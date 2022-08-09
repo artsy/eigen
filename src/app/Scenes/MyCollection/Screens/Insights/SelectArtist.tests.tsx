@@ -35,7 +35,7 @@ describe("SelectArtist", () => {
       fireEvent.press(screen.getByTestId("change-artist-touchable"))
 
       // Modal is visible and the list is populated
-      expect(screen.getByTestId("average-sale-price-select-artist-modal").props.visible).toBeTrue()
+      expect(screen.getByTestId("select-artist-modal").props.visible).toBeTrue()
       expect(screen.getByTestId("select-artist-flatlist").props.data.length).toBe(3)
 
       // Press on Banksy
@@ -48,11 +48,9 @@ describe("SelectArtist", () => {
 
       // Modal is hidden and the artist is updated
       await waitFor(() =>
-        expect(
-          screen.getByTestId("average-sale-price-select-artist-modal").props.visible
-        ).toBeFalse()
+        expect(screen.getByTestId("select-artist-modal").props.visible).toBeFalse()
       )
-      expect(screen.getByTestId("average-sale-price-select-artist-modal").props.visible).toBeFalse()
+      expect(screen.getByTestId("select-artist-modal").props.visible).toBeFalse()
       expect(screen.getByText("Banksy")).toBeTruthy()
     })
   })
@@ -67,7 +65,7 @@ describe("SelectArtist", () => {
       fireEvent.press(screen.getByTestId("change-artist-touchable"))
 
       // Modal is visible and the section list is populated
-      expect(screen.getByTestId("average-sale-price-select-artist-modal").props.visible).toBeTrue()
+      expect(screen.getByTestId("select-artist-modal").props.visible).toBeTrue()
       expect(screen.getByTestId("select-artist-flatlist").props.data.length).toBe(3)
 
       // Search for "Boafo"
@@ -93,13 +91,11 @@ describe("SelectArtist", () => {
         },
       })
       await waitFor(() =>
-        expect(
-          screen.getByTestId("average-sale-price-select-artist-modal").props.visible
-        ).toBeFalse()
+        expect(screen.getByTestId("select-artist-modal").props.visible).toBeFalse()
       )
 
       // Modal is hidden and the artist is updated
-      expect(screen.getByTestId("average-sale-price-select-artist-modal").props.visible).toBeFalse()
+      expect(screen.getByTestId("select-artist-modal").props.visible).toBeFalse()
       expect(screen.getByText("Amoako Boafo")).toBeTruthy()
     })
 
@@ -112,7 +108,7 @@ describe("SelectArtist", () => {
       fireEvent.press(screen.getByTestId("change-artist-touchable"))
 
       // Modal is visible and the section list is populated
-      expect(screen.getByTestId("average-sale-price-select-artist-modal").props.visible).toBeTrue()
+      expect(screen.getByTestId("select-artist-modal").props.visible).toBeTrue()
       expect(screen.getByTestId("select-artist-flatlist").props.data.length).toBe(3)
 
       // Search for "Artist doesn't exist"
