@@ -1,10 +1,14 @@
-import { AverageSalePriceChartQuery } from "__generated__/AverageSalePriceChartQuery.graphql"
+import {
+  AverageSalePriceAtAuctionQuery,
+  AverageSalePriceAtAuctionQuery$data,
+} from "__generated__/AverageSalePriceAtAuctionQuery.graphql"
+import { AverageSalePriceChart_query$key } from "__generated__/AverageSalePriceChart_query.graphql"
 import { formatLargeNumber } from "app/utils/formatLargeNumber"
 import { computeCategoriesForChart } from "app/utils/marketPriceInsightHelpers"
 import { Flex, LineGraph, Text } from "palette"
 import { LineChartData } from "palette/elements/LineGraph/types"
-import { useState } from "react"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { useEffect, useState } from "react"
+import { graphql, useRefetchableFragment } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 
 export enum AverageSalePriceChartDuration {
@@ -15,11 +19,13 @@ export enum AverageSalePriceChartDuration {
 interface AverageSalePriceChartProps {
   artistId: string
   initialCategory: string
+  queryData: AverageSalePriceAtAuctionQuery$data
 }
 
 export const AverageSalePriceChart: React.FC<AverageSalePriceChartProps> = ({
   artistId,
   initialCategory,
+  queryData,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState(initialCategory)
   const [selectedDuration, setSelectedDuration] = useState<AverageSalePriceChartDuration>(
@@ -32,15 +38,18 @@ export const AverageSalePriceChart: React.FC<AverageSalePriceChartProps> = ({
   ).toString()
   const endYear = end.toString()
 
-  const yearlyMarketPriceInsights = useLazyLoadQuery<AverageSalePriceChartQuery>(
-    averageSalePriceChartQuery,
-    {
-      artistId,
-      medium: selectedCategory,
-      endYear,
-      startYear,
-    }
-  )
+  const [data, refetch] = useRefetchableFragment<
+    AverageSalePriceAtAuctionQuery,
+    AverageSalePriceChart_query$key
+  >(averageSalePriceChartFragment, queryData)
+
+  if (!data) {
+    return null
+  }
+
+  useEffect(() => {
+    refetch({ artistId, medium: selectedCategory, endYear, startYear })
+  }, [artistId, selectedCategory, selectedDuration])
 
   const bands: Array<{ name: AverageSalePriceChartDuration }> = [
     { name: AverageSalePriceChartDuration["3 yrs"] },
@@ -54,12 +63,10 @@ export const AverageSalePriceChart: React.FC<AverageSalePriceChartProps> = ({
 
   const onCategorySelected = (category: string) => setSelectedCategory(category)
 
-  const chartDataArray = yearlyMarketPriceInsights.analyticsCalendarYearMarketPriceInsights?.map(
-    (p) => ({
-      x: parseInt(p.year, 10),
-      y: parseInt(p.averageSalePrice, 10),
-    })
-  )
+  const chartDataArray = data.analyticsCalendarYearMarketPriceInsights?.map((p) => ({
+    x: parseInt(p.year, 10),
+    y: parseInt(p.averageSalePrice, 10),
+  }))
 
   const { height: screenHeight, width: screenWidth } = useScreenDimensions()
 
@@ -106,11 +113,14 @@ export const AverageSalePriceChart: React.FC<AverageSalePriceChartProps> = ({
   const dataTitle =
     "$" +
     formatLargeNumber(
-      chartDataArray.reduce((prev, curr, index) => ({ ...curr, y: (prev.y + curr.y) / index })).y
+      chartDataArray.reduce((prev, curr, index) => ({
+        ...curr,
+        y: (prev.y + curr.y) / (index + 1),
+      })).y
     )
 
   const dataText =
-    yearlyMarketPriceInsights.analyticsCalendarYearMarketPriceInsights?.reduce((p, c) => ({
+    data.analyticsCalendarYearMarketPriceInsights?.reduce((p, c) => ({
       ...c,
       lotsSold: parseInt(p.lotsSold, 10) + parseInt(c.lotsSold, 10),
     })).lotsSold +
@@ -142,14 +152,9 @@ export const AverageSalePriceChart: React.FC<AverageSalePriceChartProps> = ({
     />
   )
 }
-
-const averageSalePriceChartQuery = graphql`
-  query AverageSalePriceChartQuery(
-    $artistId: ID!
-    $endYear: String
-    $startYear: String
-    $medium: String!
-  ) {
+const averageSalePriceChartFragment = graphql`
+  fragment AverageSalePriceChart_query on Query
+  @refetchable(queryName: "AverageSalePriceChartRefetchQuery") {
     analyticsCalendarYearMarketPriceInsights(
       artistId: $artistId
       endYear: $endYear

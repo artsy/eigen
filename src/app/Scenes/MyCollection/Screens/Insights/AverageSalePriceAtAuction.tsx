@@ -77,6 +77,7 @@ const AverageSalePriceAtAuctionScreen: React.FC<AverageSalePriceAtAuctionProps> 
       <AverageSalePriceChart
         artistId={queryArgs.variables.artistID}
         initialCategory={initialCategory}
+        queryData={data}
       />
 
       <AverageSalePriceSelectArtistModal
@@ -96,16 +97,27 @@ export const AverageSalePriceAtAuction: React.FC<{ artistID: string; initialCate
   artistID,
   initialCategory,
 }) => {
+  const end = new Date().getFullYear()
+  const startYear = (end - 3).toString()
+  const endYear = end.toString()
+
   const [queryArgs, setQueryArgs] = useState({
     options: { fetchKey: 0 },
-    variables: { ...artistsQueryVariables, artistID },
+    variables: {
+      ...artistsQueryVariables,
+      artistID,
+      artistId: artistID,
+      medium: initialCategory,
+      endYear,
+      startYear,
+    },
   })
 
   const refetch = useCallback((newArtistID) => {
     if (newArtistID !== queryArgs.variables.artistID) {
       setQueryArgs((prev) => ({
         options: { fetchKey: (prev?.options.fetchKey ?? 0) + 1 },
-        variables: { ...artistsQueryVariables, artistID: newArtistID },
+        variables: { ...queryArgs.variables, artistID: newArtistID },
       }))
     }
   }, [])
@@ -122,8 +134,18 @@ export const AverageSalePriceAtAuction: React.FC<{ artistID: string; initialCate
 }
 
 export const AverageSalePriceAtAuctionScreenQuery = graphql`
-  query AverageSalePriceAtAuctionQuery($artistID: String!, $count: Int, $after: String) {
+  query AverageSalePriceAtAuctionQuery(
+    $artistID: String!
+    $artistId: ID!
+    $count: Int
+    $after: String
+    $endYear: String
+    $startYear: String
+    $medium: String!
+  ) {
     ...AverageSalePriceSelectArtistModal_myCollectionInfo @arguments(count: $count, after: $after)
+    ...AverageSalePriceChart_query
+      @arguments(artistId: $artistId, endYear: $endYear, medium: $medium, startYear: $startYear)
     artist(id: $artistID) {
       internalID
       name
