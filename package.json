@@ -94,7 +94,7 @@
     "@react-native-community/viewpager": "Needed by react-native-scrollable-tab-view, more context here: https://github.com/artsy/eigen/pull/4362#discussion_r566846184"
   },
   "dependencies": {
-    "@artsy/cohesion": "4.59.0",
+    "@artsy/cohesion": "4.61.0",
     "@artsy/palette-tokens": "2.6.0",
     "@artsy/to-title-case": "1.1.0",
     "@expo/react-native-action-sheet": "3.8.0",
