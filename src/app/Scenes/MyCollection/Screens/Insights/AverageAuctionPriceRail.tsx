@@ -18,6 +18,8 @@ export const AverageAuctionPriceRail: React.FC<AverageAuctionPriceRailProps> = (
   const enableMyCollectionInsightsPhase1Part3 = useFeatureFlag(
     "AREnableMyCollectionInsightsPhase1Part3"
   )
+  const showMedianTitle = useFeatureFlag("AREnableMyCollectionInsightsMedianPrice")
+
   const me = useFragment(fragment, props.me)
   const artworks = extractNodes(me.priceInsightUpdates)
 
@@ -27,12 +29,16 @@ export const AverageAuctionPriceRail: React.FC<AverageAuctionPriceRailProps> = (
 
   const groupedArtworks = Object.values(groupBy(artworks, (artwork) => artwork?.artist?.name))
 
+  const title = showMedianTitle
+    ? "Median Auction Price in the Last 3 Years"
+    : "Average Auction Price in the Last 3 Years"
+
   return (
     <Flex mb={4}>
       <Flex mx={2}>
         <SectionTitle
           capitalized={false}
-          title="Median Auction Price in the Last 3 Years"
+          title={title}
           onPress={
             enableMyCollectionInsightsPhase1Part3
               ? () => {
