@@ -8,7 +8,7 @@
   ],
   "rulesDirectory": "./tslint-rules",
   "linterOptions": {
-    "exclude": ["src/palette/**/*test.*", "dangerfile.ts"]
+    "exclude": ["src/palette/**/*test.*"]
   },
   "rules": {
     "arrow-parens": false,

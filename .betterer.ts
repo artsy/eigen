@@ -21,8 +21,13 @@ export default {
   "Avoid non-webp images!": () =>
     countNonWebpImages().include([`./images/**/*.{${imageExtensionsToAvoid.join(",")}}`]),
 
-  "Avoid using test-renderer": () =>
+  "Avoid using test-renderer!": () =>
     regexp(/renderWithWrappersLEGACY.* from ".*renderWithWrappers"/).include(typescriptTestFiles),
+
+  "Avoid having skipped tests!": () =>
+    regexp(/(fdescribe\(|describe.only\(|fit\(|xit\(|it.only\(|it.skip\()/).include(
+      typescriptTestFiles
+    ),
 }
 
 const countNonWebpImages = () =>

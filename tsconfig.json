@@ -25,7 +25,7 @@
     "types": ["jest", "react", "react-native"],
     "noEmit": true
   },
-  "include": ["typings/*.d.ts", "src/**/*.ts", "src/**/*.tsx", "scripts/**/*.ts", "dangerfile.ts"],
+  "include": ["typings/*.d.ts", "src/**/*.ts", "src/**/*.tsx", "scripts/**/*.ts"],
   "exclude": [
     "node_modules",
     "babel.config.js",
