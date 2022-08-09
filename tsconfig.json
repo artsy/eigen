@@ -22,7 +22,6 @@
     "src/storybook/*.js",
     "scripts/**/*.ts",
     "scripts/**/*.js",
-    "dangerfile.ts",
     "metaphysics-queries-freshness-tests/test-freshness.ts"
   ]
 }

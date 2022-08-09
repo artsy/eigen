@@ -69,7 +69,6 @@ package-lock.json
 yarn-error.log
 
 
-# Danger artifacts
 eslint-errors.json
 
 # typescript
@@ -129,6 +128,8 @@ Brewfile.lock.json
 
 # for tsconfig `incremental`
 tsconfig.tsbuildinfo
+
+.betterer.cache
 
 #########################################################
 # Keep this rule last.
