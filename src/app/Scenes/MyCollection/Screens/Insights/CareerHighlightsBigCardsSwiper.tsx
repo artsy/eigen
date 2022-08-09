@@ -3,10 +3,10 @@ import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { goBack } from "app/navigation/navigate"
 import { useSpringValue } from "app/Scenes/Artwork/Components/ImageCarousel/useSpringValue"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
+import { compact } from "lodash"
 import { Flex, useColor, useSpace } from "palette"
 import { Suspense, useState } from "react"
-import { Animated } from "react-native"
-import Swiper from "react-native-swiper"
+import { Animated, NativeScrollEvent, NativeSyntheticEvent, ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 import {
@@ -19,10 +19,19 @@ import {
 import { CareerHighlightKind } from "./CareerHighlightCard"
 import { CareerHighlightsPromotionalCard } from "./CareerHighlightsPromotionalCard"
 
+interface Slides {
+  key: CareerHighlightKind | "promoCard"
+  content: JSX.Element
+}
+
 export const CareerHighlightsBigCardsSwiper: React.FC<{
   type: CareerHighlightKind
   careerHighlightsAvailableTypes: CareerHighlightKind[]
 }> = ({ type, careerHighlightsAvailableTypes }) => {
+  const color = useColor()
+  const space = useSpace()
+  const { width: screenWidth } = useScreenDimensions()
+
   const data = useLazyLoadQuery<CareerHighlightsBigCardsSwiperQuery>(
     CareerHighlightsBigCardsSwiperScreenQuery,
     {}
@@ -37,10 +46,6 @@ export const CareerHighlightsBigCardsSwiper: React.FC<{
   const numberOfSlides = careerHighlightsAvailableTypes.length + 1
   const openedCardIndex = careerHighlightsAvailableTypes.indexOf(type)
 
-  const { width: screenWidth } = useScreenDimensions()
-  const color = useColor()
-  const space = useSpace()
-
   // 18 is the close button size, 20 is screen margin and 10 is the spase between the
   // close button and the bar
   const barWidth = (screenWidth - 18 - 20 - 20 - 10) / numberOfSlides
@@ -50,6 +55,57 @@ export const CareerHighlightsBigCardsSwiper: React.FC<{
   const shouldShowSlide = (slide: CareerHighlightKind) => {
     return careerHighlightsAvailableTypes.includes(slide)
   }
+
+  const slides: Slides[] = compact([
+    !!shouldShowSlide("BIENNIAL") && {
+      key: "BIENNIAL",
+      content: <CareerHighlightBigCardBiennial type="BIENNIAL" highlightData={myCollectionInfo} />,
+    },
+
+    !!shouldShowSlide("COLLECTED") && {
+      key: "COLLECTED",
+      content: (
+        <CareerHighlightBigCardCollected type="COLLECTED" highlightData={myCollectionInfo} />
+      ),
+    },
+    !!shouldShowSlide("GROUP_SHOW") && {
+      key: "GROUP_SHOW",
+      content: (
+        <CareerHighlightBigCardGroupShow type="GROUP_SHOW" highlightData={myCollectionInfo} />
+      ),
+    },
+    !!shouldShowSlide("SOLO_SHOW") && {
+      key: "SOLO_SHOW",
+      content: <CareerHighlightBigCardSoloShow type="SOLO_SHOW" highlightData={myCollectionInfo} />,
+    },
+    !!shouldShowSlide("REVIEWED") && {
+      key: "REVIEWED",
+      content: <CareerHighlightBigCardReviewed type="REVIEWED" highlightData={myCollectionInfo} />,
+    },
+    {
+      key: "promoCard",
+      content: <CareerHighlightsPromotionalCard />,
+    },
+  ])
+
+  const setSliderPage = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const { currentPage } = sliderState
+    const { x } = event.nativeEvent.contentOffset
+
+    const currentSlide = Math.round(x / screenWidth)
+
+    if (currentSlide !== currentPage) {
+      setSliderState({
+        ...sliderState,
+        currentPage: currentSlide,
+      })
+    }
+
+    // TODO: mark the slide as seen here
+    // the seen slide will be slides[currentSlide].key
+    // TODO: not to forget to mark the initial slide as seen as well
+  }
+
   return (
     <>
       <FancyModalHeader
@@ -84,31 +140,21 @@ export const CareerHighlightsBigCardsSwiper: React.FC<{
         </Flex>
       </FancyModalHeader>
       <Suspense fallback={<LoadingSkeleton />}>
-        <Swiper
-          index={openedCardIndex}
-          showsButtons={false}
-          loop={false}
-          removeClippedSubviews={false}
-          showsPagination={false}
-          onIndexChanged={(index) => setSliderState({ currentPage: index })}
+        <ScrollView
+          horizontal
+          scrollEventThrottle={10}
+          pagingEnabled
+          snapToAlignment="center"
+          showsHorizontalScrollIndicator={false}
+          contentOffset={{ x: screenWidth * openedCardIndex, y: 0 }}
+          onMomentumScrollEnd={(event: NativeSyntheticEvent<NativeScrollEvent>) =>
+            setSliderPage(event)
+          }
         >
-          {!!shouldShowSlide("BIENNIAL") && (
-            <CareerHighlightBigCardBiennial type="BIENNIAL" highlightData={myCollectionInfo} />
-          )}
-          {!!shouldShowSlide("COLLECTED") && (
-            <CareerHighlightBigCardCollected type="COLLECTED" highlightData={myCollectionInfo} />
-          )}
-          {!!shouldShowSlide("GROUP_SHOW") && (
-            <CareerHighlightBigCardGroupShow type="GROUP_SHOW" highlightData={myCollectionInfo} />
-          )}
-          {!!shouldShowSlide("SOLO_SHOW") && (
-            <CareerHighlightBigCardSoloShow type="SOLO_SHOW" highlightData={myCollectionInfo} />
-          )}
-          {!!shouldShowSlide("REVIEWED") && (
-            <CareerHighlightBigCardReviewed type="REVIEWED" highlightData={myCollectionInfo} />
-          )}
-          <CareerHighlightsPromotionalCard />
-        </Swiper>
+          {slides.map(({ key, content }) => {
+            return <Flex key={key}>{content}</Flex>
+          })}
+        </ScrollView>
       </Suspense>
     </>
   )

@@ -1,8 +1,23 @@
-import { CareerHighlightBigCardBiennial_myCollectionInfo$key } from "__generated__/CareerHighlightBigCardBiennial_myCollectionInfo.graphql"
-import { CareerHighlightBigCardCollected_myCollectionInfo$key } from "__generated__/CareerHighlightBigCardCollected_myCollectionInfo.graphql"
-import { CareerHighlightBigCardGroupShow_myCollectionInfo$key } from "__generated__/CareerHighlightBigCardGroupShow_myCollectionInfo.graphql"
-import { CareerHighlightBigCardReviewed_myCollectionInfo$key } from "__generated__/CareerHighlightBigCardReviewed_myCollectionInfo.graphql"
-import { CareerHighlightBigCardSoloShow_myCollectionInfo$key } from "__generated__/CareerHighlightBigCardSoloShow_myCollectionInfo.graphql"
+import {
+  CareerHighlightBigCardBiennial_myCollectionInfo$data,
+  CareerHighlightBigCardBiennial_myCollectionInfo$key,
+} from "__generated__/CareerHighlightBigCardBiennial_myCollectionInfo.graphql"
+import {
+  CareerHighlightBigCardCollected_myCollectionInfo$data,
+  CareerHighlightBigCardCollected_myCollectionInfo$key,
+} from "__generated__/CareerHighlightBigCardCollected_myCollectionInfo.graphql"
+import {
+  CareerHighlightBigCardGroupShow_myCollectionInfo$data,
+  CareerHighlightBigCardGroupShow_myCollectionInfo$key,
+} from "__generated__/CareerHighlightBigCardGroupShow_myCollectionInfo.graphql"
+import {
+  CareerHighlightBigCardReviewed_myCollectionInfo$data,
+  CareerHighlightBigCardReviewed_myCollectionInfo$key,
+} from "__generated__/CareerHighlightBigCardReviewed_myCollectionInfo.graphql"
+import {
+  CareerHighlightBigCardSoloShow_myCollectionInfo$data,
+  CareerHighlightBigCardSoloShow_myCollectionInfo$key,
+} from "__generated__/CareerHighlightBigCardSoloShow_myCollectionInfo.graphql"
 import { formatTombstoneText } from "app/Components/ArtistListItem"
 import { EntityHeader, Flex, IconProps, Text, useSpace } from "palette"
 import { useState } from "react"
@@ -72,26 +87,32 @@ export const CareerHighlightBigCardBiennial: React.FC<CareerHighlightBigCardBien
       />
       <FlatList
         key={type}
-        scrollEnabled={count > 5}
+        bounces={false}
         showsVerticalScrollIndicator={false}
         data={highlightDataBiennial}
         keyExtractor={(_item, index) => `${type}_${index}`}
         contentContainerStyle={{ paddingBottom: headerHeight }}
-        renderItem={({ item }: any) => {
+        renderItem={({
+          item,
+        }: {
+          item: NonNullable<
+            NonNullable<CareerHighlightBigCardBiennial_myCollectionInfo$data["biennialInsights"]>[0]
+          >
+        }) => {
           return (
             <EntityHeader
               mb={2}
-              name={item.artist.name}
+              name={item.artist!.name!}
               meta={
                 formatTombstoneText(
-                  item.artist.nationality,
-                  item.artist.birthday,
-                  item.artist.deathday
+                  item.artist!.nationality,
+                  item.artist!.birthday,
+                  item.artist!.deathday
                 ) ?? undefined
               }
-              imageUrl={item.artist.image?.url ?? undefined}
-              initials={item.artist.initials ?? undefined}
-              key={`${item.artist.id}_${type}`}
+              imageUrl={item.artist!.image?.url ?? undefined}
+              initials={item.artist!.initials ?? undefined}
+              key={`${item.artist!.id}_${type}`}
             />
           )
         }}
@@ -156,21 +177,29 @@ export const CareerHighlightBigCardCollected: React.FC<CareerHighlightBigCardCol
         data={highlightDataCollected}
         keyExtractor={(_item, index) => `${type}_${index}`}
         contentContainerStyle={{ paddingBottom: headerHeight }}
-        renderItem={({ item }: any) => {
+        renderItem={({
+          item,
+        }: {
+          item: NonNullable<
+            NonNullable<
+              CareerHighlightBigCardCollected_myCollectionInfo$data["collectedInsights"]
+            >[0]
+          >
+        }) => {
           return (
             <EntityHeader
               mb={2}
-              name={item.artist.name}
+              name={item.artist!.name!}
               meta={
                 formatTombstoneText(
-                  item.artist.nationality,
-                  item.artist.birthday,
-                  item.artist.deathday
+                  item.artist!.nationality,
+                  item.artist!.birthday,
+                  item.artist!.deathday
                 ) ?? undefined
               }
-              imageUrl={item.artist.image?.url ?? undefined}
-              initials={item.artist.initials ?? undefined}
-              key={`${item.artist.id}_${type}`}
+              imageUrl={item.artist!.image?.url ?? undefined}
+              initials={item.artist!.initials ?? undefined}
+              key={`${item.artist!.id}_${type}`}
             />
           )
         }}
@@ -234,21 +263,29 @@ export const CareerHighlightBigCardGroupShow: React.FC<CareerHighlightBigCardGro
         data={highlightDataGroupShow}
         keyExtractor={(_item, index) => `${type}_${index}`}
         contentContainerStyle={{ paddingBottom: headerHeight }}
-        renderItem={({ item }: any) => {
+        renderItem={({
+          item,
+        }: {
+          item: NonNullable<
+            NonNullable<
+              CareerHighlightBigCardGroupShow_myCollectionInfo$data["groupShowInsights"]
+            >[0]
+          >
+        }) => {
           return (
             <EntityHeader
               mb={2}
-              name={item.artist.name}
+              name={item.artist!.name!}
               meta={
                 formatTombstoneText(
-                  item.artist.nationality,
-                  item.artist.birthday,
-                  item.artist.deathday
+                  item.artist!.nationality,
+                  item.artist!.birthday,
+                  item.artist!.deathday
                 ) ?? undefined
               }
-              imageUrl={item.artist.image?.url ?? undefined}
-              initials={item.artist.initials ?? undefined}
-              key={`${item.artist.id}_${type}`}
+              imageUrl={item.artist!.image?.url ?? undefined}
+              initials={item.artist!.initials ?? undefined}
+              key={`${item.artist!.id}_${type}`}
             />
           )
         }}
@@ -312,21 +349,27 @@ export const CareerHighlightBigCardSoloShow: React.FC<CareerHighlightBigCardSolo
         data={highlightDataSoloShow}
         keyExtractor={(_item, index) => `${type}_${index}`}
         contentContainerStyle={{ paddingBottom: headerHeight }}
-        renderItem={({ item }: any) => {
+        renderItem={({
+          item,
+        }: {
+          item: NonNullable<
+            NonNullable<CareerHighlightBigCardSoloShow_myCollectionInfo$data["soloShowInsights"]>[0]
+          >
+        }) => {
           return (
             <EntityHeader
               mb={2}
-              name={item.artist.name}
+              name={item.artist!.name!}
               meta={
                 formatTombstoneText(
-                  item.artist.nationality,
-                  item.artist.birthday,
-                  item.artist.deathday
+                  item.artist!.nationality,
+                  item.artist!.birthday,
+                  item.artist!.deathday
                 ) ?? undefined
               }
-              imageUrl={item.artist.image?.url ?? undefined}
-              initials={item.artist.initials ?? undefined}
-              key={`${item.artist.id}_${type}`}
+              imageUrl={item.artist!.image?.url ?? undefined}
+              initials={item.artist!.initials ?? undefined}
+              key={`${item.artist!.id}_${type}`}
             />
           )
         }}
@@ -391,21 +434,27 @@ export const CareerHighlightBigCardReviewed: React.FC<CareerHighlightBigCardRevi
         data={highlightDataReviewed}
         keyExtractor={(_item, index) => `${type}_${index}`}
         contentContainerStyle={{ paddingBottom: headerHeight }}
-        renderItem={({ item }: any) => {
+        renderItem={({
+          item,
+        }: {
+          item: NonNullable<
+            NonNullable<CareerHighlightBigCardReviewed_myCollectionInfo$data["reviewedInsights"]>[0]
+          >
+        }) => {
           return (
             <EntityHeader
               mb={2}
-              name={item.artist.name}
+              name={item.artist!.name!}
               meta={
                 formatTombstoneText(
-                  item.artist.nationality,
-                  item.artist.birthday,
-                  item.artist.deathday
+                  item.artist!.nationality,
+                  item.artist!.birthday,
+                  item.artist!.deathday
                 ) ?? undefined
               }
-              imageUrl={item.artist.image?.url ?? undefined}
-              initials={item.artist.initials ?? undefined}
-              key={`${item.artist.id}_${type}`}
+              imageUrl={item.artist!.image?.url ?? undefined}
+              initials={item.artist!.initials ?? undefined}
+              key={`${item.artist!.id}_${type}`}
             />
           )
         }}
