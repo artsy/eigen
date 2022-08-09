@@ -5,13 +5,17 @@
 //
 exports[`Stop using useAnimatedValue, use useSharedValue instead!`] = {
   value: `{
-    "src/app/Components/Disappearable.tsx:2829677151": [
+    "src/app/Components/Disappearable.tsx:2475655999": [
       [12, 18, 17, "RegExp match", "3761664346"]
     ],
     "src/app/Components/HeaderArtworksFilter/HeaderArtworksFilter.tests.tsx:2407012079": [
       [15, 27, 17, "RegExp match", "3761664346"]
     ],
     "src/app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks.tests.tsx:4210764974": [
+      [31, 27, 17, "RegExp match", "3761664346"]
+    ],
+    "src/app/Components/SearchInput.tsx:2115204778": [
+      [30, 24, 17, "RegExp match", "3761664346"],
       [31, 27, 17, "RegExp match", "3761664346"]
     ],
     "src/app/Components/StickyHeaderPage.tsx:3134858519": [
@@ -25,17 +29,17 @@ exports[`Stop using useAnimatedValue, use useSharedValue instead!`] = {
       [64, 31, 17, "RegExp match", "3761664346"],
       [89, 24, 17, "RegExp match", "3761664346"]
     ],
-    "src/app/Components/StickyTabPage/StickyTabPageFlatList.tsx:1058481915": [
+    "src/app/Components/StickyTabPage/StickyTabPageFlatList.tsx:589188069": [
       [44, 24, 17, "RegExp match", "3761664346"],
       [45, 23, 17, "RegExp match", "3761664346"],
       [46, 24, 17, "RegExp match", "3761664346"],
       [58, 23, 17, "RegExp match", "3761664346"],
       [160, 29, 17, "RegExp match", "3761664346"]
     ],
-    "src/app/Components/StickyTabPage/reanimatedHelpers.ts:805487622": [
-      [10, 16, 17, "RegExp match", "3761664346"],
-      [36, 16, 17, "RegExp match", "3761664346"],
-      [37, 20, 17, "RegExp match", "3761664346"]
+    "src/app/Components/StickyTabPage/reanimatedHelpers.ts:2157604683": [
+      [9, 16, 17, "RegExp match", "3761664346"],
+      [35, 16, 17, "RegExp match", "3761664346"],
+      [36, 20, 17, "RegExp match", "3761664346"]
     ],
     "src/app/Scenes/Artwork/Components/ImageCarousel/FullScreen/ImageCarouselFullScreen.tsx:1587870703": [
       [44, 22, 17, "RegExp match", "3761664346"]
@@ -55,8 +59,12 @@ exports[`Stop using useAnimatedValue, use useSharedValue instead!`] = {
     "src/app/Scenes/Artwork/Components/ImageCarousel/useSpringValue.ts:411637173": [
       [18, 16, 17, "RegExp match", "3761664346"]
     ],
-    "src/app/Scenes/MyCollection/Components/MyCollectionSearchBar.tsx:725866008": [
-      [37, 33, 17, "RegExp match", "3761664346"]
+    "src/app/Scenes/MyCollection/Components/MyCollectionSearchBar.tsx:2587485171": [
+      [40, 33, 17, "RegExp match", "3761664346"]
+    ],
+    "src/app/Scenes/Onboarding/OnboardingWelcome.tsx:41200260": [
+      [25, 18, 17, "RegExp match", "3761664346"],
+      [26, 21, 17, "RegExp match", "3761664346"]
     ],
     "src/palette/elements/Spinner/CircularSpinner.tsx:2364825164": [
       [55, 19, 17, "RegExp match", "3761664346"]
@@ -562,11 +570,5 @@ exports[`Finish our strictnes migration!`] = {
       [78, 56, 40, "RegExp match", "1708246099"],
       [85, 56, 40, "RegExp match", "1708246099"]
     ]
-  }`
-};
-
-exports[`Avoid non-webp images!`] = {
-  value: `{
-
   }`
 };
