@@ -573,7 +573,7 @@ exports[`Finish our strictnes migration!`] = {
   }`
 };
 
-exports[`Avoid using test-renderer`] = {
+exports[`Avoid using test-renderer!`] = {
   value: `{
     "src/app/Components/ArticleCard.tests.tsx:2337765959": [
       [0, 9, 62, "RegExp match", "1309307679"]
@@ -1240,6 +1240,25 @@ exports[`Avoid using test-renderer`] = {
     ],
     "src/palette/helpers/space.tests.tsx:3599286117": [
       [0, 9, 62, "RegExp match", "1309307679"]
+    ]
+  }`
+};
+
+exports[`Avoid having skipped tests!`] = {
+  value: `{
+    "src/app/Components/ArtworkFilter/FilterModal.tests.tsx:3694919679": [
+      [536, 2, 8, "RegExp match", "593069535"],
+      [585, 2, 8, "RegExp match", "593069535"]
+    ],
+    "src/app/Scenes/ArtworkAttributionClassFAQ/ArtworkAttributionClassFAQ.tests.tsx:4035119178": [
+      [28, 2, 8, "RegExp match", "593069535"]
+    ],
+    "src/app/Scenes/Sale/SaleLotsList.tests.tsx:2292544458": [
+      [95, 2, 8, "RegExp match", "593069535"]
+    ],
+    "src/app/utils/track/tracking.tests.tsx:1646524240": [
+      [28, 2, 8, "RegExp match", "593069535"],
+      [61, 2, 8, "RegExp match", "593069535"]
     ]
   }`
 };

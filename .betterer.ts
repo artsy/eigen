@@ -3,7 +3,6 @@ import recursiveReadDirSync from "recursive-readdir-sync"
 import { BettererTest, BettererFileTest } from "@betterer/betterer"
 import { bigger, smaller } from "@betterer/constraints"
 
-
 const typescriptFiles = ["./src/**/*.ts", "./src/**/*.tsx"]
 const typescriptTestFiles = ["./src/**/*.tests.ts", "./src/**/*.tests.tsx"]
 const imageExtensionsToAvoid = ["png", "jpg", "jpeg"]

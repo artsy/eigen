@@ -1,0 +1,9 @@
+name: Betterer
+
+on: [push]
+
+jobs:
+  Betterer-Check:
+    runs-on: ubuntu-latest
+    steps:
+      - run: yarn ci:betterer-check

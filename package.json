@@ -17,6 +17,7 @@
     "ci:lint": "yarn lint --format json --out tslint-errors.json ",
     "ci:skip-native-if-possible": "node scripts/ci-skip-native-if-possible.js",
     "ci:type-check": "tsc --pretty false | tee tsc_raw.log",
+    "ci:betterer-check": "betterer ci",
     "ci": "yarn ci:type-check && yarn ci:lint && yarn prettier-project -l && rm -rf src/__generated__ && yarn relay && yarn ci:test",
     "doctor": "./scripts/doctor.js",
     "generate-cities-cache": "node scripts/generate-cities-cache.js",
