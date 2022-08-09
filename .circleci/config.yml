@@ -424,10 +424,6 @@ jobs:
           path: xcode_test_raw.log
           prefix: tests
 
-      - run:
-          name: Danger
-          command: bundle exec danger --danger_id=circle --dangerfile=Dangerfile.circle.rb --verbose
-
       - await-previous-builds:
           branch: beta-ios
       - run:
