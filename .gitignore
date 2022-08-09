@@ -68,7 +68,6 @@ yarn-error.log
 # jest
 .jest/cache
 
-# Danger artifacts
 tslint-errors.json
 
 # typescript

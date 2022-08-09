@@ -260,9 +260,6 @@ jobs:
       - install-node-modules
       - run-relay-compiler
       - run:
-          name: Danger
-          command: yarn danger ci --verbose
-      - run:
           name: Prevent Strictness Regressions
           command: node scripts/strictness-migration.js check-pr
 
