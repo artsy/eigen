@@ -260,9 +260,6 @@ jobs:
       - install-node-modules
       - run-relay-compiler
       - run:
-          name: Danger
-          command: yarn danger ci --verbose
-      - run:
           name: Prevent Strictness Regressions
           command: node scripts/strictness-migration.js check-pr
 
@@ -423,10 +420,6 @@ jobs:
       - store_artifacts:
           path: xcode_test_raw.log
           prefix: tests
-
-      - run:
-          name: Danger
-          command: bundle exec danger --danger_id=circle --dangerfile=Dangerfile.circle.rb --verbose
 
       - await-previous-builds:
           branch: beta-ios
