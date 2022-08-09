@@ -259,6 +259,12 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableArtworksConnectionForAuction",
   },
+  AREnableMyCollectionInsightsMedianPrice: {
+    readyForRelease: true,
+    description: "Use median instead of average in My Collection",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableMyCollectionInsightsMedianPrice",
+  },
 })
 
 export interface DevToggleDescriptor {
