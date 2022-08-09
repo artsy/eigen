@@ -38,8 +38,8 @@ export const MedianAuctionPriceRail: React.FC<MedianAuctionPriceRailProps> = (pr
           capitalized={false}
           title={
             enableMyCollectionInsightsMedianPrice
-              ? "Median Auction Price in the last 3 years"
-              : "Average Auction Price in the last 3 years"
+              ? "Median Auction Price in the Last 3 Years"
+              : "Average Auction Price in the Last 3 Years"
           }
           onPress={
             enableMyCollectionInsightsPhase1Part3
