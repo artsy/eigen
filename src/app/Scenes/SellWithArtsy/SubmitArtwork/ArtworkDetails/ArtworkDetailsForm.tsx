@@ -217,10 +217,10 @@ export const ArtworkDetailsForm: React.FC = () => {
         displayLocation={buildLocationDisplay(values.location)}
         onChange={({ city, state, country, countryCode }: LocationWithDetails) => {
           setFieldValue("location", {
-            city: city || "",
-            state: state || "",
-            country: country || "",
-            countryCode: countryCode || "",
+            city: city ?? "",
+            state: state ?? "",
+            country: country ?? "",
+            countryCode: countryCode ?? "",
           })
 
           if (!countryCode) {

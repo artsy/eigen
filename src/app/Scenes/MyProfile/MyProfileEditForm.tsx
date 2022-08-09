@@ -131,7 +131,7 @@ export const MyProfileEditForm: React.FC = () => {
       initialValues: {
         name: me?.name ?? "",
         displayLocation: { display: buildLocationDisplay(me?.location || null) },
-        location: me?.location || null,
+        location: me?.location ?? null,
         profession: me?.profession ?? "",
         otherRelevantPositions: me?.otherRelevantPositions ?? "",
         bio: me?.bio ?? "",
