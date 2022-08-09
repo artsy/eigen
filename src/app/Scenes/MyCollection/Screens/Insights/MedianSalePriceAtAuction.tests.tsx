@@ -1,23 +1,23 @@
-import { AverageSalePriceAtAuctionQuery } from "__generated__/AverageSalePriceAtAuctionQuery.graphql"
+import { MedianSalePriceAtAuctionQuery } from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import { useLazyLoadQuery } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import {
-  AverageSalePriceAtAuction,
-  AverageSalePriceAtAuctionScreenQuery,
-} from "./AverageSalePriceAtAuction"
+  MedianSalePriceAtAuction,
+  MedianSalePriceAtAuctionScreenQuery,
+} from "./MedianSalePriceAtAuction"
 
 jest.unmock("react-relay")
 
-describe("AverageSalePriceAtAuction", () => {
+describe("MedianSalePriceAtAuction", () => {
   const TestRenderer = () => {
-    useLazyLoadQuery<AverageSalePriceAtAuctionQuery>(AverageSalePriceAtAuctionScreenQuery, {
+    useLazyLoadQuery<MedianSalePriceAtAuctionQuery>(MedianSalePriceAtAuctionScreenQuery, {
       artistID: "artist-id",
     })
 
-    return <AverageSalePriceAtAuction artistID="artist-id" />
+    return <MedianSalePriceAtAuction artistID="artist-id" />
   }
 
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -32,7 +32,7 @@ describe("AverageSalePriceAtAuction", () => {
 
     await flushPromiseQueue()
 
-    expect(getByTestId("Average_Auction_Price_title")).toBeTruthy()
+    expect(getByTestId("Median_Auction_Price_title")).toBeTruthy()
   })
 })
 

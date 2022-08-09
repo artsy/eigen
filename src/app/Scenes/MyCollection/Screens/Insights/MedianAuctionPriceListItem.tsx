@@ -1,17 +1,17 @@
-import { AverageAuctionPriceRail_me$data } from "__generated__/AverageAuctionPriceRail_me.graphql"
+import { MedianAuctionPriceRail_me$data } from "__generated__/MedianAuctionPriceRail_me.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Flex, NoArtworkIcon, Text, Touchable, useColor } from "palette"
 
-export type AverageSalePriceArtwork = NonNullable<
-  NonNullable<NonNullable<AverageAuctionPriceRail_me$data["priceInsightUpdates"]>["edges"]>[0]
+export type MedianSalePriceArtwork = NonNullable<
+  NonNullable<NonNullable<MedianAuctionPriceRail_me$data["priceInsightUpdates"]>["edges"]>[0]
 >["node"]
 
 interface Props {
-  artworks: AverageSalePriceArtwork[]
+  artworks: MedianSalePriceArtwork[]
   onPress?: () => void
 }
 
-export const AverageAuctionPriceListItem: React.FC<Props> = ({ artworks, onPress }) => {
+export const MedianAuctionPriceListItem: React.FC<Props> = ({ artworks, onPress }) => {
   const color = useColor()
   const artist = artworks[0]?.artist
 
@@ -58,6 +58,7 @@ export const AverageAuctionPriceListItem: React.FC<Props> = ({ artworks, onPress
           </Flex>
           <Flex alignItems="flex-end">
             <Text variant="xs" weight="medium">
+              {/* TODO: query for median instead */}
               {artwork?.marketPriceInsights?.averageSalePriceDisplayText}
             </Text>
           </Flex>
