@@ -44,11 +44,16 @@ export const useConfig = ({ basis, onDone }: UseConfig) => {
     setCurrent(workflowEngine.current.next())
   }
 
+  const back = () => {
+    setCurrent(workflowEngine.current.back())
+  }
+
   const reset = () => {
     setCurrent(workflowEngine.current.reset())
   }
 
   return {
+    back,
     current,
     workflowEngine: workflowEngine.current,
     next,

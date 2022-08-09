@@ -1,16 +1,20 @@
-import { useNavigation } from "@react-navigation/native"
+import {
+  OnboardingContextAction,
+  State,
+  useOnboardingContext,
+} from "app/Scenes/Onboarding/OnboardingPersonalization2/Hooks/useOnboardingContext"
 import { Box, Button, CheckCircleFillIcon, Flex, ProgressBar, Screen, Spacer, Text } from "palette"
-import { useState } from "react"
+import { FC, useCallback, useState } from "react"
 import { StatusBar } from "react-native"
 import {
   AnimatedFadingPill,
   FADE_OUT_PILL_ANIMATION_DURATION,
 } from "../Components/AnimatedFadingPill"
-import { OnboardingContextAction, State, useOnboardingContext } from "../Hooks/useOnboardingContext"
 
 interface OnboardingQuestionTemplateProps {
   answers: string[]
   action: Exclude<OnboardingContextAction["type"], "RESET">
+  onBack?: () => void
   onNext: () => void
   question: string
   subtitle?: string
@@ -19,15 +23,15 @@ interface OnboardingQuestionTemplateProps {
 const NAVIGATE_TO_NEXT_SCREEN_DELAY = 500
 const ADD_TICK_AND_ANIMATE_PROGRESS_BAR_DELAY = FADE_OUT_PILL_ANIMATION_DURATION + 200
 
-export const OnboardingQuestionTemplate: React.FC<OnboardingQuestionTemplateProps> = ({
+export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = ({
   answers,
   action,
+  onBack,
   onNext,
   question,
   subtitle,
 }) => {
-  const { goBack } = useNavigation()
-  const { dispatch, next, onDone, state, progress } = useOnboardingContext()
+  const { dispatch, back, next, onDone, progress, state } = useOnboardingContext()
   const [showPillTick, setShowPillTick] = useState(false)
   const [hideUnselectedPills, setHideUnselectedPills] = useState(false)
   const [isNextBtnDisabled, setIsNextBtnDisabled] = useState(false)
@@ -38,12 +42,15 @@ export const OnboardingQuestionTemplate: React.FC<OnboardingQuestionTemplateProp
       ? state[stateKey]?.includes(answer)
       : state[stateKey] === answer
 
-  const navigateToNextScreen = () =>
-    setTimeout(() => {
-      onNext()
-    }, NAVIGATE_TO_NEXT_SCREEN_DELAY)
+  const navigateToNextScreen = useCallback(
+    () =>
+      setTimeout(() => {
+        onNext()
+      }, NAVIGATE_TO_NEXT_SCREEN_DELAY),
+    [onNext]
+  )
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     // force disable next button
     setIsNextBtnDisabled(true)
     // trigger the fade out animation in the unselected pill components
@@ -55,13 +62,20 @@ export const OnboardingQuestionTemplate: React.FC<OnboardingQuestionTemplateProp
 
       navigateToNextScreen()
     }, ADD_TICK_AND_ANIMATE_PROGRESS_BAR_DELAY)
-  }
+  }, [next, navigateToNextScreen])
+
+  const handleBack = useCallback(() => {
+    if (!!onBack) {
+      back()
+      onBack()
+    }
+  }, [back, onBack])
 
   const isDisabled = isNextBtnDisabled || !state[stateKey] || state[stateKey]?.length === 0
 
   return (
     <Screen>
-      <Screen.Header onBack={goBack} onSkip={onDone} />
+      <Screen.Header onBack={handleBack} onSkip={onDone} />
       <Screen.Body>
         <StatusBar barStyle="dark-content" />
         <Box pt={2}>

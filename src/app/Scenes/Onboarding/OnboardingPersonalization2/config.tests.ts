@@ -1,4 +1,5 @@
 import { renderHook } from "@testing-library/react-hooks"
+import { WorkflowEngine } from "app/utils/WorkflowEngine/WorkflowEngine"
 import {
   OPTION_DEVELOPING_MY_ART_TASTES,
   OPTION_FOLLOW_GALLERIES_I_LOVE,
@@ -9,7 +10,7 @@ import {
 import { State } from "./Hooks/useOnboardingContext"
 
 describe("config", () => {
-  it("should move through workflow", () => {
+  it("should move forward through workflow", () => {
     const {
       result: {
         current: { workflowEngine },
@@ -33,6 +34,27 @@ describe("config", () => {
     expect(workflowEngine.next()).toEqual("VIEW_QUESTION_TWO")
     expect(workflowEngine.next()).toEqual("VIEW_QUESTION_THREE")
     expect(workflowEngine.next()).toEqual("VIEW_TOP_AUCTION_LOTS")
+  })
+
+  it.only("should move backward through workflow", () => {
+    const workflowEngine = new WorkflowEngine({ workflow: ["first", "second", "third", "fourth"] })
+
+    expect(workflowEngine.next()).toEqual("second")
+    expect(workflowEngine.current()).toEqual("second")
+    expect(workflowEngine.next()).toEqual("third")
+    expect(workflowEngine.isEnd()).toBe(false)
+    expect(workflowEngine.next()).toEqual("fourth")
+    expect(workflowEngine.isEnd()).toBe(true)
+    expect(workflowEngine.back()).toEqual("third")
+    expect(workflowEngine.current()).toEqual("third")
+    expect(workflowEngine.isEnd()).toBe(false)
+    expect(workflowEngine.back()).toEqual("second")
+    expect(workflowEngine.current()).toEqual("second")
+    expect(workflowEngine.isEnd()).toBe(false)
+    expect(workflowEngine.back()).toEqual("first")
+    expect(workflowEngine.current()).toEqual("first")
+    expect(workflowEngine.isEnd()).toBe(false)
+    expect(workflowEngine.isStart()).toBe(true)
   })
 
   it("should make a decision", () => {

@@ -69,6 +69,7 @@ const OnboardingContext = createContext<{
   state: State
   workflowEngine: WorkflowEngine
   next(): void
+  back(): void
   onDone(): void
 }>({
   current: "",
@@ -76,6 +77,8 @@ const OnboardingContext = createContext<{
   dispatch: () => {},
   // tslint:disable-next-line:no-empty
   next: () => {},
+  // tslint:disable-next-line:no-empty
+  back: () => {},
   // tslint:disable-next-line:no-empty
   onDone: () => {},
   progress: 0,
@@ -92,6 +95,7 @@ export const OnboardingProvider: FC<OnboardingProviderProps> = ({ children, onDo
 
   const {
     workflowEngine,
+    back,
     current,
     next,
     // tslint:disable-next-line:variable-name
@@ -112,6 +116,7 @@ export const OnboardingProvider: FC<OnboardingProviderProps> = ({ children, onDo
   return (
     <OnboardingContext.Provider
       value={{
+        back,
         current,
         dispatch,
         next,
