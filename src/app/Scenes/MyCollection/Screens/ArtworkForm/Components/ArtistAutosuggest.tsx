@@ -34,7 +34,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
         />
 
         {artistQuery.length > 2 ? (
-          <Box height="100%">
+          <Flex height="100%" py={4}>
             <AutosuggestResults
               query={artistQuery}
               entities={["ARTIST"]}
@@ -54,7 +54,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
                 </Flex>
               )}
             />
-          </Box>
+          </Flex>
         ) : null}
       </Box>
     </SearchContext.Provider>
