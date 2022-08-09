@@ -67,7 +67,11 @@
     "secrets:add-from:staged": "scripts/secrets-add-staged",
     "secrets:add-from:all": "scripts/secrets-add-all",
     "secrets:generate!": "scripts/secrets-generate-baseline",
-    "update-metaphysics": "node scripts/update-metaphysics.js"
+    "update-metaphysics": "node scripts/update-metaphysics.js",
+    "betterer:staged": "betterer precommit",
+    "betterer:changed": "betterer --cache",
+    "betterer:all": "betterer",
+    "betterer:show": "betterer results"
   },
   "repository": {
     "type": "git",
@@ -208,6 +212,8 @@
     "@babel/plugin-transform-runtime": "7.16.10",
     "@babel/preset-typescript": "7.16.7",
     "@babel/runtime": "7.16.7",
+    "@betterer/cli": "5.3.7",
+    "@betterer/regexp": "5.3.7",
     "@octokit/rest": "16.34.0",
     "@omakase/cli": "0.0.10",
     "@react-native-community/cli-platform-ios": "6.2.0",

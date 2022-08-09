@@ -130,6 +130,8 @@ reports
 Brewfile.lock.json
 
 
+.betterer.cache
+
 #########################################################
 # Keep this rule last.
 # Keep these, so we can keep the folders these appear in.

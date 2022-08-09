@@ -14,25 +14,6 @@ const getCreatedFileNames = (createdFiles: string[]) => createdFiles.filter(file
 
 const testOnlyFilter = (filename: string) => filename.includes(".tests") && typescriptOnly(filename)
 
-/**
- * Danger Rules
- */
-// We are trying to migrate away from moment towards luxon
-const preventUsingMoment = () => {
-  const newMomentImports = getCreatedFileNames(danger.git.created_files).filter((filename) => {
-    const content = fs.readFileSync(filename).toString()
-    return content.includes('from "moment"') || content.includes('from "moment-timezone"')
-  })
-  if (newMomentImports.length > 0) {
-    warn(`We are trying to migrate away from moment towards \`luxon\`, but found moment imports in the following new files:
-
-${newMomentImports.map((filename) => `- \`${filename}\``).join("\n")}
-
-See [docs](https://moment.github.io/luxon/api-docs/index.html).
-  `)
-  }
-}
-
 // We are trying to migrate away from test-renderer towards @testing-library/react-native
 const preventUsingTestRenderer = () => {
   const newTRImports = getCreatedFileNames(danger.git.created_files)
@@ -87,26 +68,6 @@ const verifyRemainingDevWork = () => {
   }
 }
 
-// Force the usage of WebPs
-const IMAGE_EXTENSIONS_TO_AVOID = ["png", "jpg", "jpeg"]
-const IMAGE_EXTENSIONS = [...IMAGE_EXTENSIONS_TO_AVOID, "webp"]
-
-export const useWebPs = (fileNames: string[]) => {
-  const hasNonWebImages = Boolean(
-    fileNames
-      .map((fileName) => fileName.split(".").pop() || "")
-      .filter((fileExtension) => {
-        return IMAGE_EXTENSIONS.includes(fileExtension)
-      })
-      .find((imageFileExtension) => IMAGE_EXTENSIONS_TO_AVOID.includes(imageFileExtension))
-  )
-
-  if (hasNonWebImages) {
-    warn(
-      "❌ **It seems like you added some non WebP images to Eigen, please convert them to WebPs using `source images/script.sh` script **"
-    )
-  }
-}
 ;(async function () {
   const newCreatedFileNames = getCreatedFileNames(danger.git.created_files)
 
