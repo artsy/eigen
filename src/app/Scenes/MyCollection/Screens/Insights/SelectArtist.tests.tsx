@@ -1,5 +1,5 @@
-import { MedianSalePriceAtAuctionQuery } from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { MedianSalePriceAtAuctionQuery } from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import { useLazyLoadQuery } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
