@@ -51,6 +51,9 @@ export const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
   const selectedLocationQuery = selectedLocation?.name || displayLocation
 
   useEffect(() => {
+    if (selectedLocation) {
+      setQuery(selectedLocation?.name)
+    }
     setPredictions([])
     handleChange(selectedLocation)
   }, [selectedLocation])
@@ -129,9 +132,7 @@ export const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
         onOutsidePress={touchOut}
         isFloating={floating}
         showError={showError}
-        locationSelected={
-          initialLocation ? initialLocation?.name !== query : displayLocation !== query
-        }
+        locationSelected={selectedLocation?.name === query}
       />
 
       {!!FooterComponent && <FooterComponent />}
@@ -179,11 +180,11 @@ const LocationPredictions = ({
     return formatted
   }
 
-  if ((predictions.length === 0 && !showError) || !locationSelected || !query || query.length < 3) {
+  if ((predictions.length === 0 && !showError) || locationSelected || !query || query.length < 3) {
     return null
   }
 
-  const emptyResults = showError && predictions.length === 0 && locationSelected
+  const emptyResults = showError && predictions.length === 0 && !locationSelected
 
   return (
     <>
