@@ -91,10 +91,11 @@
   ],
   "dependenciesComments": {
     "@react-native-community/slider": "Needed by storybook, see install script here: https://gist.github.com/dannyhw/9b84973dcc6ff4fa2e86e32d571d294e",
-    "@react-native-community/viewpager": "Needed by react-native-scrollable-tab-view, more context here: https://github.com/artsy/eigen/pull/4362#discussion_r566846184"
+    "@react-native-community/viewpager": "Needed by react-native-scrollable-tab-view, more context here: https://github.com/artsy/eigen/pull/4362#discussion_r566846184",
+    "react-native-vision-camera": "Needed for reverse image functionality, more context here: https://github.com/artsy/eigen/issues/7159"
   },
   "dependencies": {
-    "@artsy/cohesion": "4.59.0",
+    "@artsy/cohesion": "4.61.0",
     "@artsy/palette-tokens": "2.6.0",
     "@artsy/to-title-case": "1.1.0",
     "@expo/react-native-action-sheet": "3.8.0",
@@ -140,7 +141,7 @@
     "lodash": "4.17.21",
     "luxon": "2.2.0",
     "metro-cache": "0.66.2",
-    "moment": "2.29.3",
+    "moment": "2.29.4",
     "moment-timezone": "0.5.34",
     "ordinal": "1.0.3",
     "prop-types": "15.7.2",
@@ -176,6 +177,7 @@
     "react-native-share": "7.3.6",
     "react-native-svg": "9.13.3",
     "react-native-view-shot": "3.1.2",
+    "react-native-vision-camera": "2.14.0",
     "react-native-webview": "11.3.1",
     "react-relay": "14.0.0",
     "react-spring": "8.0.23",

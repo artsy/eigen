@@ -102,29 +102,28 @@ export const CareerHighlightPromotionalCard: React.FC = () => {
     <Touchable
       haptic
       onPress={() => {
-        // TODO: Navigate to detail card
+        navigate("my-collection/artworks/new", {
+          passProps: {
+            mode: "add",
+            source: Tab.insights,
+            onSuccess: popToRoot,
+          },
+        })
       }}
     >
-      <Flex ml={2} width={200} height={135} backgroundColor="white100" flexDirection="row">
+      <Flex
+        width={200}
+        height={135}
+        backgroundColor="white100"
+        flexDirection="row"
+        border={1}
+        borderColor="black10"
+      >
         <Flex p={1} flex={1}>
           <Flex flex={1} justifyContent="center">
             <Text variant="xs">Discover career highlights for your artists.</Text>
           </Flex>
-          <Button
-            size="small"
-            testID="career-highlight-promo-card-button"
-            onPress={() => {
-              navigate("my-collection/artworks/new", {
-                passProps: {
-                  mode: "add",
-                  source: Tab.insights,
-                  onSuccess: popToRoot,
-                },
-              })
-            }}
-          >
-            Upload Artwork
-          </Button>
+          <Button size="small">Upload Artwork</Button>
         </Flex>
 
         <Image source={require("images/career-highlights-promo-background-image.webp")} />

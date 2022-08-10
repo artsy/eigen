@@ -1,25 +1,25 @@
 import { fireEvent } from "@testing-library/react-native"
-import { AverageSalePriceAtAuctionQuery } from "__generated__/AverageSalePriceAtAuctionQuery.graphql"
+import { MedianSalePriceAtAuctionQuery } from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import { useLazyLoadQuery } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import {
-  AverageSalePriceAtAuction,
-  AverageSalePriceAtAuctionScreenQuery,
-} from "./AverageSalePriceAtAuction"
+  MedianSalePriceAtAuction,
+  MedianSalePriceAtAuctionScreenQuery,
+} from "./MedianSalePriceAtAuction"
 
 jest.unmock("react-relay")
 
-describe("AverageSalePriceSelectArtist", () => {
+describe("SelectArtist", () => {
   const TestRenderer = () => {
-    useLazyLoadQuery<AverageSalePriceAtAuctionQuery>(AverageSalePriceAtAuctionScreenQuery, {
+    useLazyLoadQuery<MedianSalePriceAtAuctionQuery>(MedianSalePriceAtAuctionScreenQuery, {
       artistID: "artist-id",
       count: 10,
     })
 
-    return <AverageSalePriceAtAuction artistID="artist-id" />
+    return <MedianSalePriceAtAuction artistID="artist-id" />
   }
 
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -47,7 +47,7 @@ describe("AverageSalePriceSelectArtist", () => {
       fireEvent.press(getByTestId("change-artist-touchable"))
 
       // Modal is visible and the list is populated
-      expect(getByTestId("average-sale-price-select-artist-modal").props.visible).toBe(true)
+      expect(getByTestId("select-artist-modal").props.visible).toBe(true)
       expect(getByTestId("select-artist-flatlist").props.data.length).toBe(3)
 
       // Press on Banksy
@@ -62,7 +62,7 @@ describe("AverageSalePriceSelectArtist", () => {
       await flushPromiseQueue()
 
       // Modal is hidden and the artist is updated
-      expect(getByTestId("average-sale-price-select-artist-modal").props.visible).toBe(false)
+      expect(getByTestId("select-artist-modal").props.visible).toBe(false)
       expect(getByText("Banksy")).toBeTruthy()
     })
   })
@@ -74,7 +74,7 @@ describe("AverageSalePriceSelectArtist", () => {
       fireEvent.press(getByTestId("change-artist-touchable"))
 
       // Modal is visible and the section list is populated
-      expect(getByTestId("average-sale-price-select-artist-modal").props.visible).toBe(true)
+      expect(getByTestId("select-artist-modal").props.visible).toBe(true)
       expect(getByTestId("select-artist-flatlist").props.data.length).toBe(3)
 
       // Search for "Boafo"
@@ -104,7 +104,7 @@ describe("AverageSalePriceSelectArtist", () => {
       await flushPromiseQueue()
 
       // Modal is hidden and the artist is updated
-      expect(getByTestId("average-sale-price-select-artist-modal").props.visible).toBe(false)
+      expect(getByTestId("select-artist-modal").props.visible).toBe(false)
       expect(getByText("Amoako Boafo")).toBeTruthy()
     })
 
@@ -114,7 +114,7 @@ describe("AverageSalePriceSelectArtist", () => {
       fireEvent.press(getByTestId("change-artist-touchable"))
 
       // Modal is visible and the section list is populated
-      expect(getByTestId("average-sale-price-select-artist-modal").props.visible).toBe(true)
+      expect(getByTestId("select-artist-modal").props.visible).toBe(true)
       expect(getByTestId("select-artist-flatlist").props.data.length).toBe(3)
 
       // Search for "Artist doesn't exist"

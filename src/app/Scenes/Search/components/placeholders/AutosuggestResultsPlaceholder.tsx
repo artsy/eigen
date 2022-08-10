@@ -13,7 +13,7 @@ export const AutosuggestResultsPlaceholder: React.FC<AutosuggestResultsPlacehold
   showResultType,
 }) => {
   return (
-    <Box p={2} accessibilityLabel="Autosuggest results are loading">
+    <Box accessibilityLabel="Autosuggest results are loading">
       {times(20).map((index) => (
         <Flex key={`autosuggest-result-${index}`} flexDirection="row" mb={2}>
           <PlaceholderBox width={IMAGE_SIZE} height={IMAGE_SIZE} borderRadius={IMAGE_SIZE / 2} />

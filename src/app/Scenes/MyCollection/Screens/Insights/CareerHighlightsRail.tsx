@@ -44,7 +44,11 @@ export const CareerHighlightsRail: React.FC<CareerHighlightsRailProps> = (props)
         horizontal
         showsHorizontalScrollIndicator={false}
         ItemSeparatorComponent={() => <Spacer mx={1} />}
-        ListFooterComponent={() => <CareerHighlightPromotionalCard />}
+        ListFooterComponent={() => (
+          <Flex ml={2}>
+            <CareerHighlightPromotionalCard />
+          </Flex>
+        )}
         style={{ overflow: "visible" }}
         data={careerHighlightData}
         renderItem={({ item }) => (

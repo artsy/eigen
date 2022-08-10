@@ -36,6 +36,7 @@ export const ArtworkAutosuggest: React.FC<ArtworkAutosuggestProps> = ({
         value={artworkQuery}
         enableClearButton
         autoFocus={typeof jest === "undefined"}
+        autoCorrect={false}
       />
 
       {showSkipAheadToAddArtworkLink && (

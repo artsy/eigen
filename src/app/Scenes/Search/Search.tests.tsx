@@ -1,4 +1,4 @@
-import { act, fireEvent, RenderAPI, waitFor } from "@testing-library/react-native"
+import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { RecentSearch } from "app/Scenes/Search/SearchModel"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
@@ -73,9 +73,7 @@ describe("Search Screen", () => {
   }
 
   it("should render a text input with placeholder", async () => {
-    const { getByPlaceholderText, getByText, queryByText } = await renderWithWrappers(
-      <TestRenderer />
-    )
+    renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
@@ -91,28 +89,28 @@ describe("Search Screen", () => {
 
     await flushPromiseQueue()
 
-    const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+    const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
 
     // Pill should not be visible
-    expect(queryByText("Artists")).toBeFalsy()
+    expect(screen.queryByText("Artists")).toBeFalsy()
 
     // should show City Guide
-    expect(getByText("City Guide")).toBeTruthy()
-    expect(getByText("Recent Searches")).toBeTruthy()
+    expect(screen.getByText("City Guide")).toBeTruthy()
+    expect(screen.getByText("Recent Searches")).toBeTruthy()
 
     act(() => fireEvent.changeText(searchInput, "Ba"))
 
     // Pills should be visible
     await waitFor(() => {
-      getByText("Artworks")
-      getByText("Artists")
+      screen.getByText("Artworks")
+      screen.getByText("Artists")
     })
   })
 
   it("does not show city guide entrance when on iPad", async () => {
     const isPadMock = isPad as jest.Mock
     isPadMock.mockImplementationOnce(() => true)
-    const { queryByText } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
@@ -127,7 +125,7 @@ describe("Search Screen", () => {
     })
 
     await flushPromiseQueue()
-    expect(queryByText("City Guide")).toBeFalsy()
+    expect(screen.queryByText("City Guide")).toBeFalsy()
   })
 
   it("shows city guide entrance when there are recent searches", async () => {
@@ -138,7 +136,7 @@ describe("Search Screen", () => {
     })
     const isPadMock = isPad as jest.Mock
     isPadMock.mockImplementationOnce(() => false)
-    const { getByText } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
         system: {
@@ -152,11 +150,11 @@ describe("Search Screen", () => {
     })
 
     await flushPromiseQueue()
-    expect(getByText("City Guide")).toBeTruthy()
+    expect(screen.getByText("City Guide")).toBeTruthy()
   })
 
   it('the "Top" pill should be selected by default', async () => {
-    const { getByA11yState, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
         system: {
@@ -170,15 +168,15 @@ describe("Search Screen", () => {
     })
 
     await flushPromiseQueue()
-    const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+    const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
 
     fireEvent.changeText(searchInput, "text")
 
-    expect(getByA11yState({ selected: true })).toHaveTextContent("Top")
+    expect(screen.getByA11yState({ selected: true })).toHaveTextContent("Top")
   })
 
   it("should not be able to untoggle the same pill", async () => {
-    const { getByPlaceholderText, getByText, getByA11yState } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
@@ -205,11 +203,11 @@ describe("Search Screen", () => {
 
     await flushPromiseQueue()
 
-    const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+    const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
     fireEvent(searchInput, "changeText", "prev value")
-    fireEvent(getByText("Artists"), "press")
+    fireEvent(screen.getByText("Artists"), "press")
 
-    expect(getByA11yState({ selected: true })).toHaveTextContent("Artists")
+    expect(screen.getByA11yState({ selected: true })).toHaveTextContent("Artists")
   })
 
   describe("search pills", () => {
@@ -221,7 +219,7 @@ describe("Search Screen", () => {
       })
 
       it("are displayed when the user has typed the minimum allowed number of characters", async () => {
-        const { getByPlaceholderText, queryByText } = renderWithWrappers(<TestRenderer />)
+        renderWithWrappers(<TestRenderer />)
 
         resolveMostRecentRelayOperation(mockEnvironment, {
           Query: () => ({
@@ -237,24 +235,24 @@ describe("Search Screen", () => {
 
         await flushPromiseQueue()
 
-        expect(queryByText("Top")).toBeFalsy()
-        expect(queryByText("Artist")).toBeFalsy()
-        expect(queryByText("Auction")).toBeFalsy()
-        expect(queryByText("Gallery")).toBeFalsy()
-        expect(queryByText("Fair")).toBeFalsy()
+        expect(screen.queryByText("Top")).toBeFalsy()
+        expect(screen.queryByText("Artist")).toBeFalsy()
+        expect(screen.queryByText("Auction")).toBeFalsy()
+        expect(screen.queryByText("Gallery")).toBeFalsy()
+        expect(screen.queryByText("Fair")).toBeFalsy()
 
-        const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+        const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
         fireEvent(searchInput, "changeText", "Ba")
 
-        expect(queryByText("Top")).toBeTruthy()
-        expect(queryByText("Artist")).toBeTruthy()
-        expect(queryByText("Auction")).toBeTruthy()
-        expect(queryByText("Gallery")).toBeTruthy()
-        expect(queryByText("Fair")).toBeTruthy()
+        expect(screen.queryByText("Top")).toBeTruthy()
+        expect(screen.queryByText("Artist")).toBeTruthy()
+        expect(screen.queryByText("Auction")).toBeTruthy()
+        expect(screen.queryByText("Gallery")).toBeTruthy()
+        expect(screen.queryByText("Fair")).toBeTruthy()
       })
 
       it("have top pill selected and disabled at the same time", async () => {
-        const { getByPlaceholderText, getByA11yState } = renderWithWrappers(<TestRenderer />)
+        renderWithWrappers(<TestRenderer />)
 
         resolveMostRecentRelayOperation(mockEnvironment, {
           Query: () => ({
@@ -270,14 +268,15 @@ describe("Search Screen", () => {
 
         await flushPromiseQueue()
 
-        const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+        const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
         fireEvent(searchInput, "changeText", "Ba")
-        const topPill = getByA11yState({ selected: true, disabled: true })
+        const topPill = screen.getByA11yState({ selected: true, disabled: true })
         expect(topPill).toHaveTextContent("Top")
       })
 
       it("are enabled when they have results", async () => {
-        const { getByPlaceholderText, UNSAFE_getAllByType } = renderWithWrappers(<TestRenderer />)
+        renderWithWrappers(<TestRenderer />)
+
         resolveMostRecentRelayOperation(mockEnvironment, {
           Query: () => ({
             system: {
@@ -291,11 +290,11 @@ describe("Search Screen", () => {
         })
         await flushPromiseQueue()
 
-        const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+        const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
         fireEvent(searchInput, "changeText", "Ba")
-        const enabledPills = UNSAFE_getAllByType(Pill).filter(
-          (pill) => pill.props.disabled === false
-        )
+        const enabledPills = screen
+          .UNSAFE_getAllByType(Pill)
+          .filter((pill) => pill.props.disabled === false)
         expect(enabledPills).toHaveLength(3)
         expect(enabledPills[0]).toHaveTextContent("Artworks")
         expect(enabledPills[1]).toHaveTextContent("Artist")
@@ -304,7 +303,7 @@ describe("Search Screen", () => {
     })
 
     it("are displayed when the user has typed the minimum allowed number of characters", async () => {
-      const { getByPlaceholderText, queryByText } = renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
       resolveMostRecentRelayOperation(mockEnvironment, {
         Query: () => ({
           system: {
@@ -319,25 +318,25 @@ describe("Search Screen", () => {
 
       await flushPromiseQueue()
 
-      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+      const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
 
-      expect(queryByText("Top")).toBeFalsy()
-      expect(queryByText("Artist")).toBeFalsy()
-      expect(queryByText("Auction")).toBeFalsy()
-      expect(queryByText("Gallery")).toBeFalsy()
-      expect(queryByText("Fair")).toBeFalsy()
+      expect(screen.queryByText("Top")).toBeFalsy()
+      expect(screen.queryByText("Artist")).toBeFalsy()
+      expect(screen.queryByText("Auction")).toBeFalsy()
+      expect(screen.queryByText("Gallery")).toBeFalsy()
+      expect(screen.queryByText("Fair")).toBeFalsy()
 
       fireEvent(searchInput, "changeText", "Ba")
 
-      expect(queryByText("Top")).toBeTruthy()
-      expect(queryByText("Artist")).toBeTruthy()
-      expect(queryByText("Auction")).toBeTruthy()
-      expect(queryByText("Gallery")).toBeTruthy()
-      expect(queryByText("Fair")).toBeTruthy()
+      expect(screen.queryByText("Top")).toBeTruthy()
+      expect(screen.queryByText("Artist")).toBeTruthy()
+      expect(screen.queryByText("Auction")).toBeTruthy()
+      expect(screen.queryByText("Gallery")).toBeTruthy()
+      expect(screen.queryByText("Fair")).toBeTruthy()
     })
 
     it("hide keyboard when selecting other pill", async () => {
-      const { getByText, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Query: () => ({
@@ -353,15 +352,15 @@ describe("Search Screen", () => {
 
       await flushPromiseQueue()
 
-      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+      const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
       const keyboardDismissSpy = jest.spyOn(Keyboard, "dismiss")
       fireEvent(searchInput, "changeText", "Ba")
-      fireEvent(getByText("Artist"), "press")
+      fireEvent(screen.getByText("Artist"), "press")
       expect(keyboardDismissSpy).toHaveBeenCalled()
     })
 
     it("should track event when a pill is tapped", async () => {
-      const { getByText, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Query: () => ({
@@ -377,10 +376,10 @@ describe("Search Screen", () => {
 
       await flushPromiseQueue()
 
-      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+      const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
       fireEvent(searchInput, "changeText", "text")
 
-      fireEvent(getByText("Artist"), "press")
+      fireEvent(screen.getByText("Artist"), "press")
       expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
         Array [
           Object {
@@ -396,7 +395,7 @@ describe("Search Screen", () => {
     })
 
     it("should correctly track the previously applied pill context module", async () => {
-      const { getByText, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Query: () => ({
@@ -412,10 +411,10 @@ describe("Search Screen", () => {
 
       await flushPromiseQueue()
 
-      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+      const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
       fireEvent(searchInput, "changeText", "text")
 
-      fireEvent(getByText("Artist"), "press")
+      fireEvent(screen.getByText("Artist"), "press")
       expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
         Array [
           Object {
@@ -429,7 +428,7 @@ describe("Search Screen", () => {
         ]
       `)
 
-      fireEvent(getByText("Artworks"), "press")
+      fireEvent(screen.getByText("Artworks"), "press")
       expect(mockTrackEvent.mock.calls[2]).toMatchInlineSnapshot(`
         Array [
           Object {
@@ -445,7 +444,7 @@ describe("Search Screen", () => {
     })
 
     it("should render all allowed algolia indices", async () => {
-      const { getByPlaceholderText, getByText } = renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Query: () => ({
@@ -502,21 +501,21 @@ describe("Search Screen", () => {
 
       await flushPromiseQueue()
 
-      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+      const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
       act(() => fireEvent(searchInput, "changeText", "value"))
 
-      expect(getByText("Artist")).toBeTruthy()
-      expect(getByText("Article")).toBeTruthy()
-      expect(getByText("Auction")).toBeTruthy()
-      expect(getByText("Artist Series")).toBeTruthy()
-      expect(getByText("Collection")).toBeTruthy()
-      expect(getByText("Fair")).toBeTruthy()
-      expect(getByText("Show")).toBeTruthy()
-      expect(getByText("Gallery")).toBeTruthy()
+      expect(screen.getByText("Artist")).toBeTruthy()
+      expect(screen.getByText("Article")).toBeTruthy()
+      expect(screen.getByText("Auction")).toBeTruthy()
+      expect(screen.getByText("Artist Series")).toBeTruthy()
+      expect(screen.getByText("Collection")).toBeTruthy()
+      expect(screen.getByText("Fair")).toBeTruthy()
+      expect(screen.getByText("Show")).toBeTruthy()
+      expect(screen.getByText("Gallery")).toBeTruthy()
     })
 
     it("should render only allowed algolia indices", async () => {
-      const { getByPlaceholderText, getByText, queryByText } = renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Query: () => ({
@@ -548,20 +547,18 @@ describe("Search Screen", () => {
 
       await flushPromiseQueue()
 
-      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+      const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
       fireEvent(searchInput, "changeText", "value")
 
-      expect(getByText("Artist")).toBeTruthy()
-      expect(getByText("Gallery")).toBeTruthy()
-      expect(queryByText("Denied")).toBeFalsy()
+      expect(screen.getByText("Artist")).toBeTruthy()
+      expect(screen.getByText("Gallery")).toBeTruthy()
+      expect(screen.queryByText("Denied")).toBeFalsy()
     })
   })
 
   describe("the top pill is selected by default", () => {
-    let tree: RenderAPI
-
     beforeEach(async () => {
-      tree = renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Algolia: () => ({
@@ -581,56 +578,52 @@ describe("Search Screen", () => {
     })
 
     it("when search query is empty", () => {
-      const { queryByA11yState, getByPlaceholderText, getByText } = tree
-      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+      const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
 
       fireEvent(searchInput, "changeText", "prev value")
-      fireEvent(getByText("Artists"), "press")
+      fireEvent(screen.getByText("Artists"), "press")
       fireEvent(searchInput, "changeText", "")
       fireEvent(searchInput, "changeText", "new value")
 
-      expect(queryByA11yState({ selected: true })).toHaveTextContent("Top")
+      expect(screen.queryByA11yState({ selected: true })).toHaveTextContent("Top")
     })
 
     it("when the query is changed", () => {
-      const { queryByA11yState, getByPlaceholderText, getByText } = tree
-      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+      const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
 
       fireEvent(searchInput, "changeText", "12")
-      fireEvent(getByText("Artists"), "press")
+      fireEvent(screen.getByText("Artists"), "press")
       fireEvent(searchInput, "changeText", "123")
 
-      expect(queryByA11yState({ selected: true })).toHaveTextContent("Top")
+      expect(screen.queryByA11yState({ selected: true })).toHaveTextContent("Top")
     })
 
     it("when clear button is pressed", () => {
-      const { queryByA11yState, getByPlaceholderText, getByText, getByLabelText } = tree
-      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+      const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
 
       fireEvent(searchInput, "changeText", "prev value")
-      fireEvent(getByText("Artists"), "press")
-      fireEvent(getByLabelText("Clear input button"), "press")
+      fireEvent(screen.getByText("Artists"), "press")
+      fireEvent(screen.getByLabelText("Clear input button"), "press")
       fireEvent(searchInput, "changeText", "new value")
 
-      expect(queryByA11yState({ selected: true })).toHaveTextContent("Top")
+      expect(screen.queryByA11yState({ selected: true })).toHaveTextContent("Top")
     })
 
     it("when cancel button is pressed", () => {
-      const { queryByA11yState, getByPlaceholderText, getByText } = tree
-      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+      const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
 
       fireEvent(searchInput, "changeText", "prev value")
-      fireEvent(getByText("Artists"), "press")
+      fireEvent(screen.getByText("Artists"), "press")
       fireEvent(searchInput, "focus")
-      fireEvent(getByText("Cancel"), "press")
+      fireEvent(screen.getByText("Cancel"), "press")
       fireEvent(searchInput, "changeText", "new value")
 
-      expect(queryByA11yState({ selected: true })).toHaveTextContent("Top")
+      expect(screen.queryByA11yState({ selected: true })).toHaveTextContent("Top")
     })
   })
 
   it("should track event when a search result is pressed", async () => {
-    const { getByPlaceholderText, getByText } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -648,7 +641,7 @@ describe("Search Screen", () => {
 
     await flushPromiseQueue()
 
-    const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+    const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
     act(() => fireEvent(searchInput, "changeText", "text"))
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
@@ -667,8 +660,8 @@ describe("Search Screen", () => {
 
     await flushPromiseQueue()
 
-    await waitFor(() => getByText("Banksy"))
-    act(() => fireEvent.press(getByText("Banksy")))
+    await waitFor(() => screen.getByText("Banksy"))
+    act(() => fireEvent.press(screen.getByText("Banksy")))
 
     expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
       Array [
