@@ -12,6 +12,7 @@ export const OnboardingQuestionTwo = () => {
   const { navigate } = useNavigation()
 
   const handleNext = useCallback(() => {
+    // @ts-expect-error
     navigate("OnboardingQuestionThree")
   }, [navigate])
 

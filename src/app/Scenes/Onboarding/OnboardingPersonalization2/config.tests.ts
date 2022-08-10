@@ -1,5 +1,4 @@
 import { renderHook } from "@testing-library/react-hooks"
-import { WorkflowEngine } from "app/utils/WorkflowEngine/WorkflowEngine"
 import {
   OPTION_DEVELOPING_MY_ART_TASTES,
   OPTION_FOLLOW_GALLERIES_I_LOVE,
@@ -37,24 +36,32 @@ describe("config", () => {
   })
 
   it("should move backward through workflow", () => {
-    const workflowEngine = new WorkflowEngine({ workflow: ["first", "second", "third", "fourth"] })
+    const {
+      result: {
+        current: { workflowEngine },
+      },
+    } = renderHook(() =>
+      useConfig({
+        onDone: jest.fn(),
+        basis: {
+          current: {
+            questionOne: OPTION_YES_I_LOVE_COLLECTING_ART,
+            questionTwo: [OPTION_DEVELOPING_MY_ART_TASTES],
+            questionThree: OPTION_TOP_AUCTION_LOTS,
+            followedIds: [],
+          },
+        },
+      })
+    )
 
-    expect(workflowEngine.next()).toEqual("second")
-    expect(workflowEngine.current()).toEqual("second")
-    expect(workflowEngine.next()).toEqual("third")
-    expect(workflowEngine.isEnd()).toBe(false)
-    expect(workflowEngine.next()).toEqual("fourth")
-    expect(workflowEngine.isEnd()).toBe(true)
-    expect(workflowEngine.back()).toEqual("third")
-    expect(workflowEngine.current()).toEqual("third")
-    expect(workflowEngine.isEnd()).toBe(false)
-    expect(workflowEngine.back()).toEqual("second")
-    expect(workflowEngine.current()).toEqual("second")
-    expect(workflowEngine.isEnd()).toBe(false)
-    expect(workflowEngine.back()).toEqual("first")
-    expect(workflowEngine.current()).toEqual("first")
-    expect(workflowEngine.isEnd()).toBe(false)
-    expect(workflowEngine.isStart()).toBe(true)
+    for (let i = 0; i < 3; i++) {
+      workflowEngine.next()
+    }
+
+    expect(workflowEngine.current()).toEqual("VIEW_QUESTION_THREE")
+    expect(workflowEngine.back()).toEqual("VIEW_QUESTION_TWO")
+    expect(workflowEngine.back()).toEqual("VIEW_QUESTION_ONE")
+    expect(workflowEngine.back()).toEqual("VIEW_WELCOME")
   })
 
   it("should make a decision", () => {
