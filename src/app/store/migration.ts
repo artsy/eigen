@@ -40,9 +40,10 @@ export const Versions = {
   AddDirtyFormValuesToSubmissionState: 28,
   RemoveDeviceId: 29,
   AddMyCollectionCareerHighlights: 30,
+  RemoveMyCollectionCareerHighlights: 31,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddMyCollectionCareerHighlights
+export const CURRENT_APP_VERSION = Versions.RemoveMyCollectionCareerHighlights
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -241,6 +242,9 @@ export const artsyAppMigrations: Migrations = {
     state.myCollectionCareerHighlights = {
       careerHighlights: {},
     }
+  },
+  [Versions.RemoveMyCollectionCareerHighlights]: (state) => {
+    delete state.myCollectionCareerHighlights
   },
 }
 
