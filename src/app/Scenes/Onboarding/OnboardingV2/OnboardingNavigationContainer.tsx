@@ -10,11 +10,13 @@ import { OnboardingFollowArtists } from "./OnboardingFollowArtists"
 import { OnboardingFollowGalleries } from "./OnboardingFollowGalleries"
 import { OnboardingPersonalizationWelcome } from "./OnboardingPersonalizationWelcome"
 import { OnboardingPostFollowLoadingScreen } from "./OnboardingPostFollowLoadingScreen"
+import { OnboardingQuestionOne } from "./OnboardingQuestionOne"
+import { OnboardingQuestionThree } from "./OnboardingQuestionThree"
+import { OnboardingQuestionTwo } from "./OnboardingQuestionTwo"
 import { OnboardingTopAuctionLots } from "./OnboardingTopAuctionLots"
-import { OnboardingQuestionOne, OnboardingQuestionThree, OnboardingQuestionTwo } from "./Questions"
 
 // tslint:disable-next-line:interface-over-type-literal
-export type OnboardingPersonalization2NavigationStack = {
+export type OnboardingNavigationStack = {
   OnboardingPersonalizationWelcome: undefined
   OnboardingQuestionOne: undefined
   OnboardingQuestionTwo: undefined
@@ -28,9 +30,9 @@ export type OnboardingPersonalization2NavigationStack = {
   ArtworkScreen: { artworkID: string }
 }
 
-const StackNavigator = createStackNavigator<OnboardingPersonalization2NavigationStack>()
+const StackNavigator = createStackNavigator<OnboardingNavigationStack>()
 
-export const OnboardingPersonalization2 = () => {
+export const OnboardingNavigationContainer = () => {
   const onDone = () => GlobalStore.actions.auth.setState({ onboardingState: "complete" })
 
   const { commitMutation } = useUpdateUserProfile(onDone)

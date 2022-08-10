@@ -3,7 +3,7 @@ import {
   OnboardingContextAction,
   State,
   useOnboardingContext,
-} from "app/Scenes/Onboarding/OnboardingPersonalization2/Hooks/useOnboardingContext"
+} from "app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingContext"
 import { Box, Button, CheckCircleFillIcon, Flex, ProgressBar, Screen, Spacer, Text } from "palette"
 import { FC, useCallback, useEffect, useState } from "react"
 import { StatusBar } from "react-native"

@@ -2,10 +2,9 @@ import { useNavigation } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkQueryRenderer } from "app/Scenes/Artwork/Artwork"
 import { Screen } from "palette"
-import { OnboardingPersonalization2NavigationStack } from "./OnboardingPersonalization2"
+import { OnboardingNavigationStack } from "./OnboardingNavigationContainer"
 
-interface ArtworkScreenProps
-  extends StackScreenProps<OnboardingPersonalization2NavigationStack, "ArtworkScreen"> {}
+interface ArtworkScreenProps extends StackScreenProps<OnboardingNavigationStack, "ArtworkScreen"> {}
 
 export const ArtworkScreen: React.FC<ArtworkScreenProps> = ({ route }) => {
   const { artworkID } = route?.params

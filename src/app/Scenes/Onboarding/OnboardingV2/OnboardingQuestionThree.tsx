@@ -9,7 +9,7 @@ import {
   OPTION_FOLLOW_GALLERIES_I_LOVE,
   OPTION_KEEP_TRACK_OF_ART,
   OPTION_TOP_AUCTION_LOTS,
-} from "app/Scenes/Onboarding/OnboardingPersonalization2/config"
+} from "app/Scenes/Onboarding/OnboardingV2/config"
 import { useCallback, useMemo } from "react"
 import { OnboardingQuestionTemplate } from "./Components/OnboardingQuestionTemplate"
 import { useNextOnboardingScreen } from "./Hooks/useNextOnboardingScreen"
