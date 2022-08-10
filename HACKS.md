@@ -346,7 +346,6 @@ When [this](https://github.com/storybookjs/react-native/pull/345) is merged, or 
 
 Storybook does not render outside the safe area, so for `Screen` and friends, we can't really use storybook otherwise. With this patch, we can now render outside the safe area, by adding `parameters: { noSafeArea: true }` in the new form of stories.
 
-
 ## Podfile postinstall code_signing_required = NO
 
 #### When can we remove this:

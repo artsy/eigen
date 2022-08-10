@@ -1,5 +1,7 @@
+import { buildLocationDisplay, LocationAutocomplete } from "app/Components/LocationAutocomplete"
 import { GlobalStore } from "app/store/GlobalStore"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
+import { LocationWithDetails } from "app/utils/googleMaps"
 import { useFormikContext } from "formik"
 import {
   Box,
@@ -15,10 +17,9 @@ import {
 import { Select } from "palette/elements/Select"
 import React, { useEffect, useState } from "react"
 import { ArtistAutosuggest } from "../../../../Components/ArtistAutosuggest/ArtistAutosuggest"
-import { LocationAutocomplete } from "../../../../Components/LocationAutocomplete/LocationAutocomplete"
 import { InfoModal } from "./InfoModal/InfoModal"
 import { limitedEditionValue, rarityOptions } from "./utils/rarityOptions"
-import { ArtworkDetailsFormModel, countriesRequirePostalCode, Location } from "./validation"
+import { ArtworkDetailsFormModel, countriesRequirePostalCode } from "./validation"
 
 const StandardSpace = () => <Spacer mt={4} />
 
@@ -210,10 +211,19 @@ export const ArtworkDetailsForm: React.FC = () => {
       </InfoModal>
       <StandardSpace />
       <LocationAutocomplete
-        initialLocation={values.location}
-        onChange={(e: Location) => {
-          setFieldValue("location", e)
-          if (!e.countryCode) {
+        showError
+        title="City"
+        placeholder="Enter city where artwork is located"
+        displayLocation={buildLocationDisplay(values.location)}
+        onChange={({ city, state, country, countryCode }: LocationWithDetails) => {
+          setFieldValue("location", {
+            city: city ?? "",
+            state: state ?? "",
+            country: country ?? "",
+            countryCode: countryCode ?? "",
+          })
+
+          if (!countryCode) {
             setFieldValue("location.zipCode", "")
             setFieldTouched("location.zipCode", false)
           }
