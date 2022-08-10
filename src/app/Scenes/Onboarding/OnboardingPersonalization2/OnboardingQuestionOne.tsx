@@ -4,9 +4,9 @@ import {
   OPTION_YES_I_LOVE_COLLECTING_ART,
 } from "app/Scenes/Onboarding/OnboardingPersonalization2/config"
 import { useCallback } from "react"
-import { useOnboardingContext } from "../Hooks/useOnboardingContext"
-import { useUpdateUserProfile } from "../Hooks/useUpdateUserProfile"
-import { OnboardingQuestionTemplate } from "./OnboardingQuestionTemplate"
+import { OnboardingQuestionTemplate } from "./Components/OnboardingQuestionTemplate"
+import { useOnboardingContext } from "./Hooks/useOnboardingContext"
+import { useUpdateUserProfile } from "./Hooks/useUpdateUserProfile"
 
 type QuestionOneAnswerType =
   | typeof OPTION_NO_IM_JUST_STARTING_OUT

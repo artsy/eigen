@@ -6,7 +6,7 @@ import {
   OPTION_KEEP_TRACK_OF_ART,
 } from "app/Scenes/Onboarding/OnboardingPersonalization2/config"
 import { useCallback } from "react"
-import { OnboardingQuestionTemplate } from "./OnboardingQuestionTemplate"
+import { OnboardingQuestionTemplate } from "../Components/OnboardingQuestionTemplate"
 
 export const OnboardingQuestionTwo = () => {
   const { navigate } = useNavigation()

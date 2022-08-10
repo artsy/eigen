@@ -7,10 +7,7 @@ import {
 import { Box, Button, CheckCircleFillIcon, Flex, ProgressBar, Screen, Spacer, Text } from "palette"
 import { FC, useCallback, useEffect, useState } from "react"
 import { StatusBar } from "react-native"
-import {
-  AnimatedFadingPill,
-  FADE_OUT_PILL_ANIMATION_DURATION,
-} from "../Components/AnimatedFadingPill"
+import { AnimatedFadingPill, FADE_OUT_PILL_ANIMATION_DURATION } from "./AnimatedFadingPill"
 
 interface OnboardingQuestionTemplateProps {
   answers: string[]

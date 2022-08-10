@@ -11,9 +11,9 @@ import {
   OPTION_TOP_AUCTION_LOTS,
 } from "app/Scenes/Onboarding/OnboardingPersonalization2/config"
 import { useCallback, useMemo } from "react"
-import { useNextOnboardingScreen } from "../Hooks/useNextOnboardingScreen"
-import { useOnboardingContext } from "../Hooks/useOnboardingContext"
-import { OnboardingQuestionTemplate } from "./OnboardingQuestionTemplate"
+import { OnboardingQuestionTemplate } from "./Components/OnboardingQuestionTemplate"
+import { useNextOnboardingScreen } from "./Hooks/useNextOnboardingScreen"
+import { useOnboardingContext } from "./Hooks/useOnboardingContext"
 
 export const OnboardingQuestionThree = () => {
   const { navigate } = useNavigation()

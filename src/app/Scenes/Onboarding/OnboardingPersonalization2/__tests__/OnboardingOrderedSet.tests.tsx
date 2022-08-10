@@ -2,7 +2,7 @@ import { screen, waitForElementToBeRemoved } from "@testing-library/react-native
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { createMockEnvironment } from "relay-test-utils"
-import { OnboardingOrderedSetScreen } from "./OnboardingOrderedSet"
+import { OnboardingOrderedSetScreen } from "../OnboardingOrderedSet"
 
 jest.unmock("react-relay")
 

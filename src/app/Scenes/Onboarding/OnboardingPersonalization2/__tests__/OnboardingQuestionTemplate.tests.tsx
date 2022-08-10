@@ -1,6 +1,6 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { OnboardingQuestionTemplate } from "app/Scenes/Onboarding/OnboardingPersonalization2/Components/OnboardingQuestionTemplate"
 import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingPersonalization2/Hooks/useOnboardingContext"
-import { OnboardingQuestionTemplate } from "app/Scenes/Onboarding/OnboardingPersonalization2/Questions/OnboardingQuestionTemplate"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 
 jest.mock("app/Scenes/Onboarding/OnboardingPersonalization2/Hooks/useOnboardingContext")

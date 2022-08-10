@@ -3,7 +3,7 @@ import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { createMockEnvironment } from "relay-test-utils"
-import { OnboardingPersonalizationWelcome } from "./OnboardingPersonalizationWelcome"
+import { OnboardingPersonalizationWelcome } from "../OnboardingPersonalizationWelcome"
 
 jest.unmock("react-relay")
 

@@ -2,9 +2,9 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { createMockEnvironment } from "relay-test-utils"
-import { OnboardingFollowArtists } from "./OnboardingFollowArtists"
-import { OnboardingOrderedSetScreen } from "./OnboardingOrderedSet"
-import { OnboardingSearchResultsScreen } from "./OnboardingSearchResults"
+import { OnboardingFollowArtists } from "../OnboardingFollowArtists"
+import { OnboardingOrderedSetScreen } from "../OnboardingOrderedSet"
+import { OnboardingSearchResultsScreen } from "../OnboardingSearchResults"
 
 jest.unmock("react-relay")
 
