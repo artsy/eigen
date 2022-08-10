@@ -7,9 +7,8 @@ import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { debounce } from "lodash"
 import { Flex, Input, Text, useTheme } from "palette"
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import {
-  FlatList,
   LayoutAnimation,
   NativeSyntheticEvent,
   TextInput,
@@ -22,7 +21,6 @@ import Animated from "react-native-reanimated"
 export interface MyCollectionSearchBarProps {
   onChangeText: ((text: string) => void) | undefined
   onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void
-  innerFlatListRef?: React.MutableRefObject<{ getNode(): FlatList<any> } | null>
   searchString: string
   onIsFocused?: (isFocused: boolean) => void
 }
@@ -30,7 +28,6 @@ export interface MyCollectionSearchBarProps {
 export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
   onChangeText,
   onFocus,
-  innerFlatListRef,
   searchString = "",
   onIsFocused,
 }) => {
@@ -69,13 +66,10 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
     () =>
       Animated.call(
         [staticHeaderHeight, hasRunFocusedAnimation],
-        ([staticHeaderHeightValue, hasFinishedAnimationLoop]) => {
+        ([, hasFinishedAnimationLoop]) => {
           if (hasFinishedAnimationLoop) {
             return
           }
-          innerFlatListRef?.current
-            ?.getNode()
-            .scrollToOffset({ offset: Number(staticHeaderHeightValue), animated: true })
           hasRunFocusedAnimation.setValue(new Animated.Value(1))
         }
       ),

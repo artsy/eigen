@@ -33,8 +33,8 @@ export type Color =
   // v5 stuff
   | "appBackground"
   | "appForeground"
-export { SpacingUnitV2, SpacingUnitV3 }
-export { TextVariantV3 }
+export type { SpacingUnitV2, SpacingUnitV3 }
+export type { TextVariantV3 }
 
 const {
   breakpoints: _eigenDoesntCareAboutBreakpoints,

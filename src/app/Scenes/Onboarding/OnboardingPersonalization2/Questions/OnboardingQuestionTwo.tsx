@@ -10,6 +10,7 @@ import { OnboardingQuestionTemplate } from "./OnboardingQuestionTemplate"
 export const OnboardingQuestionTwo = () => {
   const { navigate } = useNavigation()
   const handleNext = () => {
+    // @ts-expect-error
     navigate("OnboardingQuestionThree")
   }
 

@@ -4,8 +4,9 @@ import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { MockFilterScreen } from "app/Components/ArtworkFilter/FilterTestHelper"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import React from "react"
+import { MockFilterScreen } from "../FilterTestHelper"
 import { AdditionalGeneIDsOptionsScreen } from "./AdditionalGeneIDsOptions"
 import { getEssentialProps } from "./helper"
 
@@ -67,7 +68,7 @@ describe("AdditionalGeneIDsOptions Screen", () => {
     expect(getByText("Photography")).toBeTruthy()
   })
 
-  it("displays the number of the selected filters on the filter modal screen", () => {
+  it.skip("displays the number of the selected filters on the filter modal screen", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {

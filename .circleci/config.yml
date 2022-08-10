@@ -56,12 +56,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v6-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
+            - v7-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
       - run:
           name: Install node modules
           command: ls node_modules || yarn install
       - save_cache:
-          key: v6-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
+          key: v7-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
           paths:
             - node_modules
   run-relay-compiler:
@@ -103,19 +103,19 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v7-js_bundle-{{ checksum ".manifests/js_bundle" }}
+            - v8-js_bundle-{{ checksum ".manifests/js_bundle" }}
       - restore_cache:
           keys:
-            - v6-metro-{{ checksum ".manifests/js_transform" }}
+            - v7-metro-{{ checksum ".manifests/js_transform" }}
       - run:
           name: Bundle emission
           command: ls dist/jsbundle.js || yarn bundle-for-native-ci:ios
       - save_cache:
-          key: v6-metro-{{ checksum ".manifests/js_transform" }}
+          key: v7-metro-{{ checksum ".manifests/js_transform" }}
           paths:
             - .metro
       - save_cache:
-          key: v7-js_bundle-{{ checksum ".manifests/js_bundle" }}
+          key: v8-js_bundle-{{ checksum ".manifests/js_bundle" }}
           paths:
             - dist/jsbundle.js
             - dist/jsbundle.js.map
@@ -139,12 +139,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v9-pods-{{ checksum ".manifests/cocoapods" }}
+            - v10-pods-{{ checksum ".manifests/cocoapods" }}
       - run:
           name: Install Pods
           command: cd ios; bundle exec pod check --ignore-dev-pods || bundle exec pod install; cd ..;
       - save_cache:
-          key: v9-pods-{{ checksum ".manifests/cocoapods" }}
+          key: v10-pods-{{ checksum ".manifests/cocoapods" }}
           paths:
             - ios/Pods
             # this changes after pod install because we don't install dev tools on CI

@@ -104,3 +104,9 @@ threshold.
 In order to update existing screenshots, run `./scripts/record-snapshots-enable`. This will do some small edits in the `Pods/`directory. After that you can run the tests again, using `cmd+u`. They will fail again but they will generate the new snapshots. Now run the second script `./scripts/record-snapshots-disable`, which will revert the changes. Now run the tests again using `cmd+u` and tests should pass.
 
 If you are still having some tests failing, try commenting out the failing line, run the test, and comment in the line again and run again. If that still fails, then try replacing `haveValidSnapshot` with `recordSnapshot`, run test, go back to `haveValidSnapshot`, run test again. Hopefully that would fix all your failing tests.
+
+### `TypeError: Cannot read property 'now' of undefined` when running tests
+Your test includes/renders components that are using react-native-reanimated, and probably your tests are affected by this.
+Maybe the button you are trying to press in your test is not there yet, or some other animation is messing with your expectations.
+
+Consult with @pvinis/pavlos, but maybe what you need to do is import `beforeTest` and `afterTest` from `"react-native-reanimated/src/reanimated2/jestUtils"` and use them in the `beforeEach` and `afterEach` of your test file.

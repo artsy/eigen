@@ -21,6 +21,7 @@ export const OnboardingQuestionThree = () => {
   const nextScreen = useNextOnboardingScreen()
 
   const handleNext = () => {
+    // @ts-expect-error
     navigate(nextScreen!)
   }
 

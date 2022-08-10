@@ -10,6 +10,7 @@ require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 
+project 'Artsy.xcodeproj'
 platform :ios, '12.1'
 inhibit_all_warnings! # ignore all warnings from all pods
 

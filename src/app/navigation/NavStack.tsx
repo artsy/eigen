@@ -1,9 +1,8 @@
 import { Route, useIsFocused, useNavigationState } from "@react-navigation/native"
+import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { AppModule, modules } from "app/AppRegistry"
-import { isPad } from "app/utils/hardware"
-import React, { useState } from "react"
+import { createContext, useState } from "react"
 import { View } from "react-native"
-import { createNativeStackNavigator } from "react-native-screens/native-stack"
 import { ProvideScreenDimensions, useScreenDimensions } from "shared/hooks"
 import { ArtsyKeyboardAvoidingViewContext } from "shared/utils"
 import { BackButton } from "./BackButton"
@@ -86,9 +85,7 @@ export const NavStack: React.FC<{
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        stackAnimation: rootModuleProps?.isPresentedModally ? "slide_from_right" : undefined,
         contentStyle: { backgroundColor: "white" },
-        screenOrientation: isPad() ? "default" : "portrait",
       }}
     >
       <Stack.Screen name={"screen:" + id} component={ScreenWrapper} initialParams={initialParams} />
@@ -96,7 +93,7 @@ export const NavStack: React.FC<{
   )
 }
 
-export const LegacyBackButtonContext = React.createContext<{
+export const LegacyBackButtonContext = createContext<{
   updateShouldHideBackButton(shouldHideBackButton: boolean): void
 }>({
   updateShouldHideBackButton() {
