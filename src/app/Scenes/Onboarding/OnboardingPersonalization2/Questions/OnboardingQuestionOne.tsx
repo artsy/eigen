@@ -3,6 +3,7 @@ import {
   OPTION_NO_IM_JUST_STARTING_OUT,
   OPTION_YES_I_LOVE_COLLECTING_ART,
 } from "app/Scenes/Onboarding/OnboardingPersonalization2/config"
+import { useCallback } from "react"
 import { useOnboardingContext } from "../Hooks/useOnboardingContext"
 import { useUpdateUserProfile } from "../Hooks/useUpdateUserProfile"
 import { OnboardingQuestionTemplate } from "./OnboardingQuestionTemplate"
@@ -20,13 +21,13 @@ export const OnboardingQuestionOne = () => {
 
   const { commitMutation } = useUpdateUserProfile(navigateToNextScreen)
 
-  const handleNext = async () => {
+  const handleNext = useCallback(async () => {
     const level = COLLECTOR_LEVELS[state.questionOne as QuestionOneAnswerType]
 
     commitMutation({
       collectorLevel: level,
     })
-  }
+  }, [commitMutation, state.questionOne])
 
   return (
     <OnboardingQuestionTemplate
