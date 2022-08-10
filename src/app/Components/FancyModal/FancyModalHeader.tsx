@@ -11,6 +11,7 @@ import {
 } from "palette"
 import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
+import { ResponsiveAlignItemsValue } from "../Bidding/Elements/types"
 
 export interface FancyModalHeaderProps {
   hideBottomDivider?: boolean
@@ -24,7 +25,7 @@ export interface FancyModalHeaderProps {
   useShareButton?: boolean
   rightCloseButton?: boolean
   renderRightButton?: () => JSX.Element
-  alignItems?: "center" | "flex-start" | "flex-end"
+  alignItems?: ResponsiveAlignItemsValue
 }
 
 export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({

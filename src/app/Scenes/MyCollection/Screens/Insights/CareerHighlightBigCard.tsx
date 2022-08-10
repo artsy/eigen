@@ -172,7 +172,7 @@ export const CareerHighlightBigCardCollected: React.FC<CareerHighlightBigCardCol
       />
       <FlatList
         key={type}
-        scrollEnabled={count > 5}
+        bounces={false}
         showsVerticalScrollIndicator={false}
         data={highlightDataCollected}
         keyExtractor={(_item, index) => `${type}_${index}`}
@@ -258,7 +258,7 @@ export const CareerHighlightBigCardGroupShow: React.FC<CareerHighlightBigCardGro
       />
       <FlatList
         key={type}
-        scrollEnabled={count > 5}
+        bounces={false}
         showsVerticalScrollIndicator={false}
         data={highlightDataGroupShow}
         keyExtractor={(_item, index) => `${type}_${index}`}
@@ -344,7 +344,7 @@ export const CareerHighlightBigCardSoloShow: React.FC<CareerHighlightBigCardSolo
       />
       <FlatList
         key={type}
-        scrollEnabled={count > 5}
+        bounces={false}
         showsVerticalScrollIndicator={false}
         data={highlightDataSoloShow}
         keyExtractor={(_item, index) => `${type}_${index}`}
@@ -429,7 +429,7 @@ export const CareerHighlightBigCardReviewed: React.FC<CareerHighlightBigCardRevi
       />
       <FlatList
         key={type}
-        scrollEnabled={count > 5}
+        bounces={false}
         showsVerticalScrollIndicator={false}
         data={highlightDataReviewed}
         keyExtractor={(_item, index) => `${type}_${index}`}
