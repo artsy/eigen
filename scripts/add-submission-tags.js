@@ -21,6 +21,9 @@ function addSubmissionTag(tag) {
   } catch (e) {
     spinner.fail()
     console.error(e)
+  } finally {
+    exec(`git reset --hard `)
+    exec(`git checkout main`)
   }
 }
 
