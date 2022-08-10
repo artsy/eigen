@@ -1,10 +1,11 @@
+import { useNavigation } from "@react-navigation/native"
 import {
   OnboardingContextAction,
   State,
   useOnboardingContext,
 } from "app/Scenes/Onboarding/OnboardingPersonalization2/Hooks/useOnboardingContext"
 import { Box, Button, CheckCircleFillIcon, Flex, ProgressBar, Screen, Spacer, Text } from "palette"
-import { FC, useCallback, useState } from "react"
+import { FC, useCallback, useEffect, useState } from "react"
 import { StatusBar } from "react-native"
 import {
   AnimatedFadingPill,
@@ -14,7 +15,6 @@ import {
 interface OnboardingQuestionTemplateProps {
   answers: string[]
   action: Exclude<OnboardingContextAction["type"], "RESET">
-  onBack?: () => void
   onNext: () => void
   question: string
   subtitle?: string
@@ -23,17 +23,18 @@ interface OnboardingQuestionTemplateProps {
 const NAVIGATE_TO_NEXT_SCREEN_DELAY = 500
 const ADD_TICK_AND_ANIMATE_PROGRESS_BAR_DELAY = FADE_OUT_PILL_ANIMATION_DURATION + 200
 
+// TODO: reimplement fading button animation
 export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = ({
   answers,
   action,
-  onBack,
   onNext,
   question,
   subtitle,
 }) => {
+  const { canGoBack, goBack } = useNavigation()
   const { dispatch, back, next, onDone, progress, state } = useOnboardingContext()
   const [showPillTick, setShowPillTick] = useState(false)
-  const [hideUnselectedPills, setHideUnselectedPills] = useState(false)
+  // const [hideUnselectedPills, setHideUnselectedPills] = useState(false)
   const [isNextBtnDisabled, setIsNextBtnDisabled] = useState(false)
 
   const stateKey = STATE_KEYS[action]
@@ -54,7 +55,7 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
     // force disable next button
     setIsNextBtnDisabled(true)
     // trigger the fade out animation in the unselected pill components
-    setHideUnselectedPills(true)
+    // setHideUnselectedPills(true)
 
     setTimeout(() => {
       setShowPillTick(true)
@@ -65,11 +66,20 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
   }, [next, navigateToNextScreen])
 
   const handleBack = useCallback(() => {
-    if (!!onBack) {
-      back()
-      onBack()
+    back()
+
+    if (canGoBack()) {
+      goBack()
     }
-  }, [back, onBack])
+  }, [back])
+
+  useEffect(() => {
+    return () => {
+      setIsNextBtnDisabled(false)
+      // setHideUnselectedPills(false)
+      setShowPillTick(false)
+    }
+  })
 
   const isDisabled = isNextBtnDisabled || !state[stateKey] || state[stateKey]?.length === 0
 
@@ -94,7 +104,8 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
           {answers.map((answer) => (
             <AnimatedFadingPill
               mb={2}
-              isVisible={!hideUnselectedPills || !!selected(answer)}
+              // isVisible={!hideUnselectedPills || !!selected(answer)}
+              isVisible
               key={`${answer}-pill`}
               rounded
               size="xs"

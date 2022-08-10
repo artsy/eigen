@@ -36,7 +36,7 @@ describe("config", () => {
     expect(workflowEngine.next()).toEqual("VIEW_TOP_AUCTION_LOTS")
   })
 
-  it.only("should move backward through workflow", () => {
+  it("should move backward through workflow", () => {
     const workflowEngine = new WorkflowEngine({ workflow: ["first", "second", "third", "fourth"] })
 
     expect(workflowEngine.next()).toEqual("second")
