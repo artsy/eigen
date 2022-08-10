@@ -106,6 +106,7 @@ In order to update existing screenshots, run `./scripts/record-snapshots-enable`
 If you are still having some tests failing, try commenting out the failing line, run the test, and comment in the line again and run again. If that still fails, then try replacing `haveValidSnapshot` with `recordSnapshot`, run test, go back to `haveValidSnapshot`, run test again. Hopefully that would fix all your failing tests.
 
 ### `TypeError: Cannot read property 'now' of undefined` when running tests
+
 Your test includes/renders components that are using react-native-reanimated, and probably your tests are affected by this.
 Maybe the button you are trying to press in your test is not there yet, or some other animation is messing with your expectations.
 

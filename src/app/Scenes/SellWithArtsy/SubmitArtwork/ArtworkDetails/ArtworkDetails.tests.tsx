@@ -80,7 +80,7 @@ describe("ArtworkDetails", () => {
     it("still corrently rendered when location is set", () => {
       const { getByTestId } = renderWithWrappers(<TestRenderer />)
 
-      const locationInput = getByTestId("Submission_LocationInput")
+      const locationInput = getByTestId("autocomplete-location-input")
       fireEvent.changeText(locationInput, "Berlin, Germany")
 
       expect(getByTestId("Submission_ArtworkDetails_Button")).toBeTruthy()
