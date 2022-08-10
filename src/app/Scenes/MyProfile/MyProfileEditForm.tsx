@@ -130,7 +130,7 @@ export const MyProfileEditForm: React.FC = () => {
       validateOnBlur: true,
       initialValues: {
         name: me?.name ?? "",
-        displayLocation: { display: buildLocationDisplay(me?.location || null) },
+        displayLocation: { display: buildLocationDisplay(me?.location ?? null) },
         location: me?.location ?? null,
         profession: me?.profession ?? "",
         otherRelevantPositions: me?.otherRelevantPositions ?? "",

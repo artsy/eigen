@@ -1,6 +1,5 @@
 import { navigate, popToRoot } from "app/navigation/navigate"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { GlobalStore } from "app/store/GlobalStore"
 import {
   Button,
   FairIcon,
@@ -12,7 +11,6 @@ import {
   SoloIcon,
   Text,
   Touchable,
-  useColor,
 } from "palette"
 import { Fragment, FunctionComponent } from "react"
 import { Image } from "react-native"
@@ -35,9 +33,7 @@ export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({ coun
     return null
   }
 
-  const color = useColor()
-
-  const { label, Icon, isNew } = getCareerHiglight(type, count)
+  const { label, Icon } = getCareerHiglight(type, count)
 
   return (
     <Touchable
@@ -47,22 +43,7 @@ export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({ coun
       }}
     >
       <Flex p={1} height={135} width={205} background="white" border={1} borderColor="black10">
-        <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
-          <Flex backgroundColor={color("blue100")} px={0.5} mt={0.2}>
-            {!!isNew && (
-              <Flex style={{ paddingVertical: 2, paddingHorizontal: 2 }}>
-                <Text
-                  mt="-1px"
-                  fontSize={11}
-                  lineHeight={16}
-                  color="white100"
-                  key={`${isNew}-${type}`}
-                >
-                  New
-                </Text>
-              </Flex>
-            )}
-          </Flex>
+        <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
           <Flex
             width={26}
             height={26}
@@ -125,10 +106,6 @@ export const CareerHighlightPromotionalCard: React.FC = () => {
 }
 
 const getCareerHiglight = (type: CareerHighlightKind, count: number) => {
-  const careerHighlights = GlobalStore.useAppState(
-    (state) => state.myCollectionCareerHighlights.careerHighlights
-  )
-
   let label: string = ""
   let Icon: FunctionComponent<IconProps> = Fragment
 
@@ -177,10 +154,5 @@ const getCareerHiglight = (type: CareerHighlightKind, count: number) => {
     */
   }
 
-  // A career higlight is new if the user hasen't seen it at all or if the number is higher
-  // than the number that has been seen by the user the last time.
-  const isNew = !careerHighlights[type] || careerHighlights[type].count < count
-  // const isNew = !careerHighlights[type] || careerHighlights[type].count < count
-
-  return { label, Icon, isNew }
+  return { label, Icon }
 }

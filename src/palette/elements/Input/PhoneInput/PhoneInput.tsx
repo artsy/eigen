@@ -1,7 +1,17 @@
 import * as glibphone from "google-libphonenumber"
 import replace from "lodash/replace"
-import { Flex, Input, InputProps, Spacer, Text, Touchable, TriangleDown, useColor } from "palette"
-import React from "react"
+import {
+  Flex,
+  Input,
+  InputProps,
+  InputRef,
+  Spacer,
+  Text,
+  Touchable,
+  TriangleDown,
+  useColor,
+} from "palette"
+import { forwardRef, useImperativeHandle } from "react"
 import { useEffect, useRef, useState } from "react"
 import { Platform } from "react-native"
 import { Select, SelectOption } from "../../Select"
@@ -12,8 +22,8 @@ import { formatPhoneNumber } from "./formatPhoneNumber"
 /** Underline bar height for text input on android when focused */
 const UNDERLINE_TEXTINPUT_HEIGHT_ANDROID = 1.5
 
-export const PhoneInput = React.forwardRef<
-  Input,
+export const PhoneInput = forwardRef<
+  InputRef,
   {
     setValidation: (value: boolean) => void
     onChange?: (value: string) => void
@@ -31,10 +41,11 @@ export const PhoneInput = React.forwardRef<
       shouldDisplayLocalError = true,
       ...rest
     },
-    outerRef
+    ref
   ) => {
     const color = useColor()
-    const innerRef = useRef<Input | null>()
+    const innerRef = useRef<InputRef>(null)
+    useImperativeHandle(ref, () => innerRef.current!)
     const initialValues = cleanUserPhoneNumber(value ?? "")
     const [countryCode, setCountryCode] = useState<string>(initialValues.countryCode)
     const [phoneNumber, setPhoneNumber] = useState(
@@ -107,16 +118,7 @@ export const PhoneInput = React.forwardRef<
         <Input
           style={{ flex: 1 }}
           {...rest}
-          ref={(ref) => {
-            if (typeof outerRef === "function") {
-              outerRef(ref)
-            } else if (outerRef && "current" in outerRef) {
-              outerRef.current = ref
-            } else if (outerRef != null) {
-              console.error("bad ref given to PhoneInput")
-            }
-            innerRef.current = ref
-          }}
+          ref={innerRef}
           value={phoneNumber}
           inputTextStyle={Platform.select({
             android: { paddingTop: UNDERLINE_TEXTINPUT_HEIGHT_ANDROID },

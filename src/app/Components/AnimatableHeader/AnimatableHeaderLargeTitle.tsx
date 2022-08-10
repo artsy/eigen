@@ -1,31 +1,37 @@
 import { Text, useSpace } from "palette"
-import Animated, { Extrapolate } from "react-native-reanimated"
+import Animated, { Extrapolate, interpolate, useAnimatedStyle } from "react-native-reanimated"
 import { useAnimatableHeaderContext } from "./AnimatableHeaderContext"
 
 export const AnimatableHeaderLargeTitle = () => {
   const space = useSpace()
-  const { scrollOffsetY, largeTitleVerticalOffset, largeTitleHeight, largeTitleEndEdge, title } =
+  const { scrollOffsetY, largeTitleVerticalOffset, setLargeTitleHeight, largeTitleEndEdge, title } =
     useAnimatableHeaderContext()
-  const largeTitleOpacity = Animated.interpolate(scrollOffsetY, {
-    inputRange: [0, largeTitleEndEdge],
-    outputRange: [1, 0],
-    extrapolate: Extrapolate.CLAMP,
-  })
+
+  const disappearAnim = useAnimatedStyle(
+    () => ({
+      opacity: interpolate(scrollOffsetY.value, [0, largeTitleEndEdge], [1, 0], Extrapolate.CLAMP),
+    }),
+    [largeTitleEndEdge]
+  )
 
   return (
     <Animated.View
-      style={{
-        paddingHorizontal: space(2),
-        paddingTop: space(1),
-        paddingBottom: largeTitleVerticalOffset,
-        justifyContent: "center",
-        opacity: largeTitleOpacity,
-      }}
+      style={[
+        {
+          paddingHorizontal: space(2),
+          paddingTop: space(1),
+          paddingBottom: largeTitleVerticalOffset,
+          justifyContent: "center",
+        },
+        disappearAnim,
+      ]}
       onLayout={(event) => {
-        largeTitleHeight.setValue(new Animated.Value(event.nativeEvent.layout.height))
+        setLargeTitleHeight(event.nativeEvent.layout.height)
       }}
     >
-      <Text variant="lg">{title}</Text>
+      <Text testID="animated-header-large-title" variant="lg">
+        {title}
+      </Text>
     </Animated.View>
   )
 }

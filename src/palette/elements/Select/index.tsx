@@ -1,10 +1,12 @@
 // v3
 import { Select as SelectV3, SelectOption, SelectProps as SelectV3Props } from "./Select"
-export { SelectV3, SelectV3Props, SelectOption }
+export { SelectV3 }
+export type { SelectV3Props, SelectOption }
 
 // v2
 import { Select as SelectV2, SelectProps as SelectV2Props } from "./SelectV2"
-export { SelectV2, SelectV2Props }
+export { SelectV2 }
+export type { SelectV2Props }
 
 export type SelectProps<ValueType> = (SelectV2Props<ValueType> | SelectV3Props<ValueType>) & {
   ref?: React.MutableRefObject<any>

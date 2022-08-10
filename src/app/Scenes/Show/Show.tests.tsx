@@ -109,7 +109,7 @@ describe("Show", () => {
 
       it("should not be rendered", () => {
         const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
-        expect(queryByLabelText("Search images")).toBeNull()
+        expect(queryByLabelText("Search by image")).toBeNull()
       })
     })
 

@@ -4,9 +4,9 @@ import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { SearchInput, SearchInputProps } from "./SearchInput"
 
 describe("SearchInput", () => {
-  const TestRenderer = (props: Partial<SearchInputProps>) => {
-    return <SearchInput {...defaultProps} {...props} />
-  }
+  const TestRenderer = (props: Partial<SearchInputProps>) => (
+    <SearchInput {...defaultProps} {...props} />
+  )
 
   it("renders without throwing an error", () => {
     const { getByPlaceholderText } = renderWithWrappers(<TestRenderer />)

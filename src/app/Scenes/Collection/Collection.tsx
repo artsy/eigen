@@ -47,6 +47,11 @@ export class Collection extends Component<CollectionProps> {
       sections = ["collectionFeaturedArtists", ...sections]
     }
 
+    // Small hack that takes into account the list header component when looking for the index
+    const stickySectionIndex = ["ListHeaderComponent", ...sections].findIndex(
+      (section) => section === "collectionArtworksFilter"
+    )
+
     return (
       <ArtworkFiltersStoreProvider>
         <View style={{ flex: 1 }}>
@@ -62,7 +67,7 @@ export class Collection extends Component<CollectionProps> {
             data={sections}
             ListHeaderComponent={<CollectionHeader collection={this.props.collection} />}
             ItemSeparatorComponent={() => <Spacer mb={2} />}
-            stickyHeaderIndices={[3]}
+            stickyHeaderIndices={[stickySectionIndex]}
             keyboardShouldPersistTaps="handled"
             renderItem={({ item }): null | any => {
               switch (item) {

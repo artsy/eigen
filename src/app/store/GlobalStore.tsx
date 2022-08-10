@@ -200,9 +200,6 @@ export const addClue = GlobalStore.actions.visualClue.addClue
 
 export const setVisualClueAsSeen = GlobalStore.actions.visualClue.setVisualClueAsSeen
 
-export const setCareerHiglightAsSeen =
-  GlobalStore.actions.myCollectionCareerHighlights.setCareerHiglightAsSeen
-
 export function unsafe_getUserAccessToken() {
   const state = globalStoreInstance().getState() ?? null
   if (state) {

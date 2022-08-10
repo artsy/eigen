@@ -1,5 +1,6 @@
 #!/usr/bin/env yarn ts-node
 
+// tslint:disable-next-line
 require("dotenv").config()
 
 import { GraphQLClient } from "graphql-request"
@@ -120,6 +121,7 @@ const doIt = async (): Promise<never> => {
           log(JSON.stringify(response))
         } catch (e) {
           stdout.write("x")
+          // @ts-expect-error
           errors.push({ request: req, error: e })
         }
       })
