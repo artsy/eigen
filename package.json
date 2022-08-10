@@ -91,7 +91,8 @@
   ],
   "dependenciesComments": {
     "@react-native-community/slider": "Needed by storybook, see install script here: https://gist.github.com/dannyhw/9b84973dcc6ff4fa2e86e32d571d294e",
-    "@react-native-community/viewpager": "Needed by react-native-scrollable-tab-view, more context here: https://github.com/artsy/eigen/pull/4362#discussion_r566846184"
+    "@react-native-community/viewpager": "Needed by react-native-scrollable-tab-view, more context here: https://github.com/artsy/eigen/pull/4362#discussion_r566846184",
+    "react-native-vision-camera": "Needed for reverse image functionality, more context here: https://github.com/artsy/eigen/issues/7159"
   },
   "dependencies": {
     "@artsy/cohesion": "4.61.0",
