@@ -177,7 +177,7 @@ const ArtsyLogoAbsoluteHeader = () => {
   )
 }
 
-export const OnboardingAnimationScreenQuery = graphql`
+const OnboardingAnimationScreenQuery = graphql`
   query OnboardingAnimationQuery {
     me {
       name
