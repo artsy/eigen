@@ -5,7 +5,7 @@ import { Icon, IconProps, Path } from "./Icon"
 export const StarCircleIcon: React.FC<IconProps> = (props) => {
   const color = useColor()
   return (
-    <Icon {...props} viewBox="0 0 18 18">
+    <Icon {...props} viewBox="0 0 18 18" preserveAspectRatio="none">
       <Path
         d="M16.1114 8.19C16.1114 12.4371 12.6684 15.88 8.4214 15.88C4.17436 15.88 0.731445 12.4371 0.731445 8.19C0.731445 3.94293 4.17436 0.5 8.4214 0.5C12.6684 0.5 16.1114 3.94293 16.1114 8.19Z"
         fill={color(props.fill)}

@@ -1,8 +1,17 @@
 import { storiesOf } from "@storybook/react-native"
 import { LineGraph } from "."
 import { Flex } from ".."
-import { getRandomColor } from "./helpers"
 import { _AVAILABLE_MEDIUMS, testChartData } from "./testHelpers"
+
+// Helper to get a random color
+const getRandomColor = () => {
+  const letters = "0123456789ABCDEF"
+  let color = "#"
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)]
+  }
+  return color
+}
 
 storiesOf("LineGraph", module).add("LineGraph", () => (
   <Flex mx={2} my={2}>

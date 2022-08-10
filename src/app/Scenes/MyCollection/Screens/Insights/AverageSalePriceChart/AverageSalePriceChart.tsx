@@ -7,7 +7,7 @@ import { formatLargeNumber } from "app/utils/formatLargeNumber"
 import { computeCategoriesForChart } from "app/utils/marketPriceInsightHelpers"
 import { Flex, LineGraph, Text } from "palette"
 import { LineChartData } from "palette/elements/LineGraph/types"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { graphql, useRefetchableFragment } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 
@@ -59,74 +59,49 @@ export const AverageSalePriceChart: React.FC<AverageSalePriceChartProps> = ({
   const onBandSelected = (durationName: string) =>
     setSelectedDuration(durationName as AverageSalePriceChartDuration)
 
-  const categories = computeCategoriesForChart(initialCategory)
+  const categories = useRef<Array<{ name: string; color: string }>>(
+    computeCategoriesForChart(initialCategory)
+  )
 
   const onCategorySelected = (category: string) => setSelectedCategory(category)
 
-  const chartDataArray = data.analyticsCalendarYearMarketPriceInsights?.map((p) => ({
-    x: parseInt(p.year, 10),
-    y: parseInt(p.averageSalePrice, 10),
-  }))
+  const chartDataArray: LineChartData["data"] =
+    data.analyticsCalendarYearMarketPriceInsights?.map((p) => ({
+      x: parseInt(p.year, 10),
+      y: parseInt(p.averageSalePrice, 10),
+    })) ?? []
 
   const { height: screenHeight, width: screenWidth } = useScreenDimensions()
 
-  const dataTintColor = categories.find((c) => c.name === selectedCategory)?.color
+  const dataTintColor = categories.current.find((c) => c.name === selectedCategory)?.color
 
-  if (!chartDataArray || chartDataArray.length === 0) {
-    return (
-      <Flex>
-        <LineGraph
-          showHighlights
-          data={{
-            data: [],
-            dataMeta: {
-              title: "-",
-              description: selectedCategory,
-              text: "-",
-              tintColor: dataTintColor,
-            },
-          }}
-          bands={bands}
-          onBandSelected={onBandSelected}
-          selectedBand={selectedDuration}
-          categories={categories}
-          onCategorySelected={onCategorySelected}
-          selectedCategory={selectedCategory}
-          yAxisTickFormatter={() => ""}
-        />
-        <Flex
-          position="absolute"
-          top={screenHeight / 6.5} // the default chartHeight = screenHeight/3
-          left={screenWidth / 4}
-          alignItems="center"
-          justifyContent="center"
-          maxWidth={screenWidth / 2}
-        >
-          <Text textAlign="center" variant="sm" color="black60">
-            No Data available for the selected category
-          </Text>
-        </Flex>
-      </Flex>
-    )
-  }
+  const dataTitle = !chartDataArray.length
+    ? "-"
+    : "USD $" +
+      formatLargeNumber(
+        chartDataArray.reduce(
+          (prev, curr, index) => ({
+            ...curr,
+            y: (prev.y + curr.y) / (index + 1),
+          }),
+          { x: 0, y: 0 }
+        ).y
+      )
 
-  const dataTitle =
-    "$" +
-    formatLargeNumber(
-      chartDataArray.reduce((prev, curr, index) => ({
-        ...curr,
-        y: (prev.y + curr.y) / (index + 1),
-      })).y
-    )
-
-  const dataText =
-    data.analyticsCalendarYearMarketPriceInsights?.reduce((p, c) => ({
+  const totalLotsSold = data.analyticsCalendarYearMarketPriceInsights?.reduce(
+    (p, c) => ({
       ...c,
       lotsSold: parseInt(p.lotsSold, 10) + parseInt(c.lotsSold, 10),
-    })).lotsSold +
-    ` lots in the last ${
-      selectedDuration === AverageSalePriceChartDuration["3 yrs"] ? "3 years" : "8 years"
-    }`
+    }),
+    { lotsSold: "0", averageSalePrice: "0", medium: null, year: "" }
+  ).lotsSold
+
+  const dataText = !chartDataArray?.length
+    ? "-"
+    : totalLotsSold +
+      ` ${totalLotsSold > 1 ? "lots" : "lot"} in the last ${
+        selectedDuration === AverageSalePriceChartDuration["3 yrs"] ? "3 years" : "8 years"
+      }`
 
   const lineChartData: LineChartData = {
     data: chartDataArray,
@@ -139,22 +114,47 @@ export const AverageSalePriceChart: React.FC<AverageSalePriceChartProps> = ({
   }
 
   return (
-    <LineGraph
-      showHighlights
-      data={lineChartData}
-      bands={bands}
-      onBandSelected={onBandSelected}
-      selectedBand={selectedDuration}
-      categories={categories}
-      onCategorySelected={onCategorySelected}
-      selectedCategory={selectedCategory}
-      yAxisTickFormatter={(val: number) => formatLargeNumber(val)}
-    />
+    <Flex>
+      <LineGraph
+        chartInterpolation="monotoneX"
+        showHighlights
+        data={lineChartData}
+        bands={bands}
+        onBandSelected={onBandSelected}
+        selectedBand={selectedDuration}
+        categories={categories.current}
+        onCategorySelected={onCategorySelected}
+        selectedCategory={selectedCategory}
+        yAxisTickFormatter={
+          chartDataArray.length ? (val: number) => formatLargeNumber(val) : () => ""
+        }
+      />
+      {!chartDataArray.length && (
+        <Flex
+          position="absolute"
+          top={screenHeight / 6.5} // the default chartHeight = screenHeight/3
+          left={screenWidth / 4}
+          alignItems="center"
+          justifyContent="center"
+          maxWidth={screenWidth / 2}
+        >
+          <Text textAlign="center" variant="sm" color="black60">
+            No Data available for the selected medium
+          </Text>
+        </Flex>
+      )}
+    </Flex>
   )
 }
 const averageSalePriceChartFragment = graphql`
   fragment AverageSalePriceChart_query on Query
-  @refetchable(queryName: "AverageSalePriceChartRefetchQuery") {
+  @refetchable(queryName: "AverageSalePriceChartRefetchQuery")
+  @argumentDefinitions(
+    artistId: { type: "ID!" }
+    endYear: { type: "String" }
+    medium: { type: "String!" }
+    startYear: { type: "String" }
+  ) {
     analyticsCalendarYearMarketPriceInsights(
       artistId: $artistId
       endYear: $endYear

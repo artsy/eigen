@@ -32,15 +32,16 @@ const categoryColorCode: { [key: string]: string | null } = {
   Photography: "#DA6722",
   Print: "#00A8FF",
   "Drawing, Collage or other Work on Paper": "#4CD137",
+  "Video/Film/Animation": "#0582CA",
+  "Textile Arts": "#C9184A",
+  // No color code yet
   "Mixed Media": null,
   "Performance Art": null,
   Installation: null,
-  "Video/Film/Animation": "#0582CA",
   Architecture: null,
   "Fashion Design and Wearable Art": null,
   Jewelry: null,
   "Design/Decorative Art": null,
-  "Textile Arts": "#C9184A",
   Posters: null,
   "Books and Portfolios": null,
   Other: null,
@@ -64,8 +65,11 @@ export const computeCategoriesForChart = (selectedCategory: string) => {
 
   const catForChart = keys.map((k) => {
     let color = categoryColorCode[k] ?? getRandomColor()
-    while (takenColors[color]) {
+    let maxCheckTimes = 20
+    while (takenColors[color] && maxCheckTimes > 0) {
+      // don't try for unique color more than 20 times
       color = getRandomColor()
+      maxCheckTimes--
     }
     takenColors[color] = true
     return { name: k, color }

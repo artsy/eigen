@@ -2,8 +2,9 @@ import { compact, noop } from "lodash"
 import { Flex } from "palette"
 import { useColor, useSpace } from "palette/hooks"
 import { StarCircleIcon } from "palette/svgs/StarCircleIcon"
-import { useCallback, useEffect, useState } from "react"
-import { Dimensions, NativeTouchEvent, Platform, TouchableOpacity, View } from "react-native"
+import { Color } from "palette/Theme"
+import React, { useCallback, useEffect, useState } from "react"
+import { Dimensions, NativeTouchEvent, Platform, TouchableOpacity } from "react-native"
 import Svg, { Defs, G, LinearGradient, Stop } from "react-native-svg"
 import { InterpolationPropType } from "victory-core"
 import {
@@ -42,12 +43,11 @@ const { width: deviceWidth, height: deviceHeight } = Dimensions.get("window")
 
 export const LineGraphChart: React.FC<LineGraphChartProps> = ({
   data,
-  dataMeta: { tintColor = "#707070", xHighlightIcon, yHighlightIcon },
+  dataMeta: { tintColor = "#707070", xHighlightIcon },
   chartHeight,
   chartWidth,
   chartInterpolation = "natural",
   onXHighlightPressed = noop,
-  onYHighlightPressed = noop,
   showHighlights = false,
   tintColorShadeFactor = 0.8,
   xAxisTickFormatter,
@@ -62,15 +62,22 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
   const xHighlights = compact(
     data.map((datum) => (datum.highlight?.x ? { y: 0, x: datum.x } : null))
   )
+
   const yHighlights = compact(
     data.map((datum) => (datum.highlight?.y ? { x: 0, y: datum.y } : null))
   )
 
+  useEffect(() => {
+    if (yHighlights.length && showHighlights) {
+      console.error("Plotting highlights on dependent axis Y is not yet supported")
+    }
+  }, [yHighlights])
+
   const yValues = data.map((datum) => datum.y)
   const xValues = data.map((datum) => datum.x)
 
-  const minMaxDomainY = { min: 0, max: Math.max(...yValues) }
-  const minMaxDomainX = { min: 0, max: Math.max(...xValues) }
+  const minMaxDomainY = { min: Math.min(...yValues), max: Math.max(...yValues) }
+  const minMaxDomainX = { min: Math.min(...xValues), max: Math.max(...xValues) }
 
   const maxima = minMaxDomainY.max // because the y axis is the dependent axis
 
@@ -79,6 +86,11 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
   // top is not cut off
   const yDomainPadding =
     chartInterpolation === "natural" ? calculateDomainPadding(yValues, maxima) : 0
+
+  const xAxisTickMap: Record<number, boolean> = Object.assign(
+    {},
+    ...xValues.map((xtick) => ({ [xtick]: true }))
+  )
 
   const renderDefs = useCallback(
     () => (
@@ -114,7 +126,6 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
         // mapping domain from 0 to 1 because data is normalized by the factor of max Y value.
         domain={{ y: [0, 1] }}
         domainPadding={{ y: [40, yDomainPadding] }}
-        // singleQuadrantDomainPadding={false}
         backgroundComponent={<Background />}
         containerComponent={<Svg />}
         style={{
@@ -127,35 +138,43 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
       >
         {renderDefs()}
 
-        {/** Draws the Area beneath the line */}
-        <VictoryArea
-          style={{
-            data: { fill: "url(#gradientStroke)" },
-          }}
-          data={data}
-          animate={ANIMATION_CONFIG}
-          interpolation={chartInterpolation}
-          // Normalise the dependent axis Y. Else it is not possible to represent data with extreme variance.
-          y={(datum: any) => datum.y / maxima}
-        />
+        {data.length > 1 && (
+          /** Draws the Area beneath the line.
+           * Will crash on android if you pass data with less than 2 points
+           */
+          <VictoryArea
+            style={{
+              data: { fill: "url(#gradientStroke)" },
+            }}
+            data={data}
+            animate={ANIMATION_CONFIG}
+            interpolation={chartInterpolation}
+            // Normalise the dependent axis Y. Else it is not possible to represent data with extreme variance.
+            y={(datum: any) => datum.y / maxima}
+          />
+        )}
 
-        {/** Draws the Line Above the Area */}
-        <VictoryLine
-          animate
-          style={{
-            data: { stroke: tintColor },
-            border: { stroke: "transparent" },
-          }}
-          data={data}
-          domain={{ y: [0, 1] }}
-          // groupComponent={<G />} ensures the line is not cut off below when using
-          // chartInterpolation = natural. Without this, lines will dip off
-          // the chart.
-          groupComponent={<G />}
-          interpolation={chartInterpolation}
-          // Normalise the dependent axis Y. Else it is not possible to represent data with extreme variance.
-          y={(datum: any) => datum.y / maxima}
-        />
+        {data.length > 1 && (
+          /** Draws the Line Above the Area
+           * Will crash on android if you pass data with less than 2 points
+           */
+          <VictoryLine
+            animate
+            style={{
+              data: { stroke: tintColor },
+              border: { stroke: "transparent" },
+            }}
+            data={data}
+            domain={{ y: [0, 1] }}
+            // groupComponent={<G />} ensures the line is not cut off below when using
+            // chartInterpolation = natural. Without this, lines will dip off
+            // the chart.
+            groupComponent={<G />}
+            interpolation={chartInterpolation}
+            // Normalise the dependent axis Y. Else it is not possible to represent data with extreme variance.
+            y={(datum: any) => datum.y / maxima}
+          />
+        )}
 
         {/** If only a single data is given, plot a point */}
         {data.length === 1 && (
@@ -188,6 +207,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
           tickFormat={(tick: number) =>
             tickFormat(
               tick * maxima, // Because we did y={(datum) => datum.y / maxima} in VictoryArea to normalise Y values
+              minMaxDomainY.min,
               minMaxDomainY.max,
               yAxisTickFormatter, // falls back to use the defaultFormatter
               yAxisDisplayType ?? AxisDisplayType.OnlyShowMinAndMaxDomain
@@ -201,7 +221,15 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
           style={{
             axis: { stroke: color("black30"), strokeDasharray: 2 },
             ticks: { size: 0 },
-            grid: { stroke: color("black30"), strokeDasharray: 3 },
+            grid: {
+              stroke: ({ tick }: { tick: number }) => {
+                if (xValues.length > 1) {
+                  return xAxisTickMap[tick] ? color("black30") : "transparent"
+                }
+                return color("black30")
+              },
+              strokeDasharray: 3,
+            },
           }}
           axisLabelComponent={<Text />}
           maxDomain={minMaxDomainX.max}
@@ -209,6 +237,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
           tickFormat={(tick: number) =>
             tickFormat(
               tick,
+              minMaxDomainX.min,
               minMaxDomainX.max,
               xAxisTickFormatter ?? ((val) => val), // don't format x ticks by default
               xAxisDisplayType ?? AxisDisplayType.OnlyShowMinAndMaxDomain
@@ -231,49 +260,16 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
             data={xHighlights}
             size={Platform.OS === "android" ? 7 : 5}
             dataComponent={
-              // TODO:- Investigate and fix positioning of custom dataComponent on android
-              Platform.OS === "android" ? undefined : (
-                <HighlightIconContainer
-                  icon={
-                    // @ts-ignore
-                    xHighlightIcon ?? <StarCircleIcon fill={tintColor} height={20} width={20} />
-                  }
-                  onHighlightPressed={onXHighlightPressed}
-                  lastPressedEvent={lastPressedEvent}
-                  clearLastPressedEvent={() => setLastPressedEvent(null)}
-                />
-              )
-            }
-          />
-        )}
-
-        {/*
-         * If you include yHighlight values in your data, the
-         * values will be plotted along the y-axis as highlights
-         */}
-        {!!showHighlights && !!yHighlights.length && (
-          <VictoryScatter
-            name="yHighlightsChart"
-            animate={ANIMATION_CONFIG}
-            style={{
-              data: { stroke: tintColor, fill: tintColor },
-              parent: { border: "transparent" },
-            }}
-            data={yHighlights}
-            size={Platform.OS === "android" ? 7 : 5}
-            dataComponent={
-              // TODO:- Investigate and fix positioning of custom dataComponent on android
-              Platform.OS === "android" ? undefined : (
-                <HighlightIconContainer
-                  icon={
-                    // @ts-ignore
-                    yHighlightIcon ?? <StarCircleIcon fill={tintColor} height={20} width={20} />
-                  }
-                  onHighlightPressed={onYHighlightPressed}
-                  lastPressedEvent={lastPressedEvent}
-                  clearLastPressedEvent={() => setLastPressedEvent(null)}
-                />
-              )
+              <HighlightIconContainer
+                icon={
+                  xHighlightIcon ?? (
+                    <StarCircleIcon fill={tintColor as Color} height={20} width={20} />
+                  )
+                }
+                onHighlightPressed={onXHighlightPressed}
+                lastPressedEvent={lastPressedEvent}
+                clearLastPressedEvent={() => setLastPressedEvent(null)}
+              />
             }
           />
         )}
@@ -326,16 +322,9 @@ const HighlightIconContainer = (props: any) => {
   }
 
   return (
-    <View
-      style={{
-        flex: 1,
-        flexDirection: "row",
-        left: x - DISPLACEMENT_FACTOR,
-        top: y - DISPLACEMENT_FACTOR,
-      }}
-    >
+    <G x={x - DISPLACEMENT_FACTOR} y={y - DISPLACEMENT_FACTOR}>
       {icon}
-    </View>
+    </G>
   )
 }
 
