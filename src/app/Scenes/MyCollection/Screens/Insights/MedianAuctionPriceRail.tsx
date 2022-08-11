@@ -92,6 +92,7 @@ const fragment = graphql`
           }
           marketPriceInsights {
             averageSalePriceDisplayText
+            medianSalePriceDisplayText
           }
         }
       }
