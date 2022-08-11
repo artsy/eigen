@@ -27,7 +27,7 @@ interface Slides {
 export const CareerHighlightsBigCardsSwiper: React.FC<{
   type: CareerHighlightKind
   careerHighlightsAvailableTypes: CareerHighlightKind[]
-  openPromoCard: boolean
+  openPromoCard?: boolean
 }> = ({ type, careerHighlightsAvailableTypes, openPromoCard }) => {
   const color = useColor()
   const space = useSpace()
