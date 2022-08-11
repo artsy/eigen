@@ -26,13 +26,23 @@ export const LineGraphCategoryPicker: React.FC<LineGraphCategoryPickerProps> = (
   const flatlistRef = useRef<FlatList<typeof categories[0]> | null>(null)
 
   useEffect(() => {
+    if (categories.length > 0 && categories[0].name === selectedCategory) {
+      // force flatlist to focus on the first item when new set of categories are loaded
+      flatlistRef.current?.scrollToOffset({ offset: 0 })
+      return
+    }
     if (allLayoutsPresent) {
       let viewOffset = 0
       if (selectedIndex > 0) {
         // allow the preceding Pill be slightly visible
         viewOffset = categoryLayouts[selectedIndex - 1]!.width / 2
       }
-      flatlistRef.current?.scrollToIndex({ index: selectedIndex, viewOffset })
+      try {
+        flatlistRef.current?.scrollToIndex({ index: selectedIndex, viewOffset })
+      } catch (e) {
+        // TODO: Support scrollToIndex for dynamically changing data.
+        flatlistRef.current?.scrollToIndex({ index: 0 })
+      }
     }
   }, [selectedIndex, selectedCategory])
 
@@ -69,7 +79,7 @@ export const LineGraphCategoryPicker: React.FC<LineGraphCategoryPickerProps> = (
         ItemSeparatorComponent={() => <Spacer p={0.5} />}
       />
     )
-  }, [selectedCategory])
+  }, [selectedCategory, JSON.stringify(categories)])
 }
 
 interface CategoryPillProps {

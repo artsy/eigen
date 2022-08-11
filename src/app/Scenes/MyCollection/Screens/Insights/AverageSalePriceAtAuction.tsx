@@ -11,8 +11,8 @@ import React, { Suspense, useCallback, useState } from "react"
 import { ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
-import { AverageSalePriceChart } from "./AverageSalePriceChart/AverageSalePriceChart"
 import { AverageSalePriceSelectArtistModal } from "./AverageSalePriceSelectArtistModal"
+import { MedianSalePriceChart } from "./MedianSalePriceChart/MedianSalePriceChart"
 
 const PAGE_SIZE = 50
 
@@ -42,7 +42,7 @@ const AverageSalePriceAtAuctionScreen: React.FC<AverageSalePriceAtAuctionProps> 
     <ScrollView showsVerticalScrollIndicator={false}>
       <Flex mx={2} pt={6}>
         <Text variant="lg" mb={0.5} testID="Average_Auction_Price_title">
-          Average Auction Price
+          Median Auction Price
         </Text>
         <Text variant="xs">Track price stability or growth for your artists.</Text>
 
@@ -83,8 +83,8 @@ const AverageSalePriceAtAuctionScreen: React.FC<AverageSalePriceAtAuctionProps> 
           )}
         </Flex>
 
-        <AverageSalePriceChart
-          artistId={queryArgs.variables.artistID}
+        <MedianSalePriceChart
+          artistId={queryArgs.variables.artistId}
           initialCategory={initialCategory}
           queryData={data}
         />
@@ -123,14 +123,17 @@ export const AverageSalePriceAtAuction: React.FC<{ artistID: string; initialCate
     },
   })
 
-  const refetch = useCallback((newArtistID) => {
-    if (newArtistID !== queryArgs.variables.artistID) {
-      setQueryArgs((prev) => ({
-        options: { fetchKey: (prev?.options.fetchKey ?? 0) + 1 },
-        variables: { ...queryArgs.variables, artistID: newArtistID },
-      }))
-    }
-  }, [])
+  const refetch = useCallback(
+    (newArtistID) => {
+      if (newArtistID !== queryArgs.variables.artistID) {
+        setQueryArgs((prev) => ({
+          options: { fetchKey: (prev?.options.fetchKey ?? 0) + 1 },
+          variables: { ...queryArgs.variables, artistID: newArtistID, artistId: newArtistID },
+        }))
+      }
+    },
+    [queryArgs.variables.artistID]
+  )
 
   return (
     <ProvidePlaceholderContext>
@@ -156,7 +159,7 @@ export const AverageSalePriceAtAuctionScreenQuery = graphql`
     $medium: String!
   ) {
     ...AverageSalePriceSelectArtistModal_myCollectionInfo @arguments(count: $count, after: $after)
-    ...AverageSalePriceChart_query
+    ...MedianSalePriceChart_query
       @arguments(artistId: $artistId, endYear: $endYear, medium: $medium, startYear: $startYear)
     artist(id: $artistID) {
       internalID

@@ -2,6 +2,7 @@ import { useEffect } from "react"
 import { NativeTouchEvent } from "react-native"
 import { G } from "react-native-svg"
 import { Point } from "victory-native"
+import { LineChartData } from "./types"
 
 interface BaseContainerProps {
   lastPressedEvent: NativeTouchEvent | null
@@ -60,12 +61,14 @@ interface ScatterDataPointContainerProps extends BaseContainerProps {
   size: number
   /** the area along the x-axis that when touched, a point can claim */
   pointXRadiusOfTouch: number
+  onDataPointPressed?: (datum: LineChartData["data"][0]) => void
 }
 
 export const ScatterDataPointContainer: React.FC<ScatterDataPointContainerProps> = (props) => {
   const {
     lastPressedEvent,
     clearLastPressedEvent,
+    onDataPointPressed,
     pointXRadiusOfTouch,
     setLastPressedDatum,
     ...injectedProps
@@ -89,6 +92,7 @@ export const ScatterDataPointContainer: React.FC<ScatterDataPointContainerProps>
   const fireItemPressed = (locationX: number) => {
     if (isWithinItemRange(locationX)) {
       setLastPressedDatum?.({ ...datum, left: x - 10 })
+      onDataPointPressed?.(datum)
     }
   }
 

@@ -30,6 +30,7 @@ interface LineGraphChartProps extends LineChartData {
   chartHeight?: number
   chartWidth?: number
   chartInterpolation?: InterpolationPropType
+  onDataPointPressed?: (datum: LineChartData["data"][0]) => void
   onXHighlightPressed?: (datum: { _x: number; _y: number; x: number; y: number }) => void
   onYHighlightPressed?: (datum: { _x: number; _y: number; x: number; y: number }) => void
   /** Specifies by what factor between -0 to +1 to shade the graph area. Positive values lightens, negative darkens */
@@ -48,6 +49,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
   chartHeight = deviceHeight / 3,
   chartWidth = deviceWidth - 20 * 2,
   chartInterpolation = "natural",
+  onDataPointPressed = noop,
   onXHighlightPressed = noop,
   showHighlights = false,
   tintColorShadeFactor = 0.8,
@@ -112,7 +114,10 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
   const [lastPressedDatum, setLastPressedDatum] = useState<
     (typeof data[0] & { left: number }) | null
   >(null)
-  console.log("lastPressedDatum", lastPressedDatum)
+
+  useEffect(() => {
+    setLastPressedDatum(null)
+  }, [JSON.stringify(data)])
 
   return (
     /*
@@ -247,7 +252,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
               data: {
                 stroke: tintColor,
                 fill: ({ datum }: { datum: any }) =>
-                  datum.x === lastPressedDatum?.x ? tintColor : "transparent",
+                  datum.x === lastPressedDatum?.x || data.length === 1 ? tintColor : "transparent",
               },
             }}
             data={data}
@@ -261,6 +266,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
                 setLastPressedDatum={setLastPressedDatum}
                 lastPressedEvent={lastPressedEvent}
                 clearLastPressedEvent={() => setLastPressedEvent(null)}
+                onDataPointPressed={onDataPointPressed}
               />
             }
           />

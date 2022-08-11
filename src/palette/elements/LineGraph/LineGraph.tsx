@@ -21,6 +21,7 @@ interface Props {
   chartInterpolation?: InterpolationPropType
   onXHighlightPressed?: (datum: { _x: number; _y: number; x: number; y: number }) => void
   onYHighlightPressed?: (datum: { _x: number; _y: number; x: number; y: number }) => void
+  onDataPointPressed?: (datum: LineChartData["data"][0]) => void
   tintColorShadeFactor?: number
   xAxisTickFormatter?: (val: any) => string
   yAxisTickFormatter?: (val: any) => string
@@ -47,6 +48,7 @@ export const LineGraph: React.FC<Props> = ({
   data,
   onBandSelected,
   onCategorySelected,
+  onDataPointPressed,
   onXHighlightPressed,
   onYHighlightPressed,
   selectedBand,
@@ -71,6 +73,7 @@ export const LineGraph: React.FC<Props> = ({
         chartInterpolation={chartInterpolation}
         onXHighlightPressed={onXHighlightPressed}
         onYHighlightPressed={onYHighlightPressed}
+        onDataPointPressed={onDataPointPressed}
         tintColorShadeFactor={tintColorShadeFactor}
         xAxisTickFormatter={xAxisTickFormatter}
         yAxisTickFormatter={yAxisTickFormatter}

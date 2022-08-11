@@ -25,6 +25,10 @@ export const getVortexMedium = (medium: string, category: string) => {
   return VALID_VORTEX_MEDIUMS.includes(medium) ? medium : category
 }
 
+const CategoryAliases: { [key: string]: string } = {
+  Unknown: "Other",
+}
+
 const categoryColorCode: { [key: string]: string | null } = {
   // TODO: Make sure all categories have color code. Discuss with Design.
   Painting: "#E2B929",
@@ -32,6 +36,7 @@ const categoryColorCode: { [key: string]: string | null } = {
   Photography: "#DA6722",
   Print: "#00A8FF",
   "Drawing, Collage or other Work on Paper": "#4CD137",
+  "Work on Paper": "#4CD137",
   "Video/Film/Animation": "#0582CA",
   "Textile Arts": "#C9184A",
   // No color code yet
@@ -59,12 +64,18 @@ const getRandomColor = () => {
   return color
 }
 
-export const computeCategoriesForChart = (selectedCategory: string) => {
+const getCategoryForAlias = (category: string) => CategoryAliases[category] || category
+
+export const computeCategoriesForChart = (
+  selectedCategory: string,
+  categories: string[] | undefined = VALID_VORTEX_MEDIUMS
+) => {
   const takenColors: { [key: string]: boolean } = {}
-  const keys = Object.keys(categoryColorCode).filter((k) => k !== selectedCategory)
+  const keys = categories.filter((k) => k !== selectedCategory)
 
   const catForChart = keys.map((k) => {
-    let color = categoryColorCode[k] ?? getRandomColor()
+    const key = getCategoryForAlias(k)
+    let color = categoryColorCode[key] ?? getRandomColor()
     let maxCheckTimes = 20
     while (takenColors[color] && maxCheckTimes > 0) {
       // don't try for unique color more than 20 times
@@ -72,7 +83,7 @@ export const computeCategoriesForChart = (selectedCategory: string) => {
       maxCheckTimes--
     }
     takenColors[color] = true
-    return { name: k, color }
+    return { name: key, color }
   })
 
   catForChart.unshift({
