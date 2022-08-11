@@ -105,7 +105,7 @@ export const CareerHighlightsBigCardsSwiper: React.FC<{
     }
 
     // TODO: mark the slide as seen here
-    // the seen slide will be slides[currentCard].key
+    // the seen slide will be slides[currentSlide].key
     // TODO: not to forget to mark the initial slide as seen as well
   }
 
