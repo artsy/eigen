@@ -341,6 +341,8 @@ export const modules = defineModules({
   MedianSalePriceAtAuction: reactModule(MedianSalePriceAtAuction),
   CareerHighlightsBigCardsSwiper: reactModule(CareerHighlightsBigCardsSwiper, {
     alwaysPresentModally: true,
+    hidesBackButton: true,
+    fullBleed: true,
   }),
   AuctionRegistration: reactModule(RegistrationFlow, {
     alwaysPresentModally: true,
