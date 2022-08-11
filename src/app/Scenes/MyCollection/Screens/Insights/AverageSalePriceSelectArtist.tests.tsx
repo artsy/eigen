@@ -17,6 +17,8 @@ describe("AverageSalePriceSelectArtist", () => {
     useLazyLoadQuery<AverageSalePriceAtAuctionQuery>(AverageSalePriceAtAuctionScreenQuery, {
       artistID: "artist-id",
       count: 10,
+      artistId: "artist-id",
+      medium: "medium",
     })
 
     return <AverageSalePriceAtAuction artistID="artist-id" initialCategory="Painting" />

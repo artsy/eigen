@@ -1,35 +1,36 @@
+import { formatLargeNumber } from "app/utils/formatLargeNumber"
+
 export enum AxisDisplayType {
   OnlyShowMinAndMaxDomain = "OnlyShowMinAndMaxDomain",
   ShowAllValues = "ShowAllValues",
 }
 
-const defaultFormatter = (val: any) => {
+const defaultFormatter = (val: number | string) => {
+  if (typeof val === "string") {
+    val = parseInt(val, 10)
+  }
   if (isNaN(Number(val))) {
     return val
   }
-  const inThousand = Number(val) / 1000
-  if (inThousand > 0.99) {
-    return Math.ceil(inThousand) + "k"
-  }
-  return val
+  return formatLargeNumber(val)
 }
 
 export const tickFormat = (
   tick: any,
   minDomain: number,
   maxDomain: number,
-  formatter: (val: any) => string = defaultFormatter,
+  formatter: (val: number) => string | number = defaultFormatter,
   tickFormatType: AxisDisplayType = AxisDisplayType.ShowAllValues
 ): string => {
   let res = ""
   switch (tickFormatType) {
     case AxisDisplayType.OnlyShowMinAndMaxDomain:
       if (tick === maxDomain || tick === minDomain) {
-        res = formatter(tick)
+        res = formatter(tick).toString()
       }
       break
     case AxisDisplayType.ShowAllValues:
-      res = formatter(tick)
+      res = formatter(tick).toString()
       break
   }
   return res

@@ -180,7 +180,7 @@ const LoadingSkeleton = () => {
   const rng = new RandomNumberGenerator(100)
   return (
     <Flex mx={2} pt={6}>
-      <Text variant="lg" mb={0.5} testID="Average_Auction_Price_title">
+      <Text variant="lg" mb={0.5}>
         Average Auction Price
       </Text>
       <Text variant="xs">Track price stability or growth for your artists.</Text>

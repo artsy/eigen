@@ -69,6 +69,7 @@ export const AverageSalePriceChart: React.FC<AverageSalePriceChartProps> = ({
     data.analyticsCalendarYearMarketPriceInsights?.map((p) => ({
       x: parseInt(p.year, 10),
       y: parseInt(p.averageSalePrice, 10),
+      highlight: { x: true },
     })) ?? []
 
   const { height: screenHeight, width: screenWidth } = useScreenDimensions()
@@ -101,7 +102,7 @@ export const AverageSalePriceChart: React.FC<AverageSalePriceChartProps> = ({
     : totalLotsSold +
       ` ${totalLotsSold > 1 ? "lots" : "lot"} in the last ${
         selectedDuration === AverageSalePriceChartDuration["3 yrs"] ? "3 years" : "8 years"
-      }`
+      } (${startYear} - ${endYear})`
 
   const lineChartData: LineChartData = {
     data: chartDataArray,
@@ -128,6 +129,8 @@ export const AverageSalePriceChart: React.FC<AverageSalePriceChartProps> = ({
         yAxisTickFormatter={
           chartDataArray.length ? (val: number) => formatLargeNumber(val) : () => ""
         }
+        // hide the year on xAxis
+        xAxisTickFormatter={() => ""}
       />
       {!chartDataArray.length && (
         <Flex

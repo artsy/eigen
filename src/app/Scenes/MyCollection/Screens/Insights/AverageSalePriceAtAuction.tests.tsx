@@ -15,6 +15,8 @@ describe("AverageSalePriceAtAuction", () => {
   const TestRenderer = () => {
     useLazyLoadQuery<AverageSalePriceAtAuctionQuery>(AverageSalePriceAtAuctionScreenQuery, {
       artistID: "artist-id",
+      artistId: "artist-id",
+      medium: "medium",
     })
 
     return <AverageSalePriceAtAuction artistID="artist-id" initialCategory="Painting" />

@@ -105,6 +105,7 @@ export const CategoryPill: React.FC<CategoryPillProps> = ({
       rounded
       onPress={handlePress}
       onLayout={onLayout}
+      testID="categoryPill"
     >
       <Text variant="xs" color={itemColor}>
         {category}
