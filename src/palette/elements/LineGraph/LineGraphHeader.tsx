@@ -1,5 +1,4 @@
 import { Flex, Text } from "palette"
-import React from "react"
 import { Dimensions } from "react-native"
 import { ColoredDot, DEFAULT_DOT_COLOR } from "./ColoredDot"
 import { LineChartData } from "./types"

@@ -65,12 +65,12 @@ export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event, conversationId 
       Icon = AlertCircleFillIcon
       color = "yellow100"
       textColor = "black100"
-      message = "Offer accepted. Payment pending"
+      message = "Offer accepted. Payment Processing"
     } else if (orderUpdateState === "buy_processing_approval") {
       Icon = AlertCircleFillIcon
       color = "yellow100"
       textColor = "black100"
-      message = "Order approved. Payment pending"
+      message = "Order approved. Payment Processing"
     } else if (orderUpdateState === "offer_rejected") {
       color = "red100"
       message = `Offer Declined`

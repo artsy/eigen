@@ -1,6 +1,6 @@
+import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { useImageSearch } from "app/utils/useImageSearch"
-import { AddIcon, Box, Spinner } from "palette"
+import { AddIcon, Box } from "palette"
 import { TouchableOpacity } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 
@@ -14,11 +14,14 @@ interface SearchImageHeaderButtonProps {
 export const SearchImageHeaderButton: React.FC<SearchImageHeaderButtonProps> = ({
   isImageSearchButtonVisible,
 }) => {
-  const isImageSearchEnabled = isImageSearchButtonVisible && useFeatureFlag("AREnableImageSearch")
-  const { searchingByImage, handleSeachByImage } = useImageSearch()
+  const isImageSearchEnabled = useFeatureFlag("AREnableImageSearch")
 
-  if (!isImageSearchEnabled) {
+  if (!isImageSearchButtonVisible || !isImageSearchEnabled) {
     return null
+  }
+
+  const handleSearchPress = () => {
+    return navigate("/reverse-image")
   }
 
   return (
@@ -31,8 +34,7 @@ export const SearchImageHeaderButton: React.FC<SearchImageHeaderButtonProps> = (
         top: 13 + useScreenDimensions().safeAreaInsets.top,
         right: 12,
       }}
-      onPress={handleSeachByImage}
-      disabled={searchingByImage}
+      onPress={handleSearchPress}
     >
       <Box
         width={CAMERA_ICON_CONTAINER_SIZE}
@@ -42,11 +44,7 @@ export const SearchImageHeaderButton: React.FC<SearchImageHeaderButtonProps> = (
         justifyContent="center"
         alignItems="center"
       >
-        {searchingByImage ? (
-          <Spinner size="small" />
-        ) : (
-          <AddIcon width={CAMERA_ICON_SIZE} height={CAMERA_ICON_SIZE} />
-        )}
+        <AddIcon width={CAMERA_ICON_SIZE} height={CAMERA_ICON_SIZE} />
       </Box>
     </TouchableOpacity>
   )

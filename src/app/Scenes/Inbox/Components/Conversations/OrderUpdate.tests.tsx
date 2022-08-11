@@ -197,7 +197,7 @@ describe("OrderUpdate with order updates", () => {
       orderUpdateState: "buy_processing_approval",
     })
 
-    expect(extractText(tree.root)).toMatch("Order approved. Payment pending")
+    expect(extractText(tree.root)).toMatch("Order approved. Payment Processing")
     tree.root.findByType(AlertCircleFillIcon)
   })
 
@@ -207,7 +207,7 @@ describe("OrderUpdate with order updates", () => {
       orderUpdateState: "offer_processing_approval",
     })
 
-    expect(extractText(tree.root)).toMatch("Offer accepted. Payment pending")
+    expect(extractText(tree.root)).toMatch("Offer accepted. Payment Processing")
     tree.root.findByType(AlertCircleFillIcon)
   })
 

@@ -34,6 +34,7 @@ import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironme
 import { SaleBelowTheFoldQuery } from "../../../__generated__/SaleBelowTheFoldQuery.graphql"
 import { CascadingEndTimesBanner } from "../Artwork/Components/CascadingEndTimesBanner"
 import { BuyNowArtworksRailContainer } from "./Components/BuyNowArtworksRail"
+import { NewBuyNowArtworksRailContainer } from "./Components/NewBuyNowArtworksRail"
 import { NewSaleLotsListContainer } from "./Components/NewSaleLotsList"
 import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
 import { SaleActiveBidsContainer } from "./Components/SaleActiveBids"
@@ -245,7 +246,11 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
     },
     {
       key: BUY_NOW_ARTWORKS_RAIL,
-      content: <BuyNowArtworksRailContainer sale={sale} />,
+      content: enableArtworksConnection ? (
+        <NewBuyNowArtworksRailContainer sale={sale} />
+      ) : (
+        <BuyNowArtworksRailContainer sale={sale} />
+      ),
     },
     {
       key: SALE_LOTS_LIST,
@@ -388,6 +393,7 @@ export const SaleContainer = createRefetchContainer(
         ...SaleHeader_sale
         ...RegisterToBidButton_sale
         ...BuyNowArtworksRail_sale
+        ...NewBuyNowArtworksRail_sale
         endAt
         internalID
         liveStartAt
@@ -483,6 +489,7 @@ export const SaleQueryRenderer: React.FC<{
                       // @ts-ignore
                       input: {
                         sort: DEFAULT_NEW_SALE_ARTWORK_SORT.paramValue,
+                        priceRange: "",
                       },
                     },
                   }

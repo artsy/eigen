@@ -1,0 +1,12 @@
+diff --git a/node_modules/puppeteer/lib/types.d.ts b/node_modules/puppeteer/lib/types.d.ts
+index 1a62465..e5bf7da 100644
+--- a/node_modules/puppeteer/lib/types.d.ts
++++ b/node_modules/puppeteer/lib/types.d.ts
+@@ -1125,6 +1125,7 @@ declare class CustomError extends Error {
+  */
+ export declare interface CustomQueryHandler {
+     queryOne?: (element: Element | Document, selector: string) => Element | null;
++    // @ts-ignore
+     queryAll?: (element: Element | Document, selector: string) => Element[] | NodeListOf<Element>;
+ }
+ 

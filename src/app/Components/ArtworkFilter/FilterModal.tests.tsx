@@ -1,4 +1,4 @@
-import { fireEvent, within } from "@testing-library/react-native"
+import { fireEvent, screen, within } from "@testing-library/react-native"
 import { FilterModalTestsQuery } from "__generated__/FilterModalTestsQuery.graphql"
 import {
   AnimatedArtworkFilterButton,
@@ -28,107 +28,39 @@ const trackEvent = jest.fn()
 jest.unmock("react-relay")
 
 beforeEach(() => {
-  ;(useTracking as jest.Mock).mockImplementation(() => {
-    return {
-      trackEvent,
-    }
-  })
+  ;(useTracking as jest.Mock).mockImplementation(() => ({ trackEvent }))
 })
 
 const mockAggregations: Aggregations = [
   {
     slice: "MEDIUM",
     counts: [
-      {
-        name: "Sculpture",
-        count: 277,
-        value: "sculpture",
-      },
-      {
-        name: "Work on Paper",
-        count: 149,
-        value: "work-on-paper",
-      },
-      {
-        name: "Painting",
-        count: 145,
-        value: "painting",
-      },
-      {
-        name: "Drawing",
-        count: 83,
-        value: "drawing",
-      },
+      { name: "Sculpture", count: 277, value: "sculpture" },
+      { name: "Work on Paper", count: 149, value: "work-on-paper" },
+      { name: "Painting", count: 145, value: "painting" },
+      { name: "Drawing", count: 83, value: "drawing" },
     ],
   },
   {
     slice: "PRICE_RANGE",
     counts: [
-      {
-        name: "for Sale",
-        count: 2028,
-        value: "*-*",
-      },
-      {
-        name: "between $10,000 & $50,000",
-        count: 598,
-        value: "10000-50000",
-      },
-      {
-        name: "between $1,000 & $5,000",
-        count: 544,
-        value: "1000-5000",
-      },
-      {
-        name: "Under $1,000",
-        count: 393,
-        value: "*-1000",
-      },
-      {
-        name: "between $5,000 & $10,000",
-        count: 251,
-        value: "5000-10000",
-      },
-      {
-        name: "over $50,000",
-        count: 233,
-        value: "50000-*",
-      },
+      { name: "for Sale", count: 2028, value: "*-*" },
+      { name: "between $10,000 & $50,000", count: 598, value: "10000-50000" },
+      { name: "between $1,000 & $5,000", count: 544, value: "1000-5000" },
+      { name: "Under $1,000", count: 393, value: "*-1000" },
+      { name: "between $5,000 & $10,000", count: 251, value: "5000-10000" },
+      { name: "over $50,000", count: 233, value: "50000-*" },
     ],
   },
   {
     slice: "MAJOR_PERIOD",
     counts: [
-      {
-        name: "Late 19th Century",
-        count: 6,
-        value: "Late 19th Century",
-      },
-      {
-        name: "2010",
-        count: 10,
-        value: "2010",
-      },
-      {
-        name: "2000",
-        count: 4,
-        value: "2000",
-      },
-      {
-        name: "1990",
-        count: 20,
-        value: "1990",
-      },
-      {
-        name: "1980",
-        count: 46,
-        value: "1980",
-      },
-      {
-        name: "1970",
-        count: 524,
-        value: "1970",
-      },
+      { name: "Late 19th Century", count: 6, value: "Late 19th Century" },
+      { name: "2010", count: 10, value: "2010" },
+      { name: "2000", count: 4, value: "2000" },
+      { name: "1990", count: 20, value: "1990" },
+      { name: "1980", count: 46, value: "1980" },
+      { name: "1970", count: 524, value: "1970" },
     ],
   },
 ]
@@ -158,21 +90,17 @@ const MockFilterModalNavigator = ({
   initialData?: ArtworkFiltersState
   shouldShowCreateAlertButton?: boolean
 }) => (
-  <GlobalStoreProvider>
-    <Theme>
-      <ArtworkFiltersStoreProvider initialData={initialData}>
-        <ArtworkFilterNavigator
-          exitModal={exitModalMock}
-          closeModal={closeModalMock}
-          mode={FilterModalMode.ArtistArtworks}
-          id="abc123"
-          slug="some-artist"
-          visible
-          shouldShowCreateAlertButton={shouldShowCreateAlertButton}
-        />
-      </ArtworkFiltersStoreProvider>
-    </Theme>
-  </GlobalStoreProvider>
+  <ArtworkFiltersStoreProvider initialData={initialData}>
+    <ArtworkFilterNavigator
+      exitModal={exitModalMock}
+      closeModal={closeModalMock}
+      mode={FilterModalMode.ArtistArtworks}
+      id="abc123"
+      slug="some-artist"
+      visible
+      shouldShowCreateAlertButton={shouldShowCreateAlertButton}
+    />
+  </ArtworkFiltersStoreProvider>
 )
 
 describe("Filter modal", () => {
@@ -185,39 +113,22 @@ describe("Filter modal", () => {
       aggregations: [
         {
           slice: "MEDIUM",
-          counts: [
-            {
-              name: "Sculpture",
-              count: 277,
-              value: "sculpture",
-            },
-          ],
+          counts: [{ name: "Sculpture", count: 277, value: "sculpture" }],
         },
         {
           slice: "MAJOR_PERIOD",
-          counts: [
-            {
-              name: "Late 19th Century",
-              count: 6,
-              value: "Late 19th Century",
-            },
-          ],
+          counts: [{ name: "Late 19th Century", count: 6, value: "Late 19th Century" }],
         },
       ],
       filterType: "artwork",
-      counts: {
-        total: null,
-        followedArtists: null,
-      },
+      counts: { total: null, followedArtists: null },
       sizeMetric: "cm",
     }
 
-    const { getByText } = renderWithWrappers(
-      <MockFilterModalNavigator initialData={injectedState} />
-    )
+    renderWithWrappers(<MockFilterModalNavigator initialData={injectedState} />)
 
-    expect(getByText("Medium")).toBeTruthy()
-    expect(getByText("Time Period")).toBeTruthy()
+    expect(screen.getByText("Medium")).toBeTruthy()
+    expect(screen.getByText("Time Period")).toBeTruthy()
   })
 
   it("should hide filter when aggregation counts are empty", () => {
@@ -233,20 +144,11 @@ describe("Filter modal", () => {
         },
         {
           slice: "MAJOR_PERIOD",
-          counts: [
-            {
-              name: "Late 19th Century",
-              count: 6,
-              value: "Late 19th Century",
-            },
-          ],
+          counts: [{ name: "Late 19th Century", count: 6, value: "Late 19th Century" }],
         },
       ],
       filterType: "artwork",
-      counts: {
-        total: null,
-        followedArtists: null,
-      },
+      counts: { total: null, followedArtists: null },
       sizeMetric: "cm",
     }
 
@@ -668,13 +570,13 @@ describe("AnimatedArtworkFilterButton", () => {
 
     expect(getByText("Filter Text")).toBeTruthy()
   })
-})
 
-describe("Saved Search Flow", () => {
-  it('should hide "Create Alert" button by default', () => {
-    const { queryByText } = renderWithWrappers(<MockFilterModalNavigator />)
+  describe("Saved Search Flow", () => {
+    it('should hide "Create Alert" button by default', () => {
+      const { queryByText } = renderWithWrappers(<MockFilterModalNavigator />)
 
-    expect(queryByText("Create Alert")).toBeFalsy()
+      expect(queryByText("Create Alert")).toBeFalsy()
+    })
   })
 
   it('should show "Create Alert" button when shouldShowCreateAlertButton prop is passed', () => {

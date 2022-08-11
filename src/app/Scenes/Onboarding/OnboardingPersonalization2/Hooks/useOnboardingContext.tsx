@@ -16,14 +16,14 @@ export const DEFAULT_STATE: State = {
   followedIds: [],
 }
 
-type Action =
+export type OnboardingContextAction =
   | { type: "RESET" }
   | { type: "SET_ANSWER_ONE"; payload: string }
   | { type: "SET_ANSWER_TWO"; payload: string }
   | { type: "SET_ANSWER_THREE"; payload: string }
   | { type: "FOLLOW"; payload: string }
 
-const reducer = (onReset: () => void) => (state: State, action: Action) => {
+const reducer = (onReset: () => void) => (state: State, action: OnboardingContextAction) => {
   switch (action.type) {
     case "RESET":
       onReset()
@@ -64,11 +64,12 @@ const reducer = (onReset: () => void) => (state: State, action: Action) => {
 
 const OnboardingContext = createContext<{
   current: string
-  dispatch: React.Dispatch<Action>
+  dispatch: React.Dispatch<OnboardingContextAction>
   progress: number
   state: State
   workflowEngine: WorkflowEngine
   next(): void
+  back(): void
   onDone(): void
 }>({
   current: "",
@@ -76,6 +77,8 @@ const OnboardingContext = createContext<{
   dispatch: () => {},
   // tslint:disable-next-line:no-empty
   next: () => {},
+  // tslint:disable-next-line:no-empty
+  back: () => {},
   // tslint:disable-next-line:no-empty
   onDone: () => {},
   progress: 0,
@@ -92,6 +95,7 @@ export const OnboardingProvider: FC<OnboardingProviderProps> = ({ children, onDo
 
   const {
     workflowEngine,
+    back,
     current,
     next,
     // tslint:disable-next-line:variable-name
@@ -112,6 +116,7 @@ export const OnboardingProvider: FC<OnboardingProviderProps> = ({ children, onDo
   return (
     <OnboardingContext.Provider
       value={{
+        back,
         current,
         dispatch,
         next,

@@ -1,6 +1,5 @@
 import { navigate, popToRoot } from "app/navigation/navigate"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { GlobalStore } from "app/store/GlobalStore"
 import {
   Button,
   FairIcon,
@@ -12,7 +11,6 @@ import {
   SoloIcon,
   Text,
   Touchable,
-  useColor,
 } from "palette"
 import { Fragment, FunctionComponent } from "react"
 import { Image } from "react-native"
@@ -28,41 +26,32 @@ export type CareerHighlightKind =
 interface CareerHighlightsCardProps {
   count: number
   type: CareerHighlightKind
+  careerHighlightsAvailableTypes: CareerHighlightKind[]
 }
 
-export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({ count, type }) => {
+export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({
+  count,
+  type,
+  careerHighlightsAvailableTypes,
+}) => {
   if (count === 0) {
     return null
   }
 
-  const color = useColor()
-
-  const { label, Icon, isNew } = getCareerHiglight(type, count)
+  const { label, Icon } = getCareerHiglight(type, count)
 
   return (
     <Touchable
       haptic
       onPress={() => {
-        // TODO: Navigate to detail card
+        navigate("/my-collection/career-highlights", {
+          passProps: { type, careerHighlightsAvailableTypes },
+        })
       }}
+      testID="career-highlight-card-item"
     >
       <Flex p={1} height={135} width={205} background="white" border={1} borderColor="black10">
-        <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
-          <Flex backgroundColor={color("blue100")} px={0.5} mt={0.2}>
-            {!!isNew && (
-              <Flex style={{ paddingVertical: 2, paddingHorizontal: 2 }}>
-                <Text
-                  mt="-1px"
-                  fontSize={11}
-                  lineHeight={16}
-                  color="white100"
-                  key={`${isNew}-${type}`}
-                >
-                  New
-                </Text>
-              </Flex>
-            )}
-          </Flex>
+        <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
           <Flex
             width={26}
             height={26}
@@ -94,29 +83,28 @@ export const CareerHighlightPromotionalCard: React.FC = () => {
     <Touchable
       haptic
       onPress={() => {
-        // TODO: Navigate to detail card
+        navigate("my-collection/artworks/new", {
+          passProps: {
+            mode: "add",
+            source: Tab.insights,
+            onSuccess: popToRoot,
+          },
+        })
       }}
     >
-      <Flex ml={2} width={200} height={135} backgroundColor="white100" flexDirection="row">
+      <Flex
+        width={200}
+        height={135}
+        backgroundColor="white100"
+        flexDirection="row"
+        border={1}
+        borderColor="black10"
+      >
         <Flex p={1} flex={1}>
           <Flex flex={1} justifyContent="center">
             <Text variant="xs">Discover career highlights for your artists.</Text>
           </Flex>
-          <Button
-            size="small"
-            testID="career-highlight-promo-card-button"
-            onPress={() => {
-              navigate("my-collection/artworks/new", {
-                passProps: {
-                  mode: "add",
-                  source: Tab.insights,
-                  onSuccess: popToRoot,
-                },
-              })
-            }}
-          >
-            Upload Artwork
-          </Button>
+          <Button size="small">Upload Artwork</Button>
         </Flex>
 
         <Image source={require("images/career-highlights-promo-background-image.webp")} />
@@ -125,11 +113,7 @@ export const CareerHighlightPromotionalCard: React.FC = () => {
   )
 }
 
-const getCareerHiglight = (type: CareerHighlightKind, count: number) => {
-  const careerHighlights = GlobalStore.useAppState(
-    (state) => state.myCollectionCareerHighlights.careerHighlights
-  )
-
+export const getCareerHiglight = (type: CareerHighlightKind, count: number) => {
   let label: string = ""
   let Icon: FunctionComponent<IconProps> = Fragment
 
@@ -178,10 +162,5 @@ const getCareerHiglight = (type: CareerHighlightKind, count: number) => {
     */
   }
 
-  // A career higlight is new if the user hasen't seen it at all or if the number is higher
-  // than the number that has been seen by the user the last time.
-  const isNew = !careerHighlights[type] || careerHighlights[type].count < count
-  // const isNew = !careerHighlights[type] || careerHighlights[type].count < count
-
-  return { label, Icon, isNew }
+  return { label, Icon }
 }

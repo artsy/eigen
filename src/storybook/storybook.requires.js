@@ -30,6 +30,7 @@ const getStories = () => {
     require("../app/Components/ArtworkGrids/ArtworksFilterHeader.stories.tsx"),
     require("../app/Components/PopoverMessage/PopoverMessage.stories.tsx"),
     require("../app/Components/ReadMore.stories.tsx"),
+    require("../app/utils/placeholders.stories.tsx"),
     require("../palette/atoms/BackButton/BackButton.stories.tsx"),
     require("../palette/atoms/colors.stories.tsx"),
     require("../palette/atoms/space.stories.tsx"),

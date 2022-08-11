@@ -127,6 +127,10 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
             action_type: Schema.ActionTypes.Tap,
           })
         },
+        adjustCurrentOffset() {
+          railRef.current?.setOffset(activeTabIndex.current * width)
+          stickyRailRef.current?.setOffset(activeTabIndex.current * width)
+        },
       }}
     >
       <View style={{ flex: 1, position: "relative", overflow: "hidden" }}>

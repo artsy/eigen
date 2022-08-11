@@ -8,7 +8,7 @@ import {
 } from "app/utils/track/SegmentTrackingProvider"
 import { useDeepLinks } from "app/utils/useDeepLinks"
 import { useStripeConfig } from "app/utils/useStripeConfig"
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { NativeModules, Platform, UIManager, View } from "react-native"
 import RNBootSplash from "react-native-bootsplash"
 import RNShake from "react-native-shake"
@@ -64,7 +64,7 @@ const useRageShakeAdminMenu = () => {
   }, [userIsDev])
 }
 
-const Main: React.FC = () => {
+const Main = () => {
   useRageShakeAdminMenu()
   useDebugging()
   useEffect(() => {

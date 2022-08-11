@@ -3,7 +3,7 @@ import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Flex, Input, RadioButton, Spacer, Text } from "palette"
 import React, { useState } from "react"
-import { TouchableWithoutFeedback } from "react-native-gesture-handler"
+import { TouchableWithoutFeedback } from "react-native"
 
 export const Dimensions: React.FC = () => {
   const { formik } = useArtworkForm()

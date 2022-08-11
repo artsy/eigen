@@ -1,4 +1,4 @@
-const VALID_VORTEX_MEDIUMS = [
+const VALID_VORTEX_MEDIUMS: Array<string | null> = [
   "Painting",
   "Sculpture",
   "Photography",
@@ -21,8 +21,8 @@ const VALID_VORTEX_MEDIUMS = [
   "NFT",
 ]
 
-export const getVortexMedium = (medium: string, category: string) => {
-  return VALID_VORTEX_MEDIUMS.includes(medium) ? medium : category
+export const getVortexMedium = (medium: string | null, category: string | null): string => {
+  return (VALID_VORTEX_MEDIUMS.includes(medium) ? medium : category) || ""
 }
 
 const CategoryAliases: { [key: string]: string } = {

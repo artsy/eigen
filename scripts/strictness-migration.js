@@ -1,4 +1,4 @@
-// @ts-check
+// @ts-nocheck
 
 const glob = require("glob").sync
 const fs = require("fs")
@@ -41,8 +41,8 @@ switch (process.argv[2]) {
       console.log(`Run 'touch ${HERO_HELPER_FILENAME}' to join in the migration fun`)
       break
     }
-    const files = _.flatten(process.argv.slice(3).map((f) => glob(f, { nodir: true }))).map((file) =>
-      path.relative(process.cwd(), path.resolve(file))
+    const files = _.flatten(process.argv.slice(3).map((f) => glob(f, { nodir: true }))).map(
+      (file) => path.relative(process.cwd(), path.resolve(file))
     )
     let allClear = true
     for (const file of files) {
@@ -82,9 +82,11 @@ switch (process.argv[2]) {
     if (current > onMain) {
       console.error(
         chalk.yellow.bold("WARNING:"),
-        `The number of comments with the substring ${chalk.cyan("STRICTNESS_MIGRATION")} has risen from ${chalk.green(
-          onMain
-        )} in ${chalk.bold("main")} to ${chalk.red(current)} in this PR.`
+        `The number of comments with the substring ${chalk.cyan(
+          "STRICTNESS_MIGRATION"
+        )} has risen from ${chalk.green(onMain)} in ${chalk.bold("main")} to ${chalk.red(
+          current
+        )} in this PR.`
       )
       console.error(
         `These comments were added when we switched on TypeScript's strict mode, and their number should only ever go down.\n`
