@@ -2318,6 +2318,10 @@ type ArtworkPriceInsights {
   ): String
   demandRank: Float
   lastAuctionResultDate: String
+  medianSalePriceDisplayText(
+    # Passes in to numeral, such as `'0.00'`
+    format: String = ""
+  ): String
   medium: String
 }
 
