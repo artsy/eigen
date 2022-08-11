@@ -23,7 +23,7 @@ export const CareerHighlightsRail: React.FC<CareerHighlightsRailProps> = (props)
 
   const careerHighlightData = Object.entries(me.myCollectionInfo.artistInsightsCount)
     .map((a) => ({
-      kind: a[0],
+      kind: a[0] as CareerHighlightKind,
       count: a[1],
     }))
     .filter((a) => a.count > 0)
@@ -31,6 +31,11 @@ export const CareerHighlightsRail: React.FC<CareerHighlightsRailProps> = (props)
   if (careerHighlightData.length === 0) {
     return null
   }
+
+  const careerHighlightsAvailableTypes: CareerHighlightKind[] = []
+  careerHighlightData.map((i) => {
+    return careerHighlightsAvailableTypes.push(i.kind)
+  })
 
   return (
     <Flex px={2} py={1} mb={2} backgroundColor={color("black5")}>
@@ -47,7 +52,11 @@ export const CareerHighlightsRail: React.FC<CareerHighlightsRailProps> = (props)
         style={{ overflow: "visible" }}
         data={careerHighlightData}
         renderItem={({ item }) => (
-          <CareerHighlightsCard count={item.count} type={item.kind as CareerHighlightKind} />
+          <CareerHighlightsCard
+            count={item.count}
+            type={item.kind as CareerHighlightKind}
+            careerHighlightsAvailableTypes={careerHighlightsAvailableTypes}
+          />
         )}
       />
     </Flex>

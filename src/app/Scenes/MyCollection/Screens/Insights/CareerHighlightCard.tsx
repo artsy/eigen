@@ -26,9 +26,14 @@ export type CareerHighlightKind =
 interface CareerHighlightsCardProps {
   count: number
   type: CareerHighlightKind
+  careerHighlightsAvailableTypes: CareerHighlightKind[]
 }
 
-export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({ count, type }) => {
+export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({
+  count,
+  type,
+  careerHighlightsAvailableTypes,
+}) => {
   if (count === 0) {
     return null
   }
@@ -39,8 +44,11 @@ export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({ coun
     <Touchable
       haptic
       onPress={() => {
-        // TODO: Navigate to detail card
+        navigate("/my-collection/career-highlights", {
+          passProps: { type, careerHighlightsAvailableTypes },
+        })
       }}
+      testID="career-highlight-card-item"
     >
       <Flex p={1} height={135} width={205} background="white" border={1} borderColor="black10">
         <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
@@ -105,7 +113,7 @@ export const CareerHighlightPromotionalCard: React.FC = () => {
   )
 }
 
-const getCareerHiglight = (type: CareerHighlightKind, count: number) => {
+export const getCareerHiglight = (type: CareerHighlightKind, count: number) => {
   let label: string = ""
   let Icon: FunctionComponent<IconProps> = Fragment
 
