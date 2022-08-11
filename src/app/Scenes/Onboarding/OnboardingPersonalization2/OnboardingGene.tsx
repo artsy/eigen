@@ -28,6 +28,7 @@ const OnboardingGene: React.FC<OnboardingGeneProps> = ({ id, description }) => {
         <InfiniteScrollArtworksGridContainer
           shouldAddPadding
           itemComponentProps={{
+            // @ts-expect-error
             onPress: (artworkID) => navigate("ArtworkScreen", { artworkID }),
           }}
           HeaderComponent={() => <GeneHeader geneID={id} description={description} gene={gene!} />}

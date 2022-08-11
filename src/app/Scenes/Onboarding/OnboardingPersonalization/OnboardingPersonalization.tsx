@@ -31,10 +31,10 @@ export const OnboardingPersonalization = () => {
   return (
     <NavigationContainer independent>
       <StackNavigator.Navigator
-        headerMode="screen"
         screenOptions={{
           ...TransitionPresets.ModalTransition,
           headerShown: false,
+          headerMode: "screen",
         }}
       >
         <StackNavigator.Screen

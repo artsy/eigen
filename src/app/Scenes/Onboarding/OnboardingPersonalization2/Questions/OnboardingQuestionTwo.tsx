@@ -5,13 +5,16 @@ import {
   OPTION_FINDING_GREAT_INVESTMENTS,
   OPTION_KEEP_TRACK_OF_ART,
 } from "app/Scenes/Onboarding/OnboardingPersonalization2/config"
+import { useCallback } from "react"
 import { OnboardingQuestionTemplate } from "./OnboardingQuestionTemplate"
 
 export const OnboardingQuestionTwo = () => {
   const { navigate } = useNavigation()
-  const handleNext = () => {
+
+  const handleNext = useCallback(() => {
+    // @ts-expect-error
     navigate("OnboardingQuestionThree")
-  }
+  }, [navigate])
 
   return (
     <OnboardingQuestionTemplate

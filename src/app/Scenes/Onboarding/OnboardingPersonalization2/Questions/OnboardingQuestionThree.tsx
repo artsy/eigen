@@ -10,7 +10,7 @@ import {
   OPTION_KEEP_TRACK_OF_ART,
   OPTION_TOP_AUCTION_LOTS,
 } from "app/Scenes/Onboarding/OnboardingPersonalization2/config"
-import { useMemo } from "react"
+import { useCallback, useMemo } from "react"
 import { useNextOnboardingScreen } from "../Hooks/useNextOnboardingScreen"
 import { useOnboardingContext } from "../Hooks/useOnboardingContext"
 import { OnboardingQuestionTemplate } from "./OnboardingQuestionTemplate"
@@ -20,9 +20,10 @@ export const OnboardingQuestionThree = () => {
   const { state } = useOnboardingContext()
   const nextScreen = useNextOnboardingScreen()
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
+    // @ts-expect-error
     navigate(nextScreen!)
-  }
+  }, [navigate, nextScreen])
 
   const options = useMemo(() => {
     switch (true) {

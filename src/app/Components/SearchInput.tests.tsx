@@ -1,18 +1,14 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import * as input from "palette/elements/Input/Input"
-import { TextInput } from "react-native"
-import Animated, { Easing } from "react-native-reanimated"
+import { InputRef } from "palette/elements/Input/Input"
+import { useRef } from "react"
 import { SearchInput, SearchInputProps } from "./SearchInput"
-
-const emitInputClearEventSpy = jest.spyOn(input, "emitInputClearEvent")
 
 describe("SearchInput", () => {
   const onCancelPressMock = jest.fn()
-  const animatedTimingSpy = jest.spyOn(Animated, "timing")
 
   const TestWrapper = (props: SearchInputProps) => {
-    const ref = { current: null as null | TextInput }
+    const ref = useRef<InputRef>(null)
     return (
       <SearchInput
         ref={ref}
@@ -23,77 +19,69 @@ describe("SearchInput", () => {
     )
   }
 
-  beforeEach(() => {
-    jest.clearAllMocks()
+  it("renders input", async () => {
+    renderWithWrappers(<TestWrapper />)
+    expect(screen.getByPlaceholderText("Type something...")).toBeDefined()
   })
 
-  it("renders input", () => {
-    const { getByPlaceholderText } = renderWithWrappers(<TestWrapper />)
-    expect(getByPlaceholderText("Type something...")).toBeDefined()
+  it(`doesn't render "Cancel" button when "enableCancelButton" is not passed`, async () => {
+    renderWithWrappers(<TestWrapper />)
+    expect(screen.queryByText("Cancel")).toBeNull()
+
+    const input = screen.getByPlaceholderText("Type something...")
+    fireEvent(input, "focus")
+    expect(screen.queryByText("Cancel")).toBeNull()
   })
 
-  it(`calls "Animated.timing" with value 1 when focusing the input`, () => {
-    const { getByPlaceholderText } = renderWithWrappers(<TestWrapper enableCancelButton />)
-    fireEvent(getByPlaceholderText("Type something..."), "focus")
-    expect(animatedTimingSpy).toHaveBeenCalledTimes(1)
-    expect(animatedTimingSpy.mock.calls[0][1]).toEqual(
-      expect.objectContaining({
-        duration: 180,
-        easing: Easing.ease,
-        toValue: 1,
-      })
-    )
+  it("renders `Cancel` button when `enableCancelButton` is passed", async () => {
+    renderWithWrappers(<TestWrapper enableCancelButton />)
+    expect(screen.queryByText("Cancel")).toBeNull()
+
+    const input = screen.getByPlaceholderText("Type something...")
+    fireEvent(input, "focus")
+    await waitFor(() => expect(screen.getByText("Cancel")).toBeTruthy())
   })
 
-  it(`calls "Animated.timing" with value 0 when blurring the input`, () => {
-    const { getByPlaceholderText } = renderWithWrappers(<TestWrapper enableCancelButton />)
-    fireEvent(getByPlaceholderText("Type something..."), "blur")
-    expect(animatedTimingSpy).toHaveBeenCalledTimes(1)
-    expect(animatedTimingSpy.mock.calls[0][1]).toEqual(
-      expect.objectContaining({
-        duration: 180,
-        easing: Easing.ease,
-        toValue: 0,
-      })
-    )
-  })
+  it(`calls passed "onCancelPress" callback and emits "clear" event when pressing on "Cancel" button`, async () => {
+    renderWithWrappers(<TestWrapper enableCancelButton />)
 
-  it(`doesn't render "Cancel" button when "enableCancelButton" is not passed`, () => {
-    const { queryByText } = renderWithWrappers(<TestWrapper />)
+    const input = screen.getByPlaceholderText("Type something...")
+    fireEvent(input, "focus")
+    await waitFor(() => expect(screen.getByText("Cancel")).toBeTruthy())
 
-    expect(queryByText("Cancel")).toBeNull()
-  })
+    fireEvent.press(screen.getByText("Cancel"))
 
-  it(`renders "Cancel" button when "enableCancelButton" is passed`, () => {
-    const { getByText } = renderWithWrappers(<TestWrapper enableCancelButton />)
-    expect(getByText("Cancel")).toBeDefined()
-  })
-
-  it(`calls passed "onCancelPress" callback and emits "clear" event when pressing on "Cancel" button`, () => {
-    const { getByText } = renderWithWrappers(<TestWrapper enableCancelButton />)
-    fireEvent.press(getByText("Cancel"))
     expect(onCancelPressMock).toHaveBeenCalled()
-    expect(emitInputClearEventSpy).toHaveBeenCalled()
+    expect(screen.queryByText("Cancel")).toBeNull()
   })
 
-  it(`hides "x" button when pressing "Cancel"`, () => {
-    const { getByText, getByLabelText, queryAllByLabelText, getByPlaceholderText } =
-      renderWithWrappers(<TestWrapper enableCancelButton />)
-    const searchInput = getByPlaceholderText("Type something...")
-    fireEvent(searchInput, "changeText", "text")
-    expect(getByLabelText("Clear input button")).toBeTruthy()
-    fireEvent.press(getByText("Cancel"))
-    expect(queryAllByLabelText("Clear input button")).toHaveLength(0)
+  it(`hides "x" button when pressing "Cancel"`, async () => {
+    renderWithWrappers(<TestWrapper enableCancelButton />)
+
+    const input = screen.getByPlaceholderText("Type something...")
+    fireEvent(input, "focus")
+    await waitFor(() => expect(screen.getByText("Cancel")).toBeTruthy())
+
+    fireEvent(input, "changeText", "text")
+    expect(screen.getByLabelText("Clear input button")).toBeTruthy()
+
+    fireEvent.press(screen.getByText("Cancel"))
+    expect(screen.queryByLabelText("Clear input button")).toBeNull()
   })
 
-  it('should hide "Cancel" when it is pressed', () => {
-    const { queryAllByLabelText, getByText, findAllByLabelText, getByPlaceholderText } =
-      renderWithWrappers(<TestWrapper enableCancelButton />)
+  it("should show `Cancel` button on focus, hide button when button pressed", async () => {
+    renderWithWrappers(<TestWrapper enableCancelButton />)
 
-    fireEvent.changeText(getByPlaceholderText("Type something..."), "text")
-    expect(findAllByLabelText("Cancel")).toBeTruthy()
+    expect(screen.queryByText("Cancel")).toBeNull()
 
-    fireEvent.press(getByText("Cancel"))
-    expect(queryAllByLabelText("Cancel")).toHaveLength(0)
+    const input = screen.getByPlaceholderText("Type something...")
+    fireEvent(input, "focus")
+    fireEvent.changeText(input, "im typing")
+
+    const cancelButton = screen.getByText("Cancel")
+    expect(cancelButton).toBeTruthy()
+
+    fireEvent.press(cancelButton)
+    expect(screen.queryByText("Cancel")).toBeNull()
   })
 })

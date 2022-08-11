@@ -1,9 +1,7 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { MedianSalePriceAtAuctionQuery } from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import { useLazyLoadQuery } from "react-relay"
-import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import {
   MedianSalePriceAtAuction,
@@ -25,111 +23,107 @@ describe("SelectArtist", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   beforeEach(() => (mockEnvironment = createMockEnvironment()))
 
-  const getWrapper = async () => {
-    const tree = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-
-    act(() => {
-      mockEnvironment.mock.resolveMostRecentOperation({ data: mockResult })
-    })
-
-    await flushPromiseQueue()
-
-    return tree
-  }
-
   describe("when changing an artist from artists list", () => {
     it("should update the selected artist", async () => {
-      const { getByTestId, getByText } = await getWrapper()
+      renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+      mockEnvironment.mock.resolveMostRecentOperation({ data: mockResult })
 
       // Check initial artist is selected
-      expect(getByText("Andy Warhol")).toBeTruthy()
+      await waitFor(() => expect(screen.getByText("Andy Warhol")).toBeTruthy())
 
-      fireEvent.press(getByTestId("change-artist-touchable"))
+      fireEvent.press(screen.getByTestId("change-artist-touchable"))
 
       // Modal is visible and the list is populated
-      expect(getByTestId("select-artist-modal").props.visible).toBe(true)
-      expect(getByTestId("select-artist-flatlist").props.data.length).toBe(3)
+      expect(screen.getByTestId("select-artist-modal").props.visible).toBeTrue()
+      expect(screen.getByTestId("select-artist-flatlist").props.data.length).toBe(3)
 
       // Press on Banksy
-      fireEvent.press(getByTestId("artist-section-item-Banksy"))
+      fireEvent.press(screen.getByTestId("artist-section-item-Banksy"))
 
       // fetch Banksy data
-      act(() => {
-        mockEnvironment.mock.resolveMostRecentOperation({
-          data: { artist: { internalID: "artist-id", name: "Banksy", imageUrl: "image-url" } },
-        })
+      mockEnvironment.mock.resolveMostRecentOperation({
+        data: { artist: { internalID: "artist-id", name: "Banksy", imageUrl: "image-url" } },
       })
-      await flushPromiseQueue()
 
       // Modal is hidden and the artist is updated
-      expect(getByTestId("select-artist-modal").props.visible).toBe(false)
-      expect(getByText("Banksy")).toBeTruthy()
+      await waitFor(() =>
+        expect(screen.getByTestId("select-artist-modal").props.visible).toBeFalse()
+      )
+      expect(screen.getByTestId("select-artist-modal").props.visible).toBeFalse()
+      expect(screen.getByText("Banksy")).toBeTruthy()
     })
   })
 
   describe("when searching for an artist in artists list", () => {
     it("should update the list of artists if the artist name is in the list", async () => {
-      const { getByTestId, getByText } = await getWrapper()
+      renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-      fireEvent.press(getByTestId("change-artist-touchable"))
+      mockEnvironment.mock.resolveMostRecentOperation({ data: mockResult })
+
+      await waitFor(() => expect(screen.getByTestId("change-artist-touchable")).toBeTruthy())
+      fireEvent.press(screen.getByTestId("change-artist-touchable"))
 
       // Modal is visible and the section list is populated
-      expect(getByTestId("select-artist-modal").props.visible).toBe(true)
-      expect(getByTestId("select-artist-flatlist").props.data.length).toBe(3)
+      expect(screen.getByTestId("select-artist-modal").props.visible).toBeTrue()
+      expect(screen.getByTestId("select-artist-flatlist").props.data.length).toBe(3)
 
       // Search for "Boafo"
-      const searchInput = getByTestId("select-artists-search-input")
+      const searchInput = screen.getByTestId("select-artists-search-input")
 
       fireEvent(searchInput, "focus")
       fireEvent(searchInput, "changeText", "Boafo")
 
       // Flatlist is showing
-      expect(getByTestId("select-artist-flatlist")).toBeTruthy()
-      expect(getByTestId("select-artist-flatlist").props.data.length).toBe(1)
+      expect(screen.getByTestId("select-artist-flatlist")).toBeTruthy()
+      expect(screen.getByTestId("select-artist-flatlist").props.data.length).toBe(1)
 
       // Amoako Boafo is in the results list
-      expect(getByTestId("artist-section-item-Amoako Boafo")).toBeTruthy()
+      expect(screen.getByTestId("artist-section-item-Amoako Boafo")).toBeTruthy()
 
       // Press on Amoako Boafo
-      fireEvent.press(getByTestId("artist-section-item-Amoako Boafo"))
+      fireEvent.press(screen.getByTestId("artist-section-item-Amoako Boafo"))
 
       // fetch Amoako Boafo data
-      act(() => {
-        mockEnvironment.mock.resolveMostRecentOperation({
-          data: {
-            artist: { internalID: "artist-id", name: "Amoako Boafo", imageUrl: "image-url" },
-          },
-        })
+      mockEnvironment.mock.resolveMostRecentOperation({
+        data: {
+          artist: { internalID: "artist-id", name: "Amoako Boafo", imageUrl: "image-url" },
+        },
       })
-      await flushPromiseQueue()
+      await waitFor(() =>
+        expect(screen.getByTestId("select-artist-modal").props.visible).toBeFalse()
+      )
 
       // Modal is hidden and the artist is updated
-      expect(getByTestId("select-artist-modal").props.visible).toBe(false)
-      expect(getByText("Amoako Boafo")).toBeTruthy()
+      expect(screen.getByTestId("select-artist-modal").props.visible).toBeFalse()
+      expect(screen.getByText("Amoako Boafo")).toBeTruthy()
     })
 
     it("should display an error message if the artist name is not in the list", async () => {
-      const { getByTestId, getByText } = await getWrapper()
+      renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-      fireEvent.press(getByTestId("change-artist-touchable"))
+      mockEnvironment.mock.resolveMostRecentOperation({ data: mockResult })
+
+      await waitFor(() => expect(screen.getByTestId("change-artist-touchable")).toBeTruthy())
+      fireEvent.press(screen.getByTestId("change-artist-touchable"))
 
       // Modal is visible and the section list is populated
-      expect(getByTestId("select-artist-modal").props.visible).toBe(true)
-      expect(getByTestId("select-artist-flatlist").props.data.length).toBe(3)
+      expect(screen.getByTestId("select-artist-modal").props.visible).toBeTrue()
+      expect(screen.getByTestId("select-artist-flatlist").props.data.length).toBe(3)
 
       // Search for "Artist doesn't exist"
-      const searchInput = getByTestId("select-artists-search-input")
+      const searchInput = screen.getByTestId("select-artists-search-input")
 
       fireEvent(searchInput, "focus")
       fireEvent(searchInput, "changeText", "Artist doesn't exist")
 
       // Flatlist is showing
-      expect(getByTestId("select-artist-flatlist")).toBeTruthy()
-      expect(getByTestId("select-artist-flatlist").props.data.length).toBe(0)
+      expect(screen.getByTestId("select-artist-flatlist")).toBeTruthy()
+      expect(screen.getByTestId("select-artist-flatlist").props.data.length).toBe(0)
 
       // Error message is displayed
       expect(
-        getByText(
+        screen.getByText(
           "Please select from the list of artists in your collection with insights available."
         )
       ).toBeTruthy()

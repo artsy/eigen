@@ -1,4 +1,4 @@
-// @ts-check
+// @ts-nocheck
 
 const Lint = require("tslint")
 const tsutils = require("tsutils")

@@ -37,6 +37,7 @@ export class WorkflowEngine {
   }
 
   split(leaf: Workflow[number]) {
+    console.log(leaf)
     return [Object.keys(leaf)[0], Object.values(leaf)[0]]
   }
 
@@ -52,6 +53,26 @@ export class WorkflowEngine {
     }
 
     const current = this.current()
+
+    return current
+  }
+
+  isStart() {
+    return this.index === 0
+  }
+
+  // TODO: implement case for 0 index && current === "object" (Branch)
+  back(): string {
+    let current: string
+
+    if (this.index === 0) {
+      current = this.workflow[0] as string
+    }
+
+    this.index = this.index - 1
+    this.moves = this.moves - 1
+
+    current = this.current()
 
     return current
   }

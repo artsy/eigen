@@ -37,6 +37,7 @@ export const OnboardingPersonalizationWelcome: React.FC = () => {
               block
               haptic="impactMedium"
               onPress={() => {
+                // @ts-expect-error
                 navigate("OnboardingQuestionOne")
               }}
             >

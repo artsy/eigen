@@ -107,6 +107,7 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
         <Touchable
           haptic
           hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
+          // @ts-expect-error
           onPress={() => navigation.navigate("MyProfileEditForm")}
         >
           <EditIcon fill="black100" />
