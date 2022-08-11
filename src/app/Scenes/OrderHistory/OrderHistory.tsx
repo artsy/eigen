@@ -115,7 +115,7 @@ export const OrderHistoryContainer = createPaginationContainer(
         cursor: { type: "String" }
         states: {
           type: "[CommerceOrderStateEnum!]"
-          defaultValue: [APPROVED, CANCELED, FULFILLED, REFUNDED, SUBMITTED]
+          defaultValue: [APPROVED, CANCELED, FULFILLED, REFUNDED, SUBMITTED, PROCESSING_APPROVAL]
         }
       ) {
         orders(first: $count, after: $cursor, states: $states)
