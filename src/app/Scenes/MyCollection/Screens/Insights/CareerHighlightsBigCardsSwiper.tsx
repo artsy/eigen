@@ -142,7 +142,7 @@ export const CareerHighlightsBigCardsSwiper: React.FC<{
           ))}
         </Flex>
       </FancyModalHeader>
-      <Suspense fallback={<LoadingSkeleton />}>
+      <Suspense fallback={openPromoCard ? <LoadingSkeletonPromoCard /> : <LoadingSkeleton />}>
         <ScrollView
           horizontal
           scrollEventThrottle={10}
@@ -166,12 +166,23 @@ export const CareerHighlightsBigCardsSwiper: React.FC<{
 const LoadingSkeleton = () => {
   return (
     <ProvidePlaceholderContext>
-      <Flex px={2}>
+      <Flex px={2} pt={2}>
         <Flex justifyContent="space-between" flexDirection="row" alignItems="center" pb={1}>
           <PlaceholderBox height={60} width={50} />
           <PlaceholderBox width={50} height={50} borderRadius={25} />
         </Flex>
         <PlaceholderBox height={60} width={180} />
+      </Flex>
+    </ProvidePlaceholderContext>
+  )
+}
+
+const LoadingSkeletonPromoCard = () => {
+  return (
+    <ProvidePlaceholderContext>
+      <Flex px={2} pt={2}>
+        <PlaceholderBox height={60} width={200} marginBottom={10} />
+        <PlaceholderBox height={60} width={150} />
       </Flex>
     </ProvidePlaceholderContext>
   )
