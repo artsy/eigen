@@ -149,6 +149,17 @@ describe("Order history row", () => {
       expect(extractText(tree.findByProps({ testID: "order-status" }))).toBe("confirmed")
     })
 
+    it("PROCESSING_APPROVAL order", () => {
+      const tree = renderWithWrappersLEGACY(<TestRenderer />).root
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        CommerceOrder: () => ({ ...mockOrder, state: "PROCESSING_APPROVAL" }),
+      })
+
+      expect(extractText(tree.findByProps({ testID: "order-status" }))).toContain(
+        "payment processing"
+      )
+    })
+
     it("FULFILLED order", () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />).root
       resolveMostRecentRelayOperation(mockEnvironment, {
