@@ -1,0 +1,15 @@
+name: Labels from comments
+
+on:
+  pull_request:
+    types: opened
+
+jobs:
+  add_labels:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions-ecosystem/action-add-labels@v1
+        if: ${{ contains(github.event.comment.body, '#squashongreen') }}
+        with:
+          labels:
+            - squashongreen
