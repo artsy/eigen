@@ -1,8 +1,6 @@
 name: Labels from comments
 
-on:
-  pull_request:
-    types: opened
+on: [pull_request]
 
 jobs:
   add_labels:
