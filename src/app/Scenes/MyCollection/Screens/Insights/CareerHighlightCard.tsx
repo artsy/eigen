@@ -126,9 +126,9 @@ export const getCareerHiglight = (type: CareerHighlightKind, count: number) => {
       Icon = GroupIcon
       break
     case "REVIEWED":
-      label = `${pl ? "Artists were" : "Artist was"} reviewed by a major art publication${
-        pl ? "s" : ""
-      }.`
+      label = `${pl ? "Artists were" : "Artist was"} reviewed by ${
+        pl ? "" : "a"
+      } major art publication${pl ? "s" : ""}.`
       Icon = PublicationIcon
       break
 
