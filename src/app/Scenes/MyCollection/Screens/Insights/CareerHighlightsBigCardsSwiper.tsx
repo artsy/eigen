@@ -27,7 +27,8 @@ interface Slides {
 export const CareerHighlightsBigCardsSwiper: React.FC<{
   type: CareerHighlightKind
   careerHighlightsAvailableTypes: CareerHighlightKind[]
-}> = ({ type, careerHighlightsAvailableTypes }) => {
+  openPromoCard: boolean
+}> = ({ type, careerHighlightsAvailableTypes, openPromoCard }) => {
   const color = useColor()
   const space = useSpace()
   const { width: screenWidth } = useScreenDimensions()
@@ -44,7 +45,9 @@ export const CareerHighlightsBigCardsSwiper: React.FC<{
   }
 
   const numberOfSlides = careerHighlightsAvailableTypes.length + 1
-  const openedCardIndex = careerHighlightsAvailableTypes.indexOf(type)
+  const openedCardIndex = openPromoCard
+    ? careerHighlightsAvailableTypes.length
+    : careerHighlightsAvailableTypes.indexOf(type)
 
   // 18 is the close button size, 20 is screen margin and 10 is the spase between the
   // close button and the bar
@@ -102,7 +105,7 @@ export const CareerHighlightsBigCardsSwiper: React.FC<{
     }
 
     // TODO: mark the slide as seen here
-    // the seen slide will be slides[currentSlide].key
+    // the seen slide will be slides[currentCard].key
     // TODO: not to forget to mark the initial slide as seen as well
   }
 
