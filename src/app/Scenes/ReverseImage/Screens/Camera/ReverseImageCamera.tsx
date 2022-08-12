@@ -5,7 +5,7 @@ import { goBack } from "app/navigation/navigate"
 import { useIsForeground } from "app/utils/useIsForeground"
 import { BackButton, Flex, Spinner } from "palette"
 import { useEffect, useRef, useState } from "react"
-import { Linking, StatusBar, StyleSheet } from "react-native"
+import { Linking, StyleSheet } from "react-native"
 import {
   Camera,
   CameraPermissionStatus,
@@ -134,15 +134,6 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
     }
 
     run()
-  }, [])
-
-  useEffect(() => {
-    StatusBar.setBarStyle("light-content")
-
-    return () => {
-      // return the previous color for the status bar, as on all other screens
-      StatusBar.setBarStyle("dark-content")
-    }
   }, [])
 
   if (cameraPermission === null || !device) {
