@@ -82,7 +82,9 @@ const fragment = graphql`
       edges {
         node {
           internalID
-          medium
+          mediumType {
+            name
+          }
           title
           artist {
             internalID
