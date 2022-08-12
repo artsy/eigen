@@ -1,4 +1,4 @@
-import { navigate, popToRoot } from "app/navigation/navigate"
+import { dismissModal, navigate } from "app/navigation/navigate"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { Button, Flex, Text } from "palette"
 import { Image } from "react-native"
@@ -24,7 +24,11 @@ export const CareerHighlightsPromotionalCard: React.FC = () => {
               passProps: {
                 mode: "add",
                 source: Tab.insights,
-                onSuccess: popToRoot,
+                onSuccess: () => {
+                  // Since the career highlights screen is a modal, we need to dismiss it after
+                  // saving the artwork.
+                  dismissModal()
+                },
               },
             })
           }}
