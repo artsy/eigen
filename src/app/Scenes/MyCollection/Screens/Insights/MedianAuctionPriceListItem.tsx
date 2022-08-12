@@ -59,7 +59,7 @@ export const MedianAuctionPriceListItem: React.FC<Props> = ({ artworks, onPress 
           justifyContent="space-between"
         >
           <Flex flex={1} pr={15}>
-            <Text variant="xs">{artwork?.medium}</Text>
+            <Text variant="xs">{artwork?.mediumType?.name}</Text>
           </Flex>
           <Flex alignItems="flex-end">
             <Text variant="xs" weight="medium">
