@@ -1,5 +1,3 @@
-import { navigate, popToRoot } from "app/navigation/navigate"
-import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import {
   Button,
   FairIcon,
@@ -26,13 +24,13 @@ export type CareerHighlightKind =
 interface CareerHighlightsCardProps {
   count: number
   type: CareerHighlightKind
-  careerHighlightsAvailableTypes: CareerHighlightKind[]
+  onPress: () => void
 }
 
 export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({
   count,
   type,
-  careerHighlightsAvailableTypes,
+  onPress,
 }) => {
   if (count === 0) {
     return null
@@ -41,15 +39,7 @@ export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({
   const { label, Icon } = getCareerHiglight(type, count)
 
   return (
-    <Touchable
-      haptic
-      onPress={() => {
-        navigate("/my-collection/career-highlights", {
-          passProps: { type, careerHighlightsAvailableTypes },
-        })
-      }}
-      testID="career-highlight-card-item"
-    >
+    <Touchable haptic onPress={onPress} testID="career-highlight-card-item">
       <Flex p={1} height={135} width={205} background="white" border={1} borderColor="black10">
         <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
           <Flex
@@ -78,20 +68,17 @@ export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({
   )
 }
 
-export const CareerHighlightPromotionalCard: React.FC = () => {
+interface CareerHighlightPromotionalCardProps {
+  onPress: () => void
+  onButtonPress: () => void
+}
+
+export const CareerHighlightPromotionalCard: React.FC<CareerHighlightPromotionalCardProps> = ({
+  onPress,
+  onButtonPress,
+}) => {
   return (
-    <Touchable
-      haptic
-      onPress={() => {
-        navigate("my-collection/artworks/new", {
-          passProps: {
-            mode: "add",
-            source: Tab.insights,
-            onSuccess: popToRoot,
-          },
-        })
-      }}
-    >
+    <Touchable haptic onPress={onPress}>
       <Flex
         width={200}
         height={135}
@@ -104,7 +91,9 @@ export const CareerHighlightPromotionalCard: React.FC = () => {
           <Flex flex={1} justifyContent="center">
             <Text variant="xs">Discover career highlights for your artists.</Text>
           </Flex>
-          <Button size="small">Upload Artwork</Button>
+          <Button onPress={onButtonPress} size="small">
+            Upload Artwork
+          </Button>
         </Flex>
 
         <Image source={require("images/career-highlights-promo-background-image.webp")} />
@@ -119,44 +108,46 @@ export const getCareerHiglight = (type: CareerHighlightKind, count: number) => {
 
   // plural
   const pl = count > 1
+  const ending = pl ? "s" : ""
+  const article = pl ? "" : "a "
 
   switch (type) {
     case "BIENNIAL":
-      label = `${pl ? "Artists were" : "Artist was"} included in a major biennial${pl ? "s" : ""}.`
+      label = `${pl ? "Artists were" : "Artist was"} included in ${article}major biennial${ending}.`
       Icon = FairIcon
       break
     case "COLLECTED":
-      label = `${pl ? "Artists are" : "Artist is"} collected by a major institution${
-        pl ? "s" : ""
-      }.`
+      label = `${
+        pl ? "Artists are" : "Artist is"
+      } collected by ${article}major institution${ending}.`
       Icon = MuseumIcon
       break
     case "GROUP_SHOW":
-      label = `${pl ? "Artists were" : "Artist was"} in a group show at a major institution${
-        pl ? "s" : ""
-      }.`
+      label = `${
+        pl ? "Artists were" : "Artist was"
+      } in a group show at ${article}major institution${ending}.`
       Icon = GroupIcon
       break
     case "REVIEWED":
-      label = `${pl ? "Artists were" : "Artist was"} reviewed by a major art publication${
-        pl ? "s" : ""
-      }.`
+      label = `${
+        pl ? "Artists were" : "Artist was"
+      } reviewed by ${article}major art publication${ending}.`
       Icon = PublicationIcon
       break
 
     case "SOLO_SHOW":
-      label = `${pl ? "Artists" : "Artist"} had a solo show at a major institution${pl ? "s" : ""}.`
+      label = `${
+        pl ? "Artists" : "Artist"
+      } had a solo show at ${article}major institution${ending}.`
       Icon = SoloIcon
       break
     /*
     case "": // TODO: Collected by artists
-      label = `${pl ? "Artists are" : "Artist is"} collected by a major private collector${
-        pl ? "s" : ""
-      }.`
+      label = `${pl ? "Artists are" : "Artist is"} collected by ${article}major private collector${ending}.`
       Icon = ArtworkIcon
       break
     case "": // TODO: Major prize - TBD
-      label = `${pl ? "Artists were" : "Artist was"} awarded a major prize${pl ? "s" : ""}.`
+      label = `${pl ? "Artists were" : "Artist was"} awarded ${article}major prize${ending}.`
       Icon = CertificateIcon
       break
     */

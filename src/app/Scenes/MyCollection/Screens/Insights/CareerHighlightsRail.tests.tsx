@@ -58,8 +58,8 @@ describe("CareerHighlightsRail", () => {
     expect(getByText("Artist was in a group show at a major institution.")).toBeTruthy()
 
     // plural
-    expect(getByText("Artists are collected by a major institutions.")).toBeTruthy()
-    expect(getByText("Artists were reviewed by a major art publications.")).toBeTruthy()
+    expect(getByText("Artists are collected by major institutions.")).toBeTruthy()
+    expect(getByText("Artists were reviewed by major art publications.")).toBeTruthy()
 
     // promo card
     expect(getByText("Discover career highlights for your artists.")).toBeTruthy()
