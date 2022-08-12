@@ -46,7 +46,7 @@ export const MedianAuctionPriceRail: React.FC<MedianAuctionPriceRailProps> = (pr
             enableMyCollectionInsightsPhase1Part3
               ? () => {
                   navigate(
-                    `/my-collection/average-sale-price-at-auction/${artworks[0].artist?.internalID}`,
+                    `/my-collection/median-sale-price-at-auction/${artworks[0].artist?.internalID}`,
                     {
                       passProps: {
                         initialCategory: getVortexMedium(
@@ -72,7 +72,7 @@ export const MedianAuctionPriceRail: React.FC<MedianAuctionPriceRailProps> = (pr
               enableMyCollectionInsightsPhase1Part3
                 ? () => {
                     navigate(
-                      `/my-collection/average-sale-price-at-auction/${item[0].artist?.internalID}`,
+                      `/my-collection/median-sale-price-at-auction/${item[0].artist?.internalID}`,
                       {
                         passProps: {
                           initialCategory: getVortexMedium(

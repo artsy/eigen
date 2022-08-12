@@ -1,4 +1,5 @@
 import { Flex, Spacer } from "palette"
+import { useMemo } from "react"
 import { InterpolationPropType } from "victory-core"
 import { AxisDisplayType } from "./helpers"
 import { LineGraphBandProps, LineGraphBands } from "./LineGraphBands"
@@ -59,36 +60,38 @@ export const LineGraph: React.FC<Props> = ({
   xAxisDisplayType,
   yAxisDisplayType,
 }) => {
-  return (
-    <Flex>
-      <LineGraphHeader {...data.dataMeta} />
+  return useMemo(() => {
+    return (
+      <Flex>
+        <LineGraphHeader {...data.dataMeta} />
 
-      <LineGraphChart
-        data={data.data}
-        dataMeta={data.dataMeta}
-        showHighlights={showHighlights}
-        chartHeight={chartHeight}
-        chartWidth={chartWidth}
-        chartInterpolation={chartInterpolation}
-        onXHighlightPressed={onXHighlightPressed}
-        onYHighlightPressed={onYHighlightPressed}
-        onDataPointPressed={onDataPointPressed}
-        tintColorShadeFactor={tintColorShadeFactor}
-        xAxisTickFormatter={xAxisTickFormatter}
-        yAxisTickFormatter={yAxisTickFormatter}
-        xAxisDisplayType={xAxisDisplayType}
-        yAxisDisplayType={yAxisDisplayType}
-      />
-
-      <LineGraphBands bands={bands} selectedBand={selectedBand} onBandSelected={onBandSelected} />
-      <Spacer mb={0.5} />
-      {!!categories && !!onCategorySelected && !!selectedCategory && (
-        <LineGraphCategoryPicker
-          categories={categories}
-          onCategorySelected={onCategorySelected}
-          selectedCategory={selectedCategory}
+        <LineGraphChart
+          data={data.data}
+          dataMeta={data.dataMeta}
+          showHighlights={showHighlights}
+          chartHeight={chartHeight}
+          chartWidth={chartWidth}
+          chartInterpolation={chartInterpolation}
+          onXHighlightPressed={onXHighlightPressed}
+          onYHighlightPressed={onYHighlightPressed}
+          onDataPointPressed={onDataPointPressed}
+          tintColorShadeFactor={tintColorShadeFactor}
+          xAxisTickFormatter={xAxisTickFormatter}
+          yAxisTickFormatter={yAxisTickFormatter}
+          xAxisDisplayType={xAxisDisplayType}
+          yAxisDisplayType={yAxisDisplayType}
         />
-      )}
-    </Flex>
-  )
+
+        <LineGraphBands bands={bands} selectedBand={selectedBand} onBandSelected={onBandSelected} />
+        <Spacer mb={0.5} />
+        {!!categories && !!onCategorySelected && !!selectedCategory && (
+          <LineGraphCategoryPicker
+            categories={categories}
+            onCategorySelected={onCategorySelected}
+            selectedCategory={selectedCategory}
+          />
+        )}
+      </Flex>
+    )
+  }, [JSON.stringify(categories), JSON.stringify(data), selectedBand, selectedCategory])
 }

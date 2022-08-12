@@ -1,7 +1,7 @@
 import {
-  AverageSalePriceAtAuctionQuery,
-  AverageSalePriceAtAuctionQuery$data,
-} from "__generated__/AverageSalePriceAtAuctionQuery.graphql"
+  MedianSalePriceAtAuctionQuery,
+  MedianSalePriceAtAuctionQuery$data,
+} from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
 import {
   MedianSalePriceChart_query$data,
   MedianSalePriceChart_query$key,
@@ -11,7 +11,7 @@ import { computeCategoriesForChart } from "app/utils/marketPriceInsightHelpers"
 import { DateTime } from "luxon"
 import { Flex, LineGraph, Text } from "palette"
 import { LineChartData } from "palette/elements/LineGraph/types"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { graphql, useRefetchableFragment } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 
@@ -23,7 +23,7 @@ export enum MedianSalePriceChartDuration {
 interface MedianSalePriceChartProps {
   artistId: string
   initialCategory: string
-  queryData: AverageSalePriceAtAuctionQuery$data
+  queryData: MedianSalePriceAtAuctionQuery$data
 }
 
 export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
@@ -50,7 +50,7 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
   }
 
   const [data, refetch] = useRefetchableFragment<
-    AverageSalePriceAtAuctionQuery,
+    MedianSalePriceAtAuctionQuery,
     MedianSalePriceChart_query$key
   >(medianSalePriceChartFragment, queryData)
 
@@ -61,7 +61,7 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
   const deriveAvailableCategories = () =>
     data.analyticsCalendarYearPriceInsights?.map((p) => p.medium)
 
-  const initialCategories = computeCategoriesForChart(initialCategory, deriveAvailableCategories())
+  const initialCategories = computeCategoriesForChart(deriveAvailableCategories())
   const [categories, setCategories] =
     useState<Array<{ name: string; color: string }>>(initialCategories)
 
@@ -90,7 +90,7 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
       const newSelectedCategory = newCategories?.includes(selectedCategory)
         ? selectedCategory
         : newCategories?.[0] ?? selectedCategory
-      setCategories(computeCategoriesForChart(newSelectedCategory, newCategories))
+      setCategories(computeCategoriesForChart(newCategories))
       setSelectedCategory(newSelectedCategory)
     }
     // data.analyticsCalendarYearPriceInsights is expected to stay the same for the same artist
