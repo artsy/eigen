@@ -11,7 +11,7 @@ import { Suspense, useCallback, useState } from "react"
 import { ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
-import { MedianSalePriceChart } from "./MedianSalePriceChart/MedianSalePriceChart"
+import { MedianSalePriceChart } from "./MedianSalePriceChart"
 import { SelectArtistModal } from "./SelectArtistModal"
 
 const PAGE_SIZE = 50

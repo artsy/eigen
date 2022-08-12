@@ -1,8 +1,10 @@
 import { useColor } from "palette"
 import { Spacer } from "palette/atoms"
 import { useEffect, useRef, useState } from "react"
-import { LayoutRectangle, ViewProps } from "react-native"
-import { FlatList } from "react-native-gesture-handler"
+import { Dimensions, LayoutRectangle, ViewProps } from "react-native"
+import { ScrollView } from "react-native-gesture-handler"
+
+import { Flex } from "../Flex"
 import { Pill } from "../Pill"
 import { Text } from "../Text"
 import { ColoredDot, DEFAULT_DOT_COLOR } from "./ColoredDot"
@@ -22,39 +24,30 @@ export const LineGraphCategoryPicker: React.FC<LineGraphCategoryPickerProps> = (
   )
 
   let initialIndex = 0
-  categories.forEach((c, index) => {
-    if (c.name === selectedCategory) {
-      initialIndex = index
+  for (let i = 0; i < categories.length; i++) {
+    if (categories[i].name === selectedCategory) {
+      initialIndex = i
+      break
     }
-  })
+  }
+
   const [selectedIndex, setSelectedIndex] = useState(initialIndex)
 
   const allLayoutsPresent = categoryLayouts.every((l) => l)
-  const flatlistRef = useRef<FlatList<typeof categories[0]> | null>(null)
+  const scrollViewRef = useRef<ScrollView>(null)
+  const { width: screenWidth } = Dimensions.get("window")
 
   useEffect(() => {
-    if (!categories.length) {
-      return
-    }
-    if (categories[0].name === selectedCategory) {
-      // force flatlist to focus on the first item when new set of categories are loaded
-      flatlistRef.current?.scrollToOffset({ offset: 0 })
-      return
-    }
     if (allLayoutsPresent) {
-      let viewOffset = 0
-      if (selectedIndex > 0) {
-        // allow the preceding Pill be slightly visible
-        viewOffset = categoryLayouts[selectedIndex - 1]!.width / 2
+      let left = 20
+      for (let i = 0; i < selectedIndex; i++) {
+        left += categoryLayouts[i]!.width
       }
-      try {
-        flatlistRef.current?.scrollToIndex({ index: selectedIndex, viewOffset })
-      } catch (e) {
-        // TODO: Support scrollToIndex for dynamically changing data.
-        flatlistRef.current?.scrollToIndex({ index: 0 })
-      }
+      const center = left + categoryLayouts[selectedIndex]!.width / 2
+      const scrollLeft = center - screenWidth / 2
+      scrollViewRef.current?.scrollTo({ x: scrollLeft })
     }
-  }, [selectedIndex, selectedCategory, JSON.stringify(categories)])
+  }, [selectedIndex, selectedCategory])
 
   const onSelectCategory = (category: string, index: number) => {
     setSelectedIndex(index)
@@ -62,40 +55,32 @@ export const LineGraphCategoryPicker: React.FC<LineGraphCategoryPickerProps> = (
   }
 
   return (
-    <FlatList
-      ref={flatlistRef}
-      initialScrollIndex={categories.length ? selectedIndex : undefined}
-      initialNumToRender={30}
-      onScrollToIndexFailed={(info) => {
-        const pauseForLayout = new Promise((resolve) => setTimeout(resolve, 500))
-        pauseForLayout.then(() => {
-          flatlistRef.current?.scrollToIndex({ index: info.index })
-        })
-      }}
-      data={categories}
-      extraData={categories}
-      renderItem={({ item: category, index }) => (
-        <CategoryPill
-          onCategorySelected={(sCategory) => onSelectCategory(sCategory, index)}
-          selectedCategory={selectedCategory}
-          dotColor={category.color}
-          category={category.name}
-          key={index + category.name}
-          onLayout={(e) => {
-            const layout = e.nativeEvent.layout
-            setCategoryLayouts((layouts) => {
-              const result = layouts.slice(0)
-              result[index] = layout
-              return result
-            })
-          }}
-        />
-      )}
+    <ScrollView
+      ref={scrollViewRef}
       horizontal
       showsHorizontalScrollIndicator={false}
       testID="line-graph-category-picker"
-      ItemSeparatorComponent={() => <Spacer p={0.5} />}
-    />
+    >
+      {categories.map((category, index) => (
+        <Flex key={index + category.name} flexDirection="row">
+          <CategoryPill
+            onCategorySelected={(sCategory) => onSelectCategory(sCategory, index)}
+            selectedCategory={selectedCategory}
+            dotColor={category.color}
+            category={category.name}
+            onLayout={(e) => {
+              const layout = e.nativeEvent.layout
+              setCategoryLayouts((layouts) => {
+                const result = layouts.slice(0)
+                result[index] = layout
+                return result
+              })
+            }}
+          />
+          <Spacer p={0.5} />
+        </Flex>
+      ))}
+    </ScrollView>
   )
 }
 
