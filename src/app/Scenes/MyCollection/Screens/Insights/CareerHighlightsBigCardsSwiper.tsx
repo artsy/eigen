@@ -34,7 +34,10 @@ export const CareerHighlightsBigCardsSwiper: React.FC<{
 
   const data = useLazyLoadQuery<CareerHighlightsBigCardsSwiperQuery>(
     CareerHighlightsBigCardsSwiperScreenQuery,
-    {}
+    {},
+    {
+      fetchPolicy: "store-and-network",
+    }
   )
 
   const myCollectionInfo = data.me?.myCollectionInfo

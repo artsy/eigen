@@ -20,6 +20,7 @@ import { isEqual } from "lodash"
 import { useEffect, useRef, useState } from "react"
 import { Alert, InteractionManager } from "react-native"
 import { useTracking } from "react-tracking"
+import { refreshMyCollectionInsights } from "../../../../utils/refreshHelpers"
 import { deleteArtworkImage } from "../../mutations/deleteArtworkImage"
 import { myCollectionCreateArtwork } from "../../mutations/myCollectionCreateArtwork"
 import { myCollectionDeleteArtwork } from "../../mutations/myCollectionDeleteArtwork"
@@ -125,6 +126,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
         await new Promise((resolve) => setTimeout(resolve, 2000))
       }
       refreshMyCollection()
+      refreshMyCollectionInsights({})
       setLoading(false)
       // Go back to my collection screen after the loading modal is hidden
       InteractionManager.runAfterInteractions(() => {
