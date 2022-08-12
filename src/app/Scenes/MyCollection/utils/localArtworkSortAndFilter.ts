@@ -173,9 +173,9 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
           values: uniqBy(
             artworks.map(
               (a): FilterData => ({
-                displayText: a.medium ?? "N/A",
+                displayText: a.mediumType?.name ?? "N/A",
                 paramName: FilterParamName.additionalGeneIDs,
-                paramValue: a.medium ?? undefined,
+                paramValue: a.mediumType?.name ?? undefined,
               })
             ),
             (m) => m.paramValue
