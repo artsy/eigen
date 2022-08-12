@@ -342,7 +342,6 @@ export const modules = defineModules({
   CareerHighlightsBigCardsSwiper: reactModule(CareerHighlightsBigCardsSwiper, {
     alwaysPresentModally: true,
     hidesBackButton: true,
-    fullBleed: true,
   }),
   AuctionRegistration: reactModule(RegistrationFlow, {
     alwaysPresentModally: true,
