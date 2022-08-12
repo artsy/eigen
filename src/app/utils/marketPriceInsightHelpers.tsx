@@ -69,7 +69,6 @@ export const computeCategoriesForChart = (
   categories: string[] | undefined = VALID_VORTEX_MEDIUMS
 ) => {
   const takenColors: { [key: string]: boolean } = {}
-
   const catForChart = categories.map((k) => {
     const key = getCategoryForAlias(k)
     let color = categoryColorCode[key]?.color ?? getRandomColor()
