@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { useEffect } from "react"
-import { StatusBar } from "react-native"
+import { Platform, StatusBar } from "react-native"
 import { ReverseImageArtworkNotFoundScreen } from "./Screens/ArtworkNotFound/ReverseImageArtworkNotFoundScreen"
 import { ReverseImageCameraScreen } from "./Screens/Camera/ReverseImageCamera"
 import { ReverseImageMultipleResultsScreen } from "./Screens/MultipleResults/ReverseImageMultipleResults"
@@ -13,12 +13,18 @@ const Stack = createStackNavigator<ReverseImageNavigationStack>()
 export const ReverseImage = () => {
   useEffect(() => {
     StatusBar.setBarStyle("light-content")
-    StatusBar.setBackgroundColor("transparent")
+
+    if (Platform.OS === "android") {
+      StatusBar.setBackgroundColor("transparent")
+    }
 
     return () => {
       // restore the previous color for the status bar, as on all other screens
       StatusBar.setBarStyle("dark-content")
-      StatusBar.setBackgroundColor("transparent")
+
+      if (Platform.OS === "android") {
+        StatusBar.setBackgroundColor("transparent")
+      }
     }
   }, [])
 
