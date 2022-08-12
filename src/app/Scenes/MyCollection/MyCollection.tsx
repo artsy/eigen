@@ -202,6 +202,7 @@ const MyCollection: React.FC<{
           // Extend the container flex when there are no artworks for accurate vertical centering
           flexGrow: artworks.length ? undefined : 1,
           justifyContent: artworks.length ? "flex-start" : "center",
+          height: artworks.length ? "auto" : "100%",
         }}
         refreshControl={
           <StickTabPageRefreshControl onRefresh={refetch} refreshing={isRefreshing} />

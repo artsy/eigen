@@ -87,7 +87,7 @@ export class SavedWorks extends Component<Props, State> {
               onRefresh={this.handleRefresh}
             />
           }
-          contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+          contentContainerStyle={{ flexGrow: 1, justifyContent: "center", height: "100%" }}
         >
           <ZeroState
             title="You haven’t saved any works yet"
