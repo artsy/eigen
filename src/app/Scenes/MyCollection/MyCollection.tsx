@@ -252,6 +252,7 @@ export const MyCollectionContainer = createPaginationContainer(
           edges {
             node {
               id
+              internalID
               medium
               title
               pricePaid {

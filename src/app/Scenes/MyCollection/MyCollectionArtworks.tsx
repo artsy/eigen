@@ -5,17 +5,26 @@ import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/Filter
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ZeroState } from "app/Components/States/ZeroState"
 import { navigate, popToRoot } from "app/navigation/navigate"
-import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore, useDevToggle, useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { Button, Flex, LockIcon, Spacer, Text } from "palette"
 import React, { useState } from "react"
-import { FlatList, LayoutAnimation, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
+import {
+  Alert,
+  FlatList,
+  LayoutAnimation,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+} from "react-native"
+import { InteractionManager } from "react-native"
 import { graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
+import { refreshMyCollection } from "../../utils/refreshHelpers"
 import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { MyCollectionArtworkList } from "./Components/MyCollectionArtworkList"
 import { MyCollectionSearchBar } from "./Components/MyCollectionSearchBar"
+import { myCollectionDeleteArtwork } from "./mutations/myCollectionDeleteArtwork"
 import { MyCollectionArtworkEdge } from "./MyCollection"
 import { localSortAndFilterArtworks } from "./utils/localArtworkSortAndFilter"
 
@@ -47,6 +56,8 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
   const filterOptions = ArtworksFiltersStore.useStoreState((state) => state.filterOptions)
 
   const artworks = extractNodes(me?.myCollectionConnection)
+
+  const showMyCollectionDeleteAllArtworks = useDevToggle("DTMyCollectionDeleteAllArtworks")
 
   const filteredArtworks = localSortAndFilterArtworks(
     artworks as any,
@@ -94,6 +105,49 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
           />
         )}
       </Flex>
+      {!!showMyCollectionDeleteAllArtworks && artworks.length > 0 && (
+        <Button
+          onPress={() => {
+            Alert.alert(
+              "Delete all artworks",
+              "Are you sure you want to delete all artworks in your collection?",
+              [
+                {
+                  text: "Cancel",
+                  style: "cancel",
+                },
+                {
+                  text: "OK",
+                  onPress: async () => {
+                    await Promise.all(
+                      artworks.map(async (artwork) => {
+                        await myCollectionDeleteArtwork(artwork.internalID)
+                      })
+                    )
+                      .then(() => {
+                        InteractionManager.runAfterInteractions(() => {
+                          Alert.alert("All artworks deleted")
+                          refreshMyCollection()
+                        })
+                      })
+                      .catch(() => {
+                        InteractionManager.runAfterInteractions(() => {
+                          Alert.alert("Couldn't delete your artworks")
+                        })
+                      })
+                  },
+                  style: "destructive",
+                },
+              ]
+            )
+          }}
+          block
+          variant="outlineGray"
+          mb={1}
+        >
+          <Text color="red100">Delete all artworks</Text>
+        </Button>
+      )}
       {filteredArtworks.length > 0 ? (
         viewOption === "grid" ? (
           <InfiniteScrollMyCollectionArtworksGridContainer
