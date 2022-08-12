@@ -231,6 +231,11 @@ export const features = defineFeatures({
     description: "Enable MyC insights Ph 1 Pt 3",
     showInAdminMenu: true,
   },
+  AREnableMyCollectionInsightsPhase1Part4: {
+    readyForRelease: false,
+    description: "Enable MyC insights Ph 1 Pt 4",
+    showInAdminMenu: true,
+  },
   AREnableNotFoundFailureView: {
     readyForRelease: true,
     description: "Enable Not Found Failure View",
