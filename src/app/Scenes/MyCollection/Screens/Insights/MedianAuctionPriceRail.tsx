@@ -15,8 +15,8 @@ interface MedianAuctionPriceRailProps {
 }
 
 export const MedianAuctionPriceRail: React.FC<MedianAuctionPriceRailProps> = (props) => {
-  const enableMyCollectionInsightsPhase1Part3 = useFeatureFlag(
-    "AREnableMyCollectionInsightsPhase1Part3"
+  const enableMyCollectionInsightsPhase1Part4 = useFeatureFlag(
+    "AREnableMyCollectionInsightsPhase1Part4"
   )
   const enableMyCollectionInsightsMedianPrice = useFeatureFlag(
     "AREnableMyCollectionInsightsMedianPrice"
@@ -42,7 +42,7 @@ export const MedianAuctionPriceRail: React.FC<MedianAuctionPriceRailProps> = (pr
               : "Average Auction Price in the Last 3 Years"
           }
           onPress={
-            enableMyCollectionInsightsPhase1Part3
+            enableMyCollectionInsightsPhase1Part4
               ? () => {
                   navigate(
                     `/my-collection/median-sale-price-at-auction/${artworks[0].artist?.internalID}`
@@ -60,7 +60,7 @@ export const MedianAuctionPriceRail: React.FC<MedianAuctionPriceRailProps> = (pr
           <MedianAuctionPriceListItem
             artworks={item}
             onPress={
-              enableMyCollectionInsightsPhase1Part3
+              enableMyCollectionInsightsPhase1Part4
                 ? () => {
                     navigate(
                       `/my-collection/median-sale-price-at-auction/${item[0].artist?.internalID}`
