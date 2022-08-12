@@ -1,5 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
+import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingTracking"
 import { GlobalStore } from "app/store/GlobalStore"
 import { ArtworkScreen } from "./ArtworkScreen"
 import { OnboardingProvider } from "./Hooks/useOnboardingContext"
@@ -33,7 +34,12 @@ export type OnboardingNavigationStack = {
 const StackNavigator = createStackNavigator<OnboardingNavigationStack>()
 
 export const OnboardingNavigationContainer = () => {
-  const onDone = () => GlobalStore.actions.auth.setState({ onboardingState: "complete" })
+  const { trackCompletedOnboarding } = useOnboardingTracking()
+
+  const onDone = () => {
+    trackCompletedOnboarding()
+    GlobalStore.actions.auth.setState({ onboardingState: "complete" })
+  }
 
   const { commitMutation } = useUpdateUserProfile(onDone)
 

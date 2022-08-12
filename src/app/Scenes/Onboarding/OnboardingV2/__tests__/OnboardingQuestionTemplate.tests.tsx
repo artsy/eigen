@@ -3,7 +3,7 @@ import { OnboardingQuestionTemplate } from "app/Scenes/Onboarding/OnboardingV2/C
 import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingContext"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 
-jest.mock("app/Scenes/Onboarding/OnboardingPersonalization2/Hooks/useOnboardingContext")
+jest.mock("app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingContext")
 const useOnboardingContextMock = useOnboardingContext as jest.Mock
 
 const contextValue = (answer: string | null = null) => ({

@@ -20,7 +20,7 @@ export const useOnboardingTracking = () => {
   const { trackEvent } = useTracking()
   const { getId } = useNavigation()
 
-  const startedOnboarding = useCallback(() => {
+  const trackStartedOnboarding = useCallback(() => {
     const payload: StartedOnboarding = {
       action: ActionType.startedOnboarding,
     }
@@ -28,7 +28,7 @@ export const useOnboardingTracking = () => {
     trackEvent(payload)
   }, [trackEvent])
 
-  const answeredQuestionOne = useCallback(
+  const trackAnsweredQuestionOne = useCallback(
     (response: string) => {
       const payload: OnboardingUserInputData = {
         action: ActionType.onboardingUserInputData,
@@ -41,12 +41,12 @@ export const useOnboardingTracking = () => {
     [trackEvent]
   )
 
-  const answeredQuestionTwo = useCallback(
-    (response: string) => {
+  const trackAnsweredQuestionTwo = useCallback(
+    (response: string[]) => {
       const payload: OnboardingUserInputData = {
         action: ActionType.onboardingUserInputData,
         context_module: ContextModule.onboardingInterests,
-        data_input: response,
+        data_input: response.join(),
       }
 
       trackEvent(payload)
@@ -54,7 +54,7 @@ export const useOnboardingTracking = () => {
     [trackEvent]
   )
 
-  const userAnsweredActivityQuestion = useCallback(
+  const trackAnsweredQuestionThree = useCallback(
     (response: string) => {
       const payload: OnboardingUserInputData = {
         action: ActionType.onboardingUserInputData,
@@ -67,7 +67,7 @@ export const useOnboardingTracking = () => {
     [trackEvent]
   )
 
-  const artistFollow = useCallback(
+  const trackArtistFollow = useCallback(
     (isFollowed: boolean, internalID: string) => {
       const followPayload: FollowedArtist = {
         action: ActionType.followedArtist,
@@ -92,7 +92,7 @@ export const useOnboardingTracking = () => {
     [trackEvent]
   )
 
-  const galleryFollow = useCallback(
+  const trackGalleryFollow = useCallback(
     (isFollowed: boolean, internalID: string) => {
       const followPayload: FollowedPartner = {
         action: ActionType.followedPartner,
@@ -117,7 +117,7 @@ export const useOnboardingTracking = () => {
     [trackEvent]
   )
 
-  const geneFollow = useCallback(
+  const trackGeneFollow = useCallback(
     (isFollowed: boolean, internalID: string) => {
       const followPayload: FollowedGene = {
         action: ActionType.followedGene,
@@ -142,7 +142,7 @@ export const useOnboardingTracking = () => {
     [trackEvent]
   )
 
-  const completedOnboarding = useCallback(() => {
+  const trackCompletedOnboarding = useCallback(() => {
     const payload: CompletedOnboarding = {
       action: ActionType.completedOnboarding,
     }
@@ -151,13 +151,13 @@ export const useOnboardingTracking = () => {
   }, [trackEvent])
 
   return {
-    userStartedOnboarding: startedOnboarding,
-    userAnsweredCollectorQuestion: answeredQuestionOne,
-    userAnsweredInterestQuestion: answeredQuestionTwo,
-    userAnsweredActivityQuestion,
-    trackArtistFollows: artistFollow,
-    trackGalleryFollows: galleryFollow,
-    trackGeneFollows: geneFollow,
-    trackCompletedOnboarding: completedOnboarding,
+    trackStartedOnboarding,
+    trackAnsweredQuestionOne,
+    trackAnsweredQuestionTwo,
+    trackAnsweredQuestionThree,
+    trackArtistFollow,
+    trackGalleryFollow,
+    trackGeneFollow,
+    trackCompletedOnboarding,
   }
 }
