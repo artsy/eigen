@@ -13,24 +13,23 @@ import {
   UnfollowedPartner,
 } from "@artsy/cohesion"
 import { useNavigation } from "@react-navigation/native"
+import { useCallback } from "react"
 import { useTracking } from "react-tracking"
 
 export const useOnboardingTracking = () => {
   const { trackEvent } = useTracking()
-  const navigation = useNavigation()
+  const { getId } = useNavigation()
 
-  return {
-    // user clicks get started
-    userStartedOnboarding: () => {
-      const payload: StartedOnboarding = {
-        action: ActionType.startedOnboarding,
-      }
+  const startedOnboarding = useCallback(() => {
+    const payload: StartedOnboarding = {
+      action: ActionType.startedOnboarding,
+    }
 
-      trackEvent(payload)
-    },
+    trackEvent(payload)
+  }, [trackEvent])
 
-    // user clicks next after answering "have you bought art before"
-    userAnsweredCollectorQuestion: (response) => {
+  const answeredQuestionOne = useCallback(
+    (response: string) => {
       const payload: OnboardingUserInputData = {
         action: ActionType.onboardingUserInputData,
         context_module: ContextModule.onboardingCollectorLevel,
@@ -39,9 +38,11 @@ export const useOnboardingTracking = () => {
 
       trackEvent(payload)
     },
+    [trackEvent]
+  )
 
-    // user clicks next after answering "what do you love most about art"
-    userAnsweredInterestQuestion: (response) => {
+  const answeredQuestionTwo = useCallback(
+    (response: string) => {
       const payload: OnboardingUserInputData = {
         action: ActionType.onboardingUserInputData,
         context_module: ContextModule.onboardingInterests,
@@ -50,9 +51,11 @@ export const useOnboardingTracking = () => {
 
       trackEvent(payload)
     },
+    [trackEvent]
+  )
 
-    // user clicks next after answering "what would you like to see first"
-    userAnsweredActivityQuestion: (response) => {
+  const userAnsweredActivityQuestion = useCallback(
+    (response: string) => {
       const payload: OnboardingUserInputData = {
         action: ActionType.onboardingUserInputData,
         context_module: ContextModule.onboardingActivity,
@@ -61,15 +64,17 @@ export const useOnboardingTracking = () => {
 
       trackEvent(payload)
     },
+    [trackEvent]
+  )
 
-    // user follows or unfollows a artist
-    trackArtistFollows: (isFollowed, internalID) => {
+  const artistFollow = useCallback(
+    (isFollowed: boolean, internalID: string) => {
       const followPayload: FollowedArtist = {
         action: ActionType.followedArtist,
         context_module: ContextModule.onboardingFlow,
         context_owner_type: OwnerType.savesAndFollows,
         owner_id: internalID,
-        owner_slug: contextPage?.pageSlug!,
+        owner_slug: getId()!,
         owner_type: OwnerType.artist,
       }
 
@@ -78,66 +83,81 @@ export const useOnboardingTracking = () => {
         context_module: ContextModule.onboardingFlow,
         context_owner_type: OwnerType.savesAndFollows,
         owner_id: internalID,
-        owner_slug: contextPage?.pageSlug!,
+        owner_slug: getId()!,
         owner_type: OwnerType.artist,
       }
 
       trackEvent(isFollowed ? followPayload : unfollowPayload)
     },
+    [trackEvent]
+  )
 
-    // user follows or unfollows a gallery
-    trackGalleryFollows: (isFollowed, internalID) => {
-      const followedPayload: FollowedPartner = {
+  const galleryFollow = useCallback(
+    (isFollowed: boolean, internalID: string) => {
+      const followPayload: FollowedPartner = {
         action: ActionType.followedPartner,
         context_module: ContextModule.onboardingFlow,
         context_owner_type: OwnerType.savesAndFollows,
         owner_id: internalID,
-        owner_slug: contextPage?.pageSlug!,
+        owner_slug: getId()!,
         owner_type: OwnerType.partner,
       }
 
-      const unfollowedPayload: UnfollowedPartner = {
+      const unfollowPayload: UnfollowedPartner = {
         action: ActionType.unfollowedPartner,
         context_module: ContextModule.onboardingFlow,
         context_owner_type: OwnerType.savesAndFollows,
         owner_id: internalID,
-        owner_slug: contextPage?.pageSlug!,
+        owner_slug: getId()!,
         owner_type: OwnerType.partner,
       }
 
-      trackEvent(isFollowed ? followedPayload : unfollowedPayload)
+      trackEvent(isFollowed ? followPayload : unfollowPayload)
     },
+    [trackEvent]
+  )
 
-    // user follows or unfollows a gene
-    trackGeneFollows: (isFollowed, internalID) => {
-      const followedPayload: FollowedGene = {
+  const geneFollow = useCallback(
+    (isFollowed: boolean, internalID: string) => {
+      const followPayload: FollowedGene = {
         action: ActionType.followedGene,
         context_module: ContextModule.onboardingFlow,
         context_owner_type: OwnerType.savesAndFollows,
         owner_id: internalID,
-        owner_slug: contextPage?.pageSlug!,
+        owner_slug: getId()!,
         owner_type: OwnerType.gene,
       }
 
-      const unfollowedPayload: UnfollowedGene = {
+      const unfollowPayload: UnfollowedGene = {
         action: ActionType.unfollowedGene,
         context_module: ContextModule.onboardingFlow,
         context_owner_type: OwnerType.savesAndFollows,
         owner_id: internalID,
-        owner_slug: contextPage?.pageSlug!,
+        owner_slug: getId()!,
         owner_type: OwnerType.gene,
       }
 
-      trackEvent(isFollowed ? followedPayload : unfollowedPayload)
+      trackEvent(isFollowed ? followPayload : unfollowPayload)
     },
+    [trackEvent]
+  )
 
-    // whenever we decide onboarding is complete
-    userCompletedOnboarding: () => {
-      const payload: CompletedOnboarding = {
-        action: ActionType.completedOnboarding,
-      }
+  const completedOnboarding = useCallback(() => {
+    const payload: CompletedOnboarding = {
+      action: ActionType.completedOnboarding,
+    }
 
-      trackEvent(payload)
-    },
+    trackEvent(payload)
+  }, [trackEvent])
+
+  return {
+    userStartedOnboarding: startedOnboarding,
+    userAnsweredCollectorQuestion: answeredQuestionOne,
+    userAnsweredInterestQuestion: answeredQuestionTwo,
+    userAnsweredActivityQuestion,
+    trackArtistFollows: artistFollow,
+    trackGalleryFollows: galleryFollow,
+    trackGeneFollows: geneFollow,
+    trackCompletedOnboarding: completedOnboarding,
   }
 }
