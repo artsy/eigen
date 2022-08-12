@@ -1,5 +1,3 @@
-import { navigate, popToRoot } from "app/navigation/navigate"
-import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import {
   Button,
   FairIcon,
