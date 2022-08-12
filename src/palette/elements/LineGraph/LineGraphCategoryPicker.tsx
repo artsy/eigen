@@ -23,15 +23,19 @@ export const LineGraphCategoryPicker: React.FC<LineGraphCategoryPickerProps> = (
     categories.map(() => null)
   )
 
-  let initialIndex = 0
-  for (let i = 0; i < categories.length; i++) {
-    if (categories[i].name === selectedCategory) {
-      initialIndex = i
-      break
+  const getIndexForSelectedCategory = (): number => {
+    let index = 0
+    for (let i = 0; i < categories.length; i++) {
+      if (categories[i].name === selectedCategory) {
+        index = i
+        break
+      }
     }
+    return index
   }
+  const initialSelectedIndex = getIndexForSelectedCategory()
 
-  const [selectedIndex, setSelectedIndex] = useState(initialIndex)
+  const [selectedIndex, setSelectedIndex] = useState(initialSelectedIndex)
 
   const allLayoutsPresent = categoryLayouts.every((l) => l)
   const scrollViewRef = useRef<ScrollView>(null)
