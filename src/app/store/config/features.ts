@@ -317,6 +317,9 @@ export const devToggles = defineDevToggles({
   DTEasyMyCollectionArtworkCreation: {
     description: "MyCollection artworks easy add",
   },
+  DTMyCollectionDeleteAllArtworks: {
+    description: "MyCollection delete all artworks",
+  },
   DTShowWebviewIndicator: {
     description: "Webview indicator",
   },
