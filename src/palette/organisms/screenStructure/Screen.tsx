@@ -83,7 +83,7 @@ interface HeaderProps {
   onSkip?: () => void
 }
 
-export const Header: React.FC<HeaderProps> = ({ onBack, onSkip }) => {
+const Header: React.FC<HeaderProps> = ({ onBack, onSkip }) => {
   useUpdateScreenContext({ header: "regular" })
   const insets = useSafeAreaInsets()
 
@@ -113,7 +113,7 @@ export const Header: React.FC<HeaderProps> = ({ onBack, onSkip }) => {
 /**
  * @deprecated Use `Screen.Header` instead.
  */
-export const FloatingHeader: React.FC<HeaderProps> = ({ onBack }) => {
+const FloatingHeader: React.FC<HeaderProps> = ({ onBack }) => {
   useUpdateScreenContext({ header: "floating" })
   const insets = useSafeAreaInsets()
 
