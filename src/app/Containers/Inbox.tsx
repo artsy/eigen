@@ -136,7 +136,7 @@ export class Inbox extends React.Component<Props, State> {
         <TabWrapper
           tabLabel="Inquiries"
           key="inquiries"
-          style={{ flexGrow: 1, justifyContent: "flex-start" }}
+          style={{ flex: 1, justifyContent: "flex-start" }}
         >
           <ConversationsContainer
             me={this.props.me}
