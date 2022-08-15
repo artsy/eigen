@@ -33,7 +33,7 @@ export type OnboardingNavigationStack = {
 
 const StackNavigator = createStackNavigator<OnboardingNavigationStack>()
 
-export const OnboardingNavigationContainer = () => {
+export const OnboardingV2 = () => {
   const { trackCompletedOnboarding } = useOnboardingTracking()
 
   const onDone = () => {

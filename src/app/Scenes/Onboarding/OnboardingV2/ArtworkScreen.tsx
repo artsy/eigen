@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkQueryRenderer } from "app/Scenes/Artwork/Artwork"
 import { Screen } from "palette"
-import { OnboardingNavigationStack } from "./OnboardingNavigationContainer"
+import { OnboardingNavigationStack } from "./OnboardingV2"
 
 interface ArtworkScreenProps extends StackScreenProps<OnboardingNavigationStack, "ArtworkScreen"> {}
 

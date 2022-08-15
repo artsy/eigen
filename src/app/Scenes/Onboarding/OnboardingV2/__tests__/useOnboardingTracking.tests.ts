@@ -1,120 +1,166 @@
-import { ActionType, ContextModule } from "@artsy/cohesion"
-import { useTracking } from "react-tracking"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingTracking"
+import { useTracking } from "react-tracking"
 
-const trackEventMock = jest.fn()
 jest.mock("react-tracking")
-;(useTracking as jest.Mock).mockImplementation(() => {
-  return {
-    useTracking: () => {
-      return {
-        trackEvent: trackEventMock,
-      }
-    },
-  }
-})
 
 jest.mock("@react-navigation/native", () => {
   return {
     useNavigation: () => {
       return {
-        getId: jest.fn(),
+        getId: jest.fn().mockReturnValue("owner-slug-mock"),
       }
     },
   }
 })
 
 describe("useOnboardingTracking", () => {
+  let trackEventMock: jest.Mock
+
   beforeEach(() => {
-    jest.resetAllMocks()
+    trackEventMock = jest.fn()
+    ;(useTracking as jest.Mock).mockImplementation(() => ({
+      trackEvent: trackEventMock,
+    }))
   })
 
-  it.each<
-    | [keyof ReturnType<typeof useOnboardingTracking>, ActionType, null, null, null, null]
-    | [
-        keyof ReturnType<typeof useOnboardingTracking>,
+  describe("user input event", () => {
+    it.each<
+      [
+        "trackAnsweredQuestionOne" | "trackAnsweredQuestionTwo" | "trackAnsweredQuestionThree",
         ActionType,
         ContextModule,
-        string,
-        null,
-        null
+        string | string[]
       ]
-    | [
-        keyof ReturnType<typeof useOnboardingTracking>,
-        ActionType,
-        ContextModule,
-        null,
-        string,
-        boolean
-      ]
-    | [
-        keyof ReturnType<typeof useOnboardingTracking>,
-        ActionType,
-        ContextModule,
-        string[],
-        null,
-        null
-      ]
-  >([
-    ["trackStartedOnboarding", ActionType.startedOnboarding, null, null, null, null],
-    [
-      "trackAnsweredQuestionOne",
-      ActionType.onboardingUserInputData,
-      ContextModule.onboardingCollectorLevel,
-      "question 1 test response",
-      null,
-      null,
-    ],
-    [
-      "trackAnsweredQuestionTwo",
-      ActionType.onboardingUserInputData,
-      ContextModule.onboardingInterests,
-      ["question 2 test response 0", "question 2 test response 1"],
-      null,
-      null,
-    ],
-    [
-      "trackAnsweredQuestionThree",
-      ActionType.onboardingUserInputData,
-      ContextModule.onboardingActivity,
-      "question 3 test response",
-      null,
-      null,
-    ],
-    [
-      "trackArtistFollow",
-      ActionType.followedArtist,
-      ContextModule.onboardingFlow,
-      null,
-      "artist-test-id",
-      false,
-    ],
-    [
-      "trackGalleryFollow",
-      ActionType.followedPartner,
-      ContextModule.onboardingFlow,
-      null,
-      "partner-test-id",
-      false,
-    ],
-    [
-      "trackGeneFollow",
-      ActionType.followedGene,
-      ContextModule.onboardingFlow,
-      null,
-      "gene-test-id",
-      true,
-    ],
-    ["trackCompletedOnboarding", ActionType.completedOnboarding, null, null, null, null],
-  ])(
-    "%s calls trackEvent with the expected payload",
-    (key, actionType, contextModule, response, internalId, isFollowed) => {
+    >([
+      [
+        "trackAnsweredQuestionOne",
+        ActionType.onboardingUserInputData,
+        ContextModule.onboardingCollectorLevel,
+        "question 1 test response",
+      ],
+      [
+        "trackAnsweredQuestionTwo",
+        ActionType.onboardingUserInputData,
+        ContextModule.onboardingInterests,
+        ["question 2 test response 0", "question 2 test response 1"],
+      ],
+      [
+        "trackAnsweredQuestionThree",
+        ActionType.onboardingUserInputData,
+        ContextModule.onboardingActivity,
+        "question 3 test response",
+      ],
+    ])(
+      "%s calls trackEvent with the expected payload",
+      (key, actionType, contextModule, response) => {
+        const { [key]: fn } = useOnboardingTracking()
+
+        // @ts-expect-error
+        fn(response)
+
+        expect(trackEventMock).toHaveBeenCalledWith({
+          action: actionType,
+          context_module: contextModule,
+          data_input: typeof response === "string" ? response : response.join(),
+        })
+      }
+    )
+  })
+
+  describe("start / end event", () => {
+    it.each<["trackCompletedOnboarding" | "trackStartedOnboarding", ActionType]>([
+      ["trackCompletedOnboarding", ActionType.completedOnboarding],
+      ["trackStartedOnboarding", ActionType.startedOnboarding],
+    ])("% calls trackEvent with the expected payload", (key, actionType) => {
       const { [key]: fn } = useOnboardingTracking()
+      fn()
+      expect(trackEventMock).toHaveBeenCalledWith({
+        action: actionType,
+      })
+    })
+  })
 
-      expect(trackEventMock).toHaveBeenCalledWith()
-    }
-  )
-
-  it.each()(() => {})
-  it.each()(() => {})
+  describe("follow event", () => {
+    it.each<
+      [
+        "trackArtistFollow" | "trackGalleryFollow" | "trackGeneFollow",
+        ActionType,
+        ContextModule,
+        string,
+        boolean,
+        OwnerType,
+        OwnerType
+      ]
+    >([
+      [
+        "trackArtistFollow",
+        ActionType.followedArtist,
+        ContextModule.onboardingFlow,
+        "artist-test-id",
+        false,
+        OwnerType.savesAndFollows,
+        OwnerType.artist,
+      ],
+      [
+        "trackGalleryFollow",
+        ActionType.followedPartner,
+        ContextModule.onboardingFlow,
+        "partner-test-id",
+        false,
+        OwnerType.savesAndFollows,
+        OwnerType.partner,
+      ],
+      [
+        "trackGeneFollow",
+        ActionType.followedGene,
+        ContextModule.onboardingFlow,
+        "gene-test-id",
+        false,
+        OwnerType.savesAndFollows,
+        OwnerType.gene,
+      ],
+      [
+        "trackArtistFollow",
+        ActionType.unfollowedArtist,
+        ContextModule.onboardingFlow,
+        "artist-test-id",
+        true,
+        OwnerType.savesAndFollows,
+        OwnerType.artist,
+      ],
+      [
+        "trackGalleryFollow",
+        ActionType.unfollowedPartner,
+        ContextModule.onboardingFlow,
+        "partner-test-id",
+        true,
+        OwnerType.savesAndFollows,
+        OwnerType.partner,
+      ],
+      [
+        "trackGeneFollow",
+        ActionType.unfollowedGene,
+        ContextModule.onboardingFlow,
+        "gene-test-id",
+        true,
+        OwnerType.savesAndFollows,
+        OwnerType.gene,
+      ],
+    ])(
+      "%s calls trackEvent with the expected payload",
+      (key, actionType, contextModule, internalID, isFollowed, contextOwnerType, ownerType) => {
+        const { [key]: fn } = useOnboardingTracking()
+        fn(isFollowed, internalID)
+        expect(trackEventMock).toHaveBeenCalledWith({
+          action: actionType,
+          context_module: contextModule,
+          context_owner_type: contextOwnerType,
+          owner_id: internalID,
+          owner_slug: "owner-slug-mock",
+          owner_type: ownerType,
+        })
+      }
+    )
+  })
 })
