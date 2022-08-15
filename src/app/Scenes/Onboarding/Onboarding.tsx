@@ -19,8 +19,8 @@ import {
 import { OnboardingLogin, OnboardingLoginWithEmail } from "./OnboardingLogin"
 import { OnboardingLoginWithOTP, OTPMode } from "./OnboardingLoginWithOTP"
 import { OnboardingPersonalization } from "./OnboardingPersonalization/OnboardingPersonalization"
-import { OnboardingPersonalization2 } from "./OnboardingPersonalization2/OnboardingPersonalization2"
 import { AppleToken, GoogleOrFacebookToken, OnboardingSocialLink } from "./OnboardingSocialLink"
+import { OnboardingV2 } from "./OnboardingV2/OnboardingV2"
 import { OnboardingWebView, OnboardingWebViewRoute } from "./OnboardingWebView"
 import { OnboardingWelcome } from "./OnboardingWelcome"
 
@@ -121,7 +121,7 @@ export const Onboarding = () => {
       >
         {onboardingState === "incomplete" ? (
           isNewOnboardingEnabled ? (
-            <OnboardingPersonalization2 />
+            <OnboardingV2 />
           ) : (
             <OnboardingPersonalization />
           )

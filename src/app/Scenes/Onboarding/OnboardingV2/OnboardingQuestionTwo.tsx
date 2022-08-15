@@ -4,17 +4,26 @@ import {
   OPTION_DEVELOPING_MY_ART_TASTES,
   OPTION_FINDING_GREAT_INVESTMENTS,
   OPTION_KEEP_TRACK_OF_ART,
-} from "app/Scenes/Onboarding/OnboardingPersonalization2/config"
+} from "app/Scenes/Onboarding/OnboardingV2/config"
+import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingContext"
+import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingTracking"
 import { useCallback } from "react"
-import { OnboardingQuestionTemplate } from "./OnboardingQuestionTemplate"
+import { OnboardingQuestionTemplate } from "./Components/OnboardingQuestionTemplate"
 
 export const OnboardingQuestionTwo = () => {
+  const {
+    state: { questionTwo },
+  } = useOnboardingContext()
+  const { trackAnsweredQuestionTwo } = useOnboardingTracking()
   const { navigate } = useNavigation()
 
   const handleNext = useCallback(() => {
+    if (questionTwo) {
+      trackAnsweredQuestionTwo(questionTwo)
+    }
     // @ts-expect-error
     navigate("OnboardingQuestionThree")
-  }, [navigate])
+  }, [navigate, questionTwo, trackAnsweredQuestionTwo])
 
   return (
     <OnboardingQuestionTemplate

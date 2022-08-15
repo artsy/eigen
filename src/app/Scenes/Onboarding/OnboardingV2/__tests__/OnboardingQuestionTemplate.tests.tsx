@@ -1,10 +1,12 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
-import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingPersonalization2/Hooks/useOnboardingContext"
-import { OnboardingQuestionTemplate } from "app/Scenes/Onboarding/OnboardingPersonalization2/Questions/OnboardingQuestionTemplate"
+import { OnboardingQuestionTemplate } from "app/Scenes/Onboarding/OnboardingV2/Components/OnboardingQuestionTemplate"
+import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingContext"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 
-jest.mock("app/Scenes/Onboarding/OnboardingPersonalization2/Hooks/useOnboardingContext")
+jest.mock("app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingContext")
 const useOnboardingContextMock = useOnboardingContext as jest.Mock
+
+jest.mock("app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingTracking")
 
 const contextValue = (answer: string | null = null) => ({
   dispatch: jest.fn(),

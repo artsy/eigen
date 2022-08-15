@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native"
 import { OnboardingPersonalizationWelcomeQuery } from "__generated__/OnboardingPersonalizationWelcomeQuery.graphql"
+import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingTracking"
 import { ArtsyLogoIcon, Box, Button, Flex, Screen, Text } from "palette"
 import { StatusBar } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -11,6 +12,7 @@ export const OnboardingPersonalizationWelcome: React.FC = () => {
     {}
   )
 
+  const { trackStartedOnboarding } = useOnboardingTracking()
   const { navigate } = useNavigation()
   const { onDone } = useOnboardingContext()
 
@@ -37,6 +39,7 @@ export const OnboardingPersonalizationWelcome: React.FC = () => {
               block
               haptic="impactMedium"
               onPress={() => {
+                trackStartedOnboarding()
                 // @ts-expect-error
                 navigate("OnboardingQuestionOne")
               }}

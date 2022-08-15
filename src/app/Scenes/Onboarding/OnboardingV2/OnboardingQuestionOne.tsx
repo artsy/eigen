@@ -2,18 +2,22 @@ import { useNavigation } from "@react-navigation/native"
 import {
   OPTION_NO_IM_JUST_STARTING_OUT,
   OPTION_YES_I_LOVE_COLLECTING_ART,
-} from "app/Scenes/Onboarding/OnboardingPersonalization2/config"
+} from "app/Scenes/Onboarding/OnboardingV2/config"
+import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingTracking"
 import { useCallback } from "react"
-import { useOnboardingContext } from "../Hooks/useOnboardingContext"
-import { useUpdateUserProfile } from "../Hooks/useUpdateUserProfile"
-import { OnboardingQuestionTemplate } from "./OnboardingQuestionTemplate"
+import { OnboardingQuestionTemplate } from "./Components/OnboardingQuestionTemplate"
+import { useOnboardingContext } from "./Hooks/useOnboardingContext"
+import { useUpdateUserProfile } from "./Hooks/useUpdateUserProfile"
 
 type QuestionOneAnswerType =
   | typeof OPTION_NO_IM_JUST_STARTING_OUT
   | typeof OPTION_YES_I_LOVE_COLLECTING_ART
 
 export const OnboardingQuestionOne = () => {
-  const { state } = useOnboardingContext()
+  const {
+    state: { questionOne },
+  } = useOnboardingContext()
+  const { trackAnsweredQuestionOne } = useOnboardingTracking()
   const { navigate } = useNavigation()
 
   // @ts-expect-error
@@ -22,12 +26,15 @@ export const OnboardingQuestionOne = () => {
   const { commitMutation } = useUpdateUserProfile(navigateToNextScreen)
 
   const handleNext = useCallback(async () => {
-    const level = COLLECTOR_LEVELS[state.questionOne as QuestionOneAnswerType]
+    const level = COLLECTOR_LEVELS[questionOne as QuestionOneAnswerType]
 
     commitMutation({
       collectorLevel: level,
     })
-  }, [commitMutation, state.questionOne])
+    if (questionOne) {
+      trackAnsweredQuestionOne(questionOne)
+    }
+  }, [commitMutation, questionOne, trackAnsweredQuestionOne])
 
   return (
     <OnboardingQuestionTemplate

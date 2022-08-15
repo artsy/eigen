@@ -1,4 +1,5 @@
 import { GeneHeaderFragment_Gene$key } from "__generated__/GeneHeaderFragment_Gene.graphql"
+import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingTracking"
 import { Flex, FollowButton, Spacer, Text } from "palette"
 import { ImageBackground, ImageSourcePropType } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"
@@ -21,8 +22,11 @@ export const GeneHeader: React.FC<GeneHeaderProps> = ({ geneID, gene, descriptio
   const [commit, isInFlight] = useMutation(FollowGeneMutation)
 
   const { name, isFollowed } = useFragment(GeneHeaderFragment, gene)
+  const { trackGeneFollow } = useOnboardingTracking()
 
   const handleFollowGene = () => {
+    trackGeneFollow(!!isFollowed, geneID)
+
     commit({
       variables: {
         input: {
