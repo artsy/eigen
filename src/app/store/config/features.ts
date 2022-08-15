@@ -227,9 +227,10 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableMyCollectionInsightsPhase1Part2",
   },
   AREnableMyCollectionInsightsPhase1Part3: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable MyC insights Ph 1 Pt 3",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableMyCollectionInsightsPhase1Part3",
   },
   AREnableNotFoundFailureView: {
     readyForRelease: true,
