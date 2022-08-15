@@ -6,6 +6,8 @@ import { renderWithWrappers } from "app/tests/renderWithWrappers"
 jest.mock("app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingContext")
 const useOnboardingContextMock = useOnboardingContext as jest.Mock
 
+jest.mock("app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingTracking")
+
 const contextValue = (answer: string | null = null) => ({
   dispatch: jest.fn(),
   next: jest.fn(),

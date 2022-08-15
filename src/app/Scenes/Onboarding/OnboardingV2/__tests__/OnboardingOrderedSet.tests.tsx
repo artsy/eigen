@@ -6,6 +6,8 @@ import { OnboardingOrderedSetScreen } from "../OnboardingOrderedSet"
 
 jest.unmock("react-relay")
 
+jest.mock("app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingTracking")
+
 describe("OnboardingOrderedSet", () => {
   let env: ReturnType<typeof createMockEnvironment>
 

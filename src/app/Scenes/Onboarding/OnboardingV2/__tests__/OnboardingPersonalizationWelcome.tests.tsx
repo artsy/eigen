@@ -7,6 +7,8 @@ import { OnboardingPersonalizationWelcome } from "../OnboardingPersonalizationWe
 
 jest.unmock("react-relay")
 
+jest.mock("app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingTracking")
+
 describe("OnboardingPersonalizationWelcome", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
