@@ -39,5 +39,5 @@ Our App Store releases are done manually, instead of automatically once Apple ap
 
 2. Run `./scripts/next`. This prompts for the next version number. **Use the same version as the previous step**.
 3. Add and commit the changed files, typically with `-m "Preparing for development, version X.Y.Z."`.
-4. Run `./scripts/deploy-ios` to trigger a new beta. (When we add a new version, the first beta goes through additional TestFlight review by Apple. By trigger the beta now, we go through that review early, and avoid delaying future QA sessions.)
+4. Run `./scripts/deploy-beta-ios` to trigger a new beta. (When we add a new version, the first beta goes through additional TestFlight review by Apple. By trigger the beta now, we go through that review early, and avoid delaying future QA sessions.)
 5. PR your changes back into the `main` branch.

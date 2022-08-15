@@ -234,7 +234,7 @@ jobs:
       - install-node
       - run:
           name: Deploy beta
-          command: ./scripts/deploy-both
+          command: ./scripts/deploy-beta-both
 
   update-metaphysics:
     executor:
