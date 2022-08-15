@@ -2,6 +2,7 @@ import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Conversations_me$data } from "__generated__/Conversations_me.graphql"
 import { PAGE_SIZE } from "app/Components/constants"
 import { navigate } from "app/navigation/navigate"
+import { ICON_HEIGHT } from "app/Scenes/BottomTabs/BottomTabsIcon"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -96,12 +97,7 @@ export const Conversations: React.FC<Props> = (props) => {
       info={screen({ context_screen_owner_type: OwnerType.inboxInquiries })}
     >
       <Flex py={1} style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
-        <Text
-          variant="lg"
-          mx={2}
-          mt={1}
-          style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}
-        >
+        <Text variant="lg" mx={2} mt={1}>
           Inbox {unreadCounter}
         </Text>
       </Flex>
@@ -130,6 +126,7 @@ export const Conversations: React.FC<Props> = (props) => {
         contentContainerStyle={{
           flexGrow: 1,
           justifyContent: !conversations.length ? "center" : "flex-start",
+          paddingBottom: ICON_HEIGHT,
         }}
         ListEmptyComponent={<NoMessages />}
       />
