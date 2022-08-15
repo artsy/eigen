@@ -113,6 +113,17 @@ export const Conversations: React.FC<Props> = (props) => {
         }
         keyExtractor={(item) => item.internalID!}
         ItemSeparatorComponent={() => <Separator mx={2} width="auto" />}
+        ListFooterComponent={() => {
+          if (!!(relay.hasMore() && isLoading)) {
+            return (
+              <Flex mb={ICON_HEIGHT} mt={2} alignItems="center">
+                <ActivityIndicator />
+              </Flex>
+            )
+          }
+
+          return null
+        }}
         renderItem={({ item }) => {
           return (
             <ConversationSnippet
@@ -126,15 +137,9 @@ export const Conversations: React.FC<Props> = (props) => {
         contentContainerStyle={{
           flexGrow: 1,
           justifyContent: !conversations.length ? "center" : "flex-start",
-          paddingBottom: ICON_HEIGHT,
         }}
         ListEmptyComponent={<NoMessages />}
       />
-      {!!(relay.hasMore() && isLoading) && (
-        <Flex p={3} alignItems="center">
-          <ActivityIndicator />
-        </Flex>
-      )}
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }
