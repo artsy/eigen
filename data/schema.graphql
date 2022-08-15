@@ -9850,6 +9850,7 @@ type MarketPriceInsights {
   lowRangeCents: BigInt
   medianSaleOverEstimatePercentage: Int
   medianSalePriceLast36Months: BigInt
+  medianSalePriceLast96Months: BigInt
   medianSaleToEstimateRatio: Float
   medium: String
   mediumHighRangeCents: BigInt
@@ -12056,6 +12057,12 @@ enum PriceInsightSort {
 
   # sort by median_sale_price_last_36_months in descending order
   MEDIAN_SALE_PRICE_LAST_36_MONTHS_DESC
+
+  # sort by median_sale_price_last_96_months in ascending order
+  MEDIAN_SALE_PRICE_LAST_96_MONTHS_ASC
+
+  # sort by median_sale_price_last_96_months in descending order
+  MEDIAN_SALE_PRICE_LAST_96_MONTHS_DESC
 
   # sort by median_sale_to_estimate_ratio in ascending order
   MEDIAN_SALE_TO_ESTIMATE_RATIO_ASC
