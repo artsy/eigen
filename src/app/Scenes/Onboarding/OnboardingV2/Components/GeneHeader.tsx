@@ -6,6 +6,7 @@ import { ImageBackground, ImageSourcePropType } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"
 import { OnboardingGeneId } from "../OnboardingGene"
 import { AnimatedTooltip } from "./AnimatedTooltip"
+import { OnboardingFollowButton } from "./OnboardingFollowButton"
 
 interface GeneHeaderProps {
   geneID: OnboardingGeneId
@@ -51,7 +52,11 @@ export const GeneHeader: React.FC<GeneHeaderProps> = ({ geneID, gene, descriptio
             {description}
           </Text>
           <Spacer mt={2} />
-          <FollowButton isFollowed={!!isFollowed} onPress={handleFollowGene} loading={isInFlight} />
+          <OnboardingFollowButton
+            isFollowed={!!isFollowed}
+            onPress={handleFollowGene}
+            loading={isInFlight}
+          />
         </Flex>
       </ImageBackground>
       <AnimatedTooltip />
