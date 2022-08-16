@@ -111,7 +111,7 @@ export const OnboardingWelcomeScreens = () => {
 export const Onboarding = () => {
   const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
   const showNetworkUnavailableModal = useFeatureFlag("ARShowNetworkUnavailableModal")
-  const isNewOnboardingEnabled = useFeatureFlag("AREnableNewOnboarding")
+  const isNewOnboardingEnabled = true // useFeatureFlag("AREnableNewOnboarding")
   const fpsCounter = useDevToggle("DTFPSCounter")
 
   return (

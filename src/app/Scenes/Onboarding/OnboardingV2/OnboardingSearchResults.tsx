@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native"
 import { OnboardingSearchResults_viewer$key } from "__generated__/OnboardingSearchResults_viewer.graphql"
 import { OnboardingSearchResultsQuery } from "__generated__/OnboardingSearchResultsQuery.graphql"
 import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
@@ -21,6 +22,7 @@ interface OnboardingSearchResultsProps {
 const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entities, term }) => {
   const { trackArtistFollow, trackGalleryFollow } = useOnboardingTracking()
   const { dispatch } = useOnboardingContext()
+  const { getId } = useNavigation()
 
   const queryData = useLazyLoadQuery<OnboardingSearchResultsQuery>(
     OnboardingSearchResultsScreenQuery,
@@ -61,7 +63,7 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entit
             return (
               <ArtistListItemNew
                 onFollow={() => {
-                  trackArtistFollow(!!item.isFollowed, item.internalID)
+                  trackArtistFollow(!!item.isFollowed, item.internalID, getId()!)
                   dispatch({ type: "FOLLOW", payload: item.internalID })
                 }}
                 artist={item}
@@ -78,7 +80,7 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entit
               <PartnerListItem
                 partner={partner}
                 onFollow={() => {
-                  trackGalleryFollow(!!item.isFollowed, item.internalID)
+                  trackGalleryFollow(!!item.isFollowed, item.internalID, getId()!)
                   dispatch({ type: "FOLLOW", payload: item.internalID })
                 }}
               />

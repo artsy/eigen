@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native"
-import { OnboardingPersonalizationWelcomeQuery } from "__generated__/OnboardingPersonalizationWelcomeQuery.graphql"
+import { OnboardingWelcomeQuery } from "__generated__/OnboardingWelcomeQuery.graphql"
 import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingTracking"
 import { ArtsyLogoIcon, Box, Button, Flex, Screen, Text } from "palette"
 import { StatusBar } from "react-native"
@@ -7,10 +7,7 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 import { useOnboardingContext } from "./Hooks/useOnboardingContext"
 
 export const OnboardingPersonalizationWelcome: React.FC = () => {
-  const { me } = useLazyLoadQuery<OnboardingPersonalizationWelcomeQuery>(
-    OnboardingPersonalizationWelcomeScreenQuery,
-    {}
-  )
+  const { me } = useLazyLoadQuery<OnboardingWelcomeQuery>(OnboardingWelcomeScreenQuery, {})
 
   const { trackStartedOnboarding } = useOnboardingTracking()
   const { navigate } = useNavigation()
@@ -65,8 +62,8 @@ export const OnboardingPersonalizationWelcome: React.FC = () => {
   )
 }
 
-export const OnboardingPersonalizationWelcomeScreenQuery = graphql`
-  query OnboardingPersonalizationWelcomeQuery {
+export const OnboardingWelcomeScreenQuery = graphql`
+  query OnboardingWelcomeQuery {
     me {
       name
     }
