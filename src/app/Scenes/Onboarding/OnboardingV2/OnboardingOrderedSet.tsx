@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native"
 import { OnboardingOrderedSetQuery } from "__generated__/OnboardingOrderedSetQuery.graphql"
 import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
 import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingTracking"
@@ -17,6 +18,7 @@ interface OnboardingOrderedSetProps {
 }
 
 const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
+  const { getId } = useNavigation()
   const { trackArtistFollow, trackGalleryFollow } = useOnboardingTracking()
   const { dispatch } = useOnboardingContext()
   const { orderedSets } = useLazyLoadQuery<OnboardingOrderedSetQuery>(
@@ -49,7 +51,7 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
               <ArtistListItemNew
                 artist={item}
                 onFollow={() => {
-                  trackArtistFollow(!!item.isFollowed, item.internalID)
+                  trackArtistFollow(!!item.isFollowed, item.internalID, getId()!)
                   dispatch({ type: "FOLLOW", payload: item.internalID })
                 }}
               />
@@ -65,7 +67,7 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
               <PartnerListItem
                 partner={partner}
                 onFollow={() => {
-                  trackGalleryFollow(!!item.isFollowed, item.internalID)
+                  trackGalleryFollow(!!item.isFollowed, item.internalID, getId()!)
                   dispatch({ type: "FOLLOW", payload: item.internalID })
                 }}
               />
