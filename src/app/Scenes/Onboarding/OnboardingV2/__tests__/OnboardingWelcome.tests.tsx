@@ -3,13 +3,13 @@ import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { createMockEnvironment } from "relay-test-utils"
-import { OnboardingPersonalizationWelcome } from "../OnboardingPersonalizationWelcome"
+import { OnboardingPersonalizationWelcome } from "../OnboardingWelcome"
 
 jest.unmock("react-relay")
 
 jest.mock("app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingTracking")
 
-describe("OnboardingPersonalizationWelcome", () => {
+describe("OnboardingWelcome", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {

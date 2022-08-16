@@ -9,16 +9,16 @@ import { OnboardingArtistsOnTheRise } from "./OnboardingArtistsOnTheRise"
 import { OnboardingCuratedArtworks } from "./OnboardingCuratedArtworks"
 import { OnboardingFollowArtists } from "./OnboardingFollowArtists"
 import { OnboardingFollowGalleries } from "./OnboardingFollowGalleries"
-import { OnboardingPersonalizationWelcome } from "./OnboardingPersonalizationWelcome"
 import { OnboardingPostFollowLoadingScreen } from "./OnboardingPostFollowLoadingScreen"
 import { OnboardingQuestionOne } from "./OnboardingQuestionOne"
 import { OnboardingQuestionThree } from "./OnboardingQuestionThree"
 import { OnboardingQuestionTwo } from "./OnboardingQuestionTwo"
 import { OnboardingTopAuctionLots } from "./OnboardingTopAuctionLots"
+import { OnboardingPersonalizationWelcome } from "./OnboardingWelcome"
 
 // tslint:disable-next-line:interface-over-type-literal
 export type OnboardingNavigationStack = {
-  OnboardingPersonalizationWelcome: undefined
+  OnboardingWelcome: undefined
   OnboardingQuestionOne: undefined
   OnboardingQuestionTwo: undefined
   OnboardingQuestionThree: undefined
@@ -60,7 +60,7 @@ export const OnboardingV2 = () => {
           }}
         >
           <StackNavigator.Screen
-            name="OnboardingPersonalizationWelcome"
+            name="OnboardingWelcome"
             component={OnboardingPersonalizationWelcome}
           />
           <StackNavigator.Screen name="OnboardingQuestionOne" component={OnboardingQuestionOne} />

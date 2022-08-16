@@ -8,7 +8,7 @@ jest.mock("@react-navigation/native", () => {
   return {
     useNavigation: () => {
       return {
-        getId: jest.fn().mockReturnValue("owner-slug-mock"),
+        getId: jest.fn(),
       }
     },
   }
@@ -151,7 +151,7 @@ describe("useOnboardingTracking", () => {
       "%s calls trackEvent with the expected payload",
       (key, actionType, contextModule, internalID, isFollowed, contextOwnerType, ownerType) => {
         const { [key]: fn } = useOnboardingTracking()
-        fn(isFollowed, internalID)
+        fn(isFollowed, internalID, "owner-slug-mock")
         expect(trackEventMock).toHaveBeenCalledWith({
           action: actionType,
           context_module: contextModule,

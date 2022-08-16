@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native"
 import { GeneHeaderFragment_Gene$key } from "__generated__/GeneHeaderFragment_Gene.graphql"
 import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingTracking"
 import { Flex, FollowButton, Spacer, Text } from "palette"
@@ -23,9 +24,10 @@ export const GeneHeader: React.FC<GeneHeaderProps> = ({ geneID, gene, descriptio
 
   const { name, isFollowed } = useFragment(GeneHeaderFragment, gene)
   const { trackGeneFollow } = useOnboardingTracking()
+  const { getId } = useNavigation()
 
   const handleFollowGene = () => {
-    trackGeneFollow(!!isFollowed, geneID)
+    trackGeneFollow(!!isFollowed, geneID, getId()!)
 
     commit({
       variables: {

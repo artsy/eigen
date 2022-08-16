@@ -12,12 +12,10 @@ import {
   UnfollowedGene,
   UnfollowedPartner,
 } from "@artsy/cohesion"
-import { useNavigation } from "@react-navigation/native"
 import { useTracking } from "react-tracking"
 
 export const useOnboardingTracking = () => {
   const { trackEvent } = useTracking()
-  const { getId } = useNavigation()
 
   const trackStartedOnboarding = () => {
     const payload: StartedOnboarding = {
@@ -57,13 +55,13 @@ export const useOnboardingTracking = () => {
     trackEvent(payload)
   }
 
-  const trackArtistFollow = (isFollowed: boolean, internalID: string) => {
+  const trackArtistFollow = (isFollowed: boolean, internalID: string, ownerSlug: string) => {
     const followPayload: FollowedArtist = {
       action: ActionType.followedArtist,
       context_module: ContextModule.onboardingFlow,
       context_owner_type: OwnerType.savesAndFollows,
       owner_id: internalID,
-      owner_slug: getId()!,
+      owner_slug: ownerSlug,
       owner_type: OwnerType.artist,
     }
 
@@ -72,20 +70,20 @@ export const useOnboardingTracking = () => {
       context_module: ContextModule.onboardingFlow,
       context_owner_type: OwnerType.savesAndFollows,
       owner_id: internalID,
-      owner_slug: getId()!,
+      owner_slug: ownerSlug,
       owner_type: OwnerType.artist,
     }
 
     trackEvent(isFollowed ? unfollowPayload : followPayload)
   }
 
-  const trackGalleryFollow = (isFollowed: boolean, internalID: string) => {
+  const trackGalleryFollow = (isFollowed: boolean, internalID: string, ownerSlug: string) => {
     const followPayload: FollowedPartner = {
       action: ActionType.followedPartner,
       context_module: ContextModule.onboardingFlow,
       context_owner_type: OwnerType.savesAndFollows,
       owner_id: internalID,
-      owner_slug: getId()!,
+      owner_slug: ownerSlug,
       owner_type: OwnerType.partner,
     }
 
@@ -94,20 +92,20 @@ export const useOnboardingTracking = () => {
       context_module: ContextModule.onboardingFlow,
       context_owner_type: OwnerType.savesAndFollows,
       owner_id: internalID,
-      owner_slug: getId()!,
+      owner_slug: ownerSlug,
       owner_type: OwnerType.partner,
     }
 
     trackEvent(isFollowed ? unfollowPayload : followPayload)
   }
 
-  const trackGeneFollow = (isFollowed: boolean, internalID: string) => {
+  const trackGeneFollow = (isFollowed: boolean, internalID: string, ownerSlug: string) => {
     const followPayload: FollowedGene = {
       action: ActionType.followedGene,
       context_module: ContextModule.onboardingFlow,
       context_owner_type: OwnerType.savesAndFollows,
       owner_id: internalID,
-      owner_slug: getId()!,
+      owner_slug: ownerSlug,
       owner_type: OwnerType.gene,
     }
 
@@ -116,7 +114,7 @@ export const useOnboardingTracking = () => {
       context_module: ContextModule.onboardingFlow,
       context_owner_type: OwnerType.savesAndFollows,
       owner_id: internalID,
-      owner_slug: getId()!,
+      owner_slug: ownerSlug,
       owner_type: OwnerType.gene,
     }
 
