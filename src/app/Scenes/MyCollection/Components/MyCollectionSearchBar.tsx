@@ -103,6 +103,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
             value={value}
             returnKeyType="done"
             fontSize={14}
+            autoCorrect={false}
           />
 
           <TouchableOpacity
