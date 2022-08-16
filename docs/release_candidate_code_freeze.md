@@ -37,7 +37,7 @@ Push up the branch for posterity:
 
 Communicate with other devs that a release candidate will be deployed and they should hold off on deploying betas until a build is submitted for review.
 
-`./scripts/deploy-both`
+`./scripts/deploy-beta-both`
 
 ## Do bug fix QA and some smoketests and release to the app store
 
