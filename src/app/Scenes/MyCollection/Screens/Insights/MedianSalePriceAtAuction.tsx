@@ -44,47 +44,51 @@ const MedianSalePriceAtAuctionScreen: React.FC<MedianSalePriceAtAuctionProps> = 
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <Flex mx={2} pt={6}>
-        <Text variant="lg" mb={0.5} testID="Median_Auction_Price_title">
-          {enableMyCollectionInsightsMedianPrice ? "Median Auction Price" : "Average Auction Price"}
-        </Text>
-        <Text variant="xs">Track price stability or growth for your artists.</Text>
+      <Flex pt={6}>
+        <Flex mx={2}>
+          <Text variant="lg" mb={0.5} testID="Median_Auction_Price_title">
+            {enableMyCollectionInsightsMedianPrice
+              ? "Median Auction Price"
+              : "Average Auction Price"}
+          </Text>
+          <Text variant="xs">Track price stability or growth for your artists.</Text>
 
-        {/* Artists Info */}
-        <Flex py={2} flexDirection="row" justifyContent="space-between" alignItems="center">
-          <Flex
-            width={40}
-            height={40}
-            borderRadius={20}
-            backgroundColor="black10"
-            alignItems="center"
-            justifyContent="center"
-            overflow="hidden"
-            // To align the image with the text we have to add top margin to compensate the line height.
-            style={{ marginTop: 3 }}
-          >
-            {data.artist?.imageUrl ? (
-              <OpaqueImageView width={40} height={40} imageURL={data.artist.imageUrl} />
-            ) : (
-              <NoArtworkIcon width={28} height={28} opacity={0.3} />
+          {/* Artists Info */}
+          <Flex py={2} flexDirection="row" justifyContent="space-between" alignItems="center">
+            <Flex
+              width={40}
+              height={40}
+              borderRadius={20}
+              backgroundColor="black10"
+              alignItems="center"
+              justifyContent="center"
+              overflow="hidden"
+              // To align the image with the text we have to add top margin to compensate the line height.
+              style={{ marginTop: 3 }}
+            >
+              {data.artist?.imageUrl ? (
+                <OpaqueImageView width={40} height={40} imageURL={data.artist.imageUrl} />
+              ) : (
+                <NoArtworkIcon width={28} height={28} opacity={0.3} />
+              )}
+            </Flex>
+            {/* Sale Artwork Artist Name */}
+            <Flex flex={1} pl={1}>
+              {!!data.artist?.name && (
+                <Text variant="md" ellipsizeMode="middle" numberOfLines={2}>
+                  {data.artist.name}
+                </Text>
+              )}
+            </Flex>
+
+            {!!enableChangeArtist && (
+              <Touchable testID="change-artist-touchable" onPress={() => setVisible(true)} haptic>
+                <Text style={{ textDecorationLine: "underline" }} variant="xs" color="black60">
+                  Change Artist
+                </Text>
+              </Touchable>
             )}
           </Flex>
-          {/* Sale Artwork Artist Name */}
-          <Flex flex={1} pl={1}>
-            {!!data.artist?.name && (
-              <Text variant="md" ellipsizeMode="middle" numberOfLines={2}>
-                {data.artist.name}
-              </Text>
-            )}
-          </Flex>
-
-          {!!enableChangeArtist && (
-            <Touchable testID="change-artist-touchable" onPress={() => setVisible(true)} haptic>
-              <Text style={{ textDecorationLine: "underline" }} variant="xs" color="black60">
-                Change Artist
-              </Text>
-            </Touchable>
-          )}
         </Flex>
 
         <MedianSalePriceChart
@@ -112,7 +116,7 @@ export const MedianSalePriceAtAuction: React.FC<{ artistID: string; initialCateg
   initialCategory,
 }) => {
   const end = new Date().getFullYear()
-  const startYear = (end - 3).toString()
+  const startYear = (end - 8).toString()
   const endYear = end.toString()
 
   const [queryArgs, setQueryArgs] = useState({
@@ -121,7 +125,6 @@ export const MedianSalePriceAtAuction: React.FC<{ artistID: string; initialCateg
       ...artistsQueryVariables,
       artistID,
       artistId: artistID,
-      medium: initialCategory,
       endYear,
       startYear,
     },
@@ -160,11 +163,10 @@ export const MedianSalePriceAtAuctionScreenQuery = graphql`
     $after: String
     $endYear: String
     $startYear: String
-    $medium: String!
   ) {
     ...SelectArtistModal_myCollectionInfo @arguments(count: $count, after: $after)
     ...MedianSalePriceChart_query
-      @arguments(artistId: $artistId, endYear: $endYear, medium: $medium, startYear: $startYear)
+      @arguments(artistId: $artistId, endYear: $endYear, startYear: $startYear)
     artist(id: $artistID) {
       internalID
       name

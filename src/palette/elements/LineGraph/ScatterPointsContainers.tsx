@@ -1,12 +1,12 @@
 import { useEffect } from "react"
-import { NativeTouchEvent } from "react-native"
 import { G } from "react-native-svg"
 import { Point } from "victory-native"
+import { ChartGestureEventType, ChartGestureObservable } from "./LineGraphChart"
 import { LineChartData } from "./types"
 
 interface BaseContainerProps {
-  lastPressedEvent: NativeTouchEvent | null
-  clearLastPressedEvent: () => void
+  lastPressedLocation: { locationX: number; locationY: number } | null
+  clearLastPressedLocation: () => void
 }
 
 interface HighlightIconContainerProps extends BaseContainerProps {
@@ -19,19 +19,24 @@ interface HighlightIconContainerProps extends BaseContainerProps {
  * It will also trigger the onHighlightPressed callback with the datum if pressed.
  */
 export const HighlightIconContainer: React.FC<HighlightIconContainerProps> = (props) => {
-  const { icon, lastPressedEvent, clearLastPressedEvent, onHighlightPressed, ...injectedProps } =
-    props
+  const {
+    icon,
+    lastPressedLocation,
+    clearLastPressedLocation,
+    onHighlightPressed,
+    ...injectedProps
+  } = props
   const { x, y, datum } = injectedProps as any
 
   // TODO: x and y seems to have been displaced by 10. Investigate why.
   const DISPLACEMENT_FACTOR = 10
 
   useEffect(() => {
-    if (!!lastPressedEvent) {
-      fireItemPressed(lastPressedEvent.locationX, lastPressedEvent.locationY)
-      clearLastPressedEvent()
+    if (!!lastPressedLocation) {
+      fireItemPressed(lastPressedLocation.locationX, lastPressedLocation.locationY)
+      clearLastPressedLocation()
     }
-  }, [lastPressedEvent])
+  }, [lastPressedLocation])
 
   const isWithinItemRange = (locationX: number, locationY: number) => {
     if (
@@ -66,21 +71,14 @@ interface ScatterDataPointContainerProps extends BaseContainerProps {
 
 export const ScatterDataPointContainer: React.FC<ScatterDataPointContainerProps> = (props) => {
   const {
-    lastPressedEvent,
-    clearLastPressedEvent,
     onDataPointPressed,
     pointXRadiusOfTouch,
     setLastPressedDatum,
+    lastPressedLocation,
+    clearLastPressedLocation,
     ...injectedProps
   } = props
   const { x, datum } = injectedProps as any
-
-  useEffect(() => {
-    if (!!lastPressedEvent) {
-      fireItemPressed(lastPressedEvent.locationX)
-      clearLastPressedEvent()
-    }
-  }, [lastPressedEvent])
 
   const isWithinItemRange = (locationX: number) => {
     if (Math.abs(x - locationX) <= pointXRadiusOfTouch) {
@@ -89,12 +87,21 @@ export const ScatterDataPointContainer: React.FC<ScatterDataPointContainerProps>
     return false
   }
 
-  const fireItemPressed = (locationX: number) => {
-    if (isWithinItemRange(locationX)) {
+  const checkPannedOverXDataRegion = (event: ChartGestureEventType) => {
+    if (isWithinItemRange(event.x)) {
       setLastPressedDatum?.({ ...datum, left: x - 10 })
       onDataPointPressed?.(datum)
     }
   }
+
+  const observer = {
+    next: checkPannedOverXDataRegion,
+  }
+
+  useEffect(() => {
+    const observable = ChartGestureObservable.subscribe(observer)
+    return () => observable.unsubscribe()
+  }, [])
 
   return <Point {...props} />
 }

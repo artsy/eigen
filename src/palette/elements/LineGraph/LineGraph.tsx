@@ -11,17 +11,18 @@ import { LineChartData } from "./types"
 
 interface Props {
   // Chart
-  data: LineChartData
-  showHighlights?: boolean
   chartHeight?: number
   chartWidth?: number
+  data: LineChartData
   /** By default we use natural for chartInterpolation. Consider monotoneX for lines
    * that are more faithful to your data, but less curvy than natural.
    */
   chartInterpolation?: InterpolationPropType
   onXHighlightPressed?: (datum: { _x: number; _y: number; x: number; y: number }) => void
   onYHighlightPressed?: (datum: { _x: number; _y: number; x: number; y: number }) => void
-  onDataPointPressed?: (datum: LineChartData["data"][0]) => void
+  onDataPointPressed?: (datum: LineChartData["data"][0] | null) => void
+  showHighlights?: boolean
+  shouldAnimate?: boolean
   tintColorShadeFactor?: number
   xAxisTickFormatter?: (val: any) => string
   yAxisTickFormatter?: (val: any) => string
@@ -53,6 +54,7 @@ export const LineGraph: React.FC<Props> = ({
   onYHighlightPressed,
   selectedBand,
   selectedCategory,
+  shouldAnimate,
   showHighlights,
   tintColorShadeFactor,
   xAxisTickFormatter,
@@ -63,26 +65,33 @@ export const LineGraph: React.FC<Props> = ({
   return useMemo(() => {
     return (
       <Flex>
-        <LineGraphHeader {...data.dataMeta} />
+        <Flex mx={2}>
+          <LineGraphHeader {...data.dataMeta} />
 
-        <LineGraphChart
-          data={data.data}
-          dataMeta={data.dataMeta}
-          showHighlights={showHighlights}
-          chartHeight={chartHeight}
-          chartWidth={chartWidth}
-          chartInterpolation={chartInterpolation}
-          onXHighlightPressed={onXHighlightPressed}
-          onYHighlightPressed={onYHighlightPressed}
-          onDataPointPressed={onDataPointPressed}
-          tintColorShadeFactor={tintColorShadeFactor}
-          xAxisTickFormatter={xAxisTickFormatter}
-          yAxisTickFormatter={yAxisTickFormatter}
-          xAxisDisplayType={xAxisDisplayType}
-          yAxisDisplayType={yAxisDisplayType}
-        />
+          <LineGraphChart
+            data={data.data}
+            dataMeta={data.dataMeta}
+            showHighlights={showHighlights}
+            shouldAnimate={shouldAnimate}
+            chartHeight={chartHeight}
+            chartWidth={chartWidth}
+            chartInterpolation={chartInterpolation}
+            onXHighlightPressed={onXHighlightPressed}
+            onYHighlightPressed={onYHighlightPressed}
+            onDataPointPressed={onDataPointPressed}
+            tintColorShadeFactor={tintColorShadeFactor}
+            xAxisTickFormatter={xAxisTickFormatter}
+            yAxisTickFormatter={yAxisTickFormatter}
+            xAxisDisplayType={xAxisDisplayType}
+            yAxisDisplayType={yAxisDisplayType}
+          />
 
-        <LineGraphBands bands={bands} selectedBand={selectedBand} onBandSelected={onBandSelected} />
+          <LineGraphBands
+            bands={bands}
+            selectedBand={selectedBand}
+            onBandSelected={onBandSelected}
+          />
+        </Flex>
         <Spacer mb={0.5} />
         {!!categories && !!onCategorySelected && !!selectedCategory && (
           <LineGraphCategoryPicker

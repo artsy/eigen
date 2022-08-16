@@ -187,6 +187,7 @@
     "remove-markdown": "0.1.0",
     "rn-async-storage-flipper": "0.0.10",
     "rn-fetch-blob": "0.12.0",
+    "rxjs": "7.5.6",
     "search-insights": "2.0.3",
     "semver": "7.3.5",
     "simple-markdown": "0.7.3",
@@ -197,8 +198,8 @@
     "tsutils": "3.21.0",
     "unleash-proxy-client": "1.11.0",
     "url": "0.11.0",
-    "yup": "0.31.1",
     "victory-native": "36.6.0",
+    "yup": "0.31.1",
     "zustand": "3.6.9"
   },
   "devDependencies": {

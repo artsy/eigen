@@ -41,8 +41,12 @@ export const LineGraphCategoryPicker: React.FC<LineGraphCategoryPickerProps> = (
   const scrollViewRef = useRef<ScrollView>(null)
   const { width: screenWidth } = Dimensions.get("window")
 
-  useEffect(() => {
+  const alignSelectedToCenter = () => {
     if (allLayoutsPresent) {
+      if (categories[selectedIndex].name !== selectedCategory) {
+        setSelectedIndex(0)
+        return
+      }
       let left = 20
       for (let i = 0; i < selectedIndex; i++) {
         left += categoryLayouts[i]!.width
@@ -51,7 +55,10 @@ export const LineGraphCategoryPicker: React.FC<LineGraphCategoryPickerProps> = (
       const scrollLeft = center - screenWidth / 2
       scrollViewRef.current?.scrollTo({ x: scrollLeft })
     }
-  }, [selectedIndex, selectedCategory])
+  }
+  useEffect(() => {
+    alignSelectedToCenter()
+  })
 
   const onSelectCategory = (category: string, index: number) => {
     setSelectedIndex(index)
@@ -60,6 +67,9 @@ export const LineGraphCategoryPicker: React.FC<LineGraphCategoryPickerProps> = (
 
   return (
     <ScrollView
+      contentContainerStyle={{
+        paddingEnd: screenWidth / 2,
+      }}
       ref={scrollViewRef}
       horizontal
       showsHorizontalScrollIndicator={false}
@@ -67,6 +77,7 @@ export const LineGraphCategoryPicker: React.FC<LineGraphCategoryPickerProps> = (
     >
       {categories.map((category, index) => (
         <Flex key={index + category.name} flexDirection="row">
+          <Spacer p={index === 0 ? 1 : 0.5} />
           <CategoryPill
             onCategorySelected={(sCategory) => onSelectCategory(sCategory, index)}
             selectedCategory={selectedCategory}
@@ -81,7 +92,6 @@ export const LineGraphCategoryPicker: React.FC<LineGraphCategoryPickerProps> = (
               })
             }}
           />
-          <Spacer p={0.5} />
         </Flex>
       ))}
     </ScrollView>

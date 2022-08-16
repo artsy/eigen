@@ -8,6 +8,7 @@ import {
 } from "__generated__/MedianSalePriceChart_query.graphql"
 import { formatLargeNumber } from "app/utils/formatLargeNumber"
 import { computeCategoriesForChart } from "app/utils/marketPriceInsightHelpers"
+import { compact } from "lodash"
 import { DateTime } from "luxon"
 import { Flex, LineGraph, Text } from "palette"
 import { LineChartData } from "palette/elements/LineGraph/types"
@@ -58,45 +59,79 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
     return null
   }
 
-  const deriveAvailableCategories = () =>
-    data.analyticsCalendarYearPriceInsights?.map((p) => p.medium)
-
-  const initialCategories = computeCategoriesForChart(deriveAvailableCategories())
-  const [categories, setCategories] =
-    useState<Array<{ name: string; color: string }>>(initialCategories)
-
   const reloadData = () => {
-    const { endYear, startYear } = getStartAndEndYear()
-    const category = selectedCategory === "Other" ? "Unknown" : selectedCategory
-    refetch({ artistId, medium: category, endYear, startYear })
+    refetch({ artistId })
   }
 
   useEffect(() => {
     reloadData()
     setPressedDataPoint(null)
-  }, [artistId, selectedDuration])
+  }, [artistId])
+
+  const eightYearChartDataSource: Record<
+    string,
+    NonNullable<
+      MedianSalePriceChart_query$data["analyticsCalendarYearPriceInsights"]
+    >[0]["calendarYearMarketPriceInsights"]
+  > = data.analyticsCalendarYearPriceInsights
+    ? Object.assign(
+        {},
+        ...data.analyticsCalendarYearPriceInsights.map((d) => ({
+          [d.medium]: d.calendarYearMarketPriceInsights,
+        }))
+      )
+    : {}
+
+  const threeYearChartDataSource: Record<
+    string,
+    NonNullable<
+      MedianSalePriceChart_query$data["analyticsCalendarYearPriceInsights"]
+    >[0]["calendarYearMarketPriceInsights"]
+  > = data.analyticsCalendarYearPriceInsights
+    ? Object.assign(
+        {},
+        ...data.analyticsCalendarYearPriceInsights.map((d) => {
+          const value = compact(
+            d.calendarYearMarketPriceInsights?.map((insight) => {
+              const { endYear } = getStartAndEndYear()
+              if (parseInt(insight.year, 10) >= parseInt(endYear, 10) - 3) {
+                return insight
+              }
+            })
+          )
+          if (value && value.length) {
+            return { [d.medium]: value }
+          }
+        })
+      )
+    : {}
+
+  const chartDataSource =
+    selectedDuration === MedianSalePriceChartDuration["3 yrs"]
+      ? threeYearChartDataSource
+      : eightYearChartDataSource
+
+  const deriveAvailableCategories = () => Object.keys(chartDataSource)?.map((medium) => medium)
+
+  const initialCategories = computeCategoriesForChart(deriveAvailableCategories())
+  const [categories, setCategories] =
+    useState<Array<{ name: string; color: string }>>(initialCategories)
 
   useEffect(() => {
-    if (selectedDuration === MedianSalePriceChartDuration["8 yrs"]) {
-      reloadData()
-    }
     setPressedDataPoint(null)
-  }, [selectedCategory])
+  }, [artistId, selectedDuration, selectedCategory])
 
   useEffect(() => {
-    const newCategories = deriveAvailableCategories()
+    const newCategories = computeCategoriesForChart(deriveAvailableCategories()).map((c) => c.name)
     if (JSON.stringify(categories.map((c) => c.name)) !== JSON.stringify(newCategories)) {
-      // artist with a different set of mediums has been selected
+      // duration or artist with a different set of mediums has been selected
       const newSelectedCategory = newCategories?.includes(selectedCategory)
         ? selectedCategory
         : newCategories?.[0] ?? selectedCategory
       setCategories(computeCategoriesForChart(newCategories))
       setSelectedCategory(newSelectedCategory)
     }
-    // data.analyticsCalendarYearPriceInsights is expected to stay the same for the same artist
-    // since all data is loaded at once. If this changes then obviously a new artist with different
-    // available mediums/category has been loaded
-  }, [JSON.stringify(data.analyticsCalendarYearPriceInsights)])
+  }, [JSON.stringify(data.analyticsCalendarYearPriceInsights), selectedDuration])
 
   const bands: Array<{ name: MedianSalePriceChartDuration }> = [
     { name: MedianSalePriceChartDuration["3 yrs"] },
@@ -113,22 +148,8 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
   }
 
   // MARK: ChartData logic
-  const threeYearChartDataSource: Record<
-    string,
-    NonNullable<MedianSalePriceChart_query$data["analyticsCalendarYearMarketPriceInsights"]>
-  > = data.analyticsCalendarYearPriceInsights
-    ? Object.assign(
-        {},
-        ...data.analyticsCalendarYearPriceInsights.map((d) => ({
-          [d.medium]: d.calendarYearMarketPriceInsights,
-        }))
-      )
-    : {}
-
   const chartDataArraySource =
-    selectedDuration === MedianSalePriceChartDuration["3 yrs"]
-      ? threeYearChartDataSource[selectedCategory === "Other" ? "Unknown" : selectedCategory]
-      : data.analyticsCalendarYearMarketPriceInsights
+    chartDataSource[selectedCategory === "Other" ? "Unknown" : selectedCategory]
 
   const chartDataArray: LineChartData["data"] =
     chartDataArraySource?.map((p) => ({
@@ -145,9 +166,23 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
       return "-"
     }
     if (pressedDataPoint) {
-      return "USD $" + formatLargeNumber(pressedDataPoint.y)
+      return pressedDataPoint.y === 0
+        ? "O Auction Results"
+        : "USD $" + formatLargeNumber(pressedDataPoint.y)
     }
-    return "USD $" + formatLargeNumber(calculateMedian(chartDataArray.map((d) => d.y)))
+    return (
+      "USD $" +
+      formatLargeNumber(
+        calculateMedian(
+          compact(
+            chartDataArray.map((d) => {
+              // exclude all zero values
+              return d.y ? d.y : undefined
+            })
+          )
+        )
+      )
+    )
   }
 
   const totalLotsSold = chartDataArraySource?.reduce(
@@ -155,7 +190,7 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
       ...c,
       lotsSold: parseInt(p.lotsSold, 10) + parseInt(c.lotsSold, 10),
     }),
-    { lotsSold: "0", averageSalePrice: "0", medium: null, year: "" }
+    { lotsSold: 0, averageSalePrice: "0", year: "" }
   ).lotsSold
 
   const dataText = () => {
@@ -181,7 +216,7 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
     )
   }
 
-  const onDataPointPressed = (datum: typeof chartDataArray[0]) => {
+  const onDataPointPressed = (datum: typeof chartDataArray[0] | null) => {
     setPressedDataPoint(datum)
   }
 
@@ -198,12 +233,14 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
   return (
     <Flex>
       <LineGraph
+        chartHeight={screenHeight / 2.5}
         chartInterpolation="monotoneX"
         showHighlights
         data={lineChartData}
         bands={bands}
         onBandSelected={onBandSelected}
         onDataPointPressed={onDataPointPressed}
+        onXHighlightPressed={(h) => console.log("xHighlight", h)}
         selectedBand={selectedDuration}
         categories={categories}
         onCategorySelected={onCategorySelected}
@@ -238,20 +275,8 @@ const medianSalePriceChartFragment = graphql`
   @argumentDefinitions(
     artistId: { type: "ID!" }
     endYear: { type: "String" }
-    medium: { type: "String!" }
     startYear: { type: "String" }
   ) {
-    analyticsCalendarYearMarketPriceInsights(
-      artistId: $artistId
-      endYear: $endYear
-      medium: $medium
-      startYear: $startYear
-    ) {
-      averageSalePrice
-      year
-      lotsSold
-      medium
-    }
     analyticsCalendarYearPriceInsights(
       artistId: $artistId
       endYear: $endYear

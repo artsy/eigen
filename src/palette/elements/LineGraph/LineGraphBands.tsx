@@ -1,4 +1,4 @@
-import { Flex, Spacer, Text, Touchable } from "palette"
+import { Flex, Text, Touchable } from "palette"
 import { useColor } from "palette/hooks"
 
 export interface LineGraphBandProps {
@@ -16,7 +16,7 @@ export const LineGraphBands: React.FC<LineGraphBandProps> = ({
   return (
     <Flex flexDirection="row" justifyContent="center" alignItems="center">
       {bands.map((band, index) => (
-        <Flex key={band.name + index}>
+        <Flex key={band.name + index} mx={3} mb={2}>
           <Touchable
             haptic="impactMedium"
             onPress={() => onBandSelected(band.name)}
@@ -31,7 +31,6 @@ export const LineGraphBands: React.FC<LineGraphBandProps> = ({
               {band.name}
             </Text>
           </Touchable>
-          <Spacer mx={2} my={1} />
         </Flex>
       ))}
     </Flex>
