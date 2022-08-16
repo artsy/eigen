@@ -1,8 +1,8 @@
 import {
   OPTION_A_CURATED_SELECTION_OF_ARTWORKS,
   OPTION_ARTISTS_ON_THE_RISE,
-  OPTION_FOLLOW_ARTISTS_IM_INTERESTED_IN,
-  OPTION_FOLLOW_GALLERIES_I_LOVE,
+  OPTION_FOLLOW_ARTISTS_I_WANT_TO_COLLECT,
+  OPTION_FOLLOW_GALLERIES_IM_INTERESTED_IN,
   OPTION_TOP_AUCTION_LOTS,
 } from "../config"
 import { useOnboardingContext } from "./useOnboardingContext"
@@ -27,10 +27,10 @@ export const useNextOnboardingScreen = () => {
     case OPTION_ARTISTS_ON_THE_RISE:
       return screenNames.OnboardingArtistsOnTheRise
 
-    case OPTION_FOLLOW_ARTISTS_IM_INTERESTED_IN:
+    case OPTION_FOLLOW_ARTISTS_I_WANT_TO_COLLECT:
       return screenNames.OnboardingFollowArtists
 
-    case OPTION_FOLLOW_GALLERIES_I_LOVE:
+    case OPTION_FOLLOW_GALLERIES_IM_INTERESTED_IN:
       return screenNames.OnboardingFollowGalleries
   }
 }

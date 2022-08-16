@@ -48,7 +48,7 @@ export const OnboardingQuestionOne = () => {
 
 const ACTION = "SET_ANSWER_ONE"
 const ANSWERS = [OPTION_YES_I_LOVE_COLLECTING_ART, OPTION_NO_IM_JUST_STARTING_OUT]
-const QUESTION = "Have you ever purchased art before?"
+const QUESTION = "Have you purchased art before?"
 
 const COLLECTOR_LEVELS = {
   [OPTION_YES_I_LOVE_COLLECTING_ART]: 3,

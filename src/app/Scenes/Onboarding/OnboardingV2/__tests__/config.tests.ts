@@ -2,7 +2,7 @@ import { renderHook } from "@testing-library/react-hooks"
 import { State } from "app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingContext"
 import {
   OPTION_DEVELOPING_MY_ART_TASTES,
-  OPTION_FOLLOW_GALLERIES_I_LOVE,
+  OPTION_FOLLOW_GALLERIES_IM_INTERESTED_IN,
   OPTION_TOP_AUCTION_LOTS,
   OPTION_YES_I_LOVE_COLLECTING_ART,
   useConfig,
@@ -83,7 +83,7 @@ describe("config", () => {
     expect(workflowEngine.next()).toEqual("VIEW_QUESTION_ONE")
     expect(workflowEngine.next()).toEqual("VIEW_QUESTION_TWO")
     expect(workflowEngine.next()).toEqual("VIEW_QUESTION_THREE")
-    basis.current.questionThree = OPTION_FOLLOW_GALLERIES_I_LOVE
+    basis.current.questionThree = OPTION_FOLLOW_GALLERIES_IM_INTERESTED_IN
     expect(workflowEngine.next()).toEqual("VIEW_FOLLOW_GALLERIES")
   })
 })
