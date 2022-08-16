@@ -15,6 +15,7 @@ jest.mock("@react-navigation/native", () => {
   return {
     ...actualNav,
     useNavigation: () => ({
+      getId: () => "onboarding-gene-id",
       navigate: mockedNavigate,
     }),
   }
