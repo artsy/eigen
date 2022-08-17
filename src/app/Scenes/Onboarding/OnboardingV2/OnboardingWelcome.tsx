@@ -177,6 +177,7 @@ const OnboardingWelcome = () => {
 
 const Placeholder = () => (
   <Flex flex={1} justifyContent="center" alignItems="center" backgroundColor="black100">
+    <ArtsyLogoAbsoluteHeader />
     <Spinner color="white100" />
   </Flex>
 )
