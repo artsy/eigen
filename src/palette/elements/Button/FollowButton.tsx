@@ -14,7 +14,7 @@ export const FollowButton: React.FC<FollowButtonProps> = ({
   variant = "v1",
   ...rest
 }) => {
-  const iteration: { variant: ButtonProps["variant"] } =
+  const style: { variant: ButtonProps["variant"] } =
     variant === "v2"
       ? { variant: "fillLight" }
       : { variant: isFollowed ? "outline" : "outlineGray" }
@@ -24,7 +24,7 @@ export const FollowButton: React.FC<FollowButtonProps> = ({
       size="small"
       longestText="Following"
       icon={isFollowed && <CheckIcon fill="black60" width="16px" height="16px" />}
-      {...iteration}
+      {...style}
       {...rest}
     >
       {isFollowed ? "Following" : "Follow"}
