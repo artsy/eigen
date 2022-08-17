@@ -1,8 +1,8 @@
 import { useNavigation } from "@react-navigation/native"
 import { OnboardingWelcomeQuery } from "__generated__/OnboardingWelcomeQuery.graphql"
 import { GlobalStore } from "app/store/GlobalStore"
-import { ArtsyLogoIcon, Box, Button, Flex, Screen, Spacer, Text } from "palette"
-import { useEffect } from "react"
+import { ArtsyLogoIcon, Box, Button, Flex, Screen, Spacer, Spinner, Text } from "palette"
+import { Suspense, useEffect } from "react"
 import { Image, StatusBar } from "react-native"
 import Animated, {
   Easing,
@@ -33,8 +33,12 @@ const BUTTONS_ENTERING_DELAY_TOTAL =
   LAST_IMG_DISPLAY_DURATION +
   BUTTONS_ENTERING_DELAY
 
-export const OnboardingWelcome = () => {
-  const { me } = useLazyLoadQuery<OnboardingWelcomeQuery>(OnboardingWelcomeScreenQuery, {})
+const OnboardingWelcome = () => {
+  const { me } = useLazyLoadQuery<OnboardingWelcomeQuery>(
+    OnboardingWelcomeScreenQuery,
+    {},
+    { fetchPolicy: "network-only" }
+  )
   const { navigate } = useNavigation()
   const { next } = useOnboardingContext()
   const opacity = useSharedValue(1)
@@ -171,6 +175,12 @@ export const OnboardingWelcome = () => {
   )
 }
 
+const Placeholder = () => (
+  <Flex flex={1} justifyContent="center" alignItems="center" backgroundColor="black100">
+    <Spinner color="white100" />
+  </Flex>
+)
+
 const ArtsyLogoAbsoluteHeader = () => {
   const { top } = useSafeAreaInsets()
 
@@ -180,6 +190,12 @@ const ArtsyLogoAbsoluteHeader = () => {
     </Box>
   )
 }
+
+export const OnboardingWelcomeScreen = () => (
+  <Suspense fallback={<Placeholder />}>
+    <OnboardingWelcome />
+  </Suspense>
+)
 
 const OnboardingWelcomeScreenQuery = graphql`
   query OnboardingWelcomeQuery {
