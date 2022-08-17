@@ -14,7 +14,7 @@ import { OnboardingQuestionOne } from "./OnboardingQuestionOne"
 import { OnboardingQuestionThree } from "./OnboardingQuestionThree"
 import { OnboardingQuestionTwo } from "./OnboardingQuestionTwo"
 import { OnboardingTopAuctionLots } from "./OnboardingTopAuctionLots"
-import { OnboardingPersonalizationWelcome } from "./OnboardingWelcome"
+import { OnboardingWelcome } from "./OnboardingWelcome"
 
 // tslint:disable-next-line:interface-over-type-literal
 export type OnboardingNavigationStack = {
@@ -59,10 +59,7 @@ export const OnboardingV2 = () => {
             headerMode: "screen",
           }}
         >
-          <StackNavigator.Screen
-            name="OnboardingWelcome"
-            component={OnboardingPersonalizationWelcome}
-          />
+          <StackNavigator.Screen name="OnboardingWelcome" component={OnboardingWelcome} />
           <StackNavigator.Screen name="OnboardingQuestionOne" component={OnboardingQuestionOne} />
           <StackNavigator.Screen name="OnboardingQuestionTwo" component={OnboardingQuestionTwo} />
           <StackNavigator.Screen
