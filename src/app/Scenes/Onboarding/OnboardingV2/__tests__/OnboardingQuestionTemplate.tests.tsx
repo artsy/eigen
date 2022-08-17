@@ -8,6 +8,16 @@ const useOnboardingContextMock = useOnboardingContext as jest.Mock
 
 jest.mock("app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingTracking")
 
+jest.mock("@react-navigation/native", () => {
+  return {
+    useNavigation: () => ({
+      canGoBack: jest.fn(),
+      goBack: jest.fn(),
+    }),
+    useFocusEffect: jest.fn(),
+  }
+})
+
 const contextValue = (answer: string | null = null) => ({
   dispatch: jest.fn(),
   next: jest.fn(),
