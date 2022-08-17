@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native"
-import { OnboardingAnimationQuery } from "__generated__/OnboardingAnimationQuery.graphql"
+import { OnboardingWelcomeQuery } from "__generated__/OnboardingWelcomeQuery.graphql"
 import { GlobalStore } from "app/store/GlobalStore"
 import { ArtsyLogoIcon, Box, Button, Flex, Screen, Spacer, Text } from "palette"
 import { useEffect } from "react"
@@ -34,7 +34,7 @@ const BUTTONS_ENTERING_DELAY_TOTAL =
   BUTTONS_ENTERING_DELAY
 
 export const OnboardingWelcome = () => {
-  const { me } = useLazyLoadQuery<OnboardingAnimationQuery>(OnboardingAnimationScreenQuery, {})
+  const { me } = useLazyLoadQuery<OnboardingWelcomeQuery>(OnboardingWelcomeScreenQuery, {})
   const { navigate } = useNavigation()
   const { next } = useOnboardingContext()
   const opacity = useSharedValue(1)
@@ -181,8 +181,8 @@ const ArtsyLogoAbsoluteHeader = () => {
   )
 }
 
-const OnboardingAnimationScreenQuery = graphql`
-  query OnboardingAnimationQuery {
+const OnboardingWelcomeScreenQuery = graphql`
+  query OnboardingWelcomeQuery {
     me {
       name
     }
