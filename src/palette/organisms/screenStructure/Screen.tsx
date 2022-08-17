@@ -91,15 +91,18 @@ export const Header: React.FC<HeaderProps> = ({ onBack, onSkip }) => {
     <Flex
       mt={insets.top}
       height={NAVBAR_HEIGHT}
-      px={SCREEN_HORIZONTAL_PADDING}
       flexDirection="row"
       alignItems="center"
       justifyContent="space-between"
     >
-      <BackButton onPress={onBack} />
+      <Touchable haptic="impactLight" onPress={onBack}>
+        <Flex height="100%" justifyContent="center" px={SCREEN_HORIZONTAL_PADDING}>
+          <BackButton />
+        </Flex>
+      </Touchable>
       {!!onSkip && (
         <Touchable haptic="impactLight" onPress={onSkip}>
-          <Flex height={20} alignItems="flex-end" justifyContent="flex-end">
+          <Flex height="100%" justifyContent="center" px={SCREEN_HORIZONTAL_PADDING}>
             <Text textAlign="right" variant="xs">
               Skip
             </Text>
