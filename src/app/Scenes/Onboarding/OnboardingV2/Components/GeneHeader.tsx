@@ -51,7 +51,12 @@ export const GeneHeader: React.FC<GeneHeaderProps> = ({ geneID, gene, descriptio
             {description}
           </Text>
           <Spacer mt={2} />
-          <FollowButton isFollowed={!!isFollowed} onPress={handleFollowGene} loading={isInFlight} />
+          <FollowButton
+            isFollowed={!!isFollowed}
+            onPress={handleFollowGene}
+            loading={isInFlight}
+            variant="v2"
+          />
         </Flex>
       </ImageBackground>
       <AnimatedTooltip />
