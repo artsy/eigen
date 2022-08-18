@@ -1,5 +1,5 @@
 import { scaleLinear } from "d3-scale"
-import { Circle, G } from "react-native-svg"
+import { G } from "react-native-svg"
 import { ScatterChartPoint, ScatterChartPointProps } from "./ScatterPointsContainers"
 import { LineChartData } from "./types"
 
@@ -32,6 +32,8 @@ export const ScatterChart: React.FC<ScatterChartProps> = ({
 
   const scaleY = scaleLinear().domain(yDomain).range([chartHeight, 0])
 
+  const pointXRadiusOfTouch = chartWidth / data.length / 2
+
   return (
     <G>
       {data.map((datum) => {
@@ -40,9 +42,7 @@ export const ScatterChart: React.FC<ScatterChartProps> = ({
         const point = { x, y, datum }
         const isActive =
           !!selectedDataPoint && JSON.stringify(selectedDataPoint) === JSON.stringify(datum)
-
         const color = showOnlyActiveDataPoint && !isActive ? "transparent" : tintColor
-        const pointXRadiusOfTouch = chartWidth / (data.length - 1) / 2
         return (
           <ScatterChartPoint
             key={"circle" + x + y}

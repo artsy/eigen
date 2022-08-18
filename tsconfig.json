@@ -7,8 +7,7 @@
     "experimentalDecorators": true, // used for class decorators. it would be cool to remove this if we ever get rid of classes.
     "noFallthroughCasesInSwitch": true, // avoid accidental fallthrough.
     "noUnusedLocals": true, // what it says.
-    "noUnusedParameters": true, // what it says.
-    "skipLibCheck": true // temporary disable typechecking node_modules to use Charts lib. Victory is actively migrating to TS and the types for now are a mess.
+    "noUnusedParameters": true // what it says.
   },
   "include": [
     // all files must match at least one of these rules. required by `composite`.

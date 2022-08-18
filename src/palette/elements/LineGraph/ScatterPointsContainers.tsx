@@ -1,6 +1,5 @@
 import { useEffect } from "react"
 import { Circle, G } from "react-native-svg"
-import { Point } from "victory-native"
 import { ChartTapEventType, ChartTapObservable } from "./LineGraphChart"
 import { LineChartData } from "./types"
 
@@ -61,51 +60,6 @@ export const HighlightIconContainer: React.FC<HighlightIconContainerProps> = (pr
   )
 }
 
-interface ScatterDataPointContainerProps extends BaseContainerProps {
-  setLastPressedDatum: (datum: any) => void
-  size: number
-  /** the area along the x-axis that when touched, a point can claim */
-  pointXRadiusOfTouch: number
-  onDataPointPressed?: (datum: LineChartData["data"][0]) => void
-}
-
-export const ScatterDataPointContainer: React.FC<ScatterDataPointContainerProps> = (props) => {
-  const {
-    onDataPointPressed,
-    pointXRadiusOfTouch,
-    setLastPressedDatum,
-    lastPressedLocation,
-    clearLastPressedLocation,
-    ...injectedProps
-  } = props
-  const { x, datum } = injectedProps as any
-
-  const isWithinItemRange = (locationX: number) => {
-    if (Math.abs(x - locationX) <= pointXRadiusOfTouch) {
-      return true
-    }
-    return false
-  }
-
-  const checkPannedOverXDataRegion = (event: ChartGestureEventType) => {
-    if (isWithinItemRange(event.x)) {
-      setLastPressedDatum?.({ ...datum, left: x - 10 })
-      onDataPointPressed?.(datum)
-    }
-  }
-
-  const observer = {
-    next: checkPannedOverXDataRegion,
-  }
-
-  useEffect(() => {
-    const observable = ChartGestureObservable.subscribe(observer)
-    return () => observable.unsubscribe()
-  }, [])
-
-  return <Point {...props} />
-}
-
 export interface ScatterChartPointProps {
   color: string
   onDataPointAreaTapped: (point: ScatterChartPointProps["point"]) => void
@@ -129,7 +83,7 @@ export const ScatterChartPoint: React.FC<ScatterChartPointProps> = ({
   }
 
   const checkTappedOverXDataRegion = (event: ChartTapEventType) => {
-    if (isWithinItemRange(event.x)) {
+    if (isWithinItemRange(event.absoluteX || event.pageX)) {
       onDataPointAreaTapped(point)
     }
   }
