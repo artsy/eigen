@@ -39,6 +39,7 @@ const OnboardingGene: React.FC<OnboardingGeneProps> = ({ id, description }) => {
               </Button>
             </Flex>
           )}
+          unstickFooter
           connection={gene?.artworks!}
           hasMore={() => false}
           loadMore={() => null}

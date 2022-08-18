@@ -60,6 +60,10 @@ export const OnboardingV2 = () => {
           }}
         >
           <StackNavigator.Screen
+            name="OnboardingTopAuctionLots"
+            component={OnboardingTopAuctionLots}
+          />
+          <StackNavigator.Screen
             name="OnboardingWelcomeScreen"
             component={OnboardingWelcomeScreen}
           />
@@ -68,10 +72,6 @@ export const OnboardingV2 = () => {
           <StackNavigator.Screen
             name="OnboardingQuestionThree"
             component={OnboardingQuestionThree}
-          />
-          <StackNavigator.Screen
-            name="OnboardingTopAuctionLots"
-            component={OnboardingTopAuctionLots}
           />
           <StackNavigator.Screen
             name="OnboardingArtistsOnTheRise"

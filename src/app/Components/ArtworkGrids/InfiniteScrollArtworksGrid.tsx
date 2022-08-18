@@ -118,6 +118,8 @@ export interface Props {
   updateRecentSearchesOnTap?: boolean
 
   localSortAndFilterArtworks?: (artworks: any[]) => any[]
+
+  unstickFooter?: boolean
 }
 
 interface PrivateProps {
@@ -195,6 +197,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
   contextScreenOwnerSlug,
   contextScreenOwnerId,
   contextScreenOwnerType,
+  unstickFooter,
 }) => {
   const getSectionDimension = (gridWidth: number | null | undefined) => {
     // Setting the dimension to 1 for tests to avoid adjusting the screen width
@@ -417,6 +420,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
             <Spinner />
           </Flex>
         )}
+        {!!sectionDimension && !!unstickFooter && renderFooter()}
       </ScrollViewWrapper>
 
       {!!localIsLoading && hasMore() && (
@@ -433,7 +437,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
         </Flex>
       )}
 
-      {renderFooter()}
+      {!unstickFooter && renderFooter()}
     </>
   )
 }
