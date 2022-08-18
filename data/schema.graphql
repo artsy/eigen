@@ -2314,6 +2314,9 @@ union ArtworkOrEditionSetType = Artwork | EditionSet
 type ArtworkPriceInsights {
   annualLotsSold: Int
   annualValueSoldCents: FormattedNumber
+
+  # The annual value of the work sold "in USD "
+  annualValueSoldDisplayText: String
   artistId: String
   averageSalePriceDisplayText(
     # Passes in to numeral, such as `'0.00'`
@@ -2321,6 +2324,10 @@ type ArtworkPriceInsights {
   ): String
   demandRank: Float
   lastAuctionResultDate: String
+  liquidityRankDisplayText(
+    # Return the liquidity rank in a formatted way (Low, medium, high or very high)
+    format: String = ""
+  ): String
   medianSalePriceDisplayText(
     # Passes in to numeral, such as `'0.00'`
     format: String = ""
