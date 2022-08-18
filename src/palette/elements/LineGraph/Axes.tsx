@@ -12,7 +12,6 @@ const d3 = { shape }
 interface AxisProps {
   xDomain: [number, number]
   yDomain: [number, number]
-  xGridPositionCallback: (val: { [key: number]: number }) => void
   xtickValues: number[]
   ytickValues: number[]
   chartWidth: number
@@ -23,7 +22,6 @@ interface AxisProps {
 export const Axes: React.FC<AxisProps> = ({
   chartWidth,
   chartHeight,
-  xGridPositionCallback,
   xtickValues,
   ytickValues,
   xDomain,
@@ -62,7 +60,6 @@ export const Axes: React.FC<AxisProps> = ({
       {/** GRIDS */}
       {Array.from({ length: xValuesASC.length }).map((_, index) => {
         const spacer = chartWidth / (xValuesASC.length - 1)
-        xGridPositionCallback({ [xValuesASC[index]]: spacer * index })
         return (
           <Path
             key={"path" + index}

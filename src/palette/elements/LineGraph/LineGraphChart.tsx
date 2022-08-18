@@ -282,7 +282,27 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
     onDataPointPressed?.(datapointsByX[label])
   }
 
-  const [xGridPositions, setXGridPositions] = useState<Record<number, number>>({})
+  const gridPositions = () => {
+    const xValuesASC = xValues.sort((a, b) => a - b)
+    const positions: Record<number, number> = Object.assign(
+      {},
+      ...Array.from({ length: xValuesASC.length }).map((_, index) => {
+        const spacer = chartWidth / (xValuesASC.length - 1)
+        return { [xValuesASC[index]]: spacer * index }
+      })
+    )
+    return positions
+  }
+
+  const composeGridPositions = () => {
+    setXGridPositions(gridPositions())
+  }
+
+  useEffect(() => {
+    composeGridPositions()
+  }, [JSON.stringify(xValues)])
+
+  const [xGridPositions, setXGridPositions] = useState<Record<number, number>>(gridPositions())
 
   useCode(() => {
     return call([scrollX], (scrollValueX) => {
@@ -331,12 +351,6 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
             chartHeight={chartHeight}
             xDomain={[minMaxDomainX.min, minMaxDomainX.max]}
             yDomain={[minMaxDomainY.min, minMaxDomainY.max]}
-            xGridPositionCallback={(val) => {
-              // const newState = xGridPositions
-              // const key = Object.keys(val)[0]
-              // newState[parseInt(key, 10)] = Object.values(val)[0]
-              // setXGridPositions(newState)
-            }}
             xtickValues={xValues}
             ytickValues={yValues}
             yLabelMaxWidth={svgLeftMargin}
