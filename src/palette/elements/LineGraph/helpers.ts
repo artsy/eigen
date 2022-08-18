@@ -81,16 +81,16 @@ const shadeRGBColor = (color: string, percent: number) => {
   )
 }
 
+export const hexRegex = new RegExp(/^#(?:[A-Fa-f0-9]{3}){1,2}$/)
+export const rgbRegex = new RegExp(
+  /^rgb[(](?:\s*0*(?:\d\d?(?:\.\d+)?(?:\s*%)?|\.\d+\s*%|100(?:\.0*)?\s*%|(?:1\d\d|2[0-4]\d|25[0-5])(?:\.\d+)?)\s*(?:,(?![)])|(?=[)]))){3}[)]$/
+)
 /** shadeColor accepts either a hex or rgb color and lightens or darkens it based on supplied percent
  * @param color hex or rgb color string
  * @param percent decimal number between -0 and +1. Negative numbers darkens, positive numbers lightens
  * @returns string
  */
 export const shadeColor = (color: string, percent: number): string => {
-  const hexRegex = new RegExp(/^#(?:[A-Fa-f0-9]{3}){1,2}$/)
-  const rgbRegex = new RegExp(
-    /^rgb[(](?:\s*0*(?:\d\d?(?:\.\d+)?(?:\s*%)?|\.\d+\s*%|100(?:\.0*)?\s*%|(?:1\d\d|2[0-4]\d|25[0-5])(?:\.\d+)?)\s*(?:,(?![)])|(?=[)]))){3}[)]$/
-  )
   if (hexRegex.test(color)) {
     return shadeHexColor(color, percent)
   } else if (rgbRegex.test(color)) {
@@ -103,3 +103,20 @@ export const shadeColor = (color: string, percent: number): string => {
   }
   return color
 }
+
+const randomString = () => {
+  return Math.floor((1 + Math.random()) * 0x10000)
+    .toString(16)
+    .substring(1)
+}
+
+export const randomSVGId = () =>
+  randomString() +
+  "-" +
+  randomString() +
+  "-" +
+  randomString() +
+  "-" +
+  randomString() +
+  "-" +
+  randomString()

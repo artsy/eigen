@@ -1,7 +1,7 @@
 import { useEffect } from "react"
-import { G } from "react-native-svg"
+import { Circle, G } from "react-native-svg"
 import { Point } from "victory-native"
-import { ChartGestureEventType, ChartGestureObservable } from "./LineGraphChart"
+import { ChartTapEventType, ChartTapObservable } from "./LineGraphChart"
 import { LineChartData } from "./types"
 
 interface BaseContainerProps {
@@ -104,4 +104,45 @@ export const ScatterDataPointContainer: React.FC<ScatterDataPointContainerProps>
   }, [])
 
   return <Point {...props} />
+}
+
+export interface ScatterChartPointProps {
+  color: string
+  onDataPointAreaTapped: (point: ScatterChartPointProps["point"]) => void
+  point: { x: number; y: number; datum: LineChartData["data"][0] }
+  /** the area along the x-axis that when touched, a point can claim */
+  pointXRadiusOfTouch: number
+  size?: number
+}
+export const ScatterChartPoint: React.FC<ScatterChartPointProps> = ({
+  color,
+  point,
+  onDataPointAreaTapped,
+  pointXRadiusOfTouch,
+  size = 6,
+}) => {
+  const isWithinItemRange = (locationX: number) => {
+    if (Math.abs(point.x - locationX) <= pointXRadiusOfTouch) {
+      return true
+    }
+    return false
+  }
+
+  const checkTappedOverXDataRegion = (event: ChartTapEventType) => {
+    if (isWithinItemRange(event.x)) {
+      onDataPointAreaTapped(point)
+    }
+  }
+
+  const observer = {
+    next: checkTappedOverXDataRegion,
+  }
+
+  useEffect(() => {
+    const observable = ChartTapObservable.subscribe(observer)
+    return () => observable.unsubscribe()
+  }, [])
+  return (
+    <Circle r={size / 2} cx={point.x} cy={point.y} stroke={color} strokeWidth="2.5" fill={color} />
+  )
 }

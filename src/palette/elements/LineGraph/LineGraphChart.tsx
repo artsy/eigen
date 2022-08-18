@@ -1,23 +1,31 @@
-import { compact, noop } from "lodash"
+import { scaleLinear, scaleQuantile } from "d3-scale"
+import * as shape from "d3-shape"
+import { compact } from "lodash"
 import { Flex } from "palette"
 import { useColor, useSpace } from "palette/hooks"
 import { StarCircleIcon } from "palette/svgs/StarCircleIcon"
 import { Color } from "palette/Theme"
-import { useCallback, useEffect, useState } from "react"
-import { Dimensions, Platform } from "react-native"
+import React, { useCallback, useEffect, useRef, useState } from "react"
+import { Dimensions, Platform, StyleSheet } from "react-native"
 import {
-  GestureEventPayload,
   HandlerStateChangeEventPayload,
   LongPressGestureHandler,
   PanGestureHandler,
-  PanGestureHandlerEventPayload,
   State,
   TapGestureHandler,
   TapGestureHandlerEventPayload,
 } from "react-native-gesture-handler"
-import Animated, { runOnJS, useAnimatedGestureHandler } from "react-native-reanimated"
-import Svg, { Defs, G, LinearGradient, Stop } from "react-native-svg"
+import Animated, {
+  call,
+  Extrapolate,
+  useAnimatedStyle,
+  useCode,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated"
+import Svg, { Defs, G, LinearGradient, Path, Stop } from "react-native-svg"
 import { Subject } from "rxjs"
+import * as pathProperties from "svg-path-properties"
 import { AnimatePropTypeInterface, InterpolationPropType } from "victory-core"
 import {
   VictoryArea,
@@ -28,16 +36,20 @@ import {
   VictoryTheme,
 } from "victory-native"
 import { Text } from "../Text"
-import { AxisDisplayType, shadeColor, tickFormat } from "./helpers"
-import { HighlightIconContainer, ScatterDataPointContainer } from "./ScatterPointsContainers"
+import { Axes, XAxisLabels, YAxisLabels } from "./Axes"
+import { AxisDisplayType, randomSVGId, shadeColor, tickFormat } from "./helpers"
+import { ScatterChart } from "./ScatterChart"
+import {
+  HighlightIconContainer,
+  ScatterChartPointProps,
+  ScatterDataPointContainer,
+} from "./ScatterPointsContainers"
 import { LineChartData } from "./types"
 
-export type ChartGestureEventType =
-  | (GestureEventPayload & PanGestureHandlerEventPayload)
-  | (HandlerStateChangeEventPayload & TapGestureHandlerEventPayload)
+export type ChartTapEventType = HandlerStateChangeEventPayload & TapGestureHandlerEventPayload
 
 // using Subject because this observable should multicast to many datapoints
-export const ChartGestureObservable = new Subject<ChartGestureEventType>()
+export const ChartTapObservable = new Subject<ChartTapEventType>()
 
 interface LineGraphChartProps extends LineChartData {
   chartHeight?: number
@@ -48,6 +60,7 @@ interface LineGraphChartProps extends LineChartData {
   onYHighlightPressed?: (datum: { _x: number; _y: number; x: number; y: number }) => void
   shouldAnimate?: boolean
   showHighlights?: boolean
+  showOnlyActiveDataPoint?: boolean
   /** Specifies by what factor between -0 to +1 to shade the graph area. Positive values lightens, negative darkens */
   tintColorShadeFactor?: number
   xAxisTickFormatter?: (val: any) => string
@@ -64,10 +77,11 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
   chartHeight = deviceHeight / 3,
   chartWidth = deviceWidth - 20 * 2,
   chartInterpolation = "natural",
-  onDataPointPressed = noop,
-  onXHighlightPressed = noop,
+  onDataPointPressed,
+  onXHighlightPressed,
   shouldAnimate = true,
   showHighlights = false,
+  showOnlyActiveDataPoint,
   tintColorShadeFactor = 0.8,
   xAxisTickFormatter,
   yAxisTickFormatter,
@@ -94,6 +108,11 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
 
   const yValues = data.map((datum) => datum.y)
   const xValues = data.map((datum) => datum.x)
+
+  const datapointsByX: { [key: typeof data[0]["x"]]: typeof data[0] } = Object.assign(
+    {},
+    ...data.map((d) => ({ [d.x]: d }))
+  )
 
   const minMaxDomainY = { min: Math.min(...yValues), max: Math.max(...yValues) }
   const minMaxDomainX = { min: Math.min(...xValues), max: Math.max(...xValues) }
@@ -152,46 +171,248 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
 
   const space = useSpace()
 
-  const [lastPressedLocation, setLastPressedLocation] = useState<{
-    locationX: number
-    locationY: number
-  } | null>(null)
+  const broadcastTapEventXToDataPoints = (event: ChartTapEventType) => {
+    ChartTapObservable.next(event)
+  }
 
-  const [lastPressedDatum, setLastPressedDatum] = useState<
-    (typeof data[0] & { left: number }) | null
-  >(null)
+  const d3 = {
+    shape,
+  }
 
-  const updateLastPressedDatum = (value: typeof lastPressedDatum) => {
-    setLastPressedDatum(value)
-    onDataPointPressed?.(value)
-    if (!value) {
-      setLastPressedLocation(null)
+  const [rerender, setRerender] = useState(false)
+
+  const forceRerender = () => setRerender(!rerender)
+
+  useEffect(() => {
+    forceRerender()
+  }, [data.length])
+
+  // tslint:disable-next-line:array-type
+  const ourData: [number, number][] = data.map((d) => [d.x, d.y])
+
+  const scaleX = scaleLinear().domain([minMaxDomainX.min, minMaxDomainX.max]).range([0, chartWidth])
+
+  const scaleY = scaleLinear()
+    .domain([minMaxDomainY.min, minMaxDomainY.max])
+    .range([chartHeight, 0])
+
+  const lineChart =
+    d3.shape
+      .line()
+      .y((d) => scaleY(d[1]))
+      .x((d) => scaleX(d[0]))
+      .curve(d3.shape.curveMonotoneX)(ourData) ?? undefined
+
+  const movingLine =
+    d3.shape
+      .line()
+      .x((d) => d[0])
+      .y((d) => scaleY(d[1]))(yValues.map((t) => [0, t])) ?? undefined
+
+  const properties = pathProperties.svgPathProperties(lineChart!)
+  const lineLength = properties.getTotalLength()
+
+  const scaleLabels = xValues.sort((a, b) => b - a)
+  const scaleXLabel = scaleQuantile()
+    .domain([minMaxDomainX.min, minMaxDomainX.max])
+    .range(scaleLabels)
+
+  const [scrollX] = useState(new Animated.Value(0))
+
+  const styles = makeStyles(chartHeight, chartWidth)
+
+  const [yLabelMaxWidth, setYLabelMaxWidth] = useState(0)
+  const svgLeftMargin = yLabelMaxWidth + 5
+  const scaleFactor = 1 - svgLeftMargin / chartWidth
+  const yLabelContainerHeight = chartWidth - chartWidth * (1 - scaleFactor)
+
+  const xLabeltranslateX = scrollX.interpolate({
+    inputRange: [0, lineLength],
+    outputRange: [chartWidth - svgLeftMargin, 0],
+    extrapolate: Extrapolate.CLAMP,
+  })
+
+  const activeDataPointOpacity = useSharedValue<0 | 1>(0)
+
+  const activeOpacityStyle = useAnimatedStyle(() => {
+    return {
+      opacity: withTiming(activeDataPointOpacity.value, { duration: 500 }),
+    }
+  })
+
+  const onInteraction = (active: boolean) => {
+    activeDataPointOpacity.value = active ? 1 : 0
+    if (!active) {
+      onDataPointPressed?.(null)
+      setSelectedDataPoint(undefined)
     }
   }
 
-  useEffect(() => {
-    updateLastPressedDatum(null)
-  }, [JSON.stringify(data)])
+  const [labelText, setLabelText] = useState("")
+  const [selectedDataPoint, setSelectedDataPoint] = useState<typeof data[0] | undefined>(undefined)
+  const [lastPressedPoint, setLastPressedPoint] = useState<ScatterChartPointProps["point"] | null>(
+    null
+  )
 
-  // The radius of touch along x axis that a datapoint can claim
-  const pointXRadiusOfTouch =
-    data.length > 1 ? chartWidth / (data.length - 1) / 2 : data.length === 1 ? chartWidth : 0
-
-  const broadcastGestureEventXToDataPoints = (event: ChartGestureEventType) => {
-    ChartGestureObservable.next(event)
+  const showXLabel = (scrollValX: number) => {
+    // Note that we pass scrollValX / 2 to the scaleX.invert function
+    // because the width of the scrollview is 2x the lineHeight
+    const label = scaleXLabel(scaleX.invert(scrollValX / 2))
+    setLabelText(label.toString())
   }
 
-  const gestureHandler = useAnimatedGestureHandler({
-    onStart: (_event) => {
-      // Logic Handled by TapGestureHandlers
-    },
-    onActive: (event) => {
-      runOnJS(broadcastGestureEventXToDataPoints)(event)
-    },
-    onEnd: () => {
-      runOnJS(updateLastPressedDatum)(null)
-    },
-  })
+  const [movingLinePositionX, setMovingLinePositionX] = useState<number | undefined>(undefined)
+
+  const showMovingLine = (scrollValX: number) => {
+    // Note that we pass scrollValX / 2 to the scaleX.invert function
+    // because the width of the scrollview is 2x the lineHeight
+    const label = scaleXLabel(scaleX.invert(scrollValX / 2))
+    setMovingLinePositionX(xGridPositions[label])
+    setSelectedDataPoint(datapointsByX[label])
+    onDataPointPressed?.(datapointsByX[label])
+  }
+
+  const onDataPointAreaTapped = (point: ScatterChartPointProps["point"]) => {
+    onInteraction(true)
+    const label = point.datum.x
+    setSelectedDataPoint(datapointsByX[label])
+    setLabelText(label.toString())
+    setMovingLinePositionX(xGridPositions[label])
+    setLastPressedPoint(point)
+    onDataPointPressed?.(datapointsByX[label])
+  }
+
+  const [xGridPositions, setXGridPositions] = useState<Record<number, number>>({})
+
+  useCode(() => {
+    return call([scrollX], (scrollValueX) => {
+      showXLabel(scrollValueX[0])
+      showMovingLine(scrollValueX[0])
+    })
+  }, [scrollX])
+
+  return (
+    <Flex marginTop={30}>
+      <Svg id={randomSVGId()} width={chartWidth} height={chartHeight}>
+        <G id={randomSVGId()} x={svgLeftMargin} scale={scaleFactor}>
+          <Defs>
+            <LinearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="gradient">
+              <Stop stopColor={shadedTintColor} offset="0%" />
+              <Stop stopColor={shadeColor(shadedTintColor, 0.95)} offset="80%" />
+              <Stop stopColor="white" offset="100%" />
+            </LinearGradient>
+          </Defs>
+          <Path
+            id={randomSVGId()}
+            d={lineChart}
+            fill="transparent"
+            stroke={tintColor}
+            strokeWidth={2}
+          />
+          <Path
+            id={randomSVGId()}
+            d={`${lineChart} L ${chartWidth} ${chartHeight} L 0 ${chartHeight}`}
+            fill="url(#gradient)"
+          />
+
+          <ScatterChart
+            data={data}
+            chartHeight={chartHeight}
+            chartWidth={chartWidth}
+            onDataPointAreaTapped={onDataPointAreaTapped}
+            showOnlyActiveDataPoint={showOnlyActiveDataPoint}
+            selectedDataPoint={selectedDataPoint}
+            tintColor={activeDataPointOpacity.value ? tintColor : "transparent"}
+            xDomain={[minMaxDomainX.min, minMaxDomainX.max]}
+            yDomain={[minMaxDomainY.min, minMaxDomainY.max]}
+          />
+          <Axes
+            chartWidth={chartWidth}
+            chartHeight={chartHeight}
+            xDomain={[minMaxDomainX.min, minMaxDomainX.max]}
+            yDomain={[minMaxDomainY.min, minMaxDomainY.max]}
+            xGridPositionCallback={(val) => {
+              // const newState = xGridPositions
+              // const key = Object.keys(val)[0]
+              // newState[parseInt(key, 10)] = Object.values(val)[0]
+              // setXGridPositions(newState)
+            }}
+            xtickValues={xValues}
+            ytickValues={yValues}
+            yLabelMaxWidth={svgLeftMargin}
+          />
+
+          <Path
+            id={randomSVGId()}
+            d={movingLine}
+            fill="transparent"
+            stroke={activeDataPointOpacity.value ? color("black100") : "transparent"}
+            strokeDasharray={[4, 4]}
+            strokeWidth={1}
+            x={movingLinePositionX}
+          />
+        </G>
+      </Svg>
+
+      <YAxisLabels
+        height={yLabelContainerHeight}
+        onLayout={({ nativeEvent }) => {
+          setYLabelMaxWidth(nativeEvent.layout.width)
+        }}
+        formatter={yAxisTickFormatter}
+        yValues={yValues}
+        style={{ position: "absolute", top: -5 }}
+        labelFormatType={yAxisDisplayType}
+      />
+
+      <Flex left={yLabelMaxWidth - 5}>
+        <XAxisLabels
+          width={chartWidth - svgLeftMargin}
+          formatter={xAxisTickFormatter}
+          xValues={xValues}
+        />
+      </Flex>
+
+      <Animated.View
+        style={[
+          styles.label,
+          {
+            transform: [{ translateX: xLabeltranslateX }],
+            marginLeft: svgLeftMargin - 20,
+          },
+          activeOpacityStyle,
+        ]}
+      >
+        <Text variant="xs">{labelText}</Text>
+      </Animated.View>
+
+      <Animated.ScrollView
+        style={StyleSheet.absoluteFill}
+        onScrollBeginDrag={() => {
+          onInteraction(true)
+        }}
+        onMomentumScrollEnd={() => {
+          onInteraction(false)
+        }}
+        // snapToOffsets={Object.values(xGridPositions)}
+        contentContainerStyle={{ width: lineLength * 2 }}
+        showsHorizontalScrollIndicator
+        scrollEventThrottle={16}
+        bounces={false}
+        onScroll={Animated.event(
+          [
+            {
+              nativeEvent: {
+                contentOffset: { x: scrollX },
+              },
+            },
+          ],
+          { useNativeDriver: true }
+        )}
+        horizontal
+      />
+    </Flex>
+  )
 
   return (
     <>
@@ -445,3 +666,22 @@ const calculateDomainPadding = (values: number[], maxima: number): number => {
   }
   return padding
 }
+
+const makeStyles = (height: number, width: number) =>
+  StyleSheet.create({
+    root: {
+      flex: 1,
+    },
+    container: {
+      marginTop: 60,
+      height,
+      width,
+    },
+
+    label: {
+      position: "absolute",
+      top: -20,
+      left: 0,
+      width: 60,
+    },
+  })

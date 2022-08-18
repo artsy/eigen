@@ -236,6 +236,7 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
         chartHeight={screenHeight / 2.5}
         chartInterpolation="monotoneX"
         showHighlights
+        showOnlyActiveDataPoint
         data={lineChartData}
         bands={bands}
         onBandSelected={onBandSelected}
