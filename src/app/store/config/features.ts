@@ -250,9 +250,10 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableCreateArtworkAlert",
   },
   AREnableNewOnboarding: {
-    readyForRelease: false,
-    description: "Enable new Onboarding flow",
+    readyForRelease: true,
+    description: "Enable new Onboarding flow 2022",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableNewOnboarding",
   },
   AREnableArtworksConnectionForAuction: {
     readyForRelease: true,
