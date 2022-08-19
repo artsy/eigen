@@ -1,6 +1,8 @@
+import { useNavigation } from "@react-navigation/native"
 import { OnboardingSearchResults_viewer$key } from "__generated__/OnboardingSearchResults_viewer.graphql"
 import { OnboardingSearchResultsQuery } from "__generated__/OnboardingSearchResultsQuery.graphql"
 import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
+import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { times } from "lodash"
@@ -18,7 +20,9 @@ interface OnboardingSearchResultsProps {
 }
 
 const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entities, term }) => {
+  const { trackArtistFollow, trackGalleryFollow } = useOnboardingTracking()
   const { dispatch } = useOnboardingContext()
+  const { getId } = useNavigation()
 
   const queryData = useLazyLoadQuery<OnboardingSearchResultsQuery>(
     OnboardingSearchResultsScreenQuery,
@@ -59,6 +63,7 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entit
             return (
               <ArtistListItemNew
                 onFollow={() => {
+                  trackArtistFollow(!!item.isFollowed, item.internalID, getId()!)
                   dispatch({ type: "FOLLOW", payload: item.internalID })
                 }}
                 artist={item}
@@ -75,6 +80,7 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entit
               <PartnerListItem
                 partner={partner}
                 onFollow={() => {
+                  trackGalleryFollow(!!item.isFollowed, item.internalID, getId()!)
                   dispatch({ type: "FOLLOW", payload: item.internalID })
                 }}
               />
@@ -140,10 +146,12 @@ const OnboardingSearchResultsFragment = graphql`
           __typename
           ... on Artist {
             internalID
+            isFollowed
             ...ArtistListItemNew_artist
           }
           ... on Profile {
             internalID
+            isFollowed
             owner {
               __typename
               ... on Partner {

@@ -1,5 +1,7 @@
+import { useNavigation } from "@react-navigation/native"
 import { OnboardingOrderedSetQuery } from "__generated__/OnboardingOrderedSetQuery.graphql"
 import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
+import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { isEmpty, times } from "lodash"
@@ -16,6 +18,8 @@ interface OnboardingOrderedSetProps {
 }
 
 const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
+  const { getId } = useNavigation()
+  const { trackArtistFollow, trackGalleryFollow } = useOnboardingTracking()
   const { dispatch } = useOnboardingContext()
   const { orderedSets } = useLazyLoadQuery<OnboardingOrderedSetQuery>(
     OnboardingOrderedSetScreenQuery,
@@ -47,6 +51,7 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
               <ArtistListItemNew
                 artist={item}
                 onFollow={() => {
+                  trackArtistFollow(!!item.isFollowed, item.internalID, getId()!)
                   dispatch({ type: "FOLLOW", payload: item.internalID })
                 }}
               />
@@ -62,6 +67,7 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
               <PartnerListItem
                 partner={partner}
                 onFollow={() => {
+                  trackGalleryFollow(!!item.isFollowed, item.internalID, getId()!)
                   dispatch({ type: "FOLLOW", payload: item.internalID })
                 }}
               />
@@ -114,10 +120,12 @@ const OnboardingOrderedSetScreenQuery = graphql`
             __typename
             ... on Artist {
               internalID
+              isFollowed
               ...ArtistListItemNew_artist
             }
             ... on Profile {
               internalID
+              isFollowed
               owner {
                 __typename
                 ... on Partner {

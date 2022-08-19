@@ -20,8 +20,8 @@ export const useConfig = ({ basis, onDone }: UseConfig) => {
             [OPTION_TOP_AUCTION_LOTS]: [VIEW_TOP_AUCTION_LOTS],
             [OPTION_A_CURATED_SELECTION_OF_ARTWORKS]: [VIEW_CURATED_ARTWORKS],
             [OPTION_ARTISTS_ON_THE_RISE]: [VIEW_ARTISTS_ON_THE_RISE],
-            [OPTION_FOLLOW_ARTISTS_IM_INTERESTED_IN]: [VIEW_FOLLOW_ARTISTS],
-            [OPTION_FOLLOW_GALLERIES_I_LOVE]: [VIEW_FOLLOW_GALLERIES],
+            [OPTION_FOLLOW_ARTISTS_I_WANT_TO_COLLECT]: [VIEW_FOLLOW_ARTISTS],
+            [OPTION_FOLLOW_GALLERIES_IM_INTERESTED_IN]: [VIEW_FOLLOW_GALLERIES],
           },
         },
       ],
@@ -76,9 +76,8 @@ export const OPTION_COLLECTING_ART_THAT_MOVES_ME = "Collecting art that moves me
 export const OPTION_TOP_AUCTION_LOTS = "Top auction lots"
 export const OPTION_A_CURATED_SELECTION_OF_ARTWORKS = "A curated selection of artworks"
 export const OPTION_ARTISTS_ON_THE_RISE = "Artists on the rise"
-export const OPTION_FOLLOW_ARTISTS_IM_INTERESTED_IN = "Follow artists I’m interested in"
-export const OPTION_FOLLOW_GALLERIES_I_LOVE = "Follow galleries I love"
-export const OPTION_MY_FAVORITE_ARTISTS = "My favorite artists"
+export const OPTION_FOLLOW_ARTISTS_I_WANT_TO_COLLECT = "Artists I want to collect"
+export const OPTION_FOLLOW_GALLERIES_IM_INTERESTED_IN = "Galleries I'm interested in"
 
 export const VIEW_WELCOME = "VIEW_WELCOME"
 export const VIEW_QUESTION_ONE = "VIEW_QUESTION_ONE"

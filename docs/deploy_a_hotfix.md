@@ -44,7 +44,7 @@ Commit the version changes.
 
 Communicate with other devs that a hotfix will be deployed and they should hold off on deploying betas until a build is submitted for review.
 
-`./scripts/deploy-both` (or `./scripts/deploy-ios` or `./scripts/deploy-android` for individual releases)
+`./scripts/deploy-beta-both` (or `./scripts/deploy-beta-ios` or `./scripts/deploy-beta-android` for individual releases)
 
 ## Run through QA script and release to the app store
 

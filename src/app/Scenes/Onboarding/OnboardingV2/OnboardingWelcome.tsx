@@ -1,7 +1,8 @@
-import { OnboardingAnimationQuery } from "__generated__/OnboardingAnimationQuery.graphql"
+import { useNavigation } from "@react-navigation/native"
+import { OnboardingWelcomeQuery } from "__generated__/OnboardingWelcomeQuery.graphql"
 import { GlobalStore } from "app/store/GlobalStore"
-import { ArtsyLogoIcon, Box, Button, Flex, Screen, Spacer, Text } from "palette"
-import { useEffect } from "react"
+import { ArtsyLogoIcon, Box, Button, Flex, Screen, Spacer, Spinner, Text } from "palette"
+import { Suspense, useEffect } from "react"
 import { Image, StatusBar } from "react-native"
 import Animated, {
   Easing,
@@ -15,6 +16,7 @@ import Animated, {
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
+import { useOnboardingContext } from "./Hooks/useOnboardingContext"
 
 const AnimatedFlex = Animated.createAnimatedComponent(Flex)
 
@@ -31,9 +33,14 @@ const BUTTONS_ENTERING_DELAY_TOTAL =
   LAST_IMG_DISPLAY_DURATION +
   BUTTONS_ENTERING_DELAY
 
-export const OnboardingAnimation = () => {
-  const { me } = useLazyLoadQuery<OnboardingAnimationQuery>(OnboardingAnimationScreenQuery, {})
-
+const OnboardingWelcome = () => {
+  const { me } = useLazyLoadQuery<OnboardingWelcomeQuery>(
+    OnboardingWelcomeScreenQuery,
+    {},
+    { fetchPolicy: "network-only" }
+  )
+  const { navigate } = useNavigation()
+  const { next } = useOnboardingContext()
   const opacity = useSharedValue(1)
 
   const enteringAnim = FadeInRight.duration(BUTTONS_ENTERING_DURATION)
@@ -140,8 +147,9 @@ export const OnboardingAnimation = () => {
                 block
                 haptic="impactMedium"
                 onPress={() => {
-                  // navigates collector to first question
-                  console.warn("First Question Screen")
+                  next()
+                  // @ts-expect-error
+                  navigate("OnboardingQuestionOne")
                 }}
               >
                 Get Started
@@ -167,6 +175,13 @@ export const OnboardingAnimation = () => {
   )
 }
 
+const Placeholder = () => (
+  <Flex flex={1} justifyContent="center" alignItems="center" backgroundColor="black100">
+    <ArtsyLogoAbsoluteHeader />
+    <Spinner color="white100" />
+  </Flex>
+)
+
 const ArtsyLogoAbsoluteHeader = () => {
   const { top } = useSafeAreaInsets()
 
@@ -177,8 +192,14 @@ const ArtsyLogoAbsoluteHeader = () => {
   )
 }
 
-const OnboardingAnimationScreenQuery = graphql`
-  query OnboardingAnimationQuery {
+export const OnboardingWelcomeScreen = () => (
+  <Suspense fallback={<Placeholder />}>
+    <OnboardingWelcome />
+  </Suspense>
+)
+
+const OnboardingWelcomeScreenQuery = graphql`
+  query OnboardingWelcomeQuery {
     me {
       name
     }

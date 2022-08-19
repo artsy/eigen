@@ -2,7 +2,9 @@ import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/r
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { createMockEnvironment } from "relay-test-utils"
-import { OnboardingGeneScreen } from "./OnboardingGene"
+import { OnboardingGeneScreen } from "../OnboardingGene"
+
+jest.mock("app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingTracking")
 
 jest.unmock("react-relay")
 
@@ -13,6 +15,7 @@ jest.mock("@react-navigation/native", () => {
   return {
     ...actualNav,
     useNavigation: () => ({
+      getId: () => "onboarding-gene-id",
       navigate: mockedNavigate,
     }),
   }

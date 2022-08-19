@@ -2,8 +2,7 @@ import { Flex } from "palette"
 import { useColor } from "palette/hooks"
 import { Color } from "palette/Theme"
 import { useEffect, useState } from "react"
-import { Animated } from "react-native"
-import { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
 
 export interface ProgressBarProps {
   progress: number
