@@ -1,20 +1,24 @@
 import { Color, Flex } from "palette"
 import { ChevronIcon, CloseIcon } from "palette/svgs"
-import { TouchableOpacity } from "react-native"
+import { TouchableOpacity, TouchableOpacityProps } from "react-native"
 
 interface BackButtonProps {
   onPress?: () => void
   showX?: boolean
   color?: Color
+  containerStyle?: TouchableOpacityProps["style"]
+  hitSlop?: TouchableOpacityProps["hitSlop"]
 }
 
 export const BackButton: React.FC<BackButtonProps> = ({
   onPress,
   showX = false,
   color = "black100",
+  containerStyle,
+  hitSlop,
 }) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity hitSlop={hitSlop} style={containerStyle} onPress={onPress}>
       {showX ? (
         <CloseIcon fill={color} width={26} height={26} />
       ) : (
