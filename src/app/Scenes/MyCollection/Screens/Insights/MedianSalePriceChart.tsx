@@ -37,7 +37,13 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
   const [selectedDuration, setSelectedDuration] = useState<MedianSalePriceChartDuration>(
     MedianSalePriceChartDuration["3 yrs"]
   )
-  const [pressedDataPoint, setPressedDataPoint] = useState<LineChartData["data"][0] | null>(null)
+  const [threeYearPressedDataPoint, setThreeYearPressedDataPoint] = useState<
+    LineChartData["data"][0] | null
+  >(null)
+
+  const [eightYearPressedDataPoint, setEightYearPressedDataPoint] = useState<
+    LineChartData["data"][0] | null
+  >(null)
 
   const getStartAndEndYear = (
     durationBand: MedianSalePriceChartDuration | undefined = selectedDuration
@@ -138,7 +144,7 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
         ...data.analyticsCalendarYearPriceInsights.map((d) => {
           const value = compact(
             d.calendarYearMarketPriceInsights?.map((insight) => {
-              const { endYear } = getStartAndEndYear()
+              const { endYear } = getStartAndEndYear(MedianSalePriceChartDuration["3 yrs"])
               if (parseInt(insight.year, 10) >= parseInt(endYear, 10) - 3) {
                 return insight
               }
@@ -151,12 +157,13 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
       )
     : {}
 
-  const chartDataSource =
+  const chartDataSourceForBand =
     selectedDuration === MedianSalePriceChartDuration["3 yrs"]
       ? threeYearChartDataSource
       : eightYearChartDataSource
 
-  const deriveAvailableCategories = () => Object.keys(chartDataSource)?.map((medium) => medium)
+  const deriveAvailableCategories = () =>
+    Object.keys(chartDataSourceForBand)?.map((medium) => medium)
 
   const initialCategories = computeCategoriesForChart(deriveAvailableCategories())
   const [categories, setCategories] =
@@ -178,12 +185,25 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
     }
   }, [JSON.stringify(data.analyticsCalendarYearPriceInsights), selectedDuration])
 
+  const setPressedDataPoint = (datum: LineChartData["data"][0] | null) => {
+    setEightYearPressedDataPoint(null)
+    setThreeYearPressedDataPoint(null)
+    if (selectedDuration === MedianSalePriceChartDuration["3 yrs"]) {
+      setThreeYearPressedDataPoint(datum)
+    } else {
+      setEightYearPressedDataPoint(datum)
+    }
+  }
+
+  const onDataPointPressed = (datum: LineChartData["data"][0] | null) => {
+    setPressedDataPoint(datum)
+  }
+
+  // MARK: Band/Year Duration logic
   const bands: Array<{ name: MedianSalePriceChartDuration }> = [
     { name: MedianSalePriceChartDuration["3 yrs"] },
     { name: MedianSalePriceChartDuration["8 yrs"] },
   ]
-
-  // MARK: Band/Year Duration logic
   const onBandSelected = (durationName: string) => {
     setSelectedDuration(durationName as MedianSalePriceChartDuration)
     translateValue.value = durationName === MedianSalePriceChartDuration["3 yrs"] ? 0 : -l
@@ -195,10 +215,100 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
   }
 
   // MARK: ChartData logic
-  const eightYearchartDataArraySource =
-    eightYearChartDataSource[selectedCategory === "Other" ? "Unknown" : selectedCategory]
-  const threeYearchartDataArraySource =
-    threeYearChartDataSource[selectedCategory === "Other" ? "Unknown" : selectedCategory]
+  const buildChartDataFromDataSources = (
+    chartDataSource: typeof threeYearChartDataSource,
+    chartHeaderDataSource: typeof threeYearHeaderDataSource,
+    neededYears: number[],
+    band: 8 | 3
+  ) => {
+    const pressedDataPoint = band === 3 ? threeYearPressedDataPoint : eightYearPressedDataPoint
+
+    const chartDataArraySource =
+      chartDataSource[selectedCategory === "Other" ? "Unknown" : selectedCategory]
+
+    let chartDataArray: LineChartData["data"] =
+      chartDataArraySource?.map((p) => ({
+        x: parseInt(p.year, 10),
+        y: p.medianSalePrice
+          ? parseInt(p.medianSalePrice, 10) / 100
+          : // chart will crash if all values are 0
+            1,
+      })) ?? []
+
+    if (chartDataArray.length !== neededYears.length) {
+      const availableYears = chartDataArraySource
+        ? Object.assign(
+            {},
+            ...chartDataArraySource.map((d) => ({
+              [d.year]: d,
+            }))
+          )
+        : {}
+
+      chartDataArray = neededYears.map((p) => ({
+        x: p,
+        y: Number(availableYears[p]?.medianSalePrice)
+          ? parseInt(availableYears[p].medianSalePrice, 10) / 100
+          : // chart will crash if all values are 0
+            1,
+      }))
+    }
+
+    const title = () => {
+      if (!chartDataArray.length) {
+        return "-"
+      }
+
+      if (pressedDataPoint) {
+        const datapoint = chartDataArraySource?.find(
+          (d) => parseInt(d.year, 10) === pressedDataPoint.x
+        )
+        if (datapoint) {
+          return parseInt(datapoint.medianSalePrice, 10)
+            ? formatMedianPrice(parseInt(datapoint.medianSalePrice, 10))
+            : "0 Auction Results"
+        }
+      }
+
+      const medianPrice =
+        chartHeaderDataSource[selectedCategory === "Other" ? "Unknown" : selectedCategory]
+          ?.medianSalePrice
+      return formatMedianPrice(parseInt(medianPrice, 10))
+    }
+
+    const text = () => {
+      if (!chartDataArray?.length) {
+        return "-"
+      }
+      if (pressedDataPoint) {
+        const datapoint = chartDataArraySource?.find(
+          (d) => parseInt(d.year, 10) === pressedDataPoint.x
+        )
+        if (datapoint) {
+          return `${datapoint.lotsSold} ${datapoint.lotsSold > 1 ? "lots" : "lot"} in ${
+            datapoint.year
+          }`
+        }
+      }
+
+      const totalLotsSold =
+        chartHeaderDataSource[selectedCategory === "Other" ? "Unknown" : selectedCategory]?.lotsSold
+      if (!totalLotsSold) {
+        return " "
+      }
+      const { endYear, startYear, currentMonth } = getStartAndEndYear(
+        band === 8 ? MedianSalePriceChartDuration["8 yrs"] : MedianSalePriceChartDuration["3 yrs"]
+      )
+      return (
+        totalLotsSold +
+        ` ${
+          totalLotsSold > 1 ? "lots" : "lot"
+        } in the last ${band} years (${currentMonth} ${startYear} - ${currentMonth} ${endYear})`
+      )
+    }
+
+    return { title: title(), text: text(), chartDataArray }
+  }
 
   const requiredYears = (durationBand = selectedDuration) => {
     const { startYear } = getStartAndEndYear(durationBand)
@@ -207,214 +317,76 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
     return Array.from({ length }).map((_a, i) => start + i)
   }
 
-  let eightYearChartDataArray: LineChartData["data"] =
-    eightYearchartDataArraySource?.map((p) => ({
-      x: parseInt(p.year, 10),
-      y: p.medianSalePrice
-        ? parseInt(p.medianSalePrice, 10) / 100
-        : // chart will crash if all values are 0
-          1,
-    })) ?? []
-
-  let threeYearChartDataArray: LineChartData["data"] =
-    threeYearchartDataArraySource?.map((p) => ({
-      x: parseInt(p.year, 10),
-      y: p.medianSalePrice
-        ? parseInt(p.medianSalePrice, 10) / 100
-        : // chart will crash if all values are 0
-          1,
-    })) ?? []
-
-  const eightCompulsoryYears = requiredYears(MedianSalePriceChartDuration["8 yrs"])
-
-  const threeCompulsoryYears = requiredYears(MedianSalePriceChartDuration["3 yrs"])
-
-  if (eightYearChartDataArray.length !== eightCompulsoryYears.length) {
-    const availableYears = eightYearchartDataArraySource
-      ? Object.assign(
-          {},
-          ...eightYearchartDataArraySource.map((d) => ({
-            [d.year]: d,
-          }))
-        )
-      : {}
-
-    eightYearChartDataArray = eightCompulsoryYears.map((p) => ({
-      x: p,
-      y: Number(availableYears[p]?.medianSalePrice)
-        ? parseInt(availableYears[p].medianSalePrice, 10) / 100
-        : // chart will crash if all values are 0
-          1,
-    }))
-  }
-
-  if (threeYearChartDataArray.length !== threeCompulsoryYears.length) {
-    const availableYears = threeYearchartDataArraySource
-      ? Object.assign(
-          {},
-          ...threeYearchartDataArraySource.map((d) => ({
-            [d.year]: d,
-          }))
-        )
-      : {}
-
-    threeYearChartDataArray = threeCompulsoryYears.map((p) => ({
-      x: p,
-      y: Number(availableYears[p]?.medianSalePrice)
-        ? parseInt(availableYears[p].medianSalePrice, 10) / 100
-        : // chart will crash if all values are 0
-          1,
-    }))
-  }
-
   const { height: screenHeight, width: screenWidth } = useScreenDimensions()
 
   const dataTintColor = categories.find((c) => c.name === selectedCategory)?.color
 
-  const eightYearDataTitle = () => {
-    if (!eightYearChartDataArray.length) {
-      return "-"
-    }
-
-    if (pressedDataPoint) {
-      const datapoint = eightYearchartDataArraySource?.find(
-        (d) => parseInt(d.year, 10) === pressedDataPoint.x
-      )
-      if (datapoint) {
-        return parseInt(datapoint.medianSalePrice, 10)
-          ? formatMedianPrice(parseInt(datapoint.medianSalePrice, 10))
-          : "0 Auction Results"
-      }
-    }
-
-    const medianPrice = eightYearHeaderDataSource[selectedCategory]?.medianSalePrice
-    return formatMedianPrice(parseInt(medianPrice, 10))
-  }
-
-  const eightYearDataText = () => {
-    if (!eightYearChartDataArray?.length) {
-      return "-"
-    }
-    if (pressedDataPoint) {
-      const datapoint = eightYearchartDataArraySource?.find(
-        (d) => parseInt(d.year, 10) === pressedDataPoint.x
-      )
-      if (datapoint) {
-        return `${datapoint.lotsSold} ${datapoint.lotsSold > 1 ? "lots" : "lot"} in ${
-          datapoint.year
-        }`
-      }
-    }
-
-    const totalLotsSold =
-      eightYearHeaderDataSource[selectedCategory === "Other" ? "Unknown" : selectedCategory]
-        ?.lotsSold
-    if (!totalLotsSold) {
-      return " "
-    }
-    const { endYear, startYear, currentMonth } = getStartAndEndYear(
-      MedianSalePriceChartDuration["8 yrs"]
-    )
-    return (
-      totalLotsSold +
-      ` ${
-        totalLotsSold > 1 ? "lots" : "lot"
-      } in the last 8 years (${currentMonth} ${startYear} - ${currentMonth} ${endYear})`
-    )
-  }
-
-  const threeYearDataTitle = () => {
-    if (!threeYearChartDataArray.length) {
-      return "-"
-    }
-
-    if (pressedDataPoint) {
-      const datapoint = threeYearchartDataArraySource?.find(
-        (d) => parseInt(d.year, 10) === pressedDataPoint.x
-      )
-      if (datapoint) {
-        return parseInt(datapoint.medianSalePrice, 10)
-          ? formatMedianPrice(parseInt(datapoint.medianSalePrice, 10))
-          : "0 Auction Results"
-      }
-    }
-
-    const medianPrice = threeYearHeaderDataSource[selectedCategory]?.medianSalePrice
-    return formatMedianPrice(parseInt(medianPrice, 10))
-  }
-
-  const threeYearDataText = () => {
-    if (!threeYearChartDataArray?.length) {
-      return "-"
-    }
-    if (pressedDataPoint) {
-      const datapoint = threeYearchartDataArraySource?.find(
-        (d) => parseInt(d.year, 10) === pressedDataPoint.x
-      )
-      if (datapoint) {
-        return `${datapoint.lotsSold} ${datapoint.lotsSold > 1 ? "lots" : "lot"} in ${
-          datapoint.year
-        }`
-      }
-    }
-
-    const totalLotsSold =
-      threeYearHeaderDataSource[selectedCategory === "Other" ? "Unknown" : selectedCategory]
-        ?.lotsSold
-    if (!totalLotsSold) {
-      return " "
-    }
-    const { endYear, startYear, currentMonth } = getStartAndEndYear(
-      MedianSalePriceChartDuration["3 yrs"]
-    )
-    return (
-      totalLotsSold +
-      ` ${
-        totalLotsSold > 1 ? "lots" : "lot"
-      } in the last 3 years (${currentMonth} ${startYear} - ${currentMonth} ${endYear})`
-    )
-  }
-
-  const onDataPointPressed = (datum: typeof eightYearChartDataArray[0] | null) => {
-    setPressedDataPoint(datum)
-  }
-
-  const eightYearlineChartData: LineChartData = {
-    data: eightYearChartDataArray,
-    dataMeta: {
-      title: eightYearDataTitle(),
-      description: selectedCategory,
-      text: eightYearDataText(),
-      tintColor: dataTintColor,
-    },
-  }
-
-  const threeYearlineChartData: LineChartData = {
-    data: threeYearChartDataArray,
-    dataMeta: {
-      title: threeYearDataTitle(),
-      description: selectedCategory,
-      text: threeYearDataText(),
-      tintColor: dataTintColor,
-    },
-  }
-
   const CHART_HEIGHT = screenHeight / 2.25
   const CHART_WIDTH = screenWidth
 
+  const requiredYearsFor8 = requiredYears(MedianSalePriceChartDuration["8 yrs"])
+
+  const requiredYearsFor3 = requiredYears(MedianSalePriceChartDuration["3 yrs"])
+
+  const {
+    title: titleForThree,
+    text: textForThree,
+    chartDataArray: chartDataArrayFor3,
+  } = buildChartDataFromDataSources(
+    threeYearChartDataSource,
+    threeYearHeaderDataSource,
+    requiredYearsFor3,
+    3
+  )
+
+  const {
+    title: titleForEight,
+    text: textForEight,
+    chartDataArray: chartDataArrayFor8,
+  } = buildChartDataFromDataSources(
+    eightYearChartDataSource,
+    eightYearHeaderDataSource,
+    requiredYearsFor8,
+    8
+  )
+
+  const threeYearlineChartData: LineChartData = {
+    data: chartDataArrayFor3,
+    dataMeta: {
+      title: titleForThree,
+      description: selectedCategory,
+      text: textForThree,
+      tintColor: dataTintColor,
+    },
+  }
+
+  const eightYearlineChartData: LineChartData = {
+    data: chartDataArrayFor8,
+    dataMeta: {
+      title: titleForEight,
+      description: selectedCategory,
+      text: textForEight,
+      tintColor: dataTintColor,
+    },
+  }
+
   // When all the median price is incomplete we use ones because d3 and Victory will crash
   // when all the values are 0
-  const eightYearContainsAllOnes =
-    eightYearChartDataArray.reduce((a, c) => a + c.y, 0) / eightYearChartDataArray.length === 1
-
   const threeYearContainsAllOnes =
-    threeYearChartDataArray.reduce((a, c) => a + c.y, 0) / threeYearChartDataArray.length === 1
+    threeYearlineChartData.data.reduce((a, c) => a + c.y, 0) /
+      threeYearlineChartData.data.length ===
+    1
+
+  const eightYearContainsAllOnes =
+    eightYearlineChartData.data.reduce((a, c) => a + c.y, 0) /
+      eightYearlineChartData.data.length ===
+    1
 
   const translateValue = useSharedValue(0)
 
   const containerStyle = useAnimatedStyle(() => {
     return {
-      transform: [{ translateX: withTiming(translateValue.value, { duration: 500 }) }],
+      transform: [{ translateX: withTiming(translateValue.value, { duration: 200 }) }],
     }
   })
 
@@ -437,14 +409,14 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
           onCategorySelected={onCategorySelected}
           selectedCategory={selectedCategory}
           yAxisTickFormatter={
-            !threeYearChartDataArray.length || !!threeYearContainsAllOnes
+            !threeYearlineChartData.data.length || !!threeYearContainsAllOnes
               ? () => "----"
               : (val: number) => formatLargeNumber(val)
           }
           // hide the year on xAxis
           xAxisTickFormatter={() => ""}
         />
-        {!threeYearChartDataArray.length ||
+        {!threeYearlineChartData.data.length ||
           (!!threeYearContainsAllOnes && (
             <Flex
               position="absolute"
@@ -461,7 +433,7 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
           ))}
       </Flex>
 
-      <>
+      <Flex>
         <LineGraph
           chartHeight={CHART_HEIGHT}
           chartWidth={CHART_WIDTH}
@@ -476,14 +448,14 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
           onCategorySelected={onCategorySelected}
           selectedCategory={selectedCategory}
           yAxisTickFormatter={
-            !eightYearChartDataArray.length || !!eightYearContainsAllOnes
+            !eightYearlineChartData.data.length || !!eightYearContainsAllOnes
               ? () => "----"
               : (val: number) => formatLargeNumber(val)
           }
           // hide the year on xAxis
           xAxisTickFormatter={() => ""}
         />
-        {!eightYearChartDataArray.length ||
+        {!eightYearlineChartData.data.length ||
           (!!eightYearContainsAllOnes && (
             <Flex
               position="absolute"
@@ -498,7 +470,7 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
               </Text>
             </Flex>
           ))}
-      </>
+      </Flex>
     </Animated.View>
   )
 }
