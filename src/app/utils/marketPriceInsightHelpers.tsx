@@ -39,7 +39,8 @@ const categoryColorCode: { [key: string]: { color: string | null; importance: nu
   "Textile Arts": { color: "#C9184A", importance: 5 },
   "Mixed Media": { color: null, importance: 4 },
   "Video/Film/Animation": { color: "#0582CA", importance: 3 },
-  Other: { color: null, importance: 2 },
+  Other: { color: "#5f0f40", importance: 2 },
+  Unknown: { color: "#5f0f40", importance: 2 },
   // No data yet
   "Performance Art": { color: null, importance: 0 },
   Installation: { color: null, importance: 0 },

@@ -182,7 +182,13 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
   }
 
   useEffect(() => {
-    updateLastPressedDatum(null)
+    // As the scroll to position on initial render, the scrollX value will be
+    // scaled on the quantile scale to determine the label
+    // and this might trigger a onDataPointPressed based on the label.
+    // Using settimeout to revert this initial effect.
+    setTimeout(() => {
+      updateLastPressedDatum(null)
+    }, 1000)
   }, [JSON.stringify(data)])
 
   const broadcastGestureEventXToDataPoints = (event: ChartTapEventType) => {

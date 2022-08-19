@@ -143,15 +143,13 @@ export const MedianSalePriceAtAuction: React.FC<{ artistID: string; initialCateg
   )
 
   return (
-    <ProvidePlaceholderContext>
-      <Suspense fallback={<LoadingSkeleton />}>
-        <MedianSalePriceAtAuctionScreen
-          refetch={refetch}
-          queryArgs={queryArgs}
-          initialCategory={initialCategory}
-        />
-      </Suspense>
-    </ProvidePlaceholderContext>
+    <Suspense fallback={<LoadingSkeleton />}>
+      <MedianSalePriceAtAuctionScreen
+        refetch={refetch}
+        queryArgs={queryArgs}
+        initialCategory={initialCategory}
+      />
+    </Suspense>
   )
 }
 
@@ -188,60 +186,62 @@ const LoadingSkeleton = () => {
   const { height: screenHeight } = useScreenDimensions()
   const rng = new RandomNumberGenerator(100)
   return (
-    <Flex mx={2} pt={6}>
-      <Text variant="lg" mb={0.5}>
-        Median Auction Price
-      </Text>
-      <Text variant="xs">Track price stability or growth for your artists.</Text>
+    <ProvidePlaceholderContext>
+      <Flex mx={2} pt={6}>
+        <Text variant="lg" mb={0.5}>
+          Median Auction Price
+        </Text>
+        <Text variant="xs">Track price stability or growth for your artists.</Text>
 
-      <Flex py={2} flexDirection="row" justifyContent="space-between" alignItems="center">
-        <Flex flexDirection="row" alignItems="center">
-          <Flex
-            width={40}
-            height={40}
-            borderRadius={20}
-            backgroundColor="black10"
-            alignItems="center"
-            justifyContent="center"
-            overflow="hidden"
-            style={{ marginTop: 3 }}
-          />
-          <Spacer p={1} />
-          <PlaceholderText width={150} height={10} marginTop={5} />
+        <Flex py={2} flexDirection="row" justifyContent="space-between" alignItems="center">
+          <Flex flexDirection="row" alignItems="center">
+            <Flex
+              width={40}
+              height={40}
+              borderRadius={20}
+              backgroundColor="black10"
+              alignItems="center"
+              justifyContent="center"
+              overflow="hidden"
+              style={{ marginTop: 3 }}
+            />
+            <Spacer p={1} />
+            <PlaceholderText width={150} height={10} marginTop={5} />
+          </Flex>
+
+          <PlaceholderText width={70} height={10} marginTop={5} />
+        </Flex>
+        <Spacer mb={0.5} />
+        <PlaceholderText width={30} height={20} />
+        <Flex flexDirection="row" alignItems="center" my={0.1}>
+          <PlaceholderBox width={10} height={10} borderRadius={5} marginRight={7} />
+          <PlaceholderText width={60} height={7} marginTop={5} />
+        </Flex>
+        <PlaceholderText width={100} height={7} />
+        <Spacer mb={2} />
+        <PlaceholderBox width="100%" height={screenHeight / 4} marginVertical={10} />
+        <Flex flexDirection="row" my={25} justifyContent="center">
+          <PlaceholderBox height={15} width={25} marginHorizontal={10} />
+          <PlaceholderBox height={15} width={25} marginHorizontal={10} />
         </Flex>
 
-        <PlaceholderText width={70} height={10} marginTop={5} />
+        <Flex>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((c) => {
+              const w = rng.next() * 100 + 100
+              return (
+                <PlaceholderBox
+                  key={`${c}`}
+                  width={w}
+                  height={25}
+                  borderRadius={10}
+                  marginRight={10}
+                />
+              )
+            })}
+          </ScrollView>
+        </Flex>
       </Flex>
-      <Spacer mb={0.5} />
-      <PlaceholderText width={30} height={20} />
-      <Flex flexDirection="row" alignItems="center" my={0.1}>
-        <PlaceholderBox width={10} height={10} borderRadius={5} marginRight={7} />
-        <PlaceholderText width={60} height={7} marginTop={5} />
-      </Flex>
-      <PlaceholderText width={100} height={7} />
-      <Spacer mb={2} />
-      <PlaceholderBox width="100%" height={screenHeight / 4} marginVertical={10} />
-      <Flex flexDirection="row" my={25} justifyContent="center">
-        <PlaceholderBox height={15} width={25} marginHorizontal={10} />
-        <PlaceholderBox height={15} width={25} marginHorizontal={10} />
-      </Flex>
-
-      <Flex>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((c) => {
-            const w = rng.next() * 100 + 100
-            return (
-              <PlaceholderBox
-                key={`${c}`}
-                width={w}
-                height={25}
-                borderRadius={10}
-                marginRight={10}
-              />
-            )
-          })}
-        </ScrollView>
-      </Flex>
-    </Flex>
+    </ProvidePlaceholderContext>
   )
 }
