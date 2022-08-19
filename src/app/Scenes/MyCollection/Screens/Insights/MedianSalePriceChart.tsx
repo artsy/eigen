@@ -155,6 +155,7 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
     chartDataArraySource?.map((p) => ({
       x: parseInt(p.year, 10),
       y: parseInt(p.averageSalePrice, 10),
+      highlight: { x: true },
     })) ?? []
 
   const { height: screenHeight, width: screenWidth } = useScreenDimensions()
@@ -233,7 +234,8 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
   return (
     <Flex>
       <LineGraph
-        chartHeight={screenHeight / 2.5}
+        chartHeight={screenHeight / 2.25}
+        chartWidth={screenWidth}
         chartInterpolation="monotoneX"
         showHighlights
         showOnlyActiveDataPoint

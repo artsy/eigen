@@ -1,15 +1,15 @@
 import { scaleLinear, scaleQuantile } from "d3-scale"
-import * as shape from "d3-shape"
-import { compact } from "lodash"
+import { compact, noop } from "lodash"
 import { Flex } from "palette"
-import { useColor } from "palette/hooks"
-import React, { useEffect, useState } from "react"
-import { Dimensions, NativeTouchEvent, StyleSheet } from "react-native"
+import { useColor, useSpace } from "palette/hooks"
+import { StarCircleIcon } from "palette/svgs/StarCircleIcon"
+import { Color, useTheme } from "palette/Theme"
+import { useCallback, useEffect, useRef, useState } from "react"
+import { Dimensions, NativeTouchEvent, StyleSheet, TextInput } from "react-native"
 import {
   HandlerStateChangeEventPayload,
   LongPressGestureHandler,
   State,
-  TapGestureHandler,
   TapGestureHandlerEventPayload,
 } from "react-native-gesture-handler"
 import Animated, {
@@ -20,20 +20,25 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated"
-import Svg, { Defs, G, LinearGradient, Path, Stop } from "react-native-svg"
+import Svg, { Defs, G, LinearGradient, Stop } from "react-native-svg"
 import { Subject } from "rxjs"
-import * as pathProperties from "svg-path-properties"
 import { AnimatePropTypeInterface, InterpolationPropType } from "victory-core"
+import {
+  VictoryArea,
+  VictoryAxis,
+  VictoryChart,
+  VictoryLine,
+  VictoryScatter,
+  VictoryTheme,
+} from "victory-native"
 import { Text } from "../Text"
-import { Axes, XAxisLabels, YAxisLabels } from "./Axes"
-import { AxisDisplayType, randomSVGId, shadeColor } from "./helpers"
-import { ScatterChart } from "./ScatterChart"
-import { ScatterChartPointProps } from "./ScatterPointsContainers"
+import { AxisDisplayType, shadeColor, tickFormat } from "./helpers"
+import { HighlightIconContainer, ScatterDataPointContainer } from "./ScatterPointsContainers"
 import { LineChartData } from "./types"
 
 export type ChartTapEventType =
-  | (HandlerStateChangeEventPayload & TapGestureHandlerEventPayload)
   | NativeTouchEvent
+  | (HandlerStateChangeEventPayload & TapGestureHandlerEventPayload)
 
 // using Subject because this observable should multicast to many datapoints
 export const ChartTapObservable = new Subject<ChartTapEventType>()
@@ -47,7 +52,6 @@ interface LineGraphChartProps extends LineChartData {
   onYHighlightPressed?: (datum: { _x: number; _y: number; x: number; y: number }) => void
   shouldAnimate?: boolean
   showHighlights?: boolean
-  showOnlyActiveDataPoint?: boolean
   /** Specifies by what factor between -0 to +1 to shade the graph area. Positive values lightens, negative darkens */
   tintColorShadeFactor?: number
   xAxisTickFormatter?: (val: any) => string
@@ -64,11 +68,10 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
   chartHeight = deviceHeight / 3,
   chartWidth = deviceWidth - 20 * 2,
   chartInterpolation = "natural",
-  onDataPointPressed,
-  onXHighlightPressed,
+  onDataPointPressed = noop,
+  onXHighlightPressed = noop,
   shouldAnimate = true,
   showHighlights = false,
-  showOnlyActiveDataPoint,
   tintColorShadeFactor = 0.8,
   xAxisTickFormatter,
   yAxisTickFormatter,
@@ -76,8 +79,24 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
   yAxisDisplayType,
 }) => {
   const color = useColor()
+  const space = useSpace()
+  const { theme } = useTheme()
+
+  // MARK:- REFS
+  const scrollRef = useRef<Animated.ScrollView | null>(null)
+  const floatingXLabelRef = useRef<TextInput>(null)
+
+  // MARK:- STATES
+
+  const [lastPressedDatum, setLastPressedDatum] = useState<
+    (typeof data[0] & { left?: number }) | null
+  >(null)
+
+  const [scrollX] = useState(new Animated.Value(0))
 
   const shadedTintColor = shadeColor(tintColor, tintColorShadeFactor)
+
+  // MARK:- DATA PREPARATION
 
   const xHighlights = compact(
     data.map((datum) => (datum.highlight?.x ? { y: 0, x: datum.x } : null))
@@ -96,11 +115,6 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
   const yValues = data.map((datum) => datum.y)
   const xValues = data.map((datum) => datum.x)
 
-  const datapointsByX: { [key: typeof data[0]["x"]]: typeof data[0] } = Object.assign(
-    {},
-    ...data.map((d) => ({ [d.x]: d }))
-  )
-
   const minMaxDomainY = { min: Math.min(...yValues), max: Math.max(...yValues) }
   const minMaxDomainX = { min: Math.min(...xValues), max: Math.max(...xValues) }
 
@@ -116,6 +130,64 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
     {},
     ...xValues.map((xtick) => ({ [xtick]: true }))
   )
+
+  const datapointsByX: { [key: typeof data[0]["x"]]: typeof data[0] } = Object.assign(
+    {},
+    ...data.map((d) => ({ [d.x]: d }))
+  )
+
+  // The radius of touch along x axis that a datapoint can claim
+  const pointXRadiusOfTouch =
+    data.length > 1 ? chartWidth / (data.length - 1) / 2 : data.length === 1 ? chartWidth : 0
+
+  // MARK:- D3 HELPERS
+
+  const scaleX = scaleLinear().domain([minMaxDomainX.min, minMaxDomainX.max]).range([0, chartWidth])
+
+  const scaleLabels = xValues.sort((a, b) => b - a)
+  const scaleXLabel = scaleQuantile()
+    .domain([minMaxDomainX.min, minMaxDomainX.max])
+    .range(scaleLabels)
+
+  // MARK: SHARED VALUES AND ANIMATIONS
+  const showStaticPressedDatum = useSharedValue(false)
+
+  const opacityWhenScroll = useSharedValue<0 | 1>(0)
+
+  const activeOpacityStyle = useAnimatedStyle(() => {
+    return {
+      opacity: withTiming(opacityWhenScroll.value, { duration: 200 }),
+    }
+  })
+
+  const xLabeltranslateX = scrollX.interpolate({
+    inputRange: [0, chartWidth],
+    outputRange: [chartWidth, 0],
+    extrapolate: Extrapolate.CLAMP,
+  })
+
+  useCode(() => {
+    return call([scrollX], (scrollValueX) => {
+      const label = scaleXLabel(scaleX.invert(scrollValueX[0]))
+      floatingXLabelRef.current?.setNativeProps({ text: `${label}` })
+      const pressedDatum = datapointsByX[label]
+      updateLastPressedDatum(pressedDatum)
+    })
+  }, [scrollX])
+
+  // MARK: INTERACTIONS
+  const updateLastPressedDatum = (value: typeof lastPressedDatum) => {
+    setLastPressedDatum(value)
+    onDataPointPressed?.(value)
+  }
+
+  useEffect(() => {
+    updateLastPressedDatum(null)
+  }, [JSON.stringify(data)])
+
+  const broadcastGestureEventXToDataPoints = (event: ChartTapEventType) => {
+    ChartTapObservable.next(event)
+  }
 
   const ANIMATION_CONFIG: AnimatePropTypeInterface = {
     duration: 750,
@@ -144,266 +216,227 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
     easing: "linear",
   }
 
-  const broadcastTapEventXToDataPoints = (event: ChartTapEventType) => {
-    ChartTapObservable.next(event)
-  }
-
-  const d3 = {
-    shape,
-  }
-
-  // tslint:disable-next-line:array-type
-  const d3Data: [number, number][] = data.map((d) => [d.x, d.y])
-
-  const scaleX = scaleLinear().domain([minMaxDomainX.min, minMaxDomainX.max]).range([0, chartWidth])
-
-  const scaleY = scaleLinear()
-    .domain([minMaxDomainY.min, minMaxDomainY.max])
-    .range([chartHeight, 0])
-
-  const lineChart =
-    d3.shape
-      .line()
-      .y((d: typeof d3Data) => scaleY(d[1]))
-      .x((d: typeof d3Data) => scaleX(d[0]))
-      .curve(d3.shape.curveMonotoneX)(d3Data) ?? undefined
-
-  const movingLine =
-    d3.shape
-      .line()
-      .x((d: typeof d3Data) => d[0])
-      .y((d: typeof d3Data) => scaleY(d[1]))(yValues.map((t) => [0, t])) ?? undefined
-
-  const properties = pathProperties.svgPathProperties(lineChart!)
-  const lineLength = properties.getTotalLength()
-
-  const scaleLabels = xValues.sort((a, b) => b - a)
-  const scaleXLabel = scaleQuantile()
-    .domain([minMaxDomainX.min, minMaxDomainX.max])
-    .range(scaleLabels)
-
-  const [scrollX] = useState(new Animated.Value(0))
-
-  const styles = makeStyles(chartHeight, chartWidth)
-
-  const [yLabelMaxWidth, setYLabelMaxWidth] = useState(0)
-  const svgLeftMargin = yLabelMaxWidth + 5
-  const scaleFactor = 1 - svgLeftMargin / chartWidth
-  const yLabelContainerHeight = chartWidth - chartWidth * (1 - scaleFactor)
-
-  const xLabeltranslateX = scrollX.interpolate({
-    inputRange: [0, lineLength],
-    outputRange: [chartWidth - svgLeftMargin, 0],
-    extrapolate: Extrapolate.CLAMP,
-  })
-
-  const opacityWhenScroll = useSharedValue<0 | 1>(0)
-
-  const activeOpacityStyle = useAnimatedStyle(() => {
-    return {
-      opacity: withTiming(opacityWhenScroll.value, { duration: 500 }),
-    }
-  })
-
-  const opacityWhenTouch = useSharedValue<0 | 1>(0)
-
-  const activeTouchOpacityStyle = useAnimatedStyle(() => {
-    return {
-      opacity: withTiming(opacityWhenTouch.value, { duration: 500 }),
-    }
-  })
-
-  const onInteraction = (active: boolean, type: "scroll" | "touch" = "scroll") => {
-    if (active) {
-      if (type === "scroll") {
-        isScroll.value = true
-        isTouch.value = false
-        opacityWhenScroll.value = 1
-        opacityWhenTouch.value = 0
-      } else if (type === "touch") {
-        isScroll.value = false
-        isTouch.value = true
-        opacityWhenTouch.value = 1
-        opacityWhenScroll.value = 0
-      }
-    } else {
-      isScroll.value = false
-      isTouch.value = false
-      opacityWhenScroll.value = 0
-      opacityWhenTouch.value = 0
-      onDataPointPressed?.(null)
-      setSelectedDataPoint(undefined)
-      setLastPressedPoint(null)
-    }
-  }
-
-  const [labelText, setLabelText] = useState("")
-  const [selectedDataPoint, setSelectedDataPoint] = useState<typeof data[0] | undefined>(undefined)
-  const [lastPressedPoint, setLastPressedPoint] = useState<ScatterChartPointProps["point"] | null>(
-    null
+  const renderDefs = useCallback(
+    () => (
+      <Defs>
+        <LinearGradient id="gradientStroke" gradientTransform="rotate(90)">
+          <Stop offset="0%" stopColor={shadedTintColor} stopOpacity="20%" />
+          <Stop offset="100%" stopColor="white" />
+        </LinearGradient>
+      </Defs>
+    ),
+    [tintColor]
   )
 
-  const showXLabel = (scrollValX: number) => {
-    // Note that we pass scrollValX / 2 to the scaleX.invert function
-    // because the width of the scrollview is 2x the lineHeight
-    const label = scaleXLabel(scaleX.invert(scrollValX / 2))
-    setLabelText(label.toString())
-  }
-
-  const [movingLinePositionX, setMovingLinePositionX] = useState<number | undefined>(undefined)
-
-  const showMovingLine = (scrollValX: number) => {
-    // Note that we pass scrollValX / 2 to the scaleX.invert function
-    // because the width of the scrollview is 2x the lineHeight
-    const label = scaleXLabel(scaleX.invert(scrollValX / 2))
-    setMovingLinePositionX(xGridPositions[label])
-    setSelectedDataPoint(datapointsByX[label])
-    onDataPointPressed?.(datapointsByX[label])
-  }
-
-  const onDataPointAreaTapped = (point: ScatterChartPointProps["point"]) => {
-    onInteraction(true)
-    const label = point.datum.x
-    setSelectedDataPoint(datapointsByX[label])
-    setLabelText(label.toString())
-    setMovingLinePositionX(xGridPositions[label])
-    setLastPressedPoint(point)
-    onDataPointPressed?.(datapointsByX[label])
-  }
-
-  const gridPositions = () => {
-    const xValuesASC = xValues.sort((a, b) => a - b)
-    const positions: Record<number, number> = Object.assign(
-      {},
-      ...Array.from({ length: xValuesASC.length }).map((_, index) => {
-        const spacer = chartWidth / (xValuesASC.length - 1)
-        return { [xValuesASC[index]]: spacer * index }
-      })
-    )
-    return positions
-  }
-
-  const composeGridPositions = () => {
-    setXGridPositions(gridPositions())
-  }
-
-  useEffect(() => {
-    composeGridPositions()
-  }, [JSON.stringify(xValues)])
-
-  const [xGridPositions, setXGridPositions] = useState<Record<number, number>>(gridPositions())
-
-  const isScroll = useSharedValue(false)
-  const isTouch = useSharedValue(false)
-
-  useCode(() => {
-    return call([scrollX], (scrollValueX) => {
-      showXLabel(scrollValueX[0])
-      showMovingLine(scrollValueX[0])
-    })
-  }, [scrollX])
-
   return (
-    <Flex marginTop={30}>
-      <Svg id={randomSVGId()} width={chartWidth} height={chartHeight}>
-        <G id={randomSVGId()} x={svgLeftMargin} scale={scaleFactor}>
-          <Defs>
-            <LinearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="gradient">
-              <Stop stopColor={shadedTintColor} offset="0%" />
-              <Stop stopColor={shadeColor(shadedTintColor, 0.95)} offset="80%" />
-              <Stop stopColor="white" offset="100%" />
-            </LinearGradient>
-          </Defs>
-          <Path
-            id={randomSVGId()}
-            d={lineChart}
-            fill="transparent"
-            stroke={tintColor}
-            strokeWidth={2}
-          />
-          <Path
-            id={randomSVGId()}
-            d={`${lineChart} L ${chartWidth} ${chartHeight} L 0 ${chartHeight}`}
-            fill="url(#gradient)"
-          />
-
-          <ScatterChart
-            data={data}
-            chartHeight={chartHeight}
-            chartWidth={chartWidth}
-            onDataPointAreaTapped={onDataPointAreaTapped}
-            showOnlyActiveDataPoint={showOnlyActiveDataPoint}
-            selectedDataPoint={selectedDataPoint}
-            tintColor={tintColor}
-            xDomain={[minMaxDomainX.min, minMaxDomainX.max]}
-            yDomain={[minMaxDomainY.min, minMaxDomainY.max]}
-          />
-          <Axes
-            chartWidth={chartWidth}
-            chartHeight={chartHeight}
-            xDomain={[minMaxDomainX.min, minMaxDomainX.max]}
-            yDomain={[minMaxDomainY.min, minMaxDomainY.max]}
-            xtickValues={xValues}
-            ytickValues={yValues}
-            yLabelMaxWidth={svgLeftMargin}
-          />
-
-          <Path
-            id={randomSVGId()}
-            d={movingLine}
-            fill="transparent"
-            stroke={
-              opacityWhenScroll.value || opacityWhenTouch.value ? color("black100") : "transparent"
-            }
-            strokeDasharray={[4, 4]}
-            strokeWidth={1}
-            x={movingLinePositionX}
-          />
-        </G>
-      </Svg>
-
-      <YAxisLabels
-        height={yLabelContainerHeight}
-        onLayout={({ nativeEvent }) => {
-          setYLabelMaxWidth(nativeEvent.layout.width)
+    <>
+      <VictoryChart
+        theme={VictoryTheme.material}
+        // mapping domain from 0 to 1 because data is normalized by the factor of max Y value.
+        domain={{ y: [0, 1] }}
+        domainPadding={{ y: [0, yDomainPadding] }}
+        backgroundComponent={<Background />}
+        containerComponent={<Svg />}
+        style={{
+          background: { fill: "white" },
         }}
-        formatter={yAxisTickFormatter}
-        yValues={yValues}
-        style={{ position: "absolute", top: -5 }}
-        labelFormatType={yAxisDisplayType}
-      />
+        padding={{ left: 35, right: space(3), bottom: space(3), top: space(3) }}
+        width={chartWidth}
+        height={chartHeight}
+      >
+        {renderDefs()}
 
-      <Flex left={yLabelMaxWidth - 5}>
-        <XAxisLabels
-          width={chartWidth - svgLeftMargin}
-          formatter={xAxisTickFormatter}
-          xValues={xValues}
+        {data.length > 1 && (
+          /** Draws the Area beneath the line.
+           * Will crash on android if you pass data with less than 2 points
+           */
+          <VictoryArea
+            style={{
+              data: { fill: "url(#gradientStroke)" },
+            }}
+            data={data}
+            animate={shouldAnimate ? ANIMATION_CONFIG : undefined}
+            interpolation={chartInterpolation}
+            // Normalise the dependent axis Y. Else it is not possible to represent data with extreme variance.
+            y={(datum: any) => datum.y / maxima}
+          />
+        )}
+
+        {data.length > 1 && (
+          /** Draws the Line Above the Area
+           * Will crash on android if you pass data with less than 2 points
+           */
+          // @ts-ignore // AnimatePropTypeInterface has not been typed into VictoryLine yet
+          <VictoryLine
+            animate={shouldAnimate ? ANIMATION_CONFIG : undefined}
+            style={{
+              data: { stroke: tintColor },
+              border: { stroke: "transparent" },
+            }}
+            data={data}
+            domain={{ y: [0, 1] }}
+            // groupComponent={<G />} ensures the line is not cut off below when using
+            // chartInterpolation = natural. Without this, lines will dip off
+            // the chart.
+            groupComponent={<G />}
+            interpolation={chartInterpolation}
+            // Normalise the dependent axis Y. Else it is not possible to represent data with extreme variance.
+            y={(datum: any) => datum.y / maxima}
+          />
+        )}
+
+        {/** Y-Axis */}
+        <VictoryAxis
+          dependentAxis
+          style={{
+            axis: { stroke: color("black30"), strokeDasharray: 2 },
+            ticks: { size: 0 },
+            grid: {
+              stroke: ({ tick }: { tick: number }) =>
+                Number(tick * maxima) === minMaxDomainY.max ? color("black30") : "transparent",
+              strokeDasharray: 3,
+            },
+          }}
+          axisLabelComponent={<Text />}
+          maxDomain={minMaxDomainY.max}
+          minDomain={minMaxDomainY.min}
+          tickFormat={(tick: number) =>
+            tickFormat(
+              tick * maxima, // Because we did y={(datum) => datum.y / maxima} in VictoryArea to normalise Y values
+              minMaxDomainY.min,
+              minMaxDomainY.max,
+              yAxisTickFormatter, // falls back to use the defaultFormatter
+              yAxisDisplayType ?? AxisDisplayType.OnlyShowMinAndMaxDomain
+            )
+          }
         />
-      </Flex>
+
+        {/** X-Axis */}
+        <VictoryAxis
+          crossAxis
+          style={{
+            axis: { stroke: color("black30"), strokeDasharray: 2 },
+            ticks: { size: 0 },
+            grid: {
+              stroke: ({ tick }: { tick: number }) => {
+                if (tick === lastPressedDatum?.x) {
+                  return color("black100")
+                }
+                if (xValues.length > 1) {
+                  return xAxisTickMap[tick] ? color("black30") : "transparent"
+                }
+                return color("black30")
+              },
+              strokeDasharray: 3,
+            },
+          }}
+          tickValues={xValues}
+          axisLabelComponent={<Text />}
+          maxDomain={minMaxDomainX.max}
+          minDomain={minMaxDomainX.min}
+          tickFormat={(tick: number) =>
+            tickFormat(
+              tick,
+              minMaxDomainX.min,
+              minMaxDomainX.max,
+              xAxisTickFormatter ?? ((val) => val), // don't format x ticks by default
+              xAxisDisplayType ?? AxisDisplayType.OnlyShowMinAndMaxDomain
+            )
+          }
+        />
+
+        {/** If only a single data is given, plot a point */}
+        {/** @ts-ignore */}
+        <VictoryScatter
+          style={{
+            data: {
+              stroke: tintColor,
+              fill: ({ datum }: { datum: any }) =>
+                datum.x === lastPressedDatum?.x || data.length === 1 ? tintColor : "transparent",
+            },
+          }}
+          data={data}
+          domain={{ y: [0, 1] }}
+          y={(datum: any) => datum.y / maxima}
+          dataComponent={
+            <ScatterDataPointContainer
+              // touch along the x axis within this radius, the data point within this radius can claim it
+              pointXRadiusOfTouch={pointXRadiusOfTouch}
+              size={4}
+              updateLastPressedDatum={updateLastPressedDatum}
+              onDataPointPressed={onDataPointPressed}
+            />
+          }
+        />
+
+        {/*
+         * If you include xHighlight values in your data, the
+         * values will be plotted along the x-axis as highlights
+         */}
+        {!!showHighlights && !!xHighlights.length && (
+          <VictoryScatter
+            name="xHighlightsChart"
+            animate={ANIMATION_CONFIG}
+            style={{
+              data: { stroke: tintColor, fill: tintColor },
+              parent: { border: "transparent" },
+            }}
+            data={xHighlights}
+            size={5}
+            dataComponent={
+              <HighlightIconContainer
+                icon={
+                  xHighlightIcon ?? (
+                    <StarCircleIcon fill={tintColor as Color} height={20} width={20} />
+                  )
+                }
+                onHighlightPressed={onXHighlightPressed}
+                chartHeight={chartHeight}
+              />
+            }
+          />
+        )}
+      </VictoryChart>
 
       <Animated.View
         style={[
-          styles.label,
           {
             transform: [{ translateX: xLabeltranslateX }],
-            marginLeft: svgLeftMargin - 20,
+            position: "absolute",
+            top: 70,
+            left: 0,
           },
           activeOpacityStyle,
         ]}
       >
-        <Text variant="xs">{isScroll.value ? labelText : ""}</Text>
+        <TextInput
+          ref={floatingXLabelRef}
+          style={{ fontFamily: theme.fonts.sans.regular, fontSize: 13 }}
+        />
       </Animated.View>
 
       <Animated.ScrollView
+        ref={scrollRef}
         style={StyleSheet.absoluteFill}
+        onTouchStart={({ nativeEvent }) => {
+          showStaticPressedDatum.value = true
+          broadcastGestureEventXToDataPoints(nativeEvent)
+        }}
+        onTouchEnd={() => {
+          showStaticPressedDatum.value = false
+          updateLastPressedDatum(null)
+          scrollRef.current?.scrollTo({ x: chartWidth / 2 })
+        }}
         onScrollBeginDrag={() => {
-          onInteraction(true)
+          showStaticPressedDatum.value = false
+          opacityWhenScroll.value = 1
         }}
         onMomentumScrollEnd={() => {
-          onInteraction(false)
+          showStaticPressedDatum.value = false
+          updateLastPressedDatum(null)
+          opacityWhenScroll.value = 0
         }}
-        snapToOffsets={Object.values(xGridPositions)}
-        contentContainerStyle={{ width: lineLength * 2 }}
+        contentContainerStyle={{ width: chartWidth * 2 }}
         showsHorizontalScrollIndicator={false}
         scrollEventThrottle={16}
         bounces={false}
@@ -418,27 +451,43 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
           { useNativeDriver: true }
         )}
         horizontal
-      />
+      >
+        <>
+          <LongPressGestureHandler
+            onHandlerStateChange={({ nativeEvent }) => {
+              if (nativeEvent.state === State.BEGAN) {
+                broadcastGestureEventXToDataPoints(nativeEvent)
+              }
+              if (nativeEvent.state === State.END || nativeEvent.state === State.FAILED) {
+                updateLastPressedDatum(null)
+              }
+            }}
+          >
+            <Animated.View style={{ width: "100%", height: "100%" }} />
+          </LongPressGestureHandler>
+        </>
+      </Animated.ScrollView>
 
-      {!!lastPressedPoint && (
-        <Animated.View
-          style={[
-            {
-              position: "absolute",
-              top: -20,
-              left: lastPressedPoint.x - 10,
-            },
-            // activeTouchOpacityStyle,
-          ]}
-        >
+      {lastPressedDatum && showStaticPressedDatum.value && (
+        <Flex position="absolute" top={70} left={lastPressedDatum?.left}>
           <Text textAlign="center" variant="xs" color="black60">
-            {lastPressedPoint.datum.x}
+            {lastPressedDatum.x}
           </Text>
-        </Animated.View>
+        </Flex>
       )}
-    </Flex>
+    </>
   )
 }
+
+const Background = (props: any) => (
+  <Flex
+    position="absolute"
+    width={props.width}
+    height={props.height}
+    left={props.x}
+    top={props.y}
+  />
+)
 
 /** Calculates the appropriate domain padding to apply to the top bound of the y axis.
  * Because we set interpolation natural, the Area or LineChart will have a parabolic curve
@@ -465,22 +514,3 @@ const calculateDomainPadding = (values: number[], maxima: number): number => {
   }
   return padding
 }
-
-const makeStyles = (height: number, width: number) =>
-  StyleSheet.create({
-    root: {
-      flex: 1,
-    },
-    container: {
-      marginTop: 60,
-      height,
-      width,
-    },
-
-    label: {
-      position: "absolute",
-      top: -20,
-      left: 0,
-      width: 60,
-    },
-  })

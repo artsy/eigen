@@ -23,7 +23,6 @@ interface Props {
   onDataPointPressed?: (datum: LineChartData["data"][0] | null) => void
   shouldAnimate?: boolean
   showHighlights?: boolean
-  showOnlyActiveDataPoint?: boolean
   tintColorShadeFactor?: number
   xAxisTickFormatter?: (val: any) => string
   yAxisTickFormatter?: (val: any) => string
@@ -57,7 +56,6 @@ export const LineGraph: React.FC<Props> = ({
   selectedCategory,
   shouldAnimate,
   showHighlights,
-  showOnlyActiveDataPoint,
   tintColorShadeFactor,
   xAxisTickFormatter,
   yAxisTickFormatter,
@@ -74,7 +72,6 @@ export const LineGraph: React.FC<Props> = ({
             data={data.data}
             dataMeta={data.dataMeta}
             showHighlights={showHighlights}
-            showOnlyActiveDataPoint={showOnlyActiveDataPoint}
             shouldAnimate={shouldAnimate}
             chartHeight={chartHeight}
             chartWidth={chartWidth}
