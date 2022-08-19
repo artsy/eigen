@@ -57,7 +57,6 @@ export const OnboardingV2 = () => {
             ...TransitionPresets.DefaultTransition,
             headerShown: false,
             headerMode: "screen",
-            gestureEnabled: false,
           }}
         >
           <StackNavigator.Screen

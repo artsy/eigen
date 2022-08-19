@@ -41,7 +41,8 @@
 		1A4E5124283F91BA0008EF35 /* ARButtonSubclasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E5116283F91BA0008EF35 /* ARButtonSubclasses.m */; };
 		1A550F0E282AE4D300126D22 /* ARAuctionWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A550F0D282AE4D200126D22 /* ARAuctionWebViewController.m */; };
 		4A9190A1CCE54CE09384C9FC /* Unica77LL-MediumItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = CC557644CEE44511A73431D7 /* Unica77LL-MediumItalic.otf */; };
-		99F27A966E82EC34A9151AB1 /* libPods-Artsy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E67618FAB7D66D848A9EB934 /* libPods-Artsy.a */; };
+		50E313674D9D51E2749A13E7 /* libPods-ArtsyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E68A5AE2269760F44D9E0B7 /* libPods-ArtsyTests.a */; };
+		91DE2877BFB369D1F40E8172 /* libPods-Artsy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B4CDDC19345D9AFB1E708B /* libPods-Artsy.a */; };
 		9DE2CA6EF6024B2DAF877CB2 /* Unica77LL-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = CE0D8AAD95934C28AF35D2A3 /* Unica77LL-Regular.otf */; };
 		B3EFFC7412D94886B32A2B10 /* Unica77LL-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5BD7635D052B48579073DECC /* Unica77LL-Italic.otf */; };
 		B7F9E6E6D6604CC691827F1D /* Unica77LL-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = DC9FFF92F0574260A5300F1B /* Unica77LL-Medium.otf */; };
@@ -511,7 +512,6 @@
 		CBE327A027E275A400395A93 /* Bidder.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3266527E275A300395A93 /* Bidder.m */; };
 		CBE327A127E275A400395A93 /* BidderPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3266627E275A300395A93 /* BidderPosition.m */; };
 		CBE327A227E275A400395A93 /* SystemTime.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3266927E275A300395A93 /* SystemTime.m */; };
-		EAB12839B0E739574309CA10 /* libPods-ArtsyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B58F7982EDF319AFEDE22587 /* libPods-ArtsyTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -562,7 +562,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		130B644B991A212035F0CAB7 /* Pods-Artsy.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.store.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Artsy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Artsy.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		17D5AEAE759BEFBB256D5B19 /* Pods-Artsy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.debug.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"; sourceTree = "<group>"; };
 		1A2C67BB2875E769003948B6 /* Shared.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Shared.xcconfig; sourceTree = "<group>"; };
 		1A2C67BC2875E769003948B6 /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		1A2C67BD2875E769003948B6 /* Store.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Store.xcconfig; sourceTree = "<group>"; };
@@ -625,11 +627,11 @@
 		1A4E5117283F91BA0008EF35 /* ARButtonSubclasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARButtonSubclasses.h; sourceTree = "<group>"; };
 		1A550F0C282AE4D200126D22 /* ARAuctionWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAuctionWebViewController.h; sourceTree = "<group>"; };
 		1A550F0D282AE4D200126D22 /* ARAuctionWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuctionWebViewController.m; sourceTree = "<group>"; };
+		41B4CDDC19345D9AFB1E708B /* libPods-Artsy.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4D374CB1A6B008C394CA82D1 /* Pods-ArtsyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.debug.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.debug.xcconfig"; sourceTree = "<group>"; };
+		4E68A5AE2269760F44D9E0B7 /* libPods-ArtsyTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ArtsyTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BD7635D052B48579073DECC /* Unica77LL-Italic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Unica77LL-Italic.otf"; path = "Artsy/fonts/Unica77LL-Italic.otf"; sourceTree = "<group>"; };
-		5FABF21E8E8B577E9F8AD86E /* Pods-Artsy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.debug.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"; sourceTree = "<group>"; };
-		ABADB231C993E6D13DDAE575 /* Pods-ArtsyTests.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.store.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.store.xcconfig"; sourceTree = "<group>"; };
-		B58F7982EDF319AFEDE22587 /* libPods-ArtsyTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ArtsyTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		BA73626DACDFD38BE03DB8EA /* Pods-ArtsyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.debug.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.debug.xcconfig"; sourceTree = "<group>"; };
+		C2C68EB4D6DD0E0D04E49CB8 /* Pods-ArtsyTests.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.store.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.store.xcconfig"; sourceTree = "<group>"; };
 		CB43266327E8F39900B29DD6 /* ArtsyStickers.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ArtsyStickers.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB43266527E8F39B00B29DD6 /* Stickers.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Stickers.xcassets; sourceTree = "<group>"; };
 		CB43266727E8F39B00B29DD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1417,9 +1419,8 @@
 		CC557644CEE44511A73431D7 /* Unica77LL-MediumItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Unica77LL-MediumItalic.otf"; path = "Artsy/fonts/Unica77LL-MediumItalic.otf"; sourceTree = "<group>"; };
 		CE0D8AAD95934C28AF35D2A3 /* Unica77LL-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Unica77LL-Regular.otf"; path = "Artsy/fonts/Unica77LL-Regular.otf"; sourceTree = "<group>"; };
 		DC9FFF92F0574260A5300F1B /* Unica77LL-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Unica77LL-Medium.otf"; path = "Artsy/fonts/Unica77LL-Medium.otf"; sourceTree = "<group>"; };
-		E67618FAB7D66D848A9EB934 /* libPods-Artsy.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		F7D9A46950251BEBB72617CE /* Pods-Artsy.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.store.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig"; sourceTree = "<group>"; };
+		EF8AF6797C9A1A0E84BB9DDC /* libPods-Artsy-ArtsyTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy-ArtsyTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1428,6 +1429,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB43299027FDFE3F00B29DD6 /* CoreSpotlight.framework in Frameworks */,
+				91DE2877BFB369D1F40E8172 /* libPods-Artsy.a in Frameworks */,
 				CB43299A27FDFE6B00B29DD6 /* WebKit.framework in Frameworks */,
 				CB43298E27FDFE2700B29DD6 /* CoreServices.framework in Frameworks */,
 				CB43298A27FDFE0A00B29DD6 /* AppTrackingTransparency.framework in Frameworks */,
@@ -1438,7 +1440,6 @@
 				CB43299227FDFE4700B29DD6 /* iAd.framework in Frameworks */,
 				CB43299427FDFE5300B29DD6 /* MessageUI.framework in Frameworks */,
 				CB43299827FDFE6400B29DD6 /* StoreKit.framework in Frameworks */,
-				99F27A966E82EC34A9151AB1 /* libPods-Artsy.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1462,7 +1463,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EAB12839B0E739574309CA10 /* libPods-ArtsyTests.a in Frameworks */,
+				50E313674D9D51E2749A13E7 /* libPods-ArtsyTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1640,10 +1641,11 @@
 				CB43298727FDFE0000B29DD6 /* AdSupport.framework */,
 				CB43298527FDFDF800B29DD6 /* AdServices.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
+				41B4CDDC19345D9AFB1E708B /* libPods-Artsy.a */,
+				EF8AF6797C9A1A0E84BB9DDC /* libPods-Artsy-ArtsyTests.a */,
 				CB43268327E8FA6900B29DD6 /* WidgetKit.framework */,
 				CB43268527E8FA6900B29DD6 /* SwiftUI.framework */,
-				E67618FAB7D66D848A9EB934 /* libPods-Artsy.a */,
-				B58F7982EDF319AFEDE22587 /* libPods-ArtsyTests.a */,
+				4E68A5AE2269760F44D9E0B7 /* libPods-ArtsyTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2511,10 +2513,10 @@
 		CB8672711C005915043C63E8 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				5FABF21E8E8B577E9F8AD86E /* Pods-Artsy.debug.xcconfig */,
-				F7D9A46950251BEBB72617CE /* Pods-Artsy.store.xcconfig */,
-				BA73626DACDFD38BE03DB8EA /* Pods-ArtsyTests.debug.xcconfig */,
-				ABADB231C993E6D13DDAE575 /* Pods-ArtsyTests.store.xcconfig */,
+				17D5AEAE759BEFBB256D5B19 /* Pods-Artsy.debug.xcconfig */,
+				130B644B991A212035F0CAB7 /* Pods-Artsy.store.xcconfig */,
+				4D374CB1A6B008C394CA82D1 /* Pods-ArtsyTests.debug.xcconfig */,
+				C2C68EB4D6DD0E0D04E49CB8 /* Pods-ArtsyTests.store.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -3503,15 +3505,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Artsy" */;
 			buildPhases = (
-				2419BAF0015FB4C61D3756CE /* [CP] Check Pods Manifest.lock */,
+				26390072526D18F01CC42A6C /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				54EE436FC81664CC0C6F0A54 /* [CP] Embed Pods Frameworks */,
+				E4875BC980DDBF81A3B3418A /* [CP] Copy Pods Resources */,
 				CB43266B27E8F39B00B29DD6 /* Embed App Extensions */,
-				EAEAE15F0666C9F84F4EA026 /* [CP] Embed Pods Frameworks */,
-				50463F551A54591A314E5167 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -3578,7 +3580,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CB43272227E8FE5400B29DD6 /* Build configuration list for PBXNativeTarget "ArtsyTests" */;
 			buildPhases = (
-				ECF5FC8E6FF489BA82E9CBF3 /* [CP] Check Pods Manifest.lock */,
+				C43DDB41B4350A3E0D09B275 /* [CP] Check Pods Manifest.lock */,
 				CB43271827E8FE5400B29DD6 /* Sources */,
 				CB43271927E8FE5400B29DD6 /* Frameworks */,
 				CB43271A27E8FE5400B29DD6 /* Resources */,
@@ -3805,7 +3807,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		2419BAF0015FB4C61D3756CE /* [CP] Check Pods Manifest.lock */ = {
+		26390072526D18F01CC42A6C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3827,24 +3829,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		50463F551A54591A314E5167 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		EAEAE15F0666C9F84F4EA026 /* [CP] Embed Pods Frameworks */ = {
+		54EE436FC81664CC0C6F0A54 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3861,7 +3846,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		ECF5FC8E6FF489BA82E9CBF3 /* [CP] Check Pods Manifest.lock */ = {
+		C43DDB41B4350A3E0D09B275 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3881,6 +3866,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E4875BC980DDBF81A3B3418A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -4372,7 +4374,6 @@
 				CURRENT_PROJECT_VERSION = 2019.05.24.09;
 				DEVELOPMENT_TEAM = 23KMWZ572J;
 				ENABLE_BITCODE = NO;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "$(EXCLUDED_ARCHS__EFFECTIVE_PLATFORM_SUFFIX_$(EFFECTIVE_PLATFORM_SUFFIX)__NATIVE_ARCH_64_BIT_$(NATIVE_ARCH_64_BIT)__XCODE_$(XCODE_VERSION_MAJOR)) arm64";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -4391,10 +4392,6 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(SDKROOT)/usr/lib/swift",
-					"$(inherited)",
 				);
 				MARKETING_VERSION = 6.7.7;
 				OTHER_LDFLAGS = (
@@ -4433,7 +4430,6 @@
 				CURRENT_PROJECT_VERSION = 2019.05.24.09;
 				DEVELOPMENT_TEAM = 23KMWZ572J;
 				ENABLE_BITCODE = NO;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "$(EXCLUDED_ARCHS__EFFECTIVE_PLATFORM_SUFFIX_$(EFFECTIVE_PLATFORM_SUFFIX)__NATIVE_ARCH_64_BIT_$(NATIVE_ARCH_64_BIT)__XCODE_$(XCODE_VERSION_MAJOR)) arm64";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -4451,10 +4447,6 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(SDKROOT)/usr/lib/swift",
-					"$(inherited)",
 				);
 				MARKETING_VERSION = 6.7.7;
 				OTHER_LDFLAGS = (
@@ -4511,7 +4503,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -4582,7 +4574,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -4629,10 +4621,6 @@
 				INFOPLIST_FILE = ArtsyStickers/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Artsy Stickers";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
-				LIBRARY_SEARCH_PATHS = (
-					"$(SDKROOT)/usr/lib/swift",
-					"$(inherited)",
-				);
 				MARKETING_VERSION = 6.7.7;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -4666,10 +4654,6 @@
 				INFOPLIST_FILE = ArtsyStickers/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Artsy Stickers";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
-				LIBRARY_SEARCH_PATHS = (
-					"$(SDKROOT)/usr/lib/swift",
-					"$(inherited)",
-				);
 				MARKETING_VERSION = 6.7.7;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.artsy.Artsy-Stickers";
@@ -4705,10 +4689,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(SDKROOT)/usr/lib/swift",
-					"$(inherited)",
 				);
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -4751,10 +4731,6 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(SDKROOT)/usr/lib/swift",
-					"$(inherited)",
-				);
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.BrazePushServiceExtension;
@@ -4795,10 +4771,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(SDKROOT)/usr/lib/swift",
-					"$(inherited)",
 				);
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -4843,10 +4815,6 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(SDKROOT)/usr/lib/swift",
-					"$(inherited)",
-				);
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.ArtsyWidget;
@@ -4863,7 +4831,7 @@
 		};
 		CB43272327E8FE5400B29DD6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BA73626DACDFD38BE03DB8EA /* Pods-ArtsyTests.debug.xcconfig */;
+			baseConfigurationReference = 4D374CB1A6B008C394CA82D1 /* Pods-ArtsyTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -4896,10 +4864,6 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "ArtsyTests/Supporting_Files/Artsy_Tests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
-				LIBRARY_SEARCH_PATHS = (
-					"$(SDKROOT)/usr/lib/swift",
-					"$(inherited)",
-				);
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -4920,7 +4884,7 @@
 		};
 		CB43272427E8FE5400B29DD6 /* Store */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = ABADB231C993E6D13DDAE575 /* Pods-ArtsyTests.store.xcconfig */;
+			baseConfigurationReference = C2C68EB4D6DD0E0D04E49CB8 /* Pods-ArtsyTests.store.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -4942,10 +4906,6 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "ArtsyTests/Supporting_Files/Artsy_Tests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
-				LIBRARY_SEARCH_PATHS = (
-					"$(SDKROOT)/usr/lib/swift",
-					"$(inherited)",
-				);
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.artsy.Artsy-Tests";

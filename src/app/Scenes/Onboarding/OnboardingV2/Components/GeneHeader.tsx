@@ -2,7 +2,6 @@ import { useNavigation } from "@react-navigation/native"
 import { GeneHeaderFragment_Gene$key } from "__generated__/GeneHeaderFragment_Gene.graphql"
 import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingTracking"
 import { Flex, FollowButton, Spacer, Text } from "palette"
-import { useCallback, useEffect, useState } from "react"
 import { ImageBackground, ImageSourcePropType } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"
 import { OnboardingGeneId } from "../OnboardingGene"
@@ -21,7 +20,6 @@ export const images: Record<OnboardingGeneId, ImageSourcePropType> = {
 }
 
 export const GeneHeader: React.FC<GeneHeaderProps> = ({ geneID, gene, description }) => {
-  const [shouldDisplayTooltip, setShouldDisplayTooltip] = useState(false)
   const [commit, isInFlight] = useMutation(FollowGeneMutation)
 
   const { name, isFollowed } = useFragment(GeneHeaderFragment, gene)
@@ -40,16 +38,6 @@ export const GeneHeader: React.FC<GeneHeaderProps> = ({ geneID, gene, descriptio
       },
     })
   }
-
-  const showTooltip = useCallback(() => {
-    setShouldDisplayTooltip(true)
-  }, [])
-
-  useEffect(() => {
-    if (isFollowed) {
-      showTooltip()
-    }
-  }, [showTooltip, isFollowed])
 
   return (
     <Flex pb={2}>
@@ -71,7 +59,7 @@ export const GeneHeader: React.FC<GeneHeaderProps> = ({ geneID, gene, descriptio
           />
         </Flex>
       </ImageBackground>
-      {!!shouldDisplayTooltip && <AnimatedTooltip />}
+      <AnimatedTooltip />
     </Flex>
   )
 }
