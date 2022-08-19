@@ -2341,11 +2341,13 @@ type ArtworkPriceInsights {
     # Return the liquidity rank in a formatted way (Low, medium, high or very high)
     format: String = ""
   ): String
+  medianSaleOverEstimatePercentage: Float
   medianSalePriceDisplayText(
     # Passes in to numeral, such as `'0.00'`
     format: String = ""
   ): String
   medium: String
+  sellThroughRate: Float
 }
 
 # The results for one of the requested aggregations
