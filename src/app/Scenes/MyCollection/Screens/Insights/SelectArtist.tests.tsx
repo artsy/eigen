@@ -16,7 +16,6 @@ describe("SelectArtist", () => {
       artistID: "artist-id",
       count: 10,
       artistId: "artist-id",
-      medium: "medium",
     })
 
     return <MedianSalePriceAtAuction artistID="artist-id" initialCategory="Painting" />

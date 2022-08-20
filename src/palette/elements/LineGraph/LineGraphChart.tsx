@@ -5,7 +5,7 @@ import { useColor, useSpace } from "palette/hooks"
 import { StarCircleIcon } from "palette/svgs/StarCircleIcon"
 import { Color, useTheme } from "palette/Theme"
 import { useCallback, useEffect, useRef, useState } from "react"
-import { Dimensions, NativeTouchEvent, StyleSheet, TextInput } from "react-native"
+import { Dimensions, NativeTouchEvent, Platform, StyleSheet, TextInput } from "react-native"
 import {
   HandlerStateChangeEventPayload,
   LongPressGestureHandler,
@@ -47,6 +47,8 @@ interface LineGraphChartProps extends LineChartData {
   chartHeight?: number
   chartWidth?: number
   chartInterpolation?: InterpolationPropType
+  dataTag?: string // optional tag to attach to data or events sent from this chart
+  dataTagToSubscribeTo?: string
   onDataPointPressed?: (datum: LineChartData["data"][0] | null) => void
   onXHighlightPressed?: (datum: { _x: number; _y: number; x: number; y: number }) => void
   onYHighlightPressed?: (datum: { _x: number; _y: number; x: number; y: number }) => void
@@ -68,6 +70,8 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
   chartHeight = deviceHeight / 3,
   chartWidth = deviceWidth - 20 * 2,
   chartInterpolation = "natural",
+  dataTag,
+  dataTagToSubscribeTo,
   onDataPointPressed = noop,
   onXHighlightPressed = noop,
   shouldAnimate = true,
@@ -89,7 +93,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
   // MARK:- STATES
 
   const [lastPressedDatum, setLastPressedDatum] = useState<
-    (typeof data[0] & { left?: number }) | null
+    (typeof data[0] & { left?: number; dataTag?: string }) | null
   >(null)
 
   const [scrollX] = useState(new Animated.Value(0))
@@ -131,10 +135,8 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
     ...xValues.map((xtick) => ({ [xtick]: true }))
   )
 
-  const datapointsByX: { [key: typeof data[0]["x"]]: typeof data[0] } = Object.assign(
-    {},
-    ...data.map((d) => ({ [d.x]: d }))
-  )
+  const datapointsByX: { [key: typeof data[0]["x"]]: typeof data[0] & { dataTag?: string } } =
+    Object.assign({}, ...data.map((d) => ({ [d.x]: { ...d, dataTag } })))
 
   // The radius of touch along x axis that a datapoint can claim
   const pointXRadiusOfTouch =
@@ -177,6 +179,19 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
 
   // MARK: INTERACTIONS
   const updateLastPressedDatum = (value: typeof lastPressedDatum) => {
+    if (dataTagToSubscribeTo && value && !value.dataTag && __DEV__) {
+      console.warn(
+        "You have specified a `dataTagToSubscribeTo` but you have not specified any `dataTag`. \n" +
+          "If you are expecting events from multiple LineChartGraph at the same time, pass a dataTag to each and optionally choose which to subscribe to"
+      )
+      return
+    }
+    if (dataTagToSubscribeTo && value && dataTagToSubscribeTo === value.dataTag) {
+      setLastPressedDatum(value)
+      onDataPointPressed?.(value)
+      return
+    }
+    // Always set null and also untagged value if dataTagToSubscribeTo is not passed
     setLastPressedDatum(value)
     onDataPointPressed?.(value)
   }
@@ -189,7 +204,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
     setTimeout(() => {
       updateLastPressedDatum(null)
     }, 1000)
-  }, [JSON.stringify(data)])
+  }, [JSON.stringify(data), dataTagToSubscribeTo])
 
   const broadcastGestureEventXToDataPoints = (event: ChartTapEventType) => {
     ChartTapObservable.next(event)
@@ -370,7 +385,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
               pointXRadiusOfTouch={pointXRadiusOfTouch}
               size={4}
               updateLastPressedDatum={updateLastPressedDatum}
-              onDataPointPressed={onDataPointPressed}
+              dataTag={dataTag}
             />
           }
         />
@@ -409,7 +424,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
           {
             transform: [{ translateX: xLabeltranslateX }],
             position: "absolute",
-            top: 70,
+            top: Platform.select({ ios: 70, android: 60 }),
             left: 0,
           },
           activeOpacityStyle,

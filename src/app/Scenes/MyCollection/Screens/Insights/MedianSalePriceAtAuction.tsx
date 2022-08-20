@@ -219,7 +219,7 @@ const LoadingSkeleton = () => {
         </Flex>
         <PlaceholderText width={100} height={7} />
         <Spacer mb={2} />
-        <PlaceholderBox width="100%" height={screenHeight / 4} marginVertical={10} />
+        <PlaceholderBox width="100%" height={screenHeight / 2.8} marginVertical={10} />
         <Flex flexDirection="row" my={25} justifyContent="center">
           <PlaceholderBox height={15} width={25} marginHorizontal={10} />
           <PlaceholderBox height={15} width={25} marginHorizontal={10} />

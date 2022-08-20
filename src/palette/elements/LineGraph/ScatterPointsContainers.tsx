@@ -62,14 +62,13 @@ export const HighlightIconContainer: React.FC<HighlightIconContainerProps> = (pr
 interface ScatterDataPointContainerProps {
   updateLastPressedDatum: (datum: any) => void
   size: number
+  dataTag?: string
   /** the area along the x-axis that when touched, a point can claim */
   pointXRadiusOfTouch: number
-  onDataPointPressed?: (datum: LineChartData["data"][0]) => void
 }
 
 export const ScatterDataPointContainer: React.FC<ScatterDataPointContainerProps> = (props) => {
-  const { onDataPointPressed, pointXRadiusOfTouch, updateLastPressedDatum, ...injectedProps } =
-    props
+  const { dataTag, pointXRadiusOfTouch, updateLastPressedDatum, ...injectedProps } = props
   const { x, datum } = injectedProps as any
 
   const isWithinItemRange = (locationX: number) => {
@@ -82,7 +81,7 @@ export const ScatterDataPointContainer: React.FC<ScatterDataPointContainerProps>
   const checkTappedXDataRegion = (event: ChartTapEventType) => {
     // @ts-ignore Event might be a scrollview touch or tap gesture handler event
     if (isWithinItemRange(event.pageX ?? event.absoluteX ?? 0)) {
-      updateLastPressedDatum?.({ ...datum, left: x - 10 })
+      updateLastPressedDatum?.({ ...datum, left: x - 10, dataTag })
     }
   }
 

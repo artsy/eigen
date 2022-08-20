@@ -18,6 +18,8 @@ interface Props {
    * that are more faithful to your data, but less curvy than natural.
    */
   chartInterpolation?: InterpolationPropType
+  dataTag?: string // optional tag to attach to data or events sent from this chart
+  dataTagToSubscribeTo?: string
   onXHighlightPressed?: (datum: { _x: number; _y: number; x: number; y: number }) => void
   onYHighlightPressed?: (datum: { _x: number; _y: number; x: number; y: number }) => void
   onDataPointPressed?: (datum: LineChartData["data"][0] | null) => void
@@ -47,6 +49,8 @@ export const LineGraph: React.FC<Props> = ({
   chartWidth,
   chartInterpolation,
   data,
+  dataTag,
+  dataTagToSubscribeTo,
   onBandSelected,
   onCategorySelected,
   onDataPointPressed,
@@ -72,6 +76,8 @@ export const LineGraph: React.FC<Props> = ({
             data={data.data}
             dataMeta={data.dataMeta}
             showHighlights={showHighlights}
+            dataTag={dataTag}
+            dataTagToSubscribeTo={dataTagToSubscribeTo}
             shouldAnimate={shouldAnimate}
             chartHeight={chartHeight}
             chartWidth={chartWidth}
