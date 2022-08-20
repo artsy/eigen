@@ -1,13 +1,12 @@
 import { useEffect } from "react"
 import { G } from "react-native-svg"
 import { Point } from "victory-native"
-import { ChartTapEventType, ChartTapObservable } from "./LineGraphChart"
-import { LineChartData } from "./types"
+import { ChartGestureEventType, ChartGestureObservable } from "./LineGraphChart"
 
 interface HighlightIconContainerProps {
+  dataTag?: string
   icon: JSX.Element
   onHighlightPressed: (datum: any) => void
-  chartHeight: number
 }
 
 /** HighlightIconContainer helps format the custom highlights icon so they display properly on the chart
@@ -15,7 +14,7 @@ interface HighlightIconContainerProps {
  * It will also trigger the onHighlightPressed callback with the datum if pressed.
  */
 export const HighlightIconContainer: React.FC<HighlightIconContainerProps> = (props) => {
-  const { chartHeight, icon, onHighlightPressed, ...injectedProps } = props
+  const { dataTag, icon, onHighlightPressed, ...injectedProps } = props
   const { x, y, datum } = injectedProps as any
 
   // TODO: x and y seems to have been displaced by 10. Investigate why.
@@ -31,15 +30,9 @@ export const HighlightIconContainer: React.FC<HighlightIconContainerProps> = (pr
     return false
   }
 
-  const checkTappedXDataRegion = (event: ChartTapEventType) => {
-    if (
-      // @ts-ignore Event might be a scrollview touch or tap gesture handler event
-      isWithinItemRange(
-        event.locationX ?? event.absoluteY ?? 0,
-        event.locationY ?? event.absoluteY ?? 0
-      )
-    ) {
-      onHighlightPressed?.(datum)
+  const checkTappedXDataRegion = (event: ChartGestureEventType) => {
+    if (isWithinItemRange(event.x, event.y)) {
+      onHighlightPressed?.({ ...datum, dataTag })
     }
   }
 
@@ -48,7 +41,7 @@ export const HighlightIconContainer: React.FC<HighlightIconContainerProps> = (pr
   }
 
   useEffect(() => {
-    const observable = ChartTapObservable.subscribe(observer)
+    const observable = ChartGestureObservable.subscribe(observer)
     return () => observable.unsubscribe()
   }, [])
 
@@ -78,9 +71,8 @@ export const ScatterDataPointContainer: React.FC<ScatterDataPointContainerProps>
     return false
   }
 
-  const checkTappedXDataRegion = (event: ChartTapEventType) => {
-    // @ts-ignore Event might be a scrollview touch or tap gesture handler event
-    if (isWithinItemRange(event.pageX ?? event.absoluteX ?? 0)) {
+  const checkTappedXDataRegion = (event: ChartGestureEventType) => {
+    if (isWithinItemRange(event.x)) {
       updateLastPressedDatum?.({ ...datum, left: x - 10, dataTag })
     }
   }
@@ -90,7 +82,7 @@ export const ScatterDataPointContainer: React.FC<ScatterDataPointContainerProps>
   }
 
   useEffect(() => {
-    const observable = ChartTapObservable.subscribe(observer)
+    const observable = ChartGestureObservable.subscribe(observer)
     return () => observable.unsubscribe()
   }, [])
 
