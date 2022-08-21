@@ -153,8 +153,6 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
     .range(scaleXLabels)
 
   // MARK: SHARED VALUES AND ANIMATIONS
-  const showStaticPressedDatum = useSharedValue(false)
-
   const opacityWhenScroll = useSharedValue<0 | 1>(0)
 
   const activeOpacityStyle = useAnimatedStyle(() => {
@@ -166,18 +164,42 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
   const xLabeltranslateX = useSharedValue(0)
 
   // MARK: INTERACTIONS
-  const updateLastPressedDatum = (value: typeof lastPressedDatum) => {
-    if (dataTagToSubscribeTo && value && !value.dataTag && __DEV__) {
+  const updateLastPressedDatum = (value: typeof lastPressedDatum, updateLabel: boolean = true) => {
+    if (dataTagSubscribedNameRef.current && value && !value.dataTag && __DEV__) {
       console.warn(
         "You have specified a `dataTagToSubscribeTo` but you have not specified any `dataTag`. \n" +
           "If you are expecting events from multiple LineChartGraph at the same time, pass a dataTag to each and optionally choose which to subscribe to"
       )
       return
     }
-    if (dataTagToSubscribeTo && value && dataTagToSubscribeTo === value.dataTag) {
+    if (
+      dataTagSubscribedNameRef.current &&
+      value &&
+      dataTagSubscribedNameRef.current !== value.dataTag
+    ) {
+      return
+    }
+
+    opacityWhenScroll.value = !!value ? 1 : 0
+
+    if (
+      dataTagSubscribedNameRef.current &&
+      value &&
+      dataTagSubscribedNameRef.current === value.dataTag
+    ) {
+      if (updateLabel) {
+        const label = value.x
+        if (floatingXLabelRef.current?.props?.value !== label.toString()) {
+          floatingXLabelRef.current?.setNativeProps({ text: `${label}` })
+        }
+        xLabeltranslateX.value = value.left ?? 0
+      }
       setLastPressedDatum(value)
       onDataPointPressed?.(value)
       return
+    }
+    if (!value) {
+      floatingXLabelRef.current?.setNativeProps({ text: "" })
     }
     // Always set null and also untagged value if dataTagToSubscribeTo is not passed
     setLastPressedDatum(value)
@@ -210,7 +232,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
     // this reverts that when data changes
     setTimeout(() => {
       updateLastPressedDatum(null)
-    }, 1000)
+    }, 100)
   }, [JSON.stringify(data), dataTagToSubscribeTo])
 
   const broadcastGestureEventXToDataPoints = (event: ChartGestureEventType) => {
@@ -258,21 +280,20 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
 
   const handleActiveGestureEvent = (event: GestureEventPayload & PanGestureHandlerEventPayload) => {
     opacityWhenScroll.value = 1
-    xLabeltranslateX.value = event.absoluteX
+    xLabeltranslateX.value = event.x
     const label = scaleXLabel(scaleX.invert(event.absoluteX))
     floatingXLabelRef.current?.setNativeProps({ text: `${label}` })
     const pressedDatum = datapointsByX[label]
-    updateLastPressedDatum(pressedDatum)
+    updateLastPressedDatum(pressedDatum, false)
   }
 
   const handleEndGestureEvent = () => {
     updateLastPressedDatum(null)
-    opacityWhenScroll.value = 0
   }
 
   const gestureHandler = useAnimatedGestureHandler({
     onStart: () => {
-      runOnJS(updateLastPressedDatum)(null)
+      // handled by tapgesture handlers
     },
     onActive: (event, _context) => {
       runOnJS(handleActiveGestureEvent)(event)
@@ -295,10 +316,8 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
           <TapGestureHandler
             onHandlerStateChange={({ nativeEvent }) => {
               if (nativeEvent.state === State.BEGAN) {
-                showStaticPressedDatum.value = true
                 broadcastGestureEventXToDataPoints(nativeEvent)
               } else if (nativeEvent.state === State.END) {
-                showStaticPressedDatum.value = false
                 updateLastPressedDatum(null)
               }
             }}
@@ -307,11 +326,9 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
               <LongPressGestureHandler
                 onHandlerStateChange={({ nativeEvent }) => {
                   if (nativeEvent.state === State.BEGAN) {
-                    showStaticPressedDatum.value = true
                     broadcastGestureEventXToDataPoints(nativeEvent)
                   }
                   if (nativeEvent.state === State.END || nativeEvent.state === State.FAILED) {
-                    showStaticPressedDatum.value = false
                     updateLastPressedDatum(null)
                   }
                 }}
@@ -516,14 +533,6 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
           }}
         />
       </Animated.View>
-
-      {lastPressedDatum && showStaticPressedDatum.value && (
-        <Flex position="absolute" top={70} left={lastPressedDatum?.left}>
-          <Text textAlign="center" variant="xs" color="black60">
-            {lastPressedDatum.x}
-          </Text>
-        </Flex>
-      )}
     </>
   )
 }
