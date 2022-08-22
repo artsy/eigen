@@ -152,7 +152,6 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
               tracking.trackEvent(tracks.tapAuctionResultsInfo())
             }}
             modalTitle="Auction Results"
-            maxModalHeight={310}
             modalContent={renderAuctionResultsModal()}
           />
         </Flex>
