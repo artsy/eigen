@@ -2339,6 +2339,9 @@ type ArtworkPriceInsights {
 
   # The demand rank display text of the artist and medium
   demandRankDisplayText: String
+
+  # Return weather the artist medium is in high demand
+  isHighDemand: Boolean
   lastAuctionResultDate: String
   liquidityRankDisplayText(
     # Return the liquidity rank in a formatted way (Low, medium, high or very high)
