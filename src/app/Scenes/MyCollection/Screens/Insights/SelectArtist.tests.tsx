@@ -44,7 +44,10 @@ describe("SelectArtist", () => {
 
       // fetch Banksy data
       mockEnvironment.mock.resolveMostRecentOperation({
-        data: { artist: { internalID: "artist-id", name: "Banksy", imageUrl: "image-url" } },
+        data: {
+          artist: { internalID: "artist-id", name: "Banksy", imageUrl: "image-url" },
+          ...insights,
+        },
       })
 
       // Modal is hidden and the artist is updated
@@ -89,6 +92,7 @@ describe("SelectArtist", () => {
       mockEnvironment.mock.resolveMostRecentOperation({
         data: {
           artist: { internalID: "artist-id", name: "Amoako Boafo", imageUrl: "image-url" },
+          ...insights,
         },
       })
       await waitFor(() =>
@@ -176,5 +180,63 @@ const mockResult = {
         ],
       },
     },
+  },
+}
+
+const insights = {
+  analyticsCalendarYearPriceInsights: [
+    {
+      calendarYearMarketPriceInsights: [
+        { lotsSold: "7", medianSalePrice: "9654000", year: "2014" },
+        { lotsSold: "9", medianSalePrice: "8460000", year: "2015" },
+        { lotsSold: "7", medianSalePrice: "7532000", year: "2016" },
+        { lotsSold: "14", medianSalePrice: "11741000", year: "2017" },
+        { lotsSold: "19", medianSalePrice: "34367000", year: "2018" },
+        { lotsSold: "15", medianSalePrice: "41405000", year: "2019" },
+        { lotsSold: "17", medianSalePrice: "93000000", year: "2020" },
+        { lotsSold: "27", medianSalePrice: "119232000", year: "2021" },
+        { lotsSold: "9", medianSalePrice: "130423000", year: "2022" },
+      ],
+      medium: "Painting",
+    },
+  ],
+  priceInsights: {
+    nodes: [
+      {
+        lotsSoldLast36Months: 31,
+        lotsSoldLast96Months: 77,
+        medianSalePriceLast36Months: "335000",
+        medianSalePriceLast96Months: "245000",
+        medium: "Sculpture",
+      },
+      {
+        lotsSoldLast36Months: 841,
+        lotsSoldLast96Months: 1327,
+        medianSalePriceLast36Months: "6178000",
+        medianSalePriceLast96Months: "3836000",
+        medium: "Print",
+      },
+      {
+        lotsSoldLast36Months: 64,
+        lotsSoldLast96Months: 119,
+        medianSalePriceLast36Months: "93000000",
+        medianSalePriceLast96Months: "41653000",
+        medium: "Painting",
+      },
+      {
+        lotsSoldLast36Months: 20,
+        lotsSoldLast96Months: 48,
+        medianSalePriceLast36Months: "11930000",
+        medianSalePriceLast96Months: "4372000",
+        medium: "Work on Paper",
+      },
+      {
+        lotsSoldLast36Months: 13,
+        lotsSoldLast96Months: 13,
+        medianSalePriceLast36Months: "34968000",
+        medianSalePriceLast96Months: "34968000",
+        medium: "Unknown",
+      },
+    ],
   },
 }
