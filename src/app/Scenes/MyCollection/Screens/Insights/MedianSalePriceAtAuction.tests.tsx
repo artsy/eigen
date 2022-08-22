@@ -16,7 +16,6 @@ describe("MedianSalePriceAtAuction", () => {
     useLazyLoadQuery<MedianSalePriceAtAuctionQuery>(MedianSalePriceAtAuctionScreenQuery, {
       artistID: "artist-id",
       artistId: "artist-id",
-      medium: "medium",
     })
 
     return <MedianSalePriceAtAuction artistID="artist-id" initialCategory="Painting" />
