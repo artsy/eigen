@@ -34,9 +34,15 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
   queryData,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState(initialCategory)
+  // accompany category with a ref to mitigate stale closure issues.
+  const selectedCategoryRef = useRef(initialCategory)
+
   const [selectedDuration, setSelectedDuration] = useState<MedianSalePriceChartDuration>(
     MedianSalePriceChartDuration["3 yrs"]
   )
+  // accompany duration with a ref to mitigate stale closure issues.
+  const selectedDurationRef = useRef(selectedDuration)
+
   const [tappedDataPoint, setTappedDataPoint] = useState<{
     [key in MedianSalePriceChartDuration]: LineChartData["data"][0] | null
   }>({
@@ -212,8 +218,6 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
     { name: MedianSalePriceChartDuration["8 yrs"] },
   ]
 
-  const selectedDurationRef = useRef(selectedDuration)
-
   const onBandSelected = (durationName: string) => {
     selectedDurationRef.current = durationName as MedianSalePriceChartDuration
     setSelectedDuration(durationName as MedianSalePriceChartDuration)
@@ -223,6 +227,7 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
 
   // MARK: Category Logic
   const onCategorySelected = (category: string) => {
+    selectedCategoryRef.current = category
     setSelectedCategory(category)
   }
 
@@ -299,7 +304,7 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
     }
     if (pressedDataPoint) {
       const datapoint = chartDataArraySource[
-        selectedCategory === "Other" ? "Unknown" : selectedCategory
+        selectedCategoryRef.current === "Other" ? "Unknown" : selectedCategoryRef.current
       ]?.find((d) => parseInt(d.year, 10) === pressedDataPoint.x)
 
       if (datapoint) {
@@ -307,10 +312,12 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
           ? formatMedianPrice(parseInt(datapoint.medianSalePrice, 10))
           : "0 Auction Results"
       }
+      return "0 Auction Results"
     }
     const medianPrice =
-      chartHeaderDataSource[selectedCategory === "Other" ? "Unknown" : selectedCategory]
-        ?.medianSalePrice
+      chartHeaderDataSource[
+        selectedCategoryRef.current === "Other" ? "Unknown" : selectedCategoryRef.current
+      ]?.medianSalePrice
     return formatMedianPrice(parseInt(medianPrice, 10))
   }
 
@@ -336,16 +343,19 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
     }
     if (pressedDataPoint) {
       const datapoint = chartDataArraySource[
-        selectedCategory === "Other" ? "Unknown" : selectedCategory
+        selectedCategoryRef.current === "Other" ? "Unknown" : selectedCategoryRef.current
       ]?.find((d) => parseInt(d.year, 10) === pressedDataPoint.x)
       if (datapoint) {
         return `${datapoint.lotsSold} ${datapoint.lotsSold > 1 ? "lots" : "lot"} in ${
           datapoint.year
         }`
       }
+      return " "
     }
     const totalLotsSold =
-      chartHeaderDataSource[selectedCategory === "Other" ? "Unknown" : selectedCategory]?.lotsSold
+      chartHeaderDataSource[
+        selectedCategoryRef.current === "Other" ? "Unknown" : selectedCategoryRef.current
+      ]?.lotsSold
     if (!totalLotsSold) {
       return " "
     }
@@ -424,6 +434,14 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
 
   const dataTagToSubscribeTo = selectedDurationRef.current
 
+  const yAxisValueFormatter = (val: number) => {
+    const formatted = formatLargeNumber(val, 1)
+    if (formatted.length > 4) {
+      return formatLargeNumber(val, 0)
+    }
+    return formatted
+  }
+
   return (
     <Animated.View style={[{ flex: 1, flexDirection: "row" }, containerStyle]}>
       <Flex
@@ -449,7 +467,7 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
           yAxisTickFormatter={
             !threeYearlineChartData.data.length || !!threeYearContainsAllOnes
               ? () => "----"
-              : (val: number) => formatLargeNumber(val)
+              : (val: number) => yAxisValueFormatter(val)
           }
           // hide the year on xAxis
           xAxisTickFormatter={() => ""}
@@ -490,7 +508,7 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
           yAxisTickFormatter={
             !eightYearlineChartData.data.length || !!eightYearContainsAllOnes
               ? () => "----"
-              : (val: number) => formatLargeNumber(val)
+              : (val: number) => yAxisValueFormatter(val)
           }
           // hide the year on xAxis
           xAxisTickFormatter={() => ""}
