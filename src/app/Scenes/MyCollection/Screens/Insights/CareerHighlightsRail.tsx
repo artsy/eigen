@@ -1,4 +1,6 @@
 import { CareerHighlightsRail_me$key } from "__generated__/CareerHighlightsRail_me.graphql"
+import { navigate, popToRoot } from "app/navigation/navigate"
+import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { Flex, Spacer, useColor } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
@@ -46,7 +48,22 @@ export const CareerHighlightsRail: React.FC<CareerHighlightsRailProps> = (props)
         ItemSeparatorComponent={() => <Spacer mx={1} />}
         ListFooterComponent={() => (
           <Flex ml={2}>
-            <CareerHighlightPromotionalCard />
+            <CareerHighlightPromotionalCard
+              onPress={() => {
+                navigate("/my-collection/career-highlights", {
+                  passProps: { openPromoCard: true, careerHighlightsAvailableTypes },
+                })
+              }}
+              onButtonPress={() => {
+                navigate("my-collection/artworks/new", {
+                  passProps: {
+                    mode: "add",
+                    source: Tab.insights,
+                    onSuccess: popToRoot,
+                  },
+                })
+              }}
+            />
           </Flex>
         )}
         style={{ overflow: "visible" }}
@@ -54,8 +71,12 @@ export const CareerHighlightsRail: React.FC<CareerHighlightsRailProps> = (props)
         renderItem={({ item }) => (
           <CareerHighlightsCard
             count={item.count}
-            type={item.kind as CareerHighlightKind}
-            careerHighlightsAvailableTypes={careerHighlightsAvailableTypes}
+            type={item.kind}
+            onPress={() => {
+              navigate("/my-collection/career-highlights", {
+                passProps: { type: item.kind, careerHighlightsAvailableTypes },
+              })
+            }}
           />
         )}
       />

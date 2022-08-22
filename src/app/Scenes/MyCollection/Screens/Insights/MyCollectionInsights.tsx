@@ -126,6 +126,7 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
         // Extend the container flex when there are no artworks for accurate vertical centering
         flexGrow: myCollectionArtworksCount > 0 ? undefined : 1,
         justifyContent: myCollectionArtworksCount > 0 ? "flex-start" : "center",
+        height: myCollectionArtworksCount > 0 ? "auto" : "100%",
       }}
       paddingHorizontal={0}
     >

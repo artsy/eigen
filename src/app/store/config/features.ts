@@ -232,6 +232,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableMyCollectionInsightsPhase1Part3",
   },
+  AREnableMyCollectionInsightsPhase1Part4: {
+    readyForRelease: false,
+    description: "Enable MyC insights Ph 1 Pt 4",
+    showInAdminMenu: true,
+  },
   AREnableNotFoundFailureView: {
     readyForRelease: true,
     description: "Enable Not Found Failure View",
@@ -311,6 +316,9 @@ export const devToggles = defineDevToggles({
   },
   DTEasyMyCollectionArtworkCreation: {
     description: "MyCollection artworks easy add",
+  },
+  DTMyCollectionDeleteAllArtworks: {
+    description: "MyCollection delete all artworks",
   },
   DTShowWebviewIndicator: {
     description: "Webview indicator",
