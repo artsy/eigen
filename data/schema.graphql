@@ -3216,7 +3216,7 @@ type CalculatedCost {
 
 # Market Price Insights Calendar year
 type CalendarYearMarketPriceInsights {
-  artistId: String
+  artistId: ID
   artistName: String
   averageSalePrice: BigInt
   createdAt: ISO8601DateTime
@@ -12393,7 +12393,7 @@ type Query {
 
   # Get price insights for a market for each calendar year sorted by year asc.
   analyticsCalendarYearMarketPriceInsights(
-    artistId: String!
+    artistId: ID!
     endYear: String
     medium: String!
     startYear: String
@@ -12401,7 +12401,7 @@ type Query {
 
   # Get list of calendar year price insights for an artist for each market sorted by year asc.
   analyticsCalendarYearPriceInsights(
-    artistId: String!
+    artistId: ID!
     endYear: String
     startYear: String
   ): [CalendarYearPriceInsights!]
