@@ -27,14 +27,18 @@ interface Slides {
 export const CareerHighlightsBigCardsSwiper: React.FC<{
   type: CareerHighlightKind
   careerHighlightsAvailableTypes: CareerHighlightKind[]
-}> = ({ type, careerHighlightsAvailableTypes }) => {
+  openPromoCard?: boolean
+}> = ({ type, careerHighlightsAvailableTypes, openPromoCard }) => {
   const color = useColor()
   const space = useSpace()
   const { width: screenWidth } = useScreenDimensions()
 
   const data = useLazyLoadQuery<CareerHighlightsBigCardsSwiperQuery>(
     CareerHighlightsBigCardsSwiperScreenQuery,
-    {}
+    {},
+    {
+      fetchPolicy: "store-and-network",
+    }
   )
 
   const myCollectionInfo = data.me?.myCollectionInfo
@@ -44,7 +48,9 @@ export const CareerHighlightsBigCardsSwiper: React.FC<{
   }
 
   const numberOfSlides = careerHighlightsAvailableTypes.length + 1
-  const openedCardIndex = careerHighlightsAvailableTypes.indexOf(type)
+  const openedCardIndex = openPromoCard
+    ? careerHighlightsAvailableTypes.length
+    : careerHighlightsAvailableTypes.indexOf(type)
 
   // 18 is the close button size, 20 is screen margin and 10 is the spase between the
   // close button and the bar
@@ -139,7 +145,7 @@ export const CareerHighlightsBigCardsSwiper: React.FC<{
           ))}
         </Flex>
       </FancyModalHeader>
-      <Suspense fallback={<LoadingSkeleton />}>
+      <Suspense fallback={openPromoCard ? <LoadingSkeletonPromoCard /> : <LoadingSkeleton />}>
         <ScrollView
           horizontal
           scrollEventThrottle={10}
@@ -163,12 +169,23 @@ export const CareerHighlightsBigCardsSwiper: React.FC<{
 const LoadingSkeleton = () => {
   return (
     <ProvidePlaceholderContext>
-      <Flex px={2}>
+      <Flex px={2} pt={2}>
         <Flex justifyContent="space-between" flexDirection="row" alignItems="center" pb={1}>
           <PlaceholderBox height={60} width={50} />
           <PlaceholderBox width={50} height={50} borderRadius={25} />
         </Flex>
         <PlaceholderBox height={60} width={180} />
+      </Flex>
+    </ProvidePlaceholderContext>
+  )
+}
+
+const LoadingSkeletonPromoCard = () => {
+  return (
+    <ProvidePlaceholderContext>
+      <Flex px={2} pt={2}>
+        <PlaceholderBox height={60} width={200} marginBottom={10} />
+        <PlaceholderBox height={60} width={150} />
       </Flex>
     </ProvidePlaceholderContext>
   )

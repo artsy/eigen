@@ -19,7 +19,7 @@ import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/Auction
 import { isEmpty } from "lodash"
 import { Box, Separator } from "palette"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
-import { FlatList, RefreshControl } from "react-native"
+import { FlatList, RefreshControl, StatusBar } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { TrackingProp } from "react-tracking"
 import usePrevious from "react-use/lib/usePrevious"
@@ -614,43 +614,46 @@ export const ArtworkQueryRenderer: React.FC<{
   tracking?: TrackingProp
 }> = ({ artworkID, environment, ...others }) => {
   return (
-    <RetryErrorBoundaryLegacy
-      render={() => {
-        return (
-          <AboveTheFoldQueryRenderer<ArtworkAboveTheFoldQuery, ArtworkBelowTheFoldQuery>
-            environment={environment || defaultEnvironment}
-            above={{
-              query: ArtworkScreenQuery,
-              variables: { artworkID },
-            }}
-            below={{
-              query: graphql`
-                query ArtworkBelowTheFoldQuery($artworkID: String!) {
-                  artwork(id: $artworkID) {
-                    ...Artwork_artworkBelowTheFold
+    <>
+      <StatusBar barStyle="dark-content" />
+      <RetryErrorBoundaryLegacy
+        render={() => {
+          return (
+            <AboveTheFoldQueryRenderer<ArtworkAboveTheFoldQuery, ArtworkBelowTheFoldQuery>
+              environment={environment || defaultEnvironment}
+              above={{
+                query: ArtworkScreenQuery,
+                variables: { artworkID },
+              }}
+              below={{
+                query: graphql`
+                  query ArtworkBelowTheFoldQuery($artworkID: String!) {
+                    artwork(id: $artworkID) {
+                      ...Artwork_artworkBelowTheFold
+                    }
                   }
-                }
-              `,
-              variables: { artworkID },
-            }}
-            render={{
-              renderPlaceholder: () => <AboveTheFoldPlaceholder artworkID={artworkID} />,
-              renderComponent: ({ above, below }) => {
-                return (
-                  <ArtworkContainer
-                    artworkAboveTheFold={above.artwork}
-                    artworkBelowTheFold={below?.artwork ?? null}
-                    me={above.me}
-                    {...others}
-                  />
-                )
-              },
-            }}
-            fetchPolicy="store-and-network"
-            cacheConfig={{ force: true }}
-          />
-        )
-      }}
-    />
+                `,
+                variables: { artworkID },
+              }}
+              render={{
+                renderPlaceholder: () => <AboveTheFoldPlaceholder artworkID={artworkID} />,
+                renderComponent: ({ above, below }) => {
+                  return (
+                    <ArtworkContainer
+                      artworkAboveTheFold={above.artwork}
+                      artworkBelowTheFold={below?.artwork ?? null}
+                      me={above.me}
+                      {...others}
+                    />
+                  )
+                },
+              }}
+              fetchPolicy="store-and-network"
+              cacheConfig={{ force: true }}
+            />
+          )
+        }}
+      />
+    </>
   )
 }
