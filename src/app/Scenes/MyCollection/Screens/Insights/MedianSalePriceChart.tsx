@@ -175,6 +175,7 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
         ? selectedCategory
         : newCategories?.[0]
       setCategories(computeCategoriesForChart(newCategories))
+      selectedCategoryRef.current = newSelectedCategory
       setSelectedCategory(newSelectedCategory)
     }
   }, [JSON.stringify(data.analyticsCalendarYearPriceInsights), selectedDuration])
