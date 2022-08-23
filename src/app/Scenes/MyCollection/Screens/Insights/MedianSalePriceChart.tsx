@@ -331,9 +331,9 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
       if (datapoint) {
         return parseInt(datapoint.medianSalePrice, 10)
           ? formatMedianPrice(parseInt(datapoint.medianSalePrice, 10))
-          : "0 Auction Results"
+          : "Limited data - no median available"
       }
-      return "0 Auction Results"
+      return "Limited data - no median available"
     }
     const medianPrice =
       chartHeaderDataSource[
