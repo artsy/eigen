@@ -67,9 +67,6 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({
     if (appliedKeywordFilter?.paramValue || !inputRef.current) {
       return
     }
-
-    ;(inputRef as any).current?.blur()
-    ;(inputRef as any).current?.clear()
   }, [appliedFiltersState])
 
   useEffect(() => {
