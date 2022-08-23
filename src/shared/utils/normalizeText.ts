@@ -240,7 +240,8 @@ for (const { letters, base } of defaultDiacriticsRemovalMap) {
 }
 
 // "what?" version ... http://jsperf.com/diacritics/12
-export function normalizeText(text: string, trim: boolean = true) {
+export function normalizeText(text: string | null, trim: boolean = true) {
+  text = text || ""
   text = trim ? text.trim() : text
   return (
     text
