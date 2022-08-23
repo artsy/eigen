@@ -25,6 +25,10 @@ export interface PillProps extends FlexProps {
   imageUrl?: string
   highlightEnabled?: boolean
   block?: boolean
+  pressablePros?: Omit<
+    PressableProps,
+    "style" | "disabled" | "onPress" | "onPressIn" | "onPressOut"
+  >
 }
 
 enum DisplayState {
@@ -69,6 +73,7 @@ export const Pill: React.FC<PillProps> = ({
   rounded,
   highlightEnabled = false,
   block = false,
+  pressablePros = {},
   ...rest
 }) => {
   const textStyle = useTextStyleForPalette(size === "xxs" ? "xs" : "sm")
@@ -97,6 +102,7 @@ export const Pill: React.FC<PillProps> = ({
     <Spring native to={to} config={config.stiff}>
       {(springProps: typeof to) => (
         <Pressable
+          {...pressablePros}
           style={block ? {} : { alignSelf: "flex-start" }}
           disabled={disabled || !onPress}
           onPress={handlePress}

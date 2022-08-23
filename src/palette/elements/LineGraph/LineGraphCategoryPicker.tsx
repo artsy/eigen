@@ -1,4 +1,4 @@
-import { useColor } from "palette"
+import { useColor, useSpace } from "palette"
 import { Spacer } from "palette/atoms"
 import { useEffect, useRef, useState } from "react"
 import { Dimensions, LayoutRectangle, ViewProps } from "react-native"
@@ -114,6 +114,7 @@ export const CategoryPill: React.FC<CategoryPillProps> = ({
   selectedCategory,
 }) => {
   const color = useColor()
+  const space = useSpace()
 
   const isEnabled = selectedCategory === category
 
@@ -132,6 +133,7 @@ export const CategoryPill: React.FC<CategoryPillProps> = ({
       onPress={handlePress}
       onLayout={onLayout}
       testID="categoryPill"
+      hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
     >
       <Text variant="xs" color={itemColor}>
         {category}
