@@ -6,7 +6,7 @@ import { ModalStack } from "app/navigation/ModalStack"
 import { navigate } from "app/navigation/navigate"
 import { __globalStoreTestUtils__, useSelectedTab } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithRelayWrappers } from "app/tests/renderWithWrappers"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
 import { ArtworkExtraLinks } from "./index"
 
@@ -25,7 +25,7 @@ const getWrapper = ({
   artwork: CleanRelayFragment<ArtworkExtraLinks_artwork$data>
   auctionState?: AuctionTimerState
 }) =>
-  renderWithWrappers(
+  renderWithRelayWrappers(
     <ModalStack>
       <ArtworkExtraLinks artwork={artwork as any} auctionState={auctionState!} />
     </ModalStack>
@@ -369,7 +369,7 @@ describe("ArtworkExtraLinks", () => {
       })
 
       const TestRenderer = () =>
-        renderWithWrappers(
+        renderWithRelayWrappers(
           <ModalStack>
             <ArtworkExtraLinks artwork={artwork as any} auctionState={AuctionTimerState.CLOSING} />
           </ModalStack>

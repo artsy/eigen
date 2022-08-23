@@ -5,6 +5,7 @@ import {
   resolveMostRecentRelayOperation,
   resolveMostRecentRelayOperationRawPayload,
 } from "app/tests/resolveMostRecentRelayOperation"
+import { waitForSuspenseToBeRemoved } from "app/tests/waitForSupenseToBeRemoved"
 import { useLazyLoadQuery } from "react-relay"
 import {
   AverageSalePriceAtAuction,
@@ -25,6 +26,7 @@ describe("AverageSalePriceSelectArtist", () => {
     const tree = renderWithRelayWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperationRawPayload({ data: mockResult })
+    await waitForSuspenseToBeRemoved()
 
     return tree
   }
@@ -53,6 +55,8 @@ describe("AverageSalePriceSelectArtist", () => {
           imageUrl: "image-url",
         }),
       })
+
+      await waitForSuspenseToBeRemoved()
 
       // Modal is hidden and the artist is updated
       expect(getByTestId("average-sale-price-select-artist-modal").props.visible).toBe(false)
@@ -89,13 +93,13 @@ describe("AverageSalePriceSelectArtist", () => {
       // fetch Amoako Boafo data
       resolveMostRecentRelayOperation({
         Artist: () => ({
-          artist: {
-            internalID: "artist-id",
-            name: "Amoako Boafo",
-            imageUrl: "image-url",
-          },
+          internalID: "artist-id",
+          name: "Amoako Boafo",
+          imageUrl: "image-url",
         }),
       })
+
+      await waitForSuspenseToBeRemoved()
 
       // Modal is hidden and the artist is updated
       expect(getByTestId("average-sale-price-select-artist-modal").props.visible).toBe(false)

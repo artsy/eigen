@@ -1,7 +1,4 @@
-import "react-native"
-
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
-
+import { renderWithRelayWrappers } from "app/tests/renderWithWrappers"
 import Metadata from "./Metadata"
 
 it("renders properly", () => {
@@ -18,5 +15,6 @@ it("renders properly", () => {
       city: "Berlin",
     },
   }
-  renderWithWrappersLEGACY(<Metadata show={show as any} />)
+
+  renderWithRelayWrappers(<Metadata show={show as any} />)
 })

@@ -97,6 +97,13 @@ export const renderWithWrappers = (component: ReactElement) => {
           "\n\n" +
           error
       )
+    } else if (error.message.includes("was rendered outside of a query renderer")) {
+      throw new Error(
+        "Error: Relay test component failed to render. Your test could need a query renderer to pass.\n" +
+          "Try wrapping your test with `renderWithRelayWrappers`" +
+          "\n\n" +
+          error
+      )
     } else {
       throw new Error(error.stack)
     }

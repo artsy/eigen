@@ -5,7 +5,7 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { renderWithRelayWrappers } from "app/tests/renderWithWrappers"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
 import { cloneDeep } from "lodash"
 import { first, last } from "lodash"
@@ -57,7 +57,7 @@ const salesModule: CleanRelayFragment<SalesRail_salesModule$data> = {
 
 it("doesn't throw when rendered", () => {
   expect(() =>
-    renderWithWrappersLEGACY(
+    renderWithRelayWrappers(
       <SalesRailFragmentContainer
         title="Auctions"
         salesModule={salesModule as any}
@@ -74,7 +74,7 @@ it("looks correct when rendered with sales missing artworks", () => {
     result.saleArtworksConnection.edges = []
   })
   expect(() =>
-    renderWithWrappersLEGACY(
+    renderWithRelayWrappers(
       <SalesRailFragmentContainer
         title="Auctions"
         salesModule={salesCopy as any}
@@ -90,7 +90,8 @@ describe("image handling", () => {
     const sale = results[0]
     // @ts-ignore
     sale!.saleArtworksConnection!.edges = edges
-    return renderWithWrappersLEGACY(
+
+    return renderWithRelayWrappers(
       <SalesRailFragmentContainer
         title="Auctions"
         salesModule={{ results: [sale] } as any}
@@ -100,12 +101,12 @@ describe("image handling", () => {
   }
 
   it("renders all 3 images", () => {
-    const tree = render([
+    const { UNSAFE_queryAllByType } = render([
       { node: { artwork: { image: { url: "https://example.com/image-1.jpg" } } } },
       { node: { artwork: { image: { url: "https://example.com/image-2.jpg" } } } },
       { node: { artwork: { image: { url: "https://example.com/image-3.jpg" } } } },
     ])
-    expect(tree.root.findAllByType(ImageView).map(({ props }) => props.imageURL)).toEqual([
+    expect(UNSAFE_queryAllByType(ImageView).map(({ props }) => props.imageURL)).toEqual([
       "https://example.com/image-1.jpg",
       "https://example.com/image-2.jpg",
       "https://example.com/image-3.jpg",
@@ -113,11 +114,11 @@ describe("image handling", () => {
   })
 
   it("renders the 2nd image as a fallback if the 3rd is missing", () => {
-    const tree = render([
+    const { UNSAFE_queryAllByType } = render([
       { node: { artwork: { image: { url: "https://example.com/image-1.jpg" } } } },
       { node: { artwork: { image: { url: "https://example.com/image-2.jpg" } } } },
     ])
-    expect(tree.root.findAllByType(ImageView).map(({ props }) => props.imageURL)).toEqual([
+    expect(UNSAFE_queryAllByType(ImageView).map(({ props }) => props.imageURL)).toEqual([
       "https://example.com/image-1.jpg",
       "https://example.com/image-2.jpg",
       "https://example.com/image-2.jpg",
@@ -125,10 +126,10 @@ describe("image handling", () => {
   })
 
   it("renders the 1st as a fallback if the 2nd and 3rd are missing", () => {
-    const tree = render([
+    const { UNSAFE_queryAllByType } = render([
       { node: { artwork: { image: { url: "https://example.com/image-1.jpg" } } } },
     ])
-    expect(tree.root.findAllByType(ImageView).map(({ props }) => props.imageURL)).toEqual([
+    expect(UNSAFE_queryAllByType(ImageView).map(({ props }) => props.imageURL)).toEqual([
       "https://example.com/image-1.jpg",
       "https://example.com/image-1.jpg",
       "https://example.com/image-1.jpg",
@@ -138,11 +139,8 @@ describe("image handling", () => {
 
 describe("SalesRail Subtitle", () => {
   describe("with cascading feature flag switched ON", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerHomeSalesRail: true })
-    })
     it("renders formattedStartDateTime as the subtitle", () => {
-      const wrapper = renderWithWrappers(
+      const { getByText, queryByText } = renderWithRelayWrappers(
         <SalesRailFragmentContainer
           title="Auctions"
           salesModule={salesModule as any}
@@ -150,9 +148,9 @@ describe("SalesRail Subtitle", () => {
         />
       )
 
-      expect(wrapper.getByText(salesModule.results[0]?.formattedStartDateTime!)).toBeDefined()
-      expect(wrapper.queryByText("Timed Auction • In 1 day")).toBeNull()
-      expect(wrapper.queryByText("Live Auction • Live in 1 day")).toBeNull()
+      expect(getByText(salesModule.results[0]?.formattedStartDateTime!)).toBeDefined()
+      expect(queryByText("Timed Auction • In 1 day")).toBeNull()
+      expect(queryByText("Live Auction • Live in 1 day")).toBeNull()
     })
   })
   describe("with cascading feature flag switched OF", () => {
@@ -161,59 +159,63 @@ describe("SalesRail Subtitle", () => {
         AREnableCascadingEndTimerHomeSalesRail: false,
       })
     })
+
     it("renders the correct subtitle based on auction type", async () => {
-      const wrapper = renderWithWrappers(
+      const { queryByText } = renderWithRelayWrappers(
         <SalesRailFragmentContainer
           title="Auctions"
           salesModule={salesModule as any}
           scrollRef={mockScrollRef}
         />
       )
-      expect(wrapper.queryByText(salesModule.results[0]?.formattedStartDateTime!)).toBeNull()
-      expect(wrapper.queryByText("Timed Auction • In 1 day")).not.toBeNull()
-      expect(wrapper.queryByText("Live Auction • Live in 1 day")).not.toBeNull()
+
+      expect(queryByText(salesModule.results[0]?.formattedStartDateTime!)).toBeNull()
+      expect(queryByText("Timed Auction • In 1 day")).not.toBeNull()
+      expect(queryByText("Live Auction • Live in 1 day")).not.toBeNull()
     })
   })
 })
 
 it("routes to live URL if present, otherwise href", () => {
-  const tree = renderWithWrappersLEGACY(
+  const { UNSAFE_queryAllByType } = renderWithRelayWrappers(
     <SalesRailFragmentContainer
       title="Auctions"
       salesModule={salesModule as any}
       scrollRef={mockScrollRef}
     />
   )
+
   // Timed sale
-  first(tree.root.findAllByType(CardRailCard))!.props.onPress()
+  first(UNSAFE_queryAllByType(CardRailCard))!.props.onPress()
   expect(navigate).toHaveBeenCalledWith("/auction/the-sale")
   // LAI sale
-  last(tree.root.findAllByType(CardRailCard))!.props.onPress()
+  last(UNSAFE_queryAllByType(CardRailCard))!.props.onPress()
   expect(navigate).toHaveBeenCalledWith("https://live.artsy.net/the-lai-sale")
 })
 
 describe("analytics", () => {
   it("tracks auction header taps", () => {
-    const tree = renderWithWrappersLEGACY(
+    const { UNSAFE_queryByType } = renderWithRelayWrappers(
       <SalesRailFragmentContainer
         title="Auctions"
         salesModule={salesModule as any}
         scrollRef={mockScrollRef}
       />
     )
-    tree.root.findByType(SectionTitle as any).props.onPress()
+    UNSAFE_queryByType(SectionTitle)!.props.onPress()
     expect(mockTrackEvent).toHaveBeenCalledWith(HomeAnalytics.auctionHeaderTapEvent())
   })
 
   it("tracks auction thumbnail taps", () => {
-    const tree = renderWithWrappersLEGACY(
+    const { UNSAFE_queryAllByType } = renderWithRelayWrappers(
       <SalesRailFragmentContainer
         title="Auctions"
         salesModule={salesModule as any}
         scrollRef={mockScrollRef}
       />
     )
-    const cards = tree.root.findAllByType(CardRailCard)
+
+    const cards = UNSAFE_queryAllByType(CardRailCard)
     cards[0].props.onPress()
     expect(mockTrackEvent).toHaveBeenCalledWith(
       HomeAnalytics.auctionThumbnailTapEvent("the-sale-internal-id", "the-sales-slug", 0)
