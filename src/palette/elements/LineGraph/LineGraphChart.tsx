@@ -344,7 +344,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
                     style={{
                       background: { fill: "white" },
                     }}
-                    padding={{ left: 35, right: space(3), bottom: space(3), top: space(3) }}
+                    padding={{ left: 35, right: space(3), bottom: space(2), top: space(3) }}
                     width={chartWidth}
                     height={chartHeight}
                   >
