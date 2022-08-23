@@ -1,7 +1,7 @@
 import { scaleLinear, scaleQuantile } from "d3-scale"
 import { compact, noop, throttle } from "lodash"
 import { Flex } from "palette"
-import { useColor, useSpace } from "palette/hooks"
+import { useColor } from "palette/hooks"
 import { StarCircleIcon } from "palette/svgs/StarCircleIcon"
 import { Color, useTheme } from "palette/Theme"
 import { useCallback, useEffect, useRef, useState } from "react"
@@ -86,7 +86,6 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
   yAxisDisplayType,
 }) => {
   const color = useColor()
-  const space = useSpace()
   const { theme } = useTheme()
 
   // MARK:- REFS
@@ -333,7 +332,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
                   }
                 }}
               >
-                <Animated.View>
+                <Animated.View style={{ paddingLeft: 5 }}>
                   <VictoryChart
                     theme={VictoryTheme.material}
                     // mapping domain from 0 to 1 because data is normalized by the factor of max Y value.
@@ -344,7 +343,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
                     style={{
                       background: { fill: "white" },
                     }}
-                    padding={{ left: 35, right: space(3), bottom: space(2), top: space(2) }}
+                    padding={40}
                     width={chartWidth}
                     height={chartHeight}
                   >

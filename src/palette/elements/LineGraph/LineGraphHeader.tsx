@@ -1,5 +1,4 @@
 import { Flex, Text } from "palette"
-import { Dimensions } from "react-native"
 import { ColoredDot, DEFAULT_DOT_COLOR } from "./ColoredDot"
 import { LineChartData } from "./types"
 
@@ -11,9 +10,8 @@ export const LineGraphHeader: React.FC<LineGraphHeaderProps> = ({
   text,
   tintColor,
 }) => {
-  const maxWidth = Dimensions.get("window").width / 1.35
   return (
-    <Flex maxWidth={maxWidth}>
+    <Flex px={2}>
       {!!title && (
         <Text fontWeight="500" variant="md">
           {title}
@@ -28,9 +26,13 @@ export const LineGraphHeader: React.FC<LineGraphHeaderProps> = ({
         </Flex>
       )}
       {!!text && (
-        <Text variant="xs" color="black60">
-          {text}
-        </Text>
+        // We need to have a fixed height here to make sure in case the text is too long,
+        // it doesn't push the graph content down
+        <Flex>
+          <Text variant="xs" color="black60" numberOfLines={2}>
+            {text}
+          </Text>
+        </Flex>
       )}
     </Flex>
   )

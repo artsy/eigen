@@ -69,7 +69,7 @@ export const LineGraph: React.FC<Props> = ({
   return useMemo(() => {
     return (
       <Flex>
-        <Flex mx={2}>
+        <Flex>
           <LineGraphHeader {...data.dataMeta} />
 
           <LineGraphChart
