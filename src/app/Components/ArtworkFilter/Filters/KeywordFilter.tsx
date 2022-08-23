@@ -8,7 +8,7 @@ import SearchIcon from "app/Icons/SearchIcon"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { debounce, throttle } from "lodash"
 import { Input } from "palette"
-import React, { useEffect, useMemo, useRef } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { Platform } from "react-native"
 import { useTracking } from "react-tracking"
 
@@ -32,6 +32,8 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({
   const { trackEvent } = useTracking()
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
+
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.selectFiltersAction
   )
@@ -39,19 +41,12 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({
     (action) => action.applyFiltersAction
   )
   const appliedFiltersParams = filterArtworksParams(appliedFiltersState, "auctionResult")
+  const [keyword, setKeyword] = useState("")
 
   const inputRef = useRef(null)
 
   const updateKeywordFilter = (text: string) => {
-    selectFiltersAction({
-      paramName: FilterParamName.keyword,
-      displayText: text,
-      paramValue: text,
-    })
-
-    trackEvent(tracks.changeKeywordFilter(appliedFiltersParams, text, artistId, artistSlug))
-
-    applyFiltersAction()
+    setKeyword(text)
   }
 
   const handleChangeText = useMemo(
@@ -76,6 +71,17 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({
     ;(inputRef as any).current?.blur()
     ;(inputRef as any).current?.clear()
   }, [appliedFiltersState])
+
+  useEffect(() => {
+    selectFiltersAction({
+      paramName: FilterParamName.keyword,
+      displayText: keyword,
+      paramValue: keyword,
+    })
+
+    trackEvent(tracks.changeKeywordFilter(appliedFiltersParams, keyword, artistId, artistSlug))
+    applyFiltersAction()
+  }, [applyFilters, keyword])
 
   // Stop the invocation of the debounced function after unmounting
   useEffect(() => {
