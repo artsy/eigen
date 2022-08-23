@@ -28,9 +28,13 @@ export const LineGraphHeader: React.FC<LineGraphHeaderProps> = ({
         </Flex>
       )}
       {!!text && (
-        <Text variant="xs" color="black60">
-          {text}
-        </Text>
+        // We need to have a fixed height here to make sure in case the text is too long,
+        // it doesn't push the graph content down
+        <Flex height={40}>
+          <Text variant="xs" color="black60">
+            {text}
+          </Text>
+        </Flex>
       )}
     </Flex>
   )
