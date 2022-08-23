@@ -68,7 +68,7 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
     setPressedDataPoint(null)
   }, [artistId])
 
-  const eightYearHeaderDataSource: Record<
+  const eightYearHeaderDataSource = (): Record<
     string,
     {
       lotsSold?: NonNullable<
@@ -78,19 +78,22 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
         NonNullable<NonNullable<MedianSalePriceChart_query$data["priceInsights"]>["nodes"]>[0]
       >["medianSalePriceLast96Months"]
     }
-  > = data.priceInsights?.nodes
-    ? Object.assign(
-        {},
-        ...data.priceInsights.nodes.map((d) => ({
-          [d?.medium!]: {
-            lotsSold: d?.lotsSoldLast96Months,
-            medianSalePrice: d?.medianSalePriceLast96Months,
-          },
-        }))
-      )
-    : {}
+  > =>
+    data.priceInsights?.nodes
+      ? Object.assign(
+          {},
+          ...data.priceInsights.nodes.map((d) => ({
+            [d?.medium!]: {
+              lotsSold: d?.lotsSoldLast96Months,
+              medianSalePrice: d?.medianSalePriceLast96Months,
+            },
+          }))
+        )
+      : {}
 
-  const threeYearHeaderDataSource: Record<
+  const eightYearHeaderDataSourceRef = useRef(eightYearHeaderDataSource())
+
+  const threeYearHeaderDataSource = (): Record<
     string,
     {
       lotsSold?: NonNullable<
@@ -100,63 +103,68 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
         NonNullable<NonNullable<MedianSalePriceChart_query$data["priceInsights"]>["nodes"]>[0]
       >["medianSalePriceLast36Months"]
     }
-  > = data.priceInsights?.nodes
-    ? Object.assign(
-        {},
-        ...data.priceInsights.nodes.map((d) => ({
-          [d?.medium!]: {
-            lotsSold: d?.lotsSoldLast36Months,
-            medianSalePrice: d?.medianSalePriceLast36Months,
-          },
-        }))
-      )
-    : {}
+  > =>
+    data.priceInsights?.nodes
+      ? Object.assign(
+          {},
+          ...data.priceInsights.nodes.map((d) => ({
+            [d?.medium!]: {
+              lotsSold: d?.lotsSoldLast36Months,
+              medianSalePrice: d?.medianSalePriceLast36Months,
+            },
+          }))
+        )
+      : {}
 
-  const eightYearChartDataSource: Record<
+  const threeYearHeaderDataSourceRef = useRef(threeYearHeaderDataSource())
+
+  const eightYearChartDataSource = (): Record<
     string,
     NonNullable<
       MedianSalePriceChart_query$data["analyticsCalendarYearPriceInsights"]
     >[0]["calendarYearMarketPriceInsights"]
-  > = data.analyticsCalendarYearPriceInsights
-    ? Object.assign(
-        {},
-        ...data.analyticsCalendarYearPriceInsights.map((d) => ({
-          [d.medium]: d.calendarYearMarketPriceInsights,
-        }))
-      )
-    : {}
-
-  const threeYearChartDataSource: Record<
+  > =>
+    data.analyticsCalendarYearPriceInsights
+      ? Object.assign(
+          {},
+          ...data.analyticsCalendarYearPriceInsights.map((d) => ({
+            [d.medium]: d.calendarYearMarketPriceInsights,
+          }))
+        )
+      : {}
+  const eightYearChartDataSourceRef = useRef(eightYearChartDataSource())
+  const threeYearChartDataSource = (): Record<
     string,
     NonNullable<
       MedianSalePriceChart_query$data["analyticsCalendarYearPriceInsights"]
     >[0]["calendarYearMarketPriceInsights"]
-  > = data.analyticsCalendarYearPriceInsights
-    ? Object.assign(
-        {},
-        ...data.analyticsCalendarYearPriceInsights.map((d) => {
-          const value = compact(
-            d.calendarYearMarketPriceInsights?.map((insight) => {
-              const { endYear } = getStartAndEndYear(MedianSalePriceChartDuration["3 yrs"])
-              if (parseInt(insight.year, 10) >= parseInt(endYear, 10) - 3) {
-                return insight
-              }
-            })
-          )
-          if (value && value.length) {
-            return { [d.medium]: value }
-          }
-        })
-      )
-    : {}
-
-  const chartDataSourceForBand =
-    selectedDuration === MedianSalePriceChartDuration["3 yrs"]
-      ? threeYearChartDataSource
-      : eightYearChartDataSource
+  > =>
+    data.analyticsCalendarYearPriceInsights
+      ? Object.assign(
+          {},
+          ...data.analyticsCalendarYearPriceInsights.map((d) => {
+            const value = compact(
+              d.calendarYearMarketPriceInsights?.map((insight) => {
+                const { endYear } = getStartAndEndYear(MedianSalePriceChartDuration["3 yrs"])
+                if (parseInt(insight.year, 10) >= parseInt(endYear, 10) - 3) {
+                  return insight
+                }
+              })
+            )
+            if (value && value.length) {
+              return { [d.medium]: value }
+            }
+          })
+        )
+      : {}
+  const threeYearChartDataSourceRef = useRef(threeYearChartDataSource())
+  const chartDataSourceForBand = () =>
+    selectedDurationRef.current === MedianSalePriceChartDuration["3 yrs"]
+      ? threeYearChartDataSourceRef.current
+      : eightYearChartDataSourceRef.current
 
   const deriveAvailableCategories = () =>
-    Object.keys(chartDataSourceForBand)?.map((medium) => medium)
+    Object.keys(chartDataSourceForBand())?.map((medium) => medium)
 
   const initialCategories = computeCategoriesForChart(deriveAvailableCategories())
   const [categories, setCategories] =
@@ -168,6 +176,7 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
   }, [artistId, selectedDuration, selectedCategory])
 
   useEffect(() => {
+    refreshRefs()
     const newCategories = computeCategoriesForChart(deriveAvailableCategories()).map((c) => c.name)
     if (JSON.stringify(categories.map((c) => c.name)) !== JSON.stringify(newCategories)) {
       // duration or artist with a different set of mediums has been selected
@@ -178,7 +187,19 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
       selectedCategoryRef.current = newSelectedCategory
       setSelectedCategory(newSelectedCategory)
     }
-  }, [JSON.stringify(data.analyticsCalendarYearPriceInsights), selectedDuration])
+  }, [JSON.stringify(data), artistId, selectedDuration])
+
+  useEffect(() => {
+    refreshRefs()
+    refreshTitleAndText()
+  }, [JSON.stringify(data)])
+
+  const refreshRefs = () => {
+    threeYearHeaderDataSourceRef.current = threeYearHeaderDataSource()
+    eightYearHeaderDataSourceRef.current = eightYearHeaderDataSource()
+    threeYearChartDataSourceRef.current = threeYearChartDataSource()
+    eightYearChartDataSourceRef.current = eightYearChartDataSource()
+  }
 
   const refreshTitleAndText = () => {
     setThreeYearTitle(getTitle(MedianSalePriceChartDuration["3 yrs"]))
@@ -233,10 +254,11 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
   }
 
   // MARK: ChartData logic
-  const buildChartDataFromDataSources = (
-    chartDataSource: typeof threeYearChartDataSource,
-    duration: MedianSalePriceChartDuration
-  ) => {
+  const buildChartDataFromDataSources = (duration: MedianSalePriceChartDuration) => {
+    const chartDataSource =
+      duration === MedianSalePriceChartDuration["3 yrs"]
+        ? threeYearChartDataSourceRef.current
+        : eightYearChartDataSourceRef.current
     const neededYears = computeRequiredYears(duration)
 
     const chartDataArraySource =
@@ -277,12 +299,10 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
   const dataTintColor = categories.find((c) => c.name === selectedCategory)?.color
 
   const threeYearChartDataArray = buildChartDataFromDataSources(
-    threeYearChartDataSource,
     MedianSalePriceChartDuration["3 yrs"]
   )
 
   const eightYearChartDataArray = buildChartDataFromDataSources(
-    eightYearChartDataSource,
     MedianSalePriceChartDuration["8 yrs"]
   )
 
@@ -294,12 +314,12 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
         : eightYearChartDataArray
     const chartDataArraySource =
       duration === MedianSalePriceChartDuration["3 yrs"]
-        ? threeYearChartDataSource
-        : eightYearChartDataSource
+        ? threeYearChartDataSourceRef.current
+        : eightYearChartDataSourceRef.current
     const chartHeaderDataSource =
       duration === MedianSalePriceChartDuration["3 yrs"]
-        ? threeYearHeaderDataSource
-        : eightYearHeaderDataSource
+        ? threeYearHeaderDataSourceRef.current
+        : eightYearHeaderDataSourceRef.current
     if (!chartDataArray.length) {
       return "-"
     }
@@ -331,13 +351,13 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
 
     const chartDataArraySource =
       duration === MedianSalePriceChartDuration["3 yrs"]
-        ? threeYearChartDataSource
-        : eightYearChartDataSource
+        ? threeYearChartDataSourceRef.current
+        : eightYearChartDataSourceRef.current
 
     const chartHeaderDataSource =
       duration === MedianSalePriceChartDuration["3 yrs"]
-        ? threeYearHeaderDataSource
-        : eightYearHeaderDataSource
+        ? threeYearHeaderDataSourceRef.current
+        : eightYearHeaderDataSourceRef.current
 
     if (!chartDataArray?.length) {
       return "-"
@@ -383,26 +403,20 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
   const [eightYearText, setEightYearText] = useState(getText(MedianSalePriceChartDuration["8 yrs"]))
 
   const threeYearlineChartData: LineChartData = {
-    data: buildChartDataFromDataSources(
-      threeYearChartDataSource,
-      MedianSalePriceChartDuration["3 yrs"]
-    ),
+    data: buildChartDataFromDataSources(MedianSalePriceChartDuration["3 yrs"]),
     dataMeta: {
       title: threeYearTitle,
-      description: selectedCategory,
+      description: selectedCategory ?? " ",
       text: threeYearText,
       tintColor: dataTintColor,
     },
   }
 
   const eightYearlineChartData: LineChartData = {
-    data: buildChartDataFromDataSources(
-      eightYearChartDataSource,
-      MedianSalePriceChartDuration["8 yrs"]
-    ),
+    data: buildChartDataFromDataSources(MedianSalePriceChartDuration["8 yrs"]),
     dataMeta: {
       title: eightYearTitle,
-      description: selectedCategory,
+      description: selectedCategory ?? " ",
       text: eightYearText,
       tintColor: dataTintColor,
     },

@@ -43,7 +43,7 @@ export const LineGraphCategoryPicker: React.FC<LineGraphCategoryPickerProps> = (
 
   const alignSelectedToCenter = () => {
     if (allLayoutsPresent) {
-      if (categories[selectedIndex].name !== selectedCategory) {
+      if (categories?.[selectedIndex]?.name !== selectedCategory) {
         setSelectedIndex(0)
         return
       }
