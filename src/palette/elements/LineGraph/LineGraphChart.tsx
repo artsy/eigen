@@ -1,5 +1,5 @@
 import { scaleLinear, scaleQuantile } from "d3-scale"
-import { compact, noop } from "lodash"
+import { compact, noop, throttle } from "lodash"
 import { Flex } from "palette"
 import { useColor, useSpace } from "palette/hooks"
 import { StarCircleIcon } from "palette/svgs/StarCircleIcon"
@@ -235,9 +235,9 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
     }, 100)
   }, [JSON.stringify(data), dataTagToSubscribeTo])
 
-  const broadcastGestureEventXToDataPoints = (event: ChartGestureEventType) => {
+  const broadcastGestureEventXToDataPoints = throttle((event: ChartGestureEventType) => {
     ChartGestureObservable.next(event)
-  }
+  }, 100)
 
   const ANIMATION_CONFIG: AnimatePropTypeInterface = {
     duration: 750,
@@ -344,7 +344,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
                     style={{
                       background: { fill: "white" },
                     }}
-                    padding={{ left: 35, right: space(3), bottom: space(2), top: space(3) }}
+                    padding={{ left: 35, right: space(3), bottom: space(2), top: space(2) }}
                     width={chartWidth}
                     height={chartHeight}
                   >
