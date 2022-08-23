@@ -11145,6 +11145,64 @@ interface Node {
   id: ID!
 }
 
+type Notification implements Node {
+  artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
+  isUnread: Boolean!
+  message: String!
+  notificationType: NotificationTypesEnum!
+  targetHref: String!
+  title: String!
+}
+
+# A connection to a list of items.
+type NotificationConnection {
+  counts: NotificationCounts
+
+  # A list of edges.
+  edges: [NotificationEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type NotificationCounts {
+  total(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  unread(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+}
+
+# An edge in a connection.
+type NotificationEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Notification
+}
+
 type NotificationPreference {
   channel: String!
   id: String!
@@ -11155,6 +11213,11 @@ type NotificationPreference {
 input NotificationPreferenceInput {
   name: String!
   status: SubGroupInputStatus!
+}
+
+enum NotificationTypesEnum {
+  ARTWORK_ALERT
+  ARTWORK_PUBLISHED
 }
 
 # Consignment Offer Response
@@ -13013,6 +13076,17 @@ type Query {
 
   # User's notification preferences
   notificationPreferences(authenticationToken: String): [NotificationPreference!]!
+
+  # A feed of notifications
+  notificationsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+
+    # Notification types to return
+    notificationTypes: [NotificationTypesEnum]
+  ): NotificationConnection
 
   # Get an Offer
   offer(
@@ -16525,6 +16599,17 @@ type Viewer {
 
   # User's notification preferences
   notificationPreferences(authenticationToken: String): [NotificationPreference!]!
+
+  # A feed of notifications
+  notificationsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+
+    # Notification types to return
+    notificationTypes: [NotificationTypesEnum]
+  ): NotificationConnection
 
   # An OrderedSet
   orderedSet(
