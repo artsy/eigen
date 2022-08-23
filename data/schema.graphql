@@ -1920,6 +1920,9 @@ type Artwork implements Node & Searchable & Sellable {
     last: Int
   ): AuctionResultConnection
   conditionDescription: ArtworkInfoRow
+
+  # Notes by a partner on the artwork, requires partner access
+  confidentialNotes: String
   consignmentSubmission: ArtworkConsignmentSubmission
   contactLabel: String
 
@@ -1996,6 +1999,9 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Structured questions a collector can inquire on about this work
   inquiryQuestions: [InquiryQuestion]
+
+  # Price for internal partner display, requires partner access
+  internalDisplayPrice: String
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
@@ -7498,6 +7504,9 @@ type EditionSet implements Sellable {
 
   # A globally unique ID.
   id: ID!
+
+  # Price for internal partner display, requires partner access
+  internalDisplayPrice: String
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
