@@ -12,10 +12,10 @@ import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { SearchInput } from "app/Components/SearchInput"
 import { extractNodes } from "app/utils/extractNodes"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
-import { trim } from "lodash"
 import { Flex, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { graphql, usePaginationFragment } from "react-relay"
+import { normalizeText } from "shared/utils"
 import { SelectArtistList } from "./Components/MyCollectionSelectArtist"
 import { artistsQueryVariables } from "./MedianSalePriceAtAuction"
 
@@ -43,7 +43,7 @@ export const SelectArtistModal: React.FC<SelectArtistModalProps> = ({
   const [filteredArtists, setFilteredArtists] = useState<ArtistItem_artist$key[]>([])
 
   const artistsList = extractNodes(data?.me?.myCollectionInfo?.collectedArtistsConnection)
-  const trimmedQuery = trim(query)
+  const normalizedQuery = normalizeText(query)
 
   const handleLoadMore = () => {
     if (!hasNext || isLoadingNext) {
@@ -54,9 +54,9 @@ export const SelectArtistModal: React.FC<SelectArtistModalProps> = ({
   }
 
   useEffect(() => {
-    if (trimmedQuery) {
+    if (normalizedQuery) {
       const filtered = artistsList.filter((artist) =>
-        artist?.name?.toLowerCase().includes(trimmedQuery.toLowerCase())
+        normalizeText(artist?.name).includes(normalizedQuery)
       )
       setFilteredArtists(filtered)
     }
@@ -84,7 +84,7 @@ export const SelectArtistModal: React.FC<SelectArtistModalProps> = ({
             value={query}
             onChangeText={setQuery}
             error={
-              filteredArtists.length === 0 && trimmedQuery
+              filteredArtists.length === 0 && normalizedQuery
                 ? "Please select from the list of artists in your collection with insights available."
                 : ""
             }
@@ -92,8 +92,8 @@ export const SelectArtistModal: React.FC<SelectArtistModalProps> = ({
         </Flex>
 
         <SelectArtistList
-          artistsList={trimmedQuery ? filteredArtists : artistsList}
-          ListHeaderComponent={!trimmedQuery ? ListHeaderComponent : undefined}
+          artistsList={normalizedQuery ? filteredArtists : artistsList}
+          ListHeaderComponent={!normalizedQuery ? ListHeaderComponent : undefined}
           onEndReached={handleLoadMore}
           isLoadingNext={isLoadingNext}
           onItemPress={onItemPress}
