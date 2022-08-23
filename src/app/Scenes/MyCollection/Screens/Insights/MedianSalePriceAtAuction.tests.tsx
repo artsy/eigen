@@ -15,9 +15,10 @@ describe("MedianSalePriceAtAuction", () => {
   const TestRenderer = () => {
     useLazyLoadQuery<MedianSalePriceAtAuctionQuery>(MedianSalePriceAtAuctionScreenQuery, {
       artistID: "artist-id",
+      artistId: "artist-id",
     })
 
-    return <MedianSalePriceAtAuction artistID="artist-id" />
+    return <MedianSalePriceAtAuction artistID="artist-id" initialCategory="Painting" />
   }
 
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
