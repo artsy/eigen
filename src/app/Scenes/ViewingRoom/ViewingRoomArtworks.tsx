@@ -33,7 +33,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) =
   const tracking = useTracking()
   const artworks = extractNodes(viewingRoom.artworksConnection)
   const { width } = useWindowDimensions()
-  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageView")
+  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewImageComponent")
 
   const sections: ArtworkSection[] = useMemo(() => {
     return artworks.map((artwork, index) => {
