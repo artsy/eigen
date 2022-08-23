@@ -331,9 +331,9 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
       if (datapoint) {
         return parseInt(datapoint.medianSalePrice, 10)
           ? formatMedianPrice(parseInt(datapoint.medianSalePrice, 10))
-          : "0 Auction Results"
+          : "Median Unavailable (Limited Data)"
       }
-      return "0 Auction Results"
+      return "Median Unavailable (Limited Data)"
     }
     const medianPrice =
       chartHeaderDataSource[
@@ -600,7 +600,7 @@ const computeRequiredYears = (durationBand: MedianSalePriceChartDuration) => {
 const formatMedianPrice = (priceCents: number, unit: number = 100): string => {
   const amount = Math.round(priceCents / unit)
   if (isNaN(amount)) {
-    return "0 Auction Results"
+    return "Median Unavailable (Limited Data)"
   }
   return "US $" + amount.toLocaleString("en-US")
 }
