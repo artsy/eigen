@@ -3370,6 +3370,8 @@ type CollectorProfileArtists {
 
 type CollectorProfileType {
   collectorLevel: Int
+  companyName: String
+  companyWebsite: String
   confirmedBuyerAt(
     format: String
 
@@ -9364,6 +9366,8 @@ type InquirerCollectorProfile {
 
   # List of artists the Collector is interested in.
   collectorProfileArtists: [CollectorProfileArtists]
+  companyName: String
+  companyWebsite: String
   confirmedBuyerAt(
     format: String
 
@@ -10873,6 +10877,11 @@ type Mutation {
 
   # Updating a collector profile (loyalty applicant status).
   updateCollectorProfile(input: UpdateCollectorProfileInput!): UpdateCollectorProfilePayload
+
+  # Updating a collector profile (loyalty applicant status).
+  updateCollectorProfileWithID(
+    input: UpdateCollectorProfileWithIDInput!
+  ): UpdateCollectorProfileWithIDPayload
   updateConsignmentSubmission(
     # Parameters for UpdateSubmissionMutation
     input: UpdateSubmissionMutationInput!
@@ -15241,6 +15250,8 @@ input UpdateCollectorProfileInput {
   # List of affiliated gallery ids, referencing Galaxy.
   affiliatedGalleryIds: [String]
   clientMutationId: String
+  companyName: String
+  companyWebsite: String
   institutionalAffiliations: String
   intents: [Intents]
   loyaltyApplicant: Boolean
@@ -15253,6 +15264,85 @@ input UpdateCollectorProfileInput {
 type UpdateCollectorProfilePayload {
   clientMutationId: String
   collectorLevel: Int
+  companyName: String
+  companyWebsite: String
+  confirmedBuyerAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  email: String
+
+  # A globally unique ID.
+  id: ID!
+  institutionalAffiliations: String
+  intents: [String]
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  loyaltyApplicantAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  name: String
+  privacy: String
+  professionalBuyerAppliedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  professionalBuyerAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  selfReportedPurchases: String
+  userInterests: [UserInterest]!
+}
+
+input UpdateCollectorProfileWithIDInput {
+  # List of affiliated auction house ids, referencing Galaxy.
+  affiliatedAuctionHouseIds: [String]
+
+  # List of affiliated fair ids, referencing Galaxy.
+  affiliatedFairIds: [String]
+
+  # List of affiliated gallery ids, referencing Galaxy.
+  affiliatedGalleryIds: [String]
+  clientMutationId: String
+  companyName: String
+  companyWebsite: String
+  confirmedBuyer: Boolean
+
+  # The internal ID of the collector profile to update
+  id: String
+  institutionalAffiliations: String
+  intents: [Intents]
+  loyaltyApplicant: Boolean
+  professionalBuyer: Boolean
+
+  # Free-form text of purchases the collector has indicated.
+  selfReportedPurchases: String
+}
+
+type UpdateCollectorProfileWithIDPayload {
+  clientMutationId: String
+  collectorLevel: Int
+  companyName: String
+  companyWebsite: String
   confirmedBuyerAt(
     format: String
 
@@ -15657,6 +15747,9 @@ type User {
   adminNotes: [UserAdminNotes]!
   analytics: AnalyticsUserStats
   cached: Int
+
+  # A collector profile.
+  collectorProfile: CollectorProfileType
   createdAt(
     format: String
 
