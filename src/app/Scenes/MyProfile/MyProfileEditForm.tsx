@@ -41,11 +41,14 @@ import { useHandleEmailVerification, useHandleIDVerification } from "./useHandle
 
 const ICON_SIZE = 22
 
+interface EditableLocationProps extends EditableLocation {
+  display: string | null
+}
 interface EditMyProfileValuesSchema {
   photo: string
   name: string
   displayLocation: { display: string | null }
-  location: EditableLocation | null
+  location: EditableLocationProps | null
   profession: string
   otherRelevantPositions: string
   bio: string
@@ -108,9 +111,11 @@ export const MyProfileEditForm: React.FC = () => {
     otherRelevantPositions,
     bio,
   }: Partial<EditMyProfileValuesSchema>) => {
+    const updatedLocation = { ...location }
+    delete updatedLocation.display
     const payload = {
       name,
-      ...(location ? { location } : {}),
+      ...(location ? { location: updatedLocation } : {}),
       profession,
       otherRelevantPositions,
       bio,
