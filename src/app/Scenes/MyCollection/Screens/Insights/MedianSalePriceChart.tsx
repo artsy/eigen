@@ -12,7 +12,7 @@ import { compact } from "lodash"
 import { DateTime } from "luxon"
 import { Flex, LineGraph, Text } from "palette"
 import { LineChartData } from "palette/elements/LineGraph/types"
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
 import { graphql, useRefetchableFragment } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
@@ -230,9 +230,10 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
     refreshTitleAndText()
   }
 
-  const onDataPointPressed = (datum: LineChartData["data"][0] | null) => {
+  const onDataPointPressed = useCallback((datum: LineChartData["data"][0] | null) => {
+    console.log("data point pressed", new Date().getMilliseconds())
     setPressedDataPoint(datum)
-  }
+  }, [])
 
   // MARK: Band/Year Duration logic
   const bands: Array<{ name: MedianSalePriceChartDuration }> = [
@@ -298,97 +299,105 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
 
   const dataTintColor = categories.find((c) => c.name === selectedCategory)?.color
 
-  const threeYearChartDataArray = buildChartDataFromDataSources(
-    MedianSalePriceChartDuration["3 yrs"]
+  const threeYearChartDataArray = useMemo(
+    () => buildChartDataFromDataSources(MedianSalePriceChartDuration["3 yrs"]),
+    [selectedCategory]
   )
 
-  const eightYearChartDataArray = buildChartDataFromDataSources(
-    MedianSalePriceChartDuration["8 yrs"]
+  const eightYearChartDataArray = useMemo(
+    () => buildChartDataFromDataSources(MedianSalePriceChartDuration["8 yrs"]),
+    [selectedCategory]
   )
 
-  const getTitle = (duration: MedianSalePriceChartDuration) => {
-    const pressedDataPoint = tappedDataPoint[duration]
-    const chartDataArray =
-      duration === MedianSalePriceChartDuration["3 yrs"]
-        ? threeYearChartDataArray
-        : eightYearChartDataArray
-    const chartDataArraySource =
-      duration === MedianSalePriceChartDuration["3 yrs"]
-        ? threeYearChartDataSourceRef.current
-        : eightYearChartDataSourceRef.current
-    const chartHeaderDataSource =
-      duration === MedianSalePriceChartDuration["3 yrs"]
-        ? threeYearHeaderDataSourceRef.current
-        : eightYearHeaderDataSourceRef.current
-    if (!chartDataArray.length) {
-      return "-"
-    }
-    if (pressedDataPoint) {
-      const datapoint = chartDataArraySource[
-        selectedCategoryRef.current === "Other" ? "Unknown" : selectedCategoryRef.current
-      ]?.find((d) => parseInt(d.year, 10) === pressedDataPoint.x)
-
-      if (datapoint) {
-        return parseInt(datapoint.medianSalePrice, 10)
-          ? formatMedianPrice(parseInt(datapoint.medianSalePrice, 10))
-          : "Median Unavailable (Limited Data)"
+  const getTitle = useCallback(
+    (duration: MedianSalePriceChartDuration) => {
+      const pressedDataPoint = tappedDataPoint[duration]
+      const chartDataArray =
+        duration === MedianSalePriceChartDuration["3 yrs"]
+          ? threeYearChartDataArray
+          : eightYearChartDataArray
+      const chartDataArraySource =
+        duration === MedianSalePriceChartDuration["3 yrs"]
+          ? threeYearChartDataSourceRef.current
+          : eightYearChartDataSourceRef.current
+      const chartHeaderDataSource =
+        duration === MedianSalePriceChartDuration["3 yrs"]
+          ? threeYearHeaderDataSourceRef.current
+          : eightYearHeaderDataSourceRef.current
+      if (!chartDataArray.length) {
+        return "-"
       }
-      return "Median Unavailable (Limited Data)"
-    }
-    const medianPrice =
-      chartHeaderDataSource[
-        selectedCategoryRef.current === "Other" ? "Unknown" : selectedCategoryRef.current
-      ]?.medianSalePrice
-    return formatMedianPrice(parseInt(medianPrice, 10))
-  }
+      if (pressedDataPoint) {
+        const datapoint = chartDataArraySource[
+          selectedCategoryRef.current === "Other" ? "Unknown" : selectedCategoryRef.current
+        ]?.find((d) => parseInt(d.year, 10) === pressedDataPoint.x)
 
-  const getText = (duration: MedianSalePriceChartDuration) => {
-    const pressedDataPoint = tappedDataPoint[duration]
-    const chartDataArray =
-      duration === MedianSalePriceChartDuration["3 yrs"]
-        ? threeYearChartDataArray
-        : eightYearChartDataArray
-
-    const chartDataArraySource =
-      duration === MedianSalePriceChartDuration["3 yrs"]
-        ? threeYearChartDataSourceRef.current
-        : eightYearChartDataSourceRef.current
-
-    const chartHeaderDataSource =
-      duration === MedianSalePriceChartDuration["3 yrs"]
-        ? threeYearHeaderDataSourceRef.current
-        : eightYearHeaderDataSourceRef.current
-
-    if (!chartDataArray?.length) {
-      return "-"
-    }
-    if (pressedDataPoint) {
-      const datapoint = chartDataArraySource[
-        selectedCategoryRef.current === "Other" ? "Unknown" : selectedCategoryRef.current
-      ]?.find((d) => parseInt(d.year, 10) === pressedDataPoint.x)
-      if (datapoint) {
-        return `${datapoint.lotsSold} ${datapoint.lotsSold > 1 ? "lots" : "lot"} in ${
-          datapoint.year
-        }`
+        if (datapoint) {
+          return parseInt(datapoint.medianSalePrice, 10)
+            ? formatMedianPrice(parseInt(datapoint.medianSalePrice, 10))
+            : "Median Unavailable (Limited Data)"
+        }
+        return "Median Unavailable (Limited Data)"
       }
-      return " "
-    }
-    const totalLotsSold =
-      chartHeaderDataSource[
-        selectedCategoryRef.current === "Other" ? "Unknown" : selectedCategoryRef.current
-      ]?.lotsSold
-    if (!totalLotsSold) {
-      return " "
-    }
-    const { endYear, startYear, currentMonth } = getStartAndEndYear(duration)
-    const years = duration === MedianSalePriceChartDuration["3 yrs"] ? 3 : 8
-    return (
-      totalLotsSold +
-      ` ${
-        totalLotsSold > 1 ? "lots" : "lot"
-      } in the last ${years} years (${currentMonth} ${startYear} - ${currentMonth} ${endYear})`
-    )
-  }
+      const medianPrice =
+        chartHeaderDataSource[
+          selectedCategoryRef.current === "Other" ? "Unknown" : selectedCategoryRef.current
+        ]?.medianSalePrice
+      return formatMedianPrice(parseInt(medianPrice, 10))
+    },
+    [tappedDataPoint, selectedCategoryRef.current]
+  )
+
+  const getText = useCallback(
+    (duration: MedianSalePriceChartDuration) => {
+      const pressedDataPoint = tappedDataPoint[duration]
+      const chartDataArray =
+        duration === MedianSalePriceChartDuration["3 yrs"]
+          ? threeYearChartDataArray
+          : eightYearChartDataArray
+
+      const chartDataArraySource =
+        duration === MedianSalePriceChartDuration["3 yrs"]
+          ? threeYearChartDataSourceRef.current
+          : eightYearChartDataSourceRef.current
+
+      const chartHeaderDataSource =
+        duration === MedianSalePriceChartDuration["3 yrs"]
+          ? threeYearHeaderDataSourceRef.current
+          : eightYearHeaderDataSourceRef.current
+
+      if (!chartDataArray?.length) {
+        return "-"
+      }
+      if (pressedDataPoint) {
+        const datapoint = chartDataArraySource[
+          selectedCategoryRef.current === "Other" ? "Unknown" : selectedCategoryRef.current
+        ]?.find((d) => parseInt(d.year, 10) === pressedDataPoint.x)
+        if (datapoint) {
+          return `${datapoint.lotsSold} ${datapoint.lotsSold > 1 ? "lots" : "lot"} in ${
+            datapoint.year
+          }`
+        }
+        return " "
+      }
+      const totalLotsSold =
+        chartHeaderDataSource[
+          selectedCategoryRef.current === "Other" ? "Unknown" : selectedCategoryRef.current
+        ]?.lotsSold
+      if (!totalLotsSold) {
+        return " "
+      }
+      const { endYear, startYear, currentMonth } = getStartAndEndYear(duration)
+      const years = duration === MedianSalePriceChartDuration["3 yrs"] ? 3 : 8
+      return (
+        totalLotsSold +
+        ` ${
+          totalLotsSold > 1 ? "lots" : "lot"
+        } in the last ${years} years (${currentMonth} ${startYear} - ${currentMonth} ${endYear})`
+      )
+    },
+    [tappedDataPoint, selectedCategoryRef.current]
+  )
 
   const [threeYearTitle, setThreeYearTitle] = useState(
     getTitle(MedianSalePriceChartDuration["3 yrs"])
@@ -402,37 +411,49 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
 
   const [eightYearText, setEightYearText] = useState(getText(MedianSalePriceChartDuration["8 yrs"]))
 
-  const threeYearlineChartData: LineChartData = {
-    data: buildChartDataFromDataSources(MedianSalePriceChartDuration["3 yrs"]),
-    dataMeta: {
-      title: threeYearTitle,
-      description: selectedCategory ?? " ",
-      text: threeYearText,
-      tintColor: dataTintColor,
-    },
-  }
+  const threeYearlineChartData: LineChartData = useMemo(
+    () => ({
+      data: buildChartDataFromDataSources(MedianSalePriceChartDuration["3 yrs"]),
+      dataMeta: {
+        title: threeYearTitle,
+        description: selectedCategory ?? " ",
+        text: threeYearText,
+        tintColor: dataTintColor,
+      },
+    }),
+    [threeYearTitle, threeYearText, dataTintColor]
+  )
 
-  const eightYearlineChartData: LineChartData = {
-    data: buildChartDataFromDataSources(MedianSalePriceChartDuration["8 yrs"]),
-    dataMeta: {
-      title: eightYearTitle,
-      description: selectedCategory ?? " ",
-      text: eightYearText,
-      tintColor: dataTintColor,
-    },
-  }
+  const eightYearlineChartData: LineChartData = useMemo(
+    () => ({
+      data: buildChartDataFromDataSources(MedianSalePriceChartDuration["8 yrs"]),
+      dataMeta: {
+        title: eightYearTitle,
+        description: selectedCategory ?? " ",
+        text: eightYearText,
+        tintColor: dataTintColor,
+      },
+    }),
+    [eightYearTitle, eightYearText, dataTintColor]
+  )
 
   // When all the median price is incomplete we use ones because d3 and Victory will crash
   // when all the values are 0
-  const threeYearContainsAllOnes =
-    threeYearlineChartData.data.reduce((a, c) => a + c.y, 0) /
-      threeYearlineChartData.data.length ===
-    1
+  const threeYearContainsAllOnes = useMemo(() => {
+    return (
+      threeYearlineChartData.data.reduce((a, c) => a + c.y, 0) /
+        threeYearlineChartData.data.length ===
+      1
+    )
+  }, [threeYearlineChartData.data])
 
-  const eightYearContainsAllOnes =
-    eightYearlineChartData.data.reduce((a, c) => a + c.y, 0) /
-      eightYearlineChartData.data.length ===
-    1
+  const eightYearContainsAllOnes = useMemo(() => {
+    return (
+      eightYearlineChartData.data.reduce((a, c) => a + c.y, 0) /
+        eightYearlineChartData.data.length ===
+      1
+    )
+  }, [eightYearlineChartData.data])
 
   const translateValue = useSharedValue(0)
 

@@ -66,47 +66,41 @@ export const LineGraph: React.FC<Props> = ({
   xAxisDisplayType,
   yAxisDisplayType,
 }) => {
-  return useMemo(() => {
-    return (
+  return (
+    <Flex>
       <Flex>
-        <Flex>
-          <LineGraphHeader {...data.dataMeta} />
+        <LineGraphHeader {...data.dataMeta} />
 
-          <LineGraphChart
-            data={data.data}
-            dataMeta={data.dataMeta}
-            showHighlights={showHighlights}
-            dataTag={dataTag}
-            dataTagToSubscribeTo={dataTagToSubscribeTo}
-            shouldAnimate={shouldAnimate}
-            chartHeight={chartHeight}
-            chartWidth={chartWidth}
-            chartInterpolation={chartInterpolation}
-            onXHighlightPressed={onXHighlightPressed}
-            onYHighlightPressed={onYHighlightPressed}
-            onDataPointPressed={onDataPointPressed}
-            tintColorShadeFactor={tintColorShadeFactor}
-            xAxisTickFormatter={xAxisTickFormatter}
-            yAxisTickFormatter={yAxisTickFormatter}
-            xAxisDisplayType={xAxisDisplayType}
-            yAxisDisplayType={yAxisDisplayType}
-          />
+        <LineGraphChart
+          data={data.data}
+          dataMeta={data.dataMeta}
+          showHighlights={showHighlights}
+          dataTag={dataTag}
+          dataTagToSubscribeTo={dataTagToSubscribeTo}
+          shouldAnimate={shouldAnimate}
+          chartHeight={chartHeight}
+          chartWidth={chartWidth}
+          chartInterpolation={chartInterpolation}
+          onXHighlightPressed={onXHighlightPressed}
+          onYHighlightPressed={onYHighlightPressed}
+          onDataPointPressed={onDataPointPressed}
+          tintColorShadeFactor={tintColorShadeFactor}
+          xAxisTickFormatter={xAxisTickFormatter}
+          yAxisTickFormatter={yAxisTickFormatter}
+          xAxisDisplayType={xAxisDisplayType}
+          yAxisDisplayType={yAxisDisplayType}
+        />
 
-          <LineGraphBands
-            bands={bands}
-            selectedBand={selectedBand}
-            onBandSelected={onBandSelected}
-          />
-        </Flex>
-        <Spacer mb={0.5} />
-        {!!categories && !!onCategorySelected && !!selectedCategory && (
-          <LineGraphCategoryPicker
-            categories={categories}
-            onCategorySelected={onCategorySelected}
-            selectedCategory={selectedCategory}
-          />
-        )}
+        <LineGraphBands bands={bands} selectedBand={selectedBand} onBandSelected={onBandSelected} />
       </Flex>
-    )
-  }, [JSON.stringify(categories), JSON.stringify(data), selectedBand, selectedCategory])
+      <Spacer mb={0.5} />
+      {!!categories && !!onCategorySelected && !!selectedCategory && (
+        <LineGraphCategoryPicker
+          categories={categories}
+          onCategorySelected={onCategorySelected}
+          selectedCategory={selectedCategory}
+        />
+      )}
+    </Flex>
+  )
 }

@@ -1,5 +1,6 @@
 import { useEffect } from "react"
 import { G } from "react-native-svg"
+import { take, throttle } from "rxjs/operators"
 import { Point } from "victory-native"
 import { ChartGestureEventType, ChartGestureObservable } from "./LineGraphChart"
 
@@ -41,7 +42,12 @@ export const HighlightIconContainer: React.FC<HighlightIconContainerProps> = (pr
   }
 
   useEffect(() => {
-    const observable = ChartGestureObservable.subscribe(observer)
+    const observable = ChartGestureObservable.pipe(
+      throttle((value) => {
+        console.log("control for " + value)
+        return ChartGestureObservable.pipe(take(1))
+      })
+    ).subscribe(observer)
     return () => observable.unsubscribe()
   }, [])
 
