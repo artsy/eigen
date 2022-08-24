@@ -2,7 +2,6 @@ import { useNavigation } from "@react-navigation/native"
 import { MyProfileHeader_me$key } from "__generated__/MyProfileHeader_me.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { navigate } from "app/navigation/navigate"
-import { setVisualClueAsSeen, useFeatureFlag, useVisualClue } from "app/store/GlobalStore"
 import {
   Avatar,
   Box,
@@ -10,13 +9,12 @@ import {
   EditIcon,
   Flex,
   MapPinIcon,
-  Message,
   MuseumIcon,
   Text,
   Touchable,
   useColor,
 } from "palette"
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext } from "react"
 import { Image } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -30,33 +28,10 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
 
   const color = useColor()
   const navigation = useNavigation()
-  const { showVisualClue } = useVisualClue()
-
-  const enableCompleteProfileMessage = useFeatureFlag("AREnableCompleteProfileMessage")
 
   const { localImage } = useContext(MyProfileContext)
 
   const userProfileImagePath = localImage || me?.icon?.url
-
-  const [showCompleteCollectorProfileMessage, setShowCompleteCollectorProfileMessage] = useState(
-    showVisualClue("CompleteCollectorProfileMessage")
-  )
-
-  useEffect(() => {
-    setVisualClueAsSeen("CompleteCollectorProfileMessage")
-  }, [])
-
-  const isCollectorProfileCompleted = !!(
-    me.bio &&
-    me.icon &&
-    me.profession &&
-    me.otherRelevantPositions
-  )
-
-  const showCompleteProfileMessage =
-    enableCompleteProfileMessage &&
-    !isCollectorProfileCompleted &&
-    showCompleteCollectorProfileMessage
 
   return (
     <>
@@ -67,17 +42,6 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
           navigate("/my-profile/settings")
         }}
       />
-      {!!showCompleteProfileMessage && (
-        <Flex mb={2}>
-          <Message
-            variant="default"
-            title="Why complete your Collector Profile?"
-            text="A complete profile helps you build a relationship with sellers. Select “Edit Profile” to see which details are shared when you contact sellers."
-            showCloseButton
-            onClose={() => setShowCompleteCollectorProfileMessage(false)}
-          />
-        </Flex>
-      )}
 
       <Flex flexDirection="row" alignItems="center" px={2}>
         <Box

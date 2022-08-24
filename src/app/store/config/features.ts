@@ -202,12 +202,6 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableConversationalBuyNow",
   },
-  AREnableCompleteProfileMessage: {
-    readyForRelease: true,
-    description: "Enable Collector Profile Complete Message",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableCompleteProfileMessage",
-  },
   AREnableMyCollectionInsights: {
     readyForRelease: true,
     description: "Enable My Collection insights tab",

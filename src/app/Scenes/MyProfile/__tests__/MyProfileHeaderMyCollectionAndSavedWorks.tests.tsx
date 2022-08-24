@@ -101,48 +101,6 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
       expect(await findByText("My Bio")).toBeTruthy()
     })
 
-    describe("Complete Profile Message", () => {
-      it("does get displayed if at least one of the fields is empty", async () => {
-        beforeEach(() => {
-          __globalStoreTestUtils__?.injectFeatureFlags({
-            AREnableCompleteProfileMessage: false,
-          })
-        })
-        const { findByText } = getWrapper({
-          Me: () => ({
-            name: "My Name",
-            profession: null,
-            bio: "some-bio",
-            icon: "icon",
-            otherRelevantPositions: "something",
-          }),
-        })
-
-        await flushPromiseQueue()
-        expect(await findByText("Why complete your Collector Profile?")).toBeTruthy()
-      })
-
-      it("doesn't get displayed if the profile is completed", async () => {
-        beforeEach(() => {
-          __globalStoreTestUtils__?.injectFeatureFlags({
-            AREnableCompleteProfileMessage: false,
-          })
-        })
-        const { queryByText } = getWrapper({
-          Me: () => ({
-            name: "My Name",
-            profession: "some-profession",
-            bio: "some-bio",
-            icon: "some-icon",
-            otherRelevantPositions: "something",
-          }),
-        })
-
-        await flushPromiseQueue()
-        expect(await queryByText("Why complete your Collector Profile?")).toBeFalsy()
-      })
-    })
-
     it("Renders Icon", async () => {
       const localImage: LocalImage = {
         path: "some/my/profile/path",
