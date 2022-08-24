@@ -97,11 +97,13 @@ export const Header: React.FC<HeaderProps> = ({ onBack, onSkip }) => {
       px={SCREEN_HORIZONTAL_PADDING}
     >
       <Flex>
-        <BackButton
-          onPress={onBack}
-          containerStyle={{ flex: 1, justifyContent: "center" }}
-          hitSlop={{ left: 20, right: 20 }}
-        />
+        {!!onBack && (
+          <BackButton
+            onPress={onBack}
+            containerStyle={{ flex: 1, justifyContent: "center" }}
+            hitSlop={{ left: 20, right: 20 }}
+          />
+        )}
       </Flex>
       {!!onSkip && (
         <Touchable haptic="impactLight" onPress={onSkip}>

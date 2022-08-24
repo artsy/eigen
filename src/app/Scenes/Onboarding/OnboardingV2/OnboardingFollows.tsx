@@ -29,7 +29,7 @@ export const CONFIGURATION = {
 
 export const OnboardingFollows: React.FC<OnboardingFollowsProps> = ({ kind }) => {
   const [query, setQuery] = useState("")
-  const { goBack, navigate } = useNavigation()
+  const { navigate } = useNavigation()
   const { next, state, onDone, progress } = useOnboardingContext()
 
   const { debouncedValue } = useDebouncedValue({ value: query, delay: 200 })
@@ -44,7 +44,7 @@ export const OnboardingFollows: React.FC<OnboardingFollowsProps> = ({ kind }) =>
 
   return (
     <Screen>
-      <Screen.Header onBack={goBack} onSkip={onDone} />
+      <Screen.Header onSkip={onDone} />
       <Screen.Body>
         <StatusBar barStyle="dark-content" />
         {!debouncedValue && (
