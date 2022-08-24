@@ -1,19 +1,18 @@
 import { SearchArtworksGrid_viewer$data } from "__generated__/SearchArtworksGrid_viewer.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
+import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import {
   useArtworkFilters,
   useSelectedFiltersCount,
 } from "app/Components/ArtworkFilter/useArtworkFilters"
-import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-
-import { OwnerType } from "@artsy/cohesion"
-import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { Artwork } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
+import VirtualizedMasonry from "app/Components/VirtualizedMasonry"
+import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { Box, quoteLeft, quoteRight, Text, useTheme } from "palette"
 import React, { useEffect, useState } from "react"
-import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -21,11 +20,6 @@ export interface SearchArtworksGridProps {
   viewer: SearchArtworksGrid_viewer$data
   relay: RelayPaginationProp
   keyword: string
-}
-
-interface ArtworkSection {
-  key: string
-  content: JSX.Element
 }
 
 const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, keyword }) => {
@@ -65,23 +59,6 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
     }
   }, [setFiltersCountAction])
 
-  const content: ArtworkSection[] = [
-    {
-      key: "ARTWORKS",
-      content: (
-        <InfiniteScrollArtworksGridContainer
-          shouldAddPadding
-          connection={viewer.artworks!}
-          loadMore={relay.loadMore}
-          hasMore={relay.hasMore}
-          updateRecentSearchesOnTap
-          contextScreenOwnerType={OwnerType.search}
-          contextScreenQuery={keyword}
-          contextScreen={Schema.PageNames.Search}
-        />
-      ),
-    },
-  ]
   return (
     <>
       <ArtworkFilterNavigator
@@ -108,11 +85,27 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
           </Box>
         </Box>
       ) : (
-        <FlatList<ArtworkSection>
-          data={content}
-          contentContainerStyle={{ paddingTop: space(2) }}
-          renderItem={({ item }) => item.content}
-          keyExtractor={({ key }) => key}
+        <VirtualizedMasonry
+          data={extractNodes(viewer.artworks!)}
+          gutter={20}
+          contentContainerStyle={{ paddingTop: space(2), paddingHorizontal: space(2) }}
+          renderItem={({ item }) => {
+            return (
+              <Artwork
+                artwork={item as any} // FIXME: Types are messed up here
+                key={"artwork-" + item.id + "-"}
+                // hideUrgencyTags={hideUrgencyTags}
+                // hidePartner={hidePartner}
+                // showLotLabel={showLotLabel}
+                // itemIndex={item.id}
+                // updateRecentSearchesOnTap={updateRecentSearchesOnTap}
+                {...item}
+              />
+            )
+          }}
+          onEndReached={() => console.warn("reached")}
+          keyExtractor={({ id }) => id}
+          getBrickHeight={(_item, _brickWidth) => 500} // needs some more work
         />
       )}
     </>
@@ -160,12 +153,54 @@ export const SearchArtworksGridPaginationContainer = createPaginationContainer(
           counts {
             followedArtists
           }
+          pageInfo {
+            hasNextPage
+            startCursor
+            endCursor
+          }
           edges {
             node {
               id
+              title
+              date
+              saleMessage
+              slug
+              internalID
+              artistNames
+              href
+              sale {
+                isAuction
+                isClosed
+                displayTimelyAt
+                cascadingEndTimeIntervalMinutes
+                extendedBiddingPeriodMinutes
+                extendedBiddingIntervalMinutes
+                endAt
+                startAt
+              }
+              saleArtwork {
+                counts {
+                  bidderPositions
+                }
+                formattedEndDateTime
+                currentBid {
+                  display
+                }
+                lotID
+                lotLabel
+                endAt
+                extendedBiddingEndAt
+              }
+              partner {
+                name
+              }
+              image {
+                url(version: "large")
+                aspectRatio
+              }
+              realizedPrice
             }
           }
-          ...InfiniteScrollArtworksGrid_connection
         }
       }
     `,
