@@ -2,7 +2,7 @@ import { useIsFocused } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
 import { goBack } from "app/navigation/navigate"
-import { useFeatureFlag } from "app/store/GlobalStore"
+import { useDevToggle } from "app/store/GlobalStore"
 import { useIsForeground } from "app/utils/useIsForeground"
 import { BackButton, Box, Flex, Spinner, Text } from "palette"
 import { useEffect, useRef, useState } from "react"
@@ -29,7 +29,7 @@ const HIDE_FOCUS_TIMEOUT = 400
 
 export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   const { navigation } = props
-  const enableDebug = useFeatureFlag("AREnableDebugImageSearch")
+  const enableDebug = useDevToggle("DTShowDebugReverseImageView")
   const [cameraPermission, setCameraPermission] = useState<CameraPermissionStatus | null>(null)
   const [enableFlash, setEnableFlash] = useState(false)
   const [isCameraInitialized, setIsCameraInitialized] = useState(false)

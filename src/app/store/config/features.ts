@@ -135,11 +135,6 @@ export const features = defineFeatures({
     description: "Enable search with image",
     showInAdminMenu: true,
   },
-  AREnableDebugImageSearch: {
-    readyForRelease: false,
-    description: "Enable debug for image search",
-    showInAdminMenu: true,
-  },
   AREnableMyCollectionSearchBar: {
     readyForRelease: true,
     description: "Enable My Collection search bar",
@@ -342,6 +337,9 @@ export const devToggles = defineDevToggles({
   },
   DTShowErrorInLoadFailureView: {
     description: "Show error in load failure view",
+  },
+  DTShowDebugReverseImageView: {
+    description: "Show debug view for reverse image",
   },
 })
 
