@@ -32,13 +32,7 @@ export const MyCollectionArtworkComparableWorks: React.FC<
 
   return (
     <Flex mb={6}>
-      <SectionTitle
-        title="Comparable Works"
-        onPress={() => {
-          trackEvent(tracks.tappedShowMore(artwork?.internalID, artwork?.slug))
-          navigate(`/artist/${artwork?.artist?.slug!}/auction-results`)
-        }}
-      />
+      <SectionTitle title="Comparable Works" />
 
       <FlatList
         data={comparableWorks}
