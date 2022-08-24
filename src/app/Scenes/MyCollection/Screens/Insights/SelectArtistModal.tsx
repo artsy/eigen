@@ -106,9 +106,6 @@ export const SelectArtistModal: React.FC<SelectArtistModalProps> = ({
 const ListHeaderComponent = (
   <Flex mb={2}>
     <Text variant="md">Artists You Collect</Text>
-    <Text variant="xs" color="black60">
-      With insights currently available
-    </Text>
   </Flex>
 )
 
