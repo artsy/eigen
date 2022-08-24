@@ -68,6 +68,7 @@ export const updateMyUserProfile = async (
         } catch (e) {
           // fall through
         }
+        console.error(e)
         reject("Something went wrong")
       },
     })
