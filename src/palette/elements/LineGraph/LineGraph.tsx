@@ -1,5 +1,4 @@
 import { Flex, Spacer } from "palette"
-import { useMemo } from "react"
 import { InterpolationPropType } from "victory-core"
 import { AxisDisplayType } from "./helpers"
 import { LineGraphBandProps, LineGraphBands } from "./LineGraphBands"

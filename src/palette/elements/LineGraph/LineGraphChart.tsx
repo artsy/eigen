@@ -4,13 +4,12 @@ import { compact, noop, throttle } from "lodash"
 import { Flex } from "palette"
 import { useColor } from "palette/hooks"
 import { StarCircleIcon } from "palette/svgs/StarCircleIcon"
-import { Color, useTheme } from "palette/Theme"
+import { Color } from "palette/Theme"
 import { useCallback, useEffect, useRef, useState } from "react"
-import { Dimensions, Platform, TextInput } from "react-native"
+import { Dimensions } from "react-native"
 import {
   GestureEventPayload,
   HandlerStateChangeEventPayload,
-  LongPressGestureHandler,
   PanGestureHandler,
   PanGestureHandlerEventPayload,
   State,
@@ -20,9 +19,7 @@ import {
 import Animated, {
   runOnJS,
   useAnimatedGestureHandler,
-  useAnimatedStyle,
   useSharedValue,
-  withTiming,
 } from "react-native-reanimated"
 import Svg, { Defs, G, LinearGradient, Stop } from "react-native-svg"
 import { Subject } from "rxjs"
@@ -88,7 +85,6 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
   yAxisDisplayType,
 }) => {
   const color = useColor()
-  const { theme } = useTheme()
 
   // MARK:- REFS
   // const floatingXLabelRef = useRef<TextInput>(null)
@@ -156,16 +152,16 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
   // MARK: SHARED VALUES AND ANIMATIONS
   const opacityWhenScroll = useSharedValue<0 | 1>(0)
 
-  const activeOpacityStyle = useAnimatedStyle(() => {
-    return {
-      opacity: withTiming(opacityWhenScroll.value, { duration: 200 }),
-    }
-  })
+  // const activeOpacityStyle = useAnimatedStyle(() => {
+  //   return {
+  //     opacity: withTiming(opacityWhenScroll.value, { duration: 200 }),
+  //   }
+  // })
 
   // const xLabeltranslateX = useSharedValue(0)
 
   // MARK: INTERACTIONS
-  const updateLastPressedDatum = (value: typeof lastPressedDatum, updateLabel: boolean = true) => {
+  const updateLastPressedDatum = (value: typeof lastPressedDatum) => {
     if (dataTagSubscribedNameRef.current && value && !value.dataTag && __DEV__) {
       console.warn(
         "You have specified a `dataTagToSubscribeTo` but you have not specified any `dataTag`. \n" +
@@ -282,7 +278,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
     const label = scaleXLabel(scaleX.invert(event.absoluteX))
     // floatingXLabelRef.current?.setNativeProps({ text: `${label}` })
     const pressedDatum = datapointsByX[label]
-    updateLastPressedDatum(pressedDatum, false)
+    updateLastPressedDatum(pressedDatum)
   }
 
   const handleEndGestureEvent = () => {
