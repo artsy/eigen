@@ -691,7 +691,7 @@ PODS:
   - TOCropViewController (2.6.1)
   - UICKeyChainStore (2.2.1)
   - "UIView+BooleanAnimations (1.0.2)"
-  - VisionCamera (2.14.0):
+  - VisionCamera (2.14.1):
     - React
     - React-callinvoker
     - React-Core
@@ -1259,7 +1259,7 @@ SPEC CHECKSUMS:
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   UICKeyChainStore: ba3bff2c762b12db1e516f395c837dd25298b05e
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
-  VisionCamera: 17d4ce16a6b3646081005292e2ee0e972b5233c9
+  VisionCamera: 7f99b99ff38e14f42bb61c8e1d501ef04cd67017
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
