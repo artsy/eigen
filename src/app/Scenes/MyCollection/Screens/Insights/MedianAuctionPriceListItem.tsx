@@ -1,7 +1,7 @@
 import { MedianAuctionPriceRail_me$data } from "__generated__/MedianAuctionPriceRail_me.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { Flex, NoArtworkIcon, Text, Touchable, useColor } from "palette"
+import { Flex, NoArtworkIcon, Text, Touchable, useColor, useSpace } from "palette"
 
 export type MedianSalePriceArtwork = NonNullable<
   NonNullable<NonNullable<MedianAuctionPriceRail_me$data["priceInsightUpdates"]>["edges"]>[0]
@@ -9,11 +9,12 @@ export type MedianSalePriceArtwork = NonNullable<
 
 interface Props {
   artworks: MedianSalePriceArtwork[]
-  onPress?: () => void
+  onPress?: (medium?: string) => void
 }
 
 export const MedianAuctionPriceListItem: React.FC<Props> = ({ artworks, onPress }) => {
   const color = useColor()
+  const space = useSpace()
   const enableMyCollectionInsightsMedianPrice = useFeatureFlag(
     "AREnableMyCollectionInsightsMedianPrice"
   )
@@ -21,8 +22,13 @@ export const MedianAuctionPriceListItem: React.FC<Props> = ({ artworks, onPress 
   const artist = artworks[0]?.artist
 
   return (
-    <Flex>
-      <Touchable disabled={!onPress} underlayColor={color("black5")} onPress={onPress}>
+    <Flex py={0.5}>
+      <Touchable
+        disabled={!onPress}
+        underlayColor={color("black5")}
+        onPress={() => onPress?.()}
+        style={{ paddingVertical: space(0.5) }}
+      >
         <Flex mx={2} flexDirection="row" alignItems="center">
           <Flex
             width={40}
@@ -51,24 +57,27 @@ export const MedianAuctionPriceListItem: React.FC<Props> = ({ artworks, onPress 
         </Flex>
       </Touchable>
       {artworks.map((artwork) => (
-        <Flex
+        <Touchable
           key={artwork?.internalID}
-          mx={2}
-          pt={2}
-          flexDirection="row"
-          justifyContent="space-between"
+          onPress={() => {
+            if (artwork?.mediumType?.name) {
+              onPress?.(artwork.mediumType.name)
+            }
+          }}
         >
-          <Flex flex={1} pr={15}>
-            <Text variant="xs">{artwork?.mediumType?.name}</Text>
+          <Flex mx={2} pt={2} flexDirection="row" justifyContent="space-between">
+            <Flex flex={1} pr={15}>
+              <Text variant="xs">{artwork?.mediumType?.name}</Text>
+            </Flex>
+            <Flex alignItems="flex-end">
+              <Text variant="xs" weight="medium">
+                {enableMyCollectionInsightsMedianPrice
+                  ? artwork?.marketPriceInsights?.medianSalePriceDisplayText
+                  : artwork?.marketPriceInsights?.averageSalePriceDisplayText}
+              </Text>
+            </Flex>
           </Flex>
-          <Flex alignItems="flex-end">
-            <Text variant="xs" weight="medium">
-              {enableMyCollectionInsightsMedianPrice
-                ? artwork?.marketPriceInsights?.medianSalePriceDisplayText
-                : artwork?.marketPriceInsights?.averageSalePriceDisplayText}
-            </Text>
-          </Flex>
-        </Flex>
+        </Touchable>
       ))}
     </Flex>
   )
