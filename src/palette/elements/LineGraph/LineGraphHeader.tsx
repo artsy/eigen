@@ -17,7 +17,7 @@ export const LineGraphHeader: React.FC<LineGraphHeaderProps> = ({
           {title}
         </Text>
       )}
-      {!!description && (
+      {!!description?.trim() && (
         <Flex flexDirection="row" alignItems="center">
           <ColoredDot color={tintColor ?? DEFAULT_DOT_COLOR} />
           <Text variant="xs" color="black60">
