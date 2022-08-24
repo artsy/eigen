@@ -43,8 +43,7 @@ export const HighlightIconContainer: React.FC<HighlightIconContainerProps> = (pr
 
   useEffect(() => {
     const observable = ChartGestureObservable.pipe(
-      throttle((value) => {
-        console.log("control for " + value)
+      throttle(() => {
         return ChartGestureObservable.pipe(take(1))
       })
     ).subscribe(observer)

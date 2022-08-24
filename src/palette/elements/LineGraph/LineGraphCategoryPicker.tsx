@@ -34,8 +34,6 @@ export const LineGraphCategoryPicker: React.FC<LineGraphCategoryPickerProps> = m
       categories.map(() => null)
     )
 
-    console.log("hiii => ")
-
     const getIndexForSelectedCategory = (): number => {
       let index = 0
       for (let i = 0; i < categories.length; i++) {
@@ -48,9 +46,6 @@ export const LineGraphCategoryPicker: React.FC<LineGraphCategoryPickerProps> = m
     }
     const initialSelectedIndex = getIndexForSelectedCategory()
 
-    useEffect(() => {
-      console.log("initial render => ")
-    }, [])
     const [selectedIndex, setSelectedIndex] = useState(initialSelectedIndex)
 
     const allLayoutsPresent = categoryLayouts.every((l) => l)
