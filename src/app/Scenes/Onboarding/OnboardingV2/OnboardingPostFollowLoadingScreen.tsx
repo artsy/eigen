@@ -3,7 +3,7 @@ import { Screen } from "palette"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
 import { useOnboardingContext } from "./Hooks/useOnboardingContext"
 
-const NAVIGATE_TO_NEXT_SCREEN_DELAY = 500
+const NAVIGATE_TO_NEXT_SCREEN_DELAY = 1500
 
 export const OnboardingPostFollowLoadingScreen = () => {
   const { onDone } = useOnboardingContext()
