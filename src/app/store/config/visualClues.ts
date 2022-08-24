@@ -15,9 +15,6 @@ function defineVisualClues<T extends string>(visualClueMap: {
 }
 
 export const visualClues = defineVisualClues({
-  CompleteCollectorProfileMessage: {
-    description: "The message shown if the collector profile is incomplete",
-  },
   MyCollectionInsights: {
     description: "The new My Collection insights tab",
   },
