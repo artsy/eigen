@@ -135,6 +135,11 @@ export const features = defineFeatures({
     description: "Enable search with image",
     showInAdminMenu: true,
   },
+  AREnableDebugImageSearch: {
+    readyForRelease: false,
+    description: "Enable debug for image search",
+    showInAdminMenu: true,
+  },
   AREnableMyCollectionSearchBar: {
     readyForRelease: true,
     description: "Enable My Collection search bar",
