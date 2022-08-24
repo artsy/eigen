@@ -4,7 +4,7 @@ export const OnboardingCuratedArtworks: React.FC = () => {
   return (
     <OnboardingGeneScreen
       id="trove"
-      description=" Follow to see the best works on Artsy each week, all available now. Click the heart to save artworks you love."
+      description=" Want to see the best new works handpicked by our editors each week? Hit Follow."
     />
   )
 }

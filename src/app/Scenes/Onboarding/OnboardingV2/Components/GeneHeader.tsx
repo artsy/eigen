@@ -20,6 +20,8 @@ export const images: Record<OnboardingGeneId, ImageSourcePropType> = {
   "our-top-auction-lots": require("images/HirstTheWonder.webp"),
 }
 
+const SAVE_INSTRUCTIONS = "Love an artwork? Tap twice to save it."
+
 export const GeneHeader: React.FC<GeneHeaderProps> = ({ geneID, gene, description }) => {
   const [shouldDisplayTooltip, setShouldDisplayTooltip] = useState(false)
   const [commit, isInFlight] = useMutation(FollowGeneMutation)
@@ -57,6 +59,10 @@ export const GeneHeader: React.FC<GeneHeaderProps> = ({ geneID, gene, descriptio
         <Flex pt={6} px={2}>
           <Text variant="xl" color="white100">
             {name}
+          </Text>
+          <Spacer mt={2} />
+          <Text variant="sm" color="white100">
+            {SAVE_INSTRUCTIONS}
           </Text>
           <Spacer mt={2} />
           <Text variant="sm" color="white100">
