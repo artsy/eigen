@@ -16127,17 +16127,71 @@ type UserSaleProfile {
   # The second line of address for this user.
   addressLine2: String
 
+  # The alternative email for this user
+  alternativeEmail: String
+
+  # The birth year for this user
+  birthYear: String
+
+  # The buyer status for this user
+  buyerStatus: String
+
   # The city for this user.
   city: String
 
   # The country for this user.
   country: String
 
+  # The email for this user
+  email: String
+
+  # The employer for this user
+  employer: String
+
+  # The first name for this user
+  first_name: String
+
+  # The gender for this user
+  gender: String
+
   # A globally unique ID.
   id: ID!
 
+  # The indusrty for this user
+  industry: String
+
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+
+  # The job title for this user
+  job_title: String
+
+  # The last name  for this user
+  last_name: String
+
+  # The marital status for this user
+  maritalStatus: String
+
+  # The name for this user
+  name: String
+
+  # The prefix for this user
+  prefix: String
+
+  # The price range for this user
+  priceRange: Int
+
+  # The profession for this user
+  profession: String
+
+  # If this user requires manual approval for auction bidding
+  requireBidderApproval: Boolean!
+
+  # The salary(USD) for this user
+  salaryUSD: Int
+
+  # The spouse for this user
+  spouse: String
 
   # The state for this user.
   state: String
