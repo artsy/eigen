@@ -1,6 +1,4 @@
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
-import "react-native"
-
+import { renderWithRelayWrappers } from "app/tests/renderWithWrappers"
 import ShowsList from "./VariableSizeShowsList"
 
 it("renders without throwing an error", () => {
@@ -10,7 +8,7 @@ it("renders without throwing an error", () => {
   show2.location.city = "London"
 
   const shows = [show1, show2]
-  renderWithWrappersLEGACY(<ShowsList shows={shows as any} showSize="medium" />)
+  renderWithRelayWrappers(<ShowsList shows={shows as any} showSize="medium" />)
 })
 
 const showProps = (n: number) => {
