@@ -16131,10 +16131,10 @@ type UserSaleProfile {
   alternativeEmail: String
 
   # The birth year for this user
-  birthYear: String
+  birthYear: Int
 
   # The buyer status for this user
-  buyerStatus: String
+  buyerStatus: Int
 
   # The city for this user.
   city: String
@@ -16149,7 +16149,7 @@ type UserSaleProfile {
   employer: String
 
   # The first name for this user
-  first_name: String
+  firstName: String
 
   # The gender for this user
   gender: String
@@ -16164,10 +16164,10 @@ type UserSaleProfile {
   internalID: ID!
 
   # The job title for this user
-  job_title: String
+  jobTitle: String
 
   # The last name  for this user
-  last_name: String
+  lastName: String
 
   # The marital status for this user
   maritalStatus: String
