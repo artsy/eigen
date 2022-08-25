@@ -240,6 +240,7 @@ lane :promote_beta_android do
   tag_and_push(tag: "android-#{vname}-#{vcode}-submission")
 end
 
+
 lane :list_versions_android do
   version_codes = google_play_track_version_codes(
     track: "alpha",
@@ -250,17 +251,9 @@ lane :list_versions_android do
   end
 end
 
-lane :list_versions_ios do
-  api_key = app_store_connect_api_key(
-    key_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ID'],
-    issuer_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
-    key_content: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_CONTENT_BASE64'],
-    is_key_content_base64: true,
-    in_house: false,
-  )
-
-   # There seems to be some delta between spaceship + deliver token format
-   token = Spaceship::ConnectAPI::Token.create(
+lane :select_version_ios do
+  # There seems to be some delta between spaceship + deliver token format
+  token = Spaceship::ConnectAPI::Token.create(
     key_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ID'],
     issuer_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
     key: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_CONTENT_BASE64'],
@@ -271,15 +264,22 @@ lane :list_versions_ios do
   Spaceship::ConnectAPI.token = token
 
   app = Spaceship::ConnectAPI::App.find('net.artsy.artsy')
-  next_app_store_version = app.get_edit_app_store_version.version_string
 
   # app.builds are listed most recent first; we are assuming that we're shipping the most recent beta.
-  builds = app.get_builds
+  # limit to 20
+  builds = app.get_builds.first(20).map { |build| build.version }
 
-  builds.each do |build|
-    puts("Got build:" + build.version)
+  UI.header "Last 20 iOS builds"
+
+  build = UI.select("Which build would you like to release?: ", builds)
+
+  if UI.confirm("Are you sure you would like to release '#{build}'?")
+    UI.success "Continuing the release!"
+  else
+    UI.error "Stopping the train!"
   end
 end
+
 
 lane :promote_beta_ios do
   api_key = app_store_connect_api_key(
