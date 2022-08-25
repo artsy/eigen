@@ -162,6 +162,12 @@ lane :ship_beta_android_play_store do
   sh("yarn jetifier")
   sh("yarn relay")
 
+  # upload will overwrite past versions unless we explicitly tell it to retain some
+  # cap at 10 for now, if we need more feel free to update!
+  past_version_codes = google_play_track_version_codes(
+    track: "alpha",
+  ).first(10)
+
   vname, vcode = set_build_version_android
   tag_and_push(tag: "android-#{vname}-#{vcode}")
 
@@ -186,6 +192,7 @@ lane :ship_beta_android_play_store do
     skip_upload_metadata: true,
     skip_upload_images: true,
     skip_upload_screenshots: true,
+    version_codes_to_retain: past_version_codes
   )
 end
 
@@ -231,6 +238,16 @@ lane :promote_beta_android do
 
   vname, vcode = set_build_version_android(version_code: current_version_code)
   tag_and_push(tag: "android-#{vname}-#{vcode}-submission")
+end
+
+lane :list_versions_android do
+  version_codes = google_play_track_version_codes(
+    track: "alpha",
+  )
+
+  version_codes.each do |version_code|
+    puts("Got version code " + version_code.to_s)
+  end
 end
 
 lane :list_versions_ios do
