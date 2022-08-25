@@ -1,7 +1,6 @@
-import { useNavigation } from "@react-navigation/native"
 import { OnboardingGeneQuery } from "__generated__/OnboardingGeneQuery.graphql"
-import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { FullScreenLoadingImage } from "app/Components/FullScreenLoadingImage"
+import { OnboardingResultsGrid } from "app/Scenes/Onboarding/OnboardingV2/Components/OnboardingResultsGrid"
 import { Button, Flex, Screen } from "palette"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -16,34 +15,28 @@ interface OnboardingGeneProps {
 }
 
 const OnboardingGene: React.FC<OnboardingGeneProps> = ({ id, description }) => {
-  const { navigate } = useNavigation()
   const { onDone } = useOnboardingContext()
+
   const { gene } = useLazyLoadQuery<OnboardingGeneQuery>(OnboardingGeneScreenQuery, {
     id,
   })
 
+  if (!gene?.artworks) {
+    return null
+  }
+
   return (
     <Screen>
       <Screen.Background>
-        <InfiniteScrollArtworksGridContainer
-          shouldAddPadding
-          itemComponentProps={{
-            // @ts-expect-error
-            onPress: (artworkID) => navigate("ArtworkScreen", { artworkID }),
-          }}
-          HeaderComponent={() => <GeneHeader geneID={id} description={description} gene={gene!} />}
-          FooterComponent={() => (
-            <Flex p={2}>
-              <Button block onPress={onDone}>
-                Explore More on Artsy
-              </Button>
-            </Flex>
-          )}
-          connection={gene?.artworks!}
-          hasMore={() => false}
-          loadMore={() => null}
-          pageSize={100}
-        />
+        <GeneHeader geneID={id} description={description} gene={gene!} />
+        <Flex px={2}>
+          <OnboardingResultsGrid connection={gene?.artworks} />
+        </Flex>
+        <Flex p={2} background="white" position="absolute" bottom={0}>
+          <Button block onPress={onDone} mb={1}>
+            Explore More on Artsy
+          </Button>
+        </Flex>
       </Screen.Background>
     </Screen>
   )
@@ -80,7 +73,7 @@ const OnboardingGeneScreenQuery = graphql`
         inquireableOnly: true
         forSale: true
       ) {
-        ...InfiniteScrollArtworksGrid_connection
+        ...OnboardingResultsGrid_connection
       }
     }
   }
