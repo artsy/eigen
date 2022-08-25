@@ -163,10 +163,10 @@ lane :ship_beta_android_play_store do
   sh("yarn relay")
 
   # upload will overwrite past versions unless we explicitly tell it to retain some
-  # cap at 10 for now, if we need more feel free to update!
+  # cap at 20 for now, if we need more feel free to update!
   past_version_codes = google_play_track_version_codes(
     track: "alpha",
-  ).first(10)
+  ).first(20)
 
   vname, vcode = set_build_version_android
   tag_and_push(tag: "android-#{vname}-#{vcode}")
@@ -240,14 +240,20 @@ lane :promote_beta_android do
   tag_and_push(tag: "android-#{vname}-#{vcode}-submission")
 end
 
-
-lane :list_versions_android do
+lane :select_version_android do
+  # android versions are listed most recent first, limit to 20
   version_codes = google_play_track_version_codes(
     track: "alpha",
-  )
+  ).first(20)
 
-  version_codes.each do |version_code|
-    puts("Got version code " + version_code.to_s)
+  UI.header "Last 20 Android builds"
+
+  build = UI.select("Which build would you like to release?: ", version_codes)
+
+  if UI.confirm("Are you sure you would like to release '#{build}'?")
+    UI.success "Continuing the release!"
+  else
+    UI.error "Stopping the train!"
   end
 end
 
@@ -265,8 +271,7 @@ lane :select_version_ios do
 
   app = Spaceship::ConnectAPI::App.find('net.artsy.artsy')
 
-  # app.builds are listed most recent first; we are assuming that we're shipping the most recent beta.
-  # limit to 20
+  # app.builds are listed most recent first, limit to 20
   builds = app.get_builds.first(20).map { |build| build.version }
 
   UI.header "Last 20 iOS builds"
