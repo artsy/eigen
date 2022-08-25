@@ -2,7 +2,6 @@ import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingTracking"
 import { GlobalStore } from "app/store/GlobalStore"
-import { ArtworkScreen } from "./ArtworkScreen"
 import { OnboardingProvider } from "./Hooks/useOnboardingContext"
 import { useUpdateUserProfile } from "./Hooks/useUpdateUserProfile"
 import { OnboardingArtistsOnTheRise } from "./OnboardingArtistsOnTheRise"
@@ -28,7 +27,6 @@ export type OnboardingNavigationStack = {
   OnboardingFollowArtists: undefined
   OnboardingFollowGalleries: undefined
   OnboardingPostFollowLoadingScreen: undefined
-  ArtworkScreen: { artworkID: string }
 }
 
 const StackNavigator = createStackNavigator<OnboardingNavigationStack>()
@@ -94,7 +92,6 @@ export const OnboardingV2 = () => {
             name="OnboardingPostFollowLoadingScreen"
             component={OnboardingPostFollowLoadingScreen}
           />
-          <StackNavigator.Screen name="ArtworkScreen" component={ArtworkScreen} />
         </StackNavigator.Navigator>
       </NavigationContainer>
     </OnboardingProvider>
