@@ -75,23 +75,4 @@ describe("OnboardingGene", () => {
       "GeneHeaderFollowButtonMutation"
     )
   })
-
-  it("should navigate to artwork page after pressing an artwork", async () => {
-    renderWithHookWrappersTL(<OnboardingGeneScreen id="trove" description={description} />, env)
-
-    resolveMostRecentRelayOperation(env, {
-      Gene: () => ({
-        name: "Example Gene",
-      }),
-    })
-
-    await waitForElementToBeRemoved(() => screen.getByText(placeholderText))
-
-    // mocked artwork title is there
-    expect(screen.queryByText("title-1")).toBeTruthy()
-    fireEvent.press(screen.getByText("title-1"))
-
-    expect(mockedNavigate).toHaveBeenCalledTimes(1)
-    expect(mockedNavigate).toHaveBeenCalledWith("ArtworkScreen", { artworkID: "slug-1" })
-  })
 })
