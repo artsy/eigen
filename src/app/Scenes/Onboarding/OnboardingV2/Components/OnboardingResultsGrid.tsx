@@ -90,7 +90,7 @@ export const OnboardingResultsGrid: FC<OnboardingResultsGridProps> = ({ connecti
       scrollsToTop={false}
       accessibilityLabel="Artworks ScrollView"
     >
-      <Flex flexDirection="row" pr={2}>
+      <Flex flexDirection="row" pr={1}>
         {renderSections()}
       </Flex>
       <Flex height={400} />
