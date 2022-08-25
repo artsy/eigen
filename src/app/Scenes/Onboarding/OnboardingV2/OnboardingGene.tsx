@@ -1,11 +1,12 @@
+import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { OnboardingGeneQuery } from "__generated__/OnboardingGeneQuery.graphql"
 import { FullScreenLoadingImage } from "app/Components/FullScreenLoadingImage"
 import { OnboardingResultsGrid } from "app/Scenes/Onboarding/OnboardingV2/Components/OnboardingResultsGrid"
+import { OnboardingNavigationStack } from "app/Scenes/Onboarding/OnboardingV2/OnboardingV2"
 import { Button, Flex, Screen } from "palette"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { GeneHeader, images } from "./Components/GeneHeader"
-import { useOnboardingContext } from "./Hooks/useOnboardingContext"
 
 export type OnboardingGeneId = "artists-on-the-rise" | "trove" | "our-top-auction-lots"
 
@@ -15,8 +16,7 @@ interface OnboardingGeneProps {
 }
 
 const OnboardingGene: React.FC<OnboardingGeneProps> = ({ id, description }) => {
-  const { onDone } = useOnboardingContext()
-
+  const { navigate } = useNavigation<NavigationProp<OnboardingNavigationStack>>()
   const { gene } = useLazyLoadQuery<OnboardingGeneQuery>(OnboardingGeneScreenQuery, {
     id,
   })
@@ -33,7 +33,7 @@ const OnboardingGene: React.FC<OnboardingGeneProps> = ({ id, description }) => {
           <OnboardingResultsGrid connection={gene?.artworks} />
         </Flex>
         <Flex p={2} background="white" position="absolute" bottom={0}>
-          <Button block onPress={onDone} mb={1}>
+          <Button block onPress={() => navigate("OnboardingPostFollowLoadingScreen")} mb={1}>
             Explore More on Artsy
           </Button>
         </Flex>
