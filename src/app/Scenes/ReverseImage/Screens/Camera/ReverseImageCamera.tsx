@@ -3,6 +3,7 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
 import { goBack } from "app/navigation/navigate"
 import { useDevToggle } from "app/store/GlobalStore"
+import { requestPhotos } from "app/utils/requestPhotos"
 import { useIsForeground } from "app/utils/useIsForeground"
 import { BackButton, Box, Flex, Spinner, Text } from "palette"
 import { useEffect, useRef, useState } from "react"
@@ -137,6 +138,27 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
     }
   }
 
+  const selectPhotosFromLibrary = async () => {
+    try {
+      const images = await requestPhotos(false)
+      const image = images[0]
+
+      navigation.navigate("Preview", {
+        photo: {
+          path: image.path,
+          width: image.width,
+          height: image.height,
+        },
+      })
+    } catch (error) {
+      console.error(error)
+
+      if (enableDebug) {
+        Alert.alert("Something went wrong", (error as Error)?.message)
+      }
+    }
+  }
+
   useEffect(() => {
     const run = async () => {
       const status = await Camera.getCameraPermissionStatus()
@@ -195,6 +217,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
           isCameraInitialized={isCameraInitialized}
           takePhoto={takePhoto}
           toggleFlash={toggleFlash}
+          selectPhotosFromLibrary={selectPhotosFromLibrary}
           deviceHasFlash={device.hasFlash}
           isFlashEnabled={enableFlash}
           bg={BACKGROUND_COLOR}
