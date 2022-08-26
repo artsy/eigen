@@ -12,6 +12,7 @@ import { ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 import { MedianSalePriceChart } from "./MedianSalePriceChart"
+import { MedianSalePriceChartDataContextProvider } from "./providers/MedianSalePriceChartDataContext"
 import { SelectArtistModal } from "./SelectArtistModal"
 
 const PAGE_SIZE = 50
@@ -91,11 +92,13 @@ const MedianSalePriceAtAuctionScreen: React.FC<MedianSalePriceAtAuctionProps> = 
           </Flex>
         </Flex>
 
-        <MedianSalePriceChart
+        <MedianSalePriceChartDataContextProvider
           artistId={queryArgs.variables.artistId}
           initialCategory={initialCategory}
           queryData={data}
-        />
+        >
+          <MedianSalePriceChart />
+        </MedianSalePriceChartDataContextProvider>
 
         <SelectArtistModal
           queryData={data}
@@ -163,7 +166,7 @@ export const MedianSalePriceAtAuctionScreenQuery = graphql`
     $startYear: String
   ) {
     ...SelectArtistModal_myCollectionInfo @arguments(count: $count, after: $after)
-    ...MedianSalePriceChart_query
+    ...MedianSalePriceChartDataContextProvider_query
       @arguments(artistId: $artistId, endYear: $endYear, startYear: $startYear)
     artist(id: $artistID) {
       internalID
