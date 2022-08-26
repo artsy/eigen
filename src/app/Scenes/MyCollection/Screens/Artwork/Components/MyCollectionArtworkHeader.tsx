@@ -1,5 +1,6 @@
 import { tappedCollectedArtworkImages } from "@artsy/cohesion"
 import { MyCollectionArtworkHeader_artwork$key } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
+import { navigate } from "app/navigation/navigate"
 import {
   CarouselImageDescriptor,
   ImageCarousel,
@@ -8,6 +9,7 @@ import {
 import { retrieveLocalImages } from "app/utils/LocalImageStore"
 import { Flex, Join, NoImageIcon, Spacer, Text, useColor } from "palette"
 import React, { useEffect, useState } from "react"
+import { TouchableOpacity } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
@@ -95,8 +97,11 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
       )}
 
       {/* Image Meta */}
+
       <Flex px={2}>
-        <Text variant="lg">{artistNames ?? NO_ARTIST_NAMES_TEXT}</Text>
+        <TouchableOpacity onPress={() => navigate(artwork?.artist?.href!)}>
+          <Text variant="lg">{artistNames ?? NO_ARTIST_NAMES_TEXT}</Text>
+        </TouchableOpacity>
         <Text variant="lg" color="black60" italic>
           {formattedTitleAndYear}
         </Text>
@@ -116,6 +121,9 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
 
 const myCollectionArtworkHeaderFragment = graphql`
   fragment MyCollectionArtworkHeader_artwork on Artwork {
+    artist {
+      href
+    }
     artistNames
     date
     images {
