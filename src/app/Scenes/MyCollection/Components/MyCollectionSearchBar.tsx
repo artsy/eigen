@@ -147,7 +147,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
                 }}
                 hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
               >
-                <Flex py={1} my={0.5} flexDirection="row" width="100%">
+                <Flex flexDirection="row" width="100%">
                   <SearchIcon width={18} height={18} />
                   <Text ml={1} variant="xs">
                     {value.length > 0 ? value : "Search Your Collection"}
@@ -155,7 +155,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
                 </Flex>
               </TouchableWithoutFeedback>
             </Flex>
-            <Flex py={1} my={0.5} flexDirection="row">
+            <Flex flexDirection="row">
               <Flex mr={1}>
                 <TouchableWithoutFeedback
                   testID="MyCollectionSearchListIconTouchable"
