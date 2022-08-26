@@ -4,6 +4,7 @@ import { OnboardingResultsGrid } from "app/Scenes/Onboarding/OnboardingV2/Compon
 import { Button, Flex, Screen } from "palette"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
+import { useBackHandler } from "shared/hooks/useBackHandler"
 import { GeneHeader, images } from "./Components/GeneHeader"
 import { useOnboardingContext } from "./Hooks/useOnboardingContext"
 
@@ -16,6 +17,9 @@ interface OnboardingGeneProps {
 
 const OnboardingGene: React.FC<OnboardingGeneProps> = ({ id, description }) => {
   const { onDone } = useOnboardingContext()
+
+  // prevents Android users from going back with hardware button
+  useBackHandler(() => true)
 
   const { gene } = useLazyLoadQuery<OnboardingGeneQuery>(OnboardingGeneScreenQuery, {
     id,
