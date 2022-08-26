@@ -4,11 +4,11 @@ import useTimeoutFn from "react-use/lib/useTimeoutFn"
 import { useBackHandler } from "shared/hooks/useBackHandler"
 import { useOnboardingContext } from "./Hooks/useOnboardingContext"
 
-const NAVIGATE_TO_NEXT_SCREEN_DELAY = 1500
+const NAVIGATE_TO_NEXT_SCREEN_DELAY = 2000
 
 export const OnboardingPostFollowLoadingScreen = () => {
   const { onDone } = useOnboardingContext()
-  const text = "Great start\nWe are personalizing your Artsy home"
+  const text = "Great start\nFollow more as you browse and\ncontinue tailoring Artsy to your tastes"
 
   // prevents Android users from going back with hardware button
   useBackHandler(() => true)
