@@ -4,4 +4,6 @@ set -euxo pipefail
 
 source ./scripts/source-for-bash-env
 
+./scripts/setup-fastlane-env
+
 bundle exec fastlane promote_beta_ios
