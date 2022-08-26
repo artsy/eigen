@@ -85,9 +85,9 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
   }
 
   return (
-    <Flex my={1}>
+    <Flex>
       {isFocused ? (
-        <Flex flexDirection="row" alignItems="center" my={0.5}>
+        <Flex flexDirection="row" alignItems="center">
           <Input
             testID="MyCollectionSearchBarInput"
             placeholder="Search by Artist, Artwork or Keyword"
@@ -128,7 +128,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
           </TouchableOpacity>
         </Flex>
       ) : (
-        <Flex>
+        <Flex my={1}>
           <Flex flexDirection="row" justifyContent="space-between">
             <Flex flex={1} mr={1} justifyContent="center">
               <TouchableWithoutFeedback
