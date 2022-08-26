@@ -148,6 +148,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
           path: image.path,
           width: image.width,
           height: image.height,
+          fromLibrary: true,
         },
       })
     } catch (error) {

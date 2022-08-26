@@ -73,7 +73,11 @@ export const ReverseImagePreviewScreen: React.FC<Props> = (props) => {
 
   return (
     <Flex bg="black100" flex={1}>
-      <Image source={{ uri: photo.path }} style={StyleSheet.absoluteFill} resizeMode="cover" />
+      <Image
+        source={{ uri: photo.path }}
+        style={StyleSheet.absoluteFill}
+        resizeMode={photo.fromLibrary ? "contain" : "cover"}
+      />
 
       <Flex {...StyleSheet.absoluteFillObject}>
         <Background>
@@ -83,9 +87,12 @@ export const ReverseImagePreviewScreen: React.FC<Props> = (props) => {
           </HeaderContainer>
         </Background>
 
-        <CameraFramesContainer />
-
-        <Background height={CAMERA_BUTTONS_HEIGHT} />
+        {!photo.fromLibrary && (
+          <>
+            <CameraFramesContainer />
+            <Background height={CAMERA_BUTTONS_HEIGHT} />
+          </>
+        )}
       </Flex>
     </Flex>
   )
