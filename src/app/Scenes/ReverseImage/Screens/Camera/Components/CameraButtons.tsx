@@ -13,7 +13,7 @@ interface CameraButtonsProps extends FlexProps {
   selectPhotosFromLibrary: () => void
 }
 
-const SMALL_BUTTONS_SIZE = 30
+const SMALL_BUTTONS_SIZE = 40
 
 export const CameraButtons: React.FC<CameraButtonsProps> = (props) => {
   const {
