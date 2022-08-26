@@ -17,8 +17,6 @@ interface OnboardingGeneProps {
 }
 
 const OnboardingGene: React.FC<OnboardingGeneProps> = ({ id, description }) => {
-  const { onDone } = useOnboardingContext()
-
   // prevents Android users from going back with hardware button
   useBackHandler(() => true)
   const { navigate } = useNavigation<NavigationProp<OnboardingNavigationStack>>()
