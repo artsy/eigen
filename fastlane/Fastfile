@@ -222,25 +222,6 @@ lane :ship_beta_android_firebase do
 end
 
 lane :promote_beta_android do
-  current_version_code = google_play_track_version_codes(
-    track: "alpha",
-  ).first
-
-  supply(
-    track: 'alpha',
-    version_code: current_version_code,
-    track_promote_to: 'production',
-    rollout: '0.1',
-    skip_upload_metadata: true,
-    skip_upload_images: true,
-    skip_upload_screenshots: true,
-  )
-
-  vname, vcode = set_build_version_android(version_code: current_version_code)
-  tag_and_push(tag: "android-#{vname}-#{vcode}-submission")
-end
-
-lane :select_version_android do
   # android versions are listed most recent first, limit to 20
   version_codes = google_play_track_version_codes(
     track: "alpha",
@@ -248,13 +229,26 @@ lane :select_version_android do
 
   UI.header "Last 20 Android builds"
 
-  build = UI.select("Which build would you like to release?: ", version_codes)
+  selected_version_code = UI.select("Which build would you like to release?: ", version_codes)
 
-  if UI.confirm("Are you sure you would like to release '#{build}'?")
+  if UI.confirm("Are you sure you would like to release '#{selected_version_code}'?")
     UI.success "Continuing the release!"
   else
-    UI.error "Stopping the train!"
+    UI.user_error!("Stopping the train!")
   end
+
+  supply(
+    track: 'alpha',
+    version_code: selected_version_code,
+    track_promote_to: 'production',
+    rollout: '0.1',
+    skip_upload_metadata: true,
+    skip_upload_images: true,
+    skip_upload_screenshots: true,
+  )
+
+  vname, vcode = set_build_version_android(version_code: selected_version_code)
+  tag_and_push(tag: "android-#{vname}-#{vcode}-submission")
 end
 
 lane :promote_beta_ios do
