@@ -96,7 +96,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
       <FancyModalHeader
         onLeftButtonPress={goBack}
         rightButtonText="Edit"
-        onRightButtonPress={!data.artwork.consignmentSubmission ? handleEdit : undefined}
+        onRightButtonPress={handleEdit}
         hideBottomDivider
       />
       {!!shouldShowInsightsTab ? (
@@ -200,9 +200,6 @@ export const ArtworkMetaProps = graphql`
       targetSupply {
         isP1
       }
-    }
-    consignmentSubmission {
-      inProgress
     }
     artistNames
     category

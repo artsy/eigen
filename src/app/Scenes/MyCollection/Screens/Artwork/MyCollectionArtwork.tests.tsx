@@ -1,3 +1,4 @@
+import { fireEvent } from "@testing-library/react-native"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
@@ -28,50 +29,22 @@ describe("My Collection Artwork", () => {
   })
 
   describe("edit button", () => {
-    describe("when there is no submission", () => {
-      it("shows the edit button", async () => {
-        const { findByText } = renderWithHookWrappersTL(
-          <MyCollectionArtworkScreen
-            artworkSlug="random-slug"
-            artistInternalID="internal-id"
-            medium="medium"
-            category="medium"
-          />,
-          mockEnvironment
-        )
+    it("shows the edit button", async () => {
+      const { findByText } = renderWithHookWrappersTL(
+        <MyCollectionArtworkScreen
+          artworkSlug="random-slug"
+          artistInternalID="internal-id"
+          medium="medium"
+          category="medium"
+        />,
+        mockEnvironment
+      )
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          Artwork: () => ({
-            consignmentSubmission: null,
-          }),
-        })
+      const editButton = await findByText("Edit")
 
-        expect(await findByText("Edit")).toBeTruthy()
-      })
-    })
+      expect(editButton).toBeTruthy()
 
-    describe("when submission is in progress", () => {
-      it("hides the edit button when the artwork is coming from a submission", async () => {
-        const { findByText } = renderWithHookWrappersTL(
-          <MyCollectionArtworkScreen
-            artworkSlug="random-slug"
-            artistInternalID="internal-id"
-            medium="medium"
-            category="medium"
-          />,
-          mockEnvironment
-        )
-
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          Artwork: () => ({
-            consignmentSubmission: "some-consignmentSubmission",
-          }),
-        })
-
-        await expect(findByText("Edit")).rejects.toThrow(
-          "Unable to find an element with text: Edit"
-        )
-      })
+      fireEvent.press(editButton)
     })
   })
 })
