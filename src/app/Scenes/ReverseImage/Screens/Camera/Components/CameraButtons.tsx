@@ -1,4 +1,4 @@
-import { Flex, FlexProps, useSpace } from "palette"
+import { DocumentIcon, Flex, FlexProps, useSpace } from "palette"
 import { TouchableOpacity } from "react-native"
 import { CapturePhotoButton } from "./CapturePhotoButton"
 
@@ -55,8 +55,12 @@ export const CameraButtons: React.FC<CameraButtonsProps> = (props) => {
           width={SMALL_BUTTONS_SIZE}
           height={SMALL_BUTTONS_SIZE}
           borderRadius={SMALL_BUTTONS_SIZE / 2}
+          justifyContent="center"
+          alignItems="center"
           bg="white100"
-        />
+        >
+          <DocumentIcon />
+        </Flex>
       </TouchableOpacity>
     </Flex>
   )
