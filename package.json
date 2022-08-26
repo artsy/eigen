@@ -45,6 +45,7 @@
     "setup:artsy": "./scripts/setup-env-for-artsy",
     "setup:oss": "./scripts/setup-env-for-oss",
     "setup:artsy:update!": "scripts/update-env-for-artsy",
+    "setup:releases": "./scripts/setup-env-for-artsy && ./scripts/setup-distribute-macos",
     "prestart": "./scripts/set-storybook-environment.js",
     "start": "concurrently --kill-others -n metro,relay 'yarn react-native start' 'yarn relay --watch'",
     "start:reset-cache": "concurrently --kill-others -n metro,relay 'yarn react-native start --reset-cache' 'yarn relay --watch'",
