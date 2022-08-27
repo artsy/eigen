@@ -6,6 +6,7 @@ import { OnboardingNavigationStack } from "app/Scenes/Onboarding/OnboardingV2/On
 import { Button, Flex, Screen } from "palette"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
+import { useBackHandler } from "shared/hooks/useBackHandler"
 import { GeneHeader, images } from "./Components/GeneHeader"
 
 export type OnboardingGeneId = "artists-on-the-rise" | "trove" | "our-top-auction-lots"
@@ -16,7 +17,10 @@ interface OnboardingGeneProps {
 }
 
 const OnboardingGene: React.FC<OnboardingGeneProps> = ({ id, description }) => {
+  // prevents Android users from going back with hardware button
+  useBackHandler(() => true)
   const { navigate } = useNavigation<NavigationProp<OnboardingNavigationStack>>()
+
   const { gene } = useLazyLoadQuery<OnboardingGeneQuery>(OnboardingGeneScreenQuery, {
     id,
   })

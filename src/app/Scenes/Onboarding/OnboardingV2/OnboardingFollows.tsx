@@ -3,6 +3,7 @@ import { SearchInput } from "app/Components/SearchInput"
 import { Box, Button, Flex, ProgressBar, Screen, Spacer, Text } from "palette"
 import { useState } from "react"
 import { StatusBar } from "react-native"
+import { useBackHandler } from "shared/hooks/useBackHandler"
 import { useDebouncedValue } from "shared/hooks/useDebouncedValue"
 import { useOnboardingContext } from "./Hooks/useOnboardingContext"
 import { OnboardingOrderedSetScreen } from "./OnboardingOrderedSet"
@@ -31,6 +32,9 @@ export const OnboardingFollows: React.FC<OnboardingFollowsProps> = ({ kind }) =>
   const [query, setQuery] = useState("")
   const { navigate } = useNavigation()
   const { next, state, onDone, progress } = useOnboardingContext()
+
+  // prevents Android users from going back with hardware button
+  useBackHandler(() => true)
 
   const { debouncedValue } = useDebouncedValue({ value: query, delay: 200 })
 
