@@ -1,6 +1,7 @@
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { mockNavigate } from "app/tests/navigationMocks"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { Platform } from "react-native"
 import { OnboardingSocialPick } from "../OnboardingSocialPick"
 
 jest.mock("@react-navigation/native")
@@ -34,6 +35,10 @@ describe("OnboardingSocialPick", () => {
     })
 
     it("logs in using apple when the user presses on continue with apple", () => {
+      Platform.OS = "ios"
+      Object.defineProperty(Platform, "Version", {
+        get: () => 14,
+      })
       GlobalStore.actions.auth.authApple = jest.fn(() => Promise.resolve({ success: true })) as any
       const tree = renderWithWrappersLEGACY(<OnboardingSocialPick mode="login" />)
       tree.root.findByProps({ testID: "continueWithApple" }).props.onPress()
@@ -71,6 +76,10 @@ describe("OnboardingSocialPick", () => {
     })
 
     it("signs up in using apple when the user presses on continue with apple", () => {
+      Platform.OS = "ios"
+      Object.defineProperty(Platform, "Version", {
+        get: () => 14,
+      })
       GlobalStore.actions.auth.authApple = jest.fn(() => Promise.resolve({ success: true })) as any
       const tree = renderWithWrappersLEGACY(<OnboardingSocialPick mode="signup" />)
       tree.root.findByProps({ testID: "continueWithApple" }).props.onPress()
