@@ -309,7 +309,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
 
   return (
     <>
-      <PanGestureHandler onGestureEvent={gestureHandler}>
+      <PanGestureHandler onGestureEvent={gestureHandler} minDist={15}>
         <Animated.View>
           <TapGestureHandler
             onHandlerStateChange={({ nativeEvent }) => {
