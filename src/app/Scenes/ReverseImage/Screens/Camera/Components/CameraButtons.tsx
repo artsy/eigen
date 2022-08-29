@@ -1,4 +1,4 @@
-import { Flex, FlexProps, useSpace } from "palette"
+import { DocumentIcon, Flex, FlexProps, useSpace } from "palette"
 import { TouchableOpacity } from "react-native"
 import { CapturePhotoButton } from "./CapturePhotoButton"
 
@@ -10,11 +10,21 @@ interface CameraButtonsProps extends FlexProps {
   isFlashEnabled: boolean
   takePhoto: () => void
   toggleFlash: () => void
+  selectPhotosFromLibrary: () => void
 }
 
+const SMALL_BUTTONS_SIZE = 40
+
 export const CameraButtons: React.FC<CameraButtonsProps> = (props) => {
-  const { isCameraInitialized, deviceHasFlash, isFlashEnabled, takePhoto, toggleFlash, ...rest } =
-    props
+  const {
+    isCameraInitialized,
+    deviceHasFlash,
+    isFlashEnabled,
+    takePhoto,
+    toggleFlash,
+    selectPhotosFromLibrary,
+    ...rest
+  } = props
   const space = useSpace()
 
   return (
@@ -28,13 +38,30 @@ export const CameraButtons: React.FC<CameraButtonsProps> = (props) => {
           style={{ position: "absolute", right: space("2") }}
         >
           <Flex
-            width={30}
-            height={30}
-            borderRadius={15}
+            width={SMALL_BUTTONS_SIZE}
+            height={SMALL_BUTTONS_SIZE}
+            borderRadius={SMALL_BUTTONS_SIZE / 2}
             bg={isFlashEnabled ? "green100" : "white100"}
           />
         </TouchableOpacity>
       )}
+
+      <TouchableOpacity
+        onPress={selectPhotosFromLibrary}
+        disabled={!isCameraInitialized}
+        style={{ position: "absolute", left: space("2") }}
+      >
+        <Flex
+          width={SMALL_BUTTONS_SIZE}
+          height={SMALL_BUTTONS_SIZE}
+          borderRadius={SMALL_BUTTONS_SIZE / 2}
+          justifyContent="center"
+          alignItems="center"
+          bg="white100"
+        >
+          <DocumentIcon />
+        </Flex>
+      </TouchableOpacity>
     </Flex>
   )
 }

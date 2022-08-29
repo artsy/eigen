@@ -389,6 +389,9 @@ describe("MyCollectionArtworkForm", () => {
                       isP1: false,
                     },
                   },
+                  consignmentSubmission: {
+                    displayText: "In progress",
+                  },
                   dimensions: {
                     in: "23",
                     cm: "26",
@@ -410,7 +413,6 @@ describe("MyCollectionArtworkForm", () => {
                   width: null,
                   title: null,
                   attributionClass: null,
-                  consignmentSubmission: null,
                   hasMarketPriceInsights: null,
                 },
               },

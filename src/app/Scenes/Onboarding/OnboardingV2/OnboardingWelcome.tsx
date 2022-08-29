@@ -3,7 +3,7 @@ import { OnboardingWelcomeQuery } from "__generated__/OnboardingWelcomeQuery.gra
 import { GlobalStore } from "app/store/GlobalStore"
 import { ArtsyLogoIcon, Box, Button, Flex, Screen, Spacer, Spinner, Text } from "palette"
 import { Suspense, useEffect } from "react"
-import { Image, StatusBar } from "react-native"
+import { Image } from "react-native"
 import Animated, {
   Easing,
   FadeInRight,
@@ -83,7 +83,6 @@ const OnboardingWelcome = () => {
   return (
     <Screen>
       <Screen.Background>
-        <StatusBar barStyle="light-content" backgroundColor="black" />
         {/* Welcome to Artsy Screen */}
         <AnimatedFlex
           position="absolute"

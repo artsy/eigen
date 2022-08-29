@@ -2,6 +2,7 @@ export interface PhotoEntity {
   path: string
   width: number
   height: number
+  fromLibrary?: boolean
 }
 
 export interface FocusCoords {

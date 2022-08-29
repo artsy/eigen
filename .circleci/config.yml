@@ -216,7 +216,8 @@ commands:
 jobs:
   detect-secrets:
     docker:
-      - image: artsy/detect-secrets:1.3.0
+      - image: artsy/detect-secrets:ci # pragma: allowlist secret
+    resource_class: small
     working_directory: /usr/src/app
     steps:
       - checkout

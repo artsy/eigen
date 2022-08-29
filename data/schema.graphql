@@ -13368,7 +13368,7 @@ type Query {
     # Search query to perform. Required.
     query: String!
   ): SearchableConnection
-  shortcut(id: ID!): Shortcut!
+  shortcut(id: ID!): Shortcut
 
   # A Show
   show(
@@ -16895,7 +16895,7 @@ type Viewer {
     # Search query to perform. Required.
     query: String!
   ): SearchableConnection
-  shortcut(id: ID!): Shortcut!
+  shortcut(id: ID!): Shortcut
 
   # A Show
   show(

@@ -96,7 +96,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
       <FancyModalHeader
         onLeftButtonPress={goBack}
         rightButtonText="Edit"
-        onRightButtonPress={!data.artwork.consignmentSubmission ? handleEdit : undefined}
+        onRightButtonPress={handleEdit}
         hideBottomDivider
       />
       {!!shouldShowInsightsTab ? (
@@ -201,11 +201,13 @@ export const ArtworkMetaProps = graphql`
         isP1
       }
     }
-    consignmentSubmission {
-      inProgress
-    }
     artistNames
     category
+    # needed to show the banner inside the edit artwork view
+    # TODO: move logic to the edit artwork view https://artsyproduct.atlassian.net/browse/CX-2846
+    consignmentSubmission {
+      displayText
+    }
     pricePaid {
       display
       minor
