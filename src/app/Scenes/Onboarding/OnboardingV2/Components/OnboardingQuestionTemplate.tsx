@@ -83,7 +83,6 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
     <Screen>
       <Screen.Header onBack={handleBack} onSkip={onDone} />
       <Screen.Body>
-        <StatusBar barStyle="dark-content" />
         <Box pt={2}>
           <ProgressBar progress={progress} />
         </Box>

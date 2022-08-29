@@ -83,7 +83,6 @@ const OnboardingWelcome = () => {
   return (
     <Screen>
       <Screen.Background>
-        <StatusBar barStyle="light-content" backgroundColor="black" />
         {/* Welcome to Artsy Screen */}
         <AnimatedFlex
           position="absolute"

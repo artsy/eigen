@@ -50,7 +50,6 @@ export const OnboardingFollows: React.FC<OnboardingFollowsProps> = ({ kind }) =>
     <Screen>
       <Screen.Header onSkip={onDone} />
       <Screen.Body>
-        <StatusBar barStyle="dark-content" />
         {!debouncedValue && (
           <Box pt={2}>
             <ProgressBar progress={progress} />
