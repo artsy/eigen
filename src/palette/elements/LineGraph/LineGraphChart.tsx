@@ -1,5 +1,5 @@
 import { scaleLinear, scaleQuantile } from "d3-scale"
-import { compact, noop, throttle } from "lodash"
+import { compact, noop } from "lodash"
 import { Flex } from "palette"
 import { useColor } from "palette/hooks"
 import { StarCircleIcon } from "palette/svgs/StarCircleIcon"
@@ -9,7 +9,6 @@ import { Dimensions, Platform, TextInput } from "react-native"
 import {
   GestureEventPayload,
   HandlerStateChangeEventPayload,
-  LongPressGestureHandler,
   PanGestureHandler,
   PanGestureHandlerEventPayload,
   State,
@@ -234,9 +233,9 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
     }, 100)
   }, [JSON.stringify(data), dataTagToSubscribeTo])
 
-  const broadcastGestureEventXToDataPoints = throttle((event: ChartGestureEventType) => {
+  const broadcastGestureEventXToDataPoints = (event: ChartGestureEventType) => {
     ChartGestureObservable.next(event)
-  }, 100)
+  }
 
   const ANIMATION_CONFIG: AnimatePropTypeInterface = {
     duration: 750,
@@ -316,196 +315,188 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
             onHandlerStateChange={({ nativeEvent }) => {
               if (nativeEvent.state === State.BEGAN) {
                 broadcastGestureEventXToDataPoints(nativeEvent)
+                return
               } else if (nativeEvent.state === State.END) {
                 updateLastPressedDatum(null)
+                return
               }
+              broadcastGestureEventXToDataPoints(nativeEvent)
             }}
           >
             <Animated.View>
-              <LongPressGestureHandler
-                onHandlerStateChange={({ nativeEvent }) => {
-                  if (nativeEvent.state === State.BEGAN) {
-                    broadcastGestureEventXToDataPoints(nativeEvent)
-                  }
-                  if (nativeEvent.state === State.END || nativeEvent.state === State.FAILED) {
-                    updateLastPressedDatum(null)
-                  }
-                }}
-              >
-                <Animated.View style={{ paddingLeft: 5 }}>
-                  <VictoryChart
-                    theme={VictoryTheme.material}
-                    // mapping domain from 0 to 1 because data is normalized by the factor of max Y value.
-                    domain={{ y: [0, 1] }}
-                    domainPadding={{ y: [0, yDomainPadding] }}
-                    backgroundComponent={<Background />}
-                    containerComponent={<Svg />}
-                    style={{
-                      background: { fill: "white" },
-                    }}
-                    padding={40}
-                    width={chartWidth}
-                    height={chartHeight}
-                  >
-                    {renderDefs()}
+              <Animated.View style={{ paddingLeft: 5 }}>
+                <VictoryChart
+                  theme={VictoryTheme.material}
+                  // mapping domain from 0 to 1 because data is normalized by the factor of max Y value.
+                  domain={{ y: [0, 1] }}
+                  domainPadding={{ y: [0, yDomainPadding] }}
+                  backgroundComponent={<Background />}
+                  containerComponent={<Svg />}
+                  style={{
+                    background: { fill: "white" },
+                  }}
+                  padding={40}
+                  width={chartWidth}
+                  height={chartHeight}
+                >
+                  {renderDefs()}
 
-                    {data.length > 1 && (
-                      /** Draws the Area beneath the line.
-                       * Will crash on android if you pass data with less than 2 points
-                       */
-                      <VictoryArea
-                        style={{
-                          data: { fill: "url(#gradientStroke)" },
-                        }}
-                        data={data}
-                        animate={shouldAnimate ? ANIMATION_CONFIG : undefined}
-                        interpolation={chartInterpolation}
-                        // Normalise the dependent axis Y. Else it is not possible to represent data with extreme variance.
-                        y={(datum: any) => datum.y / maxima}
-                      />
-                    )}
-
-                    {data.length > 1 && (
-                      /** Draws the Line Above the Area
-                       * Will crash on android if you pass data with less than 2 points
-                       */
-                      // @ts-ignore // AnimatePropTypeInterface has not been typed into VictoryLine yet
-                      <VictoryLine
-                        animate={shouldAnimate ? ANIMATION_CONFIG : undefined}
-                        style={{
-                          data: { stroke: tintColor },
-                          border: { stroke: "transparent" },
-                        }}
-                        data={data}
-                        domain={{ y: [0, 1] }}
-                        // groupComponent={<G />} ensures the line is not cut off below when using
-                        // chartInterpolation = natural. Without this, lines will dip off
-                        // the chart.
-                        groupComponent={<G />}
-                        interpolation={chartInterpolation}
-                        // Normalise the dependent axis Y. Else it is not possible to represent data with extreme variance.
-                        y={(datum: any) => datum.y / maxima}
-                      />
-                    )}
-
-                    {/** Y-Axis */}
-                    <VictoryAxis
-                      dependentAxis
+                  {data.length > 1 && (
+                    /** Draws the Area beneath the line.
+                     * Will crash on android if you pass data with less than 2 points
+                     */
+                    <VictoryArea
                       style={{
-                        axis: { stroke: color("black30"), strokeDasharray: 2 },
-                        ticks: { size: 0 },
-                        grid: {
-                          stroke: ({ tick }: { tick: number }) =>
-                            Number(tick * maxima) === minMaxDomainY.max
-                              ? color("black30")
-                              : "transparent",
-                          strokeDasharray: 3,
-                        },
+                        data: { fill: "url(#gradientStroke)" },
                       }}
-                      axisLabelComponent={<Text />}
-                      maxDomain={minMaxDomainY.max}
-                      minDomain={minMaxDomainY.min}
-                      tickFormat={(tick: number) =>
-                        tickFormat(
-                          tick * maxima, // Because we did y={(datum) => datum.y / maxima} in VictoryArea to normalise Y values
-                          minMaxDomainY.min,
-                          minMaxDomainY.max,
-                          yAxisTickFormatter, // falls back to use the defaultFormatter
-                          yAxisDisplayType ?? AxisDisplayType.OnlyShowMinAndMaxDomain
-                        )
-                      }
+                      data={data}
+                      animate={shouldAnimate ? ANIMATION_CONFIG : undefined}
+                      interpolation={chartInterpolation}
+                      // Normalise the dependent axis Y. Else it is not possible to represent data with extreme variance.
+                      y={(datum: any) => datum.y / maxima}
                     />
+                  )}
 
-                    {/** X-Axis */}
-                    <VictoryAxis
-                      crossAxis
+                  {data.length > 1 && (
+                    /** Draws the Line Above the Area
+                     * Will crash on android if you pass data with less than 2 points
+                     */
+                    // @ts-ignore // AnimatePropTypeInterface has not been typed into VictoryLine yet
+                    <VictoryLine
+                      animate={shouldAnimate ? ANIMATION_CONFIG : undefined}
                       style={{
-                        axis: { stroke: color("black30"), strokeDasharray: 2 },
-                        ticks: { size: 0 },
-                        grid: {
-                          stroke: ({ tick }: { tick: number }) => {
-                            if (tick === lastPressedDatum?.x) {
-                              return color("black100")
-                            }
-                            if (xValues.length > 1) {
-                              return xAxisTickMap[tick] ? color("black30") : "transparent"
-                            }
-                            return color("black30")
-                          },
-                          strokeDasharray: 3,
-                        },
-                      }}
-                      tickValues={xValues}
-                      axisLabelComponent={<Text />}
-                      maxDomain={minMaxDomainX.max}
-                      minDomain={minMaxDomainX.min}
-                      tickFormat={(tick: number) =>
-                        tickFormat(
-                          tick,
-                          minMaxDomainX.min,
-                          minMaxDomainX.max,
-                          xAxisTickFormatter ?? ((val) => val), // don't format x ticks by default
-                          xAxisDisplayType ?? AxisDisplayType.OnlyShowMinAndMaxDomain
-                        )
-                      }
-                    />
-
-                    {/** If only a single data is given, plot a point */}
-                    {/** @ts-ignore */}
-                    <VictoryScatter
-                      style={{
-                        data: {
-                          stroke: tintColor,
-                          fill: ({ datum }: { datum: any }) =>
-                            datum.x === lastPressedDatum?.x || data.length === 1
-                              ? tintColor
-                              : "transparent",
-                        },
+                        data: { stroke: tintColor },
+                        border: { stroke: "transparent" },
                       }}
                       data={data}
                       domain={{ y: [0, 1] }}
+                      // groupComponent={<G />} ensures the line is not cut off below when using
+                      // chartInterpolation = natural. Without this, lines will dip off
+                      // the chart.
+                      groupComponent={<G />}
+                      interpolation={chartInterpolation}
+                      // Normalise the dependent axis Y. Else it is not possible to represent data with extreme variance.
                       y={(datum: any) => datum.y / maxima}
+                    />
+                  )}
+
+                  {/** Y-Axis */}
+                  <VictoryAxis
+                    dependentAxis
+                    style={{
+                      axis: { stroke: color("black30"), strokeDasharray: 2 },
+                      ticks: { size: 0 },
+                      grid: {
+                        stroke: ({ tick }: { tick: number }) =>
+                          Number(tick * maxima) === minMaxDomainY.max
+                            ? color("black30")
+                            : "transparent",
+                        strokeDasharray: 3,
+                      },
+                    }}
+                    axisLabelComponent={<Text />}
+                    maxDomain={minMaxDomainY.max}
+                    minDomain={minMaxDomainY.min}
+                    tickFormat={(tick: number) =>
+                      tickFormat(
+                        tick * maxima, // Because we did y={(datum) => datum.y / maxima} in VictoryArea to normalise Y values
+                        minMaxDomainY.min,
+                        minMaxDomainY.max,
+                        yAxisTickFormatter, // falls back to use the defaultFormatter
+                        yAxisDisplayType ?? AxisDisplayType.OnlyShowMinAndMaxDomain
+                      )
+                    }
+                  />
+
+                  {/** X-Axis */}
+                  <VictoryAxis
+                    crossAxis
+                    style={{
+                      axis: { stroke: color("black30"), strokeDasharray: 2 },
+                      ticks: { size: 0 },
+                      grid: {
+                        stroke: ({ tick }: { tick: number }) => {
+                          if (tick === lastPressedDatum?.x) {
+                            return color("black100")
+                          }
+                          if (xValues.length > 1) {
+                            return xAxisTickMap[tick] ? color("black30") : "transparent"
+                          }
+                          return color("black30")
+                        },
+                        strokeDasharray: 3,
+                      },
+                    }}
+                    tickValues={xValues}
+                    axisLabelComponent={<Text />}
+                    maxDomain={minMaxDomainX.max}
+                    minDomain={minMaxDomainX.min}
+                    tickFormat={(tick: number) =>
+                      tickFormat(
+                        tick,
+                        minMaxDomainX.min,
+                        minMaxDomainX.max,
+                        xAxisTickFormatter ?? ((val) => val), // don't format x ticks by default
+                        xAxisDisplayType ?? AxisDisplayType.OnlyShowMinAndMaxDomain
+                      )
+                    }
+                  />
+
+                  {/** If only a single data is given, plot a point */}
+                  {/** @ts-ignore */}
+                  <VictoryScatter
+                    style={{
+                      data: {
+                        stroke: tintColor,
+                        fill: ({ datum }: { datum: any }) =>
+                          datum.x === lastPressedDatum?.x || data.length === 1
+                            ? tintColor
+                            : "transparent",
+                      },
+                    }}
+                    data={data}
+                    domain={{ y: [0, 1] }}
+                    y={(datum: any) => datum.y / maxima}
+                    dataComponent={
+                      <ScatterDataPointContainer
+                        // touch along the x axis within this radius, the data point within this radius can claim it
+                        pointXRadiusOfTouch={pointXRadiusOfTouch}
+                        size={4}
+                        updateLastPressedDatum={updateLastPressedDatum}
+                        dataTag={dataTag}
+                      />
+                    }
+                  />
+
+                  {/*
+                   * If you include xHighlight values in your data, the
+                   * values will be plotted along the x-axis as highlights
+                   */}
+                  {!!showHighlights && !!xHighlights.length && (
+                    <VictoryScatter
+                      name="xHighlightsChart"
+                      animate={ANIMATION_CONFIG}
+                      style={{
+                        data: { stroke: tintColor, fill: tintColor },
+                        parent: { border: "transparent" },
+                      }}
+                      data={xHighlights}
+                      size={5}
                       dataComponent={
-                        <ScatterDataPointContainer
-                          // touch along the x axis within this radius, the data point within this radius can claim it
-                          pointXRadiusOfTouch={pointXRadiusOfTouch}
-                          size={4}
-                          updateLastPressedDatum={updateLastPressedDatum}
+                        <HighlightIconContainer
                           dataTag={dataTag}
+                          icon={
+                            xHighlightIcon ?? (
+                              <StarCircleIcon fill={tintColor as Color} height={20} width={20} />
+                            )
+                          }
+                          onHighlightPressed={onHighlightOnXAxisPressed}
                         />
                       }
                     />
-
-                    {/*
-                     * If you include xHighlight values in your data, the
-                     * values will be plotted along the x-axis as highlights
-                     */}
-                    {!!showHighlights && !!xHighlights.length && (
-                      <VictoryScatter
-                        name="xHighlightsChart"
-                        animate={ANIMATION_CONFIG}
-                        style={{
-                          data: { stroke: tintColor, fill: tintColor },
-                          parent: { border: "transparent" },
-                        }}
-                        data={xHighlights}
-                        size={5}
-                        dataComponent={
-                          <HighlightIconContainer
-                            dataTag={dataTag}
-                            icon={
-                              xHighlightIcon ?? (
-                                <StarCircleIcon fill={tintColor as Color} height={20} width={20} />
-                              )
-                            }
-                            onHighlightPressed={onHighlightOnXAxisPressed}
-                          />
-                        }
-                      />
-                    )}
-                  </VictoryChart>
-                </Animated.View>
-              </LongPressGestureHandler>
+                  )}
+                </VictoryChart>
+              </Animated.View>
             </Animated.View>
           </TapGestureHandler>
         </Animated.View>

@@ -12,8 +12,8 @@ import { compact } from "lodash"
 import { DateTime } from "luxon"
 import { Flex, LineGraph, Text } from "palette"
 import { LineChartData } from "palette/elements/LineGraph/types"
-import { useEffect, useRef, useState } from "react"
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
+import { useCallback, useEffect, useRef, useState } from "react"
+import Animated from "react-native-reanimated"
 import { graphql, useRefetchableFragment } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 
@@ -243,8 +243,6 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
   const onBandSelected = (durationName: string) => {
     selectedDurationRef.current = durationName as MedianSalePriceChartDuration
     setSelectedDuration(durationName as MedianSalePriceChartDuration)
-    translateValue.value =
-      durationName === MedianSalePriceChartDuration["3 yrs"] ? 0 : -layoutWidth.value
   }
 
   // MARK: Category Logic
@@ -306,41 +304,44 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
     MedianSalePriceChartDuration["8 yrs"]
   )
 
-  const getTitle = (duration: MedianSalePriceChartDuration) => {
-    const pressedDataPoint = tappedDataPoint[duration]
-    const chartDataArray =
-      duration === MedianSalePriceChartDuration["3 yrs"]
-        ? threeYearChartDataArray
-        : eightYearChartDataArray
-    const chartDataArraySource =
-      duration === MedianSalePriceChartDuration["3 yrs"]
-        ? threeYearChartDataSourceRef.current
-        : eightYearChartDataSourceRef.current
-    const chartHeaderDataSource =
-      duration === MedianSalePriceChartDuration["3 yrs"]
-        ? threeYearHeaderDataSourceRef.current
-        : eightYearHeaderDataSourceRef.current
-    if (!chartDataArray.length) {
-      return "-"
-    }
-    if (pressedDataPoint) {
-      const datapoint = chartDataArraySource[
-        selectedCategoryRef.current === "Other" ? "Unknown" : selectedCategoryRef.current
-      ]?.find((d) => parseInt(d.year, 10) === pressedDataPoint.x)
-
-      if (datapoint) {
-        return parseInt(datapoint.medianSalePrice, 10)
-          ? formatMedianPrice(parseInt(datapoint.medianSalePrice, 10))
-          : "Median Unavailable (Limited Data)"
+  const getTitle = useCallback(
+    (duration: MedianSalePriceChartDuration) => {
+      const pressedDataPoint = tappedDataPoint[duration]
+      const chartDataArray =
+        duration === MedianSalePriceChartDuration["3 yrs"]
+          ? threeYearChartDataArray
+          : eightYearChartDataArray
+      const chartDataArraySource =
+        duration === MedianSalePriceChartDuration["3 yrs"]
+          ? threeYearChartDataSourceRef.current
+          : eightYearChartDataSourceRef.current
+      const chartHeaderDataSource =
+        duration === MedianSalePriceChartDuration["3 yrs"]
+          ? threeYearHeaderDataSourceRef.current
+          : eightYearHeaderDataSourceRef.current
+      if (!chartDataArray.length) {
+        return "-"
       }
-      return "Median Unavailable (Limited Data)"
-    }
-    const medianPrice =
-      chartHeaderDataSource[
-        selectedCategoryRef.current === "Other" ? "Unknown" : selectedCategoryRef.current
-      ]?.medianSalePrice
-    return formatMedianPrice(parseInt(medianPrice, 10))
-  }
+      if (pressedDataPoint) {
+        const datapoint = chartDataArraySource[
+          selectedCategoryRef.current === "Other" ? "Unknown" : selectedCategoryRef.current
+        ]?.find((d) => parseInt(d.year, 10) === pressedDataPoint.x)
+
+        if (datapoint) {
+          return parseInt(datapoint.medianSalePrice, 10)
+            ? formatMedianPrice(parseInt(datapoint.medianSalePrice, 10))
+            : "Median Unavailable (Limited Data)"
+        }
+        return "Median Unavailable (Limited Data)"
+      }
+      const medianPrice =
+        chartHeaderDataSource[
+          selectedCategoryRef.current === "Other" ? "Unknown" : selectedCategoryRef.current
+        ]?.medianSalePrice
+      return formatMedianPrice(parseInt(medianPrice, 10))
+    },
+    [tappedDataPoint, selectedCategoryRef.current]
+  )
 
   const getText = (duration: MedianSalePriceChartDuration) => {
     const pressedDataPoint = tappedDataPoint[duration]
@@ -434,16 +435,6 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
       eightYearlineChartData.data.length ===
     1
 
-  const translateValue = useSharedValue(0)
-
-  const containerStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{ translateX: withTiming(translateValue.value, { duration: 200 }) }],
-    }
-  })
-
-  const layoutWidth = useSharedValue(screenWidth)
-
   const CHART_HEIGHT = screenHeight / 2.25
   const CHART_WIDTH = screenWidth
 
@@ -458,92 +449,92 @@ export const MedianSalePriceChart: React.FC<MedianSalePriceChartProps> = ({
   }
 
   return (
-    <Animated.View style={[{ flex: 1, flexDirection: "row" }, containerStyle]}>
-      <Flex
-        onLayout={({ nativeEvent }) => {
-          layoutWidth.value = nativeEvent.layout.width
-        }}
-      >
-        <LineGraph
-          dataTag="3 yrs"
-          dataTagToSubscribeTo={dataTagToSubscribeTo}
-          chartHeight={CHART_HEIGHT}
-          chartWidth={CHART_WIDTH}
-          chartInterpolation="monotoneX"
-          showHighlights
-          data={threeYearlineChartData}
-          bands={bands}
-          onBandSelected={onBandSelected}
-          onDataPointPressed={onDataPointPressed}
-          selectedBand={selectedDuration}
-          categories={categories}
-          onCategorySelected={onCategorySelected}
-          selectedCategory={selectedCategory}
-          yAxisTickFormatter={
-            !threeYearlineChartData.data.length || !!threeYearContainsAllOnes
-              ? () => "----"
-              : (val: number) => yAxisValueFormatter(val)
-          }
-          // hide the year on xAxis
-          xAxisTickFormatter={() => ""}
-        />
-        {!threeYearlineChartData.data.length ||
-          (!!threeYearContainsAllOnes && (
-            <Flex
-              position="absolute"
-              top={CHART_HEIGHT / 2}
-              left={CHART_WIDTH / 3}
-              alignItems="center"
-              justifyContent="center"
-              maxWidth={CHART_WIDTH / 2}
-            >
-              <Text textAlign="center" variant="sm" color="black60">
-                Incomplete Data for the selected medium
-              </Text>
-            </Flex>
-          ))}
-      </Flex>
+    <Animated.View style={[{ flex: 1, flexDirection: "row" }]}>
+      {selectedDuration === MedianSalePriceChartDuration["3 yrs"] && (
+        <Flex>
+          <LineGraph
+            dataTag="3 yrs"
+            dataTagToSubscribeTo={dataTagToSubscribeTo}
+            chartHeight={CHART_HEIGHT}
+            chartWidth={CHART_WIDTH}
+            chartInterpolation="monotoneX"
+            showHighlights
+            data={threeYearlineChartData}
+            bands={bands}
+            onBandSelected={onBandSelected}
+            onDataPointPressed={onDataPointPressed}
+            selectedBand={selectedDuration}
+            categories={categories}
+            onCategorySelected={onCategorySelected}
+            selectedCategory={selectedCategory}
+            yAxisTickFormatter={
+              !threeYearlineChartData.data.length || !!threeYearContainsAllOnes
+                ? () => "----"
+                : (val: number) => yAxisValueFormatter(val)
+            }
+            // hide the year on xAxis
+            xAxisTickFormatter={() => ""}
+          />
+          {!threeYearlineChartData.data.length ||
+            (!!threeYearContainsAllOnes && (
+              <Flex
+                position="absolute"
+                top={CHART_HEIGHT / 2}
+                left={CHART_WIDTH / 3}
+                alignItems="center"
+                justifyContent="center"
+                maxWidth={CHART_WIDTH / 2}
+              >
+                <Text textAlign="center" variant="sm" color="black60">
+                  Incomplete Data for the selected medium
+                </Text>
+              </Flex>
+            ))}
+        </Flex>
+      )}
 
-      <Flex>
-        <LineGraph
-          dataTag="8 yrs"
-          dataTagToSubscribeTo={dataTagToSubscribeTo}
-          chartHeight={CHART_HEIGHT}
-          chartWidth={CHART_WIDTH}
-          chartInterpolation="monotoneX"
-          showHighlights
-          data={eightYearlineChartData}
-          bands={bands}
-          onBandSelected={onBandSelected}
-          onDataPointPressed={onDataPointPressed}
-          selectedBand={selectedDuration}
-          categories={categories}
-          onCategorySelected={onCategorySelected}
-          selectedCategory={selectedCategory}
-          yAxisTickFormatter={
-            !eightYearlineChartData.data.length || !!eightYearContainsAllOnes
-              ? () => "----"
-              : (val: number) => yAxisValueFormatter(val)
-          }
-          // hide the year on xAxis
-          xAxisTickFormatter={() => ""}
-        />
-        {!eightYearlineChartData.data.length ||
-          (!!eightYearContainsAllOnes && (
-            <Flex
-              position="absolute"
-              top={CHART_HEIGHT / 2}
-              left={CHART_WIDTH / 3}
-              alignItems="center"
-              justifyContent="center"
-              maxWidth={CHART_WIDTH / 2}
-            >
-              <Text textAlign="center" variant="sm" color="black60">
-                Incomplete Data for the selected medium
-              </Text>
-            </Flex>
-          ))}
-      </Flex>
+      {selectedDuration === MedianSalePriceChartDuration["8 yrs"] && (
+        <Flex>
+          <LineGraph
+            dataTag="8 yrs"
+            dataTagToSubscribeTo={dataTagToSubscribeTo}
+            chartHeight={CHART_HEIGHT}
+            chartWidth={CHART_WIDTH}
+            chartInterpolation="monotoneX"
+            showHighlights
+            data={eightYearlineChartData}
+            bands={bands}
+            onBandSelected={onBandSelected}
+            onDataPointPressed={onDataPointPressed}
+            selectedBand={selectedDuration}
+            categories={categories}
+            onCategorySelected={onCategorySelected}
+            selectedCategory={selectedCategory}
+            yAxisTickFormatter={
+              !eightYearlineChartData.data.length || !!eightYearContainsAllOnes
+                ? () => "----"
+                : (val: number) => yAxisValueFormatter(val)
+            }
+            // hide the year on xAxis
+            xAxisTickFormatter={() => ""}
+          />
+          {!eightYearlineChartData.data.length ||
+            (!!eightYearContainsAllOnes && (
+              <Flex
+                position="absolute"
+                top={CHART_HEIGHT / 2}
+                left={CHART_WIDTH / 3}
+                alignItems="center"
+                justifyContent="center"
+                maxWidth={CHART_WIDTH / 2}
+              >
+                <Text textAlign="center" variant="sm" color="black60">
+                  Incomplete Data for the selected medium
+                </Text>
+              </Flex>
+            ))}
+        </Flex>
+      )}
     </Animated.View>
   )
 }
