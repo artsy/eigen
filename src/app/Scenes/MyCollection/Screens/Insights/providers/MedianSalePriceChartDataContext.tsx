@@ -25,15 +25,17 @@ interface MedianSalePriceChartDataContextProviderProps {
 }
 
 interface MedianSalePriceChartDataContextValueType {
-  categories: Array<{ name: string; color: string }> | null
-  threeYearLineChartData: LineChartData | null
-  eightYearLineChartData: LineChartData | null
   bands: Array<{ name: MedianSalePriceChartDuration }>
+  categories: Array<{ name: string; color: string }>
+  threeYearLineChartData: LineChartData
+  eightYearLineChartData: LineChartData
   onBandSelected: (durationName: string) => void
-  onDataPointPressed: (datum: LineChartData["data"][0] | null) => void
-  selectedDuration: MedianSalePriceChartDuration
   onCategorySelected: (category: string) => void
+  onDataPointPressed: (datum: LineChartData["data"][0] | null) => void
+  onXAxisHighlightPressed: (datum: LineChartData["data"][0] | null) => void
   selectedCategory: NonNullable<string>
+  selectedDuration: MedianSalePriceChartDuration
+  selectedXAxisHighlight: number | null
   isDataAvailableForThreeYears: boolean
   isDataAvailableForEightYears: boolean
 }
@@ -44,15 +46,17 @@ const bands: Array<{ name: MedianSalePriceChartDuration }> = [
 ]
 
 const initialValues: MedianSalePriceChartDataContextValueType = {
-  categories: null,
-  threeYearLineChartData: null,
-  eightYearLineChartData: null,
+  categories: [],
+  threeYearLineChartData: { data: [], dataMeta: {} },
+  eightYearLineChartData: { data: [], dataMeta: {} },
   bands,
   onBandSelected: noop,
   onDataPointPressed: noop,
   selectedDuration: MedianSalePriceChartDuration["3 yrs"],
   onCategorySelected: noop,
+  onXAxisHighlightPressed: noop,
   selectedCategory: "",
+  selectedXAxisHighlight: null,
   isDataAvailableForThreeYears: false,
   isDataAvailableForEightYears: false,
 }
@@ -80,6 +84,9 @@ export const MedianSalePriceChartDataContextProvider: React.FC<
     [MedianSalePriceChartDuration["8 yrs"]]: null,
   })
 
+  const [tappedHighlight, setTappedHighlight] = useState<number | null>(null)
+  const tappedHighlightRef = useRef(tappedHighlight)
+
   const [data, refetch] = useRefetchableFragment<
     MedianSalePriceAtAuctionQuery,
     MedianSalePriceChartDataContextProvider_query$key
@@ -97,6 +104,20 @@ export const MedianSalePriceChartDataContextProvider: React.FC<
     reloadData()
     setPressedDataPoint(null)
   }, [artistId])
+
+  const careerHighlightsMap = (): Record<number, boolean> => {
+    const result: Record<number, boolean> = {}
+    for (const node of data.analyticsArtistSparklines?.edges ?? []) {
+      const year = parseInt(node?.node?.year?.split("_")?.[1] ?? "", 10)
+      const hasHighlight = !!parseInt(node?.node?.sparkles, 10)
+      if (!isNaN(year)) {
+        result[year] = hasHighlight
+      }
+    }
+    return result
+  }
+
+  const careerHighlightsMapRef = useRef(careerHighlightsMap())
 
   const eightYearHeaderDataSource = (): Record<
     string,
@@ -237,6 +258,7 @@ export const MedianSalePriceChartDataContextProvider: React.FC<
     eightYearHeaderDataSourceRef.current = eightYearHeaderDataSource()
     threeYearChartDataSourceRef.current = threeYearChartDataSource()
     eightYearChartDataSourceRef.current = eightYearChartDataSource()
+    careerHighlightsMapRef.current = careerHighlightsMap()
   }
 
   const refreshTitleAndText = () => {
@@ -268,8 +290,23 @@ export const MedianSalePriceChartDataContextProvider: React.FC<
     refreshTitleAndText()
   }
 
+  const setPressedHighlight = (datum: (LineChartData["data"][0] & { dataTag?: string }) | null) => {
+    if (datum?.dataTag && datum?.dataTag !== selectedDurationRef.current) {
+      return
+    }
+    if (datum && datum?.x === tappedHighlightRef.current) {
+      return
+    }
+    tappedHighlightRef.current = datum?.x ?? null
+    setTappedHighlight(datum?.x ?? null)
+  }
+
   const onDataPointPressed = (datum: LineChartData["data"][0] | null) => {
     setPressedDataPoint(datum)
+  }
+
+  const onXAxisHighlightPressed = (datum: LineChartData["data"][0] | null) => {
+    setPressedHighlight(datum)
   }
 
   // MARK: Band/Year Duration logic
@@ -303,6 +340,9 @@ export const MedianSalePriceChartDataContextProvider: React.FC<
           ? parseInt(p.medianSalePrice, 10) / 100
           : // chart will crash if all values are 0
             1,
+        highlight: {
+          x: !!careerHighlightsMapRef.current[parseInt(p.year, 10)],
+        },
       })) ?? []
 
     if (chartDataArray.length !== neededYears.length) {
@@ -321,6 +361,9 @@ export const MedianSalePriceChartDataContextProvider: React.FC<
           ? parseInt(availableYears[p].medianSalePrice, 10) / 100
           : // chart will crash if all values are 0
             1,
+        highlight: {
+          x: !!careerHighlightsMapRef.current[p],
+        },
       }))
     }
     return chartDataArray
@@ -474,6 +517,8 @@ export const MedianSalePriceChartDataContextProvider: React.FC<
     selectedDuration: selectedDurationRef.current,
     onCategorySelected,
     selectedCategory: selectedCategoryRef.current,
+    onXAxisHighlightPressed,
+    selectedXAxisHighlight: tappedHighlightRef.current,
     isDataAvailableForThreeYears: !threeYearContainsAllOnes,
     isDataAvailableForEightYears: !eightYearContainsAllOnes,
   }
@@ -490,7 +535,9 @@ export const useMedianSalePriceChartDataContext = () => {
     MedianSalePriceChartDataContext
   )
   if (!context) {
-    console.error(" No COntext")
+    console.error(
+      "No MedianSalePriceChartDataContext. Ensure your component is wrapeed by the MedianSalePriceChartDataContextProvider"
+    )
     return
   }
   return context
@@ -501,6 +548,7 @@ const medianSalePriceChartDataContextProviderFragment = graphql`
   @refetchable(queryName: "MedianSalePriceChartDataContextProviderRefetchQuery")
   @argumentDefinitions(
     artistId: { type: "ID!" }
+    artistID: { type: "String!" }
     endYear: { type: "String" }
     startYear: { type: "String" }
   ) {
@@ -523,6 +571,14 @@ const medianSalePriceChartDataContextProviderFragment = graphql`
         lotsSoldLast96Months
         medianSalePriceLast36Months
         medianSalePriceLast96Months
+      }
+    }
+    analyticsArtistSparklines(artistId: $artistID, last: 9) {
+      edges {
+        node {
+          sparkles
+          year
+        }
       }
     }
   }

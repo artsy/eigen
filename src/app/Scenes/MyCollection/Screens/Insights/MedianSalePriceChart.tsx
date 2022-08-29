@@ -8,7 +8,7 @@ import {
   useMedianSalePriceChartDataContext,
 } from "./providers/MedianSalePriceChartDataContext"
 
-export const MedianSalePriceChart = () => {
+export const MedianSalePriceChart: React.FC = () => {
   const dataContext = useMedianSalePriceChartDataContext()
   if (!dataContext) {
     return null
@@ -23,6 +23,7 @@ export const MedianSalePriceChart = () => {
     onDataPointPressed,
     selectedDuration,
     onCategorySelected,
+    onXAxisHighlightPressed,
     selectedCategory,
     isDataAvailableForThreeYears,
     isDataAvailableForEightYears,
@@ -80,6 +81,7 @@ export const MedianSalePriceChart = () => {
           selectedBand={selectedDuration}
           categories={categories}
           onCategorySelected={onCategorySelected}
+          onXHighlightPressed={onXAxisHighlightPressed}
           selectedCategory={selectedCategory}
           yAxisTickFormatter={
             !threeYearLineChartData.data.length || !isDataAvailableForThreeYears
@@ -121,6 +123,7 @@ export const MedianSalePriceChart = () => {
           selectedBand={selectedDuration}
           categories={categories}
           onCategorySelected={onCategorySelected}
+          onXHighlightPressed={onXAxisHighlightPressed}
           selectedCategory={selectedCategory}
           yAxisTickFormatter={
             !eightYearLineChartData.data.length || !isDataAvailableForEightYears

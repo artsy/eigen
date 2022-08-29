@@ -1,0 +1,183 @@
+import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet"
+import { CareerHighlightBottomSheet_query$key } from "__generated__/CareerHighlightBottomSheet_query.graphql"
+import {
+  MedianSalePriceAtAuctionQuery,
+  MedianSalePriceAtAuctionQuery$data,
+} from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
+import { compact } from "lodash"
+import { Flex } from "palette"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { FlatList } from "react-native"
+import { graphql, useRefetchableFragment } from "react-relay"
+import { CareerHighlightBottomSheetItem } from "./Components/CareerHighlightBottomSheetItem"
+import { useMedianSalePriceChartDataContext } from "./providers/MedianSalePriceChartDataContext"
+
+export type CareerHighlightKindValueType =
+  | "Solo Show"
+  | "Group Show"
+  | "Review"
+  | "Biennial Inclusion"
+
+const CareerHighlightKind: { [key: string]: CareerHighlightKindValueType } = {
+  "Solo Show": "Solo Show",
+  "Group Show": "Group Show",
+  "Reviewed Solo Show": "Review",
+  "Reviewed Group Show": "Review",
+  "Biennial Inclusion": "Biennial Inclusion",
+}
+
+interface CareerHighlightBottomSheetProps {
+  artistId: string
+  queryData: MedianSalePriceAtAuctionQuery$data
+}
+
+export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProps> = ({
+  artistId,
+  queryData,
+}) => {
+  const [data, refetch] = useRefetchableFragment<
+    MedianSalePriceAtAuctionQuery,
+    CareerHighlightBottomSheet_query$key
+  >(careerHighlighsBottomSheetFragment, queryData)
+
+  if (!data) {
+    return null
+  }
+
+  const makeCareerHighlightMap = (): Record<
+    number,
+    Record<CareerHighlightKindValueType, string[]>
+  > => {
+    const minimumYear = new Date().getFullYear() - 8
+    const result: Record<number, Record<CareerHighlightKindValueType, string[]>> = {}
+    const eventDigest = data.analyticsArtistSparklines?.edges?.find(
+      (ev) => !!parseInt(ev?.node?.sparkles ?? "", 10) && ev?.node?.eventDigest
+    )?.node?.eventDigest
+    const arr = eventDigest ? eventDigest.split(";") : []
+    if (!arr.length) {
+      return result
+    }
+    for (const digest of arr) {
+      const yearStr = digest.match(/\b(19|20)\d{2}\b/)?.[0]
+      if (yearStr && parseInt(yearStr, 10) >= minimumYear) {
+        const year = parseInt(yearStr, 10)
+        const regex = new RegExp(`[^/${year}/]+$`)
+        const titleAndBody = digest.match(regex)?.[0]?.trim()
+        const [title, body] = titleAndBody?.split("@") ?? []
+        const kind = CareerHighlightKind[title.trim()]
+        const currentYear = result[year] ?? {}
+        const updatedYear = { ...currentYear, [kind]: compact([...currentYear[kind], body.trim()]) }
+        result[year] = updatedYear
+      }
+    }
+    return result
+  }
+
+  const dataForFlatlist = (): Array<{
+    year: number
+    index: number
+    highlights: Record<CareerHighlightKindValueType, string[]>
+  }> => {
+    const careerHighlightsMap = makeCareerHighlightMap()
+    const years = Object.keys(careerHighlightsMap).sort((a, b) => parseInt(a, 10) - parseInt(b, 10))
+    return years.map((year, index) => ({
+      year: parseInt(year, 10),
+      index,
+      highlights: careerHighlightsMap[parseInt(year, 10)],
+    }))
+  }
+
+  const dataContext = useMedianSalePriceChartDataContext()
+  if (!dataContext) {
+    return null
+  }
+
+  const reloadData = () => {
+    refetch({ artistId })
+  }
+
+  useEffect(() => {
+    reloadData()
+    onXAxisHighlightPressed(null)
+  }, [artistId])
+
+  useEffect(() => {
+    setDataForFlatlist(dataForFlatlist())
+  }, [JSON.stringify(data)])
+
+  const [flatListData, setDataForFlatlist] = useState(dataForFlatlist())
+
+  const flatlistRef = useRef<FlatList>(null)
+
+  const { selectedXAxisHighlight, onXAxisHighlightPressed } = dataContext
+
+  useEffect(() => {
+    if (selectedXAxisHighlight) {
+      const index = flatListData.find((d) => d.year === selectedXAxisHighlight)?.index
+      if (index !== undefined) {
+        flatlistRef.current?.scrollToIndex({ index, animated: false })
+      }
+    }
+  }, [selectedXAxisHighlight])
+
+  const bottomSheetRef = useRef<BottomSheet>(null)
+
+  const snapPoints = useMemo(() => ["25%", "50%", "80%"], [])
+
+  const handleSheetChanges = useCallback((index: number) => {
+    if (index === -1) {
+      onXAxisHighlightPressed(null)
+    }
+  }, [])
+
+  const renderBackdrop = useCallback(
+    (props) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} />,
+    []
+  )
+
+  const renderBackground = useCallback(
+    (props) => (
+      <Flex {...props} backgroundColor="white" borderTopRightRadius={10} borderTopLeftRadius={10} />
+    ),
+    []
+  )
+
+  return (
+    <BottomSheet
+      ref={bottomSheetRef}
+      index={selectedXAxisHighlight ? 0 : -1}
+      snapPoints={snapPoints}
+      onChange={handleSheetChanges}
+      enablePanDownToClose
+      backdropComponent={renderBackdrop}
+      backgroundComponent={renderBackground}
+    >
+      <FlatList
+        ref={flatlistRef}
+        data={flatListData}
+        renderItem={({ item }) => (
+          <CareerHighlightBottomSheetItem year={item.year} highlights={item.highlights} />
+        )}
+        keyExtractor={(item) => item.year.toString()}
+        horizontal
+        pagingEnabled
+      />
+    </BottomSheet>
+  )
+}
+
+const careerHighlighsBottomSheetFragment = graphql`
+  fragment CareerHighlightBottomSheet_query on Query
+  @refetchable(queryName: "CareerHighlighsBottomSheetRefetchQuery")
+  @argumentDefinitions(artistID: { type: "String!" }) {
+    analyticsArtistSparklines(artistId: $artistID, last: 9) {
+      edges {
+        node {
+          eventDigest
+          sparkles
+          year
+        }
+      }
+    }
+  }
+`
