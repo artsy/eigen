@@ -328,6 +328,7 @@
     "bracketSpacing": true
   },
   "pull-lock": {
-    "yarn.lock": "yarn install"
+    "yarn.lock": "yarn install",
+    "ios/Podfile.lock": "yarn install:all"
   }
 }
