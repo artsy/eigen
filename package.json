@@ -135,7 +135,7 @@
     "events": "3.3.0",
     "extract-files": "9.0.0",
     "formik": "2.2.9",
-    "google-libphonenumber": "3.2.27",
+    "google-libphonenumber": "3.2.30",
     "grapheme-splitter": "1.0.4",
     "html-entities": "2.3.2",
     "jsc-android": "250230.2.1",
