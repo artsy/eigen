@@ -6,7 +6,7 @@ import {
 } from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
 import { compact } from "lodash"
 import { Flex } from "palette"
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef } from "react"
 import { FlatList } from "react-native"
 import { graphql, useRefetchableFragment } from "react-relay"
 import { CareerHighlightBottomSheetItem } from "./Components/CareerHighlightBottomSheetItem"
@@ -101,12 +101,6 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
     onXAxisHighlightPressed(null)
   }, [artistId])
 
-  useEffect(() => {
-    setDataForFlatlist(dataForFlatlist())
-  }, [JSON.stringify(data)])
-
-  const [flatListData, setDataForFlatlist] = useState(dataForFlatlist())
-
   const flatlistRef = useRef<FlatList>(null)
 
   const { selectedXAxisHighlight, onXAxisHighlightPressed } = dataContext
@@ -122,7 +116,7 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
 
   const bottomSheetRef = useRef<BottomSheet>(null)
 
-  const snapPoints = useMemo(() => ["25%", "50%", "80%"], [])
+  const snapPoints = useMemo(() => ["40%", "60%", "80%"], [])
 
   const handleSheetChanges = useCallback((index: number) => {
     if (index === -1) {
@@ -141,6 +135,8 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
     ),
     []
   )
+
+  const flatListData = dataForFlatlist()
 
   return (
     <BottomSheet

@@ -61,7 +61,7 @@ export const MedianSalePriceChart: React.FC = () => {
   }
 
   return (
-    <Animated.View style={[{ flex: 1, flexDirection: "row" }, containerStyle]}>
+    <Animated.View style={[{ flex: 1, flexDirection: "row", paddingBottom: 100 }, containerStyle]}>
       <Flex
         onLayout={({ nativeEvent }) => {
           layoutWidth.value = nativeEvent.layout.width

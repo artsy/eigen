@@ -45,7 +45,7 @@ const MedianSalePriceAtAuctionScreen: React.FC<MedianSalePriceAtAuctionProps> = 
     !!data.me?.myCollectionInfo?.artistsCount && data.me.myCollectionInfo.artistsCount > 1
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <Flex pt={6}>
         <Flex mx={2}>
           <Text variant="lg" mb={0.5} testID="Median_Auction_Price_title">

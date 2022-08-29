@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { G } from "react-native-svg"
 import { Point } from "victory-native"
 import { ChartGestureEventType, ChartGestureObservable } from "./LineGraphChart"
@@ -17,12 +17,25 @@ export const HighlightIconContainer: React.FC<HighlightIconContainerProps> = (pr
   const { dataTag, icon, onHighlightPressed, ...injectedProps } = props
   const { x, y, datum } = injectedProps as any
 
+  // this ref and effect is needed because x begins at a fixed point
+  // and over time transitions to a final point. Due to stale closures
+  // the initial captured x may be the initial x. Ref + useEffect to correct that.
+  const xRef = useRef(x)
+  useEffect(() => {
+    xRef.current = x
+  }, [x])
+
+  const datumRef = useRef(datum)
+  useEffect(() => {
+    datumRef.current = datum
+  }, [JSON.stringify(datum)])
+
   // TODO: x and y seems to have been displaced by 10. Investigate why.
   const DISPLACEMENT_FACTOR = 10
 
   const isWithinItemRange = (locationX: number, locationY: number) => {
     if (
-      Math.abs(x - locationX) <= DISPLACEMENT_FACTOR &&
+      Math.abs(xRef.current - locationX) <= DISPLACEMENT_FACTOR &&
       Math.abs(y - locationY) <= DISPLACEMENT_FACTOR
     ) {
       return true
@@ -32,7 +45,7 @@ export const HighlightIconContainer: React.FC<HighlightIconContainerProps> = (pr
 
   const checkTappedXDataRegion = (event: ChartGestureEventType) => {
     if (isWithinItemRange(event.x, event.y)) {
-      onHighlightPressed?.({ ...datum, dataTag })
+      onHighlightPressed?.({ ...datumRef.current, dataTag })
     }
   }
 
