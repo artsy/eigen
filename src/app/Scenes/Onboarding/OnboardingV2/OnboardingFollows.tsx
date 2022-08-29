@@ -2,7 +2,6 @@ import { useNavigation } from "@react-navigation/native"
 import { SearchInput } from "app/Components/SearchInput"
 import { Box, Button, Flex, ProgressBar, Screen, Spacer, Text } from "palette"
 import { useState } from "react"
-import { StatusBar } from "react-native"
 import { useBackHandler } from "shared/hooks/useBackHandler"
 import { useDebouncedValue } from "shared/hooks/useDebouncedValue"
 import { useOnboardingContext } from "./Hooks/useOnboardingContext"
@@ -50,7 +49,6 @@ export const OnboardingFollows: React.FC<OnboardingFollowsProps> = ({ kind }) =>
     <Screen>
       <Screen.Header onSkip={onDone} />
       <Screen.Body>
-        <StatusBar barStyle="dark-content" />
         {!debouncedValue && (
           <Box pt={2}>
             <ProgressBar progress={progress} />
