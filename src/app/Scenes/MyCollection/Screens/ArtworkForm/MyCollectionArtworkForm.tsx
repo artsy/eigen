@@ -58,6 +58,7 @@ export type ArtworkFormScreen = {
   }
   ArtworkFormMain: {
     mode: ArtworkFormMode
+    isSubmission?: boolean
     clearForm(): void
     onDelete(): void
     onHeaderBackButtonPress(): void
@@ -257,7 +258,18 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
           <Stack.Screen
             name="ArtworkFormMain"
             component={MyCollectionArtworkFormMain}
-            initialParams={{ onDelete, clearForm, mode: props.mode, onHeaderBackButtonPress }}
+            initialParams={{
+              onDelete,
+              clearForm,
+              mode: props.mode,
+              onHeaderBackButtonPress,
+              isSubmission: (() => {
+                if (props.mode === "edit") {
+                  return !!props.artwork.consignmentSubmission?.displayText
+                }
+                return false
+              })(),
+            }}
           />
           <Stack.Screen name="AddPhotos" component={MyCollectionAddPhotos} />
         </Stack.Navigator>
