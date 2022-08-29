@@ -3,7 +3,7 @@ import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { act } from "react-test-renderer"
 import { CategoryPill, LineGraphCategoryPicker } from "./LineGraphCategoryPicker"
 
-describe(LineGraphCategoryPicker, () => {
+describe("LineGraphCategoryPicker", () => {
   const categories = [
     { name: "Cat1", color: "#000" },
     { name: "Cat2", color: "#000" },
