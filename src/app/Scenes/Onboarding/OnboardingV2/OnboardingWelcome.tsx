@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native"
 import { OnboardingWelcomeQuery } from "__generated__/OnboardingWelcomeQuery.graphql"
 import { GlobalStore } from "app/store/GlobalStore"
-import { ArtsyLogoIcon, Box, Button, Flex, Screen, Spacer, Spinner, Text } from "palette"
+import { ArtsyLogoIcon, Box, Button, Flex, Spacer, Spinner, Text } from "palette"
 import { Suspense, useEffect } from "react"
 import { Image } from "react-native"
 import Animated, {
@@ -55,7 +55,8 @@ const OnboardingWelcome = () => {
     require("images/OnboardingImage4AndyWarholCow.webp"),
   ]
 
-  const { height: screenHeight, width: screenWidth } = useScreenDimensions()
+  const { width: screenWidth } = useScreenDimensions()
+  const screenHeight = "100%"
 
   const fadeOutAnimationsArr = [
     useAnimatedStyle(() => ({ opacity: opacity.value - 1 })),
@@ -81,96 +82,93 @@ const OnboardingWelcome = () => {
   }, [])
 
   return (
-    <Screen>
-      <Screen.Background>
-        {/* Welcome to Artsy Screen */}
+    <Flex flex={1} backgroundColor="black100">
+      {/* Welcome to Artsy Screen */}
+      <AnimatedFlex
+        position="absolute"
+        px={2}
+        height={screenHeight}
+        width={screenWidth}
+        flex={1}
+        backgroundColor="black100"
+        justifyContent="center"
+      >
+        <ArtsyLogoAbsoluteHeader />
+        <Text variant="xxl" color="white100">
+          Welcome{"\n"}
+          to Artsy,{"\n"}
+          {me?.name}
+        </Text>
+      </AnimatedFlex>
+      {/* Onboarding Images */}
+      {onboardingImages.map((image, index) => (
         <AnimatedFlex
+          key={`img-${index}`}
           position="absolute"
-          px={2}
-          height={screenHeight}
-          width={screenWidth}
-          flex={1}
-          backgroundColor="black100"
-          justifyContent="center"
+          style={[{ height: screenHeight }, fadeOutAnimationsArr[index]]}
         >
-          <ArtsyLogoAbsoluteHeader />
+          <Image
+            source={image}
+            resizeMode="cover"
+            style={{ height: screenHeight, width: screenWidth }}
+          />
+        </AnimatedFlex>
+      ))}
+      {/* Start Onboarding Screen */}
+      <AnimatedFlex
+        position="absolute"
+        flex={1}
+        backgroundColor="black100"
+        justifyContent="center"
+        px={2}
+        height={screenHeight}
+        width={screenWidth}
+        style={{ ...fadeOutAnimationsArr[5] }}
+      >
+        <ArtsyLogoAbsoluteHeader />
+        <Flex flex={1} justifyContent="center">
           <Text variant="xxl" color="white100">
-            Welcome{"\n"}
-            to Artsy,{"\n"}
-            {me?.name}
+            Ready to find{"\n"}
+            art you love?
           </Text>
-        </AnimatedFlex>
-        {/* Onboarding Images */}
-        {onboardingImages.map((image, index) => (
-          <AnimatedFlex
-            key={`img-${index}`}
-            position="absolute"
-            style={[{ height: screenHeight }, fadeOutAnimationsArr[index]]}
-          >
-            <Image
-              source={image}
-              resizeMode="cover"
-              style={{ height: screenHeight, width: screenWidth }}
-            />
-          </AnimatedFlex>
-        ))}
-        {/* Start Onboarding Screen */}
-        <AnimatedFlex
-          position="absolute"
-          flex={1}
-          backgroundColor="black100"
-          justifyContent="center"
-          px={2}
-          height={screenHeight}
-          width={screenWidth}
-          style={{ ...fadeOutAnimationsArr[5] }}
-        >
-          <ArtsyLogoAbsoluteHeader />
-          <Flex flex={1} justifyContent="center">
-            <Text variant="xxl" color="white100">
-              Ready to find{"\n"}
-              art you love?
+          <Spacer mt={4} />
+          <AnimatedFlex entering={enteringAnim}>
+            <Text variant="lg" color="white100">
+              Start building your profile and tailor Artsy to your tastes.
             </Text>
-            <Spacer mt={4} />
-            <AnimatedFlex entering={enteringAnim}>
-              <Text variant="lg" color="white100">
-                Start building your profile and tailor Artsy to your tastes.
-              </Text>
-            </AnimatedFlex>
-            <AnimatedFlex entering={enteringAnim} paddingBottom={2} position="absolute" bottom={10}>
-              <Button
-                accessible
-                accessibilityLabel="Start Onboarding Quiz"
-                accessibilityHint="Starts the Onboarding Quiz"
-                variant="fillLight"
-                block
-                haptic="impactMedium"
-                onPress={() => {
-                  next()
-                  // @ts-expect-error
-                  navigate("OnboardingQuestionOne")
-                }}
-              >
-                Get Started
-              </Button>
-              <Spacer mt={1} />
-              <Button
-                accessible
-                accessibilityLabel="Skip Onboarding Quiz"
-                accessibilityHint="Navigates to the home screen"
-                variant="fillDark"
-                block
-                haptic="impactMedium"
-                onPress={() => GlobalStore.actions.auth.setState({ onboardingState: "complete" })}
-              >
-                Skip
-              </Button>
-            </AnimatedFlex>
-          </Flex>
-        </AnimatedFlex>
-      </Screen.Background>
-      <Screen.SafeBottomPadding />
-    </Screen>
+          </AnimatedFlex>
+          <AnimatedFlex entering={enteringAnim} paddingBottom={2} position="absolute" bottom={10}>
+            <Button
+              accessible
+              accessibilityLabel="Start Onboarding Quiz"
+              accessibilityHint="Starts the Onboarding Quiz"
+              variant="fillLight"
+              block
+              haptic="impactMedium"
+              onPress={() => {
+                next()
+                // @ts-expect-error
+                navigate("OnboardingQuestionOne")
+              }}
+            >
+              Get Started
+            </Button>
+            <Spacer mt={1} />
+            <Button
+              accessible
+              accessibilityLabel="Skip Onboarding Quiz"
+              accessibilityHint="Navigates to the home screen"
+              variant="fillDark"
+              block
+              haptic="impactMedium"
+              onPress={() => GlobalStore.actions.auth.setState({ onboardingState: "complete" })}
+            >
+              Skip
+            </Button>
+          </AnimatedFlex>
+        </Flex>
+      </AnimatedFlex>
+    </Flex>
   )
 }
 
