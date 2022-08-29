@@ -19,7 +19,7 @@ import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/Auction
 import { isEmpty } from "lodash"
 import { Box, Separator } from "palette"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
-import { FlatList, RefreshControl, StatusBar } from "react-native"
+import { FlatList, RefreshControl } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { TrackingProp } from "react-tracking"
 import usePrevious from "react-use/lib/usePrevious"
@@ -615,7 +615,6 @@ export const ArtworkQueryRenderer: React.FC<{
 }> = ({ artworkID, environment, ...others }) => {
   return (
     <>
-      <StatusBar barStyle="dark-content" />
       <RetryErrorBoundaryLegacy
         render={() => {
           return (

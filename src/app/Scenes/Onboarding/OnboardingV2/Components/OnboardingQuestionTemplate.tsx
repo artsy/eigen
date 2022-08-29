@@ -6,7 +6,6 @@ import {
 } from "app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingContext"
 import { Box, Button, CheckCircleFillIcon, Flex, ProgressBar, Screen, Spacer, Text } from "palette"
 import { FC, useCallback, useState } from "react"
-import { StatusBar } from "react-native"
 import { AnimatedFadingPill, FADE_OUT_PILL_ANIMATION_DURATION } from "./AnimatedFadingPill"
 
 interface OnboardingQuestionTemplateProps {
