@@ -7,27 +7,29 @@ import { Animated, Easing, TouchableOpacity } from "react-native"
 type MessageVariant = "default" | "info" | "success" | "warning" | "error"
 
 export interface MessageProps {
-  title: string
-  text: string
+  bodyTextStyle?: TextProps
+  containerStyle?: FlexProps
+  IconComponent?: React.FC<any>
   onClose?: () => void
   showCloseButton?: boolean
-  containerStyle?: FlexProps
-  titleStyle?: TextProps
-  bodyTextStyle?: TextProps
-  variant: MessageVariant
   testID?: string
+  text?: string
+  title: string
+  titleStyle?: TextProps
+  variant?: MessageVariant
 }
 
 export const Message: React.FC<MessageProps> = ({
-  title,
-  text,
+  bodyTextStyle,
+  containerStyle,
+  IconComponent,
   onClose,
   showCloseButton = false,
-  containerStyle,
-  titleStyle,
-  bodyTextStyle,
-  variant,
   testID,
+  text,
+  title,
+  titleStyle,
+  variant = "default",
 }) => {
   const color = useColor()
 
@@ -96,12 +98,21 @@ export const Message: React.FC<MessageProps> = ({
       <Flex backgroundColor={color(colors[variant].backgroundColor)} {...containerStyle}>
         <Flex px={2} py={1} flexDirection="row" justifyContent="space-between">
           <Flex flex={1}>
-            <Text variant="xs" color={color(colors[variant].titleColor)} {...titleStyle}>
-              {title}
-            </Text>
-            <Text variant="xs" color={color(colors[variant].textColor)} {...bodyTextStyle}>
-              {text}
-            </Text>
+            <Flex flexDirection="row">
+              {!!IconComponent && (
+                <Flex mr={1}>
+                  <IconComponent />
+                </Flex>
+              )}
+              <Text pr={2} variant="xs" color={color(colors[variant].titleColor)} {...titleStyle}>
+                {title}
+              </Text>
+            </Flex>
+            {!!text && (
+              <Text variant="xs" color={color(colors[variant].textColor)} {...bodyTextStyle}>
+                {text}
+              </Text>
+            )}
           </Flex>
 
           {!!showCloseButton && (
