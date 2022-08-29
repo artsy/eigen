@@ -45,6 +45,10 @@ describe("OnboardingSocialLink", () => {
   it("Only permitted providers buttons are shown", () => {
     // google auth is not permitted
     __globalStoreTestUtils__?.injectFeatureFlags({ ARGoogleAuth: false })
+    Platform.OS = "ios"
+    Object.defineProperty(Platform, "Version", {
+      get: () => 14,
+    })
 
     const tree = getWrapper()
     expect(tree.UNSAFE_getAllByType(LinkAccountButton).length).toEqual(2)
@@ -88,6 +92,10 @@ describe("OnboardingSocialLink", () => {
 
     it("Apple Link Account Button logs in With Apple and passes onSignIn callback", () => {
       Platform.OS = "ios"
+      Object.defineProperty(Platform, "Version", {
+        get: () => 14,
+      })
+
       const spy = jest.spyOn(GlobalStore.actions.auth, "authApple")
       const params = {
         ...defaultParams,

@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native"
 import { AuthPromiseRejectType } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
+import { osMajorVersion } from "app/utils/platformUtil"
 import { capitalize } from "lodash"
 import { Button, Flex, Join, Screen, Spacer, Text } from "palette"
 import { useEffect } from "react"
@@ -135,7 +136,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
                 Continue with Email
               </Button>
 
-              {Platform.OS === "ios" && (
+              {Platform.OS === "ios" && osMajorVersion() >= 13 && (
                 <Button
                   onPress={continueWithApple}
                   block
