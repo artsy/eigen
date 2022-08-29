@@ -6,7 +6,12 @@ require 'fileutils'
 require 'json'
 
 require 'dotenv'
-Dotenv.load('../.env.shared')
+
+if is_ci
+  Dotenv.load('../.env.ci')
+else
+  Dotenv.load('../.env.shared')
+end
 
 skip_docs
 
