@@ -5,6 +5,7 @@ import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { useAppleLink } from "app/utils/LinkedAccounts/apple"
 import { useFacebookLink } from "app/utils/LinkedAccounts/facebook"
 import { useGoogleLink } from "app/utils/LinkedAccounts/google"
+import { osMajorVersion } from "app/utils/platformUtil"
 import { FormikProvider, useFormik } from "formik"
 import { capitalize } from "lodash"
 import { Button, Flex, Input, Spacer, Spinner, Text, Touchable } from "palette"
@@ -37,7 +38,7 @@ export const OnboardingSocialLink: React.FC<
     email: true,
     google: useFeatureFlag("ARGoogleAuth"),
     facebook: true,
-    apple: Platform.OS === "ios",
+    apple: Platform.OS === "ios" && osMajorVersion() >= 13,
   }
 
   const permittedProviders = providers.filter((provider) => permittedProvidersTable[provider])
