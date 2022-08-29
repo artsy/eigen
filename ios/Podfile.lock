@@ -501,8 +501,8 @@ PODS:
     - React
   - react-native-slider (4.2.1):
     - React-Core
-  - react-native-view-shot (3.1.2):
-    - React
+  - react-native-view-shot (3.4.0):
+    - React-Core
   - react-native-viewpager (4.2.2):
     - React-Core
   - react-native-webview (11.3.1):
@@ -1207,7 +1207,7 @@ SPEC CHECKSUMS:
   react-native-safe-area-context: f4f7cc09d81ae2d39dfd13e764d718969af07080
   react-native-shake: 67d43d6af4abfc299400b17fea7d2ec0754c72ac
   react-native-slider: 241935e3ea8e47599c317f512f96ee8de607d4cb
-  react-native-view-shot: 4475fde003fe8a210053d1f98fb9e06c1d834e1c
+  react-native-view-shot: a60a98a18c72bcaaaf2138f9aab960ae9b0d96c7
   react-native-viewpager: ea945e2881ce9a4a8bcdc84de4ec65ff23c90f6e
   react-native-webview: 07fca3f4378bd6ea26254bf63119bfd70f4fabeb
   React-perflogger: 93075d8931c32cd1fce8a98c15d2d5ccc4d891bd
