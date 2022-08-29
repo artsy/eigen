@@ -149,6 +149,7 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
       backgroundComponent={renderBackground}
     >
       <FlatList
+        testID="BottomSheetFlatlist"
         ref={flatlistRef}
         data={flatListData}
         renderItem={({ item }) => (
