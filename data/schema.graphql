@@ -15859,6 +15859,7 @@ type User {
 
   # A globally unique ID.
   id: ID!
+  interestsConnection(after: String, before: String, first: Int, last: Int): UserInterestConnection
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
@@ -16111,6 +16112,34 @@ type UserInterest {
 enum UserInterestCategory {
   COLLECTED_BEFORE
   INTERESTED_IN_COLLECTING
+}
+
+# A connection to a list of items.
+type UserInterestConnection {
+  # A list of edges.
+  edges: [UserInterestEdge]
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+}
+
+# An edge in a connection.
+type UserInterestEdge {
+  body: String
+  category: UserInterestCategory!
+  createdByAdmin: Boolean!
+
+  # A cursor for use in pagination
+  cursor: String!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
+
+  # The item at the end of the edge
+  node: UserInterestInterest
 }
 
 union UserInterestInterest = Artist | Gene
