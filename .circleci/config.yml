@@ -463,39 +463,6 @@ jobs:
           name: Deploy if beta - play store and firebase
           command: ./scripts/deploy-if-beta-branch-android BOTH
 
-  promote-beta-to-app-store:
-    environment:
-      BUNDLE_PATH: .vendor # path to install gems and use for caching
-    macos:
-      xcode: 13.4.1
-    steps:
-      - checkout
-      - install-gems
-      - await-previous-builds:
-          branch: app_store_submission
-      - run:
-          name: Promote if app_store_submission
-          command: ./scripts/promote-if-appstore-submission-branch
-
-  promote-beta-to-play-store:
-    environment:
-      BUNDLE_PATH: .vendor # path to install gems and use for caching
-
-    docker:
-      - image: circleci/android:api-29-node
-
-    steps:
-      - checkout
-      - install-gems
-      - await-previous-builds:
-          branch: play_store_submission
-      - run:
-          name: Setup
-          command: ./scripts/setup-distribute
-      - run:
-          name: Promote if play_store_submission
-          command: ./scripts/promote-if-playstore-submission-branch
-
   update-changelog:
     executor:
       name: node/default
@@ -570,18 +537,6 @@ workflows:
             branches:
               only:
                 - release-ios-app
-  promote:
-    jobs:
-      - promote-beta-to-app-store:
-          filters:
-            branches:
-              only:
-                - app_store_submission
-      - promote-beta-to-play-store:
-          filters:
-            branches:
-              only:
-                - play_store_submission
 
   test-build-deploy:
     jobs:
