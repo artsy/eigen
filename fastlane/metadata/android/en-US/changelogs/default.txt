@@ -1,5 +1,6 @@
 This update includes a number of improvements and bug fixes including:
 
-- New Notifications Settings options for viewing rooms
+- Questions for new users on their art tastes to improve their artwork recommendations
+- New insights in My Collection: see median auction prices over several years for the artists you collect.
 
 Have feedback? Email us at support@artsy.net
