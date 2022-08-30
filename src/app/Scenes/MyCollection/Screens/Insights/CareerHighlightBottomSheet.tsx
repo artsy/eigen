@@ -44,41 +44,18 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
     return null
   }
 
-  const makeCareerHighlightMap = (): Record<
-    number,
-    Record<CareerHighlightKindValueType, string[]>
-  > => {
-    const minimumYear = new Date().getFullYear() - 8
-    const result: Record<number, Record<CareerHighlightKindValueType, string[]>> = {}
-    const eventDigest = data.analyticsArtistSparklines?.edges?.find(
-      (ev) => !!parseInt(ev?.node?.sparkles ?? "", 10) && ev?.node?.eventDigest
-    )?.node?.eventDigest
-    const arr = eventDigest ? eventDigest.split(";") : []
-    if (!arr.length) {
-      return result
-    }
-    for (const digest of arr) {
-      const yearStr = digest.match(/\b(19|20)\d{2}\b/)?.[0]
-      if (yearStr && parseInt(yearStr, 10) >= minimumYear) {
-        const year = parseInt(yearStr, 10)
-        const regex = new RegExp(`[^/${year}/]+$`)
-        const titleAndBody = digest.match(regex)?.[0]?.trim()
-        const [title, body] = titleAndBody?.split("@") ?? []
-        const kind = CareerHighlightKind[title.trim()]
-        const currentYear = result[year] ?? {}
-        const updatedYear = { ...currentYear, [kind]: compact([...currentYear[kind], body.trim()]) }
-        result[year] = updatedYear
-      }
-    }
-    return result
-  }
-
   const dataForFlatlist = (): Array<{
     year: number
     index: number
     highlights: Record<CareerHighlightKindValueType, string[]>
   }> => {
-    const careerHighlightsMap = makeCareerHighlightMap()
+    const eventDigest = data.analyticsArtistSparklines?.edges?.find(
+      (ev) => !!parseInt(ev?.node?.sparkles ?? "", 10) && ev?.node?.eventDigest
+    )?.node?.eventDigest
+    if (!eventDigest) {
+      return []
+    }
+    const careerHighlightsMap = makeCareerHighlightMap(eventDigest)
     const years = Object.keys(careerHighlightsMap).sort((a, b) => parseInt(a, 10) - parseInt(b, 10))
     return years.map((year, index) => ({
       year: parseInt(year, 10),
@@ -116,7 +93,7 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
 
   const bottomSheetRef = useRef<BottomSheet>(null)
 
-  const snapPoints = useMemo(() => ["40%", "60%", "80%"], [])
+  const snapPoints = useMemo(() => ["40%", "60%", "80%", "90%"], [])
 
   const handleSheetChanges = useCallback((index: number) => {
     if (index === -1) {
@@ -137,6 +114,9 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
   )
 
   const flatListData = dataForFlatlist()
+  if (!flatListData.length) {
+    return null
+  }
 
   return (
     <BottomSheet
@@ -178,3 +158,27 @@ const careerHighlighsBottomSheetFragment = graphql`
     }
   }
 `
+
+export const makeCareerHighlightMap = (
+  eventDigest: string
+): Record<number, Record<CareerHighlightKindValueType, string[]>> => {
+  const minimumYear = new Date().getFullYear() - 8
+  const result: Record<number, Record<CareerHighlightKindValueType, string[]>> = {}
+  const arr = eventDigest ? eventDigest.split(";") : []
+  if (!arr.length) {
+    return result
+  }
+  for (const digest of arr) {
+    const yearStr = digest.match(/\b(19|20)\d{2}\b/)?.[0]
+    if (yearStr && parseInt(yearStr, 10) >= minimumYear) {
+      const year = parseInt(yearStr, 10)
+      const titleAndBody = digest.replace(`${year}`, "").trim()
+      const [title, body] = titleAndBody?.split("@") ?? []
+      const kind = CareerHighlightKind[title.trim()]
+      const currentYear = result[year] ?? {}
+      const updatedYear = { ...currentYear, [kind]: compact([...currentYear[kind], body.trim()]) }
+      result[year] = updatedYear
+    }
+  }
+  return result
+}

@@ -69,10 +69,8 @@ export const CareerHighlightBottomSheetItem: React.FC<CareerHighlightBottomSheet
 
   return (
     <Flex flex={1} minWidth={dimensions.width} p={2}>
-      <Text variant="lg" mb={2}>
-        {year} Career Highlights
-      </Text>
-      {renderHighlight()}
+      <Text variant="lg">{year} Career Highlights</Text>
+      <Flex mt={2}>{renderHighlight()}</Flex>
     </Flex>
   )
 }

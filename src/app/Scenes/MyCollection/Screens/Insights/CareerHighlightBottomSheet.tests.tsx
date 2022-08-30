@@ -4,7 +4,7 @@ import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import { useLazyLoadQuery } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { CareerHighlightBottomSheet } from "./CareerHighlightBottomSheet"
+import { CareerHighlightBottomSheet, makeCareerHighlightMap } from "./CareerHighlightBottomSheet"
 import { MedianSalePriceAtAuctionScreenQuery } from "./MedianSalePriceAtAuction"
 import { MedianSalePriceChartDataContextProvider } from "./providers/MedianSalePriceChartDataContext"
 
@@ -51,6 +51,25 @@ describe(CareerHighlightBottomSheet, () => {
     await flushPromiseQueue()
 
     expect(queryByTestId("BottomSheetFlatlist")).not.toBe(null)
+  })
+})
+
+describe(makeCareerHighlightMap, () => {
+  it("does not include years before this year minus 8 years", () => {
+    const eventDigest = bottomSheetDataMock.analyticsArtistSparklines.edges[0].node.eventDigest
+    const result = makeCareerHighlightMap(eventDigest)
+    const minimumYear = new Date().getFullYear() - 8
+    const inValidYears = Object.keys(result).filter((y) => parseInt(y, 10) < minimumYear)
+    const validYears = Object.keys(result).filter((y) => parseInt(y, 10) >= minimumYear)
+    expect(inValidYears.length).toEqual(0)
+    expect(validYears.length).toBeGreaterThanOrEqual(1)
+  })
+
+  it("creates the right map from eventDigest", () => {
+    const eventDigest = bottomSheetDataMock.analyticsArtistSparklines.edges[0].node.eventDigest
+    const result = makeCareerHighlightMap(eventDigest)
+    const expected = { 2015: { Review: ["The Guardian", "Art in America"] } }
+    expect(result).toEqual(expected)
   })
 })
 
