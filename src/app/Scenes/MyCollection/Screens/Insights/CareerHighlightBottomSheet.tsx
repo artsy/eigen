@@ -113,7 +113,10 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
     []
   )
 
-  const flatListData = dataForFlatlist()
+  const flatListData = useMemo(
+    () => dataForFlatlist(),
+    [JSON.stringify(data.analyticsArtistSparklines)]
+  )
   if (!flatListData.length) {
     return null
   }
@@ -159,6 +162,22 @@ const careerHighlighsBottomSheetFragment = graphql`
   }
 `
 
+/**
+ * Prepares the eventDigest and creates a map of each year to the highlight kind
+ * @param eventDigest
+ * @returns Record<number, Record<CareerHighlightKindValueType, string[]>>
+ * @example
+ * {
+ *   2014: {
+ *     "Solo Show": ["ArtMuseum", "AnotherMuseum"],
+ *     "Review": ["The Guardian", "The Sun"]
+ *   },
+ *   2015: {
+ *     "Group Show": ["ArtMuseum", "AnotherMuseum"],
+ *     "Biennial": ["Documenta"]
+ *   },
+ * }
+ */
 export const makeCareerHighlightMap = (
   eventDigest: string
 ): Record<number, Record<CareerHighlightKindValueType, string[]>> => {
@@ -169,6 +188,7 @@ export const makeCareerHighlightMap = (
     return result
   }
   for (const digest of arr) {
+    // eventDigest may begin with the year, this regex extracts the first occurence
     const yearStr = digest.match(/\b(19|20)\d{2}\b/)?.[0]
     if (yearStr && parseInt(yearStr, 10) >= minimumYear) {
       const year = parseInt(yearStr, 10)
