@@ -1,8 +1,6 @@
-import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArtistHeader_artist$data } from "__generated__/ArtistHeader_artist.graphql"
 import { ArtistHeaderFollowArtistMutation } from "__generated__/ArtistHeaderFollowArtistMutation.graphql"
 import { formatLargeNumberOfItems } from "app/utils/formatLargeNumberOfItems"
-import { userHadMeaningfulInteraction } from "app/utils/userHadMeaningfulInteraction"
 import { Box, bullet, Flex, FollowButton, Spacer, Text } from "palette"
 import { useState } from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -98,13 +96,6 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
       owner_type: Schema.OwnerEntityTypes.Artist,
     })
 
-    // callback for analytics purposes
-    userHadMeaningfulInteraction({
-      contextModule: ContextModule.artistHeader,
-      contextOwnerType: OwnerType.artist,
-      contextOwnerId: artist.internalID,
-      contextOwnerSlug: artist.slug,
-    })
     setIsFollowedChanging(false)
   }
 

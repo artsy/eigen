@@ -4,8 +4,7 @@
   "native-code-version": 44,
   "description": "Artsy mobile app.",
   "engines": {
-    "node": "14.x",
-    "npm": "6.1.x",
+    "node": "16.x",
     "yarn": "1.x"
   },
   "main": "index.ios.js",
@@ -167,7 +166,7 @@
     "react-native-hyperlink": "0.0.19",
     "react-native-image-crop-picker": "0.35.1",
     "react-native-image-resizer": "1.4.5",
-    "react-native-in-app-review": "3.2.3",
+    "react-native-in-app-review": "4.1.1",
     "react-native-keychain": "8.0.0",
     "react-native-linear-gradient": "2.5.6",
     "react-native-localize": "2.0.1",
@@ -230,7 +229,7 @@
     "@types/lodash": "4.14.180",
     "@types/luxon": "2.0.9",
     "@types/moment-timezone": "0.5.30",
-    "@types/node": "14.17.34",
+    "@types/node": "14.18.32",
     "@types/node-fetch": "2.6.1",
     "@types/qs": "6.9.7",
     "@types/query-string": "5.0.1",

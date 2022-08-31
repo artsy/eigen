@@ -4,7 +4,7 @@ import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { Spacer } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { BidButtonFragmentContainer } from "./BidButton"
-import { BuyNowButtonFragmentContainer } from "./BuyNowButton"
+import { BuyNowButton } from "./BuyNowButton"
 import { InquiryButtonsFragmentContainer } from "./InquiryButtons"
 import { MakeOfferButtonFragmentContainer } from "./MakeOfferButton"
 
@@ -41,11 +41,7 @@ export const CommercialButtons: React.FC<CommercialButtonProps> = ({
           <>
             <BidButtonFragmentContainer artwork={artwork} me={me} auctionState={auctionState} />
             <Spacer mb={1} />
-            <BuyNowButtonFragmentContainer
-              variant="outline"
-              artwork={artwork}
-              editionSetID={editionSetID ?? null}
-            />
+            <BuyNowButton variant="outline" artwork={artwork} editionSetID={editionSetID ?? null} />
           </>
         ) : (
           <BidButtonFragmentContainer artwork={artwork} me={me} auctionState={auctionState} />
@@ -57,7 +53,7 @@ export const CommercialButtons: React.FC<CommercialButtonProps> = ({
   if (isOfferable && isAcquireable) {
     return (
       <>
-        <BuyNowButtonFragmentContainer artwork={artwork} editionSetID={editionSetID ?? null} />
+        <BuyNowButton artwork={artwork} editionSetID={editionSetID ?? null} />
         <Spacer mb={1} />
         <MakeOfferButtonFragmentContainer
           artwork={artwork}
@@ -69,7 +65,7 @@ export const CommercialButtons: React.FC<CommercialButtonProps> = ({
   }
 
   if (isAcquireable) {
-    return <BuyNowButtonFragmentContainer artwork={artwork} editionSetID={editionSetID ?? null} />
+    return <BuyNowButton artwork={artwork} editionSetID={editionSetID ?? null} />
   }
 
   if (isOfferable) {

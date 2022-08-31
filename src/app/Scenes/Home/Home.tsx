@@ -48,6 +48,8 @@ import { NewWorksForYouRail } from "./Components/NewWorksForYouRail"
 import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
 import { TroveFragmentContainer } from "./Components/Trove"
 import { RailScrollRef } from "./Components/types"
+import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 
 const MODULE_SEPARATOR_HEIGHT = 6
 
@@ -75,6 +77,8 @@ interface Props extends ViewProps {
 }
 
 const Home = (props: Props) => {
+  useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
+
   const prefetchUrl = usePrefetch()
 
   useEffect(() => {
