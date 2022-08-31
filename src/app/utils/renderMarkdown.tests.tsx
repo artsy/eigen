@@ -152,7 +152,10 @@ describe("renderMarkdown", () => {
   })
 })
 
-function visitTree(tree: any, visit: (node: React.ReactElement) => void) {
+function visitTree(
+  tree: React.ReactElement<any> | Array<React.ReactElement<any>>,
+  visit: (node: React.ReactElement) => void
+) {
   if (React.isValidElement(tree)) {
     visit(tree)
     React.Children.forEach((tree.props as any).children, (child) => visitTree(child, visit))
