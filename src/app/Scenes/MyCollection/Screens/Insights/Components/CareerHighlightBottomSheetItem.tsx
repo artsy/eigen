@@ -1,5 +1,6 @@
 import { uniq } from "lodash"
 import { Box, FairIcon, Flex, GroupIcon, PublicationIcon, SoloIcon, Text } from "palette"
+import { useMemo } from "react"
 import { useScreenDimensions } from "shared/hooks"
 import { CareerHighlightKindValueType } from "../CareerHighlightBottomSheet"
 
@@ -11,10 +12,27 @@ export const CareerHighlightBottomSheetItem: React.FC<CareerHighlightBottomSheet
   year,
   highlights,
 }) => {
-  const getHeader = (header: string, bodyCount: number) => {
+  const dimensions = useScreenDimensions()
+
+  const headerAndBodyTuple = useMemo(() => Object.entries(highlights), [JSON.stringify(highlights)])
+
+  return (
+    <Flex flex={1} minWidth={dimensions.width} p={2}>
+      <Text variant="lg">{year} Career Highlights</Text>
+      <Flex mt={2}>
+        {headerAndBodyTuple.map(([header, body], i) => (
+          <SectionedHighlight key={header + i} header={header} body={body} />
+        ))}
+      </Flex>
+    </Flex>
+  )
+}
+
+const SectionedHighlight: React.FC<{ header: string; body: string[] }> = ({ header, body }) => {
+  const getHeader = (headerStr: string, bodyCount: number) => {
     let text = ""
     let IconComponent: JSX.Element | null = null
-    switch (header) {
+    switch (headerStr) {
       case "Solo Show":
         text =
           bodyCount > 1 ? "Solo shows at major institutions" : "Solo show at a major institution"
@@ -42,35 +60,23 @@ export const CareerHighlightBottomSheetItem: React.FC<CareerHighlightBottomSheet
     return { text, IconComponent }
   }
 
-  const renderHighlight = () => {
-    const headers = Object.keys(highlights)
-    return headers.map((header) => {
-      const body = uniq(highlights[header as CareerHighlightKindValueType]).map((b) => (
-        <Text key={b} color="black60">
-          {b}
-        </Text>
-      ))
-      const HeaderObj = getHeader(header, body.length)
-      return (
-        <Flex mb={1} key={header} flexDirection="row">
-          <Box mr={1} mt={0.5}>
-            {HeaderObj.IconComponent}
-          </Box>
-          <Flex>
-            <Text>{HeaderObj.text}</Text>
-            {body}
-          </Flex>
-        </Flex>
-      )
-    })
-  }
-
-  const dimensions = useScreenDimensions()
+  const HeaderObj = getHeader(header, body.length)
 
   return (
-    <Flex flex={1} minWidth={dimensions.width} p={2}>
-      <Text variant="lg">{year} Career Highlights</Text>
-      <Flex mt={2}>{renderHighlight()}</Flex>
+    <Flex>
+      <Flex mb={1} key={header} flexDirection="row">
+        <Box mr={1} mt={0.5}>
+          {HeaderObj.IconComponent}
+        </Box>
+        <Flex>
+          <Text>{HeaderObj.text}</Text>
+          {uniq(body).map((b) => (
+            <Text key={b} color="black60">
+              {b}
+            </Text>
+          ))}
+        </Flex>
+      </Flex>
     </Flex>
   )
 }

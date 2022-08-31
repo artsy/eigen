@@ -7,7 +7,7 @@ import {
 import { compact } from "lodash"
 import { Flex } from "palette"
 import { useCallback, useEffect, useMemo, useRef } from "react"
-import { FlatList } from "react-native"
+import { FlatList } from "react-native-gesture-handler"
 import { graphql, useRefetchableFragment } from "react-relay"
 import { CareerHighlightBottomSheetItem } from "./Components/CareerHighlightBottomSheetItem"
 import { useMedianSalePriceChartDataContext } from "./providers/MedianSalePriceChartDataContext"
@@ -106,6 +106,7 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
     []
   )
 
+  // using our custom background to ensure backgroundColor is white
   const renderBackground = useCallback(
     (props) => (
       <Flex {...props} backgroundColor="white" borderTopRightRadius={10} borderTopLeftRadius={10} />
@@ -131,7 +132,7 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
       backdropComponent={renderBackdrop}
       backgroundComponent={renderBackground}
     >
-      <FlatList
+      <FlatList // Note that this FlatList is from "react-native-gesture-handler" in order for scrolls to work seamlessly on android. BottomSheetFlatlist shipped with BottomSheet is janky on iOS.
         testID="BottomSheetFlatlist"
         ref={flatlistRef}
         data={flatListData}
@@ -141,6 +142,7 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
         keyExtractor={(item) => item.year.toString()}
         horizontal
         pagingEnabled
+        showsHorizontalScrollIndicator={false}
       />
     </BottomSheet>
   )
