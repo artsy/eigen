@@ -335,7 +335,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
                   style={{
                     background: { fill: "white" },
                   }}
-                  padding={40}
+                  padding={{ left: 40, right: 40, bottom: 20, top: 40 }}
                   width={chartWidth}
                   height={chartHeight}
                 >
@@ -384,12 +384,12 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
                   <VictoryAxis
                     dependentAxis
                     style={{
-                      axis: { stroke: color("black30"), strokeDasharray: 2 },
+                      axis: { stroke: color("black15"), strokeDasharray: 2 },
                       ticks: { size: 0 },
                       grid: {
                         stroke: ({ tick }: { tick: number }) =>
                           Number(tick * maxima) === minMaxDomainY.max
-                            ? color("black30")
+                            ? color("black15")
                             : "transparent",
                         strokeDasharray: 3,
                       },
@@ -420,9 +420,9 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
                             return color("black100")
                           }
                           if (xValues.length > 1) {
-                            return xAxisTickMap[tick] ? color("black30") : "transparent"
+                            return xAxisTickMap[tick] ? color("black15") : "transparent"
                           }
-                          return color("black30")
+                          return color("black15")
                         },
                         strokeDasharray: 3,
                       },

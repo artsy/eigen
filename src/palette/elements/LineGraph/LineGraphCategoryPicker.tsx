@@ -121,7 +121,7 @@ interface CategoryPillProps {
 
 export const CategoryPill: React.FC<CategoryPillProps> = ({
   category,
-  dotColor,
+  dotColor = DEFAULT_DOT_COLOR,
   onCategorySelected,
   onLayout,
   selectedCategory,
@@ -131,7 +131,9 @@ export const CategoryPill: React.FC<CategoryPillProps> = ({
 
   const isEnabled = selectedCategory === category
 
-  const itemColor = isEnabled ? color("black100") : color("black60")
+  const borderColor = isEnabled ? color("black60") : color("black30")
+  const textColor = isEnabled ? color("black100") : color("black60")
+  const pillDotColor = isEnabled ? dotColor : color("black30")
 
   const handlePress = () => {
     onCategorySelected(category)
@@ -140,15 +142,27 @@ export const CategoryPill: React.FC<CategoryPillProps> = ({
   return (
     <Pill
       highlightEnabled
-      borderColor={itemColor}
-      Icon={() => <ColoredDot disabled={!isEnabled} color={dotColor ?? DEFAULT_DOT_COLOR} />}
+      borderColor={color("red100")}
+      Icon={() => <ColoredDot color={pillDotColor} />}
       rounded
       onPress={handlePress}
       onLayout={onLayout}
       testID="categoryPill"
       hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
+      stateStyle={{
+        pressed: {
+          textColor: dotColor,
+          backgroundColor: color("white100"),
+          borderColor: dotColor,
+        },
+        enabled: {
+          textColor: color("black100"),
+          backgroundColor: color("white100"),
+          borderColor,
+        },
+      }}
     >
-      <Text variant="xs" color={itemColor}>
+      <Text variant="xs" color={textColor}>
         {category}
       </Text>
     </Pill>
