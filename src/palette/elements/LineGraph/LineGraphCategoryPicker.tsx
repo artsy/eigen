@@ -142,7 +142,6 @@ export const CategoryPill: React.FC<CategoryPillProps> = ({
   return (
     <Pill
       highlightEnabled
-      borderColor={color("red100")}
       Icon={() => <ColoredDot color={pillDotColor} />}
       rounded
       onPress={handlePress}
