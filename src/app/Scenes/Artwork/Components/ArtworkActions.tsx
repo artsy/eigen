@@ -84,13 +84,6 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
       },
       onCompleted: () => {
         refreshFavoriteArtworks()
-
-        userHadMeaningfulInteraction({
-          contextModule: ContextModule.artworkMetadata,
-          contextOwnerType: OwnerType.artwork,
-          contextOwnerId: artwork.internalID,
-          contextOwnerSlug: artwork.slug,
-        })
       },
       onError: () => {
         refreshFavoriteArtworks()

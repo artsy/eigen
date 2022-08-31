@@ -564,10 +564,6 @@ jest.mock("app/NativeModules/NotificationsManager.tsx", () => ({
   NotificationsManager: new (require("events").EventEmitter)(),
 }))
 
-jest.mock("app/utils/userHadMeaningfulInteraction.tsx", () => ({
-  userHadMeaningfulInteraction: jest.fn(),
-}))
-
 jest.mock("app/navigation/navigate", () => ({
   navigate: jest.fn(),
   goBack: jest.fn(),
