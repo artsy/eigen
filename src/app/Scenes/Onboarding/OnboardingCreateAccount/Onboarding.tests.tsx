@@ -4,9 +4,6 @@ import { NetworkAwareProvider } from "app/utils/NetworkAwareProvider"
 import { Onboarding, OnboardingWelcomeScreens } from "../Onboarding"
 import { OnboardingV2 } from "../OnboardingV2/OnboardingV2"
 
-jest.mock("../OnboardingPersonalization/OnboardingPersonalization.tsx", () => ({
-  OnboardingPersonalization: () => "OnboardingPersonalization",
-}))
 jest.mock("../OnboardingV2/OnboardingV2.tsx", () => ({
   OnboardingV2: () => "OnboardingV2",
 }))
