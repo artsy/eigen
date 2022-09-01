@@ -12716,6 +12716,7 @@ type Query {
     first: Int
     includeBackfill: Boolean!
     last: Int
+    maxWorksPerArtist: Int
     page: Int
     userId: String
     version: String
@@ -16447,6 +16448,7 @@ type Viewer {
     first: Int
     includeBackfill: Boolean!
     last: Int
+    maxWorksPerArtist: Int
     page: Int
     userId: String
     version: String
