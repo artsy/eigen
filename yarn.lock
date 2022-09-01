@@ -8089,10 +8089,10 @@ globby@^8.0.1:
     pify "^3.0.0"
     slash "^1.0.0"
 
-google-libphonenumber@3.2.27:
-  version "3.2.27"
-  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.27.tgz#06a0c1d42be712a6fd4189e2e3b07fc36cacee01"
-  integrity sha512-et3QlrfWemNPhyUfXZmJG8TfzitfAN71ygNI15+B35zNge/7vyZxkpDsc13oninkf8RAtN2kNEzvMr4L1n3vfQ==
+google-libphonenumber@3.2.30:
+  version "3.2.30"
+  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.30.tgz#a9f421ff1ff87694de11fe5a1c2b9693b996ee67"
+  integrity sha512-Kx2/AqmY0P6863vOhkiCFqfAxfY3jagMe916ByU38JRKiRCqSHGJW1qTOZNV4+ag8Xda69dk6w8VwEeswVy44w==
 
 got@^7.0.0:
   version "7.1.0"
