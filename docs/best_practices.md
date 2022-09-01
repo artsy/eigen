@@ -22,6 +22,7 @@ _Please note: Links should point to specific commits, and not a branch (in case 
 - [Navigation](#Navigation)
 - [Analytics and tracking](#analytics-and-tracking)
 - [Formik](#formik)
+- [Code Quality](#code-quality)
 - [Miscellaneous](#miscellaneous)
 
 ### Examples & Hacks
@@ -33,7 +34,7 @@ Check out our lists of [examples](#../../../EXAMPLES.md) and [hacks](#../../../H
 The Artsy app was initially written in Objective-C and Swift and React Native was added in 2016. Some parts of the app are also written with Kotlin.
 
 - **React Native** is our preferred option for developing new features.
-- **Objective-C** and **Java** can be used for bridging code to react native (this is referring to native modules that need to talk to javascript, more info in the react native docs here: https://reactnative.dev/docs/native-modules-ios)
+- **Objective-C** and **Java** can be used for bridging code to react native (this is referring to native modules that need to talk to javascript, more info in the react native docs here: <https://reactnative.dev/docs/native-modules-ios>)
 - **Swift** and **Kotlin** are used for native functionality that can't be done in React Native (such as: an iOS Widget or a Push Notification Extension).
 
 - [Why Artsy uses React Native](http://artsy.github.io/blog/2016/08/15/React-Native-at-Artsy/)
@@ -195,6 +196,53 @@ In React-native, we use react-tracking as a wrapper for the tracking events we s
 ### Formik
 
 We use Formik for handling forms. You can see an example that's also using form validation [here](https://github.com/artsy/eigen/blob/9faccb0ffd987da74f76e98e55432992f07231cf/src/app/Scenes/Consignments/Screens/SubmitArtworkOverview/ContactInformation/ContactInformation.tsx)
+
+### Code Quality
+
+#### We prefer separate components over renderSomething functions
+
+Instead of creating a nested `renderSomething` function that renders a parts of the component,
+
+```tsx
+const MyComponent = () => {
+  const artists = ["Alice", "Bob", "Charlie"]
+
+  const renderArtist = (name: string) => {
+    return <Text>{name}</Text>
+  }
+
+  return <View>{artists.map((artist) => renderArtist(artist))}</View>
+}
+```
+
+we prefer to create separate component.
+
+```tsx
+const MyComponent = () => {
+  const artists = ["Alice", "Bob", "Charlie"]
+
+  return (
+    <View>
+      {artists.map((name) => (
+        <Artist name={name} />
+      ))}
+    </View>
+  )
+}
+
+const Artist = ({ name }) => {
+  return <Text>{name}</Text>
+}
+```
+
+The reasons are:
+
+- It makes it easier to test the component.
+- The JSX template part is easier to read if components and function calls are not mixed.
+- Performance improvements because React won't rerender the component if the props haven't changed.
+- All props are explicit which makes it easier to understand and debug the component.
+
+Exceptions can be made if extracting the component leads to extensive prop drilling.
 
 ### Miscellaneous
 
