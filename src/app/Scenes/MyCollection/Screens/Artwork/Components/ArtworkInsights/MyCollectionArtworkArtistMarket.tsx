@@ -3,6 +3,7 @@ import { MyCollectionArtworkArtistMarket_artwork$key } from "__generated__/MyCol
 import { MyCollectionArtworkArtistMarket_marketPriceInsights$key } from "__generated__/MyCollectionArtworkArtistMarket_marketPriceInsights.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { formatCentsToDollars } from "app/Scenes/MyCollection/utils/formatCentsToDollars"
+import { formatSellThroughRate } from "app/utils/marketPriceInsightHelpers"
 import { Flex, Spacer, Text } from "palette"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -61,7 +62,7 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
 
       <Field label="Annual Value Sold" value={formattedAnnualValueSold} />
       <Field label="Annual Lots Sold" value={`${annualLotsSold}`} />
-      <Field label="Sell-through Rate" value={`${sellThroughRate}%`} />
+      <Field label="Sell-through Rate" value={formatSellThroughRate(sellThroughRate)} />
       <Field label="Sale Price to Estimate" value={`${medianSaleToEstimateRatio}x`} />
       <Field label="Liquidity" value={formatLiquidityRank} />
       <Field label="One-Year Trend" value={formattedDemandTrend} />
