@@ -132,7 +132,6 @@
     "@styled-system/theme-get": "5.1.2",
     "algoliasearch": "4.10.3",
     "autosuggest-highlight": "3.1.1",
-    "d3-scale": "4.0.2",
     "easy-peasy": "3.3.0",
     "events": "3.3.0",
     "extract-files": "9.0.0",
