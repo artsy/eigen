@@ -1,25 +1,15 @@
 import { FairTestsQuery } from "__generated__/FairTestsQuery.graphql"
 import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { mockTrackEvent } from "app/tests/globallyMockedStuff"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { NavigationalTabs, Tab } from "palette/elements/Tabs"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
-
-import { FairArtworksFragmentContainer } from "./Components/FairArtworks"
-import { FairCollectionsFragmentContainer } from "./Components/FairCollections"
-import { FairEditorialFragmentContainer } from "./Components/FairEditorial"
-import { FairExhibitorsFragmentContainer } from "./Components/FairExhibitors"
-import { FairFollowedArtistsRailFragmentContainer } from "./Components/FairFollowedArtistsRail"
-import { FairHeaderFragmentContainer } from "./Components/FairHeader"
-import { Fair, FairFragmentContainer } from "./Fair"
+import { FairFragmentContainer } from "./Fair"
 
 describe("Fair", () => {
-  const trackEvent = useTracking().trackEvent
-
   const TestRenderer = () => (
     <QueryRenderer<FairTestsQuery>
       environment={getRelayEnvironment()}
@@ -41,20 +31,20 @@ describe("Fair", () => {
     />
   )
 
-  const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockResolvers)
-    return tree
-  }
-
   it("renders without throwing an error", () => {
-    const wrapper = getWrapper()
-    expect(wrapper.root.findAllByType(Fair)).toHaveLength(1)
+    const { getByTestId } = renderWithWrappers(<TestRenderer />)
+
+    resolveMostRecentRelayOperation({ Fair: () => ({ id: "fair1244" }) })
+
+    expect(getByTestId("fairFlatList")).toBeTruthy()
   })
 
   it("renders the necessary components when fair is active", () => {
-    const wrapper = getWrapper({
+    const { getByTestId, UNSAFE_getByType } = renderWithWrappers(<TestRenderer />)
+
+    resolveMostRecentRelayOperation({
       Fair: () => ({
+        id: "fair1244",
         isActive: true,
         counts: {
           artworks: 42,
@@ -63,34 +53,37 @@ describe("Fair", () => {
       }),
     })
 
-    expect(wrapper.root.findAllByType(FairHeaderFragmentContainer)).toHaveLength(1)
-    expect(wrapper.root.findAllByType(FairEditorialFragmentContainer)).toHaveLength(1)
-    expect(wrapper.root.findAllByType(FairCollectionsFragmentContainer)).toHaveLength(1)
-    expect(wrapper.root.findAllByType(NavigationalTabs)).toHaveLength(1)
-    expect(wrapper.root.findAllByType(FairExhibitorsFragmentContainer)).toHaveLength(1)
-    expect(wrapper.root.findAllByType(FairFollowedArtistsRailFragmentContainer)).toHaveLength(1)
+    expect(getByTestId("fairHeaderBox")).toBeTruthy()
+    expect(getByTestId("fairEditorialBox")).toBeTruthy()
+    expect(getByTestId("fairCollectionsBox")).toBeTruthy()
+    expect(getByTestId("fairExhibitorsFlatList")).toBeTruthy()
+    expect(getByTestId("fairFollowedArtistsRailBox")).toBeTruthy()
+    expect(UNSAFE_getByType(NavigationalTabs)).toBeTruthy()
   })
 
   it("renders fewer components when fair is inactive", () => {
-    const wrapper = getWrapper({
-      Fair: () => ({
-        isActive: false,
-      }),
-    })
+    const { getByText, getByTestId, queryByTestId, UNSAFE_queryByType } = renderWithWrappers(
+      <TestRenderer />
+    )
 
-    expect(wrapper.root.findAllByType(FairHeaderFragmentContainer)).toHaveLength(1)
-    expect(wrapper.root.findAllByType(FairEditorialFragmentContainer)).toHaveLength(1)
-    expect(extractText(wrapper.root)).toMatch("This fair is currently unavailable.")
+    resolveMostRecentRelayOperation({ Fair: () => ({ id: "fair1244", isActive: false }) })
 
-    expect(wrapper.root.findAllByType(FairCollectionsFragmentContainer)).toHaveLength(0)
-    expect(wrapper.root.findAllByType(NavigationalTabs)).toHaveLength(0)
-    expect(wrapper.root.findAllByType(FairExhibitorsFragmentContainer)).toHaveLength(0)
-    expect(wrapper.root.findAllByType(FairFollowedArtistsRailFragmentContainer)).toHaveLength(0)
+    expect(getByTestId("fairHeaderBox")).toBeTruthy()
+    expect(getByTestId("fairEditorialBox")).toBeTruthy()
+    expect(getByText("This fair is currently unavailable.")).toBeTruthy()
+
+    expect(queryByTestId("fairCollectionsBox")).toBeNull()
+    expect(queryByTestId("fairExhibitorsFlatList")).toBeNull()
+    expect(queryByTestId("fairFollowedArtistsRailBox")).toBeNull()
+    expect(UNSAFE_queryByType(NavigationalTabs)).toBeNull()
   })
 
   it("does not render components when there is no data for them", () => {
-    const wrapper = getWrapper({
+    const { getByTestId, queryByTestId, UNSAFE_queryByType } = renderWithWrappers(<TestRenderer />)
+
+    resolveMostRecentRelayOperation({
       Fair: () => ({
+        id: "fair1244",
         articles: {
           edges: [],
         },
@@ -101,50 +94,51 @@ describe("Fair", () => {
         },
       }),
     })
-    expect(wrapper.root.findAllByType(FairHeaderFragmentContainer)).toHaveLength(1)
-    expect(wrapper.root.findAllByType(FairEditorialFragmentContainer)).toHaveLength(0)
-    expect(wrapper.root.findAllByType(FairCollectionsFragmentContainer)).toHaveLength(0)
-    expect(wrapper.root.findAllByType(NavigationalTabs)).toHaveLength(0)
-    expect(wrapper.root.findAllByType(FairExhibitorsFragmentContainer)).toHaveLength(0)
-    expect(wrapper.root.findAllByType(FairArtworksFragmentContainer)).toHaveLength(0)
+
+    expect(getByTestId("fairHeaderBox")).toBeTruthy()
+
+    expect(queryByTestId("fairArtworksBox")).toBeNull()
+    expect(queryByTestId("fairEditorialBox")).toBeNull()
+    expect(queryByTestId("fairCollectionsBox")).toBeNull()
+    expect(queryByTestId("fairExhibitorsFlatList")).toBeNull()
+    expect(queryByTestId("fairFollowedArtistsRailBox")).toBeNull()
+    expect(UNSAFE_queryByType(NavigationalTabs)).toBeNull()
   })
 
   it("renders the collections component if there are collections", () => {
-    const wrapper = getWrapper({
+    const { getByTestId } = renderWithWrappers(<TestRenderer />)
+
+    resolveMostRecentRelayOperation({
       Fair: () => ({
+        id: "fair1244",
         isActive: true,
-        marketingCollections: [
-          {
-            slug: "great-collection",
-          },
-        ],
+        marketingCollections: [{ slug: "great-collection" }],
       }),
     })
-    expect(wrapper.root.findAllByType(FairCollectionsFragmentContainer)).toHaveLength(1)
+
+    expect(getByTestId("fairCollectionsBox")).toBeTruthy()
   })
 
   it("renders the editorial component if there are articles", () => {
-    const wrapper = getWrapper({
+    const { getByTestId } = renderWithWrappers(<TestRenderer />)
+
+    resolveMostRecentRelayOperation({
       Fair: () => ({
+        id: "fair1244",
         isActive: true,
-        articles: {
-          edges: [
-            {
-              __typename: "Article",
-              node: {
-                slug: "great-article",
-              },
-            },
-          ],
-        },
+        articles: { edges: [{ __typename: "Article", node: { slug: "great-article" } }] },
       }),
     })
-    expect(wrapper.root.findAllByType(FairEditorialFragmentContainer)).toHaveLength(1)
+
+    expect(getByTestId("fairEditorialBox")).toBeTruthy()
   })
 
-  it("renders the artists you follow rail if there are any artworks", () => {
-    let wrapper = getWrapper({
+  it("renders the artists you follow rail when there are no artworks", async () => {
+    const { queryByTestId } = renderWithWrappers(<TestRenderer />)
+
+    resolveMostRecentRelayOperation({
       Fair: () => ({
+        id: "fair1244",
         isActive: true,
         filterArtworksConnection: {
           edges: [],
@@ -152,30 +146,31 @@ describe("Fair", () => {
       }),
     })
 
-    expect(wrapper.root.findAllByType(FairFollowedArtistsRailFragmentContainer)).toHaveLength(0)
+    expect(queryByTestId("fairFollowedArtistsRailBox")).toBeNull()
+  })
 
-    wrapper = getWrapper({
+  it("renders the artists you follow rail when there are artworks", async () => {
+    const { getByTestId } = renderWithWrappers(<TestRenderer />)
+
+    resolveMostRecentRelayOperation({
       Fair: () => ({
+        id: "fair1244",
         isActive: true,
-        followedArtistArtworks: {
-          edges: [
-            {
-              __typename: "FilterArtworkEdge",
-              artwork: {
-                slug: "an-artwork",
-              },
-            },
-          ],
+        filterArtworksConnection: {
+          edges: [{ __typename: "FilterArtworksEdge", node: { id: "an-artwork" } }],
         },
       }),
     })
 
-    expect(wrapper.root.findAllByType(FairFollowedArtistsRailFragmentContainer)).toHaveLength(1)
+    expect(getByTestId("fairFollowedArtistsRailBox")).toBeTruthy()
   })
 
   it("renders the artworks/exhibitors component and tabs if there are artworks and exhibitors", () => {
-    const wrapper = getWrapper({
+    const { getByTestId, queryByTestId, UNSAFE_getAllByType } = renderWithWrappers(<TestRenderer />)
+
+    resolveMostRecentRelayOperation({
       Fair: () => ({
+        id: "fair1244",
         isActive: true,
         counts: {
           artworks: 100,
@@ -183,15 +178,19 @@ describe("Fair", () => {
         },
       }),
     })
-    expect(wrapper.root.findAllByType(Tab)).toHaveLength(2)
-    expect(wrapper.root.findAllByType(FairExhibitorsFragmentContainer)).toHaveLength(1)
-    expect(wrapper.root.findAllByType(FairArtworksFragmentContainer)).toHaveLength(0)
+
+    expect(getByTestId("fairExhibitorsFlatList")).toBeTruthy()
+    expect(queryByTestId("fairArtworksBox")).toBeNull()
+    expect(UNSAFE_getAllByType(Tab)).toHaveLength(2)
   })
 
   describe("tracks taps navigating between the artworks tab and exhibitors tab", () => {
     it("When Using Palette V3", () => {
-      const wrapper = getWrapper({
+      const { UNSAFE_getAllByType } = renderWithWrappers(<TestRenderer />)
+
+      resolveMostRecentRelayOperation({
         Fair: () => ({
+          id: "fair1244",
           isActive: true,
           slug: "art-basel-hong-kong-2020",
           internalID: "fair1244",
@@ -201,12 +200,14 @@ describe("Fair", () => {
           },
         }),
       })
-      const tabs = wrapper.root.findAllByType(Tab)
+
+      const tabs = UNSAFE_getAllByType(Tab)
       const exhibitorsTab = tabs[0]
       const artworksTab = tabs[1]
 
       act(() => artworksTab.props.onPress())
-      expect(trackEvent).toHaveBeenCalledWith({
+
+      expect(mockTrackEvent).toHaveBeenCalledWith({
         action: "tappedNavigationTab",
         context_module: "exhibitorsTab",
         context_screen_owner_type: "fair",
@@ -216,7 +217,7 @@ describe("Fair", () => {
       })
 
       act(() => exhibitorsTab.props.onPress())
-      expect(trackEvent).toHaveBeenCalledWith({
+      expect(mockTrackEvent).toHaveBeenCalledWith({
         action: "tappedNavigationTab",
         context_module: "artworksTab",
         context_screen_owner_type: "fair",
@@ -235,6 +236,7 @@ describe("Fair", () => {
 
       it("should not be rendered", () => {
         const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
+
         expect(queryByLabelText("Search images")).toBeNull()
       })
     })
@@ -249,6 +251,7 @@ describe("Fair", () => {
 
         resolveMostRecentRelayOperation({
           Fair: () => ({
+            id: "fair1244",
             isActive: false,
             slug: "a-non-active-fair",
             isReverseImageSearchEnabled: true,
@@ -263,6 +266,7 @@ describe("Fair", () => {
 
         resolveMostRecentRelayOperation({
           Fair: () => ({
+            id: "fair1244",
             isActive: true,
             slug: "an-active-fair-without-indexed-artworks",
             isReverseImageSearchEnabled: false,
@@ -277,6 +281,7 @@ describe("Fair", () => {
 
         resolveMostRecentRelayOperation({
           Fair: () => ({
+            id: "fair1244",
             isActive: true,
             slug: "an-active-fair-with-indexed-artworks",
             isReverseImageSearchEnabled: true,
