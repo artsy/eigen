@@ -34,7 +34,7 @@ export const FairEditorial: React.FC<FairEditorialProps> = ({ fair, ...rest }) =
   }
 
   return (
-    <Box {...rest}>
+    <Box {...rest} testID="fairEditorialBox">
       <Box
         mx={2}
         mb={2}

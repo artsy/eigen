@@ -35,6 +35,7 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
 
   return (
     <FlatList
+      testID="fairExhibitorsFlatList"
       data={shows}
       renderItem={({ item: show }) => {
         if ((show?.counts?.artworks ?? 0) === 0 || !show?.partner) {

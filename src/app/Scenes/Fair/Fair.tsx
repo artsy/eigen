@@ -177,6 +177,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
     >
       <ArtworkFiltersStoreProvider>
         <FlatList
+          testID="fairFlatList"
           data={sections}
           ref={flatListRef}
           viewabilityConfig={viewConfigRef.current}

@@ -85,7 +85,7 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
 
   if (artworksTotal === 0) {
     return (
-      <Box mb="80px">
+      <Box testID="fairArtworksBox-noArtworks" mb="80px">
         <FilteredArtworkGridZeroState
           id={fair.internalID}
           slug={fair.slug}
@@ -96,7 +96,7 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
   }
 
   return (
-    <Box>
+    <Box testID="fairArtworksBox">
       <InfiniteScrollArtworksGridContainer
         connection={artworks}
         loadMore={relay.loadMore}

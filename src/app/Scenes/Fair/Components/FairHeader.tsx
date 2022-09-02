@@ -48,7 +48,7 @@ export const FairHeader: React.FC<FairHeaderProps> = ({ fair }) => {
     shouldShowFairBMWArtActivationLink({ sponsoredContent })
 
   return (
-    <Box>
+    <Box testID="fairHeaderBox">
       {!!image ? (
         <Flex alignItems="center" justifyContent="center" style={{ position: "relative" }}>
           <OpaqueImageView

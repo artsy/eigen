@@ -4,7 +4,7 @@ import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex } from "palette"
+import { Box, Flex } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -21,7 +21,7 @@ export const FairFollowedArtistsRail: React.FC<FairFollowedArtistsRailProps> = (
   }
 
   return (
-    <>
+    <Box testID="fairFollowedArtistsRailBox">
       <Flex px={2}>
         <SectionTitle
           title="Works by artists you follow"
@@ -44,7 +44,7 @@ export const FairFollowedArtistsRail: React.FC<FairFollowedArtistsRailProps> = (
           navigate(artwork?.href!)
         }}
       />
-    </>
+    </Box>
   )
 }
 
