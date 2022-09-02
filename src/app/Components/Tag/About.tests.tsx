@@ -1,6 +1,5 @@
-import "react-native"
-
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { screen } from "@testing-library/react-native"
+import { renderWithRelayWrappers } from "app/tests/renderWithWrappers"
 import { StickyTabPage } from "../StickyTabPage/StickyTabPage"
 import About from "./About"
 
@@ -9,14 +8,17 @@ it("renders without throwing a error", () => {
     description: `Handmade Paper is very nice`,
   }
 
-  renderWithWrappersLEGACY(
+  renderWithRelayWrappers(
     <StickyTabPage
       tabs={[
         {
-          title: "test",
+          title: "Test Title",
           content: <About tag={tag as any} />,
         },
       ]}
     />
   )
+
+  expect(screen.queryByText("Test Title")).toBeTruthy()
+  expect(screen.queryByText("Handmade Paper is very nice")).toBeTruthy()
 })
