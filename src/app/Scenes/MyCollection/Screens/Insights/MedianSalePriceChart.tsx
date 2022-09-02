@@ -42,6 +42,8 @@ export const MedianSalePriceChart: React.FC = () => {
     return formatted
   }
 
+  const hasInsights = !!categories.length
+
   return (
     <Flex paddingBottom={100}>
       {selectedDuration === MedianSalePriceChartDuration["3 yrs"] && (
@@ -75,14 +77,20 @@ export const MedianSalePriceChart: React.FC = () => {
               <Flex
                 position="absolute"
                 top={CHART_HEIGHT / 2}
-                left={CHART_WIDTH / 3}
-                alignItems="center"
+                left={CHART_WIDTH / 5}
                 justifyContent="center"
-                maxWidth={CHART_WIDTH / 2}
+                maxWidth={CHART_WIDTH - 80}
               >
-                <Text textAlign="center" variant="sm" color="black60">
-                  Incomplete Data for the selected medium
+                <Text variant="sm" color="black60">
+                  {hasInsights
+                    ? "Incomplete data for the selected medium"
+                    : "No data currently available"}
                 </Text>
+                {!hasInsights && (
+                  <Text variant="sm" color="black60">
+                    Try a different timeframe or artist
+                  </Text>
+                )}
               </Flex>
             ))}
         </Flex>
@@ -119,14 +127,20 @@ export const MedianSalePriceChart: React.FC = () => {
               <Flex
                 position="absolute"
                 top={CHART_HEIGHT / 2}
-                left={CHART_WIDTH / 3}
-                alignItems="center"
+                left={CHART_WIDTH / 5}
                 justifyContent="center"
-                maxWidth={CHART_WIDTH / 2}
+                maxWidth={CHART_WIDTH - 80}
               >
-                <Text textAlign="center" variant="sm" color="black60">
-                  Incomplete Data for the selected medium
+                <Text variant="sm" color="black60">
+                  {hasInsights
+                    ? "Incomplete data for the selected medium"
+                    : "No data currently available"}
                 </Text>
+                {!hasInsights && (
+                  <Text variant="sm" color="black60">
+                    Try a different timeframe or artist
+                  </Text>
+                )}
               </Flex>
             ))}
         </Flex>
