@@ -44,23 +44,35 @@ describe("FairExhibitors", () => {
   it("renders the rails from exhibitors that have artworks", () => {
     const wrapper = getWrapper({
       Fair: () => ({
+        internalID: "awesome-fair",
+        slug: "awesome-fair",
         exhibitors: {
           edges: [
             {
               node: {
-                slug: "exhibitor-1",
+                id: "exhibitor-1",
+                counts: { artworks: 1 },
+                partner: {
+                  id: "partner-1",
+                },
               },
             },
             {
               node: {
-                slug: "exhibitor-2",
+                id: "exhibitor-2",
+                counts: { artworks: 5 },
+                partner: {
+                  id: "partner-3",
+                },
               },
             },
             {
               node: {
-                slug: "exhibitor-3-no-artworks",
+                id: "exhibitor-3-no-artworks",
                 counts: { artworks: 0 },
-                artworks: null,
+                partner: {
+                  id: "partner-3",
+                },
               },
             },
           ],
@@ -71,7 +83,7 @@ describe("FairExhibitors", () => {
   })
 
   it("skips over any partners with no artworks", () => {
-    const wrapper = getWrapper()
+    const wrapper = getWrapper({})
     expect(extractText(wrapper.root)).not.toContain("Partner Without Artworks")
   })
 })

@@ -1,6 +1,6 @@
 import { act } from "@testing-library/react-native"
 import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
-import { takeRight } from "lodash"
+import { isEmpty, takeRight } from "lodash"
 import { GraphQLResponse, OperationDescriptor } from "relay-runtime"
 import { MockPayloadGenerator } from "relay-test-utils"
 import { MockResolverContext, MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
@@ -69,7 +69,10 @@ export function resolveMostRecentRelayOperation(mockResolvers?: MockResolvers) {
     // are fully updated to their final state.
     // https://relay.dev/docs/guides/testing-relay-components/
     getMockRelayEnvironment().mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, { ...DefaultMockResolvers, ...mockResolvers })
+      MockPayloadGenerator.generate(
+        operation,
+        !isEmpty(mockResolvers) ? { ...DefaultMockResolvers, ...mockResolvers } : {}
+      )
     )
   })
 }
