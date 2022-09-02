@@ -42,6 +42,10 @@ export const MedianSalePriceChart: React.FC = () => {
     return formatted
   }
 
+  const hasInsights = !!categories.length
+
+  const PADDING_LEFT_AND_RIGHT = 80
+
   return (
     <Flex paddingBottom={100}>
       {selectedDuration === MedianSalePriceChartDuration["3 yrs"] && (
@@ -74,15 +78,21 @@ export const MedianSalePriceChart: React.FC = () => {
             (!isDataAvailableForThreeYears && (
               <Flex
                 position="absolute"
-                top={CHART_HEIGHT / 2}
-                left={CHART_WIDTH / 3}
-                alignItems="center"
                 justifyContent="center"
-                maxWidth={CHART_WIDTH / 2}
+                top={CHART_HEIGHT / 2}
+                left={(CHART_WIDTH - PADDING_LEFT_AND_RIGHT) / 2 - PADDING_LEFT_AND_RIGHT}
+                width={CHART_WIDTH - PADDING_LEFT_AND_RIGHT}
               >
-                <Text textAlign="center" variant="sm" color="black60">
-                  Incomplete Data for the selected medium
+                <Text variant="sm" color="black60">
+                  {hasInsights
+                    ? "Incomplete data for the selected medium"
+                    : "No data currently available"}
                 </Text>
+                {!hasInsights && (
+                  <Text variant="sm" color="black60">
+                    Try a different timeframe or artist
+                  </Text>
+                )}
               </Flex>
             ))}
         </Flex>
@@ -118,15 +128,21 @@ export const MedianSalePriceChart: React.FC = () => {
             (!isDataAvailableForEightYears && (
               <Flex
                 position="absolute"
-                top={CHART_HEIGHT / 2}
-                left={CHART_WIDTH / 3}
-                alignItems="center"
                 justifyContent="center"
-                maxWidth={CHART_WIDTH / 2}
+                top={CHART_HEIGHT / 2}
+                left={(CHART_WIDTH - PADDING_LEFT_AND_RIGHT) / 2 - PADDING_LEFT_AND_RIGHT}
+                width={CHART_WIDTH - PADDING_LEFT_AND_RIGHT}
               >
-                <Text textAlign="center" variant="sm" color="black60">
-                  Incomplete Data for the selected medium
+                <Text variant="sm" color="black60">
+                  {hasInsights
+                    ? "Incomplete data for the selected medium"
+                    : "No data currently available"}
                 </Text>
+                {!hasInsights && (
+                  <Text variant="sm" color="black60">
+                    Try a different timeframe or artist
+                  </Text>
+                )}
               </Flex>
             ))}
         </Flex>

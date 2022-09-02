@@ -1,5 +1,5 @@
 import { Flex, Text } from "palette"
-import { ColoredDot, DEFAULT_DOT_COLOR } from "./ColoredDot"
+import { ColoredDot } from "./ColoredDot"
 import { LineChartData } from "./types"
 
 type LineGraphHeaderProps = Omit<LineChartData["dataMeta"], "xHighlightIcon" | "yHighlightIcon">
@@ -19,7 +19,7 @@ export const LineGraphHeader: React.FC<LineGraphHeaderProps> = ({
       )}
       {!!description?.trim() && (
         <Flex flexDirection="row" alignItems="center">
-          <ColoredDot color={tintColor ?? DEFAULT_DOT_COLOR} />
+          <ColoredDot color={tintColor ?? "transparent"} />
           <Text variant="xs" color="black60">
             {description}
           </Text>
