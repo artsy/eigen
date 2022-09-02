@@ -1,17 +1,15 @@
-import "react-native"
-
-import { renderWithLayout } from "app/tests/renderWithLayout"
+import { renderWithRelayWrappers } from "app/tests/renderWithWrappers"
 import { Notification } from "./Notification"
 
 it("renders without throwing an error for unread notification", () => {
   const props = notification()
-  renderWithLayout(<Notification width={768} notification={props as any} />, { width: 768 })
+  renderWithRelayWrappers(<Notification width={768} notification={props as any} />)
 })
 
 it("renders without throwing an error for read notification", () => {
   const props = notification()
   props.status = "READ"
-  renderWithLayout(<Notification width={768} notification={props as any} />, { width: 768 })
+  renderWithRelayWrappers(<Notification width={768} notification={props as any} />)
 })
 
 it("renders without throwing an error if no avatar image exists", () => {
@@ -24,9 +22,7 @@ it("renders without throwing an error if no avatar image exists", () => {
       },
     },
   }
-  renderWithLayout(<Notification width={300} notification={convertedProps as any} />, {
-    width: 300,
-  })
+  renderWithRelayWrappers(<Notification width={300} notification={convertedProps as any} />)
 })
 
 const notification = () => {
