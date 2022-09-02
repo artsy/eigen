@@ -1,7 +1,6 @@
 import { waitFor } from "@testing-library/react-native"
 import { navigate, popParentViewController } from "app/navigation/navigate"
 import { getRelayEnvironment } from "app/relay/defaultEnvironment"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { DateTime } from "luxon"
@@ -31,6 +30,7 @@ describe("Sale", () => {
     renderWithWrappersLEGACY(<TestRenderer />)
     resolveMostRecentRelayOperation({
       Sale: () => ({
+        id: "sale-id",
         slug: "live-sale-slug",
         startAt: DateTime.now().minus({ day: 1 }).toISO(),
         liveStartAt: DateTime.now().minus({ second: 1 }).toISO(),
@@ -56,6 +56,7 @@ describe("Sale", () => {
     renderWithWrappersLEGACY(<TestRenderer />)
     resolveMostRecentRelayOperation({
       Sale: () => ({
+        id: "sale-id",
         slug: "live-sale-slug",
         startAt: DateTime.now().minus({ day: 1 }).toISO(),
         liveStartAt: DateTime.now().minus({ second: 1 }).toISO(),
@@ -82,6 +83,7 @@ describe("Sale", () => {
 
     resolveMostRecentRelayOperation({
       Sale: () => ({
+        id: "sale-id",
         slug: "closed-sale-slug",
         startAt: DateTime.now().minus({ days: 2 }).toISO(),
         liveStartAt: DateTime.now().minus({ days: 2 }).toISO(),
@@ -104,6 +106,7 @@ describe("Sale", () => {
 
     resolveMostRecentRelayOperation({
       Sale: () => ({
+        id: "sale-id",
         slug: "regular-sale-slug",
         startAt: DateTime.now().plus({ day: 1 }).toISO(),
         liveStartAt: DateTime.now().plus({ days: 2 }).toISO(),
@@ -121,6 +124,7 @@ describe("Sale", () => {
 
     resolveMostRecentRelayOperation({
       Sale: () => ({
+        id: "sale-id",
         slug: "reg-ended-sale-slug",
         startAt: DateTime.now().minus({ days: 3 }).toISO(),
         liveStartAt: DateTime.now().minus({ days: 2 }).toISO(),
@@ -138,6 +142,7 @@ describe("Sale", () => {
 
     resolveMostRecentRelayOperation({
       Sale: () => ({
+        id: "sale-id",
         slug: "closed-sale-slug",
         startAt: DateTime.now().minus({ days: 3 }).toISO(),
         liveStartAt: DateTime.now().minus({ days: 2 }).toISO(),
@@ -154,6 +159,7 @@ describe("Sale", () => {
 
     resolveMostRecentRelayOperation({
       Sale: () => ({
+        id: "sale-id",
         slug: "cascading-sale-slug",
         startAt: DateTime.now().minus({ days: 3 }).toISO(),
         liveStartAt: DateTime.now().minus({ days: 2 }).toISO(),
@@ -172,6 +178,7 @@ describe("Sale", () => {
 
     resolveMostRecentRelayOperation({
       Sale: () => ({
+        id: "sale-id",
         slug: "non-cascading-sale-slug",
         startAt: DateTime.now().minus({ days: 3 }).toISO(),
         liveStartAt: DateTime.now().minus({ days: 2 }).toISO(),
@@ -190,6 +197,7 @@ describe("Sale", () => {
 
     resolveMostRecentRelayOperation({
       Sale: () => ({
+        id: "sale-id",
         slug: "closed-cascading-sale-slug",
         startAt: DateTime.now().minus({ days: 3 }).toISO(),
         liveStartAt: DateTime.now().minus({ days: 2 }).toISO(),
