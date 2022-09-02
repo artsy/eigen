@@ -11,7 +11,9 @@ import { Suspense, useCallback, useState } from "react"
 import { ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
+import { CareerHighlightBottomSheet } from "./CareerHighlightBottomSheet"
 import { MedianSalePriceChart } from "./MedianSalePriceChart"
+import { MedianSalePriceChartDataContextProvider } from "./providers/MedianSalePriceChartDataContext"
 import { SelectArtistModal } from "./SelectArtistModal"
 
 const PAGE_SIZE = 50
@@ -43,7 +45,7 @@ const MedianSalePriceAtAuctionScreen: React.FC<MedianSalePriceAtAuctionProps> = 
     !!data.me?.myCollectionInfo?.artistsCount && data.me.myCollectionInfo.artistsCount > 1
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <Flex pt={6}>
         <Flex mx={2}>
           <Text variant="lg" mb={0.5} testID="Median_Auction_Price_title">
@@ -91,11 +93,14 @@ const MedianSalePriceAtAuctionScreen: React.FC<MedianSalePriceAtAuctionProps> = 
           </Flex>
         </Flex>
 
-        <MedianSalePriceChart
+        <MedianSalePriceChartDataContextProvider
           artistId={queryArgs.variables.artistId}
           initialCategory={initialCategory}
           queryData={data}
-        />
+        >
+          <MedianSalePriceChart />
+          <CareerHighlightBottomSheet artistId={queryArgs.variables.artistID} queryData={data} />
+        </MedianSalePriceChartDataContextProvider>
 
         <SelectArtistModal
           queryData={data}
@@ -163,8 +168,9 @@ export const MedianSalePriceAtAuctionScreenQuery = graphql`
     $startYear: String
   ) {
     ...SelectArtistModal_myCollectionInfo @arguments(count: $count, after: $after)
-    ...MedianSalePriceChart_query
-      @arguments(artistId: $artistId, endYear: $endYear, startYear: $startYear)
+    ...MedianSalePriceChartDataContextProvider_query
+      @arguments(artistId: $artistId, artistID: $artistID, endYear: $endYear, startYear: $startYear)
+    ...CareerHighlightBottomSheet_query @arguments(artistID: $artistID)
     artist(id: $artistID) {
       internalID
       name

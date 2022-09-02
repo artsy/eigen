@@ -100,6 +100,7 @@
     "@artsy/palette-tokens": "2.6.0",
     "@artsy/to-title-case": "1.1.0",
     "@expo/react-native-action-sheet": "3.8.0",
+    "@gorhom/bottom-sheet": "4.4.3",
     "@invertase/react-native-apple-authentication": "2.1.5",
     "@kesha-antonov/react-native-action-cable": "1.1.0",
     "@ptomasroos/react-native-multi-slider": "2.2.2",
