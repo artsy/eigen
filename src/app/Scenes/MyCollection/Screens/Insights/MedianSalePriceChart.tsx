@@ -44,6 +44,8 @@ export const MedianSalePriceChart: React.FC = () => {
 
   const hasInsights = !!categories.length
 
+  const PADDING_LEFT_AND_RIGHT = 80
+
   return (
     <Flex paddingBottom={100}>
       {selectedDuration === MedianSalePriceChartDuration["3 yrs"] && (
@@ -76,10 +78,10 @@ export const MedianSalePriceChart: React.FC = () => {
             (!isDataAvailableForThreeYears && (
               <Flex
                 position="absolute"
-                top={CHART_HEIGHT / 2}
-                left={CHART_WIDTH / 5}
                 justifyContent="center"
-                maxWidth={CHART_WIDTH - 80}
+                top={CHART_HEIGHT / 2}
+                left={(CHART_WIDTH - PADDING_LEFT_AND_RIGHT) / 2 - PADDING_LEFT_AND_RIGHT}
+                width={CHART_WIDTH - PADDING_LEFT_AND_RIGHT}
               >
                 <Text variant="sm" color="black60">
                   {hasInsights
@@ -126,10 +128,10 @@ export const MedianSalePriceChart: React.FC = () => {
             (!isDataAvailableForEightYears && (
               <Flex
                 position="absolute"
-                top={CHART_HEIGHT / 2}
-                left={CHART_WIDTH / 5}
                 justifyContent="center"
-                maxWidth={CHART_WIDTH - 80}
+                top={CHART_HEIGHT / 2}
+                left={(CHART_WIDTH - PADDING_LEFT_AND_RIGHT) / 2 - PADDING_LEFT_AND_RIGHT}
+                width={CHART_WIDTH - PADDING_LEFT_AND_RIGHT}
               >
                 <Text variant="sm" color="black60">
                   {hasInsights
