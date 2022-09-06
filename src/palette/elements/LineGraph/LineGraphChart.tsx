@@ -4,7 +4,7 @@ import { useColor } from "palette/hooks"
 import { StarCircleIcon } from "palette/svgs/StarCircleIcon"
 import { Color } from "palette/Theme"
 import { useCallback, useEffect, useRef, useState } from "react"
-import { Dimensions, Platform } from "react-native"
+import { Dimensions } from "react-native"
 import { Defs, G, LinearGradient, Stop } from "react-native-svg"
 import { Subject } from "rxjs"
 import { AnimatePropTypeInterface, InterpolationPropType } from "victory-core"
@@ -401,11 +401,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
       </Flex>
 
       {!!lastPressedDatum && (
-        <Flex
-          position="absolute"
-          top={Platform.select({ ios: 70, android: 60 })}
-          left={lastPressedDatum.left}
-        >
+        <Flex position="absolute" top={70} left={lastPressedDatum.left}>
           <Text color="black60" variant="xs">
             {lastPressedDatum.x}
           </Text>
