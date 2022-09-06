@@ -1,13 +1,12 @@
 import { AuctionResultTestsQuery } from "__generated__/AuctionResultTestsQuery.graphql"
 import { AuctionResultsMidEstimate } from "app/Components/AuctionResult/AuctionResultMidEstimate"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import { Image, ScrollView } from "react-native"
+import { Image } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { ReactTestRenderer } from "react-test-renderer"
 
@@ -56,26 +55,15 @@ describe("AuctionResult", () => {
     return tree
   }
 
-  describe("Auction Result screen renders", () => {
-    let tree: ReactTestRenderer
-    beforeEach(() => {
-      tree = getWrapper()
-    })
-
-    it("renders without throwing an error", () => {
-      expect(tree.root.findByType(ScrollView)).toBeDefined()
-    })
-
-    it("renders with a StickyScrollHeader", () => {
-      expect(tree.root.findAllByType(FancyModalHeader)).toHaveLength(2)
-    })
-  })
-
   describe("Auction Result is not empty", () => {
     it("show the mid-estimate", () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
       resolveMostRecentRelayOperation({
         AuctionResult: () => mockAuctionResult,
+        Artist: () => ({
+          name: "banksy",
+          href: "/artist/banksy",
+        }),
       })
 
       expect(tree.root.findAllByType(AuctionResultsMidEstimate)[0].props.value).toEqual("262%")
@@ -88,6 +76,10 @@ describe("AuctionResult", () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
       resolveMostRecentRelayOperation({
         AuctionResult: () => mockAuctionResult,
+        Artist: () => ({
+          name: "banksy",
+          href: "/artist/banksy",
+        }),
       })
 
       expect(extractText(tree.root.findByProps({ testID: "saleDate" }))).toContain("Nov 18, 2021")
@@ -97,6 +89,10 @@ describe("AuctionResult", () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
       resolveMostRecentRelayOperation({
         AuctionResult: () => mockAuctionResult,
+        Artist: () => ({
+          name: "banksy",
+          href: "/artist/banksy",
+        }),
       })
 
       expect(tree.root.findAllByType(AuctionResultListItemFragmentContainer)).toHaveLength(3)
@@ -106,11 +102,16 @@ describe("AuctionResult", () => {
   const getZeroStateWrapper = () =>
     getWrapper({
       AuctionResult: () => ({
+        ...mockAuctionResult,
         boughtIn: true,
         priceRealized: {
           display: null,
           cents: 0,
         },
+      }),
+      Artist: () => ({
+        name: "banksy",
+        href: "/artist/banksy",
       }),
     })
 
