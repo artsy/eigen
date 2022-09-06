@@ -18,6 +18,7 @@ describe(CareerHighlightBottomSheetItem, () => {
       "Group Show": ["ArtMuseum"],
       "Solo Show": ["Penguin"],
       "Biennial Inclusion": ["Documenta"],
+      "National Pavillion": ["Pavillion"],
     }
     const { getByText } = renderWithHookWrappersTL(
       <CareerHighlightBottomSheetItem year={year} highlights={highlights} />,
@@ -27,6 +28,7 @@ describe(CareerHighlightBottomSheetItem, () => {
     expect(getByText("Group show at a major institution")).toBeDefined()
     expect(getByText("Reviewed by a major art publication")).toBeDefined()
     expect(getByText("Included in a major biennial")).toBeDefined()
+    expect(getByText("Included in a national pavillion")).toBeDefined()
   })
 
   it("renders the right section header title for each when more than one highlight", () => {
@@ -36,6 +38,7 @@ describe(CareerHighlightBottomSheetItem, () => {
       "Group Show": ["ArtMuseum", "ArtMuseumX"],
       "Solo Show": ["Penguin", "ArtMuseum"],
       "Biennial Inclusion": ["Documenta", "ArtMuseum"],
+      "National Pavillion": ["Pavillion", "Pav2"],
     }
     const { getByText } = renderWithHookWrappersTL(
       <CareerHighlightBottomSheetItem year={year} highlights={highlights} />,
@@ -45,5 +48,6 @@ describe(CareerHighlightBottomSheetItem, () => {
     expect(getByText("Group shows at major institutions")).toBeDefined()
     expect(getByText("Reviewed by major art publications")).toBeDefined()
     expect(getByText("Included in multiple major biennials")).toBeDefined()
+    expect(getByText("Included in multiple national pavillions")).toBeDefined()
   })
 })
