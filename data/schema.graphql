@@ -15929,6 +15929,7 @@ type User {
 
   # The sale profile of the user.
   saleProfile: UserSaleProfile
+  savedArtworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
 
   # If the user has enabled two-factor authentication on their account
   secondFactorEnabled: Boolean!
