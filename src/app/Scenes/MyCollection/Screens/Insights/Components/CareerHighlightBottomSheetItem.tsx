@@ -28,17 +28,20 @@ export const CareerHighlightBottomSheetItem: React.FC<CareerHighlightBottomSheet
   const headerAndBodyTuple = useMemo(() => Object.entries(highlights), [JSON.stringify(highlights)])
 
   return (
-    <BottomSheetScrollView showsVerticalScrollIndicator={false}>
-      <Flex flex={1} minWidth={dimensions.width} p={2}>
+    <Flex flex={1} minWidth={dimensions.width} p={2}>
+      <Flex pb={2}>
         <Text variant="lg">{year} Career Highlights</Text>
-        <Flex mt={2}>
+      </Flex>
+      {/** Flex wrap to allow horizontal scroll possible so the BottomSheetScrollView does not cover everywhere */}
+      <Flex flex={1} flexWrap="wrap">
+        <BottomSheetScrollView showsVerticalScrollIndicator={false}>
           {headerAndBodyTuple.map(([header, body], i) => (
             <SectionedHighlight key={header + i} header={header} body={body} />
           ))}
-        </Flex>
+          <Spacer p={6} />
+        </BottomSheetScrollView>
       </Flex>
-      <Spacer p={6} />
-    </BottomSheetScrollView>
+    </Flex>
   )
 }
 
