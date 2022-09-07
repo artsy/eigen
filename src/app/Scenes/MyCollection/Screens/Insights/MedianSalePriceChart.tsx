@@ -23,8 +23,6 @@ export const MedianSalePriceChart: React.FC = () => {
     onCategorySelected,
     onXAxisHighlightPressed,
     selectedCategory,
-    isDataAvailableForThreeYears,
-    isDataAvailableForEightYears,
   } = dataContext
 
   const { height: screenHeight, width: screenWidth } = useScreenDimensions()
@@ -65,36 +63,30 @@ export const MedianSalePriceChart: React.FC = () => {
             onXHighlightPressed={onXAxisHighlightPressed}
             selectedCategory={selectedCategory}
             yAxisTickFormatter={
-              !threeYearLineChartData.data.length || !isDataAvailableForThreeYears
-                ? () => "----"
-                : (val: number) => yAxisValueFormatter(val)
+              hasInsights ? (val: number) => yAxisValueFormatter(val) : () => "----"
             }
             // hide the year on xAxis
             xAxisTickFormatter={() => ""}
           />
-          {!threeYearLineChartData.data.length ||
-            (!isDataAvailableForThreeYears && (
-              <Flex
-                position="absolute"
-                justifyContent="center"
-                alignItems="center"
-                top={CHART_HEIGHT / 2}
-                width={CHART_WIDTH}
-              >
-                <Flex>
-                  <Text variant="sm" color="black60">
-                    {hasInsights
-                      ? "Incomplete data for the selected medium"
-                      : "No data currently available"}
-                  </Text>
-                  {!hasInsights && (
-                    <Text variant="sm" color="black60">
-                      Try a different timeframe or artist
-                    </Text>
-                  )}
-                </Flex>
+          {!hasInsights && (
+            <Flex
+              position="absolute"
+              justifyContent="center"
+              alignItems="center"
+              top={CHART_HEIGHT / 2}
+              width={CHART_WIDTH}
+            >
+              <Flex>
+                <Text variant="sm" color="black60">
+                  No data currently available
+                </Text>
+
+                <Text variant="sm" color="black60">
+                  Try a different timeframe or artist
+                </Text>
               </Flex>
-            ))}
+            </Flex>
+          )}
         </Flex>
       )}
 
@@ -117,36 +109,30 @@ export const MedianSalePriceChart: React.FC = () => {
             onXHighlightPressed={onXAxisHighlightPressed}
             selectedCategory={selectedCategory}
             yAxisTickFormatter={
-              !eightYearLineChartData.data.length || !isDataAvailableForEightYears
-                ? () => "----"
-                : (val: number) => yAxisValueFormatter(val)
+              hasInsights ? (val: number) => yAxisValueFormatter(val) : () => "----"
             }
             // hide the year on xAxis
             xAxisTickFormatter={() => ""}
           />
-          {!eightYearLineChartData.data.length ||
-            (!isDataAvailableForEightYears && (
-              <Flex
-                position="absolute"
-                justifyContent="center"
-                alignItems="center"
-                top={CHART_HEIGHT / 2}
-                width={CHART_WIDTH}
-              >
-                <Flex>
-                  <Text variant="sm" color="black60">
-                    {hasInsights
-                      ? "Incomplete data for the selected medium"
-                      : "No data currently available"}
-                  </Text>
-                  {!hasInsights && (
-                    <Text variant="sm" color="black60">
-                      Try a different timeframe or artist
-                    </Text>
-                  )}
-                </Flex>
+          {!hasInsights && (
+            <Flex
+              position="absolute"
+              justifyContent="center"
+              alignItems="center"
+              top={CHART_HEIGHT / 2}
+              width={CHART_WIDTH}
+            >
+              <Flex>
+                <Text variant="sm" color="black60">
+                  No data currently available
+                </Text>
+
+                <Text variant="sm" color="black60">
+                  Try a different timeframe or artist
+                </Text>
               </Flex>
-            ))}
+            </Flex>
+          )}
         </Flex>
       )}
     </Flex>
