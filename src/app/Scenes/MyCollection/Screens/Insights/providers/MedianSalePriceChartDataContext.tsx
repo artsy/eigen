@@ -36,8 +36,6 @@ interface MedianSalePriceChartDataContextValueType {
   selectedCategory: NonNullable<string>
   selectedDuration: MedianSalePriceChartDuration
   selectedXAxisHighlight: number | null
-  isDataAvailableForThreeYears: boolean
-  isDataAvailableForEightYears: boolean
 }
 
 const bands: Array<{ name: MedianSalePriceChartDuration }> = [
@@ -57,8 +55,6 @@ const initialValues: MedianSalePriceChartDataContextValueType = {
   onXAxisHighlightPressed: noop,
   selectedCategory: "",
   selectedXAxisHighlight: null,
-  isDataAvailableForThreeYears: false,
-  isDataAvailableForEightYears: false,
 }
 
 const MedianSalePriceChartDataContext =
@@ -222,8 +218,16 @@ export const MedianSalePriceChartDataContextProvider: React.FC<
       ? threeYearChartDataSourceRef.current
       : eightYearChartDataSourceRef.current
 
-  const deriveAvailableCategories = () =>
-    Object.keys(chartDataSourceForBand())?.map((medium) => medium)
+  const deriveAvailableCategories = () => {
+    const chartSourceForTimeFrame = chartDataSourceForBand()
+    return compact(
+      Object.keys(chartSourceForTimeFrame)?.map((medium) => {
+        if (chartSourceForTimeFrame[medium]?.some((value) => !!value.medianSalePrice)) {
+          return medium
+        }
+      })
+    )
+  }
 
   const initialCategories = computeCategoriesForChart(deriveAvailableCategories())
   const [categories, setCategories] =
@@ -480,7 +484,7 @@ export const MedianSalePriceChartDataContextProvider: React.FC<
     dataMeta: {
       title: threeYearTitle,
       description: selectedCategory ?? " ",
-      text: threeYearText,
+      text: threeYearText ?? " ",
       tintColor: dataTintColor,
     },
   }
@@ -490,22 +494,10 @@ export const MedianSalePriceChartDataContextProvider: React.FC<
     dataMeta: {
       title: eightYearTitle,
       description: selectedCategory ?? " ",
-      text: eightYearText,
+      text: eightYearText ?? " ",
       tintColor: dataTintColor,
     },
   }
-
-  // When all the median price is incomplete we use ones because d3 and Victory will crash
-  // when all the values are 0
-  const threeYearContainsAllOnes =
-    threeYearLineChartData.data.reduce((a, c) => a + c.y, 0) /
-      threeYearLineChartData.data.length ===
-    1
-
-  const eightYearContainsAllOnes =
-    eightYearLineChartData.data.reduce((a, c) => a + c.y, 0) /
-      eightYearLineChartData.data.length ===
-    1
 
   const values = {
     categories,
@@ -519,8 +511,6 @@ export const MedianSalePriceChartDataContextProvider: React.FC<
     selectedCategory: selectedCategoryRef.current,
     onXAxisHighlightPressed,
     selectedXAxisHighlight: tappedHighlightRef.current,
-    isDataAvailableForThreeYears: !threeYearContainsAllOnes,
-    isDataAvailableForEightYears: !eightYearContainsAllOnes,
   }
 
   return (
