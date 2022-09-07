@@ -199,7 +199,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
         photo
         video={false}
         audio={false}
-        isActive={isActive}
+        isActive={enableDebug ? true : isActive}
         onInitialized={onInitialized}
         onError={onCameraError}
       />
