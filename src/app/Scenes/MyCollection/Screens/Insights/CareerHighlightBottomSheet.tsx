@@ -17,6 +17,7 @@ export type CareerHighlightKindValueType =
   | "Group Show"
   | "Review"
   | "Biennial Inclusion"
+  | "National Pavillion"
 
 const CareerHighlightKind: { [key: string]: CareerHighlightKindValueType } = {
   "Solo Show": "Solo Show",
@@ -24,6 +25,7 @@ const CareerHighlightKind: { [key: string]: CareerHighlightKindValueType } = {
   "Reviewed Solo Show": "Review",
   "Reviewed Group Show": "Review",
   "Biennial Inclusion": "Biennial Inclusion",
+  "National Pavillion": "National Pavillion",
 }
 
 interface CareerHighlightBottomSheetProps {

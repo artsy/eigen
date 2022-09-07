@@ -1,5 +1,16 @@
+import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { uniq } from "lodash"
-import { Box, FairIcon, Flex, GroupIcon, PublicationIcon, SoloIcon, Text } from "palette"
+import {
+  ArtworkIcon,
+  Box,
+  FairIcon,
+  Flex,
+  GroupIcon,
+  PublicationIcon,
+  SoloIcon,
+  Spacer,
+  Text,
+} from "palette"
 import { useMemo } from "react"
 import { useScreenDimensions } from "shared/hooks"
 import { CareerHighlightKindValueType } from "../CareerHighlightBottomSheet"
@@ -18,11 +29,17 @@ export const CareerHighlightBottomSheetItem: React.FC<CareerHighlightBottomSheet
 
   return (
     <Flex flex={1} minWidth={dimensions.width} p={2}>
-      <Text variant="lg">{year} Career Highlights</Text>
-      <Flex mt={2}>
-        {headerAndBodyTuple.map(([header, body], i) => (
-          <SectionedHighlight key={header + i} header={header} body={body} />
-        ))}
+      <Flex pb={2}>
+        <Text variant="lg">{year} Career Highlights</Text>
+      </Flex>
+      {/** Flex wrap to allow horizontal scroll possible so the BottomSheetScrollView does not cover everywhere */}
+      <Flex flex={1} flexWrap="wrap">
+        <BottomSheetScrollView showsVerticalScrollIndicator={false}>
+          {headerAndBodyTuple.map(([header, body], i) => (
+            <SectionedHighlight key={header + i} header={header} body={body} />
+          ))}
+          <Spacer p={6} />
+        </BottomSheetScrollView>
       </Flex>
     </Flex>
   )
@@ -54,6 +71,18 @@ const SectionedHighlight: React.FC<{ header: string; body: string[] }> = ({ head
         text =
           bodyCount > 1 ? "Included in multiple major biennials" : "Included in a major biennial"
         IconComponent = <FairIcon />
+        break
+      case "National Pavillion":
+        text =
+          bodyCount > 1
+            ? "Included in multiple national pavillions"
+            : "Included in a national pavillion"
+        IconComponent = <FairIcon />
+        break
+      case "undefined":
+        // we don't know for now what new types may be added in the future
+        text = "Other"
+        IconComponent = <ArtworkIcon />
         break
       default:
     }

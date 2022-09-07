@@ -600,6 +600,7 @@ jest.mock("@gorhom/bottom-sheet", () => {
   return {
     __esModule: true,
     default: RN.View, // mocks the BottomSheet
+    BottomSheetScrollView: RN.ScrollView,
     namedExport: {
       ...require("react-native-reanimated/mock"),
       ...jest.requireActual("@gorhom/bottom-sheet"),
