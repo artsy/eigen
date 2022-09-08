@@ -4,11 +4,15 @@ import {
   MedianSalePriceAtAuctionQuery,
   MedianSalePriceAtAuctionQuery$data,
 } from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
+import { LegacyBackButtonContext } from "app/navigation/NavStack"
+import { isPad } from "app/utils/hardware"
 import { compact } from "lodash"
 import { Flex } from "palette"
-import { useCallback, useEffect, useMemo, useRef } from "react"
+import { useCallback, useContext, useEffect, useMemo, useRef } from "react"
+import { StatusBar } from "react-native"
 import { FlatList } from "react-native-gesture-handler"
 import { graphql, useRefetchableFragment } from "react-relay"
+import { useScreenDimensions } from "shared/hooks"
 import { CareerHighlightBottomSheetItem } from "./Components/CareerHighlightBottomSheetItem"
 import { useMedianSalePriceChartDataContext } from "./providers/MedianSalePriceChartDataContext"
 
@@ -17,7 +21,6 @@ export type CareerHighlightKindValueType =
   | "Group Show"
   | "Review"
   | "Biennial Inclusion"
-  | "National Pavillion"
 
 const CareerHighlightKind: { [key: string]: CareerHighlightKindValueType } = {
   "Solo Show": "Solo Show",
@@ -25,7 +28,7 @@ const CareerHighlightKind: { [key: string]: CareerHighlightKindValueType } = {
   "Reviewed Solo Show": "Review",
   "Reviewed Group Show": "Review",
   "Biennial Inclusion": "Biennial Inclusion",
-  "National Pavillion": "National Pavillion",
+  "National Pavillion": "Biennial Inclusion",
 }
 
 interface CareerHighlightBottomSheetProps {
@@ -41,6 +44,8 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
     MedianSalePriceAtAuctionQuery,
     CareerHighlightBottomSheet_query$key
   >(careerHighlighsBottomSheetFragment, queryData)
+
+  const backButtonContext = useContext(LegacyBackButtonContext)
 
   if (!data) {
     return null
@@ -95,11 +100,22 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
 
   const bottomSheetRef = useRef<BottomSheet>(null)
 
-  const snapPoints = useMemo(() => ["40%", "60%", "80%", "90%"], [])
+  const { height } = useScreenDimensions()
+
+  const points = isPad()
+    ? [height / 3.5, height / 2.5, height / 1.8]
+    : [height / 2.8, height / 2, height / 1.35]
+
+  const snapPoints = useMemo(() => points, [])
 
   const handleSheetChanges = useCallback((index: number) => {
     if (index === -1) {
+      backButtonContext.updateShouldHideBackButton(false)
+      StatusBar.setHidden(false, "slide")
       onXAxisHighlightPressed(null)
+    } else {
+      backButtonContext.updateShouldHideBackButton(true)
+      StatusBar.setHidden(true, "slide")
     }
   }, [])
 
