@@ -1,5 +1,5 @@
 import { formatLargeNumber } from "app/utils/formatLargeNumber"
-import { Flex, LineGraph, Text } from "palette"
+import { Flex, LineGraph, Text, useColor } from "palette"
 import { useScreenDimensions } from "shared/hooks"
 import {
   MedianSalePriceChartDuration,
@@ -7,6 +7,7 @@ import {
 } from "./providers/MedianSalePriceChartDataContext"
 
 export const MedianSalePriceChart: React.FC = () => {
+  const color = useColor()
   const dataContext = useMedianSalePriceChartDataContext()
   if (!dataContext) {
     return null
@@ -53,6 +54,7 @@ export const MedianSalePriceChart: React.FC = () => {
             chartWidth={CHART_WIDTH}
             chartInterpolation="monotoneX"
             showHighlights
+            highlightIconColor={color("yellow100")}
             data={threeYearLineChartData}
             bands={bands}
             onBandSelected={onBandSelected}
@@ -99,6 +101,7 @@ export const MedianSalePriceChart: React.FC = () => {
             chartWidth={CHART_WIDTH}
             chartInterpolation="monotoneX"
             showHighlights
+            highlightIconColor={color("yellow100")}
             data={eightYearLineChartData}
             bands={bands}
             onBandSelected={onBandSelected}

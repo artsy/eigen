@@ -33,6 +33,7 @@ interface LineGraphChartProps extends LineChartData {
   chartInterpolation?: InterpolationPropType
   dataTag?: string // optional tag to attach to data or events sent from this chart
   dataTagToSubscribeTo?: string
+  highlightIconColor?: string
   onDataPointPressed?: (datum: LineChartData["data"][0] | null) => void
   onXHighlightPressed?: (datum: { _x: number; _y: number; x: number; y: number }) => void
   onYHighlightPressed?: (datum: { _x: number; _y: number; x: number; y: number }) => void
@@ -56,6 +57,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
   chartInterpolation = "natural",
   dataTag,
   dataTagToSubscribeTo,
+  highlightIconColor,
   onDataPointPressed = noop,
   onXHighlightPressed = noop,
   shouldAnimate = true,
@@ -389,7 +391,11 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
                   dataTag={dataTag}
                   icon={
                     xHighlightIcon ?? (
-                      <StarCircleIcon fill={tintColor as Color} height={20} width={20} />
+                      <StarCircleIcon
+                        fill={(highlightIconColor || tintColor) as Color}
+                        height={20}
+                        width={20}
+                      />
                     )
                   }
                   onHighlightPressed={onHighlightOnXAxisPressed}
