@@ -15826,7 +15826,7 @@ type UpdateViewingRoomSubsectionsPayload {
 # The `Upload` scalar type represents a file upload.
 scalar Upload
 
-type User {
+type User implements Node {
   # The admin notes associated with the user
   adminNotes: [UserAdminNotes]!
   analytics: AnalyticsUserStats
