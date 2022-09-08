@@ -11400,6 +11400,9 @@ type Partner implements Node {
     displayOnPartnerProfile: Boolean
     hasNotRepresentedArtistWithPublishedArtworks: Boolean
     hasPublishedArtworks: Boolean
+
+    # Include additional fields on artists, requires authentication
+    includeAllFields: Boolean
     representedBy: Boolean
   ): ArtistPartnerConnection
   analytics: AnalyticsPartnerStats
@@ -11434,6 +11437,9 @@ type Partner implements Node {
   artworksConnection(
     after: String
 
+    # Return only artworks by this artist.
+    artistID: String
+
     # Return only artwork(s) included in this list of IDs.
     artworkIDs: [String]
     before: String
@@ -11444,6 +11450,9 @@ type Partner implements Node {
 
     # Return artworks that are missing priority metadata
     missingPriorityMetadata: Boolean
+
+    # If false return both published and unpublished artworks, requires auth
+    published: Boolean
 
     # Return artworks published less than x seconds ago.
     publishedWithin: Int
@@ -11570,6 +11579,9 @@ type Partner implements Node {
   showsConnection(
     after: String
 
+    # If present only return shows including the artist
+    artistID: String
+
     # True for only shows that are part of a fair, false for only shows not part of a fair, blank for all shows
     atAFair: Boolean
     before: String
@@ -11671,6 +11683,11 @@ type PartnerArtistCounts {
     label: String
   ): FormattedNumber
   forSaleArtworks(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  managedArtworks(
     # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
@@ -14627,7 +14644,7 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
   # Artists inside the show who do not have artworks present
   artistsWithoutArtworks: [Artist]
 
-  # The artworks featured in the show
+  # The artworks featured in the show.
   artworksConnection(
     after: String
     before: String
