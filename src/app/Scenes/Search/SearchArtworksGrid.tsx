@@ -7,14 +7,15 @@ import {
 } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { Artwork } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
-import VirtualizedMasonry from "app/Components/VirtualizedMasonry"
+import { Masonry } from "app/Components/VirtualizedMasonry"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { Box, quoteLeft, quoteRight, Text, useTheme } from "palette"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
+import { Dimensions } from "react-native"
 
 export interface SearchArtworksGridProps {
   viewer: SearchArtworksGrid_viewer$data
@@ -85,27 +86,28 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
           </Box>
         </Box>
       ) : (
-        <VirtualizedMasonry
+        <Masonry
           data={extractNodes(viewer.artworks!)}
-          gutter={20}
+          width={Dimensions.get("window").width - 2 * space(2)} // the two spaces are for the horizontal padding below.
           contentContainerStyle={{ paddingTop: space(2), paddingHorizontal: space(2) }}
-          renderItem={({ item }) => {
-            return (
-              <Artwork
-                artwork={item as any} // FIXME: Types are messed up here
-                key={"artwork-" + item.id + "-"}
-                // hideUrgencyTags={hideUrgencyTags}
-                // hidePartner={hidePartner}
-                // showLotLabel={showLotLabel}
-                // itemIndex={item.id}
-                // updateRecentSearchesOnTap={updateRecentSearchesOnTap}
-                {...item}
-              />
-            )
+          gutter={20}
+          renderItem={({ item }) => (
+            <Artwork
+              artwork={item as any} // FIXME: Types are messed up here
+              // hideUrgencyTags={hideUrgencyTags}
+              // hidePartner={hidePartner}
+              // showLotLabel={showLotLabel}
+              // itemIndex={item.id}
+              // updateRecentSearchesOnTap={updateRecentSearchesOnTap}
+              {...item}
+            />
+          )}
+          keyExtractor={({ id }) => id}
+          getBrickHeight={(item, brickWidth) => {
+            const textHeight = 80 /* thats a bad hardcode, but its roughly the size of the text that we usually have under the artwork */
+            return (brickWidth ?? 0) / (item.image?.aspectRatio ?? 1) + textHeight
           }}
           onEndReached={() => console.warn("reached")}
-          keyExtractor={({ id }) => id}
-          getBrickHeight={(_item, _brickWidth) => 500} // needs some more work
         />
       )}
     </>

@@ -3,7 +3,6 @@ import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artw
 import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-
 import { navigate } from "app/navigation/navigate"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
@@ -18,12 +17,10 @@ import {
   Flex,
   OpaqueImageView as NewOpaqueImageView,
   Spacer,
-  Text,
   TextProps,
   Touchable,
 } from "palette"
-import React, { useRef } from "react"
-import { View } from "react-native"
+import { Text } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { DurationProvider } from "../Countdown"
@@ -90,7 +87,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   partnerNameTextStyle,
   updateRecentSearchesOnTap = false,
 }) => {
-  const itemRef = useRef<any>()
   const tracking = useTracking()
   const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageView")
 
@@ -177,9 +173,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   return (
     <Touchable onPress={handleTap} testID={`artworkGridItem-${artwork.title}`}>
-      <View ref={itemRef}>
+      <Flex>
         {!!artwork.image && (
-          <View>
+          <Flex>
             {enableNewOpaqueImageView ? (
               <NewOpaqueImageView
                 aspectRatio={artwork.image?.aspectRatio ?? 1}
@@ -211,7 +207,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                 </Text>
               </Flex>
             )}
-          </View>
+          </Flex>
         )}
         {!!canShowAuctionProgressBar && (
           <Box mt={1}>
@@ -295,7 +291,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
             </Text>
           )}
         </Box>
-      </View>
+      </Flex>
     </Touchable>
   )
 }

@@ -3,12 +3,23 @@ import { useMemo } from "react"
 import { Dimensions, FlatList, FlatListProps } from "react-native"
 
 type MasonryProps<ItemT> = {
-  gutter?: number
   width?: number
   getBrickHeight(item: ItemT, brickWidth?: number): number
+  gutter?: number
 } & FlatListProps<ItemT>
 
-export default function Masonry<ItemT>({
+type Brick<ItemT> = {
+  item: ItemT
+  height: number
+}
+
+type Row<ItemT> = {
+  brick: Brick<ItemT>
+  columnIndex: number
+  height: number
+}
+
+export function Masonry<ItemT>({
   numColumns = 2,
   gutter = 0,
   width = Dimensions.get("screen").width,
@@ -19,26 +30,32 @@ export default function Masonry<ItemT>({
   ...otherProps
 }: MasonryProps<ItemT>) {
   const columns = useMemo(() => Array.from({ length: numColumns }), [numColumns])
-  const brickData = useMemo(
+
+  const brickWidth = useMemo(
+    () => (width - (numColumns - 1) * gutter) / numColumns,
+    [width, numColumns, gutter]
+  )
+
+  const brickData: Array<Brick<ItemT>> = useMemo(
     () =>
       data
         ? data.map((i) => ({
-            ...i,
-            height: getBrickHeight(i, width ? (width + gutter) / numColumns - gutter : undefined),
+            item: i,
+            height: getBrickHeight(i, (width + gutter) / numColumns - gutter),
           }))
         : [],
     [data, width, gutter, numColumns]
   )
 
-  const rowData = useMemo(() => {
+  const rowData: Array<Row<ItemT>> = useMemo(() => {
     const columnsHeight = columns.map(() => 0)
 
-    return brickData.map((item, index, arr) => {
+    return brickData.map((brick, index, arr) => {
       const isLast = index === arr.length - 1
       const currentMinHeight = Math.min(...columnsHeight)
-      const columnNum = columnsHeight.indexOf(currentMinHeight)
+      const columnIndex = columnsHeight.indexOf(currentMinHeight)
 
-      columnsHeight[columnNum] = columnsHeight[columnNum] + item.height + gutter
+      columnsHeight[columnIndex] = columnsHeight[columnIndex] + brick.height + gutter
 
       const afterMinHeight = Math.min(...columnsHeight)
       const afterMaxHeight = Math.max(...columnsHeight)
@@ -46,8 +63,8 @@ export default function Masonry<ItemT>({
 
       return {
         height: rowHeight,
-        item,
-        columnNum,
+        brick,
+        columnIndex,
       }
     })
   }, [brickData, columns, gutter])
@@ -57,40 +74,36 @@ export default function Masonry<ItemT>({
       {...otherProps}
       CellRendererComponent={(props) => <Flex pointerEvents="box-none">{props.children}</Flex>}
       data={rowData}
-      renderItem={({ item, index, separators }) => (
+      renderItem={({ item: row, index, separators }) => (
         <Flex
           pointerEvents="box-none"
-          style={{
-            height: item.height,
-            flexDirection: "row",
-            marginHorizontal: gutter / -2,
-            marginTop: index < numColumns ? gutter / -2 : 0,
-            marginBottom: index === rowData.length - 1 ? gutter / -2 : 0,
-          }}
+          height={row.height}
+          flexDirection="row"
+          mx={gutter / -2}
+          mt={index < numColumns ? gutter / -2 : 0}
+          mb={index === rowData.length - 1 ? gutter / -2 : 0}
         >
           {columns.map((_val, i) => (
             <Flex key={`${index}-${i}`} pointerEvents="box-none" flex={1} p={gutter / 2}>
-              {i === item.columnNum && renderItem
-                ? renderItem({ item: item.item, index, separators })
-                : null}
+              {i === row.columnIndex && renderItem ? (
+                <Flex width={brickWidth} height={row.brick.height}>
+                  {renderItem({ item: row.brick.item, index, separators })}
+                </Flex>
+              ) : null}
             </Flex>
           ))}
         </Flex>
       )}
-      getItemLayout={(d, i) =>
-        d
+      getItemLayout={(data, i) =>
+        data
           ? {
-              length: d[i].height,
-              offset: d.slice(0, i).reduce((sum, val) => sum + val.height, 0),
+              length: data[i].height,
+              offset: data.slice(0, i).reduce((sum, row) => sum + row.height, 0),
               index: i,
             }
-          : {
-              length: 0,
-              offset: 0,
-              index: i,
-            }
+          : { length: 0, offset: 0, index: i }
       }
-      keyExtractor={keyExtractor ? (item, index) => keyExtractor(item.item, index) : undefined}
+      keyExtractor={keyExtractor ? (row, index) => keyExtractor(row.brick.item, index) : undefined}
       getItem={undefined}
     />
   )
