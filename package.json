@@ -308,7 +308,7 @@
     "tslint-config-prettier": "1.18.0",
     "tslint-plugin-relay": "0.0.3",
     "tslint-react": "5.0.0",
-    "typescript": "4.8.2",
+    "typescript": "4.8.3",
     "vscode-apollo-relay": "1.5.2"
   },
   "lint-staged": {
