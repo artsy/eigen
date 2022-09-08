@@ -72,13 +72,6 @@ const SectionedHighlight: React.FC<{ header: string; body: string[] }> = ({ head
           bodyCount > 1 ? "Included in multiple major biennials" : "Included in a major biennial"
         IconComponent = <FairIcon />
         break
-      case "National Pavillion":
-        text =
-          bodyCount > 1
-            ? "Included in multiple national pavillions"
-            : "Included in a national pavillion"
-        IconComponent = <FairIcon />
-        break
       case "undefined":
         // we don't know for now what new types may be added in the future
         text = "Other"
