@@ -1,24 +1,25 @@
+import { ActionType, OwnerType, SelectedArtworkFromReverseImageSearch } from "@artsy/cohesion"
 import { ReverseImageArtworksRail$key } from "__generated__/ReverseImageArtworksRail.graphql"
 import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
+import { SearchImageHeaderButtonOwner } from "app/Components/SearchImageHeaderButton"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Flex, Text } from "palette"
 import { graphql, useFragment } from "react-relay"
-import { RouteProp, useRoute } from "@react-navigation/native"
 import { useTracking } from "react-tracking"
-import { ActionType, OwnerType, SelectedArtworkFromReverseImageSearch } from "@artsy/cohesion"
-import { ReverseImageNavigationStack } from "../../types"
 
 interface ReverseImageArtworksRailProps {
   artworks: ReverseImageArtworksRail$key
+  owner: SearchImageHeaderButtonOwner
 }
 
-export const ReverseImageArtworksRail: React.FC<ReverseImageArtworksRailProps> = (props) => {
-  const route = useRoute<RouteProp<ReverseImageNavigationStack, "MultipleResults">>()
-  const { owner } = route.params
+export const ReverseImageArtworksRail: React.FC<ReverseImageArtworksRailProps> = ({
+  artworks,
+  owner,
+}) => {
   const tracking = useTracking()
-  const data = useFragment(reverseImageArtworksRailFragment, props.artworks)
-  const artworks = extractNodes(data)
+  const data = useFragment(reverseImageArtworksRailFragment, artworks)
+  const nodes = extractNodes(data)
 
   return (
     <Flex>
@@ -27,7 +28,7 @@ export const ReverseImageArtworksRail: React.FC<ReverseImageArtworksRailProps> =
       </Text>
 
       <SmallArtworkRail
-        artworks={artworks}
+        artworks={nodes}
         onPress={(artwork, index) => {
           const event: SelectedArtworkFromReverseImageSearch = {
             action: ActionType.selectedArtworkFromReverseImageSearch,
@@ -38,7 +39,7 @@ export const ReverseImageArtworksRail: React.FC<ReverseImageArtworksRailProps> =
             owner_type: owner.type,
             owner_id: owner.id,
             owner_slug: owner.slug,
-            total_matches_count: artworks.length,
+            total_matches_count: nodes.length,
             position: index,
           }
 
