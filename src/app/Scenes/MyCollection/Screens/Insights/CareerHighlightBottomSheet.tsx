@@ -102,6 +102,7 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
 
   const { height } = useScreenDimensions()
 
+  // the height here is divided by constants that seems good on device. Feel free to change them.
   const points = isPad()
     ? [height / 3.5, height / 2.5, height / 1.8]
     : [height / 2.8, height / 2, height / 1.35]
