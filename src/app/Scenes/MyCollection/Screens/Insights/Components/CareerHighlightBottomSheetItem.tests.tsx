@@ -45,6 +45,5 @@ describe(CareerHighlightBottomSheetItem, () => {
     expect(getByText("Group shows at major institutions")).toBeDefined()
     expect(getByText("Reviewed by major art publications")).toBeDefined()
     expect(getByText("Included in multiple major biennials")).toBeDefined()
-    expect(getByText("Included in multiple national pavillions")).toBeDefined()
   })
 })
