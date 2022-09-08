@@ -1,4 +1,4 @@
-import { SearchImageHeaderButtonOwner } from "app/Components/SearchImageHeaderButton"
+import { OwnerType } from "@artsy/cohesion"
 
 export interface PhotoEntity {
   path: string
@@ -12,21 +12,27 @@ export interface FocusCoords {
   y: number
 }
 
+export interface ReverseImageOwner {
+  id: string
+  slug: string
+  type: OwnerType
+}
+
 // tslint:disable-next-line:interface-over-type-literal
 export type ReverseImageNavigationStack = {
   Camera: {
-    owner: SearchImageHeaderButtonOwner
+    owner: ReverseImageOwner
   }
   MultipleResults: {
     photoPath: string
     artworkIDs: string[]
-    owner: SearchImageHeaderButtonOwner
+    owner: ReverseImageOwner
   }
   ArtworkNotFound: {
     photoPath: string
   }
   Preview: {
     photo: PhotoEntity
-    owner: SearchImageHeaderButtonOwner
+    owner: ReverseImageOwner
   }
 }

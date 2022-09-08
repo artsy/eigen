@@ -1,5 +1,6 @@
 import { ActionType, OwnerType, TappedReverseImageSearch } from "@artsy/cohesion"
 import { navigate } from "app/navigation/navigate"
+import { ReverseImageOwner } from "app/Scenes/ReverseImage/types"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { AddIcon, Box } from "palette"
 import { TouchableOpacity } from "react-native"
@@ -9,15 +10,9 @@ import { useScreenDimensions } from "shared/hooks"
 const CAMERA_ICON_CONTAINER_SIZE = 40
 const CAMERA_ICON_SIZE = 20
 
-export interface SearchImageHeaderButtonOwner {
-  id: string
-  slug: string
-  type: OwnerType
-}
-
 export interface SearchImageHeaderButtonProps {
   isImageSearchButtonVisible: boolean
-  owner: SearchImageHeaderButtonOwner
+  owner: ReverseImageOwner
 }
 
 export const SearchImageHeaderButton: React.FC<SearchImageHeaderButtonProps> = ({

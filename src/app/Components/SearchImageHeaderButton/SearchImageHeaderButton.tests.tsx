@@ -1,13 +1,10 @@
 import { OwnerType } from "@artsy/cohesion"
 import { fireEvent } from "@testing-library/react-native"
+import { ReverseImageOwner } from "app/Scenes/ReverseImage/types"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import {
-  SearchImageHeaderButton,
-  SearchImageHeaderButtonOwner,
-  SearchImageHeaderButtonProps,
-} from "./SearchImageHeaderButton"
+import { SearchImageHeaderButton, SearchImageHeaderButtonProps } from "./SearchImageHeaderButton"
 
 describe("SearchImageHeaderButton", () => {
   const TestRenderer = (props: Partial<SearchImageHeaderButtonProps>) => (
@@ -58,7 +55,7 @@ describe("SearchImageHeaderButton", () => {
   })
 })
 
-const defaultOwner: SearchImageHeaderButtonOwner = {
+const defaultOwner: ReverseImageOwner = {
   type: OwnerType.fair,
   id: "owner-id",
   slug: "owner-slug",

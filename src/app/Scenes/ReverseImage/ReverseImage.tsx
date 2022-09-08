@@ -5,16 +5,15 @@ import {
   DEFAULT_NAVIGATION_BAR_COLOR,
 } from "app/NativeModules/ArtsyNativeModule"
 import { useCallback, useEffect } from "react"
-import { SearchImageHeaderButtonOwner } from "app/Components/SearchImageHeaderButton"
 import { Platform, StatusBar } from "react-native"
 import { ReverseImageArtworkNotFoundScreen } from "./Screens/ArtworkNotFound/ReverseImageArtworkNotFoundScreen"
 import { ReverseImageCameraScreen } from "./Screens/Camera/ReverseImageCamera"
 import { ReverseImageMultipleResultsScreen } from "./Screens/MultipleResults/ReverseImageMultipleResults"
 import { ReverseImagePreviewScreen } from "./Screens/Preview/ReverseImagePreview"
-import { ReverseImageNavigationStack } from "./types"
+import { ReverseImageNavigationStack, ReverseImageOwner } from "./types"
 
 interface ReverseImageProps {
-  owner: SearchImageHeaderButtonOwner
+  owner: ReverseImageOwner
 }
 
 const Stack = createStackNavigator<ReverseImageNavigationStack>()
