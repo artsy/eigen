@@ -30,20 +30,15 @@ export const ReverseImageArtworksRail: React.FC<ReverseImageArtworksRailProps> =
       <SmallArtworkRail
         artworks={nodes}
         onPress={(artwork, index) => {
-          const event: SelectedArtworkFromReverseImageSearch = {
-            action: ActionType.selectedArtworkFromReverseImageSearch,
-            context_screen_owner_type: OwnerType.reverseImageSearch,
-            destination_owner_type: OwnerType.artwork,
-            destination_owner_id: artwork.internalID,
-            destination_owner_slug: artwork.slug,
-            owner_type: owner.type,
-            owner_id: owner.id,
-            owner_slug: owner.slug,
-            total_matches_count: nodes.length,
-            position: index,
-          }
-
-          tracking.trackEvent(event)
+          tracking.trackEvent(
+            tracks.selectedArtworkFromReverseImageSearch({
+              owner,
+              position: index,
+              artworkId: artwork.internalID,
+              artworkSlug: artwork.slug,
+              totalMatchesCount: nodes.length,
+            })
+          )
           navigate(`/artwork/${artwork.internalID}`)
         }}
       />
@@ -60,3 +55,32 @@ const reverseImageArtworksRailFragment = graphql`
     }
   }
 `
+
+interface SelectedArtworkEventData {
+  owner: ReverseImageOwner
+  artworkId: string
+  artworkSlug: string
+  position: number
+  totalMatchesCount: number
+}
+
+const tracks = {
+  selectedArtworkFromReverseImageSearch: ({
+    owner,
+    artworkId,
+    artworkSlug,
+    position,
+    totalMatchesCount,
+  }: SelectedArtworkEventData): SelectedArtworkFromReverseImageSearch => ({
+    action: ActionType.selectedArtworkFromReverseImageSearch,
+    context_screen_owner_type: OwnerType.reverseImageSearch,
+    destination_owner_type: OwnerType.artwork,
+    destination_owner_id: artworkId,
+    destination_owner_slug: artworkSlug,
+    owner_type: owner.type,
+    owner_id: owner.id,
+    owner_slug: owner.slug,
+    total_matches_count: totalMatchesCount,
+    position,
+  }),
+}

@@ -1,4 +1,4 @@
-import { OwnerType } from "@artsy/cohesion"
+import { ScreenOwnerType } from "@artsy/cohesion"
 
 export interface PhotoEntity {
   path: string
@@ -15,7 +15,7 @@ export interface FocusCoords {
 export interface ReverseImageOwner {
   id: string
   slug: string
-  type: OwnerType
+  type: ScreenOwnerType
 }
 
 // tslint:disable-next-line:interface-over-type-literal

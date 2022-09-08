@@ -27,15 +27,7 @@ export const SearchImageHeaderButton: React.FC<SearchImageHeaderButtonProps> = (
   }
 
   const handleSearchPress = () => {
-    const event: TappedReverseImageSearch = {
-      action: ActionType.tappedReverseImageSearch,
-      context_screen_owner_type: OwnerType.reverseImageSearch,
-      owner_type: owner.type,
-      owner_id: owner.id,
-      owner_slug: owner.slug,
-    }
-
-    tracking.trackEvent(event)
+    tracking.trackEvent(tracks.tappedReverseImageSearch(owner))
     navigate("/reverse-image", {
       passProps: {
         owner,
@@ -67,4 +59,14 @@ export const SearchImageHeaderButton: React.FC<SearchImageHeaderButtonProps> = (
       </Box>
     </TouchableOpacity>
   )
+}
+
+const tracks = {
+  tappedReverseImageSearch: (owner: ReverseImageOwner): TappedReverseImageSearch => ({
+    action: ActionType.tappedReverseImageSearch,
+    context_screen_owner_type: OwnerType.reverseImageSearch,
+    owner_type: owner.type,
+    owner_id: owner.id,
+    owner_slug: owner.slug,
+  }),
 }

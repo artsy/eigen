@@ -1,8 +1,8 @@
 import {
   ActionType,
   OwnerType,
-  TappedToggleCameraFlash,
   TappedPickImageFromLibrary,
+  TappedToggleCameraFlash,
 } from "@artsy/cohesion"
 import { useIsFocused } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
@@ -25,7 +25,7 @@ import { Background, BACKGROUND_COLOR } from "../../Components/Background"
 import { CameraFramesContainer } from "../../Components/CameraFramesContainer"
 import { HeaderContainer } from "../../Components/HeaderContainer"
 import { HeaderTitle } from "../../Components/HeaderTitle"
-import { FocusCoords, ReverseImageNavigationStack } from "../../types"
+import { FocusCoords, ReverseImageNavigationStack, ReverseImageOwner } from "../../types"
 import { CAMERA_BUTTONS_HEIGHT, CameraButtons } from "./Components/CameraButtons"
 import { CameraErrorState } from "./Components/CameraErrorState"
 import { CameraGrantPermissions } from "./Components/CameraGrantPermissions"
@@ -98,15 +98,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   }
 
   const toggleFlash = () => {
-    const event: TappedToggleCameraFlash = {
-      action: ActionType.tappedToggleCameraFlash,
-      context_screen_owner_type: OwnerType.reverseImageSearch,
-      owner_type: owner.type,
-      owner_id: owner.id,
-      owner_slug: owner.slug,
-    }
-
-    tracking.trackEvent(event)
+    tracking.trackEvent(tracks.tappedToggleCameraFlash(owner))
     setEnableFlash(!enableFlash)
   }
 
@@ -159,15 +151,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
 
   const selectPhotosFromLibrary = async () => {
     try {
-      const event: TappedPickImageFromLibrary = {
-        action: ActionType.tappedPickImageFromLibrary,
-        context_screen_owner_type: OwnerType.reverseImageSearch,
-        owner_type: owner.type,
-        owner_id: owner.id,
-        owner_slug: owner.slug,
-      }
-
-      tracking.trackEvent(event)
+      tracking.trackEvent(tracks.tappedPickImageFromLibrary(owner))
       const images = await requestPhotos(false)
 
       /**
@@ -181,6 +165,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
       const image = images[0]
 
       navigation.navigate("Preview", {
+        owner,
         photo: {
           path: image.path,
           width: image.width,
@@ -292,4 +277,21 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
       </Flex>
     </Flex>
   )
+}
+
+const tracks = {
+  tappedToggleCameraFlash: (owner: ReverseImageOwner): TappedToggleCameraFlash => ({
+    action: ActionType.tappedToggleCameraFlash,
+    context_screen_owner_type: OwnerType.reverseImageSearch,
+    owner_type: owner.type,
+    owner_id: owner.id,
+    owner_slug: owner.slug,
+  }),
+  tappedPickImageFromLibrary: (owner: ReverseImageOwner): TappedPickImageFromLibrary => ({
+    action: ActionType.tappedPickImageFromLibrary,
+    context_screen_owner_type: OwnerType.reverseImageSearch,
+    owner_type: owner.type,
+    owner_id: owner.id,
+    owner_slug: owner.slug,
+  }),
 }
