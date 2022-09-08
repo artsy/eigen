@@ -1,3 +1,9 @@
+import {
+  ActionType,
+  OwnerType,
+  SearchedReverseImageWithNoResults,
+  SearchedReverseImageWithResults,
+} from "@artsy/cohesion"
 import { StackScreenProps } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
 import { navigate } from "app/navigation/navigate"
@@ -6,6 +12,7 @@ import { compact } from "lodash"
 import { BackButton, Flex } from "palette"
 import { useEffect } from "react"
 import { Alert, Image, StyleSheet } from "react-native"
+import { useTracking } from "react-tracking"
 import { Background } from "../../Components/Background"
 import { CameraFramesContainer } from "../../Components/CameraFramesContainer"
 import { HeaderContainer } from "../../Components/HeaderContainer"
@@ -17,7 +24,8 @@ type Props = StackScreenProps<ReverseImageNavigationStack, "Preview">
 
 export const ReverseImagePreviewScreen: React.FC<Props> = (props) => {
   const { navigation, route } = props
-  const { photo } = route.params
+  const { photo, owner } = route.params
+  const tracking = useTracking()
   const { handleSearchByImage } = useImageSearch()
 
   const handleGoBack = () => {
@@ -29,10 +37,31 @@ export const ReverseImagePreviewScreen: React.FC<Props> = (props) => {
       const results = await handleSearchByImage(photo)
 
       if (results.length === 0) {
+        const event: SearchedReverseImageWithNoResults = {
+          action: ActionType.searchedReverseImageWithNoResults,
+          context_screen_owner_type: OwnerType.reverseImageSearch,
+          owner_type: owner.type,
+          owner_id: owner.id,
+          owner_slug: owner.slug,
+        }
+
+        tracking.trackEvent(event)
         return navigation.replace("ArtworkNotFound", {
           photoPath: photo.path,
         })
       }
+
+      const event: SearchedReverseImageWithResults = {
+        action: ActionType.searchedReverseImageWithResults,
+        context_screen_owner_type: OwnerType.reverseImageSearch,
+        owner_type: owner.type,
+        owner_id: owner.id,
+        owner_slug: owner.slug,
+        total_matches_count: results.length,
+        artwork_ids: results.join(","),
+      }
+
+      tracking.trackEvent(event)
 
       if (results.length === 1) {
         await navigate(`/artwork/${results[0]!.artwork!.internalID}`)
@@ -41,6 +70,7 @@ export const ReverseImagePreviewScreen: React.FC<Props> = (props) => {
 
       const artworkIDs = compact(results.map((result) => result?.artwork?.internalID))
       navigation.replace("MultipleResults", {
+        owner,
         photoPath: photo.path,
         artworkIDs,
       })

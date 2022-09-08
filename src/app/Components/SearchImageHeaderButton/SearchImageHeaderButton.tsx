@@ -1,19 +1,30 @@
+import { ActionType, OwnerType, TappedReverseImageSearch } from "@artsy/cohesion"
 import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { AddIcon, Box } from "palette"
 import { TouchableOpacity } from "react-native"
+import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
 
 const CAMERA_ICON_CONTAINER_SIZE = 40
 const CAMERA_ICON_SIZE = 20
 
-interface SearchImageHeaderButtonProps {
+export interface SearchImageHeaderButtonOwner {
+  id: string
+  slug: string
+  type: OwnerType
+}
+
+export interface SearchImageHeaderButtonProps {
   isImageSearchButtonVisible: boolean
+  owner: SearchImageHeaderButtonOwner
 }
 
 export const SearchImageHeaderButton: React.FC<SearchImageHeaderButtonProps> = ({
   isImageSearchButtonVisible,
+  owner,
 }) => {
+  const tracking = useTracking()
   const isImageSearchEnabled = useFeatureFlag("AREnableImageSearch")
 
   if (!isImageSearchButtonVisible || !isImageSearchEnabled) {
@@ -21,7 +32,20 @@ export const SearchImageHeaderButton: React.FC<SearchImageHeaderButtonProps> = (
   }
 
   const handleSearchPress = () => {
-    return navigate("/reverse-image")
+    const event: TappedReverseImageSearch = {
+      action: ActionType.tappedReverseImageSearch,
+      context_screen_owner_type: OwnerType.reverseImageSearch,
+      owner_type: owner.type,
+      owner_id: owner.id,
+      owner_slug: owner.slug,
+    }
+
+    tracking.trackEvent(event)
+    navigate("/reverse-image", {
+      passProps: {
+        owner,
+      },
+    })
   }
 
   return (

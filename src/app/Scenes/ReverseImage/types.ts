@@ -1,3 +1,5 @@
+import { SearchImageHeaderButtonOwner } from "app/Components/SearchImageHeaderButton"
+
 export interface PhotoEntity {
   path: string
   width: number
@@ -12,15 +14,19 @@ export interface FocusCoords {
 
 // tslint:disable-next-line:interface-over-type-literal
 export type ReverseImageNavigationStack = {
-  Camera: undefined
+  Camera: {
+    owner: SearchImageHeaderButtonOwner
+  }
   MultipleResults: {
     photoPath: string
     artworkIDs: string[]
+    owner: SearchImageHeaderButtonOwner
   }
   ArtworkNotFound: {
     photoPath: string
   }
   Preview: {
     photo: PhotoEntity
+    owner: SearchImageHeaderButtonOwner
   }
 }
