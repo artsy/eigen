@@ -11446,13 +11446,13 @@ type Partner implements Node {
     exclude: [String]
     first: Int
     forSale: Boolean
+
+    # If true return both published and unpublished artworks, requires auth
+    includeUnpublished: Boolean
     last: Int
 
     # Return artworks that are missing priority metadata
     missingPriorityMetadata: Boolean
-
-    # If false return both published and unpublished artworks, requires auth
-    published: Boolean
 
     # Return artworks published less than x seconds ago.
     publishedWithin: Int
