@@ -40,7 +40,7 @@ const filterToastsAndPosition = (
       { idx: 0, arr: [] }
     ).arr
 
-export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
+export const ToastProvider = ({ children }: { children?: React.ReactNode }) => {
   const toasts = GlobalStore.useAppState((store) => store.toast.sessionState.toasts)
 
   const topToasts = useMemo(() => filterToastsAndPosition(toasts, "top"), [toasts])
