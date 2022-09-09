@@ -254,7 +254,6 @@
 		CBE3269227E275A300395A93 /* ARAppNotificationsDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249827E275A100395A93 /* ARAppNotificationsDelegate.m */; };
 		CBE3269327E275A300395A93 /* ARAppStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249A27E275A100395A93 /* ARAppStatus.m */; };
 		CBE3269427E275A300395A93 /* ARAnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249B27E275A100395A93 /* ARAnalyticsConstants.m */; };
-		CBE3269527E275A300395A93 /* ARModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249D27E275A100395A93 /* ARModalViewController.m */; };
 		CBE3269627E275A300395A93 /* ArtsyEcho.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249F27E275A100395A93 /* ArtsyEcho.m */; };
 		CBE3269727E275A300395A93 /* ARApplicationShortcutItemDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324A127E275A100395A93 /* ARApplicationShortcutItemDelegate.m */; };
 		CBE3269827E275A300395A93 /* ARAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324A227E275A100395A93 /* ARAppDelegate.m */; };
@@ -1021,7 +1020,6 @@
 		CBE3249A27E275A100395A93 /* ARAppStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppStatus.m; sourceTree = "<group>"; };
 		CBE3249B27E275A100395A93 /* ARAnalyticsConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAnalyticsConstants.m; sourceTree = "<group>"; };
 		CBE3249C27E275A100395A93 /* ARAppDelegate+Echo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegate+Echo.h"; sourceTree = "<group>"; };
-		CBE3249D27E275A100395A93 /* ARModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARModalViewController.m; sourceTree = "<group>"; };
 		CBE3249E27E275A100395A93 /* AROptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROptions.h; sourceTree = "<group>"; };
 		CBE3249F27E275A100395A93 /* ArtsyEcho.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArtsyEcho.m; sourceTree = "<group>"; };
 		CBE324A027E275A100395A93 /* ARAppDelegate+Emission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegate+Emission.h"; sourceTree = "<group>"; };
@@ -1042,7 +1040,6 @@
 		CBE324B027E275A100395A93 /* ARAppDelegate+Emission.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARAppDelegate+Emission.m"; sourceTree = "<group>"; };
 		CBE324B127E275A100395A93 /* ArtsyEcho.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArtsyEcho.h; sourceTree = "<group>"; };
 		CBE324B227E275A100395A93 /* AROptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROptions.m; sourceTree = "<group>"; };
-		CBE324B327E275A100395A93 /* ARModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARModalViewController.h; sourceTree = "<group>"; };
 		CBE324B427E275A100395A93 /* ARFonts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFonts.h; sourceTree = "<group>"; };
 		CBE324B527E275A100395A93 /* EchoNew.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = EchoNew.json; sourceTree = "<group>"; };
 		CBE324B627E275A100395A93 /* ARUserActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserActivity.m; sourceTree = "<group>"; };
@@ -2664,7 +2661,6 @@
 				CBE3249A27E275A100395A93 /* ARAppStatus.m */,
 				CBE3249B27E275A100395A93 /* ARAnalyticsConstants.m */,
 				CBE3249C27E275A100395A93 /* ARAppDelegate+Echo.h */,
-				CBE3249D27E275A100395A93 /* ARModalViewController.m */,
 				CBE3249E27E275A100395A93 /* AROptions.h */,
 				CBE3249F27E275A100395A93 /* ArtsyEcho.m */,
 				CBE324A027E275A100395A93 /* ARAppDelegate+Emission.h */,
@@ -2685,7 +2681,6 @@
 				CBE324B027E275A100395A93 /* ARAppDelegate+Emission.m */,
 				CBE324B127E275A100395A93 /* ArtsyEcho.h */,
 				CBE324B227E275A100395A93 /* AROptions.m */,
-				CBE324B327E275A100395A93 /* ARModalViewController.h */,
 				CBE324B427E275A100395A93 /* ARFonts.h */,
 				CBE324B527E275A100395A93 /* EchoNew.json */,
 				CBE324B627E275A100395A93 /* ARUserActivity.m */,
@@ -4135,7 +4130,6 @@
 				1A4B97BE283CDD5A00878EAE /* ARScrollViewHelpers.m in Sources */,
 				CBE326B227E275A300395A93 /* LiveAuctionLotSetViewController.swift in Sources */,
 				1A4B97C1283CDD5A00878EAE /* ARTemporaryAPIModule.m in Sources */,
-				CBE3269527E275A300395A93 /* ARModalViewController.m in Sources */,
 				CBE326D627E275A300395A93 /* AuctionSaleNetworkModel.swift in Sources */,
 				CBE3278227E275A400395A93 /* ARRouter+GraphQL.m in Sources */,
 				CBE326D227E275A300395A93 /* AuctionBiddersNetworkModel.swift in Sources */,
