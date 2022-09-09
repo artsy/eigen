@@ -56,6 +56,9 @@ export const ReverseImage = () => {
           headerShown: false,
           headerMode: "screen",
           animationTypeForReplace: "push",
+          cardStyle: {
+            backgroundColor: "#000",
+          },
         }}
       >
         <Stack.Screen name="Camera" component={ReverseImageCameraScreen} />
