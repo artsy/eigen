@@ -1,3 +1,9 @@
+import {
+  ActionType,
+  OwnerType,
+  TappedPickImageFromLibrary,
+  TappedToggleCameraFlash,
+} from "@artsy/cohesion"
 import { useIsFocused } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
@@ -14,11 +20,12 @@ import {
   CameraRuntimeError,
   useCameraDevices,
 } from "react-native-vision-camera"
+import { useTracking } from "react-tracking"
 import { Background, BACKGROUND_COLOR } from "../../Components/Background"
 import { CameraFramesContainer } from "../../Components/CameraFramesContainer"
 import { HeaderContainer } from "../../Components/HeaderContainer"
 import { HeaderTitle } from "../../Components/HeaderTitle"
-import { FocusCoords, ReverseImageNavigationStack } from "../../types"
+import { FocusCoords, ReverseImageNavigationStack, ReverseImageOwner } from "../../types"
 import { CAMERA_BUTTONS_HEIGHT, CameraButtons } from "./Components/CameraButtons"
 import { CameraErrorState } from "./Components/CameraErrorState"
 import { CameraGrantPermissions } from "./Components/CameraGrantPermissions"
@@ -29,7 +36,9 @@ type Props = StackScreenProps<ReverseImageNavigationStack, "Camera">
 const HIDE_FOCUS_TIMEOUT = 400
 
 export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
-  const { navigation } = props
+  const { navigation, route } = props
+  const { owner } = route.params
+  const tracking = useTracking()
   const enableDebug = useDevToggle("DTShowDebugReverseImageView")
   const [cameraPermission, setCameraPermission] = useState<CameraPermissionStatus | null>(null)
   const [enableFlash, setEnableFlash] = useState(false)
@@ -72,6 +81,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
       }
 
       navigation.navigate("Preview", {
+        owner,
         photo: {
           path: `file://${capturedPhoto.path}`,
           width: capturedPhoto.width,
@@ -88,6 +98,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   }
 
   const toggleFlash = () => {
+    tracking.trackEvent(tracks.tappedToggleCameraFlash(owner))
     setEnableFlash(!enableFlash)
   }
 
@@ -140,6 +151,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
 
   const selectPhotosFromLibrary = async () => {
     try {
+      tracking.trackEvent(tracks.tappedPickImageFromLibrary(owner))
       const images = await requestPhotos(false)
 
       /**
@@ -153,6 +165,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
       const image = images[0]
 
       navigation.navigate("Preview", {
+        owner,
         photo: {
           path: image.path,
           width: image.width,
@@ -264,4 +277,21 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
       </Flex>
     </Flex>
   )
+}
+
+const tracks = {
+  tappedToggleCameraFlash: (owner: ReverseImageOwner): TappedToggleCameraFlash => ({
+    action: ActionType.tappedToggleCameraFlash,
+    context_screen_owner_type: OwnerType.reverseImageSearch,
+    owner_type: owner.type,
+    owner_id: owner.id,
+    owner_slug: owner.slug,
+  }),
+  tappedPickImageFromLibrary: (owner: ReverseImageOwner): TappedPickImageFromLibrary => ({
+    action: ActionType.tappedPickImageFromLibrary,
+    context_screen_owner_type: OwnerType.reverseImageSearch,
+    owner_type: owner.type,
+    owner_id: owner.id,
+    owner_slug: owner.slug,
+  }),
 }
