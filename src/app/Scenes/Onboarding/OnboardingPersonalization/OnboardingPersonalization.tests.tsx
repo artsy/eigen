@@ -1,12 +1,9 @@
 import { OnboardingPersonalization_highlights$data } from "__generated__/OnboardingPersonalization_highlights.graphql"
 import { OnboardingPersonalizationTestsQuery } from "__generated__/OnboardingPersonalizationTestsQuery.graphql"
-import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificationPermissions"
 import { mockNavigate } from "app/tests/navigationMocks"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { OnboardingPersonalizationList } from "./OnboardingPersonalization"
@@ -63,12 +60,8 @@ describe("OnboardingPersonalizationList", () => {
   })
 
   describe("Button", () => {
-    it("Sets the onboarding state to complete and requests for push notifications permission when it's not yet determined", async () => {
+    it("Sets the onboarding state to complete", async () => {
       jest.useFakeTimers()
-
-      mockFetchNotificationPermissions(false).mockImplementationOnce((cb) =>
-        cb(null, PushAuthorizationStatus.NotDetermined)
-      )
 
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
       resolveMostRecentRelayOperation(mockEnvironment)
@@ -79,9 +72,6 @@ describe("OnboardingPersonalizationList", () => {
       jest.runAllTimers()
 
       expect(__globalStoreTestUtils__?.getCurrentState().auth.onboardingState).toEqual("complete")
-      expect(
-        LegacyNativeModules.ARTemporaryAPIModule.requestPrepromptNotificationPermissions
-      ).toBeCalled()
     })
   })
 })
