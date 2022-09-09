@@ -15848,8 +15848,6 @@ type User implements Node {
   adminNotes: [UserAdminNotes]!
   analytics: AnalyticsUserStats
   cached: Int
-
-  # A collector profile.
   collectorProfile: CollectorProfileType
   createdAt(
     format: String
