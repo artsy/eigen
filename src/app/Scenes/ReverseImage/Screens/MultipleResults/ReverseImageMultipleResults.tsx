@@ -13,7 +13,7 @@ type Props = StackScreenProps<ReverseImageNavigationStack, "MultipleResults">
 
 export const ReverseImageMultipleResults: React.FC<Props> = (props) => {
   const { route, navigation } = props
-  const { artworkIDs, photoPath, owner } = route.params
+  const { artworkIDs, photoPath } = route.params
   const data = useLazyLoadQuery<ReverseImageMultipleResultsQuery>(
     reverseImageMultipleResultsQuery,
     {
@@ -47,7 +47,7 @@ export const ReverseImageMultipleResults: React.FC<Props> = (props) => {
           />
         </Flex>
 
-        <ReverseImageArtworksRail artworks={data.artworks!} owner={owner} />
+        <ReverseImageArtworksRail artworks={data.artworks!} />
       </Flex>
     </Flex>
   )
