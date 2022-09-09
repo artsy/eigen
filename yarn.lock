@@ -222,10 +222,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@artsy/cohesion@4.62.1":
-  version "4.62.1"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.62.1.tgz#9233e25b030b72f6876d9e34b73bf62d83f70c74"
-  integrity sha512-Ovm4I8FLYelp7MzP6wT35h0V5+8cVxDpJcj57NrOdGMrzHaspTivwp/4Kqj38qxQhB0MOriB4UXfXNVXYERz2w==
+"@artsy/cohesion@4.65.0":
+  version "4.65.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.65.0.tgz#f5300c60b1bd5f33366d1d2c40550c0da1441bf9"
+  integrity sha512-OL/skTzJAP8/N2HPqSCuBC5on3rjYr7U9KHVKOQkR0I1KKTkgu4ZU5GjA9McC2dTnKXS8TfPbQj9ybxdrG9jdQ==
   dependencies:
     core-js "3"
 

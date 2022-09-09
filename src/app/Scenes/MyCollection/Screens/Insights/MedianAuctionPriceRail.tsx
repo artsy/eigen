@@ -1,3 +1,9 @@
+import {
+  ActionType,
+  ContextModule,
+  OwnerType,
+  TappedMyCollectionInsightsMedianAuctionRailItem,
+} from "@artsy/cohesion"
 import { MedianAuctionPriceRail_me$key } from "__generated__/MedianAuctionPriceRail_me.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
@@ -8,6 +14,7 @@ import { groupBy } from "lodash"
 import { Flex } from "palette"
 import { FlatList } from "react-native"
 import { useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 import { graphql } from "relay-runtime"
 import { MedianAuctionPriceListItem } from "./MedianAuctionPriceListItem"
 
@@ -25,6 +32,8 @@ export const MedianAuctionPriceRail: React.FC<MedianAuctionPriceRailProps> = (pr
 
   const me = useFragment(fragment, props.me)
   const artworks = extractNodes(me.priceInsightUpdates)
+
+  const tracking = useTracking()
 
   if (artworks.length === 0) {
     return <></>
@@ -49,17 +58,19 @@ export const MedianAuctionPriceRail: React.FC<MedianAuctionPriceRailProps> = (pr
               onPress={
                 enableMyCollectionInsightsPhase1Part4
                   ? () => {
-                      navigate(
-                        `/my-collection/median-sale-price-at-auction/${artworks[0].artist?.internalID}`,
-                        {
-                          passProps: {
-                            initialCategory: getVortexMedium(
-                              artworks[0].medium ?? "",
-                              artworks[0].mediumType?.name ?? ""
-                            ),
-                          },
-                        }
+                      const artistID = artworks[0].artist?.internalID
+                      const category = getVortexMedium(
+                        artworks[0].medium ?? "",
+                        artworks[0].mediumType?.name ?? ""
                       )
+                      if (artistID && category) {
+                        tracking.trackEvent(tracks.tappedRailItem(artistID, category))
+                      }
+                      navigate(`/my-collection/median-sale-price-at-auction/${artistID}`, {
+                        passProps: {
+                          initialCategory: category,
+                        },
+                      })
                     }
                   : undefined
               }
@@ -73,16 +84,18 @@ export const MedianAuctionPriceRail: React.FC<MedianAuctionPriceRailProps> = (pr
             onPress={
               enableMyCollectionInsightsPhase1Part4
                 ? (medium) => {
-                    navigate(
-                      `/my-collection/median-sale-price-at-auction/${item[0].artist?.internalID}`,
-                      {
-                        passProps: {
-                          initialCategory:
-                            medium ||
-                            getVortexMedium(item[0].medium ?? "", item[0].mediumType?.name ?? ""),
-                        },
-                      }
-                    )
+                    const artistID = item[0].artist?.internalID
+                    const category =
+                      medium ||
+                      getVortexMedium(item[0].medium ?? "", item[0].mediumType?.name ?? "")
+                    if (artistID && category) {
+                      tracking.trackEvent(tracks.tappedRailItem(artistID, category))
+                    }
+                    navigate(`/my-collection/median-sale-price-at-auction/${artistID}`, {
+                      passProps: {
+                        initialCategory: category,
+                      },
+                    })
                   }
                 : undefined
             }
@@ -119,3 +132,19 @@ const fragment = graphql`
     }
   }
 `
+
+const tracks = {
+  tappedRailItem: (
+    artistID: string,
+    category: string
+  ): TappedMyCollectionInsightsMedianAuctionRailItem => {
+    return {
+      action: ActionType.tappedMyCollectionInsightsMedianAuctionRailItem,
+      context_module: ContextModule.myCollectionInsightsMedianAuctionRail,
+      context_screen: OwnerType.myCollectionInsights,
+      context_screen_owner_type: OwnerType.myCollectionInsights,
+      artist_id: artistID,
+      category,
+    }
+  },
+}

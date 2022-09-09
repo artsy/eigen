@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { MedianSalePriceAtAuctionQuery } from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import {
@@ -6,12 +7,15 @@ import {
   ProvidePlaceholderContext,
   RandomNumberGenerator,
 } from "app/utils/placeholders"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { Flex, NoArtworkIcon, OpaqueImageView, Spacer, Text, Touchable } from "palette"
 import { Suspense, useCallback, useState } from "react"
 import { ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 import { CareerHighlightBottomSheet } from "./CareerHighlightBottomSheet"
+import { MedianSalePriceChartTracking } from "./Components/MedianSalePriceChartTracking"
 import { MedianSalePriceChart } from "./MedianSalePriceChart"
 import { MedianSalePriceChartDataContextProvider } from "./providers/MedianSalePriceChartDataContext"
 import { SelectArtistModal } from "./SelectArtistModal"
@@ -98,6 +102,7 @@ const MedianSalePriceAtAuctionScreen: React.FC<MedianSalePriceAtAuctionProps> = 
           initialCategory={initialCategory}
           queryData={data}
         >
+          <MedianSalePriceChartTracking artistID={queryArgs.variables.artistID} />
           <MedianSalePriceChart />
           <CareerHighlightBottomSheet artistId={queryArgs.variables.artistID} queryData={data} />
         </MedianSalePriceChartDataContextProvider>
@@ -149,11 +154,17 @@ export const MedianSalePriceAtAuction: React.FC<{ artistID: string; initialCateg
 
   return (
     <Suspense fallback={<LoadingSkeleton />}>
-      <MedianSalePriceAtAuctionScreen
-        refetch={refetch}
-        queryArgs={queryArgs}
-        initialCategory={initialCategory}
-      />
+      <ProvideScreenTrackingWithCohesionSchema
+        info={screen({
+          context_screen_owner_type: OwnerType.myCollectionInsightsMedianAuctionPrice,
+        })}
+      >
+        <MedianSalePriceAtAuctionScreen
+          refetch={refetch}
+          queryArgs={queryArgs}
+          initialCategory={initialCategory}
+        />
+      </ProvideScreenTrackingWithCohesionSchema>
     </Suspense>
   )
 }
