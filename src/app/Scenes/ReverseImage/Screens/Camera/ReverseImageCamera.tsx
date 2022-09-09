@@ -141,6 +141,15 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   const selectPhotosFromLibrary = async () => {
     try {
       const images = await requestPhotos(false)
+
+      /**
+       * @platform iOS
+       * Do nothing if the user has not selected photos
+       */
+      if (images.length === 0) {
+        return
+      }
+
       const image = images[0]
 
       navigation.navigate("Preview", {
@@ -152,7 +161,19 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
         },
       })
     } catch (error) {
-      console.error(error)
+      /**
+       * @platform Android
+       * Silently ignore error if the user decided not to select photos
+       */
+      if ((error as Error).message === "User cancelled image selection") {
+        return
+      }
+
+      if (__DEV__) {
+        console.error(error)
+      } else {
+        captureMessage((error as Error).stack!)
+      }
 
       if (enableDebug) {
         Alert.alert("Something went wrong", (error as Error)?.message)
