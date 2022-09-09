@@ -60,6 +60,9 @@ export const ReverseImage: React.FC<ReverseImageProps> = ({ owner }) => {
           headerShown: false,
           headerMode: "screen",
           animationTypeForReplace: "push",
+          cardStyle: {
+            backgroundColor: "#000",
+          },
         }}
       >
         <Stack.Screen
