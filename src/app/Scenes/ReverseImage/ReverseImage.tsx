@@ -4,7 +4,7 @@ import {
   ArtsyNativeModule,
   DEFAULT_NAVIGATION_BAR_COLOR,
 } from "app/NativeModules/ArtsyNativeModule"
-import { useCallback, useEffect } from "react"
+import { useCallback } from "react"
 import { Platform, StatusBar } from "react-native"
 import { ReverseImageArtworkNotFoundScreen } from "./Screens/ArtworkNotFound/ReverseImageArtworkNotFoundScreen"
 import { ReverseImageCameraScreen } from "./Screens/Camera/ReverseImageCamera"
@@ -19,11 +19,13 @@ interface ReverseImageProps {
 const Stack = createStackNavigator<ReverseImageNavigationStack>()
 
 export const ReverseImage: React.FC<ReverseImageProps> = ({ owner }) => {
-  const updateStatusBar = useCallback(() => {
+  const onFocusEffect = useCallback(() => {
     StatusBar.setBarStyle("light-content")
 
     if (Platform.OS === "android") {
       StatusBar.setBackgroundColor("transparent")
+      ArtsyNativeModule.setNavigationBarColor("#000000")
+      ArtsyNativeModule.setAppLightContrast(true)
     }
 
     return () => {
@@ -32,25 +34,13 @@ export const ReverseImage: React.FC<ReverseImageProps> = ({ owner }) => {
 
       if (Platform.OS === "android") {
         StatusBar.setBackgroundColor("transparent")
+        ArtsyNativeModule.setNavigationBarColor(DEFAULT_NAVIGATION_BAR_COLOR)
+        ArtsyNativeModule.setAppLightContrast(false)
       }
     }
   }, [])
 
-  useEffect(() => {
-    if (Platform.OS !== "android") {
-      return
-    }
-
-    ArtsyNativeModule.setNavigationBarColor("#000000")
-    ArtsyNativeModule.setAppLightContrast(true)
-
-    return () => {
-      ArtsyNativeModule.setNavigationBarColor(DEFAULT_NAVIGATION_BAR_COLOR)
-      ArtsyNativeModule.setAppLightContrast(false)
-    }
-  }, [])
-
-  useFocusEffect(updateStatusBar)
+  useFocusEffect(onFocusEffect)
 
   return (
     <NavigationContainer independent>
