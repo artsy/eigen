@@ -20,7 +20,7 @@ export const TOAST_DURATION_MAP: Record<ToastDuration, number> = {
   long: 5000,
 }
 
-export const ToastComponent: React.FC<ToastDetails> = ({
+export const ToastComponent = ({
   id,
   positionIndex,
   placement,
@@ -29,7 +29,7 @@ export const ToastComponent: React.FC<ToastDetails> = ({
   Icon,
   backgroundColor = "black100",
   duration = "short",
-}) => {
+}: ToastDetails) => {
   const toastDuration = TOAST_DURATION_MAP[duration]
   const color = useColor()
   const { width, height } = useScreenDimensions()
@@ -58,7 +58,7 @@ export const ToastComponent: React.FC<ToastDetails> = ({
   if (placement === "middle") {
     const innerMiddle = (
       <Flex flex={1} alignItems="center" justifyContent="center">
-        {Icon !== undefined ? <Icon fill="white100" width={45} height={45} /> : null}
+        {Icon !== undefined && <Icon fill="white100" width={45} height={45} />}
         <Text variant="xs" color="white100" textAlign="center" px={0.5}>
           {message}
         </Text>
@@ -75,7 +75,6 @@ export const ToastComponent: React.FC<ToastDetails> = ({
         backgroundColor={color(backgroundColor)}
         opacity={opacityAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 0.9] })}
         overflow="hidden"
-        paddingRight={2}
         zIndex={999}
       >
         {onPress !== undefined ? (
