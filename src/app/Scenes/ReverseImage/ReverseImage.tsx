@@ -1,5 +1,9 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
+import {
+  ArtsyNativeModule,
+  DEFAULT_NAVIGATION_BAR_COLOR,
+} from "app/NativeModules/ArtsyNativeModule"
 import { useEffect } from "react"
 import { Platform, StatusBar } from "react-native"
 import { ReverseImageArtworkNotFoundScreen } from "./Screens/ArtworkNotFound/ReverseImageArtworkNotFoundScreen"
@@ -16,6 +20,8 @@ export const ReverseImage = () => {
 
     if (Platform.OS === "android") {
       StatusBar.setBackgroundColor("transparent")
+      ArtsyNativeModule.setNavigationBarColor("#000000")
+      ArtsyNativeModule.setAppLightContrast(true)
     }
 
     return () => {
@@ -24,6 +30,8 @@ export const ReverseImage = () => {
 
       if (Platform.OS === "android") {
         StatusBar.setBackgroundColor("transparent")
+        ArtsyNativeModule.setNavigationBarColor(DEFAULT_NAVIGATION_BAR_COLOR)
+        ArtsyNativeModule.setAppLightContrast(false)
       }
     }
   }, [])

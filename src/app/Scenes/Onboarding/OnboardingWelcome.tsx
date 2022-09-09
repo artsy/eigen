@@ -1,5 +1,8 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
+import {
+  ArtsyNativeModule,
+  DEFAULT_NAVIGATION_BAR_COLOR,
+} from "app/NativeModules/ArtsyNativeModule"
 import backgoundImage from "images/WelcomeImage.webp"
 import { ArtsyLogoWhiteIcon, Button, Flex, Screen, Spacer, Text, useTheme } from "palette"
 import React, { useEffect } from "react"
@@ -61,7 +64,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
     }
     const unsubscribe = navigation.addListener("blur", () => {
       requestAnimationFrame(() => {
-        ArtsyNativeModule.setNavigationBarColor("#FFFFFF")
+        ArtsyNativeModule.setNavigationBarColor(DEFAULT_NAVIGATION_BAR_COLOR)
         ArtsyNativeModule.setAppLightContrast(false)
       })
     })
