@@ -78,7 +78,7 @@ export const MedianSalePriceChart: React.FC = () => {
               top={CHART_HEIGHT / 2}
               width={CHART_WIDTH}
             >
-              <Flex>
+              <Flex alignItems="center">
                 <Text variant="sm" color="black60">
                   No data currently available
                 </Text>
@@ -125,7 +125,7 @@ export const MedianSalePriceChart: React.FC = () => {
               top={CHART_HEIGHT / 2}
               width={CHART_WIDTH}
             >
-              <Flex>
+              <Flex alignItems="center">
                 <Text variant="sm" color="black60">
                   No data currently available
                 </Text>
