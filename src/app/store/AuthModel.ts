@@ -19,7 +19,6 @@ import {
 } from "react-native-fbsdk-next"
 import Keychain from "react-native-keychain"
 import { LegacyNativeModules } from "../NativeModules/LegacyNativeModules"
-import { requestPushNotificationsPermission } from "../utils/PushNotification"
 import { AuthError } from "./AuthError"
 import { getCurrentEmissionState, GlobalStore } from "./GlobalStore"
 import type { GlobalStoreModel } from "./GlobalStoreModel"
@@ -367,10 +366,6 @@ export const getAuthModel = (): AuthModel => ({
       }
 
       postEventToProviders(tracks.loggedIn(oauthProvider))
-
-      if (!onboardingState || onboardingState === "complete" || onboardingState === "none") {
-        requestPushNotificationsPermission()
-      }
 
       onSignIn?.()
 
