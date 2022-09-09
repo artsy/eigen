@@ -231,10 +231,8 @@
 		CBE3267527E275A300395A93 /* UIView+HitTestExpansion.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3246827E275A100395A93 /* UIView+HitTestExpansion.m */; };
 		CBE3267627E275A300395A93 /* NSAttributedString+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3246C27E275A100395A93 /* NSAttributedString+Additions.swift */; };
 		CBE3267727E275A300395A93 /* UIImageView+AsyncImageLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3246E27E275A100395A93 /* UIImageView+AsyncImageLoading.m */; };
-		CBE3267827E275A300395A93 /* UIView+ScrollToTop.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3246F27E275A100395A93 /* UIView+ScrollToTop.m */; };
 		CBE3267927E275A300395A93 /* NSDate+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3247127E275A100395A93 /* NSDate+Util.m */; };
 		CBE3267A27E275A300395A93 /* UILabel+Styling.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3247427E275A100395A93 /* UILabel+Styling.swift */; };
-		CBE3267B27E275A300395A93 /* UIViewController+ARUserActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3247527E275A100395A93 /* UIViewController+ARUserActivity.m */; };
 		CBE3267C27E275A300395A93 /* UIImage+ImageFromColor.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3247627E275A100395A93 /* UIImage+ImageFromColor.m */; };
 		CBE3267D27E275A300395A93 /* UIViewController+Popovers.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3247727E275A100395A93 /* UIViewController+Popovers.m */; };
 		CBE3267E27E275A300395A93 /* NSArray+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3247927E275A100395A93 /* NSArray+Additions.m */; };
@@ -242,7 +240,6 @@
 		CBE3268027E275A300395A93 /* NSKeyedUnarchiver+ErrorLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3247F27E275A100395A93 /* NSKeyedUnarchiver+ErrorLogging.m */; };
 		CBE3268127E275A300395A93 /* UIViewController+SimpleChildren.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248027E275A100395A93 /* UIViewController+SimpleChildren.m */; };
 		CBE3268227E275A300395A93 /* NSDate+DateRange.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248127E275A100395A93 /* NSDate+DateRange.m */; };
-		CBE3268327E275A300395A93 /* UIViewController+WithLoadedData.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248227E275A100395A93 /* UIViewController+WithLoadedData.m */; };
 		CBE3268427E275A300395A93 /* UIView+OldSchoolSnapshots.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248327E275A100395A93 /* UIView+OldSchoolSnapshots.m */; };
 		CBE3268527E275A300395A93 /* UIViewController+FullScreenLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248527E275A100395A93 /* UIViewController+FullScreenLoading.m */; };
 		CBE3268627E275A300395A93 /* PanDirectionGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248627E275A100395A93 /* PanDirectionGestureRecognizer.swift */; };
@@ -973,7 +970,6 @@
 		CBE3246127E275A100395A93 /* UITableViewController+Animations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewController+Animations.swift"; sourceTree = "<group>"; };
 		CBE3246227E275A100395A93 /* UIViewController+Popovers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Popovers.h"; sourceTree = "<group>"; };
 		CBE3246327E275A100395A93 /* UIImage+ImageFromColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageFromColor.h"; sourceTree = "<group>"; };
-		CBE3246427E275A100395A93 /* UIViewController+ARUserActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ARUserActivity.h"; sourceTree = "<group>"; };
 		CBE3246527E275A100395A93 /* NSString+StringBetweenStrings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+StringBetweenStrings.m"; sourceTree = "<group>"; };
 		CBE3246627E275A100395A93 /* Int+Metrification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int+Metrification.swift"; sourceTree = "<group>"; };
 		CBE3246727E275A100395A93 /* UIDevice-Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice-Hardware.m"; sourceTree = "<group>"; };
@@ -984,26 +980,21 @@
 		CBE3246C27E275A100395A93 /* NSAttributedString+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Additions.swift"; sourceTree = "<group>"; };
 		CBE3246D27E275A100395A93 /* NSKeyedUnarchiver+ErrorLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSKeyedUnarchiver+ErrorLogging.h"; sourceTree = "<group>"; };
 		CBE3246E27E275A100395A93 /* UIImageView+AsyncImageLoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AsyncImageLoading.m"; sourceTree = "<group>"; };
-		CBE3246F27E275A100395A93 /* UIView+ScrollToTop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ScrollToTop.m"; sourceTree = "<group>"; };
 		CBE3247027E275A100395A93 /* UIViewController+FullScreenLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+FullScreenLoading.h"; sourceTree = "<group>"; };
 		CBE3247127E275A100395A93 /* NSDate+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Util.m"; sourceTree = "<group>"; };
 		CBE3247227E275A100395A93 /* UIView+OldSchoolSnapshots.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+OldSchoolSnapshots.h"; sourceTree = "<group>"; };
-		CBE3247327E275A100395A93 /* UIViewController+WithLoadedData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+WithLoadedData.h"; sourceTree = "<group>"; };
 		CBE3247427E275A100395A93 /* UILabel+Styling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+Styling.swift"; sourceTree = "<group>"; };
-		CBE3247527E275A100395A93 /* UIViewController+ARUserActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ARUserActivity.m"; sourceTree = "<group>"; };
 		CBE3247627E275A100395A93 /* UIImage+ImageFromColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageFromColor.m"; sourceTree = "<group>"; };
 		CBE3247727E275A100395A93 /* UIViewController+Popovers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Popovers.m"; sourceTree = "<group>"; };
 		CBE3247827E275A100395A93 /* UIView+HitTestExpansion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+HitTestExpansion.h"; sourceTree = "<group>"; };
 		CBE3247927E275A100395A93 /* NSArray+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Additions.m"; sourceTree = "<group>"; };
 		CBE3247A27E275A100395A93 /* UIDevice-Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice-Hardware.h"; sourceTree = "<group>"; };
 		CBE3247B27E275A100395A93 /* NSString+StringBetweenStrings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+StringBetweenStrings.h"; sourceTree = "<group>"; };
-		CBE3247C27E275A100395A93 /* UIView+ScrollToTop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ScrollToTop.h"; sourceTree = "<group>"; };
 		CBE3247D27E275A100395A93 /* UIImageView+AsyncImageLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AsyncImageLoading.h"; sourceTree = "<group>"; };
 		CBE3247E27E275A100395A93 /* UIViewController+Traits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Traits.swift"; sourceTree = "<group>"; };
 		CBE3247F27E275A100395A93 /* NSKeyedUnarchiver+ErrorLogging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSKeyedUnarchiver+ErrorLogging.m"; sourceTree = "<group>"; };
 		CBE3248027E275A100395A93 /* UIViewController+SimpleChildren.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+SimpleChildren.m"; sourceTree = "<group>"; };
 		CBE3248127E275A100395A93 /* NSDate+DateRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+DateRange.m"; sourceTree = "<group>"; };
-		CBE3248227E275A100395A93 /* UIViewController+WithLoadedData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+WithLoadedData.m"; sourceTree = "<group>"; };
 		CBE3248327E275A100395A93 /* UIView+OldSchoolSnapshots.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+OldSchoolSnapshots.m"; sourceTree = "<group>"; };
 		CBE3248427E275A100395A93 /* NSDate+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Util.h"; sourceTree = "<group>"; };
 		CBE3248527E275A100395A93 /* UIViewController+FullScreenLoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+FullScreenLoading.m"; sourceTree = "<group>"; };
@@ -2592,41 +2583,35 @@
 			isa = PBXGroup;
 			children = (
 				CBE3246127E275A100395A93 /* UITableViewController+Animations.swift */,
-				CBE3246227E275A100395A93 /* UIViewController+Popovers.h */,
-				CBE3246327E275A100395A93 /* UIImage+ImageFromColor.h */,
-				CBE3246427E275A100395A93 /* UIViewController+ARUserActivity.h */,
-				CBE3246527E275A100395A93 /* NSString+StringBetweenStrings.m */,
 				CBE3246627E275A100395A93 /* Int+Metrification.swift */,
-				CBE3246727E275A100395A93 /* UIDevice-Hardware.m */,
-				CBE3246827E275A100395A93 /* UIView+HitTestExpansion.m */,
-				CBE3246927E275A100395A93 /* NSArray+Additions.h */,
-				CBE3246A27E275A100395A93 /* NSDate+DateRange.h */,
-				CBE3246B27E275A100395A93 /* UIViewController+SimpleChildren.h */,
 				CBE3246C27E275A100395A93 /* NSAttributedString+Additions.swift */,
-				CBE3246D27E275A100395A93 /* NSKeyedUnarchiver+ErrorLogging.h */,
-				CBE3246E27E275A100395A93 /* UIImageView+AsyncImageLoading.m */,
-				CBE3246F27E275A100395A93 /* UIView+ScrollToTop.m */,
-				CBE3247027E275A100395A93 /* UIViewController+FullScreenLoading.h */,
-				CBE3247127E275A100395A93 /* NSDate+Util.m */,
-				CBE3247227E275A100395A93 /* UIView+OldSchoolSnapshots.h */,
-				CBE3247327E275A100395A93 /* UIViewController+WithLoadedData.h */,
-				CBE3247427E275A100395A93 /* UILabel+Styling.swift */,
-				CBE3247527E275A100395A93 /* UIViewController+ARUserActivity.m */,
+				CBE3246327E275A100395A93 /* UIImage+ImageFromColor.h */,
 				CBE3247627E275A100395A93 /* UIImage+ImageFromColor.m */,
+				CBE3246227E275A100395A93 /* UIViewController+Popovers.h */,
 				CBE3247727E275A100395A93 /* UIViewController+Popovers.m */,
 				CBE3247827E275A100395A93 /* UIView+HitTestExpansion.h */,
+				CBE3246827E275A100395A93 /* UIView+HitTestExpansion.m */,
+				CBE3247427E275A100395A93 /* UILabel+Styling.swift */,
+				CBE3246927E275A100395A93 /* NSArray+Additions.h */,
 				CBE3247927E275A100395A93 /* NSArray+Additions.m */,
 				CBE3247A27E275A100395A93 /* UIDevice-Hardware.h */,
+				CBE3246727E275A100395A93 /* UIDevice-Hardware.m */,
 				CBE3247B27E275A100395A93 /* NSString+StringBetweenStrings.h */,
-				CBE3247C27E275A100395A93 /* UIView+ScrollToTop.h */,
+				CBE3246527E275A100395A93 /* NSString+StringBetweenStrings.m */,
 				CBE3247D27E275A100395A93 /* UIImageView+AsyncImageLoading.h */,
+				CBE3246E27E275A100395A93 /* UIImageView+AsyncImageLoading.m */,
 				CBE3247E27E275A100395A93 /* UIViewController+Traits.swift */,
+				CBE3246D27E275A100395A93 /* NSKeyedUnarchiver+ErrorLogging.h */,
 				CBE3247F27E275A100395A93 /* NSKeyedUnarchiver+ErrorLogging.m */,
+				CBE3246B27E275A100395A93 /* UIViewController+SimpleChildren.h */,
 				CBE3248027E275A100395A93 /* UIViewController+SimpleChildren.m */,
+				CBE3246A27E275A100395A93 /* NSDate+DateRange.h */,
 				CBE3248127E275A100395A93 /* NSDate+DateRange.m */,
-				CBE3248227E275A100395A93 /* UIViewController+WithLoadedData.m */,
+				CBE3247227E275A100395A93 /* UIView+OldSchoolSnapshots.h */,
 				CBE3248327E275A100395A93 /* UIView+OldSchoolSnapshots.m */,
 				CBE3248427E275A100395A93 /* NSDate+Util.h */,
+				CBE3247127E275A100395A93 /* NSDate+Util.m */,
+				CBE3247027E275A100395A93 /* UIViewController+FullScreenLoading.h */,
 				CBE3248527E275A100395A93 /* UIViewController+FullScreenLoading.m */,
 			);
 			path = Apple;
@@ -3908,7 +3893,6 @@
 				CBE3279227E275A400395A93 /* User.m in Sources */,
 				CBE3211D27D9615000395A93 /* ARTCityGuideViewManager.m in Sources */,
 				CBE3277927E275A400395A93 /* ArtsyAPI+Notifications.m in Sources */,
-				CBE3268327E275A300395A93 /* UIViewController+WithLoadedData.m in Sources */,
 				CBE3267327E275A300395A93 /* Int+Metrification.swift in Sources */,
 				CBE326CE27E275A300395A93 /* LiveAuctionBidButton.swift in Sources */,
 				CBE326DE27E275A300395A93 /* UIViewController+InnermostTopViewController.m in Sources */,
@@ -3978,7 +3962,6 @@
 				CBE3267C27E275A300395A93 /* UIImage+ImageFromColor.m in Sources */,
 				CBE3266F27E275A300395A93 /* ARAppConstants.m in Sources */,
 				CBE326B427E275A300395A93 /* LiveAuctionStaticDataFetcher+Stubs.swift in Sources */,
-				CBE3267827E275A300395A93 /* UIView+ScrollToTop.m in Sources */,
 				CBE3277327E275A400395A93 /* ArtsyAPI+Pages.m in Sources */,
 				CBE326FD27E275A300395A93 /* ARAdminSettingsViewController.m in Sources */,
 				CBE326C827E275A300395A93 /* LiveAuctionBiddingViewModel.swift in Sources */,
@@ -4030,7 +4013,6 @@
 				CBE3278A27E275A400395A93 /* Partner.m in Sources */,
 				CBE3279827E275A400395A93 /* SaleStatusType.swift in Sources */,
 				CBE3271827E275A300395A93 /* ARBidButton.m in Sources */,
-				CBE3267B27E275A300395A93 /* UIViewController+ARUserActivity.m in Sources */,
 				CBE326BF27E275A300395A93 /* LiveAuctionLotListStickyCellCollectionViewLayout.swift in Sources */,
 				1A4B97BF283CDD5A00878EAE /* RCTScrollView+Artsy.m in Sources */,
 				CBE326A127E275A300395A93 /* ARDefaultNavigationTransition.m in Sources */,

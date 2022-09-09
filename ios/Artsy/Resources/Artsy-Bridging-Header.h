@@ -48,7 +48,6 @@
 #import "ARExternalWebBrowserViewController.h"
 
 #import "UIViewController+SimpleChildren.h"
-#import "UIViewController+ARUserActivity.h"
 #import "ARMenuAwareViewController.h"
 #import "ARSharingController.h"
 
