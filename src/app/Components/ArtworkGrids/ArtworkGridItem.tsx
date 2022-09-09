@@ -17,10 +17,10 @@ import {
   Flex,
   OpaqueImageView as NewOpaqueImageView,
   Spacer,
+  Text,
   TextProps,
   Touchable,
 } from "palette"
-import { Text } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { DurationProvider } from "../Countdown"
@@ -87,6 +87,14 @@ export const Artwork: React.FC<ArtworkProps> = ({
   partnerNameTextStyle,
   updateRecentSearchesOnTap = false,
 }) => {
+  // const [whatever, setWhatever] = useState(false)
+
+  // return (
+  //   <Flex width={100} height={100} backgroundColor="red">
+  //     <Text>{artwork.title}</Text>
+  //     <Image style={{ height: 150, width: 150 }} source={{ uri: artwork.image?.url }} />
+  //   </Flex>
+  // )
   const tracking = useTracking()
   const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageView")
 

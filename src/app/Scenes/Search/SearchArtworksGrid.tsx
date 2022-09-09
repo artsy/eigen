@@ -7,15 +7,17 @@ import {
 } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { Artwork } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
+import { PAGE_SIZE } from "app/Components/constants"
 import { Masonry } from "app/Components/VirtualizedMasonry"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
-import { Box, quoteLeft, quoteRight, Text, useTheme } from "palette"
+import { Box, Flex, quoteLeft, quoteRight, Text, useTheme } from "palette"
 import { useEffect, useState } from "react"
+import { ActivityIndicator, Platform } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { Dimensions } from "react-native"
+import { useScreenDimensions } from "shared/hooks"
 
 export interface SearchArtworksGridProps {
   viewer: SearchArtworksGrid_viewer$data
@@ -26,6 +28,7 @@ export interface SearchArtworksGridProps {
 const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, keyword }) => {
   const { space } = useTheme()
   const { trackEvent } = useTracking()
+  const { width } = useScreenDimensions()
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
   const setFiltersCountAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.setFiltersCountAction
@@ -60,6 +63,8 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
     }
   }, [setFiltersCountAction])
 
+  const ArtworkData = extractNodes(viewer.artworks!)
+
   return (
     <>
       <ArtworkFilterNavigator
@@ -87,19 +92,19 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
         </Box>
       ) : (
         <Masonry
-          data={extractNodes(viewer.artworks!)}
-          width={Dimensions.get("window").width - 2 * space(2)} // the two spaces are for the horizontal padding below.
+          data={ArtworkData}
+          width={width - 2 * space(2)} // the two spaces are for the horizontal padding below.
           contentContainerStyle={{ paddingTop: space(2), paddingHorizontal: space(2) }}
           gutter={20}
-          renderItem={({ item }) => (
+          renderItem={({ item, index }) => (
+            // <Flex width={100} height={100} backgroundColor="red">
+            //   <Text>{item.title}</Text>
+            //   <Image style={{ height: 150, width: 150 }} source={{ uri: item.image?.url }} />
+            // </Flex>
             <Artwork
-              artwork={item as any} // FIXME: Types are messed up here
-              // hideUrgencyTags={hideUrgencyTags}
-              // hidePartner={hidePartner}
-              // showLotLabel={showLotLabel}
-              // itemIndex={item.id}
-              // updateRecentSearchesOnTap={updateRecentSearchesOnTap}
-              {...item}
+              artwork={item as any} // FIXME: Types
+              updateRecentSearchesOnTap
+              itemIndex={index}
             />
           )}
           keyExtractor={({ id }) => id}
@@ -107,7 +112,20 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
             const textHeight = 80 /* thats a bad hardcode, but its roughly the size of the text that we usually have under the artwork */
             return (brickWidth ?? 0) / (item.image?.aspectRatio ?? 1) + textHeight
           }}
-          onEndReached={() => console.warn("reached")}
+          ListFooterComponent={() =>
+            relay.isLoading() ? (
+              <Flex
+                alignItems="center"
+                justifyContent="center"
+                p="3"
+                pb="9"
+                style={{ opacity: relay.hasMore() ? 1 : 0 }}
+              >
+                <ActivityIndicator color={Platform.OS === "android" ? "black" : undefined} />
+              </Flex>
+            ) : null
+          }
+          onEndReached={() => relay.loadMore(PAGE_SIZE)}
         />
       )}
     </>
@@ -162,45 +180,8 @@ export const SearchArtworksGridPaginationContainer = createPaginationContainer(
           }
           edges {
             node {
+              ...ArtworkGridItem_artwork
               id
-              title
-              date
-              saleMessage
-              slug
-              internalID
-              artistNames
-              href
-              sale {
-                isAuction
-                isClosed
-                displayTimelyAt
-                cascadingEndTimeIntervalMinutes
-                extendedBiddingPeriodMinutes
-                extendedBiddingIntervalMinutes
-                endAt
-                startAt
-              }
-              saleArtwork {
-                counts {
-                  bidderPositions
-                }
-                formattedEndDateTime
-                currentBid {
-                  display
-                }
-                lotID
-                lotLabel
-                endAt
-                extendedBiddingEndAt
-              }
-              partner {
-                name
-              }
-              image {
-                url(version: "large")
-                aspectRatio
-              }
-              realizedPrice
             }
           }
         }

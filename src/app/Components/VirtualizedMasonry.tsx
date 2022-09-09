@@ -4,16 +4,16 @@ import { Dimensions, FlatList, FlatListProps } from "react-native"
 
 type MasonryProps<ItemT> = {
   width?: number
-  getBrickHeight(item: ItemT, brickWidth?: number): number
   gutter?: number
+  getBrickHeight(item: ItemT, brickWidth?: number): number
 } & FlatListProps<ItemT>
 
-type Brick<ItemT> = {
+interface Brick<ItemT> {
   item: ItemT
   height: number
 }
 
-type Row<ItemT> = {
+interface Row<ItemT> {
   brick: Brick<ItemT>
   columnIndex: number
   height: number
@@ -94,11 +94,11 @@ export function Masonry<ItemT>({
           ))}
         </Flex>
       )}
-      getItemLayout={(data, i) =>
-        data
+      getItemLayout={(layoutData, i) =>
+        layoutData
           ? {
-              length: data[i].height,
-              offset: data.slice(0, i).reduce((sum, row) => sum + row.height, 0),
+              length: layoutData[i].height,
+              offset: layoutData.slice(0, i).reduce((sum, row) => sum + row.height, 0),
               index: i,
             }
           : { length: 0, offset: 0, index: i }
