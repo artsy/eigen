@@ -15912,6 +15912,12 @@ type User implements Node {
 
   # The Parnter or Profile access granted to the user
   profileAccess: [String]!
+  purchasedArtworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): UserPurchasesConnection
 
   # This user should receive lot opening notifications
   receiveLotOpeningSoonNotification: Boolean
@@ -16170,6 +16176,33 @@ union UserInterestInterest = Artist | Gene
 enum UserInterestInterestType {
   ARTIST
   GENE
+}
+
+# A connection to a list of items.
+type UserPurchasesConnection {
+  # A list of edges.
+  edges: [UserPurchasesEdge]
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+}
+
+# An edge in a connection.
+type UserPurchasesEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
+
+  # The item at the end of the edge
+  node: Artwork
+  ownerType: String
+  salePrice: Float
+  source: String
 }
 
 type UserSaleProfile {
