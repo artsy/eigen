@@ -10,11 +10,15 @@ import { ReverseImageArtworkNotFoundScreen } from "./Screens/ArtworkNotFound/Rev
 import { ReverseImageCameraScreen } from "./Screens/Camera/ReverseImageCamera"
 import { ReverseImageMultipleResultsScreen } from "./Screens/MultipleResults/ReverseImageMultipleResults"
 import { ReverseImagePreviewScreen } from "./Screens/Preview/ReverseImagePreview"
-import { ReverseImageNavigationStack } from "./types"
+import { ReverseImageNavigationStack, ReverseImageOwner } from "./types"
+
+interface ReverseImageProps {
+  owner: ReverseImageOwner
+}
 
 const Stack = createStackNavigator<ReverseImageNavigationStack>()
 
-export const ReverseImage = () => {
+export const ReverseImage: React.FC<ReverseImageProps> = ({ owner }) => {
   const updateStatusBar = useCallback(() => {
     StatusBar.setBarStyle("light-content")
 
@@ -58,7 +62,11 @@ export const ReverseImage = () => {
           animationTypeForReplace: "push",
         }}
       >
-        <Stack.Screen name="Camera" component={ReverseImageCameraScreen} />
+        <Stack.Screen
+          name="Camera"
+          component={ReverseImageCameraScreen}
+          initialParams={{ owner }}
+        />
         <Stack.Screen name="MultipleResults" component={ReverseImageMultipleResultsScreen} />
         <Stack.Screen name="ArtworkNotFound" component={ReverseImageArtworkNotFoundScreen} />
         <Stack.Screen

@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Show_show$data } from "__generated__/Show_show.graphql"
 import { ShowQuery } from "__generated__/ShowQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -140,7 +141,10 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
         />
       </ArtworkFiltersStoreProvider>
 
-      <SearchImageHeaderButton isImageSearchButtonVisible={shouldShowImageSearchButton} />
+      <SearchImageHeaderButton
+        isImageSearchButtonVisible={shouldShowImageSearchButton}
+        owner={{ type: OwnerType.show, id: show.internalID, slug: show.slug }}
+      />
     </ProvideScreenTracking>
   )
 }
