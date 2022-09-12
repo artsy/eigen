@@ -77,6 +77,7 @@ interface Props extends ViewProps {
 
 const Home = (props: Props) => {
   useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
+  // is that module right?
 
   const prefetchUrl = usePrefetch()
 

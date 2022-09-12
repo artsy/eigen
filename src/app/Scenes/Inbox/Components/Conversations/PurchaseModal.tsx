@@ -40,6 +40,7 @@ export const PurchaseModal: React.FC<PurchaseModalProps> = ({ ...props }) => {
       <FancyModalHeader rightButtonDisabled hideBottomDivider>
         Purchase
       </FancyModalHeader>
+      {/* here too? */}
       <ScrollView showsVerticalScrollIndicator={false}>
         <Flex p={1.5}>
           <Text variant="lg">Select edition set</Text>
@@ -83,6 +84,7 @@ export const PurchaseModal: React.FC<PurchaseModalProps> = ({ ...props }) => {
     </View>
   )
 }
+///also win a bid
 
 export const PurchaseModalFragmentContainer = createFragmentContainer(PurchaseModal, {
   artwork: graphql`
