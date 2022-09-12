@@ -11400,6 +11400,9 @@ type Partner implements Node {
     displayOnPartnerProfile: Boolean
     hasNotRepresentedArtistWithPublishedArtworks: Boolean
     hasPublishedArtworks: Boolean
+
+    # Include additional fields on artists, requires authentication
+    includeAllFields: Boolean
     representedBy: Boolean
   ): ArtistPartnerConnection
   analytics: AnalyticsPartnerStats
@@ -11434,12 +11437,18 @@ type Partner implements Node {
   artworksConnection(
     after: String
 
+    # Return only artworks by this artist.
+    artistID: String
+
     # Return only artwork(s) included in this list of IDs.
     artworkIDs: [String]
     before: String
     exclude: [String]
     first: Int
     forSale: Boolean
+
+    # If true return both published and unpublished artworks, requires auth
+    includeUnpublished: Boolean
     last: Int
 
     # Return artworks that are missing priority metadata
@@ -11570,6 +11579,9 @@ type Partner implements Node {
   showsConnection(
     after: String
 
+    # If present only return shows including the artist
+    artistID: String
+
     # True for only shows that are part of a fair, false for only shows not part of a fair, blank for all shows
     atAFair: Boolean
     before: String
@@ -11671,6 +11683,11 @@ type PartnerArtistCounts {
     label: String
   ): FormattedNumber
   forSaleArtworks(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  managedArtworks(
     # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
     label: String
@@ -12716,6 +12733,7 @@ type Query {
     first: Int
     includeBackfill: Boolean!
     last: Int
+    maxWorksPerArtist: Int
     page: Int
     userId: String
     version: String
@@ -14626,7 +14644,7 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
   # Artists inside the show who do not have artworks present
   artistsWithoutArtworks: [Artist]
 
-  # The artworks featured in the show
+  # The artworks featured in the show.
   artworksConnection(
     after: String
     before: String
@@ -15825,13 +15843,11 @@ type UpdateViewingRoomSubsectionsPayload {
 # The `Upload` scalar type represents a file upload.
 scalar Upload
 
-type User {
+type User implements Node {
   # The admin notes associated with the user
   adminNotes: [UserAdminNotes]!
   analytics: AnalyticsUserStats
   cached: Int
-
-  # A collector profile.
   collectorProfile: CollectorProfileType
   createdAt(
     format: String
@@ -15856,6 +15872,7 @@ type User {
     # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
+  follows: UserFollows
 
   # A globally unique ID.
   id: ID!
@@ -15895,6 +15912,12 @@ type User {
 
   # The Parnter or Profile access granted to the user
   profileAccess: [String]!
+  purchasedArtworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): UserPurchasesConnection
 
   # This user should receive lot opening notifications
   receiveLotOpeningSoonNotification: Boolean
@@ -15928,6 +15951,7 @@ type User {
 
   # The sale profile of the user.
   saleProfile: UserSaleProfile
+  savedArtworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
 
   # If the user has enabled two-factor authentication on their account
   secondFactorEnabled: Boolean!
@@ -16086,6 +16110,11 @@ type UserEdge {
   node: User
 }
 
+type UserFollows {
+  artistsConnection(after: String, before: String, first: Int, last: Int): ArtistConnection
+  genesConnection(after: String, before: String, first: Int, last: Int): GeneConnection
+}
+
 type UserIconDeleteFailureType {
   mutationError: GravityMutationError
 }
@@ -16147,6 +16176,33 @@ union UserInterestInterest = Artist | Gene
 enum UserInterestInterestType {
   ARTIST
   GENE
+}
+
+# A connection to a list of items.
+type UserPurchasesConnection {
+  # A list of edges.
+  edges: [UserPurchasesEdge]
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+}
+
+# An edge in a connection.
+type UserPurchasesEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
+
+  # The item at the end of the edge
+  node: Artwork
+  ownerType: String
+  salePrice: Float
+  source: String
 }
 
 type UserSaleProfile {
@@ -16447,6 +16503,7 @@ type Viewer {
     first: Int
     includeBackfill: Boolean!
     last: Int
+    maxWorksPerArtist: Int
     page: Int
     userId: String
     version: String

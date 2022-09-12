@@ -1,5 +1,6 @@
 import { Flex, Text, Touchable } from "palette"
 import { useColor } from "palette/hooks"
+import { ColoredDot } from "./ColoredDot"
 
 export interface LineGraphBandProps {
   bands: Array<{ name: string; accessibilityLabel?: string }>
@@ -16,20 +17,26 @@ export const LineGraphBands: React.FC<LineGraphBandProps> = ({
   return (
     <Flex flexDirection="row" justifyContent="center" alignItems="center">
       {bands.map((band, index) => (
-        <Flex key={band.name + index} mx={3} mb={2}>
+        <Flex key={band.name + index} mx={2} mb={2}>
           <Touchable
             haptic="impactMedium"
             onPress={() => onBandSelected(band.name)}
             testID="band"
             accessibilityLabel={band.accessibilityLabel}
           >
-            <Text
-              variant="xs"
-              color={!(selectedBand === band.name) ? color("black60") : undefined}
-              fontWeight={selectedBand === band.name ? "500" : undefined}
-            >
-              {band.name}
-            </Text>
+            <Flex flexDirection="row" alignItems="center">
+              <ColoredDot
+                color={!(selectedBand === band.name) ? color("black30") : color("black100")}
+                size={6}
+              />
+              <Text
+                variant="xs"
+                color={!(selectedBand === band.name) ? color("black30") : color("black100")}
+                fontWeight={selectedBand === band.name ? "500" : undefined}
+              >
+                {band.name}
+              </Text>
+            </Flex>
           </Touchable>
         </Flex>
       ))}

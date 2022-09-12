@@ -20,6 +20,7 @@ interface Props {
   chartInterpolation?: InterpolationPropType
   dataTag?: string // optional tag to attach to data or events sent from this chart
   dataTagToSubscribeTo?: string
+  highlightIconColor?: string
   onXHighlightPressed?: (datum: { _x: number; _y: number; x: number; y: number }) => void
   onYHighlightPressed?: (datum: { _x: number; _y: number; x: number; y: number }) => void
   onDataPointPressed?: (datum: LineChartData["data"][0] | null) => void
@@ -51,6 +52,7 @@ export const LineGraph: React.FC<Props> = ({
   data,
   dataTag,
   dataTagToSubscribeTo,
+  highlightIconColor,
   onBandSelected,
   onCategorySelected,
   onDataPointPressed,
@@ -78,6 +80,7 @@ export const LineGraph: React.FC<Props> = ({
             showHighlights={showHighlights}
             dataTag={dataTag}
             dataTagToSubscribeTo={dataTagToSubscribeTo}
+            highlightIconColor={highlightIconColor}
             shouldAnimate={shouldAnimate}
             chartHeight={chartHeight}
             chartWidth={chartWidth}

@@ -30,7 +30,7 @@ const CategoryAliases: { [key: string]: string } = {
 }
 
 const categoryColorCode: { [key: string]: { color: string | null; importance: number } } = {
-  Painting: { color: "#E2B929", importance: 10 },
+  Painting: { color: "#1023D7", importance: 10 },
   Sculpture: { color: "#9C88FF", importance: 9 },
   Print: { color: "#00A8FF", importance: 8 },
   "Drawing, Collage or other Work on Paper": { color: "#4CD137", importance: 7 },
@@ -88,4 +88,13 @@ export const computeCategoriesForChart = (
   catForChart.sort((a, b) => b.importance - a.importance)
 
   return catForChart.map((cat) => ({ name: cat.name, color: cat.color }))
+}
+
+export const formatSellThroughRate = (sellThroughRate: number | null) => {
+  if (sellThroughRate === null) {
+    return ""
+  }
+
+  // show up to 2 decimal places
+  return `${Math.round(sellThroughRate * 10000) / 100}%`
 }

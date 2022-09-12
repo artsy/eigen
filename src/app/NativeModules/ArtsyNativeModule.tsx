@@ -2,6 +2,8 @@ import { appJson } from "app/utils/jsonFiles"
 import { NativeModules, PixelRatio, Platform } from "react-native"
 import { LegacyNativeModules } from "./LegacyNativeModules"
 
+export const DEFAULT_NAVIGATION_BAR_COLOR = "#FFFFFF"
+
 /**
  * Cross-platform native module facade.
  * All new artsy-specific native bridge code should be exposed here.

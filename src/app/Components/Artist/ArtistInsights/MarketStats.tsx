@@ -15,6 +15,7 @@ import { useScreenDimensions } from "shared/hooks"
 import { extractNodes } from "../../../utils/extractNodes"
 
 import { MarketStats_priceInsightsConnection$data } from "__generated__/MarketStats_priceInsightsConnection.graphql"
+import { formatSellThroughRate } from "app/utils/marketPriceInsightHelpers"
 
 interface MarketStatsProps {
   priceInsightsConnection: MarketStats_priceInsightsConnection$data
@@ -98,10 +99,6 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
   }
   const formattedMedianSaleOverEstimatePercentage = Math.abs(actualMedianSaleOverEstimatePercentage)
 
-  const sellThroughRatePercentage = (selectedPriceInsight.sellThroughRate as number) * 100
-  // show up to 2 decimal places
-  const formattedSellThroughRate = Math.round(sellThroughRatePercentage * 100) / 100
-
   return (
     <>
       <Flex flexDirection="row" alignItems="center">
@@ -142,7 +139,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
           <Text variant="sm">Yearly lots sold</Text>
         </Flex>
         <Flex width="50%">
-          <Text variant="lg">{formattedSellThroughRate}%</Text>
+          <Text variant="lg">{formatSellThroughRate(selectedPriceInsight.sellThroughRate)}%</Text>
           <Text variant="sm">Sell-through rate</Text>
         </Flex>
         <Flex width="50%" mt={2}>

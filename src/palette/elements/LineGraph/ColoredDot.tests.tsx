@@ -8,8 +8,8 @@ describe("ColoredDot", () => {
     expect(dot.props.backgroundColor).toEqual("#44BBDD")
   })
 
-  it("falls back to default color when disabled", () => {
-    const { getByTestId } = render(<ColoredDot color="#44BBDD" disabled />)
+  it("falls back to default color when color is not supplied", () => {
+    const { getByTestId } = render(<ColoredDot />)
     const dot = getByTestId("colored-dot")
     expect(dot.props.backgroundColor).toEqual(DEFAULT_DOT_COLOR)
   })

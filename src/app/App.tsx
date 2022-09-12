@@ -16,7 +16,7 @@ import { AppProviders } from "./AppProviders"
 import { useWebViewCookies } from "./Components/ArtsyWebView"
 import { FPSCounter } from "./Components/FPSCounter"
 import { useErrorReporting } from "./errorReporting/hooks"
-import { ArtsyNativeModule } from "./NativeModules/ArtsyNativeModule"
+import { ArtsyNativeModule, DEFAULT_NAVIGATION_BAR_COLOR } from "./NativeModules/ArtsyNativeModule"
 import { ModalStack } from "./navigation/ModalStack"
 import { navigate } from "./navigation/navigate"
 import { usePurgeCacheOnAppUpdate } from "./relay/usePurgeCacheOnAppUpdate"
@@ -113,7 +113,7 @@ const Main = () => {
           ArtsyNativeModule.setAppStyling()
         }
         if (isLoggedIn && Platform.OS === "android") {
-          ArtsyNativeModule.setNavigationBarColor("#FFFFFF")
+          ArtsyNativeModule.setNavigationBarColor(DEFAULT_NAVIGATION_BAR_COLOR)
           ArtsyNativeModule.setAppLightContrast(false)
         }
       }, 500)

@@ -185,7 +185,7 @@ const mockArtwork = {
 const mockMarketPriceInsights = {
   demandRank: 0.7,
   demandTrend: 9,
-  sellThroughRate: 20,
+  sellThroughRate: 0.2,
   annualLotsSold: 100,
   annualValueSoldCents: 100000,
   medianSaleToEstimateRatio: 1,

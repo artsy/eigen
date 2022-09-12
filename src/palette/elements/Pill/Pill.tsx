@@ -29,6 +29,8 @@ export interface PillProps extends FlexProps {
     PressableProps,
     "style" | "disabled" | "onPress" | "onPressIn" | "onPressOut"
   >
+  /** Allows for overriding the pill style when in different states */
+  stateStyle?: { [key in DisplayState]?: ReturnType<typeof useStyleForState> }
 }
 
 enum DisplayState {
@@ -74,6 +76,7 @@ export const Pill: React.FC<PillProps> = ({
   highlightEnabled = false,
   block = false,
   pressablePros = {},
+  stateStyle,
   ...rest
 }) => {
   const textStyle = useTextStyleForPalette(size === "xxs" ? "xs" : "sm")
@@ -95,7 +98,7 @@ export const Pill: React.FC<PillProps> = ({
   }
 
   const iconSpacerMargin = size === "xxs" ? 0.5 : 1
-  const to = useStyleForState(displayState)
+  const to = useStyleForState(displayState, stateStyle)
   const iconColor = to.textColor as Color
 
   return (
@@ -155,7 +158,8 @@ export const Pill: React.FC<PillProps> = ({
 }
 
 const useStyleForState = (
-  state: DisplayState
+  state: DisplayState,
+  stateStyle: PillProps["stateStyle"]
 ): { textColor: string; borderColor: string; backgroundColor: string } => {
   const color = useColor()
 
@@ -163,24 +167,28 @@ const useStyleForState = (
 
   switch (state) {
     case DisplayState.Pressed:
-      retval.textColor = color("blue100")
-      retval.borderColor = color("blue100")
-      retval.backgroundColor = color("white100")
+      let desiredStyleForState = stateStyle?.pressed
+      retval.textColor = desiredStyleForState?.textColor ?? color("blue100")
+      retval.borderColor = desiredStyleForState?.borderColor ?? color("blue100")
+      retval.backgroundColor = desiredStyleForState?.backgroundColor ?? color("white100")
       break
     case DisplayState.Selected:
-      retval.textColor = color("white100")
-      retval.borderColor = color("blue100")
-      retval.backgroundColor = color("blue100")
+      desiredStyleForState = stateStyle?.selected
+      retval.textColor = desiredStyleForState?.textColor ?? color("white100")
+      retval.borderColor = desiredStyleForState?.borderColor ?? color("blue100")
+      retval.backgroundColor = desiredStyleForState?.backgroundColor ?? color("blue100")
       break
     case DisplayState.Enabled:
-      retval.textColor = color("black100")
-      retval.borderColor = color("black60")
-      retval.backgroundColor = color("white100")
+      desiredStyleForState = stateStyle?.enabled
+      retval.textColor = desiredStyleForState?.textColor ?? color("black100")
+      retval.borderColor = desiredStyleForState?.borderColor ?? color("black60")
+      retval.backgroundColor = desiredStyleForState?.backgroundColor ?? color("white100")
       break
     case DisplayState.Disabled:
-      retval.textColor = color("black30")
-      retval.borderColor = color("black30")
-      retval.backgroundColor = color("white100")
+      desiredStyleForState = stateStyle?.disabled
+      retval.textColor = desiredStyleForState?.textColor ?? color("black30")
+      retval.borderColor = desiredStyleForState?.borderColor ?? color("black30")
+      retval.backgroundColor = desiredStyleForState?.backgroundColor ?? color("white100")
       break
     default:
       assertNever(state)

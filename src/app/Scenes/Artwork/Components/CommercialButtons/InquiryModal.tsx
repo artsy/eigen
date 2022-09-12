@@ -151,6 +151,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
   const { state, dispatch } = useContext(ArtworkInquiryContext)
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
   const [mutationError, setMutationError] = useState(false)
+  const [loading, setLoading] = useState(false)
   const selectShippingLocation = (locationDetails: LocationWithDetails) =>
     dispatch({ type: "selectShippingLocation", payload: locationDetails })
   const setMessage = (message: string) => dispatch({ type: "setMessage", payload: message })
@@ -196,6 +197,34 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
     }
   }, [mutationSuccessful])
 
+  useEffect(() => {
+    if (mutationSuccessful || mutationError) {
+      setLoading(false)
+    }
+  }, [mutationSuccessful, mutationError])
+
+  const sendInquiry = () => {
+    if (loading) {
+      return
+    }
+    setLoading(true)
+    tracking.trackEvent({
+      action_type: Schema.ActionTypes.Tap,
+      action_name: Schema.ActionNames.InquirySend,
+      owner_type: Schema.OwnerEntityTypes.Artwork,
+      owner_id: artwork.internalID,
+      owner_slug: artwork.slug,
+    })
+    SubmitInquiryRequest(
+      relay.environment,
+      artwork,
+      state,
+      setMutationSuccessful,
+      setMutationError,
+      handleErrorTracking
+    )
+  }
+
   return (
     <FancyModal visible={modalIsVisible} onBackgroundPressed={() => resetAndExit()}>
       <FancyModalHeader
@@ -212,23 +241,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
         }}
         rightButtonText="Send"
         rightButtonDisabled={state.inquiryQuestions.length === 0 && !state.message}
-        onRightButtonPress={() => {
-          tracking.trackEvent({
-            action_type: Schema.ActionTypes.Tap,
-            action_name: Schema.ActionNames.InquirySend,
-            owner_type: Schema.OwnerEntityTypes.Artwork,
-            owner_id: artwork.internalID,
-            owner_slug: artwork.slug,
-          })
-          SubmitInquiryRequest(
-            relay.environment,
-            artwork,
-            state,
-            setMutationSuccessful,
-            setMutationError,
-            handleErrorTracking
-          )
-        }}
+        onRightButtonPress={sendInquiry}
       >
         {state.inquiryType}
       </FancyModalHeader>

@@ -20,18 +20,17 @@ export const HighlightIconContainer: React.FC<HighlightIconContainerProps> = (pr
   // TODO: x and y seems to have been displaced by 10. Investigate why.
   const DISPLACEMENT_FACTOR = 10
 
-  const isWithinItemRange = (locationX: number, locationY: number) => {
-    if (
-      Math.abs(x - locationX) <= DISPLACEMENT_FACTOR &&
-      Math.abs(y - locationY) <= DISPLACEMENT_FACTOR
-    ) {
+  const isWithinItemRange = (cursorX: number, cursorY: number) => {
+    // y would always be 0 or close to 0 for highlights
+    // we are using 0.06 here. Change this value to adjust the hitslop vertically
+    if (cursorX === datum.x && cursorY <= 0.06) {
       return true
     }
     return false
   }
 
-  const checkTappedXDataRegion = (event: ChartGestureEventType) => {
-    if (isWithinItemRange(event.x, event.y)) {
+  const checkTappedXDataRegion = (cursor: ChartGestureEventType) => {
+    if (cursor && isWithinItemRange(cursor.x, cursor.y)) {
       onHighlightPressed?.({ ...datum, dataTag })
     }
   }
@@ -56,23 +55,14 @@ interface ScatterDataPointContainerProps {
   updateLastPressedDatum: (datum: any) => void
   size: number
   dataTag?: string
-  /** the area along the x-axis that when touched, a point can claim */
-  pointXRadiusOfTouch: number
 }
 
 export const ScatterDataPointContainer: React.FC<ScatterDataPointContainerProps> = (props) => {
-  const { dataTag, pointXRadiusOfTouch, updateLastPressedDatum, ...injectedProps } = props
+  const { dataTag, updateLastPressedDatum, ...injectedProps } = props
   const { x, datum } = injectedProps as any
 
-  const isWithinItemRange = (locationX: number) => {
-    if (Math.abs(x - locationX) <= pointXRadiusOfTouch) {
-      return true
-    }
-    return false
-  }
-
-  const checkTappedXDataRegion = (event: ChartGestureEventType) => {
-    if (isWithinItemRange(event.x)) {
+  const checkTappedXDataRegion = (cursor: ChartGestureEventType) => {
+    if (cursor && cursor.x === datum.x) {
       updateLastPressedDatum?.({ ...datum, left: x - 10, dataTag })
     }
   }

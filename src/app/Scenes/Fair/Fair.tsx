@@ -261,7 +261,14 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
         />
       </ArtworkFiltersStoreProvider>
 
-      <SearchImageHeaderButton isImageSearchButtonVisible={shouldShowImageSearchButton} />
+      <SearchImageHeaderButton
+        isImageSearchButtonVisible={shouldShowImageSearchButton}
+        owner={{
+          type: OwnerType.fair,
+          id: fair.internalID,
+          slug: fair.slug,
+        }}
+      />
     </ProvideScreenTracking>
   )
 }

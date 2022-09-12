@@ -222,10 +222,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@artsy/cohesion@4.61.0":
-  version "4.61.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.61.0.tgz#f9939c70722c0fc9824185233d367c98784a0885"
-  integrity sha512-6gSmAkiv7SIKu9qj7wIsOhnmMHsFNehH2o83UrW4gg0RDMPLK75Hg2QFSPUqFh6sNv/tGlGHfK2T1W6JsraKMQ==
+"@artsy/cohesion@4.65.0":
+  version "4.65.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.65.0.tgz#f5300c60b1bd5f33366d1d2c40550c0da1441bf9"
+  integrity sha512-OL/skTzJAP8/N2HPqSCuBC5on3rjYr7U9KHVKOQkR0I1KKTkgu4ZU5GjA9McC2dTnKXS8TfPbQj9ybxdrG9jdQ==
   dependencies:
     core-js "3"
 
@@ -2201,6 +2201,23 @@
   dependencies:
     "@types/hoist-non-react-statics" "^3.3.1"
     hoist-non-react-statics "^3.3.0"
+
+"@gorhom/bottom-sheet@4.4.3":
+  version "4.4.3"
+  resolved "https://registry.yarnpkg.com/@gorhom/bottom-sheet/-/bottom-sheet-4.4.3.tgz#4c31f214342faa0ba9cd453a98f8c1e0e780c428"
+  integrity sha512-ZEbCLbvLaEVNa9c+om/o9Le0q7o9GkEM7smhuoFkqj9CIjv3XbpZof7uEKV86yyta+ONAInNYrCdVSpYQ1Rjkg==
+  dependencies:
+    "@gorhom/portal" "1.0.13"
+    invariant "^2.2.4"
+    nanoid "^3.3.3"
+    react-native-redash "^16.1.1"
+
+"@gorhom/portal@1.0.13":
+  version "1.0.13"
+  resolved "https://registry.yarnpkg.com/@gorhom/portal/-/portal-1.0.13.tgz#da3af4d427e1fa68d264107de4b3072a4adf35ce"
+  integrity sha512-ViClKPkyGnj8HVMW45OGQSnGbWBVh8i3tgMOkGqpm6Cv0WVcDfUL7SER6zyGQy8Wdoj3GUDpAJFMqVOxpmRpzw==
+  dependencies:
+    nanoid "^3.3.1"
 
 "@hapi/hoek@^9.0.0":
   version "9.2.1"
@@ -4674,6 +4691,11 @@ abort-controller@^3.0.0:
   dependencies:
     event-target-shim "^5.0.0"
 
+abs-svg-path@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/abs-svg-path/-/abs-svg-path-0.1.1.tgz#df601c8e8d2ba10d4a76d625e236a9a39c2723bf"
+  integrity sha512-d8XPSGjfyzlXC3Xx891DJRyZfqk5JU0BJrDQcsWomFIV1/BIzPW5HDH5iDdWpqWaav0YVIEzT1RHTwWr0FFshA==
+
 absolute-path@^0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/absolute-path/-/absolute-path-0.0.0.tgz#a78762fbdadfb5297be99b15d35a785b2f095bf7"
@@ -6477,7 +6499,7 @@ d3-ease@^3.0.1:
   resolved "https://registry.yarnpkg.com/d3-path/-/d3-path-3.0.1.tgz#f09dec0aaffd770b7995f1a399152bf93052321e"
   integrity sha512-gq6gZom9AFZby0YLduxT1qmrp4xpBA1YZr19OI717WIdKE2OM5ETq5qrHLb301IgxhLwcuxvGZVLeeWc/k1I6w==
 
-d3-scale@4.0.2, d3-scale@^4.0.2:
+d3-scale@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/d3-scale/-/d3-scale-4.0.2.tgz#82b38e8e8ff7080764f8dcec77bd4be393689396"
   integrity sha512-GZW464g1SH7ag3Y7hXjf8RoUuAFIqklOAq3MRl4OaWabTFJY9PN/E1YklhXLh+OQ3fM9yS2nOkCoS+WLZ6kvxQ==
@@ -8089,10 +8111,10 @@ globby@^8.0.1:
     pify "^3.0.0"
     slash "^1.0.0"
 
-google-libphonenumber@3.2.27:
-  version "3.2.27"
-  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.27.tgz#06a0c1d42be712a6fd4189e2e3b07fc36cacee01"
-  integrity sha512-et3QlrfWemNPhyUfXZmJG8TfzitfAN71ygNI15+B35zNge/7vyZxkpDsc13oninkf8RAtN2kNEzvMr4L1n3vfQ==
+google-libphonenumber@3.2.30:
+  version "3.2.30"
+  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.30.tgz#a9f421ff1ff87694de11fe5a1c2b9693b996ee67"
+  integrity sha512-Kx2/AqmY0P6863vOhkiCFqfAxfY3jagMe916ByU38JRKiRCqSHGJW1qTOZNV4+ag8Xda69dk6w8VwEeswVy44w==
 
 got@^7.0.0:
   version "7.1.0"
@@ -10910,10 +10932,10 @@ mkdirp@^1.0.4:
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
-moment-timezone@*, moment-timezone@0.5.34:
-  version "0.5.34"
-  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.34.tgz#a75938f7476b88f155d3504a9343f7519d9a405c"
-  integrity sha512-3zAEHh2hKUs3EXLESx/wsgw6IQdusOT8Bxm3D9UrHPQR7zlMmzwybC8zHEM1tQ4LJwP7fcxrWr8tuBg05fFCbg==
+moment-timezone@*, moment-timezone@0.5.37:
+  version "0.5.37"
+  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.37.tgz#adf97f719c4e458fdb12e2b4e87b8bec9f4eef1e"
+  integrity sha512-uEDzDNFhfaywRl+vwXxffjjq1q0Vzr+fcQpQ1bU0kbzorfS7zVtZnCnGc8mhWmF39d4g4YriF6kwA75mJKE/Zg==
   dependencies:
     moment ">= 2.9.0"
 
@@ -10976,7 +10998,7 @@ nano-css@^5.3.1:
     stacktrace-js "^2.0.2"
     stylis "^4.0.6"
 
-nanoid@^3.1.23:
+nanoid@^3.1.23, nanoid@^3.3.1, nanoid@^3.3.3:
   version "3.3.4"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.4.tgz#730b67e3cd09e2deacf03c027c81c9d9dbc5e8ab"
   integrity sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==
@@ -11113,6 +11135,13 @@ normalize-path@^3.0.0, normalize-path@~3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/normalize-path/-/normalize-path-3.0.0.tgz#0dcd69ff23a1c9b11fd0978316644a0388216a65"
   integrity sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==
+
+normalize-svg-path@^1.0.1:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/normalize-svg-path/-/normalize-svg-path-1.1.0.tgz#0e614eca23c39f0cffe821d6be6cd17e569a766c"
+  integrity sha512-r9KHKG2UUeB5LoTouwDzBy2VxXlHsiM6fyLQvnJa0S5hrhzqElH/CH7TUGhT1fVvIYBIKf3OpY4YJ4CK+iaqHg==
+  dependencies:
+    svg-arc-to-cubic-bezier "^3.0.0"
 
 npm-run-path@^2.0.0:
   version "2.0.2"
@@ -11600,6 +11629,11 @@ parse-passwd@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/parse-passwd/-/parse-passwd-1.0.0.tgz#6d5b934a456993b23d37f40a382d6f1666a8e5c6"
   integrity sha1-bVuTSkVpk7I9N/QKOC1vFmao5cY=
+
+parse-svg-path@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/parse-svg-path/-/parse-svg-path-0.1.2.tgz#7a7ec0d1eb06fa5325c7d3e009b859a09b5d49eb"
+  integrity sha512-JyPSBnkTJ0AI8GGJLfMXvKq42cj5c006fnLz6fXy6zfoVjJizi8BNTpu8on8ziI1cKy9d9DGNuY17Ce7wuejpQ==
 
 parse5@6.0.1:
   version "6.0.1"
@@ -12425,6 +12459,15 @@ react-native-reanimated@2.9.1:
     lodash.isequal "^4.5.0"
     setimmediate "^1.0.5"
     string-hash-64 "^1.0.3"
+
+react-native-redash@^16.1.1:
+  version "16.3.0"
+  resolved "https://registry.yarnpkg.com/react-native-redash/-/react-native-redash-16.3.0.tgz#a9112ff1b0e0b506a2e2ae50967597e73b69d343"
+  integrity sha512-dhmeYbQ/usGzxZSGZmzmRuIFF2LrtJUKqgseKgf9Jdj0JQ7VM20m/LqTg60+wjxeiyAh2D/vKsQ2U7rMkuoplQ==
+  dependencies:
+    abs-svg-path "^0.1.1"
+    normalize-svg-path "^1.0.1"
+    parse-svg-path "^0.1.2"
 
 react-native-safe-area-context@3.4.0:
   version "3.4.0"
@@ -14103,6 +14146,11 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
+svg-arc-to-cubic-bezier@^3.0.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/svg-arc-to-cubic-bezier/-/svg-arc-to-cubic-bezier-3.2.0.tgz#390c450035ae1c4a0104d90650304c3bc814abe6"
+  integrity sha512-djbJ/vZKZO+gPoSDThGNpKDO+o+bAeA4XQKovvkNCqnIS2t+S4qnLAGQhyyrulhCFRl1WWzAp0wUDV8PpTVU3g==
+
 symbol-observable@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.2.0.tgz#c22688aed4eab3cdc2dfeacbb561660560a00804"
@@ -14540,10 +14588,10 @@ typescript-memoize@^1.0.0-alpha.3:
   dependencies:
     core-js "2.4.1"
 
-typescript@4.8.2:
-  version "4.8.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.8.2.tgz#e3b33d5ccfb5914e4eeab6699cf208adee3fd790"
-  integrity sha512-C0I1UsrrDHo2fYI5oaCGbSejwX4ch+9Y5jTQELvovfmFkK3HHSZJB8MSJcWLmCUBzQBchCrZ9rMRV6GuNrvGtw==
+typescript@4.8.3:
+  version "4.8.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.8.3.tgz#d59344522c4bc464a65a730ac695007fdb66dd88"
+  integrity sha512-goMHfm00nWPa8UvR/CPSvykqf6dVV8x/dp0c5mFTMTIu0u0FlGWRioyy7Nn0PGAdHxpJZnuO/ut+PpQ8UiHAig==
 
 typical@^4.0.0:
   version "4.0.0"
