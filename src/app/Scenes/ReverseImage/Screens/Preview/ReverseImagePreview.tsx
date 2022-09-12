@@ -17,6 +17,7 @@ import { Background } from "../../Components/Background"
 import { CameraFramesContainer } from "../../Components/CameraFramesContainer"
 import { HeaderContainer } from "../../Components/HeaderContainer"
 import { HeaderTitle } from "../../Components/HeaderTitle"
+import { useReverseImageContext } from "../../ReverseImageContext"
 import { ReverseImageNavigationStack, ReverseImageOwner } from "../../types"
 import { CAMERA_BUTTONS_HEIGHT } from "../Camera/Components/CameraButtons"
 
@@ -24,9 +25,11 @@ type Props = StackScreenProps<ReverseImageNavigationStack, "Preview">
 
 export const ReverseImagePreviewScreen: React.FC<Props> = (props) => {
   const { navigation, route } = props
-  const { photo, owner } = route.params
+  const { photo } = route.params
   const tracking = useTracking()
+  const { analytics } = useReverseImageContext()
   const { handleSearchByImage } = useImageSearch()
+  const { owner } = analytics
 
   const handleGoBack = () => {
     navigation.goBack()
@@ -52,7 +55,6 @@ export const ReverseImagePreviewScreen: React.FC<Props> = (props) => {
       }
 
       navigation.replace("MultipleResults", {
-        owner,
         photoPath: photo.path,
         artworkIDs,
       })

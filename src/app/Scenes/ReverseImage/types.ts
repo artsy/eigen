@@ -20,19 +20,15 @@ export interface ReverseImageOwner {
 
 // tslint:disable-next-line:interface-over-type-literal
 export type ReverseImageNavigationStack = {
-  Camera: {
-    owner: ReverseImageOwner
-  }
+  Camera: undefined
   MultipleResults: {
     photoPath: string
     artworkIDs: string[]
-    owner: ReverseImageOwner
   }
   ArtworkNotFound: {
     photoPath: string
   }
   Preview: {
     photo: PhotoEntity
-    owner: ReverseImageOwner
   }
 }

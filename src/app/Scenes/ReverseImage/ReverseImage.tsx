@@ -6,6 +6,7 @@ import {
 } from "app/NativeModules/ArtsyNativeModule"
 import { useCallback } from "react"
 import { Platform, StatusBar } from "react-native"
+import { ReverseImageContext, ReverseImageContextValue } from "./ReverseImageContext"
 import { ReverseImageArtworkNotFoundScreen } from "./Screens/ArtworkNotFound/ReverseImageArtworkNotFoundScreen"
 import { ReverseImageCameraScreen } from "./Screens/Camera/ReverseImageCamera"
 import { ReverseImageMultipleResultsScreen } from "./Screens/MultipleResults/ReverseImageMultipleResults"
@@ -42,32 +43,33 @@ export const ReverseImage: React.FC<ReverseImageProps> = ({ owner }) => {
 
   useFocusEffect(onFocusEffect)
 
+  const contextValue: ReverseImageContextValue = {
+    analytics: {
+      owner,
+    },
+  }
+
   return (
-    <NavigationContainer independent>
-      <Stack.Navigator
-        initialRouteName="Camera"
-        screenOptions={{
-          headerShown: false,
-          headerMode: "screen",
-          animationTypeForReplace: "push",
-          cardStyle: {
-            backgroundColor: "#000",
-          },
-        }}
-      >
-        <Stack.Screen
-          name="Camera"
-          component={ReverseImageCameraScreen}
-          initialParams={{ owner }}
-        />
-        <Stack.Screen name="MultipleResults" component={ReverseImageMultipleResultsScreen} />
-        <Stack.Screen name="ArtworkNotFound" component={ReverseImageArtworkNotFoundScreen} />
-        <Stack.Screen
-          name="Preview"
-          component={ReverseImagePreviewScreen}
-          options={{ animationEnabled: false }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <ReverseImageContext.Provider value={contextValue}>
+      <NavigationContainer independent>
+        <Stack.Navigator
+          initialRouteName="Camera"
+          screenOptions={{
+            headerShown: false,
+            headerMode: "screen",
+            animationTypeForReplace: "push",
+          }}
+        >
+          <Stack.Screen name="Camera" component={ReverseImageCameraScreen} />
+          <Stack.Screen name="MultipleResults" component={ReverseImageMultipleResultsScreen} />
+          <Stack.Screen name="ArtworkNotFound" component={ReverseImageArtworkNotFoundScreen} />
+          <Stack.Screen
+            name="Preview"
+            component={ReverseImagePreviewScreen}
+            options={{ animationEnabled: false }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </ReverseImageContext.Provider>
   )
 }

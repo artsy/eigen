@@ -25,6 +25,7 @@ import { Background, BACKGROUND_COLOR } from "../../Components/Background"
 import { CameraFramesContainer } from "../../Components/CameraFramesContainer"
 import { HeaderContainer } from "../../Components/HeaderContainer"
 import { HeaderTitle } from "../../Components/HeaderTitle"
+import { useReverseImageContext } from "../../ReverseImageContext"
 import { FocusCoords, ReverseImageNavigationStack, ReverseImageOwner } from "../../types"
 import { CAMERA_BUTTONS_HEIGHT, CameraButtons } from "./Components/CameraButtons"
 import { CameraErrorState } from "./Components/CameraErrorState"
@@ -36,10 +37,10 @@ type Props = StackScreenProps<ReverseImageNavigationStack, "Camera">
 const HIDE_FOCUS_TIMEOUT = 400
 
 export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
-  const { navigation, route } = props
-  const { owner } = route.params
+  const { navigation } = props
   const tracking = useTracking()
   const enableDebug = useDevToggle("DTShowDebugReverseImageView")
+  const { analytics } = useReverseImageContext()
   const [cameraPermission, setCameraPermission] = useState<CameraPermissionStatus | null>(null)
   const [enableFlash, setEnableFlash] = useState(false)
   const [isCameraInitialized, setIsCameraInitialized] = useState(false)
@@ -49,6 +50,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   const timer = useRef<NodeJS.Timeout | null>(null)
   const devices = useCameraDevices()
   const device = devices.back
+  const { owner } = analytics
 
   const isFocused = useIsFocused()
   const isForeground = useIsForeground()
@@ -81,7 +83,6 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
       }
 
       navigation.navigate("Preview", {
-        owner,
         photo: {
           path: `file://${capturedPhoto.path}`,
           width: capturedPhoto.width,
@@ -165,7 +166,6 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
       const image = images[0]
 
       navigation.navigate("Preview", {
-        owner,
         photo: {
           path: image.path,
           width: image.width,
