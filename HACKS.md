@@ -14,16 +14,6 @@ Explain why the hack was added.
 
 👀 See comment on top of file for template.
 
-## cleanup-detect-secrets script in postinstall
-
-#### When can we remove this:
-
-We can remove at any point after 20 july 2022.
-
-#### Explanation/Context:
-
-This is just a cleanup script that removes the artsy detect secrets formula from brew, and the python one, both of which we used at some point, but not anymore. good to make sure other devs have the right tool installed in their PATH, and remove any old deps we had.
-
 ## EchoNew.json
 
 #### When can we remove this:
