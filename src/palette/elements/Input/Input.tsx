@@ -138,7 +138,7 @@ export const Input = forwardRef<InputRef, InputProps>(
 
     const renderShowPasswordIcon = () => {
       if (!secureTextEntry) {
-        return
+        return null
       }
       return (
         <Flex pr="1" justifyContent="center" flexGrow={0}>
