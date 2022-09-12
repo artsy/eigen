@@ -1,11 +1,12 @@
 import { ContextModule, OwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
-import { RecentlySold_targetSupply$data } from "__generated__/RecentlySold_targetSupply.graphql"
+import { RecentlySold_recentlySoldArtworks$data } from "__generated__/RecentlySold_recentlySoldArtworks.graphql"
 import {
   SmallArtworkRail,
   SmallArtworkRailPlaceholder,
 } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
+import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderText } from "app/utils/placeholders"
 import { compact, shuffle } from "lodash"
 import { Box, Flex, Spacer } from "palette"
@@ -14,7 +15,7 @@ import { useTracking } from "react-tracking"
 
 interface RecentlySoldProps {
   isLoading?: boolean
-  targetSupply: RecentlySold_targetSupply$data
+  recentlySoldArtworks: RecentlySold_recentlySoldArtworks$data
 }
 
 const trackingArgs: TappedEntityGroupArgs = {
@@ -24,21 +25,18 @@ const trackingArgs: TappedEntityGroupArgs = {
   type: "thumbnail",
 }
 
-export const RecentlySold: React.FC<RecentlySoldProps> = ({ targetSupply, isLoading }) => {
+export const RecentlySold: React.FC<RecentlySoldProps> = ({ recentlySoldArtworks, isLoading }) => {
   if (isLoading) {
     return <RecentlySoldPlaceholder />
   }
 
   const tracking = useTracking()
 
-  const microfunnelItems = targetSupply.microfunnel || []
-  if (microfunnelItems.length === 0) {
+  if (!recentlySoldArtworks) {
     return null
   }
 
-  const recentlySoldArtworks = shuffle(
-    microfunnelItems.map((x) => x?.artworksConnection?.edges?.[0]?.node)
-  )
+  const artworks = shuffle(extractNodes(recentlySoldArtworks)).map(({ artwork }) => artwork)
 
   return (
     <Box>
@@ -46,7 +44,7 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ targetSupply, isLoad
         <SectionTitle title="Recently sold on Artsy" />
       </Flex>
       <SmallArtworkRail
-        artworks={compact(recentlySoldArtworks)}
+        artworks={compact(artworks)}
         onPress={(artwork) => {
           tracking.trackEvent(
             tappedEntityGroup({
@@ -63,14 +61,15 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ targetSupply, isLoad
 }
 
 export const RecentlySoldFragmentContainer = createFragmentContainer(RecentlySold, {
-  targetSupply: graphql`
-    fragment RecentlySold_targetSupply on TargetSupply {
-      microfunnel {
-        artworksConnection(first: 1) {
-          edges {
-            node {
-              ...SmallArtworkRail_artworks
-            }
+  recentlySoldArtworks: graphql`
+    fragment RecentlySold_recentlySoldArtworks on RecentlySoldArtworkTypeConnection {
+      edges {
+        node {
+          artwork {
+            ...SmallArtworkRail_artworks
+          }
+          priceRealized {
+            display
           }
         }
       }

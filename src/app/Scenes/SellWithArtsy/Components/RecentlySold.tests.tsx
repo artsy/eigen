@@ -1,3 +1,4 @@
+/*
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -162,3 +163,4 @@ function makeTargetSupply(
     microfunnel: items,
   }
 }
+*/
