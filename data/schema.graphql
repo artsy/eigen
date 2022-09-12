@@ -15876,6 +15876,12 @@ type User implements Node {
 
   # A globally unique ID.
   id: ID!
+  inquiredArtworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): UserInquiredArtworksConnection
   interestsConnection(after: String, before: String, first: Int, last: Int): UserInterestConnection
 
   # A type-specific ID likely used as a database ID.
@@ -16125,6 +16131,47 @@ type UserIconDeleteSuccessType {
 }
 
 union UserIconDeletionMutationType = UserIconDeleteFailureType | UserIconDeleteSuccessType
+
+# A connection to a list of items.
+type UserInquiredArtworksConnection {
+  # A list of edges.
+  edges: [UserInquiredArtworksEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type UserInquiredArtworksEdge {
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+
+  # A cursor for use in pagination
+  cursor: String!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
+  isSentToGallery: Boolean
+
+  # The item at the end of the edge
+  node: Artwork
+  note: String
+  outcome: String
+
+  # This reflects the `title` attribute of the most recent embedded object in `statuses`
+  status: String
+}
 
 type UserInterest {
   body: String
