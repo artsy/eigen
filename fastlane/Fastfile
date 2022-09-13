@@ -119,11 +119,10 @@ lane :set_build_version_android do |options|
   next_version_name = app_json['version']
 
   if version_code.nil?
-    latest_version = firebase_app_distribution_get_latest_release(
-      app: ENV["FIREBASE_APP_ID"],
-    )
-    current_version_code = latest_version[:buildVersion]
-    version_code = current_version_code.to_i + 1
+    current_version_code = google_play_track_version_codes(
+      track: "alpha",
+    ).first
+    version_code = current_version_code + 1
   end
 
   next_version_code = version_code
