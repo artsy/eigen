@@ -122,7 +122,7 @@ lane :set_build_version_android do |options|
     current_version_code = google_play_track_version_codes(
       track: "alpha",
     ).first
-    version_code = current_version_code + 1
+    version_code = 601
   end
 
   next_version_code = version_code
