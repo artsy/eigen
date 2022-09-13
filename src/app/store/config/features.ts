@@ -273,6 +273,12 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableMyCollectionInsightsMedianPrice",
   },
+  ARCustomRecentlySoldOnArtsy: {
+    readyForRelease: true,
+    description: "Use custom recently sold on Artsy",
+    showInAdminMenu: true,
+    echoFlagKey: "ARCustomRecentlySoldOnArtsy",
+  },
 })
 
 export interface DevToggleDescriptor {
