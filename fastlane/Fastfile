@@ -195,6 +195,7 @@ lane :ship_beta_android_play_store do
     track: "alpha",
     skip_upload_apk: true,
     skip_upload_metadata: true,
+    skip_upload_changelogs: true,
     skip_upload_images: true,
     skip_upload_screenshots: true,
     version_codes_to_retain: past_version_codes
@@ -248,6 +249,7 @@ lane :promote_beta_android do
     track_promote_to: 'production',
     rollout: '0.1',
     skip_upload_metadata: true,
+    skip_upload_changelogs: true,
     skip_upload_images: true,
     skip_upload_screenshots: true,
   )
