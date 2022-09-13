@@ -14,7 +14,7 @@ import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = 90
 export const ARTWORK_RAIL_CARD_IMAGE_HEIGHT = {
   small: 230,
-  large: 400,
+  large: 320,
 }
 
 export type ArtworkCardSize = "small" | "large"
@@ -56,7 +56,12 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   return (
     <ArtworkCard onPress={onPress || undefined} testID={testID}>
       <Flex alignItems="flex-end">
-        <ArtworkRailCardImage image={image} size={size} urgencyTag={urgencyTag} />
+        <ArtworkRailCardImage
+          containerWidth={artwork.image?.resized?.width}
+          image={image}
+          size={size}
+          urgencyTag={urgencyTag}
+        />
         <Flex
           my={1}
           width={artwork.image?.resized?.width}
@@ -119,12 +124,14 @@ export interface ArtworkRailCardImageProps {
   image: ArtworkRailCard_artwork$data["image"]
   size: ArtworkCardSize
   urgencyTag?: string | null
+  containerWidth?: number | null
 }
 
 const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
   image,
   size,
   urgencyTag = null,
+  containerWidth,
 }) => {
   const color = useColor()
 
@@ -149,13 +156,14 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
 
   return (
     <Flex>
-      <OpaqueImageView
-        style={{ maxHeight: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size] }}
-        resizeMode="contain"
-        imageURL={src}
-        height={imageDimensions.height}
-        width={imageDimensions.width}
-      />
+      <Flex alignItems="center" width={containerWidth}>
+        <OpaqueImageView
+          style={{ maxHeight: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size] }}
+          imageURL={src}
+          height={imageDimensions.height}
+          width={imageDimensions.width}
+        />
+      </Flex>
       {!!urgencyTag && (
         <Flex
           backgroundColor={color("white100")}
