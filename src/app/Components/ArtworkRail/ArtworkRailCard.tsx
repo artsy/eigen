@@ -4,6 +4,7 @@ import {
   ArtworkRailCard_artwork$key,
 } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
+import { compact } from "lodash"
 import { Flex, Spacer, Text, useColor } from "palette"
 import { GestureResponderEvent } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -25,6 +26,8 @@ export interface ArtworkRailCardProps {
   hidePartnerName?: boolean
   isRecentlySoldArtwork?: boolean
   lotLabel?: string | null
+  lowEstimateDisplay?: string
+  highEstimateDisplay?: string
   onPress?: (event: GestureResponderEvent) => void
   priceRealizedDisplay?: string
   size: ArtworkCardSize
@@ -36,6 +39,8 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   hidePartnerName = false,
   isRecentlySoldArtwork = false,
   lotLabel,
+  lowEstimateDisplay,
+  highEstimateDisplay,
   onPress,
   priceRealizedDisplay,
   size,
@@ -95,7 +100,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                   Estimate
                 </Text>
                 <Text variant="xs" color="black60" numberOfLines={1} fontWeight="500">
-                  US$80,000—US$120,000
+                  {compact([lowEstimateDisplay, highEstimateDisplay]).join("—")}
                 </Text>
               </Flex>
               <Flex flexDirection="row" justifyContent="space-between">

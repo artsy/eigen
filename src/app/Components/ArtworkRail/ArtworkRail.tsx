@@ -112,6 +112,8 @@ export const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> =
             onPress?.(item, index)
           }}
           priceRealizedDisplay={item?.priceRealized?.display!}
+          lowEstimateDisplay={item?.lowEstimate?.display!}
+          highEstimateDisplay={item?.highEstimate?.display!}
           size={size}
           hidePartnerName
           isRecentlySoldArtwork
