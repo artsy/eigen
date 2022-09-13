@@ -92,7 +92,7 @@ lane :ship_beta_ios do
         changelog: beta_readme,
         itc_provider: 'ArtsyInc',
         distribute_external: true,
-        groups: ['Artsy People'])
+        groups: ['Artsy People', 'Applause People'])
 end
 
 lane :update_version_string do
