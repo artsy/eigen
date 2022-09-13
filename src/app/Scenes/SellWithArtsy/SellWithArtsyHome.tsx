@@ -1,4 +1,5 @@
 import { tappedConsign, TappedConsignArgs } from "@artsy/cohesion"
+import { SellWithArtsyHome_recentlySoldArtworksTypeConnection$data } from "__generated__/SellWithArtsyHome_recentlySoldArtworksTypeConnection.graphql"
 import { SellWithArtsyHome_targetSupply$data } from "__generated__/SellWithArtsyHome_targetSupply.graphql"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { navigate } from "app/navigation/navigate"
@@ -11,19 +12,28 @@ import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { useFeatureFlag } from "../../store/GlobalStore"
 import { ArtistListFragmentContainer as ArtistList } from "./Components/ArtistList"
 import { Footer } from "./Components/Footer"
 import { Header } from "./Components/Header"
 import { HowItWorks } from "./Components/HowItWorks"
 import { RecentlySoldFragmentContainer as RecentlySold } from "./Components/RecentlySold"
+import { SellWithArtsyCustomRecentlySold } from "./Components/SellWithArtsyCustomRecentlySold"
 
 interface Props {
-  targetSupply: SellWithArtsyHome_targetSupply$data
   isLoading?: boolean
+  recentlySoldArtworks: SellWithArtsyHome_recentlySoldArtworksTypeConnection$data
+  targetSupply: SellWithArtsyHome_targetSupply$data
 }
 
-export const SellWithArtsyHome: React.FC<Props> = ({ targetSupply, isLoading }) => {
+export const SellWithArtsyHome: React.FC<Props> = ({
+  isLoading,
+  recentlySoldArtworks,
+  targetSupply,
+}) => {
   const tracking = useTracking()
+  const enableCustomRecentlySold = useFeatureFlag("ARCustomRecentlySoldOnArtsy")
+
   const handleConsignPress = (tappedConsignArgs: TappedConsignArgs) => {
     tracking.trackEvent(tappedConsign(tappedConsignArgs))
     GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
@@ -46,7 +56,12 @@ export const SellWithArtsyHome: React.FC<Props> = ({ targetSupply, isLoading }) 
     <ScrollView>
       <Join separator={<Separator my={3} />}>
         <Header onConsignPress={handleConsignPress} />
-        <RecentlySold targetSupply={targetSupply} isLoading={isLoading} />
+        {enableCustomRecentlySold ? (
+          <SellWithArtsyCustomRecentlySold recentlySoldArtworks={recentlySoldArtworks} />
+        ) : (
+          <RecentlySold targetSupply={targetSupply} isLoading={isLoading} />
+        )}
+
         <HowItWorks />
         <ArtistList targetSupply={targetSupply} isLoading={isLoading} />
         <Footer onConsignPress={handleConsignPress} />
@@ -62,6 +77,11 @@ const SellWithArtsyHomeContainer = createFragmentContainer(SellWithArtsyHome, {
       ...ArtistList_targetSupply
     }
   `,
+  recentlySoldArtworks: graphql`
+    fragment SellWithArtsyHome_recentlySoldArtworksTypeConnection on RecentlySoldArtworkTypeConnection {
+      ...SellWithArtsyCustomRecentlySold_recentlySoldArtworkTypeConnection
+    }
+  `,
 })
 
 interface SellWithArtsyHomeQueryRendererProps {
@@ -72,6 +92,9 @@ export const SellWithArtsyHomeScreenQuery = graphql`
   query SellWithArtsyHomeQuery {
     targetSupply {
       ...SellWithArtsyHome_targetSupply
+    }
+    recentlySoldArtworks {
+      ...SellWithArtsyHome_recentlySoldArtworksTypeConnection
     }
   }
 `
@@ -86,7 +109,13 @@ export const SellWithArtsyHomeQueryRenderer: React.FC<SellWithArtsyHomeQueryRend
       query={SellWithArtsyHomeScreenQuery}
       render={renderWithPlaceholder({
         Container: SellWithArtsyHomeContainer,
-        renderPlaceholder: () => <SellWithArtsyHome isLoading targetSupply={null as any} />,
+        renderPlaceholder: () => (
+          <SellWithArtsyHome
+            isLoading
+            targetSupply={null as any}
+            recentlySoldArtworks={null as any}
+          />
+        ),
       })}
     />
   )
