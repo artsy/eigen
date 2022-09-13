@@ -1,2 +1,2 @@
-gem 'fastlane-plugin-sentry'
+gem 'fastlane-plugin-sentry', '1.12.2'
 gem 'fastlane-plugin-firebase_app_distribution'

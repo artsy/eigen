@@ -11446,13 +11446,13 @@ type Partner implements Node {
     exclude: [String]
     first: Int
     forSale: Boolean
+
+    # If true return both published and unpublished artworks, requires auth
+    includeUnpublished: Boolean
     last: Int
 
     # Return artworks that are missing priority metadata
     missingPriorityMetadata: Boolean
-
-    # If false return both published and unpublished artworks, requires auth
-    published: Boolean
 
     # Return artworks published less than x seconds ago.
     publishedWithin: Int
@@ -15848,8 +15848,6 @@ type User implements Node {
   adminNotes: [UserAdminNotes]!
   analytics: AnalyticsUserStats
   cached: Int
-
-  # A collector profile.
   collectorProfile: CollectorProfileType
   createdAt(
     format: String
@@ -15878,6 +15876,12 @@ type User implements Node {
 
   # A globally unique ID.
   id: ID!
+  inquiredArtworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): UserInquiredArtworksConnection
   interestsConnection(after: String, before: String, first: Int, last: Int): UserInterestConnection
 
   # A type-specific ID likely used as a database ID.
@@ -15914,6 +15918,12 @@ type User implements Node {
 
   # The Parnter or Profile access granted to the user
   profileAccess: [String]!
+  purchasedArtworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): UserPurchasesConnection
 
   # This user should receive lot opening notifications
   receiveLotOpeningSoonNotification: Boolean
@@ -16122,6 +16132,47 @@ type UserIconDeleteSuccessType {
 
 union UserIconDeletionMutationType = UserIconDeleteFailureType | UserIconDeleteSuccessType
 
+# A connection to a list of items.
+type UserInquiredArtworksConnection {
+  # A list of edges.
+  edges: [UserInquiredArtworksEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type UserInquiredArtworksEdge {
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+
+  # A cursor for use in pagination
+  cursor: String!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
+  isSentToGallery: Boolean
+
+  # The item at the end of the edge
+  node: Artwork
+  note: String
+  outcome: String
+
+  # This reflects the `title` attribute of the most recent embedded object in `statuses`
+  status: String
+}
+
 type UserInterest {
   body: String
   category: UserInterestCategory!
@@ -16172,6 +16223,35 @@ union UserInterestInterest = Artist | Gene
 enum UserInterestInterestType {
   ARTIST
   GENE
+}
+
+# A connection to a list of items.
+type UserPurchasesConnection {
+  # A list of edges.
+  edges: [UserPurchasesEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type UserPurchasesEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
+
+  # The item at the end of the edge
+  node: Artwork
+  ownerType: String
+  salePrice: Float
+  source: String
 }
 
 type UserSaleProfile {

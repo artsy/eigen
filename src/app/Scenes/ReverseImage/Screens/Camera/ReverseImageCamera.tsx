@@ -1,3 +1,9 @@
+import {
+  ActionType,
+  OwnerType,
+  TappedPickImageFromLibrary,
+  TappedToggleCameraFlash,
+} from "@artsy/cohesion"
 import { useIsFocused } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
@@ -14,11 +20,13 @@ import {
   CameraRuntimeError,
   useCameraDevices,
 } from "react-native-vision-camera"
+import { useTracking } from "react-tracking"
 import { Background, BACKGROUND_COLOR } from "../../Components/Background"
 import { CameraFramesContainer } from "../../Components/CameraFramesContainer"
 import { HeaderContainer } from "../../Components/HeaderContainer"
 import { HeaderTitle } from "../../Components/HeaderTitle"
-import { FocusCoords, ReverseImageNavigationStack } from "../../types"
+import { useReverseImageContext } from "../../ReverseImageContext"
+import { FocusCoords, ReverseImageNavigationStack, ReverseImageOwner } from "../../types"
 import { CAMERA_BUTTONS_HEIGHT, CameraButtons } from "./Components/CameraButtons"
 import { CameraErrorState } from "./Components/CameraErrorState"
 import { CameraGrantPermissions } from "./Components/CameraGrantPermissions"
@@ -30,7 +38,9 @@ const HIDE_FOCUS_TIMEOUT = 400
 
 export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   const { navigation } = props
+  const tracking = useTracking()
   const enableDebug = useDevToggle("DTShowDebugReverseImageView")
+  const { analytics } = useReverseImageContext()
   const [cameraPermission, setCameraPermission] = useState<CameraPermissionStatus | null>(null)
   const [enableFlash, setEnableFlash] = useState(false)
   const [isCameraInitialized, setIsCameraInitialized] = useState(false)
@@ -40,6 +50,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   const timer = useRef<NodeJS.Timeout | null>(null)
   const devices = useCameraDevices()
   const device = devices.back
+  const { owner } = analytics
 
   const isFocused = useIsFocused()
   const isForeground = useIsForeground()
@@ -88,6 +99,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   }
 
   const toggleFlash = () => {
+    tracking.trackEvent(tracks.tappedToggleCameraFlash(owner))
     setEnableFlash(!enableFlash)
   }
 
@@ -140,7 +152,17 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
 
   const selectPhotosFromLibrary = async () => {
     try {
+      tracking.trackEvent(tracks.tappedPickImageFromLibrary(owner))
       const images = await requestPhotos(false)
+
+      /**
+       * @platform iOS
+       * Do nothing if the user has not selected photos
+       */
+      if (images.length === 0) {
+        return
+      }
+
       const image = images[0]
 
       navigation.navigate("Preview", {
@@ -152,7 +174,19 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
         },
       })
     } catch (error) {
-      console.error(error)
+      /**
+       * @platform Android
+       * Silently ignore error if the user decided not to select photos
+       */
+      if ((error as Error).message === "User cancelled image selection") {
+        return
+      }
+
+      if (__DEV__) {
+        console.error(error)
+      } else {
+        captureMessage((error as Error).stack!)
+      }
 
       if (enableDebug) {
         Alert.alert("Something went wrong", (error as Error)?.message)
@@ -243,4 +277,21 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
       </Flex>
     </Flex>
   )
+}
+
+const tracks = {
+  tappedToggleCameraFlash: (owner: ReverseImageOwner): TappedToggleCameraFlash => ({
+    action: ActionType.tappedToggleCameraFlash,
+    context_screen_owner_type: OwnerType.reverseImageSearch,
+    owner_type: owner.type,
+    owner_id: owner.id,
+    owner_slug: owner.slug,
+  }),
+  tappedPickImageFromLibrary: (owner: ReverseImageOwner): TappedPickImageFromLibrary => ({
+    action: ActionType.tappedPickImageFromLibrary,
+    context_screen_owner_type: OwnerType.reverseImageSearch,
+    owner_type: owner.type,
+    owner_id: owner.id,
+    owner_slug: owner.slug,
+  }),
 }

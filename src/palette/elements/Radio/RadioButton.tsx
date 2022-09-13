@@ -82,6 +82,7 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
 
         onPress?.(event)
       }}
+      hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
     >
       <Flex {...restProps}>
         <Flex flexDirection="row">
