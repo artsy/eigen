@@ -3,7 +3,7 @@ import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ArtistList } from "./Components/ArtistList"
-import { RecentlySold } from "./Components/RecentlySold"
+import { SellWithArtsyCustomRecentlySold } from "./Components/SellWithArtsyCustomRecentlySold"
 import { SellWithArtsyHomeQueryRenderer } from "./SellWithArtsyHome"
 
 jest.unmock("react-relay")
@@ -24,7 +24,7 @@ describe("ConsignmentsHome index", () => {
 
     mockEnvironment.mock.resolveMostRecentOperation(MockPayloadGenerator.generate)
 
-    expect(tree.root.findAllByType(RecentlySold)).toHaveLength(1)
+    expect(tree.root.findAllByType(SellWithArtsyCustomRecentlySold)).toHaveLength(1)
     expect(tree.root.findAllByType(ArtistList)).toHaveLength(1)
   })
 
