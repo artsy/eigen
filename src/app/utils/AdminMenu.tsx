@@ -80,8 +80,7 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
         bottom: 0,
         backgroundColor: "white",
       }}
-      pb="2"
-      pt={useScreenDimensions().safeAreaInsets.top + 20}
+      py="2"
     >
       <Flex flexDirection="row" justifyContent="space-between">
         <Text variant="lg" pb="2" px="2">
