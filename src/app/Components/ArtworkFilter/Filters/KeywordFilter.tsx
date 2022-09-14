@@ -60,17 +60,6 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({
     [onTypingStart]
   )
 
-  // clear input text when keyword filter is reseted
-  useEffect(() => {
-    const appliedKeywordFilter = appliedFiltersState?.find(
-      (filter) => filter.paramName === FilterParamName.keyword
-    )
-
-    if (appliedKeywordFilter?.paramValue || !inputRef.current) {
-      return
-    }
-  }, [appliedFiltersState])
-
   useEffect(() => {
     const isChangedKeyword = typeof prevKeyword !== "undefined" && prevKeyword !== keyword
     const isClearedFilters = prevAppliedFilters.length > 0 && appliedFiltersState.length === 0
