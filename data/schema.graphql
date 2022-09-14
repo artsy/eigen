@@ -8797,9 +8797,11 @@ type Gene implements Node & Searchable {
 type GeneConnection {
   # A list of edges.
   edges: [GeneEdge]
+  pageCursors: PageCursors!
 
   # Information to aid in pagination.
   pageInfo: PageInfo!
+  totalCount: Int
 }
 
 # An edge in a connection.
