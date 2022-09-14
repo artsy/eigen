@@ -115,7 +115,6 @@ export class MakeOfferButton extends React.Component<MakeOfferButtonProps, State
                 this.onMutationError(orderOrError.error)
               } else if (orderOrError.__typename === "CommerceOrderWithMutationSuccess") {
                 navigate(`/orders/${orderOrError.order.internalID}`, {
-                  modal: true,
                   passProps: { orderID: orderOrError.order.internalID, title: "Make Offer" },
                 })
               }

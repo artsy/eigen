@@ -196,7 +196,6 @@ describe("CommercialButtons", () => {
     })
 
     expect(navigate).toHaveBeenCalledWith("/orders/buyNowID", {
-      modal: true,
       passProps: {
         title: "Purchase",
       },
@@ -232,7 +231,6 @@ describe("CommercialButtons", () => {
     })
 
     expect(navigate).toHaveBeenCalledWith("/orders/makeOfferID", {
-      modal: true,
       passProps: {
         orderID: "makeOfferID",
         title: "Make Offer",

@@ -106,7 +106,6 @@ export class BuyNowButton extends React.Component<BuyNowButtonProps, State> {
                 this.onMutationError(orderOrError.error)
               } else if (orderOrError.__typename === "CommerceOrderWithMutationSuccess") {
                 navigate(`/orders/${orderOrError.order.internalID}`, {
-                  modal: true,
                   passProps: { title: "Purchase" },
                 })
               }

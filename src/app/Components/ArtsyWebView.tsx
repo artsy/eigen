@@ -65,7 +65,7 @@ export const ArtsyWebViewPage: React.FC<
   backProps,
   backAction,
 }) => {
-  const paddingTop = useScreenDimensions().safeAreaInsets.top
+  const paddingTop = isPresentedModally ? 0 : useScreenDimensions().safeAreaInsets.top
 
   const [canGoBack, setCanGoBack] = useState(false)
   const webURL = useEnvironment().webURL
