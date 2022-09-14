@@ -11,6 +11,7 @@ import { Input } from "palette"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { Platform } from "react-native"
 import { useTracking } from "react-tracking"
+import usePrevious from "react-use/lib/usePrevious"
 
 export const DEBOUNCE_DELAY = 400
 
@@ -32,7 +33,7 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({
   const { trackEvent } = useTracking()
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
-  const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
+  const prevAppliedFilters = usePrevious(appliedFiltersState) ?? []
 
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.selectFiltersAction
@@ -42,6 +43,7 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({
   )
   const appliedFiltersParams = filterArtworksParams(appliedFiltersState, "auctionResult")
   const [keyword, setKeyword] = useState("")
+  const prevKeyword = usePrevious(keyword)
 
   const inputRef = useRef(null)
 
@@ -70,15 +72,20 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({
   }, [appliedFiltersState])
 
   useEffect(() => {
-    selectFiltersAction({
-      paramName: FilterParamName.keyword,
-      displayText: keyword,
-      paramValue: keyword,
-    })
+    const isChangedKeyword = typeof prevKeyword !== "undefined" && prevKeyword !== keyword
+    const isClearedFilters = prevAppliedFilters.length > 0 && appliedFiltersState.length === 0
 
-    trackEvent(tracks.changeKeywordFilter(appliedFiltersParams, keyword, artistId, artistSlug))
-    applyFiltersAction()
-  }, [applyFilters, keyword])
+    if (isChangedKeyword || (isClearedFilters && keyword)) {
+      selectFiltersAction({
+        paramName: FilterParamName.keyword,
+        displayText: keyword,
+        paramValue: keyword,
+      })
+
+      trackEvent(tracks.changeKeywordFilter(appliedFiltersParams, keyword, artistId, artistSlug))
+      applyFiltersAction()
+    }
+  }, [keyword, prevKeyword, appliedFiltersState, prevAppliedFilters])
 
   // Stop the invocation of the debounced function after unmounting
   useEffect(() => {
