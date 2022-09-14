@@ -211,18 +211,6 @@ class AuctionInformationViewController: UIViewController {
     }
 }
 
-private typealias UIActivitySetup = AuctionInformationViewController
-extension UIActivitySetup {
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        saleViewModel.registerSaleAsActiveActivity(self)
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        userActivity?.invalidate()
-    }
-}
 
 
 private typealias MailCompositionCallbacks = AuctionInformationViewController
