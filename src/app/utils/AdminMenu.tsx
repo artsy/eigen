@@ -38,7 +38,6 @@ import {
 import Config from "react-native-config"
 import { getBuildNumber, getUniqueId, getVersion } from "react-native-device-info"
 import Keychain from "react-native-keychain"
-import { useScreenDimensions } from "shared/hooks"
 import { useUnleashEnvironment } from "./experiments/hooks"
 
 const configurableFeatureFlagKeys = Object.entries(features)
