@@ -33,6 +33,7 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({
   const { trackEvent } = useTracking()
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const prevAppliedFilters = usePrevious(appliedFiltersState) ?? []
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
 
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
@@ -72,19 +73,20 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({
   }, [appliedFiltersState])
 
   useEffect(() => {
-    if (prevKeyword === keyword) {
-      return
+    const hasChangedKeyword = prevKeyword !== keyword
+    const hasChangedFilters = prevAppliedFilters.length > 0 && appliedFiltersState.length === 0
+
+    if (hasChangedKeyword || hasChangedFilters) {
+      selectFiltersAction({
+        paramName: FilterParamName.keyword,
+        displayText: keyword,
+        paramValue: keyword,
+      })
+
+      trackEvent(tracks.changeKeywordFilter(appliedFiltersParams, keyword, artistId, artistSlug))
+      applyFiltersAction()
     }
-
-    selectFiltersAction({
-      paramName: FilterParamName.keyword,
-      displayText: keyword,
-      paramValue: keyword,
-    })
-
-    trackEvent(tracks.changeKeywordFilter(appliedFiltersParams, keyword, artistId, artistSlug))
-    applyFiltersAction()
-  }, [applyFilters, keyword, prevKeyword])
+  }, [applyFilters, keyword, prevKeyword, appliedFiltersState, prevAppliedFilters])
 
   // Stop the invocation of the debounced function after unmounting
   useEffect(() => {
