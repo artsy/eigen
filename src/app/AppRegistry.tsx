@@ -439,7 +439,6 @@ export const modules = defineModules({
     hidesBackButton: true,
     fullBleed: true,
     alwaysPresentModally: true,
-    modalPresentationStyle: "fullScreen",
   }),
   Sales: reactModule(SellWithArtsy, { isRootViewForTabName: "sell" }, [
     SellWithArtsyHomeScreenQuery,
