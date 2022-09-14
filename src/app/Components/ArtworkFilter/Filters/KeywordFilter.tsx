@@ -11,6 +11,7 @@ import { Input } from "palette"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { Platform } from "react-native"
 import { useTracking } from "react-tracking"
+import usePrevious from "react-use/lib/usePrevious"
 
 export const DEBOUNCE_DELAY = 400
 
@@ -42,6 +43,7 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({
   )
   const appliedFiltersParams = filterArtworksParams(appliedFiltersState, "auctionResult")
   const [keyword, setKeyword] = useState("")
+  const prevKeyword = usePrevious(keyword)
 
   const inputRef = useRef(null)
 
@@ -70,6 +72,10 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({
   }, [appliedFiltersState])
 
   useEffect(() => {
+    if (prevKeyword === keyword) {
+      return
+    }
+
     selectFiltersAction({
       paramName: FilterParamName.keyword,
       displayText: keyword,
@@ -78,7 +84,7 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({
 
     trackEvent(tracks.changeKeywordFilter(appliedFiltersParams, keyword, artistId, artistSlug))
     applyFiltersAction()
-  }, [applyFilters, keyword])
+  }, [applyFilters, keyword, prevKeyword])
 
   // Stop the invocation of the debounced function after unmounting
   useEffect(() => {
