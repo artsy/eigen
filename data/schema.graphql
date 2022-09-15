@@ -9772,6 +9772,27 @@ type LotStanding {
   saleArtwork: SaleArtwork
 }
 
+type MarkAllNotificationsAsReadFailure {
+  mutationError: GravityMutationError
+}
+
+input MarkAllNotificationsAsReadInput {
+  clientMutationId: String
+}
+
+type MarkAllNotificationsAsReadPayload {
+  clientMutationId: String
+  responseOrError: MarkAllNotificationsAsReadResponseOrError
+}
+
+union MarkAllNotificationsAsReadResponseOrError =
+    MarkAllNotificationsAsReadFailure
+  | MarkAllNotificationsAsReadSuccess
+
+type MarkAllNotificationsAsReadSuccess {
+  success: Boolean
+}
+
 type MarketingCollection {
   artworksConnection(
     acquireable: Boolean
@@ -10808,6 +10829,11 @@ type Mutation {
 
   # Links a 3rd party account
   linkAuthentication(input: LinkAuthenticationMutationInput!): LinkAuthenticationMutationPayload
+
+  # Mark all unread notifications as read
+  markAllNotificationsAsRead(
+    input: MarkAllNotificationsAsReadInput!
+  ): MarkAllNotificationsAsReadPayload
 
   # Merge multiple artist records in order to deduplicate artists
   mergeArtists(input: MergeArtistsMutationInput!): MergeArtistsMutationPayload
