@@ -70,7 +70,11 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
         <Flex
           my={1}
           width={artwork.image?.resized?.width}
-          style={{ height: ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT }}
+          // Recently sold artworks require more space for the text container
+          // to accommodate the estimate and realized price
+          style={{
+            height: ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + (isRecentlySoldArtwork ? 10 : 0),
+          }}
         >
           {!!lotLabel && (
             <Text lineHeight="20" color="black60" numberOfLines={1}>
