@@ -88,7 +88,12 @@ const MedianSalePriceAtAuctionScreen: React.FC<MedianSalePriceAtAuctionProps> = 
             </Flex>
 
             {!!enableChangeArtist && (
-              <Touchable testID="change-artist-touchable" onPress={() => setVisible(true)} haptic>
+              <Touchable
+                testID="change-artist-touchable"
+                onPress={() => setVisible(true)}
+                haptic
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+              >
                 <Text style={{ textDecorationLine: "underline" }} variant="xs" color="black60">
                   Change Artist
                 </Text>
