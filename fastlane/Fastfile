@@ -353,9 +353,14 @@ lane :flag_android_beta do |options|
 end
 
 lane :upload_sentry_artifacts do |options|
+  sentry_check_cli_installed()
+
+
+
   sentry_release_name = options[:sentry_release_name]
   platform = options[:platform]
   dist_version = options[:dist_version]
+  sentry_cli_path="node_modules/@sentry/cli/bin/sentry-cli"
 
   project_slug = 'eigen'
   org_slug = 'artsynet'
@@ -383,6 +388,7 @@ lane :upload_sentry_artifacts do |options|
   end
 
   sentry_create_release(auth_token: ENV['SentryUploadAuthKey'],
+                        sentry_cli_path: sentry_cli_path,
                         org_slug: org_slug,
                         project_slug: project_slug,
                         version: sentry_release_name,
@@ -399,6 +405,7 @@ lane :upload_sentry_artifacts do |options|
     Dir.glob(File.join(dsyms_path, '*.dSYM')).each do |dsym_path|
       # No need to specify `dist` as the build number is encoded in the dSYM's Info.plist
       sentry_upload_dsym(auth_token: ENV['SentryUploadAuthKey'],
+                         sentry_cli_path: sentry_cli_path,
                          org_slug: org_slug,
                          project_slug: project_slug,
                          dsym_path: dsym_path)
@@ -408,6 +415,7 @@ lane :upload_sentry_artifacts do |options|
 
   begin
     sentry_upload_file(auth_token: ENV['SentryUploadAuthKey'],
+                        sentry_cli_path: sentry_cli_path,
                          org_slug: org_slug,
                          project_slug: project_slug,
                          version: sentry_release_name,
@@ -417,6 +425,7 @@ lane :upload_sentry_artifacts do |options|
     puts "Uploaded source js for #{project_slug}"
 
     sentry_upload_sourcemap(auth_token: ENV['SentryUploadAuthKey'],
+                          sentry_cli_path: sentry_cli_path,
                             org_slug: org_slug,
                             project_slug: project_slug,
                             version: sentry_release_name,
