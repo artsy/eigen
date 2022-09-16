@@ -90,6 +90,8 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
         },
       })
     } catch (error) {
+      console.log("[debug] takePhoto", error)
+
       console.error(error)
 
       if (enableDebug) {
@@ -108,6 +110,8 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   }
 
   const onCameraError = (error: CameraRuntimeError) => {
+    console.log("[debug] onCameraError", error)
+
     setHasError(true)
 
     if (enableDebug) {
