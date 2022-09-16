@@ -1,4 +1,10 @@
-import { ActionType, ContextModule, DeleteCollectedArtwork, OwnerType } from "@artsy/cohesion"
+import {
+  ActionType,
+  ContextModule,
+  DeleteCollectedArtwork,
+  OwnerType,
+  SaveCollectedArtwork,
+} from "@artsy/cohesion"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
@@ -121,6 +127,12 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
           )
         }),
       ])
+
+      // Adding tracking after a successfully adding an artwork
+      if (props.mode === "add") {
+        trackEvent(tracks.saveCollectedArtwork())
+      }
+
       if (showMyCollectionInsights) {
         setIsArtworkSaved(true)
         // simulate requesting market data
@@ -364,6 +376,12 @@ const tracks = {
     context_owner_id: internalID,
     context_owner_slug: slug,
     context_owner_type: OwnerType.myCollectionArtwork,
+    platform: "mobile",
+  }),
+  saveCollectedArtwork: (): SaveCollectedArtwork => ({
+    action: ActionType.saveCollectedArtwork,
+    context_module: ContextModule.myCollectionHome,
+    context_owner_type: OwnerType.myCollection,
     platform: "mobile",
   }),
 }
