@@ -86,6 +86,7 @@ export const NavStack: React.FC<{
       screenOptions={{
         headerShown: false,
         contentStyle: { backgroundColor: "white" },
+        orientation: "portrait",
       }}
     >
       <Stack.Screen name={"screen:" + id} component={ScreenWrapper} initialParams={initialParams} />
