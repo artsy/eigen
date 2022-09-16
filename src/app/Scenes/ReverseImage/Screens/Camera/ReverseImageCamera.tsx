@@ -16,8 +16,11 @@ import { useEffect, useRef, useState } from "react"
 import { Alert, Linking, StyleSheet } from "react-native"
 import {
   Camera,
+  CameraDeviceFormat,
   CameraPermissionStatus,
   CameraRuntimeError,
+  frameRateIncluded,
+  sortFormats,
   useCameraDevices,
 } from "react-native-vision-camera"
 import { useTracking } from "react-tracking"
@@ -56,6 +59,30 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   const isForeground = useIsForeground()
   const isActive = isFocused && isForeground
 
+  // Uncomment
+  // const fps = 30
+  // const format = useMemo(() => {
+  //   let formats: CameraDeviceFormat[] = []
+
+  //   if (Array.isArray(device?.formats)) {
+  //     formats = device!.formats.sort(sortFormats)
+  //   }
+
+  //   // find the first format that includes the given FPS
+  //   return formats.find((f) => f.frameRateRanges.some((r) => frameRateIncluded(r, fps)))
+  // }, [device?.formats])
+
+  // Ucomment #2
+  // const fps = useMemo(() => {
+  //   const formats = device?.formats ?? []
+  //   const supports60Fps = formats.some((f) => f.frameRateRanges.some((r) => frameRateIncluded(r, 60)));
+  //   if (supports60Fps) {
+  //     return 60
+  //   }
+
+  //   return 60;
+  // }, []);
+
   const requestCameraPermission = async () => {
     const permission = await Camera.requestCameraPermission()
 
@@ -73,9 +100,12 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
       }
 
       const capturedPhoto = await camera.current.takePhoto({
+        // (Theory #1) Check how it works without this
         qualityPrioritization: "speed",
         flash: enableFlash ? "on" : "off",
         skipMetadata: true,
+        // Uncomment #3
+        // quality: 90,
       })
 
       if (!capturedPhoto) {
@@ -231,6 +261,11 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   return (
     <Flex flex={1}>
       <Camera
+        // Uncomment
+        // fps={fps}
+        // format={format}
+        // (Theory #2) Try different presets
+        // preset="photo"
         ref={camera}
         style={StyleSheet.absoluteFill}
         device={device}
