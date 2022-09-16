@@ -747,7 +747,13 @@ describe("Checking for a duplicate alert", () => {
         expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
       })
 
-      resolveMostRecentRelayOperation()
+      resolveMostRecentRelayOperation({
+        Me: () => ({
+          savedSearch: {
+            internalID: "internalID-1",
+          },
+        }),
+      })
 
       await waitFor(() => expect(spyAlert.mock.calls[0][0]).toBe("Duplicate Alert"))
 
