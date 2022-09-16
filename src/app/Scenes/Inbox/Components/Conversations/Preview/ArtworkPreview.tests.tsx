@@ -1,21 +1,30 @@
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
-import "react-native"
-
+import { fireEvent, screen } from "@testing-library/react-native"
+import { renderWithRelayWrappers } from "app/tests/renderWithWrappers"
+import { Touchable } from "palette"
 import ArtworkPreview from "./ArtworkPreview"
 
-import { Touchable } from "palette"
-
 describe("concerning selection handling", () => {
+  const onSelected = jest.fn()
+  afterEach(() => {
+    onSelected.mockReset()
+  })
+
   it("passes a onPress handler to the touchable component if an onSelected handler is given", () => {
-    const tree = renderWithWrappersLEGACY(
-      <ArtworkPreview artwork={artwork as any} onSelected={() => null} />
-    )
-    expect(tree.root.findByType(Touchable).props.onPress).toBeTruthy()
+    renderWithRelayWrappers(<ArtworkPreview artwork={artwork as any} onSelected={onSelected} />)
+
+    expect(screen.queryByText("Karl and Anna Face Off (Diptych) / 2016")).toBeTruthy()
+    expect(screen.UNSAFE_getByType(Touchable)).toBeTruthy()
+    fireEvent.press(screen.UNSAFE_getByType(Touchable))
+
+    expect(onSelected).toHaveBeenCalledTimes(1)
   })
 
   it("does not pass a onPress handler to the touchable component if no onSelected handler is given", () => {
-    const tree = renderWithWrappersLEGACY(<ArtworkPreview artwork={artwork as any} />)
-    expect(tree.root.findByType(Touchable).props.onPress).toBeFalsy()
+    renderWithRelayWrappers(<ArtworkPreview artwork={artwork as any} />)
+
+    fireEvent.press(screen.UNSAFE_getByType(Touchable))
+
+    expect(onSelected).not.toHaveBeenCalled()
   })
 })
 

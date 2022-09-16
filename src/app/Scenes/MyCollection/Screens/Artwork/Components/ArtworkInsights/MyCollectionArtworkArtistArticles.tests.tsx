@@ -55,9 +55,23 @@ describe("MyCollectionArtworkArtistArticles", () => {
 
   it("navigates to correct article on click", () => {
     const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
-    resolveMostRecentRelayOperation()
+    resolveMostRecentRelayOperation({
+      Artwork: () => ({
+        artist: {
+          articlesConnection: {
+            edges: [
+              {
+                node: {
+                  slug: "some-slug",
+                },
+              },
+            ],
+          },
+        },
+      }),
+    })
     wrapper.root.findAllByType(TouchableOpacity)[0].props.onPress()
-    expect(navigate).toHaveBeenCalledWith("/article/articlesConnection.slug-1")
+    expect(navigate).toHaveBeenCalledWith("/article/some-slug")
   })
 
   it("navigates to all articles on click", () => {
