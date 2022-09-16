@@ -51,7 +51,12 @@ describe("ArtistInsights", () => {
   it("tracks an auction page view when artist insights is current tab", (done) => {
     renderWithWrappersLEGACY(<TestRenderer tabIndex={0} />)
 
-    resolveMostRecentRelayOperation()
+    resolveMostRecentRelayOperation({
+      Artist: () => ({
+        internalID: "internalID-1",
+        slug: "slug-1",
+      }),
+    })
 
     setImmediate(() => {
       expect(trackEvent).toHaveBeenCalledWith({

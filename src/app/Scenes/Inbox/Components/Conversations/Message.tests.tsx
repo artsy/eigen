@@ -1,6 +1,6 @@
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { screen } from "@testing-library/react-native"
+import { renderWithRelayWrappers } from "app/tests/renderWithWrappers"
 import moment from "moment"
-import "react-native"
 
 import Message from "./Message"
 
@@ -24,5 +24,8 @@ it("renders without throwing an error", () => {
       payment_url: "https://www.adopt-cats.org/pay-here",
     },
   }
-  renderWithWrappersLEGACY(<Message conversationId="420" showTimeSince message={props as any} />)
+  renderWithRelayWrappers(<Message conversationId="420" showTimeSince message={props as any} />)
+
+  expect(screen.queryByText(messageBody)).toBeTruthy()
+  expect(screen.queryByText("a year ago")).toBeTruthy()
 })

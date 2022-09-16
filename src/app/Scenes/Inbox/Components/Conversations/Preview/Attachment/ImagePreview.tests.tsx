@@ -1,10 +1,13 @@
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
-import "react-native"
-
+import { screen } from "@testing-library/react-native"
+import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { renderWithRelayWrappers } from "app/tests/renderWithWrappers"
 import { ImagePreview } from "./ImagePreview"
 
 it("renders without throwing an error", () => {
-  renderWithWrappersLEGACY(<ImagePreview attachment={attachment as any} />)
+  renderWithRelayWrappers(<ImagePreview attachment={attachment as any} />)
+
+  expect(screen.UNSAFE_getByType(OpaqueImageView)).toBeTruthy()
+  expect(screen.UNSAFE_getByType(OpaqueImageView)).toHaveProp("imageURL", "/path/to/cats.jpg")
 })
 
 const attachment = {

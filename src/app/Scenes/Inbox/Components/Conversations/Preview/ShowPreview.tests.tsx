@@ -1,10 +1,12 @@
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
-import "react-native"
-
+import { screen } from "@testing-library/react-native"
+import { renderWithRelayWrappers } from "app/tests/renderWithWrappers"
 import ShowPreview from "./ShowPreview"
 
 it("renders without throwing an error", () => {
-  renderWithWrappersLEGACY(<ShowPreview show={show as any} />)
+  renderWithRelayWrappers(<ShowPreview show={show as any} />)
+
+  expect(screen.queryByText("Catty Show")).toBeTruthy()
+  expect(screen.queryByText("Catty Partner")).toBeTruthy()
 })
 
 const show = {

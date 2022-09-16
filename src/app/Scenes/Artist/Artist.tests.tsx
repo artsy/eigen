@@ -174,8 +174,8 @@ describe("Artist", () => {
     expect(postEventToProviders).toHaveBeenCalledTimes(1)
     expect(postEventToProviders).toHaveBeenNthCalledWith(1, {
       context_screen: "Artist",
-      context_screen_owner_id: '<mock-value-for-field-"internalID">',
-      context_screen_owner_slug: '<mock-value-for-field-"slug">',
+      context_screen_owner_id: "internalID-1",
+      context_screen_owner_slug: "slug-1",
       context_screen_owner_type: "Artist",
     })
   })

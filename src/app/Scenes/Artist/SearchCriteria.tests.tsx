@@ -34,7 +34,9 @@ describe("SearchCriteria", () => {
       />
     )
 
-    resolveMostRecentRelayOperation()
+    resolveMostRecentRelayOperation({
+      Artwork: () => mockResponse,
+    })
 
     expect(mockRenderComponent).toBeCalledWith({
       fetchCriteriaError: null,
