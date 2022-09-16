@@ -1,4 +1,4 @@
-import { deleteCollectedArtwork } from "@artsy/cohesion"
+import { ActionType, ContextModule, DeleteCollectedArtwork, OwnerType } from "@artsy/cohesion"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
@@ -358,9 +358,13 @@ export const updateArtwork = async (
 }
 
 const tracks = {
-  deleteCollectedArtwork: (internalID: string, slug: string) => {
-    return deleteCollectedArtwork({ contextOwnerId: internalID, contextOwnerSlug: slug })
-  },
+  deleteCollectedArtwork: (internalID: string, slug: string): DeleteCollectedArtwork => ({
+    action: ActionType.deleteCollectedArtwork,
+    context_module: ContextModule.myCollectionArtwork,
+    context_owner_id: internalID,
+    context_owner_slug: slug,
+    context_owner_type: OwnerType.myCollectionArtwork,
+  }),
 }
 
 const addArtworkMessages = async ({

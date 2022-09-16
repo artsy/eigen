@@ -1,4 +1,4 @@
-import { addCollectedArtwork } from "@artsy/cohesion"
+import { ActionType, AddCollectedArtwork, ContextModule, OwnerType } from "@artsy/cohesion"
 import { MyCollection_me$data } from "__generated__/MyCollection_me.graphql"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
@@ -205,7 +205,7 @@ const MyCollectionZeroState: React.FC = () => {
           <Button
             testID="add-artwork-button-zero-state"
             onPress={() => {
-              trackEvent(addCollectedArtwork())
+              trackEvent(tracks.addCollectedArtwork())
               navigate("my-collection/artworks/new", {
                 passProps: {
                   mode: "add",
@@ -269,3 +269,11 @@ export const MyCollectionFilterPropsFragment = graphql`
     }
   }
 `
+
+const tracks = {
+  addCollectedArtwork: (): AddCollectedArtwork => ({
+    action: ActionType.addCollectedArtwork,
+    context_module: ContextModule.myCollectionHome,
+    context_owner_type: OwnerType.myCollection,
+  }),
+}
