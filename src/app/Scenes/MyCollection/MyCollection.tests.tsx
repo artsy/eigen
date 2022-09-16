@@ -1,4 +1,3 @@
-import { addCollectedArtwork } from "@artsy/cohesion"
 import { MyCollectionTestsQuery } from "__generated__/MyCollectionTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
@@ -115,7 +114,15 @@ describe("MyCollection", () => {
       addArtworkButton.props.onPress()
 
       expect(mockTrackEvent).toHaveBeenCalledTimes(1)
-      expect(mockTrackEvent).toHaveBeenCalledWith(addCollectedArtwork())
+      expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "action": "addCollectedArtwork",
+          "context_module": "myCollectionHome",
+          "context_owner_type": "myCollection",
+        },
+      ]
+    `)
     })
   })
 

@@ -1,4 +1,4 @@
-import { editCollectedArtwork } from "@artsy/cohesion"
+import { ActionType, ContextModule, EditCollectedArtwork, OwnerType } from "@artsy/cohesion"
 import { MyCollectionArtworkQuery } from "__generated__/MyCollectionArtworkQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
@@ -179,9 +179,13 @@ export const MyCollectionArtworkScreen: React.FC<MyCollectionArtworkScreenProps>
 }
 
 const tracks = {
-  editCollectedArtwork: (internalID: string, slug: string) => {
-    return editCollectedArtwork({ contextOwnerId: internalID, contextOwnerSlug: slug })
-  },
+  editCollectedArtwork: (internalID: string, slug: string): EditCollectedArtwork => ({
+    action: ActionType.editCollectedArtwork,
+    context_module: ContextModule.myCollectionArtwork,
+    context_owner_id: internalID,
+    context_owner_slug: slug,
+    context_owner_type: OwnerType.myCollectionArtwork,
+  }),
 }
 
 /**

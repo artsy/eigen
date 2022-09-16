@@ -1,4 +1,4 @@
-import { addCollectedArtwork, OwnerType } from "@artsy/cohesion"
+import { ActionType, AddCollectedArtwork, ContextModule, OwnerType } from "@artsy/cohesion"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
 import { MyCollection_me$data } from "__generated__/MyCollection_me.graphql"
@@ -412,7 +412,11 @@ export const MyCollectionPlaceholder: React.FC = () => {
 }
 
 const tracks = {
-  addCollectedArtwork,
+  addCollectedArtwork: (): AddCollectedArtwork => ({
+    action: ActionType.addCollectedArtwork,
+    context_module: ContextModule.myCollectionHome,
+    context_owner_type: OwnerType.myCollection,
+  }),
 }
 
 export type MyCollectionArtworkEdge = NonNullable<
