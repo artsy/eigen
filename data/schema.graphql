@@ -11255,6 +11255,7 @@ input NotificationPreferenceInput {
 enum NotificationTypesEnum {
   ARTWORK_ALERT
   ARTWORK_PUBLISHED
+  VIEWING_ROOM_PUBLISHED
 }
 
 # Consignment Offer Response
