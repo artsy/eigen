@@ -66,6 +66,7 @@ describe("MyCollectionArtworkAbout", () => {
           medium: "Painting",
           date: "2007",
           provenance: "Signed, Sealed, Delivered!",
+          metric: "in",
           dimensions: {
             in: "39 2/5 × 40 9/10 in",
             cm: "100 × 104 cm",
@@ -85,11 +86,41 @@ describe("MyCollectionArtworkAbout", () => {
     expect(getByText("Materials")).toBeTruthy()
     expect(getByText("Painting")).toBeTruthy()
     expect(getByText("Dimensions")).toBeTruthy()
-    expect(getByText("39 2/5 × 40 9/10 in 100 × 104 cm")).toBeTruthy()
+    expect(getByText("39 2/5 × 40 9/10 in")).toBeTruthy()
     expect(getByText("Year created")).toBeTruthy()
     expect(getByText("2007")).toBeTruthy()
     expect(getByText("Provenance")).toBeTruthy()
     expect(getByText("Signed, Sealed, Delivered!")).toBeTruthy()
+  })
+
+  it("renders size in cm", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      AREnablePriceEstimateRange: true,
+    })
+
+    const { getByText } = renderWithWrappers(<TestRenderer />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Query: () => ({
+        artwork: {
+          category: "Oil on Canvas",
+          medium: "Painting",
+          date: "2007",
+          provenance: "Signed, Sealed, Delivered!",
+          metric: "cm",
+          dimensions: {
+            in: "39 2/5 × 40 9/10 in",
+            cm: "100 × 104 cm",
+          },
+        },
+        marketPriceInsights: {
+          lowRangeCents: 1780000,
+          highRangeCents: 4200000,
+        },
+      }),
+    })
+
+    expect(getByText("100 × 104 cm")).toBeTruthy()
   })
 
   it("renders no estimate range when feature flag is disabled", async () => {
