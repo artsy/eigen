@@ -18,6 +18,7 @@ import {
   Camera,
   CameraPermissionStatus,
   CameraRuntimeError,
+  TakePhotoOptions,
   useCameraDevices,
 } from "react-native-vision-camera"
 import { useTracking } from "react-tracking"
@@ -76,7 +77,8 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
         qualityPrioritization: "speed",
         flash: enableFlash ? "on" : "off",
         skipMetadata: true,
-      })
+        quality: 90,
+      } as TakePhotoOptions)
 
       if (!capturedPhoto) {
         throw new Error("Something went wrong")
@@ -91,6 +93,15 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
       })
     } catch (error) {
       console.error(error)
+
+      if (__DEV__) {
+        console.error(error)
+      } else {
+        withScope((scope) => {
+          scope.setTag("reverseSearchImage", "takePhoto")
+          captureException(error)
+        })
+      }
 
       if (enableDebug) {
         Alert.alert("Something went wrong", (error as Error)?.message)
@@ -236,6 +247,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
         ref={camera}
         style={StyleSheet.absoluteFill}
         device={device}
+        preset="photo"
         photo
         video={false}
         audio={false}
