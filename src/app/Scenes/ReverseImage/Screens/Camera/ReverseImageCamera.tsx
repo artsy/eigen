@@ -12,12 +12,13 @@ import { useDevToggle } from "app/store/GlobalStore"
 import { requestPhotos } from "app/utils/requestPhotos"
 import { useIsForeground } from "app/utils/useIsForeground"
 import { BackButton, Box, Flex, Spinner, Text } from "palette"
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { Alert, Linking, StyleSheet } from "react-native"
 import {
   Camera,
   CameraPermissionStatus,
   CameraRuntimeError,
+  TakePhotoOptions,
   useCameraDevices,
 } from "react-native-vision-camera"
 import { useTracking } from "react-tracking"
@@ -76,7 +77,8 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
         qualityPrioritization: "speed",
         flash: enableFlash ? "on" : "off",
         skipMetadata: true,
-      })
+        quality: 90,
+      } as TakePhotoOptions)
 
       if (!capturedPhoto) {
         throw new Error("Something went wrong")
@@ -92,6 +94,15 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
     } catch (error) {
       console.error(error)
 
+      if (__DEV__) {
+        console.error(error)
+      } else {
+        withScope((scope) => {
+          scope.setTag("reverseSearchImage", "takePhoto")
+          captureException(error)
+        })
+      }
+
       if (enableDebug) {
         Alert.alert("Something went wrong", (error as Error)?.message)
       }
@@ -103,11 +114,11 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
     setEnableFlash(!enableFlash)
   }
 
-  const onInitialized = () => {
+  const onInitialized = useCallback(() => {
     setIsCameraInitialized(true)
-  }
+  }, [])
 
-  const onCameraError = (error: CameraRuntimeError) => {
+  const onCameraError = useCallback((error: CameraRuntimeError) => {
     setHasError(true)
 
     if (enableDebug) {
@@ -122,7 +133,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
         captureException(error)
       })
     }
-  }
+  }, [])
 
   const handleBackPress = () => {
     goBack()
@@ -236,10 +247,12 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
         ref={camera}
         style={StyleSheet.absoluteFill}
         device={device}
+        preset="photo"
         photo
         video={false}
         audio={false}
         isActive={enableDebug ? true : isActive}
+        orientation="portrait"
         onInitialized={onInitialized}
         onError={onCameraError}
       />
