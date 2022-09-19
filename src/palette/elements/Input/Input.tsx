@@ -141,7 +141,12 @@ export const Input = forwardRef<InputRef, InputProps>(
         return null
       }
       return (
-        <Flex pr="1" justifyContent="center" flexGrow={0}>
+        <Flex
+          pr="1"
+          justifyContent="center"
+          flexGrow={0}
+          // transparent?
+        >
           <TouchableOpacity
             onPress={() => {
               setShowPassword(!showPassword)
