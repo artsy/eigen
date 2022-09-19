@@ -146,7 +146,7 @@ const MyCollection: React.FC<{
             }}
             haptic
           >
-            Add Works
+            Upload Artwork
           </Button>
         </ArtworksFilterHeader>
         {!!showNewWorksMessage && (
