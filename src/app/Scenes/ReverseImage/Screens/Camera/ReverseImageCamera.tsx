@@ -12,15 +12,12 @@ import { useDevToggle } from "app/store/GlobalStore"
 import { requestPhotos } from "app/utils/requestPhotos"
 import { useIsForeground } from "app/utils/useIsForeground"
 import { BackButton, Box, Flex, Spinner, Text } from "palette"
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { Alert, Linking, StyleSheet } from "react-native"
 import {
   Camera,
-  CameraDeviceFormat,
   CameraPermissionStatus,
   CameraRuntimeError,
-  frameRateIncluded,
-  sortFormats,
   TakePhotoOptions,
   useCameraDevices,
 } from "react-native-vision-camera"
@@ -217,29 +214,6 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
     }
   }
 
-  const fps = useMemo(() => {
-    const formats = device?.formats ?? []
-    const supports60Fps = formats.some((f) =>
-      f.frameRateRanges.some((r) => frameRateIncluded(r, 60))
-    )
-    if (supports60Fps) {
-      return 60
-    }
-
-    return 30
-  }, [device?.formats])
-
-  const format = useMemo(() => {
-    let formats: CameraDeviceFormat[] = []
-
-    if (Array.isArray(device?.formats)) {
-      formats = device!.formats.sort(sortFormats)
-    }
-
-    // find the first format that includes the given FPS
-    return formats.find((f) => f.frameRateRanges.some((r) => frameRateIncluded(r, fps)))
-  }, [device?.formats, fps])
-
   useEffect(() => {
     const run = async () => {
       const status = await Camera.getCameraPermissionStatus()
@@ -276,8 +250,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
         ref={camera}
         style={StyleSheet.absoluteFill}
         device={device}
-        fps={fps}
-        format={format}
+        preset="photo"
         photo
         video={false}
         audio={false}
@@ -322,17 +295,6 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
             <Text color="white">isFocused: {isFocused ? "YES" : "NO"}</Text>
             <Text color="white">isForeground: {isForeground ? "YES" : "NO"}</Text>
             <Text color="white">isActive: {isActive ? "YES" : "NO"}</Text>
-            <Text color="white">Debug: {enableDebug ? "ALWAYS YES" : isActive ? "YES" : "NO"}</Text>
-            <Text color="white">FPS: {fps}</Text>
-            <Text color="white">Photo: {`${format?.photoWidth}-${format?.photoHeight}`}</Text>
-            <Text color="white">Pixel Format: {format?.pixelFormat}</Text>
-            <Text color="white">
-              Highest: {format?.isHighestPhotoQualitySupported ? "YES" : "NO"}
-            </Text>
-            <Text color="white">Color spaces: {format?.colorSpaces.join(", ")}</Text>
-            <Text color="white">AutoFocus: {format?.autoFocusSystem}</Text>
-            <Text color="white">Max Zoom: {format?.maxZoom}</Text>
-            <Text color="white">HDR: {format?.supportsPhotoHDR ? "YES" : "NO"}</Text>
           </Box>
         )}
       </Flex>
