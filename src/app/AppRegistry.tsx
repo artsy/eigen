@@ -437,9 +437,6 @@ export const modules = defineModules({
   RequestForPriceEstimateScreen: reactModule(RequestForPriceEstimateScreen),
   ReverseImage: reactModule(ReverseImage, {
     hidesBackButton: true,
-    fullBleed: true,
-    alwaysPresentModally: true,
-    modalPresentationStyle: "fullScreen",
   }),
   Sales: reactModule(SellWithArtsy, { isRootViewForTabName: "sell" }, [
     SellWithArtsyHomeScreenQuery,
