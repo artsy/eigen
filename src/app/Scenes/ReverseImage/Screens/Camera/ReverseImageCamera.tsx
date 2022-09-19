@@ -311,6 +311,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
             <Text color="white">isFocused: {isFocused ? "YES" : "NO"}</Text>
             <Text color="white">isForeground: {isForeground ? "YES" : "NO"}</Text>
             <Text color="white">isActive: {isActive ? "YES" : "NO"}</Text>
+            <Text color="white">Debug: {enableDebug ? "YES" : "NO"}</Text>
           </Box>
         )}
       </Flex>
