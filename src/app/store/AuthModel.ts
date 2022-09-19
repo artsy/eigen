@@ -499,14 +499,15 @@ export const getAuthModel = (): AuthModel => ({
       }
 
       const responseFacebookInfoCallback = async (
-        error: { message: string },
-        facebookInfo: { email?: string; name: string }
+        error: Record<string, unknown> | undefined,
+        result: Record<string, unknown> | undefined
       ) => {
         if (error) {
-          reject(new AuthError(error.message, "Error fetching facebook data"))
+          reject(new AuthError(error.toString(), "Error fetching facebook data"))
           return
         }
-        if (!facebookInfo.email) {
+
+        if (!result || !result.email) {
           reject(
             new AuthError(
               "There is no email associated with your Facebook account. Please log in using your email and password instead."
@@ -517,8 +518,8 @@ export const getAuthModel = (): AuthModel => ({
 
         if (options.signInOrUp === "signUp") {
           const resultGravitySignUp = await actions.signUp({
-            email: facebookInfo.email,
-            name: facebookInfo.name,
+            email: result.email as string,
+            name: result.name as string,
             accessToken: accessToken.accessToken,
             oauthProvider: "facebook",
             agreedToReceiveEmails: options.agreedToReceiveEmails,
