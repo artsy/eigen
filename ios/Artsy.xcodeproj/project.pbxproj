@@ -463,6 +463,7 @@
 		CBE3276D27E275A400395A93 /* MTLModel+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE325EF27E275A200395A93 /* MTLModel+JSON.m */; };
 		CBE3276E27E275A400395A93 /* StarscreamExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE325F327E275A200395A93 /* StarscreamExtensions.swift */; };
 		CBE3276F27E275A400395A93 /* LiveAuctionSocketCommunicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE325F427E275A200395A93 /* LiveAuctionSocketCommunicator.swift */; };
+		CBE3277027E275A400395A93 /* ARAuthProviders.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE325F927E275A200395A93 /* ARAuthProviders.m */; };
 		CBE3277127E275A400395A93 /* ArtsyAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE325FA27E275A200395A93 /* ArtsyAPI.m */; };
 		CBE3277227E275A400395A93 /* ArtsyAPI+HEAD.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE325FC27E275A200395A93 /* ArtsyAPI+HEAD.m */; };
 		CBE3277327E275A400395A93 /* ArtsyAPI+Pages.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3260027E275A200395A93 /* ArtsyAPI+Pages.m */; };
@@ -1314,6 +1315,7 @@
 		CBE325F627E275A200395A93 /* ARNetworkConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARNetworkConstants.h; sourceTree = "<group>"; };
 		CBE325F727E275A200395A93 /* ARRouter+GraphQL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARRouter+GraphQL.h"; sourceTree = "<group>"; };
 		CBE325F827E275A200395A93 /* ARSystemTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSystemTime.h; sourceTree = "<group>"; };
+		CBE325F927E275A200395A93 /* ARAuthProviders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuthProviders.m; sourceTree = "<group>"; };
 		CBE325FA27E275A200395A93 /* ArtsyAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArtsyAPI.m; sourceTree = "<group>"; };
 		CBE325FC27E275A200395A93 /* ArtsyAPI+HEAD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+HEAD.m"; sourceTree = "<group>"; };
 		CBE325FD27E275A200395A93 /* ArtsyAPI+Sales.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Sales.h"; sourceTree = "<group>"; };
@@ -1346,6 +1348,7 @@
 		CBE3261927E275A200395A93 /* ARNetworkConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNetworkConstants.m; sourceTree = "<group>"; };
 		CBE3261A27E275A200395A93 /* ARRouter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARRouter.m; sourceTree = "<group>"; };
 		CBE3261B27E275A200395A93 /* ARRouter+GraphQL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARRouter+GraphQL.m"; sourceTree = "<group>"; };
+		CBE3261D27E275A200395A93 /* ARAuthProviders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAuthProviders.h; sourceTree = "<group>"; };
 		CBE3261E27E275A200395A93 /* ArtsyAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArtsyAPI.h; sourceTree = "<group>"; };
 		CBE3261F27E275A200395A93 /* ARSystemTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSystemTime.m; sourceTree = "<group>"; };
 		CBE3262227E275A200395A93 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -3252,12 +3255,14 @@
 				CBE325F627E275A200395A93 /* ARNetworkConstants.h */,
 				CBE325F727E275A200395A93 /* ARRouter+GraphQL.h */,
 				CBE325F827E275A200395A93 /* ARSystemTime.h */,
+				CBE325F927E275A200395A93 /* ARAuthProviders.m */,
 				CBE325FA27E275A200395A93 /* ArtsyAPI.m */,
 				CBE325FB27E275A200395A93 /* API_Modules */,
 				CBE3261827E275A200395A93 /* static_sale_data.graphql */,
 				CBE3261927E275A200395A93 /* ARNetworkConstants.m */,
 				CBE3261A27E275A200395A93 /* ARRouter.m */,
 				CBE3261B27E275A200395A93 /* ARRouter+GraphQL.m */,
+				CBE3261D27E275A200395A93 /* ARAuthProviders.h */,
 				CBE3261E27E275A200395A93 /* ArtsyAPI.h */,
 				CBE3261F27E275A200395A93 /* ARSystemTime.m */,
 			);
@@ -4097,6 +4102,7 @@
 				CBE3279727E275A400395A93 /* LiveEvent.m in Sources */,
 				CBE3278E27E275A400395A93 /* AuctionLot.m in Sources */,
 				CBE326FF27E275A300395A93 /* ARAdminTableViewController.m in Sources */,
+				CBE3277027E275A400395A93 /* ARAuthProviders.m in Sources */,
 				CBE3277D27E275A400395A93 /* ARUserManager.m in Sources */,
 				CBE3269127E275A300395A93 /* ARAppActivityContinuationDelegate.m in Sources */,
 				CBE326BE27E275A300395A93 /* LiveAuctionLotBidHistoryGestureController.swift in Sources */,
