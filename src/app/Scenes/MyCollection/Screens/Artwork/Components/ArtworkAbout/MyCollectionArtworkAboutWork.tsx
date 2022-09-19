@@ -12,11 +12,6 @@ interface EstimatePriceType {
   highRangeCents: number | null
 }
 
-interface DimensionsType {
-  in: string | null
-  cm: string | null
-}
-
 interface MyCollectionArtworkAboutWorkProps {
   artwork: MyCollectionArtworkAboutWork_artwork$key
   marketPriceInsights: MyCollectionArtworkAboutWork_marketPriceInsights$key | null
@@ -30,9 +25,8 @@ export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWork
 
   const enablePriceEstimateRange = useFeatureFlag("AREnablePriceEstimateRange")
 
-  const { category, medium, dimensions, date, provenance } = artwork
+  const { category, medium, dimensions, date, provenance, metric } = artwork
 
-  const dimensionsText = getDimensionsText(dimensions)
   // FIXME: types of these values are unknown (coming from MP), so it needs to be casted to Number to work properly here
   const estimatePrice = getEstimatePrice({
     lowRangeCents: Number(marketPriceInsights?.lowRangeCents),
@@ -44,11 +38,10 @@ export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWork
       <Text variant="lg" my={1}>
         About the work
       </Text>
-
       {!!enablePriceEstimateRange && <Field label="Estimate Range" value={estimatePrice} />}
       <Field label="Medium" value={capitalize(category!)} />
       <Field label="Materials" value={capitalize(medium!)} />
-      <Field label="Dimensions" value={dimensionsText} />
+      <Field label="Dimensions" value={(metric === "in" ? dimensions?.in : dimensions?.cm) || ""} />
       <Field label="Year created" value={date} />
       <Field label="Provenance" value={provenance} />
     </Flex>
@@ -59,6 +52,7 @@ const artworkFragment = graphql`
   fragment MyCollectionArtworkAboutWork_artwork on Artwork {
     category
     medium
+    metric
     dimensions {
       in
       cm
@@ -74,14 +68,6 @@ const marketPriceInsightsFragment = graphql`
     highRangeCents
   }
 `
-
-export const getDimensionsText = (dimensions: DimensionsType | null) => {
-  if (dimensions === null) {
-    return ""
-  }
-
-  return [dimensions.in, dimensions.cm].filter((d) => d).join("\n")
-}
 
 export const getEstimatePrice = ({ lowRangeCents, highRangeCents }: EstimatePriceType) => {
   if (!lowRangeCents || !highRangeCents) {
