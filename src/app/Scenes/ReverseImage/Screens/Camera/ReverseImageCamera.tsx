@@ -6,7 +6,7 @@ import {
 } from "@artsy/cohesion"
 import { useIsFocused } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
-import { captureMessage } from "@sentry/react-native"
+import { captureException, withScope } from "@sentry/react-native"
 import { goBack } from "app/navigation/navigate"
 import { useDevToggle } from "app/store/GlobalStore"
 import { requestPhotos } from "app/utils/requestPhotos"
@@ -117,7 +117,10 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
     if (__DEV__) {
       console.error(error)
     } else {
-      captureMessage(error.message)
+      withScope((scope) => {
+        scope.setTag("reverseSearchImage", "onCameraError")
+        captureException(error)
+      })
     }
   }
 
@@ -185,7 +188,10 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
       if (__DEV__) {
         console.error(error)
       } else {
-        captureMessage((error as Error).stack!)
+        withScope((scope) => {
+          scope.setTag("reverseSearchImage", "selectPhotosFromLibrary")
+          captureException(error)
+        })
       }
 
       if (enableDebug) {
