@@ -13,7 +13,7 @@ import { requestPhotos } from "app/utils/requestPhotos"
 import { useIsForeground } from "app/utils/useIsForeground"
 import { BackButton, Box, Flex, Spinner, Text } from "palette"
 import { useEffect, useRef, useState } from "react"
-import { Alert, Linking, StyleSheet } from "react-native"
+import { Alert, Linking, Platform, StyleSheet } from "react-native"
 import {
   Camera,
   CameraPermissionStatus,
@@ -66,17 +66,31 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
     setCameraPermission(permission)
   }
 
-  const takePhoto = async () => {
-    try {
-      if (camera.current == null) {
-        throw new Error("Camera ref is null!")
-      }
+  const getPhotoByPlatform = () => {
+    const flash = enableFlash ? "on" : "off"
 
-      const capturedPhoto = await camera.current.takePhoto({
+    if (camera.current == null) {
+      throw new Error("Camera ref is null!")
+    }
+
+    if (Platform.OS === "ios") {
+      return camera.current.takePhoto({
         qualityPrioritization: "speed",
-        flash: enableFlash ? "on" : "off",
+        flash,
         skipMetadata: true,
       })
+    }
+
+    return camera.current.takeSnapshot({
+      quality: 80,
+      flash,
+      skipMetadata: true,
+    })
+  }
+
+  const takePhoto = async () => {
+    try {
+      const capturedPhoto = await getPhotoByPlatform()
 
       if (!capturedPhoto) {
         throw new Error("Something went wrong")
