@@ -416,6 +416,7 @@ const tracks = {
     action: ActionType.addCollectedArtwork,
     context_module: ContextModule.myCollectionHome,
     context_owner_type: OwnerType.myCollection,
+    platform: "mobile",
   }),
 }
 

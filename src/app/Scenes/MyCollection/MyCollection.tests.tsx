@@ -120,6 +120,7 @@ describe("MyCollection", () => {
           "action": "addCollectedArtwork",
           "context_module": "myCollectionHome",
           "context_owner_type": "myCollection",
+          "platform": "mobile",
         },
       ]
     `)
