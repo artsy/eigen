@@ -77,7 +77,10 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
         qualityPrioritization: "speed",
         flash: enableFlash ? "on" : "off",
         skipMetadata: true,
-        quality: 90,
+        quality: 80,
+        enableAutoDistortionCorrection: false,
+        enableAutoRedEyeReduction: false,
+        enableAutoStabilization: false,
       } as TakePhotoOptions)
 
       if (!capturedPhoto) {
