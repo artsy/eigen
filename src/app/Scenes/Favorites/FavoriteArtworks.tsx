@@ -90,8 +90,8 @@ export class SavedWorks extends Component<Props, State> {
           contentContainerStyle={{ flexGrow: 1, justifyContent: "center", height: "100%" }}
         >
           <ZeroState
-            title="You haven’t saved any works yet"
-            subtitle="Tap the heart on an artwork to save for later."
+            title="Keep track of artworks you love"
+            subtitle="Tap the heart on an artwork to save for later"
             callToAction={
               <Button
                 size="large"
@@ -100,7 +100,7 @@ export class SavedWorks extends Component<Props, State> {
                 }}
                 block
               >
-                Browse works for you
+                Browse Works
               </Button>
             }
           />
