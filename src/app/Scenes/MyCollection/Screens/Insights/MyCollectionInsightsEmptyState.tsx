@@ -15,7 +15,7 @@ export const MyCollectionInsightsEmptyState = () => {
   return (
     <Flex px={2} testID="my-collection-insights-empty-state">
       <Text variant="md" textAlign="center">
-        Gain deeper knowledge of your artwork
+        Gain deeper knowledge of your collection
       </Text>
       <Text variant="xs" color="black60" textAlign="center">
         Get free market insights about the artists you collect.
