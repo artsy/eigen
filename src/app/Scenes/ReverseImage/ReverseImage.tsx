@@ -53,6 +53,8 @@ export const ReverseImage: React.FC<ReverseImageProps> = ({ owner }) => {
     <ReverseImageContext.Provider value={contextValue}>
       <NavigationContainer independent>
         <Stack.Navigator
+          // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
+          detachInactiveScreens={false}
           initialRouteName="Camera"
           screenOptions={{
             headerShown: false,
