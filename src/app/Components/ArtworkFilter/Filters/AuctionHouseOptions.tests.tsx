@@ -55,7 +55,7 @@ describe("AuctionHouse options screen", () => {
     fireEvent.press(getByText("Bonhams"))
 
     const selectedOptions = getAllByA11yState({ checked: true })
-    expect(selectedOptions).toHaveLength(2)
+    expect(selectedOptions).toHaveLength(3)
     expect(selectedOptions[0]).toHaveTextContent("Sotheby's")
     expect(selectedOptions[1]).toHaveTextContent("Christie's")
     expect(selectedOptions[2]).toHaveTextContent("Bonhams")
