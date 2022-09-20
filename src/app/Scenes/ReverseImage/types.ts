@@ -31,4 +31,5 @@ export type ReverseImageNavigationStack = {
   Preview: {
     photo: PhotoEntity
   }
+  PermissionsPage: undefined
 }

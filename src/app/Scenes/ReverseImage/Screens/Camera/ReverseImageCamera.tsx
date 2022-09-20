@@ -4,20 +4,24 @@ import {
   TappedPickImageFromLibrary,
   TappedToggleCameraFlash,
 } from "@artsy/cohesion"
-import { useIsFocused } from "@react-navigation/native"
+import { useIsFocused } from "@react-navigation/core"
 import { StackScreenProps } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
 import { goBack } from "app/navigation/navigate"
 import { useDevToggle } from "app/store/GlobalStore"
 import { requestPhotos } from "app/utils/requestPhotos"
 import { useIsForeground } from "app/utils/useIsForeground"
-import { BackButton, Box, Flex, Spinner, Text, useColor } from "palette"
-import { useEffect, useRef, useState } from "react"
-import { Alert, Linking, StyleSheet } from "react-native"
+import { BackButton, Box, Flex, Text } from "palette"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { Alert, StyleSheet } from "react-native"
 import {
   Camera,
-  CameraPermissionStatus,
+  CameraDeviceFormat,
   CameraRuntimeError,
+  frameRateIncluded,
+  sortFormats,
+  TakePhotoOptions,
+  TakeSnapshotOptions,
   useCameraDevices,
 } from "react-native-vision-camera"
 import { useTracking } from "react-tracking"
@@ -28,8 +32,6 @@ import { HeaderTitle } from "../../Components/HeaderTitle"
 import { useReverseImageContext } from "../../ReverseImageContext"
 import { FocusCoords, ReverseImageNavigationStack, ReverseImageOwner } from "../../types"
 import { CAMERA_BUTTONS_HEIGHT, CameraButtons } from "./Components/CameraButtons"
-import { CameraErrorState } from "./Components/CameraErrorState"
-import { CameraGrantPermissions } from "./Components/CameraGrantPermissions"
 import { FocusIndicator } from "./Components/FocusIndicator"
 
 type Props = StackScreenProps<ReverseImageNavigationStack, "Camera">
@@ -40,13 +42,13 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   const { navigation } = props
   const tracking = useTracking()
   const enableDebug = useDevToggle("DTShowDebugReverseImageView")
-  const color = useColor()
   const { analytics } = useReverseImageContext()
-  const [cameraPermission, setCameraPermission] = useState<CameraPermissionStatus | null>(null)
   const [enableFlash, setEnableFlash] = useState(false)
   const [isCameraInitialized, setIsCameraInitialized] = useState(false)
+  const [hasMicrophonePermission, setHasMicrophonePermission] = useState(false)
   const [focusCoords, setFocusCoords] = useState<FocusCoords | null>(null)
-  const [hasError, setHasError] = useState(false)
+  const [enableHdr] = useState(false)
+  const [enableNightMode] = useState(false)
   const camera = useRef<Camera>(null)
   const timer = useRef<NodeJS.Timeout | null>(null)
   const devices = useCameraDevices()
@@ -57,15 +59,56 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   const isForeground = useIsForeground()
   const isActive = isFocused && isForeground
 
-  const requestCameraPermission = async () => {
-    const permission = await Camera.requestCameraPermission()
-
-    if (permission === "denied") {
-      await Linking.openSettings()
+  const formats = useMemo<CameraDeviceFormat[]>(() => {
+    if (device?.formats == null) {
+      return []
     }
 
-    setCameraPermission(permission)
-  }
+    return device.formats.sort(sortFormats)
+  }, [device?.formats])
+
+  //#region Memos
+  const [is60Fps] = useState(true)
+  const fps = useMemo(() => {
+    if (!is60Fps) {
+      return 30
+    }
+
+    if (enableNightMode && !device?.supportsLowLightBoost) {
+      // User has enabled Night Mode, but Night Mode is not natively supported, so we simulate it by lowering the frame rate.
+      return 30
+    }
+
+    const supportsHdrAt60Fps = formats.some(
+      (f) => f.supportsVideoHDR && f.frameRateRanges.some((r) => frameRateIncluded(r, 60))
+    )
+    if (enableHdr && !supportsHdrAt60Fps) {
+      // User has enabled HDR, but HDR is not supported at 60 FPS.
+      return 30
+    }
+
+    const supports60Fps = formats.some((f) =>
+      f.frameRateRanges.some((r) => frameRateIncluded(r, 60))
+    )
+    if (!supports60Fps) {
+      // 60 FPS is not supported by any format.
+      return 30
+    }
+    // If nothing blocks us from using it, we default to 60 FPS.
+    return 60
+  }, [device?.supportsLowLightBoost, enableHdr, enableNightMode, formats, is60Fps])
+
+  const format = useMemo(() => {
+    let result = formats
+    if (enableHdr) {
+      // We only filter by HDR capable formats if HDR is set to true.
+      // Otherwise we ignore the `supportsVideoHDR` property and accept formats which support HDR `true` or `false`
+      result = result.filter((f) => f.supportsVideoHDR || f.supportsPhotoHDR)
+    }
+
+    // find the first format that includes the given FPS
+    return result.find((f) => f.frameRateRanges.some((r) => frameRateIncluded(r, fps)))
+  }, [formats, fps, enableHdr])
 
   const takePhoto = async () => {
     try {
@@ -74,10 +117,12 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
       }
 
       const capturedPhoto = await camera.current.takePhoto({
+        photoCodec: "jpeg",
         qualityPrioritization: "speed",
         flash: enableFlash ? "on" : "off",
+        quality: 90,
         skipMetadata: true,
-      })
+      } as TakePhotoOptions & TakeSnapshotOptions)
 
       if (!capturedPhoto) {
         throw new Error("Something went wrong")
@@ -104,27 +149,13 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
     setEnableFlash(!enableFlash)
   }
 
-  const onInitialized = () => {
+  const onInitialized = useCallback(() => {
     setIsCameraInitialized(true)
-  }
+  }, [])
 
-  const onCameraError = (error: CameraRuntimeError) => {
-    setHasError(true)
-
-    if (enableDebug) {
-      Alert.alert("Error", error.message)
-    }
-
-    if (__DEV__) {
-      console.error(error)
-    } else {
-      captureMessage(error.message)
-    }
-  }
-
-  const handleBackPress = () => {
-    goBack()
-  }
+  const onError = useCallback((error: CameraRuntimeError) => {
+    Alert.alert("onError", error.message)
+  }, [])
 
   const handleFocus = async (x: number, y: number) => {
     if (camera.current) {
@@ -196,51 +227,40 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   }
 
   useEffect(() => {
-    const run = async () => {
-      const status = await Camera.getCameraPermissionStatus()
-      setCameraPermission(status)
-    }
-
-    run()
+    Camera.getMicrophonePermissionStatus().then((status) =>
+      setHasMicrophonePermission(status === "authorized")
+    )
   }, [])
 
-  if (cameraPermission === null || !device) {
+  if (!device) {
     return (
       <Flex flex={1} justifyContent="center" alignItems="center" bg="black100">
-        <Spinner color="white100" />
+        <Text>Loading...</Text>
       </Flex>
     )
   }
 
-  if (cameraPermission !== "authorized") {
-    return (
-      <CameraGrantPermissions
-        onBackPress={handleBackPress}
-        onRequestCameraPermission={requestCameraPermission}
-      />
-    )
-  }
-
-  if (hasError) {
-    return <CameraErrorState onBackPress={handleBackPress} />
-  }
-
   return (
     <Flex flex={1}>
-      <Camera
-        ref={camera}
-        style={{
-          ...StyleSheet.absoluteFillObject,
-          backgroundColor: color("black100"),
-        }}
-        device={device}
-        photo
-        video={false}
-        audio={false}
-        isActive={enableDebug ? true : isActive}
-        onInitialized={onInitialized}
-        onError={onCameraError}
-      />
+      <>
+        <Camera
+          ref={camera}
+          style={StyleSheet.absoluteFill}
+          device={device}
+          format={format}
+          fps={fps}
+          hdr={enableHdr}
+          lowLightBoost={device.supportsLowLightBoost && enableNightMode}
+          isActive={isActive}
+          onInitialized={onInitialized}
+          onError={onError}
+          enableZoomGesture={false}
+          photo
+          video
+          audio={hasMicrophonePermission}
+          orientation="portrait"
+        />
+      </>
 
       <Flex {...StyleSheet.absoluteFillObject}>
         <Background>
