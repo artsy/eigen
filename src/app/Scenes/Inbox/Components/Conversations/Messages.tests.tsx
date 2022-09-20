@@ -144,7 +144,7 @@ describe("messages with order updates", () => {
     })
 
     expect(extractText(tree.root)).toMatch(
-      "To protect your payment, always communicate and pay through the Artsy platform."
+      "To be covered by the Artsy Guarantee, always communicate and pay through the Artsy platform."
     )
     const toast = tree.root.findAllByType(Flex)[0]
     jest.advanceTimersByTime(150)
