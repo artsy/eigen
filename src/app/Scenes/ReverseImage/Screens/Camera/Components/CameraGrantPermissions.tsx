@@ -1,4 +1,5 @@
-import { Button, Flex, Screen, Text } from "palette"
+import { HeaderContainer } from "app/Scenes/ReverseImage/Components/HeaderContainer"
+import { BackButton, Button, Flex, Text } from "palette"
 
 interface CameraGrantPermissionsProps {
   onBackPress: () => void
@@ -9,17 +10,17 @@ export const CameraGrantPermissions: React.FC<CameraGrantPermissionsProps> = (pr
   const { onBackPress, onRequestCameraPermission } = props
 
   return (
-    <Screen>
-      <Screen.Header onBack={onBackPress} />
+    <Flex flex={1} bg="black100">
+      <HeaderContainer>
+        <BackButton color="white100" onPress={onBackPress} />
+      </HeaderContainer>
 
-      <Screen.Body>
-        <Flex flex={1} justifyContent="center" alignItems="center">
-          <Text>Camera permission required</Text>
-          <Button mt={2} onPress={onRequestCameraPermission}>
-            Grant
-          </Button>
-        </Flex>
-      </Screen.Body>
-    </Screen>
+      <Flex flex={1} justifyContent="center" alignItems="center">
+        <Text color="white100">Camera permission required</Text>
+        <Button mt={2} onPress={onRequestCameraPermission} variant="fillGray">
+          Grant
+        </Button>
+      </Flex>
+    </Flex>
   )
 }

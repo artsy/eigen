@@ -11,7 +11,7 @@ import { goBack } from "app/navigation/navigate"
 import { useDevToggle } from "app/store/GlobalStore"
 import { requestPhotos } from "app/utils/requestPhotos"
 import { useIsForeground } from "app/utils/useIsForeground"
-import { BackButton, Box, Flex, Spinner, Text } from "palette"
+import { BackButton, Box, Flex, Spinner, Text, useColor } from "palette"
 import { useEffect, useRef, useState } from "react"
 import { Alert, Linking, StyleSheet } from "react-native"
 import {
@@ -40,6 +40,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   const { navigation } = props
   const tracking = useTracking()
   const enableDebug = useDevToggle("DTShowDebugReverseImageView")
+  const color = useColor()
   const { analytics } = useReverseImageContext()
   const [cameraPermission, setCameraPermission] = useState<CameraPermissionStatus | null>(null)
   const [enableFlash, setEnableFlash] = useState(false)
@@ -205,8 +206,8 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
 
   if (cameraPermission === null || !device) {
     return (
-      <Flex flex={1} justifyContent="center" alignItems="center">
-        <Spinner />
+      <Flex flex={1} justifyContent="center" alignItems="center" bg="black100">
+        <Spinner color="white100" />
       </Flex>
     )
   }
@@ -228,7 +229,10 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
     <Flex flex={1}>
       <Camera
         ref={camera}
-        style={StyleSheet.absoluteFill}
+        style={{
+          ...StyleSheet.absoluteFillObject,
+          backgroundColor: color("black100"),
+        }}
         device={device}
         photo
         video={false}
