@@ -10,7 +10,7 @@ import { navigate } from "app/navigation/navigate"
 import { useImageSearch } from "app/utils/useImageSearch"
 import { compact } from "lodash"
 import { BackButton, Flex } from "palette"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { Alert, Image, StyleSheet } from "react-native"
 import { useTracking } from "react-tracking"
 import { Background } from "../../Components/Background"
@@ -27,6 +27,7 @@ export const ReverseImagePreviewScreen: React.FC<Props> = (props) => {
   const { navigation, route } = props
   const { photo } = route.params
   const tracking = useTracking()
+  const didUnmounted = useRef(false)
   const { analytics } = useReverseImageContext()
   const { handleSearchByImage } = useImageSearch()
   const { owner } = analytics
@@ -35,9 +36,20 @@ export const ReverseImagePreviewScreen: React.FC<Props> = (props) => {
     navigation.goBack()
   }
 
+  useEffect(() => {
+    return () => {
+      didUnmounted.current = true
+    }
+  }, [])
+
   const handleSearch = async () => {
     try {
       const results = await handleSearchByImage(photo)
+
+      // ignore results if component was unmounted
+      if (didUnmounted.current) {
+        return
+      }
 
       if (results.length === 0) {
         tracking.trackEvent(tracks.withNoResults(owner))
@@ -59,7 +71,11 @@ export const ReverseImagePreviewScreen: React.FC<Props> = (props) => {
         artworkIDs,
       })
     } catch (error) {
-      console.error(error)
+      // silently ignore error if component was unmounted
+      if (didUnmounted.current) {
+        return
+      }
+
       if (__DEV__) {
         console.error(error)
       } else {
