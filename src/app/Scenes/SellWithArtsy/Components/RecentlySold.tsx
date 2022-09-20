@@ -42,9 +42,9 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ targetSupply, isLoad
 
   return (
     <Box>
-      <Flex mx={2}>
-        <SectionTitle title="Recently sold on Artsy" />
-      </Flex>
+      <SectionTitle title="Recently sold on Artsy" />
+      <Spacer mb={2} mt={1} />
+
       <SmallArtworkRail
         artworks={compact(recentlySoldArtworks)}
         onPress={(artwork) => {

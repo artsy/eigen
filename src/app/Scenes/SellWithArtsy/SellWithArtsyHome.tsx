@@ -1,4 +1,4 @@
-import { tappedConsign, TappedConsignArgs } from "@artsy/cohesion"
+import { ContextModule, OwnerType, tappedConsign, TappedConsignArgs } from "@artsy/cohesion"
 import { SellWithArtsyHome_recentlySoldArtworksTypeConnection$data } from "__generated__/SellWithArtsyHome_recentlySoldArtworksTypeConnection.graphql"
 import { SellWithArtsyHome_targetSupply$data } from "__generated__/SellWithArtsyHome_targetSupply.graphql"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
@@ -6,27 +6,32 @@ import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { GlobalStore } from "app/store/GlobalStore"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { Join, Separator } from "palette"
+import { Button, Flex, Spacer, Text } from "palette"
 import React, { useEffect } from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { useFeatureFlag } from "../../store/GlobalStore"
-import { ArtistListFragmentContainer as ArtistList } from "./Components/ArtistList"
-import { Footer } from "./Components/Footer"
 import { Header } from "./Components/Header"
 import { HowItWorks } from "./Components/HowItWorks"
 import { RecentlySoldFragmentContainer as RecentlySold } from "./Components/RecentlySold"
 import { SellWithArtsyCustomRecentlySold } from "./Components/SellWithArtsyCustomRecentlySold"
+import { WhySellWithArtsy } from "./Components/WhySellWithArtsy"
 
-interface Props {
+const consignArgs: TappedConsignArgs = {
+  contextModule: ContextModule.sellFooter,
+  contextScreenOwnerType: OwnerType.sell,
+  subject: "Submit a work",
+}
+
+interface SellWithArtsyHomeProps {
   isLoading?: boolean
   recentlySoldArtworks: SellWithArtsyHome_recentlySoldArtworksTypeConnection$data
   targetSupply: SellWithArtsyHome_targetSupply$data
 }
 
-export const SellWithArtsyHome: React.FC<Props> = ({
+export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
   isLoading,
   recentlySoldArtworks,
   targetSupply,
@@ -54,18 +59,39 @@ export const SellWithArtsyHome: React.FC<Props> = ({
 
   return (
     <ScrollView>
-      <Join separator={<Separator my={3} />}>
-        <Header onConsignPress={handleConsignPress} />
-        {enableCustomRecentlySold ? (
-          <SellWithArtsyCustomRecentlySold recentlySoldArtworks={recentlySoldArtworks} />
-        ) : (
-          <RecentlySold targetSupply={targetSupply} isLoading={isLoading} />
-        )}
+      <Header onConsignPress={handleConsignPress} />
 
-        <HowItWorks />
-        <ArtistList targetSupply={targetSupply} isLoading={isLoading} />
-        <Footer onConsignPress={handleConsignPress} />
-      </Join>
+      <Spacer mb={4} />
+
+      <HowItWorks />
+
+      <Spacer mb={4} />
+
+      {enableCustomRecentlySold ? (
+        <SellWithArtsyCustomRecentlySold recentlySoldArtworks={recentlySoldArtworks} />
+      ) : (
+        <RecentlySold targetSupply={targetSupply} isLoading={isLoading} />
+      )}
+
+      <Spacer mb={4} />
+
+      <WhySellWithArtsy />
+
+      <Spacer mb={5} />
+
+      <Flex mx={2}>
+        <Button
+          testID="footer-cta"
+          variant="fillDark"
+          block
+          onPress={() => handleConsignPress(consignArgs)}
+          haptic
+        >
+          <Text variant="sm">Submit a work</Text>
+        </Button>
+      </Flex>
+
+      <Spacer mb={4} />
     </ScrollView>
   )
 }
@@ -74,7 +100,6 @@ const SellWithArtsyHomeContainer = createFragmentContainer(SellWithArtsyHome, {
   targetSupply: graphql`
     fragment SellWithArtsyHome_targetSupply on TargetSupply {
       ...RecentlySold_targetSupply
-      ...ArtistList_targetSupply
     }
   `,
   recentlySoldArtworks: graphql`
