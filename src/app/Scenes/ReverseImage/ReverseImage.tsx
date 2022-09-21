@@ -10,7 +10,6 @@ import { ReverseImageContext, ReverseImageContextValue } from "./ReverseImageCon
 import { ReverseImageArtworkNotFoundScreen } from "./Screens/ArtworkNotFound/ReverseImageArtworkNotFoundScreen"
 import { ReverseImageCameraScreen } from "./Screens/Camera/ReverseImageCamera"
 import { ReverseImageMultipleResultsScreen } from "./Screens/MultipleResults/ReverseImageMultipleResults"
-import { ReverseImagePreviewScreen } from "./Screens/Preview/ReverseImagePreview"
 import { ReverseImageNavigationStack, ReverseImageOwner } from "./types"
 
 interface ReverseImageProps {
@@ -70,11 +69,6 @@ export const ReverseImage: React.FC<ReverseImageProps> = ({ owner }) => {
           <Stack.Screen name="Camera" component={ReverseImageCameraScreen} />
           <Stack.Screen name="MultipleResults" component={ReverseImageMultipleResultsScreen} />
           <Stack.Screen name="ArtworkNotFound" component={ReverseImageArtworkNotFoundScreen} />
-          <Stack.Screen
-            name="Preview"
-            component={ReverseImagePreviewScreen}
-            options={{ animationEnabled: false }}
-          />
         </Stack.Navigator>
       </NavigationContainer>
     </ReverseImageContext.Provider>

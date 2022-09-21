@@ -28,7 +28,4 @@ export type ReverseImageNavigationStack = {
   ArtworkNotFound: {
     photoPath: string
   }
-  Preview: {
-    photo: PhotoEntity
-  }
 }
