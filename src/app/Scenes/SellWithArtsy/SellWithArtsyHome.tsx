@@ -6,12 +6,13 @@ import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { GlobalStore } from "app/store/GlobalStore"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { Button, Flex, Spacer, Text } from "palette"
+import { Button, Flex, Screen, Separator, Spacer, Text } from "palette"
 import React, { useEffect } from "react"
-import { ScrollView } from "react-native"
+import { SafeAreaView, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { space } from "styled-system"
 import { useFeatureFlag } from "../../store/GlobalStore"
 import { Header } from "./Components/Header"
 import { HowItWorks } from "./Components/HowItWorks"
@@ -58,41 +59,76 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
   }, [])
 
   return (
-    <ScrollView>
-      <Header onConsignPress={handleConsignPress} />
+    <Screen.Background>
+      <SafeAreaView
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          padding: space(2),
+          backgroundColor: "transparent",
+          top: -50,
+        }}
+      >
+        <Flex flex={1}>
+          <ScrollView>
+            <Header onConsignPress={handleConsignPress} />
 
-      <Spacer mb={4} />
+            <Spacer mb={4} />
 
-      <HowItWorks />
+            <HowItWorks />
 
-      <Spacer mb={4} />
+            <Spacer mb={4} />
 
-      {enableCustomRecentlySold ? (
-        <SellWithArtsyCustomRecentlySold recentlySoldArtworks={recentlySoldArtworks} />
-      ) : (
-        <RecentlySold targetSupply={targetSupply} isLoading={isLoading} />
-      )}
+            {enableCustomRecentlySold ? (
+              <SellWithArtsyCustomRecentlySold recentlySoldArtworks={recentlySoldArtworks} />
+            ) : (
+              <RecentlySold targetSupply={targetSupply} isLoading={isLoading} />
+            )}
 
-      <Spacer mb={4} />
+            <Spacer mb={4} />
 
-      <WhySellWithArtsy />
+            <WhySellWithArtsy />
 
-      <Spacer mb={5} />
+            <Spacer mb={5} />
 
-      <Flex mx={2}>
-        <Button
-          testID="footer-cta"
-          variant="fillDark"
-          block
-          onPress={() => handleConsignPress(consignArgs)}
-          haptic
-        >
-          <Text variant="sm">Submit a work</Text>
-        </Button>
-      </Flex>
+            <Flex mx={2}>
+              <Button
+                testID="footer-cta"
+                variant="fillDark"
+                block
+                onPress={() => handleConsignPress(consignArgs)}
+                haptic
+              >
+                <Text variant="sm">Submit a work</Text>
+              </Button>
+            </Flex>
 
-      <Spacer mb={4} />
-    </ScrollView>
+            <Spacer mb={4} />
+
+            <Flex mx={2}>
+              <Separator />
+
+              <Text variant="lg" mb={1} mt={2}>
+                Gallerist or Art Dealer?
+              </Text>
+              <Text variant="sm" color="black60" mb={2}>
+                Become a partner to access the world’s largest online art marketplace.
+              </Text>
+
+              <Separator />
+
+              <Text variant="lg" mb={1} mt={2}>
+                Have a Question?
+              </Text>
+              <Text variant="sm" color="black60" mb={2}>
+                Visit our Help Center or read our FAQs.
+              </Text>
+            </Flex>
+          </ScrollView>
+        </Flex>
+      </SafeAreaView>
+    </Screen.Background>
   )
 }
 

@@ -43,7 +43,7 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ targetSupply, isLoad
   return (
     <Box>
       <SectionTitle title="Recently sold on Artsy" />
-      <Spacer mb={2} mt={1} />
+      <Spacer mb={2} />
 
       <SmallArtworkRail
         artworks={compact(recentlySoldArtworks)}

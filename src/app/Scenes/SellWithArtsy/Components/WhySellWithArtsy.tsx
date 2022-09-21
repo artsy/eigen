@@ -7,7 +7,7 @@ export const WhySellWithArtsy: React.FC = () => {
     <Box px={2}>
       <Text variant="lg">Why sell with Artsy?</Text>
 
-      <Spacer mb={2} mt={1} />
+      <Spacer mb={2} />
 
       <Flex flexDirection="row">
         <NumberBox pl={0.5} pr={1}>

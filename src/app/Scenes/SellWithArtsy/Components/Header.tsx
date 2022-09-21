@@ -25,7 +25,7 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress }) => {
       resizeMode="cover"
       source={require("images/SellWithArtsyHeader.webp")}
     >
-      <Flex px={2} pt={5} pb={2} justifyContent="center" height="100%">
+      <Flex px={2} pb={2} justifyContent="flex-end" height="100%">
         <Flex>
           <Text variant="lg" color="white100">
             Sell Artworks from Your Collection
@@ -49,7 +49,7 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress }) => {
 
         <Spacer mb={2} />
 
-        <Text variant="sm" italic color="white100">
+        <Text variant="xs" italic color="white100">
           Alex Katz, Forest, 2009
         </Text>
       </Flex>
