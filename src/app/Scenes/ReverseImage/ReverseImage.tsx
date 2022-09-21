@@ -63,7 +63,6 @@ export const ReverseImage: React.FC<ReverseImageProps> = ({ owner }) => {
           screenOptions={{
             headerShown: false,
             headerMode: "screen",
-            animationTypeForReplace: "push",
           }}
         >
           <Stack.Screen name="Camera" component={ReverseImageCameraScreen} />

@@ -1,18 +1,22 @@
 import {
   ActionType,
   OwnerType,
+  SearchedReverseImageWithNoResults,
+  SearchedReverseImageWithResults,
   TappedPickImageFromLibrary,
   TappedToggleCameraFlash,
 } from "@artsy/cohesion"
 import { useIsFocused } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
-import { captureException, withScope } from "@sentry/react-native"
-import { goBack } from "app/navigation/navigate"
+import { captureException, captureMessage, withScope } from "@sentry/react-native"
+import { goBack, navigate } from "app/navigation/navigate"
 import { requestPhotos } from "app/utils/requestPhotos"
+import { useImageSearch } from "app/utils/useImageSearch"
 import { useIsForeground } from "app/utils/useIsForeground"
+import { compact } from "lodash"
 import { Flex, Spinner, useColor } from "palette"
 import { useEffect, useRef, useState } from "react"
-import { Linking, StyleSheet } from "react-native"
+import { Alert, Linking, StyleSheet } from "react-native"
 import {
   Camera,
   CameraPermissionStatus,
@@ -21,9 +25,15 @@ import {
 } from "react-native-vision-camera"
 import { useTracking } from "react-tracking"
 import { useReverseImageContext } from "../../ReverseImageContext"
-import { FocusCoords, ReverseImageNavigationStack, ReverseImageOwner } from "../../types"
+import {
+  FocusCoords,
+  PhotoEntity,
+  ReverseImageNavigationStack,
+  ReverseImageOwner,
+} from "../../types"
 import { CameraErrorState } from "./Components/CameraErrorState"
 import { CameraGrantPermissions } from "./Components/CameraGrantPermissions"
+import { CameraPreviewPhotoMode } from "./Components/CameraPreviewPhotoMode"
 import { CameraTakePhotoMode } from "./Components/CameraTakePhotoMode"
 
 type Props = StackScreenProps<ReverseImageNavigationStack, "Camera">
@@ -35,13 +45,16 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   const tracking = useTracking()
   const color = useColor()
   const { analytics } = useReverseImageContext()
+  const { handleSearchByImage } = useImageSearch()
   const [cameraPermission, setCameraPermission] = useState<CameraPermissionStatus | null>(null)
   const [enableFlash, setEnableFlash] = useState(false)
   const [isCameraInitialized, setIsCameraInitialized] = useState(false)
   const [focusCoords, setFocusCoords] = useState<FocusCoords | null>(null)
   const [hasError, setHasError] = useState(false)
+  const [photo, setPhoto] = useState<PhotoEntity | null>(null)
   const camera = useRef<Camera>(null)
   const timer = useRef<NodeJS.Timeout | null>(null)
+  const unmounted = useRef(false)
   const devices = useCameraDevices()
   const device = devices.back
   const { owner } = analytics
@@ -76,12 +89,10 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
         throw new Error("Something went wrong")
       }
 
-      navigation.navigate("Preview", {
-        photo: {
-          path: `file://${capturedPhoto.path}`,
-          width: capturedPhoto.width,
-          height: capturedPhoto.height,
-        },
+      setPhoto({
+        path: `file://${capturedPhoto.path}`,
+        width: capturedPhoto.width,
+        height: capturedPhoto.height,
       })
     } catch (error) {
       if (__DEV__) {
@@ -168,13 +179,11 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
 
       const image = images[0]
 
-      navigation.navigate("Preview", {
-        photo: {
-          path: image.path,
-          width: image.width,
-          height: image.height,
-          fromLibrary: true,
-        },
+      setPhoto({
+        path: image.path,
+        width: image.width,
+        height: image.height,
+        fromLibrary: true,
       })
     } catch (error) {
       /**
@@ -196,6 +205,62 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
     }
   }
 
+  const runSearchByPhoto = async () => {
+    try {
+      if (!photo) {
+        return
+      }
+
+      const results = await handleSearchByImage(photo)
+
+      // ignore results if component was unmounted
+      if (unmounted.current) {
+        return
+      }
+
+      if (results.length === 0) {
+        tracking.trackEvent(tracks.withNoResults(owner))
+        return navigation.navigate("ArtworkNotFound", {
+          photoPath: photo.path,
+        })
+      }
+
+      const artworkIDs = compact(results.map((result) => result?.artwork?.internalID))
+      tracking.trackEvent(tracks.withResults(owner, artworkIDs))
+
+      if (results.length === 1) {
+        await navigate(`/artwork/${artworkIDs[0]}`)
+        return navigation.popToTop()
+      }
+
+      navigation.replace("MultipleResults", {
+        photoPath: photo.path,
+        artworkIDs,
+      })
+    } catch (error) {
+      // silently ignore error if component was unmounted
+      if (unmounted.current) {
+        return
+      }
+
+      if (__DEV__) {
+        console.error(error)
+      } else {
+        captureMessage((error as Error).stack!)
+      }
+
+      Alert.alert(
+        "Something went wrong.",
+        "Sorry, we couldn't process the request. Please try again or contact support@artsy.net for help.",
+        [
+          {
+            text: "Retry",
+          },
+        ]
+      )
+    }
+  }
+
   useEffect(() => {
     const run = async () => {
       const status = await Camera.getCameraPermissionStatus()
@@ -204,6 +269,23 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
 
     run()
   }, [])
+
+  useEffect(() => {
+    return () => {
+      unmounted.current = true
+    }
+  }, [])
+
+  useEffect(() => {
+    const execute = async () => {
+      await runSearchByPhoto()
+      setPhoto(null)
+    }
+
+    if (photo) {
+      execute()
+    }
+  }, [photo])
 
   if (cameraPermission === null || !device) {
     return (
@@ -243,17 +325,21 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
         onError={onCameraError}
       />
 
-      <CameraTakePhotoMode
-        isCameraInitialized={isCameraInitialized}
-        takePhoto={takePhoto}
-        toggleFlash={toggleFlash}
-        selectPhotosFromLibrary={selectPhotosFromLibrary}
-        deviceHasFlash={device.hasFlash}
-        isFlashEnabled={enableFlash}
-        coords={focusCoords}
-        onFocusPress={handleFocus}
-        focusEnabled={device.supportsFocus}
-      />
+      {!!photo ? (
+        <CameraPreviewPhotoMode photo={photo} />
+      ) : (
+        <CameraTakePhotoMode
+          isCameraInitialized={isCameraInitialized}
+          takePhoto={takePhoto}
+          toggleFlash={toggleFlash}
+          selectPhotosFromLibrary={selectPhotosFromLibrary}
+          deviceHasFlash={device.hasFlash}
+          isFlashEnabled={enableFlash}
+          coords={focusCoords}
+          onFocusPress={handleFocus}
+          focusEnabled={device.supportsFocus}
+        />
+      )}
     </Flex>
   )
 }
@@ -272,5 +358,21 @@ const tracks = {
     owner_type: owner.type,
     owner_id: owner.id,
     owner_slug: owner.slug,
+  }),
+  withNoResults: (owner: ReverseImageOwner): SearchedReverseImageWithNoResults => ({
+    action: ActionType.searchedReverseImageWithNoResults,
+    context_screen_owner_type: OwnerType.reverseImageSearch,
+    owner_type: owner.type,
+    owner_id: owner.id,
+    owner_slug: owner.slug,
+  }),
+  withResults: (owner: ReverseImageOwner, results: string[]): SearchedReverseImageWithResults => ({
+    action: ActionType.searchedReverseImageWithResults,
+    context_screen_owner_type: OwnerType.reverseImageSearch,
+    owner_type: owner.type,
+    owner_id: owner.id,
+    owner_slug: owner.slug,
+    total_matches_count: results.length,
+    artwork_ids: results.join(","),
   }),
 }
