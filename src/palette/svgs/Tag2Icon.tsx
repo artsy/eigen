@@ -4,6 +4,7 @@ import { G, Icon, IconProps, Path } from "./Icon"
 
 export const Tag2Icon: React.FC<IconProps> = (props) => {
   const color = useColor()
+
   return (
     <Icon {...props} viewBox="0 0 18 18">
       <G clipPath="url(#clip0_2381_10824)">

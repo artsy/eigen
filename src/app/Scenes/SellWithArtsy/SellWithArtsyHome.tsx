@@ -6,14 +6,16 @@ import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { GlobalStore } from "app/store/GlobalStore"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { Button, Flex, Screen, Separator, Spacer, Text } from "palette"
+import { Button, Flex, Screen, Spacer, Text } from "palette"
 import React, { useEffect } from "react"
 import { SafeAreaView, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { useScreenDimensions } from "shared/hooks"
 import { space } from "styled-system"
 import { useFeatureFlag } from "../../store/GlobalStore"
+import { Footer } from "./Components/Footer"
 import { Header } from "./Components/Header"
 import { HowItWorks } from "./Components/HowItWorks"
 import { RecentlySoldFragmentContainer as RecentlySold } from "./Components/RecentlySold"
@@ -37,6 +39,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
   recentlySoldArtworks,
   targetSupply,
 }) => {
+  const { height: screenHeight } = useScreenDimensions()
   const tracking = useTracking()
   const enableCustomRecentlySold = useFeatureFlag("ARCustomRecentlySoldOnArtsy")
 
@@ -68,10 +71,11 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
           padding: space(2),
           backgroundColor: "transparent",
           top: -50,
+          minHeight: screenHeight,
         }}
       >
-        <Flex flex={1}>
-          <ScrollView>
+        <ScrollView>
+          <Flex pb={5}>
             <Header onConsignPress={handleConsignPress} />
 
             <Spacer mb={4} />
@@ -106,27 +110,9 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
 
             <Spacer mb={4} />
 
-            <Flex mx={2}>
-              <Separator />
-
-              <Text variant="lg" mb={1} mt={2}>
-                Gallerist or Art Dealer?
-              </Text>
-              <Text variant="sm" color="black60" mb={2}>
-                Become a partner to access the world’s largest online art marketplace.
-              </Text>
-
-              <Separator />
-
-              <Text variant="lg" mb={1} mt={2}>
-                Have a Question?
-              </Text>
-              <Text variant="sm" color="black60" mb={2}>
-                Visit our Help Center or read our FAQs.
-              </Text>
-            </Flex>
-          </ScrollView>
-        </Flex>
+            <Footer />
+          </Flex>
+        </ScrollView>
       </SafeAreaView>
     </Screen.Background>
   )
