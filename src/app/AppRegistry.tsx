@@ -98,7 +98,9 @@ import { OrderHistoryQueryRender } from "./Scenes/OrderHistory/OrderHistory"
 import { PartnerQueryRenderer } from "./Scenes/Partner/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest/PrivacyRequest"
-import { ReverseImage } from "./Scenes/ReverseImage/ReverseImage"
+import { ReverseImageArtworkNotFoundScreen } from "./Scenes/ReverseImage/Screens/ArtworkNotFound/ReverseImageArtworkNotFoundScreen"
+import { ReverseImageCameraScreen } from "./Scenes/ReverseImage/Screens/Camera/ReverseImageCamera"
+import { ReverseImageMultipleResults } from "./Scenes/ReverseImage/Screens/MultipleResults/ReverseImageMultipleResults"
 import { SaleQueryRenderer, SaleScreenQuery } from "./Scenes/Sale/Sale"
 import { SaleFAQ } from "./Scenes/SaleFAQ/SaleFAQ"
 import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo/SaleInfo"
@@ -435,7 +437,19 @@ export const modules = defineModules({
   PartnerLocations: reactModule(PartnerLocations),
   PrivacyRequest: reactModule(PrivacyRequest),
   RequestForPriceEstimateScreen: reactModule(RequestForPriceEstimateScreen),
-  ReverseImage: reactModule(ReverseImage, {
+  ReverseImage: reactModule(ReverseImageCameraScreen, {
+    hidesBackButton: true,
+    fullBleed: true,
+    alwaysPresentModally: true,
+    modalPresentationStyle: "fullScreen",
+  }),
+  ReverseImageArtworkNotFound: reactModule(ReverseImageArtworkNotFoundScreen, {
+    hidesBackButton: true,
+    fullBleed: true,
+    alwaysPresentModally: true,
+    modalPresentationStyle: "fullScreen",
+  }),
+  ReverseImageMultipleResults: reactModule(ReverseImageMultipleResults, {
     hidesBackButton: true,
     fullBleed: true,
     alwaysPresentModally: true,

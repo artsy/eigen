@@ -7,7 +7,6 @@ import {
   TappedToggleCameraFlash,
 } from "@artsy/cohesion"
 import { useIsFocused } from "@react-navigation/native"
-import { StackScreenProps } from "@react-navigation/stack"
 import { captureException, captureMessage, withScope } from "@sentry/react-native"
 import { goBack, navigate } from "app/navigation/navigate"
 import { requestPhotos } from "app/utils/requestPhotos"
@@ -24,27 +23,22 @@ import {
   useCameraDevices,
 } from "react-native-vision-camera"
 import { useTracking } from "react-tracking"
-import { useReverseImageContext } from "../../ReverseImageContext"
-import {
-  FocusCoords,
-  PhotoEntity,
-  ReverseImageNavigationStack,
-  ReverseImageOwner,
-} from "../../types"
+import { FocusCoords, PhotoEntity, ReverseImageOwner } from "../../types"
 import { CameraErrorState } from "./Components/CameraErrorState"
 import { CameraGrantPermissions } from "./Components/CameraGrantPermissions"
 import { CameraPreviewPhotoMode } from "./Components/CameraPreviewPhotoMode"
 import { CameraTakePhotoMode } from "./Components/CameraTakePhotoMode"
 
-type Props = StackScreenProps<ReverseImageNavigationStack, "Camera">
-
 const HIDE_FOCUS_TIMEOUT = 400
 
-export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
-  const { navigation } = props
+interface ReverseImageCameraScreenProps {
+  owner: ReverseImageOwner
+}
+
+export const ReverseImageCameraScreen: React.FC<ReverseImageCameraScreenProps> = (props) => {
+  const { owner } = props
   const tracking = useTracking()
   const color = useColor()
-  const { analytics } = useReverseImageContext()
   const { handleSearchByImage } = useImageSearch()
   const [cameraPermission, setCameraPermission] = useState<CameraPermissionStatus | null>(null)
   const [enableFlash, setEnableFlash] = useState(false)
@@ -57,7 +51,6 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   const unmounted = useRef(false)
   const devices = useCameraDevices()
   const device = devices.back
-  const { owner } = analytics
 
   const isFocused = useIsFocused()
   const isForeground = useIsForeground()
@@ -220,8 +213,11 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
 
       if (results.length === 0) {
         tracking.trackEvent(tracks.withNoResults(owner))
-        return navigation.navigate("ArtworkNotFound", {
-          photoPath: photo.path,
+        return navigate("/reverse-image/not-found", {
+          passProps: {
+            owner,
+            photoPath: photo.path,
+          },
         })
       }
 
@@ -233,9 +229,12 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
         return
       }
 
-      navigation.replace("MultipleResults", {
-        photoPath: photo.path,
-        artworkIDs,
+      return navigate("/reverse-image/multiple-results", {
+        passProps: {
+          photoPath: photo.path,
+          artworkIDs,
+          owner,
+        },
       })
     } catch (error) {
       // silently ignore error if component was unmounted

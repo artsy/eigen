@@ -1,19 +1,22 @@
-import { StackScreenProps } from "@react-navigation/stack"
 import { ReverseImageMultipleResultsQuery } from "__generated__/ReverseImageMultipleResultsQuery.graphql"
+import { goBack } from "app/navigation/navigate"
 import { ArtsyLogoIcon, BackButton, Flex } from "palette"
 import { Suspense } from "react"
 import { Image, StyleSheet } from "react-native"
 import { graphql } from "react-relay"
 import { useLazyLoadQuery } from "react-relay"
 import { HeaderContainer } from "../../Components/HeaderContainer"
-import { ReverseImageNavigationStack } from "../../types"
+import { ReverseImageOwner } from "../../types"
 import { ReverseImageArtworksRail } from "./ReverseImageArtworksRail"
 
-type Props = StackScreenProps<ReverseImageNavigationStack, "MultipleResults">
+interface Props {
+  artworkIDs: string[]
+  photoPath: string
+  owner: ReverseImageOwner
+}
 
 export const ReverseImageMultipleResults: React.FC<Props> = (props) => {
-  const { route, navigation } = props
-  const { artworkIDs, photoPath } = route.params
+  const { artworkIDs, photoPath, owner } = props
   const data = useLazyLoadQuery<ReverseImageMultipleResultsQuery>(
     reverseImageMultipleResultsQuery,
     {
@@ -22,7 +25,7 @@ export const ReverseImageMultipleResults: React.FC<Props> = (props) => {
   )
 
   const handleGoBack = () => {
-    navigation.goBack()
+    goBack()
   }
 
   return (
@@ -47,7 +50,7 @@ export const ReverseImageMultipleResults: React.FC<Props> = (props) => {
           />
         </Flex>
 
-        <ReverseImageArtworksRail artworks={data.artworks!} />
+        <ReverseImageArtworksRail artworks={data.artworks!} owner={owner} />
       </Flex>
     </Flex>
   )

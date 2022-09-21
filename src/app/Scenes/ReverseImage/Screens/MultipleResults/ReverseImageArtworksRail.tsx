@@ -6,19 +6,20 @@ import { extractNodes } from "app/utils/extractNodes"
 import { Flex, Text } from "palette"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useReverseImageContext } from "../../ReverseImageContext"
 import { ReverseImageOwner } from "../../types"
 
 interface ReverseImageArtworksRailProps {
   artworks: ReverseImageArtworksRail$key
+  owner: ReverseImageOwner
 }
 
-export const ReverseImageArtworksRail: React.FC<ReverseImageArtworksRailProps> = ({ artworks }) => {
+export const ReverseImageArtworksRail: React.FC<ReverseImageArtworksRailProps> = ({
+  artworks,
+  owner,
+}) => {
   const tracking = useTracking()
   const data = useFragment(reverseImageArtworksRailFragment, artworks)
   const nodes = extractNodes(data)
-  const { analytics } = useReverseImageContext()
-  const { owner } = analytics
 
   return (
     <Flex>

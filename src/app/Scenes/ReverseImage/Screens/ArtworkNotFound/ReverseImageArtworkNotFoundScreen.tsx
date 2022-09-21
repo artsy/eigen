@@ -1,17 +1,18 @@
-import { StackScreenProps } from "@react-navigation/stack"
+import { goBack } from "app/navigation/navigate"
 import { BackButton, Button, Flex, Text } from "palette"
 import { Image } from "react-native"
 import { HeaderContainer } from "../../Components/HeaderContainer"
 import { HeaderTitle } from "../../Components/HeaderTitle"
-import { ReverseImageNavigationStack } from "../../types"
 
-type Props = StackScreenProps<ReverseImageNavigationStack, "ArtworkNotFound">
+interface Props {
+  photoPath: string
+}
 
 export const ReverseImageArtworkNotFoundScreen: React.FC<Props> = (props) => {
-  const { navigation, route } = props
+  const { photoPath } = props
 
   const handleGoBack = () => {
-    navigation.goBack()
+    goBack()
   }
 
   return (
@@ -24,7 +25,7 @@ export const ReverseImageArtworkNotFoundScreen: React.FC<Props> = (props) => {
       <Flex flex={1} m={2} justifyContent="center" alignItems="center">
         <Flex my={2}>
           <Image
-            source={{ uri: route.params.photoPath }}
+            source={{ uri: photoPath }}
             style={{ height: "100%", aspectRatio: 1, resizeMode: "contain" }}
           />
         </Flex>
