@@ -6,14 +6,13 @@ import {
 } from "@artsy/cohesion"
 import { useIsFocused } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
-import { captureMessage } from "@sentry/react-native"
+import { captureException, withScope } from "@sentry/react-native"
 import { goBack } from "app/navigation/navigate"
-import { useDevToggle } from "app/store/GlobalStore"
 import { requestPhotos } from "app/utils/requestPhotos"
 import { useIsForeground } from "app/utils/useIsForeground"
-import { BackButton, Box, Flex, Spinner, Text, useColor } from "palette"
+import { BackButton, Flex, Spinner, useColor } from "palette"
 import { useEffect, useRef, useState } from "react"
-import { Alert, Linking, StyleSheet } from "react-native"
+import { Linking, StyleSheet } from "react-native"
 import {
   Camera,
   CameraPermissionStatus,
@@ -27,7 +26,7 @@ import { HeaderContainer } from "../../Components/HeaderContainer"
 import { HeaderTitle } from "../../Components/HeaderTitle"
 import { useReverseImageContext } from "../../ReverseImageContext"
 import { FocusCoords, ReverseImageNavigationStack, ReverseImageOwner } from "../../types"
-import { CAMERA_BUTTONS_HEIGHT, CameraButtons } from "./Components/CameraButtons"
+import { CameraButtons } from "./Components/CameraButtons"
 import { CameraErrorState } from "./Components/CameraErrorState"
 import { CameraGrantPermissions } from "./Components/CameraGrantPermissions"
 import { FocusIndicator } from "./Components/FocusIndicator"
@@ -39,7 +38,6 @@ const HIDE_FOCUS_TIMEOUT = 400
 export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   const { navigation } = props
   const tracking = useTracking()
-  const enableDebug = useDevToggle("DTShowDebugReverseImageView")
   const color = useColor()
   const { analytics } = useReverseImageContext()
   const [cameraPermission, setCameraPermission] = useState<CameraPermissionStatus | null>(null)
@@ -91,10 +89,13 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
         },
       })
     } catch (error) {
-      console.error(error)
-
-      if (enableDebug) {
-        Alert.alert("Something went wrong", (error as Error)?.message)
+      if (__DEV__) {
+        console.error(error)
+      } else {
+        withScope((scope) => {
+          scope.setTag("reverseImageSearch", "takePhoto")
+          captureException(error)
+        })
       }
     }
   }
@@ -111,14 +112,13 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   const onCameraError = (error: CameraRuntimeError) => {
     setHasError(true)
 
-    if (enableDebug) {
-      Alert.alert("Error", error.message)
-    }
-
     if (__DEV__) {
       console.error(error)
     } else {
-      captureMessage(error.message)
+      withScope((scope) => {
+        scope.setTag("reverseImageSearch", "onCameraError")
+        captureException(error)
+      })
     }
   }
 
@@ -141,7 +141,14 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
           return
         }
 
-        console.error(error)
+        if (__DEV__) {
+          console.error(error)
+        } else {
+          withScope((scope) => {
+            scope.setTag("reverseImageSearch", "handleFocus")
+            captureException(error)
+          })
+        }
       } finally {
         // TODO: Use react-native-reanimated 2 when it will be used
         timer.current = setTimeout(() => {
@@ -186,11 +193,10 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
       if (__DEV__) {
         console.error(error)
       } else {
-        captureMessage((error as Error).stack!)
-      }
-
-      if (enableDebug) {
-        Alert.alert("Something went wrong", (error as Error)?.message)
+        withScope((scope) => {
+          scope.setTag("reverseImageSearch", "selectPhotosFromLibrary")
+          captureException(error)
+        })
       }
     }
   }
@@ -237,7 +243,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
         photo
         video={false}
         audio={false}
-        isActive={enableDebug ? true : isActive}
+        isActive={isActive}
         onInitialized={onInitialized}
         onError={onCameraError}
       />
@@ -263,21 +269,6 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
         />
 
         {!!focusCoords && <FocusIndicator coords={focusCoords} />}
-
-        {!!enableDebug && (
-          <Box
-            backgroundColor="rgba(255, 0, 0, 0.9)"
-            position="absolute"
-            bottom={CAMERA_BUTTONS_HEIGHT}
-            left={0}
-            right={0}
-            p={1}
-          >
-            <Text color="white">isFocused: {isFocused ? "YES" : "NO"}</Text>
-            <Text color="white">isForeground: {isForeground ? "YES" : "NO"}</Text>
-            <Text color="white">isActive: {isActive ? "YES" : "NO"}</Text>
-          </Box>
-        )}
       </Flex>
     </Flex>
   )
