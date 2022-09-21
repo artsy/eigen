@@ -3,7 +3,7 @@ import { GestureResponderEvent, TouchableWithoutFeedback } from "react-native"
 import { Background } from "./Background"
 import { FrameIndicators } from "./FrameIndicators"
 
-interface CameraFramesContainerProps {
+export interface CameraFramesContainerProps {
   focusEnabled?: boolean
   onFocusPress?: (x: number, y: number) => void
 }

@@ -10,7 +10,7 @@ import { captureException, withScope } from "@sentry/react-native"
 import { goBack } from "app/navigation/navigate"
 import { requestPhotos } from "app/utils/requestPhotos"
 import { useIsForeground } from "app/utils/useIsForeground"
-import { BackButton, Flex, Spinner, useColor } from "palette"
+import { Flex, Spinner, useColor } from "palette"
 import { useEffect, useRef, useState } from "react"
 import { Linking, StyleSheet } from "react-native"
 import {
@@ -20,16 +20,11 @@ import {
   useCameraDevices,
 } from "react-native-vision-camera"
 import { useTracking } from "react-tracking"
-import { Background, BACKGROUND_COLOR } from "../../Components/Background"
-import { CameraFramesContainer } from "../../Components/CameraFramesContainer"
-import { HeaderContainer } from "../../Components/HeaderContainer"
-import { HeaderTitle } from "../../Components/HeaderTitle"
 import { useReverseImageContext } from "../../ReverseImageContext"
 import { FocusCoords, ReverseImageNavigationStack, ReverseImageOwner } from "../../types"
-import { CameraButtons } from "./Components/CameraButtons"
 import { CameraErrorState } from "./Components/CameraErrorState"
 import { CameraGrantPermissions } from "./Components/CameraGrantPermissions"
-import { FocusIndicator } from "./Components/FocusIndicator"
+import { CameraTakePhotoMode } from "./Components/CameraTakePhotoMode"
 
 type Props = StackScreenProps<ReverseImageNavigationStack, "Camera">
 
@@ -248,28 +243,17 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
         onError={onCameraError}
       />
 
-      <Flex {...StyleSheet.absoluteFillObject}>
-        <Background>
-          <HeaderContainer>
-            <BackButton color="white100" onPress={goBack} />
-            <HeaderTitle title="Position Artwork in this Frame" />
-          </HeaderContainer>
-        </Background>
-
-        <CameraFramesContainer onFocusPress={handleFocus} focusEnabled={device.supportsFocus} />
-
-        <CameraButtons
-          isCameraInitialized={isCameraInitialized}
-          takePhoto={takePhoto}
-          toggleFlash={toggleFlash}
-          selectPhotosFromLibrary={selectPhotosFromLibrary}
-          deviceHasFlash={device.hasFlash}
-          isFlashEnabled={enableFlash}
-          bg={BACKGROUND_COLOR}
-        />
-
-        {!!focusCoords && <FocusIndicator coords={focusCoords} />}
-      </Flex>
+      <CameraTakePhotoMode
+        isCameraInitialized={isCameraInitialized}
+        takePhoto={takePhoto}
+        toggleFlash={toggleFlash}
+        selectPhotosFromLibrary={selectPhotosFromLibrary}
+        deviceHasFlash={device.hasFlash}
+        isFlashEnabled={enableFlash}
+        coords={focusCoords}
+        onFocusPress={handleFocus}
+        focusEnabled={device.supportsFocus}
+      />
     </Flex>
   )
 }

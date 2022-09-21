@@ -4,7 +4,7 @@ import { CapturePhotoButton } from "./CapturePhotoButton"
 
 export const CAMERA_BUTTONS_HEIGHT = 120
 
-interface CameraButtonsProps extends FlexProps {
+export interface CameraButtonsProps extends FlexProps {
   isCameraInitialized: boolean
   deviceHasFlash: boolean
   isFlashEnabled: boolean

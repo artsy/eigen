@@ -1,7 +1,7 @@
 import { FocusCoords } from "app/Scenes/ReverseImage/types"
 import { Flex } from "palette"
 
-interface FocusIndicatorProps {
+export interface FocusIndicatorProps {
   coords: FocusCoords
 }
 
