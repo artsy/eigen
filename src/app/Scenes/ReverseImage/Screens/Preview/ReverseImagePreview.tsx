@@ -6,7 +6,6 @@ import {
 } from "@artsy/cohesion"
 import { StackScreenProps } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
-import { navigate } from "app/navigation/navigate"
 import { useImageSearch } from "app/utils/useImageSearch"
 import { compact } from "lodash"
 import { BackButton, Flex } from "palette"
@@ -62,8 +61,9 @@ export const ReverseImagePreviewScreen: React.FC<Props> = (props) => {
       tracking.trackEvent(tracks.withResults(owner, artworkIDs))
 
       if (results.length === 1) {
-        await navigate(`/artwork/${artworkIDs[0]}`)
-        return navigation.popToTop()
+        return navigation.replace("Artwork", {
+          id: artworkIDs[0],
+        })
       }
 
       navigation.replace("MultipleResults", {

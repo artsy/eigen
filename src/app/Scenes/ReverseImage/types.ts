@@ -31,4 +31,7 @@ export type ReverseImageNavigationStack = {
   Preview: {
     photo: PhotoEntity
   }
+  Artwork: {
+    id: string
+  }
 }

@@ -7,6 +7,7 @@ import {
 import { useCallback } from "react"
 import { Platform, StatusBar } from "react-native"
 import { ReverseImageContext, ReverseImageContextValue } from "./ReverseImageContext"
+import { ReverseImageArtworkScreen } from "./Screens/Artwork/ReverseImageArtwork"
 import { ReverseImageArtworkNotFoundScreen } from "./Screens/ArtworkNotFound/ReverseImageArtworkNotFoundScreen"
 import { ReverseImageCameraScreen } from "./Screens/Camera/ReverseImageCamera"
 import { ReverseImageMultipleResultsScreen } from "./Screens/MultipleResults/ReverseImageMultipleResults"
@@ -70,6 +71,7 @@ export const ReverseImage: React.FC<ReverseImageProps> = ({ owner }) => {
           <Stack.Screen name="Camera" component={ReverseImageCameraScreen} />
           <Stack.Screen name="MultipleResults" component={ReverseImageMultipleResultsScreen} />
           <Stack.Screen name="ArtworkNotFound" component={ReverseImageArtworkNotFoundScreen} />
+          <Stack.Screen name="Artwork" component={ReverseImageArtworkScreen} />
           <Stack.Screen
             name="Preview"
             component={ReverseImagePreviewScreen}
