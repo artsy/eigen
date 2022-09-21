@@ -230,7 +230,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
 
       if (results.length === 1) {
         await navigate(`/artwork/${artworkIDs[0]}`)
-        return navigation.popToTop()
+        return
       }
 
       navigation.replace("MultipleResults", {

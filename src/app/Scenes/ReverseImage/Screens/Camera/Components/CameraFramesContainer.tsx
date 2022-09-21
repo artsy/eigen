@@ -1,6 +1,6 @@
+import { Background } from "app/Scenes/ReverseImage/Components/Background"
 import { Flex, useSpace } from "palette"
 import { GestureResponderEvent, TouchableWithoutFeedback } from "react-native"
-import { Background } from "./Background"
 import { FrameIndicators } from "./FrameIndicators"
 
 export interface CameraFramesContainerProps {

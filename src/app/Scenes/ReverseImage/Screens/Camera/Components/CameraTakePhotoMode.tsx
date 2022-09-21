@@ -1,16 +1,12 @@
-import { useNavigation } from "@react-navigation/native"
 import { goBack } from "app/navigation/navigate"
 import { Background, BACKGROUND_COLOR } from "app/Scenes/ReverseImage/Components/Background"
-import {
-  CameraFramesContainer,
-  CameraFramesContainerProps,
-} from "app/Scenes/ReverseImage/Components/CameraFramesContainer"
 import { HeaderContainer } from "app/Scenes/ReverseImage/Components/HeaderContainer"
 import { HeaderTitle } from "app/Scenes/ReverseImage/Components/HeaderTitle"
 import { FocusCoords } from "app/Scenes/ReverseImage/types"
 import { BackButton, Flex } from "palette"
 import { StyleSheet } from "react-native"
 import { CameraButtons, CameraButtonsProps } from "./CameraButtons"
+import { CameraFramesContainer, CameraFramesContainerProps } from "./CameraFramesContainer"
 import { FocusIndicator } from "./FocusIndicator"
 
 interface CameraTakePhotoModeProps extends CameraFramesContainerProps, CameraButtonsProps {

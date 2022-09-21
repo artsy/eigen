@@ -1,12 +1,12 @@
 import { goBack } from "app/navigation/navigate"
 import { Background } from "app/Scenes/ReverseImage/Components/Background"
-import { CameraFramesContainer } from "app/Scenes/ReverseImage/Components/CameraFramesContainer"
 import { HeaderContainer } from "app/Scenes/ReverseImage/Components/HeaderContainer"
 import { HeaderTitle } from "app/Scenes/ReverseImage/Components/HeaderTitle"
 import { PhotoEntity } from "app/Scenes/ReverseImage/types"
 import { BackButton, Flex } from "palette"
 import { Image, StyleSheet } from "react-native"
 import { CAMERA_BUTTONS_HEIGHT } from "./CameraButtons"
+import { CameraFramesContainer } from "./CameraFramesContainer"
 
 interface CameraPreviewPhotoModeProps {
   photo: PhotoEntity
