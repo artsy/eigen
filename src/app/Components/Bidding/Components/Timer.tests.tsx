@@ -213,7 +213,7 @@ describe("Countdown", () => {
         />
       )
 
-      const textBlock = getByText("*Closure times may be extended to accommodate last minute bids")
+      const textBlock = getByText("*Closure times may be extended to accommodate last-minute bids")
       expect(textBlock).toBeDefined()
     })
 

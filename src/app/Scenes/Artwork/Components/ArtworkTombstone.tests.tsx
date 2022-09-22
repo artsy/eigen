@@ -145,7 +145,7 @@ describe("ArtworkTombstone", () => {
 
   describe("for an artwork in a sale with cascading end times or popcorn bidding", () => {
     const cascadingMessage = "Lots will close at 1-minute intervals."
-    const popcornMessage = "Closing times may be extended due to last minute competitive bidding. "
+    const popcornMessage = "Closing times may be extended due to last-minute competitive bidding. "
     it("renders the notification banner with cascading message", () => {
       const { queryByText } = renderWithWrappers(
         <ArtworkTombstone artwork={artworkTombstoneCascadingEndTimesAuctionArtwork()} />

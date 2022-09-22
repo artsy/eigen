@@ -188,7 +188,7 @@ export const Countdown: React.FC<CountdownProps> = ({
         <>
           <Spacer mt={1} />
           <Text variant="xs" color="black60" textAlign="center">
-            *Closure times may be extended to accommodate last minute bids
+            *Closure times may be extended to accommodate last-minute bids
           </Text>
         </>
       )}
