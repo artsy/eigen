@@ -8,6 +8,7 @@ import { CommonActions } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
 import { navigate } from "app/navigation/navigate"
+import { nextTick } from "app/utils/nextTick"
 import { useImageSearch } from "app/utils/useImageSearch"
 import { compact } from "lodash"
 import { BackButton, Flex } from "palette"
@@ -64,6 +65,8 @@ export const ReverseImagePreviewScreen: React.FC<Props> = (props) => {
 
       if (results.length === 1) {
         await navigate(`/artwork/${artworkIDs[0]}`)
+        await nextTick()
+
         return navigation.dispatch(
           CommonActions.reset({
             index: 0,
