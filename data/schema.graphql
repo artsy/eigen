@@ -2137,9 +2137,6 @@ type Artwork implements Node & Searchable & Sellable {
   submissionId: String
   title: String
 
-  # Whether this artwork is unlisted or not
-  unlisted: Boolean
-
   # Based on artwork location and status, verify that partner needs VAT exemption approval from Artsy.
   vatExemptApprovalRequired: Boolean
 
@@ -12670,9 +12667,6 @@ type Query {
   artwork(
     # The slug or ID of the Artwork
     id: String!
-
-    # Include unlisted artwork or not
-    includeUnlisted: Boolean
   ): Artwork
 
   # List of all artwork attribution classes
@@ -16491,9 +16485,6 @@ type Viewer {
   artwork(
     # The slug or ID of the Artwork
     id: String!
-
-    # Include unlisted artwork or not
-    includeUnlisted: Boolean
   ): Artwork
 
   # List of all artwork attribution classes
