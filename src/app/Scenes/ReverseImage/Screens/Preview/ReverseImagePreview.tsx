@@ -4,6 +4,7 @@ import {
   SearchedReverseImageWithNoResults,
   SearchedReverseImageWithResults,
 } from "@artsy/cohesion"
+import { CommonActions } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
 import { navigate } from "app/navigation/navigate"
@@ -63,7 +64,12 @@ export const ReverseImagePreviewScreen: React.FC<Props> = (props) => {
 
       if (results.length === 1) {
         await navigate(`/artwork/${artworkIDs[0]}`)
-        return navigation.popToTop()
+        return navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: "Camera" }],
+          })
+        )
       }
 
       navigation.replace("MultipleResults", {

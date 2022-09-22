@@ -39,7 +39,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   const { navigation } = props
   const tracking = useTracking()
   const color = useColor()
-  const { analytics } = useReverseImageContext()
+  const { analytics, isRootScreenFocused } = useReverseImageContext()
   const [cameraPermission, setCameraPermission] = useState<CameraPermissionStatus | null>(null)
   const [enableFlash, setEnableFlash] = useState(false)
   const [isCameraInitialized, setIsCameraInitialized] = useState(false)
@@ -53,7 +53,9 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
 
   const isFocused = useIsFocused()
   const isForeground = useIsForeground()
-  const isActive = isFocused && isForeground
+  const isActive = isFocused && isForeground && isRootScreenFocused
+
+  console.log("[debug] isActive", isActive)
 
   const requestCameraPermission = async () => {
     const permission = await Camera.requestCameraPermission()

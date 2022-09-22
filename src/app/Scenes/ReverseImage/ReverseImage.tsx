@@ -1,4 +1,4 @@
-import { NavigationContainer, useFocusEffect } from "@react-navigation/native"
+import { NavigationContainer, useFocusEffect, useIsFocused } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import {
   ArtsyNativeModule,
@@ -20,6 +20,7 @@ interface ReverseImageProps {
 const Stack = createStackNavigator<ReverseImageNavigationStack>()
 
 export const ReverseImage: React.FC<ReverseImageProps> = ({ owner }) => {
+  const isRootScreenFocused = useIsFocused()
   const onFocusEffect = useCallback(() => {
     StatusBar.setBarStyle("light-content")
 
@@ -44,6 +45,7 @@ export const ReverseImage: React.FC<ReverseImageProps> = ({ owner }) => {
   useFocusEffect(onFocusEffect)
 
   const contextValue: ReverseImageContextValue = {
+    isRootScreenFocused,
     analytics: {
       owner,
     },
