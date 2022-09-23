@@ -18,6 +18,7 @@ import { useFeatureFlag } from "../../store/GlobalStore"
 import { Footer } from "./Components/Footer"
 import { Header } from "./Components/Header"
 import { HowItWorks } from "./Components/HowItWorks"
+import { OldSellWithArtsyHomeQueryRenderer } from "./Components/OldSellWithArtsyHome"
 import { RecentlySoldFragmentContainer as RecentlySold } from "./Components/RecentlySold"
 import { SellWithArtsyCustomRecentlySold } from "./Components/SellWithArtsyCustomRecentlySold"
 import { WhySellWithArtsy } from "./Components/WhySellWithArtsy"
@@ -39,6 +40,10 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
   recentlySoldArtworks,
   targetSupply,
 }) => {
+  const enableNewSellWithArtsyScreen = useFeatureFlag("ARNewSellWithArtsyScreen")
+
+  if (!enableNewSellWithArtsyScreen) { return <OldSellWithArtsyHomeQueryRenderer /> }
+
   const { height: screenHeight } = useScreenDimensions()
   const tracking = useTracking()
   const enableCustomRecentlySold = useFeatureFlag("ARCustomRecentlySoldOnArtsy")

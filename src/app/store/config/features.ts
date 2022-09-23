@@ -279,6 +279,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "ARCustomRecentlySoldOnArtsy",
   },
+  ARNewSellWithArtsyScreen: {
+    readyForRelease: false,
+    description: "Enable new SWA screen",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
