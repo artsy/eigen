@@ -55,8 +55,6 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   const isForeground = useIsForeground()
   const isActive = isFocused && isForeground && isRootScreenFocused
 
-  console.log("[debug] isActive", isActive)
-
   const requestCameraPermission = async () => {
     const permission = await Camera.requestCameraPermission()
 
