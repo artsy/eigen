@@ -13,7 +13,6 @@ import { SmallArtworkRailPlaceholder } from "app/Components/ArtworkRail/SmallArt
 import { ArtistRailFragmentContainer } from "app/Components/Home/ArtistRails/ArtistRail"
 import { RecommendedArtistsRailFragmentContainer } from "app/Components/Home/ArtistRails/RecommendedArtistsRail"
 import { LotsByFollowedArtistsRailContainer } from "app/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail"
-import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { ArtworkModuleRailFragmentContainer } from "app/Scenes/Home/Components/ArtworkModuleRail"
 import { AuctionResultsRailFragmentContainer } from "app/Scenes/Home/Components/AuctionResultsRail"
@@ -34,14 +33,14 @@ import {
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { compact, times } from "lodash"
-import { ArtsyLogoIcon, BellIcon, Box, Flex, Join, Spacer, useTheme } from "palette"
-import { VisualClueDot } from "palette/elements/VisualClue"
+import { ArtsyLogoIcon, Box, Flex, Join, Spacer } from "palette"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
-import { Alert, RefreshControl, TouchableOpacity, View, ViewProps } from "react-native"
+import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { articlesQueryVariables } from "../Articles/Articles"
 import { lotsByArtistsYouFollowDefaultVariables } from "../LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import { ViewingRoomsHomeMainRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
+import { ActivityIndicator } from "./ActivityIndicator"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { ArtworkRecommendationsRail } from "./Components/ArtworkRecommendationsRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
@@ -49,6 +48,8 @@ import { NewWorksForYouRail } from "./Components/NewWorksForYouRail"
 import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
 import { TroveFragmentContainer } from "./Components/Trove"
 import { RailScrollRef } from "./Components/types"
+
+console.reportErrorsAsExceptions = false
 
 const MODULE_SEPARATOR_HEIGHT = 6
 
@@ -345,36 +346,11 @@ const Home = (props: Props) => {
 const HomeHeader: React.FC<{ homePageAbove: Home_homePageAbove$data | null }> = ({
   homePageAbove,
 }) => {
-  const enableActivityPanel = useFeatureFlag("AREnableActivityPanel")
-  const { space } = useTheme()
-
-  const navigateToActivityPanel = () => {
-    navigate("/activity-panel")
-  }
-
   return (
     <Box mb={1} mt={2}>
       <Flex alignItems="center">
         <ArtsyLogoIcon scale={0.75} />
-
-        {!!enableActivityPanel && (
-          <Box position="absolute" right={2} top={0} bottom={0} justifyContent="center">
-            <TouchableOpacity
-              onPress={navigateToActivityPanel}
-              hitSlop={{
-                top: space(1),
-                bottom: space(1),
-                left: space(1),
-                right: space(1),
-              }}
-            >
-              <BellIcon />
-              <Box position="absolute" top={0} right={0}>
-                <VisualClueDot diameter={4} />
-              </Box>
-            </TouchableOpacity>
-          </Box>
-        )}
+        <ActivityIndicator hasNotifications />
       </Flex>
       <Spacer mb="15px" />
       {!!homePageAbove && <HomeHeroContainer homePage={homePageAbove} />}
@@ -563,6 +539,7 @@ const HomePlaceholder: React.FC = () => {
       <Box mb={1} mt={2}>
         <Flex alignItems="center">
           <ArtsyLogoIcon scale={0.75} />
+          <ActivityIndicator hasNotifications={false} />
         </Flex>
       </Box>
       <Spacer mb={4} />
