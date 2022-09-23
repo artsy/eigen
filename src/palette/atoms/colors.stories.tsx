@@ -57,8 +57,8 @@ storiesOf("Theme/color", module).add("colors", () => (
       <ColorSquare color="red10" />
     </Row>
     <Row>
-      <ColorSquare color="copper100" />
-      <ColorSquare color="copper10" />
+      <ColorSquare color="yellow100" />
+      <ColorSquare color="yellow10" />
     </Row>
     <Row>
       <ColorSquare color="devpurple" />
