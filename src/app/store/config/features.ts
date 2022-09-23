@@ -285,7 +285,7 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "ARNewSellWithArtsyScreen",
   },
-  AREnableActivityPanel: {
+  AREnableActivities: {
     readyForRelease: false,
     description: "Enable Activities",
     showInAdminMenu: true,

@@ -13,7 +13,7 @@ export const ActivitiesIndicator: React.FC<ActivitiesIndicatorProps> = ({ hasNot
   const { space } = useTheme()
 
   const navigateToActivityPanel = () => {
-    navigate("/activity-panel")
+    navigate("/activities")
   }
 
   if (enableActivities) {

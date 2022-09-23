@@ -315,7 +315,7 @@ export type AppModule = keyof typeof modules
 
 export const modules = defineModules({
   Storybook: reactModule(StorybookUIRoot),
-  ActivityPanel: reactModule(Activities),
+  Activities: reactModule(Activities),
   Admin: reactModule(Admin, { alwaysPresentModally: true }),
   Admin2: reactModule(AdminMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   About: reactModule(About),
