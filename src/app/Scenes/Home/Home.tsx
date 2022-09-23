@@ -345,6 +345,8 @@ const Home = (props: Props) => {
 const HomeHeader: React.FC<{ homePageAbove: Home_homePageAbove$data | null }> = ({
   homePageAbove,
 }) => {
+  const enableActivityPanel = useFeatureFlag("AREnableActivityPanel")
+
   const navigateToActivityPanel = () => {
     navigate("/activity-panel")
   }
@@ -353,14 +355,17 @@ const HomeHeader: React.FC<{ homePageAbove: Home_homePageAbove$data | null }> = 
     <Box mb={1} mt={2}>
       <Flex alignItems="center">
         <ArtsyLogoIcon scale={0.75} />
-        <Box position="absolute" right={2} top={0} bottom={0} justifyContent="center">
-          <TouchableOpacity onPress={navigateToActivityPanel}>
-            <BellIcon />
-            <Box position="absolute" top={0} right={0}>
-              <VisualClueDot diameter={4} />
-            </Box>
-          </TouchableOpacity>
-        </Box>
+
+        {!!enableActivityPanel && (
+          <Box position="absolute" right={2} top={0} bottom={0} justifyContent="center">
+            <TouchableOpacity onPress={navigateToActivityPanel}>
+              <BellIcon />
+              <Box position="absolute" top={0} right={0}>
+                <VisualClueDot diameter={4} />
+              </Box>
+            </TouchableOpacity>
+          </Box>
+        )}
       </Flex>
       <Spacer mb="15px" />
       {!!homePageAbove && <HomeHeroContainer homePage={homePageAbove} />}

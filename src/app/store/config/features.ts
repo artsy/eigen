@@ -285,6 +285,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "ARNewSellWithArtsyScreen",
   },
+  AREnableActivityPanel: {
+    readyForRelease: false,
+    description: "Enable Activity Panel",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
