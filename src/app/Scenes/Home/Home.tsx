@@ -49,8 +49,6 @@ import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
 import { TroveFragmentContainer } from "./Components/Trove"
 import { RailScrollRef } from "./Components/types"
 
-console.reportErrorsAsExceptions = false
-
 const MODULE_SEPARATOR_HEIGHT = 6
 
 interface HomeModule {
