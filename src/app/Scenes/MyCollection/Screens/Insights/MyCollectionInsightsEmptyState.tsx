@@ -42,7 +42,7 @@ export const MyCollectionInsightsEmptyState = () => {
           })
         }
       >
-        Upload Your Artwork
+        Upload Artwork
       </Button>
     </Flex>
   )
