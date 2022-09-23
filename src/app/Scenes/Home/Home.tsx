@@ -34,7 +34,7 @@ import {
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { compact, times } from "lodash"
-import { ArtsyLogoIcon, BellIcon, Box, Flex, Join, Spacer } from "palette"
+import { ArtsyLogoIcon, BellIcon, Box, Flex, Join, Spacer, useTheme } from "palette"
 import { VisualClueDot } from "palette/elements/VisualClue"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
 import { Alert, RefreshControl, TouchableOpacity, View, ViewProps } from "react-native"
@@ -346,6 +346,7 @@ const HomeHeader: React.FC<{ homePageAbove: Home_homePageAbove$data | null }> = 
   homePageAbove,
 }) => {
   const enableActivityPanel = useFeatureFlag("AREnableActivityPanel")
+  const { space } = useTheme()
 
   const navigateToActivityPanel = () => {
     navigate("/activity-panel")
@@ -358,7 +359,15 @@ const HomeHeader: React.FC<{ homePageAbove: Home_homePageAbove$data | null }> = 
 
         {!!enableActivityPanel && (
           <Box position="absolute" right={2} top={0} bottom={0} justifyContent="center">
-            <TouchableOpacity onPress={navigateToActivityPanel}>
+            <TouchableOpacity
+              onPress={navigateToActivityPanel}
+              hitSlop={{
+                top: space(1),
+                bottom: space(1),
+                left: space(1),
+                right: space(1),
+              }}
+            >
               <BellIcon />
               <Box position="absolute" top={0} right={0}>
                 <VisualClueDot diameter={4} />
