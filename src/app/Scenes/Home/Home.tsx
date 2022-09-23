@@ -13,6 +13,7 @@ import { SmallArtworkRailPlaceholder } from "app/Components/ArtworkRail/SmallArt
 import { ArtistRailFragmentContainer } from "app/Components/Home/ArtistRails/ArtistRail"
 import { RecommendedArtistsRailFragmentContainer } from "app/Components/Home/ArtistRails/RecommendedArtistsRail"
 import { LotsByFollowedArtistsRailContainer } from "app/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail"
+import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { ArtworkModuleRailFragmentContainer } from "app/Scenes/Home/Components/ArtworkModuleRail"
 import { AuctionResultsRailFragmentContainer } from "app/Scenes/Home/Components/AuctionResultsRail"
@@ -33,9 +34,10 @@ import {
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { compact, times } from "lodash"
-import { ArtsyLogoIcon, Box, Flex, Join, Spacer } from "palette"
+import { ArtsyLogoIcon, BellIcon, Box, Flex, Join, Spacer } from "palette"
+import { VisualClueDot } from "palette/elements/VisualClue"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
-import { Alert, RefreshControl, View, ViewProps } from "react-native"
+import { Alert, RefreshControl, TouchableOpacity, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { articlesQueryVariables } from "../Articles/Articles"
 import { lotsByArtistsYouFollowDefaultVariables } from "../LotsByArtistsYouFollow/LotsByArtistsYouFollow"
@@ -342,16 +344,30 @@ const Home = (props: Props) => {
 
 const HomeHeader: React.FC<{ homePageAbove: Home_homePageAbove$data | null }> = ({
   homePageAbove,
-}) => (
-  <Box mb={1} mt={2}>
-    <Flex alignItems="center">
-      <ArtsyLogoIcon scale={0.75} />
-    </Flex>
-    <Spacer mb="15px" />
-    {!!homePageAbove && <HomeHeroContainer homePage={homePageAbove} />}
-    <Spacer mb="2" />
-  </Box>
-)
+}) => {
+  const navigateToActivityPanel = () => {
+    navigate("/activity-panel")
+  }
+
+  return (
+    <Box mb={1} mt={2}>
+      <Flex alignItems="center">
+        <ArtsyLogoIcon scale={0.75} />
+        <Box position="absolute" right={2} top={0} bottom={0} justifyContent="center">
+          <TouchableOpacity onPress={navigateToActivityPanel}>
+            <BellIcon />
+            <Box position="absolute" top={0} right={0}>
+              <VisualClueDot diameter={4} />
+            </Box>
+          </TouchableOpacity>
+        </Box>
+      </Flex>
+      <Spacer mb="15px" />
+      {!!homePageAbove && <HomeHeroContainer homePage={homePageAbove} />}
+      <Spacer mb="2" />
+    </Box>
+  )
+}
 
 const useHandleRefresh = (relay: RelayRefetchProp, modules: any[]) => {
   const scrollRefs = useRef<Array<RefObject<RailScrollRef>>>(modules.map((_) => createRef()))
