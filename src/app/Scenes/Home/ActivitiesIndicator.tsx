@@ -18,7 +18,14 @@ export const ActivitiesIndicator: React.FC<ActivitiesIndicatorProps> = ({ hasNot
 
   if (enableActivities) {
     return (
-      <Box position="absolute" right={2} top={0} bottom={0} justifyContent="center">
+      <Box
+        position="absolute"
+        right={2}
+        top={0}
+        bottom={0}
+        justifyContent="center"
+        accessibilityLabel="Activities"
+      >
         <TouchableOpacity
           onPress={navigateToActivityPanel}
           hitSlop={{
