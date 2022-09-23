@@ -38,8 +38,6 @@ export const OnboardingResultsGrid: FC<OnboardingResultsGridProps> = ({ connecti
   const sectionedGridItems = getSectionedItems(gridItems, sectionCount)
 
   const handleSaveArtwork = useDoublePressCallback((artwork: GridItem) => {
-    console.log("saving artwork", artwork)
-
     const { internalID, isSaved } = artwork!
 
     commit({
@@ -90,7 +88,7 @@ export const OnboardingResultsGrid: FC<OnboardingResultsGridProps> = ({ connecti
       scrollsToTop={false}
       accessibilityLabel="Artworks ScrollView"
     >
-      <Flex flexDirection="row" pr={1}>
+      <Flex flexDirection="row" pr={1} mt={2}>
         {renderSections()}
       </Flex>
       <Flex height={400} />
@@ -150,7 +148,7 @@ const GridItem: FC<GridItemProps> = ({ artwork, itemWidth }) => {
     <Box>
       <OpaqueImageView aspectRatio={aspectRatio} imageURL={url} width={itemWidth} height={height} />
       <Flex flex={1} flexDirection="row" pt={0.5} width={itemWidth}>
-        <Flex justifySelf="flex-start">
+        <Flex justifySelf="flex-start" width={itemWidth - 16}>
           <GridItemText>{artwork.artistNames}</GridItemText>
           <GridItemText color="black60">{artwork.title}</GridItemText>
           <GridItemText>{artwork.date}</GridItemText>
