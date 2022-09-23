@@ -1,4 +1,7 @@
 import { tappedConsign, TappedConsignArgs } from "@artsy/cohesion"
+import { OldSellWithArtsyHome_recentlySoldArtworksTypeConnection$data } from "__generated__/OldSellWithArtsyHome_recentlySoldArtworksTypeConnection.graphql"
+import { OldSellWithArtsyHome_targetSupply$data } from "__generated__/OldSellWithArtsyHome_targetSupply.graphql"
+import { OldSellWithArtsyHomeQuery } from "__generated__/OldSellWithArtsyHomeQuery.graphql"
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
@@ -9,14 +12,11 @@ import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { OldSellWithArtsyHomeQuery } from "__generated__/OldSellWithArtsyHomeQuery.graphql"
-import { OldSellWithArtsyHome_recentlySoldArtworksTypeConnection$data } from "__generated__/OldSellWithArtsyHome_recentlySoldArtworksTypeConnection.graphql"
-import { OldSellWithArtsyHome_targetSupply$data } from "__generated__/OldSellWithArtsyHome_targetSupply.graphql"
-import { OldArtistList } from "./OldComponents/OldArtistList"
+import { OldArtistListFragmentContainer } from "./OldComponents/OldArtistList"
 import { OldFooter } from "./OldComponents/OldFooter"
 import { OldHeader } from "./OldComponents/OldHeader"
 import { OldHowItWorks } from "./OldComponents/OldHowItWorks"
-import { OldRecentlySold } from "./OldComponents/OldRecentlySold"
+import { OldRecentlySoldFragmentContainer } from "./OldComponents/OldRecentlySold"
 import { OldSellWithArtsyCustomRecentlySold } from "./OldComponents/OldSellWithArtsyCustomRecentlySold"
 
 interface Props {
@@ -30,7 +30,6 @@ export const OldSellWithArtsyHome: React.FC<Props> = ({
   recentlySoldArtworks,
   targetSupply,
 }) => {
-  console.log({ targetSupply })
   const tracking = useTracking()
   const enableCustomRecentlySold = useFeatureFlag("ARCustomRecentlySoldOnArtsy")
 
@@ -59,11 +58,11 @@ export const OldSellWithArtsyHome: React.FC<Props> = ({
         {enableCustomRecentlySold ? (
           <OldSellWithArtsyCustomRecentlySold recentlySoldArtworks={recentlySoldArtworks} />
         ) : (
-          <OldRecentlySold targetSupply={targetSupply} isLoading={isLoading} />
+          <OldRecentlySoldFragmentContainer targetSupply={targetSupply} isLoading={isLoading} />
         )}
 
         <OldHowItWorks />
-        <OldArtistList targetSupply={targetSupply} isLoading={isLoading} />
+        <OldArtistListFragmentContainer targetSupply={targetSupply} isLoading={isLoading} />
         <OldFooter onConsignPress={handleConsignPress} />
       </Join>
     </ScrollView>

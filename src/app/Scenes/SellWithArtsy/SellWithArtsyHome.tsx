@@ -42,7 +42,9 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
 }) => {
   const enableNewSellWithArtsyScreen = useFeatureFlag("ARNewSellWithArtsyScreen")
 
-  if (!enableNewSellWithArtsyScreen) { return <OldSellWithArtsyHomeQueryRenderer /> }
+  if (!enableNewSellWithArtsyScreen) {
+    return <OldSellWithArtsyHomeQueryRenderer />
+  }
 
   const { height: screenHeight } = useScreenDimensions()
   const tracking = useTracking()

@@ -280,9 +280,10 @@ export const features = defineFeatures({
     echoFlagKey: "ARCustomRecentlySoldOnArtsy",
   },
   ARNewSellWithArtsyScreen: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable new SWA screen",
     showInAdminMenu: true,
+    echoFlagKey: "ARNewSellWithArtsyScreen",
   },
 })
 
