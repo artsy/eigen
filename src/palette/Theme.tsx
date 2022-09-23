@@ -30,6 +30,7 @@ export type Color =
   | "yellow10"
   | "orange10"
   | "orange100" // yellows and orange are temporary, until we add them to palette-tokens
+  | "copper100" // this needs to go once we extract palette-mobile
   // v5 stuff
   | "appBackground"
   | "appForeground"
