@@ -16,6 +16,7 @@ import { Admin } from "./NativeModules/Admin"
 import { CityGuideView } from "./NativeModules/CityGuideView"
 import { LiveAuctionView } from "./NativeModules/LiveAuctionView"
 import { About } from "./Scenes/About/About"
+import { ActivityPanel } from "./Scenes/ActivityPanel/ActivityPanel"
 import { ArticlesScreen, ArticlesScreenQuery } from "./Scenes/Articles/Articles"
 import { ArtistQueryRenderer, ArtistScreenQuery } from "./Scenes/Artist/Artist"
 import { ArtistArticlesQueryRenderer } from "./Scenes/ArtistArticles/ArtistArticles"
@@ -314,6 +315,7 @@ export type AppModule = keyof typeof modules
 
 export const modules = defineModules({
   Storybook: reactModule(StorybookUIRoot),
+  ActivityPanel: reactModule(ActivityPanel),
   Admin: reactModule(Admin, { alwaysPresentModally: true }),
   Admin2: reactModule(AdminMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   About: reactModule(About),
