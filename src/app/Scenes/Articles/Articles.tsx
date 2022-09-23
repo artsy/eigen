@@ -21,7 +21,13 @@ export const Articles: React.FC = () => {
       return
     }
 
-    loadNext(articlesQueryVariables.count)
+    loadNext(articlesQueryVariables.count, {
+      onComplete: (error) => {
+        if (error) {
+          console.error(error)
+        }
+      },
+    })
   }
 
   const handleRefresh = () => {

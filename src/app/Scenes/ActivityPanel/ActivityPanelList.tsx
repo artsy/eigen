@@ -1,7 +1,7 @@
 import { ActivityPanelList_viewer$key } from "__generated__/ActivityPanelList_viewer.graphql"
 import { ActivityPanelQuery } from "__generated__/ActivityPanelQuery.graphql"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex, Text } from "palette"
+import { Flex, Separator, Text } from "palette"
 import { useState } from "react"
 import { FlatList } from "react-native"
 import { graphql, usePaginationFragment } from "react-relay"
@@ -42,9 +42,10 @@ export const ActivityPanelList: React.FC<ActivityPanelListProps> = ({ viewer }) 
     <FlatList
       data={notifications}
       refreshing={refreshing}
+      ItemSeparatorComponent={() => <Separator />}
       renderItem={({ item }) => {
         return (
-          <Flex>
+          <Flex p={2}>
             <Text>{item.title}</Text>
             <Text>{item.message}</Text>
           </Flex>

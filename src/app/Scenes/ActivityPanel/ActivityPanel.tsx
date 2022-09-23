@@ -5,7 +5,10 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 import { ActivityPanelList } from "./ActivityPanelList"
 
 export const ActivityPanelContent = () => {
-  const queryData = useLazyLoadQuery<ActivityPanelQuery>(ActivityPanelScreenQuery, {})
+  const queryData = useLazyLoadQuery<ActivityPanelQuery>(
+    ActivityPanelScreenQuery,
+    activityPanelQueryVariables
+  )
 
   return <ActivityPanelList viewer={queryData.viewer} />
 }
@@ -25,9 +28,13 @@ const Placeholder = () => (
 )
 
 const ActivityPanelScreenQuery = graphql`
-  query ActivityPanelQuery {
+  query ActivityPanelQuery($count: Int, $after: String) {
     viewer {
-      ...ActivityPanelList_viewer
+      ...ActivityPanelList_viewer @arguments(count: $count, after: $after)
     }
   }
 `
+
+const activityPanelQueryVariables = {
+  count: 10,
+}
