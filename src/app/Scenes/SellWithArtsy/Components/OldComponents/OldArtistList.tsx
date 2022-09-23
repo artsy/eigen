@@ -1,22 +1,21 @@
 import { ContextModule, OwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
-import { ArtistList_targetSupply$data } from "__generated__/ArtistList_targetSupply.graphql"
+import { OldArtistList_targetSupply$data } from "__generated__/OldArtistList_targetSupply.graphql"
 import { navigate } from "app/navigation/navigate"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { chunk, shuffle } from "lodash"
-import { Box, EntityHeader, Flex, Join, Spacer, Text } from "palette"
-import { Touchable } from "palette"
+import { Box, EntityHeader, Flex, Join, Spacer, Text, Touchable } from "palette"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
-interface ArtistListProps {
-  targetSupply: ArtistList_targetSupply$data
+interface OldArtistListProps {
+  targetSupply: OldArtistList_targetSupply$data
   isLoading?: boolean
 }
 
-export const ArtistList: React.FC<ArtistListProps> = ({ targetSupply, isLoading }) => {
+export const OldArtistList: React.FC<OldArtistListProps> = ({ targetSupply, isLoading }) => {
   if (isLoading) {
-    return <ArtistListPlaceholder />
+    return <OldArtistListPlaceholder />
   }
 
   const microfunnelItems = targetSupply.microfunnel || []
@@ -60,9 +59,9 @@ export const ArtistList: React.FC<ArtistListProps> = ({ targetSupply, isLoading 
   )
 }
 
-export const ArtistListFragmentContainer = createFragmentContainer(ArtistList, {
+export const OldArtistListFragmentContainer = createFragmentContainer(OldArtistList, {
   targetSupply: graphql`
-    fragment ArtistList_targetSupply on TargetSupply {
+    fragment OldArtistList_targetSupply on TargetSupply {
       microfunnel {
         artist {
           internalID
@@ -117,7 +116,7 @@ const ArtistItem: React.FC<{ artist: any }> = ({ artist }) => {
   )
 }
 
-const ArtistListPlaceholder: React.FC = () => {
+const OldArtistListPlaceholder: React.FC = () => {
   return (
     <Box>
       <Box px={2}>

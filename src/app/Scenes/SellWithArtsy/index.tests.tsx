@@ -2,7 +2,6 @@ import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ArtistList } from "./Components/ArtistList"
 import { SellWithArtsyCustomRecentlySold } from "./Components/SellWithArtsyCustomRecentlySold"
 import { SellWithArtsyHomeQueryRenderer } from "./SellWithArtsyHome"
 
@@ -25,7 +24,6 @@ describe("ConsignmentsHome index", () => {
     mockEnvironment.mock.resolveMostRecentOperation(MockPayloadGenerator.generate)
 
     expect(tree.root.findAllByType(SellWithArtsyCustomRecentlySold)).toHaveLength(1)
-    expect(tree.root.findAllByType(ArtistList)).toHaveLength(1)
   })
 
   it("tracks a cta tap in the header", () => {

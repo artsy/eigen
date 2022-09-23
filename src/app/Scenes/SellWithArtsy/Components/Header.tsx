@@ -1,5 +1,7 @@
 import { ContextModule, OwnerType, TappedConsignArgs } from "@artsy/cohesion"
-import { Box, Button, Spacer, Text } from "palette"
+import { Button, Flex, Spacer, Text } from "palette"
+import { ImageBackground } from "react-native"
+import { useScreenDimensions } from "shared/hooks"
 
 const consignArgs: TappedConsignArgs = {
   contextModule: ContextModule.sellHeader,
@@ -15,28 +17,42 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress }) => {
   const handlePress = () => {
     onConsignPress(consignArgs)
   }
+  const screenDimensions = useScreenDimensions()
 
   return (
-    <Box px={2} mt={3}>
-      <Box>
-        <Text variant="lg" textAlign="center" px={2}>
-          Sell Art From Your Collection
+    <ImageBackground
+      style={{ height: 430, width: screenDimensions.width }}
+      resizeMode="cover"
+      source={require("images/SellWithArtsyHeader.webp")}
+    >
+      <Flex px={2} pb={2} justifyContent="flex-end" height="100%">
+        <Flex>
+          <Text variant="lg" color="white100">
+            Sell Artworks from Your Collection
+          </Text>
+
+          <Spacer mb={2} />
+
+          <Text variant="sm" color="white100">
+            Let our experts find the best sales option for you, whether via auction, private sale,
+            or direct listing on Artsy.
+          </Text>
+        </Flex>
+
+        <Spacer mb={3} />
+
+        <Button testID="header-cta" variant="fillLight" block onPress={handlePress} haptic>
+          <Text variant="sm" weight="medium">
+            Submit an Artwork
+          </Text>
+        </Button>
+
+        <Spacer mb={2} />
+
+        <Text variant="xs" italic color="white100">
+          Alex Katz, Forest, 2009
         </Text>
-
-        <Spacer my={0.5} />
-
-        <Text variant="md" textAlign="center">
-          Reach art buyers all over the world.
-        </Text>
-      </Box>
-
-      <Spacer mb={2} />
-
-      <Button testID="header-cta" variant="fillDark" block onPress={handlePress} haptic>
-        <Text variant="sm" weight="medium">
-          Submit a work
-        </Text>
-      </Button>
-    </Box>
+      </Flex>
+    </ImageBackground>
   )
 }

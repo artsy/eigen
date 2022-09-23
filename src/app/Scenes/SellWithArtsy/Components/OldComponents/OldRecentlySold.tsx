@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
-import { RecentlySold_targetSupply$data } from "__generated__/RecentlySold_targetSupply.graphql"
+import { OldRecentlySold_targetSupply$data } from "__generated__/OldRecentlySold_targetSupply.graphql"
 import {
   SmallArtworkRail,
   SmallArtworkRailPlaceholder,
@@ -12,9 +12,9 @@ import { Box, Flex, Spacer } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
-interface RecentlySoldProps {
+interface OldRecentlySoldProps {
   isLoading?: boolean
-  targetSupply: RecentlySold_targetSupply$data
+  targetSupply: OldRecentlySold_targetSupply$data
 }
 
 const trackingArgs: TappedEntityGroupArgs = {
@@ -24,9 +24,9 @@ const trackingArgs: TappedEntityGroupArgs = {
   type: "thumbnail",
 }
 
-export const RecentlySold: React.FC<RecentlySoldProps> = ({ targetSupply, isLoading }) => {
+export const OldRecentlySold: React.FC<OldRecentlySoldProps> = ({ targetSupply, isLoading }) => {
   if (isLoading) {
-    return <RecentlySoldPlaceholder />
+    return <OldRecentlySoldPlaceholder />
   }
 
   const tracking = useTracking()
@@ -42,9 +42,9 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ targetSupply, isLoad
 
   return (
     <Box>
-      <SectionTitle title="Recently sold on Artsy" />
-      <Spacer mb={2} />
-
+      <Flex mx={2}>
+        <SectionTitle title="Recently sold on Artsy" />
+      </Flex>
       <SmallArtworkRail
         artworks={compact(recentlySoldArtworks)}
         onPress={(artwork) => {
@@ -62,9 +62,9 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ targetSupply, isLoad
   )
 }
 
-export const RecentlySoldFragmentContainer = createFragmentContainer(RecentlySold, {
+export const OldRecentlySoldFragmentContainer = createFragmentContainer(OldRecentlySold, {
   targetSupply: graphql`
-    fragment RecentlySold_targetSupply on TargetSupply {
+    fragment OldRecentlySold_targetSupply on TargetSupply {
       microfunnel {
         artworksConnection(first: 1) {
           edges {
@@ -78,7 +78,7 @@ export const RecentlySoldFragmentContainer = createFragmentContainer(RecentlySol
   `,
 })
 
-const RecentlySoldPlaceholder: React.FC = () => {
+const OldRecentlySoldPlaceholder: React.FC = () => {
   return (
     <Box>
       <Box px={2} py={0.5}>

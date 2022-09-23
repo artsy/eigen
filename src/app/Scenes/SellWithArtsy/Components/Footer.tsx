@@ -1,86 +1,55 @@
-import { ContextModule, OwnerType, TappedConsignArgs } from "@artsy/cohesion"
-import { Box, Button, Flex, Spacer, Text } from "palette"
-import styled from "styled-components/native"
-import { TextContainer } from "./TextContainer"
+import { navigate } from "app/navigation/navigate"
+import { Flex, Separator, Text } from "palette"
+import React from "react"
 
-const consignArgs: TappedConsignArgs = {
-  contextModule: ContextModule.sellFooter,
-  contextScreenOwnerType: OwnerType.sell,
-  subject: "Submit a work",
-}
+export const Footer: React.FC = () => {
+  const handleBecomeAPartnerPress = () => {
+    navigate("https://partners.artsy.net")
+  }
 
-interface FooterProps {
-  onConsignPress: (tappedConsignArgs: TappedConsignArgs) => void
-}
+  const handleHelpCenterPress = () => {
+    navigate("https://support.artsy.net/hc/en-us/categories/360003689533-Sell")
+  }
 
-export const Footer: React.FC<FooterProps> = ({ onConsignPress }) => {
-  const handlePress = () => {
-    onConsignPress(consignArgs)
+  const handleFAQPress = () => {
+    navigate("https://artsy.net/sell/faq")
   }
 
   return (
-    <Box px={2} pb={6}>
-      <Text variant="lg">Why sell with Artsy?</Text>
-
-      <Spacer mb={2} />
-
-      <Flex flexDirection="row">
-        <NumberBox pl={0.5} pr={1}>
-          <Text variant="md">1</Text>
-        </NumberBox>
-
-        <TextContainer>
-          <Text variant="md">Simple Steps</Text>
-          <Spacer mb={0.3} />
-          <Text variant="sm" color="black60">
-            Submit your work once, pick the best offer, and ship the work when it sells.
-          </Text>
-        </TextContainer>
-      </Flex>
-
-      <Spacer mb={2} />
-
-      <Flex flexDirection="row">
-        <NumberBox pl={0.5} pr={1}>
-          <Text variant="md">2</Text>
-        </NumberBox>
-
-        <TextContainer>
-          <Text variant="md">Industry Expertise</Text>
-          <Spacer mb={0.3} />
-          <Text variant="sm" color="black60">
-            Receive virtual valuation and expert guidance on the best sales strategies.
-          </Text>
-        </TextContainer>
-      </Flex>
-
-      <Spacer mb={2} />
-
-      <Flex flexDirection="row">
-        <NumberBox pl={0.5} pr={1}>
-          <Text variant="md">3</Text>
-        </NumberBox>
-
-        <TextContainer>
-          <Text variant="md">Global Reach</Text>
-          <Spacer mb={0.3} />
-          <Text variant="sm" color="black60">
-            Your work will reach the world's collectors, galleries, and auction houses.
-          </Text>
-        </TextContainer>
-      </Flex>
-
-      <Spacer mb={3} />
-
-      <Button testID="footer-cta" variant="fillDark" block onPress={handlePress} haptic>
-        <Text variant="sm">Submit a work</Text>
-      </Button>
-    </Box>
+    <Flex mx={2}>
+      <Separator />
+      <Text variant="sm" mb={1} mt={2}>
+        Gallerist or Art Dealer?
+      </Text>
+      <Text variant="xs" color="black60" mb={2}>
+        <Text
+          variant="xs"
+          onPress={handleBecomeAPartnerPress}
+          style={{ textDecorationLine: "underline" }}
+        >
+          Become a partner
+        </Text>{" "}
+        to access the world’s largest online art marketplace.
+      </Text>
+      <Separator />
+      <Text variant="sm" mb={1} mt={1} pt={0.5}>
+        Have a Question?
+      </Text>
+      <Text variant="xs" color="black60" mb={2}>
+        Visit our{" "}
+        <Text
+          variant="xs"
+          onPress={handleHelpCenterPress}
+          style={{ textDecorationLine: "underline" }}
+        >
+          Help Center
+        </Text>{" "}
+        or{" "}
+        <Text variant="xs" onPress={handleFAQPress} style={{ textDecorationLine: "underline" }}>
+          read our FAQs
+        </Text>
+        .
+      </Text>
+    </Flex>
   )
 }
-
-const NumberBox = styled(Box)`
-  flex-basis: 30px;
-  flex-shrink: 0;
-  flex-grow: 0;
-`
