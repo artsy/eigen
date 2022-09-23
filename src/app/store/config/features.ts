@@ -287,7 +287,7 @@ export const features = defineFeatures({
   },
   AREnableActivityPanel: {
     readyForRelease: false,
-    description: "Enable Activity Panel",
+    description: "Enable Activities",
     showInAdminMenu: true,
   },
 })

@@ -4,19 +4,19 @@ import { BellIcon, Box, useTheme } from "palette"
 import { VisualClueDot } from "palette/elements/VisualClue"
 import { TouchableOpacity } from "react-native"
 
-interface ActivityIndicatorProps {
+interface ActivitiesIndicatorProps {
   hasNotifications: boolean
 }
 
-export const ActivityIndicator: React.FC<ActivityIndicatorProps> = ({ hasNotifications }) => {
-  const enableActivityPanel = useFeatureFlag("AREnableActivityPanel")
+export const ActivitiesIndicator: React.FC<ActivitiesIndicatorProps> = ({ hasNotifications }) => {
+  const enableActivities = useFeatureFlag("AREnableActivities")
   const { space } = useTheme()
 
   const navigateToActivityPanel = () => {
     navigate("/activity-panel")
   }
 
-  if (enableActivityPanel) {
+  if (enableActivities) {
     return (
       <Box position="absolute" right={2} top={0} bottom={0} justifyContent="center">
         <TouchableOpacity
