@@ -67,6 +67,7 @@ export const ReverseImagePreviewScreen: React.FC<Props> = (props) => {
         await navigate(`/artwork/${artworkIDs[0]}`)
         await nextTick()
 
+        // Navigate to the camera screen **without** animation
         return navigation.dispatch(
           CommonActions.reset({
             index: 0,
