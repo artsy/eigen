@@ -26,23 +26,21 @@ export const MarketingCollectionHeader: React.FC<MarketingCollectionHeaderProps>
   const collection = useFragment(marketingCollectionHeaderFragment, marketingCollection)
 
   return (
-    <Flex>
-      <ImageBackground style={{ height: 230 }} resizeMode="cover" source={images[collectionSlug]}>
-        <Flex pt={6} px={2}>
-          <Text variant="xl" color="white100">
-            {collection.title}
-          </Text>
-          <Spacer mt={2} />
-          <Text variant="sm" color="white100">
-            {description}
-          </Text>
-          <Spacer mt={2} />
-          <Text variant="sm" color="white100">
-            {SAVE_INSTRUCTIONS}
-          </Text>
-        </Flex>
-      </ImageBackground>
-    </Flex>
+    <ImageBackground style={{ height: 230 }} resizeMode="cover" source={images[collectionSlug]}>
+      <Flex pt={6} px={2}>
+        <Text variant="xl" color="white100">
+          {collection.title}
+        </Text>
+        <Spacer mt={2} />
+        <Text variant="sm" color="white100">
+          {description}
+        </Text>
+        <Spacer mt={2} />
+        <Text variant="sm" color="white100">
+          {SAVE_INSTRUCTIONS}
+        </Text>
+      </Flex>
+    </ImageBackground>
   )
 }
 

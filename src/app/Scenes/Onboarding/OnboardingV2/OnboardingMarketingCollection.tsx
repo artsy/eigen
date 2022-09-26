@@ -46,10 +46,8 @@ const OnboardingMarketingCollection: React.FC<OnboardingMarketingCollectionProps
           description={description}
           marketingCollection={marketingCollection!}
         />
-        <Flex px={2}>
-          <OnboardingResultsGrid connection={marketingCollection?.artworks} />
-        </Flex>
-        <Flex p={2} background="white" position="absolute" bottom={0}>
+        <OnboardingResultsGrid connection={marketingCollection?.artworks} />
+        <Flex p={2} background="white">
           <Button block onPress={() => navigate("OnboardingPostFollowLoadingScreen")} mb={1}>
             Explore More on Artsy
           </Button>
