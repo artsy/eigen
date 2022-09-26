@@ -26,13 +26,13 @@ export const Footer: React.FC<FooterProps> = ({ onConsignPress }) => {
 
       <Flex flexDirection="row">
         <NumberBox pl={0.5} pr={1}>
-          <Text variant="md">1</Text>
+          <Text>1</Text>
         </NumberBox>
 
         <TextContainer>
-          <Text variant="md">Simple Steps</Text>
+          <Text>Simple Steps</Text>
           <Spacer mb={0.3} />
-          <Text variant="sm" color="black60">
+          <Text color="black60">
             Submit your work once, pick the best offer, and ship the work when it sells.
           </Text>
         </TextContainer>
@@ -42,13 +42,13 @@ export const Footer: React.FC<FooterProps> = ({ onConsignPress }) => {
 
       <Flex flexDirection="row">
         <NumberBox pl={0.5} pr={1}>
-          <Text variant="md">2</Text>
+          <Text>2</Text>
         </NumberBox>
 
         <TextContainer>
-          <Text variant="md">Industry Expertise</Text>
+          <Text>Industry Expertise</Text>
           <Spacer mb={0.3} />
-          <Text variant="sm" color="black60">
+          <Text color="black60">
             Receive virtual valuation and expert guidance on the best sales strategies.
           </Text>
         </TextContainer>
@@ -58,13 +58,13 @@ export const Footer: React.FC<FooterProps> = ({ onConsignPress }) => {
 
       <Flex flexDirection="row">
         <NumberBox pl={0.5} pr={1}>
-          <Text variant="md">3</Text>
+          <Text>3</Text>
         </NumberBox>
 
         <TextContainer>
-          <Text variant="md">Global Reach</Text>
+          <Text>Global Reach</Text>
           <Spacer mb={0.3} />
-          <Text variant="sm" color="black60">
+          <Text color="black60">
             Your work will reach the world's collectors, galleries, and auction houses.
           </Text>
         </TextContainer>
@@ -73,7 +73,7 @@ export const Footer: React.FC<FooterProps> = ({ onConsignPress }) => {
       <Spacer mb={3} />
 
       <Button testID="footer-cta" variant="fillDark" block onPress={handlePress} haptic>
-        <Text variant="sm">Submit a work</Text>
+        <Text>Submit a work</Text>
       </Button>
     </Box>
   )
