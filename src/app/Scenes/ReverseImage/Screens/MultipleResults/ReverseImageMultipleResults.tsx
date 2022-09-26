@@ -1,10 +1,11 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { ReverseImageMultipleResultsQuery } from "__generated__/ReverseImageMultipleResultsQuery.graphql"
-import { ArtsyLogoIcon, BackButton, Flex } from "palette"
+import { ArtsyLogoIcon, Flex } from "palette"
 import { Suspense } from "react"
 import { Image, StyleSheet } from "react-native"
 import { graphql } from "react-relay"
 import { useLazyLoadQuery } from "react-relay"
+import { HeaderBackButton } from "../../Components/HeaderBackButton"
 import { HeaderContainer } from "../../Components/HeaderContainer"
 import { ReverseImageNavigationStack } from "../../types"
 import { ReverseImageArtworksRail } from "./ReverseImageArtworksRail"
@@ -28,7 +29,7 @@ export const ReverseImageMultipleResults: React.FC<Props> = (props) => {
   return (
     <Flex bg="black100" flex={1}>
       <HeaderContainer>
-        <BackButton color="white100" onPress={handleGoBack} />
+        <HeaderBackButton onPress={handleGoBack} />
         <Flex
           {...StyleSheet.absoluteFillObject}
           pointerEvents="none"

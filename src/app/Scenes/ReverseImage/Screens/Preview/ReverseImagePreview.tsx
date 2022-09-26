@@ -11,12 +11,13 @@ import { navigate } from "app/navigation/navigate"
 import { nextTick } from "app/utils/nextTick"
 import { useImageSearch } from "app/utils/useImageSearch"
 import { compact } from "lodash"
-import { BackButton, Flex } from "palette"
+import { Flex } from "palette"
 import { useEffect, useRef } from "react"
 import { Alert, Image, StyleSheet } from "react-native"
 import { useTracking } from "react-tracking"
 import { Background } from "../../Components/Background"
 import { CameraFramesContainer } from "../../Components/CameraFramesContainer"
+import { HeaderBackButton } from "../../Components/HeaderBackButton"
 import { HeaderContainer } from "../../Components/HeaderContainer"
 import { HeaderTitle } from "../../Components/HeaderTitle"
 import { useReverseImageContext } from "../../ReverseImageContext"
@@ -122,7 +123,7 @@ export const ReverseImagePreviewScreen: React.FC<Props> = (props) => {
       <Flex {...StyleSheet.absoluteFillObject}>
         <Background>
           <HeaderContainer>
-            <BackButton color="white100" onPress={handleGoBack} />
+            <HeaderBackButton onPress={handleGoBack} />
             <HeaderTitle title="Looking for Results..." />
           </HeaderContainer>
         </Background>

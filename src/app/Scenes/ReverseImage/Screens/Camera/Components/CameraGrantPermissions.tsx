@@ -1,5 +1,6 @@
+import { HeaderBackButton } from "app/Scenes/ReverseImage/Components/HeaderBackButton"
 import { HeaderContainer } from "app/Scenes/ReverseImage/Components/HeaderContainer"
-import { BackButton, Button, Flex, Text } from "palette"
+import { Button, Flex, Text } from "palette"
 
 interface CameraGrantPermissionsProps {
   onBackPress: () => void
@@ -12,7 +13,7 @@ export const CameraGrantPermissions: React.FC<CameraGrantPermissionsProps> = (pr
   return (
     <Flex flex={1} bg="black100">
       <HeaderContainer>
-        <BackButton color="white100" onPress={onBackPress} />
+        <HeaderBackButton onPress={onBackPress} />
       </HeaderContainer>
 
       <Flex flex={1} justifyContent="center" alignItems="center">
