@@ -2,11 +2,11 @@ import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { createMockEnvironment } from "relay-test-utils"
-import { Activities } from "./Activities"
+import { Activity } from "./Activity"
 
 jest.unmock("react-relay")
 
-describe("Activities", () => {
+describe("Activity", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
@@ -14,7 +14,7 @@ describe("Activities", () => {
   })
 
   it("renders items", async () => {
-    const { getByText } = renderWithHookWrappersTL(<Activities />, mockEnvironment)
+    const { getByText } = renderWithHookWrappersTL(<Activity />, mockEnvironment)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       NotificationConnection: () => notifications,

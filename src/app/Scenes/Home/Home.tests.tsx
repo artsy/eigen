@@ -67,23 +67,23 @@ describe(HomeQueryRenderer, () => {
     expect(getByText("Tap here to verify your email address")).toBeTruthy()
   })
 
-  describe("activities icon", () => {
+  describe("Activity icon", () => {
     it("should NOT be displayed by default", async () => {
       __globalStoreTestUtils__?.injectFeatureFlags({
-        AREnableActivities: false,
+        AREnableActivity: false,
       })
       const { queryByLabelText } = await getWrapper()
 
-      expect(queryByLabelText("Activities")).toBeNull()
+      expect(queryByLabelText("Activity")).toBeNull()
     })
 
     it("should be displayed when feature flag is enabled", async () => {
       __globalStoreTestUtils__?.injectFeatureFlags({
-        AREnableActivities: true,
+        AREnableActivity: true,
       })
       const { queryByLabelText } = await getWrapper()
 
-      expect(queryByLabelText("Activities")).toBeTruthy()
+      expect(queryByLabelText("Activity")).toBeTruthy()
     })
   })
 })

@@ -1,20 +1,20 @@
-import { ActivitiesList_viewer$key } from "__generated__/ActivitiesList_viewer.graphql"
-import { ActivitiesQuery } from "__generated__/ActivitiesQuery.graphql"
+import { ActivityList_viewer$key } from "__generated__/ActivityList_viewer.graphql"
+import { ActivityQuery } from "__generated__/ActivityQuery.graphql"
 import { extractNodes } from "app/utils/extractNodes"
 import { Flex, Separator, Text } from "palette"
 import { useState } from "react"
 import { FlatList } from "react-native"
 import { graphql, usePaginationFragment } from "react-relay"
 
-interface ActivitiesListProps {
-  viewer: ActivitiesList_viewer$key | null
+interface ActivityListProps {
+  viewer: ActivityList_viewer$key | null
 }
 
-export const ActivitiesList: React.FC<ActivitiesListProps> = ({ viewer }) => {
+export const ActivityList: React.FC<ActivityListProps> = ({ viewer }) => {
   const [refreshing, setRefreshing] = useState(false)
   const { data, hasNext, isLoadingNext, loadNext, refetch } = usePaginationFragment<
-    ActivitiesQuery,
-    ActivitiesList_viewer$key
+    ActivityQuery,
+    ActivityList_viewer$key
   >(notificationsConnectionFragment, viewer)
   const notifications = extractNodes(data?.notificationsConnection)
 
@@ -58,11 +58,11 @@ export const ActivitiesList: React.FC<ActivitiesListProps> = ({ viewer }) => {
 }
 
 const notificationsConnectionFragment = graphql`
-  fragment ActivitiesList_viewer on Viewer
-  @refetchable(queryName: "ActivitiesList_viewerRefetch")
+  fragment ActivityList_viewer on Viewer
+  @refetchable(queryName: "ActivityList_viewerRefetch")
   @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" }) {
     notificationsConnection(first: $count, after: $after)
-      @connection(key: "ActivitiesList_notificationsConnection") {
+      @connection(key: "ActivityList_notificationsConnection") {
       edges {
         node {
           title

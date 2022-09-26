@@ -40,7 +40,7 @@ import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { articlesQueryVariables } from "../Articles/Articles"
 import { lotsByArtistsYouFollowDefaultVariables } from "../LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import { ViewingRoomsHomeMainRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
-import { ActivitiesIndicator } from "./ActivitiesIndicator"
+import { ActivityIndicator } from "./ActivityIndicator"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { ArtworkRecommendationsRail } from "./Components/ArtworkRecommendationsRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
@@ -348,7 +348,7 @@ const HomeHeader: React.FC<{ homePageAbove: Home_homePageAbove$data | null }> = 
     <Box mb={1} mt={2}>
       <Flex alignItems="center">
         <ArtsyLogoIcon scale={0.75} />
-        <ActivitiesIndicator hasNotifications />
+        <ActivityIndicator hasNotifications />
       </Flex>
       <Spacer mb="15px" />
       {!!homePageAbove && <HomeHeroContainer homePage={homePageAbove} />}
@@ -537,7 +537,7 @@ const HomePlaceholder: React.FC = () => {
       <Box mb={1} mt={2}>
         <Flex alignItems="center">
           <ArtsyLogoIcon scale={0.75} />
-          <ActivitiesIndicator hasNotifications={false} />
+          <ActivityIndicator hasNotifications={false} />
         </Flex>
       </Box>
       <Spacer mb={4} />
