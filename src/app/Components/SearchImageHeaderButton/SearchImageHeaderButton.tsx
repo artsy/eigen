@@ -2,13 +2,12 @@ import { ActionType, OwnerType, TappedReverseImageSearch } from "@artsy/cohesion
 import { navigate } from "app/navigation/navigate"
 import { ReverseImageOwner } from "app/Scenes/ReverseImage/types"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { AddIcon, Box } from "palette"
-import { TouchableOpacity } from "react-native"
-import Animated, { FadeIn, FadeOut } from "react-native-reanimated"
+import { AddIcon } from "palette"
+import { FadeIn, FadeOut } from "react-native-reanimated"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
+import { HeaderButton } from "../HeaderButton"
 
-const CAMERA_ICON_CONTAINER_SIZE = 40
 const CAMERA_ICON_SIZE = 20
 
 export interface SearchImageHeaderButtonProps {
@@ -37,9 +36,9 @@ export const SearchImageHeaderButton: React.FC<SearchImageHeaderButtonProps> = (
   }
 
   return (
-    <Animated.View
+    <HeaderButton
       accessibilityLabel="Search by image"
-      style={{
+      containerStyle={{
         position: "absolute",
         // the margin top here is the exact same as src/app/navigation/BackButton
         // in order to align the back button with the search button
@@ -48,20 +47,10 @@ export const SearchImageHeaderButton: React.FC<SearchImageHeaderButtonProps> = (
       }}
       entering={FadeIn}
       exiting={FadeOut}
+      onPress={handleSearchPress}
     >
-      <TouchableOpacity onPress={handleSearchPress}>
-        <Box
-          width={CAMERA_ICON_CONTAINER_SIZE}
-          height={CAMERA_ICON_CONTAINER_SIZE}
-          borderRadius={CAMERA_ICON_CONTAINER_SIZE / 2}
-          bg="white"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <AddIcon width={CAMERA_ICON_SIZE} height={CAMERA_ICON_SIZE} />
-        </Box>
-      </TouchableOpacity>
-    </Animated.View>
+      <AddIcon width={CAMERA_ICON_SIZE} height={CAMERA_ICON_SIZE} />
+    </HeaderButton>
   )
 }
 

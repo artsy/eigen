@@ -4,21 +4,18 @@ import { FairQuery } from "__generated__/FairQuery.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
+import { HeaderButton } from "app/Components/HeaderButton"
 import { SearchImageHeaderButton } from "app/Components/SearchImageHeaderButton"
+import { goBack } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { Box, Flex, Separator, Spacer } from "palette"
+import { Box, ChevronIcon, Flex, Separator, Spacer } from "palette"
 import { NavigationalTabs, TabsType } from "palette/elements/Tabs"
 import React, { useCallback, useRef, useState } from "react"
 import { FlatList, View } from "react-native"
-import Animated, {
-  FadeIn,
-  FadeOut,
-  runOnJS,
-  useAnimatedScrollHandler,
-} from "react-native-reanimated"
+import Animated, { runOnJS, useAnimatedScrollHandler } from "react-native-reanimated"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
@@ -31,6 +28,7 @@ import { FairFollowedArtistsRailFragmentContainer } from "./Components/FairFollo
 import { FairHeaderFragmentContainer } from "./Components/FairHeader"
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
+const BACK_ICON_SIZE = 21
 
 interface FairQueryRendererProps {
   fairID: string
@@ -271,16 +269,24 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
         />
       </ArtworkFiltersStoreProvider>
 
-      {!shouldHideButtons && (
-        <SearchImageHeaderButton
-          isImageSearchButtonVisible={shouldShowImageSearchButton}
-          owner={{
-            type: OwnerType.fair,
-            id: fair.internalID,
-            slug: fair.slug,
-          }}
-        />
-      )}
+      <HeaderButton
+        onPress={() => goBack()}
+        containerStyle={{
+          position: "absolute",
+          top: 13 + safeAreaInsets.top,
+          left: 12,
+        }}
+      >
+        <ChevronIcon direction="left" width={BACK_ICON_SIZE} height={BACK_ICON_SIZE} />
+      </HeaderButton>
+      <SearchImageHeaderButton
+        isImageSearchButtonVisible={shouldShowImageSearchButton && !shouldHideButtons}
+        owner={{
+          type: OwnerType.fair,
+          id: fair.internalID,
+          slug: fair.slug,
+        }}
+      />
     </ProvideScreenTracking>
   )
 }
