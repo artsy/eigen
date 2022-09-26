@@ -1,6 +1,7 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { BackButton, Button, Flex, Text } from "palette"
+import { Button, Flex, Text } from "palette"
 import { Image } from "react-native"
+import { HeaderBackButton } from "../../Components/HeaderBackButton"
 import { HeaderContainer } from "../../Components/HeaderContainer"
 import { HeaderTitle } from "../../Components/HeaderTitle"
 import { ReverseImageNavigationStack } from "../../types"
@@ -17,7 +18,7 @@ export const ReverseImageArtworkNotFoundScreen: React.FC<Props> = (props) => {
   return (
     <Flex flex={1} bg="black100">
       <HeaderContainer>
-        <BackButton color="white100" onPress={handleGoBack} />
+        <HeaderBackButton onPress={handleGoBack} />
         <HeaderTitle title="Artwork Not Found" />
       </HeaderContainer>
 
