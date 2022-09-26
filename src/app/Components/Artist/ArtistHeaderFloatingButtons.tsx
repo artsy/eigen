@@ -1,6 +1,6 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArtistHeaderFloatingButtons_artist$data } from "__generated__/ArtistHeaderFloatingButtons_artist.graphql"
-import { ArtistHeaderButton } from "app/Components/Artist/ArtistHeaderButton"
+import { HeaderButton } from "app/Components/HeaderButton"
 import { ShareSheet } from "app/Components/ShareSheet/ShareSheet"
 import { useStickyTabPageContext } from "app/Components/StickyTabPage/StickyTabPageContext"
 import { goBack } from "app/navigation/navigate"
@@ -104,21 +104,21 @@ export const ArtistHeaderFloatingButtons: React.FC<ArtistHeaderFloatingButtonsPr
 
   return (
     <Fragment>
-      <ArtistHeaderButton
+      <HeaderButton
         shouldHide={hideButton}
         onPress={goBack}
         containerStyle={{ position: "absolute", top: BUTTON_OFFSET, left: BUTTON_OFFSET, opacity }}
       >
         <ChevronIcon direction="left" width={BACK_ICON_SIZE} height={BACK_ICON_SIZE} />
-      </ArtistHeaderButton>
+      </HeaderButton>
 
-      <ArtistHeaderButton
+      <HeaderButton
         shouldHide={hideButton}
         onPress={handleSharePress}
         containerStyle={{ position: "absolute", top: BUTTON_OFFSET, right: BUTTON_OFFSET, opacity }}
       >
         <ShareIcon width={SHARE_ICON_SIZE} height={SHARE_ICON_SIZE} />
-      </ArtistHeaderButton>
+      </HeaderButton>
 
       <ShareSheet
         entry={{

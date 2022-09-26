@@ -1,8 +1,8 @@
 import { Touchable } from "palette"
-import { StyleProp, ViewStyle } from "react-native"
-import Animated from "react-native-reanimated"
+import { StyleProp, ViewProps, ViewStyle } from "react-native"
+import Animated, { AnimateProps, FadeIn, FadeOut } from "react-native-reanimated"
 
-interface ArtistHeaderButtonProps {
+interface HeaderButtonProps extends AnimateProps<ViewProps> {
   containerStyle?: StyleProp<Animated.AnimateStyle<ViewStyle>>
   shouldHide?: boolean
   onPress: () => void
@@ -11,12 +11,17 @@ interface ArtistHeaderButtonProps {
 // Constants
 const BUTTON_SIZE = 40
 
-export const ArtistHeaderButton: React.FC<ArtistHeaderButtonProps> = (props) => {
-  const { shouldHide, containerStyle, children, onPress } = props
+export const HeaderButton: React.FC<HeaderButtonProps> = (props) => {
+  const { shouldHide, containerStyle, children, onPress, ...rest } = props
+
+  if (shouldHide) {
+    return null
+  }
 
   return (
     <Animated.View
-      pointerEvents={shouldHide ? "none" : "auto"}
+      entering={FadeIn.duration(250)}
+      exiting={FadeOut.duration(250)}
       style={[
         {
           zIndex: 1,
@@ -27,6 +32,7 @@ export const ArtistHeaderButton: React.FC<ArtistHeaderButtonProps> = (props) => 
         },
         containerStyle,
       ]}
+      {...rest}
     >
       <Touchable
         style={{ width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}
