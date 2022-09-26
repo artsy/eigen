@@ -43,7 +43,7 @@ export const MenuItem: React.FC<{
         opacity={disabled && allowDisabledVisualClue ? 0.5 : 1}
       >
         <Flex>
-          <Text variant="md">{title}</Text>
+          <Text>{title}</Text>
           {!!isBeta && (
             <Flex px={0.5} mx={1} backgroundColor={color("black10")}>
               <Text
