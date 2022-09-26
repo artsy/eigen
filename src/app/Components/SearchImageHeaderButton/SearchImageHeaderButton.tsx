@@ -38,7 +38,7 @@ export const SearchImageHeaderButton: React.FC<SearchImageHeaderButtonProps> = (
   return (
     <HeaderButton
       accessibilityLabel="Search by image"
-      containerStyle={{
+      style={{
         position: "absolute",
         // the margin top here is the exact same as src/app/navigation/BackButton
         // in order to align the back button with the search button

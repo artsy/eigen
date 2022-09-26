@@ -270,8 +270,9 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
       </ArtworkFiltersStoreProvider>
 
       <HeaderButton
+        shouldHide={shouldHideButtons}
         onPress={() => goBack()}
-        containerStyle={{
+        style={{
           position: "absolute",
           top: 13 + safeAreaInsets.top,
           left: 12,

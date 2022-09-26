@@ -51,7 +51,7 @@ export const ArtistHeaderFloatingButtons: React.FC<ArtistHeaderFloatingButtonsPr
       <HeaderButton
         shouldHide={hideButton}
         onPress={goBack}
-        containerStyle={{ position: "absolute", top: BUTTON_OFFSET, left: BUTTON_OFFSET }}
+        style={{ position: "absolute", top: BUTTON_OFFSET, left: BUTTON_OFFSET }}
       >
         <ChevronIcon direction="left" width={BACK_ICON_SIZE} height={BACK_ICON_SIZE} />
       </HeaderButton>
@@ -59,7 +59,7 @@ export const ArtistHeaderFloatingButtons: React.FC<ArtistHeaderFloatingButtonsPr
       <HeaderButton
         shouldHide={hideButton}
         onPress={handleSharePress}
-        containerStyle={{ position: "absolute", top: BUTTON_OFFSET, right: BUTTON_OFFSET }}
+        style={{ position: "absolute", top: BUTTON_OFFSET, right: BUTTON_OFFSET }}
       >
         <ShareIcon width={SHARE_ICON_SIZE} height={SHARE_ICON_SIZE} />
       </HeaderButton>
