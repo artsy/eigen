@@ -10,6 +10,7 @@ interface HeaderButtonProps extends AnimateProps<ViewProps> {
 
 // Constants
 const BUTTON_SIZE = 40
+const DURATION = 250
 
 export const HeaderButton: React.FC<HeaderButtonProps> = (props) => {
   const { shouldHide, style, children, onPress, ...rest } = props
@@ -20,8 +21,8 @@ export const HeaderButton: React.FC<HeaderButtonProps> = (props) => {
 
   return (
     <Animated.View
-      entering={FadeIn.duration(250)}
-      exiting={FadeOut.duration(250)}
+      entering={FadeIn.duration(DURATION)}
+      exiting={FadeOut.duration(DURATION)}
       style={[
         {
           zIndex: 1,

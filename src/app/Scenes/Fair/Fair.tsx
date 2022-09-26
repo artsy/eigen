@@ -29,6 +29,7 @@ import { FairHeaderFragmentContainer } from "./Components/FairHeader"
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
 const BACK_ICON_SIZE = 21
+const HEADER_SCROLL_THRESHOLD = 50
 
 interface FairQueryRendererProps {
   fairID: string
@@ -170,7 +171,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
   }
 
   const scrollHandler = useAnimatedScrollHandler((event) => {
-    const hideButtons = event.contentOffset.y > 10
+    const hideButtons = event.contentOffset.y > HEADER_SCROLL_THRESHOLD
     runOnJS(setShouldHideButtons)(hideButtons)
   })
 

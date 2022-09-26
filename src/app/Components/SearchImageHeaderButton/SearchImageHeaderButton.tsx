@@ -22,10 +22,6 @@ export const SearchImageHeaderButton: React.FC<SearchImageHeaderButtonProps> = (
   const tracking = useTracking()
   const isImageSearchEnabled = useFeatureFlag("AREnableImageSearch")
 
-  if (!isImageSearchButtonVisible || !isImageSearchEnabled) {
-    return null
-  }
-
   const handleSearchPress = () => {
     tracking.trackEvent(tracks.tappedReverseImageSearch(owner))
     navigate("/reverse-image", {
@@ -38,6 +34,7 @@ export const SearchImageHeaderButton: React.FC<SearchImageHeaderButtonProps> = (
   return (
     <HeaderButton
       accessibilityLabel="Search by image"
+      shouldHide={!isImageSearchButtonVisible || !isImageSearchEnabled}
       style={{
         position: "absolute",
         // the margin top here is the exact same as src/app/navigation/BackButton
