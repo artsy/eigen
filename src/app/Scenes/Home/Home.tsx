@@ -40,6 +40,7 @@ import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { articlesQueryVariables } from "../Articles/Articles"
 import { lotsByArtistsYouFollowDefaultVariables } from "../LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import { ViewingRoomsHomeMainRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
+import { ActivityIndicator } from "./ActivityIndicator"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { ArtworkRecommendationsRail } from "./Components/ArtworkRecommendationsRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
@@ -342,16 +343,19 @@ const Home = (props: Props) => {
 
 const HomeHeader: React.FC<{ homePageAbove: Home_homePageAbove$data | null }> = ({
   homePageAbove,
-}) => (
-  <Box mb={1} mt={2}>
-    <Flex alignItems="center">
-      <ArtsyLogoIcon scale={0.75} />
-    </Flex>
-    <Spacer mb="15px" />
-    {!!homePageAbove && <HomeHeroContainer homePage={homePageAbove} />}
-    <Spacer mb="2" />
-  </Box>
-)
+}) => {
+  return (
+    <Box mb={1} mt={2}>
+      <Flex alignItems="center">
+        <ArtsyLogoIcon scale={0.75} />
+        <ActivityIndicator hasNotifications />
+      </Flex>
+      <Spacer mb="15px" />
+      {!!homePageAbove && <HomeHeroContainer homePage={homePageAbove} />}
+      <Spacer mb="2" />
+    </Box>
+  )
+}
 
 const useHandleRefresh = (relay: RelayRefetchProp, modules: any[]) => {
   const scrollRefs = useRef<Array<RefObject<RailScrollRef>>>(modules.map((_) => createRef()))
@@ -533,6 +537,7 @@ const HomePlaceholder: React.FC = () => {
       <Box mb={1} mt={2}>
         <Flex alignItems="center">
           <ArtsyLogoIcon scale={0.75} />
+          <ActivityIndicator hasNotifications={false} />
         </Flex>
       </Box>
       <Spacer mb={4} />

@@ -120,6 +120,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/search", "Search"),
     addRoute("/inbox", "Inbox"),
     addRoute("/my-profile", "MyProfile"),
+    addRoute("/activity", "Activity"),
     addRoute("/articles", "Articles"),
     addWebViewRoute("/articles/:articleID"),
     addWebViewRoute("/article/:articleID", { showShareButton: true }),
