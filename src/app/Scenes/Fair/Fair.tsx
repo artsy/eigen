@@ -3,11 +3,9 @@ import { Fair_fair$data } from "__generated__/Fair_fair.graphql"
 import { FairQuery } from "__generated__/FairQuery.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { defaultEnvironment } from "app/relay/createEnvironment"
-import { useHideBackButtonOnScroll } from "app/utils/hideBackButtonOnScroll"
-
 import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
 import { SearchImageHeaderButton } from "app/Components/SearchImageHeaderButton"
+import { defaultEnvironment } from "app/relay/createEnvironment"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -15,6 +13,12 @@ import { Box, Flex, Separator, Spacer } from "palette"
 import { NavigationalTabs, TabsType } from "palette/elements/Tabs"
 import React, { useCallback, useRef, useState } from "react"
 import { FlatList, View } from "react-native"
+import Animated, {
+  FadeIn,
+  FadeOut,
+  runOnJS,
+  useAnimatedScrollHandler,
+} from "react-native-reanimated"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
@@ -25,6 +29,8 @@ import { FairEmptyStateFragmentContainer } from "./Components/FairEmptyState"
 import { FairExhibitorsFragmentContainer } from "./Components/FairExhibitors"
 import { FairFollowedArtistsRailFragmentContainer } from "./Components/FairFollowedArtistsRail"
 import { FairHeaderFragmentContainer } from "./Components/FairHeader"
+
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
 
 interface FairQueryRendererProps {
   fairID: string
@@ -57,6 +63,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
 
   const flatListRef = useRef<FlatList>(null)
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
+  const [shouldHideButtons, setShouldHideButtons] = useState(false)
 
   const sections = isActive
     ? [
@@ -164,7 +171,10 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
     handleFilterArtworksModal()
   }
 
-  const hideBackButtonOnScroll = useHideBackButtonOnScroll()
+  const scrollHandler = useAnimatedScrollHandler((event) => {
+    const hideButtons = event.contentOffset.y > 10
+    runOnJS(setShouldHideButtons)(hideButtons)
+  })
 
   return (
     <ProvideScreenTracking
@@ -176,7 +186,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
       }}
     >
       <ArtworkFiltersStoreProvider>
-        <FlatList
+        <AnimatedFlatList
           data={sections}
           ref={flatListRef}
           viewabilityConfig={viewConfigRef.current}
@@ -184,7 +194,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
           ListFooterComponent={<Spacer mb={3} />}
           keyExtractor={(_item, index) => String(index)}
           stickyHeaderIndices={[stickyIndex]}
-          onScroll={hideBackButtonOnScroll}
+          onScroll={scrollHandler}
           scrollEventThrottle={100}
           // @ts-ignore
           CellRendererComponent={cellItemRenderer}
@@ -261,14 +271,16 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
         />
       </ArtworkFiltersStoreProvider>
 
-      <SearchImageHeaderButton
-        isImageSearchButtonVisible={shouldShowImageSearchButton}
-        owner={{
-          type: OwnerType.fair,
-          id: fair.internalID,
-          slug: fair.slug,
-        }}
-      />
+      {!shouldHideButtons && (
+        <SearchImageHeaderButton
+          isImageSearchButtonVisible={shouldShowImageSearchButton}
+          owner={{
+            type: OwnerType.fair,
+            id: fair.internalID,
+            slug: fair.slug,
+          }}
+        />
+      )}
     </ProvideScreenTracking>
   )
 }

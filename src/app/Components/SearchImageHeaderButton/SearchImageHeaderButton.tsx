@@ -4,6 +4,7 @@ import { ReverseImageOwner } from "app/Scenes/ReverseImage/types"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { AddIcon, Box } from "palette"
 import { TouchableOpacity } from "react-native"
+import Animated, { FadeIn, FadeOut } from "react-native-reanimated"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
 
@@ -36,7 +37,7 @@ export const SearchImageHeaderButton: React.FC<SearchImageHeaderButtonProps> = (
   }
 
   return (
-    <TouchableOpacity
+    <Animated.View
       accessibilityLabel="Search by image"
       style={{
         position: "absolute",
@@ -45,19 +46,22 @@ export const SearchImageHeaderButton: React.FC<SearchImageHeaderButtonProps> = (
         top: 13 + useScreenDimensions().safeAreaInsets.top,
         right: 12,
       }}
-      onPress={handleSearchPress}
+      entering={FadeIn}
+      exiting={FadeOut}
     >
-      <Box
-        width={CAMERA_ICON_CONTAINER_SIZE}
-        height={CAMERA_ICON_CONTAINER_SIZE}
-        borderRadius={CAMERA_ICON_CONTAINER_SIZE / 2}
-        bg="white"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <AddIcon width={CAMERA_ICON_SIZE} height={CAMERA_ICON_SIZE} />
-      </Box>
-    </TouchableOpacity>
+      <TouchableOpacity onPress={handleSearchPress}>
+        <Box
+          width={CAMERA_ICON_CONTAINER_SIZE}
+          height={CAMERA_ICON_CONTAINER_SIZE}
+          borderRadius={CAMERA_ICON_CONTAINER_SIZE / 2}
+          bg="white"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <AddIcon width={CAMERA_ICON_SIZE} height={CAMERA_ICON_SIZE} />
+        </Box>
+      </TouchableOpacity>
+    </Animated.View>
   )
 }
 
