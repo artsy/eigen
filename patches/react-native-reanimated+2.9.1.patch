@@ -13,7 +13,7 @@ index 4f0c619..e5882ba 100644
  import { ReanimatedConsole } from './core';
  import { MeasuredDimensions } from './NativeMethods';
 diff --git a/node_modules/react-native-reanimated/mock.js b/node_modules/react-native-reanimated/mock.js
-index 0477e5a..21d019d 100644
+index 0477e5a..8f6e6b4 100644
 --- a/node_modules/react-native-reanimated/mock.js
 +++ b/node_modules/react-native-reanimated/mock.js
 @@ -238,6 +238,19 @@ const Reanimated = {
