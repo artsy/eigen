@@ -24,6 +24,7 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { defaultArtistVariables } from "app/Scenes/Artist/Artist"
 import { RailScrollProps } from "app/Scenes/Home/Components/types"
+import { nextTick } from "app/utils/nextTick"
 import { Schema } from "app/utils/track"
 import { sample, uniq } from "lodash"
 import { Flex } from "palette"
@@ -261,8 +262,6 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
     </Flex>
   ) : null
 }
-
-const nextTick = () => new Promise((resolve) => requestAnimationFrame(resolve))
 
 export const ArtistRailFragmentContainer = createFragmentContainer(ArtistRail, {
   rail: graphql`

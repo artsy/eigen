@@ -2,6 +2,7 @@ import { createContext, useContext } from "react"
 import { ReverseImageOwner } from "./types"
 
 export interface ReverseImageContextValue {
+  isRootScreenFocused: boolean
   analytics: {
     owner: ReverseImageOwner
   }
