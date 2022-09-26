@@ -16,7 +16,6 @@ interface ArtistHeaderFloatingButtonsProps {
 // Constants
 const BACK_ICON_SIZE = 21
 const SHARE_ICON_SIZE = 23
-const BUTTON_OFFSET = 12
 
 export const ArtistHeaderFloatingButtons: React.FC<ArtistHeaderFloatingButtonsProps> = ({
   artist,
@@ -50,8 +49,9 @@ export const ArtistHeaderFloatingButtons: React.FC<ArtistHeaderFloatingButtonsPr
     <Fragment>
       <HeaderButton
         shouldHide={hideButton}
+        position="left"
         onPress={goBack}
-        style={{ position: "absolute", top: BUTTON_OFFSET, left: BUTTON_OFFSET }}
+        applySafeAreaTopInsets={false}
       >
         <ChevronIcon direction="left" width={BACK_ICON_SIZE} height={BACK_ICON_SIZE} />
       </HeaderButton>
@@ -59,7 +59,8 @@ export const ArtistHeaderFloatingButtons: React.FC<ArtistHeaderFloatingButtonsPr
       <HeaderButton
         shouldHide={hideButton}
         onPress={handleSharePress}
-        style={{ position: "absolute", top: BUTTON_OFFSET, right: BUTTON_OFFSET }}
+        position="right"
+        applySafeAreaTopInsets={false}
       >
         <ShareIcon width={SHARE_ICON_SIZE} height={SHARE_ICON_SIZE} />
       </HeaderButton>

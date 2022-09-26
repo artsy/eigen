@@ -270,15 +270,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
         />
       </ArtworkFiltersStoreProvider>
 
-      <HeaderButton
-        shouldHide={shouldHideButtons}
-        onPress={() => goBack()}
-        style={{
-          position: "absolute",
-          top: 13 + safeAreaInsets.top,
-          left: 12,
-        }}
-      >
+      <HeaderButton shouldHide={shouldHideButtons} onPress={() => goBack()} position="left">
         <ChevronIcon direction="left" width={BACK_ICON_SIZE} height={BACK_ICON_SIZE} />
       </HeaderButton>
       <SearchImageHeaderButton

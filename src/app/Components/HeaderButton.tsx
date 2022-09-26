@@ -1,19 +1,32 @@
 import { Touchable } from "palette"
 import { StyleProp, ViewProps, ViewStyle } from "react-native"
 import Animated, { AnimateProps, FadeIn, FadeOut } from "react-native-reanimated"
+import { useScreenDimensions } from "shared/hooks"
 
 interface HeaderButtonProps extends AnimateProps<ViewProps> {
   style?: StyleProp<Animated.AnimateStyle<ViewStyle>>
   shouldHide?: boolean
+  position: "left" | "right"
+  applySafeAreaTopInsets?: boolean
   onPress: () => void
 }
 
 // Constants
 const BUTTON_SIZE = 40
 const DURATION = 250
+const BUTTON_HORIZONTAL_OFFSET = 12
 
 export const HeaderButton: React.FC<HeaderButtonProps> = (props) => {
-  const { shouldHide, style, children, onPress, ...rest } = props
+  const {
+    shouldHide,
+    style,
+    children,
+    position,
+    applySafeAreaTopInsets = true,
+    onPress,
+    ...rest
+  } = props
+  const { safeAreaInsets } = useScreenDimensions()
 
   if (shouldHide) {
     return null
@@ -30,6 +43,10 @@ export const HeaderButton: React.FC<HeaderButtonProps> = (props) => {
           height: BUTTON_SIZE,
           borderRadius: BUTTON_SIZE / 2,
           backgroundColor: "white",
+          position: "absolute",
+          left: position === "left" ? BUTTON_HORIZONTAL_OFFSET : undefined,
+          right: position === "right" ? BUTTON_HORIZONTAL_OFFSET : undefined,
+          top: 13 + (applySafeAreaTopInsets ? safeAreaInsets.top : 0),
         },
         style,
       ]}
