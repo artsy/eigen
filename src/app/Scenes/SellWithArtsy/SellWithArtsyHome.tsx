@@ -13,7 +13,6 @@ import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { useScreenDimensions } from "shared/hooks"
-import { space } from "styled-system"
 import { useFeatureFlag } from "../../store/GlobalStore"
 import { Footer } from "./Components/Footer"
 import { Header } from "./Components/Header"
@@ -75,13 +74,12 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
-          padding: space(2),
           backgroundColor: "transparent",
           top: -50,
           minHeight: screenHeight,
         }}
       >
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <Flex pb={5}>
             <Header onConsignPress={handleConsignPress} />
 
