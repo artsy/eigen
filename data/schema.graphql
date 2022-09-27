@@ -15820,6 +15820,7 @@ input UpdateUserSaleProfileMutationInput {
   clientMutationId: String
   country: String
   id: String!
+  requireBidderApproval: Boolean
   state: String
   zip: String
 }
