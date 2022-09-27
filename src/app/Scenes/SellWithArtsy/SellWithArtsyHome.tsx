@@ -87,7 +87,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
 
             <HowItWorks />
 
-            <Spacer mb={4} />
+            <Spacer mb={5} />
 
             {enableCustomRecentlySold ? (
               <SellWithArtsyCustomRecentlySold recentlySoldArtworks={recentlySoldArtworks} />
@@ -95,7 +95,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
               <RecentlySold targetSupply={targetSupply} isLoading={isLoading} />
             )}
 
-            <Spacer mb={4} />
+            <Spacer mb={5} />
 
             <WhySellWithArtsy />
 
@@ -109,7 +109,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
                 onPress={() => handleConsignPress(consignArgs)}
                 haptic
               >
-                <Text variant="sm">Submit a work</Text>
+                <Text variant="sm">Submit an Artwork</Text>
               </Button>
             </Flex>
 

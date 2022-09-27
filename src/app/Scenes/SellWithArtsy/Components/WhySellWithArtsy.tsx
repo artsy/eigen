@@ -1,8 +1,11 @@
+import { navigate } from "app/navigation/navigate"
 import { Box, Flex, Spacer, Text } from "palette"
-import styled from "styled-components/native"
-import { TextContainer } from "./TextContainer"
 
 export const WhySellWithArtsy: React.FC = () => {
+  const handleOurSpecialistsPress = () => {
+    navigate("https://www.artsy.net/meet-the-specialists")
+  }
+
   return (
     <Box px={2}>
       <Text variant="lg">Why sell with Artsy?</Text>
@@ -10,56 +13,57 @@ export const WhySellWithArtsy: React.FC = () => {
       <Spacer mb={2} />
 
       <Flex flexDirection="row">
-        <NumberBox pl={0.5} pr={1}>
-          <Text variant="md">1</Text>
-        </NumberBox>
+        <Box pl={0.5} pr={1}>
+          <Text variant="sm">01</Text>
+        </Box>
 
-        <TextContainer>
-          <Text variant="md">Simple Steps</Text>
+        <Box flex={1}>
+          <Text variant="sm">Earn more</Text>
           <Spacer mb={0.3} />
           <Text variant="sm" color="black60">
-            Submit your work once, pick the best offer, and ship the work when it sells.
+            We charge less than traditional auction houses and dealers, so you’ll net more.
           </Text>
-        </TextContainer>
+        </Box>
       </Flex>
 
       <Spacer mb={2} />
 
       <Flex flexDirection="row">
-        <NumberBox pl={0.5} pr={1}>
-          <Text variant="md">2</Text>
-        </NumberBox>
+        <Box pl={0.5} pr={1}>
+          <Text variant="sm">02</Text>
+        </Box>
 
-        <TextContainer>
-          <Text variant="md">Industry Expertise</Text>
+        <Box flex={1}>
+          <Text variant="sm">Reach a global network</Text>
           <Spacer mb={0.3} />
           <Text variant="sm" color="black60">
-            Receive virtual valuation and expert guidance on the best sales strategies.
+            We connect your work with interested buyers in 190 countries.
           </Text>
-        </TextContainer>
+        </Box>
       </Flex>
 
       <Spacer mb={2} />
 
       <Flex flexDirection="row">
-        <NumberBox pl={0.5} pr={1}>
-          <Text variant="md">3</Text>
-        </NumberBox>
+        <Box pl={0.5} pr={1}>
+          <Text variant="sm">03</Text>
+        </Box>
 
-        <TextContainer>
-          <Text variant="md">Global Reach</Text>
+        <Box flex={1}>
+          <Text variant="sm">Tap into our expertise</Text>
           <Spacer mb={0.3} />
           <Text variant="sm" color="black60">
-            Your work will reach the world's collectors, galleries, and auction houses.
+            <Text
+              variant="sm"
+              onPress={handleOurSpecialistsPress}
+              style={{ textDecorationLine: "underline" }}
+            >
+              Our specialists
+            </Text>{" "}
+            will guide you and handle it all, from pricing to shipping.
           </Text>
-        </TextContainer>
+        </Box>
       </Flex>
     </Box>
   )
 }
-
-const NumberBox = styled(Box)`
-  flex-basis: 30px;
-  flex-shrink: 0;
-  flex-grow: 0;
-`
