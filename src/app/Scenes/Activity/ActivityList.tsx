@@ -1,7 +1,6 @@
 import { ActivityList_viewer$key } from "__generated__/ActivityList_viewer.graphql"
 import { ActivityQuery } from "__generated__/ActivityQuery.graphql"
 import { extractNodes } from "app/utils/extractNodes"
-import { Box, Flex, Separator, Text } from "palette"
 import { useState } from "react"
 import { FlatList } from "react-native"
 import { graphql, usePaginationFragment } from "react-relay"
@@ -43,11 +42,6 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer }) => {
     <FlatList
       data={notifications}
       refreshing={refreshing}
-      ItemSeparatorComponent={() => (
-        <Box mx={2}>
-          <Separator />
-        </Box>
-      )}
       renderItem={({ item }) => <ActivityItem item={item} />}
       onEndReached={handleLoadMore}
       onRefresh={handleRefresh}
