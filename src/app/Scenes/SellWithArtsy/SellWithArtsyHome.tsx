@@ -87,7 +87,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
 
             <HowItWorks />
 
-            <Spacer mb={4} />
+            <Spacer mb={5} />
 
             {enableCustomRecentlySold ? (
               <SellWithArtsyCustomRecentlySold recentlySoldArtworks={recentlySoldArtworks} />
