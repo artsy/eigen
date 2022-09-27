@@ -55,14 +55,14 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
         <Flex flexDirection="row" alignItems="center">
           {artworks.map((artwork) => {
             return (
-              <Flex key={artwork.internalID} mr={1}>
+              <Flex key={artwork.internalID} mr={1} accessibilityLabel="Activity Artwork Image">
                 <OpaqueImageView imageURL={artwork.image?.url} width={58} height={58} />
               </Flex>
             )
           })}
 
           {remainingArtworksCount > 0 && (
-            <Text variant="xs" color="black60" aria-label="Remaining artworks count">
+            <Text variant="xs" color="black60" accessibilityLabel="Remaining artworks count">
               + {remainingArtworksCount}
             </Text>
           )}
@@ -76,7 +76,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
           borderRadius={UNREAD_INDICATOR_SIZE / 2}
           ml={1}
           bg="blue100"
-          aria-label="Unread notification indicator"
+          accessibilityLabel="Unread notification indicator"
         />
       )}
     </Flex>
