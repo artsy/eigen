@@ -5,6 +5,7 @@ import { Flex, Separator, Text } from "palette"
 import { useState } from "react"
 import { FlatList } from "react-native"
 import { graphql, usePaginationFragment } from "react-relay"
+import { ActivityItem } from "./ActivityItem"
 
 interface ActivityListProps {
   viewer: ActivityList_viewer$key | null
@@ -43,14 +44,7 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer }) => {
       data={notifications}
       refreshing={refreshing}
       ItemSeparatorComponent={() => <Separator />}
-      renderItem={({ item }) => {
-        return (
-          <Flex p={2}>
-            <Text>{item.title}</Text>
-            <Text>{item.message}</Text>
-          </Flex>
-        )
-      }}
+      renderItem={({ item }) => <ActivityItem item={item} />}
       onEndReached={handleLoadMore}
       onRefresh={handleRefresh}
     />
@@ -65,8 +59,7 @@ const notificationsConnectionFragment = graphql`
       @connection(key: "ActivityList_notificationsConnection") {
       edges {
         node {
-          title
-          message
+          ...ActivityItem_item
         }
       }
     }
