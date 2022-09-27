@@ -13,21 +13,19 @@ import { TextContainer } from "./TextContainer"
 
 const STEPS = [
   {
-    icon: Tag2Icon,
-    text: "Submit images of an artwork in your collection, along with relevant details, like the artist, time period, and medium.",
+    icon: ImageIcon,
     title: "Upload photos",
+    text: "Submit images of an artwork in your collection, along with relevant details.",
   },
   {
-    icon: ImageIcon,
-
-    text: "If your artwork is accepted, our specialists will give you a price estimate and the best sales option: at auction, via private sale, or as a direct listing on Artsy.",
+    icon: Tag2Icon,
     title: "Get a sales option",
+    text: "If your artwork is accepted, our specialists will give you a price estimate and the best sales option.",
   },
   {
     icon: Payment2Icon,
-
-    text: "We’ll find the best buyer for your work and arrange shipping and secure payment when it sells.",
     title: "Sell your artwork",
+    text: "We’ll find the best buyer for your work and arrange shipping and secure payment.",
   },
 ]
 

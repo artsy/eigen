@@ -27,7 +27,7 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress }) => {
     >
       <Flex px={2} pb={2} justifyContent="flex-end" height="100%">
         <Flex>
-          <Text variant="lg" color="white100">
+          <Text variant="xl" color="white100">
             Sell Artworks from Your Collection
           </Text>
 
