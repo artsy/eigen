@@ -109,7 +109,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
                 onPress={() => handleConsignPress(consignArgs)}
                 haptic
               >
-                <Text variant="sm">Submit a Work</Text>
+                <Text variant="sm">Submit an Artwork</Text>
               </Button>
             </Flex>
 
