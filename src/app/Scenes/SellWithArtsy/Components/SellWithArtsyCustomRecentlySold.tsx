@@ -36,7 +36,7 @@ export const SellWithArtsyCustomRecentlySold: React.FC<SellWithArtsyCustomRecent
         Sold Recently on Artsy
       </Text>
 
-      <Spacer mb={2} mt={1} />
+      <Spacer mb={2} />
 
       <RecentlySoldArtworksRail
         recentlySoldArtworks={recentlySoldArtworksNodes}
