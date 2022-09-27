@@ -75,7 +75,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
           justifyContent: "center",
           alignItems: "center",
           backgroundColor: "transparent",
-          top: -50,
+          marginTop: -50,
           minHeight: screenHeight,
         }}
       >
