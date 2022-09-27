@@ -32,11 +32,14 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
   const me = useFragment(meFragment, restProps.me)
 
   const isP1Artist = artwork.artist?.targetSupply?.isP1
+  const isAlreadySubmitted = artwork.consignmentSubmission?.displayText
+  const isHighDemand = Number((marketPriceInsights?.demandRank ?? 0) * 10) >= 9
 
   const showPriceEstimateBanner =
     useFeatureFlag("ARShowRequestPriceEstimateBanner") &&
     isP1Artist &&
-    Number((marketPriceInsights?.demandRank ?? 0) * 10) >= 9
+    isHighDemand &&
+    !isAlreadySubmitted
 
   return (
     <StickyTabPageScrollView>

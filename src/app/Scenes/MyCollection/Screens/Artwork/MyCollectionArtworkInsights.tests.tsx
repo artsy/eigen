@@ -124,6 +124,22 @@ describe("MyCollectionArtworkInsights", () => {
       expect(queryByTestId("request-price-estimate-banner-text")).toBeNull()
     })
 
+    it("does not display when artwork is submitted", () => {
+      const { queryByTestId } = renderWithWrappers(<TestRenderer />)
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Query: () => ({
+          artwork: {
+            ...mockArtworkForP1Artist,
+            consignmentsSubmission: { displayText: "Consignment" },
+          },
+          marketPriceInsights: mockMarketPriceInsightsForHighDemandIndex,
+        }),
+      })
+
+      expect(queryByTestId("request-price-estimate-button")).toBeNull()
+      expect(queryByTestId("request-price-estimate-banner-text")).toBeNull()
+    })
+
     it("displays RequestForPriceEstimateBanner when Artist is P1 AND DemandIndex >= 9", () => {
       const { queryByTestId } = renderWithWrappers(<TestRenderer />)
       resolveMostRecentRelayOperation(mockEnvironment, {
