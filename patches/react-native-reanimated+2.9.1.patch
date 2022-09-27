@@ -32,12 +32,14 @@ index 0477e5a..8f6e6b4 100644
  module.exports = {
    __esModule: true,
  
-@@ -248,6 +261,9 @@ module.exports = {
+@@ -248,6 +261,11 @@ module.exports = {
      ...Reanimated,
    },
  
 +  FadeInRight: animationMock,
 +  FadeOutRight: animationMock,
++  FadeIn: animationMock,
++  FadeOut: animationMock,
 +
    Transitioning: {
      View: createTransitioningComponent(View),

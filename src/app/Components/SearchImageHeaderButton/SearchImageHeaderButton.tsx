@@ -2,12 +2,10 @@ import { ActionType, OwnerType, TappedReverseImageSearch } from "@artsy/cohesion
 import { navigate } from "app/navigation/navigate"
 import { ReverseImageOwner } from "app/Scenes/ReverseImage/types"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { AddIcon, Box } from "palette"
-import { TouchableOpacity } from "react-native"
+import { AddIcon } from "palette"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "shared/hooks"
+import { HeaderButton } from "../HeaderButton"
 
-const CAMERA_ICON_CONTAINER_SIZE = 40
 const CAMERA_ICON_SIZE = 20
 
 export interface SearchImageHeaderButtonProps {
@@ -22,10 +20,6 @@ export const SearchImageHeaderButton: React.FC<SearchImageHeaderButtonProps> = (
   const tracking = useTracking()
   const isImageSearchEnabled = useFeatureFlag("AREnableImageSearch")
 
-  if (!isImageSearchButtonVisible || !isImageSearchEnabled) {
-    return null
-  }
-
   const handleSearchPress = () => {
     tracking.trackEvent(tracks.tappedReverseImageSearch(owner))
     navigate("/reverse-image", {
@@ -36,28 +30,14 @@ export const SearchImageHeaderButton: React.FC<SearchImageHeaderButtonProps> = (
   }
 
   return (
-    <TouchableOpacity
+    <HeaderButton
       accessibilityLabel="Search by image"
-      style={{
-        position: "absolute",
-        // the margin top here is the exact same as src/app/navigation/BackButton
-        // in order to align the back button with the search button
-        top: 13 + useScreenDimensions().safeAreaInsets.top,
-        right: 12,
-      }}
+      shouldHide={!isImageSearchButtonVisible || !isImageSearchEnabled}
+      position="right"
       onPress={handleSearchPress}
     >
-      <Box
-        width={CAMERA_ICON_CONTAINER_SIZE}
-        height={CAMERA_ICON_CONTAINER_SIZE}
-        borderRadius={CAMERA_ICON_CONTAINER_SIZE / 2}
-        bg="white"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <AddIcon width={CAMERA_ICON_SIZE} height={CAMERA_ICON_SIZE} />
-      </Box>
-    </TouchableOpacity>
+      <AddIcon width={CAMERA_ICON_SIZE} height={CAMERA_ICON_SIZE} />
+    </HeaderButton>
   )
 }
 
