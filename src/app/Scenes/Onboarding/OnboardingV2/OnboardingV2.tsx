@@ -5,7 +5,9 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { OnboardingProvider } from "./Hooks/useOnboardingContext"
 import { useUpdateUserProfile } from "./Hooks/useUpdateUserProfile"
 import { OnboardingArtistsOnTheRise } from "./OnboardingArtistsOnTheRise"
+import { OnboardingArtistsOnTheRiseCollection } from "./OnboardingArtistsOnTheRiseCollection"
 import { OnboardingCuratedArtworks } from "./OnboardingCuratedArtworks"
+import { OnboardingCuratedArtworksCollection } from "./OnboardingCuratedArtworksCollection"
 import { OnboardingFollowArtists } from "./OnboardingFollowArtists"
 import { OnboardingFollowGalleries } from "./OnboardingFollowGalleries"
 import { OnboardingPostFollowLoadingScreen } from "./OnboardingPostFollowLoadingScreen"
@@ -13,6 +15,7 @@ import { OnboardingQuestionOne } from "./OnboardingQuestionOne"
 import { OnboardingQuestionThree } from "./OnboardingQuestionThree"
 import { OnboardingQuestionTwo } from "./OnboardingQuestionTwo"
 import { OnboardingTopAuctionLots } from "./OnboardingTopAuctionLots"
+import { OnboardingTopAuctionLotsCollection } from "./OnboardingTopAuctionLotsCollection"
 import { OnboardingWelcomeScreen } from "./OnboardingWelcome"
 
 // tslint:disable-next-line:interface-over-type-literal
@@ -27,6 +30,9 @@ export type OnboardingNavigationStack = {
   OnboardingFollowArtists: undefined
   OnboardingFollowGalleries: undefined
   OnboardingPostFollowLoadingScreen: undefined
+  OnboardingTopAuctionLotsCollection: undefined
+  OnboardingArtistsOnTheRiseCollection: undefined
+  OnboardingCuratedArtworksCollection: undefined
 }
 
 const StackNavigator = createStackNavigator<OnboardingNavigationStack>()
@@ -68,6 +74,7 @@ export const OnboardingV2 = () => {
             name="OnboardingQuestionThree"
             component={OnboardingQuestionThree}
           />
+
           <StackNavigator.Screen
             name="OnboardingTopAuctionLots"
             component={OnboardingTopAuctionLots}
@@ -80,6 +87,20 @@ export const OnboardingV2 = () => {
             name="OnboardingCuratedArtworks"
             component={OnboardingCuratedArtworks}
           />
+
+          <StackNavigator.Screen
+            name="OnboardingTopAuctionLotsCollection"
+            component={OnboardingTopAuctionLotsCollection}
+          />
+          <StackNavigator.Screen
+            name="OnboardingArtistsOnTheRiseCollection"
+            component={OnboardingArtistsOnTheRiseCollection}
+          />
+          <StackNavigator.Screen
+            name="OnboardingCuratedArtworksCollection"
+            component={OnboardingCuratedArtworksCollection}
+          />
+
           <StackNavigator.Screen
             name="OnboardingFollowArtists"
             component={OnboardingFollowArtists}

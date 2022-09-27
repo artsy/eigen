@@ -290,6 +290,12 @@ export const features = defineFeatures({
     description: "Enable Activity",
     showInAdminMenu: true,
   },
+  AREnableCollectionsInOnboarding: {
+    description: "Replace genes with collections in onboarding",
+    showInAdminMenu: true,
+    readyForRelease: false,
+    // echoFlagKey: "AREnableCollectionsInOnboarding",
+  },
 })
 
 export interface DevToggleDescriptor {

@@ -33,10 +33,8 @@ const OnboardingGene: React.FC<OnboardingGeneProps> = ({ id, description }) => {
     <Screen>
       <Screen.Background>
         <GeneHeader geneID={id} description={description} gene={gene!} />
-        <Flex px={2}>
-          <OnboardingResultsGrid connection={gene?.artworks} />
-        </Flex>
-        <Flex p={2} background="white" position="absolute" bottom={0}>
+        <OnboardingResultsGrid connection={gene?.artworks} />
+        <Flex p={2} background="white">
           <Button block onPress={() => navigate("OnboardingPostFollowLoadingScreen")} mb={1}>
             Explore More on Artsy
           </Button>

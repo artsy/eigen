@@ -6,7 +6,7 @@ import { calculateLayoutValues, getSectionedItems } from "app/Components/Artwork
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useDoublePressCallback } from "app/Scenes/Artwork/Components/ImageCarousel/FullScreen/useDoublePressCallback"
 import { extractNodes } from "app/utils/extractNodes"
-import { Box, Flex, HeartFillIcon, HeartIcon, Text, TextProps, Touchable } from "palette"
+import { Box, Flex, HeartFillIcon, HeartIcon, Text, TextProps, Touchable, useTheme } from "palette"
 import { FC } from "react"
 import { Dimensions, ScrollView } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"
@@ -24,6 +24,8 @@ interface OnboardingResultsGridProps {
 }
 
 export const OnboardingResultsGrid: FC<OnboardingResultsGridProps> = ({ connection }) => {
+  const { space } = useTheme()
+
   const [commit] = useMutation(SaveArtworkMutation)
   if (!connection) {
     return null
@@ -38,8 +40,6 @@ export const OnboardingResultsGrid: FC<OnboardingResultsGridProps> = ({ connecti
   const sectionedGridItems = getSectionedItems(gridItems, sectionCount)
 
   const handleSaveArtwork = useDoublePressCallback((artwork: GridItem) => {
-    console.log("saving artwork", artwork)
-
     const { internalID, isSaved } = artwork!
 
     commit({
@@ -84,17 +84,21 @@ export const OnboardingResultsGrid: FC<OnboardingResultsGridProps> = ({ connecti
   }
 
   return (
-    <ScrollView
-      keyboardDismissMode="on-drag"
-      keyboardShouldPersistTaps="handled"
-      scrollsToTop={false}
-      accessibilityLabel="Artworks ScrollView"
-    >
-      <Flex flexDirection="row" pr={1}>
-        {renderSections()}
-      </Flex>
-      <Flex height={400} />
-    </ScrollView>
+    <Flex flex={1}>
+      <ScrollView
+        keyboardDismissMode="on-drag"
+        keyboardShouldPersistTaps="handled"
+        scrollsToTop={false}
+        accessibilityLabel="Artworks ScrollView"
+        contentContainerStyle={{
+          paddingHorizontal: space(2),
+        }}
+      >
+        <Flex flexDirection="row" pr={1} mt={2}>
+          {renderSections()}
+        </Flex>
+      </ScrollView>
+    </Flex>
   )
 }
 
@@ -147,18 +151,18 @@ const GridItem: FC<GridItemProps> = ({ artwork, itemWidth }) => {
   const height = itemWidth / aspectRatio
 
   return (
-    <Box>
+    <Box width={itemWidth}>
       <OpaqueImageView aspectRatio={aspectRatio} imageURL={url} width={itemWidth} height={height} />
-      <Flex flex={1} flexDirection="row" pt={0.5} width={itemWidth}>
-        <Flex justifySelf="flex-start">
-          <GridItemText>{artwork.artistNames}</GridItemText>
-          <GridItemText color="black60">{artwork.title}</GridItemText>
-          <GridItemText>{artwork.date}</GridItemText>
-          <GridItemText>{artwork.partner?.name}</GridItemText>
+      <Flex flex={1} pt={0.5}>
+        <Flex flexDirection="row" justifyContent="space-between">
+          <Flex flex={1} mr={0.5}>
+            <GridItemText>{artwork.artistNames}</GridItemText>
+          </Flex>
+          <Box>{!!artwork.isSaved ? <HeartFillIcon /> : <HeartIcon />}</Box>
         </Flex>
-        <Flex position="absolute" right={0} pt={0.5}>
-          {!!artwork.isSaved ? <HeartFillIcon /> : <HeartIcon />}
-        </Flex>
+        <GridItemText color="black60">{artwork.title}</GridItemText>
+        <GridItemText>{artwork.date}</GridItemText>
+        <GridItemText>{artwork.partner?.name}</GridItemText>
       </Flex>
     </Box>
   )
