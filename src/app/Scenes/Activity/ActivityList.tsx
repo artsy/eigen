@@ -5,26 +5,36 @@ import {
   StickyTabSection,
 } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { extractNodes } from "app/utils/extractNodes"
-import { Box, Separator } from "palette"
+import { Separator } from "palette"
 import { useState } from "react"
 import { graphql, usePaginationFragment } from "react-relay"
 import { ActivityItem } from "./ActivityItem"
 
 interface ActivityListProps {
   viewer: ActivityList_viewer$key | null
+  subheader: JSX.Element
 }
 
-export const ActivityList: React.FC<ActivityListProps> = ({ viewer }) => {
+const SUBHEADER_SECTION_KEY = "tab-subheader"
+
+export const ActivityList: React.FC<ActivityListProps> = ({ viewer, subheader }) => {
   const [refreshing, setRefreshing] = useState(false)
   const { data, hasNext, isLoadingNext, loadNext, refetch } = usePaginationFragment<
     ActivityQuery,
     ActivityList_viewer$key
   >(notificationsConnectionFragment, viewer)
   const notifications = extractNodes(data?.notificationsConnection)
-  const sections: StickyTabSection[] = notifications.map((notification) => ({
+  const notificationSections: StickyTabSection[] = notifications.map((notification) => ({
     key: notification.internalID,
     content: <ActivityItem item={notification} />,
   }))
+  const sections: StickyTabSection[] = [
+    {
+      key: SUBHEADER_SECTION_KEY,
+      content: subheader,
+    },
+    ...notificationSections,
+  ]
 
   const handleLoadMore = () => {
     if (!hasNext || isLoadingNext) {
@@ -51,7 +61,15 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer }) => {
       data={sections}
       refreshing={refreshing}
       keyExtractor={(item) => item.internalID}
-      ItemSeparatorComponent={() => <Separator />}
+      ItemSeparatorComponent={({ leadingItem }) => {
+        const { key } = leadingItem
+
+        if (key === SUBHEADER_SECTION_KEY) {
+          return null
+        }
+
+        return <Separator />
+      }}
       onEndReached={handleLoadMore}
       onRefresh={handleRefresh}
     />
