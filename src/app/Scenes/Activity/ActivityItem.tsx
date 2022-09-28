@@ -2,7 +2,8 @@ import { ActivityItem_item$key } from "__generated__/ActivityItem_item.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex, Spacer, Text, Touchable, useTheme } from "palette"
+import { Flex, Spacer, Text } from "palette"
+import { TouchableOpacity } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { getDateLabel } from "./util/getDateLabel"
 
@@ -13,7 +14,6 @@ interface ActivityItemProps {
 const UNREAD_INDICATOR_SIZE = 8
 
 export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
-  const { color } = useTheme()
   const item = useFragment(activityItemFragment, props.item)
   const artworks = extractNodes(item.artworksConnection)
   const remainingArtworksCount = (item.artworksConnection?.totalCount ?? 0) - 4
@@ -32,7 +32,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
   }
 
   return (
-    <Touchable underlayColor={color("black5")} onPress={handlePress}>
+    <TouchableOpacity activeOpacity={0.65} onPress={handlePress}>
       <Flex p={2} flexDirection="row" alignItems="center">
         <Flex flex={1}>
           <Flex flexDirection="row">
@@ -87,7 +87,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
           />
         )}
       </Flex>
-    </Touchable>
+    </TouchableOpacity>
   )
 }
 
