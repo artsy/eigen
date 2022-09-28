@@ -1,20 +1,56 @@
+import { NotificationTypesEnum } from "__generated__/ActivityItem_item.graphql"
 import { ActivityQuery } from "__generated__/ActivityQuery.graphql"
+import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"
 import { Flex, Text } from "palette"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ActivityList } from "./ActivityList"
 
-export const ActivityContent = () => {
-  const queryData = useLazyLoadQuery<ActivityQuery>(ActivityScreenQuery, activityQueryVariables)
+type NotificationType = "all" | "alerts"
+
+interface ActivityProps {
+  type: NotificationType
+}
+
+export const ActivityContent: React.FC<ActivityProps> = ({ type }) => {
+  const types = getNotificationTypes(type)
+  const queryData = useLazyLoadQuery<ActivityQuery>(ActivityScreenQuery, {
+    count: 10,
+    types,
+  })
 
   return <ActivityList viewer={queryData.viewer} />
 }
 
-export const Activity = () => {
+export const ActivityContainer: React.FC<ActivityProps> = (props) => {
   return (
     <Suspense fallback={<Placeholder />}>
-      <ActivityContent />
+      <ActivityContent {...props} />
     </Suspense>
+  )
+}
+
+export const Activity = () => {
+  const tabs: TabProps[] = [
+    {
+      title: "All",
+      content: <ActivityContainer type="all" />,
+      initial: true,
+    },
+    {
+      title: "Alerts",
+      content: <ActivityContainer type="alerts" />,
+    },
+  ]
+
+  return (
+    <Flex flex={1}>
+      <StickyTabPage
+        tabs={tabs}
+        staticHeaderContent={<Flex height={100} bg="blue" />}
+        disableBackButtonUpdate
+      />
+    </Flex>
   )
 }
 
@@ -25,13 +61,17 @@ const Placeholder = () => (
 )
 
 const ActivityScreenQuery = graphql`
-  query ActivityQuery($count: Int, $after: String) {
+  query ActivityQuery($count: Int, $after: String, $types: [NotificationTypesEnum]) {
     viewer {
-      ...ActivityList_viewer @arguments(count: $count, after: $after)
+      ...ActivityList_viewer @arguments(count: $count, after: $after, types: $types)
     }
   }
 `
 
-const activityQueryVariables = {
-  count: 10,
+const getNotificationTypes = (type: NotificationType): NotificationTypesEnum[] | undefined => {
+  if (type === "alerts") {
+    return ["ARTWORK_ALERT"]
+  }
+
+  return []
 }

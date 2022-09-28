@@ -1,9 +1,12 @@
 import { ActivityList_viewer$key } from "__generated__/ActivityList_viewer.graphql"
 import { ActivityQuery } from "__generated__/ActivityQuery.graphql"
+import {
+  StickyTabPageFlatList,
+  StickyTabSection,
+} from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { extractNodes } from "app/utils/extractNodes"
 import { Box, Separator } from "palette"
 import { useState } from "react"
-import { FlatList } from "react-native"
 import { graphql, usePaginationFragment } from "react-relay"
 import { ActivityItem } from "./ActivityItem"
 
@@ -18,6 +21,10 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer }) => {
     ActivityList_viewer$key
   >(notificationsConnectionFragment, viewer)
   const notifications = extractNodes(data?.notificationsConnection)
+  const sections: StickyTabSection[] = notifications.map((notification) => ({
+    key: notification.internalID,
+    content: <ActivityItem item={notification} />,
+  }))
 
   const handleLoadMore = () => {
     if (!hasNext || isLoadingNext) {
@@ -40,16 +47,11 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer }) => {
   }
 
   return (
-    <FlatList
-      data={notifications}
+    <StickyTabPageFlatList
+      data={sections}
       refreshing={refreshing}
       keyExtractor={(item) => item.internalID}
-      ItemSeparatorComponent={() => (
-        <Box mx={2}>
-          <Separator />
-        </Box>
-      )}
-      renderItem={({ item }) => <ActivityItem item={item} />}
+      ItemSeparatorComponent={() => <Separator />}
       onEndReached={handleLoadMore}
       onRefresh={handleRefresh}
     />
@@ -59,8 +61,12 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer }) => {
 const notificationsConnectionFragment = graphql`
   fragment ActivityList_viewer on Viewer
   @refetchable(queryName: "ActivityList_viewerRefetch")
-  @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" }) {
-    notificationsConnection(first: $count, after: $after)
+  @argumentDefinitions(
+    count: { type: "Int", defaultValue: 10 }
+    after: { type: "String" }
+    types: { type: "[NotificationTypesEnum]" }
+  ) {
+    notificationsConnection(first: $count, after: $after, notificationTypes: $types)
       @connection(key: "ActivityList_notificationsConnection") {
       edges {
         node {
