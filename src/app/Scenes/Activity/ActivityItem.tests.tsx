@@ -57,7 +57,7 @@ describe("ActivityItem", () => {
     })
     await flushPromiseQueue()
 
-    expect(getByText("1 days ago")).toBeTruthy()
+    expect(getByText("1 day ago")).toBeTruthy()
   })
 
   it("should render 'Today' label", async () => {
