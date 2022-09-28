@@ -1,14 +1,22 @@
 import { DateTime } from "luxon"
 
-export const getDateLabel = (dateInISO: string) => {
-  const past = DateTime.fromISO(dateInISO)
-  const now = DateTime.utc()
-  const diff = now.diff(past, "days")
-  const days = Math.floor(diff.days)
+export const getDateLabel = (timestamp: string) => {
+  const date = DateTime.fromISO(timestamp)
 
-  if (days === 0) {
+  if (isToday(date)) {
     return "Today"
   }
 
-  return `${days} days ago`
+  const days = daysAgo(date)
+  const label = days > 1 ? "days" : "day"
+
+  return `${days} ${label} ago`
+}
+
+const isToday = (date: DateTime) => {
+  return date.toISODate() === DateTime.now().toISODate()
+}
+
+const daysAgo = (date: DateTime) => {
+  return Math.floor(DateTime.now().diff(date, "days").days)
 }
