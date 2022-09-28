@@ -63,7 +63,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
             {artworks.map((artwork) => {
               return (
                 <Flex key={artwork.internalID} mr={1} accessibilityLabel="Activity Artwork Image">
-                  <OpaqueImageView imageURL={artwork.image?.url} width={58} height={58} />
+                  <OpaqueImageView imageURL={artwork.image?.preview?.src} width={58} height={58} />
                 </Flex>
               )
             })}
@@ -107,7 +107,9 @@ const activityItemFragment = graphql`
           title
           image {
             aspectRatio
-            url(version: "square")
+            preview: cropped(width: 116, height: 116, version: "normalized") {
+              src
+            }
           }
         }
       }
