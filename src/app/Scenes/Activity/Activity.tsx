@@ -1,6 +1,8 @@
 import { NotificationTypesEnum } from "__generated__/ActivityItem_item.graphql"
 import { ActivityQuery } from "__generated__/ActivityQuery.graphql"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"
+import { goBack } from "app/navigation/navigate"
 import { Flex, Text } from "palette"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -47,7 +49,11 @@ export const Activity = () => {
     <Flex flex={1}>
       <StickyTabPage
         tabs={tabs}
-        staticHeaderContent={<Flex height={100} bg="blue" />}
+        staticHeaderContent={
+          <FancyModalHeader onLeftButtonPress={goBack} hideBottomDivider>
+            Activity
+          </FancyModalHeader>
+        }
         disableBackButtonUpdate
       />
     </Flex>
