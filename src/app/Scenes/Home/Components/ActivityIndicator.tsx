@@ -38,7 +38,12 @@ export const ActivityIndicator: React.FC<ActivityIndicatorProps> = ({ hasNotific
           <BellIcon />
 
           {!!hasNotifications && (
-            <Box position="absolute" top={0} right={0}>
+            <Box
+              position="absolute"
+              top={0}
+              right={0}
+              accessibilityLabel="Unread Activities Indicator"
+            >
               <VisualClueDot diameter={4} />
             </Box>
           )}

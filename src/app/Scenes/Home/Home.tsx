@@ -40,9 +40,10 @@ import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { articlesQueryVariables } from "../Articles/Articles"
 import { lotsByArtistsYouFollowDefaultVariables } from "../LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import { ViewingRoomsHomeMainRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
-import { ActivityIndicator } from "./ActivityIndicator"
+import { ActivityIndicator } from "./Components/ActivityIndicator"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { ArtworkRecommendationsRail } from "./Components/ArtworkRecommendationsRail"
+import { HomeHeader } from "./Components/HomeHeader"
 import { NewWorksForYouRail } from "./Components/NewWorksForYouRail"
 import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
 import { TroveFragmentContainer } from "./Components/Trove"
@@ -330,26 +331,13 @@ const Home = (props: Props) => {
                 return null
             }
           }}
-          ListHeaderComponent={<HomeHeader />}
+          ListHeaderComponent={<HomeHeader me={meAbove} />}
           ListFooterComponent={() => <Flex mb={3}>{!!loading && <BelowTheFoldPlaceholder />}</Flex>}
           keyExtractor={(_item, index) => String(index)}
         />
         {!!meAbove && <EmailConfirmationBannerFragmentContainer me={meAbove} />}
       </View>
     </ProvideScreenTracking>
-  )
-}
-
-const HomeHeader: React.FC = () => {
-  return (
-    <Box mb={1} mt={2}>
-      <Flex alignItems="center">
-        <ArtsyLogoIcon scale={0.75} />
-        <ActivityIndicator hasNotifications />
-      </Flex>
-      <Spacer mb="15px" />
-      <Spacer mb="2" />
-    </Box>
   )
 }
 
@@ -424,6 +412,7 @@ export const HomeFragmentContainer = createRefetchContainer(
     `,
     meAbove: graphql`
       fragment Home_meAbove on Me {
+        ...HomeHeader_me
         ...EmailConfirmationBanner_me
         ...LotsByFollowedArtistsRail_me
       }
