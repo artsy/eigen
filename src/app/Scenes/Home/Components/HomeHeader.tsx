@@ -1,7 +1,7 @@
 import { HomeHeader_me$data } from "__generated__/HomeHeader_me.graphql"
 import { ArtsyLogoIcon, Box, Flex, Spacer } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
-import { ActivityIndicator } from "../ActivityIndicator"
+import { ActivityIndicator } from "./ActivityIndicator"
 
 interface HomeHeaderProps {
   me: HomeHeader_me$data | null
