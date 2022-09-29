@@ -1,10 +1,11 @@
 import { ActivityList_viewer$key } from "__generated__/ActivityList_viewer.graphql"
 import { ActivityQuery } from "__generated__/ActivityQuery.graphql"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex, Separator, Text } from "palette"
+import { Box, Separator } from "palette"
 import { useState } from "react"
 import { FlatList } from "react-native"
 import { graphql, usePaginationFragment } from "react-relay"
+import { ActivityItem } from "./ActivityItem"
 
 interface ActivityListProps {
   viewer: ActivityList_viewer$key | null
@@ -42,15 +43,13 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer }) => {
     <FlatList
       data={notifications}
       refreshing={refreshing}
-      ItemSeparatorComponent={() => <Separator />}
-      renderItem={({ item }) => {
-        return (
-          <Flex p={2}>
-            <Text>{item.title}</Text>
-            <Text>{item.message}</Text>
-          </Flex>
-        )
-      }}
+      keyExtractor={(item) => item.internalID}
+      ItemSeparatorComponent={() => (
+        <Box mx={2}>
+          <Separator />
+        </Box>
+      )}
+      renderItem={({ item }) => <ActivityItem item={item} />}
       onEndReached={handleLoadMore}
       onRefresh={handleRefresh}
     />
@@ -65,8 +64,8 @@ const notificationsConnectionFragment = graphql`
       @connection(key: "ActivityList_notificationsConnection") {
       edges {
         node {
-          title
-          message
+          internalID
+          ...ActivityItem_item
         }
       }
     }
