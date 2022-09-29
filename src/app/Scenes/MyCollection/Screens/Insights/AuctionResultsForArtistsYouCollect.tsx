@@ -12,7 +12,8 @@ const PAGE_SIZE = 20
 export const ListOfresults: React.FC<{}> = () => {
   const queryData = useLazyLoadQuery<AuctionResultsForArtistsYouCollectQuery>(
     AuctionResultsForArtistsYouCollectScreenQuery,
-    articlesQueryVariables
+    articlesQueryVariables,
+    { fetchPolicy: "store-and-network" }
   )
 
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<

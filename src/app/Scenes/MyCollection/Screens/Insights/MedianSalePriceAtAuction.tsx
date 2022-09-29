@@ -42,7 +42,7 @@ const MedianSalePriceAtAuctionScreen: React.FC<MedianSalePriceAtAuctionProps> = 
   const data = useLazyLoadQuery<MedianSalePriceAtAuctionQuery>(
     MedianSalePriceAtAuctionScreenQuery,
     queryArgs.variables,
-    queryArgs.options
+    { ...queryArgs.options, fetchPolicy: "store-and-network" }
   )
 
   const enableChangeArtist =
