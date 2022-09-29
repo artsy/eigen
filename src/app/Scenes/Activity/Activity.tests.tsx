@@ -25,6 +25,13 @@ describe("Activity", () => {
     expect(getByText("Notification One")).toBeTruthy()
     expect(getByText("Notification Two")).toBeTruthy()
   })
+
+  it("renders tabs", async () => {
+    const { getByText } = renderWithHookWrappersTL(<Activity />, mockEnvironment)
+
+    expect(getByText("All")).toBeTruthy()
+    expect(getByText("Alerts")).toBeTruthy()
+  })
 })
 
 const notifications = {
