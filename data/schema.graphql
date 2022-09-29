@@ -1317,6 +1317,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
+  criticallyAcclaimed: Boolean
   currentEvent: CurrentEvent
   deathday: String
   disablePriceContext: Boolean
@@ -1419,6 +1420,8 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
       BIENNIAL
       ACTIVE_SECONDARY_MARKET
       HIGH_AUCTION_RECORD
+      ARTSY_VANGUARD_YEAR
+      CRITICALLY_ACCLAIMED
     ]
   ): [ArtistInsight!]!
 
@@ -1487,6 +1490,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   sortableID: String
   statuses: ArtistStatuses
   targetSupply: ArtistTargetSupply
+  vanguardYear: String
   years: String
 }
 
@@ -1616,8 +1620,10 @@ type ArtistInsight {
 
 enum ArtistInsightKind {
   ACTIVE_SECONDARY_MARKET
+  ARTSY_VANGUARD_YEAR
   BIENNIAL
   COLLECTED
+  CRITICALLY_ACCLAIMED
   GROUP_SHOW
   HIGH_AUCTION_RECORD
   REVIEWED
