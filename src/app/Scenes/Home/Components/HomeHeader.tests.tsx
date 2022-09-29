@@ -5,7 +5,7 @@ import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { HomeHeaderFragmentContainer } from "./HomeHeader"
+import { HomeHeader } from "./HomeHeader"
 
 jest.unmock("react-relay")
 
@@ -28,7 +28,7 @@ describe("HomeHeader", () => {
       {}
     )
 
-    return <HomeHeaderFragmentContainer me={queryData.me} />
+    return <HomeHeader me={queryData.me} />
   }
 
   describe("Activity", () => {

@@ -43,7 +43,7 @@ import { ViewingRoomsHomeMainRail } from "../ViewingRoom/Components/ViewingRooms
 import { ActivityIndicator } from "./Components/ActivityIndicator"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { ArtworkRecommendationsRail } from "./Components/ArtworkRecommendationsRail"
-import { HomeHeaderFragmentContainer } from "./Components/HomeHeader"
+import { HomeHeader } from "./Components/HomeHeader"
 import { NewWorksForYouRail } from "./Components/NewWorksForYouRail"
 import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
 import { TroveFragmentContainer } from "./Components/Trove"
@@ -331,7 +331,7 @@ const Home = (props: Props) => {
                 return null
             }
           }}
-          ListHeaderComponent={<HomeHeaderFragmentContainer me={meAbove} />}
+          ListHeaderComponent={<HomeHeader me={meAbove} />}
           ListFooterComponent={() => <Flex mb={3}>{!!loading && <BelowTheFoldPlaceholder />}</Flex>}
           keyExtractor={(_item, index) => String(index)}
         />
