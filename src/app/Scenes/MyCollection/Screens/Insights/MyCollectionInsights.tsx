@@ -34,7 +34,11 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
   const [areInsightsIncomplete, setAreInsightsIncomplete] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
 
-  const data = useLazyLoadQuery<MyCollectionInsightsQuery>(MyCollectionInsightsScreenQuery, {}, {})
+  const data = useLazyLoadQuery<MyCollectionInsightsQuery>(
+    MyCollectionInsightsScreenQuery,
+    {},
+    { fetchPolicy: "store-and-network" }
+  )
 
   const myCollectionArtworksCount = extractNodes(data.me?.myCollectionConnection).length
 
