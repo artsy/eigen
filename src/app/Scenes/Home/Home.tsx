@@ -43,7 +43,6 @@ import { ViewingRoomsHomeMainRail } from "../ViewingRoom/Components/ViewingRooms
 import { ActivityIndicator } from "./ActivityIndicator"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { ArtworkRecommendationsRail } from "./Components/ArtworkRecommendationsRail"
-import { HomeHeroContainer } from "./Components/HomeHero"
 import { NewWorksForYouRail } from "./Components/NewWorksForYouRail"
 import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
 import { TroveFragmentContainer } from "./Components/Trove"
@@ -331,7 +330,7 @@ const Home = (props: Props) => {
                 return null
             }
           }}
-          ListHeaderComponent={<HomeHeader homePageAbove={homePageAbove} />}
+          ListHeaderComponent={<HomeHeader />}
           ListFooterComponent={() => <Flex mb={3}>{!!loading && <BelowTheFoldPlaceholder />}</Flex>}
           keyExtractor={(_item, index) => String(index)}
         />
@@ -341,9 +340,7 @@ const Home = (props: Props) => {
   )
 }
 
-const HomeHeader: React.FC<{ homePageAbove: Home_homePageAbove$data | null }> = ({
-  homePageAbove,
-}) => {
+const HomeHeader: React.FC = () => {
   return (
     <Box mb={1} mt={2}>
       <Flex alignItems="center">
@@ -351,7 +348,6 @@ const HomeHeader: React.FC<{ homePageAbove: Home_homePageAbove$data | null }> = 
         <ActivityIndicator hasNotifications />
       </Flex>
       <Spacer mb="15px" />
-      {!!homePageAbove && <HomeHeroContainer homePage={homePageAbove} />}
       <Spacer mb="2" />
     </Box>
   )
@@ -387,8 +383,7 @@ export const HomeFragmentContainer = createRefetchContainer(
   {
     // Make sure not to include modules that are part of "homePageBelow"
     homePageAbove: graphql`
-      fragment Home_homePageAbove on HomePage
-      @argumentDefinitions(heroImageVersion: { type: "HomePageHeroUnitImageVersion" }) {
+      fragment Home_homePageAbove on HomePage {
         activeBidsArtworkModule: artworkModule(key: ACTIVE_BIDS) {
           id
           ...ArtworkModuleRail_rail
@@ -400,7 +395,6 @@ export const HomeFragmentContainer = createRefetchContainer(
           id
           ...ArtistRail_rail
         }
-        ...HomeHero_homePage @arguments(heroImageVersion: $heroImageVersion)
       }
     `,
     // Make sure to exclude all modules that are part of "homePageAbove"
@@ -425,7 +419,6 @@ export const HomeFragmentContainer = createRefetchContainer(
         marketingCollectionsModule {
           ...CollectionsRail_collectionsModule
         }
-        ...HomeHero_homePage @arguments(heroImageVersion: $heroImageVersion)
         ...Trove_trove @arguments(heroImageVersion: $heroImageVersion)
       }
     `,
@@ -466,7 +459,7 @@ export const HomeFragmentContainer = createRefetchContainer(
   graphql`
     query HomeRefetchQuery($heroImageVersion: HomePageHeroUnitImageVersion!) {
       homePage @optionalField {
-        ...Home_homePageAbove @arguments(heroImageVersion: $heroImageVersion)
+        ...Home_homePageAbove
       }
       homePageBelow: homePage @optionalField {
         ...Home_homePageBelow @arguments(heroImageVersion: $heroImageVersion)
@@ -637,9 +630,9 @@ export const HomeQueryRenderer: React.FC = () => {
       environment={defaultEnvironment}
       above={{
         query: graphql`
-          query HomeAboveTheFoldQuery($heroImageVersion: HomePageHeroUnitImageVersion) {
+          query HomeAboveTheFoldQuery {
             homePage @optionalField {
-              ...Home_homePageAbove @arguments(heroImageVersion: $heroImageVersion)
+              ...Home_homePageAbove
             }
             me @optionalField {
               ...Home_meAbove
@@ -653,7 +646,7 @@ export const HomeQueryRenderer: React.FC = () => {
             }
           }
         `,
-        variables: { heroImageVersion: isPad() ? "WIDE" : "NARROW" },
+        variables: {},
       }}
       below={{
         query: graphql`
