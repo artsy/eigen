@@ -2,28 +2,25 @@ import { NotificationTypesEnum } from "__generated__/ActivityItem_item.graphql"
 import { ActivityQuery } from "__generated__/ActivityQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"
-import { goBack, navigate } from "app/navigation/navigate"
+import { goBack } from "app/navigation/navigate"
 import { Flex, Text } from "palette"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ActivityList } from "./ActivityList"
-import { ActivityTabSubheader } from "./ActivityTabSubheader"
-
-type NotificationType = "all" | "alerts"
+import { NotificationType } from "./types"
 
 interface ActivityProps {
   type: NotificationType
-  subheader: JSX.Element
 }
 
-export const ActivityContent: React.FC<ActivityProps> = ({ type, subheader }) => {
+export const ActivityContent: React.FC<ActivityProps> = ({ type }) => {
   const types = getNotificationTypes(type)
   const queryData = useLazyLoadQuery<ActivityQuery>(ActivityScreenQuery, {
     count: 10,
     types,
   })
 
-  return <ActivityList viewer={queryData.viewer} subheader={subheader} />
+  return <ActivityList viewer={queryData.viewer} type={type} />
 }
 
 export const ActivityContainer: React.FC<ActivityProps> = (props) => {
@@ -38,25 +35,12 @@ export const Activity = () => {
   const tabs: TabProps[] = [
     {
       title: "All",
-      content: <ActivityContainer type="all" subheader={<ActivityTabSubheader label="All" />} />,
+      content: <ActivityContainer type="all" />,
       initial: true,
     },
     {
       title: "Alerts",
-      content: (
-        <ActivityContainer
-          type="alerts"
-          subheader={
-            <ActivityTabSubheader
-              label="Alerts"
-              button={{
-                label: "Manage alerts",
-                onPress: () => navigate("/my-profile/saved-search-alerts"),
-              }}
-            />
-          }
-        />
-      ),
+      content: <ActivityContainer type="alerts" />,
     },
   ]
 

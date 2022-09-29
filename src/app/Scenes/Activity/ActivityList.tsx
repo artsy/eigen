@@ -9,15 +9,17 @@ import { Separator } from "palette"
 import { useState } from "react"
 import { graphql, usePaginationFragment } from "react-relay"
 import { ActivityItem } from "./ActivityItem"
+import { ActivityTabSubheader } from "./ActivityTabSubheader"
+import { NotificationType } from "./types"
 
 interface ActivityListProps {
   viewer: ActivityList_viewer$key | null
-  subheader: JSX.Element
+  type: NotificationType
 }
 
 const SUBHEADER_SECTION_KEY = "tab-subheader"
 
-export const ActivityList: React.FC<ActivityListProps> = ({ viewer, subheader }) => {
+export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type }) => {
   const [refreshing, setRefreshing] = useState(false)
   const { data, hasNext, isLoadingNext, loadNext, refetch } = usePaginationFragment<
     ActivityQuery,
@@ -31,7 +33,7 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, subheader })
   const sections: StickyTabSection[] = [
     {
       key: SUBHEADER_SECTION_KEY,
-      content: subheader,
+      content: <ActivityTabSubheader type={type} />,
     },
     ...notificationSections,
   ]
