@@ -331,7 +331,7 @@ const Home = (props: Props) => {
                 return null
             }
           }}
-          ListHeaderComponent={HomeHeader}
+          ListHeaderComponent={<HomeHeader homePageAbove={homePageAbove} />}
           ListFooterComponent={() => <Flex mb={3}>{!!loading && <BelowTheFoldPlaceholder />}</Flex>}
           keyExtractor={(_item, index) => String(index)}
         />
