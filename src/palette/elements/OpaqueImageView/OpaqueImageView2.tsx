@@ -183,8 +183,8 @@ export const OpaqueImageView: React.FC<Props> = ({
   return (
     <View onLayout={onLayout} style={[fastImageStyle, debugBorderStyles]}>
       {!!isStaging && (
-        <View style={{ position: "absolute", zIndex: 1000, top: "50%" }}>
-          <Text weight="medium" italic variant="xl" color="devpurple">
+        <View style={{ position: "absolute", zIndex: 1000, top: 0 }}>
+          <Text weight="medium" italic variant="xl" color="devpurple" fontSize={13}>
             NewImg
           </Text>
         </View>
