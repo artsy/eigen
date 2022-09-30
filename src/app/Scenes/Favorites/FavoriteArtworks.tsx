@@ -3,7 +3,6 @@ import { FavoriteArtworksQuery } from "__generated__/FavoriteArtworksQuery.graph
 import GenericGrid, { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { PAGE_SIZE } from "app/Components/constants"
 import { LoadFailureView } from "app/Components/LoadFailureView"
-import { ZeroState } from "app/Components/States/ZeroState"
 import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { navigate } from "app/navigation/navigate"
@@ -11,8 +10,9 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { FAVORITE_ARTWORKS_REFRESH_KEY, RefreshEvents } from "app/utils/refreshHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { Button, useSpace } from "palette"
+import { Button, Flex, Spacer, Text, useSpace } from "palette"
 import { useEffect, useState } from "react"
+import { Image } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 
@@ -78,15 +78,24 @@ const SavedWorks: React.FC<Props> = ({ me, relay, onDataFetching }) => {
         }
         contentContainerStyle={{ flexGrow: 1, justifyContent: "center", height: "100%" }}
       >
-        <ZeroState
-          title="You haven’t saved any works yet"
-          subtitle="Tap the heart on an artwork to save for later."
-          callToAction={
-            <Button size="large" onPress={() => navigate("/")} block>
-              Browse works for you
-            </Button>
-          }
-        />
+        <Flex alignItems="center">
+          <Text lineHeight={32} fontSize={20}>
+            Keep track of artworks you love
+          </Text>
+          <Text variant="xs" color="black60" mb={1}>
+            Tap the heart on an artwork to save it for later.
+          </Text>
+
+          <Spacer mt={2} />
+
+          <Image source={require("images/SavesEmptyStateImage.webp")} />
+
+          <Spacer mt={2} />
+
+          <Button size="large" onPress={() => navigate("/")} block>
+            Browse works
+          </Button>
+        </Flex>
       </StickyTabPageScrollView>
     )
   }

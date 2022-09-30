@@ -19,7 +19,7 @@ import { MyProfileHeader } from "./MyProfileHeader"
 
 export enum Tab {
   collection = "My Collection",
-  savedWorks = "Saved Works",
+  savedWorks = "Saves",
   insights = "Insights",
 }
 
