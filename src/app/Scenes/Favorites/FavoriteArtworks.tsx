@@ -11,8 +11,8 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { FAVORITE_ARTWORKS_REFRESH_KEY, RefreshEvents } from "app/utils/refreshHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { Button, ClassTheme } from "palette"
-import { Component } from "react"
+import { Button, useSpace } from "palette"
+import { useEffect, useState } from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 
@@ -22,39 +22,44 @@ interface Props {
   onDataFetching?: (loading: boolean) => void
 }
 
-interface State {
-  fetchingMoreData: boolean
-  refreshingFromPull: boolean
-}
+const SavedWorks: React.FC<Props> = ({ me, relay, onDataFetching }) => {
+  const [refreshingFromPull, setRefreshingFromPull] = useState<boolean>(false)
+  const [fetchingMoreData, setFetchingMoreData] = useState<boolean>(false)
+  const space = useSpace()
 
-export class SavedWorks extends Component<Props, State> {
-  state = {
-    fetchingMoreData: false,
-    refreshingFromPull: false,
+  useEffect(() => {
+    RefreshEvents.addListener(FAVORITE_ARTWORKS_REFRESH_KEY, handleRefresh)
+
+    return () => {
+      RefreshEvents.removeListener(FAVORITE_ARTWORKS_REFRESH_KEY, handleRefresh)
+    }
+  }, [])
+
+  const handleRefresh = () => {
+    setRefreshingFromPull(true)
+    relay.refetchConnection(PAGE_SIZE, (error) => {
+      if (error) {
+        // FIXME: Handle error
+        console.error("SavedWorks/index.tsx #handleRefresh", error.message)
+      }
+      setRefreshingFromPull(false)
+    })
   }
 
-  componentDidMount = () => {
-    RefreshEvents.addListener(FAVORITE_ARTWORKS_REFRESH_KEY, this.handleRefresh)
-  }
-
-  componentWillUnmount = () => {
-    RefreshEvents.removeListener(FAVORITE_ARTWORKS_REFRESH_KEY, this.handleRefresh)
-  }
-
-  loadMore = () => {
-    if (!this.props.relay.hasMore() || this.props.relay.isLoading()) {
+  const loadMore = () => {
+    if (!relay.hasMore() || relay.isLoading()) {
       return
     }
 
     const updateState = (loading: boolean) => {
-      this.setState({ fetchingMoreData: loading })
-      if (this.props.onDataFetching) {
-        this.props.onDataFetching(loading)
+      setFetchingMoreData(loading)
+      if (onDataFetching) {
+        onDataFetching(loading)
       }
     }
 
     updateState(true)
-    this.props.relay.loadMore(PAGE_SIZE, (error) => {
+    relay.loadMore(PAGE_SIZE, (error) => {
       if (error) {
         // FIXME: Handle error
         console.error("SavedWorks/index.tsx", error.message)
@@ -63,79 +68,46 @@ export class SavedWorks extends Component<Props, State> {
     })
   }
 
-  handleRefresh = () => {
-    this.setState({ refreshingFromPull: true })
-    this.props.relay.refetchConnection(PAGE_SIZE, (error) => {
-      if (error) {
-        // FIXME: Handle error
-        console.error("SavedWorks/index.tsx #handleRefresh", error.message)
-      }
-      this.setState({ refreshingFromPull: false })
-    })
-  }
+  const artworks = extractNodes(me?.followsAndSaves?.artworks)
 
-  // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
-  render() {
-    const artworks = extractNodes(this.props.me?.followsAndSaves?.artworks)
-
-    if (artworks.length === 0) {
-      return (
-        <StickyTabPageScrollView
-          refreshControl={
-            <StickTabPageRefreshControl
-              refreshing={this.state.refreshingFromPull}
-              onRefresh={this.handleRefresh}
-            />
-          }
-          contentContainerStyle={{ flexGrow: 1, justifyContent: "center", height: "100%" }}
-        >
-          <ZeroState
-            title="You haven’t saved any works yet"
-            subtitle="Tap the heart on an artwork to save for later."
-            callToAction={
-              <Button
-                size="large"
-                onPress={() => {
-                  navigate("/")
-                }}
-                block
-              >
-                Browse works for you
-              </Button>
-            }
-          />
-        </StickyTabPageScrollView>
-      )
-    }
-
+  if (artworks.length === 0) {
     return (
-      <ClassTheme>
-        {({ space }) => (
-          <StickyTabPageScrollView
-            contentContainerStyle={{ paddingVertical: space(2) }}
-            onEndReached={this.loadMore}
-            refreshControl={
-              <StickTabPageRefreshControl
-                refreshing={this.state.refreshingFromPull}
-                onRefresh={this.handleRefresh}
-              />
-            }
-          >
-            <GenericGrid
-              artworks={artworks}
-              isLoading={this.state.fetchingMoreData}
-              hidePartner
-              artistNamesTextStyle={{ weight: "regular" }}
-              saleInfoTextStyle={{
-                weight: "medium",
-                color: "black100",
-              }}
-            />
-          </StickyTabPageScrollView>
-        )}
-      </ClassTheme>
+      <StickyTabPageScrollView
+        refreshControl={
+          <StickTabPageRefreshControl refreshing={refreshingFromPull} onRefresh={handleRefresh} />
+        }
+        contentContainerStyle={{ flexGrow: 1, justifyContent: "center", height: "100%" }}
+      >
+        <ZeroState
+          title="You haven’t saved any works yet"
+          subtitle="Tap the heart on an artwork to save for later."
+          callToAction={
+            <Button size="large" onPress={() => navigate("/")} block>
+              Browse works for you
+            </Button>
+          }
+        />
+      </StickyTabPageScrollView>
     )
   }
+
+  return (
+    <StickyTabPageScrollView
+      contentContainerStyle={{ paddingVertical: space(2) }}
+      onEndReached={loadMore}
+      refreshControl={
+        <StickTabPageRefreshControl refreshing={refreshingFromPull} onRefresh={handleRefresh} />
+      }
+    >
+      <GenericGrid
+        artworks={artworks}
+        isLoading={fetchingMoreData}
+        hidePartner
+        artistNamesTextStyle={{ weight: "regular" }}
+        saleInfoTextStyle={{ weight: "medium", color: "black100" }}
+      />
+    </StickyTabPageScrollView>
+  )
 }
 
 const FavoriteArtworksContainer = createPaginationContainer(
