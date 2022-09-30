@@ -1,7 +1,7 @@
 import { useStickyTabPageContext } from "app/Components/StickyTabPage/StickyTabPageContext"
-import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
+import { PlaceholderBox } from "app/utils/placeholders"
 import { times } from "lodash"
-import { Box, Flex, Separator, Spacer, Text } from "palette"
+import { Box, Flex, Separator, Spacer } from "palette"
 import { Fragment } from "react"
 import Animated from "react-native-reanimated"
 
