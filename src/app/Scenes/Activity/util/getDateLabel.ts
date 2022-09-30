@@ -8,6 +8,12 @@ export const getDateLabel = (timestamp: string) => {
   }
 
   const days = daysAgo(date)
+
+  // It's NOT today and it's been less than 2 days
+  if (days <= 1) {
+    return "Yesterday"
+  }
+
   const label = days > 1 ? "days" : "day"
 
   return `${days} ${label} ago`
@@ -18,5 +24,5 @@ const isToday = (date: DateTime) => {
 }
 
 const daysAgo = (date: DateTime) => {
-  return Math.floor(DateTime.now().diff(date, "days").days)
+  return DateTime.now().diff(date, ["days", "hours"]).days
 }
