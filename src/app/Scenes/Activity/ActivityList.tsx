@@ -5,7 +5,7 @@ import {
   StickyTabSection,
 } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { extractNodes } from "app/utils/extractNodes"
-import { Separator } from "palette"
+import { Flex, Separator, Spinner } from "palette"
 import { useState } from "react"
 import { graphql, usePaginationFragment } from "react-relay"
 import { ActivityItem } from "./ActivityItem"
@@ -74,6 +74,13 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type }) => {
       }}
       onEndReached={handleLoadMore}
       onRefresh={handleRefresh}
+      ListFooterComponent={
+        isLoadingNext ? (
+          <Flex my={2} alignItems="center" justifyContent="center">
+            <Spinner />
+          </Flex>
+        ) : null
+      }
     />
   )
 }
