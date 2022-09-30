@@ -72,7 +72,7 @@ export const SearchInput = forwardRef<InputRef, SearchInputProps>(
             }}
           />
         </Animated.View>
-        <Flex alignItems="center" justifyContent="center" maxHeight={INPUT_HEIGHT}>
+        <Flex alignItems="center" justifyContent="center" maxHeight={INPUT_HEIGHT + 3}>
           {!!enableCancelButton && !!cancelButtonShown && (
             <Animated.View
               entering={FadeInRight.duration(CANCEL_BUTTON_DURATION)}
