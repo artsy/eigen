@@ -6987,6 +6987,10 @@ type CreateUserAddressPayload {
   userAddressOrErrors: UserAddressOrErrorsUnion!
 }
 
+type createUserAdminNoteFailure {
+  mutationError: GravityMutationError
+}
+
 input createUserAdminNoteMutationInput {
   body: String!
   clientMutationId: String
@@ -6994,10 +6998,15 @@ input createUserAdminNoteMutationInput {
 }
 
 type createUserAdminNoteMutationPayload {
+  # On success: the admin note created.
+  adminNoteOrError: createUserAdminNoteResponseOrError
   clientMutationId: String
+}
 
-  # On success: an identity verification with overrides
-  userAdminNote: UserAdminNotes!
+union createUserAdminNoteResponseOrError = createUserAdminNoteFailure | createUserAdminNoteSuccess
+
+type createUserAdminNoteSuccess {
+  adminNote: UserAdminNotes
 }
 
 input CreateUserInterestMutationInput {
