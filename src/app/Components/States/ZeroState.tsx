@@ -22,11 +22,7 @@ export const ZeroState = (props: ZeroStateProps) => {
           </Text>
         )}
         {!!bigTitle && (
-          <Text
-            variant="lg"
-            style={{ maxWidth: "80%", textAlign: "center" }}
-            color={color("black100")}
-          >
+          <Text variant="lg" style={{ textAlign: "center" }} color={color("black100")}>
             {bigTitle}
           </Text>
         )}
@@ -36,7 +32,7 @@ export const ZeroState = (props: ZeroStateProps) => {
         {!!subtitle && (
           <Text
             variant="sm"
-            style={{ maxWidth: title ? "100%" : "80%" }}
+            style={{ maxWidth: title || bigTitle ? "100%" : "80%" }}
             lineHeight="20"
             textAlign="center"
             color={title || bigTitle ? color("black60") : color("black100")}
