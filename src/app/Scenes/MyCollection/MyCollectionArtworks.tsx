@@ -7,10 +7,11 @@ import { ZeroState } from "app/Components/States/ZeroState"
 import { navigate, popToRoot } from "app/navigation/navigate"
 import { GlobalStore, useDevToggle, useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
-import { Button, Flex, LockIcon, Spacer, Text } from "palette"
+import { Button, Flex, LockIcon, Spacer, Text, useSpace } from "palette"
 import { useState } from "react"
 import {
   Alert,
+  Image,
   InteractionManager,
   LayoutAnimation,
   NativeScrollEvent,
@@ -195,11 +196,24 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
 
 const MyCollectionZeroState: React.FC = () => {
   const { trackEvent } = useTracking()
+  const space = useSpace()
+
+  const image = require("images/my-collection-empty-state.webp")
 
   return (
     <ZeroState
-      title="Primed and ready for artworks."
-      subtitle="Add works from your collection to access price and market insights."
+      bigTitle="Your Art Collection in Your Pocket"
+      subtitle="Access market insights and manage  your collection online."
+      image={
+        <Image
+          source={image}
+          resizeMode="contain"
+          style={{
+            alignSelf: "center",
+            marginVertical: space(2),
+          }}
+        />
+      }
       callToAction={
         <>
           <Button
@@ -216,7 +230,7 @@ const MyCollectionZeroState: React.FC = () => {
             }}
             block
           >
-            Upload Your Artwork
+            Upload Artwork
           </Button>
           <Flex flexDirection="row" justifyContent="center" alignItems="center" py={1}>
             <LockIcon fill="black60" />
