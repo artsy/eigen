@@ -22,6 +22,9 @@ export function MyCollectionArtworkAbout(props: MyCollectionArtworkAboutProps) {
   const marketPriceInsights = useFragment(marketPriceInsightsFragment, props.marketPriceInsights)
 
   const articles = extractNodes(artwork.artist?.articles)
+
+  const isP1Artist = artwork.artist?.targetSupply?.isP1
+
   const Wrapper = props.renderWithoutScrollView ? Flex : StickyTabPageScrollView
   return (
     <Wrapper style={{ paddingHorizontal: space(2) }}>
@@ -36,7 +39,8 @@ export function MyCollectionArtworkAbout(props: MyCollectionArtworkAboutProps) {
           articles={articles}
           totalCount={artwork.artist?.articles?.totalCount}
         />
-        <MyCollectionWhySell artwork={artwork} contextModule="about" />
+
+        {!!isP1Artist && <MyCollectionWhySell artwork={artwork} contextModule="about" />}
       </Flex>
     </Wrapper>
   )

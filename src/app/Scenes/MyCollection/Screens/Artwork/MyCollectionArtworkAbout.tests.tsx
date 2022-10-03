@@ -202,4 +202,41 @@ describe("MyCollectionArtworkAbout", () => {
     expect(getByText("Articles featuring Banksy")).toBeTruthy()
     expect(getByTestId("test-articles-flatlist")).toBeTruthy()
   })
+
+  it("renders Submit for Sale section if P1 artist", () => {
+    const { getByText } = renderWithWrappers(<TestRenderer />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Query: () => ({
+        artwork: {
+          artist: {
+            targetSupply: {
+              isP1: true,
+            },
+          },
+        },
+      }),
+    })
+    expect(getByText("Interested in Selling This Work?")).toBeTruthy()
+  })
+
+  it("does not render Submit for Sale section if not P1 artist", () => {
+    const { getByText } = renderWithWrappers(<TestRenderer />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Query: () => ({
+        artwork: {
+          artist: {
+            targetSupply: {
+              isP1: false,
+            },
+          },
+        },
+      }),
+    })
+
+    expect(() => getByText("Interested in Selling This Work?")).toThrow(
+      "Unable to find an element with text: Interested in Selling This Work?"
+    )
+  })
 })
