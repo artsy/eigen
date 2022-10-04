@@ -498,12 +498,9 @@ export const getAuthModel = (): AuthModel => ({
         return
       }
 
-      const responseFacebookInfoCallback = async (
-        error: Record<string, unknown> | undefined,
-        result: Record<string, unknown> | undefined
-      ) => {
+      const responseFacebookInfoCallback = async (error: any | null, result: any | null) => {
         if (error) {
-          reject(new AuthError(error.toString(), "Error fetching facebook data"))
+          reject(new AuthError("Error fetching facebook data", error))
           return
         }
 
