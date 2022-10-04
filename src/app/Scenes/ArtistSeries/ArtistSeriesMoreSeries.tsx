@@ -53,9 +53,7 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
   return (
     <Flex {...rest}>
       <Flex mb="15px" flexDirection="row" justifyContent="space-between">
-        <Text variant="md" testID="header">
-          {artistSeriesHeader}
-        </Text>
+        <Text testID="header">{artistSeriesHeader}</Text>
         {totalCount > 4 && (
           <TouchableOpacity
             onPress={() => {
