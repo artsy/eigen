@@ -32,7 +32,7 @@ const ArtistShows2: React.FC<Props> = ({ artist, relay }) => {
       <Text variant="sm" ml="2px" mb={0.5}>
         {artist.name}
       </Text>
-      <Text variant="lg" mb={2}>
+      <Text variant="lg-display" mb={2}>
         Past Shows
       </Text>
     </View>

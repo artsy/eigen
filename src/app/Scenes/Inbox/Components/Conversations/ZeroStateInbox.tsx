@@ -34,7 +34,7 @@ export default class ZeroStateInbox extends React.Component {
         keyExtractor={(_item, index) => String(index)}
         ListHeaderComponent={() => (
           <Box px={2}>
-            <Text variant="md" textAlign="center" weight="medium">
+            <Text variant="sm-display" textAlign="center" weight="medium">
               Buying art on Artsy is simple
             </Text>
           </Box>
@@ -44,7 +44,7 @@ export default class ZeroStateInbox extends React.Component {
             <Row>
               <Icon resizeMode="contain" source={item.iconHref} />
               <Flex style={{ flex: 1 }}>
-                <Text variant="md">{item.text}</Text>
+                <Text variant="sm-display">{item.text}</Text>
               </Flex>
             </Row>
           )

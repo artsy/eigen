@@ -51,7 +51,7 @@ export const SaleLotsListSortMode = ({
 
   return (
     <Flex px={2} mb={2}>
-      <FilterTitle variant="md" ellipsizeMode="tail">
+      <FilterTitle variant="sm-display" ellipsizeMode="tail">
         Sorted by {getSortDescription()?.toLowerCase()}
       </FilterTitle>
 

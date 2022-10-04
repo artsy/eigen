@@ -28,7 +28,7 @@ export const AuctionBuyersPremium: FC<AuctionBuyersPremiumProps> = ({ sale }) =>
       <FancyModalHeader useXButton onLeftButtonPress={() => goBack()} />
 
       <ScrollView contentContainerStyle={{ padding: space("2"), paddingBottom: space("4") }}>
-        <Text variant="lg" mb={1}>
+        <Text variant="lg-display" mb={1}>
           What is a Buyer’s Premium?
         </Text>
 
@@ -42,7 +42,7 @@ export const AuctionBuyersPremium: FC<AuctionBuyersPremiumProps> = ({ sale }) =>
 
         {schedule.length > 0 && (
           <>
-            <Text variant="lg" mt={2} mb={1}>
+            <Text variant="lg-display" mt={2} mb={1}>
               Buyer’s Premium For This Auction on Artsy
             </Text>
 

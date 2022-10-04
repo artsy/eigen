@@ -7,7 +7,7 @@ export const EmptyMessage: React.FC = () => {
     <ScrollView contentContainerStyle={{ flex: 1 }}>
       <Flex px={2} py={4} justifyContent="center" alignItems="center" height="100%">
         <Box maxWidth="80%" alignItems="center">
-          <Text variant="md" textAlign="center">
+          <Text variant="sm-display" textAlign="center">
             Create an alert to get notified about new works.
           </Text>
           <Spacer mb={1} />

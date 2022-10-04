@@ -36,7 +36,7 @@ const PartnerShowsRail: React.FC<{
     <>
       {!!currentAndUpcomingShows && !!currentAndUpcomingShows.length && (
         <>
-          <Text variant="md">Current and upcoming shows</Text>
+          <Text variant="sm-display">Current and upcoming shows</Text>
           <FlatList
             horizontal
             onScroll={isCloseToEdge(fetchNextPage)}

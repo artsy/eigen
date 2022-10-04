@@ -74,7 +74,7 @@ export const PartnerOverview: React.FC<{
       {!!filteredArtists && filteredArtists.length > 0 && (
         <>
           <Text>
-            <Text variant="md">Artists ({filteredArtists.length})</Text>
+            <Text variant="sm-display">Artists ({filteredArtists.length})</Text>
           </Text>
           <Spacer mb={2} />
           {renderArtists()}

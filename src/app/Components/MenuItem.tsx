@@ -43,7 +43,7 @@ export const MenuItem: React.FC<{
         opacity={disabled && allowDisabledVisualClue ? 0.5 : 1}
       >
         <Flex>
-          <Text>{title}</Text>
+          <Text variant="sm-display">{title}</Text>
           {!!isBeta && (
             <Flex px={0.5} mx={1} backgroundColor={color("black10")}>
               <Text
@@ -62,7 +62,7 @@ export const MenuItem: React.FC<{
           {!!value && (
             <Flex flex={1}>
               <Text
-                variant="md"
+                variant="sm-display"
                 color={disabled && allowDisabledVisualClue ? "black30" : "black60"}
                 numberOfLines={1}
                 ellipsizeMode={ellipsizeMode}
@@ -74,7 +74,10 @@ export const MenuItem: React.FC<{
           )}
 
           {!!text && (
-            <Text variant="md" color={disabled && allowDisabledVisualClue ? "black30" : "black60"}>
+            <Text
+              variant="sm-display"
+              color={disabled && allowDisabledVisualClue ? "black30" : "black60"}
+            >
               {text}
             </Text>
           )}

@@ -4,7 +4,7 @@ import { TextContainer } from "./TextContainer"
 export const OldHowItWorks: React.FC = () => {
   return (
     <Box px={2}>
-      <Text variant="lg">How it works</Text>
+      <Text variant="lg-display">How it works</Text>
 
       <Spacer mb={2} />
       <Flex flexDirection="row">
@@ -13,7 +13,7 @@ export const OldHowItWorks: React.FC = () => {
         </Box>
 
         <TextContainer>
-          <Text variant="md">Submit Once</Text>
+          <Text variant="sm-display">Submit Once</Text>
           <Spacer mb={0.3} />
           <Text variant="sm" color="black60">
             With a single submission, you'll access art buyers around the world.
@@ -27,7 +27,7 @@ export const OldHowItWorks: React.FC = () => {
         </Box>
 
         <TextContainer>
-          <Text variant="md">Make Your Sale</Text>
+          <Text variant="sm-display">Make Your Sale</Text>
           <Spacer mb={0.3} />
           <Text variant="sm" color="black60">
             Choose from several Artsy marketplace resale options.
@@ -41,7 +41,7 @@ export const OldHowItWorks: React.FC = () => {
         </Box>
 
         <TextContainer>
-          <Text variant="md">Receive Payment</Text>
+          <Text variant="sm-display">Receive Payment</Text>
           <Spacer mb={0.3} />
           <Text variant="sm" color="black60">
             We'll help you ship the work, and ensure you receive payment quickly.

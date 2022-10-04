@@ -38,7 +38,7 @@ export const NetworkAwareProvider: React.FC<{}> = () => {
           py={2}
           paddingBottom={safeAreaInsets.bottom + 20}
         >
-          <Text textAlign="center" variant="lg">
+          <Text textAlign="center" variant="lg-display">
             Connection Error
           </Text>
 

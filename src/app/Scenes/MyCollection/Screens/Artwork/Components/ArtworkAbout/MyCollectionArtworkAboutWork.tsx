@@ -35,7 +35,7 @@ export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWork
 
   return (
     <Flex mb={4}>
-      <Text variant="lg" my={1}>
+      <Text variant="lg-display" my={1}>
         About the work
       </Text>
       {!!enablePriceEstimateRange && <Field label="Estimate Range" value={estimatePrice} />}

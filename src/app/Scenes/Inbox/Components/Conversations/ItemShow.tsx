@@ -12,7 +12,7 @@ export const ItemShow: React.FC<ItemShowProps> = ({ show }) => {
   return (
     <>
       <Flex flexDirection="column" p={2}>
-        <Text variant="md" mb={2} weight="medium">
+        <Text variant="sm-display" mb={2} weight="medium">
           Show
         </Text>
 

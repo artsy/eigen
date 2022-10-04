@@ -93,7 +93,7 @@ const CreateArtworkAlertButtonsSection: FC<CreateArtworkAlertButtonsSectionProps
   return (
     <>
       <Box accessible accessibilityLabel="Create artwork alert buttons section">
-        <Text variant="lg">{isInClosedAuction ? "Bidding closed" : "Sold"}</Text>
+        <Text variant="lg-display">{isInClosedAuction ? "Bidding closed" : "Sold"}</Text>
         {!isEmpty(artists) && (
           <>
             <Text variant="xs" color="black60">

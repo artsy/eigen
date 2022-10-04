@@ -168,7 +168,7 @@ export const Countdown: React.FC<CountdownProps> = ({
       {cascadingEndTimeFeatureEnabled && cascadingEndTimeIntervalMinutes ? (
         <ModernTicker duration={duration} hasStarted={hasStarted} isExtended={hasBeenExtended} />
       ) : (
-        <SimpleTicker duration={duration} separator="  " variant="md" weight="medium" />
+        <SimpleTicker duration={duration} separator="  " variant="sm-display" weight="medium" />
       )}
       {!!extendedBiddingPeriodMinutes &&
         !!extendedBiddingIntervalMinutes &&
