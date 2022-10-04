@@ -2,7 +2,8 @@ import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/c
 import { MyCollectionArtworkArtistMarket_artwork$key } from "__generated__/MyCollectionArtworkArtistMarket_artwork.graphql"
 import { MyCollectionArtworkArtistMarket_marketPriceInsights$key } from "__generated__/MyCollectionArtworkArtistMarket_marketPriceInsights.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
-import { formatCentsToDollars } from "app/Scenes/MyCollection/utils/formatCentsToDollars"
+import { CENTS_IN_DOLLAR } from "app/Scenes/MyCollection/utils/formatCentsToDollars"
+import { formatLargeNumber } from "app/utils/formatLargeNumber"
 import { formatSellThroughRate } from "app/utils/marketPriceInsightHelpers"
 import { DecreaseIcon, Flex, IncreaseIcon, Spacer, Text, useSpace } from "palette"
 import { FlatList, View } from "react-native"
@@ -35,11 +36,11 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
     annualLotsSold,
     annualValueSoldCents,
     sellThroughRate,
-    medianSaleToEstimateRatio,
+    medianSaleOverEstimatePercentage,
     liquidityRank,
   } = marketPriceInsights
 
-  const formattedAnnualValueSold = formatCentsToDollars(Number(annualValueSoldCents))
+  const formattedAnnualValueSold = formatLargeNumber(Number(annualValueSoldCents) / CENTS_IN_DOLLAR)
   const formatLiquidityRank = getFormattedLiquidityRank(liquidityRank)
 
   const SalePriceEstimatePerformance = ({ value }: { value: number }) => {
@@ -53,7 +54,7 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
 
         <Spacer mr={1} />
 
-        <Text variant="lg" /* fontWeight="medium"  */ color={color}>
+        <Text variant="lg" color={color}>
           {Math.abs(value)}%
         </Text>
       </Flex>
@@ -88,10 +89,10 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
       ),
     },
     {
-      component: !!medianSaleToEstimateRatio && (
+      component: !!medianSaleOverEstimatePercentage && (
         <Flex flexDirection="column" justifyContent="flex-start">
           <Text variant="xs">Price Over Estimate</Text>
-          <SalePriceEstimatePerformance value={medianSaleToEstimateRatio} />
+          <SalePriceEstimatePerformance value={medianSaleOverEstimatePercentage} />
         </Flex>
       ),
     },
@@ -162,9 +163,8 @@ const marketPriceInsightsFragment = graphql`
     annualLotsSold
     annualValueSoldCents
     sellThroughRate
-    medianSaleToEstimateRatio
     liquidityRank
-    demandTrend
+    medianSaleOverEstimatePercentage
   }
 `
 
