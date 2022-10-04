@@ -6,6 +6,7 @@ import { CENTS_IN_DOLLAR } from "app/Scenes/MyCollection/utils/formatCentsToDoll
 import { formatLargeNumber } from "app/utils/formatLargeNumber"
 import { formatSellThroughRate } from "app/utils/marketPriceInsightHelpers"
 import { DecreaseIcon, Flex, IncreaseIcon, Spacer, Text, useSpace } from "palette"
+import { ReactElement } from "react"
 import { FlatList, View } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -15,7 +16,9 @@ interface MyCollectionArtworkArtistMarketProps {
   artwork: MyCollectionArtworkArtistMarket_artwork$key
   marketPriceInsights: MyCollectionArtworkArtistMarket_marketPriceInsights$key
 }
-
+interface MarketDataComponents {
+  component: ReactElement
+}
 export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtistMarketProps> = (
   props
 ) => {
@@ -72,7 +75,7 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
     )
   }
 
-  const marketData: any[] = []
+  const marketData: MarketDataComponents[] = []
 
   if (!!formattedAnnualValueSold) {
     marketData.push({
@@ -81,22 +84,20 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
   }
   if (!!annualLotsSold) {
     marketData.push({
-      component: !!annualLotsSold && (
-        <InsightColumn name="Annual Lots Sold" value={annualLotsSold.toString()} />
-      ),
+      component: <InsightColumn name="Annual Lots Sold" value={annualLotsSold.toString()} />,
     })
   }
 
   if (!!sellThroughRate) {
     marketData.push({
-      component: !!sellThroughRate && (
+      component: (
         <InsightColumn name="Sell-through Rate" value={formatSellThroughRate(sellThroughRate)} />
       ),
     })
   }
   if (!!medianSaleOverEstimatePercentage) {
     marketData.push({
-      component: !!medianSaleOverEstimatePercentage && (
+      component: (
         <Flex flexDirection="column" justifyContent="flex-start">
           <Text variant="xs">Price Over Estimate</Text>
           <SalePriceEstimatePerformance value={medianSaleOverEstimatePercentage} />
@@ -107,9 +108,7 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
 
   if (!!formatLiquidityRank) {
     marketData.push({
-      component: !!formatLiquidityRank && (
-        <InsightColumn name="Liquidity" value={formatLiquidityRank} />
-      ),
+      component: <InsightColumn name="Liquidity" value={formatLiquidityRank} />,
     })
   }
 
