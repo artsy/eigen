@@ -57,7 +57,7 @@ describe("ActivityItem", () => {
     })
     await flushPromiseQueue()
 
-    expect(getByText("1 day ago")).toBeTruthy()
+    expect(getByText("2 days ago")).toBeTruthy()
   })
 
   it("should render 'Today' label", async () => {
@@ -232,7 +232,7 @@ const artworks = [
 const notification = {
   title: "Notification Title",
   message: "Notification Message",
-  createdAt: DateTime.utc().minus({ days: 1 }),
+  createdAt: DateTime.utc().minus({ days: 2 }),
   isUnread: false,
   notificationType: "ARTWORK_PUBLISHED",
   artworksConnection: {

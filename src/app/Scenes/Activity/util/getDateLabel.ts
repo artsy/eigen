@@ -8,9 +8,13 @@ export const getDateLabel = (timestamp: string) => {
   }
 
   const days = daysAgo(date)
-  const label = days > 1 ? "days" : "day"
 
-  return `${days} ${label} ago`
+  // It's NOT today and it's been less than 2 days
+  if (days <= 1) {
+    return "Yesterday"
+  }
+
+  return `${days} days ago`
 }
 
 const isToday = (date: DateTime) => {

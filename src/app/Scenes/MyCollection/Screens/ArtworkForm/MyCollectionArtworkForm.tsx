@@ -219,7 +219,12 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       }
     }
 
-    GlobalStore.actions.myCollection.artwork.resetFormButKeepArtist()
+    if (props.mode === "edit") {
+      // Reset the form with the initial values from the artwork
+      GlobalStore.actions.myCollection.artwork.updateFormValues(dirtyFormCheckValues)
+    } else {
+      GlobalStore.actions.myCollection.artwork.resetFormButKeepArtist()
+    }
   }
 
   const onHeaderBackButtonPress = () => {

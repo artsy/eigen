@@ -57,7 +57,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
       passProps: {
         mode: "edit",
         artwork: data.artwork,
-        onSuccess: popToRoot,
+        onSuccess: goBack,
         onDelete: popToRoot,
       },
     })

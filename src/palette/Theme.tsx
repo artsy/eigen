@@ -30,6 +30,7 @@ export type Color =
   | "yellow10"
   | "orange10"
   | "orange100" // yellows and orange are temporary, until we add them to palette-tokens
+  | "copper100" // this needs to go once we extract palette-mobile
   // v5 stuff
   | "appBackground"
   | "appForeground"
@@ -103,7 +104,7 @@ const fixSpaceUnitsV3 = (
 // this function is just adding a dev color, `devpurple`
 const fixColorV3 = (
   colors: typeof eigenUsefulTHEME_V3.colors
-): typeof eigenUsefulTHEME_V3.colors & { devpurple: string } => {
+): typeof eigenUsefulTHEME_V3.colors & { devpurple: string; copper100: string } => {
   const ourColors = colors as any
   ourColors.devpurple = "#6E1EFF"
   ourColors.yellow150 = "#A47A0F"
@@ -125,7 +126,7 @@ export interface TextTreatment {
 
 // this function is removing the `px` and `em` suffix and making the values into numbers
 const fixTextTreatments = (
-  variantsWithUnits: Record<"xxl" | "xl" | "lg" | "md" | "sm" | "xs", TextTreatmentWithUnits>
+  variantsWithUnits: Record<TextVariantV3, TextTreatmentWithUnits>
 ): Record<TextVariantV3, TextTreatment> => {
   const textTreatments = _.mapValues(variantsWithUnits, (treatmentWithUnits) => {
     const newTreatment = {} as TextTreatment
