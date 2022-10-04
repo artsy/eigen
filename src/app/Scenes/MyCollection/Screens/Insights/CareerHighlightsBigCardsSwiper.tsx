@@ -6,7 +6,14 @@ import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholder
 import { compact } from "lodash"
 import { Flex, useColor, useSpace } from "palette"
 import { Suspense, useState } from "react"
-import { Animated, NativeScrollEvent, NativeSyntheticEvent, ScrollView } from "react-native"
+import {
+  Animated,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  Platform,
+  ScrollView,
+} from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 import {
@@ -31,6 +38,7 @@ export const CareerHighlightsBigCardsSwiper: React.FC<{
 }> = ({ type, careerHighlightsAvailableTypes, openPromoCard }) => {
   const color = useColor()
   const space = useSpace()
+  const insets = useSafeAreaInsets()
   const { width: screenWidth } = useScreenDimensions()
 
   const data = useLazyLoadQuery<CareerHighlightsBigCardsSwiperQuery>(
@@ -114,37 +122,39 @@ export const CareerHighlightsBigCardsSwiper: React.FC<{
 
   return (
     <>
-      <FancyModalHeader
-        alignItems="flex-start"
-        rightCloseButton
-        onRightButtonPress={() => goBack()}
-        hideBottomDivider
-      >
-        <Flex
-          px={2}
-          justifyContent="flex-start"
-          flexDirection="row"
-          style={{
-            paddingTop: 4,
-          }}
-          testID="career-highlighs-big-cards-swiper"
+      <Flex mt={Platform.OS === "android" ? insets.top : 0}>
+        <FancyModalHeader
+          alignItems="flex-start"
+          rightCloseButton
+          onRightButtonPress={() => goBack()}
+          hideBottomDivider
         >
-          {Array.from(Array(numberOfSlides).keys()).map((key, index) => (
-            <Animated.View
-              accessibilityLabel="Career Highlights Pagination Scroll Bar"
-              key={key}
-              style={{
-                height: 2,
-                width: barWidth - space(1),
-                marginRight: space(1),
-                borderRadius: 2,
-                backgroundColor: color("black100"),
-                opacity: useSpringValue(sliderState.currentPage === index ? 1 : 0.2),
-              }}
-            />
-          ))}
-        </Flex>
-      </FancyModalHeader>
+          <Flex
+            px={2}
+            justifyContent="flex-start"
+            flexDirection="row"
+            style={{
+              paddingTop: 4,
+            }}
+            testID="career-highlighs-big-cards-swiper"
+          >
+            {Array.from(Array(numberOfSlides).keys()).map((key, index) => (
+              <Animated.View
+                accessibilityLabel="Career Highlights Pagination Scroll Bar"
+                key={key}
+                style={{
+                  height: 2,
+                  width: barWidth - space(1),
+                  marginRight: space(1),
+                  borderRadius: 2,
+                  backgroundColor: color("black100"),
+                  opacity: useSpringValue(sliderState.currentPage === index ? 1 : 0.2),
+                }}
+              />
+            ))}
+          </Flex>
+        </FancyModalHeader>
+      </Flex>
       <Suspense fallback={openPromoCard ? <LoadingSkeletonPromoCard /> : <LoadingSkeleton />}>
         <ScrollView
           horizontal
