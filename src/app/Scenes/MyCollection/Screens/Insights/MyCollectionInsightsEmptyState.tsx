@@ -9,8 +9,8 @@ export const MyCollectionInsightsEmptyState = () => {
 
   const showMedianImage = useFeatureFlag("AREnableMyCollectionInsightsMedianPrice")
   const image = showMedianImage
-    ? require("images/my-collection-empty-state-median.webp")
-    : require("images/my-collection-empty-state.webp")
+    ? require("images/my-collection-insights-empty-state-median.webp")
+    : require("images/my-collection-insights-empty-state.webp")
 
   return (
     <Flex px={2} testID="my-collection-insights-empty-state">
