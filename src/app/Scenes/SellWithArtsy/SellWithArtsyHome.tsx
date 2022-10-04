@@ -83,7 +83,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
           <Flex pb={5}>
             <Header onConsignPress={handleConsignPress} />
 
-            <Spacer mb={4} />
+            <Spacer mb={6} />
 
             <HowItWorks />
 
