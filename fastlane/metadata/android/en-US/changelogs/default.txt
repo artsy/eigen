@@ -1,6 +1,5 @@
-This update includes a number of improvements and bug fixes including:
+This update includes a number of improvements and bug fixes, including:
 
-- See career highlights of artists you collect, when you add their works to My Collection.
-- Explore graphs showing median auction price by year of artists you collect, when you add their works to My Collection.
+- A fresh Sell with Artsy screen, with updated information about how to sell work from your art collection with Artsy.
 
 Have feedback? Email us at support@artsy.net
