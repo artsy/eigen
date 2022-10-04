@@ -72,39 +72,49 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
     )
   }
 
-  const marketData = [
-    {
-      component: !!formattedAnnualValueSold && (
-        <InsightColumn name="Annual Value Sold" value={formattedAnnualValueSold} />
-      ),
-    },
-    {
+  const marketData: any[] = []
+
+  if (!!formattedAnnualValueSold) {
+    marketData.push({
+      component: <InsightColumn name="Annual Value Sold" value={formattedAnnualValueSold} />,
+    })
+  }
+  if (!!annualLotsSold) {
+    marketData.push({
       component: !!annualLotsSold && (
         <InsightColumn name="Annual Lots Sold" value={annualLotsSold.toString()} />
       ),
-    },
-    {
+    })
+  }
+
+  if (!!sellThroughRate) {
+    marketData.push({
       component: !!sellThroughRate && (
         <InsightColumn name="Sell-through Rate" value={formatSellThroughRate(sellThroughRate)} />
       ),
-    },
-    {
+    })
+  }
+  if (!!medianSaleOverEstimatePercentage) {
+    marketData.push({
       component: !!medianSaleOverEstimatePercentage && (
         <Flex flexDirection="column" justifyContent="flex-start">
           <Text variant="xs">Price Over Estimate</Text>
           <SalePriceEstimatePerformance value={medianSaleOverEstimatePercentage} />
         </Flex>
       ),
-    },
-    {
+    })
+  }
+
+  if (!!formatLiquidityRank) {
+    marketData.push({
       component: !!formatLiquidityRank && (
         <InsightColumn name="Liquidity" value={formatLiquidityRank} />
       ),
-    },
-  ]
+    })
+  }
 
   return (
-    <Flex mb={4}>
+    <Flex mb={4} justifyContent="space-between">
       <InfoButton
         title="Artist Market"
         subTitle="Based on the last 36 months of auction data"
@@ -125,19 +135,20 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
 
       <View
         style={{
-          flex: 2, // the number of columns
+          flex: isIPad ? 3 : 2, // the number of columns
           justifyContent: "space-between",
+          alignItems: "stretch",
         }}
       >
         <FlatList
           data={marketData}
-          numColumns={isIPad ? 4 : 2}
+          numColumns={isIPad ? 3 : 2}
           renderItem={({ item }) => (
             <View
               style={{
                 flex: 1,
-                maxWidth: isIPad ? "25%" : "50%", // 100% devided by the number of rows
-                alignItems: "flex-start",
+                maxWidth: isIPad ? "33%" : "50%", // 100% devided by the number of rows
+                alignItems: "stretch",
                 paddingBottom: space(2),
               }}
             >
