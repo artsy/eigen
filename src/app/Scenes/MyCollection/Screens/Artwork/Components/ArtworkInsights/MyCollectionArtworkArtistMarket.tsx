@@ -4,10 +4,11 @@ import { MyCollectionArtworkArtistMarket_marketPriceInsights$key } from "__gener
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { formatCentsToDollars } from "app/Scenes/MyCollection/utils/formatCentsToDollars"
 import { formatSellThroughRate } from "app/utils/marketPriceInsightHelpers"
-import { Flex, Spacer, Text } from "palette"
+import { DecreaseIcon, Flex, IncreaseIcon, Spacer, Text, useSpace } from "palette"
+import { FlatList, View } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
-import { Field } from "../Field"
+import { useScreenDimensions } from "shared/hooks"
 
 interface MyCollectionArtworkArtistMarketProps {
   artwork: MyCollectionArtworkArtistMarket_artwork$key
@@ -18,6 +19,9 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
   props
 ) => {
   const { trackEvent } = useTracking()
+  const space = useSpace()
+  const screenDimensions = useScreenDimensions()
+  const isIPad = screenDimensions.width > 700
 
   const artwork = useFragment(artworkFragment, props.artwork)
 
@@ -33,15 +37,73 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
     sellThroughRate,
     medianSaleToEstimateRatio,
     liquidityRank,
-    demandTrend,
   } = marketPriceInsights
 
   const formattedAnnualValueSold = formatCentsToDollars(Number(annualValueSoldCents))
-  const formattedDemandTrend = getFormattedDemandTrend(demandTrend)
   const formatLiquidityRank = getFormattedLiquidityRank(liquidityRank)
 
+  const SalePriceEstimatePerformance = ({ value }: { value: number }) => {
+    const sign = value < 0 ? "down" : "up"
+    const color = sign === "up" ? "green100" : "red100"
+    const Arrow = sign === "up" ? IncreaseIcon : DecreaseIcon
+
+    return (
+      <Flex flexDirection="row" alignItems="center">
+        <Arrow fill={color} width={15} height={15} />
+
+        <Spacer mr={1} />
+
+        <Text variant="lg" /* fontWeight="medium"  */ color={color}>
+          {Math.abs(value)}%
+        </Text>
+      </Flex>
+    )
+  }
+
+  const InsightColumn = ({ name, value }: { name: string; value: string }) => {
+    return (
+      <>
+        <Flex flexDirection="column" justifyContent="flex-start">
+          <Text variant="xs">{name}</Text>
+          <Text variant="lg">{value}</Text>
+        </Flex>
+      </>
+    )
+  }
+
+  const marketData = [
+    {
+      component: !!formattedAnnualValueSold && (
+        <InsightColumn name="Annual Value Sold" value={formattedAnnualValueSold} />
+      ),
+    },
+    {
+      component: !!annualLotsSold && (
+        <InsightColumn name="Annual Lots Sold" value={annualLotsSold.toString()} />
+      ),
+    },
+    {
+      component: !!sellThroughRate && (
+        <InsightColumn name="Sell-through Rate" value={formatSellThroughRate(sellThroughRate)} />
+      ),
+    },
+    {
+      component: !!medianSaleToEstimateRatio && (
+        <Flex flexDirection="column" justifyContent="flex-start">
+          <Text variant="xs">Price Over Estimate</Text>
+          <SalePriceEstimatePerformance value={medianSaleToEstimateRatio} />
+        </Flex>
+      ),
+    },
+    {
+      component: !!formatLiquidityRank && (
+        <InsightColumn name="Liquidity" value={formatLiquidityRank} />
+      ),
+    },
+  ]
+
   return (
-    <Flex mb={6}>
+    <Flex mb={4}>
       <InfoButton
         title="Artist Market"
         subTitle="Based on the last 36 months of auction data"
@@ -60,12 +122,30 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
 
       <Spacer mb={2} mt={0.5} />
 
-      <Field label="Annual Value Sold" value={formattedAnnualValueSold} />
-      <Field label="Annual Lots Sold" value={`${annualLotsSold}`} />
-      <Field label="Sell-through Rate" value={formatSellThroughRate(sellThroughRate)} />
-      <Field label="Sale Price to Estimate" value={`${medianSaleToEstimateRatio}x`} />
-      <Field label="Liquidity" value={formatLiquidityRank} />
-      <Field label="One-Year Trend" value={formattedDemandTrend} />
+      <View
+        style={{
+          flex: 2, // the number of columns
+          justifyContent: "space-between",
+        }}
+      >
+        <FlatList
+          data={marketData}
+          numColumns={isIPad ? 4 : 2}
+          renderItem={({ item }) => (
+            <View
+              style={{
+                flex: 1,
+                maxWidth: isIPad ? "25%" : "50%", // 100% devided by the number of rows
+                alignItems: "flex-start",
+                paddingBottom: space(2),
+              }}
+            >
+              {item.component}
+            </View>
+          )}
+          listKey="artwork-artist-marker"
+        />
+      </View>
     </Flex>
   )
 }
@@ -97,23 +177,6 @@ const tracks = {
     context_screen_owner_type: OwnerType.myCollectionArtwork,
     subject: "artistMarketStatistics",
   }),
-}
-
-const getFormattedDemandTrend = (demandTrend: number | null) => {
-  if (demandTrend === null) {
-    return ""
-  }
-
-  switch (true) {
-    case demandTrend < -9:
-      return "Trending down"
-    case -9 < demandTrend && demandTrend < -6:
-      return "Flat"
-    case demandTrend > 7:
-      return "Trending up"
-  }
-
-  return ""
 }
 
 const getFormattedLiquidityRank = (liquidityRank: number | null) => {

@@ -76,7 +76,7 @@ describe("MyCollectionArtworkInsights", () => {
     expect(await getByText("100")).toBeTruthy()
     expect(await getByText("Sell-through Rate")).toBeTruthy()
     expect(await getByText("20%")).toBeTruthy()
-    expect(await getByText("Sale Price to Estimate")).toBeTruthy()
+    expect(await getByText("Price Over Estimate")).toBeTruthy()
     expect(await getByText("1x")).toBeTruthy()
     expect(await getByText("Liquidity")).toBeTruthy()
     expect(await getByText("High")).toBeTruthy()
