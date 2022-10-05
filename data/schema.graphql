@@ -7291,6 +7291,28 @@ type DeleteUserAddressPayload {
   userAddressOrErrors: UserAddressOrErrorsUnion!
 }
 
+type deleteUserAdminNoteFailure {
+  mutationError: GravityMutationError
+}
+
+input deleteUserAdminNoteMutationInput {
+  adminNoteId: String!
+  clientMutationId: String
+  id: String!
+}
+
+type deleteUserAdminNoteMutationPayload {
+  # On success: the admin note deleted.
+  adminNoteOrError: deleteUserAdminNoteResponseOrError
+  clientMutationId: String
+}
+
+union deleteUserAdminNoteResponseOrError = deleteUserAdminNoteFailure | deleteUserAdminNoteSuccess
+
+type deleteUserAdminNoteSuccess {
+  adminNote: UserAdminNotes
+}
+
 input DeleteUserIconInput {
   clientMutationId: String
 }
@@ -10810,6 +10832,9 @@ type Mutation {
   # Remove the user icon
   deleteMyUserProfileIcon(input: DeleteUserIconInput!): DeleteUserIconPayload
   deleteUserAddress(input: DeleteUserAddressInput!): DeleteUserAddressPayload
+
+  # delete an admin note for the user
+  deleteUserAdminNote(input: deleteUserAdminNoteMutationInput!): deleteUserAdminNoteMutationPayload
 
   # Deletes a UserInterest on the logged in User's CollectorProfile.
   deleteUserInterest(input: DeleteUserInterestMutationInput!): DeleteUserInterestMutationPayload
