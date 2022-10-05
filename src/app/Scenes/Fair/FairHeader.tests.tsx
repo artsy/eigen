@@ -62,7 +62,7 @@ describe("FairHeader", () => {
         name: "Art Basel Hong Kong 2020",
       }),
     })
-    expect(wrapper.root.findByProps({ variant: "lg" }).props.children).toBe(
+    expect(wrapper.root.findByProps({ variant: "lg-display" }).props.children).toBe(
       "Art Basel Hong Kong 2020"
     )
   })
