@@ -71,17 +71,14 @@ describe("MyCollectionArtworkInsights", () => {
     expect(await getByText("Artist Market")).toBeTruthy()
     expect(await getByText("Based on the last 36 months of auction data")).toBeTruthy()
     expect(await getByText("Annual Value Sold")).toBeTruthy()
-    expect(await getByText("$1,000")).toBeTruthy()
+    expect(await getByText("$1k")).toBeTruthy()
     expect(await getByText("Annual Lots Sold")).toBeTruthy()
     expect(await getByText("100")).toBeTruthy()
     expect(await getByText("Sell-through Rate")).toBeTruthy()
     expect(await getByText("20%")).toBeTruthy()
     expect(await getByText("Price Over Estimate")).toBeTruthy()
-    expect(await getByText("1x")).toBeTruthy()
     expect(await getByText("Liquidity")).toBeTruthy()
     expect(await getByText("High")).toBeTruthy()
-    expect(await getByText("One-Year Trend")).toBeTruthy()
-    expect(await getByText("Trending up")).toBeTruthy()
 
     // Artwork Comparable Works
 

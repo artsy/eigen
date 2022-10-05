@@ -43,7 +43,9 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
     liquidityRank,
   } = marketPriceInsights
 
-  const formattedAnnualValueSold = formatLargeNumber(Number(annualValueSoldCents) / CENTS_IN_DOLLAR)
+  const formattedAnnualValueSold = `$${formatLargeNumber(
+    Number(annualValueSoldCents) / CENTS_IN_DOLLAR
+  )}`
   const formatLiquidityRank = getFormattedLiquidityRank(liquidityRank)
 
   const SalePriceEstimatePerformance = ({ value }: { value: number }) => {
