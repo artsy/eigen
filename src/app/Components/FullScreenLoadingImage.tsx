@@ -24,7 +24,7 @@ export const FullScreenLoadingImage: React.FC<FullScreenLoadingImageProps> = ({
 
         <Spacer my={spacerHeight} />
 
-        <Text variant="md" color="white100" textAlign="center">
+        <Text variant="sm-display" color="white100" textAlign="center">
           {loadingText}
         </Text>
       </Flex>

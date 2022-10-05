@@ -97,7 +97,7 @@ export const Conversations: React.FC<Props> = (props) => {
       info={screen({ context_screen_owner_type: OwnerType.inboxInquiries })}
     >
       <Flex py={1} style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
-        <Text variant="lg" mx={2} mt={1}>
+        <Text variant="lg-display" mx={2} mt={1}>
           Inbox {unreadCounter}
         </Text>
       </Flex>

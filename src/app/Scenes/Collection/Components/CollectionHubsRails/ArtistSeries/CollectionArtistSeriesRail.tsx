@@ -20,7 +20,7 @@ export const CollectionArtistSeriesRail: React.FC<CollectionArtistSeriesRailProp
 
   return (
     <Flex ml="-20px">
-      <Text variant="md" mb={2} ml={4}>
+      <Text variant="sm-display" mb={2} ml={4}>
         {collectionGroup.name}
       </Text>
       <GenericArtistSeriesRail

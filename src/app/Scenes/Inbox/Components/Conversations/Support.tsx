@@ -5,7 +5,7 @@ import { Flex, QuestionCircleIcon, Text, Touchable } from "palette"
 export const Support = () => {
   return (
     <Flex flexDirection="column" p={2} key="support-section">
-      <Text variant="md" mb={1} weight="medium">
+      <Text variant="sm-display" mb={1} weight="medium">
         Support
       </Text>
       <Touchable

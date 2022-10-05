@@ -101,7 +101,7 @@ export const Form: React.FC<FormProps> = (props) => {
   return (
     <Box>
       {!isEditMode && (
-        <Text variant="lg" mb={4}>
+        <Text variant="lg-display" mb={4}>
           Create Alert
         </Text>
       )}

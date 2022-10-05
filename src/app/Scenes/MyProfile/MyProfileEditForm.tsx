@@ -377,7 +377,7 @@ const LoadingSkeleton = () => {
   return (
     <ProvidePlaceholderContext>
       <Flex alignItems="center" mt={2}>
-        <Text variant="md" mr={0.5}>
+        <Text variant="sm-display" mr={0.5}>
           Edit Profile
         </Text>
       </Flex>

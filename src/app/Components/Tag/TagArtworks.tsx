@@ -73,7 +73,7 @@ export const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay, openFilter
   return (
     <>
       <Spacer mb={1} />
-      <Text variant="md" color="black60" mb={2}>
+      <Text variant="sm-display" color="black60" mb={2}>
         Showing {artworksTotal} works
       </Text>
       <InfiniteScrollArtworksGridContainer

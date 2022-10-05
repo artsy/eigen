@@ -28,7 +28,7 @@ class Header extends React.Component<Props, State> {
     return (
       <>
         <Box marginTop={60} justifyContent="center">
-          <Text variant="lg" numberOfLines={2}>
+          <Text variant="lg-display" numberOfLines={2}>
             {title}
           </Text>
         </Box>

@@ -65,7 +65,7 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
           keyboardShouldPersistTaps="always"
         >
           <Spacer mt={60} />
-          <Text variant="lg">Authentication Code</Text>
+          <Text variant="lg-display">Authentication Code</Text>
           <Box>
             <Spacer mt={50} />
             <Input

@@ -17,7 +17,7 @@ export const CertificateAuthenticityModal: React.FC<CertificateAuthenticityModal
     <NavigationContainer independent>
       <FancyModal visible={visible} onBackgroundPressed={onClose}>
         <FancyModalHeader rightCloseButton onRightButtonPress={onClose}>
-          <Text variant="lg">Certificate of Authenticity</Text>
+          <Text variant="lg-display">Certificate of Authenticity</Text>
         </FancyModalHeader>
         <Box flex={1} px={2} py={2}>
           <Join separator={<Spacer my={0.5} />}>

@@ -32,7 +32,7 @@ export const SellWithArtsyCustomRecentlySold: React.FC<SellWithArtsyCustomRecent
 
   return (
     <Flex>
-      <Text px={2} variant="lg">
+      <Text px={2} variant="lg-display">
         Sold Recently on Artsy
       </Text>
 

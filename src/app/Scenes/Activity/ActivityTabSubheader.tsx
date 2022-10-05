@@ -26,7 +26,7 @@ export const ActivityTabSubheader: React.FC<ActivityTabSubheaderProps> = ({ type
 
   return (
     <Flex my={2} flexDirection="row" justifyContent="space-between">
-      <Text variant="lg">{entity.title}</Text>
+      <Text variant="lg-display">{entity.title}</Text>
 
       {!!entity.buttonLabel && (
         <Button size="small" onPress={handleButtonPress}>
