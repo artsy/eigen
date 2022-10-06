@@ -10,6 +10,7 @@
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <uses-feature android:name="android.hardware.camera.front" android:required="false" />
 
+
     <queries>
         <intent>
             <!-- Required to open mailto: links in SDK 30 and above -->
@@ -20,6 +21,11 @@
 
     <application android:name=".MainApplication" android:launchMode="singleTask" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="false" android:theme="@style/AppTheme">
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
+        <meta-data android:name='com.facebook.sdk.AutoLogAppEventsEnabled'
+           android:value='false'/>
+
+
 
         <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@mipmap/ic_notification" />
 
@@ -133,5 +139,4 @@
             </intent-filter>
         </service>
     </application>
-
 </manifest>

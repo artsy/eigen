@@ -7,6 +7,8 @@ import { goBack, navigate, popToRoot } from "app/navigation/navigate"
 import { GlobalStore } from "app/store/GlobalStore"
 import { getVortexMedium } from "app/utils/marketPriceInsightHelpers"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { compact } from "lodash"
 import { Flex, Text } from "palette/elements"
 import React, { Suspense, useCallback } from "react"
@@ -23,7 +25,7 @@ export enum Tab {
 }
 
 const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
-  artworkSlug,
+  artworkId,
   artistInternalID,
   medium,
   category,
@@ -31,7 +33,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
   const { trackEvent } = useTracking()
 
   const data = useLazyLoadQuery<MyCollectionArtworkQuery>(MyCollectionArtworkScreenQuery, {
-    artworkSlug: artworkSlug || "",
+    artworkId: artworkId || "",
     // To not let the whole query fail if the artwork doesn't has an artist
     artistInternalID: artistInternalID || "",
     // TODO: Fix this logic once we only need category to fetch insights
@@ -119,8 +121,8 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
 }
 
 export const MyCollectionArtworkScreenQuery = graphql`
-  query MyCollectionArtworkQuery($artworkSlug: String!, $artistInternalID: ID!, $medium: String!) {
-    artwork(id: $artworkSlug) {
+  query MyCollectionArtworkQuery($artworkId: String!, $artistInternalID: ID!, $medium: String!) {
+    artwork(id: $artworkId) {
       ...MyCollectionArtwork_sharedProps @relay(mask: false)
       ...MyCollectionArtworkHeader_artwork
       ...MyCollectionArtworkInsights_artwork
@@ -158,7 +160,7 @@ const MyCollectionArtworkPlaceholder = () => (
   </ProvidePlaceholderContext>
 )
 export interface MyCollectionArtworkScreenProps {
-  artworkSlug: string | null
+  artworkId: string | null
   artistInternalID: string | null
   medium: string | null
   category: string | null
@@ -166,15 +168,17 @@ export interface MyCollectionArtworkScreenProps {
 
 export const MyCollectionArtworkScreen: React.FC<MyCollectionArtworkScreenProps> = (props) => {
   return (
-    <RetryErrorBoundary
-      notFoundTitle="Artwork no longer in My Collection"
-      notFoundText="You previously deleted this artwork."
-      notFoundBackButtonText="Back to My Collection"
-    >
-      <Suspense fallback={<MyCollectionArtworkPlaceholder />}>
-        <MyCollectionArtwork {...props} />
-      </Suspense>
-    </RetryErrorBoundary>
+    <ProvideScreenTrackingWithCohesionSchema info={tracks.screen(props.artworkId || "")}>
+      <RetryErrorBoundary
+        notFoundTitle="Artwork no longer in My Collection"
+        notFoundText="You previously deleted this artwork."
+        notFoundBackButtonText="Back to My Collection"
+      >
+        <Suspense fallback={<MyCollectionArtworkPlaceholder />}>
+          <MyCollectionArtwork {...props} />
+        </Suspense>
+      </RetryErrorBoundary>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 
@@ -187,6 +191,12 @@ const tracks = {
     context_owner_type: OwnerType.myCollectionArtwork,
     platform: "mobile",
   }),
+
+  screen: (id: string) =>
+    screen({
+      context_screen_owner_type: OwnerType.myCollectionArtwork,
+      context_screen_owner_id: id,
+    }),
 }
 
 /**
