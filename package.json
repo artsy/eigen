@@ -122,7 +122,7 @@
     "@segment/analytics-react-native": "1.5.2",
     "@segment/analytics-react-native-adjust": "1.5.0",
     "@segment/analytics-react-native-appboy": "1.5.0",
-    "@sentry/cli": "2.5.2",
+    "@sentry/cli": "2.7.0",
     "@sentry/react-native": "3.2.13",
     "@storybook/addon-actions": "6.3.13",
     "@storybook/addon-controls": "6.3.13",
