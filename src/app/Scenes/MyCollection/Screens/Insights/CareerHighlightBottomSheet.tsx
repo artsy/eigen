@@ -9,7 +9,6 @@ import { isPad } from "app/utils/hardware"
 import { compact } from "lodash"
 import { Flex } from "palette"
 import { useCallback, useContext, useEffect, useMemo, useRef } from "react"
-import { StatusBar } from "react-native"
 import { FlatList } from "react-native-gesture-handler"
 import { graphql, useRefetchableFragment } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
@@ -112,11 +111,9 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
   const handleSheetChanges = useCallback((index: number) => {
     if (index === -1) {
       backButtonContext.updateShouldHideBackButton(false)
-      StatusBar.setHidden(false, "slide")
       onXAxisHighlightPressed(null)
     } else {
       backButtonContext.updateShouldHideBackButton(true)
-      StatusBar.setHidden(true, "slide")
     }
   }, [])
 

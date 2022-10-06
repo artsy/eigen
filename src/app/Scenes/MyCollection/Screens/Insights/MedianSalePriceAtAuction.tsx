@@ -1,4 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
+import { useIsFocused } from "@react-navigation/native"
 import { MedianSalePriceAtAuctionQuery } from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import {
@@ -10,8 +11,8 @@ import {
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { Flex, NoArtworkIcon, OpaqueImageView, Spacer, Text, Touchable } from "palette"
-import { Suspense, useCallback, useState } from "react"
-import { ScrollView } from "react-native"
+import { Suspense, useCallback, useEffect, useState } from "react"
+import { ScrollView, StatusBar } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 import { CareerHighlightBottomSheet } from "./CareerHighlightBottomSheet"
@@ -48,8 +49,24 @@ const MedianSalePriceAtAuctionScreen: React.FC<MedianSalePriceAtAuctionProps> = 
   const enableChangeArtist =
     !!data.me?.myCollectionInfo?.artistsCount && data.me.myCollectionInfo.artistsCount > 1
 
+  const isFocused = useIsFocused()
+
+  const renderStatusBar = useCallback(() => {
+    if (isFocused) {
+      StatusBar.setHidden(true, "none")
+    } else {
+      StatusBar.setHidden(false, "none")
+    }
+  }, [isFocused])
+
+  // unhide statusBar on unmount, else all screens in this NavTab stack will have statusBar hidden
+  useEffect(() => {
+    return () => StatusBar.setHidden(false, "none")
+  }, [])
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
+      {renderStatusBar()}
       <Flex pt={6}>
         <Flex mx={2}>
           <Text variant="lg" mb={0.5} testID="Median_Auction_Price_title">
