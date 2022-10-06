@@ -64,6 +64,7 @@ export interface ArtworkProps {
   partnerNameTextStyle?: TextProps
   /** allows for artwork to be added to recent searches */
   updateRecentSearchesOnTap?: boolean
+  disableNewOpaqueImageView?: boolean
 }
 
 export const Artwork: React.FC<ArtworkProps> = ({
@@ -89,10 +90,12 @@ export const Artwork: React.FC<ArtworkProps> = ({
   saleInfoTextStyle,
   partnerNameTextStyle,
   updateRecentSearchesOnTap = false,
+  disableNewOpaqueImageView = false,
 }) => {
   const itemRef = useRef<any>()
   const tracking = useTracking()
   const enableNewOpaqueImageView = useFeatureFlag("AREnableNewImageComponent")
+  const shouldShowNewOpaqueImageView = enableNewOpaqueImageView && !disableNewOpaqueImageView
 
   let filterParams: any
 
@@ -180,7 +183,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
       <View ref={itemRef}>
         {!!artwork.image && (
           <View>
-            {enableNewOpaqueImageView ? (
+            {shouldShowNewOpaqueImageView ? (
               <NewOpaqueImageView
                 aspectRatio={artwork.image?.aspectRatio ?? 1}
                 imageURL={artwork.image?.url}

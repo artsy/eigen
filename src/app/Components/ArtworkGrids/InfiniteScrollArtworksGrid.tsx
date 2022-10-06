@@ -118,6 +118,9 @@ export interface Props {
   updateRecentSearchesOnTap?: boolean
 
   localSortAndFilterArtworks?: (artworks: any[]) => any[]
+
+  // override the new opaque image view, this is only for the newWorksForYou grid
+  disableNewOpaqueImageView?: boolean
 }
 
 interface PrivateProps {
@@ -195,6 +198,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
   contextScreenOwnerSlug,
   contextScreenOwnerId,
   contextScreenOwnerType,
+  disableNewOpaqueImageView,
 }) => {
   const getSectionDimension = (gridWidth: number | null | undefined) => {
     // Setting the dimension to 1 for tests to avoid adjusting the screen width
@@ -321,6 +325,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
             {...itemComponentProps}
             height={imgHeight}
             width={imgWidth}
+            disableNewOpaqueImageView={disableNewOpaqueImageView}
           />
         )
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.
