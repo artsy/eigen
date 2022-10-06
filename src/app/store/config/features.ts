@@ -293,8 +293,8 @@ export const features = defineFeatures({
   AREnableCollectionsInOnboarding: {
     description: "Replace genes with collections in onboarding",
     showInAdminMenu: true,
-    readyForRelease: false,
-    // echoFlagKey: "AREnableCollectionsInOnboarding",
+    readyForRelease: true,
+    echoFlagKey: "AREnableCollectionsInOnboarding",
   },
 })
 

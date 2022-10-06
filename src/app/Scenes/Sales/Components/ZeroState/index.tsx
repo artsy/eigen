@@ -6,7 +6,7 @@ export class ZeroState extends React.Component {
   render() {
     return (
       <View style={{ flex: 1 }} testID="Sales-Zero-State-Container">
-        <Text variant="md" textAlign="center" mb={1} mt={2}>
+        <Text variant="sm-display" textAlign="center" mb={1} mt={2}>
           Auctions
         </Text>
         <Separator />

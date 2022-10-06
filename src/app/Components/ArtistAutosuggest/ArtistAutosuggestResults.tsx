@@ -74,11 +74,11 @@ const ArtistAutosuggestResultsFlatList: React.FC<{
     return (
       <AutoSuggestBoxContainer>
         <Spacer mt={3} />
-        <Text variant="md" textAlign="center">
+        <Text variant="sm-display" textAlign="center">
           Sorry, we couldn’t find anything for {quoteLeft}
           {query}.{quoteRight}
         </Text>
-        <Text variant="md" color="black60" textAlign="center">
+        <Text variant="sm-display" color="black60" textAlign="center">
           Please try searching again with a different spelling.
         </Text>
       </AutoSuggestBoxContainer>

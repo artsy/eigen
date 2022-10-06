@@ -79,7 +79,7 @@ export const CollapsibleMenuItem = forwardRef<
           )}
           <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
             <Text
-              variant="lg"
+              variant="lg-display"
               color={disabled ? "black30" : "black100"}
               style={{ maxWidth: "90%" }}
             >

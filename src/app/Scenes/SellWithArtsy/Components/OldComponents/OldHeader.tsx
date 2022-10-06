@@ -19,13 +19,13 @@ export const OldHeader: React.FC<OldHeaderProps> = ({ onConsignPress }) => {
   return (
     <Box px={2} mt={3}>
       <Box>
-        <Text variant="lg" textAlign="center" px={2}>
+        <Text variant="lg-display" textAlign="center" px={2}>
           Sell Art From Your Collection
         </Text>
 
         <Spacer my={0.5} />
 
-        <Text variant="md" textAlign="center">
+        <Text variant="sm-display" textAlign="center">
           Reach art buyers all over the world.
         </Text>
       </Box>

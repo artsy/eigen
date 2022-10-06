@@ -21,7 +21,7 @@ export const MyCollectionArtworkPurchaseDetails: React.FC<
 
   return (
     <Flex mb={4}>
-      <Text variant="lg" my={1}>
+      <Text variant="lg-display" my={1}>
         Purchase Details
       </Text>
 

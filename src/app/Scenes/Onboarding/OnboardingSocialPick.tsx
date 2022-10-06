@@ -222,11 +222,11 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
             </Text>
 
             <Flex position="absolute" bottom={0} left={0} right={0} alignItems="center">
-              <Text variant="md">
+              <Text variant="sm-display">
                 {mode === "login" ? "Don’t have an account?" : "Already have an account?"}
               </Text>
               <Text
-                variant="md"
+                variant="sm-display"
                 underline
                 onPress={() =>
                   // @ts-expect-error

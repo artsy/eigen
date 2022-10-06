@@ -53,7 +53,9 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
   return (
     <Flex {...rest}>
       <Flex mb="15px" flexDirection="row" justifyContent="space-between">
-        <Text testID="header">{artistSeriesHeader}</Text>
+        <Text variant="sm-display" testID="header">
+          {artistSeriesHeader}
+        </Text>
         {totalCount > 4 && (
           <TouchableOpacity
             onPress={() => {
@@ -61,7 +63,7 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
               navigate(`/artist/${artist?.internalID!}/artist-series`)
             }}
           >
-            <Text variant="md" testID="viewAll">{`View All (${totalCount})`}</Text>
+            <Text variant="sm-display" testID="viewAll">{`View All (${totalCount})`}</Text>
           </TouchableOpacity>
         )}
       </Flex>

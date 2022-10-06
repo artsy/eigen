@@ -20,17 +20,17 @@ export const OldFooter: React.FC<OldFooterProps> = ({ onConsignPress }) => {
 
   return (
     <Box px={2} pb={6}>
-      <Text variant="lg">Why sell with Artsy?</Text>
+      <Text variant="lg-display">Why sell with Artsy?</Text>
 
       <Spacer mb={2} />
 
       <Flex flexDirection="row">
         <NumberBox pl={0.5} pr={1}>
-          <Text variant="md">1</Text>
+          <Text variant="sm-display">1</Text>
         </NumberBox>
 
         <TextContainer>
-          <Text variant="md">Simple Steps</Text>
+          <Text variant="sm-display">Simple Steps</Text>
           <Spacer mb={0.3} />
           <Text variant="sm" color="black60">
             Submit your work once, pick the best offer, and ship the work when it sells.
@@ -42,11 +42,11 @@ export const OldFooter: React.FC<OldFooterProps> = ({ onConsignPress }) => {
 
       <Flex flexDirection="row">
         <NumberBox pl={0.5} pr={1}>
-          <Text variant="md">2</Text>
+          <Text variant="sm-display">2</Text>
         </NumberBox>
 
         <TextContainer>
-          <Text variant="md">Industry Expertise</Text>
+          <Text variant="sm-display">Industry Expertise</Text>
           <Spacer mb={0.3} />
           <Text variant="sm" color="black60">
             Receive virtual valuation and expert guidance on the best sales strategies.
@@ -58,11 +58,11 @@ export const OldFooter: React.FC<OldFooterProps> = ({ onConsignPress }) => {
 
       <Flex flexDirection="row">
         <NumberBox pl={0.5} pr={1}>
-          <Text variant="md">3</Text>
+          <Text variant="sm-display">3</Text>
         </NumberBox>
 
         <TextContainer>
-          <Text variant="md">Global Reach</Text>
+          <Text variant="sm-display">Global Reach</Text>
           <Spacer mb={0.3} />
           <Text variant="sm" color="black60">
             Your work will reach the world's collectors, galleries, and auction houses.

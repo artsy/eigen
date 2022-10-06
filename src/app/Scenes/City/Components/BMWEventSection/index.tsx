@@ -76,7 +76,7 @@ export class BMWEventSection extends React.Component<Props> {
         {({ color }) => (
           <>
             <Box my={2} px={2}>
-              <Text variant="lg">{title}</Text>
+              <Text variant="lg-display">{title}</Text>
             </Box>
             <Box mb={2} px={2}>
               <Text variant="sm" weight="medium">

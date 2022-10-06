@@ -165,7 +165,7 @@ export const tracks = {
 }
 
 export const ArticlesHeader = ({ title = "" }) => (
-  <Text mx="2" variant="lg" mb={1} mt={6}>
+  <Text mx="2" variant="lg-display" mb={1} mt={6}>
     {title}
   </Text>
 )

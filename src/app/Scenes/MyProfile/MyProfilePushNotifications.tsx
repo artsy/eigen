@@ -47,7 +47,7 @@ export type UserPushNotificationSettings =
 export const OpenSettingsBanner = () => (
   <>
     <Flex py={3} px={2} backgroundColor="black5" alignItems="center">
-      <Text variant="md" weight="medium" color="black">
+      <Text variant="sm-display" weight="medium" color="black">
         Artsy would like to send you notifications
       </Text>
       <Text variant="sm" textAlign="center" color="black60" marginTop="1" marginBottom="2">
@@ -72,7 +72,7 @@ export const OpenSettingsBanner = () => (
 export const AllowPushNotificationsBanner = () => (
   <>
     <Flex py={3} px={2} backgroundColor="black5" alignItems="center">
-      <Text variant="md" weight="medium" color="black">
+      <Text variant="sm-display" weight="medium" color="black">
         Artsy would like to send you notifications
       </Text>
       <Text variant="sm" textAlign="center" color="black60" marginTop="1" marginBottom="2">
@@ -102,7 +102,7 @@ const NotificationPermissionsBox = ({
   isLoading: boolean
 }) => (
   <Box py={1} px={2}>
-    <Text variant="md" color={isLoading ? "black60" : "black100"} weight="medium" py={1}>
+    <Text variant="sm-display" color={isLoading ? "black60" : "black100"} weight="medium" py={1}>
       {title}
     </Text>
     {children}
