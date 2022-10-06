@@ -54,7 +54,7 @@ export const SellerReplyEstimate: React.FC<SellerReplyEstimateProps> = ({ order 
   return (
     <>
       <Flex flexDirection="column" p={2}>
-        <Text variant="sm-display">{message}</Text>
+        <Text variant="md">{message}</Text>
       </Flex>
       <Separator />
     </>

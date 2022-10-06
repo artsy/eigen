@@ -102,7 +102,7 @@ export const Dialog = (props: DialogProps) => {
             shadowRadius: 10,
           }}
         >
-          <Text testID="dialog-title" variant="sm-display" mb={0.5} mt={2} mx={2}>
+          <Text testID="dialog-title" variant="md" mb={0.5} mt={2} mx={2}>
             {title}
           </Text>
           {!!detail && (

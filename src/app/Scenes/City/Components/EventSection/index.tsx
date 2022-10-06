@@ -45,7 +45,7 @@ export class EventSection extends React.Component<Props> {
     return (
       <>
         <Box my={2} px={2}>
-          <Text variant="lg-display">{title}</Text>
+          <Text variant="lg">{title}</Text>
         </Box>
         {this.renderEvents()}
         {data.length > 2 && (

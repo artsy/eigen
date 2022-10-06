@@ -15,7 +15,7 @@ export const HeaderTitle: React.FC<HeaderTitleProps> = (props) => {
       alignItems="center"
       pointerEvents="none"
     >
-      <Text variant="sm-display" color="white100">
+      <Text variant="md" color="white100">
         {title}
       </Text>
     </Flex>

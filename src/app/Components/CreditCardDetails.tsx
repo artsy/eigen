@@ -10,7 +10,7 @@ const CreditCardDetails = ({
   <Flex alignItems="center" flexDirection="row">
     <CreditCardIcon type={brand as any} width={30} height={20} />
     <Flex flexDirection="row" alignItems="baseline">
-      <Text variant="sm-display" color="black100" mx="1">
+      <Text variant="md" color="black100" mx="1">
         {bullet}
         {bullet}
         {bullet}

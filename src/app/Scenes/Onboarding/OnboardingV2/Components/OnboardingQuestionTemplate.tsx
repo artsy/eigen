@@ -87,7 +87,7 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
         </Box>
         <Flex flex={1} flexDirection="column">
           <Spacer m={2} />
-          <Text variant="lg-display">{question}</Text>
+          <Text variant="lg">{question}</Text>
           {!!subtitle && (
             <>
               <Spacer m={1} />

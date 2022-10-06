@@ -45,7 +45,7 @@ export const FairMoreInfo: React.FC<FairMoreInfoProps> = ({ fair }) => {
     >
       <ScrollView>
         <Box px={2} pb={2} pt={6}>
-          <Text variant="lg-display">About</Text>
+          <Text variant="lg">About</Text>
 
           <Spacer my={1} />
 

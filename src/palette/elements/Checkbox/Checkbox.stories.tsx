@@ -26,7 +26,7 @@ Text`}
     <Checkbox error text="With Error" />
     <Checkbox error text="With Error" subtitle="Subtitle" />
     <Checkbox>
-      <Text variant="sm-display">
+      <Text variant="md">
         Agree to <LinkText onPress={() => console.warn("tapped")}>Conditions of Sale</LinkText>
       </Text>
     </Checkbox>

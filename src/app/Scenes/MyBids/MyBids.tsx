@@ -171,7 +171,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
 
 const BidTitle: React.FC<{ topBorder?: boolean }> = (props) => (
   <Flex bg="white100">
-    <Text variant="sm-display" mx={1.5} my={2}>
+    <Text mx={1.5} my={2}>
       {props.children}
     </Text>
     <Separator />

@@ -23,10 +23,10 @@ export const NotFoundFailureView: React.FC<NotFoundFailureViewProps> = ({
       <BackButton onPress={() => goBack()} style={{ top: 10 }} />
 
       <Flex flex={1} m={4} justifyContent="center" alignItems="center">
-        <Text variant="lg-display" mb="1" textAlign="center">
+        <Text variant="lg" mb="1" textAlign="center">
           {title ?? "Not Found"}
         </Text>
-        <Text variant="lg-display" color="black60" mb="3" textAlign="center">
+        <Text variant="lg" color="black60" mb="3" textAlign="center">
           {text ?? "Sorry, the resource you were looking for doesn’t exist."}
         </Text>
 

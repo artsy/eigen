@@ -144,7 +144,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
         <Flex flexDirection="row" alignItems="center">
           <InfoButton
             titleElement={
-              <Text variant="sm-display" mr={0.5}>
+              <Text variant="md" mr={0.5}>
                 Auction Results
               </Text>
             }

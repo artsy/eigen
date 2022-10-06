@@ -71,7 +71,7 @@ export const GeneArtworks: React.FC<GeneArtworksProps> = ({ gene, relay, openFil
 
   return (
     <Box mt={1}>
-      <Text variant="sm-display" color="black60" mb={2}>
+      <Text variant="md" color="black60" mb={2}>
         Showing {artworksTotal} works
       </Text>
       <InfiniteScrollArtworksGrid

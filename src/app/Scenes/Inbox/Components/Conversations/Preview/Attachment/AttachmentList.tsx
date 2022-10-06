@@ -28,7 +28,7 @@ const AttachmentList: React.FC<Props> = ({ conversation }) => {
             return item && <FileDownload tiny attachment={item} Icon={DocumentIcon} />
           }}
           ListHeaderComponent={
-            <Text variant="sm-display" weight="medium" mb={1}>
+            <Text variant="md" weight="medium" mb={1}>
               Attachments
             </Text>
           }

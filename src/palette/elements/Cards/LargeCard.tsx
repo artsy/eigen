@@ -43,7 +43,7 @@ export const LargeCard: React.FC<LargeCardProps> = ({ image, title, subtitle, ta
           right: space(6),
         }}
       >
-        <Text variant="sm-display" color={color("white100")}>
+        <Text variant="md" color={color("white100")}>
           {title}
         </Text>
         {!!subtitle && (

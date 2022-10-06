@@ -94,7 +94,7 @@ export const PopoverMessage: React.FC<PopoverMessageProps> = (props) => {
     <Flex py={1} px={2} backgroundColor={colors.backgroundColor}>
       <Flex flexDirection="row" justifyContent="space-between">
         <Flex flex={1} mr={!!onUndoPress ? 1 : 0}>
-          <Text color="white100" variant="sm-display" numberOfLines={1}>
+          <Text color="white100" variant="md" numberOfLines={1}>
             {title}
           </Text>
           {!!message && (

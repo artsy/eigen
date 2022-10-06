@@ -100,9 +100,9 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
 
       <Flex px={2}>
         <TouchableOpacity onPress={() => navigate(artwork?.artist?.href!)}>
-          <Text variant="lg-display">{artistNames ?? NO_ARTIST_NAMES_TEXT}</Text>
+          <Text variant="lg">{artistNames ?? NO_ARTIST_NAMES_TEXT}</Text>
         </TouchableOpacity>
-        <Text variant="lg-display" color="black60" italic>
+        <Text variant="lg" color="black60" italic>
           {formattedTitleAndYear}
         </Text>
       </Flex>

@@ -171,11 +171,11 @@ const EmptyList: React.FC<{ query: string }> = ({ query }) => {
     <>
       <Spacer mt={1} />
       <Spacer mt={2} />
-      <Text variant="sm-display" textAlign="center">
+      <Text variant="md" textAlign="center">
         Sorry, we couldn’t find anything for {quoteLeft}
         {query}.{quoteRight}
       </Text>
-      <Text variant="sm-display" color="black60" textAlign="center">
+      <Text variant="md" color="black60" textAlign="center">
         Please try searching again with a different spelling.
       </Text>
     </>

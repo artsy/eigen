@@ -46,7 +46,7 @@ export const ArtistItem: React.FC<ArtistItemProps> = ({ isFirst, onPress, ...res
         {/* Sale Artwork Artist Name, Nationality and Birthday */}
         <Flex flex={1} pl={1}>
           {!!artist.name && (
-            <Text variant="sm-display" ellipsizeMode="middle" numberOfLines={2}>
+            <Text variant="md" ellipsizeMode="middle" numberOfLines={2}>
               {artist.name}
             </Text>
           )}

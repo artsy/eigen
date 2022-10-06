@@ -76,7 +76,7 @@ const OnboardingPersonalizationListHeader = ({
         </Flex>
       </Touchable>
       <Box px={2} mt={2}>
-        <Text variant="lg-display">What Artists do You Collect?</Text>
+        <Text variant="lg">What Artists do You Collect?</Text>
         <Spacer mt={0.5} />
         <Text variant="xs" color={color("black100")}>
           Follow at least three artists you’re looking to collect or track so we can personalize

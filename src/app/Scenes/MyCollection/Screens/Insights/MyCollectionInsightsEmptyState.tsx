@@ -14,7 +14,7 @@ export const MyCollectionInsightsEmptyState = () => {
 
   return (
     <Flex px={2} testID="my-collection-insights-empty-state">
-      <Text variant="sm-display" textAlign="center">
+      <Text variant="md" textAlign="center">
         Gain deeper knowledge of your collection
       </Text>
       <Text variant="xs" color="black60" textAlign="center">

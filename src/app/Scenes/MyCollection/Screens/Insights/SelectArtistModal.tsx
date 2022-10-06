@@ -71,7 +71,7 @@ export const SelectArtistModal: React.FC<SelectArtistModalProps> = ({
       animationPosition="right"
     >
       <FancyModalHeader onLeftButtonPress={closeModal} hideBottomDivider>
-        <Text variant="sm-display">Select Artist</Text>
+        <Text variant="md">Select Artist</Text>
       </FancyModalHeader>
 
       <Flex flex={1} px={2}>
@@ -105,7 +105,7 @@ export const SelectArtistModal: React.FC<SelectArtistModalProps> = ({
 
 const ListHeaderComponent = (
   <Flex mb={2}>
-    <Text variant="sm-display">Artists You Collect</Text>
+    <Text variant="md">Artists You Collect</Text>
   </Flex>
 )
 

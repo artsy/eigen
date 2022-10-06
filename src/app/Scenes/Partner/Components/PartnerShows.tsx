@@ -95,7 +95,7 @@ export const PartnerShows: React.FC<{
       key: "past_shows_header",
       content: (
         <Flex mb={2}>
-          <Text variant="sm-display">Past shows</Text>
+          <Text variant="md">Past shows</Text>
         </Flex>
       ),
     })

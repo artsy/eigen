@@ -22,7 +22,7 @@ export const ZeroState = (props: ZeroStateProps) => {
           </Text>
         )}
         {!!bigTitle && (
-          <Text variant="sm-display" style={{ textAlign: "center" }} color={color("black100")}>
+          <Text variant="md" style={{ textAlign: "center" }} color={color("black100")}>
             {bigTitle}
           </Text>
         )}

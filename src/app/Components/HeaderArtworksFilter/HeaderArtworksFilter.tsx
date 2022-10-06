@@ -139,7 +139,7 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationVa
                   ],
                 }}
               >
-                <Text variant="sm-display" color="black60">
+                <Text variant="md" color="black60">
                   Showing {total} works
                 </Text>
               </Animated.View>
@@ -149,7 +149,7 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationVa
                 render={({ color }) => (
                   <Flex flexDirection="row" alignItems="center">
                     <FilterIcon fill={color} width="20px" height="20px" />
-                    <Text variant="sm-display" color={color}>
+                    <Text variant="md" color={color}>
                       Sort & Filter
                     </Text>
                   </Flex>

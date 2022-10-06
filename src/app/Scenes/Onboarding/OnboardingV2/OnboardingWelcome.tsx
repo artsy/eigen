@@ -133,7 +133,7 @@ const OnboardingWelcome = () => {
           </Text>
           <Spacer mt={4} />
           <AnimatedFlex entering={enteringAnim}>
-            <Text variant="lg-display" color="white100">
+            <Text variant="lg" color="white100">
               Start building your profile and tailor Artsy to your tastes.
             </Text>
           </AnimatedFlex>
