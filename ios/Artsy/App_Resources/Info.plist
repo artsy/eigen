@@ -221,6 +221,7 @@
 		</dict>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<key>FacebookAutoLogAppEventsEnabled</key><false/>
 	<false/>
 </dict>
 </plist>
