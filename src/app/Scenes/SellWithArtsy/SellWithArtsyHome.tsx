@@ -1,4 +1,5 @@
 import { ContextModule, OwnerType, tappedConsign, TappedConsignArgs } from "@artsy/cohesion"
+import { useIsFocused, useNavigation } from "@react-navigation/native"
 import { SellWithArtsyHome_recentlySoldArtworksTypeConnection$data } from "__generated__/SellWithArtsyHome_recentlySoldArtworksTypeConnection.graphql"
 import { SellWithArtsyHome_targetSupply$data } from "__generated__/SellWithArtsyHome_targetSupply.graphql"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
@@ -6,9 +7,10 @@ import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { GlobalStore } from "app/store/GlobalStore"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
+import { useLightStatusBarStyle } from "app/utils/useStatusBarStyle"
 import { Button, Flex, Screen, Spacer, Text } from "palette"
 import React, { useEffect } from "react"
-import { SafeAreaView, ScrollView } from "react-native"
+import { SafeAreaView, ScrollView, StatusBar, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
@@ -69,16 +71,8 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
 
   return (
     <Screen.Background>
-      <SafeAreaView
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "transparent",
-          marginTop: -50,
-          minHeight: screenHeight,
-        }}
-      >
+      <StatusBar barStyle="light-content" />
+      <Flex flex={1} justifyContent="center" alignItems="center" minHeight={screenHeight}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Flex pb={5}>
             <Header onConsignPress={handleConsignPress} />
@@ -118,7 +112,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
             <Footer />
           </Flex>
         </ScrollView>
-      </SafeAreaView>
+      </Flex>
     </Screen.Background>
   )
 }
