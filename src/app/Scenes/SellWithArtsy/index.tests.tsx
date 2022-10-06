@@ -7,6 +7,12 @@ import { SellWithArtsyHomeQueryRenderer } from "./SellWithArtsyHome"
 
 jest.unmock("react-relay")
 
+jest.mock("../../utils/useStatusBarStyle", () => {
+  return {
+    useLightStatusBarStyle: jest.fn(),
+  }
+})
+
 describe("ConsignmentsHome index", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
