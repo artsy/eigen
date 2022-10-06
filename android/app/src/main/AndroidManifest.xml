@@ -10,8 +10,6 @@
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <uses-feature android:name="android.hardware.camera.front" android:required="false" />
 
-    <!-- Remove ad id permission for facebook sdk -->
-    <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove"/>
 
     <queries>
         <intent>
@@ -141,5 +139,4 @@
             </intent-filter>
         </service>
     </application>
-
 </manifest>
