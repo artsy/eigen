@@ -40,7 +40,6 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
   const [isDisplayingLocalImages, setIsDisplayingLocalImages] = useState(false)
 
   const dimensions = useScreenDimensions()
-  const formattedTitleAndYear = [title, date].filter(Boolean).join(", ")
 
   const color = useColor()
 
@@ -102,8 +101,11 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
         <TouchableOpacity onPress={() => navigate(artwork?.artist?.href!)}>
           <Text variant="lg-display">{artistNames ?? NO_ARTIST_NAMES_TEXT}</Text>
         </TouchableOpacity>
-        <Text variant="lg-display" color="black60" italic>
-          {formattedTitleAndYear}
+        <Text variant="lg-display" color="black60">
+          <Text variant="lg-display" color="black60" italic>
+            {title}
+          </Text>
+          {!!date && `, ${date}`}
         </Text>
       </Flex>
 

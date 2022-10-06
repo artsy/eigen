@@ -53,12 +53,12 @@ interface StepWithImageProps {
 const StepWithImage: React.FC<StepWithImageProps> = ({ icon: Icon, text, title }) => {
   return (
     <Flex flexDirection="row">
-      <Box pr={1} mr={0.3} style={{ paddingTop: 4 }}>
+      <Box pr={1} mr={0.3} style={{ paddingTop: 6 }}>
         <Icon width={18} height={18} />
       </Box>
 
       <TextContainer>
-        <Text variant="sm">{title}</Text>
+        <Text variant="sm-display">{title}</Text>
         <Spacer mb={0.3} />
         <Text variant="sm" color="black60">
           {text}

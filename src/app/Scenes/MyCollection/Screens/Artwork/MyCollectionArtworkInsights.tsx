@@ -43,7 +43,7 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
 
   return (
     <StickyTabPageScrollView>
-      <Flex my={3}>
+      <Flex mb={3} mt={2}>
         {!!marketPriceInsights && (
           <>
             <MyCollectionArtworkDemandIndex
