@@ -1,5 +1,4 @@
 import { ContextModule, OwnerType, tappedConsign, TappedConsignArgs } from "@artsy/cohesion"
-import { useIsFocused, useNavigation } from "@react-navigation/native"
 import { SellWithArtsyHome_recentlySoldArtworksTypeConnection$data } from "__generated__/SellWithArtsyHome_recentlySoldArtworksTypeConnection.graphql"
 import { SellWithArtsyHome_targetSupply$data } from "__generated__/SellWithArtsyHome_targetSupply.graphql"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
@@ -10,7 +9,7 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useLightStatusBarStyle } from "app/utils/useStatusBarStyle"
 import { Button, Flex, Screen, Spacer, Text } from "palette"
 import React, { useEffect } from "react"
-import { SafeAreaView, ScrollView, StatusBar, View } from "react-native"
+import { ScrollView, StatusBar } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
@@ -42,6 +41,8 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
   targetSupply,
 }) => {
   const enableNewSellWithArtsyScreen = useFeatureFlag("ARNewSellWithArtsyScreen")
+
+  useLightStatusBarStyle()
 
   if (!enableNewSellWithArtsyScreen) {
     return <OldSellWithArtsyHomeQueryRenderer />
