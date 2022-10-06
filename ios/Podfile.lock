@@ -62,8 +62,6 @@ PODS:
     - Expecta (~> 1.0)
     - FBSnapshotTestCase/Core (~> 2.0)
     - Specta (~> 1.0)
-  - FBAEMKit (15.0.0):
-    - FBSDKCoreKit_Basics (= 15.0.0)
   - FBLazyVector (0.66.4)
   - FBReactNativeSpec (0.66.4):
     - RCT-Folly (= 2021.06.28.00-v2)
@@ -72,18 +70,20 @@ PODS:
     - React-Core (= 0.66.4)
     - React-jsi (= 0.66.4)
     - ReactCommon/turbomodule/core (= 0.66.4)
-  - FBSDKCoreKit (15.0.0):
-    - FBAEMKit (= 15.0.0)
-    - FBSDKCoreKit_Basics (= 15.0.0)
-  - FBSDKCoreKit_Basics (15.0.0)
-  - FBSDKGamingServicesKit (15.0.0):
-    - FBSDKCoreKit (= 15.0.0)
-    - FBSDKCoreKit_Basics (= 15.0.0)
-    - FBSDKShareKit (= 15.0.0)
-  - FBSDKLoginKit (15.0.0):
-    - FBSDKCoreKit (= 15.0.0)
-  - FBSDKShareKit (15.0.0):
-    - FBSDKCoreKit (= 15.0.0)
+  - FBSDKCoreKit (9.3.0):
+    - FBSDKCoreKit/Basics (= 9.3.0)
+    - FBSDKCoreKit/Core (= 9.3.0)
+  - FBSDKCoreKit/Basics (9.3.0)
+  - FBSDKCoreKit/Core (9.3.0):
+    - FBSDKCoreKit/Basics
+  - FBSDKLoginKit (9.3.0):
+    - FBSDKLoginKit/Login (= 9.3.0)
+  - FBSDKLoginKit/Login (9.3.0):
+    - FBSDKCoreKit (~> 9.3.0)
+  - FBSDKShareKit (9.3.0):
+    - FBSDKShareKit/Share (= 9.3.0)
+  - FBSDKShareKit/Share (9.3.0):
+    - FBSDKCoreKit (~> 9.3.0)
   - FBSnapshotTestCase (2.1.4):
     - FBSnapshotTestCase/SwiftSupport (= 2.1.4)
   - FBSnapshotTestCase/Core (2.1.4)
@@ -457,20 +457,19 @@ PODS:
     - React-Core
   - react-native-cookies (6.0.11):
     - React-Core
-  - react-native-fbsdk-next (11.0.0):
+  - react-native-fbsdk-next (4.3.0):
     - React-Core
-    - react-native-fbsdk-next/Core (= 11.0.0)
-    - react-native-fbsdk-next/Login (= 11.0.0)
-    - react-native-fbsdk-next/Share (= 11.0.0)
-  - react-native-fbsdk-next/Core (11.0.0):
-    - FBSDKCoreKit (~> 15.0.0)
+    - react-native-fbsdk-next/Core (= 4.3.0)
+    - react-native-fbsdk-next/Login (= 4.3.0)
+    - react-native-fbsdk-next/Share (= 4.3.0)
+  - react-native-fbsdk-next/Core (4.3.0):
+    - FBSDKCoreKit (~> 9.3)
     - React-Core
-  - react-native-fbsdk-next/Login (11.0.0):
-    - FBSDKLoginKit (~> 15.0.0)
+  - react-native-fbsdk-next/Login (4.3.0):
+    - FBSDKLoginKit (~> 9.3)
     - React-Core
-  - react-native-fbsdk-next/Share (11.0.0):
-    - FBSDKGamingServicesKit (~> 15.0.0)
-    - FBSDKShareKit (~> 15.0.0)
+  - react-native-fbsdk-next/Share (4.3.0):
+    - FBSDKShareKit (~> 9.3)
     - React-Core
   - react-native-flipper (0.131.1):
     - React-Core
@@ -721,9 +720,9 @@ DEPENDENCIES:
   - "Expecta+Snapshots (= 3.1.1)"
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
-  - FBSDKCoreKit (= 15.0.0)
-  - FBSDKLoginKit (= 15.0.0)
-  - FBSDKShareKit (= 15.0.0)
+  - FBSDKCoreKit (= 9.3.0)
+  - FBSDKLoginKit (= 9.3.0)
+  - FBSDKShareKit (= 9.3.0)
   - Firebase/Auth (= 8.1.0)
   - Flipper (= 0.87.0)
   - Flipper-Boost-iOSX (= 1.76.0.1.11)
@@ -864,10 +863,7 @@ SPEC REPOS:
     - EDColor
     - Expecta
     - "Expecta+Snapshots"
-    - FBAEMKit
     - FBSDKCoreKit
-    - FBSDKCoreKit_Basics
-    - FBSDKGamingServicesKit
     - FBSDKLoginKit
     - FBSDKShareKit
     - FBSnapshotTestCase
@@ -1132,14 +1128,11 @@ SPEC CHECKSUMS:
   EDColor: 91d127cd67d7c1d3862846fb11ef4b3851151bfa
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   "Expecta+Snapshots": dcff217eef506dabd6dfdc7864ea2da321fafbb8
-  FBAEMKit: d8312d8451ead46282adc7f3565ffc4965e3a4a7
   FBLazyVector: e5569e42a1c79ca00521846c223173a57aca1fe1
   FBReactNativeSpec: fe08c1cd7e2e205718d77ad14b34957cce949b58
-  FBSDKCoreKit: 81879058dd06208c0820fc713d054ca54903e8ba
-  FBSDKCoreKit_Basics: eebc9bb69a0e5d133b92dca53a20716227faa454
-  FBSDKGamingServicesKit: e0766514d64d26a9f846e793c0a44bc4a236723b
-  FBSDKLoginKit: 11995469cd7da16fd4d5245e8d2ec61060479270
-  FBSDKShareKit: 9501792c3024580809f811a8a549868699d9bd32
+  FBSDKCoreKit: 0d1ae58388a458b8222f72025804cdc84eb5d0c3
+  FBSDKLoginKit: aea68df6121c5e165ccae2fabfdc83c4644ee40f
+  FBSDKShareKit: 70889c97c62f0c6b3ccb8b999e73a85f19024001
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   Firebase: b5956acddaaa53a6c292bec00649fadd18367344
   FirebaseAuth: e069ff5736fe9d5dcf61f36244bb1b1ce1897d17
@@ -1204,7 +1197,7 @@ SPEC CHECKSUMS:
   react-native-cameraroll: 463aff54e37cff27ea76eb792e6f1fa43b876320
   react-native-config: d622ebb3a7c42b072f3f24547badd43147cf84f9
   react-native-cookies: cd92f3824ed1e32a20802e8185101e14bb5b76da
-  react-native-fbsdk-next: e5ea39f1b0f1e76deeb2538275559706f3b79e82
+  react-native-fbsdk-next: 19e974b071047b7ed1dad86a9dc3fe77dff76b8c
   react-native-flipper: 8d0ada062fbc2c7460cc0d343aded6fc3f9c90dc
   react-native-geolocation: c956aeb136625c23e0dce0467664af2c437888c9
   react-native-image-resizer: d9fb629a867335bdc13230ac2a58702bb8c8828f
@@ -1271,6 +1264,6 @@ SPEC CHECKSUMS:
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: ddf6cd1825e5f92917aa32eef4f57f5d667a4b5a
+PODFILE CHECKSUM: 16639f367c48e46002fd7f1b19f610aba2fe6ee1
 
 COCOAPODS: 1.11.3

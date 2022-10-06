@@ -386,16 +386,14 @@ describe("AuthModel", () => {
     })
 
     it("throws an error if fetching data from facebook fails", async () => {
-      const error: any = "fetching fb data error"
-
       ;(GraphRequest as jest.Mock).mockImplementation((_route, _config, callback) => {
-        callback(error, undefined)
+        callback({ message: "fetching fb data error" }, undefined)
       })
 
       const result = await GlobalStore.actions.auth
         .authFacebook({ signInOrUp: "signUp", agreedToReceiveEmails: true })
         .catch((e) => e)
-      const expectedError = new AuthError("Error fetching facebook data", error.toString())
+      const expectedError = new AuthError("fetching fb data error", "Error fetching facebook data")
       expect(result).toMatchObject(expectedError)
     })
 

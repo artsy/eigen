@@ -56,12 +56,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v8-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
+            - v7-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
       - run:
           name: Install node modules
           command: ls node_modules || yarn install
       - save_cache:
-          key: v8-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
+          key: v7-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
           paths:
             - node_modules
   run-relay-compiler:
@@ -139,12 +139,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v11-pods-{{ checksum ".manifests/cocoapods" }}
+            - v10-pods-{{ checksum ".manifests/cocoapods" }}
       - run:
           name: Install Pods
           command: cd ios; bundle exec pod check --ignore-dev-pods || bundle exec pod install; cd ..;
       - save_cache:
-          key: v11-pods-{{ checksum ".manifests/cocoapods" }}
+          key: v10-pods-{{ checksum ".manifests/cocoapods" }}
           paths:
             - ios/Pods
             # this changes after pod install because we don't install dev tools on CI
