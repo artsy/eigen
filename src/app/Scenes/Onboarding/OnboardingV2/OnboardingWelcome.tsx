@@ -94,7 +94,7 @@ const OnboardingWelcome = () => {
         justifyContent="center"
       >
         <ArtsyLogoAbsoluteHeader />
-        <Text variant="xl" color="white100">
+        <Text variant="xxl" color="white100">
           Welcome{"\n"}
           to Artsy,{"\n"}
           {me?.name}
@@ -127,7 +127,7 @@ const OnboardingWelcome = () => {
       >
         <ArtsyLogoAbsoluteHeader />
         <Flex flex={1} justifyContent="center">
-          <Text variant="xl" color="white100">
+          <Text variant="xxl" color="white100">
             Ready to find{"\n"}
             art you love?
           </Text>

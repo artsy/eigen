@@ -297,11 +297,13 @@ const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
       }}
       value={
         isAdminOverrideInEffect ? (
-          <Text color="black100" fontWeight="bold">
+          <Text variant="md" color="black100" fontWeight="bold">
             {valText}
           </Text>
         ) : (
-          <Text color="black60">{valText}</Text>
+          <Text variant="md" color="black60">
+            {valText}
+          </Text>
         )
       }
     />
@@ -344,11 +346,13 @@ const DevToggleItem: React.FC<{ toggleKey: DevToggleName }> = ({ toggleKey }) =>
       }}
       value={
         currentValue ? (
-          <Text color="black100" fontWeight="bold">
+          <Text variant="md" color="black100" fontWeight="bold">
             {valText}
           </Text>
         ) : (
-          <Text color="black60">{valText}</Text>
+          <Text variant="md" color="black60">
+            {valText}
+          </Text>
         )
       }
     />
@@ -461,7 +465,7 @@ const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     {description}
                   </Text>
                   <Flex key={key} flexDirection="row" justifyContent="space-between">
-                    <Text>{strings[key as EnvironmentKey]}</Text>
+                    <Text variant="xs">{strings[key as EnvironmentKey]}</Text>
                   </Flex>
                 </Flex>
                 <ChevronIcon fill="black60" direction="right" />
@@ -491,12 +495,12 @@ export const FeatureFlagMenuItem: React.FC<{
         pr="15px"
       >
         <Flex flexDirection="row" mr="2" flex={5}>
-          <Text>{title}</Text>
+          <Text variant="md">{title}</Text>
         </Flex>
         {!!value && (
           <Flex flex={2} flexDirection="row" alignItems="center">
             <Flex flex={3}>
-              <Text color="black60" numberOfLines={1} textAlign="right">
+              <Text variant="md" color="black60" numberOfLines={1} textAlign="right">
                 {value}
               </Text>
             </Flex>
