@@ -28,7 +28,7 @@ const ArtistAboutShows: React.FC<Props> = ({ artist }) => {
   if (userHasShows) {
     return (
       <Flex>
-        <Text variant="sm-display" mb={1}>
+        <Text variant="md" mb={1}>
           Shows featuring {artist.name}
         </Text>
         <FlatList

@@ -139,7 +139,7 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
 export const SaleAvailability: React.FC<{ saleMessage: string }> = ({ saleMessage }) => {
   return (
     <Flex flexWrap="nowrap" flexDirection="row" alignItems="center">
-      <Text variant="lg-display">{saleMessage}</Text>
+      <Text variant="lg">{saleMessage}</Text>
     </Flex>
   )
 }

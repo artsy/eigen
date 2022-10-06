@@ -98,11 +98,11 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
       {artworksCount === 0 ? (
         <Box mb="80px" pt={6}>
           <Box px={2}>
-            <Text variant="sm-display" textAlign="center">
+            <Text variant="md" textAlign="center">
               Sorry, we couldn’t find any Artworks for {quoteLeft}
               {keyword}.{quoteRight}
             </Text>
-            <Text variant="sm-display" color="black60" textAlign="center">
+            <Text variant="md" color="black60" textAlign="center">
               Please try searching again with a different spelling.
             </Text>
           </Box>

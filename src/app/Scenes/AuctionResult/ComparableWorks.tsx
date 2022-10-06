@@ -30,7 +30,7 @@ const ComparableWorks: React.FC<ComparableWorks> = ({ auctionResult }) => {
         keyExtractor={(item, index) => String(item?.internalID || index)}
         initialNumToRender={3}
         ListHeaderComponent={
-          <Text variant="sm-display" my={2}>
+          <Text variant="md" my={2}>
             Comparable Works
           </Text>
         }

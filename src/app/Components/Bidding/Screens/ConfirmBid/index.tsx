@@ -497,13 +497,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                   />
                 )}
 
-                <Text
-                  variant="sm-display"
-                  mt={4}
-                  weight="medium"
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
-                >
+                <Text variant="md" mt={4} weight="medium" numberOfLines={1} ellipsizeMode="tail">
                   {artwork!.artist_names}
                 </Text>
                 <Text variant="xs" weight="medium">

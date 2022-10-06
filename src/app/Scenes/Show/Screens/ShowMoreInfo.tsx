@@ -45,7 +45,7 @@ export const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ show }) => {
       key: "title",
       element: (
         <Box mx={2}>
-          <Text variant="lg-display">About</Text>
+          <Text variant="lg">About</Text>
         </Box>
       ),
     },

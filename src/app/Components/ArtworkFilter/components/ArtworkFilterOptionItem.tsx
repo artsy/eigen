@@ -16,9 +16,9 @@ export const ArtworkFilterOptionItem: React.FC<ArtworkFilterOptionItemProps> = (
     <TouchableRow onPress={onPress} testID="ArtworkFilterOptionItemRow">
       <Flex flexDirection="row" alignItems="center" justifyContent="space-between" p={2}>
         <Flex flex={1}>
-          <Text variant="sm-display">
+          <Text variant="md">
             {item.displayText}
-            {!!count && <Text variant="sm-display" color="blue100">{` ${bullet} ${count}`}</Text>}
+            {!!count && <Text variant="md" color="blue100">{` ${bullet} ${count}`}</Text>}
           </Text>
         </Flex>
         <Flex alignItems="center" justifyContent="flex-end">

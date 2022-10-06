@@ -32,7 +32,7 @@ const STEPS = [
 export const HowItWorks: React.FC = () => {
   return (
     <Box px={2}>
-      <Text variant="lg-display">How it works</Text>
+      <Text variant="lg">How it works</Text>
 
       <Spacer mb={2} />
       <Join separator={<Spacer mb={2} />}>

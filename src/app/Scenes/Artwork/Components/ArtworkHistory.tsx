@@ -29,7 +29,7 @@ export const ArtworkHistory: React.FC<ArtworkHistoryProps> = ({ artwork }) => {
     <Join separator={<Spacer pb={3} />}>
       {displaySections.map(({ title, value, contextModule }, index) => (
         <Box key={index}>
-          <Text variant="sm-display" pb={2}>
+          <Text variant="md" pb={2}>
             {title}
           </Text>
           <ReadMore

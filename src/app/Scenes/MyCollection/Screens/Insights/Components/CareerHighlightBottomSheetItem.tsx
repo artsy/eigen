@@ -30,7 +30,7 @@ export const CareerHighlightBottomSheetItem: React.FC<CareerHighlightBottomSheet
   return (
     <Flex flex={1} minWidth={dimensions.width} p={2}>
       <Flex pb={2}>
-        <Text variant="lg-display">{year} Career Highlights</Text>
+        <Text variant="lg">{year} Career Highlights</Text>
       </Flex>
       {/** Flex wrap to allow horizontal scroll possible so the BottomSheetScrollView does not cover everywhere */}
       <Flex flex={1} flexWrap="wrap">

@@ -70,7 +70,7 @@ export const AuctionResultsForArtistsYouCollect: React.FC = () => {
 export const ListHeader: React.FC = () => {
   return (
     <Flex mx={2}>
-      <Text variant="lg-display" mb={0.5}>
+      <Text variant="lg" mb={0.5}>
         Recently Sold at Auction
       </Text>
       <Text variant="xs">Stay up-to-date on the prices your artists achieve at auctions.</Text>

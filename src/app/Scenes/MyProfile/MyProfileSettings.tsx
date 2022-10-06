@@ -16,7 +16,7 @@ export const MyProfileSettings: React.FC<{}> = () => {
 
   return (
     <ScrollView>
-      <Text variant="lg-display" mx="2" mt="6">
+      <Text variant="lg" mx="2" mt="6">
         {"Settings"}
       </Text>
       <Spacer mt={3} mb={2} />

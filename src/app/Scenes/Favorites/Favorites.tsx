@@ -109,7 +109,7 @@ export const Favorites: React.FC<Props> = ({ initialTab = Tab.works }) => {
 const StickyHeaderContent: React.FC = ({}) => {
   return (
     <Flex mt={4}>
-      <Text variant="lg-display" m={2}>
+      <Text variant="lg" m={2}>
         Follows
       </Text>
     </Flex>

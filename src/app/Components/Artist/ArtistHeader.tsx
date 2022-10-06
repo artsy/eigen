@@ -128,7 +128,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
 
   return (
     <Box px={2} pt={6} pb={1}>
-      <Text variant="lg-display">{artist.name}</Text>
+      <Text variant="lg">{artist.name}</Text>
       <Spacer mb={1} />
 
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center">

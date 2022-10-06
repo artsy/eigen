@@ -13,7 +13,7 @@ export const MyCollectionSellingWithartsyFAQ: React.FC = () => {
       <Box pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px={2}>
         <Box my={2}>
           <Join separator={<Spacer my={1} />}>
-            <Text variant="lg-display" mb={2}>
+            <Text variant="lg" mb={2}>
               How It Works
             </Text>
 

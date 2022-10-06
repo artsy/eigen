@@ -54,7 +54,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ artwork }) => {
   return (
     <Box>
       <Join separator={<Spacer my={1} />}>
-        <Text variant="sm-display">Artwork details</Text>
+        <Text variant="md">Artwork details</Text>
         {displayItems.map(({ title, value }, index) => (
           <ArtworkDetailsRow
             key={index.toString()}

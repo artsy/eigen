@@ -54,7 +54,7 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
   return collections.length > 0 ? (
     <>
       <Flex ml="-20px">
-        <Text variant="sm-display" my={2} ml={4} testID="group">
+        <Text variant="md" my={2} ml={4} testID="group">
           {collectionGroup.name}
         </Text>
       </Flex>

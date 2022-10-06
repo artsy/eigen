@@ -6,7 +6,7 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ title }) => (
   <Flex flexDirection="column">
-    <Text variant="sm-display" textAlign="left">
+    <Text variant="md" textAlign="left">
       {title}
     </Text>
   </Flex>

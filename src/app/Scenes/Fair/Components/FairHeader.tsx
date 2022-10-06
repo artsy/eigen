@@ -81,7 +81,7 @@ export const FairHeader: React.FC<FairHeaderProps> = ({ fair }) => {
         <SafeTopMargin />
       )}
       <Box px={2}>
-        <Text variant="lg-display" py={2}>
+        <Text variant="lg" py={2}>
           {name}
         </Text>
         <FairTiming fair={fair} />

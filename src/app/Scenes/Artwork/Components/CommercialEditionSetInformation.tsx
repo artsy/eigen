@@ -94,7 +94,7 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
           <>
             <Spacer mb={2} />
 
-            <Text variant="lg-display">{selectedEdition.saleMessage}</Text>
+            <Text variant="lg">{selectedEdition.saleMessage}</Text>
           </>
         )}
         <CommercialPartnerInformation artwork={artwork} />

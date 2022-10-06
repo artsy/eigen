@@ -113,7 +113,7 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
         keyboardShouldPersistTaps="handled"
       >
         <Flex px={2} mt={2}>
-          <Text variant="sm-display" color="black60" mb={2}>
+          <Text variant="md" color="black60" mb={2}>
             Showing {artworksTotal} works
           </Text>
           <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />

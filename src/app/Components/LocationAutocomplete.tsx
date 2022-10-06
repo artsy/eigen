@@ -234,7 +234,7 @@ const LocationPredictions = ({
           </Touchable>
         ))}
         {!!emptyResults && (
-          <Text m={1} variant="sm-display" color="black60" textAlign="center">
+          <Text m={1} variant="md" color="black60" textAlign="center">
             Please try searching again with a different spelling.
           </Text>
         )}
