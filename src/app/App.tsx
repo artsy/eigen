@@ -11,6 +11,7 @@ import { useStripeConfig } from "app/utils/useStripeConfig"
 import { useEffect } from "react"
 import { NativeModules, Platform, UIManager, View } from "react-native"
 import RNBootSplash from "react-native-bootsplash"
+import { Settings } from "react-native-fbsdk-next"
 import RNShake from "react-native-shake"
 import { AppProviders } from "./AppProviders"
 import { useWebViewCookies } from "./Components/ArtsyWebView"
@@ -71,6 +72,7 @@ const Main = () => {
     GoogleSignin.configure({
       webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
     })
+    Settings.initializeSDK()
   }, [])
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
