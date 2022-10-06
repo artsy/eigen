@@ -37,7 +37,7 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
   return (
     <Flex>
       <Separator mb={2} />
-      <Text variant="md" testID="SWA-banner-in-MC">
+      <Text variant="sm-display" testID="SWA-banner-in-MC">
         Interested in Selling This Work?
       </Text>
       <Spacer mt={0.5} />

@@ -29,7 +29,7 @@ export const AnimatableHeaderLargeTitle = () => {
         setLargeTitleHeight(event.nativeEvent.layout.height)
       }}
     >
-      <Text testID="animated-header-large-title" variant="lg">
+      <Text testID="animated-header-large-title" variant="lg-display">
         {title}
       </Text>
     </Animated.View>

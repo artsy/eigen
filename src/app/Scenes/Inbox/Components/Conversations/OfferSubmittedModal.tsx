@@ -36,16 +36,15 @@ export const OfferSubmittedModal: React.FC = (props) => {
         </FancyModalHeader>
         <Box flex={1} py={4} px={2}>
           <Text variant="lg">Thank you, your offer has been submitted</Text>
+          ////// WOWOWO
+          <Text variant="lg-display">Your offer has been submitted</Text>
           <Text variant="sm" color="black60">
             Offer #{offerData.code}
           </Text>
-
           <Box mt={2} backgroundColor="black10" p={2}>
             <Text>{offerData.message}</Text>
           </Box>
-
           <Text mt={2}>Negotiation with the gallery will continue in the Inbox.</Text>
-
           <Button variant="fillDark" block my={2} onPress={onGoToInbox}>
             Go to inbox
           </Button>

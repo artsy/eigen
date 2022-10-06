@@ -98,7 +98,7 @@ export class EventList extends React.Component<Props> {
           if (!!header) {
             return (
               <Box pt={6} mt={3} mb={2}>
-                <Text variant="lg">{header}</Text>
+                <Text variant="lg-display">{header}</Text>
               </Box>
             )
           } else {

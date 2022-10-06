@@ -48,7 +48,7 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
       return null
     } else if (auctionState === AuctionTimerState.CLOSED) {
       return (
-        <Text variant="md" weight="medium" color="black100">
+        <Text variant="sm-display" weight="medium" color="black100">
           Bidding closed
         </Text>
       )
@@ -74,12 +74,10 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
     return (
       <>
         <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
-          <Text variant="md" weight="medium">
-            {bidsPresent ? "Current bid" : "Starting bid"}
-          </Text>
-          <Text variant="md" weight="medium">
+          <Text weight="medium">{bidsPresent ? "Current bid" : "Starting bid"}</Text>
+          <Text variant="sm-display" weight="medium">
             {!!myBidPresent && (
-              <Text>
+              <Text variant="sm-display">
                 {myBidWinning ? (
                   <CheckCircleIcon
                     height="16"

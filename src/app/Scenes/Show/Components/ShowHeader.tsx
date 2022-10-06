@@ -30,7 +30,7 @@ export const ShowHeader: React.FC<ShowHeaderProps> = ({ show, ...rest }) => {
 
   return (
     <Box {...rest}>
-      <Text variant="lg" mb={1}>
+      <Text variant="lg-display" mb={1}>
         {show.name}
       </Text>
 

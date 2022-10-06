@@ -7,7 +7,7 @@ export const MarketSignalsSectionHeader: React.FC<{}> = () => {
 
   return (
     <Flex justifyContent="space-between" flexDirection="row" my={2} alignItems="center" px={2}>
-      <Text variant="lg">Market Signals</Text>
+      <Text variant="lg-display">Market Signals</Text>
       <Touchable onPress={() => setIsVisible(true)} haptic>
         <Text style={{ textDecorationLine: "underline" }} variant="xs" color="black60">
           What is this?

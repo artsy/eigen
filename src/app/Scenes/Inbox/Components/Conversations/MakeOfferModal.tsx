@@ -42,7 +42,7 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
       </FancyModalHeader>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Flex p={1.5}>
-          <Text variant="lg">Select edition set</Text>
+          <Text variant="lg-display">Select edition set</Text>
           <BorderBox p={0} my={2}>
             <CollapsibleArtworkDetails hasSeparator={false} artwork={artwork} />
           </BorderBox>

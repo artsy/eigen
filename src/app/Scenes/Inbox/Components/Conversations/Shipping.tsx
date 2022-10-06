@@ -25,7 +25,7 @@ export const Shipping: React.FC<ShippingProps> = ({ order }) => {
     return (
       <>
         <Flex flexDirection="column" p={2} key="support-section">
-          <Text variant="md" mb={1} weight="medium">
+          <Text variant="sm-display" mb={1} weight="medium">
             Ship to
           </Text>
 
@@ -45,7 +45,7 @@ export const Shipping: React.FC<ShippingProps> = ({ order }) => {
   return (
     <>
       <Flex flexDirection="column" p={2} key="support-section">
-        <Text variant="md" mb={1} weight="medium">
+        <Text variant="sm-display" mb={1} weight="medium">
           {`Pick up (${order.lineItems.edges[0].node?.artwork?.shippingOrigin})`}
         </Text>
 

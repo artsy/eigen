@@ -86,7 +86,7 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
       py="2"
     >
       <Flex flexDirection="row" justifyContent="space-between">
-        <Text variant="lg" pb="2" px="2">
+        <Text variant="lg-display" pb="2" px="2">
           Admin Settings
         </Text>
         <Buttons onClose={onClose} />
@@ -176,7 +176,89 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
                   onPress={() => GlobalStore.actions._setVersion(migrationVersion + 1)}
                 />
               </Flex>
+        <Text variant="sm-display" my="1" mx="2">
+          Feature Flags
+        </Text>
+        {configurableFeatureFlagKeys.map((flagKey) => {
+          return <FeatureFlagItem key={flagKey} flagKey={flagKey} />
+        })}
+        <FeatureFlagMenuItem
+          title="Revert all feature flags to default"
+          onPress={() => {
+            GlobalStore.actions.artsyPrefs.features.clearAdminOverrides()
+          }}
+        />
+        <Flex mx="2">
+          <Separator my="1" />
+        </Flex>
+        <Text variant="sm-display" my="1" mx="2">
+          Tools
+        </Text>
+        {configurableDevToggleKeys.map((devToggleKey) => {
+          return <DevToggleItem key={devToggleKey} toggleKey={devToggleKey} />
+        })}
+        <MenuItem
+          title="Migration version"
+          rightView={
+            <Flex flexDirection="row" alignItems="center">
+              <RNButton
+                title="-"
+                onPress={() => GlobalStore.actions._setVersion(migrationVersion - 1)}
+              />
+              <Text>{migrationVersion}</Text>
+              <RNButton
+                title="+"
+                onPress={() => GlobalStore.actions._setVersion(migrationVersion + 1)}
+              />
+            </Flex>
+          }
+        />
+        <FeatureFlagMenuItem
+          title={`Migration name: "${
+            (Object.entries(Versions).find(([_, v]) => v === migrationVersion) ?? ["N/A"])[0]
+          }"`}
+          disabled
+        />
+        <FeatureFlagMenuItem
+          title="Clear Keychain"
+          onPress={() => {
+            Keychain.resetInternetCredentials(server)
+          }}
+        />
+        <FeatureFlagMenuItem
+          title="Open RN Dev Menu"
+          onPress={() => NativeModules.DevMenu.show()}
+        />
+        <FeatureFlagMenuItem
+          title="Clear AsyncStorage"
+          onPress={() => {
+            AsyncStorage.clear()
+          }}
+        />
+        <FeatureFlagMenuItem
+          title="Clear Relay Cache"
+          onPress={() => {
+            RelayCache.clearAll()
+          }}
+        />
+        <FeatureFlagMenuItem title={`Active Unleash env: ${capitalize(unleashEnv)}`} />
+        <FeatureFlagMenuItem
+          title="Log out"
+          onPress={() => {
+            GlobalStore.actions.auth.signOut()
+          }}
+        />
+        <FeatureFlagMenuItem
+          title="Throw Sentry Error"
+          onPress={() => {
+            if (!Config.SENTRY_DSN) {
+              Alert.alert(
+                "No Sentry DSN available",
+                __DEV__ ? "Set it in .env.shared and re-build the app." : undefined
+              )
+              return
             }
+            ////// WOWOWO
           />
           <FeatureFlagMenuItem
             title={`Migration name: "${
@@ -319,11 +401,11 @@ const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
       }}
       value={
         isAdminOverrideInEffect ? (
-          <Text variant="md" color="black100" fontWeight="bold">
+          <Text variant="sm-display" color="black100" fontWeight="bold">
             {valText}
           </Text>
         ) : (
-          <Text variant="md" color="black60">
+          <Text variant="sm-display" color="black60">
             {valText}
           </Text>
         )
@@ -368,11 +450,11 @@ const DevToggleItem: React.FC<{ toggleKey: DevToggleName }> = ({ toggleKey }) =>
       }}
       value={
         currentValue ? (
-          <Text variant="md" color="black100" fontWeight="bold">
+          <Text variant="sm-display" color="black100" fontWeight="bold">
             {valText}
           </Text>
         ) : (
-          <Text variant="md" color="black60">
+          <Text variant="sm-display" color="black60">
             {valText}
           </Text>
         )
@@ -487,7 +569,7 @@ const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     {description}
                   </Text>
                   <Flex key={key} flexDirection="row" justifyContent="space-between">
-                    <Text variant="xs">{strings[key as EnvironmentKey]}</Text>
+                    <Text variant="sm-display">{strings[key as EnvironmentKey]}</Text>
                   </Flex>
                 </Flex>
                 <ChevronIcon fill="black60" direction="right" />
@@ -521,11 +603,14 @@ export const FeatureFlagMenuItem: React.FC<{
           <Text variant="md" color={titleColor}>
             {title}
           </Text>
+          <Text variant="sm-display">{title}</Text>
         </Flex>
+        ////// WOWOWO
+
         {!!value && (
           <Flex flex={2} flexDirection="row" alignItems="center">
             <Flex flex={3}>
-              <Text variant="md" color="black60" numberOfLines={1} textAlign="right">
+              <Text variant="sm-display" color="black60" numberOfLines={1} textAlign="right">
                 {value}
               </Text>
             </Flex>
