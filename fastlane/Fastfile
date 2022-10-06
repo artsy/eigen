@@ -353,10 +353,6 @@ lane :flag_android_beta do |options|
 end
 
 lane :upload_sentry_artifacts do |options|
-  sentry_check_cli_installed()
-
-
-
   sentry_release_name = options[:sentry_release_name]
   platform = options[:platform]
   dist_version = options[:dist_version]
