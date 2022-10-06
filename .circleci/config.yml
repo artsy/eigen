@@ -56,12 +56,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v7-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
+            - v8-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
       - run:
           name: Install node modules
-          command: ls node_modules || yarn install
+          command: yarn install
       - save_cache:
-          key: v7-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
+          key: v8-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
           paths:
             - node_modules
   run-relay-compiler:
