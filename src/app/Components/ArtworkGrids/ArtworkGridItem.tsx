@@ -94,7 +94,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
 }) => {
   const itemRef = useRef<any>()
   const tracking = useTracking()
-  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewImageComponent")
+  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewImage")
   const shouldShowNewOpaqueImageView = enableNewOpaqueImageView && !disableNewOpaqueImageView
 
   let filterParams: any
