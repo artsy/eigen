@@ -64,7 +64,7 @@ export class ArtworkTombstone extends React.Component<
     return (
       <Text>
         {this.renderArtistName(artist.name!, artist.href)}
-        <Text weight="medium">
+        <Text variant="md" weight="medium">
           {"  "}·{"  "}
         </Text>
         <FollowArtistLink artist={artist} contextModule={Schema.ContextModules.ArtworkTombstone} />
@@ -75,10 +75,14 @@ export class ArtworkTombstone extends React.Component<
   renderArtistName(artistName: string, href: string | null) {
     return href ? (
       <TouchableWithoutFeedback onPress={this.handleArtistTap.bind(this, href)}>
-        <Text weight="medium">{artistName}</Text>
+        <Text variant="md" weight="medium">
+          {artistName}
+        </Text>
       </TouchableWithoutFeedback>
     ) : (
-      <Text weight="medium">{artistName}</Text>
+      <Text variant="md" weight="medium">
+        {artistName}
+      </Text>
     )
   }
 
@@ -96,11 +100,13 @@ export class ArtworkTombstone extends React.Component<
 
     return (
       <Flex flexDirection="row" flexWrap="wrap">
-        <Text>
+        <Text variant="md">
           {artistNames}
           {!this.state.showingMoreArtists && artists! /* STRICTNESS_MIGRATION */.length > 3 && (
             <TouchableWithoutFeedback onPress={this.showMoreArtists}>
-              <Text weight="medium">{artists! /* STRICTNESS_MIGRATION */.length - 3} more</Text>
+              <Text variant="md" weight="medium">
+                {artists! /* STRICTNESS_MIGRATION */.length - 3} more
+              </Text>
             </TouchableWithoutFeedback>
           )}
         </Text>

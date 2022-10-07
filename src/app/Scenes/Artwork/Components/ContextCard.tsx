@@ -152,7 +152,7 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
     return (
       <>
         <Box mb={2}>
-          <Text weight="medium" color="black100">
+          <Text variant="sm" weight="medium" color="black100">
             {header}
           </Text>
         </Box>

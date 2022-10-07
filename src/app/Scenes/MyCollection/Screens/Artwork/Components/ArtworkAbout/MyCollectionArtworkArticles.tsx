@@ -59,6 +59,7 @@ export const MyCollectionArtworkArticles: React.FC<MyCollectionArtworkArticlesPr
         scrollsToTop={false}
         style={{ overflow: "visible" }}
         initialNumToRender={2}
+        showsHorizontalScrollIndicator={false}
         data={articles}
         keyExtractor={(item) => item.id}
         renderItem={({ item, index }) => (

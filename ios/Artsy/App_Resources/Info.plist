@@ -81,6 +81,8 @@
 	<false/>
 	<key>FacebookAppID</key>
 	<string>308278682573501</string>
+	<key>FacebookClientToken</key>
+	<string>5407e54f59d45eab502144b2e6943c6e</string>
 	<key>FacebookDisplayName</key>
 	<string>Artsy</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
@@ -218,7 +220,7 @@
 			</dict>
 		</dict>
 	</array>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
+	<key>UIViewControllerBasedStatusBarAppearance</key><false/>
+	<key>FacebookAutoLogAppEventsEnabled</key><false/>
 </dict>
 </plist>

@@ -817,7 +817,7 @@ describe("artsy.net routes", () => {
       Object {
         "module": "MyCollectionArtwork",
         "params": Object {
-          "artworkSlug": "123",
+          "artworkId": "123",
         },
         "type": "match",
       }
@@ -826,7 +826,7 @@ describe("artsy.net routes", () => {
       Object {
         "module": "MyCollectionArtwork",
         "params": Object {
-          "artworkSlug": "456",
+          "artworkId": "456",
         },
         "type": "match",
       }

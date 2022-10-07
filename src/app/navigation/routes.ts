@@ -192,7 +192,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/my-account", "MyAccount"),
 
     addRoute("/my-collection", "MyCollection"),
-    addRoute("/my-collection/artwork/:artworkSlug", "MyCollectionArtwork"),
+    addRoute("/my-collection/artwork/:artworkId", "MyCollectionArtwork"),
     addRoute("/my-collection/artworks/new", "AddOrEditMyCollectionArtwork"),
     addRoute("/my-collection/artworks/:artworkID/edit", "AddOrEditMyCollectionArtwork"),
     addRoute(

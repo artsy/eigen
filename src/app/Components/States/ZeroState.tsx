@@ -31,7 +31,7 @@ export const ZeroState = (props: ZeroStateProps) => {
       <Flex minHeight={image ? undefined : 80}>
         {!!subtitle && (
           <Text
-            variant="sm"
+            variant={bigTitle ? "xs" : "sm"}
             style={{ maxWidth: title || bigTitle ? "100%" : "80%" }}
             lineHeight="20"
             textAlign="center"

@@ -1,10 +1,10 @@
 import { Color } from "@artsy/palette-tokens/dist/themes/v3"
 import { Image } from "app/Components/Bidding/Elements/Image"
 import { Flex, FlexProps, Text, TextProps, useColor } from "palette"
-import { useRef, useState } from "react"
+import React, { useRef, useState } from "react"
 import { Animated, Easing, TouchableOpacity } from "react-native"
 
-type MessageVariant = "default" | "info" | "success" | "alert" | "warning" | "error"
+type MessageVariant = "default" | "info" | "success" | "warning" | "error"
 
 export interface MessageProps {
   bodyTextStyle?: TextProps
@@ -50,6 +50,36 @@ export const Message: React.FC<MessageProps> = ({
     onClose?.()
   }
 
+  const colors: {
+    [key: string]: { [key: string]: Color }
+  } = {
+    default: {
+      backgroundColor: "black10",
+      titleColor: "black100",
+      textColor: "black100",
+    },
+    info: {
+      backgroundColor: "blue10",
+      titleColor: "blue100",
+      textColor: "black100",
+    },
+    success: {
+      backgroundColor: "green10",
+      titleColor: "green100",
+      textColor: "black100",
+    },
+    warning: {
+      backgroundColor: "copper10",
+      titleColor: "copper100",
+      textColor: "black100",
+    },
+    error: {
+      backgroundColor: "red10",
+      titleColor: "red100",
+      textColor: "black100",
+    },
+  }
+
   return (
     <Animated.View
       testID={testID}
@@ -65,7 +95,7 @@ export const Message: React.FC<MessageProps> = ({
         ],
       }}
     >
-      <Flex backgroundColor={color(colors[variant].background)} {...containerStyle}>
+      <Flex backgroundColor={color(colors[variant].backgroundColor)} {...containerStyle}>
         <Flex px={2} py={1} flexDirection="row" justifyContent="space-between">
           <Flex flex={1}>
             <Flex flexDirection="row">
@@ -74,12 +104,12 @@ export const Message: React.FC<MessageProps> = ({
                   <IconComponent />
                 </Flex>
               )}
-              <Text pr={2} variant="xs" color={color(colors[variant].title)} {...titleStyle}>
+              <Text pr={2} variant="xs" color={color(colors[variant].titleColor)} {...titleStyle}>
                 {title}
               </Text>
             </Flex>
             {!!text && (
-              <Text variant="xs" color={color(colors[variant].text)} {...bodyTextStyle}>
+              <Text variant="xs" color={color(colors[variant].textColor)} {...bodyTextStyle}>
                 {text}
               </Text>
             )}
@@ -103,37 +133,4 @@ export const Message: React.FC<MessageProps> = ({
       </Flex>
     </Animated.View>
   )
-}
-
-const colors: Record<MessageVariant, { background: Color; title: Color; text: Color }> = {
-  default: {
-    background: "black5",
-    title: "black100",
-    text: "black60",
-  },
-  info: {
-    background: "blue10",
-    title: "blue100",
-    text: "black100",
-  },
-  success: {
-    background: "green10",
-    title: "green150",
-    text: "black100",
-  },
-  alert: {
-    background: "orange10",
-    title: "orange150",
-    text: "black100",
-  },
-  warning: {
-    background: "yellow10",
-    title: "yellow150",
-    text: "black100",
-  },
-  error: {
-    background: "red10",
-    title: "red100",
-    text: "black100",
-  },
 }

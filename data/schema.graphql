@@ -7291,6 +7291,28 @@ type DeleteUserAddressPayload {
   userAddressOrErrors: UserAddressOrErrorsUnion!
 }
 
+type deleteUserAdminNoteFailure {
+  mutationError: GravityMutationError
+}
+
+input deleteUserAdminNoteMutationInput {
+  adminNoteId: String!
+  clientMutationId: String
+  id: String!
+}
+
+type deleteUserAdminNoteMutationPayload {
+  # On success: the admin note deleted.
+  adminNoteOrError: deleteUserAdminNoteResponseOrError
+  clientMutationId: String
+}
+
+union deleteUserAdminNoteResponseOrError = deleteUserAdminNoteFailure | deleteUserAdminNoteSuccess
+
+type deleteUserAdminNoteSuccess {
+  adminNote: UserAdminNotes
+}
+
 input DeleteUserIconInput {
   clientMutationId: String
 }
@@ -10811,6 +10833,9 @@ type Mutation {
   deleteMyUserProfileIcon(input: DeleteUserIconInput!): DeleteUserIconPayload
   deleteUserAddress(input: DeleteUserAddressInput!): DeleteUserAddressPayload
 
+  # delete an admin note for the user
+  deleteUserAdminNote(input: deleteUserAdminNoteMutationInput!): deleteUserAdminNoteMutationPayload
+
   # Deletes a UserInterest on the logged in User's CollectorProfile.
   deleteUserInterest(input: DeleteUserInterestMutationInput!): DeleteUserInterestMutationPayload
 
@@ -11472,6 +11497,15 @@ type Partner implements Node {
     representedBy: Boolean
     sort: ArtistSorts
   ): ArtistPartnerConnection
+  artistsSearchConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int = 1
+    query: String!
+    size: Int = 10
+  ): ArtistConnection
 
   # A connection of artworks from a Partner.
   artworksConnection(
@@ -11501,6 +11535,15 @@ type Partner implements Node {
     # properties on an artwork, when true or not present fetch artwork :short properties
     shallow: Boolean
     sort: ArtworkSorts
+  ): ArtworkConnection
+  artworksSearchConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int = 1
+    query: String!
+    size: Int = 10
   ): ArtworkConnection
   cached: Int
   categories: [PartnerCategory]
@@ -11638,6 +11681,15 @@ type Partner implements Node {
 
     # Filter shows by chronological event status
     status: EventStatus
+  ): ShowConnection
+  showsSearchConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int = 1
+    query: String!
+    size: Int = 10
   ): ShowConnection
 
   # A slug ID.
@@ -13506,6 +13558,9 @@ type Query {
     first: Int
     ids: [String]
     last: Int
+
+    # If present, will search by term, cannot be combined with `ids`
+    term: String
   ): UserConnection
 
   # A Partner or Fair
@@ -17117,6 +17172,9 @@ type Viewer {
     first: Int
     ids: [String]
     last: Int
+
+    # If present, will search by term, cannot be combined with `ids`
+    term: String
   ): UserConnection
 
   # A Partner or Fair
