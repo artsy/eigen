@@ -77,6 +77,7 @@ describe("MyCollectionArtworkInsights", () => {
     expect(await getByText("Sell-through Rate")).toBeTruthy()
     expect(await getByText("20%")).toBeTruthy()
     expect(await getByText("Price Over Estimate")).toBeTruthy()
+    expect(await getByText("200%")).toBeTruthy()
     expect(await getByText("Liquidity")).toBeTruthy()
     expect(await getByText("High")).toBeTruthy()
 
@@ -102,19 +103,6 @@ describe("MyCollectionArtworkInsights", () => {
       expect(queryByTestId("request-price-estimate-banner-text")).toBeNull()
     })
 
-    it("does not display RequestForPriceEstimateBanner when DemandIndex < 9", () => {
-      const { queryByTestId } = renderWithWrappers(<TestRenderer />)
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Query: () => ({
-          artwork: mockArtworkForP1Artist,
-          marketPriceInsights: mockMarketPriceInsights,
-        }),
-      })
-
-      expect(queryByTestId("request-price-estimate-button")).toBeNull()
-      expect(queryByTestId("request-price-estimate-banner-text")).toBeNull()
-    })
-
     it("does not display when artwork is submitted", () => {
       const { queryByTestId } = renderWithWrappers(<TestRenderer />)
       resolveMostRecentRelayOperation(mockEnvironment, {
@@ -129,19 +117,6 @@ describe("MyCollectionArtworkInsights", () => {
 
       expect(queryByTestId("request-price-estimate-button")).toBeNull()
       expect(queryByTestId("request-price-estimate-banner-text")).toBeNull()
-    })
-
-    it("displays RequestForPriceEstimateBanner when Artist is P1 AND DemandIndex >= 9", () => {
-      const { queryByTestId } = renderWithWrappers(<TestRenderer />)
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Query: () => ({
-          artwork: mockArtworkForP1Artist,
-          marketPriceInsights: mockMarketPriceInsightsForHighDemandIndex,
-        }),
-      })
-
-      expect(queryByTestId("request-price-estimate-button")).toBeDefined()
-      expect(queryByTestId("request-price-estimate-banner-text")).toBeDefined()
     })
   })
 
@@ -185,6 +160,14 @@ describe("MyCollectionArtworkInsights", () => {
   })
 })
 
+const mockMarketPriceInsights = {
+  sellThroughRate: 0.2,
+  annualLotsSold: 100,
+  annualValueSoldDisplayText: "$1k",
+  medianSaleOverEstimatePercentage: "200",
+  liquidityRankDisplayText: "High",
+}
+
 const mockArtwork = {
   internalID: "some-artwork-id",
   slug: "some-artwork-slug",
@@ -226,16 +209,7 @@ const mockArtwork = {
       },
     ],
   },
-}
-
-const mockMarketPriceInsights = {
-  demandRank: 0.7,
-  demandTrend: 9,
-  sellThroughRate: 0.2,
-  annualLotsSold: 100,
-  annualValueSoldCents: 100000,
-  medianSaleToEstimateRatio: 1,
-  liquidityRank: 0.7,
+  marketPriceInsights: mockMarketPriceInsights,
 }
 
 const mockMarketPriceInsightsForHighDemandIndex = {

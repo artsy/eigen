@@ -39,7 +39,6 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
     sellThroughRate,
     medianSaleOverEstimatePercentage,
     liquidityRankDisplayText,
-    //  demandRankDisplayText, // TODO: refactor to use demandRankDisplayText
   } = marketPriceInsights
 
   const SalePriceEstimatePerformance = ({ value }: { value: number }) => {
