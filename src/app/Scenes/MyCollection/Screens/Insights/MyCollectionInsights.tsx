@@ -120,9 +120,6 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
 
   return (
     <StickyTabPageScrollView
-      style={{
-        flex: 1,
-      }}
       refreshControl={<StickTabPageRefreshControl onRefresh={refresh} refreshing={isRefreshing} />}
       contentContainerStyle={{
         // Extend the container flex when there are no artworks for accurate vertical centering

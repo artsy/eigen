@@ -96,7 +96,7 @@ const SavedWorks: React.FC<Props> = ({ me, relay, onDataFetching }) => {
             </>
           }
           callToAction={
-            <Button size="large" onPress={() => navigate("/")} block>
+            <Button block onPress={() => navigate("/")}>
               Browse works
             </Button>
           }
