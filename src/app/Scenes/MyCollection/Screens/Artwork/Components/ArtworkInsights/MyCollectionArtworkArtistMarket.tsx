@@ -1,9 +1,7 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
 import { MyCollectionArtworkArtistMarket_artwork$key } from "__generated__/MyCollectionArtworkArtistMarket_artwork.graphql"
-import { MyCollectionArtworkArtistMarket_marketPriceInsights$key } from "__generated__/MyCollectionArtworkArtistMarket_marketPriceInsights.graphql"
+import { MyCollectionArtworkArtistMarket_artworkPriceInsights$key } from "__generated__/MyCollectionArtworkArtistMarket_artworkPriceInsights.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
-import { CENTS_IN_DOLLAR } from "app/Scenes/MyCollection/utils/formatCentsToDollars"
-import { formatLargeNumber } from "app/utils/formatLargeNumber"
 import { formatSellThroughRate } from "app/utils/marketPriceInsightHelpers"
 import { DecreaseIcon, Flex, IncreaseIcon, Spacer, Text, useSpace } from "palette"
 import { ReactElement } from "react"
@@ -14,7 +12,7 @@ import { useScreenDimensions } from "shared/hooks"
 
 interface MyCollectionArtworkArtistMarketProps {
   artwork: MyCollectionArtworkArtistMarket_artwork$key
-  marketPriceInsights: MyCollectionArtworkArtistMarket_marketPriceInsights$key
+  marketPriceInsights: MyCollectionArtworkArtistMarket_artworkPriceInsights$key
 }
 interface MarketDataComponents {
   component: ReactElement
@@ -37,16 +35,12 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
 
   const {
     annualLotsSold,
-    annualValueSoldCents,
+    annualValueSoldDisplayText,
     sellThroughRate,
     medianSaleOverEstimatePercentage,
-    liquidityRank,
+    liquidityRankDisplayText,
+    //  demandRankDisplayText, // TODO: refactor to use demandRankDisplayText
   } = marketPriceInsights
-
-  const formattedAnnualValueSold = `$${formatLargeNumber(
-    Number(annualValueSoldCents) / CENTS_IN_DOLLAR
-  )}`
-  const formatLiquidityRank = getFormattedLiquidityRank(liquidityRank)
 
   const SalePriceEstimatePerformance = ({ value }: { value: number }) => {
     const sign = value < 0 ? "down" : "up"
@@ -79,9 +73,9 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
 
   const marketData: MarketDataComponents[] = []
 
-  if (!!formattedAnnualValueSold) {
+  if (!!annualValueSoldDisplayText) {
     marketData.push({
-      component: <InsightColumn name="Annual Value Sold" value={formattedAnnualValueSold} />,
+      component: <InsightColumn name="Annual Value Sold" value={annualValueSoldDisplayText} />,
     })
   }
   if (!!annualLotsSold) {
@@ -108,9 +102,9 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
     })
   }
 
-  if (!!formatLiquidityRank) {
+  if (!!liquidityRankDisplayText) {
     marketData.push({
-      component: <InsightColumn name="Liquidity" value={formatLiquidityRank} />,
+      component: <InsightColumn name="Liquidity" value={liquidityRankDisplayText} />,
     })
   }
 
@@ -171,11 +165,11 @@ const artworkFragment = graphql`
 `
 
 const marketPriceInsightsFragment = graphql`
-  fragment MyCollectionArtworkArtistMarket_marketPriceInsights on MarketPriceInsights {
+  fragment MyCollectionArtworkArtistMarket_artworkPriceInsights on ArtworkPriceInsights {
     annualLotsSold
-    annualValueSoldCents
+    annualValueSoldDisplayText
     sellThroughRate
-    liquidityRank
+    liquidityRankDisplayText
     medianSaleOverEstimatePercentage
   }
 `
@@ -189,23 +183,4 @@ const tracks = {
     context_screen_owner_type: OwnerType.myCollectionArtwork,
     subject: "artistMarketStatistics",
   }),
-}
-
-const getFormattedLiquidityRank = (liquidityRank: number | null) => {
-  if (liquidityRank === null) {
-    return ""
-  }
-
-  switch (true) {
-    case liquidityRank < 0.25:
-      return "Low"
-    case liquidityRank >= 0.25 && liquidityRank < 0.7:
-      return "Medium"
-    case liquidityRank >= 0.7 && liquidityRank < 0.85:
-      return "High"
-    case liquidityRank >= 0.85:
-      return "Very High"
-  }
-
-  return ""
 }
