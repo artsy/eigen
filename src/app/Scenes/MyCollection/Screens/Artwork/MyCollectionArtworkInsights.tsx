@@ -44,11 +44,11 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
   return (
     <StickyTabPageScrollView>
       <Flex my={3}>
-        {!!marketPriceInsights && (
+        {!!artwork.marketPriceInsights && (
           <>
             <MyCollectionArtworkDemandIndex
               artwork={artwork}
-              marketPriceInsights={marketPriceInsights}
+              marketPriceInsights={artwork.marketPriceInsights}
             />
             {!showPriceEstimateBanner && <Spacer p={1} />}
           </>
@@ -103,6 +103,7 @@ const artworkFragment = graphql`
     ...MyCollectionWhySell_artwork
     marketPriceInsights {
       ...MyCollectionArtworkArtistMarket_artworkPriceInsights
+      ...MyCollectionArtworkDemandIndex_artworkPriceInsights
     }
   }
 `
@@ -110,7 +111,6 @@ const artworkFragment = graphql`
 const marketPriceInsightsFragment = graphql`
   fragment MyCollectionArtworkInsights_marketPriceInsights on MarketPriceInsights {
     demandRank
-    ...MyCollectionArtworkDemandIndex_marketPriceInsights
     ...RequestForPriceEstimateBanner_marketPriceInsights
   }
 `

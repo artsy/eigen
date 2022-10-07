@@ -139,6 +139,7 @@ export const MyCollectionArtworkScreenQuery = graphql`
       }
       marketPriceInsights {
         ...MyCollectionArtworkArtistMarket_artworkPriceInsights
+        ...MyCollectionArtworkDemandIndex_artworkPriceInsights
       }
     }
     marketPriceInsights(artistId: $artistInternalID, medium: $medium) @optionalField {
