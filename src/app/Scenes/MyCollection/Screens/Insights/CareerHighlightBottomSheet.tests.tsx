@@ -6,7 +6,10 @@ import { useLazyLoadQuery } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { CareerHighlightBottomSheet, makeCareerHighlightMap } from "./CareerHighlightBottomSheet"
 import { MedianSalePriceAtAuctionScreenQuery } from "./MedianSalePriceAtAuction"
-import { MedianSalePriceChartDataContextProvider } from "./providers/MedianSalePriceChartDataContext"
+import {
+  initialValues as medianSalePriceChartDataContextInitialValues,
+  MedianSalePriceChartDataContext,
+} from "./providers/MedianSalePriceChartDataContext"
 
 jest.unmock("react-relay")
 describe(CareerHighlightBottomSheet, () => {
@@ -17,7 +20,7 @@ describe(CareerHighlightBottomSheet, () => {
     jest.clearAllMocks()
   })
 
-  const TestRenderer = () => {
+  const TestRenderer: React.FC<{ contextProps?: any }> = (props) => {
     const data = useLazyLoadQuery<MedianSalePriceAtAuctionQuery>(
       MedianSalePriceAtAuctionScreenQuery,
       {
@@ -27,13 +30,11 @@ describe(CareerHighlightBottomSheet, () => {
     )
 
     return (
-      <MedianSalePriceChartDataContextProvider
-        artistId="artistId"
-        initialCategory="Painting"
-        queryData={data}
+      <MedianSalePriceChartDataContext.Provider
+        value={{ ...medianSalePriceChartDataContextInitialValues, ...props.contextProps }}
       >
-        <CareerHighlightBottomSheet artistId="artistId" queryData={data} />
-      </MedianSalePriceChartDataContextProvider>
+        <CareerHighlightBottomSheet artistSparklines={data} />
+      </MedianSalePriceChartDataContext.Provider>
     )
   }
 
@@ -42,8 +43,11 @@ describe(CareerHighlightBottomSheet, () => {
     expect(queryByTestId("BottomSheetFlatlist")).toBe(null)
   })
 
-  it("renders BottomSheet if there is data", async () => {
-    const { queryByTestId } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+  it("renders BottomSheet if there is data and selectedXAxisHighlight", async () => {
+    const { queryByTestId } = renderWithHookWrappersTL(
+      <TestRenderer contextProps={{ selectedXAxisHighlight: 2015 }} />,
+      mockEnvironment
+    )
     act(() => {
       mockEnvironment.mock.resolveMostRecentOperation({ data: bottomSheetDataMock })
     })

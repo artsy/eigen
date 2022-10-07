@@ -10,7 +10,7 @@ import {
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { Flex, NoArtworkIcon, OpaqueImageView, Spacer, Text, Touchable } from "palette"
-import { Suspense, useCallback, useState } from "react"
+import { Suspense, useCallback, useEffect, useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
@@ -38,6 +38,19 @@ const MedianSalePriceAtAuctionScreen: React.FC<MedianSalePriceAtAuctionProps> = 
   )
 
   const [isVisible, setVisible] = useState<boolean>(false)
+  const [newArtistID, setNewArtistID] = useState<string | null>(null)
+
+  const isFirstMount = useRef(true)
+
+  useEffect(() => {
+    if (!isFirstMount.current && newArtistID) {
+      refetch(newArtistID)
+      return
+    }
+    if (isFirstMount.current) {
+      isFirstMount.current = false
+    }
+  }, [newArtistID])
 
   const data = useLazyLoadQuery<MedianSalePriceAtAuctionQuery>(
     MedianSalePriceAtAuctionScreenQuery,
@@ -109,7 +122,7 @@ const MedianSalePriceAtAuctionScreen: React.FC<MedianSalePriceAtAuctionProps> = 
         >
           <MedianSalePriceChartTracking artistID={queryArgs.variables.artistID} />
           <MedianSalePriceChart />
-          <CareerHighlightBottomSheet artistId={queryArgs.variables.artistID} queryData={data} />
+          <CareerHighlightBottomSheet artistSparklines={data} />
         </MedianSalePriceChartDataContextProvider>
 
         <SelectArtistModal
@@ -117,8 +130,8 @@ const MedianSalePriceAtAuctionScreen: React.FC<MedianSalePriceAtAuctionProps> = 
           visible={isVisible}
           closeModal={() => setVisible(false)}
           onItemPress={(artistId) => {
-            refetch(artistId)
             setVisible(false)
+            setNewArtistID(artistId)
           }}
         />
       </Flex>
