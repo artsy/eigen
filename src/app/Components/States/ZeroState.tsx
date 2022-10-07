@@ -15,12 +15,13 @@ export const ZeroState = (props: ZeroStateProps) => {
 
   return (
     <Flex px={1} alignItems="center" pt={2}>
-      <Flex minHeight={30}>
+      <Flex>
         {!!title && (
           <Text variant="sm" lineHeight="20" style={{ maxWidth: "80%" }} color={color("black100")}>
             {title}
           </Text>
         )}
+
         {!!bigTitle && (
           <Text variant="sm-display" style={{ textAlign: "center" }} color={color("black100")}>
             {bigTitle}
@@ -28,12 +29,11 @@ export const ZeroState = (props: ZeroStateProps) => {
         )}
       </Flex>
 
-      <Flex minHeight={image ? undefined : 80}>
+      <Flex>
         {!!subtitle && (
           <Text
             variant={bigTitle ? "xs" : "sm"}
             style={{ maxWidth: title || bigTitle ? "100%" : "80%" }}
-            lineHeight="20"
             textAlign="center"
             color={title || bigTitle ? color("black60") : color("black100")}
           >
@@ -44,7 +44,7 @@ export const ZeroState = (props: ZeroStateProps) => {
 
       {!!image && image}
 
-      <Flex minHeight={80}>{!!callToAction && <>{callToAction}</>}</Flex>
+      <Flex>{!!callToAction && <>{callToAction}</>}</Flex>
     </Flex>
   )
 }
