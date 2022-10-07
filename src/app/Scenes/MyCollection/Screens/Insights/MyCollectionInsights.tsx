@@ -19,7 +19,6 @@ import { MyCollectionArtworkUploadMessages } from "../ArtworkForm/MyCollectionAr
 import { ActivateMoreMarketInsightsBanner } from "./ActivateMoreMarketInsightsBanner"
 import { AuctionResultsForArtistsYouCollectRail } from "./AuctionResultsForArtistsYouCollectRail"
 import { CareerHighlightsRail } from "./CareerHighlightsRail"
-import { MarketSignalsSectionHeader } from "./MarketSignalsSectionHeader"
 import { MedianAuctionPriceRail } from "./MedianAuctionPriceRail"
 import { MyCollectionInsightsEmptyState } from "./MyCollectionInsightsEmptyState"
 import { MyCollectionInsightsOverview } from "./MyCollectionInsightsOverview"
@@ -109,7 +108,6 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
         {hasMarketSignals /* || average sale price data */ && enablePhase1Part1 && (
           <>
             {!!enablePhase1Part3 && <CareerHighlightsRail me={data.me!} />}
-            <MarketSignalsSectionHeader />
             <AuctionResultsForArtistsYouCollectRail me={data.me!} />
             {!!enablePhase1Part2 && <MedianAuctionPriceRail me={data.me} />}
             {/* TODO: The banner should be visible always as long as the user has at least an artwork with insights */}
