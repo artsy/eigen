@@ -1138,7 +1138,10 @@ type ArticleSectionImageCollection {
   layout: ArticleSectionImageCollectionLayout!
 }
 
-union ArticleSectionImageCollectionFigure = ArticleImageSection | Artwork
+union ArticleSectionImageCollectionFigure =
+    ArticleImageSection
+  | ArticleUnpublishedArtwork
+  | Artwork
 
 enum ArticleSectionImageCollectionLayout {
   COLUMN_WIDTH
@@ -1220,6 +1223,35 @@ type ArticleSponsor {
   partnerLogoLink: String
   pixelTrackingCode: String
   subTitle: String
+}
+
+type ArticleUnpublishedArtwork {
+  artist: ArticleUnpublishedArtworkArtist
+  artists: [ArticleUnpublishedArtworkArtist!]!
+  credit: String
+  date: String
+
+  # A globally unique ID.
+  id: ID!
+  image: Image
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  partner: ArticleUnpublishedArtworkPartner
+
+  # A slug ID.
+  slug: ID!
+  title: String
+}
+
+type ArticleUnpublishedArtworkArtist {
+  name: String
+  slug: String
+}
+
+type ArticleUnpublishedArtworkPartner {
+  name: String
+  slug: String
 }
 
 type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Searchable {
