@@ -73,25 +73,25 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
 
   const marketData: MarketDataComponents[] = []
 
-  if (!!annualValueSoldDisplayText) {
+  if (annualValueSoldDisplayText) {
     marketData.push({
       component: <InsightColumn name="Annual Value Sold" value={annualValueSoldDisplayText} />,
     })
   }
-  if (!!annualLotsSold) {
+  if (annualLotsSold) {
     marketData.push({
       component: <InsightColumn name="Annual Lots Sold" value={annualLotsSold.toString()} />,
     })
   }
 
-  if (!!sellThroughRate) {
+  if (sellThroughRate) {
     marketData.push({
       component: (
         <InsightColumn name="Sell-through Rate" value={formatSellThroughRate(sellThroughRate)} />
       ),
     })
   }
-  if (!!medianSaleOverEstimatePercentage) {
+  if (medianSaleOverEstimatePercentage) {
     marketData.push({
       component: (
         <Flex flexDirection="column" justifyContent="flex-start">
@@ -102,7 +102,7 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
     })
   }
 
-  if (!!liquidityRankDisplayText) {
+  if (liquidityRankDisplayText) {
     marketData.push({
       component: <InsightColumn name="Liquidity" value={liquidityRankDisplayText} />,
     })
