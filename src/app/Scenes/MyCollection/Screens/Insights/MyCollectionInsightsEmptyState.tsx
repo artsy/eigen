@@ -15,7 +15,7 @@ export const MyCollectionInsightsEmptyState = () => {
 
   return (
     <ZeroState
-      bigTitle="Gain deeper knowledge of your collection"
+      bigTitle="Gain Deeper Knowledge of your Collection"
       subtitle="Get free market insights about the artists you collect."
       image={
         <Image

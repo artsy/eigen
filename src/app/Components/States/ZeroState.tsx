@@ -44,7 +44,7 @@ export const ZeroState = (props: ZeroStateProps) => {
 
       {!!image && image}
 
-      <Flex>{!!callToAction && <>{callToAction}</>}</Flex>
+      <Flex minHeight={90}>{!!callToAction && <>{callToAction}</>}</Flex>
     </Flex>
   )
 }
