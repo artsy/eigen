@@ -1,16 +1,13 @@
 import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet"
 import { CareerHighlightBottomSheet_query$key } from "__generated__/CareerHighlightBottomSheet_query.graphql"
-import {
-  MedianSalePriceAtAuctionQuery,
-  MedianSalePriceAtAuctionQuery$data,
-} from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
 import { LegacyBackButtonContext } from "app/navigation/NavStack"
+import { delay } from "app/utils/delay"
 import { isPad } from "app/utils/hardware"
 import { compact } from "lodash"
 import { Flex } from "palette"
 import { useCallback, useContext, useEffect, useMemo, useRef } from "react"
 import { FlatList } from "react-native-gesture-handler"
-import { graphql, useRefetchableFragment } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 import { CareerHighlightBottomSheetItem } from "./Components/CareerHighlightBottomSheetItem"
 import { useMedianSalePriceChartDataContext } from "./providers/MedianSalePriceChartDataContext"
@@ -31,18 +28,13 @@ const CareerHighlightKind: { [key: string]: CareerHighlightKindValueType } = {
 }
 
 interface CareerHighlightBottomSheetProps {
-  artistId: string
-  queryData: MedianSalePriceAtAuctionQuery$data
+  artistSparklines: CareerHighlightBottomSheet_query$key
 }
 
 export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProps> = ({
-  artistId,
-  queryData,
+  artistSparklines,
 }) => {
-  const [data, refetch] = useRefetchableFragment<
-    MedianSalePriceAtAuctionQuery,
-    CareerHighlightBottomSheet_query$key
-  >(careerHighlighsBottomSheetFragment, queryData)
+  const data = useFragment(careerHighlighsBottomSheetFragment, artistSparklines)
 
   const backButtonContext = useContext(LegacyBackButtonContext)
 
@@ -75,24 +67,15 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
     return null
   }
 
-  const reloadData = () => {
-    refetch({ artistId })
-  }
-
-  useEffect(() => {
-    reloadData()
-    onXAxisHighlightPressed(null)
-  }, [artistId])
-
   const flatlistRef = useRef<FlatList>(null)
 
   const { selectedXAxisHighlight, onXAxisHighlightPressed } = dataContext
 
   useEffect(() => {
-    if (selectedXAxisHighlight) {
+    if (selectedXAxisHighlight !== null) {
       const index = flatListData.find((d) => d.year === selectedXAxisHighlight)?.index
       if (index !== undefined) {
-        flatlistRef.current?.scrollToIndex({ index, animated: false })
+        flatlistRef.current?.scrollToIndex?.({ index, animated: false })
       }
     }
   }, [selectedXAxisHighlight])
@@ -134,14 +117,15 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
     () => dataForFlatlist(),
     [JSON.stringify(data.analyticsArtistSparklines)]
   )
-  if (!flatListData.length) {
+
+  if (!flatListData.length || selectedXAxisHighlight === null) {
     return null
   }
 
   return (
     <BottomSheet
       ref={bottomSheetRef}
-      index={selectedXAxisHighlight ? 0 : -1}
+      index={0}
       snapPoints={snapPoints}
       onChange={handleSheetChanges}
       enablePanDownToClose
@@ -159,6 +143,11 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
+        onScrollToIndexFailed={({ index }) => {
+          delay(100).then(() => {
+            flatlistRef.current?.scrollToIndex({ index, animated: false })
+          })
+        }}
       />
     </BottomSheet>
   )
