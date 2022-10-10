@@ -130,10 +130,7 @@ export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = (props) =
         ListHeaderComponent={
           <Animated.View
             onLayout={() => setHeaderDidMount(true)}
-            style={{
-              flex: 1,
-              height: staticHeaderHeight,
-            }}
+            style={{ marginTop: staticHeaderHeight }}
           />
         }
         // @ts-expect-error

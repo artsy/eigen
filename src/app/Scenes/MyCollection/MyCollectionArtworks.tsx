@@ -203,7 +203,7 @@ const MyCollectionZeroState: React.FC = () => {
   return (
     <ZeroState
       bigTitle="Your Art Collection in Your Pocket"
-      subtitle="Access market insights and manage  your collection online."
+      subtitle="Access market insights and manage your collection online."
       image={
         <Image
           source={image}
