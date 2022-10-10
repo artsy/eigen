@@ -353,10 +353,6 @@ lane :flag_android_beta do |options|
 end
 
 lane :upload_sentry_artifacts do |options|
-  sentry_check_cli_installed()
-
-
-
   sentry_release_name = options[:sentry_release_name]
   platform = options[:platform]
   dist_version = options[:dist_version]
@@ -387,12 +383,29 @@ lane :upload_sentry_artifacts do |options|
     outfile = '~/index.android.bundle'
   end
 
-  sentry_create_release(auth_token: ENV['SentryUploadAuthKey'],
-                        sentry_cli_path: sentry_cli_path,
-                        org_slug: org_slug,
-                        project_slug: project_slug,
-                        version: sentry_release_name,
-                        finalize: false)
+  begin
+    sentry_create_release(auth_token: ENV['SentryUploadAuthKey'],
+      sentry_cli_path: sentry_cli_path,
+      org_slug: org_slug,
+      project_slug: project_slug,
+      version: sentry_release_name,
+      finalize: false)
+  rescue StandardError => e
+      message = 'Creating release for sentry failed. This can happen if sentry cli is out of date.'
+      puts message
+      slack(
+        message: message,
+        success: false,
+        payload: {
+          'Circle Build' => ENV['CIRCLE_BUILD_URL'],
+          'Exception' => e.message
+        },
+        default_payloads: [:last_git_commit_hash]
+      )
+      puts e.message
+      puts e.backtrace.join("\n\t")
+  end
+
   puts "Created a release for #{project_slug}"
 
   if platform == "ios"
