@@ -72,7 +72,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
 
   return (
     <Screen.Background>
-      <StatusBar barStyle="light-content" />
+      <StatusBar barStyle="light-content" backgroundColor="transparent" />
       <Flex flex={1} justifyContent="center" alignItems="center" minHeight={screenHeight}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Flex pb={5}>
