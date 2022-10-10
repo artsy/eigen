@@ -22,7 +22,7 @@ export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
   return (
     <>
       <Flex alignItems="flex-start">
-        <Text variant="sm-display" mb={2}>
+        <Text variant="md" mb={2}>
           {hasSingleArtist ? "About the artist" : "About the artists"}
         </Text>
         <Join separator={<Spacer my={1} />}>

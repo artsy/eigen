@@ -79,7 +79,7 @@ export const ArtistSeriesMeta: React.FC<ArtistSeriesMetaProps> = ({ artistSeries
 
   return (
     <View ref={metaRef}>
-      <Text variant="lg-display" testID="title">
+      <Text variant="lg" testID="title">
         {artistSeries.title}
       </Text>
       {!!artist && (

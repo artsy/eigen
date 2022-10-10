@@ -74,7 +74,7 @@ const markdownRules = defaultRules({
       match: blockRegex(/^((?:[^\n]|\n(?! *\n))+)(?:\n *)/),
       react: (node, output, state) => {
         return (
-          <Text variant="sm-display" key={state.key} textAlign="center">
+          <Text variant="md" key={state.key} textAlign="center">
             {output(node.content, state)}
           </Text>
         )

@@ -40,13 +40,7 @@ export const SectionTitle: React.FC<{
     <Wrapper onPress={onPress}>
       <Flex mb={mb} flexDirection="row" alignItems="flex-start">
         <Flex flex={1} overflow="hidden">
-          <Text
-            lineHeight="20"
-            variant="sm-display"
-            ellipsizeMode="tail"
-            numberOfLines={1}
-            testID="title"
-          >
+          <Text lineHeight="20" variant="sm" ellipsizeMode="tail" numberOfLines={1} testID="title">
             {typeof title === "string" ? titleText : title}
           </Text>
           {Boolean(subtitle) && (

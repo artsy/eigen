@@ -16,7 +16,7 @@ export const ViewingRoomSubsections: React.FC<ViewingRoomSubsectionProps> = (pro
         <Box key={index} mt="3">
           {!!subsection.title && (
             <Box mx="2" testID="subsection">
-              <Text mb="1" variant="sm-display" style={maxWidth}>
+              <Text mb="1" variant="md" style={maxWidth}>
                 {subsection.title}
               </Text>
             </Box>

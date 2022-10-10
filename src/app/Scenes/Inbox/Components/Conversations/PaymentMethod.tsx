@@ -17,7 +17,7 @@ export const PaymentMethod: React.FC<PaymentMethodProps> = ({ order }) => {
   return (
     <>
       <Flex flexDirection="column" p={2}>
-        <Text variant="sm-display" mb={1} weight="medium">
+        <Text variant="md" mb={1} weight="medium">
           Payment Method
         </Text>
         <Text variant="sm" color="black60">

@@ -50,11 +50,11 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
             </Text>
           </Flex>
 
-          <Text variant="sm-display" fontWeight="bold">
+          <Text variant="md" fontWeight="bold">
             {item.title}
           </Text>
 
-          <Text variant="sm-display">{item.message}</Text>
+          <Text variant="md">{item.message}</Text>
 
           <Spacer mb={1} />
 

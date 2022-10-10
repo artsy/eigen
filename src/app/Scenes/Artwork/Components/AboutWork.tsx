@@ -20,7 +20,7 @@ export const AboutWork: React.FC<AboutWorkProps> = ({ artwork }) => {
 
   return (
     <Join separator={<Spacer mb={2} />}>
-      <Text variant="sm-display">About the work</Text>
+      <Text variant="md">About the work</Text>
       {!!additionalInformation && (
         <ReadMore
           content={additionalInformation}

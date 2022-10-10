@@ -41,7 +41,7 @@ export class FairEventSection extends Component<Props> {
         {({ space }) => (
           <FairSectionBackground>
             <Box mx={2} mt={3}>
-              <Text variant="lg-display" color="white">
+              <Text variant="lg" color="white">
                 Fairs
               </Text>
             </Box>

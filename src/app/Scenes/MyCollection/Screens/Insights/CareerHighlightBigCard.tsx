@@ -51,7 +51,7 @@ const CardHeader: React.FC<{
           {icon}
         </Flex>
       </Flex>
-      <Text mt={1} mb={4} variant="lg-display">
+      <Text mt={1} mb={4} variant="lg">
         {label}
       </Text>
     </Flex>

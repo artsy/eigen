@@ -172,7 +172,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
       <Flex flexGrow={1}>
         <ScrollView scrollEnabled={false} keyboardShouldPersistTaps="handled">
           <Flex m={2}>
-            <Text variant="sm-display">Choose Your Price Range</Text>
+            <Text variant="md">Choose Your Price Range</Text>
           </Flex>
           <Flex flexDirection="row" mx={2}>
             <Input

@@ -14,7 +14,7 @@ export const ArtworkSubmissionStatusFAQ: React.FC = () => {
       <Box pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px={2}>
         <Box my={3}>
           <Join separator={<Spacer my={1.5} />}>
-            <Text variant="lg-display">Submission Status</Text>
+            <Text variant="lg">Submission Status</Text>
 
             <Join separator={<Spacer my={0} />}>
               <Text caps mb={0} variant="xs">

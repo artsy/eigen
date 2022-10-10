@@ -228,7 +228,7 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<
       >
         <Spacer mt={60} />
         <Box minHeight={85}>
-          <Text variant="lg-display">{title}</Text>
+          <Text variant="lg">{title}</Text>
           {!!caption && (
             <>
               <Spacer mt={0.5} />

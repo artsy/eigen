@@ -12,7 +12,7 @@ export const ItemArtwork: React.FC<ItemArtworkProps> = ({ artwork }) => {
   return (
     <>
       <Flex flexDirection="column" p={2}>
-        <Text variant="sm-display" mb={2} weight="medium">
+        <Text variant="md" mb={2} weight="medium">
           Artwork
         </Text>
 

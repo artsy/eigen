@@ -29,7 +29,7 @@ export const OtherCollectionsRail: React.FC<OtherCollectionsRailProps> = ({
 
   return (
     <View ref={ref}>
-      <Text variant="sm-display" m={2}>
+      <Text variant="md" m={2}>
         {name}
       </Text>
 

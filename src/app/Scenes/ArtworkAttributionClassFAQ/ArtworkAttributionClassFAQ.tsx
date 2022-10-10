@@ -21,7 +21,7 @@ export const ArtworkAttributionClassFAQ: React.FC<Props> = ({ artworkAttribution
       <Box pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px={2}>
         <Box my={3}>
           <Join separator={<Spacer my={1.5} />}>
-            <Text variant="lg-display">Artwork classifications</Text>
+            <Text variant="lg">Artwork classifications</Text>
 
             <Join separator={<Spacer my={1} />}>
               {artworkAttributionClasses.map((attributionClass, index) => {

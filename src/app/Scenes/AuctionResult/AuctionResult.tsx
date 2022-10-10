@@ -193,7 +193,7 @@ export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
               >
                 <Text variant="sm">{artist?.name}</Text>
               </TouchableWithoutFeedback>
-              <Text variant="sm-display">
+              <Text variant="md">
                 {auctionResult.title}
                 {!!auctionResult.dateText && `, ${auctionResult.dateText}`}
               </Text>
@@ -203,7 +203,7 @@ export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
             <Flex flexDirection="row" mb={1}>
               <InfoButton
                 titleElement={
-                  <Text variant="sm-display" mr={0.5}>
+                  <Text variant="md" mr={0.5}>
                     Sale Price
                   </Text>
                 }
@@ -219,7 +219,7 @@ export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
           {hasSalePrice ? (
             <>
               <Flex mb={0.5}>
-                <Text variant="lg-display">{auctionResult.priceRealized?.display}</Text>
+                <Text variant="lg">{auctionResult.priceRealized?.display}</Text>
                 {!!showPriceUSD && (
                   <Text variant="sm" color="black60" testID="priceUSD">
                     {auctionResult.priceRealized?.displayUSD}
@@ -235,10 +235,10 @@ export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
               )}
             </>
           ) : (
-            <Text variant="lg-display">{salePriceMessage}</Text>
+            <Text variant="lg">{salePriceMessage}</Text>
           )}
 
-          <Text variant="sm-display" mt={4} mb={1}>
+          <Text variant="md" mt={4} mb={1}>
             Stats
           </Text>
           {details}

@@ -15,7 +15,7 @@ export const PageWithSimpleHeader: React.FC<{
         </Flex>
         {/* TODO: figure out how to make this stretch dynamically */}
         <Flex flex={2.5}>
-          <Text variant="sm-display" weight="medium" textAlign="center">
+          <Text variant="md" weight="medium" textAlign="center">
             {title}
           </Text>
         </Flex>

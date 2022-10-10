@@ -11,7 +11,7 @@ export function DarkModeSettings() {
 
   return (
     <PageWithSimpleHeader title="Dark Mode Settings">
-      <Text variant="lg-display" textAlign="center">
+      <Text variant="lg" textAlign="center">
         Choose your destiny
       </Text>
       <Flex mx="2" mt="2">

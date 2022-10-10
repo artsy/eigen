@@ -13,7 +13,7 @@ export const LineGraphHeader: React.FC<LineGraphHeaderProps> = ({
   return (
     <Flex px={2}>
       {!!title && (
-        <Text fontWeight="500" variant="sm-display">
+        <Text fontWeight="500" variant="md">
           {title}
         </Text>
       )}

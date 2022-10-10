@@ -109,7 +109,7 @@ export const SaleCard: React.FC<SaleCardProps> = ({
               {sale?.partner?.name}
             </Text>
           )}
-          <Text variant="sm-display">{sale?.name}</Text>
+          <Text variant="md">{sale?.name}</Text>
 
           <SaleInfo sale={sale} />
           <RegistrationCTA />

@@ -33,22 +33,18 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
 
   const isP1Artist = artwork.artist?.targetSupply?.isP1
   const isAlreadySubmitted = artwork.consignmentSubmission?.displayText
-  const isHighDemand = Number((marketPriceInsights?.demandRank ?? 0) * 10) >= 9
 
   const showPriceEstimateBanner =
-    useFeatureFlag("ARShowRequestPriceEstimateBanner") &&
-    isP1Artist &&
-    isHighDemand &&
-    !isAlreadySubmitted
+    useFeatureFlag("ARShowRequestPriceEstimateBanner") && isP1Artist && !isAlreadySubmitted
 
   return (
     <StickyTabPageScrollView>
       <Flex mb={3} mt={2}>
-        {!!marketPriceInsights && (
+        {!!artwork.marketPriceInsights && (
           <>
             <MyCollectionArtworkDemandIndex
               artwork={artwork}
-              marketPriceInsights={marketPriceInsights}
+              marketPriceInsights={artwork.marketPriceInsights}
             />
             {!showPriceEstimateBanner && <Spacer p={1} />}
           </>
@@ -65,10 +61,10 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
           </>
         )}
 
-        {!!marketPriceInsights && (
+        {!!artwork.marketPriceInsights && (
           <MyCollectionArtworkArtistMarket
             artwork={artwork}
-            marketPriceInsights={marketPriceInsights}
+            marketPriceInsights={artwork.marketPriceInsights}
           />
         )}
 
@@ -101,14 +97,16 @@ const artworkFragment = graphql`
     ...MyCollectionArtworkComparableWorks_artwork
     ...MyCollectionArtworkArtistAuctionResults_artwork
     ...MyCollectionWhySell_artwork
+    marketPriceInsights {
+      ...MyCollectionArtworkArtistMarket_artworkPriceInsights
+      ...MyCollectionArtworkDemandIndex_artworkPriceInsights
+    }
   }
 `
 
 const marketPriceInsightsFragment = graphql`
   fragment MyCollectionArtworkInsights_marketPriceInsights on MarketPriceInsights {
     demandRank
-    ...MyCollectionArtworkDemandIndex_marketPriceInsights
-    ...MyCollectionArtworkArtistMarket_marketPriceInsights
     ...RequestForPriceEstimateBanner_marketPriceInsights
   }
 `

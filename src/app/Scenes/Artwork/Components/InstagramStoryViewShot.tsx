@@ -58,17 +58,11 @@ export const InstagramStoryViewShot: React.FC<InstagramStoryViewShotProps> = ({
           justifyContent="space-between"
         >
           <Flex flex={1}>
-            <Text variant="sm-display" weight="medium">
+            <Text variant="md" weight="medium">
               {artist}
             </Text>
             {title ? (
-              <Text
-                variant="sm-display"
-                italic
-                opacity={0.6}
-                mt={10 * scale}
-                ellipsizeMode="middle"
-              >
+              <Text variant="md" italic opacity={0.6} mt={10 * scale} ellipsizeMode="middle">
                 {title}
               </Text>
             ) : null}

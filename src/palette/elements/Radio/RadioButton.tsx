@@ -107,7 +107,7 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
 
           <Flex justifyContent="center">
             {!!text && (
-              <Text variant="sm-display" color={textColor}>
+              <Text variant="md" color={textColor}>
                 {text}
               </Text>
             )}

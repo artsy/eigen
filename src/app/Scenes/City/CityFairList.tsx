@@ -72,7 +72,7 @@ class CityFairList extends React.Component<Props, State> {
           ListHeaderComponent={() => {
             return (
               <Box pt={6} mt={3} mb={2}>
-                <Text variant="lg-display">Fairs</Text>
+                <Text variant="lg">Fairs</Text>
               </Box>
             )
           }}

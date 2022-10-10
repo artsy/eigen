@@ -30,7 +30,7 @@ export const useStickyScrollHeader = ({
       <Flex backgroundColor="white">
         <FancyModalHeader>
           <Flex flex={1} pt={0.5} flexDirection="row">
-            <Text variant="sm-display" numberOfLines={1} style={{ flexShrink: 1 }}>
+            <Text variant="md" numberOfLines={1} style={{ flexShrink: 1 }}>
               {headerText}
             </Text>
           </Flex>

@@ -12,7 +12,7 @@ describe("SimpleTicker", () => {
   it("renders properly", () => {
     const { getByText } = render(
       <Theme>
-        <SimpleTicker duration={duration} separator="  " variant="sm-display" />
+        <SimpleTicker duration={duration} separator="  " variant="md" />
       </Theme>
     )
 
@@ -27,7 +27,7 @@ describe("SimpleTicker", () => {
     const zeroDuration = moment.duration()
     const { getByText } = render(
       <Theme>
-        <SimpleTicker duration={zeroDuration} separator="  " variant="sm-display" />
+        <SimpleTicker duration={zeroDuration} separator="  " variant="md" />
       </Theme>
     )
 
@@ -43,7 +43,7 @@ describe("SimpleTicker", () => {
     const farOutDuration = moment.duration(63113904000)
     const { getByText } = render(
       <Theme>
-        <SimpleTicker duration={farOutDuration} separator="  " variant="sm-display" />
+        <SimpleTicker duration={farOutDuration} separator="  " variant="md" />
       </Theme>
     )
 

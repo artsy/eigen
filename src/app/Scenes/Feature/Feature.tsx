@@ -99,7 +99,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
         key: "setTitle:" + set.id,
         content: (
           <Flex pb="2" mx="2">
-            {!!set.name && <Text variant="lg-display">{set.name}</Text>}
+            {!!set.name && <Text variant="lg">{set.name}</Text>}
             {!!set.description && (
               <Text variant="sm" color="black60">
                 {set.description}

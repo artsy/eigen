@@ -29,7 +29,7 @@ export const OldArtistList: React.FC<OldArtistListProps> = ({ targetSupply, isLo
   return (
     <Box>
       <Box>
-        <Text variant="sm-display" px={2}>
+        <Text variant="md" px={2}>
           Artists in-demand on Artsy
         </Text>
 

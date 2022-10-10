@@ -266,7 +266,7 @@ const SelectModal: React.FC<{
       <Flex p="2" pb={15} flexDirection="row" alignItems="center" flexGrow={0}>
         <Flex flex={1} />
         <Flex flex={2} alignItems="center">
-          <Text variant="sm-display" weight="medium">
+          <Text variant="md" weight="medium">
             {props.title}
           </Text>
         </Flex>
@@ -327,12 +327,7 @@ const SelectModal: React.FC<{
               flexGrow={0}
             >
               {props.renderItemLabel?.(item) ?? (
-                <Text
-                  variant="sm-display"
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
-                  style={{ flexShrink: 1 }}
-                >
+                <Text variant="md" numberOfLines={1} ellipsizeMode="tail" style={{ flexShrink: 1 }}>
                   {item.label}
                 </Text>
               )}

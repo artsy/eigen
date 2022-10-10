@@ -133,13 +133,13 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
   return (
     <>
       <Flex style={{ borderColor: "lightgray", borderWidth: 1 }} mt={4} mb={2} p={2} pt={3} pb={3}>
-        <Text variant="lg-display" color="black100" marginBottom={1}>
+        <Text variant="lg" color="black100" marginBottom={1}>
           Add Files Here
         </Text>
-        <Text variant="sm-display" color="black60" marginBottom={1}>
+        <Text variant="md" color="black60" marginBottom={1}>
           Files Supported: JPG, PNG, HEIC
         </Text>
-        <Text variant="sm-display" color="black60" marginBottom={3}>
+        <Text variant="md" color="black60" marginBottom={3}>
           Total Maximum Size: 30MB
         </Text>
         <Button

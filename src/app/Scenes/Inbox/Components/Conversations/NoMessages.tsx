@@ -19,7 +19,7 @@ export const NoMessages: React.FC = () => {
 
   return (
     <Flex mt={3} mx={2}>
-      <Text variant="sm-display" textAlign="center" fontWeight="normal">
+      <Text variant="md" textAlign="center" fontWeight="normal">
         Keep track of your conversations with galleries.
       </Text>
       <Text

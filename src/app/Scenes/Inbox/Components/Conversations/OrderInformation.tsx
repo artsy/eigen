@@ -18,7 +18,7 @@ export const OrderInformation: React.FC<OrderInformationProps> = ({ artwork, ord
     <>
       <Flex flexDirection="column" p={2} key="support-section">
         <Join separator={<Spacer my={0.5} />}>
-          <Text variant="sm-display" weight="medium" mb={0.5}>
+          <Text variant="md" weight="medium" mb={0.5}>
             {`Order No. ${order.code}`}
           </Text>
 

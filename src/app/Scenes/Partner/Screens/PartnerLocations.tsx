@@ -42,7 +42,7 @@ const PartnerLocations: React.FC<{
       ListHeaderComponent={() => (
         <Box pt={60} px={2}>
           <Text variant="sm">{locations.length > 1 ? "Locations" : "Location"}</Text>
-          <Text variant="sm-display">{partner.name}</Text>
+          <Text variant="md">{partner.name}</Text>
         </Box>
       )}
       ListFooterComponent={() => <Spacer mb={2} />}

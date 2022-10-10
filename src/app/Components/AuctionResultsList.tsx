@@ -73,7 +73,7 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
         ListHeaderComponent={ListHeaderComponent}
         renderSectionHeader={({ section: { sectionTitle } }) => (
           <Flex bg="white" mx="2">
-            <Text my="2" variant="sm-display">
+            <Text my="2" variant="md">
               {sectionTitle}
             </Text>
           </Flex>

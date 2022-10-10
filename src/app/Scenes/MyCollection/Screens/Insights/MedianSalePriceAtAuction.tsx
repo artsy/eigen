@@ -52,7 +52,7 @@ const MedianSalePriceAtAuctionScreen: React.FC<MedianSalePriceAtAuctionProps> = 
     <ScrollView showsVerticalScrollIndicator={false}>
       <Flex pt={6}>
         <Flex mx={2}>
-          <Text variant="lg-display" mb={0.5} testID="Median_Auction_Price_title">
+          <Text variant="lg" mb={0.5} testID="Median_Auction_Price_title">
             {enableMyCollectionInsightsMedianPrice
               ? "Median Auction Price"
               : "Average Auction Price"}
@@ -81,7 +81,7 @@ const MedianSalePriceAtAuctionScreen: React.FC<MedianSalePriceAtAuctionProps> = 
             {/* Sale Artwork Artist Name */}
             <Flex flex={1} pl={1}>
               {!!data.artist?.name && (
-                <Text variant="sm-display" ellipsizeMode="middle" numberOfLines={2}>
+                <Text variant="md" ellipsizeMode="middle" numberOfLines={2}>
                   {data.artist.name}
                 </Text>
               )}
@@ -210,7 +210,7 @@ const LoadingSkeleton = () => {
   return (
     <ProvidePlaceholderContext>
       <Flex mx={2} pt={6}>
-        <Text variant="lg-display" mb={0.5}>
+        <Text variant="lg" mb={0.5}>
           Median Auction Price
         </Text>
         <Text variant="xs">Track price stability or growth for your artists.</Text>

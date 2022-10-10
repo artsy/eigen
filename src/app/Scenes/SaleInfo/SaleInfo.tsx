@@ -30,7 +30,7 @@ interface Props {
 const AuctionSupport = () => {
   return (
     <Flex mt={1}>
-      <Text variant="sm-display" px={2} mb={15}>
+      <Text variant="md" px={2} mb={15}>
         Auction support
       </Text>
       <MenuItem
@@ -51,7 +51,7 @@ const AuctionSupport = () => {
 
 const AuctionIsLive = () => (
   <Flex px={2} testID="live-auction">
-    <Text variant="sm-display" mb={2} mt={1}>
+    <Text variant="md" mb={2} mt={1}>
       This is a live auction
     </Text>
     <Text variant="sm" color="black" fontSize={15}>
@@ -99,8 +99,8 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
         <Join separator={<Separator my={2} />}>
           {/*  About Auction */}
           <Flex px={2} mt={70}>
-            <Text variant="lg-display">About this auction</Text>
-            <Text variant="sm-display" mt={1} mb={3}>
+            <Text variant="lg">About this auction</Text>
+            <Text variant="md" mt={1} mb={3}>
               {sale.name}
             </Text>
             {saleStatus(sale.startAt, sale.endAt, sale.registrationEndsAt) === "closed" || (
@@ -190,7 +190,7 @@ const BuyersPremium: React.FC<{ sale: SaleInfo_sale$data }> = (props) => {
   }
   return (
     <Flex px={2}>
-      <Text variant="sm-display" mb={2} mt={1}>
+      <Text variant="md" mb={2} mt={1}>
         Buyer's Premium for this Auction
       </Text>
       {premiumDisplay}
@@ -201,7 +201,7 @@ const BuyersPremium: React.FC<{ sale: SaleInfo_sale$data }> = (props) => {
 const SaleInfoPlaceholder = () => (
   <Join separator={<Separator my={2} />}>
     <Flex px={2} mt={70}>
-      <Text variant="lg-display">About this auction</Text>
+      <Text variant="lg">About this auction</Text>
       <Separator my={1} />
       <PlaceholderBox marginBottom={20} height={30} width={200 + Math.random() * 100} />
       <PlaceholderBox marginBottom={10} height={50} />

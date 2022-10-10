@@ -8,7 +8,7 @@ export const WhySellWithArtsy: React.FC = () => {
 
   return (
     <Box px={2}>
-      <Text variant="lg-display">Why sell with Artsy?</Text>
+      <Text variant="lg">Why sell with Artsy?</Text>
 
       <Spacer mb={2} />
 
