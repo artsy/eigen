@@ -1,6 +1,7 @@
 import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet"
 import { CareerHighlightBottomSheet_query$key } from "__generated__/CareerHighlightBottomSheet_query.graphql"
 import { LegacyBackButtonContext } from "app/navigation/NavStack"
+import { delay } from "app/utils/delay"
 import { isPad } from "app/utils/hardware"
 import { compact } from "lodash"
 import { Flex } from "palette"
@@ -119,43 +120,40 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
     () => dataForFlatlist(),
     [JSON.stringify(data.analyticsArtistSparklines)]
   )
-  if (!flatListData.length) {
+
+  if (!flatListData.length || selectedXAxisHighlight === null) {
     return null
   }
 
-  if (selectedXAxisHighlight !== null) {
-    return (
-      <BottomSheet
-        ref={bottomSheetRef}
-        index={0}
-        snapPoints={snapPoints}
-        onChange={handleSheetChanges}
-        enablePanDownToClose
-        backdropComponent={renderBackdrop}
-        backgroundComponent={renderBackground}
-      >
-        <FlatList // Note that this FlatList is from "react-native-gesture-handler" in order for scrolls to work seamlessly on android. BottomSheetFlatlist shipped with BottomSheet is janky on iOS.
-          testID="BottomSheetFlatlist"
-          ref={flatlistRef}
-          data={flatListData}
-          renderItem={({ item }) => (
-            <CareerHighlightBottomSheetItem year={item.year} highlights={item.highlights} />
-          )}
-          keyExtractor={(item) => item.year.toString()}
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          onScrollToIndexFailed={({ index }) => {
-            const delay = new Promise((resolve) => setTimeout(resolve, 100))
-            delay.then(() => {
-              flatlistRef.current?.scrollToIndex({ index, animated: false })
-            })
-          }}
-        />
-      </BottomSheet>
-    )
-  }
-  return null
+  return (
+    <BottomSheet
+      ref={bottomSheetRef}
+      index={0}
+      snapPoints={snapPoints}
+      onChange={handleSheetChanges}
+      enablePanDownToClose
+      backdropComponent={renderBackdrop}
+      backgroundComponent={renderBackground}
+    >
+      <FlatList // Note that this FlatList is from "react-native-gesture-handler" in order for scrolls to work seamlessly on android. BottomSheetFlatlist shipped with BottomSheet is janky on iOS.
+        testID="BottomSheetFlatlist"
+        ref={flatlistRef}
+        data={flatListData}
+        renderItem={({ item }) => (
+          <CareerHighlightBottomSheetItem year={item.year} highlights={item.highlights} />
+        )}
+        keyExtractor={(item) => item.year.toString()}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        onScrollToIndexFailed={({ index }) => {
+          delay(100).then(() => {
+            flatlistRef.current?.scrollToIndex({ index, animated: false })
+          })
+        }}
+      />
+    </BottomSheet>
+  )
 }
 
 const careerHighlighsBottomSheetFragment = graphql`
