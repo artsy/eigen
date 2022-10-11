@@ -8,6 +8,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { Flex, Separator, Spinner } from "palette"
 import { useState } from "react"
 import { graphql, usePaginationFragment } from "react-relay"
+import { ActivityEmptyView } from "./ActivityEmptyView"
 import { ActivityItem } from "./ActivityItem"
 import { ActivityTabSubheader } from "./ActivityTabSubheader"
 import { NotificationType } from "./types"
@@ -56,6 +57,10 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type }) => {
         },
       }
     )
+  }
+
+  if (notifications.length === 0) {
+    return <ActivityEmptyView type={type} />
   }
 
   return (

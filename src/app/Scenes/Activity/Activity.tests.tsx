@@ -32,6 +32,20 @@ describe("Activity", () => {
     expect(getByText("All")).toBeTruthy()
     expect(getByText("Alerts")).toBeTruthy()
   })
+
+  it("renders empty states", async () => {
+    const { getByLabelText } = renderWithHookWrappersTL(<Activity />, mockEnvironment)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      NotificationConnection: () => ({
+        edges: [],
+      }),
+    })
+
+    await flushPromiseQueue()
+
+    expect(getByLabelText("Activities are empty")).toBeTruthy()
+  })
 })
 
 const notifications = {
