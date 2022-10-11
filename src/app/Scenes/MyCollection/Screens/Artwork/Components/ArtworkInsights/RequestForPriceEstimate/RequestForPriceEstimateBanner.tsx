@@ -54,7 +54,7 @@ export const RequestForPriceEstimateBanner: React.FC<RequestForPriceEstimateProp
             )
             return
           }
-          navigate(`/my-collection/artwork/${artwork.internalID}/request-for-price-estimate`, {
+          navigate(`/my-collection/artwork/${artwork.internalID}/price-estimate`, {
             passProps: {
               name: me.name,
               email: me.email,
