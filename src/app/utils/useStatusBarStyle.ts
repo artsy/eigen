@@ -8,7 +8,6 @@ export const useLightStatusBarStyle = () => {
   const navigation = useNavigation()
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
-      // do something
       StatusBar.setBarStyle("light-content")
     })
 
@@ -17,7 +16,6 @@ export const useLightStatusBarStyle = () => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("blur", () => {
-      // do something
       StatusBar.setBarStyle("dark-content")
     })
 
