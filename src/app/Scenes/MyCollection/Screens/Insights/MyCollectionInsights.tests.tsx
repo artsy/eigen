@@ -120,7 +120,7 @@ describe("MyCollectionInsights", () => {
   })
 
   it("shows empty state when the user has no artworks in their collection", async () => {
-    const { getByTestId } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
     resolveMostRecentRelayOperation(mockEnvironment, {
       Me: () => ({
         myCollectionConnection: { edges: [] },
@@ -131,7 +131,7 @@ describe("MyCollectionInsights", () => {
 
     await flushPromiseQueue()
 
-    expect(getByTestId("my-collection-insights-empty-state")).toBeTruthy()
+    expect(getByText("Gain Deeper Knowledge of your Collection")).toBeTruthy()
   })
 })
 

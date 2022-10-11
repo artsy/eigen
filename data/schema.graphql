@@ -1138,7 +1138,10 @@ type ArticleSectionImageCollection {
   layout: ArticleSectionImageCollectionLayout!
 }
 
-union ArticleSectionImageCollectionFigure = ArticleImageSection | Artwork
+union ArticleSectionImageCollectionFigure =
+    ArticleImageSection
+  | ArticleUnpublishedArtwork
+  | Artwork
 
 enum ArticleSectionImageCollectionLayout {
   COLUMN_WIDTH
@@ -1220,6 +1223,35 @@ type ArticleSponsor {
   partnerLogoLink: String
   pixelTrackingCode: String
   subTitle: String
+}
+
+type ArticleUnpublishedArtwork {
+  artist: ArticleUnpublishedArtworkArtist
+  artists: [ArticleUnpublishedArtworkArtist!]!
+  credit: String
+  date: String
+
+  # A globally unique ID.
+  id: ID!
+  image: Image
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  partner: ArticleUnpublishedArtworkPartner
+
+  # A slug ID.
+  slug: ID!
+  title: String
+}
+
+type ArticleUnpublishedArtworkArtist {
+  name: String
+  slug: String
+}
+
+type ArticleUnpublishedArtworkPartner {
+  name: String
+  slug: String
 }
 
 type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Searchable {
@@ -15937,6 +15969,14 @@ type UpdateViewingRoomSubsectionsPayload {
 scalar Upload
 
 type User implements Node {
+  accessiblePropertiesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    model: UserAccessiblePropertyInput
+  ): UserAccessiblePropertyConnection
+
   # The admin notes associated with the user
   adminNotes: [UserAdminNotes]!
   analytics: AnalyticsUserStats
@@ -15957,6 +15997,14 @@ type User implements Node {
 
   # The given email of the user.
   email: String!
+  emailConfirmationSentAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
   emailConfirmedAt(
     format: String
 
@@ -16058,8 +16106,40 @@ type User implements Node {
   # The number of times a user has signed in
   signInCount: Int!
 
+  # The unconfirmed email of the user.
+  unconfirmedEmail: String
+
   # Check whether a user exists by email address before creating an account.
   userAlreadyExists: Boolean
+}
+
+union UserAccessibleProperty = Artist | Artwork | Partner | Profile
+
+# A connection to a list of items.
+type UserAccessiblePropertyConnection {
+  # A list of edges.
+  edges: [UserAccessiblePropertyEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type UserAccessiblePropertyEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: UserAccessibleProperty
+}
+
+enum UserAccessiblePropertyInput {
+  ARTIST
+  ARTWORK
+  PARTNER
+  PROFILE
 }
 
 # User saved address

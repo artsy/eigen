@@ -93,7 +93,7 @@ describe("MyCollection", () => {
     it("shows zerostate", () => {
       expect(extractText(tree.root)).toContain("Your Art Collection in Your Pocket")
       expect(extractText(tree.root)).toContain(
-        "Access market insights and manage  your collection online."
+        "Access market insights and manage your collection online."
       )
     })
 
