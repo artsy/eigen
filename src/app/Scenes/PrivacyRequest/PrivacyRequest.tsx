@@ -10,7 +10,7 @@ export class PrivacyRequest extends React.Component {
       <View style={{ flex: 1 }}>
         <Box mb={1} mt={2}>
           <Flex alignItems="center">
-            <Text variant="md" weight="medium">
+            <Text variant="sm-display" weight="medium">
               Personal data request
             </Text>
           </Flex>

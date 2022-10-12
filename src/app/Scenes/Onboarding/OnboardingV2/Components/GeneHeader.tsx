@@ -57,7 +57,7 @@ export const GeneHeader: React.FC<GeneHeaderProps> = ({ geneID, gene, descriptio
     <Flex>
       <ImageBackground style={{ height: 300 }} resizeMode="cover" source={images[geneID]}>
         <Flex pt={6} px={2}>
-          <Text variant="xl" color="white100">
+          <Text variant="lg-display" color="white100">
             {name}
           </Text>
           <Spacer mt={2} />

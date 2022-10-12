@@ -111,7 +111,7 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
                   alignItems: "center",
                 }}
               >
-                <Text variant="md" fontWeight="500" color="white">
+                <Text variant="sm-display" fontWeight="500" color="white">
                   Auction closed
                 </Text>
               </Flex>
@@ -130,7 +130,7 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
         <Flex mx="2" mt="2">
           <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
             <Flex flex={1}>
-              <Text variant="lg" testID="saleName">
+              <Text variant="lg-display" testID="saleName">
                 {sale.name}
               </Text>
             </Flex>

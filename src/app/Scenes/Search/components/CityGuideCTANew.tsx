@@ -9,7 +9,7 @@ export const CityGuideCTANew = () => {
     <ClassTheme>
       {({ color }) => (
         <Flex>
-          <Text variant="lg">City Guide</Text>
+          <Text variant="lg-display">City Guide</Text>
           <Text color="black60">Discover Galleries, Fairs and Shows around you</Text>
           <Spacer m={1} />
           <Touchable onPress={() => navigate("/map")}>

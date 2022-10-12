@@ -418,7 +418,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
           </Text>
 
           {saleTimeDetails.absolute !== null && (
-            <Text fontSize={12} variant="md" color="black60">
+            <Text fontSize={12} variant="sm-display" color="black60">
               {saleTimeDetails.absolute}
             </Text>
           )}

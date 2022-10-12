@@ -37,7 +37,7 @@ export const ArtworkFilterBackHeader: React.FC<ArtworkFilterBackHeaderProps> = (
           <ArrowLeftIcon fill="black100" />
         </TouchableOpacity>
         <Box flex={1} ml={1} mr={2}>
-          <Text variant="md" numberOfLines={2} lineHeight={18}>
+          <Text variant="sm-display" numberOfLines={2} lineHeight={18}>
             {title}
           </Text>
         </Box>

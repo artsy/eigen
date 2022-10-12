@@ -58,7 +58,7 @@ export const OnboardingFollows: React.FC<OnboardingFollowsProps> = ({ kind }) =>
           {!debouncedValue && (
             // this will be animated with fade out when reanimated is merged
             <Box mt={2}>
-              <Text variant="lg">{title}</Text>
+              <Text variant="lg-display">{title}</Text>
             </Box>
           )}
           <Spacer mt={2} />

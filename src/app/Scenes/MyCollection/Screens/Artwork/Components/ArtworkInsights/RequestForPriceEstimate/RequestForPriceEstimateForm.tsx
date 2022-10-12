@@ -17,7 +17,7 @@ export const RequestForPriceEstimateForm = () => {
           <Box my={3}>
             <Text variant="xl">Contact Information</Text>
             <Spacer p={1} />
-            <Text variant="md" color="black60">
+            <Text variant="sm-display" color="black60">
               We will only use this to contact you about this price estimate
             </Text>
             <Spacer p={1} />

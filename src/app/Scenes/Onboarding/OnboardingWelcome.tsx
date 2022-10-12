@@ -132,7 +132,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
             appearAnim,
           ]}
         >
-          <Text variant="xxl" color="white">
+          <Text variant="xl" color="white">
             Collect Art by the World’s Leading Artists
           </Text>
 

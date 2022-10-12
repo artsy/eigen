@@ -114,7 +114,7 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = (props) => {
           mb={0.5}
         >
           <Flex alignItems="center" flexDirection="column" flexGrow={1}>
-            <Text testID="title" variant="lg" textAlign="center" color="white100">
+            <Text testID="title" variant="lg-display" textAlign="center" color="white100">
               {title}
             </Text>
           </Flex>

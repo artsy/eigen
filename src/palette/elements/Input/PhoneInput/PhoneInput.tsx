@@ -163,7 +163,9 @@ export const PhoneInput = forwardRef<
                         backgroundColor="black10"
                       >
                         {/* selectedValue should always be present */}
-                        <Text variant="md">{countryIndex[selectedValue ?? countryCode].flag}</Text>
+                        <Text variant="sm-display">
+                          {countryIndex[selectedValue ?? countryCode].flag}
+                        </Text>
                         <Spacer mr={0.5} />
                         <TriangleDown width="8" />
                       </Flex>
@@ -180,14 +182,14 @@ export const PhoneInput = forwardRef<
               renderItemLabel={({ label, value }) => {
                 return (
                   <Flex flexDirection="row" alignItems="center" flexShrink={1}>
-                    <Text variant="md">{countryIndex[value].flag}</Text>
+                    <Text variant="sm-display">{countryIndex[value].flag}</Text>
                     <Spacer mr="1" />
-                    <Text variant="md" style={{ width: 45 }}>
+                    <Text variant="sm-display" style={{ width: 45 }}>
                       +{countryIndex[value].dialCode}
                     </Text>
                     <Spacer mr="1" />
                     <Text
-                      variant="md"
+                      variant="sm-display"
                       numberOfLines={1}
                       ellipsizeMode="tail"
                       style={{ flexShrink: 1 }}

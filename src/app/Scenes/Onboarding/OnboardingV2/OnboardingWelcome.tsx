@@ -94,7 +94,7 @@ const OnboardingWelcome = () => {
         justifyContent="center"
       >
         <ArtsyLogoAbsoluteHeader />
-        <Text variant="xxl" color="white100">
+        <Text variant="xl" color="white100">
           Welcome{"\n"}
           to Artsy,{"\n"}
           {me?.name}
@@ -127,13 +127,13 @@ const OnboardingWelcome = () => {
       >
         <ArtsyLogoAbsoluteHeader />
         <Flex flex={1} justifyContent="center">
-          <Text variant="xxl" color="white100">
+          <Text variant="xl" color="white100">
             Ready to find{"\n"}
             art you love?
           </Text>
           <Spacer mt={4} />
           <AnimatedFlex entering={enteringAnim}>
-            <Text variant="lg" color="white100">
+            <Text variant="lg-display" color="white100">
               Start building your profile and tailor Artsy to your tastes.
             </Text>
           </AnimatedFlex>

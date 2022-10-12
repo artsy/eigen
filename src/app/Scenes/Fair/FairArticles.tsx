@@ -59,7 +59,7 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
   return (
     <ScrollView>
       <Box px={2} py={6}>
-        <Text variant="lg">Articles</Text>
+        <Text variant="lg-display">Articles</Text>
 
         <Spacer my={1} />
 
@@ -77,7 +77,7 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
               />
 
               <Box bg="white100" pt={2} px={2} width="85%" position="absolute" bottom={0} right={0}>
-                <Text variant="md" mb={1}>
+                <Text variant="sm-display" mb={1}>
                   {heroArticle!.title}
                 </Text>
 
@@ -114,7 +114,7 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
                   />
 
                   <Box width="95%">
-                    <Text variant="md" mt={1} mb={1}>
+                    <Text variant="sm-display" mt={1} mb={1}>
                       {article!.title}
                     </Text>
 
