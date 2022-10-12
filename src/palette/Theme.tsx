@@ -311,11 +311,18 @@ export const useTheme = () => {
 
 export const isThemeV3 = (theme: ThemeType): theme is ThemeV3Type => theme.id === "v3"
 
-export type Theme2Type = typeof THEMES.v2
-export type Theme3Type = typeof THEMES.v3
-export type Theme5Type = typeof THEMES.v5
-export type Theme5DarkType = typeof THEMES.v5dark
-export type AllThemesType = Theme2Type & Theme3Type & Theme5Type & Theme5DarkType
+// these here are temporary, for better editor completion
+type SpacingUnitAnyNumber = number & {} // for things like `12` (which RN handles as number of pixels)
+type SpacingUnitAnyString = string & {} // for things like `12px`
+type SpacingUnits = SpacingUnitV2 | SpacingUnitV3 | SpacingUnitAnyNumber | SpacingUnitAnyString
+export interface SpacingUnitTheme {
+  space: Record<SpacingUnits, unknown>
+}
+type ColorAnyString = string & {}
+type Colors = Color | ColorAnyString
+export interface ColorsTheme {
+  colors: Record<Colors, unknown>
+}
 
 /**
  * Only use this if it's are absolutely neccessary, and only in tests.
