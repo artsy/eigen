@@ -43,7 +43,7 @@ const bands: Array<{ name: MedianSalePriceChartDuration }> = [
   { name: MedianSalePriceChartDuration["8 yrs"] },
 ]
 
-const initialValues: MedianSalePriceChartDataContextValueType = {
+export const initialValues: MedianSalePriceChartDataContextValueType = {
   categories: [],
   threeYearLineChartData: { data: [], dataMeta: {} },
   eightYearLineChartData: { data: [], dataMeta: {} },
@@ -57,7 +57,7 @@ const initialValues: MedianSalePriceChartDataContextValueType = {
   selectedXAxisHighlight: null,
 }
 
-const MedianSalePriceChartDataContext =
+export const MedianSalePriceChartDataContext =
   createContext<MedianSalePriceChartDataContextValueType>(initialValues)
 
 export const MedianSalePriceChartDataContextProvider: React.FC<

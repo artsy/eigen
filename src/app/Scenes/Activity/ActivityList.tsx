@@ -5,9 +5,10 @@ import {
   StickyTabSection,
 } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { extractNodes } from "app/utils/extractNodes"
-import { Separator } from "palette"
+import { Flex, Separator, Spinner } from "palette"
 import { useState } from "react"
 import { graphql, usePaginationFragment } from "react-relay"
+import { ActivityEmptyView } from "./ActivityEmptyView"
 import { ActivityItem } from "./ActivityItem"
 import { ActivityTabSubheader } from "./ActivityTabSubheader"
 import { NotificationType } from "./types"
@@ -58,6 +59,10 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type }) => {
     )
   }
 
+  if (notifications.length === 0) {
+    return <ActivityEmptyView type={type} />
+  }
+
   return (
     <StickyTabPageFlatList
       data={sections}
@@ -74,6 +79,13 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type }) => {
       }}
       onEndReached={handleLoadMore}
       onRefresh={handleRefresh}
+      ListFooterComponent={
+        isLoadingNext ? (
+          <Flex my={2} alignItems="center" justifyContent="center">
+            <Spinner />
+          </Flex>
+        ) : null
+      }
     />
   )
 }

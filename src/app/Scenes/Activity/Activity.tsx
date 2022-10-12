@@ -3,10 +3,11 @@ import { ActivityQuery } from "__generated__/ActivityQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"
 import { goBack } from "app/navigation/navigate"
-import { Flex, Text } from "palette"
+import { Flex } from "palette"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ActivityList } from "./ActivityList"
+import { ActivityTabPlaceholder } from "./ActivityTabPlaceholder"
 import { NotificationType } from "./types"
 
 interface ActivityProps {
@@ -25,7 +26,7 @@ export const ActivityContent: React.FC<ActivityProps> = ({ type }) => {
 
 export const ActivityContainer: React.FC<ActivityProps> = (props) => {
   return (
-    <Suspense fallback={<Placeholder />}>
+    <Suspense fallback={<ActivityTabPlaceholder />}>
       <ActivityContent {...props} />
     </Suspense>
   )
@@ -58,12 +59,6 @@ export const Activity = () => {
     </Flex>
   )
 }
-
-const Placeholder = () => (
-  <Flex flex={1} justifyContent="center" alignItems="center">
-    <Text>Loading</Text>
-  </Flex>
-)
 
 const ActivityScreenQuery = graphql`
   query ActivityQuery($count: Int, $after: String, $types: [NotificationTypesEnum]) {
