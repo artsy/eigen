@@ -1,4 +1,5 @@
 import { bullet } from "palette/helpers"
+import { SpacingUnitTheme } from "palette/Theme"
 import { SpacerProps } from "../../atoms/Spacer"
 import { Avatar } from "../Avatar"
 import { Flex, FlexProps } from "../Flex"
