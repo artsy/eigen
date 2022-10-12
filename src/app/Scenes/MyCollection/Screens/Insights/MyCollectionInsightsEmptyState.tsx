@@ -38,39 +38,6 @@ export const MyCollectionInsightsEmptyState = () => {
           </Button>
         </>
       }
-    <Flex px={2} testID="my-collection-insights-empty-state">
-      <Text variant="sm-display" textAlign="center">
-        Gain deeper knowledge of your collection
-      </Text>
-      <Text variant="xs" color="black60" textAlign="center">
-        Get free market insights about the artists you collect.
-      </Text>
-      <Image
-        source={image}
-        resizeMode="contain"
-        style={{
-          alignSelf: "center",
-          height: 120,
-          width: 327,
-          marginVertical: space(2),
-        }}
-      />
-      <Button
-        block
-        onPress={() =>
-          navigate("my-collection/artworks/new", {
-            passProps: {
-              mode: "add",
-              source: Tab.insights,
-              onSuccess: popToRoot,
-            },
-          })
-        }
-      >
-        Upload Artwork
-      </Button>
-    </Flex>
+    />
   )
 }
-
-            ////// WOWOWO

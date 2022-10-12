@@ -52,7 +52,7 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
 
         <Spacer mr={1} />
 
-        <Text variant="lg" color={color}>
+        <Text variant="lg-display" color={color}>
           {Math.abs(value)}%
         </Text>
       </Flex>
@@ -64,7 +64,7 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
       <>
         <Flex flexDirection="column" justifyContent="flex-start">
           <Text variant="xs">{name}</Text>
-          <Text variant="lg">{value}</Text>
+          <Text variant="lg-display">{value}</Text>
         </Flex>
       </>
     )
