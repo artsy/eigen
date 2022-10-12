@@ -316,11 +316,11 @@ type SpacingUnitAnyNumber = number & {} // for things like `12` (which RN handle
 type SpacingUnitAnyString = string & {} // for things like `12px`
 type SpacingUnits = SpacingUnitV2 | SpacingUnitV3 | SpacingUnitAnyNumber | SpacingUnitAnyString
 // tslint:disable-next-line:interface-over-type-literal
-export type SpacingUnitTheme = { space: Record<SpacingUnits, unknown> }
+export type SpacingUnitTheme = { space: Record<SpacingUnits, any> }
 type ColorAnyString = string & {}
 type Colors = Color | ColorAnyString
 // tslint:disable-next-line:interface-over-type-literal
-export type ColorsTheme = { colors: Record<Colors, unknown> }
+export type ColorsTheme = { colors: Record<Colors, any> }
 
 /**
  * Only use this if it's are absolutely neccessary, and only in tests.
