@@ -315,14 +315,12 @@ export const isThemeV3 = (theme: ThemeType): theme is ThemeV3Type => theme.id ==
 type SpacingUnitAnyNumber = number & {} // for things like `12` (which RN handles as number of pixels)
 type SpacingUnitAnyString = string & {} // for things like `12px`
 type SpacingUnits = SpacingUnitV2 | SpacingUnitV3 | SpacingUnitAnyNumber | SpacingUnitAnyString
-export interface SpacingUnitTheme {
-  space: Record<SpacingUnits, unknown>
-}
+// tslint:disable-next-line:interface-over-type-literal
+export type SpacingUnitTheme = { space: Record<SpacingUnits, unknown> }
 type ColorAnyString = string & {}
 type Colors = Color | ColorAnyString
-export interface ColorsTheme {
-  colors: Record<Colors, unknown>
-}
+// tslint:disable-next-line:interface-over-type-literal
+export type ColorsTheme = { colors: Record<Colors, unknown> }
 
 /**
  * Only use this if it's are absolutely neccessary, and only in tests.
