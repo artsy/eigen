@@ -521,7 +521,6 @@ export const FeatureFlagMenuItem: React.FC<{
           <Text variant="sm-display" color={titleColor}>
             {title}
           </Text>
-          <Text variant="sm-display">{title}</Text>
         </Flex>
         {!!value && (
           <Flex flex={2} flexDirection="row" alignItems="center">
