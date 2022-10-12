@@ -311,6 +311,12 @@ export const useTheme = () => {
 
 export const isThemeV3 = (theme: ThemeType): theme is ThemeV3Type => theme.id === "v3"
 
+export type Theme2Type = typeof THEMES.v2
+export type Theme3Type = typeof THEMES.v3
+export type Theme5Type = typeof THEMES.v5
+export type Theme5DarkType = typeof THEMES.v5dark
+export type AllThemesType = Theme2Type & Theme3Type & Theme5Type & Theme5DarkType
+
 /**
  * Only use this if it's are absolutely neccessary, and only in tests.
  */
