@@ -1,5 +1,6 @@
-This update includes a number of improvements and bug fixes, including:
+This update includes a number of improvements and bug fixes including:
 
-- A fresh Sell with Artsy screen, with updated information about how to sell work from your art collection with Artsy.
+- In-app notification centre improvements
+- My Collection UI improvements
 
 Have feedback? Email us at support@artsy.net
