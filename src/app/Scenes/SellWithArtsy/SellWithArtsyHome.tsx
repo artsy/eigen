@@ -9,7 +9,7 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useLightStatusBarStyle } from "app/utils/useStatusBarStyle"
 import { Button, Flex, Screen, Spacer, Text } from "palette"
 import React, { useEffect } from "react"
-import { ScrollView, StatusBar } from "react-native"
+import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
@@ -72,7 +72,6 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
 
   return (
     <Screen.Background>
-      <StatusBar barStyle="light-content" />
       <Flex flex={1} justifyContent="center" alignItems="center" minHeight={screenHeight}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Flex pb={5}>
