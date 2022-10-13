@@ -42,19 +42,7 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
   }, [])
 
   const renderImage = () => {
-    if (!!imageURL) {
-      const targetURL = imageURL.replace(":version", "square")
-      return (
-        <OpaqueImageView
-          testID="Image-Remote"
-          imageURL={targetURL}
-          retryFailedURLs
-          height={imageHeight}
-          width={imageWidth}
-          aspectRatio={aspectRatio}
-        />
-      )
-    } else if (localImage) {
+    if (localImage) {
       return (
         <RNImage
           testID="Image-Local"
@@ -64,6 +52,18 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
           }}
           resizeMode="contain"
           source={{ uri: localImage.path }}
+        />
+      )
+    } else if (imageURL) {
+      const targetURL = imageURL.replace(":version", "square")
+      return (
+        <OpaqueImageView
+          testID="Image-Remote"
+          imageURL={targetURL}
+          retryFailedURLs
+          height={imageHeight}
+          width={imageWidth}
+          aspectRatio={aspectRatio}
         />
       )
     } else if (localImageConsignments) {
