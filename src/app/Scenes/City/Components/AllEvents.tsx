@@ -216,7 +216,7 @@ export class AllEvents extends React.Component<Props, State> {
       case "header":
         return (
           <Box px={2} pt={4}>
-            {!!data && <Text variant="lg">{data}</Text>}
+            {!!data && <Text variant="lg-display">{data}</Text>}
           </Box>
         )
       default:

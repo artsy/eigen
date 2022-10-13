@@ -86,7 +86,7 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
       py="2"
     >
       <Flex flexDirection="row" justifyContent="space-between">
-        <Text variant="lg" pb="2" px="2">
+        <Text variant="lg-display" pb="2" px="2">
           Admin Settings
         </Text>
         <Buttons onClose={onClose} />
@@ -319,11 +319,11 @@ const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
       }}
       value={
         isAdminOverrideInEffect ? (
-          <Text variant="md" color="black100" fontWeight="bold">
+          <Text variant="sm-display" color="black100" fontWeight="bold">
             {valText}
           </Text>
         ) : (
-          <Text variant="md" color="black60">
+          <Text variant="sm-display" color="black60">
             {valText}
           </Text>
         )
@@ -368,11 +368,11 @@ const DevToggleItem: React.FC<{ toggleKey: DevToggleName }> = ({ toggleKey }) =>
       }}
       value={
         currentValue ? (
-          <Text variant="md" color="black100" fontWeight="bold">
+          <Text variant="sm-display" color="black100" fontWeight="bold">
             {valText}
           </Text>
         ) : (
-          <Text variant="md" color="black60">
+          <Text variant="sm-display" color="black60">
             {valText}
           </Text>
         )
@@ -487,7 +487,7 @@ const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     {description}
                   </Text>
                   <Flex key={key} flexDirection="row" justifyContent="space-between">
-                    <Text variant="xs">{strings[key as EnvironmentKey]}</Text>
+                    <Text variant="sm-display">{strings[key as EnvironmentKey]}</Text>
                   </Flex>
                 </Flex>
                 <ChevronIcon fill="black60" direction="right" />
@@ -518,14 +518,14 @@ export const FeatureFlagMenuItem: React.FC<{
         pr="15px"
       >
         <Flex flexDirection="row" mr="2" flex={5}>
-          <Text variant="md" color={titleColor}>
+          <Text variant="sm-display" color={titleColor}>
             {title}
           </Text>
         </Flex>
         {!!value && (
           <Flex flex={2} flexDirection="row" alignItems="center">
             <Flex flex={3}>
-              <Text variant="md" color="black60" numberOfLines={1} textAlign="right">
+              <Text variant="sm-display" color="black60" numberOfLines={1} textAlign="right">
                 {value}
               </Text>
             </Flex>

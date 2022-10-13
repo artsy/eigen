@@ -38,7 +38,7 @@ const InboxTabs = (props: TabBarProps) => (
             <Text
               mr={2}
               color="black100"
-              variant="lg"
+              variant="lg-display"
               onPress={() => {
                 if (!__TEST__) {
                   props.goToPage?.(page)

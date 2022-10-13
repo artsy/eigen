@@ -116,7 +116,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
       <Screen.Body>
         <Flex justifyContent="center" flex={1}>
           <Join separator={<Spacer y={60} />}>
-            <Text variant="xxl">{mode === "login" ? "Log in" : "Sign Up"}</Text>
+            <Text variant="xl">{mode === "login" ? "Log in" : "Sign Up"}</Text>
 
             <>
               <Button
@@ -222,11 +222,11 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
             </Text>
 
             <Flex position="absolute" bottom={0} left={0} right={0} alignItems="center">
-              <Text variant="lg">
+              <Text variant="sm-display">
                 {mode === "login" ? "Don’t have an account?" : "Already have an account?"}
               </Text>
               <Text
-                variant="lg"
+                variant="sm-display"
                 underline
                 onPress={() =>
                   // @ts-expect-error

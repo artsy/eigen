@@ -150,7 +150,7 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPag
                 onPress={() => onRemove(item.internalID)}
                 hitSlop={{ top: 10, left: 20, right: 20, bottom: 10 }}
               >
-                <Text variant="md" color="red100">
+                <Text variant="sm-display" color="red100">
                   Remove
                 </Text>
               </TouchableOpacity>

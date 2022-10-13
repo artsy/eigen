@@ -42,7 +42,7 @@ const FeatureFeaturedLink: React.FC<FeatureFeaturedLinkProps> = ({ featuredLink,
             bottom: 20,
           }}
         >
-          <Text variant="lg" color="white">
+          <Text variant="lg-display" color="white">
             {featuredLink.title}
           </Text>
           {!!featuredLink.subtitle && (

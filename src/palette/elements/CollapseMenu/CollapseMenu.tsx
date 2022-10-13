@@ -14,7 +14,7 @@ export const CollapseMenu: React.FC<{ title: string }> = ({ title, children }) =
     <Flex>
       <TouchableOpacity onPress={() => void setShowContent(!showContent)}>
         <Flex ml={2} mt={1} mb={1}>
-          <Text variant="md">{title}</Text>
+          <Text variant="sm-display">{title}</Text>
         </Flex>
       </TouchableOpacity>
 

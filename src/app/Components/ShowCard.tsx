@@ -27,7 +27,7 @@ export const ShowCard: React.FC<ShowCardProps> = ({ show, onPress }) => {
         <Flex width={WIDTH} overflow="hidden">
           {!!imageURL && <ImageView imageURL={imageURL} width={WIDTH} height={HEIGHT} />}
           <Spacer mb={1} />
-          <Text numberOfLines={3} ellipsizeMode="tail" variant="lg">
+          <Text numberOfLines={3} ellipsizeMode="tail" variant="lg-display">
             {show.name}
           </Text>
           <Text color="black60">{show.partner?.name}</Text>

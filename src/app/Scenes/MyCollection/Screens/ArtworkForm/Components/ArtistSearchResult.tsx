@@ -7,7 +7,7 @@ export const ArtistSearchResult: React.FC<{ result: AutosuggestResult }> = ({ re
       <Avatar src={result.imageUrl || undefined} size="xs" />
       <Spacer ml="1" />
       <Flex flex={1} flexDirection="column" justifyContent="center">
-        <Text variant="md" ellipsizeMode="tail" numberOfLines={1}>
+        <Text variant="sm-display" ellipsizeMode="tail" numberOfLines={1}>
           {result.displayLabel}
         </Text>
         {!!result.formattedNationalityAndBirthday && (
