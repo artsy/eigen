@@ -255,7 +255,6 @@ describe("messages with order updates", () => {
       .findAllByType(Text)
       .filter((element) => element.props.color !== "black30")
       .map((element) => extractText(element))
-    console.log(messagesAndUpdates)
     expect(messagesAndUpdates).toContain("Offer Accepted")
   })
 
