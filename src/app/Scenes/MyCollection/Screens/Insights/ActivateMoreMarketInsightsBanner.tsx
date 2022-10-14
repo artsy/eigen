@@ -9,7 +9,7 @@ import styled from "styled-components"
 
 const BackgroundImage = styled(ImageBackground)``
 
-export const ActivateMoreMarketInsightsBanner: React.FC<{}> = () => {
+export const ActivateMoreMarketInsightsBanner = () => {
   const { trackEvent } = useTracking()
   const screenDimensions = useScreenDimensions()
   const isIPad = screenDimensions.width > 700
