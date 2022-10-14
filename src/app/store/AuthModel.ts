@@ -484,107 +484,126 @@ export const getAuthModel = (): AuthModel => ({
   }),
   authFacebook: thunk(async (actions, options) => {
     return await new Promise<AuthPromiseResolveType>(async (resolve, reject) => {
-      const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions([
-        "public_profile",
-        "email",
-      ])
-      if (declinedPermissions?.includes("email")) {
-        reject(
-          new AuthError("Please allow the use of email to continue.", "Email Permission Declined")
-        )
-      }
-      const accessToken = !isCancelled && (await AccessToken.getCurrentAccessToken())
-      if (!accessToken) {
-        return
-      }
+      try {
+        const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions([
+          "public_profile",
+          "email",
+        ])
 
-      const responseFacebookInfoCallback = async (error: any | null, result: any | null) => {
-        if (error) {
-          reject(new AuthError("Error fetching facebook data", error))
-          return
-        }
-
-        if (!result || !result.email) {
+        if (declinedPermissions?.includes("email")) {
           reject(
-            new AuthError(
-              "There is no email associated with your Facebook account. Please log in using your email and password instead."
-            )
+            new AuthError("Please allow the use of email to continue.", "Email Permission Declined")
           )
+        }
+
+        const accessToken = !isCancelled && (await AccessToken.getCurrentAccessToken())
+        if (!accessToken) {
           return
         }
 
-        if (options.signInOrUp === "signUp") {
-          const resultGravitySignUp = await actions.signUp({
-            email: result.email as string,
-            name: result.name as string,
-            accessToken: accessToken.accessToken,
-            oauthProvider: "facebook",
-            agreedToReceiveEmails: options.agreedToReceiveEmails,
-          })
+        const responseFacebookInfoCallback = async (error: any | null, result: any | null) => {
+          if (error) {
+            reject(new AuthError("Error fetching facebook data", error))
+            return
+          }
 
-          resultGravitySignUp.success
-            ? resolve({ success: true })
-            : reject(
-                new AuthError(
-                  resultGravitySignUp.message,
-                  resultGravitySignUp.error,
-                  resultGravitySignUp.meta
-                )
+          if (!result || !result.email) {
+            reject(
+              new AuthError(
+                "There is no email associated with your Facebook account. Please log in using your email and password instead."
               )
-        }
+            )
+            return
+          }
 
-        if (options.signInOrUp === "signIn") {
-          // we need to get X-ACCESS-TOKEN before actual sign in
-          const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
-            path: `/oauth2/access_token`,
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: {
-              oauth_provider: "facebook",
-              oauth_token: accessToken.accessToken,
-              client_id: clientKey,
-              client_secret: clientSecret,
-              grant_type: "oauth_token",
-              scope: "offline_access",
-            },
-          })
-
-          if (resultGravityAccessToken.status === 201) {
-            const { access_token: userAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
-            const { email } = await actions.getUser({ accessToken: userAccessToken })
-            const resultGravitySignIn = await actions.signIn({
-              oauthProvider: "facebook",
-              email,
+          if (options.signInOrUp === "signUp") {
+            const resultGravitySignUp = await actions.signUp({
+              email: result.email as string,
+              name: result.name as string,
               accessToken: accessToken.accessToken,
-              onSignIn: options.onSignIn,
+              oauthProvider: "facebook",
+              agreedToReceiveEmails: options.agreedToReceiveEmails,
             })
 
-            resultGravitySignIn
+            resultGravitySignUp.success
               ? resolve({ success: true })
-              : reject(new AuthError("Could not log in"))
-          } else {
-            const res = await resultGravityAccessToken.json()
-            showError(res, reject, "facebook")
+              : reject(
+                  new AuthError(
+                    resultGravitySignUp.message,
+                    resultGravitySignUp.error,
+                    resultGravitySignUp.meta
+                  )
+                )
+          }
+
+          if (options.signInOrUp === "signIn") {
+            // we need to get X-ACCESS-TOKEN before actual sign in
+            const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
+              path: `/oauth2/access_token`,
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: {
+                oauth_provider: "facebook",
+                oauth_token: accessToken.accessToken,
+                client_id: clientKey,
+                client_secret: clientSecret,
+                grant_type: "oauth_token",
+                scope: "offline_access",
+              },
+            })
+
+            if (resultGravityAccessToken.status === 201) {
+              const { access_token: userAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
+              const { email } = await actions.getUser({ accessToken: userAccessToken })
+              const resultGravitySignIn = await actions.signIn({
+                oauthProvider: "facebook",
+                email,
+                accessToken: accessToken.accessToken,
+                onSignIn: options.onSignIn,
+              })
+
+              resultGravitySignIn
+                ? resolve({ success: true })
+                : reject(new AuthError("Could not log in"))
+            } else {
+              const res = await resultGravityAccessToken.json()
+              showError(res, reject, "facebook")
+            }
           }
         }
-      }
 
-      // get info from facebook
-      const infoRequest = new GraphRequest(
-        "/me",
-        {
-          accessToken: accessToken.accessToken,
-          parameters: {
-            fields: {
-              string: "email,name",
+        // get info from facebook
+        const infoRequest = new GraphRequest(
+          "/me",
+          {
+            accessToken: accessToken.accessToken,
+            parameters: {
+              fields: {
+                string: "email,name",
+              },
             },
           },
-        },
-        responseFacebookInfoCallback
-      )
-      new GraphRequestManager().addRequest(infoRequest).start()
+          responseFacebookInfoCallback
+        )
+        new GraphRequestManager().addRequest(infoRequest).start()
+      } catch (e) {
+        if (e instanceof Error) {
+          if (e.message === "User logged in as different Facebook user.") {
+            // odd and hopefully shouldn't happen often
+            // if the user has a valid session with another account
+            // and tries to log in with a new account they will hit this error
+            // log them out and try again
+            LoginManager.logOut()
+            GlobalStore.actions.auth.authFacebook(options)
+          }
+
+          reject(new AuthError("Error logging into facebook", e.message))
+        }
+
+        reject(new AuthError("Error logging into facebook"))
+      }
     })
   }),
   authGoogle: thunk(async (actions, options) => {
@@ -768,6 +787,7 @@ export const getAuthModel = (): AuthModel => ({
         ? await LegacyNativeModules.ArtsyNativeModule.clearUserData()
         : Promise.resolve(),
       await signOutGoogle(),
+      LoginManager.logOut(),
       CookieManager.clearAll(),
       RelayCache.clearAll(),
     ])
