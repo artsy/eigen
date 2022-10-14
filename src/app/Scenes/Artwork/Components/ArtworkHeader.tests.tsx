@@ -1,6 +1,6 @@
+import { screen } from "@testing-library/react-native"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
-import { ArtworkActions } from "./ArtworkActions"
+import { renderWithRelayWrappers } from "app/tests/renderWithWrappers"
 import { ArtworkHeader } from "./ArtworkHeader"
 import { ArtworkTombstone } from "./ArtworkTombstone"
 import { ImageCarousel } from "./ImageCarousel/ImageCarousel"
@@ -12,18 +12,16 @@ const TestRenderer: React.FC = () => {
 }
 
 describe("ArtworkHeader", () => {
-  it("renders tombstone component", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    expect(tree.root.findAllByType(ArtworkTombstone)).toHaveLength(1)
-  })
+  it("renders correctly", () => {
+    renderWithRelayWrappers(<TestRenderer />)
 
-  it("renders artwork actions component", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    expect(tree.root.findAllByType(ArtworkActions)).toHaveLength(1)
-  })
+    // tombstone
+    expect(screen.UNSAFE_queryAllByType(ArtworkTombstone)).toHaveLength(1)
 
-  it("renders image carousel component", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    expect(tree.root.findAllByType(ImageCarousel)).toHaveLength(1)
+    // actions component
+    expect(screen.UNSAFE_queryAllByType(ArtworkTombstone)).toHaveLength(1)
+
+    // image carousel component
+    expect(screen.UNSAFE_queryAllByType(ImageCarousel)).toHaveLength(1)
   })
 })
