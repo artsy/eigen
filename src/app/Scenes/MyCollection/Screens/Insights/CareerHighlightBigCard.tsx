@@ -36,7 +36,7 @@ const CardHeader: React.FC<{
   return (
     <Flex onLayout={onLayout}>
       <Flex justifyContent="space-between" flexDirection="row" alignItems="center">
-        <Text variant="xxl" color="blue100">
+        <Text variant="xl" color="blue100">
           {count}
         </Text>
         <Flex
@@ -79,7 +79,7 @@ export const CareerHighlightBigCardBiennial: React.FC<CareerHighlightBigCardBien
       <CardHeader
         count={count}
         label={label}
-        icon={<Icon fill="black100" width={21} height={21} />}
+        icon={<Icon fill="black100" width={24} height={24} />}
         onLayout={(event: LayoutChangeEvent) => {
           const layout = event.nativeEvent.layout
           setHeaderHeight(layout.height)
@@ -164,7 +164,7 @@ export const CareerHighlightBigCardCollected: React.FC<CareerHighlightBigCardCol
       <CardHeader
         count={count}
         label={label}
-        icon={<Icon fill="black100" width={21} height={21} />}
+        icon={<Icon fill="black100" width={24} height={24} />}
         onLayout={(event: LayoutChangeEvent) => {
           const layout = event.nativeEvent.layout
           setHeaderHeight(layout.height)
@@ -250,7 +250,7 @@ export const CareerHighlightBigCardGroupShow: React.FC<CareerHighlightBigCardGro
       <CardHeader
         count={count}
         label={label}
-        icon={<Icon fill="black100" width={21} height={21} />}
+        icon={<Icon fill="black100" width={24} height={24} />}
         onLayout={(event: LayoutChangeEvent) => {
           const layout = event.nativeEvent.layout
           setHeaderHeight(layout.height)
@@ -336,7 +336,7 @@ export const CareerHighlightBigCardSoloShow: React.FC<CareerHighlightBigCardSolo
       <CardHeader
         count={count}
         label={label}
-        icon={<Icon fill="black100" width={21} height={21} />}
+        icon={<Icon fill="black100" width={24} height={24} />}
         onLayout={(event: LayoutChangeEvent) => {
           const layout = event.nativeEvent.layout
           setHeaderHeight(layout.height)
@@ -421,7 +421,7 @@ export const CareerHighlightBigCardReviewed: React.FC<CareerHighlightBigCardRevi
       <CardHeader
         count={count}
         label={label}
-        icon={<Icon fill="black100" width={21} height={21} />}
+        icon={<Icon fill="black100" width={24} height={24} />}
         onLayout={(event: LayoutChangeEvent) => {
           const layout = event.nativeEvent.layout
           setHeaderHeight(layout.height)

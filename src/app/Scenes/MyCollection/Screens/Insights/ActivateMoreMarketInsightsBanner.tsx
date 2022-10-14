@@ -23,7 +23,7 @@ export const ActivateMoreMarketInsightsBanner: React.FC<{}> = () => {
         backgroundColor="black5"
       >
         <Flex mx={2}>
-          <Text variant={isIPad ? "lg" : "md"} color="black100" mt={2}>
+          <Text variant={isIPad ? "lg-display" : "sm-display"} color="black100" mt={2}>
             Unlock More Insights
           </Text>
           <Text mt={1} mb={2} variant={isIPad ? "md" : "xs"} color="black60">

@@ -56,7 +56,7 @@ export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({
           </Flex>
         </Flex>
         <Flex justifyContent="flex-end" flex={1}>
-          <Text variant="xl" color="blue100">
+          <Text variant="lg-display" color="blue100">
             {count}
           </Text>
           <Text variant="xs" color="black100">

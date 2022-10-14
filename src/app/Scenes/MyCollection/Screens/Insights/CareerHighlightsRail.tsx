@@ -40,7 +40,7 @@ export const CareerHighlightsRail: React.FC<CareerHighlightsRailProps> = (props)
   })
 
   return (
-    <Flex px={2} py={1} mb={2} backgroundColor={color("black5")}>
+    <Flex px={2} py={1} mb={4} backgroundColor={color("black5")}>
       <FlatList
         testID="career-highlight-cards-flatlist"
         horizontal
