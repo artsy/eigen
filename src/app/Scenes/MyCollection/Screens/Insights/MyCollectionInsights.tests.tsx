@@ -24,21 +24,6 @@ describe("MyCollectionInsights", () => {
       })
     })
 
-    it("shows market signal when they're available", async () => {
-      const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Me: () => ({
-          myCollectionConnection: myCollectionConnectionMock,
-          myCollectionAuctionResults: myCollectionAuctionResultsMock,
-          myCollectionInfo: myCollectionInfoMock,
-        }),
-      })
-
-      await flushPromiseQueue()
-
-      expect(getByText("Market Signals")).toBeTruthy()
-    })
-
     it("shows insights overview", async () => {
       const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
       resolveMostRecentRelayOperation(mockEnvironment, {
@@ -101,21 +86,6 @@ describe("MyCollectionInsights", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({
         AREnableMyCollectionInsightsPhase1Part1: false,
       })
-    })
-
-    it("shows market signal when they're available", async () => {
-      const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Me: () => ({
-          myCollectionConnection: myCollectionConnectionMock,
-          myCollectionAuctionResults: myCollectionAuctionResultsMock,
-          myCollectionInfo: myCollectionInfoMock,
-        }),
-      })
-
-      await flushPromiseQueue()
-
-      expect(() => getByText("Market Signals")).toThrow()
     })
   })
 

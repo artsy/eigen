@@ -42,7 +42,7 @@ export const MedianAuctionPriceRail: React.FC<MedianAuctionPriceRailProps> = (pr
   const groupedArtworks = Object.values(groupBy(artworks, (artwork) => artwork?.artist?.name))
 
   return (
-    <Flex mb={4}>
+    <Flex mb={2}>
       <FlatList
         data={groupedArtworks}
         listKey="median-sale-prices"

@@ -16,7 +16,7 @@ export const Footer: React.FC = () => {
   }
 
   return (
-    <Flex mx={2}>
+    <Flex mx={2} mb={4}>
       <Separator />
       <Text variant="sm" mb={1} mt={2}>
         Gallerist or Art Dealer?

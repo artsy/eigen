@@ -10,7 +10,7 @@ export const CareerHighlightsPromotionalCard: React.FC = () => {
   return (
     <Flex flexGrow={1} width={width} testID="promo-card">
       <Flex mx={2} position="relative">
-        <Text mt={2} variant="xl">
+        <Text mt={2} variant="lg-display">
           Discover Career Highlights for Your Artists
         </Text>
         <Text mt={2} variant="sm-display" color="black60">
