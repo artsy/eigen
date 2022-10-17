@@ -1,21 +1,10 @@
 import { useNavigation } from "@react-navigation/native"
 import { AuthPromiseRejectType } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
-import { clearAuthActions, storeAuthActions } from "app/utils/AuthLog/logAuthActions"
+import { clearAuthActions } from "app/utils/AuthLog/logAuthActions"
 import { osMajorVersion } from "app/utils/platformUtil"
 import { capitalize } from "lodash"
-import {
-  Button,
-  Flex,
-  Join,
-  MagnifyingGlassIcon,
-  Screen,
-  Spacer,
-  Text,
-  TrashIcon,
-  TriangleDown,
-} from "palette"
-import { BoltCircleFill } from "palette/svgs/sf"
+import { Button, Flex, Join, MagnifyingGlassIcon, Screen, Spacer, Text, TrashIcon } from "palette"
 import { useEffect } from "react"
 import { Alert, Image, Platform } from "react-native"
 import { EnvelopeIcon } from "../../../palette/svgs/EnvelopeIcon"

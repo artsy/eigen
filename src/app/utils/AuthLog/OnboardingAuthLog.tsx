@@ -1,7 +1,7 @@
 import Clipboard from "@react-native-community/clipboard"
 import { useNavigation } from "@react-navigation/native"
 import { ReadMore } from "app/Components/ReadMore"
-import { Button, Flex, Screen, ShareIcon, Text } from "palette"
+import { Button, Flex, Screen, ShareIcon } from "palette"
 import { useEffect, useState } from "react"
 import { ScrollView } from "react-native-gesture-handler"
 import { truncatedTextLimit } from "../hardware"
