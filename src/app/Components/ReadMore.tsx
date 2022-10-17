@@ -1,5 +1,7 @@
+import { navigate } from "app/navigation/navigate"
 import { plainTextFromTree } from "app/utils/plainTextFromTree"
 import { defaultRules, renderMarkdown } from "app/utils/renderMarkdown"
+import { sendEmailWithMailTo } from "app/utils/sendEmail"
 import { Schema } from "app/utils/track"
 import _ from "lodash"
 import {
@@ -26,6 +28,8 @@ interface Props {
   textStyle?: "sans" | "new"
   testID?: string
   type?: "show"
+  textVariant?: PaletteTextProps["variant"]
+  linkTextVariant?: PaletteTextProps["variant"]
 }
 
 export const ReadMore = React.memo(
@@ -39,6 +43,8 @@ export const ReadMore = React.memo(
     textStyle = "sans",
     testID,
     type,
+    textVariant = "xs",
+    linkTextVariant = "xs",
   }: Props) => {
     const [isExpanded, setIsExpanded] = useState(false)
     const tracking = useTracking()
@@ -46,7 +52,7 @@ export const ReadMore = React.memo(
     const basicRules = defaultRules({ modal: presentLinksModally, useNewTextStyles })
     const TextComponent: React.ComponentType<PaletteTextProps> = PaletteText
 
-    const textProps: PaletteTextProps = { variant: "xs" }
+    const textProps: PaletteTextProps = { variant: textVariant }
     const rules = {
       ...basicRules,
       ...(type === "show" && {
@@ -66,6 +72,34 @@ export const ReadMore = React.memo(
           },
         },
       }),
+      link: {
+        ...basicRules.link,
+        react: (
+          node: SimpleMarkdown.SingleASTNode,
+          output: SimpleMarkdown.Output<React.ReactNode>,
+          state: SimpleMarkdown.State
+        ) => {
+          state.withinText = true
+          const openUrl = (url: string) => {
+            if (node.target.startsWith("mailto:")) {
+              sendEmailWithMailTo(url)
+            } else {
+              navigate(url)
+            }
+          }
+
+          return (
+            <LinkText
+              key={state.key}
+              testID={`linktext-${state.key}`}
+              onPress={() => openUrl(node.target)}
+              variant={linkTextVariant}
+            >
+              {output(node.content, state)}
+            </LinkText>
+          )
+        },
+      },
       paragraph: {
         ...basicRules.paragraph,
         react: (
@@ -99,6 +133,7 @@ export const ReadMore = React.memo(
     ) : (
       <Flex testID={testID}>
         {truncate({
+          linkTextVariant,
           root,
           maxChars,
           onExpand: () => {
@@ -125,7 +160,9 @@ function truncate({
   root,
   maxChars,
   onExpand,
+  linkTextVariant,
 }: {
+  linkTextVariant: PaletteTextProps["variant"]
   root: React.ReactNode
   maxChars: number
   onExpand(): void
@@ -168,7 +205,7 @@ function truncate({
           truncatedChildren.push(
             <>
               {"... "}
-              <LinkText onPress={onExpand} variant="xs">
+              <LinkText onPress={onExpand} variant={linkTextVariant}>
                 {`Read${nbsp}more`}
               </LinkText>
             </>
