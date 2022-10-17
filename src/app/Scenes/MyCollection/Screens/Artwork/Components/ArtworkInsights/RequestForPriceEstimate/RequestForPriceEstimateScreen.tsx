@@ -93,14 +93,6 @@ export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScre
             artworkId: myCollectionArtworkId,
             requestedAt: new Date().getTime(),
           })
-          Toast.show(
-            "Request Sent. \nAn Artsy Specialist will contact you with a response",
-            "top",
-            {
-              backgroundColor: "blue100",
-              duration: "long",
-            }
-          )
           trackEvent(
             tracks.sentRequestPriceEstimate(
               myCollectionArtworkId,
