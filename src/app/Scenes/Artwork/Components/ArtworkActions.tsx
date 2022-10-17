@@ -1,4 +1,3 @@
-import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkActionsSaveMutation } from "__generated__/ArtworkActionsSaveMutation.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
@@ -6,7 +5,6 @@ import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { cm2in } from "app/utils/conversions"
 import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { Schema, track } from "app/utils/track"
-import { userHadMeaningfulInteraction } from "app/utils/userHadMeaningfulInteraction"
 import { take } from "lodash"
 import {
   BellFillIcon,
