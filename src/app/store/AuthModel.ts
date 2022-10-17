@@ -4,6 +4,7 @@ import CookieManager from "@react-native-cookies/cookies"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { OAuthProvider } from "app/auth/types"
 import * as RelayCache from "app/relay/RelayCache"
+import { logAuthAction } from "app/utils/AuthLog/logAuthActions"
 import { isArtsyEmail } from "app/utils/general"
 import { postEventToProviders } from "app/utils/track/providers"
 import { action, Action, Computed, computed, StateMapper, thunk, Thunk } from "easy-peasy"
@@ -483,6 +484,8 @@ export const getAuthModel = (): AuthModel => ({
     }
   }),
   authFacebook: thunk(async (actions, options) => {
+    logAuthAction("LOGIN step 1", "some data")
+
     return await new Promise<AuthPromiseResolveType>(async (resolve, reject) => {
       const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions([
         "public_profile",
