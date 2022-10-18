@@ -492,8 +492,6 @@ export const getAuthModel = (): AuthModel => ({
           "email",
         ])
 
-        console.log("FBSDK stop 2")
-
         if (declinedPermissions?.includes("email")) {
           reject(
             new AuthError("Please allow the use of email to continue.", "Email Permission Declined")
