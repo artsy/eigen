@@ -296,6 +296,11 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "AREnableCollectionsInOnboarding",
   },
+  AREnableNewRequestPriceEstimateLogic: {
+    description: "Enable new request price estimate logic",
+    showInAdminMenu: true,
+    readyForRelease: false,
+  },
 })
 
 export interface DevToggleDescriptor {
