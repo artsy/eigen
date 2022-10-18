@@ -42,8 +42,10 @@ const showError = (
             `or sign up on Artsy using ${providerName}. `
         )
       )
+      return
     } else {
       reject(new AuthError("Login attempt failed"))
+      return
     }
   }
 }
@@ -502,6 +504,7 @@ export const getAuthModel = (): AuthModel => ({
         reject(
           new AuthError("Please allow the use of email to continue.", "Email Permission Declined")
         )
+        return
       }
       const accessToken = !isCancelled && (await AccessToken.getCurrentAccessToken())
       if (!accessToken) {
@@ -546,15 +549,19 @@ export const getAuthModel = (): AuthModel => ({
             JSON.stringify({ resultGravitySignUp })
           )
 
-          resultGravitySignUp.success
-            ? resolve({ success: true })
-            : reject(
-                new AuthError(
-                  resultGravitySignUp.message,
-                  resultGravitySignUp.error,
-                  resultGravitySignUp.meta
-                )
+          if (resultGravitySignUp.success) {
+            resolve({ success: true })
+            return
+          } else {
+            reject(
+              new AuthError(
+                resultGravitySignUp.message,
+                resultGravitySignUp.error,
+                resultGravitySignUp.meta
               )
+            )
+            return
+          }
         }
 
         if (options.signInOrUp === "signIn") {
@@ -602,15 +609,20 @@ export const getAuthModel = (): AuthModel => ({
               JSON.stringify({ resultGravitySignIn })
             )
 
-            resultGravitySignIn
-              ? resolve({ success: true })
-              : reject(new AuthError("Could not log in"))
+            if (resultGravitySignIn) {
+              resolve({ success: true })
+              return
+            } else {
+              reject(new AuthError("Could not log in"))
+              return
+            }
           } else {
             const res = await resultGravityAccessToken.json()
 
             logAuthAction("AUTH FACEBOOK callback - signin option !201", JSON.stringify({ res }))
 
             showError(res, reject, "facebook")
+            return
           }
         }
       }
