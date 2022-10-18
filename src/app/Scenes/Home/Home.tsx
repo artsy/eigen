@@ -43,6 +43,7 @@ import { ViewingRoomsHomeMainRail } from "../ViewingRoom/Components/ViewingRooms
 import { ActivityIndicator } from "./Components/ActivityIndicator"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { ArtworkRecommendationsRail } from "./Components/ArtworkRecommendationsRail"
+import { ContentCards } from "./Components/ContentCards"
 import { HomeHeader } from "./Components/HomeHeader"
 import { NewWorksForYouRail } from "./Components/NewWorksForYouRail"
 import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
@@ -106,6 +107,12 @@ const Home = (props: Props) => {
       type: "newWorksForYou",
       data: newWorksForYou,
       prefetchUrl: "/new-works-for-you",
+    },
+    {
+      title: "",
+      type: "contentCards",
+      data: {},
+      prefetchUrl: "",
     },
     { title: "Your Active Bids", type: "artwork", data: homePageAbove?.activeBidsArtworkModule },
     {
@@ -209,6 +216,8 @@ const Home = (props: Props) => {
             }
 
             switch (item.type) {
+              case "contentCards":
+                return <ContentCards />
               case "articles":
                 return (
                   <ArticlesRailFragmentContainer
