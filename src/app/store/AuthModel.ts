@@ -487,7 +487,6 @@ export const getAuthModel = (): AuthModel => ({
   authFacebook: thunk(async (actions, options) => {
     return await new Promise<AuthPromiseResolveType>(async (resolve, reject) => {
       try {
-        console.log("FBSDK stop 1")
         const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions([
           "public_profile",
           "email",
@@ -499,16 +498,12 @@ export const getAuthModel = (): AuthModel => ({
           reject(
             new AuthError("Please allow the use of email to continue.", "Email Permission Declined")
           )
+          return
         }
-
-        console.log("FBSDK stop 3")
-
         const accessToken = !isCancelled && (await AccessToken.getCurrentAccessToken())
         if (!accessToken) {
           return
         }
-
-        console.log("FBSDK stop 4")
 
         const responseFacebookInfoCallback = async (error: any | null, result: any | null) => {
           if (error) {
