@@ -32,70 +32,69 @@ export const RequestForPriceEstimateBanner: React.FC<RequestForPriceEstimateProp
 
   const priceEstimateRequested = !!requestedPriceEstimates[artwork.internalID]
 
-  return (
-    <Box>
-      {priceEstimateRequested ? (
-        <>
-          <Separator mb={2} />
-          <Flex alignItems="center" flexDirection="row">
-            <WinningBidIcon />
-            <Text variant="sm" ml={0.5} textAlign="center">
-              Price Estimate Request Sent
-            </Text>
-          </Flex>
-          <Separator mt={2} />
-        </>
-      ) : (
-        <>
-          <Button
-            testID="request-price-estimate-button"
-            onPress={() => {
-              trackEvent(
-                tracks.trackTappedRequestPriceEstimate(
-                  artwork.internalID,
-                  artwork.slug,
-                  marketPriceInsights?.demandRank ?? undefined
-                )
-              )
-              if (!me) {
-                Toast.show(
-                  "Error: Unable to retrieve your basic info. Please try again later.",
-                  "top",
-                  {
-                    backgroundColor: "red100",
-                  }
-                )
-                return
-              }
-              navigate(`/my-collection/artwork/${artwork.internalID}/price-estimate`, {
-                passProps: {
-                  name: me.name,
-                  email: me.email,
-                  phone: me.phone,
-                  demandRank: marketPriceInsights?.demandRank ?? undefined,
-                  artworkSlug: artwork.slug,
-                },
-              })
-            }}
-            block
-            variant="fillDark"
-          >
-            Request a Price Estimate
-          </Button>
-          <Text
-            color="black60"
-            textAlign="center"
-            my={2}
-            variant="xs"
-            testID="request-price-estimate-banner-text"
-          >
-            An Artsy specialist will evaluate your artwork and contact you with a free price
-            estimate.
+  if (priceEstimateRequested) {
+    return (
+      <Box>
+        <Separator mb={2} />
+        <Flex alignItems="center" flexDirection="row">
+          <WinningBidIcon />
+          <Text variant="sm" ml={0.5} textAlign="center">
+            Price Estimate Request Sent
           </Text>
-        </>
-      )}
-    </Box>
-  )
+        </Flex>
+        <Separator mt={2} />
+      </Box>
+    )
+  } else {
+    return (
+      <Box>
+        <Button
+          testID="request-price-estimate-button"
+          onPress={() => {
+            trackEvent(
+              tracks.trackTappedRequestPriceEstimate(
+                artwork.internalID,
+                artwork.slug,
+                marketPriceInsights?.demandRank ?? undefined
+              )
+            )
+            if (!me) {
+              Toast.show(
+                "Error: Unable to retrieve your basic info. Please try again later.",
+                "top",
+                {
+                  backgroundColor: "red100",
+                }
+              )
+              return
+            }
+            navigate(`/my-collection/artwork/${artwork.internalID}/price-estimate`, {
+              passProps: {
+                name: me.name,
+                email: me.email,
+                phone: me.phone,
+                demandRank: marketPriceInsights?.demandRank ?? undefined,
+                artworkSlug: artwork.slug,
+              },
+            })
+          }}
+          block
+          variant="fillDark"
+        >
+          Request a Price Estimate
+        </Button>
+        <Text
+          color="black60"
+          textAlign="center"
+          my={2}
+          variant="xs"
+          testID="request-price-estimate-banner-text"
+        >
+          An Artsy specialist will evaluate your artwork and contact you with a free price estimate.
+        </Text>
+      </Box>
+    )
+  }
 }
 
 const artworkFragment = graphql`
