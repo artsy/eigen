@@ -15,7 +15,7 @@ export const ArtworkHistory: React.FC<ArtworkHistoryProps> = ({ artwork }) => {
   const sections = [
     { title: "Provenance", value: provenance, contextModule: Schema.ContextModules.Provenance },
     {
-      title: "Exhibition History",
+      title: "Exhibition history",
       value: exhibitionHistory,
       contextModule: Schema.ContextModules.ExhibitionHistory,
     },
