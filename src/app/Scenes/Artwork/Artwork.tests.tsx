@@ -434,9 +434,7 @@ describe("Artwork", () => {
         mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
           Artwork() {
             return merge(
-              {
-                isSold: false,
-              },
+              {},
               ArtworkFixture,
               ArtworkFromLiveAuctionRegistrationClosed,
               RegisteredBidder
@@ -456,9 +454,7 @@ describe("Artwork", () => {
         mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
           Artwork() {
             return merge(
-              {
-                isSold: false,
-              },
+              {},
               ArtworkFixture,
               ArtworkFromLiveAuctionRegistrationClosed,
               NotRegisteredToBid
@@ -479,9 +475,7 @@ describe("Artwork", () => {
         mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
           Artwork() {
             return merge(
-              {
-                isSold: false,
-              },
+              {},
               ArtworkFixture,
               ArtworkFromLiveAuctionRegistrationOpen,
               NotRegisteredToBid
