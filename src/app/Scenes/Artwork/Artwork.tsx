@@ -44,7 +44,6 @@ import {
 } from "./Components/OtherWorks/OtherWorks"
 import { PartnerCardFragmentContainer as PartnerCard } from "./Components/PartnerCard"
 import { PartnerLink } from "./Components/PartnerLink"
-import { Questions } from "./Components/Questions"
 
 interface ArtworkProps {
   artworkAboveTheFold: Artwork_artworkAboveTheFold$data | null
@@ -270,17 +269,17 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (
-      enableConversationalBuyNow &&
-      artworkBelowTheFold &&
-      (artworkAboveTheFold?.isAcquireable ||
-        (!artworkAboveTheFold?.isInquireable && artworkAboveTheFold?.isOfferable))
-    ) {
-      sections.push({
-        key: "contactGallery",
-        element: <Questions artwork={artworkBelowTheFold} />,
-      })
-    }
+    // if (
+    //   enableConversationalBuyNow &&
+    //   artworkBelowTheFold &&
+    //   (artworkAboveTheFold?.isAcquireable ||
+    //     (!artworkAboveTheFold?.isInquireable && artworkAboveTheFold?.isOfferable))
+    // ) {
+    //   sections.push({
+    //     key: "contactGallery",
+    //     element: <Questions artwork={artworkBelowTheFold} />,
+    //   })
+    // }
 
     if (
       enableCreateArtworkAlert &&
@@ -349,7 +348,19 @@ export const Artwork: React.FC<ArtworkProps> = ({
     if (shouldRenderPartner()) {
       sections.push({
         key: "partnerCard",
-        element: <PartnerCard artwork={artworkBelowTheFold} />,
+        element: (
+          <PartnerCard
+            shouldShowQuestions={
+              !!(
+                enableConversationalBuyNow &&
+                artworkBelowTheFold &&
+                (artworkAboveTheFold?.isAcquireable ||
+                  (!artworkAboveTheFold?.isInquireable && artworkAboveTheFold?.isOfferable))
+              )
+            }
+            artwork={artworkBelowTheFold}
+          />
+        ),
       })
     }
 
@@ -577,7 +588,6 @@ export const ArtworkContainer = createRefetchContainer(
         ...ContextCard_artwork
         ...ArtworkHistory_artwork
         ...ArtworksInSeriesRail_artwork
-        ...Questions_artwork
       }
     `,
     me: graphql`

@@ -1,91 +1,30 @@
 import { PartnerCard_artwork$data } from "__generated__/PartnerCard_artwork.graphql"
-import { PartnerCardFollowMutation } from "__generated__/PartnerCardFollowMutation.graphql"
 import { navigateToPartner } from "app/navigation/navigate"
 import { get } from "app/utils/get"
 import { limitWithCount } from "app/utils/limitWithCount"
-import { Schema, Track, track as _track } from "app/utils/track"
-import { EntityHeader, Flex, FollowButton, Spacer, Text } from "palette"
+import { Track, track as _track } from "app/utils/track"
+import { EntityHeader, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { Questions } from "./Questions"
 
 interface Props {
   artwork: PartnerCard_artwork$data
   relay: RelayProp
+  shouldShowQuestions?: boolean
 }
 
-interface State {
-  isFollowedChanging: boolean
-}
-
-const track: Track<Props, State> = _track as any
+const track: Track<Props> = _track as any
 
 @track()
-export class PartnerCard extends React.Component<Props, State> {
-  state = { isFollowedChanging: false }
-
-  @track({
-    action_name: Schema.ActionNames.FollowPartner,
-    action_type: Schema.ActionTypes.Tap,
-    context_module: Schema.ContextModules.PartnerContext,
-  })
-  handleFollowPartner() {
-    const { artwork, relay } = this.props
-
-    this.setState(
-      {
-        isFollowedChanging: true,
-      },
-      () => {
-        commitMutation<PartnerCardFollowMutation>(relay.environment, {
-          onCompleted: () => this.handleShowSuccessfullyUpdated(),
-          onError: (e) => console.log("errors", e),
-          mutation: graphql`
-            mutation PartnerCardFollowMutation($input: FollowProfileInput!) {
-              followProfile(input: $input) {
-                profile {
-                  id
-                  slug
-                  internalID
-                  is_followed: isFollowed
-                }
-              }
-            }
-          `,
-          variables: {
-            input: {
-              profileID: artwork.partner?.profile?.internalID!,
-              unfollow: artwork.partner?.profile?.is_followed,
-            },
-          },
-          // @ts-ignore RELAY 12 MIGRATION
-          optimisticResponse: {
-            followProfile: {
-              profile: {
-                id: artwork.partner?.profile?.id!,
-                internalID: artwork.partner?.profile?.internalID!,
-                slug: artwork.partner?.slug!,
-                is_followed: !artwork.partner?.profile?.is_followed,
-              },
-            },
-          },
-        })
-      }
-    )
-  }
-
+export class PartnerCard extends React.Component<Props> {
   handleTap(href: string) {
     navigateToPartner(href)
   }
 
-  handleShowSuccessfullyUpdated() {
-    this.setState({
-      isFollowedChanging: false,
-    })
-  }
-
   render() {
-    const { artwork } = this.props
+    const { artwork, shouldShowQuestions } = this.props
     const partner = artwork.partner!
     const galleryOrBenefitAuction =
       artwork.sale && (artwork.sale.isBenefit || artwork.sale.isGalleryAuction)
@@ -101,34 +40,26 @@ export class PartnerCard extends React.Component<Props, State> {
       partner.type === "Institution" ||
       partner.type === "Gallery" ||
       partner.type === "Institutional Seller"
-    const partnerTypeDisplayText = partner.type === "Gallery" ? "gallery" : "institution"
+    const partnerTypeDisplayText = partner.type === "Gallery" ? partner.type : "Institution"
     return (
       <Flex>
         {!!showPartnerType && (
           <>
-            <Text variant="sm-display">At {partnerTypeDisplayText}</Text>
+            <Text variant="md">{partnerTypeDisplayText}</Text>
             <Spacer my={1} />
           </>
         )}
         <TouchableWithoutFeedback onPress={this.handleTap.bind(this, partner.href!)}>
           <EntityHeader
             name={partner.name!}
-            href={(partner.is_default_profile_public && partner.href) || undefined}
+            href={(partner.isDefaultProfilePublic && partner.href) || undefined}
             meta={locationNames || undefined}
             imageUrl={imageUrl || undefined}
             initials={partner.initials || undefined}
-            FollowButton={
-              (partner.profile && (
-                <FollowButton
-                  haptic
-                  isFollowed={!!partner!.profile.is_followed}
-                  onPress={this.handleFollowPartner.bind(this)}
-                />
-              )) ||
-              undefined
-            }
           />
         </TouchableWithoutFeedback>
+        <Spacer mt={2} />
+        {!!shouldShowQuestions && <Questions artwork={artwork} />}
       </Flex>
     )
   }
@@ -137,13 +68,14 @@ export class PartnerCard extends React.Component<Props, State> {
 export const PartnerCardFragmentContainer = createFragmentContainer(PartnerCard, {
   artwork: graphql`
     fragment PartnerCard_artwork on Artwork {
+      ...Questions_artwork
       sale {
         isBenefit
         isGalleryAuction
       }
       partner {
         cities
-        is_default_profile_public: isDefaultProfilePublic
+        isDefaultProfilePublic
         type
         name
         slug
@@ -153,7 +85,6 @@ export const PartnerCardFragmentContainer = createFragmentContainer(PartnerCard,
         profile {
           id
           internalID
-          is_followed: isFollowed
           icon {
             url(version: "square140")
           }
