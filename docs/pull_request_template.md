@@ -1,3 +1,8 @@
+<!--
+➡️ Use a PR title in the form of `type(PROJECT-XXXX): what changed`.
+❗️ If this is a WIP, remember to prefix it with [WIP] and/or open a draft PR instead of normal PR.
+-->
+
 This PR resolves [] <!-- eg [PROJECT-XXXX] -->
 
 ### Description
