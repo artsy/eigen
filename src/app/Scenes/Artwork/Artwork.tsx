@@ -269,18 +269,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    // if (
-    //   enableConversationalBuyNow &&
-    //   artworkBelowTheFold &&
-    //   (artworkAboveTheFold?.isAcquireable ||
-    //     (!artworkAboveTheFold?.isInquireable && artworkAboveTheFold?.isOfferable))
-    // ) {
-    //   sections.push({
-    //     key: "contactGallery",
-    //     element: <Questions artwork={artworkBelowTheFold} />,
-    //   })
-    // }
-
     if (
       enableCreateArtworkAlert &&
       !isEmpty(artworkAboveTheFold?.artists) &&
