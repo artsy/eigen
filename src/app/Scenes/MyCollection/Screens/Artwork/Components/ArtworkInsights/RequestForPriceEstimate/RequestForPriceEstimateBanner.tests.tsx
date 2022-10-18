@@ -71,7 +71,7 @@ describe("RequestForPriceEstimateBanner", () => {
   })
 
   it("renders 'requested' state without throwing an error", () => {
-    const { getByTestId } = renderWithWrappers(<TestRenderer />)
+    const { getByText } = renderWithWrappers(<TestRenderer />)
     resolveData({
       Artwork: () => ({
         internalID: "artwork-id",
@@ -91,7 +91,7 @@ describe("RequestForPriceEstimateBanner", () => {
         },
       },
     })
-    expect(getByTestId("request-price-estimate-banner-text-requested")).toBeDefined()
+    expect(getByText("Price Estimate Request Sent")).toBeDefined()
   })
 
   it("tracks analytics event when RequestForEstimate button is tapped", () => {

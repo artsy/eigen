@@ -38,12 +38,7 @@ export const RequestForPriceEstimateBanner: React.FC<RequestForPriceEstimateProp
         <Separator mb={2} />
         <Flex alignItems="center" flexDirection="row">
           <WinningBidIcon />
-          <Text
-            variant="sm"
-            ml={0.5}
-            textAlign="center"
-            testID="request-price-estimate-banner-text-requested"
-          >
+          <Text variant="sm" ml={0.5} textAlign="center">
             Price Estimate Request Sent
           </Text>
         </Flex>
