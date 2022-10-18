@@ -4,14 +4,13 @@ import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ModalStack } from "app/navigation/ModalStack"
 import { navigate } from "app/navigation/navigate"
-import { __globalStoreTestUtils__, useSelectedTab } from "app/store/GlobalStore"
+import { useSelectedTab } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
 import { ArtworkExtraLinks } from "./index"
 
 jest.mock("app/store/GlobalStore", () => ({
-  __globalStoreTestUtils__: jest.requireActual("app/store/GlobalStore").__globalStoreTestUtils__,
   GlobalStoreProvider: jest.requireActual("app/store/GlobalStore").GlobalStoreProvider,
   useSelectedTab: jest.fn(() => "home"),
   useFeatureFlag: jest.requireActual("app/store/GlobalStore").useFeatureFlag,
@@ -32,10 +31,6 @@ const getWrapper = ({
   )
 
 describe("ArtworkExtraLinks", () => {
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: false })
-  })
-
   it("redirects to /sales when consignments link is clicked from outside of sell tab", () => {
     const artwork = {
       ...ArtworkFixture,
@@ -144,60 +139,6 @@ describe("ArtworkExtraLinks", () => {
       const { queryByText } = getWrapper({ artwork })
       expect(queryByText(/Want to sell a work by Santa?/)).toBeTruthy()
       expect(queryByText(/Consign with Artsy/)).toBeTruthy()
-    })
-  })
-
-  describe("FAQ and specialist BNMO links", () => {
-    it("does not render FAQ or ask a specialist links when isInquireable", () => {
-      const artwork = {
-        ...ArtworkFixture,
-        isAcquireable: false,
-        isInquireable: true,
-        isForSale: true,
-        artists: [
-          {
-            name: "Santa",
-            isConsignable: true,
-          },
-        ],
-      }
-
-      const { queryByText } = getWrapper({ artwork })
-      expect(queryByText("Read our FAQ")).toBeNull()
-      expect(queryByText("ask a specialist")).toBeNull()
-    })
-
-    it("renders ask a specialist link when isAcquireable", () => {
-      const artwork = {
-        ...ArtworkFixture,
-        isAcquireable: true,
-        isForSale: true,
-        isInquireable: true,
-        artists: [
-          {
-            name: "Santa",
-            isConsignable: true,
-          },
-        ],
-      }
-
-      const { queryByText } = getWrapper({ artwork })
-      expect(queryByText("Read our FAQ")).toBeTruthy()
-      expect(queryByText("ask a specialist")).toBeTruthy()
-    })
-
-    it("renders ask a specialist link when isOfferable", () => {
-      const artwork = {
-        ...ArtworkFixture,
-        isOfferable: true,
-        isForSale: true,
-        isInquireable: true,
-        artists: [{ name: "Santa", isConsignable: true }],
-      }
-
-      const { queryByText } = getWrapper({ artwork })
-      expect(queryByText("Read our FAQ")).toBeTruthy()
-      expect(queryByText("ask a specialist")).toBeTruthy()
     })
   })
 
@@ -360,34 +301,6 @@ describe("ArtworkExtraLinks", () => {
             },
           ]
         `)
-      })
-    })
-
-    describe("AREnableCreateArtworkAlert is switched to true", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: true })
-      })
-
-      const TestRenderer = () =>
-        renderWithWrappers(
-          <ModalStack>
-            <ArtworkExtraLinks artwork={artwork as any} auctionState={AuctionTimerState.CLOSING} />
-          </ModalStack>
-        )
-
-      it("should not show the FaqAndSpecialistSection component", () => {
-        const { queryByText } = TestRenderer()
-
-        // Makes sure that no parts of the text references of the FaqAndSpecialistSection
-        // appear in the rendered component when ff - AREnableCreateArtworkAlert is true
-        expect(
-          queryByText("By placing a bid you agree to Artsy's and Christie's", { exact: false })
-        ).toBeTruthy()
-        expect(queryByText("Conditions of Sale")).toBeTruthy()
-        expect(queryByText("Have a question?", { exact: false })).toBeTruthy()
-        expect(queryByText("Read our auction FAQs")).toBeTruthy()
-        expect(queryByText("ask a specialist")).toBeTruthy()
-        expect(queryByText("Read our FAQ")).toBeNull()
       })
     })
   })
