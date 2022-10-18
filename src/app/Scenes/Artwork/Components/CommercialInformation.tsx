@@ -156,7 +156,6 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
   setAuctionTimerState,
 }) => {
   const { trackEvent } = useTracking()
-  const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
   const [editionSetID, setEditionSetID] = useState<string | null>(null)
   const { isAcquireable, isOfferable, isInquireable, isInAuction, sale, isForSale, isSold } =
     artwork
@@ -169,8 +168,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
     isInAuction && sale && timerState !== AuctionTimerState.CLOSED && isForSale
   const canTakeCommercialAction =
     isAcquireable || isOfferable || isInquireable || isBiddableInAuction
-  const shouldShowCreateArtworkAlertButton =
-    enableCreateArtworkAlert && (isSold || isInClosedAuction)
+  const shouldShowCreateArtworkAlertButton = isSold || isInClosedAuction
 
   useEffect(() => {
     const artworkIsInActiveAuction = artwork.isInAuction && timerState !== AuctionTimerState.CLOSED

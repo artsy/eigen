@@ -1,14 +1,13 @@
 import { ArtworkExtraLinks_artwork$data } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/navigation/navigate"
-import { useFeatureFlag, useSelectedTab } from "app/store/GlobalStore"
+import { useSelectedTab } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { Text } from "palette"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { AuctionFaqSection } from "./AuctionFaqSection"
-import { FaqAndSpecialistSectionFragmentContainer as FaqAndSpecialistSection } from "./FaqAndSpecialistSection"
 
 export interface ArtworkExtraLinksProps {
   artwork: ArtworkExtraLinks_artwork$data
@@ -20,12 +19,9 @@ export const ArtworkExtraLinks: React.FC<ArtworkExtraLinksProps> = ({ artwork, a
   const consignableArtistsCount = artists.filter((artist) => artist?.isConsignable).length ?? 0
   const artistName = artists.length === 1 ? artists[0]!.name : null
 
-  const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
-
   return (
     <>
       <AuctionFaqSection artwork={artwork} auctionState={auctionState} />
-      {!enableCreateArtworkAlert && <FaqAndSpecialistSection artwork={artwork} />}
       {!!consignableArtistsCount && (
         <ConsignmentsLink
           artistName={consignableArtistsCount > 1 ? "these artists" : artistName ?? "this artist"}
