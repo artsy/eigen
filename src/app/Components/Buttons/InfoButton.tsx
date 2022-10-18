@@ -49,7 +49,11 @@ export const InfoButton: React.FC<InfoButtonProps> = ({
           <InfoCircleIcon fill="black60" />
         </TouchableOpacity>
       </Flex>
-      {!!subTitle && <Text color="black60">{subTitle}</Text>}
+      {!!subTitle && (
+        <Text variant="xs" color="black60">
+          {subTitle}
+        </Text>
+      )}
       <FancyModal
         visible={modalVisible}
         maxHeight={maxModalHeight}
