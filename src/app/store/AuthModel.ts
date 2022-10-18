@@ -41,8 +41,10 @@ const showError = (
             `or sign up on Artsy using ${providerName}. `
         )
       )
+      return
     } else {
       reject(new AuthError("Login attempt failed"))
+      return
     }
   }
 }
@@ -509,16 +511,10 @@ export const getAuthModel = (): AuthModel => ({
         console.log("FBSDK stop 4")
 
         const responseFacebookInfoCallback = async (error: any | null, result: any | null) => {
-          console.log("FBSDK special stop info callback")
-
           if (error) {
             reject(new AuthError("Error fetching facebook data", error))
             return
           }
-
-          console.log("FBSDK special stop info callback error", error)
-
-          console.log("FBSDK special stop info callback result", result)
 
           if (!result || !result.email) {
             reject(
@@ -538,22 +534,22 @@ export const getAuthModel = (): AuthModel => ({
               agreedToReceiveEmails: options.agreedToReceiveEmails,
             })
 
-            resultGravitySignUp.success
-              ? resolve({ success: true })
-              : reject(
-                  new AuthError(
-                    resultGravitySignUp.message,
-                    resultGravitySignUp.error,
-                    resultGravitySignUp.meta
-                  )
+            if (resultGravitySignUp.success) {
+              resolve({ success: true })
+              return
+            } else {
+              reject(
+                new AuthError(
+                  resultGravitySignUp.message,
+                  resultGravitySignUp.error,
+                  resultGravitySignUp.meta
                 )
+              )
+              return
+            }
           }
 
-          console.log("FBSDK stop 5")
-
           if (options.signInOrUp === "signIn") {
-            console.log("FBSDK special stop signIn 1")
-
             // we need to get X-ACCESS-TOKEN before actual sign in
             const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
               path: `/oauth2/access_token`,
@@ -581,22 +577,19 @@ export const getAuthModel = (): AuthModel => ({
                 onSignIn: options.onSignIn,
               })
 
-              console.log("FBSDK special stop signIn 2", resultGravityAccessToken.status)
-
-              resultGravitySignIn
-                ? resolve({ success: true })
-                : reject(new AuthError("Could not log in"))
+              if (resultGravitySignIn) {
+                resolve({ success: true })
+                return
+              } else {
+                reject(new AuthError("Could not log in"))
+                return
+              }
             } else {
               const res = await resultGravityAccessToken.json()
-
-              console.log("FBSDK special stop signUp ", res)
-
               showError(res, reject, "facebook")
             }
           }
         }
-
-        console.log("FBSDK stop 6")
 
         // get info from facebook
         const infoRequest = new GraphRequest(
@@ -613,8 +606,6 @@ export const getAuthModel = (): AuthModel => ({
         )
         new GraphRequestManager().addRequest(infoRequest).start()
       } catch (e) {
-        console.log("FBSDK special stop catch block", e)
-
         if (e instanceof Error) {
           if (e.message === "User logged in as different Facebook user.") {
             // odd and hopefully shouldn't happen often
@@ -626,9 +617,10 @@ export const getAuthModel = (): AuthModel => ({
           }
 
           reject(new AuthError("Error logging into facebook", e.message))
+          return
         }
-
         reject(new AuthError("Error logging into facebook"))
+        return
       }
     })
   }),
