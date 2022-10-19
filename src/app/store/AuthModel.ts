@@ -841,6 +841,7 @@ export const getAuthModel = (): AuthModel => ({
           )
 
           resolve(resultGravitySignUp)
+          return
         }
         const shouldSignIn =
           resultGravitySignUp.error === "Another Account Already Linked" ||
@@ -923,9 +924,13 @@ export const getAuthModel = (): AuthModel => ({
             JSON.stringify(resultGravitySignIn)
           )
 
-          resultGravitySignIn
-            ? resolve({ success: true })
-            : reject(new AuthError("Could not log in"))
+          if (resultGravitySignIn) {
+            resolve({ success: true })
+            return
+          } else {
+            reject(new AuthError("Could not log in"))
+            return
+          }
         } else {
           const res = await resultGravityAccessToken.json()
 
