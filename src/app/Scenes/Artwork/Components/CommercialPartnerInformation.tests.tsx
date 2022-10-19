@@ -50,8 +50,7 @@ describe("CommercialPartnerInformation", () => {
     expect(getByText("VAT included in price")).toBeTruthy()
   })
 
-  it("it renders 'Taxes may apply at checkout' instead of 'VAT included in price' when Avalara phase 2 flag is enabled", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAvalaraPhase2: true })
+  it("it renders 'Taxes may apply at checkout'", () => {
     const { queryByText } = renderWithWrappers(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
@@ -59,7 +58,6 @@ describe("CommercialPartnerInformation", () => {
     })
 
     expect(queryByText("Taxes may apply at checkout.")).toBeTruthy()
-    expect(queryByText("VAT included in price")).toBeFalsy()
   })
 
   it("Hides shipping/tax information if the work is not enabled for buy now or make offer", () => {
@@ -76,7 +74,6 @@ describe("CommercialPartnerInformation", () => {
 
     expect(queryByText("Ships from Brooklyn")).toBeFalsy()
     expect(queryByText("Ships within the continental USA")).toBeFalsy()
-    expect(queryByText("VAT included in price")).toBeFalsy()
   })
 })
 
