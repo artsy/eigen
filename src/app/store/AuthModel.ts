@@ -653,10 +653,10 @@ export const getAuthModel = (): AuthModel => ({
             GlobalStore.actions.auth.authFacebook(options)
           }
 
-          reject(new AuthError("Error logging into facebook", e.message))
+          reject(new AuthError("Error logging in with facebook", e.message))
           return
         }
-        reject(new AuthError("Error logging into facebook"))
+        reject(new AuthError("Error logging in with facebook"))
         return
       }
     })
@@ -665,99 +665,113 @@ export const getAuthModel = (): AuthModel => ({
     logAuthAction("AUTH GOOGLE 1", "authGoogle")
 
     return await new Promise<AuthPromiseResolveType>(async (resolve, reject) => {
-      if (!(await GoogleSignin.hasPlayServices())) {
-        logAuthAction("AUTH GOOGLE 2 - error", "no play services")
-        reject(new AuthError("Play services are not available."))
-      }
-      const userInfo = await GoogleSignin.signIn()
-      const accessToken = (await GoogleSignin.getTokens()).accessToken
+      logAuthAction("AUTH GOOGLE 2", "starting promise")
 
-      const data1 = JSON.stringify({ userInfo, accessToken })
-      logAuthAction("AUTH GOOGLE 2 - after signIn", data1)
+      try {
+        if (!(await GoogleSignin.hasPlayServices())) {
+          logAuthAction("AUTH GOOGLE 2 - error", "no play services")
+          reject(new AuthError("Play services are not available."))
+        }
 
-      if (options.signInOrUp === "signUp") {
-        logAuthAction("AUTH GOOGLE - signup option 1", JSON.stringify({ options }))
+        logAuthAction("AUTH GOOGLE 2 - before signIn", "before sign in")
 
-        const resultGravitySignUp = userInfo.user.name
-          ? await actions.signUp({
-              email: userInfo.user.email,
-              name: userInfo.user.name,
-              accessToken,
-              oauthProvider: "google",
-              agreedToReceiveEmails: options.agreedToReceiveEmails,
-            })
-          : { success: false, message: "missing name in google's userInfo" }
+        const userInfo = await GoogleSignin.signIn()
+        const accessToken = (await GoogleSignin.getTokens()).accessToken
 
-        logAuthAction("AUTH GOOGLE - signup option 2", JSON.stringify({ resultGravitySignUp }))
+        const data1 = JSON.stringify({ userInfo, accessToken })
+        logAuthAction("AUTH GOOGLE 2 - after signIn", data1)
 
-        resultGravitySignUp.success
-          ? resolve({ success: true })
-          : reject(
-              new AuthError(
-                resultGravitySignUp.message,
-                resultGravitySignUp.error,
-                resultGravitySignUp.meta
+        if (options.signInOrUp === "signUp") {
+          logAuthAction("AUTH GOOGLE - signup option 1", JSON.stringify({ options }))
+
+          const resultGravitySignUp = userInfo.user.name
+            ? await actions.signUp({
+                email: userInfo.user.email,
+                name: userInfo.user.name,
+                accessToken,
+                oauthProvider: "google",
+                agreedToReceiveEmails: options.agreedToReceiveEmails,
+              })
+            : { success: false, message: "missing name in google's userInfo" }
+
+          logAuthAction("AUTH GOOGLE - signup option 2", JSON.stringify({ resultGravitySignUp }))
+
+          resultGravitySignUp.success
+            ? resolve({ success: true })
+            : reject(
+                new AuthError(
+                  resultGravitySignUp.message,
+                  resultGravitySignUp.error,
+                  resultGravitySignUp.meta
+                )
               )
-            )
-      }
+        }
 
-      if (options.signInOrUp === "signIn") {
-        logAuthAction("AUTH GOOGLE - signin option 1", JSON.stringify({ options }))
+        if (options.signInOrUp === "signIn") {
+          logAuthAction("AUTH GOOGLE - signin option 1", JSON.stringify({ options }))
 
-        // we need to get X-ACCESS-TOKEN before actual sign in
-        const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
-          path: `/oauth2/access_token`,
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: {
-            oauth_provider: "google",
-            oauth_token: accessToken,
-            client_id: clientKey,
-            client_secret: clientSecret,
-            grant_type: "oauth_token",
-            scope: "offline_access",
-          },
-        })
-
-        logAuthAction(
-          "AUTH GOOGLE - signin option 2 - grav access token result",
-          JSON.stringify(resultGravityAccessToken)
-        )
-
-        if (resultGravityAccessToken.status === 201) {
-          logAuthAction(
-            "AUTH GOOGLE - signin option 3 - 201 result",
-            JSON.stringify(resultGravityAccessToken)
-          )
-
-          const { access_token: userAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
-          const { email } = await actions.getUser({ accessToken: userAccessToken })
-
-          logAuthAction("AUTH GOOGLE - signin option 4 - get user result", JSON.stringify(email))
-
-          const resultGravitySignIn = await actions.signIn({
-            oauthProvider: "google",
-            email,
-            accessToken,
-            onSignIn: options.onSignIn,
+          // we need to get X-ACCESS-TOKEN before actual sign in
+          const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
+            path: `/oauth2/access_token`,
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: {
+              oauth_provider: "google",
+              oauth_token: accessToken,
+              client_id: clientKey,
+              client_secret: clientSecret,
+              grant_type: "oauth_token",
+              scope: "offline_access",
+            },
           })
 
           logAuthAction(
-            "AUTH GOOGLE - signin option 5 - gravity sign in result",
-            JSON.stringify(resultGravitySignIn)
+            "AUTH GOOGLE - signin option 2 - grav access token result",
+            JSON.stringify(resultGravityAccessToken)
           )
 
-          resultGravitySignIn
-            ? resolve({ success: true })
-            : reject(new AuthError("Could not log in"))
-        } else {
-          const res = await resultGravityAccessToken.json()
+          if (resultGravityAccessToken.status === 201) {
+            logAuthAction(
+              "AUTH GOOGLE - signin option 3 - 201 result",
+              JSON.stringify(resultGravityAccessToken)
+            )
 
-          logAuthAction("AUTH GOOGLE - signin !201 - access token", JSON.stringify(res))
-          showError(res, reject, "google")
+            const { access_token: userAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
+            const { email } = await actions.getUser({ accessToken: userAccessToken })
+
+            logAuthAction("AUTH GOOGLE - signin option 4 - get user result", JSON.stringify(email))
+
+            const resultGravitySignIn = await actions.signIn({
+              oauthProvider: "google",
+              email,
+              accessToken,
+              onSignIn: options.onSignIn,
+            })
+
+            logAuthAction(
+              "AUTH GOOGLE - signin option 5 - gravity sign in result",
+              JSON.stringify(resultGravitySignIn)
+            )
+
+            resultGravitySignIn
+              ? resolve({ success: true })
+              : reject(new AuthError("Could not log in"))
+          } else {
+            const res = await resultGravityAccessToken.json()
+
+            logAuthAction("AUTH GOOGLE - signin !201 - access token", JSON.stringify(res))
+            showError(res, reject, "google")
+          }
         }
+      } catch (e) {
+        if (e instanceof Error) {
+          reject(new AuthError("Error logging in with google", e.message))
+          return
+        }
+        reject(new AuthError("Error logging in with google"))
+        return
       }
     })
   }),
