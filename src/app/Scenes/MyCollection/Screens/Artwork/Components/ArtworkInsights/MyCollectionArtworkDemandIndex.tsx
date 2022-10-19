@@ -4,7 +4,7 @@ import { MyCollectionArtworkDemandIndex_artworkPriceInsights$key } from "__gener
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import HighDemandIcon from "app/Icons/HighDemandIcon"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { Flex, Spacer, Text, TriangleDown } from "palette"
+import { Flex, Separator, Spacer, Text, TriangleDown } from "palette"
 import LinearGradient from "react-native-linear-gradient"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -31,7 +31,7 @@ export const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandI
   const demandRank = Number((marketPriceInsights.demandRank * 10).toFixed(2))
 
   return (
-    <Flex mt={1} mb={2}>
+    <Flex mt={1}>
       <InfoButton
         title="Demand index"
         modalContent={
@@ -48,6 +48,8 @@ export const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandI
 
       <Spacer my={1} />
       <DemandRankScale demandRank={demandRank} demandRankDisplayText={demandRankDisplayText} />
+
+      <Separator my={2} borderColor="black10" />
     </Flex>
   )
 }

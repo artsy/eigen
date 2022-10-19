@@ -100,7 +100,6 @@ describe("MyCollectionArtworkInsights", () => {
         }),
       })
       expect(queryByTestId("request-price-estimate-button")).toBeNull()
-      expect(queryByTestId("request-price-estimate-banner-text")).toBeNull()
     })
 
     it("does not display when artwork is submitted", () => {
@@ -116,7 +115,6 @@ describe("MyCollectionArtworkInsights", () => {
       })
 
       expect(queryByTestId("request-price-estimate-button")).toBeNull()
-      expect(queryByTestId("request-price-estimate-banner-text")).toBeNull()
     })
   })
 

@@ -67,7 +67,8 @@ describe("RequestForPriceEstimateBanner", () => {
       }),
     })
     expect(getByTestId("request-price-estimate-button")).toBeDefined()
-    expect(getByTestId("request-price-estimate-banner-text")).toBeDefined()
+    expect(getByTestId("request-price-estimate-banner-title")).toBeDefined()
+    expect(getByTestId("request-price-estimate-banner-description")).toBeDefined()
   })
 
   it("renders 'requested' state without throwing an error", () => {
