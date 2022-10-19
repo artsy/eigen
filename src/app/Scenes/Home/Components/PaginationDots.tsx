@@ -1,4 +1,5 @@
 import { Flex } from "palette"
+import { useEffect, useRef } from "react"
 import { Animated } from "react-native"
 
 interface PaginationDotProps {
@@ -7,8 +8,15 @@ interface PaginationDotProps {
 
 const PaginationDot: React.FC<PaginationDotProps> = (props) => {
   const { active } = props
-  const opacity = active ? 1 : 0.1
   const diameter = 5
+  const opacity = useRef(new Animated.Value(active ? 1 : 0.1)).current
+
+  useEffect(() => {
+    Animated.spring(opacity, {
+      toValue: active ? 1 : 0.1,
+      useNativeDriver: true,
+    }).start()
+  }, [active])
 
   return (
     <Animated.View
