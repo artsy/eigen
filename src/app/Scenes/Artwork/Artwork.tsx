@@ -100,7 +100,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const shouldRenderShippingAndTaxes = () => {
     const { isEligibleForArtsyGuarantee, shippingOrigin, shippingInfo, priceIncludesTaxDisplay } =
-      artworkAboveTheFold ?? {}
+      artworkBelowTheFold ?? {}
     const shouldRenderLabels = shippingOrigin || shippingInfo || priceIncludesTaxDisplay
 
     return !isInAuction && isEligibleForArtsyGuarantee && shouldRenderLabels
@@ -327,7 +327,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
     if (shouldRenderShippingAndTaxes()) {
       sections.push({
         key: "shippingAndTaxes",
-        element: <ShippingAndTaxesFragmentContainer artwork={artworkAboveTheFold!} />,
+        element: <ShippingAndTaxesFragmentContainer artwork={artworkBelowTheFold!} />,
       })
     }
 
@@ -449,7 +449,6 @@ export const ArtworkContainer = createRefetchContainer(
         ...FaqAndSpecialistSection_artwork
         ...CreateArtworkAlertSection_artwork
         ...PartnerLink_artwork
-        ...ShippingAndTaxes_artwork
         slug
         internalID
         id
@@ -461,10 +460,6 @@ export const ArtworkContainer = createRefetchContainer(
         isEligibleForArtsyGuarantee
         isInAuction
         availability
-        shippingOrigin
-        shippingInfo
-        priceIncludesTaxDisplay
-        isEligibleForArtsyGuarantee
         artists {
           name
         }
@@ -535,6 +530,10 @@ export const ArtworkContainer = createRefetchContainer(
             }
           }
         }
+        shippingOrigin
+        shippingInfo
+        priceIncludesTaxDisplay
+        isEligibleForArtsyGuarantee
         ...PartnerCard_artwork
         ...AboutWork_artwork
         ...OtherWorks_artwork
@@ -543,6 +542,7 @@ export const ArtworkContainer = createRefetchContainer(
         ...ContextCard_artwork
         ...ArtworkHistory_artwork
         ...ArtworksInSeriesRail_artwork
+        ...ShippingAndTaxes_artwork
       }
     `,
     me: graphql`
