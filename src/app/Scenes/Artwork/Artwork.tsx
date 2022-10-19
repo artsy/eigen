@@ -29,7 +29,7 @@ import { OfferSubmittedModal } from "../Inbox/Components/Conversations/OfferSubm
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { AboveTheFoldPlaceholder } from "./Components/AboveTheFoldArtworkPlaceholder"
-import { ArtworkDetailsFragmentContainer as ArtworkDetails } from "./Components/ArtworkDetails"
+import { ArtworkDetails } from "./Components/ArtworkDetails"
 import { FaqAndSpecialistSectionFragmentContainer as FaqAndSpecialistSection } from "./Components/ArtworkExtraLinks/FaqAndSpecialistSection"
 import { ArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/ArtworkHeader"
 import { ArtworkHistoryFragmentContainer as ArtworkHistory } from "./Components/ArtworkHistory"
