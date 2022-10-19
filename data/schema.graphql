@@ -2073,6 +2073,9 @@ type Artwork implements Node & Searchable & Sellable {
   isComparableWithAuctionResults: Boolean
   isDownloadable: Boolean
   isEdition: Boolean
+
+  # Artwork is eligible for the Artsy Guarantee
+  isEligibleForArtsyGuarantee: Boolean!
   isEmbeddableVideo: Boolean
   isForSale: Boolean
   isHangable: Boolean
