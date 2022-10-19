@@ -261,18 +261,6 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableArtworksConnectionForAuction",
   },
-  ARCustomRecentlySoldOnArtsy: {
-    readyForRelease: true,
-    description: "Use custom recently sold on Artsy",
-    showInAdminMenu: true,
-    echoFlagKey: "ARCustomRecentlySoldOnArtsy",
-  },
-  ARNewSellWithArtsyScreen: {
-    readyForRelease: true,
-    description: "Enable new SWA screen",
-    showInAdminMenu: true,
-    echoFlagKey: "ARNewSellWithArtsyScreen",
-  },
   AREnableActivity: {
     readyForRelease: false,
     description: "Enable Activity",
