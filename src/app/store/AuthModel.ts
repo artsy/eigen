@@ -776,6 +776,20 @@ export const getAuthModel = (): AuthModel => ({
         }
       } catch (e) {
         if (e instanceof Error) {
+          if (e.message === "DEVELOPER_ERROR") {
+            logAuthAction(
+              "AUTH GOOGLE - Error logging in with google - dev error",
+              JSON.stringify(e)
+            )
+            reject(
+              new AuthError(
+                "Google auth does not work in firebase beta, try again in a playstore beta",
+                e.message
+              )
+            )
+            return
+          }
+
           logAuthAction("AUTH GOOGLE - Error logging in with google", JSON.stringify(e))
           reject(new AuthError("Error logging in with google", e.message))
           return
