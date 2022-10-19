@@ -776,6 +776,7 @@ export const getAuthModel = (): AuthModel => ({
         }
       } catch (e) {
         if (e instanceof Error) {
+          logAuthAction("AUTH GOOGLE - Error logging in with google", JSON.stringify(e))
           reject(new AuthError("Error logging in with google", e.message))
           return
         }
