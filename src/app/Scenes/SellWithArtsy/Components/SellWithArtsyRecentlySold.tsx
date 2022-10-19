@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
-import { SellWithArtsyCustomRecentlySold_recentlySoldArtworkTypeConnection$key } from "__generated__/SellWithArtsyCustomRecentlySold_recentlySoldArtworkTypeConnection.graphql"
+import { SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$key } from "__generated__/SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection.graphql"
 import { RecentlySoldArtworksRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { navigate } from "app/navigation/navigate"
 import { Flex, Spacer, Text } from "palette"
@@ -8,8 +8,8 @@ import { useTracking } from "react-tracking"
 import { graphql } from "relay-runtime"
 import { extractNodes } from "../../../utils/extractNodes"
 
-interface SellWithArtsyCustomRecentlySoldProps {
-  recentlySoldArtworks: SellWithArtsyCustomRecentlySold_recentlySoldArtworkTypeConnection$key
+interface SellWithArtsyRecentlySoldProps {
+  recentlySoldArtworks: SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$key
 }
 
 const trackingArgs: TappedEntityGroupArgs = {
@@ -19,7 +19,7 @@ const trackingArgs: TappedEntityGroupArgs = {
   type: "thumbnail",
 }
 
-export const SellWithArtsyCustomRecentlySold: React.FC<SellWithArtsyCustomRecentlySoldProps> = ({
+export const SellWithArtsyRecentlySold: React.FC<SellWithArtsyRecentlySoldProps> = ({
   recentlySoldArtworks,
 }) => {
   const tracking = useTracking()
@@ -57,7 +57,7 @@ export const SellWithArtsyCustomRecentlySold: React.FC<SellWithArtsyCustomRecent
 }
 
 const customRecentlySoldArtworksFragment = graphql`
-  fragment SellWithArtsyCustomRecentlySold_recentlySoldArtworkTypeConnection on RecentlySoldArtworkTypeConnection {
+  fragment SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection on RecentlySoldArtworkTypeConnection {
     edges {
       node {
         artwork {
