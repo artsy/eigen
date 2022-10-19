@@ -15,12 +15,12 @@ export const RequestForPriceEstimateForm = () => {
       <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
         <Box pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px={2}>
           <Box my={3}>
-            <Text variant="xl">Contact Information</Text>
-            <Spacer p={1} />
-            <Text variant="sm-display" color="black60">
+            <Text variant="lg-display" mb={2}>
+              Contact Information
+            </Text>
+            <Text variant="sm-display" color="black60" mb={4}>
               We will only use this to contact you about this price estimate
             </Text>
-            <Spacer p={1} />
             <Input
               testID="request-price-estimate-name-input"
               title="Name"
@@ -41,7 +41,7 @@ export const RequestForPriceEstimateForm = () => {
               value={values.requesterName}
               error={errors.requesterName}
             />
-            <Spacer p={1} />
+            <Spacer m={2} />
             <Input
               testID="request-price-estimate-email-input"
               title="Email"
@@ -65,7 +65,7 @@ export const RequestForPriceEstimateForm = () => {
               textContentType={Platform.OS === "ios" ? "username" : "emailAddress"}
               error={errors.requesterEmail}
             />
-            <Spacer p={1} />
+            <Spacer m={2} />
             <PhoneInput
               testID="request-price-estimate-phone-input"
               style={{ flex: 1 }}
@@ -78,7 +78,7 @@ export const RequestForPriceEstimateForm = () => {
               accessibilityLabel="Phone number"
               shouldDisplayLocalError={false}
             />
-            <Spacer p={2} />
+            <Spacer m={4} />
             <Button
               block
               onPress={handleSubmit}
