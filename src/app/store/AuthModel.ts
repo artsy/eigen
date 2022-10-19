@@ -671,6 +671,7 @@ export const getAuthModel = (): AuthModel => ({
         if (!(await GoogleSignin.hasPlayServices())) {
           logAuthAction("AUTH GOOGLE 2 - error", "no play services")
           reject(new AuthError("Play services are not available."))
+          return
         }
 
         logAuthAction("AUTH GOOGLE 2 - before signIn", "before sign in")
@@ -696,15 +697,19 @@ export const getAuthModel = (): AuthModel => ({
 
           logAuthAction("AUTH GOOGLE - signup option 2", JSON.stringify({ resultGravitySignUp }))
 
-          resultGravitySignUp.success
-            ? resolve({ success: true })
-            : reject(
-                new AuthError(
-                  resultGravitySignUp.message,
-                  resultGravitySignUp.error,
-                  resultGravitySignUp.meta
-                )
+          if (resultGravitySignUp.success) {
+            resolve({ success: true })
+            return
+          } else {
+            reject(
+              new AuthError(
+                resultGravitySignUp.message,
+                resultGravitySignUp.error,
+                resultGravitySignUp.meta
               )
+            )
+            return
+          }
         }
 
         if (options.signInOrUp === "signIn") {
@@ -755,9 +760,13 @@ export const getAuthModel = (): AuthModel => ({
               JSON.stringify(resultGravitySignIn)
             )
 
-            resultGravitySignIn
-              ? resolve({ success: true })
-              : reject(new AuthError("Could not log in"))
+            if (resultGravitySignIn) {
+              resolve({ success: true })
+              return
+            } else {
+              reject(new AuthError("Could not log in"))
+              return
+            }
           } else {
             const res = await resultGravityAccessToken.json()
 
@@ -770,6 +779,8 @@ export const getAuthModel = (): AuthModel => ({
           reject(new AuthError("Error logging in with google", e.message))
           return
         }
+
+        logAuthAction("AUTH GOOGLE - Error logging in with google", JSON.stringify(e))
         reject(new AuthError("Error logging in with google"))
         return
       }
