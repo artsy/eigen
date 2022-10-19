@@ -67,7 +67,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const [refreshing, setRefreshing] = useState(false)
   const [fetchingData, setFetchingData] = useState(false)
   const enableConversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
-  const avalaraPhase2 = useFeatureFlag("AREnableAvalaraPhase2")
 
   const { internalID, slug, isInAuction, partner: partnerAbove } = artworkAboveTheFold || {}
   const { isPreview, isClosed, liveStartAt } = artworkAboveTheFold?.sale ?? {}
@@ -100,14 +99,11 @@ export const Artwork: React.FC<ArtworkProps> = ({
   }
 
   const shouldRenderShippingAndTaxes = () => {
-    const { isAcquireable, isOfferable, shippingOrigin, shippingInfo, priceIncludesTaxDisplay } =
+    const { isEligibleForArtsyGuarantee, shippingOrigin, shippingInfo, priceIncludesTaxDisplay } =
       artworkAboveTheFold ?? {}
-    const artworkEcommerceAvailable = isAcquireable || isOfferable
-    const hasPartnerName = !!partnerAbove?.name
-    const priceTaxLabel = priceIncludesTaxDisplay && !avalaraPhase2
-    const shouldRenderLabels = avalaraPhase2 || shippingOrigin || shippingInfo || priceTaxLabel
+    const shouldRenderLabels = shippingOrigin || shippingInfo || priceIncludesTaxDisplay
 
-    return artworkEcommerceAvailable && hasPartnerName && shouldRenderLabels
+    return !isInAuction && isEligibleForArtsyGuarantee && shouldRenderLabels
   }
 
   const shouldRenderOtherWorks = () => {
@@ -468,6 +464,7 @@ export const ArtworkContainer = createRefetchContainer(
         shippingOrigin
         shippingInfo
         priceIncludesTaxDisplay
+        isEligibleForArtsyGuarantee
         artists {
           name
         }
