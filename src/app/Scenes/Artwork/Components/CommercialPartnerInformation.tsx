@@ -12,9 +12,7 @@ export const CommercialPartnerInformation: React.FC<Props> = ({ artwork }) => {
   const showsSellerInfo = artwork.partner && artwork.partner.name
   const shouldRenderShipsFromLabel = artworkEcommerceAvailable && !!artwork.shippingOrigin
   const shouldRenderShippingInfoLabel = artworkEcommerceAvailable && !!artwork.shippingInfo
-  const shouldRenderPriceTaxLabel = artworkEcommerceAvailable && !!artwork.priceIncludesTaxDisplay
-  const shouldRenderLabels =
-    shouldRenderShipsFromLabel || shouldRenderShippingInfoLabel || shouldRenderPriceTaxLabel
+  const shouldRenderLabels = shouldRenderShipsFromLabel || shouldRenderShippingInfoLabel
 
   if (!showsSellerInfo || !shouldRenderLabels) {
     return null
@@ -43,11 +41,6 @@ export const CommercialPartnerInformation: React.FC<Props> = ({ artwork }) => {
       {shouldRenderShippingInfoLabel && (
         <Text variant="xs" color="black60">
           {artwork.shippingInfo}
-        </Text>
-      )}
-      {shouldRenderPriceTaxLabel && (
-        <Text variant="xs" color="black60">
-          {artwork.priceIncludesTaxDisplay}
         </Text>
       )}
     </>

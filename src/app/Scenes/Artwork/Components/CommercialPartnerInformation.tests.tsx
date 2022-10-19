@@ -47,7 +47,6 @@ describe("CommercialPartnerInformation", () => {
 
     expect(getByText("Ships from Brooklyn")).toBeTruthy()
     expect(getByText("Ships within the continental USA")).toBeTruthy()
-    expect(getByText("VAT included in price")).toBeTruthy()
   })
 
   it("it renders 'Taxes may apply at checkout'", () => {
@@ -85,5 +84,4 @@ const CommercialPartnerInformationArtwork = {
   partner: {
     name: "Bob's Gallery",
   },
-  priceIncludesTaxDisplay: "VAT included in price",
 }
