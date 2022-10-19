@@ -1,6 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
 import { MedianSalePriceAtAuctionQuery } from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import {
   PlaceholderBox,
   PlaceholderText,
@@ -33,10 +32,6 @@ const MedianSalePriceAtAuctionScreen: React.FC<MedianSalePriceAtAuctionProps> = 
   queryArgs,
   initialCategory,
 }) => {
-  const enableMyCollectionInsightsMedianPrice = useFeatureFlag(
-    "AREnableMyCollectionInsightsMedianPrice"
-  )
-
   const [isVisible, setVisible] = useState<boolean>(false)
   const [newArtistID, setNewArtistID] = useState<string | null>(null)
 
@@ -66,9 +61,7 @@ const MedianSalePriceAtAuctionScreen: React.FC<MedianSalePriceAtAuctionProps> = 
       <Flex pt={6}>
         <Flex mx={2}>
           <Text variant="lg-display" mb={0.5} testID="Median_Auction_Price_title">
-            {enableMyCollectionInsightsMedianPrice
-              ? "Median Auction Price"
-              : "Average Auction Price"}
+            Median Auction Price
           </Text>
           <Text variant="xs">Track price stability or growth for your artists.</Text>
 
