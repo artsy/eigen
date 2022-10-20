@@ -4,7 +4,6 @@ import { extractNodes } from "app/utils/extractNodes"
 import { Flex, OpaqueImageView, Spacer, Text } from "palette"
 import { TouchableOpacity } from "react-native"
 import { graphql, useFragment } from "react-relay"
-import { getDateLabel } from "./util/getDateLabel"
 
 interface ActivityItemProps {
   item: ActivityItem_item$key
@@ -46,7 +45,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
             )}
 
             <Text variant="xs" color="black60">
-              {getDateLabel(item.createdAt!)}
+              {item.publishedAt}
             </Text>
           </Flex>
 
@@ -94,7 +93,7 @@ const activityItemFragment = graphql`
   fragment ActivityItem_item on Notification {
     title
     message
-    createdAt
+    publishedAt(format: "RELATIVE")
     targetHref
     isUnread
     notificationType

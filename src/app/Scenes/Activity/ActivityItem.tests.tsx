@@ -3,7 +3,6 @@ import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { extractNodes } from "app/utils/extractNodes"
-import { DateTime } from "luxon"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ActivityItem } from "./ActivityItem"
@@ -49,7 +48,7 @@ describe("ActivityItem", () => {
     expect(getByText("Notification Message")).toBeTruthy()
   })
 
-  it("should render 'x days ago' label", async () => {
+  it("should render the formatted publication date", async () => {
     const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
@@ -58,20 +57,6 @@ describe("ActivityItem", () => {
     await flushPromiseQueue()
 
     expect(getByText("2 days ago")).toBeTruthy()
-  })
-
-  it("should render 'Today' label", async () => {
-    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Notification: () => ({
-        ...notification,
-        createdAt: DateTime.utc().minus({ hours: 1 }),
-      }),
-    })
-    await flushPromiseQueue()
-
-    expect(getByText("Today")).toBeTruthy()
   })
 
   it("should render artwork images", async () => {
@@ -90,10 +75,7 @@ describe("ActivityItem", () => {
       const { queryByLabelText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
-        Notification: () => ({
-          ...notification,
-          createdAt: DateTime.utc().minus({ hours: 1 }),
-        }),
+        Notification: () => notification,
       })
       await flushPromiseQueue()
 
@@ -232,7 +214,7 @@ const artworks = [
 const notification = {
   title: "Notification Title",
   message: "Notification Message",
-  createdAt: DateTime.utc().minus({ days: 2 }),
+  publishedAt: "2 days ago",
   isUnread: false,
   notificationType: "ARTWORK_PUBLISHED",
   artworksConnection: {
