@@ -238,12 +238,6 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableMedianPriceChartCareerHighlights",
   },
-  AREnableNotFoundFailureView: {
-    readyForRelease: true,
-    description: "Enable Not Found Failure View",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableNotFoundFailureView",
-  },
   AREnableArtworksFromNonArtsyArtists: {
     readyForRelease: false,
     description: "Enable My Collection artworks from non-Artsy artists",
