@@ -43,6 +43,7 @@ cd eigen
 ```
 yarn setup:artsy
 yarn install:all
+yarn relay
 ```
 
 You will need [awscli](https://formulae.brew.sh/formula/awscli) to get our ENV vars.
