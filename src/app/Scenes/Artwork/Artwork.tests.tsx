@@ -562,6 +562,71 @@ describe("Artwork", () => {
     })
   })
 
+  describe("Shipping and taxes", () => {
+    it("should be rendered", () => {
+      const { queryByText } = renderWithWrappers(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        Artwork: () => ({
+          isInAuction: false,
+          isEligibleForArtsyGuarantee: true,
+        }),
+      })
+      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+      mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+        Artwork: () => ({
+          shippingOrigin: "City, State, Country",
+          shippingInfo: "Shipping: Calculated in checkout",
+        }),
+      })
+
+      expect(queryByText("City, State, Country")).toBeDefined()
+      expect(queryByText("Shipping: Calculated in checkout")).toBeDefined()
+    })
+
+    it("should NOT be rendered if the artwork is in an auction", () => {
+      const { queryByText } = renderWithWrappers(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        Artwork: () => ({
+          isInAuction: true,
+        }),
+      })
+      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+      mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+        Artwork: () => ({
+          shippingOrigin: "City, State, Country",
+          shippingInfo: "Shipping: Calculated in checkout",
+          isEligibleForArtsyGuarantee: true,
+        }),
+      })
+
+      expect(queryByText("City, State, Country")).toBeNull()
+      expect(queryByText("Shipping: Calculated in checkout")).toBeNull()
+    })
+
+    it("should NOT be rendered if the artwork is NOT eligible for on-platform transaction", () => {
+      const { queryByText } = renderWithWrappers(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        Artwork: () => ({
+          isInAuction: false,
+        }),
+      })
+      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+      mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+        Artwork: () => ({
+          shippingOrigin: "City, State, Country",
+          shippingInfo: "Shipping: Calculated in checkout",
+          isEligibleForArtsyGuarantee: false,
+        }),
+      })
+
+      expect(queryByText("City, State, Country")).toBeNull()
+      expect(queryByText("Shipping: Calculated in checkout")).toBeNull()
+    })
+  })
+
   describe("Artsy Guarantee section", () => {
     it("should be displayed when eligible for artsy guarantee", async () => {
       renderWithWrappers(<TestRenderer />)
