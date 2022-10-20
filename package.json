@@ -4,8 +4,7 @@
   "native-code-version": 44,
   "description": "Artsy mobile app.",
   "engines": {
-    "node": "14.x",
-    "npm": "6.1.x",
+    "node": "16.x",
     "yarn": "1.x"
   },
   "main": "index.ios.js",
