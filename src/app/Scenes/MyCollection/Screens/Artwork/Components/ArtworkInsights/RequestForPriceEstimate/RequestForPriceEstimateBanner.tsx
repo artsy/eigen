@@ -26,11 +26,12 @@ export const RequestForPriceEstimateBanner: React.FC<RequestForPriceEstimateProp
 
   const me = useFragment(meFragment, otherProps.me)
 
-  const requestedPriceEstimates = GlobalStore.useAppState(
+  const localRequestedPriceEstimates = GlobalStore.useAppState(
     (state) => state.requestedPriceEstimates.requestedPriceEstimates
   )
 
-  const priceEstimateRequested = !!requestedPriceEstimates[artwork.internalID]
+  const priceEstimateRequested =
+    artwork.hasPriceEstimateRequest || !!localRequestedPriceEstimates[artwork.internalID]
 
   if (priceEstimateRequested) {
     return (
@@ -100,6 +101,7 @@ const artworkFragment = graphql`
   fragment RequestForPriceEstimateBanner_artwork on Artwork {
     internalID
     slug
+    hasPriceEstimateRequest
   }
 `
 

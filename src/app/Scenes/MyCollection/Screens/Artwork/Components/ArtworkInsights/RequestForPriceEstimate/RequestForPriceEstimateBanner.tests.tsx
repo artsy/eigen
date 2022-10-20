@@ -51,6 +51,7 @@ describe("RequestForPriceEstimateBanner", () => {
 
   afterEach(() => {
     jest.clearAllMocks()
+    __globalStoreTestUtils__?.reset()
   })
 
   const resolveData = (passedProps = {}) => {
@@ -71,12 +72,13 @@ describe("RequestForPriceEstimateBanner", () => {
     expect(getByTestId("request-price-estimate-banner-description")).toBeDefined()
   })
 
-  it("renders 'requested' state without throwing an error", () => {
+  it("renders 'requested' state if in global store without throwing an error", () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
     resolveData({
       Artwork: () => ({
         internalID: "artwork-id",
         slug: "artwork-id",
+        hasPriceEstimateRequest: null,
       }),
       MarketPriceInsights: () => ({
         demandRank: 7.5,
@@ -91,6 +93,21 @@ describe("RequestForPriceEstimateBanner", () => {
           },
         },
       },
+    })
+    expect(getByText("Price Estimate Request Sent")).toBeDefined()
+  })
+
+  it("renders 'requested' state if hasPriceEstimateRequest is true", () => {
+    const { getByText } = renderWithWrappers(<TestRenderer />)
+    resolveData({
+      Artwork: () => ({
+        internalID: "artwork-id",
+        slug: "artwork-id",
+        hasPriceEstimateRequest: true,
+      }),
+      MarketPriceInsights: () => ({
+        demandRank: 7.5,
+      }),
     })
     expect(getByText("Price Estimate Request Sent")).toBeDefined()
   })
