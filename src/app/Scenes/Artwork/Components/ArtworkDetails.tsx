@@ -85,7 +85,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ artwork }) => {
       title: "Series",
       value: artworkData?.series,
     },
-    { title: "Publisher", value: artworkData.publisher },
+    { title: "Publisher", value: artworkData?.publisher },
     { title: "Manufacturer", value: artworkData?.manufacturer },
     {
       title: "Image rights",
