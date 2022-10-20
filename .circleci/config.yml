@@ -228,7 +228,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 13.4.1
+      xcode: 14.0.1
 
     steps:
       - checkout
@@ -272,7 +272,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 13.4.1
+      xcode: 14.0.1
 
     steps:
       - checkout
@@ -288,7 +288,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 13.4.1
+      xcode: 14.0.1
 
     steps:
       - checkout
@@ -369,7 +369,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 13.4.1
+      xcode: 14.0.1
 
     steps:
       - attach_workspace:
@@ -481,7 +481,7 @@ jobs:
     environment:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
     macos:
-      xcode: 13.4.1
+      xcode: 14.0.1
     steps:
       - checkout
       - install-gems
