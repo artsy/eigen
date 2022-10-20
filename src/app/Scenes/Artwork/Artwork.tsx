@@ -99,7 +99,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   }
 
   const shouldRenderShippingAndTaxes = () => {
-    return !isInAuction && artworkBelowTheFold?.isEligibleForArtsyGuarantee
+    return !isInAuction && artworkBelowTheFold?.isEligibleForOnPlatformTransaction
   }
 
   const shouldRenderOtherWorks = () => {
@@ -526,7 +526,7 @@ export const ArtworkContainer = createRefetchContainer(
             }
           }
         }
-        isEligibleForArtsyGuarantee
+        isEligibleForOnPlatformTransaction
         ...PartnerCard_artwork
         ...AboutWork_artwork
         ...OtherWorks_artwork

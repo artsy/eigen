@@ -569,7 +569,6 @@ describe("Artwork", () => {
       mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
         Artwork: () => ({
           isInAuction: false,
-          isEligibleForArtsyGuarantee: true,
         }),
       })
       mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
@@ -577,6 +576,7 @@ describe("Artwork", () => {
         Artwork: () => ({
           shippingOrigin: "City, State, Country",
           shippingInfo: "Shipping: Calculated in checkout",
+          isEligibleForOnPlatformTransaction: true,
         }),
       })
 
@@ -597,7 +597,7 @@ describe("Artwork", () => {
         Artwork: () => ({
           shippingOrigin: "City, State, Country",
           shippingInfo: "Shipping: Calculated in checkout",
-          isEligibleForArtsyGuarantee: true,
+          isEligibleForOnPlatformTransaction: true,
         }),
       })
 
@@ -618,7 +618,7 @@ describe("Artwork", () => {
         Artwork: () => ({
           shippingOrigin: "City, State, Country",
           shippingInfo: "Shipping: Calculated in checkout",
-          isEligibleForArtsyGuarantee: false,
+          isEligibleForOnPlatformTransaction: false,
         }),
       })
 
