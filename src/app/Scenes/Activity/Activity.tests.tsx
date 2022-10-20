@@ -46,6 +46,44 @@ describe("Activity", () => {
 
     expect(getByLabelText("Activities are empty")).toBeTruthy()
   })
+
+  it("should display all notifications", async () => {
+    const { queryByText } = renderWithHookWrappersTL(<Activity />, mockEnvironment)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      NotificationConnection: () => notifications,
+    })
+    await flushPromiseQueue()
+
+    expect(queryByText("Notification One")).toBeTruthy()
+    expect(queryByText("Notification Two")).toBeTruthy()
+  })
+
+  it("should hide artworks based notifications that don't have artworks", async () => {
+    const { queryByText } = renderWithHookWrappersTL(<Activity />, mockEnvironment)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      NotificationConnection: () => ({
+        edges: [
+          ...notifications.edges,
+          {
+            node: {
+              notificationType: "ARTWORK_PUBLISHED",
+              title: "Notification Three",
+              artworks: {
+                totalCount: 0,
+              },
+            },
+          },
+        ],
+      }),
+    })
+    await flushPromiseQueue()
+
+    expect(queryByText("Notification One")).toBeTruthy()
+    expect(queryByText("Notification Two")).toBeTruthy()
+    expect(queryByText("Notification Three")).toBeNull()
+  })
 })
 
 const notifications = {
@@ -53,11 +91,16 @@ const notifications = {
     {
       node: {
         title: "Notification One",
+        notificationType: "VIEWING_ROOM_PUBLISHED",
       },
     },
     {
       node: {
         title: "Notification Two",
+        notificationType: "ARTWORK_ALERT",
+        artworks: {
+          totalCount: 3,
+        },
       },
     },
   ],
