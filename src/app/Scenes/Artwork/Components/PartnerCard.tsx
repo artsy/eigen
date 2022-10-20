@@ -2,7 +2,6 @@ import { PartnerCard_artwork$data } from "__generated__/PartnerCard_artwork.grap
 import { navigateToPartner } from "app/navigation/navigate"
 import { get } from "app/utils/get"
 import { limitWithCount } from "app/utils/limitWithCount"
-import { Track, track as _track } from "app/utils/track"
 import { EntityHeader, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
@@ -15,9 +14,6 @@ interface Props {
   shouldShowQuestions?: boolean
 }
 
-const track: Track<Props> = _track as any
-
-@track()
 export class PartnerCard extends React.Component<Props> {
   handleTap(href: string) {
     navigateToPartner(href)
