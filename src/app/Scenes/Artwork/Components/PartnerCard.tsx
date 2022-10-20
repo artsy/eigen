@@ -1,7 +1,7 @@
 import { PartnerCard_artwork$data } from "__generated__/PartnerCard_artwork.graphql"
 import { navigateToPartner } from "app/navigation/navigate"
-import { get } from "app/utils/get"
 import { limitWithCount } from "app/utils/limitWithCount"
+import { compact } from "lodash"
 import { EntityHeader, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
@@ -18,8 +18,8 @@ export const PartnerCard: React.FC<PartnerCardProps> = ({ artwork, shouldShowQue
   const handleTap = (href: string) => navigateToPartner(href)
 
   const partner = artwork.partner!
-  const galleryOrBenefitAuction =
-    artwork.sale && (artwork.sale.isBenefit || artwork.sale.isGalleryAuction)
+
+  const galleryOrBenefitAuction = artwork.sale?.isBenefit ?? artwork.sale?.isGalleryAuction
 
   if (partner.type === "Auction House" || galleryOrBenefitAuction) {
     return null
@@ -27,10 +27,9 @@ export const PartnerCard: React.FC<PartnerCardProps> = ({ artwork, shouldShowQue
 
   let locationNames = null
 
-  const imageUrl = partner.profile && partner.profile.icon ? partner.profile.icon.url : null
-
   if (partner.cities) {
-    locationNames = get(partner, (p) => limitWithCount(p.cities as any, 2), [])!.join(", ")
+    const cities = compact(partner.cities ?? [])
+    locationNames = limitWithCount(cities, 2).join(", ")
   }
 
   const showPartnerType =
@@ -53,7 +52,7 @@ export const PartnerCard: React.FC<PartnerCardProps> = ({ artwork, shouldShowQue
           name={partner.name!}
           href={(partner.isDefaultProfilePublic && partner.href) || undefined}
           meta={locationNames || undefined}
-          imageUrl={imageUrl || undefined}
+          imageUrl={partner.profile?.icon?.url || undefined}
           initials={partner.initials || undefined}
         />
       </TouchableWithoutFeedback>
