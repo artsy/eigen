@@ -117,7 +117,6 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
         <Flex justifyContent="center" flex={1}>
           <Join separator={<Spacer y={60} />}>
             <Text variant="xl">{mode === "login" ? "Log in" : "Sign Up"}</Text>
-
             <>
               <Button
                 onPress={() =>
