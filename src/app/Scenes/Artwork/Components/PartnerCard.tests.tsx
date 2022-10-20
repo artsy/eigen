@@ -1,7 +1,5 @@
-import { fireEvent } from "@testing-library/react-native"
 import { PartnerCard_artwork$data } from "__generated__/PartnerCard_artwork.graphql"
 import { PartnerCardTestsQuery } from "__generated__/PartnerCardTestsQuery.graphql"
-import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
@@ -67,7 +65,7 @@ describe("PartnerCard", () => {
       Artwork: () => PartnerCardArtwork,
     })
 
-    expect(getByText("At gallery")).toBeTruthy()
+    expect(getByText("Gallery")).toBeTruthy()
   })
 
   it("renders partner type correctly for institutional sellers", () => {
@@ -85,7 +83,7 @@ describe("PartnerCard", () => {
       Artwork: () => PartnerCardArtworkInstitutionalSeller,
     })
 
-    expect(getByText("At institution")).toBeTruthy()
+    expect(getByText("Institution")).toBeTruthy()
   })
 
   it("doesn't render partner type for partners that aren't institutions or galleries", () => {
@@ -134,16 +132,6 @@ describe("PartnerCard", () => {
     expect(getByText("Miami, New York, +3 more")).toBeTruthy()
   })
 
-  it("renders button text correctly", () => {
-    const { getByText } = renderWithWrappers(<TestWrapper />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Artwork: () => PartnerCardArtwork,
-    })
-
-    expect(getByText("Follow")).toBeTruthy()
-  })
-
   it("does not render when the partner is an auction house", () => {
     const PartnerCardArtworkAuctionHouse: PartnerCard_artwork$data = {
       ...PartnerCardArtwork,
@@ -177,102 +165,6 @@ describe("PartnerCard", () => {
 
     expect(toJSON()).toBeNull()
   })
-
-  it("does not render follow button when the partner has no profile info", () => {
-    const PartnerCardArtworkNoProfile = {
-      ...PartnerCardArtwork,
-      partner: {
-        ...PartnerCardArtwork.partner!,
-        profile: null,
-      },
-    }
-    const { queryByText } = renderWithWrappers(<TestWrapper />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Artwork: () => PartnerCardArtworkNoProfile,
-    })
-
-    expect(queryByText("Follow")).toBeFalsy()
-    expect(queryByText("Following")).toBeFalsy()
-  })
-
-  describe("Following a partner", () => {
-    it("correctly displays when the artist is already followed, and allows unfollowing", () => {
-      const PartnerCardArtworkFollowed = {
-        ...PartnerCardArtwork,
-        partner: {
-          ...PartnerCardArtwork.partner,
-          profile: {
-            ...PartnerCardArtwork.partner!.profile,
-            is_followed: true,
-          },
-        },
-      }
-
-      const { getByText, queryByText } = renderWithWrappers(<TestWrapper />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artwork: () => PartnerCardArtworkFollowed,
-      })
-
-      expect(getByText("Following")).toBeTruthy()
-      expect(queryByText("Follow")).toBeFalsy()
-
-      fireEvent.press(getByText("Following"))
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Profile: () => ({
-          is_followed: false,
-          id: PartnerCardArtwork.partner!.id,
-          slug: PartnerCardArtwork.partner!.slug,
-          internalID: PartnerCardArtwork.partner!.profile!.internalID,
-        }),
-      })
-
-      expect(getByText("Follow")).toBeTruthy()
-      expect(queryByText("Following")).toBeFalsy()
-    })
-
-    it("correctly displays when the work is not followed, and allows following", () => {
-      const { getByText, queryByText } = renderWithWrappers(<TestWrapper />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artwork: () => PartnerCardArtwork,
-      })
-
-      expect(getByText("Follow")).toBeTruthy()
-      expect(queryByText("Following")).toBeFalsy()
-
-      fireEvent.press(getByText("Follow"))
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Profile: () => ({
-          is_followed: true,
-          id: PartnerCardArtwork.partner!.id,
-          slug: PartnerCardArtwork.partner!.slug,
-          internalID: PartnerCardArtwork.partner!.profile!.internalID,
-        }),
-      })
-
-      expect(getByText("Following")).toBeTruthy()
-      expect(queryByText("Follow")).toBeFalsy()
-    })
-
-    it("handles errors in saving gracefully", () => {
-      const { getByText, queryByText } = renderWithWrappers(<TestWrapper />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artwork: () => PartnerCardArtwork,
-      })
-
-      fireEvent.press(getByText("Follow"))
-
-      rejectMostRecentRelayOperation(mockEnvironment, new Error())
-
-      expect(getByText("Follow")).toBeTruthy()
-      expect(queryByText("Following")).toBeFalsy()
-    })
-  })
 })
 
 const PartnerCardArtwork: PartnerCard_artwork$data = {
@@ -281,7 +173,7 @@ const PartnerCardArtwork: PartnerCard_artwork$data = {
     isGalleryAuction: false,
   },
   partner: {
-    is_default_profile_public: true,
+    isDefaultProfilePublic: true,
     type: "Gallery",
     name: "Test Gallery",
     slug: "12345",
@@ -291,7 +183,6 @@ const PartnerCardArtwork: PartnerCard_artwork$data = {
     profile: {
       id: "12345",
       internalID: "56789",
-      is_followed: false,
       icon: {
         url: "https://d32dm0rphc51dk.cloudfront.net/YciR5levjrhp2JnFYlPxpw/square140.webp",
       },
@@ -299,4 +190,5 @@ const PartnerCardArtwork: PartnerCard_artwork$data = {
     cities: ["Miami", "New York", "Hong Kong", "London", "Boston"],
   },
   " $fragmentType": "PartnerCard_artwork",
+  " $fragmentSpreads": null as any,
 }

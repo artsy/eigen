@@ -1,14 +1,11 @@
 import { ArtworkTombstone_artwork$data } from "__generated__/ArtworkTombstone_artwork.graphql"
-import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { navigate } from "app/navigation/navigate"
 import { Schema, track } from "app/utils/track"
-import { ArtworkIcon, Box, CertificateIcon, comma, Flex, Spacer, Text } from "palette"
+import { Box, comma, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { CascadingEndTimesBanner } from "./CascadingEndTimesBanner"
-import { CertificateAuthenticityModal } from "./CertificateAuthenticityModal"
-import { FollowArtistLinkFragmentContainer as FollowArtistLink } from "./FollowArtistLink"
 
 type Artist = NonNullable<NonNullable<ArtworkTombstone_artwork$data["artists"]>[0]>
 
@@ -40,19 +37,6 @@ export class ArtworkTombstone extends React.Component<
     navigate(href)
   }
 
-  @track(() => ({
-    action_name: Schema.ActionNames.ArtworkClassification,
-    action_type: Schema.ActionTypes.Tap,
-    context_module: Schema.ContextModules.ArtworkTombstone,
-  }))
-  handleClassificationTap(href: string) {
-    navigate(href)
-  }
-
-  showAttributionClassFAQ() {
-    navigate("/artwork-classifications")
-  }
-
   showMoreArtists = () => {
     this.setState({
       ...this.state,
@@ -61,28 +45,16 @@ export class ArtworkTombstone extends React.Component<
   }
 
   renderSingleArtist(artist: Artist) {
-    return (
-      <Text>
-        {this.renderArtistName(artist.name!, artist.href)}
-        <Text variant="sm-display" weight="medium">
-          {"  "}·{"  "}
-        </Text>
-        <FollowArtistLink artist={artist} contextModule={Schema.ContextModules.ArtworkTombstone} />
-      </Text>
-    )
+    return <Text variant="lg-display">{this.renderArtistName(artist.name!, artist.href)}</Text>
   }
 
   renderArtistName(artistName: string, href: string | null) {
     return href ? (
       <TouchableWithoutFeedback onPress={this.handleArtistTap.bind(this, href)}>
-        <Text variant="sm-display" weight="medium">
-          {artistName}
-        </Text>
+        <Text variant="lg-display">{artistName}</Text>
       </TouchableWithoutFeedback>
     ) : (
-      <Text variant="sm-display" weight="medium">
-        {artistName}
-      </Text>
+      <Text variant="lg-display">{artistName}</Text>
     )
   }
 
@@ -100,11 +72,11 @@ export class ArtworkTombstone extends React.Component<
 
     return (
       <Flex flexDirection="row" flexWrap="wrap">
-        <Text variant="sm-display">
+        <Text variant="lg-display">
           {artistNames}
           {!this.state.showingMoreArtists && artists! /* STRICTNESS_MIGRATION */.length > 3 && (
             <TouchableWithoutFeedback onPress={this.showMoreArtists}>
-              <Text variant="sm-display" weight="medium">
+              <Text variant="lg-display">
                 {artists! /* STRICTNESS_MIGRATION */.length - 3} more
               </Text>
             </TouchableWithoutFeedback>
@@ -132,7 +104,6 @@ export class ArtworkTombstone extends React.Component<
       artwork.saleArtwork.lotLabel &&
       artwork.sale &&
       !artwork.sale.isClosed
-    const attributionClass = artwork.attributionClass
 
     return (
       <Box textAlign="left">
@@ -140,81 +111,22 @@ export class ArtworkTombstone extends React.Component<
           {artwork.artists! /* STRICTNESS_MIGRATION */.length === 1
             ? this.renderSingleArtist(artwork!.artists![0]!)
             : this.renderMultipleArtists()}
-          {!!(artwork.artists! /* STRICTNESS_MIGRATION */.length === 0 && artwork.cultural_maker) &&
-            this.renderArtistName(artwork.cultural_maker, null)}
+          {!!(artwork.artists! /* STRICTNESS_MIGRATION */.length === 0 && artwork.culturalMaker) &&
+            this.renderArtistName(artwork.culturalMaker, null)}
         </Flex>
-        <Spacer mb={1} />
         {!!displayAuctionLotLabel && (
-          <Text variant="sm" color="black100" weight="medium">
-            Lot {artwork.saleArtwork.lotLabel}
-          </Text>
+          <>
+            <Spacer mb={1} />
+            <Text variant="sm" color="black100" weight="medium">
+              Lot {artwork.saleArtwork.lotLabel}
+            </Text>
+          </>
         )}
         <Flex flexDirection="row" flexWrap="wrap">
-          <Text variant="sm" color="black60">
+          <Text variant="lg-display" color="black60">
             {this.getArtworkTitleAndMaybeDate()}
           </Text>
         </Flex>
-        {!!artwork.medium && (
-          <Text variant="sm" color="black60">
-            {artwork.medium}
-          </Text>
-        )}
-        {!!artwork.dimensions! /* STRICTNESS_MIGRATION */.in &&
-          !!artwork.dimensions! /* STRICTNESS_MIGRATION */.cm && (
-            <Text variant="sm" color="black60">
-              {LegacyNativeModules.ARCocoaConstantsModule.CurrentLocale === "en_US"
-                ? artwork.dimensions! /* STRICTNESS_MIGRATION */.in
-                : artwork.dimensions! /* STRICTNESS_MIGRATION */.cm}
-            </Text>
-          )}
-        {!!artwork.edition_of && (
-          <Text variant="sm" color="black60">
-            {artwork.edition_of}
-          </Text>
-        )}
-        <Spacer my={1} />
-        {!!attributionClass?.shortArrayDescription &&
-          !!Array.isArray(attributionClass.shortArrayDescription) &&
-          attributionClass.shortArrayDescription.length > 0 && (
-            <Box mt={0.5} flexDirection="row">
-              <ArtworkIcon fill="black60" />
-              <Text color="black60" variant="xs" ml={1}>
-                {attributionClass.shortArrayDescription
-                  .slice(0, attributionClass.shortArrayDescription.length - 1)
-                  .join(" ") + " "}
-                <TouchableWithoutFeedback
-                  onPress={() => this.handleClassificationTap("/artwork-classifications")}
-                >
-                  <Text variant="xs" style={{ textDecorationLine: "underline" }}>
-                    {
-                      attributionClass.shortArrayDescription[
-                        attributionClass.shortArrayDescription.length - 1
-                      ]
-                    }
-                  </Text>
-                </TouchableWithoutFeedback>
-                .
-              </Text>
-            </Box>
-          )}
-        {!!artwork.certificateOfAuthenticity && (
-          <Box mt={0.5} flexDirection="row">
-            <CertificateIcon fill="black60" />
-            <Text color="black60" variant="xs" ml={1}>
-              This work includes a{" "}
-              <TouchableWithoutFeedback
-                onPress={() =>
-                  this.setState({ ...this.setState, showAuthenticityCertificateModal: true })
-                }
-              >
-                <Text variant="xs" style={{ textDecorationLine: "underline" }}>
-                  {"Certificate of Authenticity"}
-                </Text>
-              </TouchableWithoutFeedback>
-              .
-            </Text>
-          </Box>
-        )}
         {!!artwork.isInAuction && !artwork.sale?.isClosed && (
           <>
             {!!artwork.sale?.cascadingEndTimeIntervalMinutes && (
@@ -238,10 +150,6 @@ export class ArtworkTombstone extends React.Component<
             )}
           </>
         )}
-        <CertificateAuthenticityModal
-          visible={this.state.showAuthenticityCertificateModal}
-          onClose={() => this.setState({ ...this.state, showAuthenticityCertificateModal: false })}
-        />
       </Box>
     )
   }
@@ -254,17 +162,13 @@ export const ArtworkTombstoneFragmentContainer = createFragmentContainer(Artwork
       isInAuction
       medium
       date
-      cultural_maker: culturalMaker
+      culturalMaker
       saleArtwork {
         lotLabel
         estimate
       }
       partner {
         name
-      }
-      certificateOfAuthenticity {
-        label
-        __typename
       }
       sale {
         isClosed
@@ -275,14 +179,6 @@ export const ArtworkTombstoneFragmentContainer = createFragmentContainer(Artwork
         name
         href
         ...FollowArtistLink_artist
-      }
-      dimensions {
-        in
-        cm
-      }
-      edition_of: editionOf
-      attributionClass {
-        shortArrayDescription
       }
     }
   `,

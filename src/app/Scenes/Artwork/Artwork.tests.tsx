@@ -32,8 +32,6 @@ import { CommercialPartnerInformation } from "./Components/CommercialPartnerInfo
 import { ContextCard } from "./Components/ContextCard"
 import { ImageCarousel } from "./Components/ImageCarousel/ImageCarousel"
 import { OtherWorksFragmentContainer } from "./Components/OtherWorks/OtherWorks"
-import { PartnerLink } from "./Components/PartnerLink"
-import { Questions } from "./Components/Questions"
 
 type ArtworkQueries =
   | "ArtworkAboveTheFoldQuery"
@@ -290,24 +288,6 @@ describe("Artwork", () => {
     })
   })
 
-  it("refetches on re-appear", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsLotConditionReport: false })
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-
-    mockMostRecentOperation("ArtworkAboveTheFoldQuery")
-    mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
-    mockMostRecentOperation("ArtworkBelowTheFoldQuery")
-
-    expect(environment.mock.getAllOperations()).toHaveLength(0)
-
-    navigationEvents.emit("modalDismissed")
-    mockMostRecentOperation("ArtworkRefetchQuery")
-
-    tree.update(<TestRenderer isVisible={false} />)
-    tree.update(<TestRenderer isVisible />)
-    mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
-  })
-
   it("updates the above-the-fold content on re-appear", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
@@ -404,26 +384,6 @@ describe("Artwork", () => {
     await flushPromiseQueue()
 
     expect(tree.root.findAllByType(ContextCard)).toHaveLength(1)
-  })
-
-  it("renders buy now contact gallery when feature flag is enabled", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: true })
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-
-    mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
-      Artwork: () => ({
-        slug: "test-artwork",
-        isAcquireable: true,
-        partner: { name: "XYZ Gallery" },
-      }),
-    })
-    mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
-    mockMostRecentOperation("ArtworkBelowTheFoldQuery")
-
-    await flushPromiseQueue()
-
-    expect(tree.root.findAllByType(Questions)).toHaveLength(1)
-    expect(tree.root.findAllByType(PartnerLink)).toHaveLength(1)
   })
 
   describe("Live Auction States", () => {
