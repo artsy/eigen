@@ -4,7 +4,7 @@ import { RequestForPriceEstimateBanner_marketPriceInsights$key } from "__generat
 import { RequestForPriceEstimateBanner_me$key } from "__generated__/RequestForPriceEstimateBanner_me.graphql"
 import { Toast } from "app/Components/Toast/Toast"
 import { navigate } from "app/navigation/navigate"
-import { GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { Box, Button, Flex, Separator, Text, WinningBidIcon } from "palette"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -26,11 +26,17 @@ export const RequestForPriceEstimateBanner: React.FC<RequestForPriceEstimateProp
 
   const me = useFragment(meFragment, otherProps.me)
 
-  const requestedPriceEstimates = GlobalStore.useAppState(
+  const enableRemotePriceEstimateRequestedLogic = useFeatureFlag(
+    "AREnableNewRequestPriceEstimateLogic"
+  )
+
+  const localRequestedPriceEstimates = GlobalStore.useAppState(
     (state) => state.requestedPriceEstimates.requestedPriceEstimates
   )
 
-  const priceEstimateRequested = !!requestedPriceEstimates[artwork.internalID]
+  const priceEstimateRequested =
+    (enableRemotePriceEstimateRequestedLogic && artwork.hasPriceEstimateRequest) ||
+    !!localRequestedPriceEstimates[artwork.internalID]
 
   if (priceEstimateRequested) {
     return (
@@ -100,6 +106,7 @@ const artworkFragment = graphql`
   fragment RequestForPriceEstimateBanner_artwork on Artwork {
     internalID
     slug
+    hasPriceEstimateRequest
   }
 `
 
