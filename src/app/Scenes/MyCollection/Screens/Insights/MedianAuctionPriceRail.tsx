@@ -26,9 +26,6 @@ export const MedianAuctionPriceRail: React.FC<MedianAuctionPriceRailProps> = (pr
   const enableMyCollectionInsightsPhase1Part4 = useFeatureFlag(
     "AREnableMyCollectionInsightsPhase1Part4"
   )
-  const enableMyCollectionInsightsMedianPrice = useFeatureFlag(
-    "AREnableMyCollectionInsightsMedianPrice"
-  )
 
   const me = useFragment(fragment, props.me)
   const artworks = extractNodes(me.priceInsightUpdates)
@@ -50,11 +47,7 @@ export const MedianAuctionPriceRail: React.FC<MedianAuctionPriceRailProps> = (pr
           <Flex mx={2}>
             <SectionTitle
               capitalized={false}
-              title={
-                enableMyCollectionInsightsMedianPrice
-                  ? "Median Auction Price in the Last 3 Years"
-                  : "Average Auction Price in the Last 3 Years"
-              }
+              title="Median Auction Price in the Last 3 Years"
               onPress={
                 enableMyCollectionInsightsPhase1Part4
                   ? () => {
@@ -124,7 +117,6 @@ const fragment = graphql`
             formattedNationalityAndBirthday
           }
           marketPriceInsights {
-            averageSalePriceDisplayText
             medianSalePriceDisplayText
           }
         }

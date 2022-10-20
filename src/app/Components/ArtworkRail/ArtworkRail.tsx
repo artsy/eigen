@@ -1,5 +1,5 @@
 import { LargeArtworkRail_artworks$data } from "__generated__/LargeArtworkRail_artworks.graphql"
-import { SellWithArtsyCustomRecentlySold_recentlySoldArtworkTypeConnection$data } from "__generated__/SellWithArtsyCustomRecentlySold_recentlySoldArtworkTypeConnection.graphql"
+import { SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$data } from "__generated__/SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection.graphql"
 import { SmallArtworkRail_artworks$data } from "__generated__/SmallArtworkRail_artworks.graphql"
 import { ArtworkCardSize, ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
@@ -71,7 +71,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
 }
 
 type RecentlySoldArtwork = NonNullable<
-  NonNullable<SellWithArtsyCustomRecentlySold_recentlySoldArtworkTypeConnection$data["edges"]>[0]
+  NonNullable<SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$data["edges"]>[0]
 >["node"]
 
 export interface RecentlySoldArtworksRailProps extends CommonArtworkRailProps {

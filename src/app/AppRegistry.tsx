@@ -74,6 +74,7 @@ import {
   MyCollectionScreenQuery,
 } from "./Scenes/MyCollection/MyCollection"
 import { ArtworkSubmissionStatusFAQ } from "./Scenes/MyCollection/Screens/Artwork/ArtworkSubmissionStatusFAQ"
+import { RequestForPriceEstimateConfirmationScreen } from "./Scenes/MyCollection/Screens/Artwork/Components/ArtworkInsights/RequestForPriceEstimate/RequestForPriceEstimateConfirmationScreen"
 import { RequestForPriceEstimateScreen } from "./Scenes/MyCollection/Screens/Artwork/Components/ArtworkInsights/RequestForPriceEstimate/RequestForPriceEstimateScreen"
 import {
   MyCollectionArtworkScreen,
@@ -441,6 +442,10 @@ export const modules = defineModules({
   PartnerLocations: reactModule(PartnerLocations),
   PrivacyRequest: reactModule(PrivacyRequest),
   RequestForPriceEstimateScreen: reactModule(RequestForPriceEstimateScreen),
+  RequestForPriceEstimateConfirmationScreen: reactModule(
+    RequestForPriceEstimateConfirmationScreen,
+    { hidesBackButton: true }
+  ),
   ReverseImage: reactModule(ReverseImage, {
     hidesBackButton: true,
     fullBleed: true,

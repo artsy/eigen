@@ -65,7 +65,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const [refreshing, setRefreshing] = useState(false)
   const [fetchingData, setFetchingData] = useState(false)
   const enableConversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
-  const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
 
   const { internalID, slug, isInAuction, partner: partnerAbove } = artworkAboveTheFold || {}
   const { isPreview, isClosed, liveStartAt } = artworkAboveTheFold?.sale ?? {}
@@ -223,12 +222,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (
-      enableCreateArtworkAlert &&
-      !enableConversationalBuyNow &&
-      !!partnerAbove?.name &&
-      artworkAboveTheFold
-    ) {
+    if (!enableConversationalBuyNow && !!partnerAbove?.name && artworkAboveTheFold) {
       sections.push({
         key: "partnerSection",
         element: <PartnerLink artwork={artworkAboveTheFold} />,
@@ -237,7 +231,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
     }
 
     if (
-      enableCreateArtworkAlert &&
       !isEmpty(artworkAboveTheFold?.artists) &&
       !artworkAboveTheFold?.isSold &&
       !isInClosedAuction
@@ -249,10 +242,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (
-      !!(artworkAboveTheFold?.isAcquireable || artworkAboveTheFold?.isOfferable) &&
-      enableCreateArtworkAlert
-    ) {
+    if (!!(artworkAboveTheFold?.isAcquireable || artworkAboveTheFold?.isOfferable)) {
       sections.push({
         key: "faqSection",
         element: <FaqAndSpecialistSection artwork={artworkAboveTheFold} />,

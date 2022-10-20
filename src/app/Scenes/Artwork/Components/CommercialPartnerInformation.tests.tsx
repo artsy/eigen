@@ -35,7 +35,6 @@ describe("CommercialPartnerInformation", () => {
   }
 
   beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: false })
     mockEnvironment = createMockEnvironment()
   })
 
@@ -46,7 +45,6 @@ describe("CommercialPartnerInformation", () => {
       Artwork: () => CommercialPartnerInformationArtwork,
     })
 
-    expect(getByText("From Bob's Gallery")).toBeTruthy()
     expect(getByText("Ships from Brooklyn")).toBeTruthy()
     expect(getByText("Ships within the continental USA")).toBeTruthy()
     expect(getByText("VAT included in price")).toBeTruthy()
@@ -64,46 +62,6 @@ describe("CommercialPartnerInformation", () => {
     expect(queryByText("VAT included in price")).toBeFalsy()
   })
 
-  it("hides shipping info for works from closed auctions", () => {
-    const CommercialPartnerInformationArtworkClosedAuction = {
-      ...CommercialPartnerInformationArtwork,
-      availability: "not for sale",
-      isForSale: false,
-      isOfferable: false,
-      isAcquireable: false,
-    }
-    const { queryByText } = renderWithWrappers(<TestWrapper />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Artwork: () => CommercialPartnerInformationArtworkClosedAuction,
-    })
-
-    expect(queryByText("At Bob's Gallery")).toBeTruthy()
-    expect(queryByText("Ships from Brooklyn")).toBeFalsy()
-    expect(queryByText("Ships within the continental USA")).toBeFalsy()
-    expect(queryByText("VAT included in price")).toBeFalsy()
-  })
-
-  it("hides shipping information for sold works", () => {
-    const CommercialPartnerInformationSoldArtwork = {
-      ...CommercialPartnerInformationArtwork,
-      availability: "sold",
-      isForSale: false,
-      isOfferable: false,
-      isAcquireable: false,
-    }
-    const { queryByText } = renderWithWrappers(<TestWrapper />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Artwork: () => CommercialPartnerInformationSoldArtwork,
-    })
-
-    expect(queryByText("From Bob's Gallery")).toBeTruthy()
-    expect(queryByText("Ships from Brooklyn")).toBeFalsy()
-    expect(queryByText("Ships within the continental USA")).toBeFalsy()
-    expect(queryByText("VAT included in price")).toBeFalsy()
-  })
-
   it("Hides shipping/tax information if the work is not enabled for buy now or make offer", () => {
     const CommercialPartnerInformationNoEcommerce = {
       ...CommercialPartnerInformationArtwork,
@@ -116,27 +74,6 @@ describe("CommercialPartnerInformation", () => {
       Artwork: () => CommercialPartnerInformationNoEcommerce,
     })
 
-    expect(queryByText("From Bob's Gallery")).toBeTruthy()
-    expect(queryByText("Ships from Brooklyn")).toBeFalsy()
-    expect(queryByText("Ships within the continental USA")).toBeFalsy()
-    expect(queryByText("VAT included in price")).toBeFalsy()
-  })
-
-  it("Says 'At Gallery Name' instead of 'From Gallery Name' and hides shipping info for non-commercial works", () => {
-    const Artwork = {
-      ...CommercialPartnerInformationArtwork,
-      availability: null,
-      isForSale: false,
-      isOfferable: false,
-      isAcquireable: false,
-    }
-    const { queryByText } = renderWithWrappers(<TestWrapper />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Artwork: () => Artwork,
-    })
-
-    expect(queryByText("At Bob's Gallery")).toBeTruthy()
     expect(queryByText("Ships from Brooklyn")).toBeFalsy()
     expect(queryByText("Ships within the continental USA")).toBeFalsy()
     expect(queryByText("VAT included in price")).toBeFalsy()
@@ -144,9 +81,7 @@ describe("CommercialPartnerInformation", () => {
 })
 
 const CommercialPartnerInformationArtwork = {
-  availability: "for sale",
   isAcquireable: true,
-  isForSale: true,
   isOfferable: false,
   shippingOrigin: "Brooklyn",
   shippingInfo: "Ships within the continental USA",

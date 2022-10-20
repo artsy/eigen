@@ -9,40 +9,26 @@ interface Props {
 }
 
 export const CommercialPartnerInformation: React.FC<Props> = ({ artwork }) => {
-  const artworkIsSold = artwork.availability && artwork.availability === "sold"
   const artworkEcommerceAvailable = artwork.isAcquireable || artwork.isOfferable
   const showsSellerInfo = artwork.partner && artwork.partner.name
-  const availabilityDisplayText = artwork.isForSale || artworkIsSold ? "From" : "At"
   const avalaraPhase2 = useFeatureFlag("AREnableAvalaraPhase2")
-  const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
   const shouldRenderShipsFromLabel = artworkEcommerceAvailable && !!artwork.shippingOrigin
   const shouldRenderShippingInfoLabel = artworkEcommerceAvailable && !!artwork.shippingInfo
   const shouldRenderPriceTaxLabel =
     artworkEcommerceAvailable && !!artwork.priceIncludesTaxDisplay && !avalaraPhase2
-
-  if (!showsSellerInfo) {
-    return null
-  }
-
   const shouldRenderLabels =
     avalaraPhase2 ||
-    !enableCreateArtworkAlert ||
     shouldRenderShipsFromLabel ||
     shouldRenderShippingInfoLabel ||
     shouldRenderPriceTaxLabel
 
-  if (!shouldRenderLabels) {
+  if (!showsSellerInfo || !shouldRenderLabels) {
     return null
   }
 
   return (
     <>
       <Spacer mb={1} />
-      {!enableCreateArtworkAlert && (
-        <Text variant="xs" color="black60">
-          {availabilityDisplayText} {artwork.partner!.name}
-        </Text>
-      )}
       {avalaraPhase2 && (
         <Text variant="xs" color="black60">
           Taxes may apply at checkout.{" "}
@@ -81,9 +67,7 @@ export const CommercialPartnerInformationFragmentContainer = createFragmentConta
   {
     artwork: graphql`
       fragment CommercialPartnerInformation_artwork on Artwork {
-        availability
         isAcquireable
-        isForSale
         isOfferable
         shippingOrigin
         shippingInfo
