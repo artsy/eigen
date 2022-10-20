@@ -7,7 +7,6 @@ import {
 import { OAuthProvider } from "app/auth/types"
 import { FPSCounter } from "app/Components/FPSCounter"
 import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
-import { OnboardingAuthLog } from "app/utils/AuthLog/OnboardingAuthLog"
 import { NetworkAwareProvider } from "app/utils/NetworkAwareProvider"
 import { Platform, View } from "react-native"
 import { ArtsyKeyboardAvoidingViewContext } from "shared/utils"
@@ -47,7 +46,6 @@ export type OnboardingNavigationStack = {
   }
   ForgotPassword: undefined
   OnboardingWebView: { url: OnboardingWebViewRoute }
-  OnboardingAuthLog: undefined
 }
 
 declare global {
@@ -106,7 +104,6 @@ export const OnboardingWelcomeScreens = () => {
         <StackNavigator.Screen name="OnboardingSocialLink" component={OnboardingSocialLink} />
         <StackNavigator.Screen name="ForgotPassword" component={ForgotPassword} />
         <StackNavigator.Screen name="OnboardingWebView" component={OnboardingWebView} />
-        <StackNavigator.Screen name="OnboardingAuthLog" component={OnboardingAuthLog} />
       </StackNavigator.Navigator>
     </NavigationContainer>
   )

@@ -1,10 +1,9 @@
 import { useNavigation } from "@react-navigation/native"
 import { AuthPromiseRejectType } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
-import { clearAuthActions } from "app/utils/AuthLog/logAuthActions"
 import { osMajorVersion } from "app/utils/platformUtil"
 import { capitalize } from "lodash"
-import { Button, Flex, Join, MagnifyingGlassIcon, Screen, Spacer, Text, TrashIcon } from "palette"
+import { Button, Flex, Join, Screen, Spacer, Text } from "palette"
 import { useEffect } from "react"
 import { Alert, Image, Platform } from "react-native"
 import { EnvelopeIcon } from "../../../palette/svgs/EnvelopeIcon"
@@ -195,32 +194,6 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
                 testID="continueWithFacebook"
               >
                 Continue with Facebook
-              </Button>
-              <Button
-                onPress={() => {
-                  navigation.navigate("OnboardingAuthLog")
-                }}
-                block
-                haptic="impactMedium"
-                mb={1}
-                variant="outline"
-                iconPosition="left-start"
-                icon={<MagnifyingGlassIcon mr={1} />}
-              >
-                Read log
-              </Button>
-              <Button
-                onPress={() => {
-                  clearAuthActions()
-                }}
-                block
-                haptic="impactMedium"
-                mb={1}
-                variant="outline"
-                iconPosition="left-start"
-                icon={<TrashIcon mr={1} />}
-              >
-                Clear log
               </Button>
             </>
 
