@@ -1,7 +1,7 @@
 import { ActionType, ContextModule, OwnerType, SentRequestPriceEstimate } from "@artsy/cohesion"
 import { RequestForPriceEstimateScreenMutation } from "__generated__/RequestForPriceEstimateScreenMutation.graphql"
 import { Toast } from "app/Components/Toast/Toast"
-import { goBack } from "app/navigation/navigate"
+import { goBack, navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { GlobalStore } from "app/store/GlobalStore"
 import { FormikProvider, useFormik } from "formik"
@@ -93,14 +93,6 @@ export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScre
             artworkId: myCollectionArtworkId,
             requestedAt: new Date().getTime(),
           })
-          Toast.show(
-            "Request Sent. \nAn Artsy Specialist will contact you with a response",
-            "top",
-            {
-              backgroundColor: "blue100",
-              duration: "long",
-            }
-          )
           trackEvent(
             tracks.sentRequestPriceEstimate(
               myCollectionArtworkId,
@@ -117,6 +109,9 @@ export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScre
         })
       }
       requestForPriceEstimateMutation(defaultEnvironment, onCompleted, onError, input)
+      navigate(`/my-collection/artwork/${artworkID}/price-estimate/success`, {
+        passProps: { artworkID },
+      })
     },
     validationSchema: ValidationSchema,
   })

@@ -13,11 +13,6 @@ import { CommercialButtons } from "./CommercialButtons/CommercialButtons"
 import { CommercialInformationTimerWrapper } from "./CommercialInformation"
 
 describe("CommercialInformation", () => {
-  beforeEach(() => {
-    // TODO: Remove it when AREnableCreateArtworkAlert flag is true in Echo
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: false })
-  })
-
   it("renders all information when the data is present", () => {
     const ForSaleArtwork = {
       ...CommercialInformationArtwork,
@@ -36,12 +31,10 @@ describe("CommercialInformation", () => {
     )
 
     expect(queryByText("For sale")).toBeTruthy()
-    expect(queryByText("From I'm a Gallery")).toBeTruthy()
     expect(queryByText("Consign with Artsy")).toBeTruthy()
   })
 
-  it("returns correct information with ff true and artworks is sold", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: true })
+  it("returns correct information when artworks is sold", () => {
     const ForSaleArtwork = {
       ...CommercialInformationArtwork,
       isSold: true,
@@ -61,8 +54,7 @@ describe("CommercialInformation", () => {
     expect(queryByText("Sold")).toBeTruthy()
   })
 
-  it("returns correct information for auction works when the auction has ended and ff true", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: true })
+  it("returns correct information for auction works when the auction has ended", () => {
     const Artwork = {
       ...CommercialInformationArtwork,
       isInAuction: true,
@@ -258,26 +250,6 @@ describe("CommercialInformation", () => {
     expect(queryByText("For sale")).toBeNull()
     expect(queryByText("I'm a Gallery")).toBeNull()
     expect(queryByText("Consign with Artsy.")).toBeNull()
-  })
-
-  it("renders seller info correctly for non-commercial works", () => {
-    const CommercialInformationArtworkNonCommercial = {
-      ...CommercialInformationArtwork,
-      availability: null,
-      isForSale: false,
-    }
-
-    const { queryByText } = renderWithWrappers(
-      <ModalStack>
-        <CommercialInformationTimerWrapper
-          artwork={CommercialInformationArtworkNonCommercial as any}
-          me={{ identityVerified: false } as any}
-          refetchArtwork={jest.fn()}
-        />
-      </ModalStack>
-    )
-
-    expect(queryByText("At I'm a Gallery")).toBeTruthy()
   })
 
   it("renders consign with Artsy text", () => {

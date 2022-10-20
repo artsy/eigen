@@ -238,22 +238,10 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableMedianPriceChartCareerHighlights",
   },
-  AREnableNotFoundFailureView: {
-    readyForRelease: true,
-    description: "Enable Not Found Failure View",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableNotFoundFailureView",
-  },
   AREnableArtworksFromNonArtsyArtists: {
     readyForRelease: false,
     description: "Enable My Collection artworks from non-Artsy artists",
     showInAdminMenu: true,
-  },
-  AREnableCreateArtworkAlert: {
-    readyForRelease: true,
-    description: "Enable Create Alert on Artwork pages",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableCreateArtworkAlert",
   },
   AREnableNewOnboarding: {
     readyForRelease: true,
@@ -267,24 +255,6 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableArtworksConnectionForAuction",
   },
-  AREnableMyCollectionInsightsMedianPrice: {
-    readyForRelease: true,
-    description: "Use median instead of average in My Collection",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableMyCollectionInsightsMedianPrice",
-  },
-  ARCustomRecentlySoldOnArtsy: {
-    readyForRelease: true,
-    description: "Use custom recently sold on Artsy",
-    showInAdminMenu: true,
-    echoFlagKey: "ARCustomRecentlySoldOnArtsy",
-  },
-  ARNewSellWithArtsyScreen: {
-    readyForRelease: true,
-    description: "Enable new SWA screen",
-    showInAdminMenu: true,
-    echoFlagKey: "ARNewSellWithArtsyScreen",
-  },
   AREnableActivity: {
     readyForRelease: false,
     description: "Enable Activity",
@@ -295,6 +265,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     readyForRelease: true,
     echoFlagKey: "AREnableCollectionsInOnboarding",
+  },
+  AREnableNewRequestPriceEstimateLogic: {
+    description: "Enable new request price estimate logic",
+    showInAdminMenu: true,
+    readyForRelease: false,
   },
 })
 

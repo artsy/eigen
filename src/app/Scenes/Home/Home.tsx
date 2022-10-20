@@ -43,10 +43,10 @@ import { ViewingRoomsHomeMainRail } from "../ViewingRoom/Components/ViewingRooms
 import { ActivityIndicator } from "./Components/ActivityIndicator"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { ArtworkRecommendationsRail } from "./Components/ArtworkRecommendationsRail"
+import { ContentCards } from "./Components/ContentCards"
 import { HomeHeader } from "./Components/HomeHeader"
 import { NewWorksForYouRail } from "./Components/NewWorksForYouRail"
 import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
-import { TroveFragmentContainer } from "./Components/Trove"
 import { RailScrollRef } from "./Components/types"
 
 const MODULE_SEPARATOR_HEIGHT = 6
@@ -108,6 +108,12 @@ const Home = (props: Props) => {
       data: newWorksForYou,
       prefetchUrl: "/new-works-for-you",
     },
+    {
+      title: "",
+      type: "contentCards",
+      data: {},
+      prefetchUrl: "",
+    },
     { title: "Your Active Bids", type: "artwork", data: homePageAbove?.activeBidsArtworkModule },
     {
       title: "Auction Lots for You Ending Soon",
@@ -148,7 +154,6 @@ const Home = (props: Props) => {
       type: "shows",
       data: showsByFollowedArtists,
     },
-    { title: "Trove", type: "trove", data: homePageBelow },
     {
       title: "Viewing Rooms",
       type: "viewing-rooms",
@@ -211,6 +216,8 @@ const Home = (props: Props) => {
             }
 
             switch (item.type) {
+              case "contentCards":
+                return <ContentCards />
               case "articles":
                 return (
                   <ArticlesRailFragmentContainer
@@ -316,9 +323,6 @@ const Home = (props: Props) => {
                     mb={MODULE_SEPARATOR_HEIGHT}
                   />
                 )
-
-              case "trove":
-                return <TroveFragmentContainer trove={item.data} mb={MODULE_SEPARATOR_HEIGHT} />
               case "viewing-rooms":
                 return (
                   <ViewingRoomsHomeMainRail
@@ -387,8 +391,7 @@ export const HomeFragmentContainer = createRefetchContainer(
     `,
     // Make sure to exclude all modules that are part of "homePageAbove"
     homePageBelow: graphql`
-      fragment Home_homePageBelow on HomePage
-      @argumentDefinitions(heroImageVersion: { type: "HomePageHeroUnitImageVersion" }) {
+      fragment Home_homePageBelow on HomePage @argumentDefinitions {
         recentlyViewedWorksArtworkModule: artworkModule(key: RECENTLY_VIEWED_WORKS) {
           id
           ...ArtworkModuleRail_rail
@@ -407,7 +410,6 @@ export const HomeFragmentContainer = createRefetchContainer(
         marketingCollectionsModule {
           ...CollectionsRail_collectionsModule
         }
-        ...Trove_trove @arguments(heroImageVersion: $heroImageVersion)
       }
     `,
     meAbove: graphql`
@@ -446,12 +448,12 @@ export const HomeFragmentContainer = createRefetchContainer(
     `,
   },
   graphql`
-    query HomeRefetchQuery($heroImageVersion: HomePageHeroUnitImageVersion!) {
+    query HomeRefetchQuery {
       homePage @optionalField {
         ...Home_homePageAbove
       }
       homePageBelow: homePage @optionalField {
-        ...Home_homePageBelow @arguments(heroImageVersion: $heroImageVersion)
+        ...Home_homePageBelow
       }
       me @optionalField {
         ...Home_meAbove
@@ -639,12 +641,12 @@ export const HomeQueryRenderer: React.FC = () => {
       }}
       below={{
         query: graphql`
-          query HomeBelowTheFoldQuery($heroImageVersion: HomePageHeroUnitImageVersion) {
+          query HomeBelowTheFoldQuery {
             newWorksForYou: viewer @optionalField {
               ...Home_newWorksForYou
             }
             homePage @optionalField {
-              ...Home_homePageBelow @arguments(heroImageVersion: $heroImageVersion)
+              ...Home_homePageBelow
             }
             featured: viewingRooms(featured: true) @optionalField {
               ...Home_featured

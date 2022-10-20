@@ -43,6 +43,7 @@ type ArtworkQueries =
 
 jest.unmock("react-relay")
 
+// TODO: remove the use of renderWithWrappersLEGACY
 jest.mock("app/Components/Bidding/Context/TimeOffsetProvider", () => {
   class TimeOffsetProvider extends require("react").Component {
     static childContextTypes = {
@@ -98,8 +99,6 @@ describe("Artwork", () => {
   beforeEach(() => {
     require("app/relay/createEnvironment").reset()
     environment = require("app/relay/createEnvironment").defaultEnvironment
-    // TODO: Remove it when AREnableCreateArtworkAlert flag is true in Echo
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: false })
   })
 
   afterEach(() => {
@@ -136,10 +135,16 @@ describe("Artwork", () => {
         Artwork() {
           return {
             artist: {
+              biographyBlurb: null,
               artistSeriesConnection: {
                 totalCount: 5,
               },
             },
+            // Hide some other sections
+            // otherwise arties series components will not be found
+            sale: null,
+            partner: null,
+            context: null,
           }
         },
       })
@@ -163,6 +168,11 @@ describe("Artwork", () => {
             artistSeriesConnection: {
               edges: [],
             },
+            // Hide some other sections
+            // otherwise arties series components will not be found
+            sale: null,
+            partner: null,
+            context: null,
           }
         },
       })
@@ -205,6 +215,11 @@ describe("Artwork", () => {
                 ],
               },
             },
+            // Hide some other sections
+            // otherwise arties series components will not be found
+            sale: null,
+            partner: null,
+            context: null,
           }
         },
       })
@@ -478,10 +493,6 @@ describe("Artwork", () => {
   })
 
   describe("Partner Section", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: true })
-    })
-
     it("should not display partner link if CBN flag is on", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: true })
 
@@ -516,10 +527,6 @@ describe("Artwork", () => {
   })
 
   describe("Create Alert button", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: true })
-    })
-
     it("should display create artwork alert section by default", () => {
       const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
 

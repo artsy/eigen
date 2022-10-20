@@ -1,15 +1,15 @@
 import { ContextModule, OwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
-import { OldSellWithArtsyCustomRecentlySold_recentlySoldArtworkTypeConnection$key } from "__generated__/OldSellWithArtsyCustomRecentlySold_recentlySoldArtworkTypeConnection.graphql"
+import { SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$key } from "__generated__/SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection.graphql"
 import { RecentlySoldArtworksRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { navigate } from "app/navigation/navigate"
 import { Flex, Spacer, Text } from "palette"
 import { useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { graphql } from "relay-runtime"
-import { extractNodes } from "../../../../utils/extractNodes"
+import { extractNodes } from "../../../utils/extractNodes"
 
-interface OldSellWithArtsyCustomRecentlySoldProps {
-  recentlySoldArtworks: OldSellWithArtsyCustomRecentlySold_recentlySoldArtworkTypeConnection$key
+interface SellWithArtsyRecentlySoldProps {
+  recentlySoldArtworks: SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$key
 }
 
 const trackingArgs: TappedEntityGroupArgs = {
@@ -19,9 +19,9 @@ const trackingArgs: TappedEntityGroupArgs = {
   type: "thumbnail",
 }
 
-export const OldSellWithArtsyCustomRecentlySold: React.FC<
-  OldSellWithArtsyCustomRecentlySoldProps
-> = ({ recentlySoldArtworks }) => {
+export const SellWithArtsyRecentlySold: React.FC<SellWithArtsyRecentlySoldProps> = ({
+  recentlySoldArtworks,
+}) => {
   const tracking = useTracking()
   const recentlySoldArtworksData = useFragment(
     customRecentlySoldArtworksFragment,
@@ -35,7 +35,9 @@ export const OldSellWithArtsyCustomRecentlySold: React.FC<
       <Text px={2} variant="lg-display">
         Sold Recently on Artsy
       </Text>
+
       <Spacer mb={2} />
+
       <RecentlySoldArtworksRail
         recentlySoldArtworks={recentlySoldArtworksNodes}
         onPress={(recentlySoldArtwork) => {
@@ -55,7 +57,7 @@ export const OldSellWithArtsyCustomRecentlySold: React.FC<
 }
 
 const customRecentlySoldArtworksFragment = graphql`
-  fragment OldSellWithArtsyCustomRecentlySold_recentlySoldArtworkTypeConnection on RecentlySoldArtworkTypeConnection {
+  fragment SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection on RecentlySoldArtworkTypeConnection {
     edges {
       node {
         artwork {

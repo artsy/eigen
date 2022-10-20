@@ -1,3 +1,4 @@
+import { ColorsTheme, SpacingUnitTheme } from "palette"
 import { View, ViewProps } from "react-native"
 import styled from "styled-components/native"
 import {
@@ -23,11 +24,11 @@ import {
 export interface BoxProps
   extends BackgroundProps,
     BorderProps,
-    Omit<ColorProps, "color">,
+    Omit<ColorProps<ColorsTheme>, "color">,
     FlexboxProps,
     LayoutProps,
     PositionProps,
-    SpaceProps,
+    SpaceProps<SpacingUnitTheme>,
     TextAlignProps,
     ViewProps {}
 
