@@ -2026,6 +2026,9 @@ type Artwork implements Node & Searchable & Sellable {
   hasCertificateOfAuthenticity: Boolean
   hasMarketPriceInsights: Boolean
 
+  # Whether a request for price estimate has been submitted for this artwork
+  hasPriceEstimateRequest: Boolean
+
   # The height as expressed by the original input metric
   height: String
 
