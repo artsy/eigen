@@ -70,25 +70,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const { internalID, slug, isInAuction, partner: partnerAbove } = artworkAboveTheFold || {}
   const { isPreview, isClosed, liveStartAt } = artworkAboveTheFold?.sale ?? {}
-  const {
-    category,
-    canRequestLotConditionsReport,
-    conditionDescription,
-    signature,
-    signatureInfo,
-    certificateOfAuthenticity,
-    framed,
-    series,
-    publisher,
-    manufacturer,
-    imageRights,
-    partner,
-    sale,
-    contextGrids,
-    artistSeriesConnection,
-    artist,
-    context,
-  } = artworkBelowTheFold || {}
+  const { partner, sale, contextGrids, artistSeriesConnection, artist, context } =
+    artworkBelowTheFold || {}
 
   const getInitialAuctionTimerState = () => {
     if (isInAuction) {
@@ -104,22 +87,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
     getInitialAuctionTimerState()
   )
   const isInClosedAuction = isInAuction && auctionTimerState === AuctionTimerState.CLOSED
-
-  const shouldRenderDetails = () => {
-    return !!(
-      category ||
-      canRequestLotConditionsReport ||
-      conditionDescription ||
-      signature ||
-      signatureInfo ||
-      certificateOfAuthenticity ||
-      framed ||
-      series ||
-      publisher ||
-      manufacturer ||
-      imageRights
-    )
-  }
 
   const shouldRenderPartner = () => {
     if ((sale && sale.isBenefit) || (sale && sale.isGalleryAuction)) {
@@ -321,12 +288,10 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (shouldRenderDetails()) {
-      sections.push({
-        key: "artworkDetails",
-        element: <ArtworkDetails artwork={artworkBelowTheFold} />,
-      })
-    }
+    sections.push({
+      key: "artworkDetails",
+      element: <ArtworkDetails artwork={artworkBelowTheFold} />,
+    })
 
     if (
       artworkBelowTheFold.provenance ||
@@ -522,25 +487,6 @@ export const ArtworkContainer = createRefetchContainer(
           isGalleryAuction
           extendedBiddingIntervalMinutes
         }
-        category
-        canRequestLotConditionsReport
-        conditionDescription {
-          details
-        }
-        signature
-        signatureInfo {
-          details
-        }
-        certificateOfAuthenticity {
-          details
-        }
-        framed {
-          details
-        }
-        series
-        publisher
-        manufacturer
-        imageRights
         context {
           __typename
           ... on Sale {

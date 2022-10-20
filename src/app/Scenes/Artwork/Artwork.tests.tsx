@@ -275,24 +275,6 @@ describe("Artwork", () => {
     })
   })
 
-  it("refetches on re-appear", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsLotConditionReport: false })
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-
-    mockMostRecentOperation("ArtworkAboveTheFoldQuery")
-    mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
-    mockMostRecentOperation("ArtworkBelowTheFoldQuery")
-
-    expect(environment.mock.getAllOperations()).toHaveLength(0)
-
-    navigationEvents.emit("modalDismissed")
-    mockMostRecentOperation("ArtworkRefetchQuery")
-
-    tree.update(<TestRenderer isVisible={false} />)
-    tree.update(<TestRenderer isVisible />)
-    mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
-  })
-
   it("updates the above-the-fold content on re-appear", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
