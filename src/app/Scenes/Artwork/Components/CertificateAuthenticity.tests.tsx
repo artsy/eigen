@@ -1,21 +1,15 @@
 import { fireEvent } from "@testing-library/react-native"
 import { navigate } from "app/navigation/navigate"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { CertificateAuthenticityModal } from "./CertificateAuthenticityModal"
+import { CertificateOfAuthenticity } from "./CertificateAuthenticity"
 
 jest.mock("app/navigation/navigate", () => ({
   navigate: jest.fn(),
 }))
 
-describe("CertificateAuthenticityModal", () => {
-  beforeEach(() => {
-    jest.clearAllMocks()
-  })
-
+describe("CertificateAuthenticity", () => {
   it("renders", () => {
-    const { getByText } = renderWithWrappers(
-      <CertificateAuthenticityModal visible onClose={() => null} />
-    )
+    const { getByText } = renderWithWrappers(<CertificateOfAuthenticity />)
 
     expect(getByText("A certificate of authenticity (COA)", { exact: false })).toBeDefined()
     expect(
@@ -26,9 +20,7 @@ describe("CertificateAuthenticityModal", () => {
   })
 
   it("navigates to support page", () => {
-    const { getByText } = renderWithWrappers(
-      <CertificateAuthenticityModal visible onClose={() => null} />
-    )
+    const { getByText } = renderWithWrappers(<CertificateOfAuthenticity />)
 
     fireEvent.press(getByText("Help Center"))
     expect(navigate).toHaveBeenCalledWith(

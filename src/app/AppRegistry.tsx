@@ -24,6 +24,7 @@ import { ArtistSeriesQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeries"
 import { ArtistSeriesFullArtistSeriesListQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
 import { ArtistShows2QueryRenderer } from "./Scenes/ArtistShows/ArtistShows2"
 import { ArtworkQueryRenderer, ArtworkScreenQuery } from "./Scenes/Artwork/Artwork"
+import { CertificateOfAuthenticity } from "./Scenes/Artwork/Components/CertificateAuthenticity"
 import { ArtworkAttributionClassFAQQueryRenderer } from "./Scenes/ArtworkAttributionClassFAQ/ArtworkAttributionClassFAQ"
 import { ArtworkMediumQueryRenderer } from "./Scenes/ArtworkMedium/ArtworkMedium"
 import { AuctionBuyersPremiumQueryRenderer } from "./Scenes/AuctionBuyersPremium/AuctionBuyersPremium"
@@ -330,6 +331,7 @@ export const modules = defineModules({
   Artwork: reactModule(Artwork, {}, [ArtworkScreenQuery]),
   ArtworkMedium: reactModule(ArtworkMediumQueryRenderer),
   ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer),
+  ArtworkCertificateAuthenticity: reactModule(CertificateOfAuthenticity),
   ArtworkSubmissionStatusFAQ: reactModule(ArtworkSubmissionStatusFAQ),
   Auction: reactModule(SaleQueryRenderer, { fullBleed: true }, [SaleScreenQuery]),
   Auctions: reactModule(SalesQueryRenderer, {}, [SalesScreenQuery]),
