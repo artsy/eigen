@@ -31,7 +31,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
 
   const { space } = useTheme()
   const { width } = useWindowDimensions()
-  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewImageComponent")
+  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewImage")
 
   return (
     <Flex width={isFluid ? "100%" : WIDTH}>
