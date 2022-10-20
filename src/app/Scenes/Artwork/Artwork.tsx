@@ -99,10 +99,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   }
 
   const shouldRenderShippingAndTaxes = () => {
-    const { isEligibleForArtsyGuarantee, shippingOrigin, shippingInfo } = artworkBelowTheFold ?? {}
-    const shouldRenderLabels = shippingOrigin || shippingInfo
-
-    return !isInAuction && isEligibleForArtsyGuarantee && shouldRenderLabels
+    return !isInAuction && artworkBelowTheFold?.isEligibleForArtsyGuarantee
   }
 
   const shouldRenderOtherWorks = () => {
@@ -529,8 +526,6 @@ export const ArtworkContainer = createRefetchContainer(
             }
           }
         }
-        shippingOrigin
-        shippingInfo
         isEligibleForArtsyGuarantee
         ...PartnerCard_artwork
         ...AboutWork_artwork
