@@ -139,3 +139,19 @@ index c498ba6..11338d0 100755
 +elif [[ -x "$(command -v brew)" && -x "$(brew --prefix fnm)/bin/fnm" ]]; then
 +  eval "$("$(brew --prefix fnm)/bin/fnm" env)"
 +fi
+diff --git a/node_modules/react-native/scripts/react_native_pods.rb b/node_modules/react-native/scripts/react_native_pods.rb
+index df31139..df907c5 100644
+--- a/node_modules/react-native/scripts/react_native_pods.rb
++++ b/node_modules/react-native/scripts/react_native_pods.rb
+@@ -132,11 +132,7 @@ def exclude_architectures(installer)
+ 
+   projects.each do |project|
+     project.build_configurations.each do |config|
+-      if arm_value == 1 then
+         config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = excluded_archs_default
+-      else
+-        config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64 " + excluded_archs_default
+-      end
+     end
+ 
+     project.save()
