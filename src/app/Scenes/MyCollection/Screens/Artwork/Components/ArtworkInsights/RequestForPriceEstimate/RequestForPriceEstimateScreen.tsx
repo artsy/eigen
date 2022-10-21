@@ -100,7 +100,6 @@ export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScre
               demandRank ?? undefined
             )
           )
-          goBack()
         }
       }
       const onError = () => {
