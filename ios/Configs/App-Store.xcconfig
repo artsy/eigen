@@ -1,4 +1,4 @@
-#include "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig
+#include "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig"
 #include "Shared.xcconfig"
 
 
