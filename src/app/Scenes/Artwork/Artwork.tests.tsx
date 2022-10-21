@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import {
   ArtworkFromLiveAuctionRegistrationClosed,
   ArtworkFromLiveAuctionRegistrationOpen,
@@ -559,6 +560,59 @@ describe("Artwork", () => {
 
       expect(queryByLabelText("Create artwork alert section")).toBeFalsy()
       expect(queryByLabelText("Create artwork alert buttons section")).toBeTruthy()
+    })
+  })
+
+  describe("Artsy Guarantee section", () => {
+    it("should be displayed when not sold and eligible", async () => {
+      renderWithWrappers(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        Artwork: () => ({
+          isSold: false,
+          isEligibleForArtsyGuarantee: true,
+        }),
+      })
+      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+      mockMostRecentOperation("ArtworkBelowTheFoldQuery")
+
+      await flushPromiseQueue()
+
+      expect(screen.queryByText("Be covered by the Artsy Guarantee")).toBeTruthy()
+    })
+
+    it("should not be displayed when sold", async () => {
+      renderWithWrappers(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        Artwork: () => ({
+          isSold: true,
+          isEligibleForArtsyGuarantee: true,
+        }),
+      })
+      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+      mockMostRecentOperation("ArtworkBelowTheFoldQuery")
+
+      await flushPromiseQueue()
+
+      expect(screen.queryByText("Be covered by the Artsy Guarantee")).toBeNull()
+    })
+
+    it("should not be displayed when inelgible", async () => {
+      renderWithWrappers(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        Artwork: () => ({
+          isSold: false,
+          isEligibleForArtsyGuarantee: false,
+        }),
+      })
+      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+      mockMostRecentOperation("ArtworkBelowTheFoldQuery")
+
+      await flushPromiseQueue()
+
+      expect(screen.queryByText("Be covered by the Artsy Guarantee")).toBeNull()
     })
   })
 })
