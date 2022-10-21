@@ -25,3 +25,4 @@ if (metaflags.startStorybook) {
   const { App } = require("./src/app/App")
   AppRegistry.registerComponent(appName, () => App)
 }
+//wow
