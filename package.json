@@ -171,7 +171,7 @@
     "react-native-linear-gradient": "2.5.6",
     "react-native-localize": "2.0.1",
     "react-native-push-notification": "7.4.0",
-    "react-native-reanimated": "2.9.1",
+    "react-native-reanimated": "2.11.0",
     "react-native-safe-area-context": "3.4.0",
     "react-native-screens": "3.15.0",
     "react-native-scrollable-tab-view": "ptomasroos/react-native-scrollable-tab-view#a7f46de184123be9703c57b0a7618ae0557c8a87",
