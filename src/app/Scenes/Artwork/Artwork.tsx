@@ -29,6 +29,7 @@ import { OfferSubmittedModal } from "../Inbox/Components/Conversations/OfferSubm
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { AboveTheFoldPlaceholder } from "./Components/AboveTheFoldArtworkPlaceholder"
+import { ArtsyGuarantee } from "./Components/ArtsyGuarantee"
 import { ArtworkDetails } from "./Components/ArtworkDetails"
 import { FaqAndSpecialistSectionFragmentContainer as FaqAndSpecialistSection } from "./Components/ArtworkExtraLinks/FaqAndSpecialistSection"
 import { ArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/ArtworkHeader"
@@ -307,6 +308,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
+    if (artworkAboveTheFold?.isSold !== true && artworkAboveTheFold?.isEligibleForArtsyGuarantee) {
+      sections.push({
+        key: "artsyGuarantee",
+        element: <ArtsyGuarantee />,
+      })
+    }
+
     if (context && context.__typename === "Sale" && context.isAuction) {
       sections.push({
         key: "contextCard",
@@ -432,6 +440,7 @@ export const ArtworkContainer = createRefetchContainer(
         isBiddable
         isInquireable
         isSold
+        isEligibleForArtsyGuarantee
         isInAuction
         availability
         artists {
