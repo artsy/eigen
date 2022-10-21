@@ -566,11 +566,7 @@ describe("Artwork", () => {
     it("should be rendered", () => {
       const { queryByText } = renderWithWrappers(<TestRenderer />)
 
-      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
-        Artwork: () => ({
-          isInAuction: false,
-        }),
-      })
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery")
       mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
       mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
         Artwork: () => ({
@@ -584,35 +580,10 @@ describe("Artwork", () => {
       expect(queryByText("Shipping: Calculated in checkout")).toBeDefined()
     })
 
-    it("should NOT be rendered if the artwork is in an auction", () => {
-      const { queryByText } = renderWithWrappers(<TestRenderer />)
-
-      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
-        Artwork: () => ({
-          isInAuction: true,
-        }),
-      })
-      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
-      mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
-        Artwork: () => ({
-          shippingOrigin: "City, State, Country",
-          shippingInfo: "Shipping: Calculated in checkout",
-          isEligibleForOnPlatformTransaction: true,
-        }),
-      })
-
-      expect(queryByText("City, State, Country")).toBeNull()
-      expect(queryByText("Shipping: Calculated in checkout")).toBeNull()
-    })
-
     it("should NOT be rendered if the artwork is NOT eligible for on-platform transaction", () => {
       const { queryByText } = renderWithWrappers(<TestRenderer />)
 
-      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
-        Artwork: () => ({
-          isInAuction: false,
-        }),
-      })
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery")
       mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
       mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
         Artwork: () => ({

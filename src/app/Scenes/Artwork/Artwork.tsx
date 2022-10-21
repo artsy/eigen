@@ -98,10 +98,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
     }
   }
 
-  const shouldRenderShippingAndTaxes = () => {
-    return !isInAuction && artworkBelowTheFold?.isEligibleForOnPlatformTransaction
-  }
-
   const shouldRenderOtherWorks = () => {
     const gridsToShow = populatedGrids(contextGrids)
 
@@ -313,17 +309,17 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
+    if (!!artworkBelowTheFold?.isEligibleForOnPlatformTransaction) {
+      sections.push({
+        key: "shippingAndTaxes",
+        element: <ShippingAndTaxesFragmentContainer artwork={artworkBelowTheFold!} />,
+      })
+    }
+
     if (!!artworkAboveTheFold?.isEligibleForArtsyGuarantee) {
       sections.push({
         key: "artsyGuarantee",
         element: <ArtsyGuarantee />,
-      })
-    }
-
-    if (shouldRenderShippingAndTaxes()) {
-      sections.push({
-        key: "shippingAndTaxes",
-        element: <ShippingAndTaxesFragmentContainer artwork={artworkBelowTheFold!} />,
       })
     }
 
