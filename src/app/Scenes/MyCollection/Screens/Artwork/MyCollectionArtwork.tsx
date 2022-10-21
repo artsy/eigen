@@ -51,6 +51,11 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
     )
   }
 
+  const handleGoBack = () => {
+    // Navigating back to the MyCollection tab on the profile screen
+    navigate("/my-profile")
+  }
+
   const handleEdit = useCallback(() => {
     trackEvent(tracks.editCollectedArtwork(data.artwork!.internalID, data.artwork!.slug))
     GlobalStore.actions.myCollection.artwork.startEditingArtwork(data.artwork as any)
@@ -96,7 +101,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
   return (
     <>
       <FancyModalHeader
-        onLeftButtonPress={goBack}
+        onLeftButtonPress={handleGoBack}
         rightButtonText="Edit"
         onRightButtonPress={handleEdit}
         hideBottomDivider
