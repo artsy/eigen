@@ -113,6 +113,12 @@ export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScre
           })
           navigate(`/my-collection/artwork/${artworkID}/price-estimate/success`)
         }
+
+        if (response.requestPriceEstimate?.priceEstimateParamsOrError?.mutationError) {
+          Toast.show("Error: Failed to send a price estimate request.", "top", {
+            backgroundColor: "red100",
+          })
+        }
       }
       const onError = () => {
         Toast.show("Error: Failed to send a price estimate request.", "top", {
