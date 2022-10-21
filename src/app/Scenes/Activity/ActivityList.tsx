@@ -12,6 +12,7 @@ import { ActivityEmptyView } from "./ActivityEmptyView"
 import { ActivityItem } from "./ActivityItem"
 import { ActivityTabSubheader } from "./ActivityTabSubheader"
 import { NotificationType } from "./types"
+import { isArtworksBasedNotification } from "./utils/isArtworksBasedNotification"
 
 interface ActivityListProps {
   viewer: ActivityList_viewer$key | null
@@ -26,7 +27,16 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type }) => {
     ActivityQuery,
     ActivityList_viewer$key
   >(notificationsConnectionFragment, viewer)
-  const notifications = extractNodes(data?.notificationsConnection)
+  const notificationsNodes = extractNodes(data?.notificationsConnection)
+  const notifications = notificationsNodes.filter((notification) => {
+    if (isArtworksBasedNotification(notification.notificationType)) {
+      const artworksCount = notification.artworks?.totalCount ?? 0
+      return artworksCount > 0
+    }
+
+    return true
+  })
+
   const notificationSections: StickyTabSection[] = notifications.map((notification) => ({
     key: notification.internalID,
     content: <ActivityItem item={notification} />,
@@ -103,6 +113,10 @@ const notificationsConnectionFragment = graphql`
       edges {
         node {
           internalID
+          notificationType
+          artworks: artworksConnection {
+            totalCount
+          }
           ...ActivityItem_item
         }
       }
