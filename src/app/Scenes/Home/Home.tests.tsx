@@ -1,5 +1,4 @@
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import { act } from "react-test-renderer"
@@ -65,26 +64,6 @@ describe(HomeQueryRenderer, () => {
     const { getByText } = await getWrapper()
 
     expect(getByText("Tap here to verify your email address")).toBeTruthy()
-  })
-
-  describe("Activity icon", () => {
-    it("should NOT be displayed by default", async () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({
-        AREnableActivity: false,
-      })
-      const { queryByLabelText } = await getWrapper()
-
-      expect(queryByLabelText("Activity")).toBeNull()
-    })
-
-    it("should be displayed when feature flag is enabled", async () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({
-        AREnableActivity: true,
-      })
-      const { queryByLabelText } = await getWrapper()
-
-      expect(queryByLabelText("Activity")).toBeTruthy()
-    })
   })
 })
 
