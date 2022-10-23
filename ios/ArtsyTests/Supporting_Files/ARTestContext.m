@@ -31,14 +31,6 @@ static OCMockObject *ARPartialScreenMock;
             isClassedAsPhone = NO;
             break;
 
-        case ARDeviceTypePhone4:
-            size = (CGSize){320, 480};
-            break;
-
-        case ARDeviceTypePhone5:
-            size = (CGSize){320, 568};
-            break;
-
         case ARDeviceTypePhone6:
             size = (CGSize){375, 667};
             break;

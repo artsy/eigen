@@ -44,11 +44,5 @@ class LiveAuctionLotSetViewControllerSpec: QuickSpec {
                 return ["horizontalSizeClass": UIUserInterfaceSizeClass.compact.rawValue, "device": ARDeviceType.phone6.rawValue]
             }
         }
-
-        describe("really compact horizontal size class") {
-            itBehavesLike("live auctions lot set") {
-                return ["horizontalSizeClass": UIUserInterfaceSizeClass.compact.rawValue, "device": ARDeviceType.phone4.rawValue]
-            }
-        }
     }
 }
