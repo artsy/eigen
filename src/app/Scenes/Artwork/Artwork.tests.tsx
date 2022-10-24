@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import {
   ArtworkFromLiveAuctionRegistrationClosed,
   ArtworkFromLiveAuctionRegistrationOpen,
@@ -559,6 +560,40 @@ describe("Artwork", () => {
 
       expect(queryByLabelText("Create artwork alert section")).toBeFalsy()
       expect(queryByLabelText("Create artwork alert buttons section")).toBeTruthy()
+    })
+  })
+
+  describe("Artsy Guarantee section", () => {
+    it("should be displayed when eligible for artsy guarantee", async () => {
+      renderWithWrappers(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        Artwork: () => ({
+          isEligibleForArtsyGuarantee: true,
+        }),
+      })
+      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+      mockMostRecentOperation("ArtworkBelowTheFoldQuery")
+
+      await flushPromiseQueue()
+
+      expect(screen.queryByText("Be covered by the Artsy Guarantee")).toBeTruthy()
+    })
+
+    it("should not be displayed when ineligible for artsy guarantee", async () => {
+      renderWithWrappers(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        Artwork: () => ({
+          isEligibleForArtsyGuarantee: false,
+        }),
+      })
+      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+      mockMostRecentOperation("ArtworkBelowTheFoldQuery")
+
+      await flushPromiseQueue()
+
+      expect(screen.queryByText("Be covered by the Artsy Guarantee")).toBeNull()
     })
   })
 })
