@@ -1,1 +1,2 @@
 #include "Pods/Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.debug.xcconfig"
+#include "Shared.xcconfig"
