@@ -1,14 +1,11 @@
 import { act, fireEvent } from "@testing-library/react-native"
-import { navigate } from "app/navigation/navigate"
+import { popToRoot } from "app/navigation/navigate"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { RequestForPriceEstimateConfirmationScreen } from "./RequestForPriceEstimateConfirmationScreen"
 
 describe("RequestForPriceEstimateConfirmationScreen", () => {
-  const props = {
-    artworkID: "artworkId",
-  }
   const getWrapper = () => {
-    return renderWithWrappers(<RequestForPriceEstimateConfirmationScreen {...props} />)
+    return renderWithWrappers(<RequestForPriceEstimateConfirmationScreen />)
   }
   it("renders without errors", () => {
     const { getByText } = getWrapper()
@@ -23,6 +20,6 @@ describe("RequestForPriceEstimateConfirmationScreen", () => {
   it("navigates correctly", () => {
     const { getByTestId } = getWrapper()
     act(() => fireEvent.press(getByTestId("back-to-my-collection-button")))
-    expect(navigate).toHaveBeenCalledWith("/my-collection/artwork/artworkId")
+    expect(popToRoot).toHaveBeenCalled()
   })
 })
