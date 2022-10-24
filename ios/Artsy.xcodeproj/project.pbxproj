@@ -4290,6 +4290,7 @@
 				CB43287327E8FEE500B29DD6 /* ARValueTransformerTests.m in Sources */,
 				CB4328BB27E8FEE500B29DD6 /* ArtsyAPI+PrivateTests.m in Sources */,
 				CB43287427E8FEE500B29DD6 /* ARFileUtilsTests.m in Sources */,
+				CB43287B27E8FEE500B29DD6 /* SaleOnHoldOverlayViewTests.swift in Sources */,
 				CB4328BE27E8FEE500B29DD6 /* ARRouterTests.m in Sources */,
 				CB43286E27E8FEE500B29DD6 /* TextStackTests.swift in Sources */,
 				CB43287927E8FEE500B29DD6 /* ARSerifNavigationViewControllerSpec.m in Sources */,
