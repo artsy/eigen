@@ -1,7 +1,8 @@
 import { ActionType, ContextModule, OwnerType, SentRequestPriceEstimate } from "@artsy/cohesion"
+import { CommonActions, useNavigation } from "@react-navigation/native"
 import { RequestForPriceEstimateScreenMutation } from "__generated__/RequestForPriceEstimateScreenMutation.graphql"
 import { Toast } from "app/Components/Toast/Toast"
-import { goBack, navigate } from "app/navigation/navigate"
+import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { GlobalStore } from "app/store/GlobalStore"
 import { FormikProvider, useFormik } from "formik"
@@ -74,6 +75,7 @@ export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScre
   phone,
 }) => {
   const { trackEvent } = useTracking()
+  const navigation = useNavigation()
 
   const formik = useFormik<RequestForPriceEstimateFormikSchema>({
     validateOnChange: true,
@@ -100,7 +102,16 @@ export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScre
               demandRank ?? undefined
             )
           )
-          goBack()
+          // Remove this screen from the nav stack. This way when we go back we won't land on this screen again
+          navigation.dispatch((state) => {
+            const routes = state.routes.slice(0, state.routes.length - 1)
+            return CommonActions.reset({
+              ...state,
+              routes,
+              index: 0,
+            })
+          })
+          navigate(`/my-collection/artwork/${artworkID}/price-estimate/success`)
         }
       }
       const onError = () => {
@@ -109,9 +120,6 @@ export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScre
         })
       }
       requestForPriceEstimateMutation(defaultEnvironment, onCompleted, onError, input)
-      navigate(`/my-collection/artwork/${artworkID}/price-estimate/success`, {
-        passProps: { artworkID },
-      })
     },
     validationSchema: ValidationSchema,
   })
