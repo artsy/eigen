@@ -1,12 +1,7 @@
-import { navigate } from "app/navigation/navigate"
+import { popToRoot } from "app/navigation/navigate"
 import { ArtsyLogoIcon, Box, Button, Flex, Text } from "palette"
 
-export const RequestForPriceEstimateConfirmationScreen: React.FC<{ artworkID: string }> = ({
-  artworkID,
-}) => {
-  const onPress = () => {
-    navigate(`/my-collection/artwork/${artworkID}`)
-  }
+export const RequestForPriceEstimateConfirmationScreen: React.FC<{}> = () => {
   return (
     <Box mt={2} px={2}>
       <Flex justifyContent="center" alignItems="center" mb={4}>
@@ -19,7 +14,7 @@ export const RequestForPriceEstimateConfirmationScreen: React.FC<{ artworkID: st
         An Artsy Specialist will evaluate your artwork and contact you with a free price estimate.
       </Text>
       <Button
-        onPress={onPress}
+        onPress={popToRoot}
         block
         variant="fillDark"
         size="large"
