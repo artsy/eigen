@@ -7,17 +7,15 @@ import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex, TextProps } from "palette"
+import { Flex } from "palette"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface ArtworksInSeriesRailProps {
   artwork: ArtworksInSeriesRail_artwork$key
-  headerVariant?: TextProps["variant"]
 }
 
 export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = (props) => {
-  const { headerVariant } = props
   const { trackEvent } = useTracking()
 
   const artwork = useFragment(artworkFragment, props.artwork)
@@ -33,7 +31,7 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = (props)
     <Flex>
       <SectionTitle
         title="More from this series"
-        titleVariant={headerVariant}
+        titleVariant="md"
         onPress={() => {
           trackEvent(tracks.tappedHeader(artwork, firstArtistSeries))
           navigate(`/artist-series/${firstArtistSeries?.slug}`)

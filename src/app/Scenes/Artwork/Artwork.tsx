@@ -317,7 +317,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
     if (shouldRenderArtworksInArtistSeries()) {
       sections.push({
         key: "artworksInSeriesRail",
-        element: <ArtworksInSeriesRail headerVariant="md" artwork={artworkBelowTheFold} />,
+        element: <ArtworksInSeriesRail artwork={artworkBelowTheFold} />,
       })
     }
 
