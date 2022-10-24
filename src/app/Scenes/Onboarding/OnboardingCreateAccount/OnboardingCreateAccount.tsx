@@ -73,8 +73,6 @@ export const getCurrentRoute = () =>
     | keyof OnboardingCreateAccountNavigationStack
     | undefined
 
-const EMAIL_EXISTS_ERROR_MESSAGE = "We found an account with this email"
-
 export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountProps> = ({
   navigation,
 }) => {
@@ -94,25 +92,10 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
       agreedToReceiveEmails: false,
     },
     initialErrors: {},
-    onSubmit: async (
-      { email, password, name, agreedToReceiveEmails, acceptedTerms },
-      { setErrors }
-    ) => {
+    onSubmit: async ({ email, password, name, agreedToReceiveEmails, acceptedTerms }) => {
       switch (currentRoute) {
         case "OnboardingCreateAccountEmail":
-          const userExists = await GlobalStore.actions.auth.userExists({ email })
-
-          if (userExists) {
-            // When the user exists already we want to take them to the login screen
-            setErrors({
-              email: EMAIL_EXISTS_ERROR_MESSAGE,
-            })
-          } else {
-            // If the email is new continue with the sign up
-            __unsafe__createAccountNavigationRef.current?.navigate(
-              "OnboardingCreateAccountPassword"
-            )
-          }
+          __unsafe__createAccountNavigationRef.current?.navigate("OnboardingCreateAccountPassword")
           break
         case "OnboardingCreateAccountPassword":
           __unsafe__createAccountNavigationRef.current?.navigate("OnboardingCreateAccountName")
@@ -188,16 +171,7 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
               />
               <StackNavigator.Screen name="OnboardingWebView" component={OnboardingWebView} />
             </StackNavigator.Navigator>
-            {currentRoute !== "OnboardingWebView" && (
-              <OnboardingCreateAccountButton
-                navigateToLoginWithEmail={() => {
-                  navigation.replace("OnboardingLoginWithEmail", {
-                    withFadeAnimation: true,
-                    email: formik.values.email,
-                  })
-                }}
-              />
-            )}
+            {currentRoute !== "OnboardingWebView" && <OnboardingCreateAccountButton />}
           </NavigationContainer>
         </FormikProvider>
       </ArtsyKeyboardAvoidingView>
@@ -246,48 +220,18 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<
   )
 }
 
-export interface OnboardingCreateAccountButtonProps {
-  navigateToLoginWithEmail: () => void
-}
-
-export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButtonProps> = ({
-  navigateToLoginWithEmail,
-}) => {
+export const OnboardingCreateAccountButton: React.FC = () => {
   const { values, handleSubmit, isSubmitting, errors } = useFormikContext<FormikSchema>()
 
   const isLastStep = getCurrentRoute() === "OnboardingCreateAccountName"
   const yTranslateAnim = useRef(new Animated.Value(0))
 
   useEffect(() => {
-    if (errors.email === EMAIL_EXISTS_ERROR_MESSAGE) {
-      Animated.timing(yTranslateAnim.current, {
-        toValue: -50,
-        duration: 500,
-        useNativeDriver: true,
-      }).start()
-    } else {
-      yTranslateAnim.current = new Animated.Value(0)
-    }
+    yTranslateAnim.current = new Animated.Value(0)
   }, [errors.email])
 
   return (
     <Flex px={2} paddingBottom={2} backgroundColor="white" pt={0.5}>
-      {errors.email === EMAIL_EXISTS_ERROR_MESSAGE && (
-        <Animated.View style={{ bottom: -50, transform: [{ translateY: yTranslateAnim.current }] }}>
-          <Button
-            onPress={navigateToLoginWithEmail}
-            block
-            haptic="impactMedium"
-            mb={1}
-            mt={1.5}
-            variant="outline"
-            testID="loginButton"
-          >
-            Go to Login
-          </Button>
-        </Animated.View>
-      )}
-
       <Button
         onPress={handleSubmit}
         block
