@@ -15,7 +15,7 @@ export type ArtistSeriesConnectionEdge = NonNullable<
 interface ArtistSeriesMoreSeriesProps extends FlexProps {
   artist: ArtistSeriesMoreSeries_artist$data | null | undefined
   artistSeriesHeader: string
-  headerVariant: TextProps["variant"]
+  headerVariant?: TextProps["variant"]
   contextScreenOwnerType: ScreenOwnerType
   contextScreenOwnerId: string
   contextScreenOwnerSlug: string
