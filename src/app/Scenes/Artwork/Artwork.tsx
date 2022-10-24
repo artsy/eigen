@@ -45,6 +45,7 @@ import {
 } from "./Components/OtherWorks/OtherWorks"
 import { PartnerCardFragmentContainer as PartnerCard } from "./Components/PartnerCard"
 import { PartnerLink } from "./Components/PartnerLink"
+import { ShippingAndTaxesFragmentContainer } from "./Components/ShippingAndTaxes"
 
 interface ArtworkProps {
   artworkAboveTheFold: Artwork_artworkAboveTheFold$data | null
@@ -66,6 +67,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const [refreshing, setRefreshing] = useState(false)
   const [fetchingData, setFetchingData] = useState(false)
   const enableConversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
+  const avalaraPhase2 = useFeatureFlag("AREnableAvalaraPhase2")
 
   const { internalID, slug, isInAuction, partner: partnerAbove } = artworkAboveTheFold || {}
   const { isPreview, isClosed, liveStartAt } = artworkAboveTheFold?.sale ?? {}
@@ -95,6 +97,17 @@ export const Artwork: React.FC<ArtworkProps> = ({
     } else {
       return false
     }
+  }
+
+  const shouldRenderShippingAndTaxes = () => {
+    const { isAcquireable, isOfferable, shippingOrigin, shippingInfo, priceIncludesTaxDisplay } =
+      artworkAboveTheFold ?? {}
+    const artworkEcommerceAvailable = isAcquireable || isOfferable
+    const hasPartnerName = !!partnerAbove?.name
+    const priceTaxLabel = priceIncludesTaxDisplay && !avalaraPhase2
+    const shouldRenderLabels = avalaraPhase2 || shippingOrigin || shippingInfo || priceTaxLabel
+
+    return artworkEcommerceAvailable && hasPartnerName && shouldRenderLabels
   }
 
   const shouldRenderOtherWorks = () => {
@@ -315,6 +328,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
+    if (shouldRenderShippingAndTaxes()) {
+      sections.push({
+        key: "shippingAndTaxes",
+        element: <ShippingAndTaxesFragmentContainer artwork={artworkAboveTheFold!} />,
+      })
+    }
+
     if (context && context.__typename === "Sale" && context.isAuction) {
       sections.push({
         key: "contextCard",
@@ -433,6 +453,7 @@ export const ArtworkContainer = createRefetchContainer(
         ...FaqAndSpecialistSection_artwork
         ...CreateArtworkAlertSection_artwork
         ...PartnerLink_artwork
+        ...ShippingAndTaxes_artwork
         slug
         internalID
         id
@@ -444,6 +465,9 @@ export const ArtworkContainer = createRefetchContainer(
         isEligibleForArtsyGuarantee
         isInAuction
         availability
+        shippingOrigin
+        shippingInfo
+        priceIncludesTaxDisplay
         artists {
           name
         }
