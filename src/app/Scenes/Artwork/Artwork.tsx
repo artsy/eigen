@@ -308,7 +308,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (artworkAboveTheFold?.isSold !== true && artworkAboveTheFold?.isEligibleForArtsyGuarantee) {
+    if (!!artworkAboveTheFold?.isEligibleForArtsyGuarantee) {
       sections.push({
         key: "artsyGuarantee",
         element: <ArtsyGuarantee />,

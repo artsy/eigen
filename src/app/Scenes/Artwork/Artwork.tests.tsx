@@ -564,12 +564,11 @@ describe("Artwork", () => {
   })
 
   describe("Artsy Guarantee section", () => {
-    it("should be displayed when not sold and eligible", async () => {
+    it("should be displayed when eligible for artsy guarantee", async () => {
       renderWithWrappers(<TestRenderer />)
 
       mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
         Artwork: () => ({
-          isSold: false,
           isEligibleForArtsyGuarantee: true,
         }),
       })
@@ -581,29 +580,11 @@ describe("Artwork", () => {
       expect(screen.queryByText("Be covered by the Artsy Guarantee")).toBeTruthy()
     })
 
-    it("should not be displayed when sold", async () => {
+    it("should not be displayed when ineligible for artsy guarantee", async () => {
       renderWithWrappers(<TestRenderer />)
 
       mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
         Artwork: () => ({
-          isSold: true,
-          isEligibleForArtsyGuarantee: true,
-        }),
-      })
-      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
-      mockMostRecentOperation("ArtworkBelowTheFoldQuery")
-
-      await flushPromiseQueue()
-
-      expect(screen.queryByText("Be covered by the Artsy Guarantee")).toBeNull()
-    })
-
-    it("should not be displayed when inelgible", async () => {
-      renderWithWrappers(<TestRenderer />)
-
-      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
-        Artwork: () => ({
-          isSold: false,
           isEligibleForArtsyGuarantee: false,
         }),
       })
