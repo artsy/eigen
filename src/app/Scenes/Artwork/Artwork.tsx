@@ -317,7 +317,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
     if (shouldRenderArtworksInArtistSeries()) {
       sections.push({
         key: "artworksInSeriesRail",
-        element: <ArtworksInSeriesRail artwork={artworkBelowTheFold} />,
+        element: <ArtworksInSeriesRail headerVariant="md" artwork={artworkBelowTheFold} />,
       })
     }
 
@@ -331,6 +331,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
             contextScreenOwnerType={OwnerType.artwork}
             artist={artist}
             artistSeriesHeader="Series from this artist"
+            headerVariant="md"
           />
         ),
       })

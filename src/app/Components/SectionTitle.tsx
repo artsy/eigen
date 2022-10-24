@@ -1,5 +1,5 @@
 import { toTitleCase } from "@artsy/to-title-case"
-import { ArrowRightIcon, Flex, Text, useTheme } from "palette"
+import { ArrowRightIcon, Flex, Text, TextProps, useTheme } from "palette"
 import { TouchableOpacity } from "react-native"
 
 const Wrapper: React.FC<{ onPress?(): any }> = ({ onPress, children }) => {
@@ -16,6 +16,7 @@ const Wrapper: React.FC<{ onPress?(): any }> = ({ onPress, children }) => {
 
 export const SectionTitle: React.FC<{
   title: React.ReactNode
+  titleVariant?: TextProps["variant"]
   subtitle?: React.ReactNode
   onPress?: () => any
   RightButtonContent?: React.FC
@@ -23,6 +24,7 @@ export const SectionTitle: React.FC<{
   capitalized?: boolean
 }> = ({
   title,
+  titleVariant = "sm-display",
   subtitle,
   onPress,
   RightButtonContent = RightButton,
@@ -42,7 +44,7 @@ export const SectionTitle: React.FC<{
         <Flex flex={1} overflow="hidden">
           <Text
             lineHeight="20"
-            variant="sm-display"
+            variant={titleVariant}
             ellipsizeMode="tail"
             numberOfLines={1}
             testID="title"
