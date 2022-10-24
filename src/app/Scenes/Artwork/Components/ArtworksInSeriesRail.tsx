@@ -31,6 +31,7 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = (props)
     <Flex>
       <SectionTitle
         title="More from this series"
+        titleVariant="md"
         onPress={() => {
           trackEvent(tracks.tappedHeader(artwork, firstArtistSeries))
           navigate(`/artist-series/${firstArtistSeries?.slug}`)

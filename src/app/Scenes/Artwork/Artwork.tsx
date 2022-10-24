@@ -339,6 +339,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
             contextScreenOwnerType={OwnerType.artwork}
             artist={artist}
             artistSeriesHeader="Series from this artist"
+            headerVariant="md"
           />
         ),
       })
