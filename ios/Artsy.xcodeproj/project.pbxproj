@@ -1826,6 +1826,7 @@
 				CB43273927E8FEE300B29DD6 /* ARVIR */,
 				CB43273E27E8FEE300B29DD6 /* Components */,
 				CB43274027E8FEE300B29DD6 /* LiveAuctionCurrentLotCTAPositionManagerTests.swift */,
+				CB43274127E8FEE300B29DD6 /* SaleOnHoldOverlayViewTests.swift */,
 				CB43274227E8FEE300B29DD6 /* Live_Auction */,
 				CB43275327E8FEE300B29DD6 /* Embedded */,
 			);
