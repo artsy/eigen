@@ -118,6 +118,7 @@
 		CB43287727E8FEE500B29DD6 /* ARAugmentedRealityConfigSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43273C27E8FEE300B29DD6 /* ARAugmentedRealityConfigSpec.m */; };
 		CB43287927E8FEE500B29DD6 /* ARSerifNavigationViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43273F27E8FEE300B29DD6 /* ARSerifNavigationViewControllerSpec.m */; };
 		CB43287A27E8FEE500B29DD6 /* LiveAuctionCurrentLotCTAPositionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43274027E8FEE300B29DD6 /* LiveAuctionCurrentLotCTAPositionManagerTests.swift */; };
+		CB43287B27E8FEE500B29DD6 /* SaleOnHoldOverlayViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43274127E8FEE300B29DD6 /* SaleOnHoldOverlayViewTests.swift */; };
 		CB43287C27E8FEE500B29DD6 /* LiveAuctionLotBidHistoryGestureControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43274327E8FEE300B29DD6 /* LiveAuctionLotBidHistoryGestureControllerTests.swift */; };
 		CB43287D27E8FEE500B29DD6 /* LiveAuctionBidButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43274427E8FEE300B29DD6 /* LiveAuctionBidButtonTests.swift */; };
 		CB43287E27E8FEE500B29DD6 /* LiveAuctionBiddingViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43274527E8FEE300B29DD6 /* LiveAuctionBiddingViewModelTests.swift */; };
