@@ -1,8 +1,8 @@
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 import { Box, Button, Flex, Spacer, Text, Touchable } from "palette"
-import React, { useCallback, useEffect, useState } from "react"
-import { FlatList } from "react-native"
+import React, { useEffect, useRef, useState } from "react"
+import { FlatList, ViewabilityConfig } from "react-native"
 import ReactAppboy from "react-native-appboy-sdk"
 import { useScreenDimensions } from "shared/hooks"
 import { PaginationDots } from "./PaginationDots"
@@ -51,8 +51,6 @@ const ContentCard: React.FC<CardProps> = ({ item }) => {
 
 export const ContentCards: React.FC = () => {
   const [cards, setCards] = useState<ReactAppboy.CaptionedContentCard[]>([])
-  const [currentCardIndex, setCurrentCardIndex] = useState(0)
-  const [viewedCards, setViewedCards] = useState([] as ReactAppboy.CaptionedContentCard[])
   const eventName = ReactAppboy.Events?.CONTENT_CARDS_UPDATED
 
   if (!eventName) {
@@ -62,6 +60,7 @@ export const ContentCards: React.FC = () => {
   useEffect(() => {
     const callback = async () => {
       const updatedCards = await ReactAppboy.getContentCards()
+
       const sortedCards = updatedCards.sort((lhs, rhs) =>
         lhs.extras.position > rhs.extras.position ? 1 : -1
       )
@@ -76,30 +75,42 @@ export const ContentCards: React.FC = () => {
     }
   }, [])
 
-  const handleViewableItemsChanged = useCallback(
-    (viewable) => {
-      const viewableCards = viewable.viewableItems.map(
-        (viewableItem: any) => viewableItem.item
-      ) as ReactAppboy.CaptionedContentCard[]
-      const lastShown = viewableCards[viewableCards.length - 1]
-      const newCardIndex = cards.findIndex((card) => card.id === lastShown.id)
-      setCurrentCardIndex(newCardIndex)
-      const filteredCards = viewableCards.filter((card) => !viewedCards.includes(card))
-      if (filteredCards.length === 0) {
-        return
-      }
-
-      filteredCards.forEach((card) => ReactAppboy.logContentCardImpression(card.id))
-      setViewedCards([...viewedCards, ...filteredCards])
-    },
-    [cards]
-  )
-
-  const { width } = useScreenDimensions()
-
   if (cards.length < 1) {
     return null
   }
+
+  return <CardList cards={cards} />
+}
+
+interface CardListProps {
+  cards: ReactAppboy.CaptionedContentCard[]
+}
+
+export const CardList: React.FC<CardListProps> = ({ cards }) => {
+  const [currentCardIndex, setCurrentCardIndex] = useState(0)
+  const [viewedCards, setViewedCards] = useState([] as ReactAppboy.CaptionedContentCard[])
+
+  const onViewableItemsChanged = ({ viewableItems }: any) => {
+    const viewableCards = viewableItems.map(
+      (viewableItem: any) => viewableItem.item
+    ) as ReactAppboy.CaptionedContentCard[]
+    const lastShown = viewableCards[viewableCards.length - 1]
+    const newCardIndex = cards.findIndex((card) => card.id === lastShown.id)
+    if (newCardIndex >= 0) {
+      setCurrentCardIndex(newCardIndex)
+    }
+    const filteredCards = viewableCards.filter((card) => !viewedCards.includes(card))
+    if (filteredCards.length === 0) {
+      return
+    }
+    filteredCards.forEach((card) => ReactAppboy.logContentCardImpression(card.id))
+    setViewedCards([...viewedCards, ...filteredCards])
+  }
+
+  const viewabilityConfig: ViewabilityConfig = { itemVisiblePercentThreshold: 25 }
+  const viewabilityConfigCallbackPairs = useRef([{ onViewableItemsChanged, viewabilityConfig }])
+
+  const { width } = useScreenDimensions()
 
   return (
     <>
@@ -108,11 +119,10 @@ export const ContentCards: React.FC = () => {
         decelerationRate="fast"
         horizontal
         keyExtractor={(item) => item.id}
-        onViewableItemsChanged={handleViewableItemsChanged}
         renderItem={({ item }) => <ContentCard item={item} />}
         snapToAlignment="start"
         snapToInterval={width}
-        viewabilityConfig={{ itemVisiblePercentThreshold: 25 }}
+        viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
       />
       <Spacer mb={2} />
       <PaginationDots currentIndex={currentCardIndex} length={cards.length} />
