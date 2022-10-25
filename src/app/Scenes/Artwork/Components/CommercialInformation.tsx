@@ -25,6 +25,7 @@ import { CommercialButtonsFragmentContainer as CommercialButtons } from "./Comme
 import { CommercialEditionSetInformationFragmentContainer as CommercialEditionSetInformation } from "./CommercialEditionSetInformation"
 import { CommercialPartnerInformationFragmentContainer as CommercialPartnerInformation } from "./CommercialPartnerInformation"
 import { CreateArtworkAlertButtonsSectionFragmentContainer as CreateArtworkAlertButtonsSection } from "./CreateArtworkAlertButtonsSection"
+import { EditionSetInformation } from "./EditionSetInformation"
 
 interface CommercialInformationProps extends CountdownTimerProps {
   artwork: CommercialInformation_artwork$data
@@ -228,13 +229,21 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
   }
 
   const renderEditionSetArtwork = () => {
+    const editionSets = artwork.editionSets ?? []
+    const selectedEdition = editionSets.find((editionSet) => {
+      return editionSet?.internalID === editionSetID
+    })
+
     return (
-      <CommercialEditionSetInformation
-        artwork={artwork}
-        setEditionSetId={(newEditionSetID) => {
-          setEditionSetID(newEditionSetID)
-        }}
-      />
+      <>
+        <EditionSetInformation artwork={artwork} onSelectEdition={setEditionSetID} />
+        {!!selectedEdition?.saleMessage && (
+          <>
+            <Spacer mb={2} />
+            <Text variant="lg-display">{selectedEdition.saleMessage}</Text>
+          </>
+        )}
+      </>
     )
   }
 
@@ -327,7 +336,8 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(
         }
 
         editionSets {
-          id
+          internalID
+          saleMessage
         }
 
         saleArtwork {
@@ -357,6 +367,7 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(
         ...ArtworkExtraLinks_artwork
         ...AuctionPrice_artwork
         ...CreateArtworkAlertButtonsSection_artwork
+        ...EditionSetInformation_artwork
       }
     `,
     me: graphql`
