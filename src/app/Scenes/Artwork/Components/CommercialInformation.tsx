@@ -19,13 +19,13 @@ import { Box, Flex, Spacer, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp, useTracking } from "react-tracking"
+import { ArtworkEditionSets } from "./ArtworkEditionSets"
 import { ArtworkExtraLinksFragmentContainer as ArtworkExtraLinks } from "./ArtworkExtraLinks"
 import { AuctionPriceFragmentContainer as AuctionPrice } from "./AuctionPrice"
 import { CommercialButtonsFragmentContainer as CommercialButtons } from "./CommercialButtons/CommercialButtons"
 import { CommercialEditionSetInformationFragmentContainer as CommercialEditionSetInformation } from "./CommercialEditionSetInformation"
 import { CommercialPartnerInformationFragmentContainer as CommercialPartnerInformation } from "./CommercialPartnerInformation"
 import { CreateArtworkAlertButtonsSectionFragmentContainer as CreateArtworkAlertButtonsSection } from "./CreateArtworkAlertButtonsSection"
-import { EditionSetInformation } from "./EditionSetInformation"
 
 interface CommercialInformationProps extends CountdownTimerProps {
   artwork: CommercialInformation_artwork$data
@@ -236,7 +236,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
 
     return (
       <>
-        <EditionSetInformation artwork={artwork} onSelectEdition={setEditionSetID} />
+        <ArtworkEditionSets artwork={artwork} onSelectEdition={setEditionSetID} />
         {!!selectedEdition?.saleMessage && (
           <>
             <Spacer mb={2} />
@@ -367,7 +367,7 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(
         ...ArtworkExtraLinks_artwork
         ...AuctionPrice_artwork
         ...CreateArtworkAlertButtonsSection_artwork
-        ...EditionSetInformation_artwork
+        ...ArtworkEditionSets_artwork
       }
     `,
     me: graphql`

@@ -1,4 +1,4 @@
-import { EditionSetInformation_artwork$key } from "__generated__/EditionSetInformation_artwork.graphql"
+import { ArtworkEditionSets_artwork$key } from "__generated__/ArtworkEditionSets_artwork.graphql"
 import { GlobalStore } from "app/store/GlobalStore"
 import { compact } from "lodash"
 import { Box, Flex, Join, RadioButton, Separator, Spacer, Text } from "palette"
@@ -7,16 +7,16 @@ import { TouchableWithoutFeedback } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 
-interface EditionSetInformationProps {
-  artwork: EditionSetInformation_artwork$key
+interface ArtworkEditionSetsProps {
+  artwork: ArtworkEditionSets_artwork$key
   onSelectEdition: (editionId: string) => void
 }
 
-export const EditionSetInformation: React.FC<EditionSetInformationProps> = ({
+export const ArtworkEditionSets: React.FC<ArtworkEditionSetsProps> = ({
   artwork,
   onSelectEdition,
 }) => {
-  const artworkData = useFragment(editionSetInformationFragment, artwork)
+  const artworkData = useFragment(artworkEditionSetsFragment, artwork)
   const editionSets = compact(artworkData.editionSets ?? [])
   const firstEditionId = editionSets[0]?.internalID ?? null
   const [selectedEditionId, setSelectedEditionId] = useState(firstEditionId)
@@ -85,8 +85,8 @@ export const EditionSetInformation: React.FC<EditionSetInformationProps> = ({
   )
 }
 
-const editionSetInformationFragment = graphql`
-  fragment EditionSetInformation_artwork on Artwork {
+const artworkEditionSetsFragment = graphql`
+  fragment ArtworkEditionSets_artwork on Artwork {
     editionSets {
       id
       internalID
