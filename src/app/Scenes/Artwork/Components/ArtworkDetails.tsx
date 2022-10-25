@@ -51,7 +51,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ artwork }) => {
     },
     {
       title: "Edition",
-      value: artworkData?.editionOf,
+      value: (artworkData.editionSets ?? []).length < 2 && artworkData?.editionOf,
     },
     {
       title: "Certificate of Authenticity",
@@ -142,5 +142,8 @@ const artworkDetailsFragment = graphql`
     manufacturer
     imageRights
     editionOf
+    editionSets {
+      internalID
+    }
   }
 `
