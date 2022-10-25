@@ -1,7 +1,7 @@
 import { ArtworkEditionSets_artwork$key } from "__generated__/ArtworkEditionSets_artwork.graphql"
 import { GlobalStore } from "app/store/GlobalStore"
 import { compact } from "lodash"
-import { Box, Flex, Join, RadioButton, Separator, Spacer, Text } from "palette"
+import { Flex, Join, RadioButton, Separator, Spacer, Text } from "palette"
 import { useEffect, useState } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { useFragment } from "react-relay"
@@ -38,50 +38,44 @@ export const ArtworkEditionSets: React.FC<ArtworkEditionSetsProps> = ({
   }
 
   return (
-    <Box>
-      <Separator />
+    <Join separator={<Separator />}>
+      {editionSets.map((edition) => {
+        const { dimensions, saleMessage, editionOf } = edition
+        const isSelected = edition.internalID === selectedEditionId
+        const metric = preferredMetric === "cm" ? dimensions?.cm : dimensions?.in
 
-      <Join separator={<Separator />}>
-        {editionSets.map((edition) => {
-          const { dimensions, saleMessage, editionOf } = edition
-          const isSelected = edition.internalID === selectedEditionId
-          const metric = preferredMetric === "cm" ? dimensions?.cm : dimensions?.in
+        return (
+          <TouchableWithoutFeedback
+            key={edition.internalID}
+            onPress={() => handleSelectEdition(edition.internalID)}
+          >
+            <Flex flexDirection="row" justifyContent="flex-start" py={2}>
+              <RadioButton
+                selected={isSelected}
+                onPress={() => handleSelectEdition(edition.internalID)}
+              />
 
-          return (
-            <TouchableWithoutFeedback
-              key={edition.internalID}
-              onPress={() => handleSelectEdition(edition.internalID)}
-            >
-              <Flex flexDirection="row" justifyContent="flex-start" my={2}>
-                <RadioButton
-                  selected={isSelected}
-                  onPress={() => handleSelectEdition(edition.internalID)}
-                />
+              <Spacer ml={1} />
 
-                <Spacer ml={1} />
-
-                <Flex flex={1}>
+              <Flex flex={1}>
+                <Text variant="sm-display" color="black60">
+                  {metric}
+                </Text>
+                {!!editionOf && (
                   <Text variant="sm-display" color="black60">
-                    {metric}
+                    {editionOf}
                   </Text>
-                  {!!editionOf && (
-                    <Text variant="sm-display" color="black60">
-                      {editionOf}
-                    </Text>
-                  )}
-                </Flex>
-
-                <Spacer ml={1} />
-
-                <Text variant="sm-display">{saleMessage}</Text>
+                )}
               </Flex>
-            </TouchableWithoutFeedback>
-          )
-        })}
-      </Join>
 
-      <Separator />
-    </Box>
+              <Spacer ml={1} />
+
+              <Text variant="sm-display">{saleMessage}</Text>
+            </Flex>
+          </TouchableWithoutFeedback>
+        )
+      })}
+    </Join>
   )
 }
 

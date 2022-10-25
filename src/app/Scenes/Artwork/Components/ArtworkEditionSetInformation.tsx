@@ -1,5 +1,5 @@
 import { ArtworkEditionSetInformation_artwork$key } from "__generated__/ArtworkEditionSetInformation_artwork.graphql"
-import { Spacer, Text } from "palette"
+import { Box, Separator, Spacer, Text } from "palette"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { ArtworkEditionSets } from "./ArtworkEditionSets"
@@ -23,7 +23,11 @@ export const ArtworkEditionSetInformation: React.FC<ArtworkEditionSetInformation
 
   return (
     <>
-      <ArtworkEditionSets artwork={artworkData} onSelectEdition={onSelectEdition} />
+      <Box mt={-3}>
+        <ArtworkEditionSets artwork={artworkData} onSelectEdition={onSelectEdition} />
+      </Box>
+      <Separator />
+
       {!!selectedEdition?.saleMessage && (
         <>
           <Spacer mb={3} />
