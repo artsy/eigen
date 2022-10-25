@@ -19,7 +19,7 @@ import { Box, Flex, Spacer, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp, useTracking } from "react-tracking"
-import { ArtworkEditionSets } from "./ArtworkEditionSets"
+import { ArtworkEditionSetInformation } from "./ArtworkEditionSetInformation"
 import { ArtworkExtraLinksFragmentContainer as ArtworkExtraLinks } from "./ArtworkExtraLinks"
 import { AuctionPriceFragmentContainer as AuctionPrice } from "./AuctionPrice"
 import { CommercialButtonsFragmentContainer as CommercialButtons } from "./CommercialButtons/CommercialButtons"
@@ -222,29 +222,16 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
         return <AuctionPrice artwork={artwork} auctionState={timerState as AuctionTimerState} />
       }
     } else if (artwork.editionSets && artwork.editionSets.length > 1) {
-      return renderEditionSetArtwork()
+      return (
+        <ArtworkEditionSetInformation
+          artwork={artwork}
+          selectedEditionId={editionSetID}
+          onSelectEdition={setEditionSetID}
+        />
+      )
     } else {
       return renderSingleEditionArtwork()
     }
-  }
-
-  const renderEditionSetArtwork = () => {
-    const editionSets = artwork.editionSets ?? []
-    const selectedEdition = editionSets.find((editionSet) => {
-      return editionSet?.internalID === editionSetID
-    })
-
-    return (
-      <>
-        <ArtworkEditionSets artwork={artwork} onSelectEdition={setEditionSetID} />
-        {!!selectedEdition?.saleMessage && (
-          <>
-            <Spacer mb={2} />
-            <Text variant="lg-display">{selectedEdition.saleMessage}</Text>
-          </>
-        )}
-      </>
-    )
   }
 
   const renderCommercialButtons = () => {
@@ -337,7 +324,6 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(
 
         editionSets {
           internalID
-          saleMessage
         }
 
         saleArtwork {
@@ -367,7 +353,7 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(
         ...ArtworkExtraLinks_artwork
         ...AuctionPrice_artwork
         ...CreateArtworkAlertButtonsSection_artwork
-        ...ArtworkEditionSets_artwork
+        ...ArtworkEditionSetInformation_artwork
       }
     `,
     me: graphql`
