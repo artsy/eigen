@@ -51,7 +51,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ artwork }) => {
     },
     {
       title: "Edition",
-      value: (artworkData.editionSets ?? []).length < 2 && artworkData?.editionOf,
+      value: (artworkData.editionSets ?? []).length < 2 ? artworkData.editionOf : null,
     },
     {
       title: "Certificate of Authenticity",
