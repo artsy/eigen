@@ -25,7 +25,7 @@ void _itTestsWithDevicesRecordingAsynchronouslyWithName(id self, int lineNumber,
     };
 
     it(@" as iphone", ^{
-        [ARTestContext stubDevice:ARDeviceTypePhone5];
+        [ARTestContext stubDevice:ARDeviceTypePhone6];
 
         @try {
             id sut = block();

@@ -36,7 +36,7 @@ describe(@"url and image thumbnail", ^{
                 [ARTestContext stopStubbing];
             });
             it(@"is correct on phone", ^{
-                [ARTestContext stubDevice:ARDeviceTypePhone5];
+                [ARTestContext stubDevice:ARDeviceTypePhone6];
                 expect(provider.placeholderItem).to.equal(expectedURL);
             });
 
@@ -78,7 +78,7 @@ describe(@"url and image thumbnail", ^{
                     [ARTestContext stopStubbing];
                 });
                 it(@"is correct on phone", ^{
-                    [ARTestContext stubDevice:ARDeviceTypePhone5];
+                    [ARTestContext stubDevice:ARDeviceTypePhone6];
                     expect(provider.item).to.equal(expectedURL);
                 });
 
@@ -126,7 +126,7 @@ describe(@"url and image thumbnail", ^{
                         [ARTestContext stopStubbing];
                     });
                     it(@"is correct on phone", ^{
-                        [ARTestContext stubDevice:ARDeviceTypePhone5];
+                        [ARTestContext stubDevice:ARDeviceTypePhone6];
                         expect([data valueForKey:@"url"]).to.equal(expectedURL.absoluteString);
                     });
 
@@ -156,7 +156,7 @@ describe(@"url and image thumbnail", ^{
                 [ARTestContext stopStubbing];
             });
             it(@"is correct on phone", ^{
-                [ARTestContext stubDevice:ARDeviceTypePhone5];
+                [ARTestContext stubDevice:ARDeviceTypePhone6];
                 expect(provider.item).to.equal(expectedURL);
             });
 
@@ -187,7 +187,7 @@ describe(@"url and image thumbnail", ^{
                 [ARTestContext stopStubbing];
             });
             it(@"is correct on phone", ^{
-                [ARTestContext stubDevice:ARDeviceTypePhone5];
+                [ARTestContext stubDevice:ARDeviceTypePhone6];
                 expect(provider.item).to.equal(expectedURL);
             });
 

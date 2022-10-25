@@ -21,7 +21,7 @@
 
     CGSize nativeResolution = [UIScreen mainScreen].nativeBounds.size;
     NSAssert([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone && CGSizeEqualToSize(nativeResolution, CGSizeMake(1170, 2532)),
-             @"The tests should be run on an iPhone 14 Pro, not a device with native resolution %@",
+             @"The tests should be run on an iPhone 13 Pro, not a device with native resolution %@",
              NSStringFromCGSize(nativeResolution));
 
     ARPerformWorkAsynchronously = NO;

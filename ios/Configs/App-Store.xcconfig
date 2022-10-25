@@ -1,4 +1,5 @@
 #include "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig"
-#include "Shared.xcconfig"
+#include "App.xcconfig"
+
 
 DISPLAY_NAME = Artsy
