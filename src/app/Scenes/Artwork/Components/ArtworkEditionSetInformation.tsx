@@ -31,7 +31,9 @@ export const ArtworkEditionSetInformation: React.FC<ArtworkEditionSetInformation
       {!!selectedEdition?.saleMessage && (
         <>
           <Spacer mb={3} />
-          <Text variant="lg-display">{selectedEdition.saleMessage}</Text>
+          <Text variant="lg-display" accessibilityLabel="Selected edition set">
+            {selectedEdition.saleMessage}
+          </Text>
         </>
       )}
     </>
