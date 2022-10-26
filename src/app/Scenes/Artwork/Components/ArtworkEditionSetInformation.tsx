@@ -1,22 +1,21 @@
-import { ArtworkEditionSetInformation_artwork$key } from "__generated__/ArtworkEditionSetInformation_artwork.graphql"
+import { ArtworkEditionSetInformation_artwork$data } from "__generated__/ArtworkEditionSetInformation_artwork.graphql"
 import { Box, Separator, Spacer, Text } from "palette"
-import { useFragment } from "react-relay"
+import { createFragmentContainer } from "react-relay"
 import { graphql } from "relay-runtime"
-import { ArtworkEditionSets } from "./ArtworkEditionSets"
+import { ArtworkEditionSetsFragmentContainer as ArtworkEditionSets } from "./ArtworkEditionSets"
 
 interface ArtworkEditionSetInformationProps {
-  artwork: ArtworkEditionSetInformation_artwork$key
+  artwork: ArtworkEditionSetInformation_artwork$data
   selectedEditionId: string | null
   onSelectEdition: (editionId: string) => void
 }
 
-export const ArtworkEditionSetInformation: React.FC<ArtworkEditionSetInformationProps> = ({
+const ArtworkEditionSetInformation: React.FC<ArtworkEditionSetInformationProps> = ({
   artwork,
   selectedEditionId,
   onSelectEdition,
 }) => {
-  const artworkData = useFragment(artworkEditionSetFragment, artwork)
-  const editionSets = artworkData.editionSets ?? []
+  const editionSets = artwork.editionSets ?? []
   const selectedEdition = editionSets.find((editionSet) => {
     return editionSet?.internalID === selectedEditionId
   })
@@ -24,7 +23,7 @@ export const ArtworkEditionSetInformation: React.FC<ArtworkEditionSetInformation
   return (
     <>
       <Box mt={-3}>
-        <ArtworkEditionSets artwork={artworkData} onSelectEdition={onSelectEdition} />
+        <ArtworkEditionSets artwork={artwork} onSelectEdition={onSelectEdition} />
       </Box>
       <Separator />
 
@@ -40,12 +39,17 @@ export const ArtworkEditionSetInformation: React.FC<ArtworkEditionSetInformation
   )
 }
 
-const artworkEditionSetFragment = graphql`
-  fragment ArtworkEditionSetInformation_artwork on Artwork {
-    ...ArtworkEditionSets_artwork
-    editionSets {
-      internalID
-      saleMessage
-    }
+export const ArtworkEditionSetInformationFragmentContainer = createFragmentContainer(
+  ArtworkEditionSetInformation,
+  {
+    artwork: graphql`
+      fragment ArtworkEditionSetInformation_artwork on Artwork {
+        ...ArtworkEditionSets_artwork
+        editionSets {
+          internalID
+          saleMessage
+        }
+      }
+    `,
   }
-`
+)

@@ -1,11 +1,10 @@
 import { fireEvent } from "@testing-library/react-native"
 import { ArtworkEditionSetInformation_Test_Query } from "__generated__/ArtworkEditionSetInformation_Test_Query.graphql"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { ArtworkEditionSetInformation } from "./ArtworkEditionSetInformation"
+import { ArtworkEditionSetInformationFragmentContainer as ArtworkEditionSetInformation } from "./ArtworkEditionSetInformation"
 
 jest.unmock("react-relay")
 
@@ -20,50 +19,52 @@ describe("ArtworkEditionSetInformation", () => {
   })
 
   const TestRenderer = () => {
-    const data = useLazyLoadQuery<ArtworkEditionSetInformation_Test_Query>(
-      graphql`
-        query ArtworkEditionSetInformation_Test_Query {
-          artwork(id: "artworkID") {
-            ...ArtworkEditionSetInformation_artwork
+    return (
+      <QueryRenderer<ArtworkEditionSetInformation_Test_Query>
+        environment={mockEnvironment}
+        query={graphql`
+          query ArtworkEditionSetInformation_Test_Query @relay_test_operation {
+            artwork(id: "artworkID") {
+              ...ArtworkEditionSetInformation_artwork
+            }
           }
-        }
-      `,
-      {}
+        `}
+        variables={{}}
+        render={({ props }) => {
+          if (props?.artwork) {
+            return (
+              <ArtworkEditionSetInformation
+                artwork={props.artwork}
+                selectedEditionId={selectedEditionId}
+                onSelectEdition={onSelectEditionMock}
+              />
+            )
+          }
+
+          return null
+        }}
+      />
     )
-
-    if (data.artwork) {
-      return (
-        <ArtworkEditionSetInformation
-          artwork={data.artwork}
-          selectedEditionId={selectedEditionId}
-          onSelectEdition={onSelectEditionMock}
-        />
-      )
-    }
-
-    return null
   }
 
-  it("should correctly render the sale message for the selected edition set", async () => {
+  it("should correctly render the sale message for the selected edition set", () => {
     selectedEditionId = artwork.editionSets[1].internalID
-    const { getByLabelText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    const { getByLabelText } = renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => artwork,
     })
-    await flushPromiseQueue()
 
     const saleMessageElement = getByLabelText("Selected edition set")
     expect(saleMessageElement).toHaveTextContent("$2000")
   })
 
-  it("should call `onSelectEdition` handler with the selected edition set id", async () => {
-    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+  it("should call `onSelectEdition` handler with the selected edition set id", () => {
+    const { getByText } = renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => artwork,
     })
-    await flushPromiseQueue()
 
     fireEvent.press(getByText("Edition Set Two"))
 

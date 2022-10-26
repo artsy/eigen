@@ -1,22 +1,18 @@
-import { ArtworkEditionSets_artwork$key } from "__generated__/ArtworkEditionSets_artwork.graphql"
+import { ArtworkEditionSets_artwork$data } from "__generated__/ArtworkEditionSets_artwork.graphql"
 import { compact } from "lodash"
 import { Join, Separator } from "palette"
 import { useEffect, useState } from "react"
-import { useFragment } from "react-relay"
+import { createFragmentContainer } from "react-relay"
 import { graphql } from "relay-runtime"
-import { ArtworkEditionSetItem } from "./ArtworkEditionSetItem"
+import { ArtworkEditionSetItemFragmentContainer as ArtworkEditionSetItem } from "./ArtworkEditionSetItem"
 
 interface ArtworkEditionSetsProps {
-  artwork: ArtworkEditionSets_artwork$key
+  artwork: ArtworkEditionSets_artwork$data
   onSelectEdition: (editionId: string) => void
 }
 
-export const ArtworkEditionSets: React.FC<ArtworkEditionSetsProps> = ({
-  artwork,
-  onSelectEdition,
-}) => {
-  const artworkData = useFragment(artworkEditionSetsFragment, artwork)
-  const editionSets = compact(artworkData.editionSets ?? [])
+const ArtworkEditionSets: React.FC<ArtworkEditionSetsProps> = ({ artwork, onSelectEdition }) => {
+  const editionSets = compact(artwork.editionSets ?? [])
   const firstEditionId = editionSets[0]?.internalID ?? null
   const [selectedEditionId, setSelectedEditionId] = useState(firstEditionId)
 
@@ -53,12 +49,14 @@ export const ArtworkEditionSets: React.FC<ArtworkEditionSetsProps> = ({
   )
 }
 
-const artworkEditionSetsFragment = graphql`
-  fragment ArtworkEditionSets_artwork on Artwork {
-    editionSets {
-      id
-      internalID
-      ...ArtworkEditionSetItem_item
+export const ArtworkEditionSetsFragmentContainer = createFragmentContainer(ArtworkEditionSets, {
+  artwork: graphql`
+    fragment ArtworkEditionSets_artwork on Artwork {
+      editionSets {
+        id
+        internalID
+        ...ArtworkEditionSetItem_item
+      }
     }
-  }
-`
+  `,
+})

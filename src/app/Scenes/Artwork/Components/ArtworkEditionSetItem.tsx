@@ -1,27 +1,26 @@
-import { ArtworkEditionSetItem_item$key } from "__generated__/ArtworkEditionSetItem_item.graphql"
+import { ArtworkEditionSetItem_item$data } from "__generated__/ArtworkEditionSetItem_item.graphql"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Flex, RadioButton, Spacer, Text } from "palette"
 import { TouchableWithoutFeedback } from "react-native"
-import { useFragment } from "react-relay"
+import { createFragmentContainer } from "react-relay"
 import { graphql } from "relay-runtime"
 
 interface ArtworkEditionSetItemProps {
-  item: ArtworkEditionSetItem_item$key
+  item: ArtworkEditionSetItem_item$data
   isSelected: boolean
   onPress: (id: string) => void
 }
 
-export const ArtworkEditionSetItem: React.FC<ArtworkEditionSetItemProps> = ({
+const ArtworkEditionSetItem: React.FC<ArtworkEditionSetItemProps> = ({
   item,
   isSelected,
   onPress,
 }) => {
-  const data = useFragment(artworkEditionSetItemFragment, item)
   const preferredMetric = GlobalStore.useAppState((state) => state.userPrefs.metric)
-  const { dimensions, editionOf, saleMessage } = data
+  const { dimensions, editionOf, saleMessage } = item
 
   const handlePress = () => {
-    onPress(data.internalID)
+    onPress(item.internalID)
   }
 
   const getMetricLabel = () => {
@@ -67,15 +66,20 @@ export const ArtworkEditionSetItem: React.FC<ArtworkEditionSetItemProps> = ({
   )
 }
 
-const artworkEditionSetItemFragment = graphql`
-  fragment ArtworkEditionSetItem_item on EditionSet {
-    internalID
-    saleMessage
-    editionOf
+export const ArtworkEditionSetItemFragmentContainer = createFragmentContainer(
+  ArtworkEditionSetItem,
+  {
+    item: graphql`
+      fragment ArtworkEditionSetItem_item on EditionSet {
+        internalID
+        saleMessage
+        editionOf
 
-    dimensions {
-      in
-      cm
-    }
+        dimensions {
+          in
+          cm
+        }
+      }
+    `,
   }
-`
+)
