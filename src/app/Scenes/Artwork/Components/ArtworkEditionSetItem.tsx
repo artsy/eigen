@@ -19,11 +19,25 @@ export const ArtworkEditionSetItem: React.FC<ArtworkEditionSetItemProps> = ({
   const data = useFragment(artworkEditionSetItemFragment, item)
   const preferredMetric = GlobalStore.useAppState((state) => state.userPrefs.metric)
   const { dimensions, editionOf, saleMessage } = data
-  const metric = preferredMetric === "cm" ? dimensions?.cm : dimensions?.in
 
   const handlePress = () => {
     onPress(data.internalID)
   }
+
+  const getMetricLabel = () => {
+    if (preferredMetric === "cm" && dimensions?.cm) {
+      return dimensions.cm
+    }
+
+    if (preferredMetric === "in" && dimensions?.in) {
+      return dimensions.in
+    }
+
+    // display the first available dimension without taking into account the preferred metric
+    return dimensions?.cm ?? dimensions?.in
+  }
+
+  const metric = getMetricLabel()
 
   return (
     <TouchableWithoutFeedback onPress={handlePress}>
