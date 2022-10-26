@@ -84,6 +84,55 @@ describe("ArtworkDetails", () => {
     expect(screen.queryByText("Manufacturer")).toBeNull()
   })
 
+  describe("Edition", () => {
+    it("should be rendered edition sets 0/1", async () => {
+      renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => ({
+          editionOf: "Edition Set",
+          editionSets: [
+            {
+              internalID: "edition-set",
+              editionOf: "Edition Set",
+              saleMessage: "$1000",
+            },
+          ],
+        }),
+      })
+      await flushPromiseQueue()
+
+      expect(screen.queryByText("Edition Set")).toBeTruthy()
+    })
+
+    it("should NOT be rendered edition sets 2 or more", async () => {
+      renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => ({
+          editionOf: null,
+          editionSets: [
+            {
+              internalID: "edition-set-one",
+              editionOf: "Edition Set One",
+              saleMessage: "$1000",
+            },
+            {
+              internalID: "edition-set-two",
+              editionOf: "Edition Set Two",
+              saleMessage: "$2000",
+            },
+          ],
+        }),
+      })
+      await flushPromiseQueue()
+
+      expect(screen.queryByText("Edition")).toBeNull()
+      expect(screen.queryByText("Edition Set One")).toBeNull()
+      expect(screen.queryByText("Edition Set Two")).toBeNull()
+    })
+  })
+
   it("navigates to medium info modal when tapped", async () => {
     renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
