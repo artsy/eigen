@@ -19,10 +19,10 @@ import { Box, Flex, Spacer, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp, useTracking } from "react-tracking"
+import { ArtworkEditionSetInformationFragmentContainer as ArtworkEditionSetInformation } from "./ArtworkEditionSetInformation"
 import { ArtworkExtraLinksFragmentContainer as ArtworkExtraLinks } from "./ArtworkExtraLinks"
 import { AuctionPriceFragmentContainer as AuctionPrice } from "./AuctionPrice"
 import { CommercialButtonsFragmentContainer as CommercialButtons } from "./CommercialButtons/CommercialButtons"
-import { CommercialEditionSetInformationFragmentContainer as CommercialEditionSetInformation } from "./CommercialEditionSetInformation"
 import { CommercialPartnerInformationFragmentContainer as CommercialPartnerInformation } from "./CommercialPartnerInformation"
 import { CreateArtworkAlertButtonsSectionFragmentContainer as CreateArtworkAlertButtonsSection } from "./CreateArtworkAlertButtonsSection"
 
@@ -221,21 +221,16 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
         return <AuctionPrice artwork={artwork} auctionState={timerState as AuctionTimerState} />
       }
     } else if (artwork.editionSets && artwork.editionSets.length > 1) {
-      return renderEditionSetArtwork()
+      return (
+        <ArtworkEditionSetInformation
+          artwork={artwork}
+          selectedEditionId={editionSetID}
+          onSelectEdition={setEditionSetID}
+        />
+      )
     } else {
       return renderSingleEditionArtwork()
     }
-  }
-
-  const renderEditionSetArtwork = () => {
-    return (
-      <CommercialEditionSetInformation
-        artwork={artwork}
-        setEditionSetId={(newEditionSetID) => {
-          setEditionSetID(newEditionSetID)
-        }}
-      />
-    )
   }
 
   const renderCommercialButtons = () => {
@@ -327,7 +322,7 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(
         }
 
         editionSets {
-          id
+          internalID
         }
 
         saleArtwork {
@@ -353,10 +348,10 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(
 
         ...CommercialButtons_artwork
         ...CommercialPartnerInformation_artwork
-        ...CommercialEditionSetInformation_artwork
         ...ArtworkExtraLinks_artwork
         ...AuctionPrice_artwork
         ...CreateArtworkAlertButtonsSection_artwork
+        ...ArtworkEditionSetInformation_artwork
       }
     `,
     me: graphql`
