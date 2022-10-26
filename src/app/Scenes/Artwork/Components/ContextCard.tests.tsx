@@ -37,80 +37,78 @@ describe("ContextCard", () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  describe("Sale context", () => {
-    it("renders sale name correctly", () => {
-      const { getByText } = renderWithWrappers(<TestWrapper />)
+  it("renders sale name correctly", () => {
+    const { getByText } = renderWithWrappers(<TestWrapper />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artwork: () => auctionContextArtwork,
-      })
-
-      expect(getByText("Christie’s: Prints & Multiples")).toBeTruthy()
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => auctionContextArtwork,
     })
 
-    it("renders formatted sale start/end date correctly", () => {
-      const { getByText } = renderWithWrappers(<TestWrapper />)
+    expect(getByText("Christie’s: Prints & Multiples")).toBeTruthy()
+  })
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artwork: () => auctionContextArtwork,
-      })
+  it("renders formatted sale start/end date correctly", () => {
+    const { getByText } = renderWithWrappers(<TestWrapper />)
 
-      expect(getByText("Ended Oct 25, 2018")).toBeTruthy()
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => auctionContextArtwork,
     })
 
-    it("if auction is live display in progress", () => {
-      const saleContextArtwork = {
-        ...auctionContextArtwork,
-        context: {
-          ...auctionContextArtwork.context,
-          formattedStartDateTime: "In progress",
-        },
-      }
-      const { getByText } = renderWithWrappers(<TestWrapper />)
+    expect(getByText("Ended Oct 25, 2018")).toBeTruthy()
+  })
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artwork: () => saleContextArtwork,
-      })
+  it("if auction is live display in progress", () => {
+    const saleContextArtwork = {
+      ...auctionContextArtwork,
+      context: {
+        ...auctionContextArtwork.context,
+        formattedStartDateTime: "In progress",
+      },
+    }
+    const { getByText } = renderWithWrappers(<TestWrapper />)
 
-      expect(getByText("In progress")).toBeTruthy()
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => saleContextArtwork,
     })
 
-    it("renders sale image", () => {
-      const { getByLabelText } = renderWithWrappers(<TestWrapper />)
+    expect(getByText("In progress")).toBeTruthy()
+  })
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artwork: () => auctionContextArtwork,
-      })
+  it("renders sale image", () => {
+    const { getByLabelText } = renderWithWrappers(<TestWrapper />)
 
-      expect(getByLabelText("Context Card Image")).toBeTruthy()
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => auctionContextArtwork,
     })
 
-    it("renders 'Auction' if the sale is an auction", () => {
-      const { getByText } = renderWithWrappers(<TestWrapper />)
+    expect(getByLabelText("Context Card Image")).toBeTruthy()
+  })
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artwork: () => auctionContextArtwork,
-      })
+  it("renders 'Auction' if the sale is an auction", () => {
+    const { getByText } = renderWithWrappers(<TestWrapper />)
 
-      expect(getByText("Auction")).toBeTruthy()
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => auctionContextArtwork,
     })
 
-    it("renders nothing if the sale is not an auction", () => {
-      const saleContextArtwork = {
-        ...auctionContextArtwork,
-        context: {
-          ...auctionContextArtwork.context,
-          isAuction: false,
-        },
-      }
-      const { toJSON } = renderWithWrappers(<TestWrapper />)
+    expect(getByText("Auction")).toBeTruthy()
+  })
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artwork: () => saleContextArtwork,
-      })
+  it("renders nothing if the sale is not an auction", () => {
+    const saleContextArtwork = {
+      ...auctionContextArtwork,
+      context: {
+        ...auctionContextArtwork.context,
+        isAuction: false,
+      },
+    }
+    const { toJSON } = renderWithWrappers(<TestWrapper />)
 
-      expect(toJSON()).toBeNull()
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => saleContextArtwork,
     })
+
+    expect(toJSON()).toBeNull()
   })
 })
 
