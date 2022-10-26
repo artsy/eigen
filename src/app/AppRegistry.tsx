@@ -25,6 +25,7 @@ import { ArtistSeriesFullArtistSeriesListQueryRenderer } from "./Scenes/ArtistSe
 import { ArtistShows2QueryRenderer } from "./Scenes/ArtistShows/ArtistShows2"
 import { ArtworkQueryRenderer, ArtworkScreenQuery } from "./Scenes/Artwork/Artwork"
 import { CertificateOfAuthenticity } from "./Scenes/Artwork/Components/CertificateAuthenticity"
+import { PrivateListingsFAQScreen } from "./Scenes/Artwork/Components/PrivateListingsFAQScreen"
 import { ArtworkAttributionClassFAQQueryRenderer } from "./Scenes/ArtworkAttributionClassFAQ/ArtworkAttributionClassFAQ"
 import { ArtworkMediumQueryRenderer } from "./Scenes/ArtworkMedium/ArtworkMedium"
 import { AuctionBuyersPremiumQueryRenderer } from "./Scenes/AuctionBuyersPremium/AuctionBuyersPremium"
@@ -441,6 +442,7 @@ export const modules = defineModules({
   Partner: reactModule(PartnerQueryRenderer),
   PartnerLocations: reactModule(PartnerLocations),
   PrivacyRequest: reactModule(PrivacyRequest),
+  PrivateListingsFAQScreen: reactModule(PrivateListingsFAQScreen),
   RequestForPriceEstimateScreen: reactModule(RequestForPriceEstimateScreen),
   RequestForPriceEstimateConfirmationScreen: reactModule(
     RequestForPriceEstimateConfirmationScreen,
