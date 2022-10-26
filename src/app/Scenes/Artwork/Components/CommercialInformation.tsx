@@ -348,7 +348,6 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(
 
         ...CommercialButtons_artwork
         ...CommercialPartnerInformation_artwork
-        ...CommercialEditionSetInformation_artwork
         ...ArtworkExtraLinks_artwork
         ...AuctionPrice_artwork
         ...CreateArtworkAlertButtonsSection_artwork
