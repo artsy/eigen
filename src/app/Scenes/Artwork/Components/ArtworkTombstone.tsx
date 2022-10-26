@@ -107,21 +107,21 @@ export class ArtworkTombstone extends React.Component<
 
     return (
       <Box textAlign="left">
-        <Flex flexDirection="row" flexWrap="wrap">
-          {artwork.artists! /* STRICTNESS_MIGRATION */.length === 1
-            ? this.renderSingleArtist(artwork!.artists![0]!)
-            : this.renderMultipleArtists()}
-          {!!(artwork.artists! /* STRICTNESS_MIGRATION */.length === 0 && artwork.culturalMaker) &&
-            this.renderArtistName(artwork.culturalMaker, null)}
-        </Flex>
         {!!displayAuctionLotLabel && (
           <>
             <Spacer mb={1} />
-            <Text variant="sm" color="black100" weight="medium">
+            <Text variant="md" color="black100">
               Lot {artwork.saleArtwork.lotLabel}
             </Text>
           </>
         )}
+        <Flex flexDirection="row" flexWrap="wrap">
+          {artwork.artists?.length === 1
+            ? this.renderSingleArtist(artwork!.artists![0]!)
+            : this.renderMultipleArtists()}
+          {!!(artwork.artists?.length === 0 && artwork.culturalMaker) &&
+            this.renderArtistName(artwork.culturalMaker, null)}
+        </Flex>
         <Flex flexDirection="row" flexWrap="wrap">
           <Text variant="lg-display" color="black60">
             {this.getArtworkTitleAndMaybeDate()}
