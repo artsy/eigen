@@ -37,61 +37,6 @@ describe("ContextCard", () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  describe("Fair context", () => {
-    it("renders fair name correctly", () => {
-      const { getByText } = renderWithWrappers(<TestWrapper />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artwork: () => fairContextArtwork,
-      })
-
-      expect(getByText("Market Art + Design 2019")).toBeTruthy()
-    })
-
-    it("renders fair image", () => {
-      const { getByLabelText } = renderWithWrappers(<TestWrapper />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artwork: () => fairContextArtwork,
-      })
-
-      expect(getByLabelText("Context Card Image")).toBeTruthy()
-    })
-  })
-
-  describe("Show context", () => {
-    it("renders show name correctly", () => {
-      const { getByText } = renderWithWrappers(<TestWrapper />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artwork: () => showContextArtwork,
-      })
-
-      expect(getByText("Time Lapse")).toBeTruthy()
-    })
-
-    it("renders show image", () => {
-      const { getByLabelText } = renderWithWrappers(<TestWrapper />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artwork: () => showContextArtwork,
-      })
-
-      expect(getByLabelText("Context Card Image")).toBeTruthy()
-    })
-
-    it("renders show button text correctly", () => {
-      const { queryByText } = renderWithWrappers(<TestWrapper />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artwork: () => showContextArtwork,
-      })
-
-      expect(queryByText("Follow")).toBeTruthy()
-      expect(queryByText("Following")).toBeFalsy()
-    })
-  })
-
   describe("Sale context", () => {
     it("renders sale name correctly", () => {
       const { getByText } = renderWithWrappers(<TestWrapper />)
@@ -140,14 +85,14 @@ describe("ContextCard", () => {
       expect(getByLabelText("Context Card Image")).toBeTruthy()
     })
 
-    it("renders 'In Auction' if the sale is an auction", () => {
+    it("renders 'Auction' if the sale is an auction", () => {
       const { getByText } = renderWithWrappers(<TestWrapper />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => auctionContextArtwork,
       })
 
-      expect(getByText("In auction")).toBeTruthy()
+      expect(getByText("Auction")).toBeTruthy()
     })
 
     it("renders nothing if the sale is not an auction", () => {
@@ -169,22 +114,6 @@ describe("ContextCard", () => {
   })
 })
 
-const fairContextArtwork = {
-  id: "QXJ0d29yazpjYW5kaWNlLWNtYy1zdXBlcm1hbi1kb251dHMtMQ==",
-  gravityID: "candice-cmc-superman-donuts-1",
-  internalID: "5d0a7485fc1f78001248b677",
-  context: {
-    __typename: "Fair",
-    id: "QXJ0d29ya0NvbnRleHRGYWlyOm1hcmtldC1hcnQtcGx1cy1kZXNpZ24tMjAxOQ==",
-    name: "Market Art + Design 2019",
-    href: "/market-art-plus-design-2019",
-    exhibition_period: "Jul 5 – 7",
-    image: {
-      url: "https://d32dm0rphc51dk.cloudfront.net/R5z4lkyH6DyGhEwAg44NSA/wide.jpg",
-    },
-  },
-}
-
 const auctionContextArtwork = {
   id: "QXJ0d29yazphbmR5LXdhcmhvbC1tYW8tb25lLXBsYXRlLTM=",
   gravityID: "andy-warhol-mao-one-plate-3",
@@ -202,25 +131,5 @@ const auctionContextArtwork = {
     },
   },
   shows: [],
-  fair: null,
-}
-
-const showContextArtwork = {
-  id: "QXJ0d29yazphYmJhcy1raWFyb3N0YW1pLXVudGl0bGVkLTc=",
-  gravityID: "abbas-kiarostami-untitled-7",
-  internalID: "5b2b745e9c18db204fc32e11",
-  context: {
-    __typename: "Show",
-    id: "U2hvdzpjYW1hLWdhbGxlcnktMS10aW1lLWxhcHNl",
-    name: "Time Lapse",
-    href: "/show/cama-gallery-1-time-lapse",
-    gravityID: "cama-gallery-1-time-lapse",
-    internalID: "5b335e329c18db4a5a5015cc",
-    exhibition_period: "Jun 22 – Jul 3, 2018",
-    is_followed: null,
-    coverImage: {
-      url: "https://d32dm0rphc51dk.cloudfront.net/MYRUdCdCDdpU9dLTcmDX0A/medium.jpg",
-    },
-  },
   fair: null,
 }
