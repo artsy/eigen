@@ -47,25 +47,29 @@ describe("ShippingAndTaxes", () => {
     expect(queryByText("Taxes may apply at checkout", { exact: false })).toBeDefined()
     expect(queryByText("City, State, Country")).toBeDefined()
     expect(queryByText("Shipping: Calculated in checkout")).toBeDefined()
+    expect(queryByText("VAT included in price")).toBeDefined()
   })
 
-  it("should NOT render all shipping information", () => {
+  it("should NOT render shipping information if it is not available", () => {
     const { queryByText } = renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(env, {
       Artwork: () => ({
         shippingOrigin: null,
         shippingInfo: null,
+        priceIncludesTaxDisplay: null,
       }),
     })
 
     expect(queryByText("Taxes may apply at checkout", { exact: false })).toBeDefined()
     expect(queryByText("City, State, Country")).toBeNull()
     expect(queryByText("Shipping: Calculated in checkout")).toBeNull()
+    expect(queryByText("VAT included in price")).toBeNull()
   })
 })
 
 const artwork = {
   shippingOrigin: "City, State, Country",
   shippingInfo: "Shipping: Calculated in checkout",
+  priceIncludesTaxDisplay: "VAT included in price",
 }

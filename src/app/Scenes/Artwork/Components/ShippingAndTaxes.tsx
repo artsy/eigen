@@ -8,7 +8,7 @@ interface ShippingAndTaxesProps {
 }
 
 const ShippingAndTaxes: React.FC<ShippingAndTaxesProps> = ({ artwork }) => {
-  const { shippingInfo, shippingOrigin } = artwork
+  const { shippingInfo, shippingOrigin, priceIncludesTaxDisplay } = artwork
 
   const handleLearnMorePress = () => {
     navigate(
@@ -36,6 +36,12 @@ const ShippingAndTaxes: React.FC<ShippingAndTaxesProps> = ({ artwork }) => {
           {shippingInfo}
         </Text>
       )}
+
+      {!!priceIncludesTaxDisplay && (
+        <Text variant="sm" color="black60">
+          {priceIncludesTaxDisplay}
+        </Text>
+      )}
     </Box>
   )
 }
@@ -45,6 +51,7 @@ export const ShippingAndTaxesFragmentContainer = createFragmentContainer(Shippin
     fragment ShippingAndTaxes_artwork on Artwork {
       shippingOrigin
       shippingInfo
+      priceIncludesTaxDisplay
     }
   `,
 })
