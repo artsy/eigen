@@ -309,7 +309,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (!!artworkBelowTheFold?.isEligibleForOnPlatformTransaction) {
+    if (!!artworkBelowTheFold.isForSale) {
       sections.push({
         key: "shippingAndTaxes",
         element: <ShippingAndTaxesFragmentContainer artwork={artworkBelowTheFold!} />,
@@ -474,6 +474,7 @@ export const ArtworkContainer = createRefetchContainer(
         provenance
         exhibitionHistory
         literature
+        isForSale
         partner {
           type
           id
@@ -522,7 +523,6 @@ export const ArtworkContainer = createRefetchContainer(
             }
           }
         }
-        isEligibleForOnPlatformTransaction
         ...PartnerCard_artwork
         ...AboutWork_artwork
         ...OtherWorks_artwork

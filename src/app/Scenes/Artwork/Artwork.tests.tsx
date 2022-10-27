@@ -574,38 +574,32 @@ describe("Artwork", () => {
   })
 
   describe("Shipping and taxes", () => {
-    it("should be rendered", () => {
+    it("should be rendered when the work has `for sale` availability", () => {
       const { queryByText } = renderWithWrappers(<TestRenderer />)
 
       mockMostRecentOperation("ArtworkAboveTheFoldQuery")
       mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
       mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
         Artwork: () => ({
-          shippingOrigin: "City, State, Country",
-          shippingInfo: "Shipping: Calculated in checkout",
-          isEligibleForOnPlatformTransaction: true,
+          isForSale: true,
         }),
       })
 
-      expect(queryByText("City, State, Country")).toBeDefined()
-      expect(queryByText("Shipping: Calculated in checkout")).toBeDefined()
+      expect(queryByText("Shipping and taxes")).toBeDefined()
     })
 
-    it("should NOT be rendered if the artwork is NOT eligible for on-platform transaction", () => {
+    it("should NOT be rendered if the work has any other availability", () => {
       const { queryByText } = renderWithWrappers(<TestRenderer />)
 
       mockMostRecentOperation("ArtworkAboveTheFoldQuery")
       mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
       mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
         Artwork: () => ({
-          shippingOrigin: "City, State, Country",
-          shippingInfo: "Shipping: Calculated in checkout",
-          isEligibleForOnPlatformTransaction: false,
+          isForSale: false,
         }),
       })
 
-      expect(queryByText("City, State, Country")).toBeNull()
-      expect(queryByText("Shipping: Calculated in checkout")).toBeNull()
+      expect(queryByText("Shipping and taxes")).toBeNull()
     })
   })
 
