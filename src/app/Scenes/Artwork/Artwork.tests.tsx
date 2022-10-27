@@ -196,7 +196,6 @@ describe("Artwork", () => {
           return {
             slug: "my-cool-artwork",
             internalID: "artwork123",
-            isEligibleForOnPlatformTransaction: false,
             artist: {
               artistSeriesConnection: {
                 totalCount: 5,
@@ -358,16 +357,12 @@ describe("Artwork", () => {
   it("does not show a contextCard if the work is in a non-auction sale", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-    mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
-      Artwork: () => ({
-        isEligibleForArtsyGuarantee: false,
-      }),
-    })
+    mockMostRecentOperation("ArtworkAboveTheFoldQuery")
     mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
     mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
       Artwork() {
         return {
-          isEligibleForOnPlatformTransaction: false,
+          isForSale: false,
         }
       },
       Sale() {
