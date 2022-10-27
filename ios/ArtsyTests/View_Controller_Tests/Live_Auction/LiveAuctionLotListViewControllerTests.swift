@@ -9,14 +9,14 @@ import Artsy
 class LiveAuctionLotListViewControllerTests: QuickSpec {
     override func spec() {
 
-        it("looks good by default") {
+        it("live auction lot list looks good by default") {
             let fake = stub_auctionSalesPerson()
             let subject = LiveAuctionLotListViewController(salesPerson: fake, currentLotSignal: fake.currentLotSignal, auctionViewModel: fake.auctionViewModel)
 
             expect(subject) == snapshot()
         }
 
-        it("shows the selected lot") {
+        it("live auction lot list shows the selected lot") {
             let fake = stub_auctionSalesPerson()
             let subject = LiveAuctionLotListViewController(salesPerson: fake, currentLotSignal: fake.currentLotSignal, auctionViewModel: fake.auctionViewModel)
             subject.selectedIndex = 4
