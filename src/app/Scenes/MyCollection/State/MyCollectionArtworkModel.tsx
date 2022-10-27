@@ -1,4 +1,3 @@
-import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
 import { MyCollectionArtwork_sharedProps$data } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
@@ -21,7 +20,7 @@ export interface ArtworkFormValues {
   artist: string
   artistIds: string[]
   artistDisplayName?: string
-  artistSearchResult: AutosuggestResult | ArtistListItem_artist$data | null
+  artistSearchResult: AutosuggestResult | null
   category: string // this refers to "materials" in UI
   pricePaidDollars: string
   pricePaidCurrency: string
@@ -77,10 +76,7 @@ export interface MyCollectionArtworkModel {
   setDirtyFormCheckValues: Action<MyCollectionArtworkModel, ArtworkFormValues>
   resetForm: Action<MyCollectionArtworkModel>
   resetFormButKeepArtist: Action<MyCollectionArtworkModel>
-  setArtistSearchResult: Action<
-    MyCollectionArtworkModel,
-    AutosuggestResult | ArtistListItem_artist$data | null
-  >
+  setArtistSearchResult: Action<MyCollectionArtworkModel, AutosuggestResult | null>
   setArtworkId: Action<MyCollectionArtworkModel, { artworkId: string }>
   setArtworkErrorOccurred: Action<MyCollectionArtworkModel, boolean>
 

@@ -1,9 +1,8 @@
-import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
 import { Avatar, Flex, Spacer, Text } from "palette"
 
 export const ArtistSearchResult: React.FC<{
-  result: AutosuggestResult | ArtistListItem_artist$data
+  result: AutosuggestResult
 }> = ({ result }) => {
   return (
     <Flex flexDirection="row" alignItems="center">

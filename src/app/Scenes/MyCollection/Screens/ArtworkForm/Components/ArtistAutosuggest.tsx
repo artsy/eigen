@@ -1,17 +1,17 @@
 import { ArtistAutosuggestQuery } from "__generated__/ArtistAutosuggestQuery.graphql"
-import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
 import SearchIcon from "app/Icons/SearchIcon"
 import { AutosuggestResult, AutosuggestResults } from "app/Scenes/Search/AutosuggestResults"
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
 import { useFeatureFlag } from "app/store/GlobalStore"
+import { extractNodes } from "app/utils/extractNodes"
 import { Box, Button, Flex, Input, Text } from "palette"
 import { useLazyLoadQuery } from "react-relay"
 import { graphql } from "relay-runtime"
+import { normalizeText } from "shared/utils"
 import { useArtworkForm } from "../Form/useArtworkForm"
-import { CollectedArtistList } from "./CollectedArtistList"
 
 interface ArtistAutosuggestProps {
-  onResultPress: (result: AutosuggestResult | ArtistListItem_artist$data) => void
+  onResultPress: (result: AutosuggestResult) => void
   onSkipPress?: () => void
 }
 
@@ -26,6 +26,13 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
   const { artist: artistQuery } = formik.values
   const searchProviderValues = useSearchProviderValues(artistQuery)
 
+  const collectedArtists = extractNodes(queryData.me?.myCollectionInfo?.collectedArtistsConnection)
+  const filteredCollecteArtists = filterArtistsByKeyword(collectedArtists, artistQuery).map(
+    (artist) => ({ ...artist, __typename: "Artist" })
+  )
+
+  const showResults = filteredCollecteArtists.length || artistQuery.length > 2
+
   return (
     <SearchContext.Provider value={searchProviderValues}>
       <Box>
@@ -39,19 +46,11 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
           autoFocus={typeof jest === "undefined"}
           autoCorrect={false}
         />
-        {!!enableArtworksFromNonArtsyArtists && (
-          <Flex mt={2}>
-            <CollectedArtistList
-              myCollectionInfo={queryData.me?.myCollectionInfo!}
-              onResultPress={onResultPress}
-              searchTerm={formik.values.artist}
-            />
-          </Flex>
-        )}
-        {artistQuery.length > 2 ? (
-          <Box height="200px" py={4}>
+        {showResults ? (
+          <Box height="100%" py={4}>
             <AutosuggestResults
               query={artistQuery}
+              prependResults={enableArtworksFromNonArtsyArtists ? filteredCollecteArtists : []}
               entities={["ARTIST"]}
               showResultType={false}
               showQuickNavigationButtons={false}
@@ -80,8 +79,41 @@ const ArtistAutosuggestScreenQuery = graphql`
   query ArtistAutosuggestQuery {
     me {
       myCollectionInfo {
-        ...CollectedArtistList_myCollectionInfo
+        collectedArtistsConnection(first: 20) {
+          edges {
+            node {
+              internalID
+              displayLabel
+              slug
+              imageUrl
+              formattedNationalityAndBirthday
+            }
+          }
+        }
       }
     }
   }
 `
+
+export const filterArtistsByKeyword = (
+  artists: Array<{ displayLabel: string | null }>,
+  keywordFilter: string
+) => {
+  if (!keywordFilter) {
+    return artists
+  }
+
+  const normalizedKeywordFilter = normalizeText(keywordFilter)
+
+  if (!normalizedKeywordFilter) {
+    return artists
+  }
+
+  const keywordFilterWords = normalizedKeywordFilter.split(" ")
+
+  const doAllKeywordFiltersMatch = (artist: { displayLabel: string | null }) =>
+    keywordFilterWords.filter((word) => !normalizeText(artist?.displayLabel ?? "").includes(word))
+      .length === 0
+
+  return artists.filter(doAllKeywordFiltersMatch)
+}

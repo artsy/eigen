@@ -30,6 +30,7 @@ const SUBSEQUENT_BATCH_SIZE = 64
 
 const AutosuggestResultsFlatList: React.FC<{
   query: string
+  prependResults?: any[]
   // if results are null that means we are waiting on a response from MP
   results: AutosuggestResults_results$data | null
   relay: RelayPaginationProp
@@ -47,6 +48,7 @@ const AutosuggestResultsFlatList: React.FC<{
   onResultPress,
   trackResultPress,
   ListEmptyComponent = EmptyList,
+  prependResults = [],
 }) => {
   const [shouldShowLoadingPlaceholder, setShouldShowLoadingPlaceholder] = useState(true)
   const loadMore = useCallback(() => relay.loadMore(SUBSEQUENT_BATCH_SIZE), [])
@@ -107,16 +109,23 @@ const AutosuggestResultsFlatList: React.FC<{
   const results = useRef(latestResults)
   results.current = latestResults || results.current
 
-  const nodes: AutosuggestResult[] = useMemo(
-    () =>
+  const nodes: AutosuggestResult[] = useMemo(() => {
+    const excludedIDs = prependResults.map((result) => result.internalID)
+
+    const edges =
       results.current?.results?.edges?.map((e, i) => ({ ...e?.node!, key: e?.node?.href! + i })) ??
-      [],
-    [results.current]
-  )
+      []
+    const filteredEdges = edges.filter((node) => !excludedIDs.includes(node.internalID))
+
+    return filteredEdges
+  }, [results.current])
+
+  const allNodes = [...prependResults, ...nodes]
 
   // We want to show a loading spinner at the bottom so long as there are more results to be had
   const hasMoreResults =
     results.current && results.current.results?.edges?.length! > 0 && relay.hasMore()
+
   const ListFooterComponent = useMemo(() => {
     return () => (
       <Flex justifyContent="center" p={3} pb={6}>
@@ -125,7 +134,7 @@ const AutosuggestResultsFlatList: React.FC<{
     )
   }, [hasMoreResults])
 
-  const noResults = results.current && results.current.results?.edges?.length === 0
+  const noResults = results.current && allNodes.length === 0
 
   if (shouldShowLoadingPlaceholder) {
     return (
@@ -139,7 +148,7 @@ const AutosuggestResultsFlatList: React.FC<{
     <AboveTheFoldFlatList<AutosuggestResult>
       listRef={flatListRef}
       initialNumToRender={isPad() ? 24 : 12}
-      data={nodes}
+      data={allNodes}
       showsVerticalScrollIndicator={false}
       ListFooterComponent={ListFooterComponent}
       keyboardDismissMode="on-drag"
@@ -257,6 +266,7 @@ const AutosuggestResultsContainer = createPaginationContainer(
 export const AutosuggestResults: React.FC<{
   query: string
   entities?: AutosuggestResultsQuery["variables"]["entities"]
+  prependResults?: any[]
   showResultType?: boolean
   showQuickNavigationButtons?: boolean
   showOnRetryErrorMessage?: boolean
@@ -267,6 +277,7 @@ export const AutosuggestResults: React.FC<{
   ({
     query,
     entities,
+    prependResults,
     showResultType,
     showQuickNavigationButtons,
     showOnRetryErrorMessage,
@@ -301,6 +312,7 @@ export const AutosuggestResults: React.FC<{
           return (
             <AutosuggestResultsContainer
               query={query}
+              prependResults={prependResults}
               results={props}
               showResultType={showResultType}
               showQuickNavigationButtons={showQuickNavigationButtons}
