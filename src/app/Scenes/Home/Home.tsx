@@ -217,7 +217,7 @@ const Home = (props: Props) => {
 
             switch (item.type) {
               case "contentCards":
-                return <ContentCards />
+                return <ContentCards mb={MODULE_SEPARATOR_HEIGHT} />
               case "articles":
                 return (
                   <ArticlesRailFragmentContainer
