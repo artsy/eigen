@@ -1,4 +1,6 @@
+import { fireEvent } from "@testing-library/react-native"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { createMockEnvironment } from "relay-test-utils"
@@ -83,6 +85,21 @@ describe("Activity", () => {
     expect(queryByText("Notification One")).toBeTruthy()
     expect(queryByText("Notification Two")).toBeTruthy()
     expect(queryByText("Notification Three")).toBeNull()
+  })
+
+  it("should track event when the tab is tapped", () => {
+    const { getByText } = renderWithHookWrappersTL(<Activity />, mockEnvironment)
+
+    fireEvent.press(getByText("Alerts"))
+
+    expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "action": "clickedActivityPanelTab",
+          "tab_name": "Alerts",
+        },
+      ]
+    `)
   })
 })
 
