@@ -1,4 +1,5 @@
 import { ActionType } from "@artsy/cohesion"
+import { ClickedNotificationsBell } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
 import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { BellIcon, Box, useTheme } from "palette"
@@ -54,7 +55,7 @@ export const ActivityIndicator: React.FC<ActivityIndicatorProps> = ({ hasNotific
 }
 
 const tracks = {
-  clickedNotificationsBell: () => ({
+  clickedNotificationsBell: (): ClickedNotificationsBell => ({
     action: ActionType.clickedNotificationsBell,
   }),
 }

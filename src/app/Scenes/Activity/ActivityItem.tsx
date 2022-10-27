@@ -1,4 +1,5 @@
 import { ActionType } from "@artsy/cohesion"
+import { ClickedActivityPanelNotificationItem } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
 import { ActivityItem_item$key } from "__generated__/ActivityItem_item.graphql"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -120,7 +121,7 @@ const activityItemFragment = graphql`
 `
 
 const tracks = {
-  tappedNotification: (notificationType: string) => ({
+  tappedNotification: (notificationType: string): ClickedActivityPanelNotificationItem => ({
     action: ActionType.clickedActivityPanelNotificationItem,
     notification_type: notificationType,
   }),
