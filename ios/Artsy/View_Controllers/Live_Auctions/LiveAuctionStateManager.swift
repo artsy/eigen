@@ -3,6 +3,7 @@ import Interstellar
 import SwiftyJSON
 
 /*
+
 Independent of sockets:
 - time elapsed
 
@@ -14,6 +15,7 @@ Based on socket events:
 - next bid amount $
 - bid history
 - bid request (command) success/failure
+
 */
 
 class LiveAuctionStateManager: NSObject {
