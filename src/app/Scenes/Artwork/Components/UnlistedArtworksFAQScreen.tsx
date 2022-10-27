@@ -4,7 +4,7 @@ import React from "react"
 import { ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks/useScreenDimensions"
 
-export const PrivateListingsFAQScreen: React.FC = () => {
+export const UnlistedArtworksFAQScreen: React.FC = () => {
   const { safeAreaInsets } = useScreenDimensions()
 
   return (

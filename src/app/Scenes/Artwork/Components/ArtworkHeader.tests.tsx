@@ -4,7 +4,7 @@ import { ArtworkActions } from "./ArtworkActions"
 import { ArtworkHeader, VisibilityLevels } from "./ArtworkHeader"
 import { ArtworkTombstone } from "./ArtworkTombstone"
 import { ImageCarousel } from "./ImageCarousel/ImageCarousel"
-import { PrivateListingsBanner } from "./PrivateListingsBanner"
+import { UnlistedArtworksBanner } from "./UnlistedArtworksBanner"
 
 jest.mock("react-native-view-shot", () => ({}))
 
@@ -35,7 +35,7 @@ describe("ArtworkHeader", () => {
         visibilityLevel: VisibilityLevels.UNLISTED,
       }
       const { container } = renderWithWrappers(<ArtworkHeader artwork={artwork} />)
-      expect(container.findAllByType(PrivateListingsBanner).length).toEqual(1)
+      expect(container.findAllByType(UnlistedArtworksBanner).length).toEqual(1)
     })
 
     describe("when artwork is listed", () => {
@@ -45,7 +45,7 @@ describe("ArtworkHeader", () => {
           visibilityLevel: VisibilityLevels.LISTED,
         }
         const { container } = renderWithWrappers(<ArtworkHeader artwork={artwork} />)
-        expect(container.findAllByType(PrivateListingsBanner)).toHaveLength(0)
+        expect(container.findAllByType(UnlistedArtworksBanner)).toHaveLength(0)
       })
     })
 
@@ -56,7 +56,7 @@ describe("ArtworkHeader", () => {
           visibilityLevel: null,
         }
         const { container } = renderWithWrappers(<ArtworkHeader artwork={artwork} />)
-        expect(container.findAllByType(PrivateListingsBanner)).toHaveLength(0)
+        expect(container.findAllByType(UnlistedArtworksBanner)).toHaveLength(0)
       })
     })
   })

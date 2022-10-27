@@ -27,7 +27,7 @@ import { ArtworkActionsFragmentContainer as ArtworkActions, shareContent } from 
 import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./ArtworkTombstone"
 import { ImageCarouselFragmentContainer } from "./ImageCarousel/ImageCarousel"
 import { InstagramStoryViewShot } from "./InstagramStoryViewShot"
-import { PrivateListingsBanner } from "./PrivateListingsBanner"
+import { UnlistedArtworksBanner } from "./UnlistedArtworksBanner"
 
 interface ArtworkHeaderProps {
   artwork: ArtworkHeader_artwork$data
@@ -122,7 +122,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
       <Box>
         {artwork.visibilityLevel === VisibilityLevels.UNLISTED && (
           <Flex my={2} mx={-2}>
-            <PrivateListingsBanner partnerName={artwork.partner?.name} />
+            <UnlistedArtworksBanner partnerName={artwork.partner?.name} />
           </Flex>
         )}
         <Spacer mb={2} />
