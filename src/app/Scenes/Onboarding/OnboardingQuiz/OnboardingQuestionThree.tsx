@@ -9,8 +9,8 @@ import {
   OPTION_FOLLOW_GALLERIES_IM_INTERESTED_IN,
   OPTION_KEEP_TRACK_OF_ART,
   OPTION_TOP_AUCTION_LOTS,
-} from "app/Scenes/Onboarding/OnboardingV2/config"
-import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingTracking"
+} from "app/Scenes/Onboarding/OnboardingQuiz/config"
+import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingTracking"
 import { useCallback, useMemo } from "react"
 import { OnboardingQuestionTemplate } from "./Components/OnboardingQuestionTemplate"
 import { useNextOnboardingScreen } from "./Hooks/useNextOnboardingScreen"

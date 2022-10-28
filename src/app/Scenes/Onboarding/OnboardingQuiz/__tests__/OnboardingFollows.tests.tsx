@@ -8,9 +8,9 @@ import { OnboardingSearchResultsScreen } from "../OnboardingSearchResults"
 
 jest.unmock("react-relay")
 
-jest.mock("app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingTracking")
+jest.mock("app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingTracking")
 
-jest.mock("app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingContext", () => {
+jest.mock("app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext", () => {
   return {
     useOnboardingContext: () => ({
       state: {

@@ -4,9 +4,9 @@ import {
   OPTION_DEVELOPING_MY_ART_TASTES,
   OPTION_FINDING_GREAT_INVESTMENTS,
   OPTION_KEEP_TRACK_OF_ART,
-} from "app/Scenes/Onboarding/OnboardingV2/config"
-import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingContext"
-import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingTracking"
+} from "app/Scenes/Onboarding/OnboardingQuiz/config"
+import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
+import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingTracking"
 import { useCallback } from "react"
 import { OnboardingQuestionTemplate } from "./Components/OnboardingQuestionTemplate"
 

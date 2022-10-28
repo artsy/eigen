@@ -243,12 +243,6 @@ export const features = defineFeatures({
     description: "Enable My Collection artworks from non-Artsy artists",
     showInAdminMenu: true,
   },
-  AREnableNewOnboarding: {
-    readyForRelease: true,
-    description: "Enable new Onboarding flow 2022",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableNewOnboarding",
-  },
   AREnableArtworksConnectionForAuction: {
     readyForRelease: true,
     description: "Use artworksConnection for Auction screen",

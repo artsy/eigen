@@ -1,5 +1,5 @@
 import { renderHook } from "@testing-library/react-hooks"
-import { State } from "app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingContext"
+import { State } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
 import {
   OPTION_DEVELOPING_MY_ART_TASTES,
   OPTION_FOLLOW_GALLERIES_IM_INTERESTED_IN,
