@@ -1,4 +1,5 @@
 import { ActivityItem_item$key } from "__generated__/ActivityItem_item.graphql"
+import { AppModule } from "app/AppRegistry"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Flex, OpaqueImageView, Spacer, Text } from "palette"
@@ -26,7 +27,11 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
   const notificationTypeLabel = getNotificationType()
 
   const handlePress = () => {
-    navigate(item.targetHref)
+    navigate(item.targetHref, {
+      passProps: {
+        fromModule: "Activity" as AppModule,
+      },
+    })
   }
 
   return (
