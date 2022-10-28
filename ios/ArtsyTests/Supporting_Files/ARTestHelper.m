@@ -20,8 +20,8 @@
              @"The tests should be run on iOS 16.0, not %ld.%ld", version.majorVersion, version.minorVersion);
 
     CGSize nativeResolution = [UIScreen mainScreen].nativeBounds.size;
-    NSAssert([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone && CGSizeEqualToSize(nativeResolution, CGSizeMake(1170, 2532)),
-             @"The tests should be run on an iPhone 13 Pro, not a device with native resolution %@",
+    NSAssert([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone && CGSizeEqualToSize(nativeResolution, CGSizeMake(1179, 2556)),
+             @"The tests should be run on an iPhone 14 Pro, not a device with native resolution %@",
              NSStringFromCGSize(nativeResolution));
 
     ARPerformWorkAsynchronously = NO;
