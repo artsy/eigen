@@ -1,10 +1,18 @@
-import { ArtistAboveTheFoldQuery } from "__generated__/ArtistAboveTheFoldQuery.graphql"
+import {
+  ArtistAboveTheFoldQuery,
+  FilterArtworksInput,
+} from "__generated__/ArtistAboveTheFoldQuery.graphql"
 import { ArtistBelowTheFoldQuery } from "__generated__/ArtistBelowTheFoldQuery.graphql"
 import { ArtistAboutContainer } from "app/Components/Artist/ArtistAbout/ArtistAbout"
 import ArtistArtworks from "app/Components/Artist/ArtistArtworks/ArtistArtworks"
 import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeader"
 import { ArtistHeaderFloatingButtonsFragmentContainer } from "app/Components/Artist/ArtistHeaderFloatingButtons"
 import { ArtistInsightsFragmentContainer } from "app/Components/Artist/ArtistInsights/ArtistInsights"
+import {
+  FilterArray,
+  filterArtworksParams,
+  prepareFilterArtworksParamsForInput,
+} from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { DEFAULT_ARTWORK_SORT } from "app/Components/ArtworkFilter/Filters/SortOptions"
 import { getOnlyFilledSearchCriteriaValues } from "app/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
@@ -32,6 +40,7 @@ interface ArtistProps {
   initialTab?: string
   searchCriteria: SearchCriteriaAttributes | null
   fetchCriteriaError: Error | null
+  predefinedFilters?: FilterArray
 }
 
 export const Artist: React.FC<ArtistProps> = (props) => {
@@ -41,6 +50,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     initialTab = INITIAL_TAB,
     searchCriteria,
     fetchCriteriaError,
+    predefinedFilters,
   } = props
   const popoverMessage = usePopoverMessage()
 
@@ -74,7 +84,13 @@ export const Artist: React.FC<ArtistProps> = (props) => {
 
   tabs.push({
     title: "Artworks",
-    content: <ArtistArtworks artist={artistAboveTheFold} searchCriteria={searchCriteria} />,
+    content: (
+      <ArtistArtworks
+        artist={artistAboveTheFold}
+        searchCriteria={searchCriteria}
+        predefinedFilters={predefinedFilters}
+      />
+    ),
   })
 
   if (!!artistAboveTheFold?.statuses?.auctionLots) {
@@ -124,6 +140,7 @@ interface ArtistQueryRendererProps {
   searchCriteriaID?: string
   search_criteria_id?: string
   artistID: string
+  predefinedFilters?: FilterArray
 }
 
 export const ArtistScreenQuery = graphql`
@@ -154,7 +171,14 @@ export const defaultArtistVariables = () => ({
 })
 
 export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) => {
-  const { artistID, environment, initialTab, searchCriteriaID, search_criteria_id } = props
+  const {
+    artistID,
+    environment,
+    initialTab,
+    searchCriteriaID,
+    search_criteria_id,
+    predefinedFilters,
+  } = props
 
   return (
     <SearchCriteriaQueryRenderer
@@ -164,21 +188,32 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
         renderPlaceholder: () => <HeaderTabsGridPlaceholder />,
         renderComponent: (searchCriteriaProps) => {
           const { savedSearchCriteria, fetchCriteriaError } = searchCriteriaProps
-          const preparedSavedSearchCriteria = getOnlyFilledSearchCriteriaValues(
-            savedSearchCriteria ?? {}
-          )
-          const initialArtworksInput = {
+          const predefinedFilterParams = filterArtworksParams(predefinedFilters ?? [], "artwork")
+          let initialArtworksInput = {
             ...defaultArtistVariables().input,
-            sort: !!savedSearchCriteria ? "-published_at" : DEFAULT_ARTWORK_SORT.paramValue,
-            ...preparedSavedSearchCriteria,
+            ...predefinedFilterParams,
           }
+
+          if (savedSearchCriteria) {
+            const preparedCriteria = getOnlyFilledSearchCriteriaValues(savedSearchCriteria)
+
+            initialArtworksInput = {
+              ...initialArtworksInput,
+              ...preparedCriteria,
+              sort: "-published_at",
+            }
+          }
+          const input = prepareFilterArtworksParamsForInput(initialArtworksInput)
 
           return (
             <AboveTheFoldQueryRenderer<ArtistAboveTheFoldQuery, ArtistBelowTheFoldQuery>
               environment={environment || defaultEnvironment}
               above={{
                 query: ArtistScreenQuery,
-                variables: { artistID, input: initialArtworksInput },
+                variables: {
+                  artistID,
+                  input: input as FilterArtworksInput,
+                },
               }}
               below={{
                 query: graphql`
@@ -204,6 +239,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
                       initialTab={initialTab}
                       searchCriteria={savedSearchCriteria}
                       fetchCriteriaError={fetchCriteriaError}
+                      predefinedFilters={predefinedFilters}
                     />
                   )
                 },
