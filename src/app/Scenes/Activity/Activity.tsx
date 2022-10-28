@@ -1,3 +1,5 @@
+import { ActionType } from "@artsy/cohesion"
+import { ClickedActivityPanelTab } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
 import { NotificationTypesEnum } from "__generated__/ActivityItem_item.graphql"
 import { ActivityQuery } from "__generated__/ActivityQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
@@ -6,6 +8,7 @@ import { goBack } from "app/navigation/navigate"
 import { Flex } from "palette"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
+import { useTracking } from "react-tracking"
 import { ActivityList } from "./ActivityList"
 import { ActivityTabPlaceholder } from "./ActivityTabPlaceholder"
 import { NotificationType } from "./types"
@@ -33,6 +36,8 @@ export const ActivityContainer: React.FC<ActivityProps> = (props) => {
 }
 
 export const Activity = () => {
+  const tracking = useTracking()
+
   const tabs: TabProps[] = [
     {
       title: "All",
@@ -45,6 +50,11 @@ export const Activity = () => {
     },
   ]
 
+  const handleTabPress = (tabIndex: number) => {
+    const tab = tabs[tabIndex]
+    tracking.trackEvent(tracks.clickedActivityPanelTab(tab.title))
+  }
+
   return (
     <Flex flex={1}>
       <StickyTabPage
@@ -55,6 +65,8 @@ export const Activity = () => {
           </FancyModalHeader>
         }
         disableBackButtonUpdate
+        shouldTrackEventOnTabClick={false}
+        onTabPress={handleTabPress}
       />
     </Flex>
   )
@@ -74,4 +86,11 @@ const getNotificationTypes = (type: NotificationType): NotificationTypesEnum[] |
   }
 
   return []
+}
+
+const tracks = {
+  clickedActivityPanelTab: (tabName: string): ClickedActivityPanelTab => ({
+    action: ActionType.clickedActivityPanelTab,
+    tab_name: tabName,
+  }),
 }

@@ -1,9 +1,12 @@
+import { ActionType } from "@artsy/cohesion"
+import { ClickedActivityPanelNotificationItem } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
 import { ActivityItem_item$key } from "__generated__/ActivityItem_item.graphql"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Flex, OpaqueImageView, Spacer, Text } from "palette"
 import { TouchableOpacity } from "react-native"
 import { graphql, useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface ActivityItemProps {
   item: ActivityItem_item$key
@@ -12,6 +15,7 @@ interface ActivityItemProps {
 const UNREAD_INDICATOR_SIZE = 8
 
 export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
+  const tracking = useTracking()
   const item = useFragment(activityItemFragment, props.item)
   const artworks = extractNodes(item.artworksConnection)
   const remainingArtworksCount = (item.artworksConnection?.totalCount ?? 0) - 4
@@ -27,6 +31,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
 
   const handlePress = () => {
     navigate(item.targetHref)
+    tracking.trackEvent(tracks.tappedNotification(item.notificationType))
   }
 
   return (
@@ -114,3 +119,10 @@ const activityItemFragment = graphql`
     }
   }
 `
+
+const tracks = {
+  tappedNotification: (notificationType: string): ClickedActivityPanelNotificationItem => ({
+    action: ActionType.clickedActivityPanelNotificationItem,
+    notification_type: notificationType,
+  }),
+}

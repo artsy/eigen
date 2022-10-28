@@ -1,5 +1,7 @@
+import { fireEvent } from "@testing-library/react-native"
 import { ActivityItem_Test_Query } from "__generated__/ActivityItem_Test_Query.graphql"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { extractNodes } from "app/utils/extractNodes"
@@ -68,6 +70,26 @@ describe("ActivityItem", () => {
     await flushPromiseQueue()
 
     expect(getAllByLabelText("Activity Artwork Image")).toHaveLength(4)
+  })
+
+  it("should track event when an item is tapped", async () => {
+    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Notification: () => notification,
+    })
+    await flushPromiseQueue()
+
+    fireEvent.press(getByText("Notification Title"))
+
+    expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "action": "clickedActivityPanelNotificationItem",
+          "notification_type": "ARTWORK_PUBLISHED",
+        },
+      ]
+    `)
   })
 
   describe("the remaining artworks count", () => {
