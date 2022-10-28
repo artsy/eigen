@@ -337,6 +337,9 @@ export const devToggles = defineDevToggles({
   DTShowErrorInLoadFailureView: {
     description: "Show error in load failure view",
   },
+  DTEnableNewImageLabel: {
+    description: "Show a label on new OpaqueImageView",
+  },
 })
 
 export const isDevToggle = (name: FeatureName | DevToggleName): name is DevToggleName => {
