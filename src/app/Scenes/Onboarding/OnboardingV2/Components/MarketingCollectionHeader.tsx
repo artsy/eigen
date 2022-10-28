@@ -26,7 +26,7 @@ export const MarketingCollectionHeader: React.FC<MarketingCollectionHeaderProps>
   const collection = useFragment(marketingCollectionHeaderFragment, marketingCollection)
 
   return (
-    <ImageBackground style={{ minHeight: 250 }} resizeMode="cover" source={images[collectionSlug]}>
+    <ImageBackground resizeMode="cover" source={images[collectionSlug]}>
       <Flex pt={6} px={2}>
         <Text variant="xl" color="white100">
           {collection.title}
@@ -39,6 +39,7 @@ export const MarketingCollectionHeader: React.FC<MarketingCollectionHeaderProps>
         <Text variant="sm" color="white100">
           {SAVE_INSTRUCTIONS}
         </Text>
+        <Spacer mt={4} />
       </Flex>
     </ImageBackground>
   )
