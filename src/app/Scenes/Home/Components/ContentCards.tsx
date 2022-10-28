@@ -49,7 +49,7 @@ const ContentCard: React.FC<CardProps> = ({ item }) => {
   )
 }
 
-export const ContentCards: React.FC = () => {
+export const ContentCards: React.FC<{ mb?: number }> = ({ mb }) => {
   const [cards, setCards] = useState<ReactAppboy.CaptionedContentCard[]>([])
   const eventName = ReactAppboy.Events?.CONTENT_CARDS_UPDATED
 
@@ -79,14 +79,15 @@ export const ContentCards: React.FC = () => {
     return null
   }
 
-  return <CardList cards={cards} />
+  return <CardList cards={cards} mb={mb} />
 }
 
 interface CardListProps {
   cards: ReactAppboy.CaptionedContentCard[]
+  mb?: number
 }
 
-export const CardList: React.FC<CardListProps> = ({ cards }) => {
+export const CardList: React.FC<CardListProps> = ({ cards, mb }) => {
   const [currentCardIndex, setCurrentCardIndex] = useState(0)
   const [viewedCards, setViewedCards] = useState([] as ReactAppboy.CaptionedContentCard[])
 
@@ -126,7 +127,7 @@ export const CardList: React.FC<CardListProps> = ({ cards }) => {
       />
       <Spacer mb={2} />
       <PaginationDots currentIndex={currentCardIndex} length={cards.length} />
-      <Spacer mb={2} />
+      <Spacer mb={mb} />
     </>
   )
 }
