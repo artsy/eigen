@@ -18,7 +18,6 @@ import {
 } from "./OnboardingCreateAccount/OnboardingCreateAccount"
 import { OnboardingLogin, OnboardingLoginWithEmail } from "./OnboardingLogin"
 import { OnboardingLoginWithOTP, OTPMode } from "./OnboardingLoginWithOTP"
-import { OnboardingPersonalization } from "./OnboardingPersonalization/OnboardingPersonalization"
 import { AppleToken, GoogleOrFacebookToken, OnboardingSocialLink } from "./OnboardingSocialLink"
 import { OnboardingV2 } from "./OnboardingV2/OnboardingV2"
 import { OnboardingWebView, OnboardingWebViewRoute } from "./OnboardingWebView"
@@ -111,7 +110,6 @@ export const OnboardingWelcomeScreens = () => {
 export const Onboarding = () => {
   const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
   const showNetworkUnavailableModal = useFeatureFlag("ARShowNetworkUnavailableModal")
-  const isNewOnboardingEnabled = useFeatureFlag("AREnableNewOnboarding")
   const fpsCounter = useDevToggle("DTFPSCounter")
 
   return (
@@ -119,15 +117,7 @@ export const Onboarding = () => {
       <ArtsyKeyboardAvoidingViewContext.Provider
         value={{ isVisible: true, isPresentedModally: false, bottomOffset: 0 }}
       >
-        {onboardingState === "incomplete" ? (
-          isNewOnboardingEnabled ? (
-            <OnboardingV2 />
-          ) : (
-            <OnboardingPersonalization />
-          )
-        ) : (
-          <OnboardingWelcomeScreens />
-        )}
+        {onboardingState === "incomplete" ? <OnboardingV2 /> : <OnboardingWelcomeScreens />}
         {!!showNetworkUnavailableModal && <NetworkAwareProvider />}
       </ArtsyKeyboardAvoidingViewContext.Provider>
       {!!fpsCounter && <FPSCounter style={{ bottom: Platform.OS === "ios" ? 40 : undefined }} />}

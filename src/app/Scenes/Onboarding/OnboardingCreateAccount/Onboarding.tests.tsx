@@ -9,10 +9,6 @@ jest.mock("../OnboardingV2/OnboardingV2.tsx", () => ({
 }))
 
 describe("Onboarding", () => {
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewOnboarding: true })
-  })
-
   it("renders the welcome screens when the onboarding state is none or complete", () => {
     const tree1 = renderWithWrappersLEGACY(<Onboarding />)
     __globalStoreTestUtils__?.injectState({ auth: { onboardingState: "none" } })

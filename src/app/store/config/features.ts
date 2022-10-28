@@ -246,7 +246,6 @@ export const features = defineFeatures({
   AREnableNewOnboarding: {
     readyForRelease: true,
     description: "Enable new Onboarding flow 2022",
-    showInAdminMenu: true,
     echoFlagKey: "AREnableNewOnboarding",
   },
   AREnableArtworksConnectionForAuction: {
