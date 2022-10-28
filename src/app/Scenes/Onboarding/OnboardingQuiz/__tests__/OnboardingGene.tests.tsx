@@ -4,7 +4,7 @@ import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRela
 import { createMockEnvironment } from "relay-test-utils"
 import { OnboardingGeneScreen } from "../OnboardingGene"
 
-jest.mock("app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingTracking")
+jest.mock("app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingTracking")
 
 jest.unmock("react-relay")
 

@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native"
 import { GeneHeaderFragment_Gene$key } from "__generated__/GeneHeaderFragment_Gene.graphql"
-import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingTracking"
+import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingTracking"
 import { Flex, FollowButton, Spacer, Text } from "palette"
 import { useCallback, useEffect, useState } from "react"
 import { ImageBackground, ImageSourcePropType } from "react-native"

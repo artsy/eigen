@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
-import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingV2/Hooks/useOnboardingTracking"
+import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingTracking"
 import { GlobalStore } from "app/store/GlobalStore"
 import { OnboardingProvider } from "./Hooks/useOnboardingContext"
 import { useUpdateUserProfile } from "./Hooks/useUpdateUserProfile"
@@ -37,7 +37,7 @@ export type OnboardingNavigationStack = {
 
 const StackNavigator = createStackNavigator<OnboardingNavigationStack>()
 
-export const OnboardingV2 = () => {
+export const OnboardingQuiz = () => {
   const { trackCompletedOnboarding } = useOnboardingTracking()
 
   const onDone = () => {
