@@ -8,12 +8,10 @@ interface ShippingAndTaxesProps {
 }
 
 const ShippingAndTaxes: React.FC<ShippingAndTaxesProps> = ({ artwork }) => {
-  const { shippingInfo, shippingOrigin, priceIncludesTaxDisplay } = artwork
+  const { shippingInfo, shippingOrigin, priceIncludesTaxDisplay, taxInfo } = artwork
 
   const handleLearnMorePress = () => {
-    navigate(
-      "https://support.artsy.net/hc/en-us/articles/360047294733-How-is-sales-tax-and-VAT-handled-on-works-listed-with-secure-checkout-"
-    )
+    navigate(taxInfo!.moreInfo.url)
   }
 
   return (
@@ -21,9 +19,12 @@ const ShippingAndTaxes: React.FC<ShippingAndTaxesProps> = ({ artwork }) => {
       <Text variant="md">Shipping and taxes</Text>
       <Spacer my={1} />
 
-      <Text variant="sm" color="black60">
-        Taxes may apply at checkout. <LinkText onPress={handleLearnMorePress}>Learn more.</LinkText>
-      </Text>
+      {!!taxInfo && (
+        <Text variant="sm" color="black60">
+          {taxInfo.displayText}{" "}
+          <LinkText onPress={handleLearnMorePress}>{taxInfo.moreInfo.displayText}</LinkText>
+        </Text>
+      )}
 
       {!!shippingOrigin && (
         <Text variant="sm" color="black60">
@@ -52,6 +53,13 @@ export const ShippingAndTaxesFragmentContainer = createFragmentContainer(Shippin
       shippingOrigin
       shippingInfo
       priceIncludesTaxDisplay
+      taxInfo {
+        displayText
+        moreInfo {
+          displayText
+          url
+        }
+      }
     }
   `,
 })

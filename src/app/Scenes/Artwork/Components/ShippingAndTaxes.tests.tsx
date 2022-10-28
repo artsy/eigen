@@ -44,7 +44,10 @@ describe("ShippingAndTaxes", () => {
       Artwork: () => artwork,
     })
 
-    expect(queryByText("Taxes may apply at checkout", { exact: false })).toBeDefined()
+    // Tax info
+    expect(queryByText("Tax Info")).toBeDefined()
+    expect(queryByText("Link Button")).toBeDefined()
+
     expect(queryByText("City, State, Country")).toBeDefined()
     expect(queryByText("Shipping: Calculated in checkout")).toBeDefined()
     expect(queryByText("VAT included in price")).toBeDefined()
@@ -58,10 +61,14 @@ describe("ShippingAndTaxes", () => {
         shippingOrigin: null,
         shippingInfo: null,
         priceIncludesTaxDisplay: null,
+        taxInfo: null,
       }),
     })
 
-    expect(queryByText("Taxes may apply at checkout", { exact: false })).toBeDefined()
+    // Tax info
+    expect(queryByText("Tax Info")).toBeNull()
+    expect(queryByText("Link Button")).toBeNull()
+
     expect(queryByText("City, State, Country")).toBeNull()
     expect(queryByText("Shipping: Calculated in checkout")).toBeNull()
     expect(queryByText("VAT included in price")).toBeNull()
@@ -72,4 +79,10 @@ const artwork = {
   shippingOrigin: "City, State, Country",
   shippingInfo: "Shipping: Calculated in checkout",
   priceIncludesTaxDisplay: "VAT included in price",
+  taxInfo: {
+    displayText: "Tax Info",
+    moreInfo: {
+      displayText: "Link Button",
+    },
+  },
 }
