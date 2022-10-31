@@ -215,6 +215,12 @@ extension PrivateFunctions {
         bidButton.delegate = self
         metadataStack.addSubview(bidButton, withTopMargin: "0", sideMargin: sideMargin)
 
+        // Report a problem button
+        let reportButton = LiveAuctionReportProblemButton(viewModel: biddingViewModel)
+        reportButton.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .vertical)
+        reportButton.delegate = self
+        metadataStack.addSubview(reportButton, withTopMargin: "10", sideMargin: sideMargin)
+
         // Bid history setup.
         let historyViewController = LiveAuctionBidHistoryViewController(lotViewModel: lotViewModel)
         bidHistoryViewController = historyViewController
@@ -282,5 +288,11 @@ extension LiveAuctionLotViewController: LiveAuctionBidButtonDelegate {
         guard let pageVC = parent else { return }
         guard let auctionVC = pageVC.parent else { return }
         auctionVC.present(nav, animated: true) { button.isEnabled = true }
+    }
+}
+
+extension LiveAuctionLotViewController: LiveAuctionReportProblemButtonDelegate {
+    func reportButtonReportedProblem() {
+        print("Report button reported problem called")
     }
 }

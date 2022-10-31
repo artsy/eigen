@@ -222,6 +222,7 @@
 		CB43299D27FE0D9000B29DD6 /* CloseButtonLargeHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE325DD27E275A200395A93 /* CloseButtonLargeHighlighted@2x.png */; };
 		CB43299E27FE0DB100B29DD6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CB43278427E8FEE400B29DD6 /* InfoPlist.strings */; };
 		CB61B85427B585F00007922D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB61B85327B585F00007922D /* GoogleService-Info.plist */; };
+		CB762B2A291054D500881194 /* LiveAuctionReportProblemButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB762B29291054D500881194 /* LiveAuctionReportProblemButton.swift */; };
 		CBE3211C27D9615000395A93 /* OldAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3210827D9615000395A93 /* OldAdminView.swift */; };
 		CBE3211D27D9615000395A93 /* ARTCityGuideViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3210927D9615000395A93 /* ARTCityGuideViewManager.m */; };
 		CBE3211E27D9615000395A93 /* ARTLiveAuctionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3210C27D9615000395A93 /* ARTLiveAuctionViewManager.m */; };
@@ -963,6 +964,7 @@
 		CB43299727FDFE6400B29DD6 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		CB43299927FDFE6B00B29DD6 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		CB61B85327B585F00007922D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CB762B29291054D500881194 /* LiveAuctionReportProblemButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveAuctionReportProblemButton.swift; sourceTree = "<group>"; };
 		CBA7CF22282BF6310025AEA5 /* Artsy_Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Artsy_Tests-Info.plist"; sourceTree = "<group>"; };
 		CBE3210827D9615000395A93 /* OldAdminView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OldAdminView.swift; sourceTree = "<group>"; };
 		CBE3210927D9615000395A93 /* ARTCityGuideViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTCityGuideViewManager.m; sourceTree = "<group>"; };
@@ -2792,6 +2794,7 @@
 				CBE324E527E275A100395A93 /* LiveAuctionsAdminViewController.swift */,
 				CBE324E627E275A100395A93 /* Views */,
 				CBE324F427E275A100395A93 /* LiveAuctionBidButton.swift */,
+				CB762B29291054D500881194 /* LiveAuctionReportProblemButton.swift */,
 				CBE324F527E275A100395A93 /* LiveAuctionPlaceMaxBidViewController.swift */,
 			);
 			path = Live_Auctions;
@@ -4136,6 +4139,7 @@
 				CBE3270527E275A300395A93 /* LiveAuctionPlainLotCollectionViewLayout.swift in Sources */,
 				CBE3269427E275A300395A93 /* ARAnalyticsConstants.m in Sources */,
 				CBE3270927E275A300395A93 /* StoryboardImages.swift in Sources */,
+				CB762B2A291054D500881194 /* LiveAuctionReportProblemButton.swift in Sources */,
 				CBE326E027E275A300395A93 /* ARBackButton.m in Sources */,
 				1A4B97C2283CDD5A00878EAE /* ARMapComponentViewController.m in Sources */,
 				CBE3268727E275A300395A93 /* ORStackView+ArtsyViews.m in Sources */,
