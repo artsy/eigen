@@ -208,30 +208,7 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableMyCollectionInsights",
   },
-  AREnableMyCollectionInsightsPhase1Part1: {
-    readyForRelease: true,
-    description: "Enable MyC insights Ph 1 Pt 1",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableMyCollectionInsightsPhase1Part1",
-  },
-  AREnableMyCollectionInsightsPhase1Part2: {
-    readyForRelease: true,
-    description: "Enable MyC insights Ph 1 Pt 2",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableMyCollectionInsightsPhase1Part2",
-  },
-  AREnableMyCollectionInsightsPhase1Part3: {
-    readyForRelease: true,
-    description: "Enable MyC insights Ph 1 Pt 3",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableMyCollectionInsightsPhase1Part3",
-  },
-  AREnableMyCollectionInsightsPhase1Part4: {
-    readyForRelease: true,
-    description: "Enable MyC insights Ph 1 Pt 4",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableMyCollectionInsightsPhase1Part4",
-  },
+
   AREnableMedianPriceChartCareerHighlights: {
     readyForRelease: true,
     description: "Enable Career Highlights In Median Price Chart",
