@@ -90,9 +90,9 @@ export const FairHeader: React.FC<FairHeaderProps> = ({ fair }) => {
         )}
         {!!canShowMoreInfoLink && (
           <TouchableOpacity onPress={() => navigate(`/fair/${slug}/info`)}>
-            <Flex pt={2} flexDirection="row" justifyContent="flex-start">
+            <Flex pt={2} flexDirection="row" justifyContent="flex-start" alignItems="center">
               <Text variant="sm">More info</Text>
-              <ChevronIcon mr="-5px" mt="2px" />
+              <ChevronIcon mr="-5px" mt="4px" />
             </Flex>
           </TouchableOpacity>
         )}
