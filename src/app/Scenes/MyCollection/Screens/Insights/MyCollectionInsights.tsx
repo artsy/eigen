@@ -104,9 +104,9 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
 
         {hasMarketSignals /* || average sale price data */ && (
           <>
-            <CareerHighlightsRail me={data.me!} />{" "}
+            <CareerHighlightsRail me={data.me!} />
             <AuctionResultsForArtistsYouCollectRail me={data.me!} />
-            <MedianAuctionPriceRail me={data.me} />{" "}
+            <MedianAuctionPriceRail me={data.me} />
             {/* TODO: The banner should be visible always as long as the user has at least an artwork with insights */}
             <ActivateMoreMarketInsightsBanner />
           </>
