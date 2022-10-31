@@ -39,6 +39,7 @@ const AutosuggestResultsFlatList: React.FC<{
   onResultPress?: OnResultPress
   trackResultPress?: TrackResultPress
   ListEmptyComponent?: React.ComponentType<any>
+  ListHeaderComponent?: React.ComponentType<any>
 }> = ({
   query,
   results: latestResults,
@@ -48,6 +49,7 @@ const AutosuggestResultsFlatList: React.FC<{
   onResultPress,
   trackResultPress,
   ListEmptyComponent = EmptyList,
+  ListHeaderComponent,
   prependResults = [],
 }) => {
   const [shouldShowLoadingPlaceholder, setShouldShowLoadingPlaceholder] = useState(true)
@@ -139,39 +141,43 @@ const AutosuggestResultsFlatList: React.FC<{
   if (shouldShowLoadingPlaceholder) {
     return (
       <ProvidePlaceholderContext>
+        {!!ListHeaderComponent && <ListHeaderComponent />}
         <AutosuggestResultsPlaceholder showResultType={showResultType} />
       </ProvidePlaceholderContext>
     )
   }
 
   return (
-    <AboveTheFoldFlatList<AutosuggestResult>
-      listRef={flatListRef}
-      initialNumToRender={isPad() ? 24 : 12}
-      data={allNodes}
-      showsVerticalScrollIndicator={false}
-      ListFooterComponent={ListFooterComponent}
-      keyboardDismissMode="on-drag"
-      keyboardShouldPersistTaps="handled"
-      ListEmptyComponent={noResults ? () => <ListEmptyComponent query={query} /> : null}
-      renderItem={({ item, index }) => {
-        return (
-          <Flex mb={2}>
-            <AutosuggestSearchResult
-              highlight={query}
-              result={item}
-              showResultType={showResultType}
-              onResultPress={onResultPress}
-              showQuickNavigationButtons={showQuickNavigationButtons}
-              trackResultPress={trackResultPress}
-              itemIndex={index}
-            />
-          </Flex>
-        )
-      }}
-      onScrollBeginDrag={onScrollBeginDrag}
-      onEndReached={onEndReached}
-    />
+    <>
+      {!!ListHeaderComponent && !!(allNodes.length > 0) && <ListHeaderComponent />}
+      <AboveTheFoldFlatList<AutosuggestResult>
+        listRef={flatListRef}
+        initialNumToRender={isPad() ? 24 : 12}
+        data={allNodes}
+        showsVerticalScrollIndicator={false}
+        ListFooterComponent={ListFooterComponent}
+        keyboardDismissMode="on-drag"
+        keyboardShouldPersistTaps="handled"
+        ListEmptyComponent={noResults ? () => <ListEmptyComponent query={query} /> : null}
+        renderItem={({ item, index }) => {
+          return (
+            <Flex mb={2}>
+              <AutosuggestSearchResult
+                highlight={query}
+                result={item}
+                showResultType={showResultType}
+                onResultPress={onResultPress}
+                showQuickNavigationButtons={showQuickNavigationButtons}
+                trackResultPress={trackResultPress}
+                itemIndex={index}
+              />
+            </Flex>
+          )
+        }}
+        onScrollBeginDrag={onScrollBeginDrag}
+        onEndReached={onEndReached}
+      />
+    </>
   )
 }
 
@@ -272,6 +278,7 @@ export const AutosuggestResults: React.FC<{
   showOnRetryErrorMessage?: boolean
   onResultPress?: OnResultPress
   trackResultPress?: TrackResultPress
+  ListHeaderComponent?: React.ComponentType<any>
   ListEmptyComponent?: React.ComponentType<any>
 }> = React.memo(
   ({
@@ -283,6 +290,7 @@ export const AutosuggestResults: React.FC<{
     showOnRetryErrorMessage,
     onResultPress,
     trackResultPress,
+    ListHeaderComponent,
     ListEmptyComponent,
   }) => {
     return (
@@ -319,6 +327,7 @@ export const AutosuggestResults: React.FC<{
               onResultPress={onResultPress}
               trackResultPress={trackResultPress}
               ListEmptyComponent={ListEmptyComponent}
+              ListHeaderComponent={ListHeaderComponent}
             />
           )
         }}

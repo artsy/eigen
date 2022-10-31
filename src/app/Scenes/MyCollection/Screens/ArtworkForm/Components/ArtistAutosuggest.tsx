@@ -4,7 +4,8 @@ import { AutosuggestResult, AutosuggestResults } from "app/Scenes/Search/Autosug
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
-import { Box, Button, Flex, Input, Text } from "palette"
+import { sortBy } from "lodash"
+import { Box, Button, Flex, Input, Text, Touchable } from "palette"
 import { useLazyLoadQuery } from "react-relay"
 import { graphql } from "relay-runtime"
 import { normalizeText } from "shared/utils"
@@ -19,17 +20,21 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
   onResultPress,
   onSkipPress,
 }) => {
-  const queryData = useLazyLoadQuery<ArtistAutosuggestQuery>(ArtistAutosuggestScreenQuery, {})
-
   const enableArtworksFromNonArtsyArtists = useFeatureFlag("AREnableArtworksFromNonArtsyArtists")
   const { formik } = useArtworkForm()
   const { artist: artistQuery } = formik.values
   const searchProviderValues = useSearchProviderValues(artistQuery)
 
-  const collectedArtists = extractNodes(queryData.me?.myCollectionInfo?.collectedArtistsConnection)
-  const filteredCollecteArtists = filterArtistsByKeyword(collectedArtists, artistQuery).map(
-    (artist) => ({ ...artist, __typename: "Artist" })
+  const queryData = useLazyLoadQuery<ArtistAutosuggestQuery>(
+    ArtistAutosuggestScreenQuery,
+    {},
+    { fetchPolicy: "network-only" }
   )
+
+  const collectedArtists = extractNodes(queryData.me?.myCollectionInfo?.collectedArtistsConnection)
+  const filteredCollecteArtists = sortBy(filterArtistsByKeyword(collectedArtists, artistQuery), [
+    "displayLabel",
+  ])
 
   const showResults = filteredCollecteArtists.length || artistQuery.length > 2
 
@@ -47,7 +52,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
           autoCorrect={false}
         />
         {showResults ? (
-          <Box height="100%" py={4}>
+          <Box pb={4}>
             <AutosuggestResults
               query={artistQuery}
               prependResults={enableArtworksFromNonArtsyArtists ? filteredCollecteArtists : []}
@@ -55,18 +60,35 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
               showResultType={false}
               showQuickNavigationButtons={false}
               onResultPress={onResultPress}
-              ListEmptyComponent={() => (
-                <Flex width="100%">
-                  <Text>We couldn't find any results for "{artistQuery}"</Text>
-                  {!!enableArtworksFromNonArtsyArtists && (
-                    <Flex alignItems="center" width="100%">
-                      <Button variant="outline" onPress={onSkipPress} mt={3} block>
-                        Can't find the Artist? Skip ahead
-                      </Button>
+              ListHeaderComponent={() =>
+                enableArtworksFromNonArtsyArtists ? (
+                  <Touchable onPress={onSkipPress}>
+                    <Flex flexDirection="row" mb={3} mt={1}>
+                      <Text variant="xs" color="black60">
+                        Or skip ahead to{" "}
+                      </Text>
+                      <Text variant="xs" color="black60" underline>
+                        add artwork details
+                      </Text>
                     </Flex>
-                  )}
-                </Flex>
-              )}
+                  </Touchable>
+                ) : null
+              }
+              ListEmptyComponent={() =>
+                enableArtworksFromNonArtsyArtists ? (
+                  <Flex width="100%" my={2}>
+                    <Text>We didn't find "{artistQuery}" on Artsy.</Text>
+                    <Text>You can add their name in the artwork details.</Text>
+                    <Button variant="outline" onPress={onSkipPress} mt={4} block>
+                      Add Artist
+                    </Button>
+                  </Flex>
+                ) : (
+                  <Flex width="100%">
+                    <Text>We couldn't find any results for "{artistQuery}"</Text>
+                  </Flex>
+                )
+              }
             />
           </Box>
         ) : null}
@@ -79,9 +101,10 @@ const ArtistAutosuggestScreenQuery = graphql`
   query ArtistAutosuggestQuery {
     me {
       myCollectionInfo {
-        collectedArtistsConnection(first: 20) {
+        collectedArtistsConnection(first: 100) {
           edges {
             node {
+              __typename
               internalID
               displayLabel
               slug
@@ -99,7 +122,7 @@ export const filterArtistsByKeyword = (
   artists: Array<{ displayLabel: string | null }>,
   keywordFilter: string
 ) => {
-  if (!keywordFilter) {
+  if (keywordFilter?.length < 2) {
     return artists
   }
 

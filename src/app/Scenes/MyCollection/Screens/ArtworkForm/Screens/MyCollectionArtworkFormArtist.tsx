@@ -2,7 +2,7 @@ import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { StackScreenProps } from "@react-navigation/stack"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
-import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { useTracking } from "react-tracking"
 import { ScreenMargin } from "../../../Components/ScreenMargin"
 import { ArtistAutosuggest } from "../Components/ArtistAutosuggest"
@@ -11,7 +11,6 @@ import { ArtworkFormScreen } from "../MyCollectionArtworkForm"
 export const MyCollectionArtworkFormArtist: React.FC<
   StackScreenProps<ArtworkFormScreen, "ArtworkFormArtist">
 > = ({ route, navigation }) => {
-  const enableArtworksFromNonArtsyArtists = useFeatureFlag("AREnableArtworksFromNonArtsyArtists")
   const tracking = useTracking()
 
   const preferredCurrency = GlobalStore.useAppState((state) => state.userPrefs.currency)
@@ -42,13 +41,7 @@ export const MyCollectionArtworkFormArtist: React.FC<
 
   return (
     <>
-      <FancyModalHeader
-        hideBottomDivider
-        onLeftButtonPress={route.params.onHeaderBackButtonPress}
-        rightButtonText="Skip"
-        rightButtonTestId="my-collection-artwork-form-artist-skip-button"
-        onRightButtonPress={enableArtworksFromNonArtsyArtists ? handleSkipPress : undefined}
-      >
+      <FancyModalHeader hideBottomDivider onLeftButtonPress={route.params.onHeaderBackButtonPress}>
         Select an Artist
       </FancyModalHeader>
       <ScreenMargin>
