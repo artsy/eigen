@@ -1,3 +1,4 @@
+import { useToggleBottomTab } from "app/BottomTabsToggleProvider"
 import { GlobalStore, useFeatureFlag, useIsStaging } from "app/store/GlobalStore"
 import { Flex, Separator, useTheme } from "palette"
 import React, { useEffect } from "react"
@@ -26,6 +27,13 @@ export const BottomTabs: React.FC = () => {
   const enableMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
 
   const { bottom } = useScreenDimensions().safeAreaInsets
+
+  const { state: toggleBottomTab } = useToggleBottomTab()
+
+  if (!toggleBottomTab.visible) {
+    return null
+  }
+
   return (
     <Flex style={{ paddingBottom: bottom }}>
       <Separator

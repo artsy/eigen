@@ -5,6 +5,7 @@ import { Artwork_me$data } from "__generated__/Artwork_me.graphql"
 import { ArtworkAboveTheFoldQuery } from "__generated__/ArtworkAboveTheFoldQuery.graphql"
 import { ArtworkBelowTheFoldQuery } from "__generated__/ArtworkBelowTheFoldQuery.graphql"
 import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRecentlyViewedQuery.graphql"
+import { useToggleBottomTab } from "app/BottomTabsToggleProvider"
 import { AuctionTimerState, currentTimerState } from "app/Components/Bidding/Components/Timer"
 import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
 import { navigationEvents } from "app/navigation/navigate"
@@ -17,7 +18,7 @@ import { QAInfoPanel } from "app/utils/QAInfo"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
 import { isEmpty } from "lodash"
-import { Box, Separator } from "palette"
+import { Box, Button, Flex, Separator, Spacer } from "palette"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
@@ -67,6 +68,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const [fetchingData, setFetchingData] = useState(false)
   const enableConversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
 
+  const { dispatch, state } = useToggleBottomTab()
+
   const { internalID, slug, isInAuction, partner: partnerAbove } = artworkAboveTheFold || {}
   const { isPreview, isClosed, liveStartAt } = artworkAboveTheFold?.sale ?? {}
   const { partner, sale, contextGrids, artistSeriesConnection, artist, context } =
@@ -86,6 +89,16 @@ export const Artwork: React.FC<ArtworkProps> = ({
     getInitialAuctionTimerState()
   )
   const isInClosedAuction = isInAuction && auctionTimerState === AuctionTimerState.CLOSED
+
+  useEffect(() => {
+    if (isInAuction) {
+      dispatch({ type: "hide" })
+    }
+
+    return () => {
+      dispatch({ type: "show" })
+    }
+  }, [isInAuction])
 
   const shouldRenderPartner = () => {
     if ((sale && sale.isBenefit) || (sale && sale.isGalleryAuction)) {
@@ -285,7 +298,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
     if (artist && artist.biographyBlurb) {
       sections.push({
         key: "aboutArtist",
-        element: <AboutArtist artwork={artworkBelowTheFold} />,
+        element: (
+          <>
+            <AboutArtist artwork={artworkBelowTheFold} />
+            <Button onPress={() => dispatch({ type: "show" })}>show</Button>
+            <Button onPress={() => dispatch({ type: "hide" })}>hide</Button>
+          </>
+        ),
       })
     }
 
@@ -407,6 +426,19 @@ export const Artwork: React.FC<ArtworkProps> = ({
               </Box>
             )}
           />
+        )}
+        {!state.visible && (
+          <Flex bg="red10" p={2} flexDirection="row">
+            <Flex flex={1}>
+              <Button block>yolo</Button>
+            </Flex>
+            <Spacer mr={2} />
+            <Flex flex={1}>
+              <Button block variant="outline">
+                yolo 2
+              </Button>
+            </Flex>
+          </Flex>
         )}
         <QAInfo />
         <OfferSubmittedModal />

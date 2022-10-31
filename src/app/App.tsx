@@ -14,6 +14,7 @@ import RNBootSplash from "react-native-bootsplash"
 import { Settings } from "react-native-fbsdk-next"
 import RNShake from "react-native-shake"
 import { AppProviders } from "./AppProviders"
+import { ToggleBottomTabProvider } from "./BottomTabsToggleProvider"
 import { useWebViewCookies } from "./Components/ArtsyWebView"
 import { FPSCounter } from "./Components/FPSCounter"
 import { useErrorReporting } from "./errorReporting/hooks"
@@ -150,8 +151,10 @@ const Main = () => {
 
 export const App = () => (
   <AppProviders>
-    <AdminMenuWrapper>
-      <Main />
-    </AdminMenuWrapper>
+    <ToggleBottomTabProvider>
+      <AdminMenuWrapper>
+        <Main />
+      </AdminMenuWrapper>
+    </ToggleBottomTabProvider>
   </AppProviders>
 )
