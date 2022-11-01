@@ -45,7 +45,7 @@ class LiveAuctionReportProblemButton: ARFlatButton {
     }
 
     fileprivate func setupWithState(_ buttonState: LiveAuctionBidButtonState) {
-        setupUI("Report a Problem")
+        setupUI("Report a Problem", background: white, border: .black, textColor: .black)
         isEnabled = true
     }
 
