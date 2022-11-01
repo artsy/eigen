@@ -293,6 +293,32 @@ extension LiveAuctionLotViewController: LiveAuctionBidButtonDelegate {
 
 extension LiveAuctionLotViewController: LiveAuctionReportProblemButtonDelegate {
     func reportButtonReportedProblem() {
-        print("Report button reported problem called")
+        let alert = reportAlertController()
+        self.present(alert, animated: true)
+    }
+
+    private func reportAlertController() -> UIAlertController {
+        let alertController = UIAlertController(title: "Sorry for the Trouble", message: "Briefly describe your issue and we will look into it. If it persists you can contact support@artsy.net", preferredStyle: .alert)
+
+        let reportAction = UIAlertAction(title: "Report", style: .default) { (_) in
+            let descriptionTextField = alertController.textFields![0] as UITextField
+
+            let description = descriptionTextField.text
+            self.reportToSentry(description: description ?? "")
+        }
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
+
+        alertController.addTextField { (textField) in
+            textField.placeholder = "Describe your issue"
+        }
+
+        alertController.addAction(reportAction)
+        alertController.addAction(cancelAction)
+        return alertController
+    }
+
+    private func reportToSentry(description: String) {
+        print("Here is where I should report to sentry \(description)")
     }
 }

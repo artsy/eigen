@@ -45,8 +45,23 @@ class LiveAuctionReportProblemButton: ARFlatButton {
     }
 
     fileprivate func setupWithState(_ buttonState: LiveAuctionBidButtonState) {
-        setupUI("Report a Problem", background: white, border: .black, textColor: .black)
-        isEnabled = true
+        var shouldShowButton = false
+        switch buttonState {
+        case .active(biddingState: let biddingState):
+            switch biddingState {
+            case .userRegistrationClosed, .userRegistrationPending,
+                    .userRegistrationRequired:
+                shouldShowButton = true
+                break
+            default:
+                shouldShowButton = false
+                break
+            }
+        default:
+            shouldShowButton = false
+            break
+        }
+        setupUI("Report a Problem", background: white, border: .black, textColor: .black, hideButton: !shouldShowButton)
     }
 
     fileprivate func setupUI(_ title: String, background: UIColor = .black, border: UIColor? = nil, textColor: UIColor = UIColor.white, hideButton: Bool = false) {
