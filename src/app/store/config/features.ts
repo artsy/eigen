@@ -208,13 +208,6 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableMyCollectionInsights",
   },
-
-  AREnableMedianPriceChartCareerHighlights: {
-    readyForRelease: true,
-    description: "Enable Career Highlights In Median Price Chart",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableMedianPriceChartCareerHighlights",
-  },
   AREnableArtworksFromNonArtsyArtists: {
     readyForRelease: false,
     description: "Enable My Collection artworks from non-Artsy artists",
@@ -240,7 +233,8 @@ export const features = defineFeatures({
   AREnableNewRequestPriceEstimateLogic: {
     description: "Enable new request price estimate logic",
     showInAdminMenu: true,
-    readyForRelease: false,
+    readyForRelease: true,
+    echoFlagKey: "AREnableNewRequestPriceEstimateLogic",
   },
 })
 
