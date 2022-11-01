@@ -8,7 +8,7 @@ import Animated from "react-native-reanimated"
 const ActivityItemPlaceholder = () => {
   return (
     <Box my={2}>
-      <PlaceholderBox width={30} height={15} />
+      <PlaceholderBox width={30} height={20} />
       <Spacer mt={0.5} />
       <PlaceholderBox width={130} height={15} />
       <Spacer mt={0.5} />
@@ -34,19 +34,29 @@ export const ActivityTabPlaceholder = () => {
           height: headerHeight ?? 0,
         }}
       />
-      <Flex flex={1} px={2}>
-        {/* Subheader */}
-        <Flex my={2}>
-          <PlaceholderBox width={120} height={30} />
-        </Flex>
 
+      {/* Subheader */}
+      <Flex
+        py={1}
+        px={2}
+        height={50}
+        flexDirection="row"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <PlaceholderBox width={120} height={25} />
+        <PlaceholderBox width={125} height={30} borderRadius={15} />
+      </Flex>
+      <Separator />
+
+      <Box mx={2}>
         {times(3).map((index) => (
           <Fragment key={`placeholder-item-${index}`}>
             <ActivityItemPlaceholder />
             <Separator />
           </Fragment>
         ))}
-      </Flex>
+      </Box>
     </Flex>
   )
 }
