@@ -32,10 +32,6 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
   const me = useFragment(meFragment, restProps.me)
 
   const isP1Artist = artwork.artist?.targetSupply?.isP1
-  const isAlreadySubmitted = artwork.consignmentSubmission?.displayText
-
-  const showPriceEstimateBanner =
-    useFeatureFlag("ARShowRequestPriceEstimateBanner") && isP1Artist && !isAlreadySubmitted
 
   return (
     <StickyTabPageScrollView>
@@ -49,7 +45,7 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
           </>
         )}
 
-        {!!showPriceEstimateBanner && (
+        {!!useFeatureFlag("ARShowRequestPriceEstimateBanner") && (
           <RequestForPriceEstimateBanner
             me={me}
             artwork={artwork}
@@ -83,9 +79,6 @@ const artworkFragment = graphql`
       targetSupply {
         isP1
       }
-    }
-    consignmentSubmission {
-      displayText
     }
     ...RequestForPriceEstimateBanner_artwork
     ...MyCollectionArtworkDemandIndex_artwork
