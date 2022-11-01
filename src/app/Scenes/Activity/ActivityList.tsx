@@ -8,11 +8,12 @@ import {
   StickyTabSection,
 } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { extractNodes } from "app/utils/extractNodes"
-import { Button, Flex, Separator, Spinner, Text } from "palette"
+import { Flex, Separator, Spinner } from "palette"
 import { useCallback, useContext, useEffect, useState } from "react"
 import { graphql, useFragment, usePaginationFragment } from "react-relay"
 import { ActivityEmptyView } from "./ActivityEmptyView"
 import { ActivityItem } from "./ActivityItem"
+import { ActivityMarkAllAsReadSection } from "./ActivityMarkAllAsReadSection"
 import { NotificationType } from "./types"
 import { isArtworksBasedNotification } from "./utils/isArtworksBasedNotification"
 
@@ -72,25 +73,12 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
   }, [])
 
   useEffect(() => {
-    const label = hasUnreadNotifications ? "New notifications" : "No new notifications"
-
     setJSX(
       <>
-        <Flex
-          flexDirection="row"
-          alignItems="center"
-          justifyContent="space-between"
-          backgroundColor="white"
-          py={1}
-          px={2}
-        >
-          <Text variant="xs" color={hasUnreadNotifications ? "brand" : "black60"}>
-            {label}
-          </Text>
-          <Button onPress={handleMarkAllAsReadPress} size="small">
-            Mark all as read
-          </Button>
-        </Flex>
+        <ActivityMarkAllAsReadSection
+          hasUnreadNotifications={hasUnreadNotifications}
+          onPress={handleMarkAllAsReadPress}
+        />
         <Separator />
       </>
     )
