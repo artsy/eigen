@@ -21,8 +21,8 @@ Still nothing?
 
 if your problems come from asdf package manager try
 
-- `asdf install node 14.0.2`
-- `asdf local node 14.0.2`
+- `asdf install node x.y.z`
+- `asdf local node x.y.z`
 
 - `asdf install`
 - `asdf reshim`
