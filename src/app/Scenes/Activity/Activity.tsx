@@ -1,6 +1,5 @@
 import { ActionType } from "@artsy/cohesion"
 import { ClickedActivityPanelTab } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
-import { NotificationTypesEnum } from "__generated__/ActivityItem_item.graphql"
 import { ActivityQuery } from "__generated__/ActivityQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"
@@ -12,6 +11,7 @@ import { useTracking } from "react-tracking"
 import { ActivityList } from "./ActivityList"
 import { ActivityTabPlaceholder } from "./ActivityTabPlaceholder"
 import { NotificationType } from "./types"
+import { getNotificationTypes } from "./utils/getNotificationTypes"
 
 interface ActivityProps {
   type: NotificationType
@@ -88,14 +88,6 @@ const ActivityScreenQuery = graphql`
     }
   }
 `
-
-const getNotificationTypes = (type: NotificationType): NotificationTypesEnum[] | undefined => {
-  if (type === "alerts") {
-    return ["ARTWORK_ALERT"]
-  }
-
-  return []
-}
 
 const tracks = {
   clickedActivityPanelTab: (tabName: string): ClickedActivityPanelTab => ({
