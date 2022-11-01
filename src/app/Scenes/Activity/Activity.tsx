@@ -19,10 +19,16 @@ interface ActivityProps {
 
 export const ActivityContent: React.FC<ActivityProps> = ({ type }) => {
   const types = getNotificationTypes(type)
-  const queryData = useLazyLoadQuery<ActivityQuery>(ActivityScreenQuery, {
-    count: 10,
-    types,
-  })
+  const queryData = useLazyLoadQuery<ActivityQuery>(
+    ActivityScreenQuery,
+    {
+      count: 10,
+      types,
+    },
+    {
+      fetchPolicy: "store-and-network",
+    }
+  )
 
   return <ActivityList viewer={queryData.viewer} type={type} />
 }

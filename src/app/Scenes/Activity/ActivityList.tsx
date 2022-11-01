@@ -62,6 +62,7 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type }) => {
     refetch(
       {},
       {
+        fetchPolicy: "store-and-network",
         onComplete: () => {
           setRefreshing(false)
         },
