@@ -52,9 +52,10 @@ export const ActivityMarkAllAsReadSection: React.FC<ActivityMarkAllAsReadSection
         {label}
       </Text>
       <Button
-        onPress={handleMarkAllAsReadPress}
         disabled={!hasUnreadNotifications || mutationInProgress}
         size="small"
+        variant="outline"
+        onPress={handleMarkAllAsReadPress}
       >
         Mark all as read
       </Button>
