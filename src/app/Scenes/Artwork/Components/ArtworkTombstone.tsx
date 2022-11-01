@@ -95,6 +95,10 @@ export const ArtworkTombstoneFragmentContainer = createFragmentContainer(Artwork
         extendedBiddingIntervalMinutes
       }
       ...ArtworkMakerTitle_artwork
+      artists {
+        name
+        href
+      }
     }
   `,
 })
