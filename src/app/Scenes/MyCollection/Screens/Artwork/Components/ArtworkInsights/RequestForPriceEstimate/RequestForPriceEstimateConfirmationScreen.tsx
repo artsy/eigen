@@ -1,4 +1,4 @@
-import { popToRoot } from "app/navigation/navigate"
+import { goBack } from "app/navigation/navigate"
 import { ArtsyLogoIcon, Box, Button, Flex, Text } from "palette"
 
 export const RequestForPriceEstimateConfirmationScreen: React.FC<{}> = () => {
@@ -14,7 +14,7 @@ export const RequestForPriceEstimateConfirmationScreen: React.FC<{}> = () => {
         An Artsy Specialist will evaluate your artwork and contact you with a free price estimate.
       </Text>
       <Button
-        onPress={popToRoot}
+        onPress={() => goBack()}
         block
         variant="fillDark"
         size="large"
