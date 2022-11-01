@@ -52,7 +52,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
           autoCorrect={false}
         />
         {showResults ? (
-          <Box pb={4}>
+          <Box height="100%">
             <AutosuggestResults
               query={artistQuery}
               prependResults={enableArtworksFromNonArtsyArtists ? filteredCollecteArtists : []}
@@ -63,7 +63,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
               ListHeaderComponent={() =>
                 enableArtworksFromNonArtsyArtists ? (
                   <Touchable onPress={onSkipPress}>
-                    <Flex flexDirection="row" mb={3} mt={1}>
+                    <Flex flexDirection="row" my={1}>
                       <Text variant="xs" color="black60">
                         Or skip ahead to{" "}
                       </Text>
@@ -105,11 +105,12 @@ const ArtistAutosuggestScreenQuery = graphql`
           edges {
             node {
               __typename
-              internalID
               displayLabel
-              slug
-              imageUrl
               formattedNationalityAndBirthday
+              imageUrl
+              initials
+              internalID
+              slug
             }
           }
         }

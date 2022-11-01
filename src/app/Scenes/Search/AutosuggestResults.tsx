@@ -49,7 +49,7 @@ const AutosuggestResultsFlatList: React.FC<{
   onResultPress,
   trackResultPress,
   ListEmptyComponent = EmptyList,
-  ListHeaderComponent,
+  ListHeaderComponent = null,
   prependResults = [],
 }) => {
   const [shouldShowLoadingPlaceholder, setShouldShowLoadingPlaceholder] = useState(true)
@@ -120,7 +120,7 @@ const AutosuggestResultsFlatList: React.FC<{
     const filteredEdges = edges.filter((node) => !excludedIDs.includes(node.internalID))
 
     return filteredEdges
-  }, [results.current])
+  }, [results.current, prependResults])
 
   const allNodes = [...prependResults, ...nodes]
 
@@ -130,7 +130,7 @@ const AutosuggestResultsFlatList: React.FC<{
 
   const ListFooterComponent = useMemo(() => {
     return () => (
-      <Flex justifyContent="center" p={3} pb={6}>
+      <Flex justifyContent="center" p={3} pb={6} height={250}>
         {hasMoreResults ? <Spinner /> : null}
       </Flex>
     )
@@ -147,10 +147,13 @@ const AutosuggestResultsFlatList: React.FC<{
     )
   }
 
+  const showHeaderComponent = ListHeaderComponent && !!(allNodes.length > 0)
+
   return (
-    <>
-      {!!ListHeaderComponent && !!(allNodes.length > 0) && <ListHeaderComponent />}
+    <Flex>
+      {!!showHeaderComponent && <ListHeaderComponent />}
       <AboveTheFoldFlatList<AutosuggestResult>
+        ListHeaderComponent={<Spacer mb={2} />}
         listRef={flatListRef}
         initialNumToRender={isPad() ? 24 : 12}
         data={allNodes}
@@ -177,7 +180,7 @@ const AutosuggestResultsFlatList: React.FC<{
         onScrollBeginDrag={onScrollBeginDrag}
         onEndReached={onEndReached}
       />
-    </>
+    </Flex>
   )
 }
 
@@ -231,6 +234,7 @@ const AutosuggestResultsContainer = createPaginationContainer(
               }
               ... on Artist {
                 internalID
+                initials
                 formattedNationalityAndBirthday
                 slug
                 statuses {
