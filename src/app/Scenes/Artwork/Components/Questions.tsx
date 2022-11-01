@@ -11,17 +11,19 @@ export const Questions: React.FC<QuestionsProps> = (props) => {
   const artworkData = useFragment(artworkFragment, props.artwork)
 
   return (
-    <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-      <Flex>
+    <Flex flexDirection="row" flexWrap="wrap" justifyContent="space-between" alignItems="center">
+      <Flex mr={0.5} flex={1}>
         <Text variant="xs">Questions about this piece?</Text>
       </Flex>
 
-      <InquiryButtonsFragmentContainer
-        artwork={artworkData}
-        variant="outline"
-        size="small"
-        icon={<EnvelopeIcon fill="black100" width="16px" height="16px" />}
-      />
+      <Flex flex={1} alignItems="flex-end">
+        <InquiryButtonsFragmentContainer
+          artwork={artworkData}
+          variant="outline"
+          size="small"
+          icon={<EnvelopeIcon fill="black100" width="16px" height="16px" />}
+        />
+      </Flex>
     </Flex>
   )
 }
