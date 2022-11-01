@@ -62,7 +62,10 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
               onResultPress={onResultPress}
               ListHeaderComponent={() =>
                 enableArtworksFromNonArtsyArtists ? (
-                  <Touchable onPress={onSkipPress}>
+                  <Touchable
+                    onPress={onSkipPress}
+                    testID="my-collection-artwork-form-artist-skip-button"
+                  >
                     <Flex flexDirection="row" my={1}>
                       <Text variant="xs" color="black60">
                         Or skip ahead to{" "}
@@ -110,6 +113,7 @@ const ArtistAutosuggestScreenQuery = graphql`
               imageUrl
               initials
               internalID
+              isPersonalArtist
               slug
             }
           }

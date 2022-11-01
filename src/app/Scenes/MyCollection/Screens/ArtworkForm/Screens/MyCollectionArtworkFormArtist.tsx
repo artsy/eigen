@@ -21,8 +21,7 @@ export const MyCollectionArtworkFormArtist: React.FC<
 
     await GlobalStore.actions.myCollection.artwork.setArtistSearchResult(result)
 
-    // TODO: Use `is_personal_artist` to check if arstist was created by the user
-    if (!result.imageUrl) {
+    if (result.isPersonalArtist) {
       navigation.navigate("ArtworkFormMain", { ...route.params })
     } else {
       navigation.navigate("ArtworkFormArtwork", { ...route.params })
