@@ -6,7 +6,7 @@ If things are not going right some of the things you can try are
 - `yarn setup:artsy`
 - `yarn install:all`
 - `yarn relay`
-- `open ios/Artsy.xcworkspace and build the app again`
+- `open ios/Artsy.xcworkspace` and build the app again
 - `yarn doctor`
 
 Still nothing?
