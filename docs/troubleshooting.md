@@ -1,5 +1,21 @@
 # Troubleshooting
 
+If things are not going right some of the things you can try are
+
+- Pulling from main branch
+- `yarn setup:artsy`
+- `yarn install:all`
+- `yarn relay`
+- `open ios/Artsy.xcworkspace and build the app again`
+- `yarn doctor`
+
+Still nothing?
+
+- reinstall eigen
+  ![...Have you tried turning it off and on again?](https://y.yarn.co/1ab70c93-fce1-460d-8575-3bac5a666e96_text.gif)
+
+- No, seriously. Try turning the computer off and on again
+
 ## Installation Issues
 
 - Commit failed with: "ERROR: Potential secrets about to be committed to git repo!"
