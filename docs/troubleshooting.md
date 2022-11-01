@@ -17,6 +17,18 @@ Still nothing?
 
 - No, seriously. Try turning the computer off and on again
 
+# asdf
+
+if your problems come from asdf package manager try
+
+- `asdf install node 14.0.2`
+- `asdf local node 14.0.2`
+
+- `asdf install`
+- `asdf reshim`
+
+- remove `.nvm` if it exists also on your home environment
+
 ## Installation Issues
 
 - Commit failed with: "ERROR: Potential secrets about to be committed to git repo!"
