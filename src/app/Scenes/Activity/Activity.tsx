@@ -12,6 +12,7 @@ import { useTracking } from "react-tracking"
 import { ActivityList } from "./ActivityList"
 import { ActivityTabPlaceholder } from "./ActivityTabPlaceholder"
 import { NotificationType } from "./types"
+import { getNotificationTypes } from "./utils/getNotificationTypes"
 
 interface ActivityProps {
   type: NotificationType
@@ -88,14 +89,6 @@ const ActivityScreenQuery = graphql`
     }
   }
 `
-
-const getNotificationTypes = (type: NotificationType): NotificationTypesEnum[] | undefined => {
-  if (type === "alerts") {
-    return ["ARTWORK_ALERT"]
-  }
-
-  return []
-}
 
 const tracks = {
   clickedActivityPanelTab: (tabName: string): ClickedActivityPanelTab => ({
