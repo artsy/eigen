@@ -30,7 +30,7 @@ export const ActivityContent: React.FC<ActivityProps> = ({ type }) => {
     }
   )
 
-  return <ActivityList viewer={queryData.viewer} type={type} />
+  return <ActivityList viewer={queryData.viewer} me={queryData.me} type={type} />
 }
 
 export const ActivityContainer: React.FC<ActivityProps> = (props) => {
@@ -82,6 +82,9 @@ const ActivityScreenQuery = graphql`
   query ActivityQuery($count: Int, $after: String, $types: [NotificationTypesEnum]) {
     viewer {
       ...ActivityList_viewer @arguments(count: $count, after: $after, types: $types)
+    }
+    me {
+      ...ActivityList_me
     }
   }
 `
