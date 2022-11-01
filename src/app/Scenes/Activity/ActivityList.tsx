@@ -77,7 +77,7 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type }) => {
     <StickyTabPageFlatList
       data={sections}
       refreshing={refreshing}
-      keyExtractor={(item) => item.internalID}
+      keyExtractor={(item) => `${type}-${item.key}`}
       ItemSeparatorComponent={({ leadingItem }) => {
         const { key } = leadingItem
 
