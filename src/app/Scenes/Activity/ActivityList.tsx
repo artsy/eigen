@@ -1,5 +1,6 @@
 import { ActivityList_viewer$key } from "__generated__/ActivityList_viewer.graphql"
 import { ActivityQuery } from "__generated__/ActivityQuery.graphql"
+import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
 import {
   StickyTabPageFlatList,
   StickyTabSection,
@@ -62,6 +63,7 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type }) => {
     refetch(
       {},
       {
+        fetchPolicy: "store-and-network",
         onComplete: () => {
           setRefreshing(false)
         },
@@ -76,8 +78,7 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type }) => {
   return (
     <StickyTabPageFlatList
       data={sections}
-      refreshing={refreshing}
-      keyExtractor={(item) => item.internalID}
+      keyExtractor={(item) => `${type}-${item.key}`}
       ItemSeparatorComponent={({ leadingItem }) => {
         const { key } = leadingItem
 
@@ -88,7 +89,9 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type }) => {
         return <Separator />
       }}
       onEndReached={handleLoadMore}
-      onRefresh={handleRefresh}
+      refreshControl={
+        <StickTabPageRefreshControl onRefresh={handleRefresh} refreshing={refreshing} />
+      }
       ListFooterComponent={
         isLoadingNext ? (
           <Flex my={2} alignItems="center" justifyContent="center">

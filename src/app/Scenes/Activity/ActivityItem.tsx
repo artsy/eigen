@@ -81,7 +81,11 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
           <Flex flexDirection="row" alignItems="center" flexWrap="wrap">
             {artworks.map((artwork) => {
               return (
-                <Flex key={artwork.internalID} mr={1} accessibilityLabel="Activity Artwork Image">
+                <Flex
+                  key={`${item.internalID}-${artwork.internalID}`}
+                  mr={1}
+                  accessibilityLabel="Activity Artwork Image"
+                >
                   <OpaqueImageView imageURL={artwork.image?.preview?.src} width={58} height={58} />
                 </Flex>
               )
@@ -106,6 +110,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
 
 const activityItemFragment = graphql`
   fragment ActivityItem_item on Notification {
+    internalID
     title
     message
     publishedAt(format: "RELATIVE")
