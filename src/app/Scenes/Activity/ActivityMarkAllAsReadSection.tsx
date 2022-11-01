@@ -2,11 +2,13 @@ import { Button, Flex, Text } from "palette"
 
 interface ActivityMarkAllAsReadSectionProps {
   hasUnreadNotifications: boolean
+  loading: boolean
   onPress: () => void
 }
 
 export const ActivityMarkAllAsReadSection: React.FC<ActivityMarkAllAsReadSectionProps> = ({
   hasUnreadNotifications,
+  loading,
   onPress,
 }) => {
   const label = hasUnreadNotifications ? "New notifications" : "No new notifications"
@@ -23,7 +25,7 @@ export const ActivityMarkAllAsReadSection: React.FC<ActivityMarkAllAsReadSection
       <Text variant="xs" color={hasUnreadNotifications ? "brand" : "black60"}>
         {label}
       </Text>
-      <Button onPress={onPress} disabled={!hasUnreadNotifications} size="small">
+      <Button onPress={onPress} disabled={!hasUnreadNotifications || loading} size="small">
         Mark all as read
       </Button>
     </Flex>
