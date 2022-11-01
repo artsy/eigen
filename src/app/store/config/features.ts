@@ -257,7 +257,8 @@ export const features = defineFeatures({
   AREnableNewRequestPriceEstimateLogic: {
     description: "Enable new request price estimate logic",
     showInAdminMenu: true,
-    readyForRelease: false,
+    readyForRelease: true,
+    echoFlagKey: "AREnableNewRequestPriceEstimateLogic",
   },
 })
 
