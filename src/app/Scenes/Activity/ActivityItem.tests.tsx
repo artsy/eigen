@@ -1,5 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { ActivityItem_Test_Query } from "__generated__/ActivityItem_Test_Query.graphql"
+import { navigate } from "app/navigation/navigate"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
@@ -8,6 +9,10 @@ import { extractNodes } from "app/utils/extractNodes"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ActivityItem } from "./ActivityItem"
+
+const targetUrl = "/artist/banksy/works-for-sale?sort=-published_at"
+const alertTargetUrl =
+  "/artist/banksy/works-for-sale?search_criteria_id=searchCriteriaId&sort=-published_at"
 
 jest.unmock("react-relay")
 
@@ -90,6 +95,56 @@ describe("ActivityItem", () => {
         },
       ]
     `)
+  })
+
+  it("should pass predefined props when", async () => {
+    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Notification: () => notification,
+    })
+    await flushPromiseQueue()
+
+    fireEvent.press(getByText("Notification Title"))
+
+    expect(navigate).toHaveBeenCalledWith(targetUrl, {
+      passProps: {
+        predefinedFilters: [
+          {
+            displayText: "Recently Added",
+            paramName: "sort",
+            paramValue: "-published_at",
+          },
+        ],
+      },
+    })
+  })
+
+  it("should pass search criteria id prop", async () => {
+    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Notification: () => ({
+        ...notification,
+        targetHref: alertTargetUrl,
+      }),
+    })
+    await flushPromiseQueue()
+
+    fireEvent.press(getByText("Notification Title"))
+
+    expect(navigate).toHaveBeenCalledWith(alertTargetUrl, {
+      passProps: {
+        searchCriteriaID: "searchCriteriaId",
+        predefinedFilters: [
+          {
+            displayText: "Recently Added",
+            paramName: "sort",
+            paramValue: "-published_at",
+          },
+        ],
+      },
+    })
   })
 
   describe("the remaining artworks count", () => {
@@ -239,6 +294,7 @@ const notification = {
   publishedAt: "2 days ago",
   isUnread: false,
   notificationType: "ARTWORK_PUBLISHED",
+  targetHref: targetUrl,
   artworksConnection: {
     totalCount: 4,
     edges: artworks,

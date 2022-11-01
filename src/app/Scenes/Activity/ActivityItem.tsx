@@ -1,9 +1,13 @@
 import { ActionType } from "@artsy/cohesion"
 import { ClickedActivityPanelNotificationItem } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
 import { ActivityItem_item$key } from "__generated__/ActivityItem_item.graphql"
+import { FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ORDERED_ARTWORK_SORTS } from "app/Components/ArtworkFilter/Filters/SortOptions"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { last } from "lodash"
 import { Flex, OpaqueImageView, Spacer, Text } from "palette"
+import { parse as parseQueryString } from "query-string"
 import { TouchableOpacity } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -30,8 +34,21 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
   const notificationTypeLabel = getNotificationType()
 
   const handlePress = () => {
-    navigate(item.targetHref)
+    const splittedQueryParams = item.targetHref.split("?")
+    const queryParams = last(splittedQueryParams) ?? ""
+    const parsed = parseQueryString(queryParams)
+
+    const sortFilterItem = ORDERED_ARTWORK_SORTS.find(
+      (sortEntity) => sortEntity.paramValue === "-published_at"
+    )!
+
     tracking.trackEvent(tracks.tappedNotification(item.notificationType))
+    navigate(item.targetHref, {
+      passProps: {
+        predefinedFilters: [sortFilterItem] as FilterArray,
+        searchCriteriaID: parsed.search_criteria_id,
+      },
+    })
   }
 
   return (
