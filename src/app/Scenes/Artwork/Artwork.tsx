@@ -34,6 +34,7 @@ import { ArtworkDetails } from "./Components/ArtworkDetails"
 import { FaqAndSpecialistSectionFragmentContainer as FaqAndSpecialistSection } from "./Components/ArtworkExtraLinks/FaqAndSpecialistSection"
 import { ArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/ArtworkHeader"
 import { ArtworkHistoryFragmentContainer as ArtworkHistory } from "./Components/ArtworkHistory"
+import { ArtworkLotDetails } from "./Components/ArtworkLotDetails/ArtworkLotDetails"
 import { ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
 import { BelowTheFoldPlaceholder } from "./Components/BelowTheFoldPlaceholder"
 import { CommercialInformationFragmentContainer as CommercialInformation } from "./Components/CommercialInformation"
@@ -67,6 +68,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const [refreshing, setRefreshing] = useState(false)
   const [fetchingData, setFetchingData] = useState(false)
   const enableConversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
+  const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
 
   const { internalID, slug, isInAuction, partner: partnerAbove } = artworkAboveTheFold || {}
   const { isPreview, isClosed, liveStartAt } = artworkAboveTheFold?.sale ?? {}
@@ -116,6 +118,10 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const shouldRenderArtistSeriesMoreSeries = () => {
     return (artist?.artistSeriesConnection?.totalCount ?? 0) > 0
+  }
+
+  const shouldRenderLotDetails = () => {
+    return enableArtworkRedesign && isInAuction && artworkAboveTheFold?.sale
   }
 
   useEffect(() => {
@@ -219,6 +225,18 @@ export const Artwork: React.FC<ArtworkProps> = ({
               relay.refetch({ artworkID: internalID }, null, () => null, { force: true })
             }
             setAuctionTimerState={setAuctionTimerState}
+          />
+        ),
+      })
+    }
+
+    if (shouldRenderLotDetails()) {
+      sections.push({
+        key: "lotDetailsSection",
+        element: (
+          <ArtworkLotDetails
+            artwork={artworkAboveTheFold!}
+            auctionState={auctionTimerState as AuctionTimerState}
           />
         ),
       })
@@ -441,6 +459,7 @@ export const ArtworkContainer = createRefetchContainer(
         ...FaqAndSpecialistSection_artwork
         ...CreateArtworkAlertSection_artwork
         ...PartnerLink_artwork
+        ...ArtworkLotDetails_artwork
         slug
         internalID
         id
@@ -459,6 +478,9 @@ export const ArtworkContainer = createRefetchContainer(
           isClosed
           isPreview
           liveStartAt
+        }
+        saleArtwork {
+          internalID
         }
         partner {
           name
