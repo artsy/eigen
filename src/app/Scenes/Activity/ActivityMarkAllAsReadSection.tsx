@@ -3,6 +3,8 @@ import { ActivityMarkAllAsReadSectionMutation } from "__generated__/ActivityMark
 import { Button, Flex, Text } from "palette"
 import { useMutation } from "react-relay"
 import { ConnectionHandler, graphql, RecordSourceSelectorProxy } from "relay-runtime"
+import { NotificationType, notificationTypes } from "./types"
+import { getNotificationTypes } from "./utils/getNotificationTypes"
 
 interface ActivityMarkAllAsReadSectionProps {
   hasUnreadNotifications: boolean
@@ -89,16 +91,20 @@ const markAllAsReadMutationUpdater = (store: RecordSourceSelectorProxy) => {
     return
   }
 
-  const key = "ActivityList_notificationsConnection"
-  const connection = ConnectionHandler.getConnection(viewer, key)
-  const edges = connection?.getLinkedRecords("edges")
+  notificationTypes.forEach((type) => {
+    const key = "ActivityList_notificationsConnection"
+    const connection = ConnectionHandler.getConnection(viewer, key, {
+      notificationTypes: getNotificationTypes(type),
+    })
+    const edges = connection?.getLinkedRecords("edges")
 
-  // Set unread notifications count to 0
-  me.setValue(0, "unreadNotificationsCount")
+    // Set unread notifications count to 0
+    me.setValue(0, "unreadNotificationsCount")
 
-  // Mark all notifications as read
-  edges?.forEach((edge) => {
-    const node = edge.getLinkedRecord("node")
-    node?.setValue(false, "isUnread")
+    // Mark all notifications as read
+    edges?.forEach((edge) => {
+      const node = edge.getLinkedRecord("node")
+      node?.setValue(false, "isUnread")
+    })
   })
 }

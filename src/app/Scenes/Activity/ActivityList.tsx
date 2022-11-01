@@ -110,7 +110,7 @@ const notificationsConnectionFragment = graphql`
     types: { type: "[NotificationTypesEnum]" }
   ) {
     notificationsConnection(first: $count, after: $after, notificationTypes: $types)
-      @connection(key: "ActivityList_notificationsConnection", filters: []) {
+      @connection(key: "ActivityList_notificationsConnection", filters: ["notificationTypes"]) {
       edges {
         node {
           internalID
