@@ -1,6 +1,5 @@
 import { ActionType } from "@artsy/cohesion"
 import { ClickedActivityPanelTab } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
-import { NotificationTypesEnum } from "__generated__/ActivityItem_item.graphql"
 import { ActivityQuery } from "__generated__/ActivityQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"

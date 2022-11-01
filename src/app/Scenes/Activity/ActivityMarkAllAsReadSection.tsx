@@ -3,7 +3,7 @@ import { ActivityMarkAllAsReadSectionMutation } from "__generated__/ActivityMark
 import { Button, Flex, Text } from "palette"
 import { useMutation } from "react-relay"
 import { ConnectionHandler, graphql, RecordSourceSelectorProxy } from "relay-runtime"
-import { NotificationType, notificationTypes } from "./types"
+import { notificationTypes } from "./types"
 import { getNotificationTypes } from "./utils/getNotificationTypes"
 
 interface ActivityMarkAllAsReadSectionProps {
