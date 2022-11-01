@@ -12,6 +12,7 @@ If things are not going right some of the things you can try are
 Still nothing?
 
 - reinstall eigen
+
   ![...Have you tried turning it off and on again?](https://y.yarn.co/1ab70c93-fce1-460d-8575-3bac5a666e96_text.gif)
 
 - No, seriously. Try turning the computer off and on again
