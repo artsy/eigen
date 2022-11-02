@@ -10,7 +10,7 @@ export const LotCurrentBidInfo: React.FC<LotCurrentBidInfoProps> = ({ saleArtwor
   const data = useFragment(lotCurrentBidInfoFragment, saleArtwork)
   const { reserveMessage, counts, currentBid } = data ?? {}
   const bidsCount = counts?.bidderPositions ?? 0
-  const bidText = getBidText(bidsCount, reserveMessage ?? null)
+  const bidText = getBidText(bidsCount, reserveMessage ?? "")
 
   return <ArtworkLotDetailsRow title={bidText} value={currentBid?.display!} />
 }
@@ -27,7 +27,7 @@ const lotCurrentBidInfoFragment = graphql`
   }
 `
 
-const getBidStateText = (bidsCount: number, message: string | null) => {
+const getBidStateText = (bidsCount: number, message: string) => {
   const textParts = []
 
   if (bidsCount > 0) {
@@ -35,14 +35,14 @@ const getBidStateText = (bidsCount: number, message: string | null) => {
     textParts.push(label)
   }
 
-  if (message) {
+  if (message.length > 0) {
     textParts.push(message.toLocaleLowerCase())
   }
 
   return textParts.join(", ")
 }
 
-const getBidText = (bidsCount: number, reserveMessage: string | null) => {
+const getBidText = (bidsCount: number, reserveMessage: string) => {
   const bidsPresent = bidsCount > 0
   const bidStateText = getBidStateText(bidsCount, reserveMessage)
   const bidStatusText = bidsPresent ? "Current bid" : "Starting bid"
