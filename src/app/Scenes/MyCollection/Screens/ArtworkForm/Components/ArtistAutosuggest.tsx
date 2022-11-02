@@ -64,19 +64,20 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
               onResultPress={onResultPress}
               ListHeaderComponent={() =>
                 enableArtworksFromNonArtsyArtists ? (
-                  <Touchable
-                    onPress={onSkipPress}
-                    testID="my-collection-artwork-form-artist-skip-button"
-                  >
-                    <Flex flexDirection="row" my={1}>
-                      <Text variant="xs" color="black60">
-                        Or skip ahead to{" "}
-                      </Text>
+                  <Flex flexDirection="row" my={1}>
+                    <Text variant="xs" color="black60">
+                      Or skip ahead to{" "}
+                    </Text>
+                    <Touchable
+                      onPress={onSkipPress}
+                      testID="my-collection-artwork-form-artist-skip-button"
+                      hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
+                    >
                       <Text variant="xs" color="black60" underline>
                         add artwork details
                       </Text>
-                    </Flex>
-                  </Touchable>
+                    </Touchable>
+                  </Flex>
                 ) : null
               }
               ListEmptyComponent={() =>
@@ -129,7 +130,7 @@ export const filterArtistsByKeyword = (
   artists: Array<{ displayLabel: string | null }>,
   keywordFilter: string
 ) => {
-  if (keywordFilter?.length < 2) {
+  if (keywordFilter.length < 2) {
     return artists
   }
 

@@ -30,7 +30,7 @@ const SUBSEQUENT_BATCH_SIZE = 64
 
 const AutosuggestResultsFlatList: React.FC<{
   query: string
-  prependResults?: any[]
+  prependResults?: AutosuggestResult[]
   // if results are null that means we are waiting on a response from MP
   results: AutosuggestResults_results$data | null
   relay: RelayPaginationProp
