@@ -113,3 +113,6 @@
 
 // Admin
 #import "ARAdminSettingsViewController.h"
+
+// Sentry Swift Access
+#import "ARSentryReporter.h"

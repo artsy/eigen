@@ -223,6 +223,15 @@
 		CB43299E27FE0DB100B29DD6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CB43278427E8FEE400B29DD6 /* InfoPlist.strings */; };
 		CB61B85427B585F00007922D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB61B85327B585F00007922D /* GoogleService-Info.plist */; };
 		CB762B2A291054D500881194 /* LiveAuctionReportProblemButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB762B29291054D500881194 /* LiveAuctionReportProblemButton.swift */; };
+		CB762B2D29119F0700881194 /* ARSentryReporter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB762B2C29119F0700881194 /* ARSentryReporter.m */; };
+		CB762B372911A5E100881194 /* ARVIRModalClose.png in Resources */ = {isa = PBXBuildFile; fileRef = CB762B2F2911A5E100881194 /* ARVIRModalClose.png */; };
+		CB762B382911A5E100881194 /* ARVIRTick.png in Resources */ = {isa = PBXBuildFile; fileRef = CB762B302911A5E100881194 /* ARVIRTick.png */; };
+		CB762B392911A5E100881194 /* ARVIRModalClose@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB762B312911A5E100881194 /* ARVIRModalClose@3x.png */; };
+		CB762B3A2911A5E100881194 /* ARVIRTick@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB762B322911A5E100881194 /* ARVIRTick@2x.png */; };
+		CB762B3B2911A5E100881194 /* ARVIRTick@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB762B332911A5E100881194 /* ARVIRTick@3x.png */; };
+		CB762B3C2911A5E100881194 /* ARVIRModalClose@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB762B342911A5E100881194 /* ARVIRModalClose@2x.png */; };
+		CB762B3D2911A5E100881194 /* ARVIRShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = CB762B352911A5E100881194 /* ARVIRShadow.png */; };
+		CB762B3E2911A5E100881194 /* ar_vir_opening_frame.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB762B362911A5E100881194 /* ar_vir_opening_frame.jpg */; };
 		CBE3211C27D9615000395A93 /* OldAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3210827D9615000395A93 /* OldAdminView.swift */; };
 		CBE3211D27D9615000395A93 /* ARTCityGuideViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3210927D9615000395A93 /* ARTCityGuideViewManager.m */; };
 		CBE3211E27D9615000395A93 /* ARTLiveAuctionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3210C27D9615000395A93 /* ARTLiveAuctionViewManager.m */; };
@@ -350,14 +359,6 @@
 		CBE326EE27E275A300395A93 /* ARAugmentedFloorBasedVIRViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3253B27E275A100395A93 /* ARAugmentedFloorBasedVIRViewController.m */; };
 		CBE326EF27E275A300395A93 /* ARAugmentedVIRSetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3253C27E275A100395A93 /* ARAugmentedVIRSetupViewController.m */; };
 		CBE326F027E275A300395A93 /* ARVIRHorizontalPlaneInteractionController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3253F27E275A100395A93 /* ARVIRHorizontalPlaneInteractionController.m */; };
-		CBE326F127E275A300395A93 /* ARVIRModalClose.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE3254127E275A100395A93 /* ARVIRModalClose.png */; };
-		CBE326F227E275A300395A93 /* ARVIRTick.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE3254227E275A100395A93 /* ARVIRTick.png */; };
-		CBE326F327E275A300395A93 /* ARVIRModalClose@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE3254327E275A100395A93 /* ARVIRModalClose@3x.png */; };
-		CBE326F427E275A300395A93 /* ARVIRTick@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE3254427E275A100395A93 /* ARVIRTick@2x.png */; };
-		CBE326F527E275A300395A93 /* ARVIRTick@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE3254527E275A100395A93 /* ARVIRTick@3x.png */; };
-		CBE326F627E275A300395A93 /* ARVIRModalClose@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE3254627E275A100395A93 /* ARVIRModalClose@2x.png */; };
-		CBE326F727E275A300395A93 /* ARVIRShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE3254727E275A100395A93 /* ARVIRShadow.png */; };
-		CBE326F827E275A300395A93 /* ar_vir_opening_frame.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CBE3254827E275A100395A93 /* ar_vir_opening_frame.jpg */; };
 		CBE326F927E275A300395A93 /* ARAugmentedRealityConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3254927E275A100395A93 /* ARAugmentedRealityConfig.m */; };
 		CBE326FA27E275A300395A93 /* ARInformationView.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3254C27E275A100395A93 /* ARInformationView.m */; };
 		CBE326FB27E275A300395A93 /* live_auctions_socket.json in Resources */ = {isa = PBXBuildFile; fileRef = CBE3254D27E275A100395A93 /* live_auctions_socket.json */; };
@@ -965,6 +966,16 @@
 		CB43299927FDFE6B00B29DD6 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		CB61B85327B585F00007922D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CB762B29291054D500881194 /* LiveAuctionReportProblemButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveAuctionReportProblemButton.swift; sourceTree = "<group>"; };
+		CB762B2B29119F0700881194 /* ARSentryReporter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARSentryReporter.h; sourceTree = "<group>"; };
+		CB762B2C29119F0700881194 /* ARSentryReporter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARSentryReporter.m; sourceTree = "<group>"; };
+		CB762B2F2911A5E100881194 /* ARVIRModalClose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ARVIRModalClose.png; sourceTree = "<group>"; };
+		CB762B302911A5E100881194 /* ARVIRTick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ARVIRTick.png; sourceTree = "<group>"; };
+		CB762B312911A5E100881194 /* ARVIRModalClose@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRModalClose@3x.png"; sourceTree = "<group>"; };
+		CB762B322911A5E100881194 /* ARVIRTick@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRTick@2x.png"; sourceTree = "<group>"; };
+		CB762B332911A5E100881194 /* ARVIRTick@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRTick@3x.png"; sourceTree = "<group>"; };
+		CB762B342911A5E100881194 /* ARVIRModalClose@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRModalClose@2x.png"; sourceTree = "<group>"; };
+		CB762B352911A5E100881194 /* ARVIRShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ARVIRShadow.png; sourceTree = "<group>"; };
+		CB762B362911A5E100881194 /* ar_vir_opening_frame.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ar_vir_opening_frame.jpg; sourceTree = "<group>"; };
 		CBA7CF22282BF6310025AEA5 /* Artsy_Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Artsy_Tests-Info.plist"; sourceTree = "<group>"; };
 		CBE3210827D9615000395A93 /* OldAdminView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OldAdminView.swift; sourceTree = "<group>"; };
 		CBE3210927D9615000395A93 /* ARTCityGuideViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTCityGuideViewManager.m; sourceTree = "<group>"; };
@@ -1171,14 +1182,6 @@
 		CBE3253C27E275A100395A93 /* ARAugmentedVIRSetupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAugmentedVIRSetupViewController.m; sourceTree = "<group>"; };
 		CBE3253E27E275A100395A93 /* ARVIRHorizontalPlaneInteractionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARVIRHorizontalPlaneInteractionController.h; sourceTree = "<group>"; };
 		CBE3253F27E275A100395A93 /* ARVIRHorizontalPlaneInteractionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARVIRHorizontalPlaneInteractionController.m; sourceTree = "<group>"; };
-		CBE3254127E275A100395A93 /* ARVIRModalClose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ARVIRModalClose.png; sourceTree = "<group>"; };
-		CBE3254227E275A100395A93 /* ARVIRTick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ARVIRTick.png; sourceTree = "<group>"; };
-		CBE3254327E275A100395A93 /* ARVIRModalClose@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRModalClose@3x.png"; sourceTree = "<group>"; };
-		CBE3254427E275A100395A93 /* ARVIRTick@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRTick@2x.png"; sourceTree = "<group>"; };
-		CBE3254527E275A100395A93 /* ARVIRTick@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRTick@3x.png"; sourceTree = "<group>"; };
-		CBE3254627E275A100395A93 /* ARVIRModalClose@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRModalClose@2x.png"; sourceTree = "<group>"; };
-		CBE3254727E275A100395A93 /* ARVIRShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ARVIRShadow.png; sourceTree = "<group>"; };
-		CBE3254827E275A100395A93 /* ar_vir_opening_frame.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ar_vir_opening_frame.jpg; sourceTree = "<group>"; };
 		CBE3254927E275A100395A93 /* ARAugmentedRealityConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAugmentedRealityConfig.m; sourceTree = "<group>"; };
 		CBE3254B27E275A100395A93 /* ARInformationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARInformationView.h; sourceTree = "<group>"; };
 		CBE3254C27E275A100395A93 /* ARInformationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARInformationView.m; sourceTree = "<group>"; };
@@ -2521,6 +2524,21 @@
 			path = Stubs;
 			sourceTree = "<group>";
 		};
+		CB762B2E2911A5E100881194 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+				CB762B2F2911A5E100881194 /* ARVIRModalClose.png */,
+				CB762B302911A5E100881194 /* ARVIRTick.png */,
+				CB762B312911A5E100881194 /* ARVIRModalClose@3x.png */,
+				CB762B322911A5E100881194 /* ARVIRTick@2x.png */,
+				CB762B332911A5E100881194 /* ARVIRTick@3x.png */,
+				CB762B342911A5E100881194 /* ARVIRModalClose@2x.png */,
+				CB762B352911A5E100881194 /* ARVIRShadow.png */,
+				CB762B362911A5E100881194 /* ar_vir_opening_frame.jpg */,
+			);
+			path = "New Group";
+			sourceTree = "<group>";
+		};
 		CB8672711C005915043C63E8 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -2675,6 +2693,7 @@
 				CBE3249727E275A100395A93 /* ARAppActivityContinuationDelegate.m */,
 				CBE3249827E275A100395A93 /* ARAppNotificationsDelegate.m */,
 				CBE3249927E275A100395A93 /* ARTArtsyNativeModule.h */,
+				CBE324AE27E275A100395A93 /* ARTArtsyNativeModule.m */,
 				CBE3249A27E275A100395A93 /* ARAppStatus.m */,
 				CBE3249B27E275A100395A93 /* ARAnalyticsConstants.m */,
 				CBE3249C27E275A100395A93 /* ARAppDelegate+Echo.h */,
@@ -2694,7 +2713,6 @@
 				CBE324AB27E275A100395A93 /* ARAnalyticsConstants.h */,
 				CBE324AC27E275A100395A93 /* ARAppDelegate+Echo.m */,
 				CBE324AD27E275A100395A93 /* ARAppStatus.h */,
-				CBE324AE27E275A100395A93 /* ARTArtsyNativeModule.m */,
 				CBE324AF27E275A100395A93 /* ARApplicationShortcutItemDelegate.h */,
 				CBE324B027E275A100395A93 /* ARAppDelegate+Emission.m */,
 				CBE324B127E275A100395A93 /* ArtsyEcho.h */,
@@ -2915,6 +2933,8 @@
 			children = (
 				CBE3251D27E275A100395A93 /* ARNetworkErrorManager.h */,
 				CBE3251E27E275A100395A93 /* ARNetworkErrorManager.m */,
+				CB762B2B29119F0700881194 /* ARSentryReporter.h */,
+				CB762B2C29119F0700881194 /* ARSentryReporter.m */,
 			);
 			path = Errors;
 			sourceTree = "<group>";
@@ -2944,11 +2964,11 @@
 		CBE3253127E275A100395A93 /* ARVIR */ = {
 			isa = PBXGroup;
 			children = (
+				CB762B2E2911A5E100881194 /* New Group */,
 				CBE3253227E275A100395A93 /* Nodes */,
 				CBE3253727E275A100395A93 /* ARAugmentedRealityConfig.h */,
 				CBE3253827E275A100395A93 /* VCs */,
 				CBE3253D27E275A100395A93 /* AR */,
-				CBE3254027E275A100395A93 /* New Group */,
 				CBE3254927E275A100395A93 /* ARAugmentedRealityConfig.m */,
 				CBE3254A27E275A100395A93 /* Views */,
 			);
@@ -2984,21 +3004,6 @@
 				CBE3253F27E275A100395A93 /* ARVIRHorizontalPlaneInteractionController.m */,
 			);
 			path = AR;
-			sourceTree = "<group>";
-		};
-		CBE3254027E275A100395A93 /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-				CBE3254127E275A100395A93 /* ARVIRModalClose.png */,
-				CBE3254227E275A100395A93 /* ARVIRTick.png */,
-				CBE3254327E275A100395A93 /* ARVIRModalClose@3x.png */,
-				CBE3254427E275A100395A93 /* ARVIRTick@2x.png */,
-				CBE3254527E275A100395A93 /* ARVIRTick@3x.png */,
-				CBE3254627E275A100395A93 /* ARVIRModalClose@2x.png */,
-				CBE3254727E275A100395A93 /* ARVIRShadow.png */,
-				CBE3254827E275A100395A93 /* ar_vir_opening_frame.jpg */,
-			);
-			path = "New Group";
 			sourceTree = "<group>";
 		};
 		CBE3254A27E275A100395A93 /* Views */ = {
@@ -3666,20 +3671,18 @@
 				CBE326FB27E275A300395A93 /* live_auctions_socket.json in Resources */,
 				CBE3275D27E275A400395A93 /* CloseButtonLargeHighlighted@2x.png in Resources */,
 				1AE9F26B2902DA87002A561B /* Tests-Store.xcconfig in Resources */,
-				CBE326F327E275A300395A93 /* ARVIRModalClose@3x.png in Resources */,
 				CBE3276B27E275A400395A93 /* navigation_more_arrow_horizontal@2x.png in Resources */,
 				1AE9F2682902DA87002A561B /* Tests-Debug.xcconfig in Resources */,
-				CBE326F627E275A300395A93 /* ARVIRModalClose@2x.png in Resources */,
 				CBE3272D27E275A400395A93 /* ViewInRoom_Bench@2x.png in Resources */,
 				CBE3275227E275A400395A93 /* RefreshIcon@2x.png in Resources */,
 				CBE3274F27E275A400395A93 /* CircleXRed.png in Resources */,
 				CBE3276427E275A400395A93 /* followButtonChecked.png in Resources */,
-				CBE326F427E275A300395A93 /* ARVIRTick@2x.png in Resources */,
 				CBE3277F27E275A400395A93 /* static_sale_data.graphql in Resources */,
 				CBE3273D27E275A400395A93 /* FooterBackground@2x.png in Resources */,
 				CBE3275427E275A400395A93 /* Chevron_White_Left@2x.png in Resources */,
 				CBE3276227E275A400395A93 /* full_logo_black_large@2x.png in Resources */,
 				CBE3275827E275A400395A93 /* paddle@2x.png in Resources */,
+				CB762B3D2911A5E100881194 /* ARVIRShadow.png in Resources */,
 				CBE3272927E275A400395A93 /* ViewInRoom_Wall@2x.png in Resources */,
 				CB61B85427B585F00007922D /* GoogleService-Info.plist in Resources */,
 				CBE3273F27E275A400395A93 /* Hash@2x.png in Resources */,
@@ -3700,13 +3703,12 @@
 				CBE3273827E275A400395A93 /* followButtonChecked@3x.png in Resources */,
 				CBE3275527E275A400395A93 /* Range@2x.png in Resources */,
 				CBE3274327E275A400395A93 /* full_logo_white_small@2x.png in Resources */,
-				CBE326F127E275A300395A93 /* ARVIRModalClose.png in Resources */,
 				CBE3272C27E275A400395A93 /* ViewInRoom_Base@2x.png in Resources */,
 				1A4B97D0283CFA1E00878EAE /* fonts in Resources */,
 				CBE3274127E275A400395A93 /* followButton@2x.png in Resources */,
-				CBE326F827E275A300395A93 /* ar_vir_opening_frame.jpg in Resources */,
 				CBE326D127E275A300395A93 /* live_auctions_static.json in Resources */,
 				CBE3273027E275A400395A93 /* SmallMoreVerticalArrow.png in Resources */,
+				CB762B372911A5E100881194 /* ARVIRModalClose.png in Resources */,
 				CBE3274D27E275A400395A93 /* ARVIRRefresh@3x.png in Resources */,
 				CBE3273927E275A400395A93 /* followButtonChecked@2x.png in Resources */,
 				1AE9F2692902DA87002A561B /* Shared.xcconfig in Resources */,
@@ -3718,6 +3720,7 @@
 				1AE9F26A2902DA87002A561B /* App-Store.xcconfig in Resources */,
 				CBE3274727E275A400395A93 /* BackChevron.png in Resources */,
 				CBE3272E27E275A400395A93 /* ViewInRoom_BaseNoBench@2x.png in Resources */,
+				CB762B3C2911A5E100881194 /* ARVIRModalClose@2x.png in Resources */,
 				1AE9F2672902DA87002A561B /* BrazeExt.xcconfig in Resources */,
 				CBE3273727E275A400395A93 /* navigation_more_arrow_vertical@2x.png in Resources */,
 				CBE3275327E275A400395A93 /* CircleCheckGreen@2x.png in Resources */,
@@ -3725,7 +3728,6 @@
 				1AE9F2652902DA87002A561B /* App-Debug.xcconfig in Resources */,
 				CBE3274E27E275A400395A93 /* CloseButtonLarge@2x.png in Resources */,
 				CBE3278527E275A400395A93 /* InfoPlist.strings in Resources */,
-				CBE326F527E275A300395A93 /* ARVIRTick@3x.png in Resources */,
 				CBE3275F27E275A400395A93 /* BackChevron@2x.png in Resources */,
 				CBE3275627E275A400395A93 /* Thumb@2x.png in Resources */,
 				CBE3274927E275A400395A93 /* CircularCancelButton@2x.png in Resources */,
@@ -3736,17 +3738,20 @@
 				CBE3276527E275A400395A93 /* full_logo_black_medium@2x.png in Resources */,
 				CBE3273427E275A400395A93 /* MoreArrow@2x.png in Resources */,
 				CBE3269F27E275A300395A93 /* EchoNew.json in Resources */,
+				CB762B3A2911A5E100881194 /* ARVIRTick@2x.png in Resources */,
+				CB762B392911A5E100881194 /* ARVIRModalClose@3x.png in Resources */,
 				CBE3274A27E275A400395A93 /* followButton.png in Resources */,
 				CBE3275C27E275A400395A93 /* ARVIRRefresh@2x.png in Resources */,
-				CBE326F727E275A300395A93 /* ARVIRShadow.png in Resources */,
 				CBE3275B27E275A400395A93 /* CircleCheckGreen@3x.png in Resources */,
 				CBE3273527E275A400395A93 /* ARVIRBack@3x.png in Resources */,
 				CBE3274C27E275A400395A93 /* full_logo_white_large@2x.png in Resources */,
 				CBE3272A27E275A400395A93 /* ViewInRoom_Man_3@2x.png in Resources */,
 				CBE3275927E275A400395A93 /* CircleCheckGreen.png in Resources */,
+				CB762B3B2911A5E100881194 /* ARVIRTick@3x.png in Resources */,
 				CBE3276127E275A400395A93 /* CircularCancelButton.png in Resources */,
 				1AE9F2642902DA87002A561B /* App.xcconfig in Resources */,
 				CBE3276927E275A400395A93 /* BackChevron@3x.png in Resources */,
+				CB762B382911A5E100881194 /* ARVIRTick.png in Resources */,
 				CBE3273E27E275A400395A93 /* serif_modal_close@2x.png in Resources */,
 				CBE3273227E275A400395A93 /* SearchButton@3x.png in Resources */,
 				CBE3276827E275A400395A93 /* Thumb.png in Resources */,
@@ -3756,11 +3761,11 @@
 				CBE3273A27E275A400395A93 /* AuctionRefineCheck.png in Resources */,
 				CBE3275027E275A400395A93 /* Artsy_Logo.png in Resources */,
 				CBE3276327E275A400395A93 /* BackArrow_Highlighted@2x.png in Resources */,
-				CBE326F227E275A300395A93 /* ARVIRTick.png in Resources */,
 				B3EFFC7412D94886B32A2B10 /* Unica77LL-Italic.otf in Resources */,
 				B7F9E6E6D6604CC691827F1D /* Unica77LL-Medium.otf in Resources */,
 				4A9190A1CCE54CE09384C9FC /* Unica77LL-MediumItalic.otf in Resources */,
 				9DE2CA6EF6024B2DAF877CB2 /* Unica77LL-Regular.otf in Resources */,
+				CB762B3E2911A5E100881194 /* ar_vir_opening_frame.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4159,6 +4164,7 @@
 				CBE326D227E275A300395A93 /* AuctionBiddersNetworkModel.swift in Sources */,
 				1A4E5119283F91BA0008EF35 /* Artsy+UILabels.m in Sources */,
 				CBE3267927E275A300395A93 /* NSDate+Util.m in Sources */,
+				CB762B2D29119F0700881194 /* ARSentryReporter.m in Sources */,
 				CBE326E227E275A300395A93 /* ARNavigationController.m in Sources */,
 				CBE3271527E275A300395A93 /* ARSeparatorViews.m in Sources */,
 				CBE3277A27E275A400395A93 /* ArtsyAPI+Sales.m in Sources */,

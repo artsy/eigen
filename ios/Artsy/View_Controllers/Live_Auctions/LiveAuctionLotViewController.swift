@@ -319,6 +319,8 @@ extension LiveAuctionLotViewController: LiveAuctionReportProblemButtonDelegate {
     }
 
     private func reportToSentry(description: String) {
-        print("Here is where I should report to sentry \(description)")
+        let userID = User.current().userID
+        let saleID = salesPerson.liveSaleID
+        ARSentryReporter.reportProblem(forUserID: userID ?? "unknown", inSale: saleID, withDescription: description)
     }
 }
