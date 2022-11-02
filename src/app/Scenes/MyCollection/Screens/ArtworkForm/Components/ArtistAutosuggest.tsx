@@ -4,7 +4,7 @@ import { AutosuggestResult, AutosuggestResults } from "app/Scenes/Search/Autosug
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
-import { sortBy } from "lodash"
+import { sortBy, trim } from "lodash"
 import { Box, Button, Flex, Input, Spacer, Text, Touchable } from "palette"
 import { useLazyLoadQuery } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -23,6 +23,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
   const enableArtworksFromNonArtsyArtists = useFeatureFlag("AREnableArtworksFromNonArtsyArtists")
   const { formik } = useArtworkForm()
   const { artist: artistQuery } = formik.values
+  const trimmedQuery = trim(artistQuery)
   const searchProviderValues = useSearchProviderValues(artistQuery)
 
   const queryData = useLazyLoadQuery<ArtistAutosuggestQuery>(
@@ -33,10 +34,10 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
 
   const collectedArtists = extractNodes(queryData.me?.myCollectionInfo?.collectedArtistsConnection)
   const filteredCollecteArtists = enableArtworksFromNonArtsyArtists
-    ? sortBy(filterArtistsByKeyword(collectedArtists, artistQuery), ["displayLabel"])
+    ? sortBy(filterArtistsByKeyword(collectedArtists, trimmedQuery), ["displayLabel"])
     : []
 
-  const showResults = filteredCollecteArtists.length || artistQuery.length > 2
+  const showResults = filteredCollecteArtists.length || trimmedQuery.length > 2
 
   return (
     <SearchContext.Provider value={searchProviderValues}>
@@ -55,7 +56,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
         {showResults ? (
           <Box height="100%">
             <AutosuggestResults
-              query={artistQuery}
+              query={trimmedQuery}
               prependResults={filteredCollecteArtists}
               entities={["ARTIST"]}
               showResultType={false}
@@ -81,7 +82,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
               ListEmptyComponent={() =>
                 enableArtworksFromNonArtsyArtists ? (
                   <Flex width="100%" my={2}>
-                    <Text>We didn't find "{artistQuery}" on Artsy.</Text>
+                    <Text>We didn't find "{trimmedQuery}" on Artsy.</Text>
                     <Text>You can add their name in the artwork details.</Text>
                     <Button variant="outline" onPress={onSkipPress} mt={4} block>
                       Add Artist
@@ -89,7 +90,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
                   </Flex>
                 ) : (
                   <Flex width="100%">
-                    <Text>We couldn't find any results for "{artistQuery}"</Text>
+                    <Text>We couldn't find any results for "{trimmedQuery}"</Text>
                   </Flex>
                 )
               }
