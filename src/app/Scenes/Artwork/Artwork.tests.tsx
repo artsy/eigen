@@ -39,6 +39,7 @@ type ArtworkQueries =
   | "ArtworkBelowTheFoldQuery"
   | "ArtworkMarkAsRecentlyViewedQuery"
   | "ArtworkRefetchQuery"
+  | "RequestConditionReportQuery"
 
 jest.unmock("react-relay")
 
@@ -319,6 +320,8 @@ describe("Artwork", () => {
         return { slug: "my-special-artwork" }
       },
     })
+
+    mockMostRecentOperation("RequestConditionReportQuery")
 
     navigationEvents.emit("modalDismissed")
     mockMostRecentOperation("ArtworkRefetchQuery", {
