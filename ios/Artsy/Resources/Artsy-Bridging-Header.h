@@ -105,6 +105,7 @@
 #import "UIDevice-Hardware.h"
 #import "AREmission.h"
 #import "ARComponentViewController.h"
+#import "ARNotificationView.h"
 
 #import "ARTNativeScreenPresenterModule.h"
 

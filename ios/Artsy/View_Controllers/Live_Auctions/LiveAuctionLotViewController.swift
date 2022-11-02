@@ -322,5 +322,9 @@ extension LiveAuctionLotViewController: LiveAuctionReportProblemButtonDelegate {
         let userID = User.current().userID
         let saleID = salesPerson.liveSaleID
         ARSentryReporter.reportProblem(forUserID: userID ?? "unknown", inSale: saleID, withDescription: description)
+        ARNotificationView.showNotice(in: self.view, title: "Thanks for reporting.", time: 3.0) {
+            // do nothing
+            return
+        }
     }
 }
