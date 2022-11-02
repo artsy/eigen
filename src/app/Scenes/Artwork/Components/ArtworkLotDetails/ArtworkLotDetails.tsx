@@ -73,7 +73,6 @@ export const ArtworkLotDetails: React.FC<ArtworkLotDetailsProps> = ({ artwork, a
     <Join separator={<Spacer mt={2} />}>
       {!!estimate && <ArtworkLotDetailsRow title="Estimated value" value={estimate} />}
 
-      {/* CHECK SALE ARTWORK */}
       {!!(shouldRenderBidRelatedInfo && currentBid?.display) && (
         <ArtworkLotDetailsRow title={bidText} value={currentBid.display} />
       )}
@@ -84,7 +83,6 @@ export const ArtworkLotDetails: React.FC<ArtworkLotDetailsProps> = ({ artwork, a
         <LotCascadingEndTimesBanner sale={artworkData.sale!} />
       )}
 
-      {/* CHECK SALE ARTWORK */}
       {!!(shouldRenderBidRelatedInfo && isWithBuyersPremium) && (
         <Text variant="sm">
           This auction has a <LinkText onPress={handleBuyersPremiumTap}>buyer's premium</LinkText>.
