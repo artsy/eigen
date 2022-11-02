@@ -6,7 +6,7 @@ import React from "react"
 import { CountdownTimerProps } from "./CountdownTimer"
 
 interface TimeSectionProps {
-  textProps: ExtractProps<typeof Text>
+  textProps: TextProps
   time: string
   label: string
 }
