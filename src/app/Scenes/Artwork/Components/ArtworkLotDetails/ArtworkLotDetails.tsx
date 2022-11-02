@@ -42,7 +42,10 @@ export const ArtworkLotDetails: React.FC<ArtworkLotDetailsProps> = ({ artwork, a
   const isLiveAuctionState = auctionState === AuctionTimerState.LIVE_INTEGRATION_ONGOING
   const bidsCount = counts?.bidderPositions ?? 0
   const bidText = getBidText(bidsCount, reserveMessage ?? null)
-  const shouldRender = !isClosedAuctionState && !isLiveAuctionState && isForSale
+  const shouldRender = !isClosedAuctionState && isForSale
+  const shouldRenderBidRelatedInfo = shouldRender && !isLiveAuctionState
+
+  console.log("[debug] auctionState", auctionState)
 
   const { currentBiddingEndAt } = useArtworkBidding({
     lotID,
@@ -83,22 +86,26 @@ export const ArtworkLotDetails: React.FC<ArtworkLotDetailsProps> = ({ artwork, a
     <Join separator={<Spacer mt={2} />}>
       {!!estimate && <ArtworkLotDetailsRow title="Estimated value" value={estimate} />}
 
-      {!!(shouldRender && currentBid?.display) && (
+      {/* CHECK SALE ARTWORK */}
+      {/* CHECK LIVE AUCTION */}
+      {!!(shouldRenderBidRelatedInfo && currentBid?.display) && (
         <ArtworkLotDetailsRow title={bidText} value={currentBid.display} />
       )}
 
-      {!!(currentBiddingEndAt && shouldRender) && (
+      {!!(shouldRenderBidRelatedInfo && currentBiddingEndAt) && (
         <ArtworkLotDetailsRow title="Lot closes" value={formatEndDate(currentBiddingEndAt)} />
       )}
 
-      {!!(cascadingEndTimeIntervalMinutes && shouldRender) && (
+      {!!(shouldRenderBidRelatedInfo && cascadingEndTimeIntervalMinutes) && (
         <ArtworkLotCascadingEndTimesBanner
           cascadingEndTimeInterval={cascadingEndTimeIntervalMinutes}
           extendedBiddingIntervalMinutes={extendedBiddingIntervalMinutes}
         />
       )}
 
-      {!!(isWithBuyersPremium && shouldRender) && (
+      {/* CHECK SALE ARTWORK */}
+      {/* CHECK LIVE AUCTION */}
+      {!!(shouldRenderBidRelatedInfo && isWithBuyersPremium) && (
         <Text variant="sm">
           This auction has a <LinkText onPress={handleBuyersPremiumTap}>buyer's premium</LinkText>.
         </Text>

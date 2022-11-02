@@ -121,7 +121,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   }
 
   const shouldRenderLotDetails = () => {
-    return enableArtworkRedesign && isInAuction && artworkAboveTheFold?.sale
+    return enableArtworkRedesign && isInAuction && sale && artworkAboveTheFold?.saleArtwork
   }
 
   useEffect(() => {
