@@ -13,7 +13,7 @@ import { LotCurrentBidInfo } from "./LotCurrentBidInfo"
 import { LotEndDateTime } from "./LotEndDateTime"
 import { LotUpcomingLiveDateTime } from "./LotUpcomingLiveDateTime"
 
-interface ArtworkLotDetailsProps {
+export interface ArtworkLotDetailsProps {
   artwork: ArtworkLotDetails_artwork$key
   auctionState?: AuctionTimerState
 }
@@ -81,20 +81,20 @@ export const ArtworkLotDetails: React.FC<ArtworkLotDetailsProps> = ({ artwork, a
       )}
 
       {!!(shouldRenderBidRelatedInfo && isWithBuyersPremium) && (
-        <Text variant="sm">
+        <Text variant="sm" testID="buyers-premium">
           This auction has a <LinkText onPress={handleBuyersPremiumTap}>buyer's premium</LinkText>.
         </Text>
       )}
 
       {!!shouldRender && (
-        <Text variant="sm">
+        <Text variant="sm" testID="conditions-of-sale">
           By placing a bid you agree to {partnerName(artworkData.sale!)}{" "}
           <LinkText onPress={handleConditionsOfSaleTap}>Conditions of Sale</LinkText>.
         </Text>
       )}
 
       {!!shouldRender && (
-        <Text variant="sm">
+        <Text variant="sm" testID="have-a-question">
           Have a question?{" "}
           <LinkText onPress={handleReadOurAuctionFAQsTap}>Read our auction FAQs</LinkText> or{" "}
           <LinkText onPress={handleAskASpecialistTap}>ask a specialist</LinkText>.
