@@ -8,8 +8,8 @@ import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { partnerName } from "../ArtworkExtraLinks/partnerName"
 import { ArtworkLotDetailsRow } from "./ArtworkLotDetailsRow"
-import { getBidText } from "./helpers"
 import { LotCascadingEndTimesBanner } from "./LotCascadingEndTimesBanner"
+import { LotCurrentBidInfo } from "./LotCurrentBidInfo"
 import { LotEndDateTime } from "./LotEndDateTime"
 import { LotUpcomingLiveDateTime } from "./LotUpcomingLiveDateTime"
 
@@ -21,14 +21,11 @@ interface ArtworkLotDetailsProps {
 export const ArtworkLotDetails: React.FC<ArtworkLotDetailsProps> = ({ artwork, auctionState }) => {
   const { trackEvent } = useTracking()
   const artworkData = useFragment(artworkFragment, artwork)
-  const { isForSale, title, artist } = artworkData
-  const { isWithBuyersPremium, internalID, cascadingEndTimeIntervalMinutes } =
-    artworkData.sale ?? {}
-  const { estimate, reserveMessage, currentBid, counts } = artworkData.saleArtwork ?? {}
+  const { isForSale, title, artist, saleArtwork, sale } = artworkData
+  const { isWithBuyersPremium, internalID, cascadingEndTimeIntervalMinutes } = sale ?? {}
+  const { estimate, currentBid } = saleArtwork ?? {}
   const isClosedAuctionState = auctionState === AuctionTimerState.CLOSED
   const isLiveAuctionState = auctionState === AuctionTimerState.LIVE_INTEGRATION_ONGOING
-  const bidsCount = counts?.bidderPositions ?? 0
-  const bidText = getBidText(bidsCount, reserveMessage ?? null)
   const shouldRender = !isClosedAuctionState && isForSale
   const shouldRenderBidRelatedInfo = shouldRender && !isLiveAuctionState
 
@@ -74,7 +71,7 @@ export const ArtworkLotDetails: React.FC<ArtworkLotDetailsProps> = ({ artwork, a
       {!!estimate && <ArtworkLotDetailsRow title="Estimated value" value={estimate} />}
 
       {!!(shouldRenderBidRelatedInfo && currentBid?.display) && (
-        <ArtworkLotDetailsRow title={bidText} value={currentBid.display} />
+        <LotCurrentBidInfo saleArtwork={saleArtwork!} />
       )}
 
       {!!shouldRenderBidRelatedInfo && renderLotDateTimeInfo()}
@@ -117,7 +114,6 @@ const artworkFragment = graphql`
     sale {
       internalID
       isWithBuyersPremium
-      isBenefit
       cascadingEndTimeIntervalMinutes
       partner {
         name
@@ -126,14 +122,10 @@ const artworkFragment = graphql`
     }
     saleArtwork {
       estimate
-      reserveMessage
-      extendedBiddingEndAt
-      counts {
-        bidderPositions
-      }
       currentBid {
         display
       }
+      ...LotCurrentBidInfo_saleArtwork
     }
     ...LotEndDateTime_artwork
     ...LotUpcomingLiveDateTime_artwork
