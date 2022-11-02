@@ -3,15 +3,15 @@ import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/navigation/navigate"
 import { sendEmail } from "app/utils/sendEmail"
 import { Schema } from "app/utils/track"
-import { useArtworkBidding } from "app/Websockets/auctions/useArtworkBidding"
-import { DateTime } from "luxon"
 import { Join, LinkText, Spacer, Text } from "palette"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { partnerName } from "../ArtworkExtraLinks/partnerName"
-import { ArtworkLotCascadingEndTimesBanner } from "./ArtworkLotCascadingEndTimesBanner"
 import { ArtworkLotDetailsRow } from "./ArtworkLotDetailsRow"
 import { getBidText } from "./helpers"
+import { LotCascadingEndTimesBanner } from "./LotCascadingEndTimesBanner"
+import { LotEndDateTime } from "./LotEndDateTime"
+import { LotUpcomingLiveDateTime } from "./LotUpcomingLiveDateTime"
 
 interface ArtworkLotDetailsProps {
   artwork: ArtworkLotDetails_artwork$key
@@ -22,36 +22,15 @@ export const ArtworkLotDetails: React.FC<ArtworkLotDetailsProps> = ({ artwork, a
   const { trackEvent } = useTracking()
   const artworkData = useFragment(artworkFragment, artwork)
   const { isForSale, title, artist } = artworkData
-  const {
-    endAt: saleEndAt,
-    cascadingEndTimeIntervalMinutes,
-    extendedBiddingIntervalMinutes,
-    isWithBuyersPremium,
-    internalID,
-  } = artworkData.sale ?? {}
-  const {
-    lotID,
-    estimate,
-    reserveMessage,
-    currentBid,
-    counts,
-    endAt: lotEndAt,
-    extendedBiddingEndAt,
-  } = artworkData.saleArtwork ?? {}
+  const { isWithBuyersPremium, internalID, cascadingEndTimeIntervalMinutes } =
+    artworkData.sale ?? {}
+  const { estimate, reserveMessage, currentBid, counts } = artworkData.saleArtwork ?? {}
   const isClosedAuctionState = auctionState === AuctionTimerState.CLOSED
   const isLiveAuctionState = auctionState === AuctionTimerState.LIVE_INTEGRATION_ONGOING
   const bidsCount = counts?.bidderPositions ?? 0
   const bidText = getBidText(bidsCount, reserveMessage ?? null)
   const shouldRender = !isClosedAuctionState && isForSale
   const shouldRenderBidRelatedInfo = shouldRender && !isLiveAuctionState
-
-  console.log("[debug] auctionState", auctionState)
-
-  const { currentBiddingEndAt } = useArtworkBidding({
-    lotID,
-    lotEndAt,
-    biddingEndAt: extendedBiddingEndAt ?? lotEndAt ?? saleEndAt,
-  })
 
   const handleBuyersPremiumTap = () => {
     navigate(`/auction/${internalID!}/buyers-premium`, {
@@ -82,29 +61,30 @@ export const ArtworkLotDetails: React.FC<ArtworkLotDetailsProps> = ({ artwork, a
     })
   }
 
+  const renderLotDateTimeInfo = () => {
+    if (auctionState === AuctionTimerState.LIVE_INTEGRATION_UPCOMING) {
+      return <LotUpcomingLiveDateTime artwork={artworkData} />
+    }
+
+    return <LotEndDateTime artwork={artworkData} />
+  }
+
   return (
     <Join separator={<Spacer mt={2} />}>
       {!!estimate && <ArtworkLotDetailsRow title="Estimated value" value={estimate} />}
 
       {/* CHECK SALE ARTWORK */}
-      {/* CHECK LIVE AUCTION */}
       {!!(shouldRenderBidRelatedInfo && currentBid?.display) && (
         <ArtworkLotDetailsRow title={bidText} value={currentBid.display} />
       )}
 
-      {!!(shouldRenderBidRelatedInfo && currentBiddingEndAt) && (
-        <ArtworkLotDetailsRow title="Lot closes" value={formatEndDate(currentBiddingEndAt)} />
-      )}
+      {!!shouldRenderBidRelatedInfo && renderLotDateTimeInfo()}
 
       {!!(shouldRenderBidRelatedInfo && cascadingEndTimeIntervalMinutes) && (
-        <ArtworkLotCascadingEndTimesBanner
-          cascadingEndTimeInterval={cascadingEndTimeIntervalMinutes}
-          extendedBiddingIntervalMinutes={extendedBiddingIntervalMinutes}
-        />
+        <LotCascadingEndTimesBanner sale={artworkData.sale!} />
       )}
 
       {/* CHECK SALE ARTWORK */}
-      {/* CHECK LIVE AUCTION */}
       {!!(shouldRenderBidRelatedInfo && isWithBuyersPremium) && (
         <Text variant="sm">
           This auction has a <LinkText onPress={handleBuyersPremiumTap}>buyer's premium</LinkText>.
@@ -138,21 +118,17 @@ const artworkFragment = graphql`
     }
     sale {
       internalID
-      endAt
       isWithBuyersPremium
-      cascadingEndTimeIntervalMinutes
-      extendedBiddingIntervalMinutes
       isBenefit
+      cascadingEndTimeIntervalMinutes
       partner {
         name
       }
+      ...LotCascadingEndTimesBanner_sale
     }
     saleArtwork {
-      lotID
       estimate
       reserveMessage
-      endAt
-      endedAt
       extendedBiddingEndAt
       counts {
         bidderPositions
@@ -161,15 +137,10 @@ const artworkFragment = graphql`
         display
       }
     }
+    ...LotEndDateTime_artwork
+    ...LotUpcomingLiveDateTime_artwork
   }
 `
-
-// TODO: Clarify format
-const formatEndDate = (endAt: string) => {
-  const date = DateTime.fromISO(endAt)
-
-  return date.toFormat("MMM dd, h:mma")
-}
 
 // TODO: move track events to cohesion
 const tracks = {
