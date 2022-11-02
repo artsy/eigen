@@ -1,4 +1,13 @@
 import { ArtworkLotDetails_TestQuery } from "__generated__/ArtworkLotDetails_TestQuery.graphql"
+import {
+  AuctionPreview,
+  AuctionPreviewNoStartingBid,
+  OpenAuctionNoReserveNoBids,
+  OpenAuctionNoReserveWithBids,
+  OpenAuctionReserveMetWithBids,
+  OpenAuctionReserveNoBids,
+  OpenAuctionReserveNotMetWithBids,
+} from "app/__fixtures__/ArtworkBidInfo"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
@@ -56,7 +65,7 @@ describe("ArtworkLotDetails", () => {
 
     expect(queryByText("Estimated value")).toBeTruthy()
     expect(queryByText("$1,200")).toBeTruthy()
-    expect(queryByText(/Starting bid/)).toBeTruthy()
+    expect(queryByText("Starting bid")).toBeTruthy()
     expect(queryByText("$500")).toBeTruthy()
     expect(queryByText("Lot closes")).toBeTruthy()
     expect(queryByText(formateLotDateTime(sale.endAt))).toBeTruthy()
@@ -66,7 +75,7 @@ describe("ArtworkLotDetails", () => {
   })
 
   it("should render only `Estimated value` row when auction is closed", async () => {
-    const { queryByText, queryByTestId } = renderWithHookWrappersTL(
+    const { queryByText, queryByTestId, queryByLabelText } = renderWithHookWrappersTL(
       <TestRenderer auctionState={AuctionTimerState.CLOSED} />,
       mockEnvironment
     )
@@ -79,8 +88,11 @@ describe("ArtworkLotDetails", () => {
     expect(queryByText("Estimated value")).toBeTruthy()
     expect(queryByText("$1,200")).toBeTruthy()
 
+    // Hide bid info
+    expect(queryByLabelText("Bid info")).toBeNull()
     expect(queryByText("Starting bid")).toBeNull()
     expect(queryByText("$500")).toBeNull()
+
     expect(queryByText("Lot closes")).toBeNull()
     expect(queryByText(formateLotDateTime(sale.endAt))).toBeNull()
     expect(queryByTestId("buyers-premium")).toBeNull()
@@ -88,8 +100,8 @@ describe("ArtworkLotDetails", () => {
     expect(queryByTestId("have-a-question")).toBeNull()
   })
 
-  it("should hide only the bid related info when auction is live", async () => {
-    const { queryByText, queryByTestId } = renderWithHookWrappersTL(
+  it("should hide only the bid related info for live sale in progress", async () => {
+    const { queryByText, queryByTestId, queryByLabelText } = renderWithHookWrappersTL(
       <TestRenderer auctionState={AuctionTimerState.LIVE_INTEGRATION_ONGOING} />,
       mockEnvironment
     )
@@ -99,8 +111,11 @@ describe("ArtworkLotDetails", () => {
     })
     await flushPromiseQueue()
 
+    // Hide bid info
+    expect(queryByLabelText("Bid info")).toBeNull()
     expect(queryByText("Starting bid")).toBeNull()
     expect(queryByText("$500")).toBeNull()
+
     expect(queryByText(formateLotDateTime(sale.endAt))).toBeNull()
     expect(queryByTestId("buyers-premium")).toBeNull()
 
@@ -150,6 +165,128 @@ describe("ArtworkLotDetails", () => {
 
     expect(queryByTestId("buyers-premium")).toBeNull()
   })
+
+  describe("Bid info for different auction states", () => {
+    describe("auction preview", () => {
+      it("displays proper starting bid info", async () => {
+        const { getByText } = renderWithHookWrappersTL(
+          <TestRenderer auctionState={AuctionTimerState.PREVIEW} />,
+          mockEnvironment
+        )
+
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Artwork: () => AuctionPreview,
+        })
+        await flushPromiseQueue()
+
+        expect(getByText("Starting bid")).toBeTruthy()
+        expect(getByText("CHF 4,000")).toBeTruthy()
+      })
+
+      describe("with no start bid set", () => {
+        it("displays nothing if current bid info is unavailable", async () => {
+          const { queryByLabelText } = renderWithHookWrappersTL(
+            <TestRenderer auctionState={AuctionTimerState.PREVIEW} />,
+            mockEnvironment
+          )
+
+          resolveMostRecentRelayOperation(mockEnvironment, {
+            Artwork: () => AuctionPreviewNoStartingBid,
+          })
+          await flushPromiseQueue()
+
+          expect(queryByLabelText("Bid info")).toBeNull()
+        })
+      })
+    })
+
+    describe("open auction", () => {
+      describe("with no reserve and no bids", () => {
+        it("displays proper starting bid info", async () => {
+          const { getByText } = renderWithHookWrappersTL(
+            <TestRenderer auctionState={AuctionTimerState.CLOSING} />,
+            mockEnvironment
+          )
+
+          resolveMostRecentRelayOperation(mockEnvironment, {
+            Artwork: () => OpenAuctionNoReserveNoBids,
+          })
+          await flushPromiseQueue()
+
+          expect(getByText("Starting bid")).toBeTruthy()
+          expect(getByText("$500")).toBeTruthy()
+        })
+      })
+
+      describe("with no reserve with bids present", () => {
+        it("displays proper current bid info including bid count", async () => {
+          const { getByText } = renderWithHookWrappersTL(
+            <TestRenderer auctionState={AuctionTimerState.CLOSING} />,
+            mockEnvironment
+          )
+
+          resolveMostRecentRelayOperation(mockEnvironment, {
+            Artwork: () => OpenAuctionNoReserveWithBids,
+          })
+          await flushPromiseQueue()
+
+          expect(getByText("Current bid (11 bids)")).toBeTruthy()
+          expect(getByText("$850")).toBeTruthy()
+        })
+      })
+
+      describe("with reserve and no bids", () => {
+        it("displays proper starting bid info and resserve message", async () => {
+          const { getByText } = renderWithHookWrappersTL(
+            <TestRenderer auctionState={AuctionTimerState.CLOSING} />,
+            mockEnvironment
+          )
+
+          resolveMostRecentRelayOperation(mockEnvironment, {
+            Artwork: () => OpenAuctionReserveNoBids,
+          })
+          await flushPromiseQueue()
+
+          expect(getByText("Starting bid (this work has a reserve)")).toBeTruthy()
+          expect(getByText("$3,000")).toBeTruthy()
+        })
+      })
+
+      describe("with some bids and reserve not met", () => {
+        it("displays current bid message inculding reserve warning", async () => {
+          const { getByText } = renderWithHookWrappersTL(
+            <TestRenderer auctionState={AuctionTimerState.CLOSING} />,
+            mockEnvironment
+          )
+
+          resolveMostRecentRelayOperation(mockEnvironment, {
+            Artwork: () => OpenAuctionReserveNotMetWithBids,
+          })
+          await flushPromiseQueue()
+
+          expect(getByText("Current bid (2 bids, reserve not met)")).toBeTruthy()
+          expect(getByText("$10,000")).toBeTruthy()
+        })
+      })
+
+      describe("with some bids and satisfied reserve", () => {
+        it("displays current bid message inculding reserve met", async () => {
+          const { getByText } = renderWithHookWrappersTL(
+            <TestRenderer auctionState={AuctionTimerState.CLOSING} />,
+            mockEnvironment
+          )
+
+          resolveMostRecentRelayOperation(mockEnvironment, {
+            Artwork: () => OpenAuctionReserveMetWithBids,
+          })
+          await flushPromiseQueue()
+
+          expect(getByText("Current bid (2 bids, reserve met)")).toBeTruthy()
+          expect(getByText("$500")).toBeTruthy()
+        })
+      })
+    })
+  })
 })
 
 const sale = {
@@ -162,6 +299,7 @@ const saleArtwork = {
   estimate: "$1,200",
   extendedBiddingEndAt: null,
   endAt: null,
+  reserveMessage: null,
   currentBid: {
     display: "$500",
   },

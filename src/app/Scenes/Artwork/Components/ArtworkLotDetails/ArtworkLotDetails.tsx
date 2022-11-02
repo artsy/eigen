@@ -3,7 +3,7 @@ import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/navigation/navigate"
 import { sendEmail } from "app/utils/sendEmail"
 import { Schema } from "app/utils/track"
-import { Join, LinkText, Spacer, Text } from "palette"
+import { Box, Join, LinkText, Spacer, Text } from "palette"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { partnerName } from "../ArtworkExtraLinks/partnerName"
@@ -71,7 +71,9 @@ export const ArtworkLotDetails: React.FC<ArtworkLotDetailsProps> = ({ artwork, a
       {!!estimate && <ArtworkLotDetailsRow title="Estimated value" value={estimate} />}
 
       {!!(shouldRenderBidRelatedInfo && currentBid?.display) && (
-        <LotCurrentBidInfo saleArtwork={saleArtwork!} />
+        <Box accessibilityLabel="Bid info">
+          <LotCurrentBidInfo saleArtwork={saleArtwork!} />
+        </Box>
       )}
 
       {!!shouldRenderBidRelatedInfo && renderLotDateTimeInfo()}
