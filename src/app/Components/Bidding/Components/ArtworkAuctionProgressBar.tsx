@@ -7,6 +7,7 @@ export interface ArtworkAuctionProgressBarProps {
   extendedBiddingIntervalMinutes: number
   biddingEndAt?: string | null
   hasBeenExtended: boolean
+  height?: number
 }
 
 export const ArtworkAuctionProgressBar: React.FC<ArtworkAuctionProgressBarProps> = ({
@@ -15,6 +16,7 @@ export const ArtworkAuctionProgressBar: React.FC<ArtworkAuctionProgressBarProps>
   extendedBiddingIntervalMinutes,
   biddingEndAt,
   hasBeenExtended,
+  height,
 }) => {
   if (!biddingEndAt) {
     return null
@@ -43,6 +45,10 @@ export const ArtworkAuctionProgressBar: React.FC<ArtworkAuctionProgressBarProps>
   const renderProgressBar = isWithinExtendedBiddingPeriod || hasBeenExtended
 
   return (
-    <>{renderProgressBar && <ProgressBar trackColor="red100" progress={percentComplete * 100} />}</>
+    <>
+      {renderProgressBar && (
+        <ProgressBar height={height} trackColor="red100" progress={percentComplete * 100} />
+      )}
+    </>
   )
 }
