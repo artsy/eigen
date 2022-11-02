@@ -115,6 +115,7 @@ const artworkFragment = graphql`
       internalID
       isWithBuyersPremium
       cascadingEndTimeIntervalMinutes
+      isBenefit
       partner {
         name
       }
