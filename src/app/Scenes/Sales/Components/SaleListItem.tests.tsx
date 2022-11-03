@@ -1,8 +1,6 @@
-import moment from "moment"
-import "react-native"
-
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import moment from "moment"
 import SaleListItem from "./SaleListItem"
 
 describe("SaleListItem", () => {
@@ -14,11 +12,6 @@ describe("SaleListItem", () => {
 
   describe("SalesRail Subtitle", () => {
     describe("with cascading feature flag switched ON", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({
-          AREnableCascadingEndTimerSalePageGrid: true,
-        })
-      })
       it("renders formattedStartDateTime as the subtitle", () => {
         const wrapper = renderWithWrappers(
           <SaleListItem sale={props as any} containerWidth={750} index={0} columnCount={4} />
@@ -26,20 +19,6 @@ describe("SaleListItem", () => {
 
         expect(wrapper.getByText(props.formattedStartDateTime)).toBeDefined()
         expect(wrapper.queryByText(props.displayTimelyAt)).toBeNull()
-      })
-    })
-    describe("with cascading feature flag switched OF", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({
-          AREnableCascadingEndTimerSalePageGrid: false,
-        })
-      })
-      it("renders the correct subtitle based on auction type", async () => {
-        const wrapper = renderWithWrappers(
-          <SaleListItem sale={props as any} containerWidth={750} index={0} columnCount={4} />
-        )
-        expect(wrapper.queryByText(props.formattedStartDateTime)).toBeNull()
-        expect(wrapper.queryByText(props.displayTimelyAt)).not.toBeNull()
       })
     })
   })

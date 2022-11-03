@@ -5,8 +5,6 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 
 import { SaleListItem_sale$data } from "__generated__/SaleListItem_sale.graphql"
-import { formatDisplayTimelyAt } from "app/Scenes/Sale/helpers"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { Text } from "palette"
 
 interface Props {
@@ -17,8 +15,6 @@ interface Props {
 }
 
 export const SaleListItem: React.FC<Props> = (props) => {
-  const isCascadingEnabled = useFeatureFlag("AREnableCascadingEndTimerSalePageGrid")
-
   const handleTap = () => {
     const {
       sale: { liveURLIfOpen, href },
@@ -29,9 +25,7 @@ export const SaleListItem: React.FC<Props> = (props) => {
 
   const { sale, containerWidth, index, columnCount } = props
   const image = sale.coverImage
-  const timestamp = isCascadingEnabled
-    ? sale.formattedStartDateTime
-    : formatDisplayTimelyAt(sale.displayTimelyAt)
+  const timestamp = sale.formattedStartDateTime
   const isFirstItemInRow = index === 0 || index % columnCount === 0
   const marginLeft = isFirstItemInRow ? 0 : 20
 
