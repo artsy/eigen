@@ -48,7 +48,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
             Can't find the artist?{" "}
           </Text>
           <Touchable
-            onPress={onSkipPress}
+            onPress={() => onSkipPress?.(trimmedQuery)}
             testID="my-collection-artwork-form-artist-skip-button"
             hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
           >
@@ -92,7 +92,6 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
                     </Text>
                     <Touchable
                       onPress={() => onSkipPress?.(trimmedQuery)}
-                      testID="my-collection-artwork-form-artist-skip-button"
                       hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
                     >
                       <Text variant="xs" color="black60" underline>
@@ -100,7 +99,9 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
                       </Text>
                     </Touchable>
                   </Flex>
-                ) : <Spacer mb={enableArtworksFromNonArtsyArtists ? 2 : 0} />
+                ) : (
+                  <Spacer mb={enableArtworksFromNonArtsyArtists ? 2 : 0} />
+                )
               }
               ListEmptyComponent={() =>
                 enableArtworksFromNonArtsyArtists ? (
