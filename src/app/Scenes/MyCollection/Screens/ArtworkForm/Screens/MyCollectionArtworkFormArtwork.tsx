@@ -75,7 +75,10 @@ export const MyCollectionArtworkFormArtwork: React.FC<
     }
   }
 
-  const onSkip = () => {
+  const onSkip = (artworkTitle?: string) => {
+    GlobalStore.actions.myCollection.artwork.updateFormValues({
+      title: artworkTitle,
+    })
     trackEvent(
       tracks.tappedOnSkip(
         formik.values.artistSearchResult?.internalID!,
