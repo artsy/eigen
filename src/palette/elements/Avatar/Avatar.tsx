@@ -34,11 +34,18 @@ export interface AvatarProps extends ImgHTMLAttributes<any> {
   initials?: string
   /** The size of the Avatar */
   size?: "xxs" | "xs" | "sm" | "md"
+  /** Custom diameter */
+  diameter?: number
 }
 
 /** An circular Avatar component containing an image or initials */
-export const Avatar = ({ src, initials, size = DEFAULT_SIZE }: AvatarProps) => {
-  const { diameter, typeSize } = SIZES[size]
+export const Avatar = ({
+  src,
+  initials,
+  size = DEFAULT_SIZE,
+  diameter = SIZES[size].diameter,
+}: AvatarProps) => {
+  const { typeSize } = SIZES[size]
 
   if (src) {
     return (
