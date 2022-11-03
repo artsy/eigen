@@ -145,7 +145,7 @@ const AutosuggestResultsFlatList: React.FC<{
   if (shouldShowLoadingPlaceholder) {
     return (
       <ProvidePlaceholderContext>
-        {!!showHeaderComponent && <HeaderComponent />}
+        {!!HeaderComponent && <HeaderComponent />}
         {!!ListHeaderComponent && <ListHeaderComponent />}
         <AutosuggestResultsPlaceholder showResultType={showResultType} />
       </ProvidePlaceholderContext>

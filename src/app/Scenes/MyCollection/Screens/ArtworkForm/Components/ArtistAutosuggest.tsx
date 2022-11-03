@@ -88,19 +88,9 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
               HeaderComponent={HeaderComponent}
               ListHeaderComponent={() =>
                 enableArtworksFromNonArtsyArtists && onlyShowCollectedArtists ? (
-                  <Flex flexDirection="row" my={1}>
-                    <Text variant="xs" color="black60">
-                      Or skip ahead to{" "}
-                    </Text>
-                    <Touchable
-                      onPress={() => onSkipPress?.(trimmedQuery)}
-                      hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
-                    >
-                      <Text variant="xs" color="black60" underline>
-                        add artwork details
-                      </Text>
-                    </Touchable>
-                  </Flex>
+                  <Text mb={2} mt={2}>
+                    Artists in My Collection
+                  </Text>
                 ) : (
                   <Spacer mb={enableArtworksFromNonArtsyArtists ? 2 : 0} />
                 )
