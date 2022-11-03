@@ -40,6 +40,7 @@ const AutosuggestResultsFlatList: React.FC<{
   trackResultPress?: TrackResultPress
   ListEmptyComponent?: React.ComponentType<any>
   ListHeaderComponent?: React.ComponentType<any>
+  HeaderComponent?: React.ComponentType<any>
 }> = ({
   query,
   results: latestResults,
@@ -49,7 +50,8 @@ const AutosuggestResultsFlatList: React.FC<{
   onResultPress,
   trackResultPress,
   ListEmptyComponent = EmptyList,
-  ListHeaderComponent = null,
+  ListHeaderComponent = () => <Spacer mb={2} />,
+  HeaderComponent = null,
   prependResults = [],
 }) => {
   const [shouldShowLoadingPlaceholder, setShouldShowLoadingPlaceholder] = useState(true)
@@ -138,22 +140,23 @@ const AutosuggestResultsFlatList: React.FC<{
 
   const noResults = results.current && allNodes.length === 0
 
+  const showHeaderComponent = HeaderComponent && !!(allNodes.length > 0)
+
   if (shouldShowLoadingPlaceholder) {
     return (
       <ProvidePlaceholderContext>
+        {!!HeaderComponent && <HeaderComponent />}
         {!!ListHeaderComponent && <ListHeaderComponent />}
         <AutosuggestResultsPlaceholder showResultType={showResultType} />
       </ProvidePlaceholderContext>
     )
   }
 
-  const showHeaderComponent = ListHeaderComponent && !!(allNodes.length > 0)
-
   return (
     <Flex>
-      {!!showHeaderComponent && <ListHeaderComponent />}
+      {!!showHeaderComponent && <HeaderComponent />}
       <AboveTheFoldFlatList<AutosuggestResult>
-        ListHeaderComponent={<Spacer mb={2} />}
+        ListHeaderComponent={ListHeaderComponent}
         listRef={flatListRef}
         initialNumToRender={isPad() ? 24 : 12}
         data={allNodes}
@@ -283,6 +286,7 @@ export const AutosuggestResults: React.FC<{
   showOnRetryErrorMessage?: boolean
   onResultPress?: OnResultPress
   trackResultPress?: TrackResultPress
+  HeaderComponent?: React.ComponentType<any>
   ListHeaderComponent?: React.ComponentType<any>
   ListEmptyComponent?: React.ComponentType<any>
 }> = React.memo(
@@ -295,6 +299,7 @@ export const AutosuggestResults: React.FC<{
     showOnRetryErrorMessage,
     onResultPress,
     trackResultPress,
+    HeaderComponent,
     ListHeaderComponent,
     ListEmptyComponent,
   }) => {
@@ -333,6 +338,7 @@ export const AutosuggestResults: React.FC<{
               trackResultPress={trackResultPress}
               ListEmptyComponent={ListEmptyComponent}
               ListHeaderComponent={ListHeaderComponent}
+              HeaderComponent={HeaderComponent}
             />
           )
         }}

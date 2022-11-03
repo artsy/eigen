@@ -38,6 +38,29 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
     : []
 
   const showResults = filteredCollecteArtists.length || trimmedQuery.length > 2
+  const onlyShowCollectedArtists = filteredCollecteArtists.length && trimmedQuery.length < 2
+
+  const HeaderComponent = () =>
+    enableArtworksFromNonArtsyArtists ? (
+      <>
+        <Flex flexDirection="row" mt={1} mb={2}>
+          <Text variant="xs" color="black60">
+            Can't find the artist?{" "}
+          </Text>
+          <Touchable
+            onPress={() => onSkipPress?.(trimmedQuery)}
+            testID="my-collection-artwork-form-artist-skip-button"
+            hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
+          >
+            <Text variant="xs" color="black60" underline>
+              Add their name.
+            </Text>
+          </Touchable>
+        </Flex>
+      </>
+    ) : (
+      <></>
+    )
 
   return (
     <SearchContext.Provider value={searchProviderValues}>
@@ -54,7 +77,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
         />
         {!enableArtworksFromNonArtsyArtists && <Spacer mb={1} />}
         {showResults ? (
-          <Box height="100%">
+          <Box height="100%" mt={enableArtworksFromNonArtsyArtists ? 0 : 2}>
             <AutosuggestResults
               query={trimmedQuery}
               prependResults={filteredCollecteArtists}
@@ -62,23 +85,15 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
               showResultType={false}
               showQuickNavigationButtons={false}
               onResultPress={onResultPress}
+              HeaderComponent={HeaderComponent}
               ListHeaderComponent={() =>
-                enableArtworksFromNonArtsyArtists ? (
-                  <Flex flexDirection="row" my={1}>
-                    <Text variant="xs" color="black60">
-                      Or skip ahead to{" "}
-                    </Text>
-                    <Touchable
-                      onPress={() => onSkipPress?.(trimmedQuery)}
-                      testID="my-collection-artwork-form-artist-skip-button"
-                      hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
-                    >
-                      <Text variant="xs" color="black60" underline>
-                        add artwork details
-                      </Text>
-                    </Touchable>
-                  </Flex>
-                ) : null
+                enableArtworksFromNonArtsyArtists && onlyShowCollectedArtists ? (
+                  <Text mb={2} mt={2}>
+                    Artists in My Collection
+                  </Text>
+                ) : (
+                  <Spacer mb={enableArtworksFromNonArtsyArtists ? 2 : 0} />
+                )
               }
               ListEmptyComponent={() =>
                 enableArtworksFromNonArtsyArtists ? (
@@ -102,7 +117,9 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
               }
             />
           </Box>
-        ) : null}
+        ) : (
+          <HeaderComponent />
+        )}
       </Box>
     </SearchContext.Provider>
   )
