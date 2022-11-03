@@ -220,9 +220,10 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableArtworksConnectionForAuction",
   },
   AREnableActivity: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable Activity",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableActivity",
   },
   AREnableCollectionsInOnboarding: {
     description: "Replace genes with collections in onboarding",
