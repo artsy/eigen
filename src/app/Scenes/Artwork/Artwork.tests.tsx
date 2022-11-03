@@ -29,7 +29,6 @@ import { ArtworkDetails } from "./Components/ArtworkDetails"
 import { ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
 import { BidButton } from "./Components/CommercialButtons/BidButton"
 import { CommercialInformation } from "./Components/CommercialInformation"
-import { CommercialPartnerInformation } from "./Components/CommercialPartnerInformation"
 import { ContextCard } from "./Components/ContextCard"
 import { ImageCarousel } from "./Components/ImageCarousel/ImageCarousel"
 import { OtherWorksFragmentContainer } from "./Components/OtherWorks/OtherWorks"
@@ -187,6 +186,7 @@ describe("Artwork", () => {
         Artwork() {
           return {
             internalID: "artwork123",
+            isEligibleForArtsyGuarantee: false,
           }
         },
       })
@@ -360,6 +360,11 @@ describe("Artwork", () => {
     mockMostRecentOperation("ArtworkAboveTheFoldQuery")
     mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
     mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+      Artwork() {
+        return {
+          isForSale: false,
+        }
+      },
       Sale() {
         return {
           isAuction: false,
@@ -406,7 +411,6 @@ describe("Artwork", () => {
           },
         })
 
-        expect(tree.root.findAllByType(CommercialPartnerInformation)).toHaveLength(0)
         expect(tree.root.findAllByType(Countdown)).toHaveLength(1)
         expect(tree.root.findByType(Countdown).props.label).toBe("In progress")
         expect(extractText(tree.root.findByType(BidButton))).toContain("Enter live bidding")
@@ -426,7 +430,6 @@ describe("Artwork", () => {
           },
         })
 
-        expect(tree.root.findAllByType(CommercialPartnerInformation)).toHaveLength(0)
         expect(tree.root.findAllByType(Countdown)).toHaveLength(1)
         expect(tree.root.findByType(Countdown).props.label).toBe("In progress")
         expect(extractText(tree.root.findByType(BidButton))).toContain("Registration closed")
@@ -447,7 +450,6 @@ describe("Artwork", () => {
           },
         })
 
-        expect(tree.root.findAllByType(CommercialPartnerInformation)).toHaveLength(0)
         expect(tree.root.findAllByType(Countdown)).toHaveLength(1)
         expect(tree.root.findByType(Countdown).props.label).toBe("In progress")
         expect(extractText(tree.root.findByType(Countdown))).toContain("00d  00h  00m  00s")
@@ -563,6 +565,36 @@ describe("Artwork", () => {
 
       expect(queryByLabelText("Create artwork alert section")).toBeFalsy()
       expect(queryByLabelText("Create artwork alert buttons section")).toBeTruthy()
+    })
+  })
+
+  describe("Shipping and taxes", () => {
+    it("should be rendered when the work has `for sale` availability", () => {
+      const { queryByText } = renderWithWrappers(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery")
+      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+      mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+        Artwork: () => ({
+          isForSale: true,
+        }),
+      })
+
+      expect(queryByText("Shipping and taxes")).toBeDefined()
+    })
+
+    it("should NOT be rendered if the work has any other availability", () => {
+      const { queryByText } = renderWithWrappers(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery")
+      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+      mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+        Artwork: () => ({
+          isForSale: false,
+        }),
+      })
+
+      expect(queryByText("Shipping and taxes")).toBeNull()
     })
   })
 

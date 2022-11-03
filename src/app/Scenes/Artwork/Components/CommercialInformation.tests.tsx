@@ -168,35 +168,6 @@ describe("CommercialInformation", () => {
     expect(UNSAFE_queryByType(CommercialButtons)).toBeNull()
   })
 
-  it("hides seller info for works from closed auctions", () => {
-    const CommercialInformationArtworkClosedAuction = {
-      ...CommercialInformationArtwork,
-      isInAuction: true,
-      sale: {
-        isAuction: true,
-        isClosed: true,
-      },
-      saleArtwork: {
-        endAt: "2019-08-16T20:20:00+00:00",
-      },
-    }
-
-    const { queryByText } = renderWithWrappers(
-      <ModalStack>
-        <CommercialInformationTimerWrapper
-          artwork={CommercialInformationArtworkClosedAuction as any}
-          me={{ identityVerified: false } as any}
-          refetchArtwork={jest.fn()}
-        />
-      </ModalStack>
-    )
-
-    expect(queryByText("Bidding closed")).toBeTruthy()
-    expect(queryByText("I'm a Gallery")).toBeNull()
-    expect(queryByText("Shipping, tax, and service quoted by seller")).toBeNull()
-    expect(queryByText("Consign with Artsy")).toBeTruthy()
-  })
-
   it("doesn't render information when the data is not present", () => {
     const CommercialInformationArtworkNoData = {
       ...ArtworkFixture,
@@ -204,9 +175,7 @@ describe("CommercialInformation", () => {
         availability: null,
         price: "",
         saleMessage: "",
-        shippingInfo: "",
         isInAuction: false,
-        shippingOrigin: null,
         isAcquireable: false,
         isOfferable: false,
         isBiddable: false,
@@ -577,8 +546,6 @@ const CommercialInformationArtwork = {
   isForSale: true,
   editionSets: [],
   saleMessage: "Contact For Price",
-  shippingInfo: "Shipping, tax, and service quoted by seller",
-  shippingOrigin: null,
   availability: "sold",
   sale: {
     isClosed: false,

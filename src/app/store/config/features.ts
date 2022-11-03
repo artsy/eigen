@@ -146,11 +146,6 @@ export const features = defineFeatures({
     description: "Enable placeholder layout animation",
     echoFlagKey: "AREnablePlaceholderLayoutAnimation",
   },
-  AREnableAvalaraPhase2: {
-    readyForRelease: false,
-    description: "Enable Avalara Phase 2",
-    showInAdminMenu: true,
-  },
   ARDarkModeSupport: {
     readyForRelease: false,
     description: "Support dark mode",
