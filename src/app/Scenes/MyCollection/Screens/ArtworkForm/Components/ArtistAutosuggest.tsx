@@ -58,7 +58,9 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
           </Touchable>
         </Flex>
       </>
-    ) : null
+    ) : (
+      <></>
+    )
 
   return (
     <SearchContext.Provider value={searchProviderValues}>
