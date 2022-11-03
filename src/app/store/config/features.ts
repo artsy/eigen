@@ -106,12 +106,6 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "ARAllowLinkSocialAccountsOnSignUp",
   },
-  AREnableCascadingEndTimerLotPage: {
-    readyForRelease: true,
-    description: "Enable cascading end times on the lot page",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableCascadingEndTimerLotPage",
-  },
   AREnableCascadingEndTimerSalePageDetails: {
     readyForRelease: true,
     description: "Enable cascading end times on the sale page details",

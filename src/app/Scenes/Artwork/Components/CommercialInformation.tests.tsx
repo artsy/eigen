@@ -1,7 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
-import { SimpleTicker } from "app/Components/Countdown/Ticker"
 import { ModalStack } from "app/navigation/ModalStack"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
@@ -333,10 +332,6 @@ describe("CommercialInformation buttons and coundtown timer", () => {
   })
 
   describe("when the enable cascading end time feature is on", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerLotPage: true })
-    })
-
     afterEach(() => jest.clearAllMocks())
 
     it("renders CountDownTimer and BidButton when Artwork is in an auction", () => {
@@ -428,34 +423,6 @@ describe("CommercialInformation buttons and coundtown timer", () => {
       // This would say 1d 7h if the countdown timer was looking at the sale's end at time (instead of the sale artwork's end at time)
       expect(queryByText("3d 7h")).toBeTruthy()
 
-      expect(queryByLabelText("Countdown")).toBeTruthy()
-      expect(UNSAFE_queryByType(BidButton)).toBeTruthy()
-    })
-  })
-
-  describe("when the enable cascading end time feature is off", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerLotPage: false })
-    })
-
-    afterEach(() => jest.clearAllMocks())
-
-    it("renders CountDownTimer with the sale's end time even when Artwork is in a cascading end time auction", () => {
-      const { UNSAFE_queryByType, queryByText, queryByLabelText } = renderWithWrappers(
-        <ModalStack>
-          <CommercialInformationTimerWrapper
-            artwork={CommercialInformationArtworkInCascadingEndTimeAuction as any}
-            me={{ identityVerified: false } as any}
-            tracking={{ trackEvent: jest.fn() } as any}
-            refetchArtwork={jest.fn()}
-            hasStarted
-          />
-        </ModalStack>
-      )
-
-      expect(UNSAFE_queryByType(SimpleTicker)).toBeTruthy()
-      // This would say 01d  07h  58m  00s if the countdown timer was looking at the sale's end at time (instead of the sale artwork's end at time)
-      expect(queryByText("03d  07h  58m  00s")).toBeTruthy()
       expect(queryByLabelText("Countdown")).toBeTruthy()
       expect(UNSAFE_queryByType(BidButton)).toBeTruthy()
     })

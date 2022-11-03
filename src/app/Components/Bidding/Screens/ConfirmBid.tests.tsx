@@ -853,10 +853,6 @@ describe("cascading end times", () => {
   })
 
   describe("with cacsading end time feature enabled", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerLotPage: true })
-    })
-
     it("sale endtime defaults to extendedBiddingEndtime", () => {
       const { getByText } = renderWithWrappers(<ConfirmBid {...initialPropsForCascadingSale} />)
       const timerText = getByText("00d 00h 00m 10s")
@@ -865,17 +861,6 @@ describe("cascading end times", () => {
 
     it("shows the sale's end time if the sale does not have cascading end times", () => {
       const { getByText } = renderWithWrappers(<ConfirmBid {...initialPropsForNonCascadingSale} />)
-      const timerText = getByText("00d 00h 00m 10s")
-      expect(timerText).toBeTruthy()
-    })
-  })
-
-  describe("with cacsading end time feature disabled", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerLotPage: false })
-    })
-    it("shows the sale's end time", () => {
-      const { getByText } = renderWithWrappers(<ConfirmBid {...initialPropsForCascadingSale} />)
       const timerText = getByText("00d 00h 00m 10s")
       expect(timerText).toBeTruthy()
     })
