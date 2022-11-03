@@ -38,8 +38,9 @@ export const HomeFeedOnboardingRail: React.FC<HomeFeedOnboardingRailProps> = (pr
   const { mb, title } = props
 
   return (
-    <Flex mb={mb}>
+    <Flex mb={mb} mx={2}>
       <EmbeddedCarousel
+        testID="my-collection-hf-onboadring"
         title={title}
         data={onboardingData}
         renderItem={({ item }: { item: HomeFeedOnboardingRailItemProps }) => {

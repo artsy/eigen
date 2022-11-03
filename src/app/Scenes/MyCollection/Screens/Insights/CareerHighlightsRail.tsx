@@ -1,9 +1,9 @@
 import { CareerHighlightsRail_me$key } from "__generated__/CareerHighlightsRail_me.graphql"
+import { EmbeddedCarousel } from "app/Components/EmbeddedCarousel"
 import { navigate, popToRoot } from "app/navigation/navigate"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { Flex, Spacer, useColor } from "palette"
+import { Flex, useColor } from "palette"
 import React from "react"
-import { FlatList } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import {
@@ -41,11 +41,8 @@ export const CareerHighlightsRail: React.FC<CareerHighlightsRailProps> = (props)
 
   return (
     <Flex px={2} py={1} mb={4} backgroundColor={color("black5")}>
-      <FlatList
+      <EmbeddedCarousel
         testID="career-highlight-cards-flatlist"
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        ItemSeparatorComponent={() => <Spacer mx={1} />}
         ListFooterComponent={() => (
           <Flex ml={2}>
             <CareerHighlightPromotionalCard
@@ -66,7 +63,6 @@ export const CareerHighlightsRail: React.FC<CareerHighlightsRailProps> = (props)
             />
           </Flex>
         )}
-        style={{ overflow: "visible" }}
         data={careerHighlightData}
         renderItem={({ item }) => (
           <CareerHighlightsCard
