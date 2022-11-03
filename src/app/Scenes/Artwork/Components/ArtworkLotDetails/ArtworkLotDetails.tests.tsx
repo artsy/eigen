@@ -1,3 +1,4 @@
+import { fireEvent } from "@testing-library/react-native"
 import { ArtworkLotDetails_TestQuery } from "__generated__/ArtworkLotDetails_TestQuery.graphql"
 import {
   AuctionPreview,
@@ -10,6 +11,7 @@ import {
 } from "app/__fixtures__/ArtworkBidInfo"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { DateTime } from "luxon"
@@ -69,7 +71,7 @@ describe("ArtworkLotDetails", () => {
     expect(queryByText("$500")).toBeTruthy()
     expect(queryByText("Lot closes")).toBeTruthy()
     expect(queryByText(formateLotDateTime(sale.endAt))).toBeTruthy()
-    expect(queryByTestId("buyers-premium")).toBeTruthy()
+    expect(queryByTestId("buyers-premium-and-shipping")).toBeTruthy()
     expect(queryByTestId("conditions-of-sale")).toBeTruthy()
     expect(queryByTestId("have-a-question")).toBeTruthy()
   })
@@ -95,7 +97,7 @@ describe("ArtworkLotDetails", () => {
 
     expect(queryByText("Lot closes")).toBeNull()
     expect(queryByText(formateLotDateTime(sale.endAt))).toBeNull()
-    expect(queryByTestId("buyers-premium")).toBeNull()
+    expect(queryByTestId("buyers-premium-and-shipping")).toBeNull()
     expect(queryByTestId("conditions-of-sale")).toBeNull()
     expect(queryByTestId("have-a-question")).toBeNull()
   })
@@ -117,7 +119,7 @@ describe("ArtworkLotDetails", () => {
     expect(queryByText("$500")).toBeNull()
 
     expect(queryByText(formateLotDateTime(sale.endAt))).toBeNull()
-    expect(queryByTestId("buyers-premium")).toBeNull()
+    expect(queryByTestId("buyers-premium-and-shipping")).toBeNull()
 
     // Check other info
     expect(queryByText("Estimated value")).toBeTruthy()
@@ -163,7 +165,26 @@ describe("ArtworkLotDetails", () => {
     })
     await flushPromiseQueue()
 
-    expect(queryByTestId("buyers-premium")).toBeNull()
+    expect(queryByTestId("buyers-premium-and-shipping")).toBeNull()
+  })
+
+  it("should render correct partner info", async () => {
+    const { queryByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => ({
+        ...artwork,
+        sale: {
+          ...artwork.sale,
+          partner: {
+            name: "Christie's",
+          },
+        },
+      }),
+    })
+    await flushPromiseQueue()
+
+    expect(queryByText(/By placing a bid you agree to Artsy's and Christie's/)).toBeTruthy()
   })
 
   describe("Bid info for different auction states", () => {
@@ -285,6 +306,74 @@ describe("ArtworkLotDetails", () => {
           expect(getByText("$500")).toBeTruthy()
         })
       })
+    })
+  })
+
+  describe("Analytics", () => {
+    it("posts proper event in when clicking `Ask A Specialist`", async () => {
+      const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => artwork,
+      })
+      await flushPromiseQueue()
+
+      fireEvent.press(getByText("ask a specialist"))
+
+      expect(mockTrackEvent).toHaveBeenCalledTimes(1)
+      expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "action_name": "askASpecialist",
+            "action_type": "tap",
+            "context_module": "ArtworkExtraLinks",
+          },
+        ]
+      `)
+    })
+
+    it("posts proper event in when clicking `Read our auction FAQs`", async () => {
+      const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => artwork,
+      })
+      await flushPromiseQueue()
+
+      fireEvent.press(getByText("Read our auction FAQs"))
+
+      expect(mockTrackEvent).toHaveBeenCalledTimes(1)
+      expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "action_name": "auctionsFAQ",
+            "action_type": "tap",
+            "context_module": "ArtworkExtraLinks",
+          },
+        ]
+      `)
+    })
+
+    it("posts proper event in when clicking `Conditions of Sale`", async () => {
+      const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => artwork,
+      })
+      await flushPromiseQueue()
+
+      fireEvent.press(getByText("Conditions of Sale"))
+
+      expect(mockTrackEvent).toHaveBeenCalledTimes(1)
+      expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "action_name": "conditionsOfSale",
+            "action_type": "tap",
+            "context_module": "ArtworkExtraLinks",
+          },
+        ]
+      `)
     })
   })
 })
