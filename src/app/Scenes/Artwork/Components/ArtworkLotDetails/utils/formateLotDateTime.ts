@@ -1,8 +1,11 @@
 import { DateTime } from "luxon"
 
-// TODO: Clarify format
 export const formateLotDateTime = (endAt: string) => {
   const date = DateTime.fromISO(endAt)
+  const monthDay = date.toFormat("MMM dd")
+  const hoursMinutes = date.toFormat(date.get("minute") === 0 ? "h" : "h:mm")
+  const amPm = date.toFormat("a").toLowerCase()
+  const timeZone = date.toFormat("ZZ")
 
-  return date.toFormat("MMM dd, h:mma")
+  return `${monthDay}, ${hoursMinutes}${amPm} (${timeZone})`
 }
