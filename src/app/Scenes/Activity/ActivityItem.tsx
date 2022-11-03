@@ -17,6 +17,7 @@ interface ActivityItemProps {
 }
 
 const UNREAD_INDICATOR_SIZE = 8
+const ARTWORK_IMAGE_SIZE = 55
 
 export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
   const tracking = useTracking()
@@ -78,7 +79,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
 
           <Spacer mb={1} />
 
-          <Flex flexDirection="row" alignItems="center" flexWrap="wrap">
+          <Flex flexDirection="row" alignItems="center">
             {artworks.map((artwork) => {
               return (
                 <Flex
@@ -86,7 +87,11 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
                   mr={1}
                   accessibilityLabel="Activity Artwork Image"
                 >
-                  <OpaqueImageView imageURL={artwork.image?.preview?.src} width={58} height={58} />
+                  <OpaqueImageView
+                    imageURL={artwork.image?.preview?.src}
+                    width={ARTWORK_IMAGE_SIZE}
+                    height={ARTWORK_IMAGE_SIZE}
+                  />
                 </Flex>
               )
             })}
@@ -98,7 +103,6 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
             width={UNREAD_INDICATOR_SIZE}
             height={UNREAD_INDICATOR_SIZE}
             borderRadius={UNREAD_INDICATOR_SIZE / 2}
-            ml={1}
             bg="blue100"
             accessibilityLabel="Unread notification indicator"
           />
