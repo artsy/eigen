@@ -22,6 +22,7 @@ import { FairsRailFragmentContainer } from "app/Scenes/Home/Components/FairsRail
 import { SalesRailFragmentContainer } from "app/Scenes/Home/Components/SalesRail"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
+import { useExperimentFlag } from "app/utils/experiments/hooks"
 import { isPad } from "app/utils/hardware"
 import {
   PlaceholderBox,
@@ -44,6 +45,7 @@ import { ActivityIndicator } from "./Components/ActivityIndicator"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { ArtworkRecommendationsRail } from "./Components/ArtworkRecommendationsRail"
 import { ContentCards } from "./Components/ContentCards"
+import { HomeFeedOnboardingRail } from "./Components/HomeFeedOnboardingRail"
 import { HomeHeader } from "./Components/HomeHeader"
 import { NewWorksForYouRail } from "./Components/NewWorksForYouRail"
 import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
@@ -98,6 +100,7 @@ const Home = (props: Props) => {
   } = props
 
   const enableArtworkRecommendations = useFeatureFlag("AREnableHomeScreenArtworkRecommendations")
+  const enableMyCollectionHFOnboarding = useExperimentFlag("my-collection-hf-onboarding")
 
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
   let modules: HomeModule[] = compact([
@@ -128,6 +131,12 @@ const Home = (props: Props) => {
       type: "sales",
       data: homePageAbove?.salesModule,
       prefetchUrl: "/auctions",
+    },
+    {
+      title: "Do More on Artsy",
+      type: "homeFeedOnboarding",
+      data: {}, // TODO: add data from MF
+      hidden: !enableMyCollectionHFOnboarding,
     },
     // Below-The-Fold Modules
     {
@@ -216,6 +225,8 @@ const Home = (props: Props) => {
             }
 
             switch (item.type) {
+              case "homeFeedOnboarding":
+                return <HomeFeedOnboardingRail title={item.title} mb={MODULE_SEPARATOR_HEIGHT} />
               case "contentCards":
                 return <ContentCards mb={MODULE_SEPARATOR_HEIGHT} />
               case "articles":
