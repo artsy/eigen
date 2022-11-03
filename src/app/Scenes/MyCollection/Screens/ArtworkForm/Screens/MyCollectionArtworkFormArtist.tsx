@@ -2,7 +2,10 @@ import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { StackScreenProps } from "@react-navigation/stack"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
+import { AutosuggestResultsPlaceholder } from "app/Scenes/Search/components/placeholders/AutosuggestResultsPlaceholder"
 import { GlobalStore } from "app/store/GlobalStore"
+import { ProvidePlaceholderContext } from "app/utils/placeholders"
+import { Suspense } from "react"
 import { useTracking } from "react-tracking"
 import { ScreenMargin } from "../../../Components/ScreenMargin"
 import { ArtistAutosuggest } from "../Components/ArtistAutosuggest"
@@ -44,7 +47,9 @@ export const MyCollectionArtworkFormArtist: React.FC<
         Select an Artist
       </FancyModalHeader>
       <ScreenMargin>
-        <ArtistAutosuggest onResultPress={handleResultPress} onSkipPress={handleSkipPress} />
+        <Suspense fallback={() => <Placeholder />}>
+          <ArtistAutosuggest onResultPress={handleResultPress} onSkipPress={handleSkipPress} />
+        </Suspense>{" "}
       </ScreenMargin>
     </>
   )
@@ -58,3 +63,9 @@ const tracks = {
     context_screen_owner_slug: artistSlug,
   }),
 }
+
+const Placeholder: React.FC = () => (
+  <ProvidePlaceholderContext>
+    <AutosuggestResultsPlaceholder />
+  </ProvidePlaceholderContext>
+)
