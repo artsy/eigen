@@ -6,7 +6,6 @@ import { MyBids_me$data } from "__generated__/MyBids_me.graphql"
 import { MyBidsQuery } from "__generated__/MyBidsQuery.graphql"
 
 import { OwnerType } from "@artsy/cohesion"
-import { Inbox_me$data } from "__generated__/Inbox_me.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
@@ -18,7 +17,7 @@ import { LotStatusListItemContainer } from "./Components/LotStatusListItem"
 import { NoBids } from "./Components/NoBids"
 
 export interface MyBidsProps {
-  me: MyBids_me$data & Inbox_me$data
+  me: MyBids_me$data
   isActiveTab: boolean
   relay: RelayRefetchProp
 }
