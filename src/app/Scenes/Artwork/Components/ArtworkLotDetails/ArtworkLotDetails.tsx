@@ -83,9 +83,13 @@ export const ArtworkLotDetails: React.FC<ArtworkLotDetailsProps> = ({ artwork, a
       )}
 
       {!!(shouldRenderBidRelatedInfo && isWithBuyersPremium) && (
-        <Text variant="sm" testID="buyers-premium">
-          This auction has a <LinkText onPress={handleBuyersPremiumTap}>buyer's premium</LinkText>.
-        </Text>
+        <Box testID="buyers-premium-and-shipping">
+          <Text variant="sm">
+            This auction has a <LinkText onPress={handleBuyersPremiumTap}>buyer's premium</LinkText>
+            .
+          </Text>
+          <Text variant="sm">Shipping, taxes, and additional fees may apply.</Text>
+        </Box>
       )}
 
       {!!shouldRender && (
