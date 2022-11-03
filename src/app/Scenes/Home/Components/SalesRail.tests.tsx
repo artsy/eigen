@@ -244,9 +244,6 @@ describe("image handling when AREnableArtworksConnectionForAuction is enabled", 
 
 describe("SalesRail Subtitle", () => {
   describe("with cascading feature flag switched ON", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerHomeSalesRail: true })
-    })
     it("renders formattedStartDateTime as the subtitle", () => {
       const wrapper = renderWithWrappers(
         <SalesRailFragmentContainer
@@ -259,25 +256,6 @@ describe("SalesRail Subtitle", () => {
       expect(wrapper.getByText(salesModule.results[0]?.formattedStartDateTime!)).toBeDefined()
       expect(wrapper.queryByText("Timed Auction • In 1 day")).toBeNull()
       expect(wrapper.queryByText("Live Auction • Live in 1 day")).toBeNull()
-    })
-  })
-  describe("with cascading feature flag switched OF", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({
-        AREnableCascadingEndTimerHomeSalesRail: false,
-      })
-    })
-    it("renders the correct subtitle based on auction type", async () => {
-      const wrapper = renderWithWrappers(
-        <SalesRailFragmentContainer
-          title="Auctions"
-          salesModule={salesModule as any}
-          scrollRef={mockScrollRef}
-        />
-      )
-      expect(wrapper.queryByText(salesModule.results[0]?.formattedStartDateTime!)).toBeNull()
-      expect(wrapper.queryByText("Timed Auction • In 1 day")).not.toBeNull()
-      expect(wrapper.queryByText("Live Auction • Live in 1 day")).not.toBeNull()
     })
   })
 })

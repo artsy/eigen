@@ -106,12 +106,6 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "ARAllowLinkSocialAccountsOnSignUp",
   },
-  AREnableCascadingEndTimerHomeSalesRail: {
-    readyForRelease: true,
-    description: "Enable cascading end times on the Sales Rail on Home screen",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableCascadingEndTimerHomeSalesRail",
-  },
   AREnableImageSearch: {
     readyForRelease: false,
     description: "Enable search with image",
