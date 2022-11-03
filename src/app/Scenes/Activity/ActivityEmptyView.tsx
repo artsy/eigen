@@ -1,6 +1,6 @@
 import { useStickyTabPageContext } from "app/Components/StickyTabPage/StickyTabPageContext"
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
-import { Flex, Spacer, Text } from "palette"
+import { apostrophe, Flex, quoteLeft, quoteRight, Spacer, Text } from "palette"
 import { useContext } from "react"
 import Animated from "react-native-reanimated"
 import { NotificationType } from "./types"
@@ -11,13 +11,13 @@ interface ActivityEmptyViewProps {
 
 const entityByType: Record<NotificationType, { title: string; message: string }> = {
   all: {
-    title: "You haven’t followed any artists, galleries or fairs yet.",
+    title: `You haven${apostrophe}t followed any artists, galleries or fairs yet.`,
     message:
       "Follow artists to keep track of their latest work and career highlights. Following artists helps Artsy to recommend works you might like.",
   },
   alerts: {
-    title: "Set alerts for artworks you're hunting for.",
-    message: `Filter for the artworks you love on an artist page and tap "Create Alert". Get notifications here when there's a match.`,
+    title: `Set alerts for artworks you${apostrophe}re seeking.`,
+    message: `Filter for the artworks you love on an artist page and tap ${quoteLeft}Create Alert.${quoteRight} Get notifications here when there${apostrophe}s a match.`,
   },
 }
 
