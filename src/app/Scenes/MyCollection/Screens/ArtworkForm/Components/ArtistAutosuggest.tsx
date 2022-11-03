@@ -55,7 +55,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
         />
         {!enableArtworksFromNonArtsyArtists && <Spacer mb={1} />}
         {showResults ? (
-          <Box height="100%">
+          <Box height="100%" mt={enableArtworksFromNonArtsyArtists ? 0 : 2}>
             <AutosuggestResults
               query={trimmedQuery}
               prependResults={filteredCollecteArtists}
@@ -81,9 +81,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
                       </Touchable>
                     </Flex>
                   </>
-                ) : (
-                  <Spacer mb={2} />
-                )
+                ) : null
               }
               ListHeaderComponent={() =>
                 enableArtworksFromNonArtsyArtists && onlyShowCollectedArtists ? (
