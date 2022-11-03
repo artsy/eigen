@@ -22,7 +22,6 @@ import { ArtworkEditionSetInformationFragmentContainer as ArtworkEditionSetInfor
 import { ArtworkExtraLinksFragmentContainer as ArtworkExtraLinks } from "./ArtworkExtraLinks"
 import { AuctionPriceFragmentContainer as AuctionPrice } from "./AuctionPrice"
 import { CommercialButtonsFragmentContainer as CommercialButtons } from "./CommercialButtons/CommercialButtons"
-import { CommercialPartnerInformationFragmentContainer as CommercialPartnerInformation } from "./CommercialPartnerInformation"
 import { CreateArtworkAlertButtonsSectionFragmentContainer as CreateArtworkAlertButtonsSection } from "./CreateArtworkAlertButtonsSection"
 
 interface CommercialInformationProps extends CountdownTimerProps {
@@ -203,12 +202,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
       newSaleMessage = "For sale"
     }
 
-    return (
-      <>
-        <SaleAvailability saleMessage={newSaleMessage ? newSaleMessage : saleMessage} />
-        {!artworkIsInClosedAuction && <CommercialPartnerInformation artwork={artwork} />}
-      </>
-    )
+    return <SaleAvailability saleMessage={newSaleMessage ? newSaleMessage : saleMessage} />
   }
 
   const renderPriceInformation = () => {
@@ -345,7 +339,6 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(
         }
 
         ...CommercialButtons_artwork
-        ...CommercialPartnerInformation_artwork
         ...ArtworkExtraLinks_artwork
         ...AuctionPrice_artwork
         ...CreateArtworkAlertButtonsSection_artwork
