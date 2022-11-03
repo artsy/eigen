@@ -236,6 +236,11 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "AREnableNewRequestPriceEstimateLogic",
   },
+  ARReorderSWAArtworkSubmissionFlow: {
+    description: "Reorder SWA Artwork submission flow",
+    showInAdminMenu: true,
+    readyForRelease: false,
+  },
 })
 
 export interface DevToggleDescriptor {

@@ -3,48 +3,28 @@ import { ContactInformation_me$data } from "__generated__/ContactInformation_me.
 import { ContactInformationQueryRendererQuery } from "__generated__/ContactInformationQueryRendererQuery.graphql"
 import { ErrorView } from "app/Components/ErrorView/ErrorView"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { consignmentSubmittedEvent } from "app/Scenes/SellWithArtsy/utils/TrackingEvent"
-import { addClue, GlobalStore } from "app/store/GlobalStore"
 import { Formik } from "formik"
 import { CTAButton, Flex, Input, Spacer, Text } from "palette"
 import { PhoneInput } from "palette/elements/Input/PhoneInput/PhoneInput"
 import React, { useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { useTracking } from "react-tracking"
-import { updateConsignSubmission } from "../../mutations/updateConsignSubmissionMutation"
 import { ContactInformationFormModel, contactInformationValidationSchema } from "./validation"
 
 export const ContactInformation: React.FC<{
-  handlePress: (submissionId: string) => void
+  handlePress: (formValues: ContactInformationFormModel) => void
   me: ContactInformation_me$data | null
-}> = ({ handlePress, me }) => {
-  const { userID } = GlobalStore.useAppState((store) => store.auth)
-  const { submissionId } = GlobalStore.useAppState((state) => state.artworkSubmission.submission)
+  isLastStep: boolean
+}> = ({ handlePress, me, isLastStep }) => {
   const [submissionError, setSubmissionError] = useState(false)
-  const { trackEvent } = useTracking()
 
   const [isNameInputFocused, setIsNameInputFocused] = useState(false)
   const [isEmailInputFocused, setIsEmailInputFocused] = useState(false)
   const [isPhoneInputFocused, setIsPhoneInputFocused] = useState(false)
   const [isValidNumber, setIsValidNumber] = useState(false)
 
-  const handleFormSubmit = async (formValues: ContactInformationFormModel) => {
+  const handleFormSubmit = (formValues: ContactInformationFormModel) => {
     try {
-      const updatedSubmissionId = await updateConsignSubmission({
-        id: submissionId,
-        userName: formValues.userName,
-        userEmail: formValues.userEmail,
-        userPhone: formValues.userPhone,
-        state: "SUBMITTED",
-      })
-
-      if (updatedSubmissionId) {
-        trackEvent(consignmentSubmittedEvent(updatedSubmissionId, formValues.userEmail, userID))
-
-        GlobalStore.actions.artworkSubmission.submission.resetSessionState()
-        addClue("ArtworkSubmissionMessage")
-        handlePress(submissionId)
-      }
+      handlePress(formValues)
     } catch (error) {
       captureMessage(JSON.stringify(error))
       setSubmissionError(true)
@@ -115,7 +95,7 @@ export const ContactInformation: React.FC<{
           />
           <Spacer mt={6} />
           <CTAButton onPress={handleSubmit} disabled={!isValid || !isValidNumber}>
-            Submit Artwork
+            {isLastStep ? "Submit Artwork" : "Save & Continue"}
           </CTAButton>
         </Flex>
       )}
@@ -137,8 +117,9 @@ export const ContactInformationFragmentContainer = createFragmentContainer(Conta
 })
 
 export const ContactInformationQueryRenderer: React.FC<{
-  handlePress: (submissionId: string) => void
-}> = ({ handlePress }) => {
+  handlePress: (formValues: ContactInformationFormModel) => void
+  isLastStep: boolean
+}> = ({ handlePress, isLastStep }) => {
   return (
     <QueryRenderer<ContactInformationQueryRendererQuery>
       environment={defaultEnvironment}
@@ -155,7 +136,13 @@ export const ContactInformationQueryRenderer: React.FC<{
           return null
         }
 
-        return <ContactInformationFragmentContainer handlePress={handlePress} me={props?.me} />
+        return (
+          <ContactInformationFragmentContainer
+            handlePress={handlePress}
+            me={props?.me}
+            isLastStep={isLastStep}
+          />
+        )
       }}
     />
   )
