@@ -140,16 +140,17 @@ const AutosuggestResultsFlatList: React.FC<{
 
   const noResults = results.current && allNodes.length === 0
 
+  const showHeaderComponent = HeaderComponent && !!(allNodes.length > 0)
+
   if (shouldShowLoadingPlaceholder) {
     return (
       <ProvidePlaceholderContext>
+        {!!showHeaderComponent && <HeaderComponent />}
         {!!ListHeaderComponent && <ListHeaderComponent />}
         <AutosuggestResultsPlaceholder showResultType={showResultType} />
       </ProvidePlaceholderContext>
     )
   }
-
-  const showHeaderComponent = HeaderComponent && !!(allNodes.length > 0)
 
   return (
     <Flex>

@@ -40,6 +40,26 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
   const showResults = filteredCollecteArtists.length || trimmedQuery.length > 2
   const onlyShowCollectedArtists = filteredCollecteArtists.length && trimmedQuery.length < 2
 
+  const HeaderComponent = () =>
+    enableArtworksFromNonArtsyArtists ? (
+      <>
+        <Flex flexDirection="row" mt={1} mb={2}>
+          <Text variant="xs" color="black60">
+            Can't find the artist?{" "}
+          </Text>
+          <Touchable
+            onPress={onSkipPress}
+            testID="my-collection-artwork-form-artist-skip-button"
+            hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
+          >
+            <Text variant="xs" color="black60" underline>
+              Add their name.
+            </Text>
+          </Touchable>
+        </Flex>
+      </>
+    ) : null
+
   return (
     <SearchContext.Provider value={searchProviderValues}>
       <Box>
@@ -63,26 +83,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
               showResultType={false}
               showQuickNavigationButtons={false}
               onResultPress={onResultPress}
-              HeaderComponent={() =>
-                enableArtworksFromNonArtsyArtists ? (
-                  <>
-                    <Flex flexDirection="row" mt={1} mb={2}>
-                      <Text variant="xs" color="black60">
-                        Can't find the artist?{" "}
-                      </Text>
-                      <Touchable
-                        onPress={onSkipPress}
-                        testID="my-collection-artwork-form-artist-skip-button"
-                        hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
-                      >
-                        <Text variant="xs" color="black60" underline>
-                          Add their name.
-                        </Text>
-                      </Touchable>
-                    </Flex>
-                  </>
-                ) : null
-              }
+              HeaderComponent={HeaderComponent}
               ListHeaderComponent={() =>
                 enableArtworksFromNonArtsyArtists && onlyShowCollectedArtists ? (
                   <Text mb={2} mt={2}>
@@ -109,7 +110,9 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
               }
             />
           </Box>
-        ) : null}
+        ) : (
+          <HeaderComponent />
+        )}
       </Box>
     </SearchContext.Provider>
   )
