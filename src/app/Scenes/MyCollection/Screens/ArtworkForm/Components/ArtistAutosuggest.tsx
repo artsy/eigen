@@ -38,6 +38,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
     : []
 
   const showResults = filteredCollecteArtists.length || trimmedQuery.length > 2
+  const onlyShowCollectedArtists = filteredCollecteArtists.length && trimmedQuery.length < 2
 
   return (
     <SearchContext.Provider value={searchProviderValues}>
@@ -62,23 +63,36 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
               showResultType={false}
               showQuickNavigationButtons={false}
               onResultPress={onResultPress}
-              ListHeaderComponent={() =>
+              HeaderComponent={() =>
                 enableArtworksFromNonArtsyArtists ? (
-                  <Flex flexDirection="row" my={1}>
-                    <Text variant="xs" color="black60">
-                      Or skip ahead to{" "}
-                    </Text>
-                    <Touchable
-                      onPress={onSkipPress}
-                      testID="my-collection-artwork-form-artist-skip-button"
-                      hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
-                    >
-                      <Text variant="xs" color="black60" underline>
-                        add artwork details
+                  <>
+                    <Flex flexDirection="row" mt={1} mb={2}>
+                      <Text variant="xs" color="black60">
+                        Can't find the artist?{" "}
                       </Text>
-                    </Touchable>
-                  </Flex>
-                ) : null
+                      <Touchable
+                        onPress={onSkipPress}
+                        testID="my-collection-artwork-form-artist-skip-button"
+                        hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
+                      >
+                        <Text variant="xs" color="black60" underline>
+                          Add their name.
+                        </Text>
+                      </Touchable>
+                    </Flex>
+                  </>
+                ) : (
+                  <Spacer mb={2} />
+                )
+              }
+              ListHeaderComponent={() =>
+                enableArtworksFromNonArtsyArtists && onlyShowCollectedArtists ? (
+                  <Text mb={2} mt={2}>
+                    Artists in My Collection
+                  </Text>
+                ) : (
+                  <Spacer mb={enableArtworksFromNonArtsyArtists ? 2 : 0} />
+                )
               }
               ListEmptyComponent={() =>
                 enableArtworksFromNonArtsyArtists ? (
