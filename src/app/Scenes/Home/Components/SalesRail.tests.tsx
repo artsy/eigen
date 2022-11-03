@@ -32,8 +32,6 @@ const salesModule: CleanRelayFragment<SalesRail_salesModule$data> = {
       name: "The Sale",
       href: "/auction/the-sale",
       liveURLIfOpen: null,
-      liveStartAt: null,
-      displayTimelyAt: "in 1 day",
       formattedStartDateTime: "Live May 19 at 11:00pm CEST",
       saleArtworksConnection: {
         edges: [artworkNode, artworkNode, artworkNode],
@@ -59,8 +57,6 @@ const salesModule: CleanRelayFragment<SalesRail_salesModule$data> = {
       name: "The LAI Sale",
       href: "/auction/the-lai-sale",
       liveURLIfOpen: "https://live.artsy.net/the-lai-sale",
-      liveStartAt: "2020-04-09T17:00:00+00:00",
-      displayTimelyAt: "live in 1 day",
       formattedStartDateTime: "Live May 19 at 3:00pm CEST",
       saleArtworksConnection: {
         edges: [artworkNode, artworkNode, artworkNode],
@@ -243,20 +239,18 @@ describe("image handling when AREnableArtworksConnectionForAuction is enabled", 
 })
 
 describe("SalesRail Subtitle", () => {
-  describe("with cascading feature flag switched ON", () => {
-    it("renders formattedStartDateTime as the subtitle", () => {
-      const wrapper = renderWithWrappers(
-        <SalesRailFragmentContainer
-          title="Auctions"
-          salesModule={salesModule as any}
-          scrollRef={mockScrollRef}
-        />
-      )
+  it("renders formattedStartDateTime as the subtitle", () => {
+    const wrapper = renderWithWrappers(
+      <SalesRailFragmentContainer
+        title="Auctions"
+        salesModule={salesModule as any}
+        scrollRef={mockScrollRef}
+      />
+    )
 
-      expect(wrapper.getByText(salesModule.results[0]?.formattedStartDateTime!)).toBeDefined()
-      expect(wrapper.queryByText("Timed Auction • In 1 day")).toBeNull()
-      expect(wrapper.queryByText("Live Auction • Live in 1 day")).toBeNull()
-    })
+    expect(wrapper.getByText(salesModule.results[0]?.formattedStartDateTime!)).toBeDefined()
+    expect(wrapper.queryByText("Timed Auction • In 1 day")).toBeNull()
+    expect(wrapper.queryByText("Live Auction • Live in 1 day")).toBeNull()
   })
 })
 

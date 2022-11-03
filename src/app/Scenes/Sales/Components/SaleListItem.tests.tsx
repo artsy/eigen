@@ -1,4 +1,3 @@
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import moment from "moment"
 import SaleListItem from "./SaleListItem"
@@ -11,15 +10,12 @@ describe("SaleListItem", () => {
   })
 
   describe("SalesRail Subtitle", () => {
-    describe("with cascading feature flag switched ON", () => {
-      it("renders formattedStartDateTime as the subtitle", () => {
-        const wrapper = renderWithWrappers(
-          <SaleListItem sale={props as any} containerWidth={750} index={0} columnCount={4} />
-        )
+    it("renders formattedStartDateTime as the subtitle", () => {
+      const wrapper = renderWithWrappers(
+        <SaleListItem sale={props as any} containerWidth={750} index={0} columnCount={4} />
+      )
 
-        expect(wrapper.getByText(props.formattedStartDateTime)).toBeDefined()
-        expect(wrapper.queryByText(props.displayTimelyAt)).toBeNull()
-      })
+      expect(wrapper.getByText(props.formattedStartDateTime)).toBeDefined()
     })
   })
 })
@@ -33,9 +29,7 @@ const props = {
   start_at: moment().add(2, "hour").toISOString(),
   end_at: null,
   registration_ends_at: moment().subtract(1, "day").toISOString(),
-  live_start_at: moment().add(5, "hour").toISOString(),
   live_url_if_open: null,
-  displayTimelyAt: "Live in 2 hours",
   formattedStartDateTime: "Live May 19 at 11:00pm CEST",
   cover_image: {
     url: "https://d32dm0rphc51dk.cloudfront.net/eeqLfwMMAYA8XOmeYEb7Rg/source.jpg",

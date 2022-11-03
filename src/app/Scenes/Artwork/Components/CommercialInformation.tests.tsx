@@ -331,101 +331,99 @@ describe("CommercialInformation buttons and coundtown timer", () => {
     Date.now = () => dateNow
   })
 
-  describe("when the enable cascading end time feature is on", () => {
-    afterEach(() => jest.clearAllMocks())
+  afterEach(() => jest.clearAllMocks())
 
-    it("renders CountDownTimer and BidButton when Artwork is in an auction", () => {
-      const { queryByLabelText, UNSAFE_queryByType } = renderWithWrappers(
-        <ModalStack>
-          <CommercialInformationTimerWrapper
-            artwork={CommercialInformationArtworkInAuction as any}
-            me={{ identityVerified: false } as any}
-            tracking={{ trackEvent: jest.fn() } as any}
-            refetchArtwork={jest.fn()}
-          />
-        </ModalStack>
-      )
-      expect(queryByLabelText("Countdown")).toBeTruthy()
-      expect(UNSAFE_queryByType(BidButton)).toBeTruthy()
-    })
+  it("renders CountDownTimer and BidButton when Artwork is in an auction", () => {
+    const { queryByLabelText, UNSAFE_queryByType } = renderWithWrappers(
+      <ModalStack>
+        <CommercialInformationTimerWrapper
+          artwork={CommercialInformationArtworkInAuction as any}
+          me={{ identityVerified: false } as any}
+          tracking={{ trackEvent: jest.fn() } as any}
+          refetchArtwork={jest.fn()}
+        />
+      </ModalStack>
+    )
+    expect(queryByLabelText("Countdown")).toBeTruthy()
+    expect(UNSAFE_queryByType(BidButton)).toBeTruthy()
+  })
 
-    it("renders CountDownTimer with the sale artwork's end time when Artwork is in a cascading end time auction", () => {
-      const { queryByText, queryByLabelText, UNSAFE_queryByType } = renderWithWrappers(
-        <ModalStack>
-          <CommercialInformationTimerWrapper
-            artwork={CommercialInformationArtworkInCascadingEndTimeAuction as any}
-            me={{ identityVerified: false } as any}
-            tracking={{ trackEvent: jest.fn() } as any}
-            refetchArtwork={jest.fn()}
-            hasStarted
-          />
-        </ModalStack>
-      )
+  it("renders CountDownTimer with the sale artwork's end time when Artwork is in a cascading end time auction", () => {
+    const { queryByText, queryByLabelText, UNSAFE_queryByType } = renderWithWrappers(
+      <ModalStack>
+        <CommercialInformationTimerWrapper
+          artwork={CommercialInformationArtworkInCascadingEndTimeAuction as any}
+          me={{ identityVerified: false } as any}
+          tracking={{ trackEvent: jest.fn() } as any}
+          refetchArtwork={jest.fn()}
+          hasStarted
+        />
+      </ModalStack>
+    )
 
-      expect(queryByText("3d 7h")).toBeTruthy()
-      expect(queryByLabelText("Countdown")).toBeTruthy()
-      expect(UNSAFE_queryByType(BidButton)).toBeTruthy()
-    })
+    expect(queryByText("3d 7h")).toBeTruthy()
+    expect(queryByLabelText("Countdown")).toBeTruthy()
+    expect(UNSAFE_queryByType(BidButton)).toBeTruthy()
+  })
 
-    it("doesn't render CountDownTimer, BidButton, or BuyNowButton when artwork is in an auction but sold via buy now", () => {
-      const CommercialInformationSoldArtworkInAuction = {
-        ...CommercialInformationArtworkInAuction,
-        availability: "sold",
-        isAcquireable: false,
-        isForSale: false,
-      }
+  it("doesn't render CountDownTimer, BidButton, or BuyNowButton when artwork is in an auction but sold via buy now", () => {
+    const CommercialInformationSoldArtworkInAuction = {
+      ...CommercialInformationArtworkInAuction,
+      availability: "sold",
+      isAcquireable: false,
+      isForSale: false,
+    }
 
-      const { queryByLabelText, UNSAFE_queryByType } = renderWithWrappers(
-        <ModalStack>
-          <CommercialInformationTimerWrapper
-            artwork={CommercialInformationSoldArtworkInAuction as any}
-            me={{ identityVerified: false } as any}
-            tracking={{ trackEvent: jest.fn() } as any}
-            refetchArtwork={jest.fn()}
-          />
-        </ModalStack>
-      )
+    const { queryByLabelText, UNSAFE_queryByType } = renderWithWrappers(
+      <ModalStack>
+        <CommercialInformationTimerWrapper
+          artwork={CommercialInformationSoldArtworkInAuction as any}
+          me={{ identityVerified: false } as any}
+          tracking={{ trackEvent: jest.fn() } as any}
+          refetchArtwork={jest.fn()}
+        />
+      </ModalStack>
+    )
 
-      expect(queryByLabelText("Countdown")).toBeNull()
-      expect(UNSAFE_queryByType(BidButton)).toBeNull()
-      expect(UNSAFE_queryByType(BuyNowButton)).toBeNull()
-    })
+    expect(queryByLabelText("Countdown")).toBeNull()
+    expect(UNSAFE_queryByType(BidButton)).toBeNull()
+    expect(UNSAFE_queryByType(BuyNowButton)).toBeNull()
+  })
 
-    it("doesn't render CountDownTimer or BidButton when not in auction", () => {
-      const { queryByLabelText, UNSAFE_queryByType } = renderWithWrappers(
-        <ModalStack>
-          <CommercialInformationTimerWrapper
-            artwork={CommercialInformationAcquierableArtwork as any}
-            me={{ identityVerified: false } as any}
-            refetchArtwork={jest.fn()}
-          />
-        </ModalStack>
-      )
+  it("doesn't render CountDownTimer or BidButton when not in auction", () => {
+    const { queryByLabelText, UNSAFE_queryByType } = renderWithWrappers(
+      <ModalStack>
+        <CommercialInformationTimerWrapper
+          artwork={CommercialInformationAcquierableArtwork as any}
+          me={{ identityVerified: false } as any}
+          refetchArtwork={jest.fn()}
+        />
+      </ModalStack>
+    )
 
-      expect(queryByLabelText("Countdown")).toBeNull()
-      expect(UNSAFE_queryByType(BidButton)).toBeNull()
-      expect(UNSAFE_queryByType(BuyNowButton)).toBeTruthy()
-    })
+    expect(queryByLabelText("Countdown")).toBeNull()
+    expect(UNSAFE_queryByType(BidButton)).toBeNull()
+    expect(UNSAFE_queryByType(BuyNowButton)).toBeTruthy()
+  })
 
-    it("renders CountDownTimer with the sale artwork's end time when Artwork is in a cascading end time auction", () => {
-      const { queryByLabelText, UNSAFE_queryByType, queryByText } = renderWithWrappers(
-        <ModalStack>
-          <CommercialInformationTimerWrapper
-            artwork={CommercialInformationArtworkInCascadingEndTimeAuction as any}
-            me={{ identityVerified: false } as any}
-            tracking={{ trackEvent: jest.fn() } as any}
-            refetchArtwork={jest.fn()}
-            hasStarted
-          />
-        </ModalStack>
-      )
+  it("renders CountDownTimer with the sale artwork's end time when Artwork is in a cascading end time auction", () => {
+    const { queryByLabelText, UNSAFE_queryByType, queryByText } = renderWithWrappers(
+      <ModalStack>
+        <CommercialInformationTimerWrapper
+          artwork={CommercialInformationArtworkInCascadingEndTimeAuction as any}
+          me={{ identityVerified: false } as any}
+          tracking={{ trackEvent: jest.fn() } as any}
+          refetchArtwork={jest.fn()}
+          hasStarted
+        />
+      </ModalStack>
+    )
 
-      // This would say 1d 7h if the countdown timer was looking at the sale's end at time (instead of the sale artwork's end at time)
-      expect(queryByText("3d 7h")).toBeTruthy()
+    // This would say 1d 7h if the countdown timer was looking at the sale's end at time (instead of the sale artwork's end at time)
+    expect(queryByText("3d 7h")).toBeTruthy()
 
-      expect(queryByLabelText("Countdown")).toBeTruthy()
-      expect(UNSAFE_queryByType(BidButton)).toBeTruthy()
-    })
+    expect(queryByLabelText("Countdown")).toBeTruthy()
+    expect(UNSAFE_queryByType(BidButton)).toBeTruthy()
   })
 })
 

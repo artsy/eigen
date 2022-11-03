@@ -1,7 +1,6 @@
 import { SaleHeaderTestsQuery } from "__generated__/SaleHeaderTestsQuery.graphql"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { mockTimezone } from "app/tests/mockTimezone"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
@@ -63,29 +62,27 @@ describe("SaleHeader", () => {
     expect(tree.root.findAllByType(CaretButton)).toHaveLength(1)
   })
 
-  describe("when the cascading end time feature flag is on", () => {
-    it("does not render auction is closed when cascading end time is enabled", () => {
-      const { queryByText } = renderWithWrappers(<TestRenderer />)
+  it("does not render auction is closed when cascading end time is enabled", () => {
+    const { queryByText } = renderWithWrappers(<TestRenderer />)
 
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          Sale: () => ({
-            endAt: moment().subtract(1, "day").toISOString(),
-            startAt: "2020-09-01T15:00:00",
-            timeZone: "Europe/Berlin",
-            coverImage: {
-              url: "cover image url",
-            },
-            name: "sale name",
-            liveStartAt: "2020-09-01T15:00:00",
-            internalID: "the-sale-internal",
-            cascadingEndTimeIntervalMinutes: 1,
-          }),
-        })
-      )
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Sale: () => ({
+          endAt: moment().subtract(1, "day").toISOString(),
+          startAt: "2020-09-01T15:00:00",
+          timeZone: "Europe/Berlin",
+          coverImage: {
+            url: "cover image url",
+          },
+          name: "sale name",
+          liveStartAt: "2020-09-01T15:00:00",
+          internalID: "the-sale-internal",
+          cascadingEndTimeIntervalMinutes: 1,
+        }),
+      })
+    )
 
-      expect(queryByText("Auction closed")).toBeFalsy()
-    })
+    expect(queryByText("Auction closed")).toBeFalsy()
   })
 
   it("does not render auction is closed when an auction is still active", () => {

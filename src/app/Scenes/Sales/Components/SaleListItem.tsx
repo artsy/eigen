@@ -65,8 +65,6 @@ export default createFragmentContainer(SaleListItem, {
       name
       href
       liveURLIfOpen
-      liveStartAt
-      displayTimelyAt
       formattedStartDateTime
       coverImage {
         url(version: "large")

@@ -158,8 +158,6 @@ export const SalesRailFragmentContainer = createFragmentContainer(SalesRail, {
         href
         name
         liveURLIfOpen
-        liveStartAt
-        displayTimelyAt
         formattedStartDateTime
         saleArtworksConnection(first: 3) {
           edges {
