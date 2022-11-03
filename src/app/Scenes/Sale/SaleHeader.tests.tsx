@@ -37,9 +37,6 @@ describe("SaleHeader", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
-    __globalStoreTestUtils__?.injectFeatureFlags({
-      AREnableCascadingEndTimerSalePageDetails: false,
-    })
     mockTimezone("America/New_York")
   })
 
@@ -66,37 +63,7 @@ describe("SaleHeader", () => {
     expect(tree.root.findAllByType(CaretButton)).toHaveLength(1)
   })
 
-  it("renders auction is closed when an auction has passed", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Sale: () => ({
-          endAt: moment().subtract(1, "day").toISOString(),
-          startAt: "2020-09-01T15:00:00",
-          timeZone: "Europe/Berlin",
-          coverImage: {
-            url: "cover image url",
-          },
-          name: "sale name",
-          liveStartAt: "2020-09-01T15:00:00",
-          internalID: "the-sale-internal",
-        }),
-      })
-    )
-
-    expect(extractText(tree.root.findByProps({ testID: "sale-header-hero" }))).toBe(
-      "Auction closed"
-    )
-  })
-
   describe("when the cascading end time feature flag is on", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({
-        AREnableCascadingEndTimerSalePageDetails: true,
-      })
-    })
-
     it("does not render auction is closed when cascading end time is enabled", () => {
       const { queryByText } = renderWithWrappers(<TestRenderer />)
 
@@ -160,10 +127,6 @@ describe("SaleHeader", () => {
 
     describe("when the cascade end time flag is turned on", () => {
       beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({
-          AREnableCascadingEndTimerSalePageDetails: true,
-        })
-
         jest.useFakeTimers()
       })
 
@@ -376,33 +339,6 @@ describe("SaleHeader", () => {
           const absoluteTime = getByText("Closed May 8, 2018 • 12:00pm EDT")
           expect(absoluteTime).toBeTruthy()
         })
-      })
-    })
-
-    describe("when the cascade end time flag is turned off", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({
-          AREnableCascadingEndTimerSalePageDetails: false,
-        })
-      })
-
-      it("does not show the cascading end time label", () => {
-        const { queryByText } = renderWithWrappers(<TestRenderer />)
-
-        mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-          MockPayloadGenerator.generate(operation, {
-            Sale: () => ({
-              endAt: "2018-05-10T18:00:00",
-              startAt: "2018-05-13T15:00:00",
-              endedAt: null,
-              cascadingEndTimeIntervalMinutes: 1,
-              ...baseSale,
-            }),
-          })
-        )
-
-        const cascadeEndTimeLabel = queryByText("Lots close at 1-minute intervals")
-        expect(cascadeEndTimeLabel).toBeFalsy()
       })
     })
   })
