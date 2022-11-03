@@ -54,7 +54,7 @@ export const MyCollectionArtworkFormArtist: React.FC<
       <ScreenMargin>
         <Suspense fallback={() => <Placeholder />}>
           <ArtistAutosuggest onResultPress={handleResultPress} onSkipPress={handleSkipPress} />
-        </Suspense>{" "}
+        </Suspense>
       </ScreenMargin>
     </>
   )
