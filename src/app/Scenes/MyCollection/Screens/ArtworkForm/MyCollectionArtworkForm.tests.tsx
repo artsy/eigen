@@ -255,8 +255,8 @@ describe("MyCollectionArtworkForm", () => {
         })
       })
 
-      it("displays the artist display name input", async () => {
-        const { getByText, getByTestId } = renderWithHookWrappersTL(
+      it("initializes the artist name input field", async () => {
+        const { getByText, getByTestId, getByPlaceholderText } = renderWithHookWrappersTL(
           <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} source={Tab.collection} />,
           mockEnvironment
         )
@@ -274,6 +274,15 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(getByText("Select an Artist")).toBeTruthy()
 
+        act(() =>
+          fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "foo bar")
+        )
+        act(() =>
+          mockEnvironment.mock.resolveMostRecentOperation({
+            errors: [],
+            data: mockArtistSearchResult,
+          })
+        )
         act(() => fireEvent.press(getByTestId("my-collection-artwork-form-artist-skip-button")))
 
         await flushPromiseQueue()
@@ -282,7 +291,7 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(getByText("Add Details")).toBeTruthy()
 
-        expect(getByTestId("ArtistDisplayNameInput").props.value).toBe(undefined)
+        expect(getByTestId("ArtistDisplayNameInput").props.value).toBe("foo bar")
         expect(getByTestId("TitleInput").props.value).toBe("")
         expect(getByTestId("DateInput").props.value).toBe("")
         expect(getByTestId("MaterialsInput").props.value).toBe("")

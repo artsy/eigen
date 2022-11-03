@@ -22,6 +22,10 @@ export const MyCollectionArtworkFormArtist: React.FC<
   const handleResultPress = async (result: AutosuggestResult) => {
     tracking.trackEvent(tracks.tappedArtist({ artistSlug: result.slug, artistId: result.slug }))
 
+    GlobalStore.actions.myCollection.artwork.updateFormValues({
+      metric: preferredMetric,
+      pricePaidCurrency: preferredCurrency,
+    })
     await GlobalStore.actions.myCollection.artwork.setArtistSearchResult(result)
 
     if (result.isPersonalArtist) {
@@ -31,9 +35,10 @@ export const MyCollectionArtworkFormArtist: React.FC<
     }
   }
 
-  const handleSkipPress = async () => {
+  const handleSkipPress = async (artistDisplayName: string) => {
     requestAnimationFrame(() => {
       GlobalStore.actions.myCollection.artwork.updateFormValues({
+        artistDisplayName,
         metric: preferredMetric,
         pricePaidCurrency: preferredCurrency,
       })

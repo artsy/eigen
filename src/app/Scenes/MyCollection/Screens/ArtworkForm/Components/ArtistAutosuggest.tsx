@@ -13,7 +13,7 @@ import { useArtworkForm } from "../Form/useArtworkForm"
 
 interface ArtistAutosuggestProps {
   onResultPress: (result: AutosuggestResult) => void
-  onSkipPress?: () => void
+  onSkipPress?: (artistDisplayName: string) => void
 }
 
 export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
@@ -69,7 +69,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
                       Or skip ahead to{" "}
                     </Text>
                     <Touchable
-                      onPress={onSkipPress}
+                      onPress={() => onSkipPress?.(trimmedQuery)}
                       testID="my-collection-artwork-form-artist-skip-button"
                       hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
                     >
@@ -85,7 +85,12 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
                   <Flex width="100%" my={2}>
                     <Text>We didn't find "{trimmedQuery}" on Artsy.</Text>
                     <Text>You can add their name in the artwork details.</Text>
-                    <Button variant="outline" onPress={onSkipPress} mt={4} block>
+                    <Button
+                      variant="outline"
+                      onPress={() => onSkipPress?.(trimmedQuery)}
+                      mt={4}
+                      block
+                    >
                       Add Artist
                     </Button>
                   </Flex>
