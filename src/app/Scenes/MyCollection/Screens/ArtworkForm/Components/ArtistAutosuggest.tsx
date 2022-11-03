@@ -13,7 +13,7 @@ import { useArtworkForm } from "../Form/useArtworkForm"
 
 interface ArtistAutosuggestProps {
   onResultPress: (result: AutosuggestResult) => void
-  onSkipPress?: () => void
+  onSkipPress?: (artistDisplayName: string) => void
 }
 
 export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
@@ -86,19 +86,33 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
               HeaderComponent={HeaderComponent}
               ListHeaderComponent={() =>
                 enableArtworksFromNonArtsyArtists && onlyShowCollectedArtists ? (
-                  <Text mb={2} mt={2}>
-                    Artists in My Collection
-                  </Text>
-                ) : (
-                  <Spacer mb={enableArtworksFromNonArtsyArtists ? 2 : 0} />
-                )
+                  <Flex flexDirection="row" my={1}>
+                    <Text variant="xs" color="black60">
+                      Or skip ahead to{" "}
+                    </Text>
+                    <Touchable
+                      onPress={() => onSkipPress?.(trimmedQuery)}
+                      testID="my-collection-artwork-form-artist-skip-button"
+                      hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
+                    >
+                      <Text variant="xs" color="black60" underline>
+                        add artwork details
+                      </Text>
+                    </Touchable>
+                  </Flex>
+                ) : <Spacer mb={enableArtworksFromNonArtsyArtists ? 2 : 0} />
               }
               ListEmptyComponent={() =>
                 enableArtworksFromNonArtsyArtists ? (
                   <Flex width="100%" my={2}>
                     <Text>We didn't find "{trimmedQuery}" on Artsy.</Text>
                     <Text>You can add their name in the artwork details.</Text>
-                    <Button variant="outline" onPress={onSkipPress} mt={4} block>
+                    <Button
+                      variant="outline"
+                      onPress={() => onSkipPress?.(trimmedQuery)}
+                      mt={4}
+                      block
+                    >
                       Add Artist
                     </Button>
                   </Flex>
