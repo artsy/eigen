@@ -26,8 +26,8 @@ export const ArtworkLotDetails: React.FC<ArtworkLotDetailsProps> = ({ artwork, a
   const { estimate, currentBid } = saleArtwork ?? {}
   const isClosedAuctionState = auctionState === AuctionTimerState.CLOSED
   const isLiveAuctionState = auctionState === AuctionTimerState.LIVE_INTEGRATION_ONGOING
-  const shouldRender = !isClosedAuctionState && isForSale
-  const shouldRenderBidRelatedInfo = shouldRender && !isLiveAuctionState
+  const shouldRenderInfo = !isClosedAuctionState && isForSale
+  const shouldRenderExtraInfo = shouldRenderInfo && !isLiveAuctionState
 
   const handleBuyersPremiumTap = () => {
     navigate(`/auction/${internalID!}/buyers-premium`, {
@@ -70,19 +70,19 @@ export const ArtworkLotDetails: React.FC<ArtworkLotDetailsProps> = ({ artwork, a
     <Join separator={<Spacer mt={2} />}>
       {!!estimate && <ArtworkLotDetailsRow title="Estimated value" value={estimate} />}
 
-      {!!(shouldRenderBidRelatedInfo && currentBid?.display) && (
+      {!!(shouldRenderExtraInfo && currentBid?.display) && (
         <Box accessibilityLabel="Bid info">
           <LotCurrentBidInfo saleArtwork={saleArtwork!} />
         </Box>
       )}
 
-      {!!shouldRenderBidRelatedInfo && renderLotDateTimeInfo()}
+      {!!shouldRenderExtraInfo && renderLotDateTimeInfo()}
 
-      {!!(shouldRenderBidRelatedInfo && cascadingEndTimeIntervalMinutes) && (
+      {!!(shouldRenderExtraInfo && cascadingEndTimeIntervalMinutes) && (
         <LotCascadingEndTimesBanner sale={artworkData.sale!} />
       )}
 
-      {!!(shouldRenderBidRelatedInfo && isWithBuyersPremium) && (
+      {!!(shouldRenderExtraInfo && isWithBuyersPremium) && (
         <Box testID="buyers-premium-and-shipping">
           <Text variant="sm">
             This auction has a <LinkText onPress={handleBuyersPremiumTap}>buyer's premium</LinkText>
@@ -92,14 +92,14 @@ export const ArtworkLotDetails: React.FC<ArtworkLotDetailsProps> = ({ artwork, a
         </Box>
       )}
 
-      {!!shouldRender && (
+      {!!shouldRenderInfo && (
         <Text variant="sm" testID="conditions-of-sale">
           By placing a bid you agree to {partnerName(artworkData.sale!)}{" "}
           <LinkText onPress={handleConditionsOfSaleTap}>Conditions of Sale</LinkText>.
         </Text>
       )}
 
-      {!!shouldRender && (
+      {!!shouldRenderInfo && (
         <Text variant="sm" testID="have-a-question">
           Have a question?{" "}
           <LinkText onPress={handleReadOurAuctionFAQsTap}>Read our auction FAQs</LinkText> or{" "}
