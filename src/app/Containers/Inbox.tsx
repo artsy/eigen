@@ -120,10 +120,15 @@ export class Inbox extends React.Component<Props, State> {
   }
 
   render() {
+    const userHasBids = this.props.me.myBids?.active?.length! > 0 ? true : false
+    const bidsTab = 0
+    const inquiriesTab = 1
+    const initialPageNumber = userHasBids ? bidsTab : inquiriesTab
+
     return (
       <ScrollableTabView
         style={{ paddingTop: 30 }}
-        initialPage={0}
+        initialPage={initialPageNumber}
         renderTabBar={() => <InboxTabs />}
         onChangeTab={({ i }: { i: number }) => this.handleNavigationTab(i)}
       >
@@ -154,7 +159,7 @@ export const InboxContainer = createRefetchContainer(
     me: graphql`
       fragment Inbox_me on Me {
         ...Conversations_me
-        ...MyBids_me
+        ...MyBids_me @relay(mask: false)
       }
     `,
   },
