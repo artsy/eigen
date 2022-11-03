@@ -17,7 +17,7 @@ const entityByType: Record<NotificationType, { title: string; message: string }>
   },
   alerts: {
     title: `Set alerts for artworks you${apostrophe}re seeking.`,
-    message: `Filter for the artworks you love on an artist page and tap ${quoteLeft}Create Alert${quoteRight}. Get notifications here when there${apostrophe}s a match.`,
+    message: `Filter for the artworks you love on an artist page and tap ${quoteLeft}Create Alert.${quoteRight} Get notifications here when there${apostrophe}s a match.`,
   },
 }
 
