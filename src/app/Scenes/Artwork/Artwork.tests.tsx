@@ -29,7 +29,6 @@ import { ArtworkDetails } from "./Components/ArtworkDetails"
 import { ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
 import { BidButton } from "./Components/CommercialButtons/BidButton"
 import { CommercialInformation } from "./Components/CommercialInformation"
-import { CommercialPartnerInformation } from "./Components/CommercialPartnerInformation"
 import { ContextCard } from "./Components/ContextCard"
 import { ImageCarousel } from "./Components/ImageCarousel/ImageCarousel"
 import { OtherWorksFragmentContainer } from "./Components/OtherWorks/OtherWorks"
@@ -406,7 +405,6 @@ describe("Artwork", () => {
           },
         })
 
-        expect(tree.root.findAllByType(CommercialPartnerInformation)).toHaveLength(0)
         expect(tree.root.findAllByType(Countdown)).toHaveLength(1)
         expect(tree.root.findByType(Countdown).props.label).toBe("In progress")
         expect(extractText(tree.root.findByType(BidButton))).toContain("Enter live bidding")
@@ -426,7 +424,6 @@ describe("Artwork", () => {
           },
         })
 
-        expect(tree.root.findAllByType(CommercialPartnerInformation)).toHaveLength(0)
         expect(tree.root.findAllByType(Countdown)).toHaveLength(1)
         expect(tree.root.findByType(Countdown).props.label).toBe("In progress")
         expect(extractText(tree.root.findByType(BidButton))).toContain("Registration closed")
@@ -447,7 +444,6 @@ describe("Artwork", () => {
           },
         })
 
-        expect(tree.root.findAllByType(CommercialPartnerInformation)).toHaveLength(0)
         expect(tree.root.findAllByType(Countdown)).toHaveLength(1)
         expect(tree.root.findByType(Countdown).props.label).toBe("In progress")
         expect(extractText(tree.root.findByType(Countdown))).toContain("00d  00h  00m  00s")
