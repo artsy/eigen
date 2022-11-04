@@ -1,7 +1,5 @@
-import { captureMessage } from "@sentry/react-native"
 import { ContactInformation_me$data } from "__generated__/ContactInformation_me.graphql"
 import { ContactInformationQueryRendererQuery } from "__generated__/ContactInformationQueryRendererQuery.graphql"
-import { ErrorView } from "app/Components/ErrorView/ErrorView"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { Formik } from "formik"
 import { CTAButton, Flex, Input, Spacer, Text } from "palette"
@@ -15,24 +13,13 @@ export const ContactInformation: React.FC<{
   me: ContactInformation_me$data | null
   isLastStep: boolean
 }> = ({ handlePress, me, isLastStep }) => {
-  const [submissionError, setSubmissionError] = useState(false)
-
   const [isNameInputFocused, setIsNameInputFocused] = useState(false)
   const [isEmailInputFocused, setIsEmailInputFocused] = useState(false)
   const [isPhoneInputFocused, setIsPhoneInputFocused] = useState(false)
   const [isValidNumber, setIsValidNumber] = useState(false)
 
   const handleFormSubmit = (formValues: ContactInformationFormModel) => {
-    try {
-      handlePress(formValues)
-    } catch (error) {
-      captureMessage(JSON.stringify(error))
-      setSubmissionError(true)
-    }
-  }
-
-  if (submissionError) {
-    return <ErrorView />
+    handlePress(formValues)
   }
 
   return (

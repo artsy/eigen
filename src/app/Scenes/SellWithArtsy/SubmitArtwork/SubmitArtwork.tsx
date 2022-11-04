@@ -3,6 +3,10 @@ import { ContextModule } from "@artsy/cohesion"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
+import { captureMessage } from "@sentry/react-native"
+import { ErrorView } from "app/Components/ErrorView/ErrorView"
+import { FancyModal } from "app/Components/FancyModal/FancyModal"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { BackButton } from "app/navigation/BackButton"
 import { goBack } from "app/navigation/navigate"
 import { addClue, GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
@@ -10,7 +14,7 @@ import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { isEqual } from "lodash"
-import { CollapsibleMenuItem, Flex, Join, Separator, Spacer } from "palette"
+import { CollapsibleMenuItem, Flex, Join, Separator, Spacer, Text } from "palette"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
@@ -60,6 +64,8 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
   const [desiredEmail, setDesiredEmail] = useState(userEmail)
 
   const [activeStep, setActiveStep] = useState(0)
+
+  const [hasError, setHasError] = useState(false)
 
   const artworkDetailsFromValuesRef = useRef(artworkDetails)
   artworkDetailsFromValuesRef.current = artworkDetails
@@ -120,7 +126,9 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
         }
       }
     } catch (error) {
-      console.error("Error", error)
+      // Error with mutation.
+      captureMessage(JSON.stringify(error))
+      setHasError(true)
       return
     }
 
@@ -264,6 +272,16 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
               ))}
             </Join>
           </ScrollView>
+          <FancyModal visible={hasError} onBackgroundPressed={() => setHasError(false)}>
+            <FancyModalHeader onRightButtonPress={() => setHasError(false)} rightCloseButton>
+              <Text variant="md">Error</Text>
+            </FancyModalHeader>
+            <ErrorView
+              message={`We encountered an error while ${
+                activeStep !== STEPS_IN_ORDER.length - 1 ? "saving" : "submitting"
+              } the Artwork. Please try again shortly`}
+            />
+          </FancyModal>
         </Flex>
       </ArtsyKeyboardAvoidingView>
     </ProvideScreenTrackingWithCohesionSchema>

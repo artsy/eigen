@@ -1,10 +1,8 @@
-import { captureMessage } from "@sentry/react-native"
-import { ErrorView } from "app/Components/ErrorView/ErrorView"
 import { navigate } from "app/navigation/navigate"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Formik } from "formik"
 import { BulletedItem, CTAButton, Flex, LinkText, Spacer } from "palette"
-import React, { useState } from "react"
+import React from "react"
 import { ArtworkDetailsForm } from "./ArtworkDetailsForm"
 import { ArtworkDetailsFormModel, artworkDetailsValidationSchema } from "./validation"
 
@@ -13,19 +11,9 @@ export const ArtworkDetails: React.FC<{
   isLastStep: boolean
 }> = ({ handlePress, isLastStep }) => {
   const { artworkDetails } = GlobalStore.useAppState((state) => state.artworkSubmission.submission)
-  const [submissionError, setSubmissionError] = useState(false)
 
   const handleArtworkDetailsSubmit = (values: ArtworkDetailsFormModel) => {
-    try {
-      handlePress(values)
-    } catch (error) {
-      captureMessage(JSON.stringify(error))
-      setSubmissionError(true)
-    }
-  }
-
-  if (submissionError) {
-    return <ErrorView />
+    handlePress(values)
   }
 
   return (
