@@ -1474,6 +1474,9 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   # Only specific Artists should show a link to auction results.
   isDisplayAuctionLink: Boolean
   isFollowed: Boolean
+
+  # Whether the artist has been created by a user.
+  isPersonalArtist: Boolean
   isPublic: Boolean
   isShareable: Boolean
   location: String
@@ -16544,6 +16547,7 @@ union VanityURLEntityType = Fair | Partner
 type Video {
   # The height of the video
   height: Int!
+  id: ID!
 
   # The url of the video
   url: String!

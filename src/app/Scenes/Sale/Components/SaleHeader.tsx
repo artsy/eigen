@@ -37,9 +37,7 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
 
   const relativeTimeOfSale = useRelativeTimeOfSale(sale)
 
-  const cascadingEndTimeFeatureEnabled =
-    useFeatureFlag("AREnableCascadingEndTimerSalePageDetails") &&
-    sale.cascadingEndTimeIntervalMinutes
+  const cascadingEndTimeFeatureEnabled = sale.cascadingEndTimeIntervalMinutes
 
   const handleCopyLinkPress = () => {
     const clipboardLink = getShareURL(sale.href!)

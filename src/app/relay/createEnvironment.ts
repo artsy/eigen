@@ -34,7 +34,7 @@ export function createEnvironment(
       // We need to run the checkAuthenticationMiddleware as early as possible to make sure that the user
       // session is still valid. This is why we need to keep it as low as possible in the middlewares array.
       checkAuthenticationMiddleware(),
-      metaphysicsExtensionsLoggerMiddleware(),
+      __DEV__ ? metaphysicsExtensionsLoggerMiddleware() : null,
       simpleLoggerMiddleware(),
       __DEV__ ? relayErrorMiddleware() : null,
       timingMiddleware(),

@@ -106,30 +106,6 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "ARAllowLinkSocialAccountsOnSignUp",
   },
-  AREnableCascadingEndTimerLotPage: {
-    readyForRelease: true,
-    description: "Enable cascading end times on the lot page",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableCascadingEndTimerLotPage",
-  },
-  AREnableCascadingEndTimerSalePageDetails: {
-    readyForRelease: true,
-    description: "Enable cascading end times on the sale page details",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableCascadingEndTimerSalePageDetails",
-  },
-  AREnableCascadingEndTimerSalePageGrid: {
-    readyForRelease: true,
-    description: "Enable cascading end times on the sale page lot grid",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableCascadingEndTimerSalePageGrid",
-  },
-  AREnableCascadingEndTimerHomeSalesRail: {
-    readyForRelease: true,
-    description: "Enable cascading end times on the Sales Rail on Home screen",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableCascadingEndTimerHomeSalesRail",
-  },
   AREnableImageSearch: {
     readyForRelease: false,
     description: "Enable search with image",
@@ -145,11 +121,6 @@ export const features = defineFeatures({
     readyForRelease: true,
     description: "Enable placeholder layout animation",
     echoFlagKey: "AREnablePlaceholderLayoutAnimation",
-  },
-  AREnableAvalaraPhase2: {
-    readyForRelease: false,
-    description: "Enable Avalara Phase 2",
-    showInAdminMenu: true,
   },
   ARDarkModeSupport: {
     readyForRelease: false,
@@ -208,30 +179,6 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableMyCollectionInsights",
   },
-  AREnableMyCollectionInsightsPhase1Part1: {
-    readyForRelease: true,
-    description: "Enable MyC insights Ph 1 Pt 1",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableMyCollectionInsightsPhase1Part1",
-  },
-  AREnableMyCollectionInsightsPhase1Part2: {
-    readyForRelease: true,
-    description: "Enable MyC insights Ph 1 Pt 2",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableMyCollectionInsightsPhase1Part2",
-  },
-  AREnableMyCollectionInsightsPhase1Part3: {
-    readyForRelease: true,
-    description: "Enable MyC insights Ph 1 Pt 3",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableMyCollectionInsightsPhase1Part3",
-  },
-  AREnableMyCollectionInsightsPhase1Part4: {
-    readyForRelease: true,
-    description: "Enable MyC insights Ph 1 Pt 4",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableMyCollectionInsightsPhase1Part4",
-  },
   AREnableArtworksFromNonArtsyArtists: {
     readyForRelease: false,
     description: "Enable My Collection artworks from non-Artsy artists",
@@ -244,9 +191,10 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableArtworksConnectionForAuction",
   },
   AREnableActivity: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable Activity",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableActivity",
   },
   AREnableCollectionsInOnboarding: {
     description: "Replace genes with collections in onboarding",
@@ -257,7 +205,8 @@ export const features = defineFeatures({
   AREnableNewRequestPriceEstimateLogic: {
     description: "Enable new request price estimate logic",
     showInAdminMenu: true,
-    readyForRelease: false,
+    readyForRelease: true,
+    echoFlagKey: "AREnableNewRequestPriceEstimateLogic",
   },
 })
 

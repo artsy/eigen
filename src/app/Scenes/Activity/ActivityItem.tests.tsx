@@ -1,5 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { ActivityItem_Test_Query } from "__generated__/ActivityItem_Test_Query.graphql"
+import { navigate } from "app/navigation/navigate"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
@@ -8,6 +9,10 @@ import { extractNodes } from "app/utils/extractNodes"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ActivityItem } from "./ActivityItem"
+
+const targetUrl = "/artist/banksy/works-for-sale?sort=-published_at"
+const alertTargetUrl =
+  "/artist/banksy/works-for-sale?search_criteria_id=searchCriteriaId&sort=-published_at"
 
 jest.unmock("react-relay")
 
@@ -92,34 +97,53 @@ describe("ActivityItem", () => {
     `)
   })
 
-  describe("the remaining artworks count", () => {
-    it("should NOT be rendered if there are less or equal to 4", async () => {
-      const { queryByLabelText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+  it("should pass predefined props when", async () => {
+    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Notification: () => notification,
-      })
-      await flushPromiseQueue()
-
-      const label = queryByLabelText("Remaining artworks count")
-      expect(label).toBeNull()
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Notification: () => notification,
     })
+    await flushPromiseQueue()
 
-    it("should be rendered if there are more than 4", async () => {
-      const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    fireEvent.press(getByText("Notification Title"))
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Notification: () => ({
-          ...notification,
-          artworksConnection: {
-            ...notification.artworksConnection,
-            totalCount: 10,
+    expect(navigate).toHaveBeenCalledWith(targetUrl, {
+      passProps: {
+        predefinedFilters: [
+          {
+            displayText: "Recently Added",
+            paramName: "sort",
+            paramValue: "-published_at",
           },
-        }),
-      })
-      await flushPromiseQueue()
+        ],
+      },
+    })
+  })
 
-      expect(getByText("+ 6")).toBeTruthy()
+  it("should pass search criteria id prop", async () => {
+    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Notification: () => ({
+        ...notification,
+        targetHref: alertTargetUrl,
+      }),
+    })
+    await flushPromiseQueue()
+
+    fireEvent.press(getByText("Notification Title"))
+
+    expect(navigate).toHaveBeenCalledWith(alertTargetUrl, {
+      passProps: {
+        searchCriteriaID: "searchCriteriaId",
+        predefinedFilters: [
+          {
+            displayText: "Recently Added",
+            paramName: "sort",
+            paramValue: "-published_at",
+          },
+        ],
+      },
     })
   })
 
@@ -239,6 +263,7 @@ const notification = {
   publishedAt: "2 days ago",
   isUnread: false,
   notificationType: "ARTWORK_PUBLISHED",
+  targetHref: targetUrl,
   artworksConnection: {
     totalCount: 4,
     edges: artworks,

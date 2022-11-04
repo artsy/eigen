@@ -1,7 +1,9 @@
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
 import { Avatar, Flex, Spacer, Text } from "palette"
 
-export const ArtistSearchResult: React.FC<{ result: AutosuggestResult }> = ({ result }) => {
+export const ArtistSearchResult: React.FC<{
+  result: AutosuggestResult
+}> = ({ result }) => {
   return (
     <Flex flexDirection="row" alignItems="center">
       <Avatar src={result.imageUrl || undefined} size="xs" />

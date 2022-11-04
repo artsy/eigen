@@ -11,6 +11,7 @@ export const bullet = "•"
 export const nbsp = String.fromCharCode(160)
 export const quoteLeft = "“"
 export const quoteRight = "”"
+export const apostrophe = "’"
 export const comma = ","
 
 /**
