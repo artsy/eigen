@@ -1,5 +1,6 @@
 import { LotCurrentBidInfo_artwork$key } from "__generated__/LotCurrentBidInfo_artwork.graphql"
-import { CheckCircleIcon, CloseCircleIcon, Flex, Text } from "palette"
+import { CheckCircleFillIcon, Flex, Text } from "palette"
+import { CloseCircleFillIcon } from "palette/svgs/CloseCircleFillIcon"
 import { graphql, useFragment } from "react-relay"
 
 interface LotCurrentBidInfoProps {
@@ -23,7 +24,7 @@ export const LotCurrentBidInfo: React.FC<LotCurrentBidInfoProps> = ({ artwork })
 
     if (myLotStanding.activeBid?.isWinning) {
       return (
-        <CheckCircleIcon
+        <CheckCircleFillIcon
           height="16"
           fill="green100"
           accessibilityLabel="My Bid Winning Icon"
@@ -33,7 +34,12 @@ export const LotCurrentBidInfo: React.FC<LotCurrentBidInfoProps> = ({ artwork })
     }
 
     return (
-      <CloseCircleIcon height="16" fill="red100" accessibilityLabel="My Bid Losing Icon" mr={0.5} />
+      <CloseCircleFillIcon
+        height="16"
+        fill="red100"
+        accessibilityLabel="My Bid Losing Icon"
+        mr={0.5}
+      />
     )
   }
 
