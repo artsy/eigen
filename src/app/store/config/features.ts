@@ -106,30 +106,6 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "ARAllowLinkSocialAccountsOnSignUp",
   },
-  AREnableCascadingEndTimerLotPage: {
-    readyForRelease: true,
-    description: "Enable cascading end times on the lot page",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableCascadingEndTimerLotPage",
-  },
-  AREnableCascadingEndTimerSalePageDetails: {
-    readyForRelease: true,
-    description: "Enable cascading end times on the sale page details",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableCascadingEndTimerSalePageDetails",
-  },
-  AREnableCascadingEndTimerSalePageGrid: {
-    readyForRelease: true,
-    description: "Enable cascading end times on the sale page lot grid",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableCascadingEndTimerSalePageGrid",
-  },
-  AREnableCascadingEndTimerHomeSalesRail: {
-    readyForRelease: true,
-    description: "Enable cascading end times on the Sales Rail on Home screen",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableCascadingEndTimerHomeSalesRail",
-  },
   AREnableImageSearch: {
     readyForRelease: false,
     description: "Enable search with image",

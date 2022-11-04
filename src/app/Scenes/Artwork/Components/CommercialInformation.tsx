@@ -10,7 +10,6 @@ import {
 import { TimeOffsetProvider } from "app/Components/Bidding/Context/TimeOffsetProvider"
 import { StateManager as CountdownStateManager } from "app/Components/Countdown"
 import { CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
 import { useArtworkBidding } from "app/Websockets/auctions/useArtworkBidding"
@@ -39,9 +38,8 @@ interface CommercialInformationProps extends CountdownTimerProps {
 // On Android, the useArtworkBidding fails to receive data, bringing the
 // ContextProvider down closer to this component fixed it. [Android Only]
 const CommercialInformationWebsocketWrapper: React.FC<CommercialInformationProps> = (props) => {
-  const cascadingEndTimeFeatureEnabled = useFeatureFlag("AREnableCascadingEndTimerLotPage")
-  const websocketEnabled =
-    cascadingEndTimeFeatureEnabled && !!props.artwork.sale?.cascadingEndTimeIntervalMinutes
+  const websocketEnabled = !!props.artwork.sale?.cascadingEndTimeIntervalMinutes
+
   return (
     <AuctionWebsocketContextProvider
       channelInfo={{

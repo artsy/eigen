@@ -15,12 +15,6 @@ afterEach(() => {
 
 describe("RetryErrorBoundary", () => {
   describe("when the rendered component crashes", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({
-        AREnableCascadingEndTimerSalePageGrid: true,
-      })
-    })
-
     it("renders Unable to load", () => {
       const { getByText } = renderWithWrappers(
         <RetryErrorBoundary>
@@ -33,10 +27,6 @@ describe("RetryErrorBoundary", () => {
   })
 
   describe("when the rendered component crashes with a 404 status code", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerSalePageGrid: true })
-    })
-
     const error = {
       res: {
         json: {
