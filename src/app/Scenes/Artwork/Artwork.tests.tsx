@@ -596,6 +596,24 @@ describe("Artwork", () => {
 
       expect(queryByText("Shipping and taxes")).toBeNull()
     })
+
+    it("should NOT be rendered if the work is in auction", () => {
+      const { queryByText } = renderWithWrappers(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        Artwork: () => ({
+          isInAuction: true,
+        }),
+      })
+      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+      mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+        Artwork: () => ({
+          isForSale: false,
+        }),
+      })
+
+      expect(queryByText("Shipping and taxes")).toBeNull()
+    })
   })
 
   describe("Artsy Guarantee section", () => {
