@@ -6,7 +6,10 @@ import {
   OpenAuctionNoReserveNoBids,
   OpenAuctionNoReserveWithBids,
   OpenAuctionReserveMetWithBids,
+  OpenAuctionReserveMetWithMyLosingBid,
+  OpenAuctionReserveMetWithMyWinningBid,
   OpenAuctionReserveNoBids,
+  OpenAuctionReserveNotMetIncreasingOwnBid,
   OpenAuctionReserveNotMetWithBids,
 } from "app/__fixtures__/ArtworkBidInfo"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
@@ -304,6 +307,57 @@ describe("ArtworkLotDetails", () => {
 
           expect(getByText("Current bid (2 bids, reserve met)")).toBeTruthy()
           expect(getByText("$500")).toBeTruthy()
+        })
+      })
+
+      describe("with my bid winning", () => {
+        it("displays max bid and winning indicator", async () => {
+          const { getByText, getByLabelText } = renderWithHookWrappersTL(
+            <TestRenderer auctionState={AuctionTimerState.CLOSING} />,
+            mockEnvironment
+          )
+
+          resolveMostRecentRelayOperation(mockEnvironment, {
+            Artwork: () => OpenAuctionReserveMetWithMyWinningBid,
+          })
+          await flushPromiseQueue()
+
+          expect(getByText("Your max: $15,000")).toBeTruthy()
+          expect(getByLabelText("My Bid Winning Icon")).toBeTruthy()
+        })
+      })
+
+      describe("with me increasing my max bid while winning", () => {
+        it("displays max bid and winning indicator", async () => {
+          const { getByText, getByLabelText } = renderWithHookWrappersTL(
+            <TestRenderer auctionState={AuctionTimerState.CLOSING} />,
+            mockEnvironment
+          )
+
+          resolveMostRecentRelayOperation(mockEnvironment, {
+            Artwork: () => OpenAuctionReserveNotMetIncreasingOwnBid,
+          })
+          await flushPromiseQueue()
+
+          expect(getByText("Your max: $15,000")).toBeTruthy()
+          expect(getByLabelText("My Bid Winning Icon")).toBeTruthy()
+        })
+      })
+
+      describe("with my bid losing", () => {
+        it("displays max bid and losing indicator", async () => {
+          const { getByText, getByLabelText } = renderWithHookWrappersTL(
+            <TestRenderer auctionState={AuctionTimerState.CLOSING} />,
+            mockEnvironment
+          )
+
+          resolveMostRecentRelayOperation(mockEnvironment, {
+            Artwork: () => OpenAuctionReserveMetWithMyLosingBid,
+          })
+          await flushPromiseQueue()
+
+          expect(getByText("Your max: $400")).toBeTruthy()
+          expect(getByLabelText("My Bid Losing Icon")).toBeTruthy()
         })
       })
     })

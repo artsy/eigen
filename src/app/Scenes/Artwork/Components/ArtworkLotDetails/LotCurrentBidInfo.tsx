@@ -1,28 +1,80 @@
-import { LotCurrentBidInfo_saleArtwork$key } from "__generated__/LotCurrentBidInfo_saleArtwork.graphql"
+import { LotCurrentBidInfo_artwork$key } from "__generated__/LotCurrentBidInfo_artwork.graphql"
+import { CheckCircleIcon, CloseCircleIcon, Flex, Text } from "palette"
 import { graphql, useFragment } from "react-relay"
-import { ArtworkLotDetailsRow } from "./ArtworkLotDetailsRow"
 
 interface LotCurrentBidInfoProps {
-  saleArtwork: LotCurrentBidInfo_saleArtwork$key
+  artwork: LotCurrentBidInfo_artwork$key
 }
 
-export const LotCurrentBidInfo: React.FC<LotCurrentBidInfoProps> = ({ saleArtwork }) => {
-  const data = useFragment(lotCurrentBidInfoFragment, saleArtwork)
-  const { reserveMessage, counts, currentBid } = data ?? {}
+export const LotCurrentBidInfo: React.FC<LotCurrentBidInfoProps> = ({ artwork }) => {
+  const data = useFragment(lotCurrentBidInfoFragment, artwork)
+  const { saleArtwork } = data
+  const { reserveMessage, counts, currentBid } = saleArtwork ?? {}
   const bidsCount = counts?.bidderPositions ?? 0
   const bidText = getBidText(bidsCount, reserveMessage ?? "")
+  const myLotStanding = data.myLotStanding?.[0]
+  const myBidPresent = !!myLotStanding?.mostRecentBid
+  const myMaxBid = myLotStanding?.mostRecentBid?.maxBid?.display
 
-  return <ArtworkLotDetailsRow title={bidText} value={currentBid?.display!} />
+  const renderBidResultIcon = () => {
+    if (!myBidPresent) {
+      return null
+    }
+
+    if (myLotStanding.activeBid?.isWinning) {
+      return (
+        <CheckCircleIcon
+          height="16"
+          fill="green100"
+          accessibilityLabel="My Bid Winning Icon"
+          mr={0.5}
+        />
+      )
+    }
+
+    return (
+      <CloseCircleIcon height="16" fill="red100" accessibilityLabel="My Bid Losing Icon" mr={0.5} />
+    )
+  }
+
+  return (
+    <>
+      <Text variant="sm">{bidText}</Text>
+      <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+        <Flex flexDirection="row" alignItems="center">
+          {renderBidResultIcon()}
+
+          <Text variant="sm-display" fontWeight="bold">
+            {currentBid?.display}
+          </Text>
+        </Flex>
+
+        {!!myMaxBid && <Text variant="sm-display">Your max: {myMaxBid}</Text>}
+      </Flex>
+    </>
+  )
 }
 
 const lotCurrentBidInfoFragment = graphql`
-  fragment LotCurrentBidInfo_saleArtwork on SaleArtwork {
-    reserveMessage
-    currentBid {
-      display
+  fragment LotCurrentBidInfo_artwork on Artwork {
+    myLotStanding(live: true) {
+      activeBid {
+        isWinning
+      }
+      mostRecentBid {
+        maxBid {
+          display
+        }
+      }
     }
-    counts {
-      bidderPositions
+    saleArtwork {
+      reserveMessage
+      currentBid {
+        display
+      }
+      counts {
+        bidderPositions
+      }
     }
   }
 `

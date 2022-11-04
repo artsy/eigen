@@ -72,7 +72,7 @@ export const ArtworkLotDetails: React.FC<ArtworkLotDetailsProps> = ({ artwork, a
 
       {!!(shouldRenderExtraInfo && currentBid?.display) && (
         <Box accessibilityLabel="Bid info">
-          <LotCurrentBidInfo saleArtwork={saleArtwork!} />
+          <LotCurrentBidInfo artwork={artworkData} />
         </Box>
       )}
 
@@ -132,8 +132,8 @@ const artworkFragment = graphql`
       currentBid {
         display
       }
-      ...LotCurrentBidInfo_saleArtwork
     }
+    ...LotCurrentBidInfo_artwork
     ...LotEndDateTime_artwork
     ...LotUpcomingLiveDateTime_artwork
   }
