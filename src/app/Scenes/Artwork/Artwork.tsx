@@ -309,7 +309,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (!!artworkBelowTheFold.isForSale) {
+    if (!!(artworkBelowTheFold.isForSale && !isInAuction)) {
       sections.push({
         key: "shippingAndTaxes",
         element: <ShippingAndTaxesFragmentContainer artwork={artworkBelowTheFold!} />,
