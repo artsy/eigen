@@ -33,7 +33,7 @@ import { ContactInformationQueryRenderer } from "./ContactInformation/ContactInf
 import { ContactInformationFormModel } from "./ContactInformation/validation"
 import { UploadPhotos } from "./UploadPhotos/UploadPhotos"
 
-enum STEPS {
+export enum STEPS {
   ArtworkDetails = "ArtworkDetails",
   UploadPhotos = "UploadPhotos",
   ContactInformation = "ContactInformation",
@@ -50,6 +50,23 @@ interface SubmitArtworkScreenNavigationProps
 
 export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> = ({
   navigation,
+}) => {
+  const enableReorderedSubmissionFlow = useFeatureFlag("ARReorderSWAArtworkSubmissionFlow")
+  const STEPS_IN_ORDER: typeof DEFAULT_STEPS_IN_ORDER = enableReorderedSubmissionFlow
+    ? [STEPS.ContactInformation, STEPS.ArtworkDetails, STEPS.UploadPhotos]
+    : DEFAULT_STEPS_IN_ORDER
+
+  return <SubmitSWAArtworkFlow navigation={navigation} stepsInOrder={STEPS_IN_ORDER} />
+}
+
+interface SubmitSWAArtworkFlowProps {
+  navigation: SubmitArtworkScreenNavigationProps["navigation"]
+  stepsInOrder: STEPS[]
+}
+
+export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
+  navigation,
+  stepsInOrder,
 }) => {
   const { trackEvent } = useTracking()
   const { showActionSheetWithOptions } = useActionSheet()
@@ -70,18 +87,12 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
   const artworkDetailsFromValuesRef = useRef(artworkDetails)
   artworkDetailsFromValuesRef.current = artworkDetails
 
-  const enableReorderedSubmissionFlow = useFeatureFlag("ARReorderSWAArtworkSubmissionFlow")
-
-  const STEPS_IN_ORDER: typeof DEFAULT_STEPS_IN_ORDER = enableReorderedSubmissionFlow
-    ? [STEPS.ContactInformation, STEPS.ArtworkDetails, STEPS.UploadPhotos]
-    : DEFAULT_STEPS_IN_ORDER
-
   const track = (id: string, email?: string | null) => {
-    if (activeStep === STEPS_IN_ORDER.length - 1) {
+    if (activeStep === stepsInOrder.length - 1) {
       trackEvent(consignmentSubmittedEvent(id, email, userID))
     }
 
-    const step = STEPS_IN_ORDER[activeStep]
+    const step = stepsInOrder[activeStep]
 
     if (step === STEPS.ArtworkDetails) {
       trackEvent(artworkDetailsCompletedEvent(id, email, userID))
@@ -95,7 +106,7 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
   const handlePress = async (
     formValues: ArtworkDetailsFormModel | ContactInformationFormModel | {}
   ) => {
-    const isLastStep = activeStep === STEPS_IN_ORDER.length - 1
+    const isLastStep = activeStep === stepsInOrder.length - 1
     const values = {
       ...artworkDetails,
       ...formValues,
@@ -110,7 +121,7 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
       if (id) {
         track(id, email)
 
-        if (activeStep === STEPS_IN_ORDER.length - 1) {
+        if (activeStep === stepsInOrder.length - 1) {
           refreshMyCollection()
           GlobalStore.actions.artworkSubmission.submission.resetSessionState()
           addClue("ArtworkSubmissionMessage")
@@ -119,7 +130,7 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
 
         GlobalStore.actions.artworkSubmission.submission.setSubmissionId(id)
 
-        if (STEPS_IN_ORDER[activeStep] === STEPS.ArtworkDetails) {
+        if (stepsInOrder[activeStep] === STEPS.ArtworkDetails) {
           GlobalStore.actions.artworkSubmission.submission.setArtworkDetailsForm(
             formValues as ArtworkDetailsFormModel
           )
@@ -139,9 +150,9 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
     setActiveStep(activeStep + 1)
   }
 
-  const items = STEPS_IN_ORDER.map((step, index) => {
-    const staticValues = { overtitle: `Step ${index + 1} of ${STEPS_IN_ORDER.length}` }
-    const isLastStep = index === STEPS_IN_ORDER.length - 1
+  const items = stepsInOrder.map((step, index) => {
+    const staticValues = { overtitle: `Step ${index + 1} of ${stepsInOrder.length}` }
+    const isLastStep = index === stepsInOrder.length - 1
     switch (step) {
       case STEPS.ArtworkDetails:
         return {
@@ -278,7 +289,7 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
             </FancyModalHeader>
             <ErrorView
               message={`We encountered an error while ${
-                activeStep !== STEPS_IN_ORDER.length - 1 ? "saving" : "submitting"
+                activeStep !== stepsInOrder.length - 1 ? "saving" : "submitting"
               } the Artwork. Please try again shortly`}
             />
           </FancyModal>

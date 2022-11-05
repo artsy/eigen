@@ -81,7 +81,11 @@ export const ContactInformation: React.FC<{
             }
           />
           <Spacer mt={6} />
-          <CTAButton onPress={handleSubmit} disabled={!isValid || !isValidNumber}>
+          <CTAButton
+            testID="Submission_ContactInformation_Button"
+            onPress={handleSubmit}
+            disabled={!isValid || !isValidNumber}
+          >
             {isLastStep ? "Submit Artwork" : "Save & Continue"}
           </CTAButton>
         </Flex>
