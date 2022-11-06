@@ -98,9 +98,13 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
       {/* Image Meta */}
 
       <Flex px={2}>
-        <TouchableOpacity onPress={() => navigate(artwork?.artist?.href!)}>
+        {artwork?.artist?.isPersonalArtist ? (
           <Text variant="lg-display">{artistNames ?? NO_ARTIST_NAMES_TEXT}</Text>
-        </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={() => navigate(artwork?.artist?.href!)}>
+            <Text variant="lg-display">{artistNames ?? NO_ARTIST_NAMES_TEXT}</Text>
+          </TouchableOpacity>
+        )}
         <Text variant="lg-display" color="black60">
           <Text variant="lg-display" color="black60" italic>
             {title}
@@ -125,6 +129,7 @@ const myCollectionArtworkHeaderFragment = graphql`
   fragment MyCollectionArtworkHeader_artwork on Artwork {
     artist {
       href
+      isPersonalArtist
     }
     artistNames
     date
