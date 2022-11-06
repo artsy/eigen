@@ -60,7 +60,7 @@ export const ArtworkAutosuggest: React.FC<ArtworkAutosuggestProps> = ({
             keyword={keyword}
             artistSlug={artistSlug}
             onPress={onResultPress}
-            onSkipPress={onSkipPress}
+            onSkipPress={() => onSkipPress?.(trimmedArtworkQuery)}
             setShowSkipAheadToAddArtworkLink={setShowSkipAheadToAddArtworkLink}
           />
         </Flex>
