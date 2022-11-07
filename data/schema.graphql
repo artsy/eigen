@@ -16552,9 +16552,6 @@ type Video {
   # Returns a full-qualified, embeddable iframe player for the video
   playerUrl: String!
 
-  # The url of the video
-  url: String!
-
   # The width of the video
   width: Int!
 }
