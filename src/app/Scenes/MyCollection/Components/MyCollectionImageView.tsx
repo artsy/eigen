@@ -12,6 +12,7 @@ export interface MyCollectionImageViewProps {
   imageHeight?: number
   aspectRatio?: number
   artworkSlug: string
+  artworkSubmissionId?: string | null
 }
 
 export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
@@ -20,6 +21,7 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
   imageHeight,
   aspectRatio,
   artworkSlug,
+  artworkSubmissionId,
 }) => {
   const color = useColor()
   const [localImage, setLocalImage] = useState<LocalImage | null>(null)
@@ -32,11 +34,19 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
       }
     })
   }, [])
-  const { photos } = GlobalStore.useAppState(
-    (state) => state.artworkSubmission.submission.photosForMyCollection
-  )
+
+  const {
+    photosForMyCollection: { photos },
+    submissionIdForMyCollection,
+  } = GlobalStore.useAppState((state) => state.artworkSubmission.submission)
+
   useEffect(() => {
-    if (photos !== null && photos.length > 0) {
+    if (
+      photos !== null &&
+      photos.length > 0 &&
+      artworkSubmissionId &&
+      submissionIdForMyCollection === artworkSubmissionId
+    ) {
       setLocalImageConsignments(photos[0])
     }
   }, [])
@@ -54,18 +64,6 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
           source={{ uri: localImage.path }}
         />
       )
-    } else if (imageURL) {
-      const targetURL = imageURL.replace(":version", "square")
-      return (
-        <OpaqueImageView
-          testID="Image-Remote"
-          imageURL={targetURL}
-          retryFailedURLs
-          height={imageHeight}
-          width={imageWidth}
-          aspectRatio={aspectRatio}
-        />
-      )
     } else if (localImageConsignments) {
       return (
         <RNImage
@@ -80,6 +78,18 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
           source={{
             uri: localImageConsignments.path,
           }}
+        />
+      )
+    } else if (imageURL) {
+      const targetURL = imageURL.replace(":version", "square")
+      return (
+        <OpaqueImageView
+          testID="Image-Remote"
+          imageURL={targetURL}
+          retryFailedURLs
+          height={imageHeight}
+          width={imageWidth}
+          aspectRatio={aspectRatio}
         />
       )
     } else {
