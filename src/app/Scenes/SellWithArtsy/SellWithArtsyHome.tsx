@@ -40,6 +40,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({ recentlySo
     GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
       photos: [],
     })
+    GlobalStore.actions.artworkSubmission.submission.setSubmissionIdForMyCollection("")
     const route = "/collections/my-collection/artworks/new/submissions/new"
     navigate(route)
   }
@@ -50,6 +51,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({ recentlySo
       GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
         photos: [],
       })
+      GlobalStore.actions.artworkSubmission.submission.setSubmissionIdForMyCollection("")
     }
   }, [])
 

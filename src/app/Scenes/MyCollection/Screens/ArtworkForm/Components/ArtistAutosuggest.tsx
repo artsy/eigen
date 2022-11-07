@@ -4,7 +4,7 @@ import { AutosuggestResult, AutosuggestResults } from "app/Scenes/Search/Autosug
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
-import { sortBy, trim } from "lodash"
+import { sortBy } from "lodash"
 import { Box, Button, Flex, Input, Spacer, Text, Touchable } from "palette"
 import { useLazyLoadQuery } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -23,7 +23,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
   const enableArtworksFromNonArtsyArtists = useFeatureFlag("AREnableArtworksFromNonArtsyArtists")
   const { formik } = useArtworkForm()
   const { artist: artistQuery } = formik.values
-  const trimmedQuery = trim(artistQuery)
+  const trimmedQuery = artistQuery.trimStart()
   const searchProviderValues = useSearchProviderValues(artistQuery)
 
   const queryData = useLazyLoadQuery<ArtistAutosuggestQuery>(

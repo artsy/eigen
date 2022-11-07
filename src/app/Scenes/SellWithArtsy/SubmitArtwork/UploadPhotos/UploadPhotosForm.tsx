@@ -83,6 +83,9 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
     GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
       photos: allPhotos,
     })
+    GlobalStore.actions.artworkSubmission.submission.setSubmissionIdForMyCollection(
+      submission.submissionId
+    )
     GlobalStore.actions.artworkSubmission.submission.setPhotos({
       photos: allPhotos,
     })
@@ -119,6 +122,9 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
       GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
         photos: filteredPhotos,
       })
+      GlobalStore.actions.artworkSubmission.submission.setSubmissionIdForMyCollection(
+        submission.submissionId
+      )
       GlobalStore.actions.artworkSubmission.submission.setPhotos({
         photos: filteredPhotos,
       })

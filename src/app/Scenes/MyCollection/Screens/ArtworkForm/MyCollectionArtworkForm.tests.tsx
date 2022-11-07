@@ -224,6 +224,9 @@ describe("MyCollectionArtworkForm", () => {
             data: mockArtistSearchResult,
           })
         )
+
+        await flushPromiseQueue()
+
         act(() => fireEvent.press(getByTestId("autosuggest-search-result-Banksy")))
 
         await flushPromiseQueue()
@@ -232,14 +235,27 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(getByText("Select an Artwork")).toBeTruthy()
 
+        act(() =>
+          fireEvent.changeText(getByPlaceholderText("Search artworks"), "Test Artwork Title")
+        )
+        act(() =>
+          mockEnvironment.mock.resolveMostRecentOperation({
+            errors: [],
+            data: mockArtworkSearchResult,
+          })
+        )
+
+        await flushPromiseQueue()
+
         act(() => fireEvent.press(getByTestId("my-collection-artwork-form-artwork-skip-button")))
 
         await flushPromiseQueue()
+
         // Edit Details Screen
 
         expect(getByText("Add Details")).toBeTruthy()
 
-        expect(getByTestId("TitleInput").props.value).toBe("")
+        expect(getByTestId("TitleInput").props.value).toBe("Test Artwork Title")
         expect(getByTestId("DateInput").props.value).toBe("")
         expect(getByTestId("MaterialsInput").props.value).toBe("")
         expect(getByTestId("WidthInput").props.value).toBe("")
@@ -531,6 +547,7 @@ describe("MyCollectionArtworkForm", () => {
         await flushPromiseQueue()
 
         // Select Artwork Screen
+
         act(() => fireEvent.changeText(getByPlaceholderText("Search artworks"), "banksy"))
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({

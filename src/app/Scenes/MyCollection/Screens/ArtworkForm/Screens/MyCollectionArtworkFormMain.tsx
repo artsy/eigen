@@ -61,13 +61,14 @@ export const MyCollectionArtworkFormMain: React.FC<
               text: "Discard",
               style: "destructive",
               onPress: () => {
-                GlobalStore.actions.myCollection.artwork.resetFormButKeepArtist()
+                GlobalStore.actions.myCollection.artwork.resetForm()
                 navigation.dispatch(e.data.action)
               },
             },
           ]
         )
       } else {
+        GlobalStore.actions.myCollection.artwork.resetForm()
         navigation.dispatch(e.data.action)
       }
     })
