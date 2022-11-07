@@ -45,7 +45,7 @@ import { ActivityIndicator } from "./Components/ActivityIndicator"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { ArtworkRecommendationsRail } from "./Components/ArtworkRecommendationsRail"
 import { ContentCards } from "./Components/ContentCards"
-import { HomeFeedOnboardingRail } from "./Components/HomeFeedOnboardingRail"
+import { HomeFeedOnboardingRailFragmentContainer } from "./Components/HomeFeedOnboardingRail"
 import { HomeHeader } from "./Components/HomeHeader"
 import { NewWorksForYouRail } from "./Components/NewWorksForYouRail"
 import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
@@ -135,8 +135,8 @@ const Home = (props: Props) => {
     {
       title: "Do More on Artsy",
       type: "homeFeedOnboarding",
-      data: {}, // TODO: add data from MF
-      hidden: !enableMyCollectionHFOnboarding,
+      data: homePageAbove?.onboardingModule, // TODO: add data from MF
+      hidden: enableMyCollectionHFOnboarding || !homePageAbove?.onboardingModule,
     },
     // Below-The-Fold Modules
     {
@@ -226,7 +226,13 @@ const Home = (props: Props) => {
 
             switch (item.type) {
               case "homeFeedOnboarding":
-                return <HomeFeedOnboardingRail title={item.title} mb={MODULE_SEPARATOR_HEIGHT} />
+                return (
+                  <HomeFeedOnboardingRailFragmentContainer
+                    title={item.title}
+                    mb={MODULE_SEPARATOR_HEIGHT}
+                    onboardingModule={item.data}
+                  />
+                )
               case "contentCards":
                 return <ContentCards mb={MODULE_SEPARATOR_HEIGHT} />
               case "articles":
@@ -397,6 +403,9 @@ export const HomeFragmentContainer = createRefetchContainer(
         recommendedArtistsArtistModule: artistModule(key: SUGGESTED) {
           id
           ...ArtistRail_rail
+        }
+        onboardingModule {
+          ...HomeFeedOnboardingRail_onboardingModule
         }
       }
     `,

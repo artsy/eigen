@@ -1,15 +1,19 @@
+import { HomeFeedOnboardingRail_onboardingModule$data } from "__generated__/HomeFeedOnboardingRail_onboardingModule.graphql"
 import { EmbeddedCarousel } from "app/Components/EmbeddedCarousel"
 import { navigate, switchTab } from "app/navigation/navigate"
 import { Button, Flex, Text } from "palette"
 import React from "react"
 import { Image, ImageSourcePropType } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 
 interface HomeFeedOnboardingRailProps {
   title: string
   mb?: number
+  onboardingModule: HomeFeedOnboardingRail_onboardingModule$data
 }
 
 interface HomeFeedOnboardingRailItemProps {
+  shouldShow: boolean
   type: "MyC" | "SWA"
   title: string
   subtitle: string
@@ -17,25 +21,27 @@ interface HomeFeedOnboardingRailItemProps {
   button: string
 }
 
-const onboardingData = [
-  {
-    type: "MyC",
-    title: "Manage your collection",
-    subtitle: "Get powerful market insights about artworks you own.",
-    image: require("images/homefeed-my-collection-inboarding-0.webp"),
-    button: "Explore My Collection",
-  },
-  {
-    type: "SWA",
-    title: "Sell with Artsy ",
-    subtitle: "Get the best sales options for artworks from your collection.",
-    image: require("images/homefeed-my-collection-inboarding-1.webp"),
-    button: "Learn more",
-  },
-]
-
 export const HomeFeedOnboardingRail: React.FC<HomeFeedOnboardingRailProps> = (props) => {
-  const { mb, title } = props
+  const { mb, title, onboardingModule } = props
+
+  const onboardingData = [
+    {
+      shouldShow: onboardingModule.showMyCollectionCard,
+      type: "MyC",
+      title: "Manage your collection",
+      subtitle: "Get powerful market insights about artworks you own.",
+      image: require("images/homefeed-my-collection-inboarding-0.webp"),
+      button: "Explore My Collection",
+    },
+    {
+      shouldShow: onboardingModule.showSWACard,
+      type: "SWA",
+      title: "Sell with Artsy ",
+      subtitle: "Get the best sales options for artworks from your collection.",
+      image: require("images/homefeed-my-collection-inboarding-1.webp"),
+      button: "Learn more",
+    },
+  ]
 
   return (
     <Flex mb={mb} mx={2}>
@@ -44,6 +50,9 @@ export const HomeFeedOnboardingRail: React.FC<HomeFeedOnboardingRailProps> = (pr
         title={title}
         data={onboardingData}
         renderItem={({ item }: { item: HomeFeedOnboardingRailItemProps }) => {
+          if (!item.shouldShow) {
+            return <></>
+          }
           return (
             <Flex width={295}>
               <Image source={item.image} borderTopLeftRadius={4} borderTopRightRadius={4} />
@@ -81,3 +90,15 @@ export const HomeFeedOnboardingRail: React.FC<HomeFeedOnboardingRailProps> = (pr
     </Flex>
   )
 }
+
+export const HomeFeedOnboardingRailFragmentContainer = createFragmentContainer(
+  HomeFeedOnboardingRail,
+  {
+    onboardingModule: graphql`
+      fragment HomeFeedOnboardingRail_onboardingModule on HomePageMyCollectionOnboardingModule {
+        showMyCollectionCard
+        showSWACard
+      }
+    `,
+  }
+)
