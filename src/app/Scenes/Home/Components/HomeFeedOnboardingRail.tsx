@@ -1,10 +1,10 @@
 import { HomeFeedOnboardingRail_onboardingModule$data } from "__generated__/HomeFeedOnboardingRail_onboardingModule.graphql"
 import { EmbeddedCarousel } from "app/Components/EmbeddedCarousel"
-import { navigate, switchTab } from "app/navigation/navigate"
-import { Button, Flex, Text } from "palette"
+import { Flex } from "palette"
 import React from "react"
-import { Image, ImageSourcePropType } from "react-native"
+import { ImageSourcePropType } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { HomeFeedOnboardingCard } from "./HomeFeedOnboardingCard"
 
 interface HomeFeedOnboardingRailProps {
   title: string
@@ -12,7 +12,7 @@ interface HomeFeedOnboardingRailProps {
   onboardingModule: HomeFeedOnboardingRail_onboardingModule$data
 }
 
-interface HomeFeedOnboardingRailItemProps {
+export interface HomeFeedOnboardingRailItemProps {
   shouldShow: boolean
   type: "MyC" | "SWA"
   title: string
@@ -49,43 +49,9 @@ export const HomeFeedOnboardingRail: React.FC<HomeFeedOnboardingRailProps> = (pr
         testID="my-collection-hf-onboadring"
         title={title}
         data={onboardingData}
-        renderItem={({ item }: { item: HomeFeedOnboardingRailItemProps }) => {
-          if (!item.shouldShow) {
-            return <></>
-          }
-          return (
-            <Flex width={295}>
-              <Image source={item.image} borderTopLeftRadius={4} borderTopRightRadius={4} />
-              <Flex
-                p={2}
-                backgroundColor="black100"
-                borderBottomLeftRadius={4}
-                borderBottomRightRadius={4}
-              >
-                <Text variant="md" mb={0.5} color="white100">
-                  {item.title}
-                </Text>
-                <Text variant="xs" mb={2} color="white100">
-                  {item.subtitle}
-                </Text>
-                <Button
-                  size="small"
-                  variant="fillLight"
-                  onPress={() => {
-                    switch (item.type) {
-                      case "MyC":
-                        return navigate("/") // TODO: navigate the the full screen carousel
-                      case "SWA":
-                        return switchTab("sell")
-                    }
-                  }}
-                >
-                  {item.button}
-                </Button>
-              </Flex>
-            </Flex>
-          )
-        }}
+        renderItem={({ item }: { item: HomeFeedOnboardingRailItemProps }) => (
+          <HomeFeedOnboardingCard item={item} />
+        )}
       />
     </Flex>
   )

@@ -136,7 +136,7 @@ const Home = (props: Props) => {
       title: "Do More on Artsy",
       type: "homeFeedOnboarding",
       data: homePageAbove?.onboardingModule, // TODO: add data from MF
-      hidden: enableMyCollectionHFOnboarding || !homePageAbove?.onboardingModule,
+      hidden: !enableMyCollectionHFOnboarding || !homePageAbove?.onboardingModule,
     },
     // Below-The-Fold Modules
     {
