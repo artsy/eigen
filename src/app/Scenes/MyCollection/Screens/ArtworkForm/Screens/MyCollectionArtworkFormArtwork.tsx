@@ -103,7 +103,6 @@ export const MyCollectionArtworkFormArtwork: React.FC<
       <FancyModalHeader
         onLeftButtonPress={route.params.onHeaderBackButtonPress}
         rightButtonText="Skip"
-        rightButtonTestId="my-collection-artwork-form-artwork-skip-button"
         onRightButtonPress={onSkip}
         hideBottomDivider
       >

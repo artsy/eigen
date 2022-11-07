@@ -40,8 +40,11 @@ export const ArtworkAutosuggest: React.FC<ArtworkAutosuggestProps> = ({
         autoCorrect={false}
       />
 
-      {showSkipAheadToAddArtworkLink && (
-        <Touchable onPress={() => onSkipPress?.(trimmedArtworkQuery)}>
+      {!!showSkipAheadToAddArtworkLink && (
+        <Touchable
+          onPress={() => onSkipPress?.(trimmedArtworkQuery)}
+          testID="my-collection-artwork-form-artwork-skip-button"
+        >
           <Flex flexDirection="row" my={1}>
             <Text variant="xs" color="black60">
               Or skip ahead to{" "}
