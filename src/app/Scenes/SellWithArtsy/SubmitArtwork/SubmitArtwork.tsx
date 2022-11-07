@@ -78,6 +78,8 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
 
   const { userID, userEmail } = GlobalStore.useAppState((state) => state.auth)
 
+  // By default the userEmail is the user's email, but they can change that email in the form,
+  // and when they do we want to continue the tracking with the new email
   const [desiredEmail, setDesiredEmail] = useState(userEmail)
 
   const [activeStep, setActiveStep] = useState(0)

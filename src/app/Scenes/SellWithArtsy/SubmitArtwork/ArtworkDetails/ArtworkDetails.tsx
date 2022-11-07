@@ -12,10 +12,6 @@ export const ArtworkDetails: React.FC<{
 }> = ({ handlePress, isLastStep }) => {
   const { artworkDetails } = GlobalStore.useAppState((state) => state.artworkSubmission.submission)
 
-  const handleArtworkDetailsSubmit = (values: ArtworkDetailsFormModel) => {
-    handlePress(values)
-  }
-
   return (
     <Flex flex={3} py={1} mt={1}>
       <BulletedItem>
@@ -35,7 +31,7 @@ export const ArtworkDetails: React.FC<{
       <Spacer mt={4} />
       <Formik<ArtworkDetailsFormModel>
         initialValues={artworkDetails}
-        onSubmit={handleArtworkDetailsSubmit}
+        onSubmit={handlePress}
         validationSchema={artworkDetailsValidationSchema}
         validateOnMount
       >
@@ -45,7 +41,7 @@ export const ArtworkDetails: React.FC<{
             <Spacer mt={2} />
             <CTAButton
               disabled={!isValid}
-              onPress={() => handleArtworkDetailsSubmit(values)}
+              onPress={() => handlePress(values)}
               testID="Submission_ArtworkDetails_Button"
             >
               {isLastStep ? "Submit Artwork" : "Save & Continue"}
