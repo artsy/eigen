@@ -4111,10 +4111,10 @@
     "@styled-system/core" "^5.1.2"
     "@styled-system/css" "^5.1.5"
 
-"@testing-library/jest-native@5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@testing-library/jest-native/-/jest-native-5.0.0.tgz#0c63245578f3301b4e6a471a28ef569f397cb30f"
-  integrity sha512-OrO8Huf0/QBPgiyQCNfXEYgLOalss/TA74CR0X7PR7mrjtrWQiBPGnaSMPYsNT8JRYGCE4D9My0rChJ0rzXS2g==
+"@testing-library/jest-native@5.1.2":
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/@testing-library/jest-native/-/jest-native-5.1.2.tgz#aefabc666f0f18b1ef3c0daf5c58d7cb1ffe41ea"
+  integrity sha512-OPpt4wxn/+rgE4yIyQpiNpSEyE67ggXaom3iv4ly0HM1YhH9rH5eNg8b8N47CuQArJrsjwvvaKor7MqznVSzjw==
   dependencies:
     chalk "^4.1.2"
     jest-diff "^29.0.1"
