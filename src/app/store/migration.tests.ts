@@ -712,3 +712,21 @@ describe("App version Versions.RemoveDeviceId", () => {
     expect(migratedState.native.deviceId).toBe(undefined)
   })
 })
+
+describe("App version Versions.AddSubmissionIdForMyCollection", () => {
+  const migrationToTest = Versions.AddSubmissionIdForMyCollection
+
+  it("removes deviceId", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.artworkSubmission.submission.submissionIdForMyCollection).toEqual("")
+  })
+})
