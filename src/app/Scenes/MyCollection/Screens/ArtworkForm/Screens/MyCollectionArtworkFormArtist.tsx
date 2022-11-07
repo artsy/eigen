@@ -4,7 +4,8 @@ import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
 import { AutosuggestResultsPlaceholder } from "app/Scenes/Search/components/placeholders/AutosuggestResultsPlaceholder"
 import { GlobalStore } from "app/store/GlobalStore"
-import { ProvidePlaceholderContext } from "app/utils/placeholders"
+import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
+import { Spacer } from "palette"
 import { Suspense } from "react"
 import { useTracking } from "react-tracking"
 import { ScreenMargin } from "../../../Components/ScreenMargin"
@@ -52,7 +53,7 @@ export const MyCollectionArtworkFormArtist: React.FC<
         Select an Artist
       </FancyModalHeader>
       <ScreenMargin>
-        <Suspense fallback={() => <Placeholder />}>
+        <Suspense fallback={<Placeholder />}>
           <ArtistAutosuggest onResultPress={handleResultPress} onSkipPress={handleSkipPress} />
         </Suspense>
       </ScreenMargin>
@@ -71,6 +72,12 @@ const tracks = {
 
 const Placeholder: React.FC = () => (
   <ProvidePlaceholderContext>
+    <PlaceholderBox height={50} />
+    <Spacer mt={2} />
+    <PlaceholderText width={250} />
+    <Spacer mt={4} />
+    <PlaceholderText width={180} />
+    <Spacer mb={2} />
     <AutosuggestResultsPlaceholder />
   </ProvidePlaceholderContext>
 )
