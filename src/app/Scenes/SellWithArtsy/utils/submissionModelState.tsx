@@ -17,6 +17,7 @@ interface ConsignmentsSubmissionUtmParams {
 
 export interface ArtworkSubmissionModel {
   submissionId: string
+  submissionIdForMyCollection: string
   setSubmissionId: Action<ArtworkSubmissionModel, string>
   artworkDetails: ArtworkDetailsFormModel
   dirtyArtworkDetailsValues: ArtworkDetailsFormModel
@@ -28,6 +29,7 @@ export interface ArtworkSubmissionModel {
   photosForMyCollection: PhotosFormModel
   setPhotos: Action<ArtworkSubmissionModel, PhotosFormModel>
   setPhotosForMyCollection: Action<ArtworkSubmissionModel, PhotosFormModel>
+  setSubmissionIdForMyCollection: Action<ArtworkSubmissionModel, string>
   setUtmParams: Action<ArtworkSubmissionModel, ConsignmentsSubmissionUtmParams>
   resetSessionState: Action<ArtworkSubmissionModel>
 }
@@ -39,12 +41,16 @@ export interface SubmissionModel {
 export const getSubmissionModel = (): SubmissionModel => ({
   submission: {
     submissionId: "",
+    submissionIdForMyCollection: "",
     artworkDetails: artworkDetailsEmptyInitialValues,
     dirtyArtworkDetailsValues: artworkDetailsEmptyInitialValues,
     photos: photosEmptyInitialValues,
     photosForMyCollection: photosEmptyInitialValues,
     setPhotosForMyCollection: action((state, photos) => {
       state.photosForMyCollection = photos
+    }),
+    setSubmissionIdForMyCollection: action((state, submissionId) => {
+      state.submissionIdForMyCollection = submissionId
     }),
     setPhotos: action((state, photos) => {
       state.photos = photos
