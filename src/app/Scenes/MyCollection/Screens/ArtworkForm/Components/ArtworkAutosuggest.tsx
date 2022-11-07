@@ -1,5 +1,4 @@
 import SearchIcon from "app/Icons/SearchIcon"
-import { trim } from "lodash"
 import { Flex, Input, Text, Touchable } from "palette"
 import React, { useState } from "react"
 import { useArtworkForm } from "../Form/useArtworkForm"
@@ -21,7 +20,7 @@ export const ArtworkAutosuggest: React.FC<ArtworkAutosuggestProps> = ({
   const artistSlug = artistSearchResult?.slug || ""
 
   const [artworkQuery, setArtworkQuery] = useState("")
-  const trimmedArtworkQuery = trim(artworkQuery)
+  const trimmedArtworkQuery = artworkQuery.trimStart()
   // In order to get results even before the user types anything, we need to add the artist slug to the query.
   const keyword = artworkQuery.length < 2 ? `${artistSlug} ${artworkQuery}` : artworkQuery
 
