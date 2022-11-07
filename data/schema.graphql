@@ -16547,6 +16547,7 @@ union VanityURLEntityType = Fair | Partner
 type Video {
   # The height of the video
   height: Int!
+  id: ID!
 
   # The url of the video
   url: String!

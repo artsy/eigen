@@ -132,6 +132,7 @@ export const MyCollectionArtworkScreenQuery = graphql`
       }
       artist {
         internalID
+        initials
         formattedNationalityAndBirthday
         auctionResultsConnection(first: 3, sort: DATE_DESC) {
           totalCount

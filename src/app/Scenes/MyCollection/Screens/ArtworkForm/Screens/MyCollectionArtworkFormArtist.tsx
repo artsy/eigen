@@ -2,7 +2,10 @@ import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { StackScreenProps } from "@react-navigation/stack"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
-import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { AutosuggestResultsPlaceholder } from "app/Scenes/Search/components/placeholders/AutosuggestResultsPlaceholder"
+import { GlobalStore } from "app/store/GlobalStore"
+import { ProvidePlaceholderContext } from "app/utils/placeholders"
+import { Suspense } from "react"
 import { useTracking } from "react-tracking"
 import { ScreenMargin } from "../../../Components/ScreenMargin"
 import { ArtistAutosuggest } from "../Components/ArtistAutosuggest"
@@ -11,7 +14,6 @@ import { ArtworkFormScreen } from "../MyCollectionArtworkForm"
 export const MyCollectionArtworkFormArtist: React.FC<
   StackScreenProps<ArtworkFormScreen, "ArtworkFormArtist">
 > = ({ route, navigation }) => {
-  const enableArtworksFromNonArtsyArtists = useFeatureFlag("AREnableArtworksFromNonArtsyArtists")
   const tracking = useTracking()
 
   const preferredCurrency = GlobalStore.useAppState((state) => state.userPrefs.currency)
@@ -19,13 +21,24 @@ export const MyCollectionArtworkFormArtist: React.FC<
 
   const handleResultPress = async (result: AutosuggestResult) => {
     tracking.trackEvent(tracks.tappedArtist({ artistSlug: result.slug, artistId: result.slug }))
+
+    GlobalStore.actions.myCollection.artwork.updateFormValues({
+      metric: preferredMetric,
+      pricePaidCurrency: preferredCurrency,
+    })
     await GlobalStore.actions.myCollection.artwork.setArtistSearchResult(result)
-    navigation.navigate("ArtworkFormArtwork", { ...route.params })
+
+    if (result.isPersonalArtist) {
+      navigation.navigate("ArtworkFormMain", { ...route.params })
+    } else {
+      navigation.navigate("ArtworkFormArtwork", { ...route.params })
+    }
   }
 
-  const handleSkipPress = async () => {
+  const handleSkipPress = async (artistDisplayName: string) => {
     requestAnimationFrame(() => {
       GlobalStore.actions.myCollection.artwork.updateFormValues({
+        artistDisplayName,
         metric: preferredMetric,
         pricePaidCurrency: preferredCurrency,
       })
@@ -35,17 +48,13 @@ export const MyCollectionArtworkFormArtist: React.FC<
 
   return (
     <>
-      <FancyModalHeader
-        hideBottomDivider
-        onLeftButtonPress={route.params.onHeaderBackButtonPress}
-        rightButtonText="Skip"
-        rightButtonTestId="my-collection-artwork-form-artist-skip-button"
-        onRightButtonPress={enableArtworksFromNonArtsyArtists ? handleSkipPress : undefined}
-      >
+      <FancyModalHeader hideBottomDivider onLeftButtonPress={route.params.onHeaderBackButtonPress}>
         Select an Artist
       </FancyModalHeader>
       <ScreenMargin>
-        <ArtistAutosuggest onResultPress={handleResultPress} onSkipPress={handleSkipPress} />
+        <Suspense fallback={() => <Placeholder />}>
+          <ArtistAutosuggest onResultPress={handleResultPress} onSkipPress={handleSkipPress} />
+        </Suspense>
       </ScreenMargin>
     </>
   )
@@ -59,3 +68,9 @@ const tracks = {
     context_screen_owner_slug: artistSlug,
   }),
 }
+
+const Placeholder: React.FC = () => (
+  <ProvidePlaceholderContext>
+    <AutosuggestResultsPlaceholder />
+  </ProvidePlaceholderContext>
+)

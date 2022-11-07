@@ -34,7 +34,7 @@ export const ActivityIndicator: React.FC<ActivityIndicatorProps> = ({ hasNotific
             right: space(1),
           }}
         >
-          <BellIcon />
+          <BellIcon height={24} width={24} />
 
           {!!hasNotifications && (
             <Box

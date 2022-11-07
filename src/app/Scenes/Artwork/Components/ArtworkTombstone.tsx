@@ -1,10 +1,11 @@
 import { ArtworkTombstone_artwork$data } from "__generated__/ArtworkTombstone_artwork.graphql"
 import { navigate } from "app/navigation/navigate"
-import { Schema, track } from "app/utils/track"
+import { Schema } from "app/utils/track"
 import { Box, comma, Flex, Spacer, Text } from "palette"
-import React from "react"
+import React, { useState } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 import { CascadingEndTimesBanner } from "./CascadingEndTimesBanner"
 
 type Artist = NonNullable<NonNullable<ArtworkTombstone_artwork$data["artists"]>[0]>
@@ -18,39 +19,30 @@ export interface ArtworkTombstoneState {
   showAuthenticityCertificateModal: boolean
 }
 
-@track()
-export class ArtworkTombstone extends React.Component<
-  ArtworkTombstoneProps,
-  ArtworkTombstoneState
-> {
-  state = {
-    showingMoreArtists: false,
-    showAuthenticityCertificateModal: false,
-  }
+export const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork }) => {
+  const { trackEvent } = useTracking()
+  const [showingMoreArtists, setShowingMoreArtists] = useState(false)
 
-  @track(() => ({
-    action_name: Schema.ActionNames.ArtistName,
-    action_type: Schema.ActionTypes.Tap,
-    context_module: Schema.ContextModules.ArtworkTombstone,
-  }))
-  handleArtistTap(href: string) {
+  const handleArtistTap = (href: string) => {
+    trackEvent({
+      action_name: Schema.ActionNames.ArtistName,
+      action_type: Schema.ActionTypes.Tap,
+      context_module: Schema.ContextModules.ArtworkTombstone,
+    })
     navigate(href)
   }
 
-  showMoreArtists = () => {
-    this.setState({
-      ...this.state,
-      showingMoreArtists: !this.state.showingMoreArtists,
-    })
+  const showMoreArtists = () => {
+    setShowingMoreArtists((current) => !current)
   }
 
-  renderSingleArtist(artist: Artist) {
-    return <Text variant="lg-display">{this.renderArtistName(artist.name!, artist.href)}</Text>
+  const renderSingleArtist = (artist: Artist) => {
+    return <Text variant="lg-display">{renderArtistName(artist.name!, artist.href)}</Text>
   }
 
-  renderArtistName(artistName: string, href: string | null) {
+  const renderArtistName = (artistName: string, href: string | null) => {
     return href ? (
-      <TouchableWithoutFeedback onPress={this.handleArtistTap.bind(this, href)}>
+      <TouchableWithoutFeedback onPress={() => handleArtistTap(href)}>
         <Text variant="lg-display">{artistName}</Text>
       </TouchableWithoutFeedback>
     ) : (
@@ -58,14 +50,14 @@ export class ArtworkTombstone extends React.Component<
     )
   }
 
-  renderMultipleArtists = () => {
-    const artists = this.props.artwork.artists ?? []
-    const truncatedArtists = !this.state.showingMoreArtists ? artists.slice(0, 3) : artists
+  const renderMultipleArtists = () => {
+    const artists = artwork.artists ?? []
+    const truncatedArtists = !showingMoreArtists ? artists.slice(0, 3) : artists
     const artistNames = truncatedArtists.map((artist, index) => {
       const artistNameWithComma = index !== artists.length - 1 ? artist!.name + ", " : artist!.name!
       return (
         <React.Fragment key={artist!.href}>
-          {this.renderArtistName(artistNameWithComma, artist!.href)}
+          {renderArtistName(artistNameWithComma, artist!.href)}
         </React.Fragment>
       )
     })
@@ -74,11 +66,9 @@ export class ArtworkTombstone extends React.Component<
       <Flex flexDirection="row" flexWrap="wrap">
         <Text variant="lg-display">
           {artistNames}
-          {!this.state.showingMoreArtists && artists! /* STRICTNESS_MIGRATION */.length > 3 && (
-            <TouchableWithoutFeedback onPress={this.showMoreArtists}>
-              <Text variant="lg-display">
-                {artists! /* STRICTNESS_MIGRATION */.length - 3} more
-              </Text>
+          {!showingMoreArtists && artists!.length > 3 && (
+            <TouchableWithoutFeedback onPress={showMoreArtists}>
+              <Text variant="lg-display">{artists!.length - 3} more</Text>
             </TouchableWithoutFeedback>
           )}
         </Text>
@@ -86,9 +76,7 @@ export class ArtworkTombstone extends React.Component<
     )
   }
 
-  getArtworkTitleAndMaybeDate = () => {
-    const { artwork } = this.props
-
+  const getArtworkTitleAndMaybeDate = () => {
     if (artwork.date) {
       return `${artwork.title!}${comma} ${artwork.date}`
     }
@@ -96,63 +84,60 @@ export class ArtworkTombstone extends React.Component<
     return artwork.title!
   }
 
-  render() {
-    const { artwork } = this.props
-    const displayAuctionLotLabel =
-      artwork.isInAuction &&
-      artwork.saleArtwork &&
-      artwork.saleArtwork.lotLabel &&
-      artwork.sale &&
-      !artwork.sale.isClosed
+  const displayAuctionLotLabel =
+    artwork.isInAuction &&
+    artwork.saleArtwork &&
+    artwork.saleArtwork.lotLabel &&
+    artwork.sale &&
+    !artwork.sale.isClosed
 
-    return (
-      <Box textAlign="left">
-        <Flex flexDirection="row" flexWrap="wrap">
-          {artwork.artists! /* STRICTNESS_MIGRATION */.length === 1
-            ? this.renderSingleArtist(artwork!.artists![0]!)
-            : this.renderMultipleArtists()}
-          {!!(artwork.artists! /* STRICTNESS_MIGRATION */.length === 0 && artwork.culturalMaker) &&
-            this.renderArtistName(artwork.culturalMaker, null)}
-        </Flex>
-        {!!displayAuctionLotLabel && (
-          <>
-            <Spacer mb={1} />
-            <Text variant="sm" color="black100" weight="medium">
-              Lot {artwork.saleArtwork.lotLabel}
-            </Text>
-          </>
-        )}
-        <Flex flexDirection="row" flexWrap="wrap">
-          <Text variant="lg-display" color="black60">
-            {this.getArtworkTitleAndMaybeDate()}
+  return (
+    <Box textAlign="left">
+      {!!displayAuctionLotLabel && (
+        <>
+          <Spacer mb={1} />
+          <Text variant="md" color="black100">
+            Lot {artwork.saleArtwork.lotLabel}
           </Text>
-        </Flex>
-        {!!artwork.isInAuction && !artwork.sale?.isClosed && (
-          <>
-            {!!artwork.sale?.cascadingEndTimeIntervalMinutes && (
-              <Flex my={2} mx={-2}>
-                <CascadingEndTimesBanner
-                  cascadingEndTimeInterval={artwork.sale.cascadingEndTimeIntervalMinutes}
-                  extendedBiddingIntervalMinutes={artwork.sale.extendedBiddingIntervalMinutes}
-                />
-              </Flex>
-            )}
-            <Spacer mb={1} />
-            {!!artwork.partner && (
-              <Text variant="sm" color="black100" weight="medium">
-                {artwork.partner.name}
-              </Text>
-            )}
-            {!!artwork.saleArtwork && !!artwork.saleArtwork.estimate && (
-              <Text variant="sm" color="black60">
-                Estimated value: {artwork.saleArtwork.estimate}
-              </Text>
-            )}
-          </>
-        )}
-      </Box>
-    )
-  }
+        </>
+      )}
+      <Flex flexDirection="row" flexWrap="wrap">
+        {artwork.artists?.length === 1
+          ? renderSingleArtist(artwork!.artists![0]!)
+          : renderMultipleArtists()}
+        {!!(artwork.artists?.length === 0 && artwork.culturalMaker) &&
+          renderArtistName(artwork.culturalMaker, null)}
+      </Flex>
+      <Flex flexDirection="row" flexWrap="wrap">
+        <Text variant="lg-display" color="black60">
+          {getArtworkTitleAndMaybeDate()}
+        </Text>
+      </Flex>
+      {!!artwork.isInAuction && !artwork.sale?.isClosed && (
+        <>
+          {!!artwork.sale?.cascadingEndTimeIntervalMinutes && (
+            <Flex my={2} mx={-2}>
+              <CascadingEndTimesBanner
+                cascadingEndTimeInterval={artwork.sale.cascadingEndTimeIntervalMinutes}
+                extendedBiddingIntervalMinutes={artwork.sale.extendedBiddingIntervalMinutes}
+              />
+            </Flex>
+          )}
+          <Spacer mb={1} />
+          {!!artwork.partner && (
+            <Text variant="sm" color="black100" weight="medium">
+              {artwork.partner.name}
+            </Text>
+          )}
+          {!!artwork.saleArtwork && !!artwork.saleArtwork.estimate && (
+            <Text variant="sm" color="black60">
+              Estimated value: {artwork.saleArtwork.estimate}
+            </Text>
+          )}
+        </>
+      )}
+    </Box>
+  )
 }
 
 export const ArtworkTombstoneFragmentContainer = createFragmentContainer(ArtworkTombstone, {

@@ -10,7 +10,6 @@ import {
 import { TimeOffsetProvider } from "app/Components/Bidding/Context/TimeOffsetProvider"
 import { StateManager as CountdownStateManager } from "app/Components/Countdown"
 import { CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
 import { useArtworkBidding } from "app/Websockets/auctions/useArtworkBidding"
@@ -23,7 +22,6 @@ import { ArtworkEditionSetInformationFragmentContainer as ArtworkEditionSetInfor
 import { ArtworkExtraLinksFragmentContainer as ArtworkExtraLinks } from "./ArtworkExtraLinks"
 import { AuctionPriceFragmentContainer as AuctionPrice } from "./AuctionPrice"
 import { CommercialButtonsFragmentContainer as CommercialButtons } from "./CommercialButtons/CommercialButtons"
-import { CommercialPartnerInformationFragmentContainer as CommercialPartnerInformation } from "./CommercialPartnerInformation"
 import { CreateArtworkAlertButtonsSectionFragmentContainer as CreateArtworkAlertButtonsSection } from "./CreateArtworkAlertButtonsSection"
 
 interface CommercialInformationProps extends CountdownTimerProps {
@@ -40,9 +38,8 @@ interface CommercialInformationProps extends CountdownTimerProps {
 // On Android, the useArtworkBidding fails to receive data, bringing the
 // ContextProvider down closer to this component fixed it. [Android Only]
 const CommercialInformationWebsocketWrapper: React.FC<CommercialInformationProps> = (props) => {
-  const cascadingEndTimeFeatureEnabled = useFeatureFlag("AREnableCascadingEndTimerLotPage")
-  const websocketEnabled =
-    cascadingEndTimeFeatureEnabled && !!props.artwork.sale?.cascadingEndTimeIntervalMinutes
+  const websocketEnabled = !!props.artwork.sale?.cascadingEndTimeIntervalMinutes
+
   return (
     <AuctionWebsocketContextProvider
       channelInfo={{
@@ -205,12 +202,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
       newSaleMessage = "For sale"
     }
 
-    return (
-      <>
-        <SaleAvailability saleMessage={newSaleMessage ? newSaleMessage : saleMessage} />
-        {!artworkIsInClosedAuction && <CommercialPartnerInformation artwork={artwork} />}
-      </>
-    )
+    return <SaleAvailability saleMessage={newSaleMessage ? newSaleMessage : saleMessage} />
   }
 
   const renderPriceInformation = () => {
@@ -347,7 +339,6 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(
         }
 
         ...CommercialButtons_artwork
-        ...CommercialPartnerInformation_artwork
         ...ArtworkExtraLinks_artwork
         ...AuctionPrice_artwork
         ...CreateArtworkAlertButtonsSection_artwork

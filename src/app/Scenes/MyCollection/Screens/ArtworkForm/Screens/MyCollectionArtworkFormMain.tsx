@@ -141,6 +141,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 accessibilityLabel="Title"
                 value={formikValues.title}
               />
+              <CategoryPicker />
               <Input
                 title="Year"
                 keyboardType="number-pad"
@@ -151,7 +152,6 @@ export const MyCollectionArtworkFormMain: React.FC<
                 accessibilityLabel="Year"
                 value={formikValues.date}
               />
-              <CategoryPicker />
               <Input
                 title="Materials"
                 placeholder="Materials"

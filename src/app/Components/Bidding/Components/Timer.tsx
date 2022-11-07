@@ -1,7 +1,6 @@
 import { StateManager as CountdownStateManager } from "app/Components/Countdown"
 import { CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
 import { ModernTicker, SimpleTicker } from "app/Components/Countdown/Ticker"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { DateTime } from "luxon"
 import moment from "moment-timezone"
 import { Flex, Spacer, Text } from "palette"
@@ -161,30 +160,26 @@ export const Countdown: React.FC<CountdownProps> = ({
   extendedBiddingPeriodMinutes,
   biddingEndAt,
 }) => {
-  const cascadingEndTimeFeatureEnabled = useFeatureFlag("AREnableCascadingEndTimerLotPage")
-
   return (
     <Flex alignItems="center" accessibilityLabel="Countdown">
-      {cascadingEndTimeFeatureEnabled && cascadingEndTimeIntervalMinutes ? (
+      {cascadingEndTimeIntervalMinutes ? (
         <ModernTicker duration={duration} hasStarted={hasStarted} isExtended={hasBeenExtended} />
       ) : (
         <SimpleTicker duration={duration} separator="  " variant="sm-display" weight="medium" />
       )}
-      {!!extendedBiddingPeriodMinutes &&
-        !!extendedBiddingIntervalMinutes &&
-        !!cascadingEndTimeFeatureEnabled && (
-          <ArtworkAuctionProgressBar
-            startAt={startAt}
-            extendedBiddingPeriodMinutes={extendedBiddingPeriodMinutes}
-            extendedBiddingIntervalMinutes={extendedBiddingIntervalMinutes}
-            biddingEndAt={biddingEndAt}
-            hasBeenExtended={!!hasBeenExtended}
-          />
-        )}
+      {!!extendedBiddingPeriodMinutes && !!extendedBiddingIntervalMinutes && (
+        <ArtworkAuctionProgressBar
+          startAt={startAt}
+          extendedBiddingPeriodMinutes={extendedBiddingPeriodMinutes}
+          extendedBiddingIntervalMinutes={extendedBiddingIntervalMinutes}
+          biddingEndAt={biddingEndAt}
+          hasBeenExtended={!!hasBeenExtended}
+        />
+      )}
       <Text variant="xs" weight="medium" color="black60">
         {label}
       </Text>
-      {!!extendedBiddingPeriodMinutes && !!cascadingEndTimeFeatureEnabled && (
+      {!!extendedBiddingPeriodMinutes && (
         <>
           <Spacer mt={1} />
           <Text variant="xs" color="black60" textAlign="center">

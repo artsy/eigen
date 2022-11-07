@@ -13,6 +13,7 @@ export type OrderState = Exclude<
   "ABANDONED" | "PENDING" | "%future added value"
 >
 export type ShipmentStatus =
+  | "DRAFT"
   | "PENDING"
   | "CONFIRMED"
   | "COLLECTED"
@@ -44,6 +45,7 @@ const orderStatusesMap = {
   REFUNDED: ORDER_STATUSES.Refunded,
   PENDING: SHIPMENT_STATUSES.Processing,
   CONFIRMED: SHIPMENT_STATUSES.Processing,
+  DRAFT: ORDER_STATUSES.Pending,
   PROCESSING_APPROVAL: ORDER_STATUSES.PaymentProcessing,
   COLLECTED: SHIPMENT_STATUSES.InTransit,
   IN_TRANSIT: SHIPMENT_STATUSES.InTransit,

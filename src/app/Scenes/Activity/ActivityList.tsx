@@ -7,6 +7,7 @@ import {
   StickyTabPageFlatListContext,
   StickyTabSection,
 } from "app/Components/StickyTabPage/StickyTabPageFlatList"
+import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractNodes } from "app/utils/extractNodes"
 import { Flex, Separator, Spinner } from "palette"
 import { useContext, useEffect, useState } from "react"
@@ -78,7 +79,21 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
   }, [hasUnreadNotifications])
 
   if (notifications.length === 0) {
-    return <ActivityEmptyView type={type} />
+    return (
+      <StickyTabPageScrollView
+        contentContainerStyle={{
+          // Extend the container flex when there are no artworks for accurate vertical centering
+          flexGrow: 1,
+          justifyContent: "center",
+          height: "100%",
+        }}
+        refreshControl={
+          <StickTabPageRefreshControl onRefresh={handleRefresh} refreshing={refreshing} />
+        }
+      >
+        <ActivityEmptyView type={type} />
+      </StickyTabPageScrollView>
+    )
   }
 
   return (
