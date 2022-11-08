@@ -649,4 +649,61 @@ describe("Artwork", () => {
       expect(screen.queryByText("Be covered by the Artsy Guarantee")).toBeNull()
     })
   })
+
+  describe("Consigments", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        ARArtworkRedesingPhase2: true,
+      })
+    })
+
+    it("shows consign link if at least 1 artist is consignable", async () => {
+      renderWithWrappers(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery")
+      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+      mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+        Artwork: () => ({
+          isForSale: true,
+          artists: [
+            {
+              name: "Santa",
+              isConsignable: true,
+            },
+          ],
+        }),
+      })
+      await flushPromiseQueue()
+
+      expect(screen.queryByText(/Consign with Artsy/)).toBeTruthy()
+    })
+
+    it("doesn't render section", async () => {
+      renderWithWrappers(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        Artwork: () => ({
+          isAcquireable: false,
+          isOfferable: false,
+          isInAuction: false,
+          sale: null,
+        }),
+      })
+      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+      mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+        Artwork: () => ({
+          isForSale: false,
+          artists: [
+            {
+              name: "Santa",
+              isConsignable: false,
+            },
+          ],
+        }),
+      })
+      await flushPromiseQueue()
+
+      expect(screen.queryByText(/Consign with Artsy/)).toBeNull()
+    })
+  })
 })
