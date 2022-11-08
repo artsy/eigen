@@ -165,6 +165,9 @@ export const InboxContainer = createRefetchContainer(
             sale {
               internalID
             }
+            saleArtworks {
+              internalID
+            }
           }
         }
       }
