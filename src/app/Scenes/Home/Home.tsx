@@ -135,7 +135,7 @@ const Home = (props: Props) => {
     {
       title: "Do More on Artsy",
       type: "homeFeedOnboarding",
-      data: homePageAbove?.onboardingModule, // TODO: add data from MF
+      data: homePageAbove?.onboardingModule,
       hidden: !enableMyCollectionHFOnboarding || !homePageAbove?.onboardingModule,
     },
     // Below-The-Fold Modules
@@ -229,8 +229,8 @@ const Home = (props: Props) => {
                 return (
                   <HomeFeedOnboardingRailFragmentContainer
                     title={item.title}
-                    mb={MODULE_SEPARATOR_HEIGHT}
                     onboardingModule={item.data}
+                    mb={MODULE_SEPARATOR_HEIGHT}
                   />
                 )
               case "contentCards":

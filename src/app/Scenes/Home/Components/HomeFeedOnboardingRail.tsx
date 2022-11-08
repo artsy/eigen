@@ -43,15 +43,20 @@ export const HomeFeedOnboardingRail: React.FC<HomeFeedOnboardingRailProps> = (pr
     },
   ]
 
+  const cardsToShow = onboardingData.filter((item) => item.shouldShow)
+  if (!cardsToShow.length) {
+    return <></>
+  }
+
   return (
     <Flex mb={mb} mx={2}>
       <EmbeddedCarousel
         testID="my-collection-hf-onboadring"
         title={title}
         data={onboardingData}
-        renderItem={({ item }: { item: HomeFeedOnboardingRailItemProps }) => (
-          <HomeFeedOnboardingCard item={item} />
-        )}
+        renderItem={({ item }: { item: HomeFeedOnboardingRailItemProps }) => {
+          return <HomeFeedOnboardingCard item={item} />
+        }}
       />
     </Flex>
   )
