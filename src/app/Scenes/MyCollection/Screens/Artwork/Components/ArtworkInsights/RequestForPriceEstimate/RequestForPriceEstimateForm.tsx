@@ -1,5 +1,6 @@
+import { navigate } from "app/navigation/navigate"
 import { useFormikContext } from "formik"
-import { Box, Button, Input, PhoneInput, Spacer, Text } from "palette"
+import { Box, Button, Input, LinkText, PhoneInput, Spacer, Text } from "palette"
 import { Platform, ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
@@ -16,10 +17,7 @@ export const RequestForPriceEstimateForm = () => {
         <Box pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px={2}>
           <Box my={3}>
             <Text variant="lg-display" mb={2}>
-              Contact Information
-            </Text>
-            <Text variant="sm-display" color="black60" mb={4}>
-              We will only use this to contact you about this price estimate
+              Let us know how to reach you
             </Text>
             <Input
               testID="request-price-estimate-name-input"
@@ -78,7 +76,13 @@ export const RequestForPriceEstimateForm = () => {
               accessibilityLabel="Phone number"
               shouldDisplayLocalError={false}
             />
-            <Spacer m={4} />
+            <Spacer mb={5} />
+            <Text variant="sm" color="black60" mb={2}>
+              By continuing, you agree to{" "}
+              <LinkText onPress={() => navigate("/privacy", { modal: true })}>
+                Artsy’s Privacy Policy.
+              </LinkText>{" "}
+            </Text>
             <Button
               block
               onPress={handleSubmit}
