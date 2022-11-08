@@ -265,6 +265,7 @@ describe("Artwork", () => {
         }
       },
     })
+    mockMostRecentOperation("RequestConditionReportQuery")
     await flushPromiseQueue()
     expect(tree.root.findAllByType(ArtworkDetails)).toHaveLength(1)
   })
