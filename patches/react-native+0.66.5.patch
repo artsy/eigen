@@ -56,7 +56,7 @@ index b4dab8e..2195f8e 100644
  #import "RCTSurfaceView.h"
  #import "RCTTouchEvent.h"
  #import "RCTUIManager.h"
-@@ -112,6 +113,16 @@ RCT_NOT_IMPLEMENTED(-(instancetype)initWithTarget : (id)target action : (SEL)act
+@@ -112,6 +113,16 @@ - (void)_recordNewTouches:(NSSet<UITouch *> *)touches
        continue;
      }
  
