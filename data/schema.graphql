@@ -1518,6 +1518,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     first: Int
     isReference: Boolean
     last: Int
+    page: Int
 
     # The number of PartnerShows to return
     size: Int
@@ -16549,8 +16550,8 @@ type Video {
   height: Int!
   id: ID!
 
-  # The url of the video
-  url: String!
+  # Returns a full-qualified url that can be embedded in an iframe player
+  playerUrl: String!
 
   # The width of the video
   width: Int!
