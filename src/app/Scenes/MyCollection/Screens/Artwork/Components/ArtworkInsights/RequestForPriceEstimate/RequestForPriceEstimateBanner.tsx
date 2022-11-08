@@ -38,6 +38,9 @@ export const RequestForPriceEstimateBanner: React.FC<RequestForPriceEstimateProp
     (enableRemotePriceEstimateRequestedLogic && artwork.hasPriceEstimateRequest) ||
     !!localRequestedPriceEstimates[artwork.internalID]
 
+  const isP1Artist = artwork.artist?.targetSupply?.isP1
+  const isAlreadySubmitted = artwork.submissionId
+
   if (priceEstimateRequested) {
     return (
       <Box>
@@ -51,6 +54,10 @@ export const RequestForPriceEstimateBanner: React.FC<RequestForPriceEstimateProp
         <Separator mt={2} mb={3} borderColor="black10" />
       </Box>
     )
+  }
+
+  if (!isP1Artist || isAlreadySubmitted) {
+    return null
   }
 
   return (
@@ -104,8 +111,14 @@ export const RequestForPriceEstimateBanner: React.FC<RequestForPriceEstimateProp
 
 const artworkFragment = graphql`
   fragment RequestForPriceEstimateBanner_artwork on Artwork {
+    artist {
+      targetSupply {
+        isP1
+      }
+    }
     internalID
     slug
+    submissionId
     hasPriceEstimateRequest
   }
 `

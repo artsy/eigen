@@ -64,6 +64,16 @@ describe("RequestForPriceEstimateBanner", () => {
   it("renders without throwing an error", () => {
     const { getByTestId } = renderWithWrappers(<TestRenderer />)
     resolveData({
+      Artwork: () => ({
+        internalID: "some-internal-id",
+        submissionId: null,
+        hasPriceEstimateRequest: false,
+        artist: {
+          targetSupply: {
+            isP1: true,
+          },
+        },
+      }),
       MarketPriceInsights: () => ({
         demandRank: 7.5,
       }),
@@ -119,6 +129,13 @@ describe("RequestForPriceEstimateBanner", () => {
       Artwork: () => ({
         internalID: "artwork-id",
         slug: "artwork-slug",
+        submissionId: null,
+        hasPriceEstimateRequest: false,
+        artist: {
+          targetSupply: {
+            isP1: true,
+          },
+        },
       }),
       MarketPriceInsights: () => ({
         demandRank: 7.5,

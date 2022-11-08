@@ -452,10 +452,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     // GOTCHA: Don't copy this kind of feature flag code if you're working in a functional component. use `useFeatureFlag` instead
     const enablePriceTransparency = unsafe_getFeatureFlag("AROptionsPriceTransparency")
 
-    const cascadingEndTimeFeatureEnabled = unsafe_getFeatureFlag("AREnableCascadingEndTimerLotPage")
-
-    const websocketEnabled =
-      !!cascadingEndTimeFeatureEnabled && !!sale?.cascadingEndTimeIntervalMinutes
+    const websocketEnabled = !!sale?.cascadingEndTimeIntervalMinutes
 
     return (
       <AuctionWebsocketContextProvider

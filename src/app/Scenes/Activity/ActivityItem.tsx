@@ -17,12 +17,12 @@ interface ActivityItemProps {
 }
 
 const UNREAD_INDICATOR_SIZE = 8
+const ARTWORK_IMAGE_SIZE = 55
 
 export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
   const tracking = useTracking()
   const item = useFragment(activityItemFragment, props.item)
   const artworks = extractNodes(item.artworksConnection)
-  const remainingArtworksCount = (item.artworksConnection?.totalCount ?? 0) - 4
 
   const getNotificationType = () => {
     if (item.notificationType === "ARTWORK_ALERT") {
@@ -82,17 +82,19 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
           <Flex flexDirection="row" alignItems="center">
             {artworks.map((artwork) => {
               return (
-                <Flex key={artwork.internalID} mr={1} accessibilityLabel="Activity Artwork Image">
-                  <OpaqueImageView imageURL={artwork.image?.preview?.src} width={58} height={58} />
+                <Flex
+                  key={`${item.internalID}-${artwork.internalID}`}
+                  mr={1}
+                  accessibilityLabel="Activity Artwork Image"
+                >
+                  <OpaqueImageView
+                    imageURL={artwork.image?.preview?.src}
+                    width={ARTWORK_IMAGE_SIZE}
+                    height={ARTWORK_IMAGE_SIZE}
+                  />
                 </Flex>
               )
             })}
-
-            {remainingArtworksCount > 0 && (
-              <Text variant="xs" color="black60" accessibilityLabel="Remaining artworks count">
-                + {remainingArtworksCount}
-              </Text>
-            )}
           </Flex>
         </Flex>
 
@@ -101,7 +103,6 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
             width={UNREAD_INDICATOR_SIZE}
             height={UNREAD_INDICATOR_SIZE}
             borderRadius={UNREAD_INDICATOR_SIZE / 2}
-            ml={1}
             bg="blue100"
             accessibilityLabel="Unread notification indicator"
           />
@@ -113,6 +114,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
 
 const activityItemFragment = graphql`
   fragment ActivityItem_item on Notification {
+    internalID
     title
     message
     publishedAt(format: "RELATIVE")
@@ -120,7 +122,6 @@ const activityItemFragment = graphql`
     isUnread
     notificationType
     artworksConnection(first: 4) {
-      totalCount
       edges {
         node {
           internalID

@@ -6,7 +6,7 @@ import { ArtworkAutosuggestResultsQueryRenderer } from "./ArtworkAutosuggestResu
 
 interface ArtworkAutosuggestProps {
   onResultPress: (artworkId: string) => void
-  onSkipPress: () => void
+  onSkipPress: (artworkTitle?: string) => void
 }
 
 export const ArtworkAutosuggest: React.FC<ArtworkAutosuggestProps> = ({
@@ -20,7 +20,7 @@ export const ArtworkAutosuggest: React.FC<ArtworkAutosuggestProps> = ({
   const artistSlug = artistSearchResult?.slug || ""
 
   const [artworkQuery, setArtworkQuery] = useState("")
-
+  const trimmedArtworkQuery = artworkQuery.trimStart()
   // In order to get results even before the user types anything, we need to add the artist slug to the query.
   const keyword = artworkQuery.length < 2 ? `${artistSlug} ${artworkQuery}` : artworkQuery
 
@@ -33,14 +33,17 @@ export const ArtworkAutosuggest: React.FC<ArtworkAutosuggestProps> = ({
           setArtworkQuery(value)
         }}
         onBlur={formik.handleBlur("artwork")}
-        value={artworkQuery}
+        value={trimmedArtworkQuery}
         enableClearButton
         autoFocus={typeof jest === "undefined"}
         autoCorrect={false}
       />
 
-      {showSkipAheadToAddArtworkLink && (
-        <Touchable onPress={onSkipPress}>
+      {!!showSkipAheadToAddArtworkLink && (
+        <Touchable
+          onPress={() => onSkipPress?.(trimmedArtworkQuery)}
+          testID="my-collection-artwork-form-artwork-skip-button"
+        >
           <Flex flexDirection="row" my={1}>
             <Text variant="xs" color="black60">
               Or skip ahead to{" "}
@@ -59,7 +62,7 @@ export const ArtworkAutosuggest: React.FC<ArtworkAutosuggestProps> = ({
             keyword={keyword}
             artistSlug={artistSlug}
             onPress={onResultPress}
-            onSkipPress={onSkipPress}
+            onSkipPress={() => onSkipPress?.(trimmedArtworkQuery)}
             setShowSkipAheadToAddArtworkLink={setShowSkipAheadToAddArtworkLink}
           />
         </Flex>

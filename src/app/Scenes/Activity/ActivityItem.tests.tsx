@@ -147,37 +147,6 @@ describe("ActivityItem", () => {
     })
   })
 
-  describe("the remaining artworks count", () => {
-    it("should NOT be rendered if there are less or equal to 4", async () => {
-      const { queryByLabelText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Notification: () => notification,
-      })
-      await flushPromiseQueue()
-
-      const label = queryByLabelText("Remaining artworks count")
-      expect(label).toBeNull()
-    })
-
-    it("should be rendered if there are more than 4", async () => {
-      const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Notification: () => ({
-          ...notification,
-          artworksConnection: {
-            ...notification.artworksConnection,
-            totalCount: 10,
-          },
-        }),
-      })
-      await flushPromiseQueue()
-
-      expect(getByText("+ 6")).toBeTruthy()
-    })
-  })
-
   describe("Unread notification indicator", () => {
     it("should NOT be rendered by default", async () => {
       const { queryByLabelText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)

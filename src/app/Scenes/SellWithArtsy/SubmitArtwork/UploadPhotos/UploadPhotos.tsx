@@ -3,23 +3,23 @@ import {
   PhotosFormModel,
   photosValidationSchema,
 } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
-import { uploadPhotosCompletedEvent } from "app/Scenes/SellWithArtsy/utils/TrackingEvent"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Formik } from "formik"
 import { BulletedItem, CTAButton, Flex, Spacer } from "palette"
-import { useTracking } from "react-tracking"
 import { UploadPhotosForm } from "./UploadPhotosForm"
 import { isSizeLimitExceeded } from "./utils/calculatePhotoSize"
 
-export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
-  const { userID, userEmail } = GlobalStore.useAppState((state) => state.auth)
+export const UploadPhotos = ({
+  handlePress,
+  isLastStep,
+}: {
+  handlePress: ({}) => void
+  isLastStep: boolean
+}) => {
   const { submission } = GlobalStore.useAppState((state) => state.artworkSubmission)
-  const { trackEvent } = useTracking()
 
   const submitUploadPhotosStep = () => {
-    trackEvent(uploadPhotosCompletedEvent(submission.submissionId, userEmail, userID))
-
-    handlePress()
+    handlePress({})
   }
 
   return (
@@ -49,10 +49,14 @@ export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
               <Spacer mt={2} />
               <CTAButton
                 disabled={!isValid || isAnyPhotoLoading || isSizeLimitExceeded(values.photos)}
-                onPress={submitUploadPhotosStep}
+                onPress={() => submitUploadPhotosStep()}
                 testID="Submission_Save_Photos_Button"
               >
-                {!!isAnyPhotoLoading ? "Processing Photos..." : "Save & Continue"}
+                {!!isAnyPhotoLoading
+                  ? "Processing Photos..."
+                  : isLastStep
+                  ? "Submit Artwork"
+                  : "Save & Continue"}
               </CTAButton>
             </>
           )

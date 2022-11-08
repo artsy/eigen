@@ -222,10 +222,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@artsy/cohesion@4.70.0":
-  version "4.70.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.70.0.tgz#307d9d628be1ba8cbe28a42fe3ab272043a3caf5"
-  integrity sha512-8PvaA7SWvR7kYSSWuHCc+riXBRHLpQ5lQTFVjyGJafWpHJy8VWMMeeGPaiXqdZue/Iwx8pDnAo4fhnCh1e4mbw==
+"@artsy/cohesion@4.71.0":
+  version "4.71.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.71.0.tgz#b514e4ab9f86b475f6e3bd6faaa35be6c9389075"
+  integrity sha512-JWIi3y3LequXPluO/Y0MK17SIOJt5WR0WylgAPbp0tG7EvLIqy8ZpH/7Xj5I4X8mOGjoNgT66XTSsi+zftXVIg==
   dependencies:
     core-js "3"
 
@@ -12674,10 +12674,10 @@ react-native-webview@11.3.1:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"
 
-react-native@0.66.4:
-  version "0.66.4"
-  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.66.4.tgz#bf89a5fb18bd23046d889fb4de4ea2822a4d7805"
-  integrity sha512-9vx5dlSfQlKbbDtr8+xMon6qsmSu7jvjdXWZpEKh3XVKpUidbbODv7048gwVKX8YAel1egeR7hN8vzSeI6ssTw==
+react-native@0.66.5:
+  version "0.66.5"
+  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.66.5.tgz#9056a2f7ad04d5e75b3a00dab847b3366d69f26a"
+  integrity sha512-dC5xmE1anT+m8eGU0N/gv2XUWZygii6TTqbwZPsN+uMhVvjxt4FsTqpZOFFvA5sxLPR/NDEz8uybTvItNBMClw==
   dependencies:
     "@jest/create-cache-key-function" "^27.0.1"
     "@react-native-community/cli" "^6.0.0"

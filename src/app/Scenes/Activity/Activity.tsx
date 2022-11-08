@@ -1,6 +1,5 @@
 import { ActionType } from "@artsy/cohesion"
 import { ClickedActivityPanelTab } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
-import { NotificationTypesEnum } from "__generated__/ActivityItem_item.graphql"
 import { ActivityQuery } from "__generated__/ActivityQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"
@@ -12,6 +11,7 @@ import { useTracking } from "react-tracking"
 import { ActivityList } from "./ActivityList"
 import { ActivityTabPlaceholder } from "./ActivityTabPlaceholder"
 import { NotificationType } from "./types"
+import { getNotificationTypes } from "./utils/getNotificationTypes"
 
 interface ActivityProps {
   type: NotificationType
@@ -19,12 +19,18 @@ interface ActivityProps {
 
 export const ActivityContent: React.FC<ActivityProps> = ({ type }) => {
   const types = getNotificationTypes(type)
-  const queryData = useLazyLoadQuery<ActivityQuery>(ActivityScreenQuery, {
-    count: 10,
-    types,
-  })
+  const queryData = useLazyLoadQuery<ActivityQuery>(
+    ActivityScreenQuery,
+    {
+      count: 10,
+      types,
+    },
+    {
+      fetchPolicy: "store-and-network",
+    }
+  )
 
-  return <ActivityList viewer={queryData.viewer} type={type} />
+  return <ActivityList viewer={queryData.viewer} me={queryData.me} type={type} />
 }
 
 export const ActivityContainer: React.FC<ActivityProps> = (props) => {
@@ -77,16 +83,11 @@ const ActivityScreenQuery = graphql`
     viewer {
       ...ActivityList_viewer @arguments(count: $count, after: $after, types: $types)
     }
+    me {
+      ...ActivityList_me
+    }
   }
 `
-
-const getNotificationTypes = (type: NotificationType): NotificationTypesEnum[] | undefined => {
-  if (type === "alerts") {
-    return ["ARTWORK_ALERT"]
-  }
-
-  return []
-}
 
 const tracks = {
   clickedActivityPanelTab: (tabName: string): ClickedActivityPanelTab => ({

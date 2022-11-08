@@ -45,6 +45,7 @@ import {
 } from "./Components/OtherWorks/OtherWorks"
 import { PartnerCardFragmentContainer as PartnerCard } from "./Components/PartnerCard"
 import { PartnerLink } from "./Components/PartnerLink"
+import { ShippingAndTaxesFragmentContainer } from "./Components/ShippingAndTaxes"
 
 interface ArtworkProps {
   artworkAboveTheFold: Artwork_artworkAboveTheFold$data | null
@@ -308,6 +309,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
+    if (!!(artworkBelowTheFold.isForSale && !isInAuction)) {
+      sections.push({
+        key: "shippingAndTaxes",
+        element: <ShippingAndTaxesFragmentContainer artwork={artworkBelowTheFold!} />,
+      })
+    }
+
     if (!!artworkAboveTheFold?.isEligibleForArtsyGuarantee) {
       sections.push({
         key: "artsyGuarantee",
@@ -466,6 +474,7 @@ export const ArtworkContainer = createRefetchContainer(
         provenance
         exhibitionHistory
         literature
+        isForSale
         partner {
           type
           id
@@ -522,6 +531,7 @@ export const ArtworkContainer = createRefetchContainer(
         ...ContextCard_artwork
         ...ArtworkHistory_artwork
         ...ArtworksInSeriesRail_artwork
+        ...ShippingAndTaxes_artwork
       }
     `,
     me: graphql`

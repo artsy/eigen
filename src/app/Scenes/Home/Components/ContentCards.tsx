@@ -2,7 +2,7 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 import { Box, Button, Flex, Spacer, Text, Touchable } from "palette"
 import React, { useEffect, useRef, useState } from "react"
-import { FlatList, ViewabilityConfig } from "react-native"
+import { FlatList, PixelRatio, ViewabilityConfig } from "react-native"
 import ReactAppboy from "react-native-appboy-sdk"
 import { useScreenDimensions } from "shared/hooks"
 import { PaginationDots } from "./PaginationDots"
@@ -11,8 +11,11 @@ interface CardProps {
   item: ReactAppboy.CaptionedContentCard
 }
 
-const CARD_HEIGHT = 250
+const fontScale = PixelRatio.getFontScale()
+
+const CARD_HEIGHT = 250 * fontScale
 const CARD_IMAGE_WIDTH = 125
+const DESCRIPTION_LINES = fontScale > 1 ? 4 : 3
 
 const ContentCard: React.FC<CardProps> = ({ item }) => {
   const { width: screenWidth } = useScreenDimensions()
@@ -37,7 +40,7 @@ const ContentCard: React.FC<CardProps> = ({ item }) => {
           <Text color="white100" mb={1} numberOfLines={2} variant="lg-display">
             {item.title}
           </Text>
-          <Text color="white100" mb={2} numberOfLines={3}>
+          <Text color="white100" mb={2} numberOfLines={DESCRIPTION_LINES}>
             {item.cardDescription}
           </Text>
           <Button size="small" variant="outlineLight" onPress={handlePress}>

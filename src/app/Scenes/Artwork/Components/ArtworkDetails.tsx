@@ -1,7 +1,7 @@
 import { ArtworkDetails_artwork$key } from "__generated__/ArtworkDetails_artwork.graphql"
 import { navigate } from "app/navigation/navigate"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Box, Join, Spacer, Text } from "palette"
+import { Box, Flex, Join, Spacer, Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -68,7 +68,12 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ artwork }) => {
     {
       title: "Condition",
       value: artworkData?.canRequestLotConditionsReport ? (
-        <RequestConditionReportQueryRenderer artworkID={artworkData.slug} />
+        //  this is here to reset the margin that lives in the RequestConditionReport component
+        //  https://github.com/artsy/eigen/blob/32c80bf3883cc1a1ce6016dce193b1e24822a57f/src/app/Scenes/Artwork/Components/RequestConditionReport.tsx#L122
+        //  this is because the component is being used in many places we didn't remove the margin from there.
+        <Flex mt={-1}>
+          <RequestConditionReportQueryRenderer artworkID={artworkData.slug} />
+        </Flex>
       ) : (
         artworkData?.conditionDescription?.details
       ),

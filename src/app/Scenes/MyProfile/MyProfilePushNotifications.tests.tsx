@@ -77,6 +77,7 @@ describe(MyProfilePushNotificationsQueryRenderer, () => {
             receiveSaleOpeningClosingNotification: true,
             receiveOrderNotification: true,
             receiveViewingRoomNotification: true,
+            receivePartnerShowNotification: true,
           },
         },
       })
@@ -111,6 +112,7 @@ describe(MyProfilePushNotificationsQueryRenderer, () => {
             receiveSaleOpeningClosingNotification: true,
             receiveOrderNotification: true,
             receiveViewingRoomNotification: true,
+            receivePartnerShowNotification: true,
           },
         },
       })
@@ -142,6 +144,7 @@ describe(MyProfilePushNotificationsQueryRenderer, () => {
             receiveSaleOpeningClosingNotification: true,
             receiveOrderNotification: true,
             receiveViewingRoomNotification: true,
+            receivePartnerShowNotification: true,
           },
         },
       })
