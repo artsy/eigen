@@ -2,7 +2,7 @@ import { LotUpcomingLiveDateTime_artwork$key } from "__generated__/LotUpcomingLi
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { ArtworkLotDetailsRow } from "./ArtworkLotDetailsRow"
-import { formateLotDateTime } from "./utils/formateLotDateTime"
+import { formatLotDateTime } from "./utils/formatLotDateTime"
 
 interface LotUpcomingLiveDateTimeProps {
   artwork: LotUpcomingLiveDateTime_artwork$key
@@ -16,7 +16,7 @@ export const LotUpcomingLiveDateTime: React.FC<LotUpcomingLiveDateTimeProps> = (
     return null
   }
 
-  return <ArtworkLotDetailsRow title="Lot live" value={formateLotDateTime(liveStartAt)} />
+  return <ArtworkLotDetailsRow title="Lot live" value={formatLotDateTime(liveStartAt)} />
 }
 
 const lotUpcomingLiveDateTimeFragment = graphql`

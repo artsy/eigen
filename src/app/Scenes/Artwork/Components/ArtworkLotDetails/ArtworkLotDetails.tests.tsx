@@ -21,7 +21,7 @@ import { DateTime } from "luxon"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtworkLotDetails, ArtworkLotDetailsProps } from "./ArtworkLotDetails"
-import { formateLotDateTime } from "./utils/formateLotDateTime"
+import { formatLotDateTime } from "./utils/formatLotDateTime"
 
 jest.unmock("react-relay")
 
@@ -73,7 +73,7 @@ describe("ArtworkLotDetails", () => {
     expect(queryByText("Starting bid")).toBeTruthy()
     expect(queryByText("$500")).toBeTruthy()
     expect(queryByText("Lot closes")).toBeTruthy()
-    expect(queryByText(formateLotDateTime(sale.endAt))).toBeTruthy()
+    expect(queryByText(formatLotDateTime(sale.endAt))).toBeTruthy()
     expect(queryByTestId("buyers-premium-and-shipping")).toBeTruthy()
     expect(queryByTestId("conditions-of-sale")).toBeTruthy()
     expect(queryByTestId("have-a-question")).toBeTruthy()
@@ -99,7 +99,7 @@ describe("ArtworkLotDetails", () => {
     expect(queryByText("$500")).toBeNull()
 
     expect(queryByText("Lot closes")).toBeNull()
-    expect(queryByText(formateLotDateTime(sale.endAt))).toBeNull()
+    expect(queryByText(formatLotDateTime(sale.endAt))).toBeNull()
     expect(queryByTestId("buyers-premium-and-shipping")).toBeNull()
     expect(queryByTestId("conditions-of-sale")).toBeNull()
     expect(queryByTestId("have-a-question")).toBeNull()
@@ -121,7 +121,7 @@ describe("ArtworkLotDetails", () => {
     expect(queryByText("Starting bid")).toBeNull()
     expect(queryByText("$500")).toBeNull()
 
-    expect(queryByText(formateLotDateTime(sale.endAt))).toBeNull()
+    expect(queryByText(formatLotDateTime(sale.endAt))).toBeNull()
     expect(queryByTestId("buyers-premium-and-shipping")).toBeNull()
 
     // Check other info
@@ -151,7 +151,7 @@ describe("ArtworkLotDetails", () => {
 
     expect(queryByText("Lot live")).toBeTruthy()
     expect(queryByText("Lot closes")).toBeNull()
-    expect(queryByText(formateLotDateTime(liveStartAt))).toBeTruthy()
+    expect(queryByText(formatLotDateTime(liveStartAt))).toBeTruthy()
   })
 
   it("should hide the buyer's premium info when sale doesn't support it", async () => {

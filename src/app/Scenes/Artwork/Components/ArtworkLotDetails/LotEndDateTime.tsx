@@ -3,7 +3,7 @@ import { useArtworkBidding } from "app/Websockets/auctions/useArtworkBidding"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { ArtworkLotDetailsRow } from "./ArtworkLotDetailsRow"
-import { formateLotDateTime } from "./utils/formateLotDateTime"
+import { formatLotDateTime } from "./utils/formatLotDateTime"
 
 interface LotEndDateTimeProps {
   artwork: LotEndDateTime_artwork$key
@@ -23,7 +23,7 @@ export const LotEndDateTime: React.FC<LotEndDateTimeProps> = ({ artwork }) => {
     return null
   }
 
-  return <ArtworkLotDetailsRow title="Lot closes" value={formateLotDateTime(biddingEndAt)} />
+  return <ArtworkLotDetailsRow title="Lot closes" value={formatLotDateTime(biddingEndAt)} />
 }
 
 const lotEndDateTimeFragment = graphql`
