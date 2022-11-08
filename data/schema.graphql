@@ -1274,6 +1274,8 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     # Get only articles with 'standard', 'feature', 'series' or 'video' layouts.
     inEditorialFeed: Boolean
     last: Int
+
+    # DEPRECATION REASON: Use `size` instead
     limit: Int
     page: Int
     size: Int
