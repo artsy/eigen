@@ -9075,6 +9075,7 @@ type HomePage {
   # A list of enabled hero units to show on the requested platform
   heroUnits(platform: HomePageHeroUnitPlatform!): [HomePageHeroUnit]
   marketingCollectionsModule: HomePageMarketingCollectionsModule
+  onboardingModule: HomePageMyCollectionOnboardingModule
   salesModule: HomePageSalesModule
 }
 
@@ -9201,6 +9202,11 @@ type HomePageModulesParams {
   medium: String
   priceRange: String
   relatedArtistID: ID
+}
+
+type HomePageMyCollectionOnboardingModule {
+  showMyCollectionCard: Boolean!
+  showSWACard: Boolean!
 }
 
 type HomePageRelatedArtistArtworkModule {
