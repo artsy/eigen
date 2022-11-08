@@ -120,7 +120,7 @@ export class Inbox extends React.Component<Props, State> {
   }
 
   render() {
-    const userHasBids = this.props.me.myBids?.active?.length! > 0 ? true : false
+    const userHasBids = (this.props.me.myBids?.active ?? []).length > 0
     const bidsTab = 0
     const inquiriesTab = 1
     const initialPageNumber = userHasBids ? bidsTab : inquiriesTab
@@ -159,7 +159,14 @@ export const InboxContainer = createRefetchContainer(
     me: graphql`
       fragment Inbox_me on Me {
         ...Conversations_me
-        ...MyBids_me @relay(mask: false)
+        ...MyBids_me
+        myBids {
+          active {
+            sale {
+              internalID
+            }
+          }
+        }
       }
     `,
   },
