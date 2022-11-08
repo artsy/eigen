@@ -496,6 +496,8 @@ PODS:
     - React-Core
   - react-native-netinfo (6.0.1):
     - React-Core
+  - react-native-pager-view (6.0.0):
+    - React-Core
   - react-native-safe-area-context (3.4.0):
     - React-Core
   - react-native-shake (5.1.1):
@@ -503,8 +505,6 @@ PODS:
   - react-native-slider (4.2.1):
     - React-Core
   - react-native-view-shot (3.4.0):
-    - React-Core
-  - react-native-viewpager (4.2.2):
     - React-Core
   - react-native-webview (11.3.1):
     - React-Core
@@ -793,11 +793,11 @@ DEPENDENCIES:
   - react-native-in-app-review (from `../node_modules/react-native-in-app-review`)
   - "react-native-mapbox-gl (from `../node_modules/@react-native-mapbox-gl/maps`)"
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
+  - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-shake (from `../node_modules/react-native-shake`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - react-native-view-shot (from `../node_modules/react-native-view-shot`)
-  - "react-native-viewpager (from `../node_modules/@react-native-community/viewpager`)"
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -1004,6 +1004,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-mapbox-gl/maps"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
+  react-native-pager-view:
+    :path: "../node_modules/react-native-pager-view"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-shake:
@@ -1012,8 +1014,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/slider"
   react-native-view-shot:
     :path: "../node_modules/react-native-view-shot"
-  react-native-viewpager:
-    :path: "../node_modules/@react-native-community/viewpager"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   React-perflogger:
@@ -1211,11 +1211,11 @@ SPEC CHECKSUMS:
   react-native-in-app-review: 23f4f5b9fcd94339dd5d93c6230557f9c67c7dda
   react-native-mapbox-gl: 0308cba1da4edbc1aa0e82a7584ba50e52725996
   react-native-netinfo: 7cb7877ff31ebeb3d03ce0b4fbb616f121ddd859
+  react-native-pager-view: e76d64a5114a152e942caa09136e4e250709378c
   react-native-safe-area-context: f4f7cc09d81ae2d39dfd13e764d718969af07080
   react-native-shake: 67d43d6af4abfc299400b17fea7d2ec0754c72ac
   react-native-slider: 241935e3ea8e47599c317f512f96ee8de607d4cb
   react-native-view-shot: a60a98a18c72bcaaaf2138f9aab960ae9b0d96c7
-  react-native-viewpager: ea945e2881ce9a4a8bcdc84de4ec65ff23c90f6e
   react-native-webview: 07fca3f4378bd6ea26254bf63119bfd70f4fabeb
   React-perflogger: 169fb34f60c5fd793b370002ee9c916eba9bc4ae
   React-RCTActionSheet: 2355539e02ad5cd4b1328682ab046487e1e1e920
