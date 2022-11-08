@@ -1275,6 +1275,8 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     inEditorialFeed: Boolean
     last: Int
     limit: Int
+    page: Int
+    size: Int
     sort: ArticleSorts
   ): ArticleConnection
   artistSeriesConnection(
