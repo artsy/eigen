@@ -13,7 +13,7 @@ const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnviro
 describe("ArtworkDetailsForm", () => {
   const TestRenderer = () => (
     <RelayEnvironmentProvider environment={mockEnvironment}>
-      <ArtworkDetails handlePress={jest.fn()} />
+      <ArtworkDetails handlePress={jest.fn()} isLastStep />
     </RelayEnvironmentProvider>
   )
 
