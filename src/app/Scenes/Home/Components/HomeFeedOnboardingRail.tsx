@@ -2,7 +2,6 @@ import { EmbeddedCarousel } from "app/Components/EmbeddedCarousel"
 import { Flex, Spacer } from "palette"
 import React from "react"
 import { ImageSourcePropType } from "react-native"
-// import { createFragmentContainer, graphql } from "react-relay"
 import { HomeFeedOnboardingCard } from "./HomeFeedOnboardingCard"
 
 interface HomeFeedOnboardingRailProps {

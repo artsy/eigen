@@ -22,7 +22,6 @@ import { FairsRailFragmentContainer } from "app/Scenes/Home/Components/FairsRail
 import { SalesRailFragmentContainer } from "app/Scenes/Home/Components/SalesRail"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
-import { useExperimentFlag } from "app/utils/experiments/hooks"
 import { isPad } from "app/utils/hardware"
 import {
   PlaceholderBox,
@@ -103,9 +102,9 @@ const Home = (props: Props) => {
   } = props
 
   const enableArtworkRecommendations = useFeatureFlag("AREnableHomeScreenArtworkRecommendations")
-  const enableMyCollectionHFOnboarding = useExperimentFlag("my-collection-hf-onboarding")
+  const enableMyCollectionHFOnboarding = useFeatureFlag("AREnableMyCollectionHFOnboarding")
 
-  const onboardingData: HomeFeedOnboardingRailItemProps[] | [] = [
+  const onboardingRailData: HomeFeedOnboardingRailItemProps[] | [] = [
     {
       shouldShow: homePageAbove?.onboardingModule?.showMyCollectionCard!,
       type: "MyC",
@@ -124,7 +123,7 @@ const Home = (props: Props) => {
     },
   ]
 
-  const onboardingModuleData = onboardingData.filter((item) => item.shouldShow)
+  const onboardingRailDataToShow = onboardingRailData.filter((item) => item.shouldShow)
 
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
   let modules: HomeModule[] = compact([
@@ -159,11 +158,11 @@ const Home = (props: Props) => {
     {
       title: "Do More on Artsy",
       type: "homeFeedOnboarding",
-      data: onboardingModuleData,
+      data: onboardingRailDataToShow,
       hidden:
         !enableMyCollectionHFOnboarding ||
         !homePageAbove?.onboardingModule ||
-        onboardingModuleData.length === 0,
+        onboardingRailDataToShow.length === 0,
     },
     // Below-The-Fold Modules
     {
