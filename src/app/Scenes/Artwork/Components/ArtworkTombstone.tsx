@@ -39,9 +39,7 @@ export const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork }) =
           </Text>
         </>
       )}
-      <Flex flexDirection="row" flexWrap="wrap">
-        <ArtworkMakerTitleFragmentContainer artwork={artwork} />
-      </Flex>
+      <ArtworkMakerTitleFragmentContainer artwork={artwork} />
       <Flex flexDirection="row" flexWrap="wrap">
         <Text variant="lg-display" color="black60">
           {getArtworkTitleAndMaybeDate()}

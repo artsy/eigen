@@ -17,10 +17,6 @@ const ArtworkMaker: React.FC<ArtworkMakerProps> = ({ artistName, href }) => {
   const { trackEvent } = useTracking()
 
   const handleArtistTap = (artistHref: string) => {
-    if (!artistHref) {
-      return
-    }
-
     trackEvent({
       action_name: Schema.ActionNames.ArtistName,
       action_type: Schema.ActionTypes.Tap,
