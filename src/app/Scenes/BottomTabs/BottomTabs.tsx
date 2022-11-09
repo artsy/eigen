@@ -9,9 +9,12 @@ import { ICON_HEIGHT } from "./BottomTabsIcon"
 export const BottomTabs: React.FC = () => {
   const { color } = useTheme()
 
+  const sessionState = GlobalStore.useAppState((state) => state.bottomTabs.sessionState)
   const unreadConversationCount = GlobalStore.useAppState(
     (state) => state.bottomTabs.sessionState.unreadConversationCount
   )
+  const selectedTabProps = sessionState.tabProps[sessionState.selectedTab]
+  const isVisibleTab = (selectedTabProps as { isVisibleTab?: boolean })?.isVisibleTab ?? true
 
   useEffect(() => {
     GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
@@ -26,6 +29,11 @@ export const BottomTabs: React.FC = () => {
   const enableMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
 
   const { bottom } = useScreenDimensions().safeAreaInsets
+
+  if (!isVisibleTab) {
+    return null
+  }
+
   return (
     <Flex style={{ paddingBottom: bottom }}>
       <Separator
