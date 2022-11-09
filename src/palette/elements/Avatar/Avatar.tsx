@@ -72,9 +72,7 @@ export const Avatar = ({
       alignItems="center"
       borderRadius={diameter}
     >
-      <Text fontSize={typeSize} lineHeight={diameter}>
-        {initials}
-      </Text>
+      <Text fontSize={typeSize}>{initials}</Text>
     </InitialsHolder>
   )
 }
