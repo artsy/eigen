@@ -21,7 +21,7 @@
     "doctor": "./scripts/doctor.js",
     "generate-cities-cache": "node scripts/generate-cities-cache.js",
     "generate-cities-objc": "node scripts/generate-cities-objc.js",
-    "ios": "react-native run-ios",
+    "ios": "react-native run-ios --udid=\"$(xcrun simctl list | awk -F'[()]' '/(Booted)/ { print $2 }')\"",
     "android": "react-native run-android",
     "clean-ios": "yarn rimraf ~/Library/Developer/Xcode/DerivedData",
     "clean-android": "cd android; ./gradlew clean cleanBuildCache; cd -",
