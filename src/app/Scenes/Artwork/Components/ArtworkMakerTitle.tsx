@@ -1,10 +1,11 @@
-import { ArtworkTombstone_artwork$data } from "__generated__/ArtworkTombstone_artwork.graphql"
+import { ArtworkMakerTitle_artwork$data } from "__generated__/ArtworkMakerTitle_artwork.graphql"
 import { navigate } from "app/navigation/navigate"
 import { Schema } from "app/utils/track"
 import { Flex, Text } from "palette"
 import { useState } from "react"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface ArtworkMakerProps {
@@ -29,15 +30,12 @@ const ArtworkMaker: React.FC<ArtworkMakerProps> = ({ artistName, href }) => {
     navigate(artistHref)
   }
 
-  if (!href) {
-    return <Text variant="lg-display">{artistName}</Text>
-  }
-
   return (
     <TouchableWithoutFeedback
       accessibilityRole="link"
       accessibilityHint="Go to artist page"
-      onPress={() => handleArtistTap(href)}
+      disabled={!href}
+      onPress={() => handleArtistTap(href!)}
     >
       <Text variant="lg-display">{artistName}</Text>
     </TouchableWithoutFeedback>
@@ -45,7 +43,7 @@ const ArtworkMaker: React.FC<ArtworkMakerProps> = ({ artistName, href }) => {
 }
 
 interface ArtworkMultipleMakersProps {
-  artists: ArtworkTombstone_artwork$data["artists"]
+  artists: ArtworkMakerTitle_artwork$data["artists"]
 }
 
 const ArtworkMultipleMakers: React.FC<ArtworkMultipleMakersProps> = ({ artists }) => {
@@ -82,11 +80,16 @@ const ArtworkMultipleMakers: React.FC<ArtworkMultipleMakersProps> = ({ artists }
 }
 
 interface ComponentProps {
-  artists: ArtworkTombstone_artwork$data["artists"]
-  culturalMaker: ArtworkTombstone_artwork$data["culturalMaker"]
+  artwork: ArtworkMakerTitle_artwork$data
 }
 
-export const ArtworkMakerTitle: React.FC<ComponentProps> = ({ artists, culturalMaker }) => {
+export const ArtworkMakerTitle: React.FC<ComponentProps> = ({ artwork }) => {
+  const { artists, culturalMaker } = artwork
+
+  if (artists?.length === 0 && !!culturalMaker) {
+    return <ArtworkMaker artistName={culturalMaker} />
+  }
+
   if (artists?.length === 1) {
     return <ArtworkMaker artistName={artists[0]!.name!} href={artists[0]!.href!} />
   }
@@ -95,9 +98,19 @@ export const ArtworkMakerTitle: React.FC<ComponentProps> = ({ artists, culturalM
     return <ArtworkMultipleMakers artists={artists} />
   }
 
-  if (artists?.length === 0 && !!culturalMaker) {
-    return <ArtworkMaker artistName={culturalMaker} />
-  }
-
   return null
 }
+
+const artworkMakerTitleFragment = graphql`
+  fragment ArtworkMakerTitle_artwork on Artwork {
+    culturalMaker
+    artists {
+      name
+      href
+    }
+  }
+`
+
+export const ArtworkMakerTitleFragmentContainer = createFragmentContainer(ArtworkMakerTitle, {
+  artwork: artworkMakerTitleFragment,
+})

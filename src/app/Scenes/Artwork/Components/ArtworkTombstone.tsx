@@ -1,6 +1,5 @@
 import { ArtworkTombstone_artwork$data } from "__generated__/ArtworkTombstone_artwork.graphql"
 import { Box, comma, Flex, Spacer, Text } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ArtworkMakerTitle } from "./ArtworkMakerTitle"
 import { CascadingEndTimesBanner } from "./CascadingEndTimesBanner"
@@ -41,7 +40,7 @@ export const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork }) =
         </>
       )}
       <Flex flexDirection="row" flexWrap="wrap">
-        <ArtworkMakerTitle artists={artwork.artists} culturalMaker={artwork.culturalMaker} />
+        <ArtworkMakerTitle artwork={artwork} />
       </Flex>
       <Flex flexDirection="row" flexWrap="wrap">
         <Text variant="lg-display" color="black60">
@@ -82,7 +81,6 @@ export const ArtworkTombstoneFragmentContainer = createFragmentContainer(Artwork
       isInAuction
       medium
       date
-      culturalMaker
       saleArtwork {
         lotLabel
         estimate
@@ -95,11 +93,7 @@ export const ArtworkTombstoneFragmentContainer = createFragmentContainer(Artwork
         cascadingEndTimeIntervalMinutes
         extendedBiddingIntervalMinutes
       }
-      artists {
-        name
-        href
-        ...FollowArtistLink_artist
-      }
+      ...ArtworkMakerTitle_artwork
     }
   `,
 })
