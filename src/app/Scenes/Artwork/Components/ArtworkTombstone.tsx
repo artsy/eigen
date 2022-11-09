@@ -1,7 +1,7 @@
 import { ArtworkTombstone_artwork$data } from "__generated__/ArtworkTombstone_artwork.graphql"
 import { Box, comma, Flex, Spacer, Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
-import { ArtworkMakerTitle } from "./ArtworkMakerTitle"
+import { ArtworkMakerTitleFragmentContainer } from "./ArtworkMakerTitle"
 import { CascadingEndTimesBanner } from "./CascadingEndTimesBanner"
 
 export interface ArtworkTombstoneProps {
@@ -40,7 +40,7 @@ export const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork }) =
         </>
       )}
       <Flex flexDirection="row" flexWrap="wrap">
-        <ArtworkMakerTitle artwork={artwork} />
+        <ArtworkMakerTitleFragmentContainer artwork={artwork} />
       </Flex>
       <Flex flexDirection="row" flexWrap="wrap">
         <Text variant="lg-display" color="black60">

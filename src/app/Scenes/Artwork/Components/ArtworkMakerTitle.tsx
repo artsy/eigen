@@ -79,11 +79,11 @@ const ArtworkMultipleMakers: React.FC<ArtworkMultipleMakersProps> = ({ artists }
   )
 }
 
-interface ComponentProps {
+interface ArtworkMakerTitleProps {
   artwork: ArtworkMakerTitle_artwork$data
 }
 
-export const ArtworkMakerTitle: React.FC<ComponentProps> = ({ artwork }) => {
+const ArtworkMakerTitle: React.FC<ArtworkMakerTitleProps> = ({ artwork }) => {
   const { artists, culturalMaker } = artwork
 
   if (artists?.length === 0 && !!culturalMaker) {
@@ -101,16 +101,14 @@ export const ArtworkMakerTitle: React.FC<ComponentProps> = ({ artwork }) => {
   return null
 }
 
-const artworkMakerTitleFragment = graphql`
-  fragment ArtworkMakerTitle_artwork on Artwork {
-    culturalMaker
-    artists {
-      name
-      href
-    }
-  }
-`
-
 export const ArtworkMakerTitleFragmentContainer = createFragmentContainer(ArtworkMakerTitle, {
-  artwork: artworkMakerTitleFragment,
+  artwork: graphql`
+    fragment ArtworkMakerTitle_artwork on Artwork {
+      culturalMaker
+      artists {
+        name
+        href
+      }
+    }
+  `,
 })
