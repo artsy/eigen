@@ -3,7 +3,6 @@ import { Flex, Spacer, Touchable } from "palette"
 import React from "react"
 import { FlatList, FlatListProps } from "react-native"
 
-// TODO: replace any type
 interface EmbeddedCarouselProps {
   title?: string
   testID: string
@@ -17,13 +16,16 @@ export const EmbeddedCarousel: React.FC<EmbeddedCarouselProps & FlatListProps<an
 
   return (
     <Flex>
-      {!!title && <SectionTitle title={title} />}
+      {!!title && (
+        <Flex px={2}>
+          <SectionTitle title={title} />
+        </Flex>
+      )}
       <FlatList
         testID={testID}
         horizontal
         showsHorizontalScrollIndicator={false}
         ItemSeparatorComponent={() => <Spacer mx={1} />}
-        style={{ overflow: "visible" }}
         data={data}
         renderItem={(item: any) =>
           onCardPress ? (
@@ -34,6 +36,8 @@ export const EmbeddedCarousel: React.FC<EmbeddedCarouselProps & FlatListProps<an
             renderItem(item)
           )
         }
+        ListHeaderComponent={() => <Spacer mr={2} />}
+        ListFooterComponent={() => <Spacer mr={2} />}
         {...restProps}
       />
     </Flex>

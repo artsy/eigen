@@ -1,5 +1,5 @@
 import { EmbeddedCarousel } from "app/Components/EmbeddedCarousel"
-import { Flex } from "palette"
+import { Flex, Spacer } from "palette"
 import React from "react"
 import { ImageSourcePropType } from "react-native"
 // import { createFragmentContainer, graphql } from "react-relay"
@@ -24,7 +24,7 @@ export const HomeFeedOnboardingRail: React.FC<HomeFeedOnboardingRailProps> = (pr
   const { mb, title, onboardingModuleData } = props
 
   return (
-    <Flex mb={mb} mx={2}>
+    <Flex mb={mb}>
       <EmbeddedCarousel
         testID="my-collection-hf-onboadring-rail"
         title={title}
@@ -32,6 +32,8 @@ export const HomeFeedOnboardingRail: React.FC<HomeFeedOnboardingRailProps> = (pr
         renderItem={({ item }: { item: HomeFeedOnboardingRailItemProps }) => {
           return <HomeFeedOnboardingCard item={item} />
         }}
+        ListHeaderComponent={() => <Spacer mr={2} />}
+        ListFooterComponent={() => <Spacer mr={2} />}
       />
     </Flex>
   )
