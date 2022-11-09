@@ -73,7 +73,10 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
   }),
   toggleBottomTabForCurrentTab: action((state, { isVisible }) => {
     const selectedTab = state.sessionState.selectedTab
+    const prevTabState = state.sessionState.tabProps[selectedTab]
+
     state.sessionState.tabProps[selectedTab] = {
+      ...prevTabState,
       isVisibleTab: isVisible,
     }
   }),
