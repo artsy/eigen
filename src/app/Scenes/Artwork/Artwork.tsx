@@ -151,7 +151,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
     }
   }, [])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     GlobalStore.actions.bottomTabs.toggleBottomTabForCurrentTab({ isVisible: false })
 
     return () => {
