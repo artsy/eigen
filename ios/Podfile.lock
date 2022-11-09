@@ -849,9 +849,7 @@ DEPENDENCIES:
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/artsy/Specs.git:
-    - Aerodramus
-  trunk:
+  https://cdn.cocoapods.org/:
     - Adjust
     - AFNetworkActivityLogger
     - AFNetworking
@@ -862,36 +860,23 @@ SPEC REPOS:
     - CocoaAsyncSocket
     - CocoaLumberjack
     - EDColor
-    - Expecta
     - "Expecta+Snapshots"
     - FBAEMKit
-    - FBSDKCoreKit
     - FBSDKCoreKit_Basics
     - FBSDKGamingServicesKit
-    - FBSDKLoginKit
-    - FBSDKShareKit
     - FBSnapshotTestCase
     - Firebase
     - FirebaseAuth
-    - FirebaseCore
     - FirebaseCoreDiagnostics
-    - Flipper
     - Flipper-Boost-iOSX
-    - Flipper-DoubleConversion
     - Flipper-Fmt
-    - Flipper-Folly
-    - Flipper-Glog
-    - Flipper-PeerTalk
-    - Flipper-RSocket
     - FlipperKit
     - fmt
     - Forgeries
     - FXBlurView
     - GoogleDataTransport
-    - GoogleSignIn
     - GoogleUtilities
     - GTMAppAuth
-    - GTMSessionFetcher
     - INTUAnimationEngine
     - JSDecoupledAppDelegate
     - JWTDecode
@@ -904,21 +889,16 @@ SPEC REPOS:
     - MMMarkdown
     - MultiDelegate
     - nanopb
-    - Nimble
     - Nimble-Snapshots
     - ObjectiveSugar
     - OCMock
-    - OHHTTPStubs
     - OpenSSL-Universal
     - ORStackView
     - PromisesObjC
     - Quick
-    - SDWebImage
     - SDWebImageWebPCoder
-    - Segment-Adjust
     - Segment-Appboy
     - Sentry
-    - Specta
     - Starscream
     - Stripe
     - SwiftyJSON
@@ -928,6 +908,33 @@ SPEC REPOS:
     - "UIView+BooleanAnimations"
     - "XCTest+OHHTTPStubSuiteCleanUp"
     - YogaKit
+  https://github.com/artsy/Specs.git:
+    - Aerodramus
+  https://github.com/CocoaPods/Specs.git:
+    - AFNetworking
+    - AppAuth
+    - Appboy-iOS-SDK
+    - Expecta
+    - FBSDKCoreKit
+    - FBSDKLoginKit
+    - FBSDKShareKit
+    - FBSnapshotTestCase
+    - FirebaseCore
+    - Flipper
+    - Flipper-DoubleConversion
+    - Flipper-Folly
+    - Flipper-Glog
+    - Flipper-PeerTalk
+    - Flipper-RSocket
+    - GoogleSignIn
+    - GoogleUtilities
+    - GTMSessionFetcher
+    - nanopb
+    - Nimble
+    - OHHTTPStubs
+    - SDWebImage
+    - Segment-Adjust
+    - Specta
 
 EXTERNAL SOURCES:
   AFOAuth1Client:
