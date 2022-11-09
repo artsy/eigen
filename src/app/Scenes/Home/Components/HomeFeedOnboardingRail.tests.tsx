@@ -1,52 +1,33 @@
-import { HomeFeedOnboardingRailTestsQuery } from "__generated__/HomeFeedOnboardingRailTestsQuery.graphql"
-import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
-import { HomeFeedOnboardingRailFragmentContainer } from "./HomeFeedOnboardingRail"
+import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
+import { Theme } from "palette"
+import { graphql } from "react-relay"
+import { HomeFeedOnboardingRail } from "./HomeFeedOnboardingRail"
 
 jest.unmock("react-relay")
 
 describe("HomeFeedOnboardingRail", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  const TestRenderer = () => {
-    return (
-      <QueryRenderer<HomeFeedOnboardingRailTestsQuery>
-        environment={mockEnvironment}
-        query={graphql`
-          query HomeFeedOnboardingRailTestsQuery @raw_response_type {
-            homePage {
-              onboardingModule {
-                ...HomeFeedOnboardingRail_onboardingModule
-              }
-            }
+  const { renderWithRelay } = setupTestWrapperTL({
+    Component: (props) => {
+      return (
+        <Theme>
+          <HomeFeedOnboardingRail {...props} />
+        </Theme>
+      )
+    },
+    query: graphql`
+      query HomeFeedOnboardingRailTestsQuery @raw_response_type {
+        homePage {
+          onboardingModule {
+            showMyCollectionCard
+            showSWACard
           }
-        `}
-        variables={{}}
-        render={({ props, error }) => {
-          if (props) {
-            return (
-              <HomeFeedOnboardingRailFragmentContainer
-                title="Do More on Artsy"
-                onboardingModule={props.homePage?.onboardingModule!}
-              />
-            )
-          } else if (error) {
-            console.log(error)
-          }
-        }}
-      />
-    )
-  }
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+        }
+      }
+    `,
   })
 
-  it("doesn't throw when rendered", () => {
-    const { getByTestId } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+  it("doesn't throw an error when rendered", () => {
+    const { getByTestId } = renderWithRelay({
       HomePage: () => ({
         homePageAbove: {
           onboardingModule: {
@@ -56,6 +37,7 @@ describe("HomeFeedOnboardingRail", () => {
         },
       }),
     })
+
     expect(getByTestId("my-collection-hf-onboadring")).toBeTruthy()
   })
 })

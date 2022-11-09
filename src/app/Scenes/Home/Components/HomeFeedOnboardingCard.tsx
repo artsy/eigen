@@ -4,16 +4,23 @@ import React from "react"
 import { Image } from "react-native"
 import { HomeFeedOnboardingRailItemProps } from "./HomeFeedOnboardingRail"
 
-export const HomeFeedOnboardingCard: React.FC<{ item: HomeFeedOnboardingRailItemProps }> = ({
-  item,
-}) => {
-  if (!item.shouldShow) {
-    return <></>
-  }
+const CARD_BORDER_RADIUS = 4
+export const HomeFeedOnboardingCard: React.FC<{
+  item: HomeFeedOnboardingRailItemProps
+}> = ({ item }) => {
   return (
-    <Flex width={295}>
-      <Image source={item.image} borderTopLeftRadius={4} borderTopRightRadius={4} />
-      <Flex p={2} backgroundColor="black100" borderBottomLeftRadius={4} borderBottomRightRadius={4}>
+    <Flex width={295} testID="my-collection-hf-onboadring-card">
+      <Image
+        source={item.image}
+        borderTopLeftRadius={CARD_BORDER_RADIUS}
+        borderTopRightRadius={CARD_BORDER_RADIUS}
+      />
+      <Flex
+        p={2}
+        backgroundColor="black100"
+        borderBottomLeftRadius={CARD_BORDER_RADIUS}
+        borderBottomRightRadius={CARD_BORDER_RADIUS}
+      >
         <Text variant="md" mb={0.5} color="white100">
           {item.title}
         </Text>
