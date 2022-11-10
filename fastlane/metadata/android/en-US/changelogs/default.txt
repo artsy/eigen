@@ -1,6 +1,5 @@
 This update includes a number of improvements and bug fixes including:
 
-- New notification preferences
 - New content cards on the home screen
 - Improvements to the artwork screen
 
