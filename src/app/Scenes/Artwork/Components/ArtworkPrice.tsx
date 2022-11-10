@@ -5,6 +5,7 @@ import { Flex, Text } from "palette"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { ArtworkStore } from "../ArtworkStore"
+import { ArtworkAuctionBidInfo } from "./ArtworkAuctionBidInfo"
 
 interface ArtworkPriceProps {
   artwork: ArtworkPrice_artwork$key
@@ -42,7 +43,7 @@ export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({ artwork }) => {
       return null
     }
 
-    return <Text variant="lg-display">Render Auction Price</Text>
+    return <ArtworkAuctionBidInfo artwork={data} />
   }
 
   if (editionSets.length > 1) {
@@ -79,5 +80,6 @@ const artworkPriceFragment = graphql`
       internalID
       saleMessage
     }
+    ...ArtworkAuctionBidInfo_artwork
   }
 `
