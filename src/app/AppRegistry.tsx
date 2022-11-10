@@ -88,6 +88,7 @@ import { CareerHighlightsBigCardsSwiper } from "./Scenes/MyCollection/Screens/In
 import { MedianSalePriceAtAuction } from "./Scenes/MyCollection/Screens/Insights/MedianSalePriceAtAuction"
 import { DarkModeSettings } from "./Scenes/MyProfile/DarkModeSettings"
 import { MyProfile } from "./Scenes/MyProfile/MyProfile"
+import { MyProfileEditFormScreen } from "./Scenes/MyProfile/MyProfileEditForm"
 import { MyProfileHeaderMyCollectionAndSavedWorksScreenQuery } from "./Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { MyProfilePaymentQueryRenderer } from "./Scenes/MyProfile/MyProfilePayment"
 import { MyProfilePaymentNewCreditCard } from "./Scenes/MyProfile/MyProfilePaymentNewCreditCard"
@@ -429,6 +430,7 @@ export const modules = defineModules({
     },
     [MyProfileHeaderMyCollectionAndSavedWorksScreenQuery, MyCollectionScreenQuery]
   ),
+  MyProfileEditForm: reactModule(MyProfileEditFormScreen),
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
   MyProfileSettings: reactModule(MyProfileSettings),
   OrderHistory: reactModule(OrderHistoryQueryRender),
