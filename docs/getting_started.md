@@ -63,6 +63,10 @@ yarn install:all
 
 **Note**: `yarn pod-install` (which is included in `yarn install:all`) may fail the first time you run it (due to a [bug](https://github.com/orta/cocoapods-keys/issues/127) in a dependency of ours). Re-running the command should work.
 
+## Troubleshooting
+
+If there are issues setting up the app, see the [troubleshooting doc](docs/troubleshooting.md).
+
 ## Contribute
 
 We welcome independent contributions! Feel free to open an issue and open a PR and assign one of [Brian Beckerle](https://github.com/brainbicycle), [Pavlos Vinieratos](https://github.com/pvinis), [Mounir Dhahri](https://github.com/MounirDhahri) as a reviewer or anyone else listed [here](https://github.com/artsy/eigen#meta).
