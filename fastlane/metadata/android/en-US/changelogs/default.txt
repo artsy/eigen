@@ -1,5 +1,7 @@
 This update includes a number of improvements and bug fixes including:
 
-- Fixed issue preventing some users from logging in via Facebook or Google accounts
+- New notification preferences
+- New content cards on the home screen
+- Improvements to the artwork screen
 
 Have feedback? Email us at support@artsy.net
