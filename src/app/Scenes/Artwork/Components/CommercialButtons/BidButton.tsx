@@ -5,7 +5,7 @@ import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/navigation/navigate"
 import { bidderNeedsIdentityVerification } from "app/utils/auction/bidderNeedsIdentityVerification"
 import { Schema } from "app/utils/track"
-import { Button, ClassTheme, Text } from "palette"
+import { Button, ButtonProps, ClassTheme, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import track from "react-tracking"
@@ -17,6 +17,7 @@ export interface BidButtonProps {
   me: BidButton_me$data
   auctionState: AuctionTimerState
   relay: RelayProp
+  variant?: ButtonProps["variant"]
 }
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -111,6 +112,7 @@ export class BidButton extends React.Component<BidButtonProps> {
               block
               size="large"
               mt={1}
+              variant={this.props.variant}
               onPress={() => this.redirectToRegister()}
               haptic
             >
@@ -125,7 +127,7 @@ export class BidButton extends React.Component<BidButtonProps> {
         )}
         {registrationStatus && !registrationStatus.qualifiedForBidding && (
           <>
-            <Button width={100} block size="large" mt={1} disabled>
+            <Button width={100} block size="large" mt={1} variant={this.props.variant} disabled>
               Registration pending
             </Button>
             {needsIdentityVerification && (
@@ -136,7 +138,7 @@ export class BidButton extends React.Component<BidButtonProps> {
           </>
         )}
         {registrationStatus?.qualifiedForBidding && (
-          <Button width={100} block size="large" mt={1} disabled>
+          <Button width={100} block size="large" mt={1} variant={this.props.variant} disabled>
             Registration complete
           </Button>
         )}
@@ -145,7 +147,8 @@ export class BidButton extends React.Component<BidButtonProps> {
   }
 
   renderIsLiveOpen() {
-    const { sale } = this.props.artwork
+    const { variant, artwork } = this.props
+    const { sale } = artwork
     const isWatchOnly = watchOnly(sale)
     return (
       <>
@@ -158,7 +161,13 @@ export class BidButton extends React.Component<BidButtonProps> {
             )}
           </ClassTheme>
         )}
-        <Button width={100} block size="large" onPress={() => this.redirectToLiveBidding()}>
+        <Button
+          width={100}
+          block
+          size="large"
+          variant={variant}
+          onPress={() => this.redirectToLiveBidding()}
+        >
           {isWatchOnly ? "Watch live bidding" : "Enter live bidding"}
         </Button>
       </>
@@ -166,7 +175,7 @@ export class BidButton extends React.Component<BidButtonProps> {
   }
 
   render() {
-    const { artwork, auctionState, me } = this.props
+    const { artwork, auctionState, me, variant } = this.props
     const { sale, saleArtwork } = artwork
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const { registrationStatus } = sale
@@ -200,7 +209,7 @@ export class BidButton extends React.Component<BidButtonProps> {
     } else if (registrationStatus && !qualifiedForBidding) {
       return (
         <>
-          <Button width={100} block size="large" disabled>
+          <Button width={100} block size="large" variant={variant} disabled>
             Registration pending
           </Button>
           {needsIdentityVerification && (
@@ -213,14 +222,21 @@ export class BidButton extends React.Component<BidButtonProps> {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     } else if (sale.isRegistrationClosed && !qualifiedForBidding) {
       return (
-        <Button width={100} block size="large" disabled>
+        <Button width={100} block size="large" variant={variant} disabled>
           Registration closed
         </Button>
       )
     } else if (needsIdentityVerification) {
       return (
         <>
-          <Button width={100} block size="large" mt={1} onPress={() => this.redirectToRegister()}>
+          <Button
+            width={100}
+            block
+            size="large"
+            variant={variant}
+            mt={1}
+            onPress={() => this.redirectToRegister()}
+          >
             Register to bid
           </Button>
           <IdentityVerificationRequiredMessage
@@ -242,6 +258,7 @@ export class BidButton extends React.Component<BidButtonProps> {
         <Button
           width={100}
           size="large"
+          variant={variant}
           block
           // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           onPress={() => this.redirectToBid(incrementCents)}
