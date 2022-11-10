@@ -2,7 +2,7 @@ import { ActionType, AuthService, CreatedAccount } from "@artsy/cohesion"
 import { appleAuth } from "@invertase/react-native-apple-authentication"
 import CookieManager from "@react-native-cookies/cookies"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
-import { fbAction } from "app/auth/logAuthActions"
+import { fbAction, reportAuthFailure } from "app/auth/logAuthActions"
 import { OAuthProvider } from "app/auth/types"
 import * as RelayCache from "app/relay/RelayCache"
 import { isArtsyEmail } from "app/utils/general"
@@ -501,7 +501,7 @@ export const getAuthModel = (): AuthModel => ({
 
         if (declinedPermissions?.includes("email")) {
           fbAction("declined email permission", "no email permission")
-          // TODO: fire error here
+          reportAuthFailure("declined email permission")
           reject(
             new AuthError("Please allow the use of email to continue.", "Email Permission Declined")
           )
@@ -510,7 +510,7 @@ export const getAuthModel = (): AuthModel => ({
         const accessToken = !isCancelled && (await AccessToken.getCurrentAccessToken())
         if (!accessToken) {
           fbAction("no access token", "no access token")
-          // TODO: fire error here
+          reportAuthFailure("no access token")
           reject(new AuthError("Could not log in"))
           return
         }
@@ -520,14 +520,14 @@ export const getAuthModel = (): AuthModel => ({
 
           if (error) {
             fbAction("callback error", JSON.stringify({ error }))
-            // TODO: fire error here
+            reportAuthFailure("callback error")
             reject(new AuthError("Error fetching facebook data", error))
             return
           }
 
           if (!result || !result.email) {
             fbAction("callback no result or email", JSON.stringify({ result }))
-            // TODO: fire error here
+            reportAuthFailure("callback no result or email")
             reject(
               new AuthError(
                 "There is no email associated with your Facebook account. Please log in using your email and password instead."
@@ -557,7 +557,7 @@ export const getAuthModel = (): AuthModel => ({
               return
             } else {
               fbAction("callback signup option failure", JSON.stringify({ resultGravitySignUp }))
-              // TODO: fire error here
+              reportAuthFailure("callback signup option failure")
               reject(
                 new AuthError(
                   resultGravitySignUp.message,
@@ -619,7 +619,7 @@ export const getAuthModel = (): AuthModel => ({
                   "signin option 201 gravity sign in result failure",
                   JSON.stringify({ resultGravitySignIn })
                 )
-                // TODO: fire error here
+                reportAuthFailure("signin option 201 gravity sign in result failure")
                 reject(new AuthError("Could not log in"))
                 return
               }
@@ -627,7 +627,7 @@ export const getAuthModel = (): AuthModel => ({
               const res = await resultGravityAccessToken.json()
 
               fbAction("signin option !201", JSON.stringify({ res }))
-              // TODO: fire error here
+              reportAuthFailure("signin option !201")
               showError(res, reject, "facebook")
             }
           }
@@ -663,13 +663,13 @@ export const getAuthModel = (): AuthModel => ({
           }
 
           fbAction("error logging in", e.message)
-          // TODO: fire error here
+          reportAuthFailure("error logging in")
           reject(new AuthError("Error logging in with facebook", e.message))
           return
         }
 
         fbAction("error logging in", "")
-        // TODO: fire error here
+        reportAuthFailure("error logging in")
         reject(new AuthError("Error logging in with facebook"))
         return
       }
