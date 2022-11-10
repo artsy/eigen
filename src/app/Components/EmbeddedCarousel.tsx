@@ -14,6 +14,10 @@ interface EmbeddedCarouselProps {
 export const EmbeddedCarousel: React.FC<EmbeddedCarouselProps & FlatListProps<any>> = (props) => {
   const { title, testID, data, renderItem, onCardPress, ...restProps } = props
 
+  if (!data.length) {
+    return null
+  }
+
   return (
     <Flex>
       {!!title && (

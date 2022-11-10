@@ -1,5 +1,4 @@
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import { act } from "react-test-renderer"
@@ -34,10 +33,6 @@ describe(HomeQueryRenderer, () => {
         homePage: {
           artworkModules: [],
           salesModule: [],
-          onboardingModule: {
-            showMyCollectionCard: true,
-            showSWACard: false,
-          },
         },
         me: {
           canRequestEmailConfirmation: true,
@@ -58,15 +53,6 @@ describe(HomeQueryRenderer, () => {
 
     return tree
   }
-
-  it("renders HomeFeedOnboardingRail with 1 card when only one card is visible", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionHFOnboarding: true })
-
-    const { getByTestId, getAllByTestId } = await getWrapper()
-
-    expect(getByTestId("my-collection-hf-onboadring-rail")).toBeTruthy()
-    expect(getAllByTestId("my-collection-hf-onboadring-card")).toHaveLength(1)
-  })
 
   it("renders home screen module flat list", async () => {
     const { getByTestId } = await getWrapper()

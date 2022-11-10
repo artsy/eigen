@@ -1,13 +1,15 @@
+import { HomeFeedOnboardingRail_onboardingModule$data } from "__generated__/HomeFeedOnboardingRail_onboardingModule.graphql"
 import { EmbeddedCarousel } from "app/Components/EmbeddedCarousel"
-import { Flex, Spacer } from "palette"
+import { Flex } from "palette"
 import React from "react"
 import { ImageSourcePropType } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 import { HomeFeedOnboardingCard } from "./HomeFeedOnboardingCard"
 
 interface HomeFeedOnboardingRailProps {
   title: string
   mb?: number
-  onboardingModuleData: HomeFeedOnboardingRailItemProps[] | []
+  onboardingModule: HomeFeedOnboardingRail_onboardingModule$data
 }
 
 export interface HomeFeedOnboardingRailItemProps {
@@ -20,20 +22,53 @@ export interface HomeFeedOnboardingRailItemProps {
 }
 
 export const HomeFeedOnboardingRail: React.FC<HomeFeedOnboardingRailProps> = (props) => {
-  const { mb, title, onboardingModuleData } = props
+  const { mb, title, onboardingModule } = props
+
+  const onboardingData = [
+    {
+      shouldShow: onboardingModule.showMyCollectionCard,
+      type: "MyC",
+      title: "Manage your collection",
+      subtitle: "Get powerful market insights about artworks you own.",
+      image: require("images/homefeed-my-collection-inboarding-0.webp"),
+      button: "Explore My Collection",
+    },
+    {
+      shouldShow: onboardingModule.showSWACard,
+      type: "SWA",
+      title: "Sell with Artsy",
+      subtitle: "Get the best sales options for artworks from your collection.",
+      image: require("images/homefeed-my-collection-inboarding-1.webp"),
+      button: "Learn more",
+    },
+  ]
+
+  const cardsToShow = onboardingData.filter((item) => item.shouldShow)
 
   return (
-    <Flex mb={mb}>
-      <EmbeddedCarousel
-        testID="my-collection-hf-onboadring-rail"
-        title={title}
-        data={onboardingModuleData}
-        renderItem={({ item }: { item: HomeFeedOnboardingRailItemProps }) => {
-          return <HomeFeedOnboardingCard item={item} />
-        }}
-        ListHeaderComponent={() => <Spacer mr={2} />}
-        ListFooterComponent={() => <Spacer mr={2} />}
-      />
-    </Flex>
+    <EmbeddedCarousel
+      testID="my-collection-hf-onboadring-rail"
+      title={title}
+      data={cardsToShow}
+      renderItem={({ item }: { item: HomeFeedOnboardingRailItemProps }) => {
+        return (
+          <Flex mb={mb}>
+            <HomeFeedOnboardingCard item={item} />
+          </Flex>
+        )
+      }}
+    />
   )
 }
+
+export const HomeFeedOnboardingRailFragmentContainer = createFragmentContainer(
+  HomeFeedOnboardingRail,
+  {
+    onboardingModule: graphql`
+      fragment HomeFeedOnboardingRail_onboardingModule on HomePageMyCollectionOnboardingModule {
+        showMyCollectionCard
+        showSWACard
+      }
+    `,
+  }
+)

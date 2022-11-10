@@ -7,14 +7,14 @@ import { HomeFeedOnboardingRailItemProps } from "./HomeFeedOnboardingRail"
 const CARD_BORDER_RADIUS = 4
 const CARD_WIDTH = 295
 
-export const HomeFeedOnboardingCard: React.FC<{
-  item: HomeFeedOnboardingRailItemProps
-}> = ({ item }) => {
+export const HomeFeedOnboardingCard: React.FC<{ item: HomeFeedOnboardingRailItemProps }> = ({
+  item,
+}) => {
   return (
     <Flex width={CARD_WIDTH} testID="my-collection-hf-onboadring-card">
       <Image
-        source={item.image}
         width={CARD_WIDTH}
+        source={item.image}
         borderTopLeftRadius={CARD_BORDER_RADIUS}
         borderTopRightRadius={CARD_BORDER_RADIUS}
       />

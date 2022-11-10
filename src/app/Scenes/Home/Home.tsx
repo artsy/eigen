@@ -44,10 +44,7 @@ import { ActivityIndicator } from "./Components/ActivityIndicator"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { ArtworkRecommendationsRail } from "./Components/ArtworkRecommendationsRail"
 import { ContentCards } from "./Components/ContentCards"
-import {
-  HomeFeedOnboardingRail,
-  HomeFeedOnboardingRailItemProps,
-} from "./Components/HomeFeedOnboardingRail"
+import { HomeFeedOnboardingRailFragmentContainer } from "./Components/HomeFeedOnboardingRail"
 import { HomeHeader } from "./Components/HomeHeader"
 import { NewWorksForYouRail } from "./Components/NewWorksForYouRail"
 import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
@@ -104,27 +101,6 @@ const Home = (props: Props) => {
   const enableArtworkRecommendations = useFeatureFlag("AREnableHomeScreenArtworkRecommendations")
   const enableMyCollectionHFOnboarding = useFeatureFlag("AREnableMyCollectionHFOnboarding")
 
-  const onboardingRailData: HomeFeedOnboardingRailItemProps[] | [] = [
-    {
-      shouldShow: homePageAbove?.onboardingModule?.showMyCollectionCard!,
-      type: "MyC",
-      title: "Manage your collection",
-      subtitle: "Get powerful market insights about artworks you own.",
-      image: require("images/homefeed-my-collection-inboarding-0.webp"),
-      button: "Explore My Collection",
-    },
-    {
-      shouldShow: homePageAbove?.onboardingModule?.showSWACard!,
-      type: "SWA",
-      title: "Sell with Artsy ",
-      subtitle: "Get the best sales options for artworks from your collection.",
-      image: require("images/homefeed-my-collection-inboarding-1.webp"),
-      button: "Learn more",
-    },
-  ]
-
-  const onboardingRailDataToShow = onboardingRailData.filter((item) => item.shouldShow)
-
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
   let modules: HomeModule[] = compact([
     // Above-The-Fold Modules
@@ -158,11 +134,8 @@ const Home = (props: Props) => {
     {
       title: "Do More on Artsy",
       type: "homeFeedOnboarding",
-      data: onboardingRailDataToShow,
-      hidden:
-        !enableMyCollectionHFOnboarding ||
-        !homePageAbove?.onboardingModule ||
-        onboardingRailDataToShow.length === 0,
+      data: homePageAbove?.onboardingModule,
+      hidden: !enableMyCollectionHFOnboarding || !homePageAbove?.onboardingModule,
     },
     // Below-The-Fold Modules
     {
@@ -253,9 +226,9 @@ const Home = (props: Props) => {
             switch (item.type) {
               case "homeFeedOnboarding":
                 return (
-                  <HomeFeedOnboardingRail
+                  <HomeFeedOnboardingRailFragmentContainer
                     title={item.title}
-                    onboardingModuleData={item.data}
+                    onboardingModule={item.data}
                     mb={MODULE_SEPARATOR_HEIGHT}
                   />
                 )
@@ -431,8 +404,7 @@ export const HomeFragmentContainer = createRefetchContainer(
           ...ArtistRail_rail
         }
         onboardingModule @optionalField {
-          showMyCollectionCard
-          showSWACard
+          ...HomeFeedOnboardingRail_onboardingModule
         }
       }
     `,
