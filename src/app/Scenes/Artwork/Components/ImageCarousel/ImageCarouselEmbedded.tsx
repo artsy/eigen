@@ -1,4 +1,5 @@
 import * as Sentry from "@sentry/react-native"
+import querystring from "querystring"
 import { isPad } from "app/utils/hardware"
 import React, { useCallback, useContext } from "react"
 import { Animated, FlatList, NativeScrollEvent, NativeSyntheticEvent, Platform } from "react-native"
@@ -7,6 +8,8 @@ import { useScreenDimensions } from "shared/hooks"
 import { findClosestIndex, getMeasurements } from "./geometry"
 import { ImageCarouselContext, ImageDescriptor } from "./ImageCarouselContext"
 import { ImageWithLoadingState } from "./ImageWithLoadingState"
+import { Vimeo } from "react-native-vimeo-iframe"
+import { Box } from "palette"
 
 interface ImageCarouselEmbeddedProps {
   cardHeight: number
@@ -28,7 +31,7 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
   }
 
   const {
-    images,
+    media,
     embeddedFlatListRef: embeddedFlatListRef,
     embeddedImageRefs: embeddedImageRefs,
     xScrollOffsetAnimatedValue: xScrollOffsetAnimatedValue,
@@ -36,11 +39,10 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
     imageIndex,
   } = useContext(ImageCarouselContext)
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  const measurements = getMeasurements({ images, boundingBox: embeddedCardBoundingBox })
+  const measurements = getMeasurements({ images: media, boundingBox: embeddedCardBoundingBox })
   const offsets = measurements.map((m) => m.cumulativeScrollOffset)
 
-  const scrollEnabled = images.length > 1
+  const scrollEnabled = media.length > 1
 
   // update the imageIndex on scroll
   const onScroll = useCallback(
@@ -119,7 +121,7 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
     <FlatList<ImageDescriptor>
       // force full re-render on orientation change
       key={screenDimensions.orientation}
-      data={images}
+      data={media}
       horizontal
       ref={embeddedFlatListRef}
       showsHorizontalScrollIndicator={false}
@@ -131,15 +133,27 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
       })}
       snapToOffsets={offsets}
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      keyExtractor={(item) => item.url}
+      keyExtractor={(item) => item.url ?? item.playerUrl}
       decelerationRate="fast"
       onScroll={onScroll}
       scrollEventThrottle={50}
       onResponderRelease={onResponderRelease}
       accessibilityLabel="Image Carousel"
-      initialNumToRender={Math.min(images.length, 20)}
+      initialNumToRender={Math.min(media.length, 20)}
       renderItem={({ item, index }) => {
         const { cumulativeScrollOffset, ...styles } = measurements[index]
+
+        if (item.__typename === "Video") {
+          const { videoId, width, height, token } = extractVimeoData(item.playerUrl)
+          //player.vimeo.com/video/767444845?h=5ad7aa84ee&width=400&height=300'
+
+          return (
+            <Box background={"black"} width={styles.width} height={styles.height}>
+              <Vimeo videoId={videoId} params={`h=${token}`} />
+            </Box>
+          )
+        }
+
         return (
           <ImageWithLoadingState
             // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -152,10 +166,23 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
             ref={(ref) => {
               embeddedImageRefs[index] = ref! /* STRICTNESS_MIGRATION */
             }}
-            style={[styles, images.length === 1 ? { marginTop: 0, marginBottom: 0 } : {}]}
+            style={[styles, media.length === 1 ? { marginTop: 0, marginBottom: 0 } : {}]}
           />
         )
       }}
     />
   )
+}
+
+const extractVimeoData = (playerUrl: string) => {
+  const [url, queryParams] = playerUrl.split("?")
+  const videoId = url.replace("https://player.vimeo.com/video/", "")
+  const params = querystring.parse("?" + queryParams)
+
+  return {
+    videoId,
+    token: params["?h"],
+    width: params.width,
+    height: params.height,
+  }
 }

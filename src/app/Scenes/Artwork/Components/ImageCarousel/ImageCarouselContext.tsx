@@ -4,10 +4,16 @@ import React, { useMemo, useRef } from "react"
 import { Animated, FlatList, View } from "react-native"
 import { useTracking } from "react-tracking"
 import { GlobalState, useGlobalState } from "../../../../utils/useGlobalState"
+import { ImageCarousel_artwork$data } from "__generated__/ImageCarousel_artwork.graphql"
 
 export type ImageDescriptor = Pick<
   ImageCarousel_images$data[number],
   "deepZoom" | "height" | "width" | "url"
+>
+
+export type ImageDescriptor2 = Extract<
+  ImageCarousel_artwork$data["figures"][number],
+  "height" | "width" | "url"
 >
 
 export type ImageCarouselAction =
@@ -48,6 +54,9 @@ export interface ImageCarouselContext {
   fullScreenState: GlobalState<FullScreenState>
   isZoomedCompletelyOut: GlobalState<boolean>
   images: ImageDescriptor[]
+  videos: any
+  media: any
+  setVideoAsCover: boolean
   embeddedImageRefs: View[]
   embeddedFlatListRef: React.RefObject<FlatList<any>>
   xScrollOffsetAnimatedValue: React.RefObject<Animated.Value>
@@ -56,9 +65,13 @@ export interface ImageCarouselContext {
 
 export function useNewImageCarouselContext({
   images,
+  videos,
+  setVideoAsCover,
   onImageIndexChange,
 }: {
   images: ImageDescriptor[]
+  videos: any
+  setVideoAsCover: boolean
   onImageIndexChange?: (imageIndex: number) => void
 }): ImageCarouselContext {
   const embeddedImageRefs = useMemo(() => [], [])
@@ -70,6 +83,8 @@ export function useNewImageCarouselContext({
   const [isZoomedCompletelyOut, setIsZoomedCompletelyOut] = useGlobalState(true)
   const tracking = useTracking()
 
+  const media = setVideoAsCover ? [...videos, ...images] : [...images, ...videos]
+
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   return useMemo(
     () => ({
@@ -78,6 +93,9 @@ export function useNewImageCarouselContext({
       fullScreenState,
       isZoomedCompletelyOut,
       images,
+      videos,
+      setVideoAsCover,
+      media,
       embeddedImageRefs,
       embeddedFlatListRef,
       xScrollOffsetAnimatedValue,

@@ -127,6 +127,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
         )}
         <Spacer mb={2} />
         <ImageCarouselFragmentContainer
+          artwork={artwork}
           images={artwork.images as any /* STRICTNESS_MIGRATION */}
           cardHeight={screenDimensions.width >= 375 ? 340 : 290}
           onImageIndexChange={(imageIndex) => setCurrentImageIndex(imageIndex)}
@@ -204,6 +205,7 @@ export const ArtworkHeaderFragmentContainer = createFragmentContainer(ArtworkHea
     fragment ArtworkHeader_artwork on Artwork {
       ...ArtworkActions_artwork
       ...ArtworkTombstone_artwork
+      ...ImageCarousel_artwork
       images {
         ...ImageCarousel_images
         url: imageURL

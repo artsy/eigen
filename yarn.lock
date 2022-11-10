@@ -12661,6 +12661,11 @@ react-native-view-shot@3.4.0:
   resolved "https://registry.yarnpkg.com/react-native-view-shot/-/react-native-view-shot-3.4.0.tgz#787b31b2d0525a197864e12aaea214e905e97f9a"
   integrity sha512-b0CcWJGO0xLCXRsstIYRUEg/UStrR7uujQV9jFHRIVyPfBH0gRplT7Vlgimr+PX+Xg+9/rCyIKPjqK1Knv8hxg==
 
+react-native-vimeo-iframe@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-vimeo-iframe/-/react-native-vimeo-iframe-1.2.0.tgz#c85d0a96dff6b29d6c9bcd71b08a5e834cf02549"
+  integrity sha512-BCEPg0rMqW5RRRW3xO08jvuEr7upaf1uu1vrO9GR6IeFhb/cl0tNCayHt6n2jp6vyY+CR9Xzr3LZ2H3mvdRlYw==
+
 react-native-vision-camera@2.14.1:
   version "2.14.1"
   resolved "https://registry.yarnpkg.com/react-native-vision-camera/-/react-native-vision-camera-2.14.1.tgz#6b9fecd5c5976167b8e8752455be24cd12c3d84f"

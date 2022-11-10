@@ -16,6 +16,7 @@ import {
 } from "./ImageCarouselContext"
 import { ImageCarouselEmbedded } from "./ImageCarouselEmbedded"
 import { IndicatorType, PaginationIndicator } from "./ImageCarouselPaginationIndicator"
+import { ImageCarousel_artwork$data } from "__generated__/ImageCarousel_artwork.graphql"
 
 export interface CarouselImageDescriptor extends ImageDescriptor {
   imageVersions?: string[]
@@ -33,6 +34,7 @@ export interface ImageCarouselProps {
   onImageIndexChange?: (imageIndex: number) => void
   paginationIndicatorType?: IndicatorType
   onImagePressed?: () => void
+  artwork: ImageCarousel_artwork$data
 }
 
 /**
@@ -53,7 +55,10 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
   // TODO:- Deepzoom for local images?
   const disableDeepZoom = props.images.some((image) => isALocalImage(image.url))
 
-  const images: ImageDescriptor[] = useMemo(() => {
+  const videos = props.artwork.figures.filter((artwork) => artwork.__typename === "Video")
+  const setVideoAsCover = !!props.artwork.isSetVideoAsCover
+
+  const images = useMemo(() => {
     let result = props.images
       .map((image): MappedImageDescriptor | null => {
         if (!image.height || !image.width || !image.url) {
@@ -61,22 +66,27 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
           return null
         }
         const { width, height } = fitInside(embeddedCardBoundingBox, image as MappedImageDescriptor)
+
+        let url
+        if (isALocalImage(image.url) || !imageHasVersions(image)) {
+          url = image.url
+        } else {
+          url = createGeminiUrl({
+            imageURL: image.url.replace(
+              ":version",
+              getBestImageVersionForThumbnail(image.imageVersions as string[])
+            ),
+            // upscale to match screen resolution
+            width: width * PixelRatio.get(),
+            height: height * PixelRatio.get(),
+          })
+        }
+
         return {
+          deepZoom: image.deepZoom,
           width,
           height,
-          url:
-            isALocalImage(image.url) || !imageHasVersions(image)
-              ? image.url
-              : createGeminiUrl({
-                  imageURL: image.url.replace(
-                    ":version",
-                    getBestImageVersionForThumbnail(image.imageVersions as string[])
-                  ),
-                  // upscale to match screen resolution
-                  width: width * PixelRatio.get(),
-                  height: height * PixelRatio.get(),
-                }),
-          deepZoom: image.deepZoom,
+          url,
         }
       })
       .filter((mappedImage): mappedImage is MappedImageDescriptor => Boolean(mappedImage))
@@ -95,7 +105,12 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
     return result
   }, [props.images])
 
-  const context = useNewImageCarouselContext({ images, onImageIndexChange })
+  const context = useNewImageCarouselContext({
+    images,
+    videos,
+    setVideoAsCover,
+    onImageIndexChange,
+  })
 
   context.fullScreenState.useUpdates()
 
@@ -130,6 +145,20 @@ export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarou
             width: Width
             height: Height
           }
+        }
+      }
+    }
+  `,
+  artwork: graphql`
+    fragment ImageCarousel_artwork on Artwork {
+      isSetVideoAsCover
+
+      figures {
+        __typename
+        ... on Video {
+          width
+          height
+          playerUrl
         }
       }
     }

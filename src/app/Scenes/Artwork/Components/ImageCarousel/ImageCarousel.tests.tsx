@@ -103,7 +103,9 @@ describe("ImageCarouselFragmentContainer", () => {
           query ImageCarouselTestsQuery @raw_response_type {
             artwork(id: "unused") {
               images {
-                ...ImageCarousel_images
+                internalID
+                # FIXME
+                # ...ImageCarousel_images
               }
             }
           }
