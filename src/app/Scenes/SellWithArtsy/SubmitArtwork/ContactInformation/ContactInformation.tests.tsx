@@ -1,8 +1,10 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { fireEvent } from "@testing-library/react-native"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { GlobalStore } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils/"
 import { updateConsignSubmission } from "../../mutations"
 import { STEPS, SubmitSWAArtworkFlow } from "../SubmitArtwork"
@@ -198,8 +200,69 @@ describe("ContactInformationForm", () => {
   })
 
   describe("analytics", () => {
-    // TODO: Implement after tracking for Contact Information is added
-    // https://artsyproduct.atlassian.net/browse/CX-3106
+    let trackEvent: (data: Partial<{}>) => void
+    beforeEach(() => {
+      trackEvent = useTracking().trackEvent
+      GlobalStore.actions.auth.setState({
+        userID: "my-id",
+      })
+    })
+
+    afterEach(() => {
+      GlobalStore.actions.auth.setState({
+        userID: null,
+      })
+    })
+
+    it("tracks uploadPhotosCompleted event on save", async () => {
+      const { getByTestId } = renderWithWrappers(
+        <SubmitSWAArtworkFlow
+          navigation={jest.fn() as any}
+          stepsInOrder={[
+            STEPS.ContactInformation,
+            // Add a random step so that STEPS.ContactInformation is not the last step
+            STEPS.ArtworkDetails,
+          ]}
+        />
+      )
+
+      await flushPromiseQueue()
+
+      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, {
+          Me: () => ({
+            ...mockQueryData,
+          }),
+        })
+      )
+
+      await flushPromiseQueue()
+
+      const contactInfoCTA = getByTestId("Submission_ContactInformation_Button")
+      fireEvent.press(contactInfoCTA)
+
+      await flushPromiseQueue()
+
+      mockEnvironment.mock.resolveMostRecentOperation((operation) => {
+        return MockPayloadGenerator.generate(operation, {
+          consignmentSubmission: () => ({
+            internalID: "54321",
+          }),
+        })
+      })
+
+      await flushPromiseQueue()
+
+      expect(trackEvent).toHaveBeenCalled()
+      expect(trackEvent).toHaveBeenCalledWith({
+        action: ActionType.contactInformationCompleted,
+        context_owner_type: OwnerType.consignmentFlow,
+        context_module: ContextModule.contactInformation,
+        submission_id: '<mock-value-for-field-"internalID">',
+        user_email: mockQueryData.email,
+        user_id: "my-id",
+      })
+    })
   })
 })
 
