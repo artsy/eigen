@@ -83,6 +83,8 @@ First, ask for your apple developer account to be added on the project and login
 
 #### Using terminal
 
+> Make sure that you have a simulator running before running the command. In order to do so you can use the `yarn open-sim` command
+
 ```sh
 yarn ios
 ```
