@@ -53,7 +53,7 @@ const SalesRail: React.FC<Props & RailScrollProps> = ({
 
   return (
     <Flex mb={mb}>
-      <Flex pl="2" pr="2">
+      <Flex px={2}>
         <SectionTitle
           title={title}
           subtitle={subtitle}

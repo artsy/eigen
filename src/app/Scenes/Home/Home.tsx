@@ -44,6 +44,7 @@ import { ActivityIndicator } from "./Components/ActivityIndicator"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { ArtworkRecommendationsRail } from "./Components/ArtworkRecommendationsRail"
 import { ContentCards } from "./Components/ContentCards"
+import { HomeFeedOnboardingRailFragmentContainer } from "./Components/HomeFeedOnboardingRail"
 import { HomeHeader } from "./Components/HomeHeader"
 import { NewWorksForYouRail } from "./Components/NewWorksForYouRail"
 import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
@@ -98,6 +99,7 @@ const Home = (props: Props) => {
   } = props
 
   const enableArtworkRecommendations = useFeatureFlag("AREnableHomeScreenArtworkRecommendations")
+  const enableMyCollectionHFOnboarding = useFeatureFlag("AREnableMyCollectionHFOnboarding")
 
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
   let modules: HomeModule[] = compact([
@@ -128,6 +130,12 @@ const Home = (props: Props) => {
       type: "sales",
       data: homePageAbove?.salesModule,
       prefetchUrl: "/auctions",
+    },
+    {
+      title: "Do More on Artsy",
+      type: "homeFeedOnboarding",
+      data: homePageAbove?.onboardingModule,
+      hidden: !enableMyCollectionHFOnboarding || !homePageAbove?.onboardingModule,
     },
     // Below-The-Fold Modules
     {
@@ -216,6 +224,14 @@ const Home = (props: Props) => {
             }
 
             switch (item.type) {
+              case "homeFeedOnboarding":
+                return (
+                  <HomeFeedOnboardingRailFragmentContainer
+                    title={item.title}
+                    onboardingModule={item.data}
+                    mb={MODULE_SEPARATOR_HEIGHT}
+                  />
+                )
               case "contentCards":
                 return <ContentCards mb={MODULE_SEPARATOR_HEIGHT} />
               case "articles":
@@ -386,6 +402,9 @@ export const HomeFragmentContainer = createRefetchContainer(
         recommendedArtistsArtistModule: artistModule(key: SUGGESTED) {
           id
           ...ArtistRail_rail
+        }
+        onboardingModule @optionalField {
+          ...HomeFeedOnboardingRail_onboardingModule
         }
       }
     `,
