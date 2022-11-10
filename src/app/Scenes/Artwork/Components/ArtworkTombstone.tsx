@@ -7,7 +7,6 @@ import { CascadingEndTimesBanner } from "./CascadingEndTimesBanner"
 
 export interface ArtworkTombstoneProps {
   artwork: ArtworkTombstone_artwork$data
-  isArtworkRedesignEnabled: boolean
 }
 
 export interface ArtworkTombstoneState {
