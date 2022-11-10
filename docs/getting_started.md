@@ -79,7 +79,15 @@ yarn start
 
 ### Run the iOS app
 
-Ask for your apple developer account to be added on the project and login with your apple id under settings/accounts/apple Id
+First, ask for your apple developer account to be added on the project and login with your apple id under settings/accounts/apple Id.
+
+#### Using terminal
+
+```sh
+yarn ios
+```
+
+#### Using Xcode
 
 Open the app in Xcode:
 
