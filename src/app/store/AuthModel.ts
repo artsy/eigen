@@ -2,7 +2,7 @@ import { ActionType, AuthService, CreatedAccount } from "@artsy/cohesion"
 import { appleAuth } from "@invertase/react-native-apple-authentication"
 import CookieManager from "@react-native-cookies/cookies"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
-import { fbAction, reportAuthFailure } from "app/auth/logAuthActions"
+import { appleAction, fbAction, googleAction, reportAuthFailure } from "app/auth/logAuthActions"
 import { OAuthProvider } from "app/auth/types"
 import * as RelayCache from "app/relay/RelayCache"
 import { isArtsyEmail } from "app/utils/general"
@@ -625,7 +625,6 @@ export const getAuthModel = (): AuthModel => ({
               }
             } else {
               const res = await resultGravityAccessToken.json()
-
               fbAction("signin option !201", JSON.stringify({ res }))
               reportAuthFailure("signin option !201")
               showError(res, reject, "facebook")
@@ -676,16 +675,26 @@ export const getAuthModel = (): AuthModel => ({
     })
   }),
   authGoogle: thunk(async (actions, options) => {
+    googleAction("start", "authGoogle")
     return await new Promise<AuthPromiseResolveType>(async (resolve, reject) => {
       try {
+        googleAction("before play services check", "")
         if (!(await GoogleSignin.hasPlayServices())) {
+          googleAction("no play services error", "")
+          reportAuthFailure("no play services error")
           reject(new AuthError("Play services are not available."))
           return
         }
+
+        googleAction("before sign in", "")
         const userInfo = await GoogleSignin.signIn()
+        googleAction("before access token", JSON.stringify(userInfo))
         const accessToken = (await GoogleSignin.getTokens()).accessToken
+        googleAction("after access token", JSON.stringify(accessToken))
 
         if (options.signInOrUp === "signUp") {
+          googleAction("options signup", JSON.stringify(options))
+
           const resultGravitySignUp = userInfo.user.name
             ? await actions.signUp({
                 email: userInfo.user.email,
@@ -696,10 +705,18 @@ export const getAuthModel = (): AuthModel => ({
               })
             : { success: false, message: "missing name in google's userInfo" }
 
+          googleAction("options signup gravity sign up", JSON.stringify(resultGravitySignUp))
+
           if (resultGravitySignUp.success) {
+            googleAction("options signup gravity sign up success", "")
             resolve({ success: true })
             return
           } else {
+            googleAction(
+              "options signup gravity sign up failure",
+              JSON.stringify(resultGravitySignUp)
+            )
+            reportAuthFailure("options signup gravity sign up failure")
             reject(
               new AuthError(
                 resultGravitySignUp.message,
@@ -712,6 +729,7 @@ export const getAuthModel = (): AuthModel => ({
         }
 
         if (options.signInOrUp === "signIn") {
+          googleAction("options signin", JSON.stringify(options))
           // we need to get X-ACCESS-TOKEN before actual sign in
           const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
             path: `/oauth2/access_token`,
@@ -729,9 +747,15 @@ export const getAuthModel = (): AuthModel => ({
             },
           })
 
+          googleAction("options signin access token", JSON.stringify(resultGravityAccessToken))
+
           if (resultGravityAccessToken.status === 201) {
+            googleAction("options signin 201", JSON.stringify(resultGravityAccessToken))
+
             const { access_token: userAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
             const { email } = await actions.getUser({ accessToken: userAccessToken })
+
+            googleAction("options signin 201 get user", JSON.stringify({ email, userAccessToken }))
 
             const resultGravitySignIn = await actions.signIn({
               oauthProvider: "google",
@@ -740,21 +764,36 @@ export const getAuthModel = (): AuthModel => ({
               onSignIn: options.onSignIn,
             })
 
+            googleAction(
+              "options signin 201 resultGravitySignIn",
+              JSON.stringify(resultGravitySignIn)
+            )
+
             if (resultGravitySignIn) {
+              googleAction("options signin 201 resultGravitySignIn success", "")
               resolve({ success: true })
               return
             } else {
+              googleAction(
+                "options signin 201 resultGravitySignIn failure",
+                JSON.stringify(resultGravitySignIn)
+              )
+              reportAuthFailure("options signin 201 resultGravitySignIn failure")
               reject(new AuthError("Could not log in"))
               return
             }
           } else {
             const res = await resultGravityAccessToken.json()
+            googleAction("options signin !201", JSON.stringify({ res }))
+            reportAuthFailure("options signin !201")
             showError(res, reject, "google")
           }
         }
       } catch (e) {
         if (e instanceof Error) {
           if (e.message === "DEVELOPER_ERROR") {
+            googleAction("developer error", JSON.stringify(e))
+            reportAuthFailure("developer error")
             reject(
               new AuthError(
                 "Google auth does not work in firebase beta, try again in a playstore beta",
@@ -763,35 +802,49 @@ export const getAuthModel = (): AuthModel => ({
             )
             return
           }
+          googleAction("error logging in with google", JSON.stringify(e))
+          reportAuthFailure("error logging in with google")
           reject(new AuthError("Error logging in with google", e.message))
           return
         }
+        googleAction("error logging in with google", JSON.stringify(e))
+        reportAuthFailure("error logging in with google")
         reject(new AuthError("Error logging in with google"))
         return
       }
     })
   }),
   authApple: thunk(async (actions, { agreedToReceiveEmails, onSignIn }) => {
+    appleAction("start", "authApple")
     return await new Promise<AuthPromiseResolveType>(async (resolve, reject) => {
       // we cannot have separated logic for sign in and sign up with apple, as with google or facebook,
       // because apple returns email only on the FIRST auth attempt, so we run sign up and sign in one by one
       let signInOrUp: "signIn" | "signUp" = "signUp"
 
+      appleAction("before userInfo request", signInOrUp)
       const userInfo = await appleAuth.performRequest({
         requestedOperation: appleAuth.Operation.LOGIN,
         requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
       })
 
+      appleAction("after userInfo request", JSON.stringify(userInfo))
+
       const idToken = userInfo.identityToken
       if (!idToken) {
+        appleAction("no id token", JSON.stringify(userInfo))
+        reportAuthFailure("no id token failure")
         reject(new AuthError("Failed to authenticate using apple sign in"))
         return
       }
       const appleUid = userInfo.user
 
       if (signInOrUp === "signUp") {
+        appleAction("signUp option", signInOrUp)
+
         const firstName = userInfo.fullName?.givenName ? userInfo.fullName.givenName : ""
         const lastName = userInfo.fullName?.familyName ? userInfo.fullName.familyName : ""
+
+        appleAction("signUp option before gravity signup", signInOrUp)
 
         const resultGravitySignUp = userInfo.email
           ? await actions.signUp({
@@ -808,7 +861,10 @@ export const getAuthModel = (): AuthModel => ({
               message: "missing email in apple's userInfo",
             }
 
+        appleAction("signUp option after gravity signup", JSON.stringify(resultGravitySignUp))
+
         if (resultGravitySignUp.success) {
+          appleAction("signUp option gravity sign up success", JSON.stringify(resultGravitySignUp))
           resolve(resultGravitySignUp)
           return
         }
@@ -817,9 +873,14 @@ export const getAuthModel = (): AuthModel => ({
           // because userinfo.email is returned only the first time
           resultGravitySignUp.error === "Apple UserInfo Email Is Null"
 
+        appleAction("shouldSignIn", JSON.stringify(resultGravitySignUp))
+
         if (shouldSignIn) {
+          appleAction("shouldSignIn true", JSON.stringify(resultGravitySignUp))
           signInOrUp = "signIn"
         } else {
+          appleAction("shouldSignIn false error", JSON.stringify(resultGravitySignUp))
+          reportAuthFailure("shouldSignIn false error")
           reject(
             new AuthError(
               resultGravitySignUp.message,
@@ -832,6 +893,8 @@ export const getAuthModel = (): AuthModel => ({
       }
 
       if (signInOrUp === "signIn") {
+        appleAction("signIn option", "signIn")
+
         // we need to get X-ACCESS-TOKEN before actual sign in
         const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
           path: `/oauth2/access_token`,
@@ -850,9 +913,18 @@ export const getAuthModel = (): AuthModel => ({
           },
         })
 
+        appleAction("signIn option access token", JSON.stringify(resultGravityAccessToken))
+
         if (resultGravityAccessToken.status === 201) {
+          appleAction("signIn option 201", JSON.stringify(resultGravityAccessToken))
+
           const { access_token: userAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
           const { email } = await actions.getUser({ accessToken: userAccessToken })
+
+          appleAction(
+            "signIn option 201 user accessToken",
+            JSON.stringify({ userAccessToken, email })
+          )
 
           const resultGravitySignIn = await actions.signIn({
             oauthProvider: "apple",
@@ -862,15 +934,29 @@ export const getAuthModel = (): AuthModel => ({
             onSignIn,
           })
 
+          appleAction("signIn option 201 resultGravitySignIn", JSON.stringify(resultGravitySignIn))
+
           if (resultGravitySignIn) {
+            appleAction(
+              "signIn option 201 resultGravitySignIn success",
+              JSON.stringify(resultGravitySignIn)
+            )
+
             resolve({ success: true })
             return
           } else {
+            appleAction(
+              "signIn option 201 resultGravitySignIn failure",
+              JSON.stringify(resultGravitySignIn)
+            )
+            reportAuthFailure("signIn option 201 resultGravitySignIn failure")
             reject(new AuthError("Could not log in"))
             return
           }
         } else {
           const res = await resultGravityAccessToken.json()
+          appleAction("sign in error", JSON.stringify({ res }))
+          reportAuthFailure("sign in error")
           showError(res, reject, "apple")
         }
       }
