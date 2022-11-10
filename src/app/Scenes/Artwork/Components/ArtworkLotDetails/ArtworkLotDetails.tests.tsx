@@ -74,7 +74,8 @@ describe("ArtworkLotDetails", () => {
     expect(queryByText("$500")).toBeTruthy()
     expect(queryByText("Lot closes")).toBeTruthy()
     expect(queryByText(formatLotDateTime(sale.endAt))).toBeTruthy()
-    expect(queryByTestId("buyers-premium-and-shipping")).toBeTruthy()
+    expect(queryByTestId("buyers-premium")).toBeTruthy()
+    expect(queryByTestId("shipping-info")).toBeTruthy()
     expect(queryByTestId("conditions-of-sale")).toBeTruthy()
     expect(queryByTestId("have-a-question")).toBeTruthy()
   })
@@ -100,12 +101,13 @@ describe("ArtworkLotDetails", () => {
 
     expect(queryByText("Lot closes")).toBeNull()
     expect(queryByText(formatLotDateTime(sale.endAt))).toBeNull()
-    expect(queryByTestId("buyers-premium-and-shipping")).toBeNull()
+    expect(queryByTestId("buyers-premium")).toBeNull()
+    expect(queryByTestId("shipping-info")).toBeNull()
     expect(queryByTestId("conditions-of-sale")).toBeNull()
     expect(queryByTestId("have-a-question")).toBeNull()
   })
 
-  it("should hide only the bid related info for live sale in progress", async () => {
+  it("should hide the extra info for live sale in progress", async () => {
     const { queryByText, queryByTestId, queryByLabelText } = renderWithHookWrappersTL(
       <TestRenderer auctionState={AuctionTimerState.LIVE_INTEGRATION_ONGOING} />,
       mockEnvironment
@@ -122,7 +124,8 @@ describe("ArtworkLotDetails", () => {
     expect(queryByText("$500")).toBeNull()
 
     expect(queryByText(formatLotDateTime(sale.endAt))).toBeNull()
-    expect(queryByTestId("buyers-premium-and-shipping")).toBeNull()
+    expect(queryByTestId("buyers-premium")).toBeNull()
+    expect(queryByTestId("shipping-info")).toBeNull()
 
     // Check other info
     expect(queryByText("Estimated value")).toBeTruthy()
@@ -168,7 +171,7 @@ describe("ArtworkLotDetails", () => {
     })
     await flushPromiseQueue()
 
-    expect(queryByTestId("buyers-premium-and-shipping")).toBeNull()
+    expect(queryByTestId("buyers-premium")).toBeNull()
   })
 
   it("should render correct partner info", async () => {
