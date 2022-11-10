@@ -38,6 +38,6 @@ describe("HomeFeedOnboardingRail", () => {
       }),
     })
 
-    expect(getByTestId("my-collection-hf-onboadring")).toBeTruthy()
+    expect(getByTestId("my-collection-hf-onboadring-rail")).toBeTruthy()
   })
 })

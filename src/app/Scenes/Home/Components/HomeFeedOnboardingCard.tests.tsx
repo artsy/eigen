@@ -12,14 +12,6 @@ describe("HomeFeedOnboardingCard", () => {
     expect(getByText(mockItem.title)).toBeTruthy()
   })
 
-  it("does not render when should show is false", () => {
-    const { queryAllByText } = renderWithWrappers(
-      <HomeFeedOnboardingCard item={mockItemNotShown} />
-    )
-
-    expect(queryAllByText(mockItemNotShown.title)).toHaveLength(0)
-  })
-
   it("button works", async () => {
     const { getByText } = renderWithWrappers(<HomeFeedOnboardingCard item={mockItem} />)
     fireEvent.press(getByText(mockItem.button))
@@ -34,13 +26,4 @@ const mockItem: HomeFeedOnboardingRailItemProps = {
   subtitle: "Get the best sales options for artworks from your collection.",
   image: require("images/homefeed-my-collection-inboarding-1.webp"),
   button: "Learn more",
-}
-
-const mockItemNotShown: HomeFeedOnboardingRailItemProps = {
-  shouldShow: false,
-  type: "MyC",
-  title: "Manage your collection",
-  subtitle: "Get powerful market insights about artworks you own.",
-  image: require("images/homefeed-my-collection-inboarding-0.webp"),
-  button: "Explore My Collection",
 }
