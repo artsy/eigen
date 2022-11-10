@@ -2,7 +2,7 @@ import { ActionType, AuthService, CreatedAccount } from "@artsy/cohesion"
 import { appleAuth } from "@invertase/react-native-apple-authentication"
 import CookieManager from "@react-native-cookies/cookies"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
-import { logAuthAction } from "app/auth/logAuthActions"
+import { fbAction } from "app/auth/logAuthActions"
 import { OAuthProvider } from "app/auth/types"
 import * as RelayCache from "app/relay/RelayCache"
 import { isArtsyEmail } from "app/utils/general"
@@ -486,21 +486,22 @@ export const getAuthModel = (): AuthModel => ({
     }
   }),
   authFacebook: thunk(async (actions, options) => {
-    logAuthAction("AUTH FACEBOOK 1", "authFacebook")
+    fbAction("start", "authFacebook")
 
     return await new Promise<AuthPromiseResolveType>(async (resolve, reject) => {
       try {
-        logAuthAction("AUTH FACEBOOK 2 - before loginWithPermissions", "")
+        fbAction("before loginWithPermissions", "")
         const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions([
           "public_profile",
           "email",
         ])
 
         const data1 = JSON.stringify({ declinedPermissions, isCancelled })
-        logAuthAction("AUTH FACEBOOK 2 - after loginWithPermissions", data1)
+        fbAction("after loginWithPermissions", data1)
 
         if (declinedPermissions?.includes("email")) {
-          logAuthAction("AUTH FACEBOOK 2 - error", "no email permission")
+          fbAction("declined email permission", "no email permission")
+          // TODO: fire error here
           reject(
             new AuthError("Please allow the use of email to continue.", "Email Permission Declined")
           )
@@ -508,23 +509,25 @@ export const getAuthModel = (): AuthModel => ({
         }
         const accessToken = !isCancelled && (await AccessToken.getCurrentAccessToken())
         if (!accessToken) {
-          logAuthAction("AUTH FACEBOOK 2 - error", "no access token")
+          fbAction("no access token", "no access token")
+          // TODO: fire error here
+          reject(new AuthError("Could not log in"))
           return
         }
 
         const responseFacebookInfoCallback = async (error: any | null, result: any | null) => {
-          logAuthAction("AUTH FACEBOOK callback 1", JSON.stringify({ error, result }))
+          fbAction("callback start", JSON.stringify({ error, result }))
+
           if (error) {
-            logAuthAction("AUTH FACEBOOK callback 1 - error", JSON.stringify({ error }))
+            fbAction("callback error", JSON.stringify({ error }))
+            // TODO: fire error here
             reject(new AuthError("Error fetching facebook data", error))
             return
           }
 
           if (!result || !result.email) {
-            logAuthAction(
-              "AUTH FACEBOOK callback 1 - error - no result or email ",
-              JSON.stringify({ result })
-            )
+            fbAction("callback no result or email", JSON.stringify({ result }))
+            // TODO: fire error here
             reject(
               new AuthError(
                 "There is no email associated with your Facebook account. Please log in using your email and password instead."
@@ -534,7 +537,7 @@ export const getAuthModel = (): AuthModel => ({
           }
 
           if (options.signInOrUp === "signUp") {
-            logAuthAction("AUTH FACEBOOK callback - signup option 1", JSON.stringify({ options }))
+            fbAction("callback signup option start", JSON.stringify({ options }))
             const resultGravitySignUp = await actions.signUp({
               email: result.email as string,
               name: result.name as string,
@@ -543,15 +546,18 @@ export const getAuthModel = (): AuthModel => ({
               agreedToReceiveEmails: options.agreedToReceiveEmails,
             })
 
-            logAuthAction(
-              "AUTH FACEBOOK callback - signup option 2",
+            fbAction(
+              "callback signup option gravity result",
               JSON.stringify({ resultGravitySignUp })
             )
 
             if (resultGravitySignUp.success) {
+              fbAction("callback signup option success", JSON.stringify({ resultGravitySignUp }))
               resolve({ success: true })
               return
             } else {
+              fbAction("callback signup option failure", JSON.stringify({ resultGravitySignUp }))
+              // TODO: fire error here
               reject(
                 new AuthError(
                   resultGravitySignUp.message,
@@ -564,7 +570,7 @@ export const getAuthModel = (): AuthModel => ({
           }
 
           if (options.signInOrUp === "signIn") {
-            logAuthAction("AUTH FACEBOOK callback - signin option 1", JSON.stringify({ options }))
+            fbAction("signin option start", JSON.stringify({ options }))
 
             // we need to get X-ACCESS-TOKEN before actual sign in
             const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
@@ -583,16 +589,10 @@ export const getAuthModel = (): AuthModel => ({
               },
             })
 
-            logAuthAction(
-              "AUTH FACEBOOK callback - signin option 2",
-              JSON.stringify({ resultGravityAccessToken })
-            )
+            fbAction("signin option gravity result", JSON.stringify({ resultGravityAccessToken }))
 
             if (resultGravityAccessToken.status === 201) {
-              logAuthAction(
-                "AUTH FACEBOOK callback - signin option 201 3",
-                JSON.stringify({ resultGravityAccessToken })
-              )
+              fbAction("signin option 201", JSON.stringify({ resultGravityAccessToken }))
               const { access_token: userAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
               const { email } = await actions.getUser({ accessToken: userAccessToken })
               const resultGravitySignIn = await actions.signIn({
@@ -602,27 +602,38 @@ export const getAuthModel = (): AuthModel => ({
                 onSignIn: options.onSignIn,
               })
 
-              logAuthAction(
-                "AUTH FACEBOOK callback - signin option 201 4",
+              fbAction(
+                "signin option 201 gravity sign in result",
                 JSON.stringify({ resultGravitySignIn })
               )
 
               if (resultGravitySignIn) {
+                fbAction(
+                  "signin option 201 gravity sign in result success",
+                  JSON.stringify({ resultGravitySignIn })
+                )
                 resolve({ success: true })
                 return
               } else {
+                fbAction(
+                  "signin option 201 gravity sign in result failure",
+                  JSON.stringify({ resultGravitySignIn })
+                )
+                // TODO: fire error here
                 reject(new AuthError("Could not log in"))
                 return
               }
             } else {
               const res = await resultGravityAccessToken.json()
-              logAuthAction("AUTH FACEBOOK callback - signin option !201", JSON.stringify({ res }))
+
+              fbAction("signin option !201", JSON.stringify({ res }))
+              // TODO: fire error here
               showError(res, reject, "facebook")
             }
           }
         }
 
-        logAuthAction("AUTH FACEBOOK callback - before info request", "")
+        fbAction("callback before info request", "")
 
         // get info from facebook
         const infoRequest = new GraphRequest(
@@ -637,11 +648,12 @@ export const getAuthModel = (): AuthModel => ({
           },
           responseFacebookInfoCallback
         )
-        logAuthAction("AUTH FACEBOOK callback - making info request", JSON.stringify(infoRequest))
+        fbAction("making info request", JSON.stringify(infoRequest))
         new GraphRequestManager().addRequest(infoRequest).start()
       } catch (e) {
         if (e instanceof Error) {
           if (e.message === "User logged in as different Facebook user.") {
+            fbAction("logged in as different facebook user", "")
             // odd and hopefully shouldn't happen often
             // if the user has a valid session with another account
             // and tries to log in with a new account they will hit this error
@@ -650,9 +662,14 @@ export const getAuthModel = (): AuthModel => ({
             GlobalStore.actions.auth.authFacebook(options)
           }
 
+          fbAction("error logging in", e.message)
+          // TODO: fire error here
           reject(new AuthError("Error logging in with facebook", e.message))
           return
         }
+
+        fbAction("error logging in", "")
+        // TODO: fire error here
         reject(new AuthError("Error logging in with facebook"))
         return
       }
