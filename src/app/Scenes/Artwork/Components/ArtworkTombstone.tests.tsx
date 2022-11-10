@@ -1,150 +1,95 @@
-import { fireEvent } from "@testing-library/react-native"
+import { screen } from "@testing-library/react-native"
 import { ArtworkTombstone_artwork$data } from "__generated__/ArtworkTombstone_artwork.graphql"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
-import { navigate } from "app/navigation/navigate"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { ArtworkTombstone } from "./ArtworkTombstone"
+import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
+import { Theme } from "palette"
+import { graphql } from "react-relay"
+import { ArtworkTombstoneFragmentContainer } from "./ArtworkTombstone"
+
+jest.unmock("react-relay")
 
 describe("ArtworkTombstone", () => {
-  it("renders fields correctly", () => {
-    const { queryByText } = renderWithWrappers(
-      <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-    )
-
-    expect(queryByText("Hello im a title, 1992")).toBeTruthy()
-
-    expect(queryByText("Lot 8")).toBeNull()
-    expect(queryByText("Cool Auction")).toBeNull()
-    expect(queryByText("Estimated value: CHF 160,000–CHF 230,000")).toBeNull()
+  const { renderWithRelay } = setupTestWrapperTL({
+    Component: (props) => (
+      <Theme>
+        <ArtworkTombstoneFragmentContainer {...props} />
+      </Theme>
+    ),
+    query: graphql`
+      query ArtworkTombstone_Test_Query {
+        artwork(id: "test-artwork") {
+          ...ArtworkTombstone_artwork
+        }
+      }
+    `,
   })
 
-  it("renders auction fields correctly", () => {
-    const { queryByText } = renderWithWrappers(
-      <ArtworkTombstone artwork={artworkTombstoneAuctionArtwork} />
-    )
+  it("renders fields correctly", async () => {
+    renderWithRelay({
+      Artwork: () => ({
+        ...artworkTombstoneArtwork,
+      }),
+    })
 
-    expect(queryByText("Lot 8")).toBeTruthy()
-    expect(queryByText("Cool Auction")).toBeTruthy()
-    expect(queryByText("Estimated value: CHF 160,000–CHF 230,000")).toBeTruthy()
+    await flushPromiseQueue()
+
+    expect(screen.queryByText("Hello im a title, 1992")).toBeTruthy()
+
+    expect(screen.queryByText("Lot 8")).toBeNull()
+    expect(screen.queryByText("Cool Auction")).toBeNull()
+    expect(screen.queryByText("Estimated value: CHF 160,000–CHF 230,000")).toBeNull()
   })
 
-  it("redirects to artist page when artist name is clicked", () => {
-    const { queryByText, getByText } = renderWithWrappers(
-      <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-    )
-
-    expect(queryByText(/Andy Warhol/)).toBeTruthy()
-    fireEvent.press(getByText(/Andy Warhol/))
-
-    expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol")
-  })
-
-  describe("for an artwork with more than 3 artists", () => {
-    it("truncates artist names", () => {
-      const { queryByText } = renderWithWrappers(
-        <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-      )
-
-      expect(queryByText(/Andy Warhol/)).toBeTruthy()
-      expect(queryByText(/Alex Katz/)).toBeTruthy()
-      expect(queryByText(/Pablo Picasso/)).toBeTruthy()
-      expect(queryByText("2 more")).toBeTruthy()
-      expect(queryByText("Barbara Kruger")).toBeNull()
-      expect(queryByText("Banksy")).toBeNull()
+  it("renders auction fields correctly", async () => {
+    renderWithRelay({
+      Artwork: () => ({
+        ...artworkTombstoneAuctionArtwork,
+      }),
     })
 
-    it("doesn't show follow button", () => {
-      const { queryByText } = renderWithWrappers(
-        <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-      )
+    await flushPromiseQueue()
 
-      expect(queryByText("Follow")).toBeNull()
-    })
-
-    it("shows truncated artist names when 'x more' is clicked", () => {
-      const { queryByText, getByText } = renderWithWrappers(
-        <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-      )
-
-      fireEvent.press(getByText("2 more"))
-
-      expect(queryByText("2 more")).toBeNull()
-      expect(queryByText(/Barbara Kruger/)).toBeTruthy()
-      expect(queryByText(/Banksy/)).toBeTruthy()
-    })
+    expect(screen.queryByText("Lot 8")).toBeTruthy()
+    expect(screen.queryByText("Cool Auction")).toBeTruthy()
+    expect(screen.queryByText("Estimated value: CHF 160,000–CHF 230,000")).toBeTruthy()
   })
 
   describe("for an artwork in a sale with cascading end times or popcorn bidding", () => {
     const cascadingMessage = "Lots will close at 1-minute intervals."
     const popcornMessage = "Closing times may be extended due to last-minute competitive bidding. "
     it("renders the notification banner with cascading message", () => {
-      const { queryByText } = renderWithWrappers(
-        <ArtworkTombstone artwork={artworkTombstoneCascadingEndTimesAuctionArtwork()} />
-      )
+      renderWithRelay({
+        Artwork: () => ({
+          ...artworkTombstoneCascadingEndTimesAuctionArtwork(),
+        }),
+      })
 
-      expect(queryByText(cascadingMessage)).toBeTruthy()
-      expect(queryByText(popcornMessage)).toBeNull()
+      expect(screen.queryByText(cascadingMessage)).toBeTruthy()
+      expect(screen.queryByText(popcornMessage)).toBeNull()
     })
 
-    it("renders the notification banner with popcorn message", () => {
-      const { queryByText } = renderWithWrappers(
-        <ArtworkTombstone artwork={artworkTombstoneCascadingEndTimesAuctionArtwork(true)} />
-      )
+    it("renders the notification banner with popcorn message", async () => {
+      renderWithRelay({
+        Artwork: () => ({
+          ...artworkTombstoneCascadingEndTimesAuctionArtwork(true),
+        }),
+      })
 
-      expect(queryByText(cascadingMessage)).toBeNull()
-      expect(queryByText(popcornMessage)).toBeTruthy()
+      expect(screen.queryByText(cascadingMessage)).toBeNull()
+      expect(screen.queryByText(popcornMessage)).toBeTruthy()
     })
   })
 
   describe("for an artwork in a sale without cascading end times", () => {
     it("renders the notification banner", () => {
-      const { queryByText } = renderWithWrappers(
-        <ArtworkTombstone artwork={artworkTombstoneAuctionArtwork} />
-      )
+      renderWithRelay({
+        Artwork: () => ({
+          ...artworkTombstoneAuctionArtwork,
+        }),
+      })
 
-      expect(queryByText("Lots will close at 1-minute intervals.")).toBeNull()
-    })
-  })
-
-  describe("for an artwork with less than 4 artists but more than 1", () => {
-    it("doesn't show follow button", () => {
-      const { queryByText } = renderWithWrappers(
-        <ArtworkTombstone artwork={threeArtistsArtworkData} />
-      )
-
-      expect(queryByText("Follow")).toBeNull()
-    })
-
-    it("doesn't truncate artist names", () => {
-      const { queryByText } = renderWithWrappers(
-        <ArtworkTombstone artwork={threeArtistsArtworkData} />
-      )
-
-      expect(queryByText(/Andy Warhol/)).toBeTruthy()
-      expect(queryByText(/Alex Katz/)).toBeTruthy()
-      expect(queryByText(/Pablo Picasso/)).toBeTruthy()
-      expect(queryByText("2 more")).toBeNull()
-      expect(queryByText(/Barbara Kruger/)).toBeNull()
-      expect(queryByText(/Banksy/)).toBeNull()
-    })
-  })
-
-  describe("for an artwork with one artist", () => {
-    it("renders artist name", () => {
-      const { queryByText } = renderWithWrappers(
-        <ArtworkTombstone artwork={oneArtistArtworkData} />
-      )
-
-      expect(queryByText(/Andy Warhol/)).toBeTruthy()
-      expect(queryByText(/Alex Katz/)).toBeNull()
-      expect(queryByText(/Pablo Picasso/)).toBeNull()
-    })
-  })
-
-  describe("for an artwork with no artists but a cultural maker", () => {
-    it("renders artist name", () => {
-      const { queryByText } = renderWithWrappers(<ArtworkTombstone artwork={noArtistArtworkData} />)
-      expect(queryByText("18th century American")).toBeTruthy()
+      expect(screen.queryByText("Lots will close at 1-minute intervals.")).toBeNull()
     })
   })
 })
@@ -154,35 +99,6 @@ const artworkTombstoneArtwork: ArtworkTombstone_artwork$data = {
   title: "Hello im a title",
   medium: "Painting",
   date: "1992",
-  artists: [
-    {
-      name: "Andy Warhol",
-      href: "/artist/andy-warhol",
-      " $fragmentSpreads": null as any,
-    },
-    {
-      name: "Alex Katz",
-      href: "/artist/alex-katz",
-      " $fragmentSpreads": null as any,
-    },
-    {
-      name: "Pablo Picasso",
-      href: "/artist/pablo-picasso",
-      " $fragmentSpreads": null as any,
-    },
-    {
-      name: "Banksy",
-      href: "/artist/banksy",
-      " $fragmentSpreads": null as any,
-    },
-    {
-      name: "Barbara Kruger",
-      href: "/artist/barbara-kruger",
-      " $fragmentSpreads": null as any,
-    },
-  ],
-  culturalMaker: null,
-  " $fragmentType": "ArtworkTombstone_artwork",
 }
 
 const artworkTombstoneAuctionArtwork = {
@@ -218,19 +134,3 @@ const artworkTombstoneCascadingEndTimesAuctionArtwork = (withextendedBidding: bo
     extendedBiddingIntervalMinutes: withextendedBidding ? 1 : null,
   },
 })
-
-const threeArtistsArtworkData = {
-  ...artworkTombstoneArtwork,
-  artists: artworkTombstoneArtwork.artists!.slice(0, 3),
-}
-
-const oneArtistArtworkData = {
-  ...artworkTombstoneArtwork,
-  artists: artworkTombstoneArtwork.artists!.slice(0, 1),
-}
-
-const noArtistArtworkData = {
-  ...artworkTombstoneArtwork,
-  artists: [],
-  culturalMaker: "18th century American",
-}

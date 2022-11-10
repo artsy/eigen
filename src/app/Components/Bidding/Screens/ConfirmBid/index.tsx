@@ -348,7 +348,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   onConditionsOfSaleLinkPressed() {
-    navigate("/conditions-of-sale", { modal: true })
+    navigate("/conditions-of-sale")
   }
 
   refreshBidderInfo = () => {

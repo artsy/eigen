@@ -63,9 +63,13 @@ yarn install:all
 
 **Note**: `yarn pod-install` (which is included in `yarn install:all`) may fail the first time you run it (due to a [bug](https://github.com/orta/cocoapods-keys/issues/127) in a dependency of ours). Re-running the command should work.
 
+## Troubleshooting
+
+If there are issues setting up the app, see the [troubleshooting doc](docs/troubleshooting.md).
+
 ## Contribute
 
-We welcome independent contributions! Feel free to open an issue and open a PR and assign one of [Brian Beckerle](https://github.com/brainbicycle) [Pavlos Vinieratos](https://github.com/pvinis) [Mounir Dhahri](https://github.com/MounirDhahri) as a reviewer or anyone else listed [here](https://github.com/artsy/eigen#meta).
+We welcome independent contributions! Feel free to open an issue and open a PR and assign one of [Brian Beckerle](https://github.com/brainbicycle), [Pavlos Vinieratos](https://github.com/pvinis), [Mounir Dhahri](https://github.com/MounirDhahri) as a reviewer or anyone else listed [here](https://github.com/artsy/eigen#meta).
 
 If you work at Artsy you can find a ticket on [CX backlog](https://artsyproduct.atlassian.net/jira/software/c/projects/CX/boards/77/backlog?issueLimit=100) and look for a **#good-first-issue**
 
@@ -79,7 +83,17 @@ yarn start
 
 ### Run the iOS app
 
-Ask for your apple developer account to be added on the project and login with your apple id under settings/accounts/apple Id
+First, ask for your apple developer account to be added on the project and login with your apple id under settings/accounts/apple Id.
+
+#### Using terminal
+
+> Make sure that you have a simulator running before running the command. In order to do so you can use the `yarn open-sim` command
+
+```sh
+yarn ios
+```
+
+#### Using Xcode
 
 Open the app in Xcode:
 
