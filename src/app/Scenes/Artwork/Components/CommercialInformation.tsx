@@ -153,6 +153,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
   setAuctionTimerState,
 }) => {
   const { trackEvent } = useTracking()
+  const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
   const [editionSetID, setEditionSetID] = useState<string | null>(null)
   const { isAcquireable, isOfferable, isInquireable, isInAuction, sale, isForSale, isSold } =
     artwork
@@ -207,7 +208,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
 
   const renderPriceInformation = () => {
     if (isInAuction && isForSale) {
-      if (timerState === AuctionTimerState.LIVE_INTEGRATION_ONGOING) {
+      if (enableArtworkRedesign || timerState === AuctionTimerState.LIVE_INTEGRATION_ONGOING) {
         return null
       } else {
         return <AuctionPrice artwork={artwork} auctionState={timerState as AuctionTimerState} />

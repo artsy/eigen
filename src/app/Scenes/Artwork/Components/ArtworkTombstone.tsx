@@ -1,4 +1,5 @@
 import { ArtworkTombstone_artwork$data } from "__generated__/ArtworkTombstone_artwork.graphql"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { Box, comma, Flex, Spacer, Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ArtworkMakerTitleFragmentContainer } from "./ArtworkMakerTitle"
@@ -6,6 +7,7 @@ import { CascadingEndTimesBanner } from "./CascadingEndTimesBanner"
 
 export interface ArtworkTombstoneProps {
   artwork: ArtworkTombstone_artwork$data
+  isArtworkRedesignEnabled: boolean
 }
 
 export interface ArtworkTombstoneState {
@@ -14,6 +16,8 @@ export interface ArtworkTombstoneState {
 }
 
 export const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork }) => {
+  const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
+
   const getArtworkTitleAndMaybeDate = () => {
     if (artwork.date) {
       return `${artwork.title!}${comma} ${artwork.date}`
@@ -47,7 +51,7 @@ export const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork }) =
       </Flex>
       {!!artwork.isInAuction && !artwork.sale?.isClosed && (
         <>
-          {!!artwork.sale?.cascadingEndTimeIntervalMinutes && (
+          {!!(artwork.sale?.cascadingEndTimeIntervalMinutes && !enableArtworkRedesign) && (
             <Flex my={2} mx={-2}>
               <CascadingEndTimesBanner
                 cascadingEndTimeInterval={artwork.sale.cascadingEndTimeIntervalMinutes}
