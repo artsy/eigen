@@ -77,9 +77,9 @@ export const RequestForPriceEstimateForm = () => {
               shouldDisplayLocalError={false}
             />
             <Spacer mb={5} />
-            <Text variant="sm" color="black60" mb={2}>
+            <Text variant="xs" color="black60" mb={2}>
               By continuing, you agree to{" "}
-              <LinkText onPress={() => navigate("/privacy", { modal: true })}>
+              <LinkText variant="xs" onPress={() => navigate("/privacy", { modal: true })}>
                 Artsy’s Privacy Policy.
               </LinkText>{" "}
             </Text>
