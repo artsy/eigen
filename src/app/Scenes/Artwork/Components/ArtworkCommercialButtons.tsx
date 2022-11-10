@@ -89,6 +89,7 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
     return <BuyNowButtonFragmentContainer artwork={artworkData} editionSetID={selectedEditionId} />
   }
 
+  // TODO: Should we check `isOfferableFromInquiry`
   if (artworkData.isInquireable && artworkData.isOfferable) {
     return (
       <RowContainer>
@@ -104,6 +105,7 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
     )
   }
 
+  // TODO: Should we check `isOfferableFromInquiry`
   if (artworkData.isInquireable) {
     return <InquiryButtonsFragmentContainer artwork={artworkData} block />
   }
