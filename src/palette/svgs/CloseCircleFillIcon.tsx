@@ -1,7 +1,7 @@
 import { useColor } from "palette/hooks"
 import { Icon, IconProps, Path } from "./Icon"
 
-/** CloseCircleIcon */
+/** CloseCircleFillIcon */
 export const CloseCircleFillIcon: React.FC<IconProps> = (props) => {
   const color = useColor()
   return (
