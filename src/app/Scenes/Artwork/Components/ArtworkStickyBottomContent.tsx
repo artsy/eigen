@@ -5,6 +5,7 @@ import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
 import { Box, Separator, Spacer } from "palette"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
+import { useScreenDimensions } from "shared/hooks"
 import { ArtworkCommercialButtons } from "./ArtworkCommercialButtons"
 import { ArtworkPrice } from "./ArtworkPrice"
 
@@ -17,6 +18,7 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
   artwork,
   me,
 }) => {
+  const { safeAreaInsets } = useScreenDimensions()
   const artworkData = useFragment(artworkFragment, artwork)
   const meData = useFragment(meFragment, me)
   const auctionState = ArtworkStore.useStoreState((state) => state.auctionState)
@@ -27,7 +29,7 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
   }
 
   return (
-    <Box bg="white100">
+    <Box bg="white100" pb={safeAreaInsets.bottom}>
       <Separator />
       <Box px={2} py={1}>
         {!isLiveOngoing && (
