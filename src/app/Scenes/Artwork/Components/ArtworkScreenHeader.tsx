@@ -5,18 +5,25 @@ import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { Schema } from "app/utils/track"
 import { userHadMeaningfulInteraction } from "app/utils/userHadMeaningfulInteraction"
 import { isEmpty } from "lodash"
-import { BackButton, Button, Flex, HeartFillIcon, HeartIcon, Text, useSpace } from "palette"
+import { BackButton, Flex, HeartFillIcon, HeartIcon, Text, Touchable, useSpace } from "palette"
 import { createFragmentContainer, graphql, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtworkScreenHeaderCreateAlertFragmentContainer } from "./ArtworkScreenHeaderCreateAlert"
 
 const HEADER_HEIGHT = 44
 
+interface SaveIconProps {
+  isSaved: boolean
+}
+
+const SaveIcon: React.FC<SaveIconProps> = ({ isSaved }) =>
+  isSaved ? <HeartFillIcon fill="blue100" mr={1} /> : <HeartIcon mr={1} />
+
 interface ArtworkScreenHeaderProps {
   artwork: ArtworkScreenHeader_artwork$data
 }
 
-export const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) => {
+const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) => {
   const { trackEvent } = useTracking()
   const space = useSpace()
 
@@ -103,16 +110,27 @@ export const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwor
         />
       </Flex>
 
-      <Flex flexDirection="row">
-        <Button
-          icon={isSaved ? <HeartFillIcon fill="blue100" /> : <HeartIcon />}
-          variant="fillLight"
-          size="small"
+      <Flex flexDirection="row" alignItems="center">
+        <Touchable
+          accessibilityRole="button"
+          accessibilityLabel={saveButtonText()}
+          haptic
           onPress={handleArtworkSave}
-          loading={isInFlight}
+          disabled={isInFlight}
         >
-          <Text variant="sm-display">{saveButtonText()}</Text>
-        </Button>
+          <Flex flexDirection="row" alignItems="center">
+            <SaveIcon isSaved={!!isSaved} />
+            <Text variant="sm-display" color={isSaved ? "blue100" : "black100"}>
+              {saveButtonText()}
+              {/* this is a hacky way of preventing the save text / button to be jumpy when it changes to saved */}
+              {!isSaved && !__TEST__ && (
+                <Text variant="sm-display" color="transparent">
+                  d
+                </Text>
+              )}
+            </Text>
+          </Flex>
+        </Touchable>
         <ArtworkScreenHeaderCreateAlertFragmentContainer artwork={artwork} />
       </Flex>
     </Flex>
