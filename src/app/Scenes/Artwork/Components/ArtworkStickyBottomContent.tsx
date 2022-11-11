@@ -3,6 +3,7 @@ import { ArtworkStickyBottomContent_me$key } from "__generated__/ArtworkStickyBo
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
 import { Box, Separator, Spacer } from "palette"
+import { LayoutChangeEvent } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { ArtworkCommercialButtons } from "./ArtworkCommercialButtons"
@@ -20,13 +21,20 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
   const artworkData = useFragment(artworkFragment, artwork)
   const meData = useFragment(meFragment, me)
   const auctionState = ArtworkStore.useStoreState((state) => state.auctionState)
+  const setBottomStickyContentHeight = ArtworkStore.useStoreActions(
+    (action) => action.setBottomStickyContentHeight
+  )
 
   if (!artworkData.isForSale || auctionState === AuctionTimerState.CLOSED) {
     return null
   }
 
+  const handleLayout = (event: LayoutChangeEvent) => {
+    setBottomStickyContentHeight(event.nativeEvent.layout.height)
+  }
+
   return (
-    <Box position="absolute" left={0} right={0} bottom={0} bg="white100">
+    <Box position="absolute" left={0} right={0} bottom={0} bg="white100" onLayout={handleLayout}>
       <Separator />
       <Box px={2} py={1}>
         <ArtworkPrice artwork={artworkData} />

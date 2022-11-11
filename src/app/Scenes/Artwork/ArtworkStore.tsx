@@ -3,8 +3,10 @@ import { action, Action, createContextStore, State } from "easy-peasy"
 interface ArtworkModel {
   auctionState: string | null
   selectedEditionId: string | null
+  bottomStickyContentHeight: number
   setAuctionState: Action<this, string | null>
   setSelectedEditionId: Action<this, string | null>
+  setBottomStickyContentHeight: Action<this, number>
 }
 
 export type ArtworkState = State<ArtworkModel>
@@ -12,11 +14,15 @@ export type ArtworkState = State<ArtworkModel>
 const artworkModel: ArtworkModel = {
   auctionState: null,
   selectedEditionId: null,
+  bottomStickyContentHeight: 0,
   setAuctionState: action((state, payload) => {
     state.auctionState = payload
   }),
   setSelectedEditionId: action((state, payload) => {
     state.selectedEditionId = payload
+  }),
+  setBottomStickyContentHeight: action((state, payload) => {
+    state.bottomStickyContentHeight = payload
   }),
 }
 
