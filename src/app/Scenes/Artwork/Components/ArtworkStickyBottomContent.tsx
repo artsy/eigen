@@ -24,6 +24,7 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
   const setBottomStickyContentHeight = ArtworkStore.useStoreActions(
     (action) => action.setBottomStickyContentHeight
   )
+  const isLiveOngoing = auctionState === AuctionTimerState.LIVE_INTEGRATION_ONGOING
 
   if (!artworkData.isForSale || auctionState === AuctionTimerState.CLOSED) {
     return null
@@ -37,8 +38,12 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
     <Box position="absolute" left={0} right={0} bottom={0} bg="white100" onLayout={handleLayout}>
       <Separator />
       <Box px={2} py={1}>
-        <ArtworkPrice artwork={artworkData} />
-        <Spacer mt={1} />
+        {!isLiveOngoing && (
+          <>
+            <ArtworkPrice artwork={artworkData} />
+            <Spacer mt={1} />
+          </>
+        )}
         <ArtworkCommercialButtons artwork={artworkData} me={meData} />
       </Box>
     </Box>
