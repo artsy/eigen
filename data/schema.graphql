@@ -7874,6 +7874,8 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     # Get only articles with 'standard', 'feature', 'series' or 'video' layouts.
     inEditorialFeed: Boolean
     last: Int
+    page: Int
+    size: Int
     sort: ArticleSorts
   ): ArticleConnection
   artistsConnection(
