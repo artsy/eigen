@@ -2,7 +2,7 @@ import { ArtworkStickyBottomContent_artwork$key } from "__generated__/ArtworkSti
 import { ArtworkStickyBottomContent_me$key } from "__generated__/ArtworkStickyBottomContent_me.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
-import { Box, Spacer } from "palette"
+import { Box, Separator, Spacer } from "palette"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { ArtworkCommercialButtons } from "./ArtworkCommercialButtons"
@@ -26,10 +26,13 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
   }
 
   return (
-    <Box p={2} position="absolute" left={0} right={0} bottom={0} bg="red">
-      <ArtworkPrice artwork={artworkData} />
-      <Spacer mt={1} />
-      <ArtworkCommercialButtons artwork={artworkData} me={meData} />
+    <Box position="absolute" left={0} right={0} bottom={0} bg="white100">
+      <Separator />
+      <Box px={2} py={1}>
+        <ArtworkPrice artwork={artworkData} />
+        <Spacer mt={1} />
+        <ArtworkCommercialButtons artwork={artworkData} me={meData} />
+      </Box>
     </Box>
   )
 }
