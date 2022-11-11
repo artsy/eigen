@@ -17,19 +17,9 @@ commands:
           only-on-branch: <<parameters.branch>> # restrict queueing to a specific branch (default *)
   install-node:
     steps:
-      - run:
-          name: Install Node 14 (Required for Yarn)
-          command: |
-            set +e
-            touch $BASH_ENV
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
-            echo "HOMEBREW_NO_AUTO_UPDATE=1" >> $BASH_ENV
-            echo 'export NVM_DIR="$HOME/.nvm"' >> $BASH_ENV
-            echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
-            echo 'nvm install v16.18.0' >> $BASH_ENV
-            echo 'nvm alias default v16.18.0' >> $BASH_ENV
-            sudo mkdir ~/.config
-            sudo chown -R $USER:$GROUP ~/.config
+      - node/install:
+          install-yarn: true
+          node-version: "16.18.0"
   generate-checksums:
     steps:
       - run:
