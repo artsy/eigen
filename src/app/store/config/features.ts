@@ -218,6 +218,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     readyForRelease: false,
   },
+  ARArtworkRedesingPhase2: {
+    description: "Enable redesigned artwork page (phase 2)",
+    showInAdminMenu: true,
+    readyForRelease: false,
+  },
 })
 
 export interface DevToggleDescriptor {

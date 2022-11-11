@@ -1,10 +1,12 @@
 import { ArtworkExtraLinks_artwork$data } from "__generated__/ArtworkExtraLinks_artwork.graphql"
+import { ArtworkLotDetails_artwork$data } from "__generated__/ArtworkLotDetails_artwork.graphql"
 import { ConfirmBid_sale_artwork$data } from "__generated__/ConfirmBid_sale_artwork.graphql"
 import { isEmpty } from "lodash"
 
 type SaleWithPartner =
   | NonNullable<ConfirmBid_sale_artwork$data["sale"]>
   | NonNullable<ArtworkExtraLinks_artwork$data["sale"]>
+  | NonNullable<ArtworkLotDetails_artwork$data["sale"]>
 
 export const partnerName = ({ isBenefit, partner }: SaleWithPartner) => {
   if (isBenefit || isEmpty(partner)) {

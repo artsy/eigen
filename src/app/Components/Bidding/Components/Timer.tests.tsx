@@ -195,10 +195,17 @@ describe("Countdown", () => {
   const duration = moment.duration(36180000)
 
   describe("when the enable cascade feature flag is turned on", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        ARArtworkRedesingPhase2: false,
+      })
+    })
+
     afterEach(() => {
       jest.clearAllMocks()
     })
 
+    // TODO: Remove this test case when ARArtworkRedesingPhase2 will be released
     it("shows extended bidding info when extendedBiddingPeriodMinutes is present", () => {
       const { getByText } = renderWithWrappers(
         <Countdown
