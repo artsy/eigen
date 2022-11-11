@@ -1,6 +1,6 @@
 import { action, Action, createContextStore, State } from "easy-peasy"
 
-interface ArtworkModel {
+export interface ArtworkStoreModel {
   auctionState: string | null
   selectedEditionId: string | null
   bottomStickyContentHeight: number
@@ -8,9 +8,9 @@ interface ArtworkModel {
   setSelectedEditionId: Action<this, string | null>
 }
 
-export type ArtworkState = State<ArtworkModel>
+export type ArtworkStoreState = State<ArtworkStoreModel>
 
-const artworkModel: ArtworkModel = {
+const artworkModel: ArtworkStoreModel = {
   auctionState: null,
   selectedEditionId: null,
   bottomStickyContentHeight: 0,
@@ -22,8 +22,8 @@ const artworkModel: ArtworkModel = {
   }),
 }
 
-export const ArtworkStore = createContextStore<ArtworkModel>(
-  (initialData: ArtworkModel) => ({
+export const ArtworkStore = createContextStore<ArtworkStoreModel>(
+  (initialData: ArtworkStoreModel) => ({
     ...artworkModel,
     ...initialData,
   }),
