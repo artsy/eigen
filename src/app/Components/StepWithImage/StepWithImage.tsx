@@ -1,4 +1,4 @@
-import { Box, IconProps, Spacer, Text } from "palette"
+import { IconProps, Spacer, Text } from "palette"
 import { Flex } from "../Bidding/Elements/Flex"
 
 interface StepWithImageProps {

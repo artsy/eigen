@@ -29,16 +29,6 @@ export const HomeFeedModalCarouselContainer: React.FC<FullScreenCarouselProps> =
   const pagerViewRef = useRef<PagerView>(null)
   const { top: topInset } = useSafeAreaInsets()
 
-  // reset the initial page after the modal has been dismissed
-  useEffect(() => {
-    if (!isVisible && pagerViewRef?.current) {
-      setActiveStep(initialPage)
-      if (!__TEST__) {
-        pagerViewRef.current.setPage(initialPage)
-      }
-    }
-  })
-
   const handleIndexChange = (e: PagerViewOnPageScrollEvent) => {
     if (e.nativeEvent.position !== undefined) {
       // We need to avoid updating the index when the position is -1. This happens when the user
@@ -51,7 +41,17 @@ export const HomeFeedModalCarouselContainer: React.FC<FullScreenCarouselProps> =
 
   return (
     <Flex>
-      <Modal visible={isVisible} style={{ flex: 1 }} animationType="slide">
+      <Modal
+        visible={isVisible}
+        style={{ flex: 1 }}
+        animationType="slide"
+        onDismiss={() => {
+          setActiveStep(initialPage)
+          if (!__TEST__ && pagerViewRef?.current) {
+            pagerViewRef.current.setPage(initialPage)
+          }
+        }}
+      >
         <SafeAreaView style={{ flex: 1 }}>
           <Steps
             numberOfSteps={Array.isArray(children) ? children.length : 0}
