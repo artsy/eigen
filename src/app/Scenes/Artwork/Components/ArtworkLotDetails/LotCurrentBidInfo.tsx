@@ -1,6 +1,5 @@
 import { LotCurrentBidInfo_artwork$key } from "__generated__/LotCurrentBidInfo_artwork.graphql"
-import { CheckCircleFillIcon, Flex, Text } from "palette"
-import { CloseCircleFillIcon } from "palette/svgs/CloseCircleFillIcon"
+import { CheckCircleFillIcon, CloseCircleFillIcon, Flex, Text } from "palette"
 import { graphql, useFragment } from "react-relay"
 
 interface LotCurrentBidInfoProps {
