@@ -6,7 +6,6 @@ interface ArtworkModel {
   bottomStickyContentHeight: number
   setAuctionState: Action<this, string | null>
   setSelectedEditionId: Action<this, string | null>
-  setBottomStickyContentHeight: Action<this, number>
 }
 
 export type ArtworkState = State<ArtworkModel>
@@ -20,9 +19,6 @@ const artworkModel: ArtworkModel = {
   }),
   setSelectedEditionId: action((state, payload) => {
     state.selectedEditionId = payload
-  }),
-  setBottomStickyContentHeight: action((state, payload) => {
-    state.bottomStickyContentHeight = payload
   }),
 }
 
