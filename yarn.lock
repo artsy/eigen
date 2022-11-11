@@ -12468,9 +12468,9 @@ react-native-codegen@^0.0.7:
     jscodeshift "^0.11.0"
     nullthrows "^1.1.1"
 
-"react-native-config@https://github.com/artsy/react-native-config.git#v1.5.0":
-  version "1.5.0"
-  resolved "https://github.com/artsy/react-native-config.git#0740d38883f1feaa6d4eefff883bcb6a9c74812d"
+"react-native-config@https://github.com/artsy/react-native-config.git#v1.4.11-artsy":
+  version "1.4.11"
+  resolved "https://github.com/artsy/react-native-config.git#609129ba486db9cb648e3bdd2043ab4a9f8692ea"
 
 react-native-credit-card-input@0.4.1:
   version "0.4.1"
