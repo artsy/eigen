@@ -20,6 +20,7 @@ export const ClosedAuctionArtwork = {
 }
 
 export const AuctionPreview = {
+  isForSale: true,
   slug: "artwork_from_auction_preview",
   sale: {
     isClosed: false,
@@ -41,6 +42,7 @@ export const AuctionPreview = {
 }
 
 export const AuctionPreviewNoStartingBid = {
+  isForSale: true,
   slug: "artwork_from_auction_preview",
   sale: {
     isClosed: false,
@@ -60,6 +62,7 @@ export const AuctionPreviewNoStartingBid = {
 }
 
 export const OpenAuctionNoReserveNoBids = {
+  isForSale: true,
   slug: "open_auction_no_reserve_no_bids",
   sale: {
     isClosed: false,
@@ -82,7 +85,7 @@ export const OpenAuctionNoReserveNoBids = {
 
 export const OpenAuctionNoReserveWithBids = {
   slug: "artwork_from_open_auction",
-
+  isForSale: true,
   sale: {
     isClosed: false,
     isLiveOpen: false,
@@ -104,6 +107,7 @@ export const OpenAuctionNoReserveWithBids = {
 
 export const OpenAuctionReserveNoBids = {
   slug: "open_auction_reserve_no_bids",
+  isForSale: true,
   sale: {
     isClosed: false,
     isLiveOpen: false,
@@ -125,6 +129,7 @@ export const OpenAuctionReserveNoBids = {
 
 export const OpenAuctionReserveNotMetWithBids = {
   slug: "open_auction_reserve_not_met_with_bids",
+  isForSale: true,
   sale: {
     isClosed: false,
     isLiveOpen: false,
@@ -146,6 +151,7 @@ export const OpenAuctionReserveNotMetWithBids = {
 
 export const OpenAuctionReserveMetWithBids = {
   slug: "open_auction_reserve_met_with_bids",
+  isForSale: true,
   sale: {
     isClosed: false,
     isLiveOpen: false,
