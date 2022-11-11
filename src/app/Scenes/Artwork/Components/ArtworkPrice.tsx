@@ -1,7 +1,7 @@
 import { ArtworkPrice_artwork$key } from "__generated__/ArtworkPrice_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { capitalize } from "lodash"
-import { Flex, Text } from "palette"
+import { Text } from "palette"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { ArtworkStore } from "../ArtworkStore"
@@ -38,6 +38,18 @@ export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({ artwork }) => {
     return selectedEdition?.saleMessage
   }
 
+  const renderShippingAndTaxesInfo = () => {
+    if (!data.isEligibleForOnPlatformTransaction || data.isInAuction) {
+      return null
+    }
+
+    return (
+      <Text variant="xs" color="black60">
+        excl. Shipping and Taxes
+      </Text>
+    )
+  }
+
   if (data.isInAuction) {
     if (auctionState === AuctionTimerState.LIVE_INTEGRATION_ONGOING) {
       return null
@@ -54,14 +66,10 @@ export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({ artwork }) => {
 
   if (message) {
     return (
-      <Flex flexDirection="row" alignItems="flex-end">
+      <>
         <Text variant="lg-display">{message}</Text>
-        {!!data.taxInfo && (
-          <Text variant="xs" color="black60" ml={0.5}>
-            excl. Shipping and Taxes
-          </Text>
-        )}
-      </Flex>
+        {renderShippingAndTaxesInfo()}
+      </>
     )
   }
 
@@ -73,6 +81,7 @@ const artworkPriceFragment = graphql`
     saleMessage
     availability
     isInAuction
+    isEligibleForOnPlatformTransaction
     taxInfo {
       displayText
     }
