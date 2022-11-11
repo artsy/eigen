@@ -16313,6 +16313,9 @@ type UserAdminNotes {
     timezone: String
   ): String
 
+  # The user who created the note
+  creator: User
+
   # A globally unique ID.
   id: ID!
 
