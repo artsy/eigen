@@ -94,7 +94,7 @@
     "react-native-vision-camera": "Needed for reverse image functionality, more context here: https://github.com/artsy/eigen/issues/7159"
   },
   "dependencies": {
-    "@artsy/cohesion": "4.72.0",
+    "@artsy/cohesion": "4.73.0",
     "@artsy/palette-tokens": "4.0.1",
     "@artsy/to-title-case": "1.1.0",
     "@expo/react-native-action-sheet": "3.8.0",
