@@ -24,4 +24,15 @@ describe("<Pill />", () => {
     fireEvent.press(getByText("Press me"))
     expect(onPress).not.toHaveBeenCalled()
   })
+
+  it("should display placeholder", () => {
+    const { getByText } = renderWithWrappers(
+      <Pill placeholder="Placeholder" onPress={jest.fn}>
+        Label
+      </Pill>
+    )
+
+    expect(getByText(/Label/)).toBeTruthy()
+    expect(getByText(/Placeholder/)).toBeTruthy()
+  })
 })
