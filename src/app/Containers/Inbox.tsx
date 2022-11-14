@@ -16,6 +16,8 @@ import { EmitterSubscription, View, ViewProps } from "react-native"
 import ScrollableTabView, { TabBarProps } from "react-native-scrollable-tab-view"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
+const BIDS_TAB_INDEX = 0
+const INQUIRIES_TAB_INDEX = 1
 // Tabs
 interface TabWrapperProps extends ViewProps {
   tabLabel: string
@@ -120,10 +122,8 @@ export class Inbox extends React.Component<Props, State> {
   }
 
   render() {
-    const userHasBids = (this.props.me.myBids?.active ?? []).length > 0
-    const bidsTab = 0
-    const inquiriesTab = 1
-    const initialPageNumber = userHasBids ? bidsTab : inquiriesTab
+    const hasActiveBids = (this.props.me.myBids?.active ?? []).length > 0
+    const initialPageNumber = hasActiveBids ? BIDS_TAB_INDEX : INQUIRIES_TAB_INDEX
 
     return (
       <ScrollableTabView
