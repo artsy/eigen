@@ -22,6 +22,7 @@ import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import {
   artworkDetailsCompletedEvent,
   consignmentSubmittedEvent,
+  contactInformationCompletedEvent,
   toggledAccordionEvent,
   uploadPhotosCompletedEvent,
 } from "../utils/TrackingEvent"
@@ -101,7 +102,7 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
     } else if (step === STEPS.UploadPhotos) {
       trackEvent(uploadPhotosCompletedEvent(id, email, userID))
     } else if (step === STEPS.ContactInformation) {
-      // TODO:- Track ContactInformation https://artsyproduct.atlassian.net/browse/CX-3106
+      trackEvent(contactInformationCompletedEvent(id, email, userID))
     }
   }
 
