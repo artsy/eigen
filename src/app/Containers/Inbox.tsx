@@ -25,7 +25,7 @@ interface TabWrapperProps extends ViewProps {
 
 const TabWrapper = (props: TabWrapperProps) => <View {...props} />
 
-const InboxTabs = (props: TabBarProps) => (
+export const InboxTabs = (props: TabBarProps) => (
   <>
     <Flex flexDirection="row" px={1.5} mb={2}>
       {props.tabs?.map((name: JSX.Element, page: number) => {
