@@ -146,7 +146,14 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
     )
 
     if (priceRange?.paramValue && priceRange.paramValue !== ParamDefaultValues.priceRange) {
-      GlobalStore.actions.recentPriceRanges.addNewPriceRange(priceRange.paramValue as string)
+      /**
+       * We wait until the filter modal is closed, then save the recent price range
+       * Otherwise the recent price range will be displayed immediately after clicking on the "Show Results" button,
+       * Which can negatively affect the UI
+       */
+      setTimeout(() => {
+        GlobalStore.actions.recentPriceRanges.addNewPriceRange(priceRange.paramValue as string)
+      }, 500)
     }
   }
 
