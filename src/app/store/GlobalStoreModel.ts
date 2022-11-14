@@ -22,6 +22,7 @@ import {
   PendingPushNotificationModel,
 } from "./PendingPushNotificationModel"
 import { assignDeep, sanitize } from "./persistence"
+import { getRecentPriceRanges, RecentPriceRangesModel } from "./RecentPriceRanges"
 import {
   getRequestedPriceEstimatesModel,
   RequestedPriceEstimatesModel,
@@ -48,6 +49,7 @@ interface GlobalStoreStateModel {
   visualClue: VisualClueModel
   artworkSubmission: SubmissionModel
   requestedPriceEstimates: RequestedPriceEstimatesModel
+  recentPriceRanges: RecentPriceRangesModel
 }
 export interface GlobalStoreModel extends GlobalStoreStateModel {
   rehydrate: Action<this, DeepPartial<State<GlobalStoreStateModel>>>
@@ -122,6 +124,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   visualClue: getVisualClueModel(),
   artworkSubmission: getSubmissionModel(),
   requestedPriceEstimates: getRequestedPriceEstimatesModel(),
+  recentPriceRanges: getRecentPriceRanges(),
 
   // for dev only.
   _setVersion: action((state, newVersion) => {
