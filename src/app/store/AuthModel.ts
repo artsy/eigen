@@ -2,6 +2,7 @@ import { ActionType, AuthService, CreatedAccount } from "@artsy/cohesion"
 import { appleAuth } from "@invertase/react-native-apple-authentication"
 import CookieManager from "@react-native-cookies/cookies"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
+import { captureMessage } from "@sentry/react-native"
 import { OAuthProvider } from "app/auth/types"
 import * as RelayCache from "app/relay/RelayCache"
 import { isArtsyEmail } from "app/utils/general"
@@ -32,18 +33,21 @@ const showError = (
   provider: "facebook" | "apple" | "google"
 ) => {
   const providerName = capitalize(provider)
+
   if (res.error_description) {
     if (res.error_description.includes("no account linked to oauth token")) {
-      reject(
-        new AuthError(
-          `Your ${providerName} account is not linked to any Artsy account. ` +
-            "Please log in using your email and password if you have an Artsy account, " +
-            `or sign up on Artsy using ${providerName}. `
-        )
-      )
+      const message =
+        `Your ${providerName} account is not linked to any Artsy account. ` +
+        "Please log in using your email and password if you have an Artsy account, " +
+        `or sign up on Artsy using ${providerName}.
+        `
+      captureMessage("AUTH_FAILURE: " + message)
+      reject(new AuthError(message))
       return
     } else {
-      reject(new AuthError("Login attempt failed"))
+      const message = "Login attempt failed"
+      captureMessage("AUTH_FAILURE: " + message)
+      reject(new AuthError(message))
       return
     }
   }
@@ -83,6 +87,8 @@ const handleSignUpError = ({
   } else {
     message = "Failed to sign up"
   }
+
+  captureMessage("AUTH_SIGN_UP_FAILURE: " + message)
 
   return {
     message,
@@ -500,6 +506,7 @@ export const getAuthModel = (): AuthModel => ({
         }
         const accessToken = !isCancelled && (await AccessToken.getCurrentAccessToken())
         if (!accessToken) {
+          reject(new AuthError("Could not log in"))
           return
         }
 
