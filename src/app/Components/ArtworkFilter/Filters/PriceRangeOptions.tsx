@@ -290,17 +290,22 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
               >
                 <Flex flexDirection="row">
                   <Join separator={<Spacer ml={1} />}>
-                    {recentPriceRanges.map((recentPrice) => (
-                      <Pill
-                        key={recentPrice}
-                        rounded
-                        placeholder="$USD"
-                        selected={isSelectedPriceRange(recentPrice)}
-                        onPress={() => handlePrevPriceRangePress(recentPrice)}
-                      >
-                        {recentPrice}
-                      </Pill>
-                    ))}
+                    {recentPriceRanges.map((recentPrice) => {
+                      const recentPriceRange = parseRange(recentPrice)
+                      const label = parsePriceRangeLabel(recentPriceRange[0], recentPriceRange[1])
+
+                      return (
+                        <Pill
+                          key={recentPrice}
+                          rounded
+                          placeholder="$USD"
+                          selected={isSelectedPriceRange(recentPrice)}
+                          onPress={() => handlePrevPriceRangePress(recentPrice)}
+                        >
+                          {label}
+                        </Pill>
+                      )
+                    })}
                   </Join>
                 </Flex>
               </ScrollView>
