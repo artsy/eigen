@@ -216,7 +216,8 @@ export const features = defineFeatures({
   ARReorderSWAArtworkSubmissionFlow: {
     description: "Reorder SWA Artwork submission flow",
     showInAdminMenu: true,
-    readyForRelease: false,
+    readyForRelease: true,
+    echoFlagKey: "ARReorderSWAArtworkSubmissionFlow",
   },
   ARArtworkRedesingPhase2: {
     description: "Enable redesigned artwork page (phase 2)",
