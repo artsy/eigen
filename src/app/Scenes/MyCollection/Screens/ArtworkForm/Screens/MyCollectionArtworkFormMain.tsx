@@ -43,7 +43,7 @@ export const MyCollectionArtworkFormMain: React.FC<
   const space = useSpace()
 
   const { showActionSheetWithOptions } = useActionSheet()
-  const { mode: modalType } = route.params
+  const modalType = route.params.mode
   const addOrEditLabel = modalType === "edit" ? "Edit" : "Add"
   const formikValues = formik?.values
 
