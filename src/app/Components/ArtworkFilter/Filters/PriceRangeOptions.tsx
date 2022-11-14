@@ -10,7 +10,7 @@ import {
   ArtworksFiltersStore,
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { useRecentPriceRanges } from "app/store/RecentPriceRanges"
+import { useRecentPriceRanges } from "app/store/RecentPriceRangesModel"
 import { useExperimentFlag } from "app/utils/experiments/hooks"
 import { debounce, sortBy } from "lodash"
 import {

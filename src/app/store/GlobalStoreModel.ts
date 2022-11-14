@@ -22,7 +22,7 @@ import {
   PendingPushNotificationModel,
 } from "./PendingPushNotificationModel"
 import { assignDeep, sanitize } from "./persistence"
-import { getRecentPriceRanges, RecentPriceRangesModel } from "./RecentPriceRanges"
+import { getRecentPriceRangesModel, RecentPriceRangesModel } from "./RecentPriceRangesModel"
 import {
   getRequestedPriceEstimatesModel,
   RequestedPriceEstimatesModel,
@@ -124,7 +124,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   visualClue: getVisualClueModel(),
   artworkSubmission: getSubmissionModel(),
   requestedPriceEstimates: getRequestedPriceEstimatesModel(),
-  recentPriceRanges: getRecentPriceRanges(),
+  recentPriceRanges: getRecentPriceRangesModel(),
 
   // for dev only.
   _setVersion: action((state, newVersion) => {

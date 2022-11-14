@@ -8,7 +8,7 @@ export interface RecentPriceRangesModel {
   addNewPriceRange: Action<this, string>
 }
 
-export const getRecentPriceRanges = (): RecentPriceRangesModel => ({
+export const getRecentPriceRangesModel = (): RecentPriceRangesModel => ({
   recentPriceRanges: [],
   addNewPriceRange: action((state, newPriceRange) => {
     const hasSamePriceRange = state.recentPriceRanges.find(
