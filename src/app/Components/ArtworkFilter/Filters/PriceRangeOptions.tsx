@@ -97,8 +97,6 @@ const getInputValue = (value: CustomRange[number]) => {
   return value === "*" || value === 0 ? "" : value.toString()
 }
 
-const MOCK_PRICES = ["1000-2000", "2000-3000", "3000-4000"]
-
 export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = ({ navigation }) => {
   const { width } = useWindowDimensions()
   const recentPriceRanges = useRecentPriceRanges()
