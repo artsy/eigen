@@ -2,19 +2,17 @@ import { navigate } from "app/navigation/navigate"
 import { useFormikContext } from "formik"
 import { Box, Button, Input, LinkText, PhoneInput, Spacer, Text } from "palette"
 import { Platform, ScrollView } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import { RequestForPriceEstimateFormikSchema } from "./RequestForPriceEstimateScreen"
 
 export const RequestForPriceEstimateForm = () => {
-  const { safeAreaInsets } = useScreenDimensions()
   const { values, handleChange, errors, setErrors, handleSubmit, isValid } =
     useFormikContext<RequestForPriceEstimateFormikSchema>()
 
   return (
     <ArtsyKeyboardAvoidingView>
       <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
-        <Box pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px={2}>
+        <Box px={2}>
           <Box my={3}>
             <Text variant="lg-display" mb={2}>
               Let us know how to reach you
