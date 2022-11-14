@@ -3,7 +3,7 @@ apply plugin: "com.google.gms.google-services"
 
 project.ext.envConfigFiles = [
     debug: ".env.shared",
-    release: System.getenv('CI') == "true" ? ".env.ci" : ".env.shared",
+    release: ".env.shared",
 ]
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
