@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native"
+import { captureMessage } from "@sentry/react-native"
 import { AuthPromiseRejectType } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { osMajorVersion } from "app/utils/platformUtil"
@@ -80,6 +81,8 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
   }
 
   const handleError = (error: AuthPromiseRejectType) => {
+    captureMessage("AUTH_FAILURE: " + error.message)
+
     const canBeLinked =
       error.error === "User Already Exists" && error.meta && error.meta.existingProviders
     if (canBeLinked && allowLinkingOnSignUp) {
