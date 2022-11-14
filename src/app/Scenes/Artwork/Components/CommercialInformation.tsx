@@ -10,6 +10,7 @@ import {
 import { TimeOffsetProvider } from "app/Components/Bidding/Context/TimeOffsetProvider"
 import { StateManager as CountdownStateManager } from "app/Components/Countdown"
 import { CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
 import { useArtworkBidding } from "app/Websockets/auctions/useArtworkBidding"
@@ -153,6 +154,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
   setAuctionTimerState,
 }) => {
   const { trackEvent } = useTracking()
+  const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
   const [editionSetID, setEditionSetID] = useState<string | null>(null)
   const { isAcquireable, isOfferable, isInquireable, isInAuction, sale, isForSale, isSold } =
     artwork
@@ -207,7 +209,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
 
   const renderPriceInformation = () => {
     if (isInAuction && isForSale) {
-      if (timerState === AuctionTimerState.LIVE_INTEGRATION_ONGOING) {
+      if (enableArtworkRedesign || timerState === AuctionTimerState.LIVE_INTEGRATION_ONGOING) {
         return null
       } else {
         return <AuctionPrice artwork={artwork} auctionState={timerState as AuctionTimerState} />

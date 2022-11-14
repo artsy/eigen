@@ -105,7 +105,6 @@ import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerL
 import { PrivacyRequest } from "./Scenes/PrivacyRequest/PrivacyRequest"
 import { ReverseImage } from "./Scenes/ReverseImage/ReverseImage"
 import { SaleQueryRenderer, SaleScreenQuery } from "./Scenes/Sale/Sale"
-import { SaleFAQ } from "./Scenes/SaleFAQ/SaleFAQ"
 import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo/SaleInfo"
 import { SalesQueryRenderer, SalesScreenQuery } from "./Scenes/Sales/Sales"
 import { SavedAddressesQueryRenderer } from "./Scenes/SavedAddresses/SavedAddresses"
@@ -339,7 +338,6 @@ export const modules = defineModules({
   Auction: reactModule(SaleQueryRenderer, { fullBleed: true }, [SaleScreenQuery]),
   Auctions: reactModule(SalesQueryRenderer, {}, [SalesScreenQuery]),
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
-  AuctionFAQ: reactModule(SaleFAQ),
   AuctionResult: reactModule(AuctionResultQueryRenderer),
   AuctionResultsForArtistsYouFollow: reactModule(
     AuctionResultsForArtistsYouFollowQueryRenderer,
@@ -364,6 +362,7 @@ export const modules = defineModules({
     fullBleed: true,
   }),
   AuctionBuyersPremium: reactModule(AuctionBuyersPremiumQueryRenderer, {
+    fullBleed: true,
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,
   }),

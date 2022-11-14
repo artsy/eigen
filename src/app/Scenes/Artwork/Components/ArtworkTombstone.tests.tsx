@@ -1,6 +1,7 @@
 import { screen } from "@testing-library/react-native"
 import { ArtworkTombstone_artwork$data } from "__generated__/ArtworkTombstone_artwork.graphql"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
+import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
 import { Theme } from "palette"
@@ -13,7 +14,9 @@ describe("ArtworkTombstone", () => {
   const { renderWithRelay } = setupTestWrapperTL({
     Component: (props) => (
       <Theme>
-        <ArtworkTombstoneFragmentContainer {...props} />
+        <GlobalStoreProvider>
+          <ArtworkTombstoneFragmentContainer {...props} />
+        </GlobalStoreProvider>
       </Theme>
     ),
     query: graphql`
@@ -23,6 +26,12 @@ describe("ArtworkTombstone", () => {
         }
       }
     `,
+  })
+
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      ARArtworkRedesingPhase2: false,
+    })
   })
 
   it("renders fields correctly", async () => {

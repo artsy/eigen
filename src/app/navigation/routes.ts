@@ -143,7 +143,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/auction-registration/:saleID", "AuctionRegistration"),
     addRoute("/auction/:saleID", "Auction"),
     addRoute("/auction/:saleID/info", "AuctionInfo"),
-    addRoute("/auction-faq", "AuctionFAQ"),
+    addWebViewRoute("/auction-faq"),
     addRoute("/auction/:saleID/bid/:artworkID", "AuctionBidArtwork"),
     addRoute("/auction/:saleID/buyers-premium", "AuctionBuyersPremium"),
     addRoute("/gene/:geneID", "Gene"),
