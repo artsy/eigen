@@ -30,7 +30,7 @@ export interface PillProps extends FlexProps {
     "style" | "disabled" | "onPress" | "onPressIn" | "onPressOut"
   >
   /** Allows for overriding the pill style when in different states */
-  stateStyle?: { [key in DisplayState]?: ReturnType<typeof useStyleForState> }
+  stateStyle?: { [key in DisplayState]?: Partial<ReturnType<typeof useStyleForState>> }
   placeholder?: string
 }
 
