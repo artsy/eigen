@@ -85,10 +85,14 @@ const enforceNumeric = (value: Numeric | undefined | null): Numeric => {
  * Accepts a string in the form: `"*-*"` | `"*-1"` | `"1-*"`
  * and returns a `Range`
  */
-export const parseRange = (range: string): Range => {
+export const parseRange = (range: string, parseAsInteger?: boolean): Range => {
   const [min, max] = range.split("-").map((s) => {
     if (s === "*") {
       return s
+    }
+
+    if (parseAsInteger) {
+      return parseInt(s, 10)
     }
 
     return parseFloat(s)
