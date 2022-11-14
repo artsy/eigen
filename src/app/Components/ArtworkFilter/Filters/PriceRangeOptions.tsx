@@ -10,6 +10,7 @@ import {
   ArtworksFiltersStore,
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { useRecentPriceRanges } from "app/store/RecentPriceRangesModel"
 import { useExperimentFlag } from "app/utils/experiments/hooks"
 import { debounce, sortBy } from "lodash"
@@ -26,7 +27,7 @@ import {
   useSpace,
 } from "palette"
 import React, { useMemo, useState } from "react"
-import { ScrollView, useWindowDimensions } from "react-native"
+import { ScrollView, TouchableOpacity, useWindowDimensions } from "react-native"
 import { ArtworkFilterBackHeader } from "../components/ArtworkFilterBackHeader"
 import { Numeric, parsePriceRangeLabel } from "./helpers"
 
@@ -183,6 +184,10 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
     return min === minValue && max === maxValue
   }
 
+  const handleClearRecentPriceRanges = () => {
+    GlobalStore.actions.recentPriceRanges.clearAllPriceRanges()
+  }
+
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const histogramBars = getBarsFromAggregations(aggregations)
   const shouldDisplayHistogram = enableHistogram && histogramBars.length > 0
@@ -279,9 +284,17 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
 
           {recentPriceRanges.length > 0 && (
             <>
-              <Text variant="sm" mx={2}>
-                Apply a recent Price Range
-              </Text>
+              <Flex mx={2} flexDirection="row" justifyContent="space-between" alignItems="center">
+                <Text variant="sm">Apply a recent Price Range</Text>
+                <TouchableOpacity
+                  onPress={handleClearRecentPriceRanges}
+                  hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
+                >
+                  <Text variant="sm" style={{ textDecorationLine: "underline" }}>
+                    Clear
+                  </Text>
+                </TouchableOpacity>
+              </Flex>
               <Spacer mt={1} />
               <ScrollView
                 horizontal

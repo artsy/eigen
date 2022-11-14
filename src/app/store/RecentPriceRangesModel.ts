@@ -6,6 +6,7 @@ export const MAX_SHOWN_RECENT_PRICE_RANGES = 3
 export interface RecentPriceRangesModel {
   recentPriceRanges: string[]
   addNewPriceRange: Action<this, string>
+  clearAllPriceRanges: Action<this>
 }
 
 export const getRecentPriceRangesModel = (): RecentPriceRangesModel => ({
@@ -21,6 +22,9 @@ export const getRecentPriceRangesModel = (): RecentPriceRangesModel => ({
 
     const prevPriceRanges = state.recentPriceRanges.slice(0, MAX_SHOWN_RECENT_PRICE_RANGES - 1)
     state.recentPriceRanges = [newPriceRange, ...prevPriceRanges]
+  }),
+  clearAllPriceRanges: action((state) => {
+    state.recentPriceRanges = []
   }),
 })
 

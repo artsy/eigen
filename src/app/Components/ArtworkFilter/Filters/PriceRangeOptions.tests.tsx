@@ -229,5 +229,19 @@ describe("PriceRangeOptions", () => {
 
       expect(queryByText("Apply a recent Price Range")).toBeNull()
     })
+
+    it("should correctly clear the recent price ranges when `Clear` button is pressed", () => {
+      __globalStoreTestUtils__?.injectState({
+        recentPriceRanges: {
+          recentPriceRanges: ["*-500", "1000-2000", "3000-*"],
+        },
+      })
+
+      const { queryByText, getByText } = getTree()
+
+      fireEvent.press(getByText("Clear"))
+
+      expect(queryByText("Apply a recent Price Range")).toBeNull()
+    })
   })
 })
