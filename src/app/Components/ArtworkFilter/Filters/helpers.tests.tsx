@@ -21,10 +21,6 @@ describe("parseRange", () => {
     expect(parseRange("1.333-99.1234")).toEqual({ min: 1.333, max: 99.1234 })
   })
 
-  it("parses a range string as an integer", () => {
-    expect(parseRange("1.333-99.1234", true)).toEqual({ min: 1, max: 99 })
-  })
-
   it("rejects garbage input", () => {
     expect(parseRange("whatever")).toEqual({ min: "*", max: "*" })
   })
