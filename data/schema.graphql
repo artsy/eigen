@@ -2082,6 +2082,7 @@ type Artwork implements Node & Searchable & Sellable {
   # When in an auction, can the work be bought immediately
   isBuyNowable: Boolean
   isComparableWithAuctionResults: Boolean
+  isDisliked: Boolean!
   isDownloadable: Boolean
   isEdition: Boolean
 
@@ -7557,6 +7558,18 @@ type DisableSecondFactorPayload {
   secondFactorOrErrors: SecondFactorOrErrorsUnion!
 }
 
+input DislikeArtworkInput {
+  artworkID: String!
+  clientMutationId: String
+  remove: Boolean!
+}
+
+type DislikeArtworkPayload {
+  artwork: Artwork
+  clientMutationId: String
+  me: Me!
+}
+
 type DoNotUseThisPartner {
   display_name: String @deprecated(reason: "Use displayName")
   displayName: String
@@ -10930,6 +10943,9 @@ type Mutation {
   deliverSecondFactor(input: DeliverSecondFactorInput!): DeliverSecondFactorPayload
   disableSavedSearch(input: DisableSavedSearchInput!): DisableSavedSearchPayload
   disableSecondFactor(input: DisableSecondFactorInput!): DisableSecondFactorPayload
+
+  # Add (or remove) an artwork to (from) a users dislikes.
+  dislikeArtwork(input: DislikeArtworkInput!): DislikeArtworkPayload
   enableSecondFactor(input: EnableSecondFactorInput!): EnableSecondFactorPayload
 
   # Mark sale as ended.
