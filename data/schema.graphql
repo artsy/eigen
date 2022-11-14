@@ -11380,6 +11380,7 @@ input NotificationPreferenceInput {
 enum NotificationTypesEnum {
   ARTWORK_ALERT
   ARTWORK_PUBLISHED
+  PARTNER_SHOW_OPENED
   VIEWING_ROOM_PUBLISHED
 }
 
