@@ -291,8 +291,8 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
                 <Flex flexDirection="row">
                   <Join separator={<Spacer ml={1} />}>
                     {recentPriceRanges.map((recentPrice) => {
-                      const recentPriceRange = parseRange(recentPrice)
-                      const label = parsePriceRangeLabel(recentPriceRange[0], recentPriceRange[1])
+                      const [min, max] = parseRange(recentPrice)
+                      const label = parsePriceRangeLabel(min, max)
 
                       return (
                         <Pill
