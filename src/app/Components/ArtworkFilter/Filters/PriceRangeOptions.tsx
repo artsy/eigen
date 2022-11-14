@@ -10,9 +10,21 @@ import {
   ArtworksFiltersStore,
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { useRecentPriceRanges } from "app/store/RecentPriceRanges"
 import { useExperimentFlag } from "app/utils/experiments/hooks"
 import { debounce, sortBy } from "lodash"
-import { Flex, Histogram, HistogramBarEntity, Input, Spacer, Text, useColor } from "palette"
+import {
+  Flex,
+  Histogram,
+  HistogramBarEntity,
+  Input,
+  Join,
+  Pill,
+  Spacer,
+  Text,
+  useColor,
+  useSpace,
+} from "palette"
 import React, { useMemo, useState } from "react"
 import { ScrollView, useWindowDimensions } from "react-native"
 import { ArtworkFilterBackHeader } from "../components/ArtworkFilterBackHeader"
@@ -85,9 +97,13 @@ const getInputValue = (value: CustomRange[number]) => {
   return value === "*" || value === 0 ? "" : value.toString()
 }
 
+const MOCK_PRICES = ["1000-2000", "2000-3000", "3000-4000"]
+
 export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = ({ navigation }) => {
   const { width } = useWindowDimensions()
+  const recentPriceRanges = useRecentPriceRanges()
   const color = useColor()
+  const space = useSpace()
 
   const enableHistogram = useExperimentFlag("eigen-enable-price-histogram")
 
@@ -156,6 +172,17 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
       paramValue: updatedRange.join("-"),
       paramName: PARAM_NAME,
     })
+  }
+
+  const handlePrevPriceRangePress = (price: string) => {
+    const selectedRange = parseRange(price)
+    updateRange(selectedRange)
+  }
+
+  const isSelectedPriceRange = (price: string) => {
+    const [min, max] = parseRange(price)
+
+    return min === minValue && max === maxValue
   }
 
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
@@ -249,6 +276,38 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
               </Text>
             </Flex>
           </Flex>
+
+          <Spacer mt={4} />
+
+          {recentPriceRanges.length > 0 && (
+            <>
+              <Text variant="sm" mx={2}>
+                Apply a recent Price Range
+              </Text>
+              <Spacer mt={1} />
+              <ScrollView
+                horizontal
+                contentContainerStyle={{ paddingHorizontal: space("2") }}
+                showsHorizontalScrollIndicator={false}
+              >
+                <Flex flexDirection="row">
+                  <Join separator={<Spacer ml={1} />}>
+                    {recentPriceRanges.map((recentPrice) => (
+                      <Pill
+                        key={recentPrice}
+                        rounded
+                        placeholder="$USD"
+                        selected={isSelectedPriceRange(recentPrice)}
+                        onPress={() => handlePrevPriceRangePress(recentPrice)}
+                      >
+                        {recentPrice}
+                      </Pill>
+                    ))}
+                  </Join>
+                </Flex>
+              </ScrollView>
+            </>
+          )}
         </ScrollView>
       </Flex>
     </Flex>
