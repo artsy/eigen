@@ -31,6 +31,7 @@ export interface PillProps extends FlexProps {
   >
   /** Allows for overriding the pill style when in different states */
   stateStyle?: { [key in DisplayState]?: ReturnType<typeof useStyleForState> }
+  placeholder?: string
 }
 
 enum DisplayState {
@@ -77,6 +78,7 @@ export const Pill: React.FC<PillProps> = ({
   block = false,
   pressablePros = {},
   stateStyle,
+  placeholder,
   ...rest
 }) => {
   const textStyle = useTextStyleForPalette(size === "xxs" ? "xs" : "sm")
@@ -141,9 +143,27 @@ export const Pill: React.FC<PillProps> = ({
               </>
             )}
             {!!imageUrl && <OpaqueImageViewContainer imageURL={imageUrl} />}
-            <AnimatedText numberOfLines={1} style={[textStyle, { color: springProps.textColor }]}>
-              {children}
-            </AnimatedText>
+            {!!placeholder ? (
+              <Flex flexDirection="row" alignItems="center">
+                <AnimatedText
+                  numberOfLines={1}
+                  style={[textStyle, { color: springProps.textColor }]}
+                >
+                  {children}
+                </AnimatedText>
+
+                <AnimatedText
+                  numberOfLines={1}
+                  style={[textStyle, { color: springProps.placeholderTextColor }]}
+                >
+                  {` ${placeholder}`}
+                </AnimatedText>
+              </Flex>
+            ) : (
+              <AnimatedText numberOfLines={1} style={[textStyle, { color: springProps.textColor }]}>
+                {children}
+              </AnimatedText>
+            )}
             {iconPosition === "right" && !!Icon && (
               <>
                 <Spacer mr={iconSpacerMargin} />
@@ -160,7 +180,12 @@ export const Pill: React.FC<PillProps> = ({
 const useStyleForState = (
   state: DisplayState,
   stateStyle: PillProps["stateStyle"]
-): { textColor: string; borderColor: string; backgroundColor: string } => {
+): {
+  textColor: string
+  placeholderTextColor: string
+  borderColor: string
+  backgroundColor: string
+} => {
   const color = useColor()
 
   const retval = {} as ReturnType<typeof useStyleForState>
@@ -169,24 +194,28 @@ const useStyleForState = (
     case DisplayState.Pressed:
       let desiredStyleForState = stateStyle?.pressed
       retval.textColor = desiredStyleForState?.textColor ?? color("blue100")
+      retval.placeholderTextColor = desiredStyleForState?.placeholderTextColor ?? color("blue100")
       retval.borderColor = desiredStyleForState?.borderColor ?? color("blue100")
       retval.backgroundColor = desiredStyleForState?.backgroundColor ?? color("white100")
       break
     case DisplayState.Selected:
       desiredStyleForState = stateStyle?.selected
       retval.textColor = desiredStyleForState?.textColor ?? color("white100")
+      retval.placeholderTextColor = desiredStyleForState?.placeholderTextColor ?? color("white100")
       retval.borderColor = desiredStyleForState?.borderColor ?? color("blue100")
       retval.backgroundColor = desiredStyleForState?.backgroundColor ?? color("blue100")
       break
     case DisplayState.Enabled:
       desiredStyleForState = stateStyle?.enabled
       retval.textColor = desiredStyleForState?.textColor ?? color("black100")
+      retval.placeholderTextColor = desiredStyleForState?.placeholderTextColor ?? color("black60")
       retval.borderColor = desiredStyleForState?.borderColor ?? color("black60")
       retval.backgroundColor = desiredStyleForState?.backgroundColor ?? color("white100")
       break
     case DisplayState.Disabled:
       desiredStyleForState = stateStyle?.disabled
       retval.textColor = desiredStyleForState?.textColor ?? color("black30")
+      retval.placeholderTextColor = desiredStyleForState?.placeholderTextColor ?? color("black30")
       retval.borderColor = desiredStyleForState?.borderColor ?? color("black30")
       retval.backgroundColor = desiredStyleForState?.backgroundColor ?? color("white100")
       break
