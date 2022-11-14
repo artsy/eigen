@@ -229,6 +229,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     readyForRelease: false,
   },
+  AREnforceLargeNewWorksRail: {
+    description: "Enforce large new works rail",
+    showInAdminMenu: true,
+    readyForRelease: false,
+  },
 })
 
 export interface DevToggleDescriptor {

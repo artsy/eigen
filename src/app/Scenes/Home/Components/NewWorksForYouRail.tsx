@@ -1,8 +1,11 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { NewWorksForYouRail_artworkConnection$key } from "__generated__/NewWorksForYouRail_artworkConnection.graphql"
+import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
+import { useFeatureFlag } from "app/store/GlobalStore"
+import { useExperimentFlagVariant } from "app/utils/experiments/hooks"
 import { extractNodes } from "app/utils/extractNodes"
 import { Flex } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
@@ -25,8 +28,9 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
   mb,
 }) => {
   const { trackEvent } = useTracking()
+  const railVariant = useExperimentFlagVariant("eigen-large-new-works-for-you-rail").payload?.value
 
-  const { artworksForUser } = useFragment(artworksFragment, artworkConnection)
+  const { artworksForUser, smallArtworksForUser } = useFragment(artworksFragment, artworkConnection)
 
   const railRef = useRef<View>(null)
   const listRef = useRef<FlatList<any>>(null)
@@ -36,6 +40,7 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
   }))
 
   const artworks = extractNodes(artworksForUser)
+  const smallArtworks = extractNodes(smallArtworksForUser)
 
   if (!artworks.length) {
     return null
@@ -53,20 +58,37 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
             }}
           />
         </Flex>
-        <SmallArtworkRail
-          artworks={artworks}
-          onPress={(artwork, position) => {
-            trackEvent(
-              HomeAnalytics.artworkThumbnailTapEvent(
-                ContextModule.newWorksForYouRail,
-                artwork.slug,
-                position,
-                "single"
+        {railVariant === "large" || useFeatureFlag("AREnforceLargeNewWorksRail") ? (
+          <LargeArtworkRail
+            artworks={artworks}
+            onPress={(artwork, position) => {
+              trackEvent(
+                HomeAnalytics.artworkThumbnailTapEvent(
+                  ContextModule.newWorksForYouRail,
+                  artwork.slug,
+                  position,
+                  "single"
+                )
               )
-            )
-            navigate(artwork.href!)
-          }}
-        />
+              navigate(artwork.href!)
+            }}
+          />
+        ) : (
+          <SmallArtworkRail
+            artworks={smallArtworks}
+            onPress={(artwork, position) => {
+              trackEvent(
+                HomeAnalytics.artworkThumbnailTapEvent(
+                  ContextModule.newWorksForYouRail,
+                  artwork.slug,
+                  position,
+                  "single"
+                )
+              )
+              navigate(artwork.href!)
+            }}
+          />
+        )}
       </View>
     </Flex>
   )
@@ -74,12 +96,21 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
 
 const artworksFragment = graphql`
   fragment NewWorksForYouRail_artworkConnection on Viewer {
-    artworksForUser(maxWorksPerArtist: 3, includeBackfill: true, first: 40) {
+    smallArtworksForUser: artworksForUser(maxWorksPerArtist: 3, includeBackfill: true, first: 40) {
       edges {
         node {
           title
           internalID
           ...SmallArtworkRail_artworks
+        }
+      }
+    }
+    artworksForUser(maxWorksPerArtist: 3, includeBackfill: true, first: 40) {
+      edges {
+        node {
+          title
+          internalID
+          ...LargeArtworkRail_artworks
         }
       }
     }
