@@ -12,6 +12,12 @@ import { CommercialButtons } from "./CommercialButtons/CommercialButtons"
 import { CommercialInformationTimerWrapper } from "./CommercialInformation"
 
 describe("CommercialInformation", () => {
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      ARArtworkRedesingPhase2: false,
+    })
+  })
+
   it("renders all information when the data is present", () => {
     const ForSaleArtwork = {
       ...CommercialInformationArtwork,

@@ -281,16 +281,17 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
           {renderCountdown()}
         </Box>
       )}
-      {!!(!!artistIsConsignable || isAcquireable || isOfferable || isBiddableInAuction) && (
-        <>
-          <Spacer mb={2} />
-          <ArtworkExtraLinks
-            artwork={artwork}
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            auctionState={timerState}
-          />
-        </>
-      )}
+      {!enableArtworkRedesign &&
+        !!(artistIsConsignable || isAcquireable || isOfferable || isBiddableInAuction) && (
+          <>
+            <Spacer mb={2} />
+            <ArtworkExtraLinks
+              artwork={artwork}
+              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+              auctionState={timerState}
+            />
+          </>
+        )}
     </>
   )
 }

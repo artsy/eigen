@@ -1,7 +1,7 @@
 import { ArtworkExtraLinks_artwork$data } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/navigation/navigate"
-import { useFeatureFlag, useSelectedTab } from "app/store/GlobalStore"
+import { useSelectedTab } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { Text } from "palette"
 import { View } from "react-native"
@@ -15,16 +15,13 @@ export interface ArtworkExtraLinksProps {
 }
 
 export const ArtworkExtraLinks: React.FC<ArtworkExtraLinksProps> = ({ artwork, auctionState }) => {
-  const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
   const artists = artwork.artists ?? []
   const consignableArtistsCount = artists.filter((artist) => artist?.isConsignable).length ?? 0
   const artistName = artists.length === 1 ? artists[0]!.name : null
 
   return (
     <>
-      {!enableArtworkRedesign && (
-        <AuctionFaqSection artwork={artwork} auctionState={auctionState} />
-      )}
+      <AuctionFaqSection artwork={artwork} auctionState={auctionState} />
       {!!consignableArtistsCount && (
         <ConsignmentsLink
           artistName={consignableArtistsCount > 1 ? "these artists" : artistName ?? "this artist"}
