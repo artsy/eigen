@@ -37,7 +37,6 @@ const NewWorksForYou: React.FC<NewWorksForYouProps> = ({ viewer }) => {
               shouldAddPadding
               showLoadingSpinner
               useParentAwareScrollView={false}
-              disableNewOpaqueImageView
             />
           ) : (
             <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
