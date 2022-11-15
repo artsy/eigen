@@ -270,6 +270,54 @@ describe("AuthModel", () => {
       })
       expect(Keychain.setInternetCredentials).toHaveBeenCalled()
     })
+
+    describe("The recent price ranges", () => {
+      it("does not clear if user id has not changed after the previous session", async () => {
+        const clearAllPriceRangesSpy = jest.spyOn(
+          GlobalStore.actions.recentPriceRanges,
+          "clearAllPriceRanges"
+        )
+        __globalStoreTestUtils__?.injectState({
+          auth: {
+            userID: null,
+            previousSessionUserID: "my-user-id",
+          },
+        })
+        mockFetchJsonOnce({ access_token: "my-access-token" }, 201)
+        mockFetchJsonOnce({
+          id: "my-user-id",
+        })
+        await GlobalStore.actions.auth.signIn({
+          oauthProvider: "email",
+          email: "user@example.com",
+          password: "hunter2",
+        })
+        expect(clearAllPriceRangesSpy).not.toHaveBeenCalled()
+      })
+
+      it("clears if user id has changed after the previous session", async () => {
+        const clearAllPriceRangesSpy = jest.spyOn(
+          GlobalStore.actions.recentPriceRanges,
+          "clearAllPriceRanges"
+        )
+        __globalStoreTestUtils__?.injectState({
+          auth: {
+            userID: null,
+            previousSessionUserID: "prev-user-id",
+          },
+        })
+        mockFetchJsonOnce({ access_token: "my-access-token" }, 201)
+        mockFetchJsonOnce({
+          id: "my-user-id",
+        })
+        await GlobalStore.actions.auth.signIn({
+          oauthProvider: "email",
+          email: "user@example.com",
+          password: "hunter2",
+        })
+        expect(clearAllPriceRangesSpy).toHaveBeenCalled()
+      })
+    })
   })
 
   describe("signUp", () => {
