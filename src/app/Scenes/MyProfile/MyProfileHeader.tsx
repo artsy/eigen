@@ -41,7 +41,7 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
           justifyContent="center"
           alignItems="center"
         >
-          <TouchableOpacity onPress={() => navigate("/my-profile/edit")}>
+          <TouchableOpacity onPress={() => navigate("/my-profile/edit")} testID="profile-image">
             {!!userProfileImagePath ? (
               <Avatar src={userProfileImagePath} size="xs" />
             ) : (
