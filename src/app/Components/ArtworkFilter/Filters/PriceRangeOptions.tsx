@@ -10,11 +10,24 @@ import {
   ArtworksFiltersStore,
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { useRecentPriceRanges } from "app/store/RecentPriceRangesModel"
 import { useExperimentFlag } from "app/utils/experiments/hooks"
 import { debounce, sortBy } from "lodash"
-import { Flex, Histogram, HistogramBarEntity, Input, Spacer, Text, useColor } from "palette"
+import {
+  Flex,
+  Histogram,
+  HistogramBarEntity,
+  Input,
+  Join,
+  Pill,
+  Spacer,
+  Text,
+  useColor,
+  useSpace,
+} from "palette"
 import React, { useMemo, useState } from "react"
-import { ScrollView, useWindowDimensions } from "react-native"
+import { ScrollView, TouchableOpacity, useWindowDimensions } from "react-native"
 import { ArtworkFilterBackHeader } from "../components/ArtworkFilterBackHeader"
 import { Numeric, parsePriceRangeLabel } from "./helpers"
 
@@ -87,7 +100,10 @@ const getInputValue = (value: CustomRange[number]) => {
 
 export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = ({ navigation }) => {
   const { width } = useWindowDimensions()
+  const recentPriceRanges = useRecentPriceRanges()
+  const enableRecentPriceRanges = useFeatureFlag("ARRecentPriceRanges")
   const color = useColor()
+  const space = useSpace()
 
   const enableHistogram = useExperimentFlag("eigen-enable-price-histogram")
 
@@ -156,6 +172,21 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
       paramValue: updatedRange.join("-"),
       paramName: PARAM_NAME,
     })
+  }
+
+  const handlePrevPriceRangePress = (price: string) => {
+    const selectedRange = parseRange(price)
+    updateRange(selectedRange)
+  }
+
+  const isSelectedPriceRange = (price: string) => {
+    const [min, max] = parseRange(price)
+
+    return min === minValue && max === maxValue
+  }
+
+  const handleClearRecentPriceRanges = () => {
+    GlobalStore.actions.recentPriceRanges.clearAllPriceRanges()
   }
 
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
@@ -249,6 +280,50 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
               </Text>
             </Flex>
           </Flex>
+
+          <Spacer mt={4} />
+
+          {!!enableRecentPriceRanges && recentPriceRanges.length > 0 && (
+            <>
+              <Flex mx={2} flexDirection="row" justifyContent="space-between" alignItems="center">
+                <Text variant="sm">Apply a recent Price Range</Text>
+                <TouchableOpacity
+                  onPress={handleClearRecentPriceRanges}
+                  hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
+                >
+                  <Text variant="sm" style={{ textDecorationLine: "underline" }}>
+                    Clear
+                  </Text>
+                </TouchableOpacity>
+              </Flex>
+              <Spacer mt={1} />
+              <ScrollView
+                horizontal
+                contentContainerStyle={{ paddingHorizontal: space("2") }}
+                showsHorizontalScrollIndicator={false}
+              >
+                <Flex flexDirection="row">
+                  <Join separator={<Spacer ml={1} />}>
+                    {recentPriceRanges.map((recentPrice) => {
+                      const [min, max] = parseRange(recentPrice)
+                      const label = parsePriceRangeLabel(min, max)
+
+                      return (
+                        <Pill
+                          key={recentPrice}
+                          rounded
+                          selected={isSelectedPriceRange(recentPrice)}
+                          onPress={() => handlePrevPriceRangePress(recentPrice)}
+                        >
+                          {label}
+                        </Pill>
+                      )
+                    })}
+                  </Join>
+                </Flex>
+              </ScrollView>
+            </>
+          )}
         </ScrollView>
       </Flex>
     </Flex>
