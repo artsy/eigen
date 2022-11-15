@@ -1,6 +1,7 @@
 package net.artsy.app;
 
 import android.Manifest;
+import android.content.pm.PackageManager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -33,12 +34,16 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule implements Per
     // this is called on application launch by MainApplication#onCreate
     private static final String LAUNCH_COUNT = "launchCount";
 
+    public static final int REQUEST_CODE_NOTIFICATION_PERMISSION = 11111;
+
     public static void didLaunch(SharedPreferences prefs) {
         launchCount = prefs.getInt(LAUNCH_COUNT, 0) + 1;
         prefs.edit().putInt(LAUNCH_COUNT, launchCount).commit();
     }
 
     private static Integer launchCount = 0;
+
+    private Promise pushPermissionsPromise;
 
     ReactApplicationContext context;
 
@@ -217,20 +222,31 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule implements Per
 
     @ReactMethod
     public void requestPermission(Promise promise) {
-        og.v("PUSH", "requestPermission");
+        Log.v("PUSH", "requestPermission");
+        pushPermissionsPromise = promise;
         PermissionAwareActivity activity = (PermissionAwareActivity) getCurrentActivity();
         activity.requestPermissions(
                 new String[] { Manifest.permission.POST_NOTIFICATIONS },
-                11111,
+                REQUEST_CODE_NOTIFICATION_PERMISSION,
                 this);
     }
 
     @Override
     public boolean onRequestPermissionsResult(
             int requestCode, String[] permissions, int[] grantResults) {
-        // TODO: We should pass the results to typescipt here
         Log.v("PUSH", "onRequestPermissionsResult: " + String.join(",", permissions));
-        return true;
+        if (requestCode == REQUEST_CODE_NOTIFICATION_PERMISSION) {
+            if (grantResults.length > 0 &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                pushPermissionsPromise.resolve(true);
+                return true;
+            } else {
+                pushPermissionsPromise.resolve(false);
+                return false;
+            }
+        }
+        pushPermissionsPromise.resolve(false);
+        return false;
     }
 
 }
