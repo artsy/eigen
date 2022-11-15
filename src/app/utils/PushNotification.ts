@@ -1,10 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { navigate } from "app/navigation/navigate"
 import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
 import { GlobalStore, unsafe_getUserAccessToken } from "app/store/GlobalStore"
 import { PendingPushNotification } from "app/store/PendingPushNotificationModel"
-import { Alert, Linking, Platform } from "react-native"
+import { Alert, Linking, NativeModules, Platform } from "react-native"
 import { getDeviceId } from "react-native-device-info"
 import PushNotification, { ReceivedNotification } from "react-native-push-notification"
 import { logAction, logNotification } from "./loggers"
@@ -216,6 +217,7 @@ export async function configure() {
   PushNotification.configure({
     // (optional) Called when Token is generated (iOS and Android)
     onRegister: (token) => {
+      console.log("PUSH onRegister called token", token)
       saveToken(token.token)
     },
 
@@ -227,6 +229,7 @@ export async function configure() {
 
     // (optional) Called when the user fails to register for remote notifications. Typically occurs when APNS is having issues, or the device is a simulator. (iOS)
     onRegistrationError: (err) => {
+      console.log("PUSH onRegistrationError err", err?.message)
       if (__DEV__) {
         console.error(err?.message, err)
       }
@@ -277,18 +280,10 @@ export const requestPushNotificationsPermission = async () => {
   const pushNotificationsPermissionsStatus = await getNotificationPermissionsStatus()
   if (pushNotificationsPermissionsStatus !== PushAuthorizationStatus.Authorized) {
     setTimeout(() => {
-      if (Platform.OS === "ios") {
-        LegacyNativeModules.ARTemporaryAPIModule.requestPrepromptNotificationPermissions()
-      } else {
-        Alert.alert(
-          "Artsy Would Like to Send You Notifications",
-          "Turn on notifications to get important updates about artists you follow.",
-          [
-            { text: "Dismiss", style: "cancel" },
-            { text: "Settings", onPress: () => Linking.openSettings() },
-          ]
-        )
-      }
+      console.log("PUSH requesting permissions")
+      ArtsyNativeModule.requestPrepromptNotificationPermissions()
+      // TODO: point to settings for old Android versions here maybe
+      // maybe need to also just register directly on old versions
     }, 3000)
   }
 }

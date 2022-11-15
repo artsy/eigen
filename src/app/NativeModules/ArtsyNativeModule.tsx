@@ -15,6 +15,12 @@ export const ArtsyNativeModule = {
     Platform.OS === "ios"
       ? LegacyNativeModules.ARNotificationsManager.nativeState.launchCount
       : (NativeModules.ArtsyNativeModule.getConstants().launchCount as number),
+  // TODO: Move the iOS method to ArtsyNativeModule and remove from temp module
+  // TODO: preprompt on Android
+  requestPrepromptNotificationPermissions:
+    Platform.OS === "ios"
+      ? LegacyNativeModules.ARTemporaryAPIModule.requestPrepromptNotificationPermissions
+      : NativeModules.ArtsyNativeModule.requestPermission(),
   setAppStyling:
     Platform.OS === "ios"
       ? () => {

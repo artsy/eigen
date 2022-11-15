@@ -220,6 +220,8 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule implements Per
         }
     }
 
+    // TODO: This should probably be called requestDirectNotificationPermission or
+    // similar
     @ReactMethod
     public void requestPermission(Promise promise) {
         Log.v("PUSH", "requestPermission");
