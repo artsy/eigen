@@ -25,7 +25,7 @@ const MEDIUM_CARD_WIDTH = 280
  */
 export const MediumCard: React.FC<MediumCardProps> = ({ image, title, subtitle, tag, ...rest }) => {
   const { color, space } = useTheme()
-  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewImage")
+  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageComponent")
 
   return (
     <Box
