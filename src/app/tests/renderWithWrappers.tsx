@@ -13,6 +13,8 @@ import ReactTestRenderer from "react-test-renderer"
 import { ProvideScreenDimensions } from "shared/hooks"
 import { ReactElement } from "simple-markdown"
 
+jest.unmock("react-relay")
+
 const Wrappers = ({ children }: { children: React.ReactNode }) =>
   combineProviders(
     [
