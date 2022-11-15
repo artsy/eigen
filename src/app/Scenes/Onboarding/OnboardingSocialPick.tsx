@@ -1,12 +1,13 @@
 import { useNavigation } from "@react-navigation/native"
 import { captureMessage } from "@sentry/react-native"
+import LoadingModal from "app/Components/Modals/LoadingModal"
 import { AuthPromiseRejectType } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { osMajorVersion } from "app/utils/platformUtil"
 import { capitalize } from "lodash"
 import { Button, Flex, Join, Screen, Spacer, Text } from "palette"
-import { useEffect, useState } from "react"
-import { Alert, Image, Platform } from "react-native"
+import { useEffect } from "react"
+import { Alert, Image, InteractionManager, Platform } from "react-native"
 import { EnvelopeIcon } from "../../../palette/svgs/EnvelopeIcon"
 import { useFeatureFlag } from "../../store/GlobalStore"
 import { OnboardingNavigationStack } from "./Onboarding"
@@ -20,7 +21,8 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
   const navigation = useNavigation()
   const enableGoogleAuth = useFeatureFlag("ARGoogleAuth")
   const allowLinkingOnSignUp = useFeatureFlag("ARAllowLinkSocialAccountsOnSignUp")
-  const [isLoading, setIsLoading] = useState(false)
+  const isLoading = GlobalStore.useAppState((state) => state.auth.isLoading)
+
   const isIOS = Platform.OS === "ios"
 
   // When we land on OnboardingSocialPick coming from OnboardingCreateAccount or OnboardingLogin
@@ -90,7 +92,9 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
       handleErrorWithAlternativeProviders(error.meta)
       return
     }
-    Alert.alert("Try again", error.message)
+    InteractionManager.runAfterInteractions(() => {
+      Alert.alert("Try again", error.message)
+    })
   }
 
   const continueWithApple = () =>
@@ -119,6 +123,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
       <Screen.Header onBack={() => navigation.goBack()} />
       <Screen.Body>
         <Flex justifyContent="center" flex={1}>
+          <LoadingModal isVisible={isLoading} dark />
           <Join separator={<Spacer y={60} />}>
             <Text variant="xl">{mode === "login" ? "Log in" : "Sign Up"}</Text>
             <>

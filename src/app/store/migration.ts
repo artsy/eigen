@@ -40,9 +40,10 @@ export const Versions = {
   AddDirtyFormValuesToSubmissionState: 28,
   RemoveDeviceId: 29,
   AddSubmissionIdForMyCollection: 30,
+  AddIsLoadingToAuthModal: 31,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddSubmissionIdForMyCollection
+export const CURRENT_APP_VERSION = Versions.AddIsLoadingToAuthModal
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -239,6 +240,9 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.AddSubmissionIdForMyCollection]: (state) => {
     state.artworkSubmission.submission.submissionIdForMyCollection = ""
+  },
+  [Versions.AddIsLoadingToAuthModal]: (state) => {
+    state.auth.isLoading = false
   },
 }
 
