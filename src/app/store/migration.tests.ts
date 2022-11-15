@@ -730,6 +730,7 @@ describe("App version Versions.AddSubmissionIdForMyCollection", () => {
     expect(migratedState.artworkSubmission.submission.submissionIdForMyCollection).toEqual("")
   })
 })
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 describe("App version Versions.AddRecentPriceRangesModel", () => {
@@ -759,3 +760,5 @@ describe("App version Versions.AddIsLoadingToAuthModal", () => {
 >>>>>>> d3d7c953f4 (feat: add spinner when signing in/up using a social acount)
   })
 })
+=======
+>>>>>>> 40e481204d (chore: refactor)
