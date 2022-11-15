@@ -1,10 +1,8 @@
 import { MyProfileHeaderMyCollectionAndSavedWorksTestsQuery } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorksTestsQuery.graphql"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { navigate } from "app/navigation/navigate"
 import { FavoriteArtworksQueryRenderer } from "app/Scenes/Favorites/FavoriteArtworks"
 import { MyCollectionQueryRenderer } from "app/Scenes/MyCollection/MyCollection"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
@@ -76,11 +74,13 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
     })
 
     // Header tests
-    it("Header Settings onPress navigates to MyProfileSettings", () => {
+    it("Header Settings onPress navigates to my profile edit", () => {
       const { container } = getWrapper()
-      container.findByType(FancyModalHeader).props.onRightButtonPress()
+      const profileImage = container.findAllByProps({ testID: "profile-image" })
+      expect(profileImage).toBeTruthy()
+      profileImage[0].props.onPress()
       expect(navigate).toHaveBeenCalledTimes(1)
-      expect(navigate).toHaveBeenCalledWith("/my-profile/settings")
+      expect(navigate).toHaveBeenCalledWith("/my-profile/edit")
     })
 
     it("Header shows the right text", async () => {

@@ -1,21 +1,19 @@
-import { useNavigation } from "@react-navigation/native"
 import { MyProfileHeader_me$key } from "__generated__/MyProfileHeader_me.graphql"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { navigate } from "app/navigation/navigate"
 import {
   Avatar,
   Box,
   BriefcaseIcon,
-  EditIcon,
   Flex,
   MapPinIcon,
   MuseumIcon,
+  SettingsIcon,
   Text,
   Touchable,
   useColor,
 } from "palette"
 import React, { useContext } from "react"
-import { Image } from "react-native"
+import { Image, TouchableOpacity } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { MyProfileContext } from "./MyProfileProvider"
@@ -27,36 +25,29 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
   const me = useFragment(myProfileHeaderFragment, props.me)
 
   const color = useColor()
-  const navigation = useNavigation()
 
   const { localImage } = useContext(MyProfileContext)
 
   const userProfileImagePath = localImage || me?.icon?.url
 
   return (
-    <>
-      <FancyModalHeader
-        rightButtonText="Settings"
-        hideBottomDivider
-        onRightButtonPress={() => {
-          navigate("/my-profile/settings")
-        }}
-      />
-
+    <Flex pt={2}>
       <Flex flexDirection="row" alignItems="center" px={2}>
         <Box
-          height="45"
-          width="45"
-          borderRadius="50"
+          height={50}
+          width={50}
+          borderRadius={25}
           backgroundColor={color("black10")}
           justifyContent="center"
           alignItems="center"
         >
-          {!!userProfileImagePath ? (
-            <Avatar src={userProfileImagePath} size="xs" />
-          ) : (
-            <Image source={require("images/profile_placeholder_avatar.webp")} />
-          )}
+          <TouchableOpacity onPress={() => navigate("/my-profile/edit")} testID="profile-image">
+            {!!userProfileImagePath ? (
+              <Avatar src={userProfileImagePath} size="xs" />
+            ) : (
+              <Image source={require("images/profile_placeholder_avatar.webp")} />
+            )}
+          </TouchableOpacity>
         </Box>
         <Flex flex={1} px={1}>
           <Text fontSize={20} lineHeight={24} color={color("black100")}>
@@ -71,10 +62,10 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
         <Touchable
           haptic
           hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
-          // @ts-expect-error
-          onPress={() => navigation.navigate("MyProfileEditForm")}
+          onPress={() => navigate("/my-profile/settings")}
+          style={{ height: "100%" }}
         >
-          <EditIcon fill="black100" />
+          <SettingsIcon height={18} width={18} fill="black100" />
         </Touchable>
       </Flex>
 
@@ -112,7 +103,7 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
           </Flex>
         )}
       </Flex>
-    </>
+    </Flex>
   )
 }
 
