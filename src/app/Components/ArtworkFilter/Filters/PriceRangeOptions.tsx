@@ -10,6 +10,7 @@ import {
   ArtworksFiltersStore,
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { DEFAULT_PRICE_RANGE as USER_PREFERRED_DEFAULT_PRICE_RANGE } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { useRecentPriceRanges } from "app/store/RecentPriceRangesModel"
 import { useExperimentFlag } from "app/utils/experiments/hooks"
@@ -100,8 +101,8 @@ const getInputValue = (value: CustomRange[number]) => {
 
 export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = ({ navigation }) => {
   const { width } = useWindowDimensions()
-  const recentPriceRanges = useRecentPriceRanges()
   const enableRecentPriceRanges = useFeatureFlag("ARRecentPriceRanges")
+  const priceRanges = usePriceRanges()
   const color = useColor()
   const space = useSpace()
 
@@ -283,7 +284,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
 
           <Spacer mt={4} />
 
-          {!!enableRecentPriceRanges && recentPriceRanges.length > 0 && (
+          {!!enableRecentPriceRanges && priceRanges.length > 0 && (
             <>
               <Flex mx={2} flexDirection="row" justifyContent="space-between" alignItems="center">
                 <Text variant="sm">Apply a recent Price Range</Text>
@@ -304,7 +305,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
               >
                 <Flex flexDirection="row">
                   <Join separator={<Spacer ml={1} />}>
-                    {recentPriceRanges.map((recentPrice) => {
+                    {priceRanges.map((recentPrice) => {
                       const [min, max] = parseRange(recentPrice)
                       const label = parsePriceRangeLabel(min, max)
 
@@ -328,4 +329,20 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
       </Flex>
     </Flex>
   )
+}
+
+const usePriceRanges = () => {
+  let recentPriceRanges = useRecentPriceRanges()
+  const userPreferredPriceRange = GlobalStore.useAppState((state) => state.userPrefs.priceRange)
+
+  if (userPreferredPriceRange !== USER_PREFERRED_DEFAULT_PRICE_RANGE) {
+    // Remove duplicate price ranges
+    recentPriceRanges = recentPriceRanges.filter((priceRange) => {
+      return priceRange !== userPreferredPriceRange
+    })
+
+    return [...recentPriceRanges, userPreferredPriceRange]
+  }
+
+  return recentPriceRanges
 }

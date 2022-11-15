@@ -22,7 +22,7 @@ const DEFAULT_CURRENCY =
   ) as Currency) ?? "USD"
 const DEFAULT_METRIC = "in"
 const DEFAULT_VIEW_OPTION = "grid"
-const DEFAULT_PRICE_RANGE = "*-*"
+export const DEFAULT_PRICE_RANGE = "*-*"
 // please update this when adding new user preferences
 export interface UserPrefs {
   pricePaidCurrency: Currency

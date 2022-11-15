@@ -258,6 +258,21 @@ describe("PriceRangeOptions", () => {
         expect(queryByText("Apply a recent Price Range")).toBeNull()
       })
 
+      it("should render the collector profile-sourced range", () => {
+        __globalStoreTestUtils__?.injectState({
+          userPrefs: {
+            priceRange: "0-5000",
+          },
+          recentPriceRanges: {
+            ranges: [],
+          },
+        })
+
+        const { queryByText } = getTree()
+
+        expect(queryByText("$0–5,000")).toBeTruthy()
+      })
+
       it("should correctly clear the recent price ranges when `Clear` button is pressed", () => {
         __globalStoreTestUtils__?.injectState({
           recentPriceRanges: {
