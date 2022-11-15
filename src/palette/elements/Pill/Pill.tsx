@@ -160,11 +160,7 @@ export const Pill: React.FC<PillProps> = ({
 const useStyleForState = (
   state: DisplayState,
   stateStyle: PillProps["stateStyle"]
-): {
-  textColor: string
-  borderColor: string
-  backgroundColor: string
-} => {
+): { textColor: string; borderColor: string; backgroundColor: string } => {
   const color = useColor()
 
   const retval = {} as ReturnType<typeof useStyleForState>
