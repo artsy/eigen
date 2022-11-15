@@ -745,6 +745,6 @@ describe("App version Versions.AddRecentPriceRangesModel", () => {
       toVersion: migrationToTest,
     }) as any
 
-    expect(migratedState.recentPriceRanges.recentPriceRanges).toEqual([])
+    expect(migratedState.recentPriceRanges.ranges).toEqual([])
   })
 })

@@ -243,7 +243,7 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.AddRecentPriceRangesModel]: (state) => {
     state.recentPriceRanges = {
-      recentPriceRanges: [],
+      ranges: [],
     }
   },
 }

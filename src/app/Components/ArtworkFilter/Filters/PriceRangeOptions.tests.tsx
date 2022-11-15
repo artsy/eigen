@@ -206,7 +206,7 @@ describe("PriceRangeOptions", () => {
     it("should be rendered", () => {
       __globalStoreTestUtils__?.injectState({
         recentPriceRanges: {
-          recentPriceRanges: ["*-500", "1000-2000", "3000-*"],
+          ranges: ["*-500", "1000-2000", "3000-*"],
         },
       })
 
@@ -221,7 +221,7 @@ describe("PriceRangeOptions", () => {
     it("should NOT be rendered if recent price ranges are empty", () => {
       __globalStoreTestUtils__?.injectState({
         recentPriceRanges: {
-          recentPriceRanges: [],
+          ranges: [],
         },
       })
 
@@ -233,7 +233,7 @@ describe("PriceRangeOptions", () => {
     it("should correctly clear the recent price ranges when `Clear` button is pressed", () => {
       __globalStoreTestUtils__?.injectState({
         recentPriceRanges: {
-          recentPriceRanges: ["*-500", "1000-2000", "3000-*"],
+          ranges: ["*-500", "1000-2000", "3000-*"],
         },
       })
 
