@@ -35,7 +35,7 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({ artist, onDismiss, onFol
     }
   }
 
-  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewImage")
+  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageComponent")
 
   return (
     <ArtistCardWrapper onPress={handlePress}>

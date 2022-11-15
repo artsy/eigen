@@ -52,7 +52,6 @@ export interface ArtworkProps {
   /** Hide sale info */
   hideSaleInfo?: boolean
   height?: number
-  width?: number
   /** Show the lot number (Lot 213) */
   showLotLabel?: boolean
   /** styles for each field: allows for customization of each field */
@@ -64,7 +63,6 @@ export interface ArtworkProps {
   partnerNameTextStyle?: TextProps
   /** allows for artwork to be added to recent searches */
   updateRecentSearchesOnTap?: boolean
-  disableNewOpaqueImageView?: boolean
 }
 
 export const Artwork: React.FC<ArtworkProps> = ({
@@ -73,7 +71,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   trackTap,
   itemIndex,
   height,
-  width,
   contextScreenOwnerId,
   contextScreenOwnerSlug,
   contextScreenOwnerType,
@@ -90,12 +87,10 @@ export const Artwork: React.FC<ArtworkProps> = ({
   saleInfoTextStyle,
   partnerNameTextStyle,
   updateRecentSearchesOnTap = false,
-  disableNewOpaqueImageView = false,
 }) => {
   const itemRef = useRef<any>()
   const tracking = useTracking()
-  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewImage")
-  const shouldShowNewOpaqueImageView = enableNewOpaqueImageView && !disableNewOpaqueImageView
+  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageComponent")
 
   let filterParams: any
 
@@ -179,12 +174,11 @@ export const Artwork: React.FC<ArtworkProps> = ({
       <View ref={itemRef}>
         {!!artwork.image && (
           <View>
-            {shouldShowNewOpaqueImageView ? (
+            {enableNewOpaqueImageView ? (
               <NewOpaqueImageView
                 aspectRatio={artwork.image?.aspectRatio ?? 1}
                 imageURL={artwork.image?.url}
                 height={height}
-                width={width}
               />
             ) : (
               <OpaqueImageView

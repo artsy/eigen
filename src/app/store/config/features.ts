@@ -161,11 +161,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableAuctionShareButton",
   },
-  AREnableNewImage: {
+  AREnableNewOpaqueImageComponent: {
     readyForRelease: true,
     description: "Enable New Image Component",
     showInAdminMenu: true,
-    echoFlagKey: "AREnableNewImage",
+    echoFlagKey: "AREnableNewOpaqueImageComponent",
   },
   AREnableConversationalBuyNow: {
     readyForRelease: true,
