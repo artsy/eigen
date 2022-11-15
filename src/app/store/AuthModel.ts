@@ -831,8 +831,11 @@ export const getAuthModel = (): AuthModel => ({
   signOut: thunk(async () => {
     const signOutGoogle = async () => {
       try {
-        await GoogleSignin.revokeAccess()
-        await GoogleSignin.signOut()
+        const isSignedIn = await GoogleSignin.isSignedIn()
+        if (isSignedIn) {
+          await GoogleSignin.revokeAccess()
+          await GoogleSignin.signOut()
+        }
       } catch (error) {
         console.log("Failed to signout from Google")
         console.error(error)
