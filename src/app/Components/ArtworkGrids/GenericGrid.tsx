@@ -147,6 +147,7 @@ export class GenericArtworksGrid extends React.Component<Props & PropsForArtwork
             artwork={artwork}
             key={artwork.id + column + row}
             height={imgHeight}
+            hideSaveIcon
             width={imgWidth}
             trackingFlow={trackingFlow}
             contextModule={contextModule}

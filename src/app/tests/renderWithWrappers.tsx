@@ -1,6 +1,7 @@
 import { render } from "@testing-library/react-native"
 import { PopoverMessageProvider } from "app/Components/PopoverMessage/PopoverMessageProvider"
 import { ToastProvider } from "app/Components/Toast/toastHook"
+import { defaultEnvironment } from "app/relay/createEnvironment"
 import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { combineProviders } from "app/utils/combineProviders"
 import { track } from "app/utils/track"
@@ -31,7 +32,13 @@ const Wrappers = ({ children }: { children: React.ReactNode }) =>
  * @param component
  */
 const componentWithWrappers = (component: ReactElement) => {
-  return <Wrappers>{component}</Wrappers>
+  return (
+    <Wrappers>
+      <RelayEnvironmentProvider environment={defaultEnvironment}>
+        {component}
+      </RelayEnvironmentProvider>
+    </Wrappers>
+  )
 }
 
 /**
