@@ -5,7 +5,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { osMajorVersion } from "app/utils/platformUtil"
 import { capitalize } from "lodash"
 import { Button, Flex, Join, Screen, Spacer, Text } from "palette"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Alert, Image, Platform } from "react-native"
 import { EnvelopeIcon } from "../../../palette/svgs/EnvelopeIcon"
 import { useFeatureFlag } from "../../store/GlobalStore"
@@ -20,6 +20,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
   const navigation = useNavigation()
   const enableGoogleAuth = useFeatureFlag("ARGoogleAuth")
   const allowLinkingOnSignUp = useFeatureFlag("ARAllowLinkSocialAccountsOnSignUp")
+  const [isLoading, setIsLoading] = useState(false)
   const isIOS = Platform.OS === "ios"
 
   // When we land on OnboardingSocialPick coming from OnboardingCreateAccount or OnboardingLogin
