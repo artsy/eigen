@@ -5,8 +5,10 @@ import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { useExperimentFlagVariant } from "app/utils/experiments/hooks"
+import { useExperimentVariant } from "app/utils/experiments/hooks"
+import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
 import { extractNodes } from "app/utils/extractNodes"
+import { Schema } from "app/utils/track"
 import { Flex } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
@@ -28,7 +30,15 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
   mb,
 }) => {
   const { trackEvent } = useTracking()
-  const railVariant = useExperimentFlagVariant("eigen-large-new-works-for-you-rail").name
+
+  const railVariant = useExperimentVariant("eigen-new-works-for-you-rail-size")
+
+  trackExperimentVariant(
+    "eigen-new-works-for-you-rail-size",
+    railVariant.enabled,
+    railVariant.variant,
+    railVariant.payload
+  )
 
   const { artworksForUser, smallArtworksForUser } = useFragment(artworksFragment, artworkConnection)
 
@@ -58,7 +68,7 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
             }}
           />
         </Flex>
-        {railVariant === "experiment" || useFeatureFlag("AREnforceLargeNewWorksRail") ? (
+        {railVariant.variant === "experiment" || useFeatureFlag("AREnforceLargeNewWorksRail") ? (
           <LargeArtworkRail
             artworks={artworks}
             onPress={(artwork, position) => {
@@ -126,3 +136,19 @@ const tracks = {
     type: "header",
   }),
 }
+
+const trackExperimentVariant = (
+  name: string,
+  enabled: boolean,
+  variant: string,
+  payload?: string
+) =>
+  maybeReportExperimentVariant({
+    name,
+    enabled,
+    variant,
+    payload,
+    context_module: ContextModule.newWorksForYouRail,
+    context_screen_owner_type: OwnerType.home,
+    context_screen: Schema.PageNames.Home,
+  })

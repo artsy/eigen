@@ -15,18 +15,6 @@ export function useExperimentFlag(name: string) {
   return enabled
 }
 
-export function useExperimentFlagVariant(name: string) {
-  const client = getUnleashClient()
-  const [variant, setVariant] = useState(client.getVariant(name))
-
-  const { lastUpdate } = useContext(UnleashContext)
-  useEffect(() => {
-    setVariant(client.getVariant(name))
-  }, [lastUpdate])
-
-  return variant
-}
-
 export function useExperimentVariant(name: string): {
   enabled: boolean
   variant: string
