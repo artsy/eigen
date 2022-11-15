@@ -311,7 +311,6 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
                         <Pill
                           key={recentPrice}
                           rounded
-                          placeholder="$USD"
                           selected={isSelectedPriceRange(recentPrice)}
                           onPress={() => handlePrevPriceRangePress(recentPrice)}
                         >
