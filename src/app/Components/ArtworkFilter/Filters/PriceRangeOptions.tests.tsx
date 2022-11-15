@@ -203,45 +203,74 @@ describe("PriceRangeOptions", () => {
   })
 
   describe("Recent price ranges", () => {
-    it("should be rendered", () => {
-      __globalStoreTestUtils__?.injectState({
-        recentPriceRanges: {
-          ranges: ["*-500", "1000-2000", "3000-*"],
-        },
+    describe("when feature flag is disabled", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({
+          ARRecentPriceRanges: false,
+        })
       })
 
-      const { getByText } = getTree()
+      it("should NOT be rendered", () => {
+        __globalStoreTestUtils__?.injectState({
+          recentPriceRanges: {
+            ranges: ["*-500"],
+          },
+        })
 
-      expect(getByText("Apply a recent Price Range")).toBeTruthy()
-      expect(getByText("$0–500")).toBeTruthy()
-      expect(getByText("$1,000–2,000")).toBeTruthy()
-      expect(getByText("$3,000+")).toBeTruthy()
+        const { queryByText } = getTree()
+
+        expect(queryByText("Apply a recent Price Range")).toBeNull()
+        expect(queryByText("$0–500")).toBeNull()
+      })
     })
 
-    it("should NOT be rendered if recent price ranges are empty", () => {
-      __globalStoreTestUtils__?.injectState({
-        recentPriceRanges: {
-          ranges: [],
-        },
+    describe("when feature flag is enabled", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({
+          ARRecentPriceRanges: true,
+        })
       })
 
-      const { queryByText } = getTree()
+      it("should be rendered", () => {
+        __globalStoreTestUtils__?.injectState({
+          recentPriceRanges: {
+            ranges: ["*-500", "1000-2000", "3000-*"],
+          },
+        })
 
-      expect(queryByText("Apply a recent Price Range")).toBeNull()
-    })
+        const { getByText } = getTree()
 
-    it("should correctly clear the recent price ranges when `Clear` button is pressed", () => {
-      __globalStoreTestUtils__?.injectState({
-        recentPriceRanges: {
-          ranges: ["*-500", "1000-2000", "3000-*"],
-        },
+        expect(getByText("Apply a recent Price Range")).toBeTruthy()
+        expect(getByText("$0–500")).toBeTruthy()
+        expect(getByText("$1,000–2,000")).toBeTruthy()
+        expect(getByText("$3,000+")).toBeTruthy()
       })
 
-      const { queryByText, getByText } = getTree()
+      it("should NOT be rendered if recent price ranges are empty", () => {
+        __globalStoreTestUtils__?.injectState({
+          recentPriceRanges: {
+            ranges: [],
+          },
+        })
 
-      fireEvent.press(getByText("Clear"))
+        const { queryByText } = getTree()
 
-      expect(queryByText("Apply a recent Price Range")).toBeNull()
+        expect(queryByText("Apply a recent Price Range")).toBeNull()
+      })
+
+      it("should correctly clear the recent price ranges when `Clear` button is pressed", () => {
+        __globalStoreTestUtils__?.injectState({
+          recentPriceRanges: {
+            ranges: ["*-500", "1000-2000", "3000-*"],
+          },
+        })
+
+        const { queryByText, getByText } = getTree()
+
+        fireEvent.press(getByText("Clear"))
+
+        expect(queryByText("Apply a recent Price Range")).toBeNull()
+      })
     })
   })
 })

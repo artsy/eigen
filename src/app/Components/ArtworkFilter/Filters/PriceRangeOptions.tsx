@@ -10,7 +10,7 @@ import {
   ArtworksFiltersStore,
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { useRecentPriceRanges } from "app/store/RecentPriceRangesModel"
 import { useExperimentFlag } from "app/utils/experiments/hooks"
 import { debounce, sortBy } from "lodash"
@@ -101,6 +101,7 @@ const getInputValue = (value: CustomRange[number]) => {
 export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = ({ navigation }) => {
   const { width } = useWindowDimensions()
   const recentPriceRanges = useRecentPriceRanges()
+  const enableRecentPriceRanges = useFeatureFlag("ARRecentPriceRanges")
   const color = useColor()
   const space = useSpace()
 
@@ -282,7 +283,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
 
           <Spacer mt={4} />
 
-          {recentPriceRanges.length > 0 && (
+          {!!enableRecentPriceRanges && recentPriceRanges.length > 0 && (
             <>
               <Flex mx={2} flexDirection="row" justifyContent="space-between" alignItems="center">
                 <Text variant="sm">Apply a recent Price Range</Text>
