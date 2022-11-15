@@ -1,20 +1,26 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { defaultEnvironment } from "app/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import "react-native"
+import { RelayEnvironmentProvider } from "react-relay"
 import { act } from "react-test-renderer"
 import Artwork from "./ArtworkGridItem"
 import { LotCloseInfo } from "./LotCloseInfo"
 
+jest.unmock("react-relay")
+
 const ArtworkWithProviders = (props: any) => {
   return (
-    <ArtworkFiltersStoreProvider>
-      <Artwork {...props} />
-    </ArtworkFiltersStoreProvider>
+    <RelayEnvironmentProvider environment={defaultEnvironment}>
+      <ArtworkFiltersStoreProvider>
+        <Artwork {...props} />
+      </ArtworkFiltersStoreProvider>
+    </RelayEnvironmentProvider>
   )
 }
 
