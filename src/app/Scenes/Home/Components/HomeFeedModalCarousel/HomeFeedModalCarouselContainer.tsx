@@ -1,4 +1,5 @@
-import { navigate, switchTab } from "app/navigation/navigate"
+import { navigate, popToRoot, switchTab } from "app/navigation/navigate"
+import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { BackButton, Button, Flex, useSpace } from "palette"
 import { useEffect, useRef, useState } from "react"
 import { LayoutAnimation, Modal, TouchableOpacity } from "react-native"
@@ -47,7 +48,7 @@ export const HomeFeedModalCarouselContainer: React.FC<FullScreenCarouselProps> =
         animationType="slide"
         onDismiss={() => {
           setActiveStep(initialPage)
-          if (!__TEST__ && pagerViewRef?.current) {
+          if (pagerViewRef?.current) {
             pagerViewRef.current.setPage(initialPage)
           }
         }}
@@ -154,7 +155,13 @@ export const FooterButtons = ({
             switchTab("profile")
             dismissModal()
             requestAnimationFrame(() => {
-              navigate("/my-collection/artworks/new")
+              navigate("my-collection/artworks/new", {
+                passProps: {
+                  mode: "add",
+                  source: Tab.collection,
+                  onSuccess: popToRoot,
+                },
+              })
             })
           }}
         >
