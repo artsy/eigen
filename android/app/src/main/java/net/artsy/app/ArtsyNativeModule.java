@@ -1,5 +1,6 @@
 package net.artsy.app;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.Window;
 import android.view.WindowManager;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -18,6 +20,8 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.modules.core.PermissionAwareActivity;
+import com.facebook.react.modules.core.PermissionListener;
 
 import org.apache.commons.io.FileUtils;
 
@@ -25,14 +29,15 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-
-public class ArtsyNativeModule extends ReactContextBaseJavaModule {
+public class ArtsyNativeModule extends ReactContextBaseJavaModule implements PermissionListener {
     // this is called on application launch by MainApplication#onCreate
     private static final String LAUNCH_COUNT = "launchCount";
+
     public static void didLaunch(SharedPreferences prefs) {
         launchCount = prefs.getInt(LAUNCH_COUNT, 0) + 1;
         prefs.edit().putInt(LAUNCH_COUNT, launchCount).commit();
     }
+
     private static Integer launchCount = 0;
 
     ReactApplicationContext context;
@@ -57,12 +62,11 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule {
         return constants;
     }
 
-
     @ReactMethod
     public void setNavigationBarColor(final String color) {
         final Activity activity = getCurrentActivity();
         final int colorInt = Color.parseColor(color);
-        if(activity == null)
+        if (activity == null)
             return;
 
         activity.runOnUiThread(new Runnable() {
@@ -80,7 +84,7 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 final Activity activity = getCurrentActivity();
-                if(activity == null)
+                if (activity == null)
                     return;
 
                 activity.runOnUiThread(new Runnable() {
@@ -107,7 +111,7 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 final Activity activity = getCurrentActivity();
-                if(activity == null)
+                if (activity == null)
                     return;
 
                 activity.runOnUiThread(new Runnable() {
@@ -116,10 +120,12 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule {
                         final Window window = activity.getWindow();
                         // clear any existing flags
                         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-                        if(isLight) {
-                            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN );
+                        if (isLight) {
+                            window.getDecorView().setSystemUiVisibility(
+                                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
                         } else {
-                            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR );
+                            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                                    | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
                         }
                     }
                 });
@@ -134,7 +140,7 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule {
     public void setStatusBarColor(final String color) {
         final Activity activity = getCurrentActivity();
         final int colorInt = Color.parseColor(color);
-        if(activity == null)
+        if (activity == null)
             return;
 
         activity.runOnUiThread(new Runnable() {
@@ -150,8 +156,7 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule {
     public static int getNavigationBarSize(Context context) {
         boolean hasHardwareMenuKey = ViewConfiguration.get(context).hasPermanentMenuKey();
         int resourceId = context.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
-        if (resourceId > 0 && !hasHardwareMenuKey)
-        {
+        if (resourceId > 0 && !hasHardwareMenuKey) {
             return context.getResources().getDimensionPixelSize(resourceId);
         }
         return 0;
@@ -159,8 +164,7 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule {
 
     private boolean isTablet() {
         return (getCurrentActivity().getResources().getConfiguration().screenLayout
-                & Configuration.SCREENLAYOUT_SIZE_MASK)
-                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+                & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
     @ReactMethod
@@ -172,7 +176,8 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule {
     }
 
     private boolean deleteDir(File dir) {
-        if (dir == null) return true;
+        if (dir == null)
+            return true;
         if (dir.isDirectory()) {
             String[] children = dir.list();
             if (children != null) {
@@ -208,6 +213,24 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule {
                 promise.resolve(false);
             }
         }
+    }
+
+    @ReactMethod
+    public void requestPermission(Promise promise) {
+        og.v("PUSH", "requestPermission");
+        PermissionAwareActivity activity = (PermissionAwareActivity) getCurrentActivity();
+        activity.requestPermissions(
+                new String[] { Manifest.permission.POST_NOTIFICATIONS },
+                11111,
+                this);
+    }
+
+    @Override
+    public boolean onRequestPermissionsResult(
+            int requestCode, String[] permissions, int[] grantResults) {
+        // TODO: We should pass the results to typescipt here
+        Log.v("PUSH", "onRequestPermissionsResult: " + String.join(",", permissions));
+        return true;
     }
 
 }
