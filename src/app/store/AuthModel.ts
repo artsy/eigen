@@ -144,6 +144,7 @@ export interface AuthPromiseRejectType {
 
 export interface AuthModel {
   // State
+  isLoading: boolean
   userID: string | null
   userAccessToken: string | null
   userAccessTokenExpiresIn: string | null
@@ -219,6 +220,7 @@ const clientSecret = __DEV__
   : Config.ARTSY_PROD_API_CLIENT_SECRET
 
 export const getAuthModel = (): AuthModel => ({
+  isLoading: false,
   userID: null,
   userAccessToken: null,
   userAccessTokenExpiresIn: null,
@@ -496,6 +498,7 @@ export const getAuthModel = (): AuthModel => ({
   authFacebook: thunk(async (actions, options) => {
     return await new Promise<AuthPromiseResolveType>(async (resolve, reject) => {
       try {
+        actions.setState({ isLoading: true })
         const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions([
           "public_profile",
           "email",
@@ -541,6 +544,7 @@ export const getAuthModel = (): AuthModel => ({
               resolve({ success: true })
               return
             } else {
+              actions.setState({ isLoading: false })
               reject(
                 new AuthError(
                   resultGravitySignUp.message,
@@ -584,11 +588,13 @@ export const getAuthModel = (): AuthModel => ({
                 resolve({ success: true })
                 return
               } else {
+                actions.setState({ isLoading: false })
                 reject(new AuthError("Could not log in"))
                 return
               }
             } else {
               const res = await resultGravityAccessToken.json()
+              actions.setState({ isLoading: false })
               showError(res, reject, "facebook")
             }
           }
@@ -630,6 +636,7 @@ export const getAuthModel = (): AuthModel => ({
   authGoogle: thunk(async (actions, options) => {
     return await new Promise<AuthPromiseResolveType>(async (resolve, reject) => {
       try {
+        actions.setState({ isLoading: true })
         if (!(await GoogleSignin.hasPlayServices())) {
           reject(new AuthError("Play services are not available."))
           return
@@ -720,11 +727,14 @@ export const getAuthModel = (): AuthModel => ({
         }
         reject(new AuthError("Error logging in with google"))
         return
+      } finally {
+        actions.setState({ isLoading: false })
       }
     })
   }),
   authApple: thunk(async (actions, { agreedToReceiveEmails, onSignIn }) => {
     return await new Promise<AuthPromiseResolveType>(async (resolve, reject) => {
+      actions.setState({ isLoading: true })
       // we cannot have separated logic for sign in and sign up with apple, as with google or facebook,
       // because apple returns email only on the FIRST auth attempt, so we run sign up and sign in one by one
       let signInOrUp: "signIn" | "signUp" = "signUp"
@@ -826,6 +836,8 @@ export const getAuthModel = (): AuthModel => ({
           showError(res, reject, "apple")
         }
       }
+    }).finally(() => {
+      actions.setState({ isLoading: false })
     })
   }),
   signOut: thunk(async () => {
