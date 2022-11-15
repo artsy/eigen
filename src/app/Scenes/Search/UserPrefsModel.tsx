@@ -75,8 +75,6 @@ export const getUserPrefsModel = (): UserPrefsModel => ({
     GlobalStore.actions.userPrefs.setMetric(me?.lengthUnitPreference.toLowerCase() as Metric)
     GlobalStore.actions.userPrefs.setCurrency(me?.currencyPreference as Currency)
 
-    console.log("[debug] me.priceRange", me.priceRange)
-
     if (me.priceRange) {
       const priceRange = parsePriceRange(me.priceRange)
       GlobalStore.actions.userPrefs.setPriceRange(priceRange)
