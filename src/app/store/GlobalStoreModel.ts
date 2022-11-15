@@ -89,11 +89,17 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
         artsyPrefs: existingConfig,
         search,
         auth: { userID },
+        recentPriceRanges,
       } = store.getState()
 
       // keep existing config state
       const config = sanitize(existingConfig) as typeof existingConfig
-      actions.reset({ artsyPrefs: config, search, auth: { previousSessionUserID: userID } })
+      actions.reset({
+        artsyPrefs: config,
+        search,
+        recentPriceRanges,
+        auth: { previousSessionUserID: userID },
+      })
     }
   ),
   didRehydrate: thunkOn(

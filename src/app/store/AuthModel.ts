@@ -371,7 +371,10 @@ export const getAuthModel = (): AuthModel => ({
       }
 
       if (user.id !== store.getState().previousSessionUserID) {
-        store.getStoreActions().search.clearRecentSearches()
+        const storeActions = store.getStoreActions()
+
+        storeActions.search.clearRecentSearches()
+        storeActions.recentPriceRanges.clearAllPriceRanges()
       }
 
       postEventToProviders(tracks.loggedIn(oauthProvider))
