@@ -4,7 +4,7 @@ import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ModalStack } from "app/navigation/ModalStack"
 import { navigate } from "app/navigation/navigate"
-import { __globalStoreTestUtils__, useSelectedTab } from "app/store/GlobalStore"
+import { useSelectedTab } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
@@ -31,12 +31,6 @@ const getWrapper = ({
   )
 
 describe("ArtworkExtraLinks", () => {
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({
-      ARArtworkRedesingPhase2: false,
-    })
-  })
-
   it("redirects to /sales when consignments link is clicked from outside of sell tab", () => {
     const artwork = {
       ...ArtworkFixture,

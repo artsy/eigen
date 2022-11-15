@@ -30,6 +30,7 @@ import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutA
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { AboveTheFoldPlaceholder } from "./Components/AboveTheFoldArtworkPlaceholder"
 import { ArtsyGuarantee } from "./Components/ArtsyGuarantee"
+import { ArtworkConsignments } from "./Components/ArtworkConsignments"
 import { ArtworkDetails } from "./Components/ArtworkDetails"
 import { FaqAndSpecialistSectionFragmentContainer as FaqAndSpecialistSection } from "./Components/ArtworkExtraLinks/FaqAndSpecialistSection"
 import { ArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/ArtworkHeader"
@@ -122,6 +123,20 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const shouldRenderLotDetails = () => {
     return enableArtworkRedesign && isInAuction && sale && artworkAboveTheFold?.saleArtwork
+  }
+
+  const shouldRenderConsignmentsSection = () => {
+    const { isAcquireable, isOfferable } = artworkAboveTheFold ?? {}
+    const { isForSale } = artworkBelowTheFold ?? {}
+    const artists = artworkBelowTheFold?.artists ?? []
+    const consignableArtists = artists.filter((currentArtist) => !!currentArtist?.isConsignable)
+    const isBiddableInAuction =
+      isInAuction && sale && auctionTimerState !== AuctionTimerState.CLOSED && isForSale
+
+    return (
+      enableArtworkRedesign &&
+      (consignableArtists.length || isAcquireable || isOfferable || isBiddableInAuction)
+    )
   }
 
   useEffect(() => {
@@ -305,6 +320,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
       sections.push({
         key: "aboutArtist",
         element: <AboutArtist artwork={artworkBelowTheFold} />,
+      })
+    }
+
+    if (shouldRenderConsignmentsSection()) {
+      sections.push({
+        key: "consignments",
+        element: <ArtworkConsignments artwork={artworkBelowTheFold} />,
       })
     }
 
@@ -545,6 +567,9 @@ export const ArtworkContainer = createRefetchContainer(
             }
           }
         }
+        artists {
+          isConsignable
+        }
         ...PartnerCard_artwork
         ...AboutWork_artwork
         ...OtherWorks_artwork
@@ -554,6 +579,7 @@ export const ArtworkContainer = createRefetchContainer(
         ...ArtworkHistory_artwork
         ...ArtworksInSeriesRail_artwork
         ...ShippingAndTaxes_artwork
+        ...ArtworkConsignments_artwork
       }
     `,
     me: graphql`
