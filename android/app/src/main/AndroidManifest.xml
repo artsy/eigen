@@ -108,6 +108,7 @@
                 <data android:pathPrefix="/my-collection" />
                 <data android:pathPrefix="/my-profile" />
                 <data android:pathPrefix="/my-profile/saved-addresses" />
+                <data android:pathPrefix="/new-for-you" />
                 <data android:pathPrefix="/orders" />
                 <data android:pathPrefix="/partner" />
                 <data android:pathPrefix="/privacy-request" />
