@@ -94,9 +94,18 @@ class PureWrapper extends Component {
  * by using @testing-library/react-native
  * @param component
  */
-export const renderWithWrappers = (component: ReactElement) => {
+export const renderWithWrappers = (
+  component: ReactElement,
+  environment: Environment = defaultEnvironment
+) => {
+  const jsx = (
+    <RelayEnvironmentProvider environment={environment}>
+      <Suspense fallback="Loading...">{component}</Suspense>
+    </RelayEnvironmentProvider>
+  )
+
   try {
-    return render(component, { wrapper: Wrappers })
+    return render(jsx, { wrapper: Wrappers })
   } catch (error: any) {
     if (error.message.includes("Element type is invalid")) {
       throw new Error(
@@ -111,11 +120,4 @@ export const renderWithWrappers = (component: ReactElement) => {
   }
 }
 
-export const renderWithHookWrappersTL = (component: ReactElement, environment: Environment) => {
-  const jsx = (
-    <RelayEnvironmentProvider environment={environment}>
-      <Suspense fallback="Loading...">{component}</Suspense>
-    </RelayEnvironmentProvider>
-  )
-  return renderWithWrappers(jsx)
-}
+export const renderWithHookWrappersTL = renderWithWrappers
