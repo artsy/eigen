@@ -675,12 +675,12 @@ describe("getSelectedFiltersCounts helper", () => {
 
   const waysToBuyFilters = [
     {
-      displayText: "Ways to Buy",
+      displayText: "Make Offer",
       paramName: FilterParamName.waysToBuyMakeOffer,
       paramValue: true,
     },
     {
-      displayText: "Ways to Buy",
+      displayText: "Bid",
       paramName: FilterParamName.waysToBuyBid,
       paramValue: true,
     },
@@ -909,17 +909,17 @@ describe("getUnitedSelectedAndAppliedFilters helper", () => {
   it("returns only ways to buy filter options that weren't unselected", () => {
     const previouslyAppliedFilters = [
       {
-        displayText: "Ways to Buy",
+        displayText: "Make Offer",
         paramName: FilterParamName.waysToBuyMakeOffer,
         paramValue: true,
       },
       {
-        displayText: "Ways to Buy",
+        displayText: "Purchase",
         paramName: FilterParamName.waysToBuyBuy,
         paramValue: true,
       },
       {
-        displayText: "Ways to Buy",
+        displayText: "Bid",
         paramName: FilterParamName.waysToBuyBid,
         paramValue: true,
       },
@@ -927,17 +927,17 @@ describe("getUnitedSelectedAndAppliedFilters helper", () => {
 
     const newlySelectedFilters = [
       {
-        displayText: "Ways to Buy",
+        displayText: "Purchase",
         paramName: FilterParamName.waysToBuyBuy,
         paramValue: true,
       },
       {
-        displayText: "Ways to Buy",
+        displayText: "Bid",
         paramName: FilterParamName.waysToBuyBid,
         paramValue: true,
       },
       {
-        displayText: "Ways to Buy",
+        displayText: "Contact Gallery",
         paramName: FilterParamName.waysToBuyInquire,
         paramValue: true,
       },
@@ -951,22 +951,22 @@ describe("getUnitedSelectedAndAppliedFilters helper", () => {
 
     expect(result).toEqual([
       {
-        displayText: "Ways to Buy",
+        displayText: "Purchase",
         paramName: FilterParamName.waysToBuyBuy,
         paramValue: true,
       },
       {
-        displayText: "Ways to Buy",
+        displayText: "Bid",
         paramName: FilterParamName.waysToBuyBid,
         paramValue: true,
       },
       {
-        displayText: "Ways to Buy",
+        displayText: "Contact Gallery",
         paramName: FilterParamName.waysToBuyInquire,
         paramValue: true,
       },
       {
-        displayText: "Ways to Buy",
+        displayText: "Make Offer",
         paramName: FilterParamName.waysToBuyMakeOffer,
         paramValue: true,
       },

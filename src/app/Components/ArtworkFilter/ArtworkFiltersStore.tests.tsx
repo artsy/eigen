@@ -1214,12 +1214,12 @@ describe("selectedOptionsUnion", () => {
           paramValue: [],
         },
         {
-          displayText: "Buy Now",
+          displayText: "Purchase",
           paramName: "acquireable",
           paramValue: false,
         },
         {
-          displayText: "Inquire",
+          displayText: "Contact Gallery",
           paramName: "inquireableOnly",
           paramValue: false,
         },
@@ -1332,12 +1332,12 @@ describe("selectedOptionsUnion", () => {
           paramValue: [],
         },
         {
-          displayText: "Buy Now",
+          displayText: "Purchase",
           paramName: "acquireable",
           paramValue: false,
         },
         {
-          displayText: "Inquire",
+          displayText: "Contact Gallery",
           paramName: "inquireableOnly",
           paramValue: false,
         },
@@ -1445,12 +1445,12 @@ describe("selectedOptionsUnion", () => {
           paramValue: [],
         },
         {
-          displayText: "Buy Now",
+          displayText: "Purchase",
           paramName: "acquireable",
           paramValue: false,
         },
         {
-          displayText: "Inquire",
+          displayText: "Contact Gallery",
           paramName: "inquireableOnly",
           paramValue: false,
         },
@@ -1564,12 +1564,12 @@ describe("selectedOptionsUnion", () => {
           paramValue: [],
         },
         {
-          displayText: "Buy Now",
+          displayText: "Purchase",
           paramName: "acquireable",
           paramValue: false,
         },
         {
-          displayText: "Inquire",
+          displayText: "Contact Gallery",
           paramName: "inquireableOnly",
           paramValue: false,
         },
@@ -1683,12 +1683,12 @@ describe("selectedOptionsUnion", () => {
           paramValue: [],
         },
         {
-          displayText: "Buy Now",
+          displayText: "Purchase",
           paramName: "acquireable",
           paramValue: false,
         },
         {
-          displayText: "Inquire",
+          displayText: "Contact Gallery",
           paramName: "inquireableOnly",
           paramValue: false,
         },
@@ -1748,7 +1748,7 @@ describe("selectedOptionsUnion", () => {
           paramValue: ["2010-2020"],
         },
         {
-          displayText: "Buy Now",
+          displayText: "Purchase",
           paramName: "acquireable",
           paramValue: true,
         },
@@ -1812,7 +1812,7 @@ describe("selectedOptionsUnion", () => {
           paramName: "colors",
         },
         {
-          displayText: "Inquire",
+          displayText: "Contact Gallery",
           paramName: "inquireableOnly",
           paramValue: false,
         },
@@ -1917,12 +1917,12 @@ describe("selectedOptionsUnion", () => {
           paramValue: [],
         },
         {
-          displayText: "Buy Now",
+          displayText: "Purchase",
           paramName: "acquireable",
           paramValue: false,
         },
         {
-          displayText: "Inquire",
+          displayText: "Contact Gallery",
           paramName: "inquireableOnly",
           paramValue: false,
         },
@@ -2041,12 +2041,12 @@ describe("selectedOptionsUnion", () => {
           paramValue: [],
         },
         {
-          displayText: "Buy Now",
+          displayText: "Purchase",
           paramName: "acquireable",
           paramValue: false,
         },
         {
-          displayText: "Inquire",
+          displayText: "Contact Gallery",
           paramName: "inquireableOnly",
           paramValue: false,
         },
@@ -2166,12 +2166,12 @@ describe("selectedOptionsUnion", () => {
           paramValue: [],
         },
         {
-          displayText: "Buy Now",
+          displayText: "Purchase",
           paramName: "acquireable",
           paramValue: false,
         },
         {
-          displayText: "Inquire",
+          displayText: "Contact Gallery",
           paramName: "inquireableOnly",
           paramValue: false,
         },
@@ -2276,12 +2276,12 @@ describe("selectedOptionsUnion", () => {
           paramValue: [],
         },
         {
-          displayText: "Buy Now",
+          displayText: "Purchase",
           paramName: "acquireable",
           paramValue: false,
         },
         {
-          displayText: "Inquire",
+          displayText: "Contact Gallery",
           paramName: "inquireableOnly",
           paramValue: false,
         },
