@@ -1,9 +1,11 @@
 import { HomeFeedOnboardingRail_onboardingModule$data } from "__generated__/HomeFeedOnboardingRail_onboardingModule.graphql"
 import { EmbeddedCarousel } from "app/Components/EmbeddedCarousel"
+import { switchTab } from "app/navigation/navigate"
 import { Flex } from "palette"
-import React from "react"
+import React, { useState } from "react"
 import { ImageSourcePropType } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { HomeFeedModalCarousel } from "./HomeFeedModalCarousel/HomeFeedModalCarousel"
 import { HomeFeedOnboardingCard } from "./HomeFeedOnboardingCard"
 
 interface HomeFeedOnboardingRailProps {
@@ -21,43 +23,65 @@ export interface HomeFeedOnboardingRailItemProps {
   button: string
 }
 
+interface OnboardingDataItem {
+  visible: boolean
+  jsx: JSX.Element
+}
+
 export const HomeFeedOnboardingRail: React.FC<HomeFeedOnboardingRailProps> = (props) => {
   const { mb, title, onboardingModule } = props
 
-  const onboardingData = [
+  const [isMyCollectionModalVisible, setIsMyCollectionModalVisible] = useState(false)
+  const onboardingCardsData: OnboardingDataItem[] = [
     {
-      shouldShow: onboardingModule.showMyCollectionCard,
-      type: "MyC",
-      title: "Manage your collection",
-      subtitle: "Get powerful market insights about artworks you own.",
-      image: require("images/homefeed-my-collection-inboarding-0.webp"),
-      button: "Explore My Collection",
+      visible: onboardingModule.showMyCollectionCard,
+      jsx: (
+        <>
+          <HomeFeedModalCarousel
+            isVisible={isMyCollectionModalVisible}
+            toggleModal={(isVisible) => setIsMyCollectionModalVisible(isVisible)}
+          />
+          <HomeFeedOnboardingCard
+            title="Manage your collection"
+            subtitle="Get powerful market insights about artworks you own."
+            image={require("images/homefeed-my-collection-inboarding-0.webp")}
+            buttonText="Explore My Collection"
+            onPress={() => {
+              setIsMyCollectionModalVisible(true)
+            }}
+          />
+        </>
+      ),
     },
     {
-      shouldShow: onboardingModule.showSWACard,
-      type: "SWA",
-      title: "Sell with Artsy",
-      subtitle: "Get the best sales options for artworks from your collection.",
-      image: require("images/homefeed-my-collection-inboarding-1.webp"),
-      button: "Learn more",
+      visible: onboardingModule.showSWACard,
+      jsx: (
+        <HomeFeedOnboardingCard
+          title="Sell with Artsy"
+          subtitle="Get the best sales options for artworks from your collection."
+          image={require("images/homefeed-my-collection-inboarding-1.webp")}
+          buttonText="Learn more"
+          onPress={() => {
+            switchTab("sell")
+          }}
+        />
+      ),
     },
   ]
 
-  const cardsToShow = onboardingData.filter((item) => item.shouldShow)
+  const visibleOnboardingCardsData = onboardingCardsData.filter((item) => item.visible)
 
   return (
-    <EmbeddedCarousel
-      testID="my-collection-hf-onboadring-rail"
-      title={title}
-      data={cardsToShow}
-      renderItem={({ item }: { item: HomeFeedOnboardingRailItemProps }) => {
-        return (
-          <Flex mb={mb}>
-            <HomeFeedOnboardingCard item={item} />
-          </Flex>
-        )
-      }}
-    />
+    <>
+      <EmbeddedCarousel
+        testID="my-collection-hf-onboadring-rail"
+        title={title}
+        data={visibleOnboardingCardsData}
+        renderItem={({ item }: { item: OnboardingDataItem }) => {
+          return <Flex mb={mb}>{item.jsx}</Flex>
+        }}
+      />
+    </>
   )
 }
 
