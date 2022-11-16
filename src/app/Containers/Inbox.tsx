@@ -21,6 +21,7 @@ const INQUIRIES_TAB_INDEX = 1
 // Tabs
 interface TabWrapperProps extends ViewProps {
   tabLabel: string
+  isActiveTab: boolean
 }
 
 const TabWrapper = (props: TabWrapperProps) => <View {...props} />
@@ -120,7 +121,6 @@ export class Inbox extends React.Component<Props, State> {
     const newTab: Tab = tabIndex === 0 ? Tab.bids : Tab.inquiries
     this.setState({ activeTab: newTab })
   }
-
   render() {
     const hasActiveBids = (this.props.me.myBids?.active ?? []).length > 0
     const initialPageNumber = hasActiveBids ? BIDS_TAB_INDEX : INQUIRIES_TAB_INDEX
@@ -132,7 +132,14 @@ export class Inbox extends React.Component<Props, State> {
         renderTabBar={() => <InboxTabs />}
         onChangeTab={({ i }: { i: number }) => this.handleNavigationTab(i)}
       >
-        <TabWrapper tabLabel="Bids" key="bids" style={{ flexGrow: 1, justifyContent: "center" }}>
+        <TabWrapper
+          tabLabel="Bids"
+          key="bids"
+          style={{ flexGrow: 1, justifyContent: "center" }}
+          // this is for testing purposes
+          isActiveTab={initialPageNumber === BIDS_TAB_INDEX}
+          testID="tabWrapper-bids"
+        >
           <MyBidsContainer
             isActiveTab={this.props.isVisible && this.state.activeTab === Tab.bids}
             me={this.props.me}
@@ -142,6 +149,9 @@ export class Inbox extends React.Component<Props, State> {
           tabLabel="Inquiries"
           key="inquiries"
           style={{ flex: 1, justifyContent: "flex-start" }}
+          // this is fr testing purposes
+          isActiveTab={initialPageNumber === INQUIRIES_TAB_INDEX}
+          testID="tabWrapper-inquiries"
         >
           <ConversationsContainer
             me={this.props.me}
@@ -182,19 +192,17 @@ export const InboxContainer = createRefetchContainer(
   `
 )
 
-export const InboxScreenQuery = graphql`
-  query InboxQuery {
-    me {
-      ...Inbox_me
-    }
-  }
-`
-
 export const InboxQueryRenderer: React.FC<{ isVisible: boolean }> = (props) => {
   return (
     <QueryRenderer<InboxQuery>
       environment={defaultEnvironment}
-      query={InboxScreenQuery}
+      query={graphql`
+        query InboxQuery {
+          me {
+            ...Inbox_me
+          }
+        }
+      `}
       variables={{}}
       render={(...args) =>
         renderWithPlaceholder({
@@ -209,7 +217,7 @@ export const InboxQueryRenderer: React.FC<{ isVisible: boolean }> = (props) => {
 
 export const InboxPlaceholder: React.FC<{}> = () => {
   return (
-    <Flex height="100%">
+    <Flex height="100%" testID="inbox-placeholder">
       <Flex flexDirection="row" mx={2} mt={3} mb={1}>
         <PlaceholderText width={60} height={26} />
         <Spacer mx={1} />
