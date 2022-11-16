@@ -68,12 +68,12 @@ describe("Ways to Buy Options Screen", () => {
       selectedFilters: [
         {
           displayText: "Purchase",
-          paramName: FilterParamName.waysToBuyBuy,
+          paramName: FilterParamName.waysToBuyPurchase,
           paramValue: true,
         },
         {
           displayText: "Contact Gallery",
-          paramName: FilterParamName.waysToBuyInquire,
+          paramName: FilterParamName.waysToBuyContactGallery,
           paramValue: true,
         },
         {
@@ -103,7 +103,7 @@ describe("Ways to Buy Options Screen", () => {
       selectedFilters: [
         {
           displayText: "Purchase",
-          paramName: FilterParamName.waysToBuyBuy,
+          paramName: FilterParamName.waysToBuyPurchase,
           paramValue: true,
         },
       ],
@@ -134,14 +134,14 @@ describe("Ways to Buy Options Screen", () => {
       appliedFilters: [
         {
           displayText: "Contact Gallery",
-          paramName: FilterParamName.waysToBuyInquire,
+          paramName: FilterParamName.waysToBuyContactGallery,
           paramValue: true,
         },
       ],
       previouslyAppliedFilters: [
         {
           displayText: "Contact Gallery",
-          paramName: FilterParamName.waysToBuyInquire,
+          paramName: FilterParamName.waysToBuyContactGallery,
           paramValue: true,
         },
       ],

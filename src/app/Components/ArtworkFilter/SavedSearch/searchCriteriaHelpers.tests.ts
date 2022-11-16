@@ -160,7 +160,7 @@ describe("prepareFilterDataForSaveSearchInput", () => {
       },
       {
         displayText: "Contact Gallery",
-        paramName: FilterParamName.waysToBuyInquire,
+        paramName: FilterParamName.waysToBuyContactGallery,
         paramValue: true,
       },
     ]

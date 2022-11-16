@@ -374,12 +374,12 @@ describe("convertWaysToBuyToFilterParams", () => {
       {
         displayText: "Purchase",
         paramValue: true,
-        paramName: FilterParamName.waysToBuyBuy,
+        paramName: FilterParamName.waysToBuyPurchase,
       },
       {
         displayText: "Contact Gallery",
         paramValue: true,
-        paramName: FilterParamName.waysToBuyInquire,
+        paramName: FilterParamName.waysToBuyContactGallery,
       },
     ])
   })

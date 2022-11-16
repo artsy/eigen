@@ -360,7 +360,7 @@ describe("Select Filters", () => {
       previouslyAppliedFilters: [],
       selectedFilters: [
         {
-          paramName: FilterParamName.waysToBuyBuy,
+          paramName: FilterParamName.waysToBuyPurchase,
           paramValue: true,
           displayText: "Purchase",
         },
@@ -392,7 +392,7 @@ describe("Select Filters", () => {
           displayText: "Bid",
         },
         {
-          paramName: FilterParamName.waysToBuyBuy,
+          paramName: FilterParamName.waysToBuyPurchase,
           paramValue: true,
           displayText: "Purchase",
         },
@@ -665,7 +665,7 @@ describe("Apply Filters", () => {
           displayText: "Bid",
         },
         {
-          paramName: FilterParamName.waysToBuyBuy,
+          paramName: FilterParamName.waysToBuyPurchase,
           paramValue: true,
           displayText: "Purchase",
         },
@@ -691,7 +691,7 @@ describe("Apply Filters", () => {
           displayText: "Bid",
         },
         {
-          paramName: FilterParamName.waysToBuyBuy,
+          paramName: FilterParamName.waysToBuyPurchase,
           paramValue: true,
           displayText: "Purchase",
         },
@@ -703,7 +703,7 @@ describe("Apply Filters", () => {
           displayText: "Bid",
         },
         {
-          paramName: FilterParamName.waysToBuyBuy,
+          paramName: FilterParamName.waysToBuyPurchase,
           paramValue: true,
           displayText: "Purchase",
         },
@@ -799,13 +799,17 @@ describe("Apply Filters", () => {
     filterState = {
       applyFilters: false,
       appliedFilters: [
-        { paramName: FilterParamName.waysToBuyBuy, paramValue: true, displayText: "Purchase" },
+        { paramName: FilterParamName.waysToBuyPurchase, paramValue: true, displayText: "Purchase" },
       ],
       previouslyAppliedFilters: [
-        { paramName: FilterParamName.waysToBuyBuy, paramValue: true, displayText: "Purchase" },
+        { paramName: FilterParamName.waysToBuyPurchase, paramValue: true, displayText: "Purchase" },
       ],
       selectedFilters: [
-        { paramName: FilterParamName.waysToBuyBuy, paramValue: false, displayText: "Purchase" },
+        {
+          paramName: FilterParamName.waysToBuyPurchase,
+          paramValue: false,
+          displayText: "Purchase",
+        },
       ],
       aggregations: [],
       filterType: "artwork",
@@ -1736,7 +1740,7 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "Purchase",
-          paramName: FilterParamName.waysToBuyBuy,
+          paramName: FilterParamName.waysToBuyPurchase,
           paramValue: true,
         },
       ]

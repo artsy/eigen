@@ -196,12 +196,12 @@ describe("filterArtworksParams helper", () => {
       {
         displayText: "Purchase",
         paramValue: false,
-        paramName: FilterParamName.waysToBuyBuy,
+        paramName: FilterParamName.waysToBuyPurchase,
       },
       {
         displayText: "Contact Gallery",
         paramValue: false,
-        paramName: FilterParamName.waysToBuyInquire,
+        paramName: FilterParamName.waysToBuyContactGallery,
       },
       {
         displayText: "Make Offer",
@@ -283,12 +283,12 @@ describe("filterArtworksParams helper", () => {
       {
         displayText: "Purchase",
         paramValue: true,
-        paramName: FilterParamName.waysToBuyBuy,
+        paramName: FilterParamName.waysToBuyPurchase,
       },
       {
         displayText: "Contact Gallery",
         paramValue: true,
-        paramName: FilterParamName.waysToBuyInquire,
+        paramName: FilterParamName.waysToBuyContactGallery,
       },
       {
         displayText: "Make Offer",
@@ -391,12 +391,12 @@ describe("filterArtworksParams helper", () => {
         {
           displayText: "Purchase",
           paramValue: false,
-          paramName: FilterParamName.waysToBuyBuy,
+          paramName: FilterParamName.waysToBuyPurchase,
         },
         {
           displayText: "Contact Gallery",
           paramValue: false,
-          paramName: FilterParamName.waysToBuyInquire,
+          paramName: FilterParamName.waysToBuyContactGallery,
         },
         {
           displayText: "Make Offer",
@@ -915,7 +915,7 @@ describe("getUnitedSelectedAndAppliedFilters helper", () => {
       },
       {
         displayText: "Purchase",
-        paramName: FilterParamName.waysToBuyBuy,
+        paramName: FilterParamName.waysToBuyPurchase,
         paramValue: true,
       },
       {
@@ -928,7 +928,7 @@ describe("getUnitedSelectedAndAppliedFilters helper", () => {
     const newlySelectedFilters = [
       {
         displayText: "Purchase",
-        paramName: FilterParamName.waysToBuyBuy,
+        paramName: FilterParamName.waysToBuyPurchase,
         paramValue: true,
       },
       {
@@ -938,7 +938,7 @@ describe("getUnitedSelectedAndAppliedFilters helper", () => {
       },
       {
         displayText: "Contact Gallery",
-        paramName: FilterParamName.waysToBuyInquire,
+        paramName: FilterParamName.waysToBuyContactGallery,
         paramValue: true,
       },
     ]
@@ -952,7 +952,7 @@ describe("getUnitedSelectedAndAppliedFilters helper", () => {
     expect(result).toEqual([
       {
         displayText: "Purchase",
-        paramName: FilterParamName.waysToBuyBuy,
+        paramName: FilterParamName.waysToBuyPurchase,
         paramValue: true,
       },
       {
@@ -962,7 +962,7 @@ describe("getUnitedSelectedAndAppliedFilters helper", () => {
       },
       {
         displayText: "Contact Gallery",
-        paramName: FilterParamName.waysToBuyInquire,
+        paramName: FilterParamName.waysToBuyContactGallery,
         paramValue: true,
       },
       {
