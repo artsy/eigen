@@ -3350,10 +3350,10 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.11.tgz#2f4c6e10bee0786abff4604e39a37ded6f3980ce"
   integrity sha512-rQfMIGSR/1r/SyN87+VD8xHHzDYeHaJq6elOSCAD+0iLagXkSI2pfA0LmSXP21uw5i3em7GkkRjfJ8wpqWXZNw==
 
-"@react-native-community/netinfo@6.0.1":
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-6.0.1.tgz#7d0adaf5cd8b7f77561a8e2d534cc61d6c25a0f6"
-  integrity sha512-hajGhBGr4QsC6/mclyb2TlBBY8D3wiMxskO4u7zcQoYtX3CHrYjRJjgQFOwOIxLU+HaK1d7Kdk+kSxMlnMs4Kg==
+"@react-native-community/netinfo@9.3.6":
+  version "9.3.6"
+  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-9.3.6.tgz#730de4ebf83f7263fa61b0cbec6cde9b28660077"
+  integrity sha512-SwbBnHZuXcCUpYdL6ebt4HPAZEugPASl+RPxIyNe91Y+boZptzAFLywYW6yU93DYAhiHHFQBL6x6LxwF/K/tOQ==
 
 "@react-native-community/slider@4.2.1":
   version "4.2.1"
