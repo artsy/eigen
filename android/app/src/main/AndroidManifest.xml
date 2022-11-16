@@ -112,11 +112,9 @@
                 <data android:pathPrefix="/orders" />
                 <data android:pathPrefix="/partner" />
                 <data android:pathPrefix="/privacy-request" />
-                <data android:pathPrefix="/privacy" />
                 <data android:pathPrefix="/sales" />
                 <data android:pathPrefix="/search" />
                 <data android:pathPrefix="/show" />
-                <data android:pathPrefix="/terms" />
                 <data android:pathPrefix="/user/conversations" />
                 <data android:pathPrefix="/user/purchases" />
                 <data android:pathPrefix="/viewing-room" />
