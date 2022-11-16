@@ -158,8 +158,6 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
     InteractionManager.runAfterInteractions(() => {
       props.onSuccess?.()
     })
-
-    setLoading(false)
   }
 
   useEffect(() => {
