@@ -51,8 +51,8 @@ export enum FilterParamName {
   timePeriod = "majorPeriods",
   viewAs = "viewAs",
   waysToBuyBid = "atAuction",
-  waysToBuyBuy = "acquireable",
-  waysToBuyInquire = "inquireableOnly",
+  waysToBuyPurchase = "acquireable",
+  waysToBuyContactGallery = "inquireableOnly",
   waysToBuyMakeOffer = "offerable",
   width = "width",
 }
@@ -278,10 +278,10 @@ const createdYearsFilterNames = [
 const sizesFilterNames = [FilterParamName.width, FilterParamName.height]
 
 const waysToBuyFilterNames = [
-  FilterParamName.waysToBuyBuy,
+  FilterParamName.waysToBuyPurchase,
   FilterParamName.waysToBuyMakeOffer,
   FilterParamName.waysToBuyBid,
-  FilterParamName.waysToBuyInquire,
+  FilterParamName.waysToBuyContactGallery,
 ]
 
 const getDefaultParamsByType = (filterType: FilterType) => {
