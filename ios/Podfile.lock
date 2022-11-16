@@ -494,7 +494,7 @@ PODS:
     - Mapbox-iOS-SDK (~> 6.4)
     - React
     - React-Core
-  - react-native-netinfo (6.0.1):
+  - react-native-netinfo (9.3.6):
     - React-Core
   - react-native-pager-view (6.0.0):
     - React-Core
@@ -1210,7 +1210,7 @@ SPEC CHECKSUMS:
   react-native-image-resizer: d9fb629a867335bdc13230ac2a58702bb8c8828f
   react-native-in-app-review: 23f4f5b9fcd94339dd5d93c6230557f9c67c7dda
   react-native-mapbox-gl: 0308cba1da4edbc1aa0e82a7584ba50e52725996
-  react-native-netinfo: 7cb7877ff31ebeb3d03ce0b4fbb616f121ddd859
+  react-native-netinfo: f80db8cac2151405633324cb645c60af098ee461
   react-native-pager-view: e76d64a5114a152e942caa09136e4e250709378c
   react-native-safe-area-context: f4f7cc09d81ae2d39dfd13e764d718969af07080
   react-native-shake: 67d43d6af4abfc299400b17fea7d2ec0754c72ac
