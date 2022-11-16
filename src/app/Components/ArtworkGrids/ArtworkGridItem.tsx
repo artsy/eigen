@@ -97,6 +97,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
 }) => {
   const itemRef = useRef<any>()
   const tracking = useTracking()
+  const eableArtworkGridSaveIcon = useFeatureFlag("AREnableArtworkGridSaveIcon")
   const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageComponent")
   const [saveArtwork] = useMutation(SaveArtworkMutation)
 
@@ -324,7 +325,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
               </Text>
             )}
           </Flex>
-          {!hideSaveIcon && (
+          {!hideSaveIcon && !!eableArtworkGridSaveIcon && (
             <Flex ml={0.2}>
               <Touchable haptic onPress={handleArtworkSave}>
                 {artwork.isSaved ? (
