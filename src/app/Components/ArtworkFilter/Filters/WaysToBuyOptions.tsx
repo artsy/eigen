@@ -17,7 +17,7 @@ interface WaysToBuyOptionsScreenProps
 
 export const WAYS_TO_BUY_OPTIONS: FilterData[] = [
   {
-    displayText: "Buy Now",
+    displayText: "Purchase",
     paramName: FilterParamName.waysToBuyBuy,
   },
   {
@@ -29,7 +29,7 @@ export const WAYS_TO_BUY_OPTIONS: FilterData[] = [
     paramName: FilterParamName.waysToBuyBid,
   },
   {
-    displayText: "Inquire",
+    displayText: "Contact Gallery",
     paramName: FilterParamName.waysToBuyInquire,
   },
 ]

@@ -194,12 +194,12 @@ describe("filterArtworksParams helper", () => {
         paramName: FilterParamName.waysToBuyBid,
       },
       {
-        displayText: "Buy",
+        displayText: "Purchase",
         paramValue: false,
         paramName: FilterParamName.waysToBuyBuy,
       },
       {
-        displayText: "Inquire",
+        displayText: "Contact Gallery",
         paramValue: false,
         paramName: FilterParamName.waysToBuyInquire,
       },
@@ -281,12 +281,12 @@ describe("filterArtworksParams helper", () => {
         paramName: FilterParamName.waysToBuyBid,
       },
       {
-        displayText: "Buy",
+        displayText: "Purchase",
         paramValue: true,
         paramName: FilterParamName.waysToBuyBuy,
       },
       {
-        displayText: "Inquire",
+        displayText: "Contact Gallery",
         paramValue: true,
         paramName: FilterParamName.waysToBuyInquire,
       },
@@ -389,12 +389,12 @@ describe("filterArtworksParams helper", () => {
           paramName: FilterParamName.waysToBuyBid,
         },
         {
-          displayText: "Buy",
+          displayText: "Purchase",
           paramValue: false,
           paramName: FilterParamName.waysToBuyBuy,
         },
         {
-          displayText: "Inquire",
+          displayText: "Contact Gallery",
           paramValue: false,
           paramName: FilterParamName.waysToBuyInquire,
         },

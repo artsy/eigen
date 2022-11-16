@@ -67,12 +67,12 @@ describe("Ways to Buy Options Screen", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {
-          displayText: "Buy Now",
+          displayText: "Purchase",
           paramName: FilterParamName.waysToBuyBuy,
           paramValue: true,
         },
         {
-          displayText: "Inquire",
+          displayText: "Contact Gallery",
           paramName: FilterParamName.waysToBuyInquire,
           paramValue: true,
         },
@@ -102,7 +102,7 @@ describe("Ways to Buy Options Screen", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {
-          displayText: "Buy Now",
+          displayText: "Purchase",
           paramName: FilterParamName.waysToBuyBuy,
           paramValue: true,
         },
@@ -133,14 +133,14 @@ describe("Ways to Buy Options Screen", () => {
       selectedFilters: [],
       appliedFilters: [
         {
-          displayText: "Inquire",
+          displayText: "Contact Gallery",
           paramName: FilterParamName.waysToBuyInquire,
           paramValue: true,
         },
       ],
       previouslyAppliedFilters: [
         {
-          displayText: "Inquire",
+          displayText: "Contact Gallery",
           paramName: FilterParamName.waysToBuyInquire,
           paramValue: true,
         },

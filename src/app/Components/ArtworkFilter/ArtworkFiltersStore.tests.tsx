@@ -362,7 +362,7 @@ describe("Select Filters", () => {
         {
           paramName: FilterParamName.waysToBuyBuy,
           paramValue: true,
-          displayText: "Buy Now",
+          displayText: "Purchase",
         },
       ],
       aggregations: [],
@@ -394,7 +394,7 @@ describe("Select Filters", () => {
         {
           paramName: FilterParamName.waysToBuyBuy,
           paramValue: true,
-          displayText: "Buy Now",
+          displayText: "Purchase",
         },
       ],
       aggregations: [],
@@ -667,7 +667,7 @@ describe("Apply Filters", () => {
         {
           paramName: FilterParamName.waysToBuyBuy,
           paramValue: true,
-          displayText: "Buy Now",
+          displayText: "Purchase",
         },
       ],
       aggregations: [],
@@ -693,7 +693,7 @@ describe("Apply Filters", () => {
         {
           paramName: FilterParamName.waysToBuyBuy,
           paramValue: true,
-          displayText: "Buy Now",
+          displayText: "Purchase",
         },
       ],
       appliedFilters: [
@@ -705,7 +705,7 @@ describe("Apply Filters", () => {
         {
           paramName: FilterParamName.waysToBuyBuy,
           paramValue: true,
-          displayText: "Buy Now",
+          displayText: "Purchase",
         },
       ],
       selectedFilters: [],
@@ -799,13 +799,13 @@ describe("Apply Filters", () => {
     filterState = {
       applyFilters: false,
       appliedFilters: [
-        { paramName: FilterParamName.waysToBuyBuy, paramValue: true, displayText: "Buy Now" },
+        { paramName: FilterParamName.waysToBuyBuy, paramValue: true, displayText: "Purchase" },
       ],
       previouslyAppliedFilters: [
-        { paramName: FilterParamName.waysToBuyBuy, paramValue: true, displayText: "Buy Now" },
+        { paramName: FilterParamName.waysToBuyBuy, paramValue: true, displayText: "Purchase" },
       ],
       selectedFilters: [
-        { paramName: FilterParamName.waysToBuyBuy, paramValue: false, displayText: "Buy Now" },
+        { paramName: FilterParamName.waysToBuyBuy, paramValue: false, displayText: "Purchase" },
       ],
       aggregations: [],
       filterType: "artwork",
@@ -1735,7 +1735,7 @@ describe("selectedOptionsUnion", () => {
           paramValue: ["2010-2020"],
         },
         {
-          displayText: "Buy Now",
+          displayText: "Purchase",
           paramName: FilterParamName.waysToBuyBuy,
           paramValue: true,
         },
