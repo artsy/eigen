@@ -277,15 +277,42 @@ export const getNotificationPermissionsStatus = (): Promise<PushAuthorizationSta
 }
 
 export const requestPushNotificationsPermission = async () => {
+  console.log("PUSH requestPushPermissions")
   const pushNotificationsPermissionsStatus = await getNotificationPermissionsStatus()
   if (pushNotificationsPermissionsStatus !== PushAuthorizationStatus.Authorized) {
     setTimeout(() => {
       console.log("PUSH requesting permissions")
-      ArtsyNativeModule.requestPrepromptNotificationPermissions()
+      requestPushPermissionWithSoftAsk()
       // TODO: point to settings for old Android versions here maybe
       // maybe need to also just register directly on old versions
     }, 3000)
+  } else {
+    console.log("PUSH permission authorized")
   }
+}
+
+const requestPushPermissionWithSoftAsk = async () => {
+  console.log("PUSH requestPushPermissionsWithSoftAsk")
+  Alert.alert(
+    "Artsy Would Like to Send You Notifications",
+    "Turn on notifications to get important updates about artists you follow.",
+    [
+      {
+        text: "Don't Allow",
+        onPress: () => {
+          return // do nothing
+        },
+        style: "cancel",
+      },
+      {
+        text: "OK",
+        onPress: () => {
+          console.log("OK Pressed")
+          ArtsyNativeModule.requestNotificationPermissions()
+        },
+      },
+    ]
+  )
 }
 
 module.exports = {
