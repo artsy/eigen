@@ -6521,14 +6521,6 @@ type Conversation implements Node {
     # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
-
-  # Messages and other events in a conversation.
-  conversationEventConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ConversationEventConnection
   createdAt(
     format: String
 
@@ -6630,28 +6622,6 @@ type ConversationEdge {
   node: Conversation
 }
 
-union ConversationEvent = ConversationOfferSubmitted | ConversationOrderStateChanged | Message
-
-# A connection to a list of items.
-type ConversationEventConnection {
-  # A list of edges.
-  edges: [ConversationEventEdge]
-  pageCursors: PageCursors!
-
-  # Information to aid in pagination.
-  pageInfo: PageInfo!
-  totalCount: Int
-}
-
-# An edge in a connection.
-type ConversationEventEdge {
-  # A cursor for use in pagination
-  cursor: String!
-
-  # The item at the end of the edge
-  node: ConversationEvent
-}
-
 # The participant who started the conversation, currently always a User
 type ConversationInitiator {
   email: String!
@@ -6678,53 +6648,6 @@ type ConversationItem {
 }
 
 union ConversationItemType = Artwork | Show
-
-enum ConversationOfferPartyType {
-  BUYER
-  SELLER
-}
-
-# An offer submitted in a conversation
-type ConversationOfferSubmitted implements Node {
-  # A formatted price with various currency formatting options.
-  amount(
-    decimal: String = "."
-    disambiguate: Boolean = false
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-  createdAt(
-    format: String
-
-    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
-    # http://www.iana.org/time-zones,
-    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-    timezone: String
-  ): String
-  fromParticipant: ConversationOfferPartyType
-  id: ID!
-  isCounter: Boolean
-  offerAmountChanged: Boolean
-}
-
-# A conversation order state change
-type ConversationOrderStateChanged implements Node {
-  createdAt(
-    format: String
-
-    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
-    # http://www.iana.org/time-zones,
-    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-    timezone: String
-  ): String
-  id: ID!
-  state: String!
-  stateReason: String
-}
 
 # The participant responding to the conversation, currently always a Partner
 type ConversationResponder {
@@ -16100,6 +16023,9 @@ type User implements Node {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+
+  # Has the users identity been verified.
+  isIdentityVerified: Boolean!
   lastSignInAt(
     format: String
 
