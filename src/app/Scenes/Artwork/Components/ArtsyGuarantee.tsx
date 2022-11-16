@@ -21,11 +21,11 @@ export const ArtsyGuarantee: React.FC = () => {
         <Flex flexDirection="row" alignItems="center">
           <SecureLockIcon
             accessibilityRole="image"
-            accessibilityLabel="Secure Payment Icon"
+            accessibilityLabel="Secure Checkout Icon"
             {...iconProps}
           />
           <Text variant="sm" color="black60">
-            Secure Payment
+            Secure Checkout
           </Text>
         </Flex>
         <Flex flexDirection="row" alignItems="center">

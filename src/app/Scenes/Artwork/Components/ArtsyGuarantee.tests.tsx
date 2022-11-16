@@ -7,8 +7,8 @@ describe("ArtsyGuarantee", () => {
   it("should render all sections correctly", () => {
     renderWithWrappers(<ArtsyGuarantee />)
 
-    expect(screen.queryByText("Secure Payment")).toBeTruthy()
-    expect(screen.getByLabelText("Secure Payment Icon")).toBeTruthy()
+    expect(screen.queryByText("Secure Checkout")).toBeTruthy()
+    expect(screen.getByLabelText("Secure Checkout Icon")).toBeTruthy()
 
     expect(screen.queryByText("Money-Back Guarantee")).toBeTruthy()
     expect(screen.getByLabelText("Money-Back Guarantee Icon")).toBeTruthy()
