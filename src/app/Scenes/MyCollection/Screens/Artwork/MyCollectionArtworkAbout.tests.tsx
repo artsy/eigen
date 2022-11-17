@@ -80,6 +80,8 @@ describe("MyCollectionArtworkAbout", () => {
       expect(getByText("2007")).toBeTruthy()
       expect(getByText("Provenance")).toBeTruthy()
       expect(getByText("Signed, Sealed, Delivered!")).toBeTruthy()
+      expect(getByText("Price Paid")).toBeTruthy()
+      expect(getByText("$12,000")).toBeTruthy()
     })
 
     it("renders the lables and the empty value when the data is not available", () => {
@@ -89,7 +91,7 @@ describe("MyCollectionArtworkAbout", () => {
         Query: () => artworkDataNotAvailable,
       })
 
-      expect(getAllByText("----")).toHaveLength(7)
+      expect(getAllByText("----")).toHaveLength(8)
     })
 
     it("renders size in cm", () => {
@@ -129,24 +131,6 @@ describe("MyCollectionArtworkAbout", () => {
 
     expect(await queryByText("Estimate Range")).toBeFalsy()
     expect(await queryByText("$17,800 - $42,000")).toBeFalsy()
-  })
-
-  it("renders purchase details section", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Query: () => ({
-        artwork: {
-          pricePaid: { display: "€224,000" },
-        },
-        marketPriceInsights: {},
-      }),
-    })
-
-    expect(getByText("Purchase Details")).toBeTruthy()
-
-    expect(getByText("Price Paid")).toBeTruthy()
-    expect(getByText("€224,000")).toBeTruthy()
   })
 
   it("renders articles section", () => {
@@ -206,7 +190,7 @@ const artworkDataAvailable = {
     },
     artworkLocation: "Berlin",
     pricePaid: {
-      display: "$12000",
+      display: "$12,000",
     },
     artist: {
       targetSupply: {
@@ -232,6 +216,7 @@ const artworkDataNotAvailable = {
     },
     attributionClass: null,
     artworkLocation: "",
+    pricePaid: null,
   },
 }
 

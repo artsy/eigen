@@ -36,6 +36,7 @@ export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWork
     date,
     provenance,
     metric,
+    pricePaid,
   } = artwork
 
   // FIXME: types of these values are unknown (coming from MP), so it needs to be casted to Number to work properly here
@@ -54,6 +55,7 @@ export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWork
       <MetaDataField label="Location" value={artworkLocation} />
       <MetaDataField label="Year created" value={date} />
       <MetaDataField label="Provenance" value={provenance} />
+      <MetaDataField label="Price Paid" value={pricePaid?.display} />
     </Flex>
   )
 }
@@ -80,6 +82,9 @@ const artworkFragment = graphql`
       name
     }
     artworkLocation
+    pricePaid {
+      display
+    }
   }
 `
 

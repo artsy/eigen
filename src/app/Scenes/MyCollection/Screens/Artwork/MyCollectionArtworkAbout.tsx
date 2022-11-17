@@ -7,7 +7,6 @@ import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { MyCollectionArtworkAboutWork } from "./Components/ArtworkAbout/MyCollectionArtworkAboutWork"
 import { MyCollectionArtworkArticles } from "./Components/ArtworkAbout/MyCollectionArtworkArticles"
-import { MyCollectionArtworkPurchaseDetails } from "./Components/ArtworkAbout/MyCollectionArtworkPurchaseDetails"
 import { MyCollectionWhySell } from "./Components/MyCollectionWhySell"
 
 interface MyCollectionArtworkAboutProps {
@@ -31,8 +30,6 @@ export function MyCollectionArtworkAbout(props: MyCollectionArtworkAboutProps) {
       <Flex mt={props.renderWithoutScrollView ? 1 : 2} mb={3}>
         <MyCollectionArtworkAboutWork artwork={artwork} marketPriceInsights={marketPriceInsights} />
 
-        <MyCollectionArtworkPurchaseDetails artwork={artwork} />
-
         <MyCollectionArtworkArticles
           artistSlug={artwork.artist?.slug}
           artistNames={artwork.artistNames}
@@ -49,7 +46,6 @@ export function MyCollectionArtworkAbout(props: MyCollectionArtworkAboutProps) {
 const artworkFragment = graphql`
   fragment MyCollectionArtworkAbout_artwork on Artwork {
     ...MyCollectionArtworkAboutWork_artwork
-    ...MyCollectionArtworkPurchaseDetails_artwork
     artistNames
     consignmentSubmission {
       displayText
