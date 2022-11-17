@@ -32,6 +32,7 @@ import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
 import { SearchInput } from "./components/SearchInput"
 import { SearchPills } from "./components/SearchPills"
 import { ALLOWED_ALGOLIA_KEYS, DEFAULT_PILLS, TOP_PILL } from "./constants"
+import { CuratedCollections } from "./CuratedCollections"
 import { getContextModuleByPillName, isAlgoliaApiKeyExpiredError } from "./helpers"
 import { RecentSearches } from "./RecentSearches"
 import { RefetchWhenApiKeyExpiredContainer } from "./RefetchWhenApiKeyExpired"
@@ -57,7 +58,7 @@ export const Search: React.FC = () => {
   const [refreshedQueryOptions, setRefreshedQueryOptions] = useState<RefreshQueryOptions>({})
   const queryData = useLazyLoadQuery<SearchQuery>(SearchScreenQuery, {}, refreshedQueryOptions)
   const [isRefreshing, setIsRefreshing] = useState(false)
-  const { system } = queryData
+  const { system, curatedMarketingCollections } = queryData
   const indices = system?.algolia?.indices ?? []
   const indiceNames = indices.map((indice) => indice.name)
   const enableMaps = useFeatureFlag("AREnableMapScreen")
@@ -230,6 +231,8 @@ export const Search: React.FC = () => {
               <Scrollable>
                 <RecentSearches />
                 <Spacer mb={3} />
+                <CuratedCollections collections={curatedMarketingCollections} />
+                <Spacer mb={3} />
                 {!!enableMaps ? (
                   <Touchable onPress={() => navigate("/map")}>
                     <CityGuideCTANew />
@@ -286,6 +289,21 @@ export const SearchScreenQuery = graphql`
           key
         }
       }
+    }
+
+    curatedMarketingCollections: marketingCollections(
+      slugs: [
+        "trending-this-week"
+        "artists-on-the-rise"
+        "trove-editors-picks"
+        "painting"
+        "photography"
+      ]
+    ) {
+      internalID
+      slug
+      title
+      thumbnail
     }
   }
 `
