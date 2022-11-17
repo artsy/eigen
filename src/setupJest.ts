@@ -168,6 +168,7 @@ jest.mock("@react-native-google-signin/google-signin", () => ({
     configure: jest.fn(),
     getTokens: jest.fn(),
     hasPlayServices: jest.fn(),
+    isSignedIn: jest.fn(),
     revokeAccess: jest.fn(),
     signIn: jest.fn(),
     signOut: jest.fn(),
@@ -237,6 +238,11 @@ jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
   easeInEaseOut: jest.fn(),
   linear: jest.fn(),
   spring: jest.fn(),
+}))
+
+jest.mock("react-native/Libraries/Interaction/InteractionManager", () => ({
+  ...jest.requireActual("react-native/Libraries/Interaction/InteractionManager"),
+  runAfterInteractions: jest.fn((callback) => callback()),
 }))
 
 jest.mock("react-native-gesture-handler", () => {
