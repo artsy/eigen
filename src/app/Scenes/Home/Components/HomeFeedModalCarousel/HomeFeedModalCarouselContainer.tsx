@@ -2,7 +2,7 @@ import { navigate, popToRoot, switchTab } from "app/navigation/navigate"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { BackButton, Button, Flex, useSpace } from "palette"
 import { useEffect, useRef, useState } from "react"
-import { LayoutAnimation, Modal, TouchableOpacity } from "react-native"
+import { BackHandler, LayoutAnimation, Modal, TouchableOpacity } from "react-native"
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 
@@ -46,6 +46,18 @@ export const HomeFeedModalCarouselContainer: React.FC<FullScreenCarouselProps> =
     }
   }, [isVisible])
 
+  const handleCloseModal = () => {
+    switchTab("profile")
+    toggleModal(false)
+    return null
+  }
+
+  useEffect(() => {
+    const subscription = BackHandler.addEventListener("hardwareBackPress", handleCloseModal)
+
+    return () => subscription.remove()
+  }, [])
+
   return (
     <Flex>
       <Modal visible={isVisible} style={{ flex: 1 }} animationType="slide">
@@ -71,7 +83,7 @@ export const HomeFeedModalCarouselContainer: React.FC<FullScreenCarouselProps> =
           position="absolute"
           zIndex={100}
         >
-          <BackButton onPress={() => toggleModal(false)} showX />
+          <BackButton onPress={handleCloseModal} showX />
         </Flex>
         <SafeAreaView style={{ flex: 1 }}>
           <PagerView
