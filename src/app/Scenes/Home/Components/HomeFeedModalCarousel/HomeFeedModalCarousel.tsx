@@ -52,17 +52,17 @@ const HowItWorksScreen = () => {
         />
         <StepWithImage
           title="Check for insights"
-          text="Access free price estimates and sales options from our experts on eligible artworks."
+          text="Get free insights into the markets and careers of the artists in your collection."
           icon={GraphIcon}
         />
         <StepWithImage
           title="Sell with Ease"
-          text="Get free insights into the markets and careers of the artists in your collection. "
+          text="Access free price estimates and sales options from our experts on eligible artworks."
           icon={SellWithEaseIcon}
         />
         <StepWithImage
           title="Access your collection on-the-go"
-          text="Upload images and details about your artworks to your private space."
+          text="Carry your collection in your pocket, wherever you go."
           icon={PhoneIcon}
         />
       </Join>
