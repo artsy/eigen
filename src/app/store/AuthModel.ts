@@ -125,7 +125,7 @@ type OAuthParams = EmailOAuthParams | FacebookOAuthParams | GoogleOAuthParams | 
 
 type OnboardingState = "none" | "incomplete" | "complete"
 
-interface AuthPromiseResolveType {
+export interface AuthPromiseResolveType {
   success: boolean
 }
 export interface AuthPromiseRejectType {

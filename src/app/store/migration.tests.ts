@@ -730,19 +730,10 @@ describe("App version Versions.AddSubmissionIdForMyCollection", () => {
     expect(migratedState.artworkSubmission.submission.submissionIdForMyCollection).toEqual("")
   })
 })
-<<<<<<< HEAD
-
-<<<<<<< HEAD
 describe("App version Versions.AddRecentPriceRangesModel", () => {
   const migrationToTest = Versions.AddRecentPriceRangesModel
 
   it("adds recentPriceRanges to the store", () => {
-=======
-describe("App version Versions.AddIsLoadingToAuthModal", () => {
-  const migrationToTest = Versions.AddIsLoadingToAuthModal
-
-  it("removes deviceId", () => {
->>>>>>> d3d7c953f4 (feat: add spinner when signing in/up using a social acount)
     const previousState = migrate({
       state: { version: 0 },
       toVersion: migrationToTest - 1,
@@ -753,12 +744,6 @@ describe("App version Versions.AddIsLoadingToAuthModal", () => {
       toVersion: migrationToTest,
     }) as any
 
-<<<<<<< HEAD
     expect(migratedState.recentPriceRanges.ranges).toEqual([])
-=======
-    expect(migratedState.auth.isLoading).toEqual(false)
->>>>>>> d3d7c953f4 (feat: add spinner when signing in/up using a social acount)
   })
 })
-=======
->>>>>>> 40e481204d (chore: refactor)

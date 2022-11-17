@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native"
 import { captureMessage } from "@sentry/react-native"
 import LoadingModal from "app/Components/Modals/LoadingModal"
-import { AuthPromiseRejectType } from "app/store/AuthModel"
+import { AuthPromiseRejectType, AuthPromiseResolveType } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { osMajorVersion } from "app/utils/platformUtil"
 import { capitalize } from "lodash"
@@ -98,7 +98,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
     })
   }
 
-  const handleSocialLogin = async (callback: any) => {
+  const handleSocialLogin = async (callback: () => Promise<AuthPromiseResolveType>) => {
     GlobalStore.actions.auth.setState({ sessionState: { isLoading: true } })
     InteractionManager.runAfterInteractions(() => {
       callback().catch((error: AuthPromiseRejectType) => {
