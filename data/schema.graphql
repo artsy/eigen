@@ -6666,6 +6666,11 @@ type ConversationResponder {
   type: String!
 }
 
+enum ConversationType {
+  PARTNER
+  USER
+}
+
 type CreateAccountRequestMutationFailure {
   mutationError: GravityMutationError
 }
@@ -10183,8 +10188,13 @@ type Me implements Node {
   conversationsConnection(
     after: String
     before: String
+    dismissed: Boolean
     first: Int
+    hasMessage: Boolean
+    hasReply: Boolean
     last: Int
+    partnerId: String
+    type: ConversationType
   ): ConversationConnection
   createdAt(
     format: String
@@ -13024,6 +13034,19 @@ type Query {
     # Return consignments sorted by input (default sort by id)
     sort: ConsignmentSort
   ): ConsignmentConnection
+
+  # Conversations, usually between a user and partner.
+  conversationsConnection(
+    after: String
+    before: String
+    dismissed: Boolean
+    first: Int
+    hasMessage: Boolean
+    hasReply: Boolean
+    last: Int
+    partnerId: String
+    type: ConversationType
+  ): ConversationConnection
 
   # A user's credit card
   creditCard(
@@ -16769,6 +16792,19 @@ type Viewer {
     # A slug for the city, conforming to Gravity's city slug naming conventions
     slug: String
   ): City
+
+  # Conversations, usually between a user and partner.
+  conversationsConnection(
+    after: String
+    before: String
+    dismissed: Boolean
+    first: Int
+    hasMessage: Boolean
+    hasReply: Boolean
+    last: Int
+    partnerId: String
+    type: ConversationType
+  ): ConversationConnection
 
   # A user's credit card
   creditCard(
