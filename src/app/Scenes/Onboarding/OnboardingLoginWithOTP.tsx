@@ -93,7 +93,7 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
             />
             <Spacer mt={1} />
             <LinkText variant="sm" color="black60" onPress={() => setRecoveryCodeMode((v) => !v)}>
-              {recoveryCodeMode ? "Back to authentication code" : "Enter recovery code instead"}
+              {recoveryCodeMode ? "Enter authentication code" : "Enter recovery code instead"}
             </LinkText>
 
             {otpMode === "on_demand" ? (
