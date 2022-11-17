@@ -1,15 +1,19 @@
+import { CuratedCollections_collections$key } from "__generated__/CuratedCollections_collections.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
 import { Flex, Join, Spacer, Text, Touchable } from "palette"
+import { graphql, useFragment } from "react-relay"
 import { IMAGE_SIZE, SearchResultImage } from "./components/SearchResultImage"
 
 interface CuratedCollectionsProps {
-  collections: any
+  collections: CuratedCollections_collections$key
 }
 
 export const CuratedCollections: React.FC<CuratedCollectionsProps> = ({ collections }) => {
-  const onPress = (collection: any) => {
-    navigate(`/collection/${collection.slug}`)
+  const data = useFragment(CuratedCollectionsFragment, collections)
+
+  const onPress = (slug: string) => {
+    navigate(`/collection/${slug}`)
   }
 
   return (
@@ -17,8 +21,8 @@ export const CuratedCollections: React.FC<CuratedCollectionsProps> = ({ collecti
       <SectionTitle title="Artsy Curated Collections" />
 
       <Join separator={<Spacer mb={2} />}>
-        {collections.map((collection: any) => (
-          <Touchable key={collection.internalID} onPress={() => onPress(collection)}>
+        {data.collections?.map((collection: any) => (
+          <Touchable key={collection.internalID} onPress={() => onPress(collection.slug)}>
             <Flex
               key={collection.internalID}
               height={IMAGE_SIZE}
@@ -45,3 +49,22 @@ export const CuratedCollections: React.FC<CuratedCollectionsProps> = ({ collecti
     </>
   )
 }
+
+const CuratedCollectionsFragment = graphql`
+  fragment CuratedCollections_collections on Query {
+    collections: marketingCollections(
+      slugs: [
+        "trending-this-week"
+        "artists-on-the-rise"
+        "trove-editors-picks"
+        "painting"
+        "photography"
+      ]
+    ) {
+      internalID
+      slug
+      title
+      thumbnail
+    }
+  }
+`

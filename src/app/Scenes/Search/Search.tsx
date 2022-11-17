@@ -58,10 +58,12 @@ export const Search: React.FC = () => {
   const [refreshedQueryOptions, setRefreshedQueryOptions] = useState<RefreshQueryOptions>({})
   const queryData = useLazyLoadQuery<SearchQuery>(SearchScreenQuery, {}, refreshedQueryOptions)
   const [isRefreshing, setIsRefreshing] = useState(false)
-  const { system, curatedMarketingCollections } = queryData
+  const { system } = queryData
   const indices = system?.algolia?.indices ?? []
   const indiceNames = indices.map((indice) => indice.name)
   const enableMaps = useFeatureFlag("AREnableMapScreen")
+  const displayCuratedCollections =
+    Platform.OS !== "ios" || useFeatureFlag("ARIosSearchTabCuratedCollections")
   const onRefetch = () => {
     if (isRefreshing) {
       return
@@ -230,8 +232,12 @@ export const Search: React.FC = () => {
             ) : (
               <Scrollable>
                 <RecentSearches />
-                <Spacer mb={3} />
-                <CuratedCollections collections={curatedMarketingCollections} />
+                {!!displayCuratedCollections && (
+                  <>
+                    <Spacer mb={3} />
+                    <CuratedCollections collections={queryData} />
+                  </>
+                )}
                 <Spacer mb={3} />
                 {!!enableMaps ? (
                   <Touchable onPress={() => navigate("/map")}>
@@ -291,20 +297,7 @@ export const SearchScreenQuery = graphql`
       }
     }
 
-    curatedMarketingCollections: marketingCollections(
-      slugs: [
-        "trending-this-week"
-        "artists-on-the-rise"
-        "trove-editors-picks"
-        "painting"
-        "photography"
-      ]
-    ) {
-      internalID
-      slug
-      title
-      thumbnail
-    }
+    ...CuratedCollections_collections
   }
 `
 
