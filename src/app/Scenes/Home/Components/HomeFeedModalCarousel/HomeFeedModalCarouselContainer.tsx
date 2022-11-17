@@ -40,19 +40,15 @@ export const HomeFeedModalCarouselContainer: React.FC<FullScreenCarouselProps> =
     }
   }
 
+  useEffect(() => {
+    if (!isVisible) {
+      setActiveStep(initialPage)
+    }
+  }, [isVisible])
+
   return (
     <Flex>
-      <Modal
-        visible={isVisible}
-        style={{ flex: 1 }}
-        animationType="slide"
-        onDismiss={() => {
-          setActiveStep(initialPage)
-          if (pagerViewRef?.current) {
-            pagerViewRef.current.setPage(initialPage)
-          }
-        }}
-      >
+      <Modal visible={isVisible} style={{ flex: 1 }} animationType="slide">
         <Steps
           numberOfSteps={Array.isArray(children) ? children.length : 0}
           activeStep={activeStep}
@@ -116,7 +112,7 @@ const Steps = ({
       pl={1}
       mt={topInset}
       pr={5}
-      zIndex={100}
+      zIndex={101}
     >
       {Array.from({ length: numberOfSteps }).map((_, index) => (
         <Step key={index} isActive={activeStep === index} goToStep={() => goToStep(index)} />
