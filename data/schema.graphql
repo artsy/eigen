@@ -9925,6 +9925,7 @@ type MarketingCollection {
   showHeaderArtworksRail: Boolean!
   slug: String!
   thumbnail: String
+  thumbnailImage: Image
   title: String!
   updatedAt: ISO8601DateTime!
 }
@@ -13029,6 +13030,7 @@ type Query {
     # The ID of the Credit Card
     id: String!
   ): CreditCard
+  curatedMarketingCollections(size: Int): [MarketingCollection]
   departments: [Department!]!
 
   # Get an image info
