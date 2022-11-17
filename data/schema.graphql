@@ -6666,6 +6666,11 @@ type ConversationResponder {
   type: String!
 }
 
+enum ConversationType {
+  PARTNER
+  USER
+}
+
 type CreateAccountRequestMutationFailure {
   mutationError: GravityMutationError
 }
@@ -9925,6 +9930,7 @@ type MarketingCollection {
   showHeaderArtworksRail: Boolean!
   slug: String!
   thumbnail: String
+  thumbnailImage: Image
   title: String!
   updatedAt: ISO8601DateTime!
 }
@@ -10182,8 +10188,13 @@ type Me implements Node {
   conversationsConnection(
     after: String
     before: String
+    dismissed: Boolean
     first: Int
+    hasMessage: Boolean
+    hasReply: Boolean
     last: Int
+    partnerId: String
+    type: ConversationType
   ): ConversationConnection
   createdAt(
     format: String
@@ -13024,11 +13035,25 @@ type Query {
     sort: ConsignmentSort
   ): ConsignmentConnection
 
+  # Conversations, usually between a user and partner.
+  conversationsConnection(
+    after: String
+    before: String
+    dismissed: Boolean
+    first: Int
+    hasMessage: Boolean
+    hasReply: Boolean
+    last: Int
+    partnerId: String
+    type: ConversationType
+  ): ConversationConnection
+
   # A user's credit card
   creditCard(
     # The ID of the Credit Card
     id: String!
   ): CreditCard
+  curatedMarketingCollections(size: Int): [MarketingCollection]
   departments: [Department!]!
 
   # Get an image info
@@ -16767,6 +16792,19 @@ type Viewer {
     # A slug for the city, conforming to Gravity's city slug naming conventions
     slug: String
   ): City
+
+  # Conversations, usually between a user and partner.
+  conversationsConnection(
+    after: String
+    before: String
+    dismissed: Boolean
+    first: Int
+    hasMessage: Boolean
+    hasReply: Boolean
+    last: Int
+    partnerId: String
+    type: ConversationType
+  ): ConversationConnection
 
   # A user's credit card
   creditCard(
