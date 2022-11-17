@@ -239,6 +239,11 @@ jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
   spring: jest.fn(),
 }))
 
+jest.mock("react-native/Libraries/Interaction/InteractionManager", () => ({
+  ...jest.requireActual("react-native/Libraries/Interaction/InteractionManager"),
+  runAfterInteractions: jest.fn((callback) => callback()),
+}))
+
 jest.mock("react-native-gesture-handler", () => {
   const View = require("react-native/Libraries/Components/View/View")
   const TouchableWithoutFeedback = require("react-native/Libraries/Components/Touchable/TouchableWithoutFeedback")
