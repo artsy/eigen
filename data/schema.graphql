@@ -6666,7 +6666,7 @@ type ConversationResponder {
   type: String!
 }
 
-enum ConversationType {
+enum ConversationsInputMode {
   PARTNER
   USER
 }
@@ -10194,7 +10194,7 @@ type Me implements Node {
     hasReply: Boolean
     last: Int
     partnerId: String
-    type: ConversationType
+    type: ConversationsInputMode = USER
   ): ConversationConnection
   createdAt(
     format: String
@@ -13045,7 +13045,7 @@ type Query {
     hasReply: Boolean
     last: Int
     partnerId: String
-    type: ConversationType
+    type: ConversationsInputMode = USER
   ): ConversationConnection
 
   # A user's credit card
@@ -16803,7 +16803,7 @@ type Viewer {
     hasReply: Boolean
     last: Int
     partnerId: String
-    type: ConversationType
+    type: ConversationsInputMode = USER
   ): ConversationConnection
 
   # A user's credit card
