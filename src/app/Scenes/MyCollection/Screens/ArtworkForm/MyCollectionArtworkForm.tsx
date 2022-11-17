@@ -107,6 +107,10 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
   const { showActionSheetWithOptions } = useActionSheet()
 
   const handleSubmit = async (values: ArtworkFormValues) => {
+    if (loading) {
+      return
+    }
+
     setLoading(true)
 
     updateMyUserProfile({
