@@ -28,13 +28,7 @@ const CuratedCollectionsFragment = graphql`
   fragment CuratedCollections_collections on Query {
     collections: curatedMarketingCollections(size: 5) {
       internalID
-      slug
-      title
-      thumbnailImage {
-        resized(width: 40) {
-          url
-        }
-      }
+      ...CuratedCollectionItem_collection
     }
   }
 `

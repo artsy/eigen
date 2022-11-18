@@ -3,8 +3,8 @@ import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { navigate } from "app/navigation/navigate"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { CuratedCollections } from "./CuratedCollections"
 
@@ -33,12 +33,10 @@ describe("CuratedCollections", () => {
   it("renders a list of curated collections", async () => {
     const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-    act(() => {
-      mockEnvironment.mock.resolveMostRecentOperation({
-        data: {
-          collections,
-        },
-      })
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Query: () => ({
+        collections,
+      }),
     })
 
     await flushPromiseQueue()
@@ -50,12 +48,10 @@ describe("CuratedCollections", () => {
   it("navigates to /collection/slug", async () => {
     const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-    act(() => {
-      mockEnvironment.mock.resolveMostRecentOperation({
-        data: {
-          collections,
-        },
-      })
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Query: () => ({
+        collections,
+      }),
     })
 
     await flushPromiseQueue()
