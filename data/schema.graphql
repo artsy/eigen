@@ -6649,6 +6649,14 @@ type ConversationItem {
 
 union ConversationItemType = Artwork | Show
 
+input ConversationMessageAttachmentInput {
+  id: String
+  name: String!
+  size: String
+  type: String!
+  url: String!
+}
+
 # The participant responding to the conversation, currently always a Partner
 type ConversationResponder {
   # A globally unique ID.
@@ -14716,17 +14724,33 @@ union SendConfirmationEmailMutationType =
   | SendConfirmationEmailMutationSuccess
 
 input SendConversationMessageMutationInput {
+  # Attachments to the message
+  attachments: [ConversationMessageAttachmentInput!]
+
+  # Message body (html)
+  bodyHTML: String
+
+  # Message body (text)
   bodyText: String!
   clientMutationId: String
 
-  # The email address of the message sender
+  # Sender email, optionally including display string (like 'Jane Doe <jane@doe.com>').
   from: String!
+
+  # Sender user id
+  fromId: String
 
   # The id of the conversation to be updated
   id: String!
 
+  # Reply to all
+  replyAll: Boolean = true
+
   # The message being replied to
   replyToMessageID: String!
+
+  # Recepients emails.
+  to: [String]
 }
 
 type SendConversationMessageMutationPayload {
