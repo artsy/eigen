@@ -5,7 +5,7 @@ import { useFeatureFlag } from "app/store/GlobalStore"
 import { capitalize } from "lodash"
 import { Flex } from "palette"
 import { graphql, useFragment } from "react-relay"
-import { Field } from "../Field"
+import { Field, MetaDataField } from "../Field"
 
 interface EstimatePriceType {
   lowRangeCents: number | null
@@ -16,8 +16,6 @@ interface MyCollectionArtworkAboutWorkProps {
   artwork: MyCollectionArtworkAboutWork_artwork$key
   marketPriceInsights: MyCollectionArtworkAboutWork_marketPriceInsights$key | null
 }
-
-const EMPTY_VALUE = "----"
 
 export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWorkProps> = (
   props
@@ -57,15 +55,6 @@ export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWork
       <MetaDataField label="Provenance" value={provenance} />
       <MetaDataField label="Price Paid" value={pricePaid?.display} />
     </Flex>
-  )
-}
-
-const MetaDataField: React.FC<{ label: string; value: string | null | undefined }> = ({
-  label,
-  value,
-}) => {
-  return (
-    <Field label={label} value={value || EMPTY_VALUE} color={!value ? "black60" : "black100"} />
   )
 }
 

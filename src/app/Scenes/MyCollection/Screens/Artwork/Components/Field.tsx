@@ -1,5 +1,7 @@
 import { Flex, Text } from "palette"
 
+const EMPTY_VALUE = "----"
+
 export const Field: React.FC<{
   label: string
   value: string | null
@@ -23,5 +25,14 @@ export const Field: React.FC<{
         {value}
       </Text>
     </Flex>
+  )
+}
+
+export const MetaDataField: React.FC<{ label: string; value: string | null | undefined }> = ({
+  label,
+  value,
+}) => {
+  return (
+    <Field label={label} value={value || EMPTY_VALUE} color={!value ? "black60" : "black100"} />
   )
 }
