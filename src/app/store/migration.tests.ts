@@ -730,7 +730,6 @@ describe("App version Versions.AddSubmissionIdForMyCollection", () => {
     expect(migratedState.artworkSubmission.submission.submissionIdForMyCollection).toEqual("")
   })
 })
-
 describe("App version Versions.AddRecentPriceRangesModel", () => {
   const migrationToTest = Versions.AddRecentPriceRangesModel
 
