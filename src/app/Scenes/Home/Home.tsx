@@ -131,12 +131,6 @@ const Home = (props: Props) => {
       data: homePageAbove?.salesModule,
       prefetchUrl: "/auctions",
     },
-    {
-      title: "Do More on Artsy",
-      type: "homeFeedOnboarding",
-      data: homePageAbove?.onboardingModule,
-      hidden: !enableMyCollectionHFOnboarding || !homePageAbove?.onboardingModule,
-    },
     // Below-The-Fold Modules
     {
       title: "Latest Auction Results",
@@ -151,6 +145,12 @@ const Home = (props: Props) => {
       hidden: !articlesConnection,
       prefetchUrl: "/articles",
       prefetchVariables: articlesQueryVariables,
+    },
+    {
+      title: "Do More on Artsy",
+      type: "homeFeedOnboarding",
+      data: homePageBelow?.onboardingModule,
+      hidden: !enableMyCollectionHFOnboarding || !homePageBelow?.onboardingModule,
     },
     {
       title: "Recommended Artists",
@@ -403,9 +403,6 @@ export const HomeFragmentContainer = createRefetchContainer(
           id
           ...ArtistRail_rail
         }
-        onboardingModule @optionalField {
-          ...HomeFeedOnboardingRail_onboardingModule
-        }
       }
     `,
     // Make sure to exclude all modules that are part of "homePageAbove"
@@ -428,6 +425,9 @@ export const HomeFragmentContainer = createRefetchContainer(
         }
         marketingCollectionsModule {
           ...CollectionsRail_collectionsModule
+        }
+        onboardingModule @optionalField {
+          ...HomeFeedOnboardingRail_onboardingModule
         }
       }
     `,
