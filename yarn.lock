@@ -3365,6 +3365,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/viewpager/-/viewpager-3.3.0.tgz#e613747a43a31a6f3278f817ba96fdaaa7941f23"
   integrity sha512-tyzh79l4t/hxiyS9QD3LRmWMs8KVkZzjrkQ8U8+8To1wmvVCBtp8BenvNsDLTBO7CpO/YmiThpmIdEZMr1WuVw==
 
+"@react-native-community/viewpager@^4.2.2":
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/@react-native-community/viewpager/-/viewpager-4.2.2.tgz#e05d618829c589284326896c806200af90ae0986"
+  integrity sha512-XBAO/9gV0pb6VAqbaobdJp6slTgmf8TOAnIbERO1pKjIXoj2OrKYcma2VPB/02wzEzu7TE8jcbt3u6BT4fpXxA==
+
 "@react-native-cookies/cookies@6.0.11":
   version "6.0.11"
   resolved "https://registry.yarnpkg.com/@react-native-cookies/cookies/-/cookies-6.0.11.tgz#94e2ef88e20d4370f2b69be37d274aa30a089c6c"
@@ -12582,11 +12587,6 @@ react-native-modal-selector@^2.1.0:
   integrity sha512-aXOF8tC69XXfI6kbIskRRLe8xcexiYc21GD0s8gNz/Pl1FT8921PuLz647uY2le+fsJsztX6Taaf3mij/Noc+A==
   dependencies:
     prop-types "^15.5.10"
-
-react-native-pager-view@6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-pager-view/-/react-native-pager-view-6.0.0.tgz#e3706da1bb7e55bcd2644d770d36c8dd14b48690"
-  integrity sha512-0qUMUmA/Lhv76F+fbCcYB+iuODH6Lp6E1EYlXw+GM3Ns3FaKFtBaVYXKQSfNhqnTUg9YEOY3HuX+ZMKBSHwNbA==
 
 react-native-push-notification@7.4.0:
   version "7.4.0"
