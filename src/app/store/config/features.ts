@@ -197,9 +197,10 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableActivity",
   },
   AREnableMyCollectionHFOnboarding: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable My Collection home feed onboarding",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableMyCollectionHFOnboarding",
   },
   AREnableCollectionsInOnboarding: {
     description: "Replace genes with collections in onboarding",
