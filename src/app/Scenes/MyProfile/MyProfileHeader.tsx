@@ -33,15 +33,18 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
   return (
     <Flex pt={2}>
       <Flex flexDirection="row" alignItems="center" px={2}>
-        <Box
-          height={50}
-          width={50}
-          borderRadius={25}
-          backgroundColor={color("black10")}
-          justifyContent="center"
-          alignItems="center"
-        >
-          <TouchableOpacity onPress={() => navigate("/my-profile/edit")} testID="profile-image">
+        <Box height={45} width={45} borderRadius={25} backgroundColor={color("black10")}>
+          <TouchableOpacity
+            onPress={() => navigate("/my-profile/edit")}
+            testID="profile-image"
+            style={{
+              height: 45,
+              width: 45,
+              borderRadius: 25,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             {!!userProfileImagePath ? (
               <Avatar src={userProfileImagePath} size="xs" />
             ) : (
