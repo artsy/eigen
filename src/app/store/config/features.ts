@@ -183,6 +183,7 @@ export const features = defineFeatures({
     readyForRelease: false,
     description: "Enable My Collection artworks from non-Artsy artists",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableArtworksFromNonArtsyArtists",
   },
   AREnableArtworksConnectionForAuction: {
     readyForRelease: true,
