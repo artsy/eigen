@@ -64,7 +64,9 @@ const MetaDataField: React.FC<{ label: string; value: string | null | undefined 
   label,
   value,
 }) => {
-  return <Field label={label} value={value || EMPTY_VALUE} />
+  return (
+    <Field label={label} value={value || EMPTY_VALUE} color={!value ? "black60" : "black100"} />
+  )
 }
 
 const artworkFragment = graphql`
