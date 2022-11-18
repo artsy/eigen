@@ -1,4 +1,5 @@
 import { VisualClueName } from "app/store/config/visualClues"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { useUpdateShouldHideBackButton } from "app/utils/hideBackButtonOnScroll"
 import { Schema } from "app/utils/track"
 import { useAutoCollapsingMeasuredView } from "app/utils/useAutoCollapsingMeasuredView"
@@ -73,6 +74,8 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
   const [tabSpecificStickyHeaderContent, setTabSpecificStickyHeaderContent] = useState<
     Array<JSX.Element | null>
   >([])
+
+  const enablePanOnStaticHeader = useFeatureFlag("AREnablePanOnStaticHeader")
 
   const { jsx: staticHeader, nativeHeight: staticHeaderHeight } =
     useAutoCollapsingMeasuredView(staticHeaderContent)
@@ -191,10 +194,17 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
           }}
           pointerEvents="box-none"
         >
-          <StaticHeaderContainer registeredListRefs={registeredListRefs.current}>
-            {staticHeader}
-            {stickyHeader}
-          </StaticHeaderContainer>
+          {enablePanOnStaticHeader ? (
+            <StaticHeaderContainer registeredListRefs={registeredListRefs.current}>
+              {staticHeader}
+              {stickyHeader}
+            </StaticHeaderContainer>
+          ) : (
+            <Box backgroundColor="white100">
+              {staticHeader}
+              {stickyHeader}
+            </Box>
+          )}
           <SnappyHorizontalRail
             width={width * tabs.length}
             ref={stickyRailRef}
