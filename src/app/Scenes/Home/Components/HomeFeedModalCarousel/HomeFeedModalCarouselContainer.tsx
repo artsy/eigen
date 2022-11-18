@@ -20,6 +20,8 @@ export const HomeFeedModalCarouselContainer: React.FC<FullScreenCarouselProps> =
   initialPage = 0,
   toggleModal,
 }) => {
+  const { trackEvent } = useTracking()
+
   if (!Array.isArray(children) || children.length === 0) {
     throw new Error("FullScreenCarousel requires at least one child")
   }
@@ -41,6 +43,14 @@ export const HomeFeedModalCarouselContainer: React.FC<FullScreenCarouselProps> =
       }
     }
   }
+  const isLastStep = children.length - 1 === activeStep
+
+  useEffect(() => {
+    if (isLastStep) {
+      trackEvent(tracks.myCollectionOnboardingCompleted())
+    }
+    trackEvent(tracks.visitMyCollectionOnboardingSlide(activeStep))
+  }, [activeStep])
 
   return (
     <Flex>
@@ -79,7 +89,7 @@ export const HomeFeedModalCarouselContainer: React.FC<FullScreenCarouselProps> =
           </Flex>
 
           <FooterButtons
-            isLastStep={children.length - 1 === activeStep}
+            isLastStep={isLastStep}
             goToNextPage={() => pagerViewRef.current?.setPage(activeStep + 1)}
             dismissModal={() => toggleModal(false)}
           />
@@ -214,5 +224,18 @@ const tracks = {
     action: ActionType.visitMyCollection,
     context_screen_owner_type: OwnerType.myCollectionOnboarding,
     context_module: ContextModule.myCollectionOnboarding,
+  }),
+  myCollectionOnboardingCompleted: () => ({
+    action: ActionType.myCollectionOnboardingCompleted,
+    context_owner_type: OwnerType.myCollectionOnboarding,
+    context_screen_owner_type: OwnerType.myCollectionOnboarding,
+    context_module: ContextModule.myCollectionOnboarding,
+    destination_screen_owner_type: OwnerType.myCollectionOnboarding,
+  }),
+  visitMyCollectionOnboardingSlide: (slideIndex: number) => ({
+    action: ActionType.visitMyCollectionOnboardingSlide,
+    context_screen_owner_type: OwnerType.myCollectionOnboarding,
+    context_module: ContextModule.myCollectionOnboarding,
+    index: slideIndex,
   }),
 }

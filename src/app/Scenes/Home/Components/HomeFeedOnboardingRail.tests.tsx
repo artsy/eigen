@@ -1,5 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
-import { navigate, switchTab } from "app/navigation/navigate"
+import { switchTab } from "app/navigation/navigate"
 import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
 import { Theme } from "palette"
 import { SafeAreaProvider } from "react-native-safe-area-context"
