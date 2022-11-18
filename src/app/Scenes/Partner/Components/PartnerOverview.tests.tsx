@@ -188,27 +188,4 @@ const artists: NonNullable<
       },
     },
   },
-  {
-    cursor: "c",
-    id: "c",
-    node: {
-      __typename: "Artist",
-      id: "QXJ0aXN0OjRmMDY0ODMxODUwMWZhMTBjYTAwMDAxMA==",
-      internalID: "4f0648318501fa10ca000010",
-      slug: "william-anastasi",
-      name: "William Anastasi",
-      initials: "WA",
-      href: "/artist/william-anastasi",
-      is_followed: false,
-      nationality: "American",
-      birthday: "1933",
-      deathday: "",
-      image: {
-        url: "https://d32dm0rphc51dk.cloudfront.net/1cUF7xHvhU9_R1ucmSRoPg/tall.jpg",
-      },
-      counts: {
-        artworks: 2,
-      },
-    },
-  },
 ]

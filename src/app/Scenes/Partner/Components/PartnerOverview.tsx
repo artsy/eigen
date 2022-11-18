@@ -12,10 +12,10 @@ import { PartnerLocationSectionContainer as PartnerLocationSection } from "./Par
 export const PartnerOverview: React.FC<{
   partner: PartnerOverview_partner$data
 }> = ({ partner }) => {
-  const artists = extractNodes(partner.allArtistsConnection)
+  const artistsData = extractNodes(partner.artists)
 
   const renderArtists = () => {
-    return artists.map((artist) => {
+    return artistsData.map((artist) => {
       return (
         <Box key={artist.id}>
           <ArtistListItem artist={artist} />
@@ -27,7 +27,7 @@ export const PartnerOverview: React.FC<{
 
   const aboutText = partner.profile?.bio
 
-  if (!aboutText && !artists && !partner.cities) {
+  if (!aboutText && !artistsData && !partner.cities) {
     return (
       <StickyTabPageScrollView>
         <TabEmptyState text="There is no information for this gallery yet" />
@@ -46,10 +46,10 @@ export const PartnerOverview: React.FC<{
         </>
       )}
       <PartnerLocationSection partner={partner} />
-      {!!artists && artists.length > 0 && (
+      {!!artistsData && artistsData.length > 0 && (
         <>
           <Text>
-            <Text variant="sm-display">Artists ({artists.length})</Text>
+            <Text variant="sm-display">Artists ({artistsData.length})</Text>
           </Text>
           <Spacer mb={2} />
           {renderArtists()}
@@ -69,7 +69,7 @@ export const PartnerOverviewFragmentContainer = createFragmentContainer(PartnerO
       profile {
         bio
       }
-      allArtistsConnection(
+      artists: allArtistsConnection(
         displayOnPartnerProfile: true
         hasNotRepresentedArtistWithPublishedArtworks: true
       ) {
