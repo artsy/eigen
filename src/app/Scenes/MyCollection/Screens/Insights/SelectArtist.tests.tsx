@@ -50,6 +50,11 @@ describe("SelectArtist", () => {
         },
       })
 
+      // Modal is hidden and the artist is updated
+      await waitFor(() =>
+        expect(screen.getByTestId("select-artist-modal").props.visible).toBeFalse()
+      )
+      expect(screen.getByTestId("select-artist-modal").props.visible).toBeFalse()
       expect(screen.getByText("Banksy")).toBeTruthy()
     })
   })
@@ -90,7 +95,12 @@ describe("SelectArtist", () => {
           ...insights,
         },
       })
+      await waitFor(() =>
+        expect(screen.getByTestId("select-artist-modal").props.visible).toBeFalse()
+      )
 
+      // Modal is hidden and the artist is updated
+      expect(screen.getByTestId("select-artist-modal").props.visible).toBeFalse()
       expect(screen.getByText("Amoako Boafo")).toBeTruthy()
     })
 
