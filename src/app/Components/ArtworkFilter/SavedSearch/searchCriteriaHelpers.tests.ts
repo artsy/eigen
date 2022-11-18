@@ -159,8 +159,8 @@ describe("prepareFilterDataForSaveSearchInput", () => {
         paramValue: true,
       },
       {
-        displayText: "Inquire",
-        paramName: FilterParamName.waysToBuyInquire,
+        displayText: "Contact Gallery",
+        paramName: FilterParamName.waysToBuyContactGallery,
         paramValue: true,
       },
     ]

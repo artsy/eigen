@@ -90,11 +90,10 @@
   ],
   "dependenciesComments": {
     "@react-native-community/slider": "Needed by storybook, see install script here: https://gist.github.com/dannyhw/9b84973dcc6ff4fa2e86e32d571d294e",
-    "@react-native-community/viewpager": "Needed by react-native-scrollable-tab-view, more context here: https://github.com/artsy/eigen/pull/4362#discussion_r566846184",
     "react-native-vision-camera": "Needed for reverse image functionality, more context here: https://github.com/artsy/eigen/issues/7159"
   },
   "dependencies": {
-    "@artsy/cohesion": "4.73.0",
+    "@artsy/cohesion": "4.75.0",
     "@artsy/palette-tokens": "4.0.1",
     "@artsy/to-title-case": "1.1.0",
     "@expo/react-native-action-sheet": "3.8.0",
@@ -108,9 +107,8 @@
     "@react-native-community/datetimepicker": "6.1.2",
     "@react-native-community/geolocation": "2.0.2",
     "@react-native-community/masked-view": "0.1.11",
-    "@react-native-community/netinfo": "6.0.1",
+    "@react-native-community/netinfo": "9.3.6",
     "@react-native-community/slider": "4.2.1",
-    "@react-native-community/viewpager": "^4.2.2",
     "@react-native-cookies/cookies": "6.0.11",
     "@react-native-google-signin/google-signin": "6.0.0",
     "@react-native-mapbox-gl/maps": "8.5.0",
@@ -170,6 +168,7 @@
     "react-native-keychain": "8.0.0",
     "react-native-linear-gradient": "2.5.6",
     "react-native-localize": "2.0.1",
+    "react-native-pager-view": "6.0.0",
     "react-native-push-notification": "7.4.0",
     "react-native-reanimated": "2.9.1",
     "react-native-safe-area-context": "3.4.0",

@@ -899,6 +899,17 @@ describe("artsy.net routes", () => {
       Object {
         "module": "Partner",
         "params": Object {
+          "initialTab": "Artworks",
+          "partnerID": ":partnerID",
+        },
+        "type": "match",
+      }
+    `)
+    expect(matchRoute("/partner/:partnerID/shows")).toMatchInlineSnapshot(`
+      Object {
+        "module": "Partner",
+        "params": Object {
+          "initialTab": "Shows",
           "partnerID": ":partnerID",
         },
         "type": "match",
