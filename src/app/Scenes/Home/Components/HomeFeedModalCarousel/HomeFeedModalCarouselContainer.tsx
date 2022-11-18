@@ -90,12 +90,16 @@ export const HomeFeedModalCarouselContainer: React.FC<FullScreenCarouselProps> =
             // we are using top from styles to avoid computing distances wrongly
             // @example: by setting top to 1 using the top prop, the distance
             // from the top of the screen is going to be 10
-            top: topInset - 10,
+            top: topInset - 1,
           }}
           position="absolute"
           zIndex={100}
         >
-          <BackButton onPress={handleCloseModal} showX />
+          <BackButton
+            onPress={handleCloseModal}
+            showX
+            hitSlop={{ top: 5, left: 5, right: 5, bottom: 5 }}
+          />
         </Flex>
         <SafeAreaView style={{ flex: 1 }}>
           <PagerView
@@ -134,7 +138,7 @@ const Steps = ({
       flexDirection="row"
       justifyContent="space-between"
       pl={1}
-      mt={topInset}
+      style={{ marginTop: topInset + 10 }}
       pr={5}
       zIndex={101}
     >
@@ -188,7 +192,7 @@ export const FooterButtons = ({
 
   if (isLastStep) {
     return (
-      <Flex position="absolute" bottom={bottomInset} px={2}>
+      <Flex position="absolute" bottom={bottomInset} px={2} mb={1}>
         <Button
           variant="fillDark"
           block
@@ -227,7 +231,7 @@ export const FooterButtons = ({
   }
 
   return (
-    <Flex position="absolute" bottom={bottomInset}>
+    <Flex position="absolute" style={{ bottom: bottomInset + 10 }}>
       <Button
         variant="text"
         block
