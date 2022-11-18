@@ -6649,6 +6649,14 @@ type ConversationItem {
 
 union ConversationItemType = Artwork | Show
 
+input ConversationMessageAttachmentInput {
+  id: String
+  name: String!
+  size: String
+  type: String!
+  url: String!
+}
+
 # The participant responding to the conversation, currently always a Partner
 type ConversationResponder {
   # A globally unique ID.
@@ -6664,6 +6672,11 @@ type ConversationResponder {
 
   # The type of participant, e.g. Partner or User
   type: String!
+}
+
+enum ConversationsInputMode {
+  PARTNER
+  USER
 }
 
 type CreateAccountRequestMutationFailure {
@@ -9925,6 +9938,7 @@ type MarketingCollection {
   showHeaderArtworksRail: Boolean!
   slug: String!
   thumbnail: String
+  thumbnailImage: Image
   title: String!
   updatedAt: ISO8601DateTime!
 }
@@ -10182,8 +10196,13 @@ type Me implements Node {
   conversationsConnection(
     after: String
     before: String
+    dismissed: Boolean
     first: Int
+    hasMessage: Boolean
+    hasReply: Boolean
     last: Int
+    partnerId: String
+    type: ConversationsInputMode = USER
   ): ConversationConnection
   createdAt(
     format: String
@@ -13024,11 +13043,25 @@ type Query {
     sort: ConsignmentSort
   ): ConsignmentConnection
 
+  # Conversations, usually between a user and partner.
+  conversationsConnection(
+    after: String
+    before: String
+    dismissed: Boolean
+    first: Int
+    hasMessage: Boolean
+    hasReply: Boolean
+    last: Int
+    partnerId: String
+    type: ConversationsInputMode = USER
+  ): ConversationConnection
+
   # A user's credit card
   creditCard(
     # The ID of the Credit Card
     id: String!
   ): CreditCard
+  curatedMarketingCollections(size: Int): [MarketingCollection]
   departments: [Department!]!
 
   # Get an image info
@@ -14691,17 +14724,33 @@ union SendConfirmationEmailMutationType =
   | SendConfirmationEmailMutationSuccess
 
 input SendConversationMessageMutationInput {
+  # Attachments to the message
+  attachments: [ConversationMessageAttachmentInput!]
+
+  # Message body (html)
+  bodyHTML: String
+
+  # Message body (text)
   bodyText: String!
   clientMutationId: String
 
-  # The email address of the message sender
+  # Sender email, optionally including display string (like 'Jane Doe <jane@doe.com>').
   from: String!
+
+  # Sender user id
+  fromId: String
 
   # The id of the conversation to be updated
   id: String!
 
+  # Reply to all
+  replyAll: Boolean = true
+
   # The message being replied to
   replyToMessageID: String!
+
+  # Recepients emails.
+  to: [String]
 }
 
 type SendConversationMessageMutationPayload {
@@ -16767,6 +16816,19 @@ type Viewer {
     # A slug for the city, conforming to Gravity's city slug naming conventions
     slug: String
   ): City
+
+  # Conversations, usually between a user and partner.
+  conversationsConnection(
+    after: String
+    before: String
+    dismissed: Boolean
+    first: Int
+    hasMessage: Boolean
+    hasReply: Boolean
+    last: Int
+    partnerId: String
+    type: ConversationsInputMode = USER
+  ): ConversationConnection
 
   # A user's credit card
   creditCard(
