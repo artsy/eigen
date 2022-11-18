@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { navigate, popToRoot, switchTab } from "app/navigation/navigate"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { BackButton, Button, Flex, useSpace } from "palette"
@@ -5,6 +6,7 @@ import { useEffect, useRef, useState } from "react"
 import { BackHandler, LayoutAnimation, Modal, TouchableOpacity } from "react-native"
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
+import { useTracking } from "react-tracking"
 
 export interface FullScreenCarouselProps {
   initialPage?: number
@@ -18,6 +20,8 @@ export const HomeFeedModalCarouselContainer: React.FC<FullScreenCarouselProps> =
   initialPage = 0,
   toggleModal,
 }) => {
+  const { trackEvent } = useTracking()
+
   if (!Array.isArray(children) || children.length === 0) {
     throw new Error("FullScreenCarousel requires at least one child")
   }
@@ -39,6 +43,14 @@ export const HomeFeedModalCarouselContainer: React.FC<FullScreenCarouselProps> =
       }
     }
   }
+  const isLastStep = children.length - 1 === activeStep
+
+  useEffect(() => {
+    if (isLastStep) {
+      trackEvent(tracks.myCollectionOnboardingCompleted())
+    }
+    trackEvent(tracks.visitMyCollectionOnboardingSlide(activeStep))
+  }, [activeStep])
 
   useEffect(() => {
     if (!isVisible) {
@@ -97,7 +109,7 @@ export const HomeFeedModalCarouselContainer: React.FC<FullScreenCarouselProps> =
           </PagerView>
 
           <FooterButtons
-            isLastStep={children.length - 1 === activeStep}
+            isLastStep={isLastStep}
             goToNextPage={() => pagerViewRef.current?.setPage(activeStep + 1)}
             dismissModal={() => toggleModal(false)}
           />
@@ -163,6 +175,7 @@ export const FooterButtons = ({
   isLastStep?: boolean
   goToNextPage: () => void
 }) => {
+  const { trackEvent } = useTracking()
   const { bottom: bottomInset } = useSafeAreaInsets()
 
   // Animate how the last step buttons appear in the last step
@@ -190,6 +203,7 @@ export const FooterButtons = ({
                   onSuccess: popToRoot,
                 },
               })
+              trackEvent(tracks.addCollectedArtwork())
             })
           }}
         >
@@ -203,6 +217,7 @@ export const FooterButtons = ({
             requestAnimationFrame(() => {
               dismissModal()
             })
+            trackEvent(tracks.visitMyCollection())
           }}
         >
           Go to My Collection
@@ -224,4 +239,31 @@ export const FooterButtons = ({
       </Button>
     </Flex>
   )
+}
+
+const tracks = {
+  addCollectedArtwork: () => ({
+    action: ActionType.addCollectedArtwork,
+    context_module: ContextModule.myCollectionOnboarding,
+    context_owner_type: OwnerType.myCollectionOnboarding,
+    platform: "mobile",
+  }),
+  visitMyCollection: () => ({
+    action: ActionType.visitMyCollection,
+    context_screen_owner_type: OwnerType.myCollectionOnboarding,
+    context_module: ContextModule.myCollectionOnboarding,
+  }),
+  myCollectionOnboardingCompleted: () => ({
+    action: ActionType.myCollectionOnboardingCompleted,
+    context_owner_type: OwnerType.myCollectionOnboarding,
+    context_screen_owner_type: OwnerType.myCollectionOnboarding,
+    context_module: ContextModule.myCollectionOnboarding,
+    destination_screen_owner_type: OwnerType.myCollectionOnboarding,
+  }),
+  visitMyCollectionOnboardingSlide: (slideIndex: number) => ({
+    action: ActionType.visitMyCollectionOnboardingSlide,
+    context_screen_owner_type: OwnerType.myCollectionOnboarding,
+    context_module: ContextModule.myCollectionOnboarding,
+    index: slideIndex,
+  }),
 }
