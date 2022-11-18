@@ -1,32 +1,21 @@
 import { PartnerOverview_partner$data } from "__generated__/PartnerOverview_partner.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
 import { ReadMore } from "app/Components/ReadMore"
-import Spinner from "app/Components/Spinner"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { TabEmptyState } from "app/Components/TabEmptyState"
 import { extractNodes } from "app/utils/extractNodes"
-import { Box, Flex, Spacer, Text } from "palette"
-import React, { useState } from "react"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { Box, Spacer, Text } from "palette"
+import React from "react"
+import { createFragmentContainer, graphql } from "react-relay"
 import { PartnerLocationSectionContainer as PartnerLocationSection } from "./PartnerLocationSection"
-
-const PAGE_SIZE = 10
 
 export const PartnerOverview: React.FC<{
   partner: PartnerOverview_partner$data
-  relay: RelayPaginationProp
-}> = ({ partner, relay }) => {
-  const [fetchingNextPage, setFetchingNextPage] = useState(false)
-  const allArtists = extractNodes(partner.artists)
-
-  const getArtistsWithPublishedArtworks = (artists: typeof allArtists) => {
-    return artists.filter((artist) => artist?.counts?.artworks)
-  }
-
-  const filteredArtists = getArtistsWithPublishedArtworks(allArtists)
+}> = ({ partner }) => {
+  const artists = extractNodes(partner.allArtistsConnection)
 
   const renderArtists = () => {
-    return filteredArtists.map((artist) => {
+    return artists.map((artist) => {
       return (
         <Box key={artist.id}>
           <ArtistListItem artist={artist} />
@@ -38,7 +27,7 @@ export const PartnerOverview: React.FC<{
 
   const aboutText = partner.profile?.bio
 
-  if (!aboutText && !filteredArtists && !partner.cities) {
+  if (!aboutText && !artists && !partner.cities) {
     return (
       <StickyTabPageScrollView>
         <TabEmptyState text="There is no information for this gallery yet" />
@@ -48,21 +37,7 @@ export const PartnerOverview: React.FC<{
 
   return (
     // TODO: Switch to StickyTabPageFlatList
-    <StickyTabPageScrollView
-      onEndReached={() => {
-        if (fetchingNextPage || !partner.artists?.pageInfo.endCursor || !relay.hasMore()) {
-          return
-        }
-        setFetchingNextPage(true)
-        relay.loadMore(PAGE_SIZE, (error) => {
-          if (error) {
-            // FIXME: Handle error
-            console.error("PartnerOverview.tsx", error.message)
-          }
-          setFetchingNextPage(false)
-        })
-      }}
-    >
+    <StickyTabPageScrollView>
       <Spacer mb={2} />
       {!!aboutText && (
         <>
@@ -71,20 +46,13 @@ export const PartnerOverview: React.FC<{
         </>
       )}
       <PartnerLocationSection partner={partner} />
-      {!!filteredArtists && filteredArtists.length > 0 && (
+      {!!artists && artists.length > 0 && (
         <>
           <Text>
-            <Text variant="sm-display">Artists ({filteredArtists.length})</Text>
+            <Text variant="sm-display">Artists ({artists.length})</Text>
           </Text>
           <Spacer mb={2} />
           {renderArtists()}
-          {!!fetchingNextPage && (
-            <Box p={2}>
-              <Flex style={{ flex: 1 }} flexDirection="row" justifyContent="center">
-                <Spinner />
-              </Flex>
-            </Box>
-          )}
           <Spacer mb={3} />
         </>
       )}
@@ -92,57 +60,30 @@ export const PartnerOverview: React.FC<{
   )
 }
 
-export const PartnerOverviewFragmentContainer = createPaginationContainer(
-  PartnerOverview,
-  {
-    partner: graphql`
-      fragment PartnerOverview_partner on Partner
-      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
-        internalID
-        name
-        cities
-        profile {
-          bio
-        }
-        artists: artistsConnection(sort: SORTABLE_ID_ASC, first: $count, after: $cursor)
-          @connection(key: "Partner_artists") {
-          pageInfo {
-            hasNextPage
-            startCursor
-            endCursor
-          }
-          edges {
-            node {
-              id
-              ...ArtistListItem_artist
-              counts {
-                artworks
-              }
+export const PartnerOverviewFragmentContainer = createFragmentContainer(PartnerOverview, {
+  partner: graphql`
+    fragment PartnerOverview_partner on Partner {
+      internalID
+      name
+      cities
+      profile {
+        bio
+      }
+      allArtistsConnection(
+        displayOnPartnerProfile: true
+        hasNotRepresentedArtistWithPublishedArtworks: true
+      ) {
+        edges {
+          node {
+            id
+            ...ArtistListItem_artist
+            counts {
+              artworks
             }
           }
         }
-
-        ...PartnerLocationSection_partner
       }
-    `,
-  },
-  {
-    getConnectionFromProps(props) {
-      return props.partner && props.partner.artists
-    },
-    getVariables(props, { count, cursor }) {
-      return {
-        id: props.partner.internalID,
-        count,
-        cursor,
-      }
-    },
-    query: graphql`
-      query PartnerOverviewInfiniteScrollQuery($id: String!, $cursor: String, $count: Int!) {
-        partner(id: $id) {
-          ...PartnerOverview_partner @arguments(count: $count, cursor: $cursor)
-        }
-      }
-    `,
-  }
-)
+      ...PartnerLocationSection_partner
+    }
+  `,
+})
