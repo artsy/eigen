@@ -2,6 +2,7 @@ import { fireEvent } from "@testing-library/react-native"
 import { navigate, popToRoot, switchTab } from "app/navigation/navigate"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { useTracking } from "react-tracking"
 import { flushPromiseQueue } from "../../../../tests/flushPromiseQueue"
 import { FooterButtons } from "./HomeFeedModalCarouselContainer"
 
@@ -9,6 +10,8 @@ const mockDismissModal = jest.fn()
 const mockGoToNextPage = jest.fn()
 
 describe(FooterButtons, () => {
+  const trackEvent = useTracking().trackEvent
+
   describe("when the active step is not the last one", () => {
     it("the next button is rendered and navigates to the next page", () => {
       const component = renderWithWrappers(
@@ -40,6 +43,12 @@ describe(FooterButtons, () => {
           onSuccess: popToRoot,
         },
       })
+      expect(trackEvent).toHaveBeenCalledWith({
+        action: "addCollectedArtwork",
+        context_module: "myCollectionOnboarding",
+        context_owner_type: "myCollectionOnboarding",
+        platform: "mobile",
+      })
     })
 
     it("the Go button is rendered and navigates to the upload artwork screen", () => {
@@ -51,6 +60,11 @@ describe(FooterButtons, () => {
       fireEvent(goToMyCollectionButton, "onPress")
       expect(mockDismissModal).toHaveBeenCalled()
       expect(switchTab).toHaveBeenCalledWith("profile")
+      expect(trackEvent).toHaveBeenCalledWith({
+        action: "visitMyCollection",
+        context_screen_owner_type: "myCollectionOnboarding",
+        context_module: "myCollectionOnboarding",
+      })
     })
   })
 })

@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { navigate, popToRoot, switchTab } from "app/navigation/navigate"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { BackButton, Button, Flex, useSpace } from "palette"
@@ -5,6 +6,7 @@ import { useEffect, useRef, useState } from "react"
 import { LayoutAnimation, Modal, TouchableOpacity } from "react-native"
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
+import { useTracking } from "react-tracking"
 
 export interface FullScreenCarouselProps {
   initialPage?: number
@@ -135,6 +137,7 @@ export const FooterButtons = ({
   isLastStep?: boolean
   goToNextPage: () => void
 }) => {
+  const { trackEvent } = useTracking()
   const { bottom: bottomInset } = useSafeAreaInsets()
 
   // Animate how the last step buttons appear in the last step
@@ -162,6 +165,7 @@ export const FooterButtons = ({
                   onSuccess: popToRoot,
                 },
               })
+              trackEvent(tracks.addCollectedArtwork())
             })
           }}
         >
@@ -175,6 +179,7 @@ export const FooterButtons = ({
             requestAnimationFrame(() => {
               dismissModal()
             })
+            trackEvent(tracks.visitMyCollection())
           }}
         >
           Go to My Collection
@@ -196,4 +201,18 @@ export const FooterButtons = ({
       </Button>
     </Flex>
   )
+}
+
+const tracks = {
+  addCollectedArtwork: () => ({
+    action: ActionType.addCollectedArtwork,
+    context_module: ContextModule.myCollectionOnboarding,
+    context_owner_type: OwnerType.myCollectionOnboarding,
+    platform: "mobile",
+  }),
+  visitMyCollection: () => ({
+    action: ActionType.visitMyCollection,
+    context_screen_owner_type: OwnerType.myCollectionOnboarding,
+    context_module: ContextModule.myCollectionOnboarding,
+  }),
 }
