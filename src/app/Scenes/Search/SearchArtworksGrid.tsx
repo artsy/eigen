@@ -11,9 +11,8 @@ import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilter
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { Schema } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
-import { Box, quoteLeft, quoteRight, Text, useTheme } from "palette"
+import { Box, quoteLeft, quoteRight, Spacer, Text } from "palette"
 import React, { useEffect, useState } from "react"
-import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -23,13 +22,7 @@ export interface SearchArtworksGridProps {
   keyword: string
 }
 
-interface ArtworkSection {
-  key: string
-  content: JSX.Element
-}
-
 const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, keyword }) => {
-  const { space } = useTheme()
   const { trackEvent } = useTracking()
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
   const setFiltersCountAction = ArtworksFiltersStore.useStoreActions(
@@ -65,23 +58,6 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
     }
   }, [setFiltersCountAction])
 
-  const content: ArtworkSection[] = [
-    {
-      key: "ARTWORKS",
-      content: (
-        <InfiniteScrollArtworksGridContainer
-          shouldAddPadding
-          connection={viewer.artworks!}
-          loadMore={relay.loadMore}
-          hasMore={relay.hasMore}
-          updateRecentSearchesOnTap
-          contextScreenOwnerType={OwnerType.search}
-          contextScreenQuery={keyword}
-          contextScreen={Schema.PageNames.Search}
-        />
-      ),
-    },
-  ]
   return (
     <>
       <ArtworkFilterNavigator
@@ -108,12 +84,19 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
           </Box>
         </Box>
       ) : (
-        <FlatList<ArtworkSection>
-          data={content}
-          contentContainerStyle={{ paddingTop: space(2) }}
-          renderItem={({ item }) => item.content}
-          keyExtractor={({ key }) => key}
-        />
+        <>
+          <Spacer mt={2} />
+          <InfiniteScrollArtworksGridContainer
+            shouldAddPadding
+            connection={viewer.artworks!}
+            loadMore={relay.loadMore}
+            hasMore={relay.hasMore}
+            updateRecentSearchesOnTap
+            contextScreenOwnerType={OwnerType.search}
+            contextScreenQuery={keyword}
+            contextScreen={Schema.PageNames.Search}
+          />
+        </>
       )}
     </>
   )
