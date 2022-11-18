@@ -1,4 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
+import { MasonryFlashList } from "@shopify/flash-list"
 import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { Aggregations, FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
@@ -13,19 +14,31 @@ import {
   useArtworkFilters,
   useSelectedFiltersCount,
 } from "app/Components/ArtworkFilter/useArtworkFilters"
+import { Artwork } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
   Props as InfiniteScrollGridProps,
 } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { PAGE_SIZE } from "app/Components/constants"
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
-import { Box, Message, Spacer } from "palette"
+import { Box, Flex, Message, OpaqueImageView, Spacer, Text, useSpace } from "palette"
+import { Masonry } from "palette/elements/VirtualizedMasonry"
 import React, { useContext, useEffect, useState } from "react"
+import {
+  ActivityIndicator,
+  FlatList,
+  Platform,
+  SafeAreaView,
+  useWindowDimensions,
+} from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
+import { useScreenDimensions } from "shared/hooks"
 import { SavedSearchButtonV2 } from "./SavedSearchButtonV2"
 
 interface ArtworksGridProps extends InfiniteScrollGridProps {
@@ -193,19 +206,62 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
         </Box>
       )
     } else {
+      const space = useSpace()
+      const { width } = useScreenDimensions()
+      const artworkdata = extractNodes(artist.artworks)
+
+      const fetchNextPage = () => {
+        if (!relay.hasMore() || relay.isLoading()) {
+          return
+        }
+
+        relay.loadMore(PAGE_SIZE)
+      }
+
+      const { height } = useWindowDimensions()
+
       return (
-        <>
-          <Spacer mb={1} />
-          <InfiniteScrollArtworksGrid
-            connection={artist.artworks!}
-            loadMore={relay.loadMore}
-            hasMore={relay.hasMore}
-            {...props}
-            contextScreenOwnerType={OwnerType.artist}
-            contextScreenOwnerId={artist.internalID}
-            contextScreenOwnerSlug={artist.slug}
+        <Box flex={1} height={height}>
+          <MasonryFlashList
+            data={artworkdata}
+            numColumns={2}
+            estimatedItemSize={width / 2}
+            // contentContainerStyle={{ paddingTop: space(2), paddingHorizontal: space(2) }}
+            renderItem={({ item, index }) => (
+              <Flex backgroundColor="red">
+                <Text>{item.title}</Text>
+                <OpaqueImageView
+                  aspectRatio={item.image?.aspectRatio}
+                  width={width / 2 - space(2)}
+                  imageURL={item.image?.url}
+                />
+              </Flex>
+              // <Artwork
+              //   artwork={item}
+              //   updateRecentSearchesOnTap
+              //   itemIndex={index}
+              // />
+            )}
+            ListFooterComponent={() =>
+              relay.isLoading() ? (
+                <Flex
+                  alignItems="center"
+                  justifyContent="center"
+                  p="3"
+                  pb="9"
+                  style={{ opacity: relay.hasMore() ? 1 : 0 }}
+                >
+                  <ActivityIndicator color={Platform.OS === "android" ? "black" : undefined} />
+                </Flex>
+              ) : null
+            }
+            onEndReachedThreshold={0.2}
+            onEndReached={() => {
+              console.warn("i was called")
+              fetchNextPage()
+            }}
           />
-        </>
+        </Box>
       )
     }
   }
@@ -268,7 +324,18 @@ export default createPaginationContainer(
           edges {
             node {
               id
+              title
+              image {
+                url(version: "large")
+                aspectRatio
+              }
+              ...ArtworkGridItem_artwork
             }
+          }
+          pageInfo {
+            hasNextPage
+            startCursor
+            endCursor
           }
           counts {
             total

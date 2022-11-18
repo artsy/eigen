@@ -1,15 +1,18 @@
 import { OwnerType } from "@artsy/cohesion"
+import { MasonryFlashList, MasonryFlashListScrollEvent } from "@shopify/flash-list"
 import { NewWorksForYou_viewer$data } from "__generated__/NewWorksForYou_viewer.graphql"
 import { NewWorksForYouQuery } from "__generated__/NewWorksForYouQuery.graphql"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "app/relay/createEnvironment"
+import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { Box, SimpleMessage, Spacer } from "palette"
+import { Box, OpaqueImageView, SimpleMessage, Spacer, Text, useSpace } from "palette"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
+import { useScreenDimensions } from "shared/hooks"
 
 const SCREEN_TITLE = "New Works for You"
 const PAGE_SIZE = 100
@@ -20,13 +23,18 @@ interface NewWorksForYouProps {
 }
 
 const NewWorksForYou: React.FC<NewWorksForYouProps> = ({ viewer }) => {
+  const space = useSpace()
+  const test = extractNodes(viewer.artworks)
+  const { width } = useScreenDimensions()
+  console.warn({ test })
+
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.newWorksForYou })}
     >
       <PageWithSimpleHeader title={SCREEN_TITLE}>
-        <Box>
-          {!!viewer.artworks?.edges?.length ? (
+        {/* <Box> */}
+        {/* {!!viewer.artworks?.edges?.length ? (
             <InfiniteScrollArtworksGridContainer
               connection={viewer.artworks!}
               loadMore={() => null}
@@ -40,8 +48,30 @@ const NewWorksForYou: React.FC<NewWorksForYouProps> = ({ viewer }) => {
             />
           ) : (
             <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
-          )}
-        </Box>
+          )} */}
+        <MasonryFlashList
+          contentContainerStyle={{ paddingVertical: space(2) }}
+          numColumns={2}
+          data={test}
+          estimatedItemSize={width / 2}
+          renderItem={({ item }) => {
+            console.warn({ img: item.image?.url })
+            return (
+              <Box mx={1}>
+                <OpaqueImageView
+                  imageURL={item.image?.url}
+                  width={width / 2 - space("2")}
+                  aspectRatio={item.image?.aspectRatio}
+                />
+                <Text>{item.title}</Text>
+              </Box>
+            )
+          }}
+          ListEmptyComponent={
+            <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
+          }
+        />
+        {/* </Box> */}
       </PageWithSimpleHeader>
     </ProvideScreenTrackingWithCohesionSchema>
   )
@@ -62,9 +92,13 @@ export const NewWorksForYouFragmentContainer = createPaginationContainer(
           edges {
             node {
               id
+              title
+              image {
+                url(version: "large")
+                aspectRatio
+              }
             }
           }
-          ...InfiniteScrollArtworksGrid_connection
         }
       }
     `,

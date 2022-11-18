@@ -154,7 +154,7 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
             >
               {tabs.map(({ content }, index) => {
                 return (
-                  <View style={{ flex: 1, width }} key={index}>
+                  <View style={{ backgroundColor: "green", flex: 1, width }} key={index}>
                     <StickyTabPageFlatListContext.Provider
                       value={{
                         tabIsActive: Animated.eq(index, activeTabIndexNative),
