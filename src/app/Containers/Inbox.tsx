@@ -21,7 +21,7 @@ const INQUIRIES_TAB_INDEX = 1
 // Tabs
 interface TabWrapperProps extends ViewProps {
   tabLabel: string
-  isActiveTab: boolean
+  _tests_isActiveTab: boolean
 }
 
 const TabWrapper = (props: TabWrapperProps) => <View {...props} />
@@ -137,7 +137,7 @@ export class Inbox extends React.Component<Props, State> {
           key="bids"
           style={{ flexGrow: 1, justifyContent: "center" }}
           // this is for testing purposes
-          isActiveTab={initialPageNumber === BIDS_TAB_INDEX}
+          _tests_isActiveTab={initialPageNumber === BIDS_TAB_INDEX}
           testID="tabWrapper-bids"
         >
           <MyBidsContainer
@@ -150,7 +150,7 @@ export class Inbox extends React.Component<Props, State> {
           key="inquiries"
           style={{ flex: 1, justifyContent: "flex-start" }}
           // this is fr testing purposes
-          isActiveTab={initialPageNumber === INQUIRIES_TAB_INDEX}
+          _tests_isActiveTab={initialPageNumber === INQUIRIES_TAB_INDEX}
           testID="tabWrapper-inquiries"
         >
           <ConversationsContainer

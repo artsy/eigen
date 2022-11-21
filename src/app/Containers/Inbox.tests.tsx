@@ -67,8 +67,8 @@ describe("renders Inbox component", () => {
         }),
       })
       await flushPromiseQueue()
-      expect(screen.queryByTestId("tabWrapper-inquiries")).toHaveProp("isActiveTab", true)
-      expect(screen.queryByTestId("tabWrapper-bids")).toHaveProp("isActiveTab", false)
+      expect(screen.queryByTestId("tabWrapper-inquiries")).toHaveProp("_tests_isActiveTab", true)
+      expect(screen.queryByTestId("tabWrapper-bids")).toHaveProp("_tests_isActiveTab", false)
     })
 
     it("Active bids -> Bids tab is active", async () => {
@@ -81,8 +81,8 @@ describe("renders Inbox component", () => {
         }),
       })
       await flushPromiseQueue()
-      expect(screen.queryByTestId("tabWrapper-bids")).toHaveProp("isActiveTab", true)
-      expect(screen.queryByTestId("tabWrapper-inquiries")).toHaveProp("isActiveTab", false)
+      expect(screen.queryByTestId("tabWrapper-bids")).toHaveProp("_tests_isActiveTab", true)
+      expect(screen.queryByTestId("tabWrapper-inquiries")).toHaveProp("_tests_isActiveTab", false)
     })
   })
 })
