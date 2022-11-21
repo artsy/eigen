@@ -277,6 +277,13 @@ jest.mock("react-native-gesture-handler", () => {
   }
 })
 
+jest.mock("react-native-image-crop-picker", () => ({
+  openPicker: jest.fn(),
+  openCamera: jest.fn(),
+  cleanSingle: jest.fn(),
+  clean: jest.fn(),
+}))
+
 jest.mock("react-native-config", () => {
   const mockConfig = {
     ARTSY_DEV_API_CLIENT_SECRET: "artsy_api_client_secret", // pragma: allowlist secret
