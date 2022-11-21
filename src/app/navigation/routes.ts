@@ -263,7 +263,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     "staging.artsy.net": artsyDotNet,
     "artsy.net": artsyDotNet,
     "www.artsy.net": artsyDotNet,
-    "click.artsy.net": artsyDotNet,
     [parse(unsafe__getEnvironment().webURL).host ?? "artsy.net"]: artsyDotNet,
   }
 
