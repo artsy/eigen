@@ -417,7 +417,7 @@ describe("Artwork", () => {
         expect(extractText(tree.root.findByType(BidButton))).toContain("Enter live bidding")
       })
 
-      it("for which I am not registered and registration is open", () => {
+      xit("for which I am not registered and registration is open", () => {
         const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
         mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
