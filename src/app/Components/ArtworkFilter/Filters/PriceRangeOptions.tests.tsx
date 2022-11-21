@@ -258,42 +258,59 @@ describe("PriceRangeOptions", () => {
         expect(queryByText("Apply a recent Price Range")).toBeNull()
       })
 
-      it("should render the collector profile-sourced range", () => {
-        __globalStoreTestUtils__?.injectState({
-          userPrefs: {
-            priceRange: "0-5000",
-          },
-          recentPriceRanges: {
-            ranges: [],
-          },
+      describe("the collector profile-sourced price range", () => {
+        it("should NOT be rendered if it is NOT specified", () => {
+          __globalStoreTestUtils__?.injectState({
+            userPrefs: {
+              priceRange: "*-*",
+            },
+            recentPriceRanges: {
+              ranges: [],
+            },
+          })
+
+          const { queryAllByLabelText } = getTree()
+
+          expect(queryAllByLabelText("Price range pill")).toHaveLength(0)
         })
 
-        const { queryByText } = getTree()
+        it("should be rendered if it is specified", () => {
+          __globalStoreTestUtils__?.injectState({
+            userPrefs: {
+              priceRange: "0-5000",
+            },
+            recentPriceRanges: {
+              ranges: [],
+            },
+          })
 
-        expect(queryByText("$0–5,000")).toBeTruthy()
-      })
+          const { queryByText } = getTree()
 
-      it("should render 5 pills maximum (4 recently selected, 1 collector profile-sourced)", () => {
-        __globalStoreTestUtils__?.injectState({
-          userPrefs: {
-            priceRange: "0-5000",
-          },
-          recentPriceRanges: {
-            ranges: ["0-100", "100-200", "200-300", "300-400", "400-500"],
-          },
+          expect(queryByText("$0–5,000")).toBeTruthy()
         })
 
-        const { queryByText } = getTree()
+        it("should be rendered 5 pills maximum (4 recently selected, 1 collector profile-sourced)", () => {
+          __globalStoreTestUtils__?.injectState({
+            userPrefs: {
+              priceRange: "0-5000",
+            },
+            recentPriceRanges: {
+              ranges: ["0-100", "100-200", "200-300", "300-400", "400-500"],
+            },
+          })
 
-        expect(queryByText("$0–100")).toBeTruthy()
-        expect(queryByText("$100–200")).toBeTruthy()
-        expect(queryByText("$200–300")).toBeTruthy()
-        expect(queryByText("$300–400")).toBeTruthy()
+          const { queryByText } = getTree()
 
-        // collector profile-sourced
-        expect(queryByText("$0–5,000")).toBeTruthy()
+          expect(queryByText("$0–100")).toBeTruthy()
+          expect(queryByText("$100–200")).toBeTruthy()
+          expect(queryByText("$200–300")).toBeTruthy()
+          expect(queryByText("$300–400")).toBeTruthy()
 
-        expect(queryByText("$400–500")).toBeNull()
+          // collector profile-sourced
+          expect(queryByText("$0–5,000")).toBeTruthy()
+
+          expect(queryByText("$400–500")).toBeNull()
+        })
       })
 
       it("should correctly clear the recent price ranges when `Clear` button is pressed", () => {

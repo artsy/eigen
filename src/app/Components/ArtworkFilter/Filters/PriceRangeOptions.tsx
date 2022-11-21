@@ -316,6 +316,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
                         <Pill
                           key={recentPrice}
                           rounded
+                          accessibilityLabel="Price range pill"
                           selected={isSelectedPriceRange(recentPrice)}
                           onPress={() => handlePrevPriceRangePress(recentPrice)}
                         >
