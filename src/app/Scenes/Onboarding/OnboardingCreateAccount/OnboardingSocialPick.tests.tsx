@@ -6,6 +6,11 @@ import { OnboardingSocialPick } from "../OnboardingSocialPick"
 
 jest.mock("@react-navigation/native")
 
+jest.mock("react-native/Libraries/Interaction/InteractionManager", () => ({
+  ...jest.requireActual("react-native/Libraries/Interaction/InteractionManager"),
+  runAfterInteractions: jest.fn((callback) => callback()),
+}))
+
 describe("OnboardingSocialPick", () => {
   describe("login", () => {
     afterAll(() => {

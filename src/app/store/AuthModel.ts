@@ -125,7 +125,7 @@ type OAuthParams = EmailOAuthParams | FacebookOAuthParams | GoogleOAuthParams | 
 
 type OnboardingState = "none" | "incomplete" | "complete"
 
-interface AuthPromiseResolveType {
+export interface AuthPromiseResolveType {
   success: boolean
 }
 export interface AuthPromiseRejectType {
@@ -144,6 +144,9 @@ export interface AuthPromiseRejectType {
 
 export interface AuthModel {
   // State
+  sessionState: {
+    isLoading: boolean
+  }
   userID: string | null
   userAccessToken: string | null
   userAccessTokenExpiresIn: string | null
@@ -219,6 +222,9 @@ const clientSecret = __DEV__
   : Config.ARTSY_PROD_API_CLIENT_SECRET
 
 export const getAuthModel = (): AuthModel => ({
+  sessionState: {
+    isLoading: false,
+  },
   userID: null,
   userAccessToken: null,
   userAccessTokenExpiresIn: null,
@@ -729,11 +735,19 @@ export const getAuthModel = (): AuthModel => ({
       // because apple returns email only on the FIRST auth attempt, so we run sign up and sign in one by one
       let signInOrUp: "signIn" | "signUp" = "signUp"
 
-      const userInfo = await appleAuth.performRequest({
-        requestedOperation: appleAuth.Operation.LOGIN,
-        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-      })
+      const userInfo = await appleAuth
+        .performRequest({
+          requestedOperation: appleAuth.Operation.LOGIN,
+          requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+        })
+        .catch(() => {
+          // Use canceled apple auth
+          actions.setState({ sessionState: { isLoading: false } })
+        })
 
+      if (!userInfo) {
+        return
+      }
       const idToken = userInfo.identityToken
       if (!idToken) {
         reject(new AuthError("Failed to authenticate using apple sign in"))
@@ -831,8 +845,11 @@ export const getAuthModel = (): AuthModel => ({
   signOut: thunk(async () => {
     const signOutGoogle = async () => {
       try {
-        await GoogleSignin.revokeAccess()
-        await GoogleSignin.signOut()
+        const isSignedIn = await GoogleSignin.isSignedIn()
+        if (isSignedIn) {
+          await GoogleSignin.revokeAccess()
+          await GoogleSignin.signOut()
+        }
       } catch (error) {
         console.log("Failed to signout from Google")
         console.error(error)

@@ -1,10 +1,12 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { navigate, popToRoot, switchTab } from "app/navigation/navigate"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { BackButton, Button, Flex, useSpace } from "palette"
 import { useEffect, useRef, useState } from "react"
-import { LayoutAnimation, Modal, TouchableOpacity } from "react-native"
+import { BackHandler, LayoutAnimation, Modal, TouchableOpacity } from "react-native"
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
+import { useTracking } from "react-tracking"
 
 export interface FullScreenCarouselProps {
   initialPage?: number
@@ -18,6 +20,8 @@ export const HomeFeedModalCarouselContainer: React.FC<FullScreenCarouselProps> =
   initialPage = 0,
   toggleModal,
 }) => {
+  const { trackEvent } = useTracking()
+
   if (!Array.isArray(children) || children.length === 0) {
     throw new Error("FullScreenCarousel requires at least one child")
   }
@@ -39,30 +43,65 @@ export const HomeFeedModalCarouselContainer: React.FC<FullScreenCarouselProps> =
       }
     }
   }
+  const isLastStep = children.length - 1 === activeStep
+
+  useEffect(() => {
+    if (isLastStep) {
+      trackEvent(tracks.myCollectionOnboardingCompleted())
+    }
+    trackEvent(tracks.visitMyCollectionOnboardingSlide(activeStep))
+  }, [activeStep])
+
+  useEffect(() => {
+    if (!isVisible) {
+      setActiveStep(initialPage)
+    }
+  }, [isVisible])
+
+  const handleCloseModal = () => {
+    switchTab("profile")
+    toggleModal(false)
+    return null
+  }
+
+  useEffect(() => {
+    const subscription = BackHandler.addEventListener("hardwareBackPress", handleCloseModal)
+
+    return () => subscription.remove()
+  }, [])
 
   return (
     <Flex>
-      <Modal
-        visible={isVisible}
-        style={{ flex: 1 }}
-        animationType="slide"
-        onDismiss={() => {
-          setActiveStep(initialPage)
-          if (pagerViewRef?.current) {
-            pagerViewRef.current.setPage(initialPage)
-          }
-        }}
-      >
-        <SafeAreaView style={{ flex: 1 }}>
-          <Steps
-            numberOfSteps={Array.isArray(children) ? children.length : 0}
-            activeStep={activeStep}
-            goToStep={(step) => {
-              if (pagerViewRef.current) {
-                pagerViewRef.current.setPage(step)
-              }
-            }}
+      <Modal visible={isVisible} style={{ flex: 1 }} animationType="slide">
+        <Steps
+          numberOfSteps={Array.isArray(children) ? children.length : 0}
+          activeStep={activeStep}
+          goToStep={(step) => {
+            if (pagerViewRef.current) {
+              pagerViewRef.current.setPage(step)
+            }
+          }}
+        />
+        <Flex
+          alignItems="flex-end"
+          right={2}
+          width="100%"
+          style={{
+            // we are using top from styles to avoid computing distances wrongly
+            // @example: by setting top to 1 using the top prop, the distance
+            // from the top of the screen is going to be 10
+            top: topInset - 1,
+          }}
+          position="absolute"
+          zIndex={100}
+        >
+          <BackButton
+            onPress={handleCloseModal}
+            showX
+            hitSlop={{ top: 5, left: 5, right: 5, bottom: 5 }}
           />
+        </Flex>
+        <SafeAreaView style={{ flex: 1 }}>
           <PagerView
             style={{ flex: 1 }}
             initialPage={0}
@@ -72,12 +111,9 @@ export const HomeFeedModalCarouselContainer: React.FC<FullScreenCarouselProps> =
           >
             {children}
           </PagerView>
-          <Flex alignItems="flex-end" right={2} width="100%" top={topInset} position="absolute">
-            <BackButton onPress={() => toggleModal(false)} showX />
-          </Flex>
 
           <FooterButtons
-            isLastStep={children.length - 1 === activeStep}
+            isLastStep={isLastStep}
             goToNextPage={() => pagerViewRef.current?.setPage(activeStep + 1)}
             dismissModal={() => toggleModal(false)}
           />
@@ -96,8 +132,16 @@ const Steps = ({
   goToStep: (index: number) => void
   numberOfSteps: number
 }) => {
+  const { top: topInset } = useSafeAreaInsets()
   return (
-    <Flex flexDirection="row" justifyContent="space-between" pl={1} mt={13} pr={5} zIndex={100}>
+    <Flex
+      flexDirection="row"
+      justifyContent="space-between"
+      pl={1}
+      style={{ marginTop: topInset + 10 }}
+      pr={5}
+      zIndex={101}
+    >
       {Array.from({ length: numberOfSteps }).map((_, index) => (
         <Step key={index} isActive={activeStep === index} goToStep={() => goToStep(index)} />
       ))}
@@ -135,6 +179,7 @@ export const FooterButtons = ({
   isLastStep?: boolean
   goToNextPage: () => void
 }) => {
+  const { trackEvent } = useTracking()
   const { bottom: bottomInset } = useSafeAreaInsets()
 
   // Animate how the last step buttons appear in the last step
@@ -147,7 +192,7 @@ export const FooterButtons = ({
 
   if (isLastStep) {
     return (
-      <Flex position="absolute" bottom={bottomInset} px={2}>
+      <Flex position="absolute" bottom={bottomInset} px={2} mb={1}>
         <Button
           variant="fillDark"
           block
@@ -162,6 +207,7 @@ export const FooterButtons = ({
                   onSuccess: popToRoot,
                 },
               })
+              trackEvent(tracks.addCollectedArtwork())
             })
           }}
         >
@@ -175,6 +221,7 @@ export const FooterButtons = ({
             requestAnimationFrame(() => {
               dismissModal()
             })
+            trackEvent(tracks.visitMyCollection())
           }}
         >
           Go to My Collection
@@ -184,7 +231,7 @@ export const FooterButtons = ({
   }
 
   return (
-    <Flex position="absolute" bottom={bottomInset}>
+    <Flex position="absolute" style={{ bottom: bottomInset + 10 }}>
       <Button
         variant="text"
         block
@@ -196,4 +243,31 @@ export const FooterButtons = ({
       </Button>
     </Flex>
   )
+}
+
+const tracks = {
+  addCollectedArtwork: () => ({
+    action: ActionType.addCollectedArtwork,
+    context_module: ContextModule.myCollectionOnboarding,
+    context_owner_type: OwnerType.myCollectionOnboarding,
+    platform: "mobile",
+  }),
+  visitMyCollection: () => ({
+    action: ActionType.visitMyCollection,
+    context_screen_owner_type: OwnerType.myCollectionOnboarding,
+    context_module: ContextModule.myCollectionOnboarding,
+  }),
+  myCollectionOnboardingCompleted: () => ({
+    action: ActionType.myCollectionOnboardingCompleted,
+    context_owner_type: OwnerType.myCollectionOnboarding,
+    context_screen_owner_type: OwnerType.myCollectionOnboarding,
+    context_module: ContextModule.myCollectionOnboarding,
+    destination_screen_owner_type: OwnerType.myCollectionOnboarding,
+  }),
+  visitMyCollectionOnboardingSlide: (slideIndex: number) => ({
+    action: ActionType.visitMyCollectionOnboardingSlide,
+    context_screen_owner_type: OwnerType.myCollectionOnboarding,
+    context_module: ContextModule.myCollectionOnboarding,
+    index: slideIndex,
+  }),
 }

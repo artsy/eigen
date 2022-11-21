@@ -628,7 +628,7 @@ describe("AuthModel", () => {
       })
       await GlobalStore.actions.auth.getXAppToken()
       mockFetch.mockClear()
-      ;(appleAuth.performRequest as jest.Mock).mockReturnValue({
+      ;(appleAuth.performRequest as jest.Mock).mockResolvedValue({
         email: "appleEmail@mail.com",
         identityToken: "apple-id-token",
         user: "appleUID",
@@ -637,7 +637,7 @@ describe("AuthModel", () => {
 
     it("fetches profile info from apple and signs up", async () => {
       GlobalStore.actions.auth.signUp = jest.fn(() => ({ success: true })) as any
-      ;(appleAuth.performRequest as jest.Mock).mockReturnValue({
+      ;(appleAuth.performRequest as jest.Mock).mockResolvedValue({
         identityToken: "apple-id-token",
         user: "appleUID",
         email: "appleEmail@mail.com",
