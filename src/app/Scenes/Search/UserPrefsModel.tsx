@@ -130,7 +130,7 @@ const parsePriceRange = (priceRange: string) => {
   }
 
   if (min === -1) {
-    return [0, max].join("-")
+    return ["*", max].join("-")
   }
 
   return [min, max].join("-")
