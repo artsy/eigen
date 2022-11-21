@@ -1,10 +1,10 @@
 import { PopularSearches_query$key } from "__generated__/PopularSearches_query.graphql"
-import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Join, Spacer, Text } from "palette"
-import { TouchableOpacity } from "react-native"
+import { Spacer, Text } from "palette"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
+import { AutosuggestSearchResult } from "./components/AutosuggestSearchResult"
+import { SearchResultList } from "./components/SearchResultList"
 
 interface PopularSearchesProps {
   data: PopularSearches_query$key
@@ -14,26 +14,20 @@ export const PopularSearches: React.FC<PopularSearchesProps> = ({ data }) => {
   const result = useFragment(popularSearchesFragment, data)
   const nodes = extractNodes(result.curatedTrendingArtists)
 
-  const handlePress = (slug: string) => {
-    navigate(`/artist/${slug}`)
-  }
-
   return (
     <>
       <Text variant="sm">Popular Searches</Text>
       <Spacer mb={2} />
-      <Join separator={<Spacer mb={2} />}>
-        {nodes.map((node) => {
-          return (
-            <TouchableOpacity key={node.internalID} onPress={() => handlePress(node.slug)}>
-              <Text variant="xs">{node.name}</Text>
-              <Text variant="xs" color="black60">
-                Artist
-              </Text>
-            </TouchableOpacity>
-          )
-        })}
-      </Join>
+      <SearchResultList
+        results={nodes.map((node) => (
+          <AutosuggestSearchResult
+            key={node.internalID}
+            result={node as any}
+            showResultType
+            updateRecentSearchesOnTap={false}
+          />
+        ))}
+      />
     </>
   )
 }
@@ -43,9 +37,12 @@ const popularSearchesFragment = graphql`
     curatedTrendingArtists(first: 3) {
       edges {
         node {
+          __typename
           internalID
           slug
-          name
+          displayLabel
+          imageUrl
+          href
         }
       }
     }
