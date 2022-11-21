@@ -12,7 +12,10 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { DEFAULT_PRICE_RANGE as USER_PREFERRED_DEFAULT_PRICE_RANGE } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
-import { useRecentPriceRanges } from "app/store/RecentPriceRangesModel"
+import {
+  MAX_SHOWN_RECENT_PRICE_RANGES,
+  useRecentPriceRanges,
+} from "app/store/RecentPriceRangesModel"
 import { useExperimentFlag } from "app/utils/experiments/hooks"
 import { debounce, sortBy } from "lodash"
 import {
@@ -336,8 +339,10 @@ const usePriceRanges = () => {
   const userPreferredPriceRange = GlobalStore.useAppState((state) => state.userPrefs.priceRange)
 
   if (userPreferredPriceRange !== USER_PREFERRED_DEFAULT_PRICE_RANGE) {
-    // Remove duplicate price ranges
-    recentPriceRanges = recentPriceRanges.filter((priceRange) => {
+    const slicedRecentPriceRanges = recentPriceRanges.slice(0, MAX_SHOWN_RECENT_PRICE_RANGES - 1)
+
+    // Remove duplicate price range that matches collector profile-sourced price
+    recentPriceRanges = slicedRecentPriceRanges.filter((priceRange) => {
       return priceRange !== userPreferredPriceRange
     })
 
