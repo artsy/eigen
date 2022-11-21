@@ -217,6 +217,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     readyForRelease: false,
   },
+  ARIosSearchTabCuratedCollections: {
+    description: "Display curated collection on Search tab on ios",
+    showInAdminMenu: true,
+    readyForRelease: false,
+  },
   AREnforceLargeNewWorksRail: {
     description: "Enforce large new works rail",
     showInAdminMenu: true,
