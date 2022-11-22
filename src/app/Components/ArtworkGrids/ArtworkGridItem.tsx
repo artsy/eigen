@@ -56,7 +56,7 @@ export interface ArtworkProps {
   hidePartner?: boolean
   /** Hide sale info */
   hideSaleInfo?: boolean
-  hideSaveIcon?: boolean
+  showSaveIcon?: boolean
   height?: number
   /** Show the lot number (Lot 213) */
   showLotLabel?: boolean
@@ -85,7 +85,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   hideUrgencyTags = false,
   hidePartner = false,
   hideSaleInfo = false,
-  hideSaveIcon = false,
+  showSaveIcon = false,
   showLotLabel = false,
   urgencyTagTextStyle,
   lotLabelTextStyle,
@@ -204,6 +204,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const canShowAuctionProgressBar =
     !!artwork.sale?.extendedBiddingPeriodMinutes && !!artwork.sale?.extendedBiddingIntervalMinutes
+
+  const isBiddableLot = artwork?.sale?.isAuction && !artwork.sale.isClosed
 
   return (
     <Touchable onPress={handleTap} testID={`artworkGridItem-${artwork.title}`}>
@@ -325,13 +327,22 @@ export const Artwork: React.FC<ArtworkProps> = ({
               </Text>
             )}
           </Flex>
-          {!hideSaveIcon && !!eableArtworkGridSaveIcon && (
+          {!!showSaveIcon && !!eableArtworkGridSaveIcon && !isBiddableLot && (
             <Flex ml={0.2}>
-              <Touchable haptic onPress={handleArtworkSave}>
+              <Touchable haptic onPress={handleArtworkSave} testID="save-artwork-icon">
                 {artwork.isSaved ? (
-                  <HeartFillIcon height={SAVE_ICON_SIZE} width={SAVE_ICON_SIZE} fill="blue100" />
+                  <HeartFillIcon
+                    testID="filled-heart-icon"
+                    height={SAVE_ICON_SIZE}
+                    width={SAVE_ICON_SIZE}
+                    fill="blue100"
+                  />
                 ) : (
-                  <HeartIcon height={SAVE_ICON_SIZE} width={SAVE_ICON_SIZE} />
+                  <HeartIcon
+                    testID="empty-heart-icon"
+                    height={SAVE_ICON_SIZE}
+                    width={SAVE_ICON_SIZE}
+                  />
                 )}
               </Touchable>
             </Flex>

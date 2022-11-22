@@ -73,7 +73,7 @@ export const LotCloseInfo: React.FC<LotCloseInfoProps> = ({
   }
 
   return (
-    <Text variant="xs" color={labelColor}>
+    <Text variant="xs" color={labelColor} testID="lot-close-info">
       {lotCloseCopy}
     </Text>
   )

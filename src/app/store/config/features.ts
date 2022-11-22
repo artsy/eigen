@@ -225,7 +225,8 @@ export const features = defineFeatures({
   AREnableArtworkGridSaveIcon: {
     description: "Enable artwork grid save icon",
     showInAdminMenu: true,
-    readyForRelease: false,
+    readyForRelease: true,
+    echoFlagKey: "AREnableArtworkGridSaveIcon",
   },
 })
 

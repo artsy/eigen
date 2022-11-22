@@ -13,8 +13,6 @@ import ReactTestRenderer from "react-test-renderer"
 import { ProvideScreenDimensions } from "shared/hooks"
 import { ReactElement } from "simple-markdown"
 
-jest.unmock("react-relay")
-
 const Wrappers = ({ children }: { children: React.ReactNode }) =>
   combineProviders(
     [
@@ -34,13 +32,7 @@ const Wrappers = ({ children }: { children: React.ReactNode }) =>
  * @param component
  */
 const componentWithWrappers = (component: ReactElement) => {
-  return (
-    <Wrappers>
-      <RelayEnvironmentProvider environment={defaultEnvironment}>
-        {component}
-      </RelayEnvironmentProvider>
-    </Wrappers>
-  )
+  return <Wrappers>{component}</Wrappers>
 }
 
 /**
@@ -94,18 +86,9 @@ class PureWrapper extends Component {
  * by using @testing-library/react-native
  * @param component
  */
-export const renderWithWrappers = (
-  component: ReactElement,
-  environment: Environment = defaultEnvironment
-) => {
-  const jsx = (
-    <RelayEnvironmentProvider environment={environment}>
-      <Suspense fallback="Loading...">{component}</Suspense>
-    </RelayEnvironmentProvider>
-  )
-
+export const renderWithWrappers = (component: ReactElement) => {
   try {
-    return render(jsx, { wrapper: Wrappers })
+    return render(component, { wrapper: Wrappers })
   } catch (error: any) {
     if (error.message.includes("Element type is invalid")) {
       throw new Error(
@@ -120,4 +103,14 @@ export const renderWithWrappers = (
   }
 }
 
-export const renderWithHookWrappersTL = renderWithWrappers
+export const renderWithHookWrappersTL = (
+  component: ReactElement,
+  environment: Environment = defaultEnvironment
+) => {
+  const jsx = (
+    <RelayEnvironmentProvider environment={environment}>
+      <Suspense fallback="Loading...">{component}</Suspense>
+    </RelayEnvironmentProvider>
+  )
+  return renderWithWrappers(jsx)
+}
