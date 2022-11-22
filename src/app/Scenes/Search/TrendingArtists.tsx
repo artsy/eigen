@@ -4,7 +4,7 @@ import { ArtistCardContainer as ArtistCard } from "app/Components/Home/ArtistRai
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Box, Flex, Spacer, Spinner, Text } from "palette"
+import { Flex, Spacer, Spinner, Text } from "palette"
 import { usePaginationFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 
@@ -36,7 +36,7 @@ export const TrendingArtists: React.FC<TrendingArtistsProps> = ({ data }) => {
   }
 
   return (
-    <Box mx={-2}>
+    <>
       <Text variant="sm" mx={2}>
         Trending Artists
       </Text>
@@ -61,7 +61,7 @@ export const TrendingArtists: React.FC<TrendingArtistsProps> = ({ data }) => {
           </>
         }
       />
-    </Box>
+    </>
   )
 }
 

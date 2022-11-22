@@ -232,23 +232,33 @@ export const Search: React.FC = () => {
               </>
             ) : (
               <Scrollable>
-                <RecentSearches />
-                {!!displayCuratedCollections && (
-                  <>
-                    <Spacer mb={3} />
-                    <CuratedCollections collections={queryData} />
-                  </>
-                )}
-                <Spacer mb={3} />
+                <HorizontalPadding>
+                  <RecentSearches />
+
+                  {!!displayCuratedCollections && (
+                    <>
+                      <Spacer mb={3} />
+                      <CuratedCollections collections={queryData} />
+                    </>
+                  )}
+
+                  <Spacer mb={3} />
+                </HorizontalPadding>
+
                 <TrendingArtists data={queryData} />
+
                 <Spacer mb={3} />
-                {!!enableMaps ? (
-                  <Touchable onPress={() => navigate("/map")}>
-                    <CityGuideCTANew />
-                  </Touchable>
-                ) : (
-                  !isPad() && Platform.OS === "ios" && <CityGuideCTA />
-                )}
+
+                <HorizontalPadding>
+                  {!!enableMaps ? (
+                    <Touchable onPress={() => navigate("/map")}>
+                      <CityGuideCTANew />
+                    </Touchable>
+                  ) : (
+                    !isPad() && Platform.OS === "ios" && <CityGuideCTA />
+                  )}
+                </HorizontalPadding>
+
                 <Spacer mb="40px" />
               </Scrollable>
             )}
@@ -315,9 +325,12 @@ const Scrollable = styled(ScrollView).attrs(() => ({
   keyboardShouldPersistTaps: "handled",
 }))`
   flex: 1;
-  padding: 0 20px;
   padding-top: 20px;
 `
+
+const HorizontalPadding: React.FC = ({ children }) => {
+  return <Box px={2}>{children}</Box>
+}
 
 const tracks = {
   tappedPill: (contextModule: ContextModule, subject: string, query: string) => ({
