@@ -94,7 +94,21 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
     }
     GlobalStore.actions.auth.setState({ sessionState: { isLoading: false } })
     InteractionManager.runAfterInteractions(() => {
-      Alert.alert("Try again", error.message)
+      Alert.alert("Try again", error.message, [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            // @ts-expect-error
+            navigation.replace(mode === "login" ? "OnboardingCreateAccount" : "OnboardingLogin", {
+              withFadeAnimation: true,
+            })
+          },
+        },
+      ])
     })
   }
 
