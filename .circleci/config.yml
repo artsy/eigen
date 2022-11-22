@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   node: circleci/node@5.0.3
-  queue: eddiewebb/queue@1.7.0
+  queue: eddiewebb/queue@1.8.1
   horizon: artsy/release@0.0.1
 
 commands:
@@ -17,19 +17,9 @@ commands:
           only-on-branch: <<parameters.branch>> # restrict queueing to a specific branch (default *)
   install-node:
     steps:
-      - run:
-          name: Install Node 14 (Required for Yarn)
-          command: |
-            set +e
-            touch $BASH_ENV
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
-            echo "HOMEBREW_NO_AUTO_UPDATE=1" >> $BASH_ENV
-            echo 'export NVM_DIR="$HOME/.nvm"' >> $BASH_ENV
-            echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
-            echo 'nvm install v14.17.1' >> $BASH_ENV
-            echo 'nvm alias default v14.17.1' >> $BASH_ENV
-            sudo mkdir ~/.config
-            sudo chown -R $USER:$GROUP ~/.config
+      - node/install:
+          install-yarn: true
+          node-version: "16.18.0"
   generate-checksums:
     steps:
       - run:
@@ -39,14 +29,14 @@ commands:
             scripts/generate-manifest.js .manifests/node_modules '^yarn\.lock$' '^patches/' '^package\.json$'
             scripts/generate-manifest.js .manifests/js_transform '^\.manifests/node_modules' '^babel\.config\.js' '^relay\.config\.js' '^jest\.config\.js'
             scripts/generate-manifest.js .manifests/js_bundle '^\.manifests/js_transform' '^data/' '^index\.ios\.js' '^src/(?!.*(__mocks__|__fixtures__))'
-            scripts/generate-manifest.js .manifests/cocoapods '^Podfile' '^Gemfile'
-            scripts/generate-manifest.js .manifests/native_code '^\.manifests/node_modules' '^Podfile' '^Gemfile' '^dist/' '^Artsy' '^patches/react-native' '^\.env\.example'
+            scripts/generate-manifest.js .manifests/cocoapods '^ios/Podfile' '^Gemfile'
+            scripts/generate-manifest.js .manifests/native_code '^\.manifests/node_modules' '^ios/Podfile' '^Gemfile' '^dist/' '^ios/Artsy' '^patches/react-native' '^\.env\.example'
             scripts/generate-manifest.js .manifests/android_native '^\.manifests/node_modules' '^android/' '^patches/react-native' '^\.env\.example'
   setup-env-file:
     steps:
       - run:
           name: "Set up .env file"
-          command: touch .env.shared && scripts/setup-env-for-ci
+          command: touch .env.shared && touch .env && scripts/setup-env-for-ci
   setup-awscli:
     steps:
       - run:
@@ -56,12 +46,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v7-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
+            - v8-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
       - run:
           name: Install node modules
           command: ls node_modules || yarn install
       - save_cache:
-          key: v7-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
+          key: v8-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
           paths:
             - node_modules
   run-relay-compiler:
@@ -139,12 +129,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v10-pods-{{ checksum ".manifests/cocoapods" }}
+            - v11-pods-{{ checksum ".manifests/cocoapods" }}
       - run:
           name: Install Pods
           command: cd ios; bundle exec pod check --ignore-dev-pods || bundle exec pod install; cd ..;
       - save_cache:
-          key: v10-pods-{{ checksum ".manifests/cocoapods" }}
+          key: v11-pods-{{ checksum ".manifests/cocoapods" }}
           paths:
             - ios/Pods
             # this changes after pod install because we don't install dev tools on CI
@@ -228,7 +218,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 13.4.1
+      xcode: 14.0.1
 
     steps:
       - checkout
@@ -240,7 +230,7 @@ jobs:
   update-metaphysics:
     executor:
       name: node/default
-      tag: "14.17.1"
+      tag: "16.18.0"
     steps:
       - checkout
       - generate-checksums
@@ -254,7 +244,7 @@ jobs:
   check-pr:
     executor:
       name: node/default
-      tag: "14.17.1"
+      tag: "16.18.0"
     steps:
       - checkout
       - generate-checksums
@@ -272,7 +262,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 13.4.1
+      xcode: 14.0.1
 
     steps:
       - checkout
@@ -288,7 +278,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 13.4.1
+      xcode: 14.0.1
 
     steps:
       - checkout
@@ -301,7 +291,7 @@ jobs:
   check-metaphysics-freshness:
     executor:
       name: node/default
-      tag: "14.17.1"
+      tag: "16.18.0"
     steps:
       - checkout
       - run:
@@ -330,7 +320,7 @@ jobs:
   build-test-js:
     executor:
       name: node/default
-      tag: "14.17.1"
+      tag: "16.18.0"
     resource_class: large
     steps:
       - checkout
@@ -369,7 +359,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 13.4.1
+      xcode: 14.0.1
 
     steps:
       - attach_workspace:
@@ -466,7 +456,7 @@ jobs:
   update-changelog:
     executor:
       name: node/default
-      tag: "14.17.1"
+      tag: "16.18.0"
 
     steps:
       - checkout
@@ -481,7 +471,7 @@ jobs:
     environment:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
     macos:
-      xcode: 13.4.1
+      xcode: 14.0.1
     steps:
       - checkout
       - install-gems

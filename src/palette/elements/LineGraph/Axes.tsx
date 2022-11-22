@@ -92,7 +92,7 @@ export const YAxisLabels: React.FC<{
 }) => {
   const sorted = yValues.sort((a, b) => b - a)
   return (
-    <Flex {...style} onLayout={onLayout} height={height} justifyContent="space-between">
+    <Flex style={style} onLayout={onLayout} height={height} justifyContent="space-between">
       {sorted.map((value) => {
         const yLabel = labelFormat(
           value,
@@ -118,7 +118,7 @@ export const XAxisLabels: React.FC<{
   style?: ViewStyle
 }> = ({ xValues, formatter = (val) => val.toString(), style, width }) => {
   return (
-    <Flex {...style} flexDirection="row" justifyContent="space-between" width={width}>
+    <Flex style={style} flexDirection="row" justifyContent="space-between" width={width}>
       {xValues.map((value) => (
         <Text key={value} variant="xs" color="black60">
           {formatter(value)}

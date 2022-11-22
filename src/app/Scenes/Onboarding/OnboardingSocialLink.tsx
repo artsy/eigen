@@ -169,7 +169,7 @@ export const OnboardingSocialLink: React.FC<
         <Flex flex={1} backgroundColor="white100">
           <BackButton onPress={() => navigation.goBack()} />
           <Flex px={2} mt={insets.top + NAVBAR_HEIGHT + 20} mb={insets.bottom}>
-            <Text variant="lg">Link Accounts</Text>
+            <Text variant="lg-display">Link Accounts</Text>
             <Spacer mt={2} />
             <Text variant="xs">{screenText()}</Text>
 
@@ -238,7 +238,7 @@ export const OnboardingSocialLink: React.FC<
     <Flex justifyContent="center" flex={1} backgroundColor="white">
       <BackButton onPress={() => navigation.goBack()} />
       <Flex flex={1} px={2} mt={insets.top + NAVBAR_HEIGHT + 20} mb={insets.bottom}>
-        <Text variant="lg">Link Accounts</Text>
+        <Text variant="lg-display">Link Accounts</Text>
         <Spacer mt={2} />
         <Text variant="xs">{screenText()}</Text>
         <Spacer mt={3} />

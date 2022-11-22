@@ -4,7 +4,7 @@ import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/Stick
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { setVisualClueAsSeen, useFeatureFlag, useVisualClue } from "app/store/GlobalStore"
+import { setVisualClueAsSeen, useVisualClue } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   MY_COLLECTION_INSIGHTS_REFRESH_KEY,
@@ -19,7 +19,6 @@ import { MyCollectionArtworkUploadMessages } from "../ArtworkForm/MyCollectionAr
 import { ActivateMoreMarketInsightsBanner } from "./ActivateMoreMarketInsightsBanner"
 import { AuctionResultsForArtistsYouCollectRail } from "./AuctionResultsForArtistsYouCollectRail"
 import { CareerHighlightsRail } from "./CareerHighlightsRail"
-import { MarketSignalsSectionHeader } from "./MarketSignalsSectionHeader"
 import { MedianAuctionPriceRail } from "./MedianAuctionPriceRail"
 import { MyCollectionInsightsEmptyState } from "./MyCollectionInsightsEmptyState"
 import { MyCollectionInsightsOverview } from "./MyCollectionInsightsOverview"
@@ -27,9 +26,6 @@ import { MyCollectionInsightsIncompleteMessage } from "./MyCollectionMessages"
 
 export const MyCollectionInsights: React.FC<{}> = ({}) => {
   const { showVisualClue } = useVisualClue()
-  const enablePhase1Part1 = useFeatureFlag("AREnableMyCollectionInsightsPhase1Part1")
-  const enablePhase1Part2 = useFeatureFlag("AREnableMyCollectionInsightsPhase1Part2")
-  const enablePhase1Part3 = useFeatureFlag("AREnableMyCollectionInsightsPhase1Part3")
 
   const [areInsightsIncomplete, setAreInsightsIncomplete] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -106,12 +102,11 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
       <>
         <MyCollectionInsightsOverview myCollectionInfo={data.me?.myCollectionInfo!} />
 
-        {hasMarketSignals /* || average sale price data */ && enablePhase1Part1 && (
+        {hasMarketSignals /* || average sale price data */ && (
           <>
-            {!!enablePhase1Part3 && <CareerHighlightsRail me={data.me!} />}
-            <MarketSignalsSectionHeader />
+            <CareerHighlightsRail me={data.me!} />
             <AuctionResultsForArtistsYouCollectRail me={data.me!} />
-            {!!enablePhase1Part2 && <MedianAuctionPriceRail me={data.me} />}
+            <MedianAuctionPriceRail me={data.me} />
             {/* TODO: The banner should be visible always as long as the user has at least an artwork with insights */}
             <ActivateMoreMarketInsightsBanner />
           </>
@@ -122,9 +117,6 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
 
   return (
     <StickyTabPageScrollView
-      style={{
-        flex: 1,
-      }}
       refreshControl={<StickTabPageRefreshControl onRefresh={refresh} refreshing={isRefreshing} />}
       contentContainerStyle={{
         // Extend the container flex when there are no artworks for accurate vertical centering

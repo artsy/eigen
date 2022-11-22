@@ -31,8 +31,8 @@ export const ArtworkSubmittedScreen: React.FC<ArtworkSubmittedScreenNavigationPr
       <ScrollView>
         <Box>
           <ArtsyLogoHeader />
-          <Text variant="lg" mx="2">
-            Your Artwork has been submitted
+          <Text variant="lg-display" mx="2">
+            Your Artwork Has Been Submitted
           </Text>
           <Spacer mb={2} />
           <Text mx="2" color="black60">
@@ -55,7 +55,7 @@ export const ArtworkSubmittedScreen: React.FC<ArtworkSubmittedScreenNavigationPr
                 navigation.replace("SubmitArtworkScreen")
               }}
             >
-              Submit another Artwork
+              Submit Another Artwork
             </Button>
             <Spacer mb={2} />
             <Button

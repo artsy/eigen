@@ -38,7 +38,7 @@ export const MyCollectionArtworkArticles: React.FC<MyCollectionArtworkArticlesPr
       >
         <Flex flexDirection="row" alignItems="flex-start" mb={2}>
           <Flex flex={1} flexDirection="row">
-            <Text variant="md">{`Articles featuring ${props.artistNames || ""}`}</Text>
+            <Text variant="sm-display">{`Articles featuring ${props.artistNames || ""}`}</Text>
             {!!props?.totalCount && (
               <Text variant="xs" color="blue100" ml={0.5} mt={-0.5}>
                 {props?.totalCount}
@@ -59,6 +59,7 @@ export const MyCollectionArtworkArticles: React.FC<MyCollectionArtworkArticlesPr
         scrollsToTop={false}
         style={{ overflow: "visible" }}
         initialNumToRender={2}
+        showsHorizontalScrollIndicator={false}
         data={articles}
         keyExtractor={(item) => item.id}
         renderItem={({ item, index }) => (

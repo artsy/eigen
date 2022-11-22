@@ -40,7 +40,6 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
   const [isDisplayingLocalImages, setIsDisplayingLocalImages] = useState(false)
 
   const dimensions = useScreenDimensions()
-  const formattedTitleAndYear = [title, date].filter(Boolean).join(", ")
 
   const color = useColor()
 
@@ -99,11 +98,18 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
       {/* Image Meta */}
 
       <Flex px={2}>
-        <TouchableOpacity onPress={() => navigate(artwork?.artist?.href!)}>
-          <Text variant="lg">{artistNames ?? NO_ARTIST_NAMES_TEXT}</Text>
-        </TouchableOpacity>
-        <Text variant="lg" color="black60" italic>
-          {formattedTitleAndYear}
+        {artwork?.artist?.isPersonalArtist ? (
+          <Text variant="lg-display">{artistNames ?? NO_ARTIST_NAMES_TEXT}</Text>
+        ) : (
+          <TouchableOpacity onPress={() => navigate(artwork?.artist?.href!)}>
+            <Text variant="lg-display">{artistNames ?? NO_ARTIST_NAMES_TEXT}</Text>
+          </TouchableOpacity>
+        )}
+        <Text variant="lg-display" color="black60">
+          <Text variant="lg-display" color="black60" italic>
+            {title}
+          </Text>
+          {!!date && `, ${date}`}
         </Text>
       </Flex>
 
@@ -123,6 +129,7 @@ const myCollectionArtworkHeaderFragment = graphql`
   fragment MyCollectionArtworkHeader_artwork on Artwork {
     artist {
       href
+      isPersonalArtist
     }
     artistNames
     date

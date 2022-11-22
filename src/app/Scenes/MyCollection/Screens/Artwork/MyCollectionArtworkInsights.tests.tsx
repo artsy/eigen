@@ -71,27 +71,19 @@ describe("MyCollectionArtworkInsights", () => {
     expect(await getByText("Artist Market")).toBeTruthy()
     expect(await getByText("Based on the last 36 months of auction data")).toBeTruthy()
     expect(await getByText("Annual Value Sold")).toBeTruthy()
-    expect(await getByText("$1,000")).toBeTruthy()
+    expect(await getByText("$1k")).toBeTruthy()
     expect(await getByText("Annual Lots Sold")).toBeTruthy()
     expect(await getByText("100")).toBeTruthy()
     expect(await getByText("Sell-through Rate")).toBeTruthy()
     expect(await getByText("20%")).toBeTruthy()
-    expect(await getByText("Sale Price to Estimate")).toBeTruthy()
-    expect(await getByText("1x")).toBeTruthy()
+    expect(await getByText("Price Over Estimate")).toBeTruthy()
+    expect(await getByText("200%")).toBeTruthy()
     expect(await getByText("Liquidity")).toBeTruthy()
     expect(await getByText("High")).toBeTruthy()
-    expect(await getByText("One-Year Trend")).toBeTruthy()
-    expect(await getByText("Trending up")).toBeTruthy()
 
     // Artwork Comparable Works
 
     expect(await getByText("Comparable Works")).toBeTruthy()
-
-    // Why Sell or Submit To Sell
-
-    // TODO: fix this test
-    // jest won, i don't get how to mock the showSubmitToSell function ><'
-    expect(await getByText("Sell Art From Your Collection")).toBeTruthy()
   })
 
   describe("Conditional Display of RequestForPriceEstimateBanner", () => {
@@ -108,20 +100,6 @@ describe("MyCollectionArtworkInsights", () => {
         }),
       })
       expect(queryByTestId("request-price-estimate-button")).toBeNull()
-      expect(queryByTestId("request-price-estimate-banner-text")).toBeNull()
-    })
-
-    it("does not display RequestForPriceEstimateBanner when DemandIndex < 9", () => {
-      const { queryByTestId } = renderWithWrappers(<TestRenderer />)
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Query: () => ({
-          artwork: mockArtworkForP1Artist,
-          marketPriceInsights: mockMarketPriceInsights,
-        }),
-      })
-
-      expect(queryByTestId("request-price-estimate-button")).toBeNull()
-      expect(queryByTestId("request-price-estimate-banner-text")).toBeNull()
     })
 
     it("does not display when artwork is submitted", () => {
@@ -137,23 +115,56 @@ describe("MyCollectionArtworkInsights", () => {
       })
 
       expect(queryByTestId("request-price-estimate-button")).toBeNull()
-      expect(queryByTestId("request-price-estimate-banner-text")).toBeNull()
     })
+  })
 
-    it("displays RequestForPriceEstimateBanner when Artist is P1 AND DemandIndex >= 9", () => {
-      const { queryByTestId } = renderWithWrappers(<TestRenderer />)
+  describe("display of Submit for Sale section", () => {
+    it("renders Submit for Sale section if P1 artist", () => {
+      const { getByText } = renderWithWrappers(<TestRenderer />)
+
       resolveMostRecentRelayOperation(mockEnvironment, {
         Query: () => ({
-          artwork: mockArtworkForP1Artist,
-          marketPriceInsights: mockMarketPriceInsightsForHighDemandIndex,
+          artwork: {
+            artist: {
+              targetSupply: {
+                isP1: true,
+              },
+            },
+          },
+        }),
+      })
+      expect(getByText("Interested in Selling This Work?")).toBeTruthy()
+    })
+
+    it("does not render Submit for Sale section if not P1 artist", () => {
+      const { getByText } = renderWithWrappers(<TestRenderer />)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Query: () => ({
+          artwork: {
+            artist: {
+              targetSupply: {
+                isP1: false,
+              },
+            },
+          },
         }),
       })
 
-      expect(queryByTestId("request-price-estimate-button")).toBeDefined()
-      expect(queryByTestId("request-price-estimate-banner-text")).toBeDefined()
+      expect(() => getByText("Interested in Selling This Work?")).toThrow(
+        "Unable to find an element with text: Interested in Selling This Work?"
+      )
     })
   })
 })
+
+const mockMarketPriceInsights = {
+  sellThroughRate: 0.2,
+  annualLotsSold: 100,
+  annualValueSoldDisplayText: "$1k",
+  medianSaleOverEstimatePercentage: "200",
+  liquidityRankDisplayText: "High",
+}
 
 const mockArtwork = {
   internalID: "some-artwork-id",
@@ -196,16 +207,7 @@ const mockArtwork = {
       },
     ],
   },
-}
-
-const mockMarketPriceInsights = {
-  demandRank: 0.7,
-  demandTrend: 9,
-  sellThroughRate: 0.2,
-  annualLotsSold: 100,
-  annualValueSoldCents: 100000,
-  medianSaleToEstimateRatio: 1,
-  liquidityRank: 0.7,
+  marketPriceInsights: mockMarketPriceInsights,
 }
 
 const mockMarketPriceInsightsForHighDemandIndex = {

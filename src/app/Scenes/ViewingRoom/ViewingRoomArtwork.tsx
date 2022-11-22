@@ -96,7 +96,7 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
           )}
         </Flex>
         <Box mt="2" mx="2">
-          <Text variant="md" color="black100">
+          <Text variant="sm-display" color="black100">
             {selectedArtwork.artistNames}
           </Text>
           <Text variant="sm" color="black60">

@@ -348,7 +348,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   onConditionsOfSaleLinkPressed() {
-    navigate("/conditions-of-sale", { modal: true })
+    navigate("/conditions-of-sale")
   }
 
   refreshBidderInfo = () => {
@@ -452,10 +452,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     // GOTCHA: Don't copy this kind of feature flag code if you're working in a functional component. use `useFeatureFlag` instead
     const enablePriceTransparency = unsafe_getFeatureFlag("AROptionsPriceTransparency")
 
-    const cascadingEndTimeFeatureEnabled = unsafe_getFeatureFlag("AREnableCascadingEndTimerLotPage")
-
-    const websocketEnabled =
-      !!cascadingEndTimeFeatureEnabled && !!sale?.cascadingEndTimeIntervalMinutes
+    const websocketEnabled = !!sale?.cascadingEndTimeIntervalMinutes
 
     return (
       <AuctionWebsocketContextProvider
@@ -497,7 +494,13 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                   />
                 )}
 
-                <Text variant="md" mt={4} weight="medium" numberOfLines={1} ellipsizeMode="tail">
+                <Text
+                  variant="sm-display"
+                  mt={4}
+                  weight="medium"
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
                   {artwork!.artist_names}
                 </Text>
                 <Text variant="xs" weight="medium">

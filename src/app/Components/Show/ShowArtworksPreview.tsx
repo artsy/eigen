@@ -24,7 +24,7 @@ export class ShowArtworksPreview extends React.Component<Props> {
     return (
       <>
         {!!title && (
-          <Text variant="md" mb={2}>
+          <Text variant="sm-display" mb={2}>
             {title}
           </Text>
         )}

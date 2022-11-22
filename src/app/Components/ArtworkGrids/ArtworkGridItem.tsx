@@ -52,7 +52,6 @@ export interface ArtworkProps {
   /** Hide sale info */
   hideSaleInfo?: boolean
   height?: number
-  width?: number
   /** Show the lot number (Lot 213) */
   showLotLabel?: boolean
   /** styles for each field: allows for customization of each field */
@@ -72,7 +71,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   trackTap,
   itemIndex,
   height,
-  width,
   contextScreenOwnerId,
   contextScreenOwnerSlug,
   contextScreenOwnerType,
@@ -92,7 +90,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
 }) => {
   const itemRef = useRef<any>()
   const tracking = useTracking()
-  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewImageComponent")
+  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageComponent")
 
   let filterParams: any
 
@@ -162,18 +160,14 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const saleInfo = saleMessageOrBidInfo({ artwork })
 
-  const cascadingEndTimeFeatureEnabled = useFeatureFlag("AREnableCascadingEndTimerSalePageGrid")
-  const endsAt =
-    cascadingEndTimeFeatureEnabled && artwork.sale?.cascadingEndTimeIntervalMinutes
-      ? currentBiddingEndAt
-      : artwork.saleArtwork?.endAt || artwork.sale?.endAt
+  const endsAt = artwork.sale?.cascadingEndTimeIntervalMinutes
+    ? currentBiddingEndAt
+    : artwork.saleArtwork?.endAt || artwork.sale?.endAt
 
   const urgencyTag = getUrgencyTag(endsAt)
 
   const canShowAuctionProgressBar =
-    cascadingEndTimeFeatureEnabled &&
-    !!artwork.sale?.extendedBiddingPeriodMinutes &&
-    !!artwork.sale?.extendedBiddingIntervalMinutes
+    !!artwork.sale?.extendedBiddingPeriodMinutes && !!artwork.sale?.extendedBiddingIntervalMinutes
 
   return (
     <Touchable onPress={handleTap} testID={`artworkGridItem-${artwork.title}`}>
@@ -185,7 +179,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
                 aspectRatio={artwork.image?.aspectRatio ?? 1}
                 imageURL={artwork.image?.url}
                 height={height}
-                width={width}
               />
             ) : (
               <OpaqueImageView
@@ -233,7 +226,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
               <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
                 Lot {artwork.saleArtwork.lotLabel}
               </Text>
-              {!!artwork.sale?.cascadingEndTimeIntervalMinutes && !!cascadingEndTimeFeatureEnabled && (
+              {!!artwork.sale?.cascadingEndTimeIntervalMinutes && (
                 <DurationProvider startAt={endsAt ?? undefined}>
                   <LotCloseInfo
                     duration={null}

@@ -270,6 +270,54 @@ describe("AuthModel", () => {
       })
       expect(Keychain.setInternetCredentials).toHaveBeenCalled()
     })
+
+    describe("The recent price ranges", () => {
+      it("does not clear if user id has not changed after the previous session", async () => {
+        const clearAllPriceRangesSpy = jest.spyOn(
+          GlobalStore.actions.recentPriceRanges,
+          "clearAllPriceRanges"
+        )
+        __globalStoreTestUtils__?.injectState({
+          auth: {
+            userID: null,
+            previousSessionUserID: "my-user-id",
+          },
+        })
+        mockFetchJsonOnce({ access_token: "my-access-token" }, 201)
+        mockFetchJsonOnce({
+          id: "my-user-id",
+        })
+        await GlobalStore.actions.auth.signIn({
+          oauthProvider: "email",
+          email: "user@example.com",
+          password: "hunter2",
+        })
+        expect(clearAllPriceRangesSpy).not.toHaveBeenCalled()
+      })
+
+      it("clears if user id has changed after the previous session", async () => {
+        const clearAllPriceRangesSpy = jest.spyOn(
+          GlobalStore.actions.recentPriceRanges,
+          "clearAllPriceRanges"
+        )
+        __globalStoreTestUtils__?.injectState({
+          auth: {
+            userID: null,
+            previousSessionUserID: "prev-user-id",
+          },
+        })
+        mockFetchJsonOnce({ access_token: "my-access-token" }, 201)
+        mockFetchJsonOnce({
+          id: "my-user-id",
+        })
+        await GlobalStore.actions.auth.signIn({
+          oauthProvider: "email",
+          email: "user@example.com",
+          password: "hunter2",
+        })
+        expect(clearAllPriceRangesSpy).toHaveBeenCalled()
+      })
+    })
   })
 
   describe("signUp", () => {
@@ -386,14 +434,16 @@ describe("AuthModel", () => {
     })
 
     it("throws an error if fetching data from facebook fails", async () => {
+      const error: any = "fetching fb data error"
+
       ;(GraphRequest as jest.Mock).mockImplementation((_route, _config, callback) => {
-        callback({ message: "fetching fb data error" }, undefined)
+        callback(error, undefined)
       })
 
       const result = await GlobalStore.actions.auth
         .authFacebook({ signInOrUp: "signUp", agreedToReceiveEmails: true })
         .catch((e) => e)
-      const expectedError = new AuthError("fetching fb data error", "Error fetching facebook data")
+      const expectedError = new AuthError("Error fetching facebook data", error.toString())
       expect(result).toMatchObject(expectedError)
     })
 
@@ -578,7 +628,7 @@ describe("AuthModel", () => {
       })
       await GlobalStore.actions.auth.getXAppToken()
       mockFetch.mockClear()
-      ;(appleAuth.performRequest as jest.Mock).mockReturnValue({
+      ;(appleAuth.performRequest as jest.Mock).mockResolvedValue({
         email: "appleEmail@mail.com",
         identityToken: "apple-id-token",
         user: "appleUID",
@@ -587,7 +637,7 @@ describe("AuthModel", () => {
 
     it("fetches profile info from apple and signs up", async () => {
       GlobalStore.actions.auth.signUp = jest.fn(() => ({ success: true })) as any
-      ;(appleAuth.performRequest as jest.Mock).mockReturnValue({
+      ;(appleAuth.performRequest as jest.Mock).mockResolvedValue({
         identityToken: "apple-id-token",
         user: "appleUID",
         email: "appleEmail@mail.com",

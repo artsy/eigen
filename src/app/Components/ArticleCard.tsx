@@ -31,7 +31,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
 
   const { space } = useTheme()
   const { width } = useWindowDimensions()
-  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewImageComponent")
+  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageComponent")
 
   return (
     <Flex width={isFluid ? "100%" : WIDTH}>
@@ -63,7 +63,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
             ))}
           <Spacer mb={1} />
           <Text variant="xs">{article.vertical || " "}</Text>
-          <Text numberOfLines={3} ellipsizeMode="tail" variant="lg">
+          <Text numberOfLines={3} ellipsizeMode="tail" variant="lg-display">
             {article.thumbnailTitle}
           </Text>
           {!!article.author && (

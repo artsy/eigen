@@ -61,13 +61,14 @@ export const MyCollectionArtworkFormMain: React.FC<
               text: "Discard",
               style: "destructive",
               onPress: () => {
-                GlobalStore.actions.myCollection.artwork.resetFormButKeepArtist()
+                GlobalStore.actions.myCollection.artwork.resetForm()
                 navigation.dispatch(e.data.action)
               },
             },
           ]
         )
       } else {
+        GlobalStore.actions.myCollection.artwork.resetForm()
         navigation.dispatch(e.data.action)
       }
     })
@@ -141,6 +142,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 accessibilityLabel="Title"
                 value={formikValues.title}
               />
+              <CategoryPicker />
               <Input
                 title="Year"
                 keyboardType="number-pad"
@@ -151,7 +153,6 @@ export const MyCollectionArtworkFormMain: React.FC<
                 accessibilityLabel="Year"
                 value={formikValues.date}
               />
-              <CategoryPicker />
               <Input
                 title="Materials"
                 placeholder="Materials"

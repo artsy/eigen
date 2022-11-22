@@ -27,7 +27,10 @@ const login = async (): Promise<{ userId: string; accessToken: string }> => {
   )
   await page.click('aria/pushbutton[name="Log in"]')
   await page.waitForNavigation()
-  const { id: userId, accessToken } = await page.evaluate("sd.CURRENT_USER")
+  const { id: userId, accessToken } = (await page.evaluate("sd.CURRENT_USER")) as {
+    id: string
+    accessToken: string
+  }
   console.log("Logged in.")
   return { userId, accessToken }
 }

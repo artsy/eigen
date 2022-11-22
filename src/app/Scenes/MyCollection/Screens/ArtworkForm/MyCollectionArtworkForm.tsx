@@ -19,7 +19,7 @@ import {
   explicitlyClearedFields,
 } from "app/Scenes/MyCollection/utils/cleanArtworkPayload"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { addClue, GlobalStore, setVisualClueAsSeen, useFeatureFlag } from "app/store/GlobalStore"
+import { addClue, GlobalStore, setVisualClueAsSeen } from "app/store/GlobalStore"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { isEqual } from "lodash"
@@ -106,56 +106,58 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
 
   const { showActionSheetWithOptions } = useActionSheet()
 
-  const showMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
-
   const handleSubmit = async (values: ArtworkFormValues) => {
+    if (loading) {
+      return
+    }
+
     setLoading(true)
+
+    updateMyUserProfile({
+      currencyPreference: preferredCurrency,
+      lengthUnitPreference: preferredMetric.toUpperCase() as LengthUnitPreference,
+    })
 
     try {
       await Promise.all([
         // This is to satisfy showing the insights modal for 2500 ms
-        __TEST__ || !showMyCollectionInsights
-          ? undefined
-          : new Promise((resolve) => setTimeout(resolve, 2500)),
-        updateMyUserProfile({
-          currencyPreference: preferredCurrency,
-          lengthUnitPreference: preferredMetric.toUpperCase() as LengthUnitPreference,
-        }),
+        __TEST__ ? undefined : new Promise((resolve) => setTimeout(resolve, 2500)),
+        ,
         updateArtwork(values, dirtyFormCheckValues, props).then((hasMarketPriceInsights) => {
           setSavingArtworkModalDisplayText(
             hasMarketPriceInsights ? "Generating market data" : "Saving artwork"
           )
         }),
       ])
+    } catch (e) {
+      __DEV__ ? console.error(e) : captureException(e)
 
+      Alert.alert("Artwork could not be saved.", typeof e === "string" ? e : undefined)
+
+      setLoading(false)
+
+      return
+    }
+
+    try {
       // Adding tracking after a successfully adding an artwork
       if (props.mode === "add") {
         trackEvent(tracks.saveCollectedArtwork())
       }
 
-      if (showMyCollectionInsights) {
-        setIsArtworkSaved(true)
-        // simulate requesting market data
-        await new Promise((resolve) => setTimeout(resolve, 2000))
-      }
+      setIsArtworkSaved(true)
+      // simulate requesting market data
+      await new Promise((resolve) => setTimeout(resolve, 2000))
+
       refreshMyCollection()
       refreshMyCollectionInsights({})
-      setLoading(false)
-      // Go back to my collection screen after the loading modal is hidden
-      InteractionManager.runAfterInteractions(() => {
-        props.onSuccess?.()
-      })
     } catch (e) {
-      if (__DEV__) {
-        console.error(e)
-      } else {
-        captureException(e)
-      }
-      Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
-      setLoading(false)
-    } finally {
-      setIsArtworkSaved(false)
+      __DEV__ ? console.error(e) : captureException(e)
     }
+
+    InteractionManager.runAfterInteractions(() => {
+      props.onSuccess?.()
+    })
   }
 
   useEffect(() => {
@@ -219,7 +221,12 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       }
     }
 
-    GlobalStore.actions.myCollection.artwork.resetFormButKeepArtist()
+    if (props.mode === "edit") {
+      // Reset the form with the initial values from the artwork
+      GlobalStore.actions.myCollection.artwork.updateFormValues(dirtyFormCheckValues)
+    } else {
+      GlobalStore.actions.myCollection.artwork.resetFormButKeepArtist()
+    }
   }
 
   const onHeaderBackButtonPress = () => {
@@ -285,7 +292,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
           />
           <Stack.Screen name="AddPhotos" component={MyCollectionAddPhotos} />
         </Stack.Navigator>
-        {showMyCollectionInsights && props.mode === "add" ? (
+        {props.mode === "add" ? (
           <SavingArtworkModal
             testID="saving-artwork-modal"
             isVisible={loading}

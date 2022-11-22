@@ -1,180 +1,182 @@
-import { ArtworkDetails_artwork$data } from "__generated__/ArtworkDetails_artwork.graphql"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { fireEvent, screen } from "@testing-library/react-native"
+import { ArtworkDetails_artwork_TestQuery } from "__generated__/ArtworkDetails_artwork_TestQuery.graphql"
+import { navigate } from "app/navigation/navigate"
+import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { graphql, useLazyLoadQuery } from "react-relay"
+import { createMockEnvironment } from "relay-test-utils"
 import { ArtworkDetails } from "./ArtworkDetails"
-import { RequestConditionReportQueryRenderer } from "./RequestConditionReport"
 
 jest.unmock("react-relay")
 
-describe("Artwork Details", () => {
-  it("renders the data if available", () => {
-    const testArtwork: ArtworkDetails_artwork$data = {
-      " $fragmentType": "ArtworkDetails_artwork",
-      mediumType: null,
-      category: "Oil on canvas",
-      conditionDescription: null,
-      signatureInfo: { label: "Signature", details: "Signed by artist" },
-      certificateOfAuthenticity: { label: "Certificate of Authenticity", details: "Not included" },
-      framed: { label: "Framed", details: "Included" },
-      series: null,
-      publisher: null,
-      manufacturer: null,
-      image_rights: null,
-      slug: "some-slug",
-      canRequestLotConditionsReport: false,
-    }
+describe("ArtworkDetails", () => {
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
-    const artworkDetailsInfo = {
-      artwork: testArtwork,
-    }
-
-    const { queryByText } = renderWithWrappers(
-      <ArtworkDetails artwork={artworkDetailsInfo.artwork} />
+  beforeEach(() => {
+    mockEnvironment = createMockEnvironment()
+  })
+  const TestRenderer = () => {
+    const data = useLazyLoadQuery<ArtworkDetails_artwork_TestQuery>(
+      graphql`
+        query ArtworkDetails_artwork_TestQuery @relay_test_operation {
+          artwork(id: "four-pence-coins-david-lynch") {
+            ...ArtworkDetails_artwork
+          }
+        }
+      `,
+      {}
     )
 
-    expect(queryByText("Artwork details")).toBeTruthy()
-    expect(queryByText("Signature")).toBeTruthy()
-    expect(queryByText("Signed by artist")).toBeTruthy()
-    expect(queryByText("Medium")).toBeTruthy()
-    expect(queryByText("Oil on canvas")).toBeTruthy()
-    expect(queryByText("Certificate of Authenticity")).toBeTruthy()
-    expect(queryByText("Not included")).toBeTruthy()
-    expect(queryByText("Frame")).toBeTruthy()
-    expect(queryByText("Included")).toBeTruthy()
+    return <ArtworkDetails artwork={data.artwork!} />
+  }
+
+  it("renders all data correctly", async () => {
+    renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {})
+    await flushPromiseQueue()
+
+    expect(screen.queryByText("Medium")).toBeTruthy()
+    expect(screen.queryByText("Materials")).toBeTruthy()
+    expect(screen.queryByText("Size")).toBeTruthy()
+    expect(screen.queryByText("Rarity")).toBeTruthy()
+    expect(screen.queryByText("Edition")).toBeTruthy()
+    expect(screen.queryByText("Certificate of Authenticity")).toBeTruthy()
+    expect(screen.queryByText("Condition")).toBeTruthy()
+    expect(screen.queryByText("Frame")).toBeTruthy()
+    expect(screen.queryByText("Signature")).toBeTruthy()
+    expect(screen.queryByText("Series")).toBeTruthy()
+    expect(screen.queryByText("Publisher")).toBeTruthy()
+    expect(screen.queryByText("Manufacturer")).toBeTruthy()
+    expect(screen.queryByText("Image rights")).toBeTruthy()
   })
 
-  it("hides certificate of authenticity, framed, and signature fields if null", () => {
-    const testArtwork: ArtworkDetails_artwork$data = {
-      " $fragmentType": "ArtworkDetails_artwork",
-      mediumType: null,
-      category: "Oil on canvas",
-      conditionDescription: null,
-      signatureInfo: null,
-      certificateOfAuthenticity: null,
-      framed: null,
-      series: null,
-      publisher: null,
-      manufacturer: null,
-      image_rights: "Scala / Art Resource, NY / Picasso, Pablo (1881-1973) © ARS, NY",
-      slug: "some-slug",
-      canRequestLotConditionsReport: false,
-    }
+  it("doesn't render fields that are null or empty string", async () => {
+    renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-    const artworkDetailsInfo = {
-      artwork: testArtwork,
-    }
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => ({
+        framed: {
+          details: "",
+        },
+        publisher: null,
+        manufacturer: null,
+      }),
+    })
+    await flushPromiseQueue()
 
-    const { queryByText } = renderWithWrappers(
-      <ArtworkDetails artwork={artworkDetailsInfo.artwork} />
-    )
+    expect(screen.queryByText("Medium")).toBeTruthy()
+    expect(screen.queryByText("Materials")).toBeTruthy()
+    expect(screen.queryByText("Size")).toBeTruthy()
+    expect(screen.queryByText("Rarity")).toBeTruthy()
+    expect(screen.queryByText("Edition")).toBeTruthy()
+    expect(screen.queryByText("Certificate of Authenticity")).toBeTruthy()
+    expect(screen.queryByText("Condition")).toBeTruthy()
 
-    expect(queryByText("Certificate of Authenticity")).toBeNull()
-    expect(queryByText("Frame")).toBeNull()
-    expect(queryByText("Signature")).toBeNull()
+    expect(screen.queryByText("Signature")).toBeTruthy()
+    expect(screen.queryByText("Series")).toBeTruthy()
+
+    expect(screen.queryByText("Image rights")).toBeTruthy()
+
+    expect(screen.queryByText("Frame")).toBeNull()
+    expect(screen.queryByText("Publisher")).toBeNull()
+    expect(screen.queryByText("Manufacturer")).toBeNull()
   })
 
-  it("shows condition description if present and lot condition report disabled", () => {
-    const testArtwork: ArtworkDetails_artwork$data = {
-      " $fragmentType": "ArtworkDetails_artwork",
-      mediumType: null,
-      category: "Oil on canvas",
-      conditionDescription: {
-        label: "some label",
-        details: "Amazing condition",
-      },
-      signatureInfo: null,
-      certificateOfAuthenticity: null,
-      framed: null,
-      series: null,
-      publisher: null,
-      manufacturer: null,
-      image_rights: "Scala / Art Resource, NY / Picasso, Pablo (1881-1973) © ARS, NY",
-      slug: "some-slug",
-      canRequestLotConditionsReport: false,
-    }
+  describe("Edition", () => {
+    it("should be rendered edition sets 0/1", async () => {
+      renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-    const artworkDetailsInfo = {
-      artwork: testArtwork,
-    }
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => ({
+          editionOf: "Edition Set",
+          editionSets: [
+            {
+              internalID: "edition-set",
+              editionOf: "Edition Set",
+              saleMessage: "$1000",
+            },
+          ],
+        }),
+      })
+      await flushPromiseQueue()
 
-    const { queryByText } = renderWithWrappers(
-      <ArtworkDetails artwork={artworkDetailsInfo.artwork} />
-    )
-    expect(queryByText("Condition")).toBeTruthy()
-    expect(queryByText("Amazing condition")).toBeTruthy()
+      expect(screen.queryByText("Edition Set")).toBeTruthy()
+    })
+
+    it("should NOT be rendered edition sets 2 or more", async () => {
+      renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => ({
+          editionOf: null,
+          editionSets: [
+            {
+              internalID: "edition-set-one",
+              editionOf: "Edition Set One",
+              saleMessage: "$1000",
+            },
+            {
+              internalID: "edition-set-two",
+              editionOf: "Edition Set Two",
+              saleMessage: "$2000",
+            },
+          ],
+        }),
+      })
+      await flushPromiseQueue()
+
+      expect(screen.queryByText("Edition")).toBeNull()
+      expect(screen.queryByText("Edition Set One")).toBeNull()
+      expect(screen.queryByText("Edition Set Two")).toBeNull()
+    })
   })
 
-  it("shows request condition report if lot condition report enabled and feature flag is enabled", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsLotConditionReport: true })
+  it("navigates to medium info modal when tapped", async () => {
+    renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-    const testArtwork: ArtworkDetails_artwork$data = {
-      " $fragmentType": "ArtworkDetails_artwork",
-      mediumType: null,
-      category: "Oil on canvas",
-      conditionDescription: {
-        label: "some label",
-        details: "Amazing condition",
-      },
-      signatureInfo: null,
-      certificateOfAuthenticity: null,
-      framed: null,
-      series: null,
-      publisher: null,
-      manufacturer: null,
-      image_rights: "Scala / Art Resource, NY / Picasso, Pablo (1881-1973) © ARS, NY",
-      slug: "some-slug",
-      canRequestLotConditionsReport: true,
-    }
+    resolveMostRecentRelayOperation(mockEnvironment, {})
+    await flushPromiseQueue()
 
-    const artworkDetailsInfo = {
-      artwork: testArtwork,
-    }
+    fireEvent.press(screen.getByText("name-1"))
 
-    const { queryByText, UNSAFE_queryByType } = renderWithWrappers(
-      <ArtworkDetails artwork={artworkDetailsInfo.artwork} />
-    )
-
-    expect(queryByText("Condition")).toBeTruthy()
-    expect(queryByText("Amazing condition")).toBeNull()
-
-    const requestReportQueryRenderer = UNSAFE_queryByType(RequestConditionReportQueryRenderer)
-    expect(requestReportQueryRenderer).toBeTruthy()
+    expect(navigate).toHaveBeenCalledWith("/artwork/slug-1/medium", { modal: true })
   })
 
-  it("does not show request condition report if lot condition report enabled and feature flag is disabled", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsLotConditionReport: false })
+  it("navigates to artwork classifications modal when tapped", async () => {
+    renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-    const testArtwork: ArtworkDetails_artwork$data = {
-      " $fragmentType": "ArtworkDetails_artwork",
-      mediumType: null,
-      category: "Oil on canvas",
-      conditionDescription: {
-        label: "some label",
-        details: "Amazing condition",
-      },
-      signatureInfo: null,
-      certificateOfAuthenticity: null,
-      framed: null,
-      series: null,
-      publisher: null,
-      manufacturer: null,
-      image_rights: "Scala / Art Resource, NY / Picasso, Pablo (1881-1973) © ARS, NY",
-      slug: "some-slug",
-      canRequestLotConditionsReport: true,
-    }
+    resolveMostRecentRelayOperation(mockEnvironment, {})
+    await flushPromiseQueue()
 
-    const artworkDetailsInfo = {
-      artwork: testArtwork,
-    }
+    fireEvent.press(screen.getByText("attributionClass.name-1"))
 
-    const { queryByText, UNSAFE_queryByType } = renderWithWrappers(
-      <ArtworkDetails artwork={artworkDetailsInfo.artwork} />
-    )
+    expect(navigate).toHaveBeenCalledWith("/artwork-classifications", { modal: true })
+  })
 
-    expect(queryByText("Condition")).toBeTruthy()
-    expect(queryByText("Amazing condition")).toBeTruthy()
+  it("navigates to artwork certificate of authenticity modal when tapped", async () => {
+    renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-    const requestReportQueryRenderer = UNSAFE_queryByType(RequestConditionReportQueryRenderer)
-    expect(requestReportQueryRenderer).toBeNull()
+    resolveMostRecentRelayOperation(mockEnvironment, {})
+    await flushPromiseQueue()
+
+    fireEvent.press(screen.getByText("details-1"))
+
+    expect(navigate).toHaveBeenCalledWith("/artwork-certificate-of-authenticity", { modal: true })
+  })
+
+  it("should not render condition report button when canRequestLotConditionsReport false", async () => {
+    renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => ({
+        canRequestLotConditionsReport: false,
+      }),
+    })
+
+    await flushPromiseQueue()
+
+    expect(screen.queryByText("conditionDescription.details-1")).toBeTruthy()
   })
 })

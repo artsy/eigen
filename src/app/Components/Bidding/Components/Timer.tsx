@@ -161,30 +161,28 @@ export const Countdown: React.FC<CountdownProps> = ({
   extendedBiddingPeriodMinutes,
   biddingEndAt,
 }) => {
-  const cascadingEndTimeFeatureEnabled = useFeatureFlag("AREnableCascadingEndTimerLotPage")
+  const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
 
   return (
     <Flex alignItems="center" accessibilityLabel="Countdown">
-      {cascadingEndTimeFeatureEnabled && cascadingEndTimeIntervalMinutes ? (
+      {cascadingEndTimeIntervalMinutes ? (
         <ModernTicker duration={duration} hasStarted={hasStarted} isExtended={hasBeenExtended} />
       ) : (
-        <SimpleTicker duration={duration} separator="  " variant="md" weight="medium" />
+        <SimpleTicker duration={duration} separator="  " variant="sm-display" weight="medium" />
       )}
-      {!!extendedBiddingPeriodMinutes &&
-        !!extendedBiddingIntervalMinutes &&
-        !!cascadingEndTimeFeatureEnabled && (
-          <ArtworkAuctionProgressBar
-            startAt={startAt}
-            extendedBiddingPeriodMinutes={extendedBiddingPeriodMinutes}
-            extendedBiddingIntervalMinutes={extendedBiddingIntervalMinutes}
-            biddingEndAt={biddingEndAt}
-            hasBeenExtended={!!hasBeenExtended}
-          />
-        )}
+      {!!extendedBiddingPeriodMinutes && !!extendedBiddingIntervalMinutes && (
+        <ArtworkAuctionProgressBar
+          startAt={startAt}
+          extendedBiddingPeriodMinutes={extendedBiddingPeriodMinutes}
+          extendedBiddingIntervalMinutes={extendedBiddingIntervalMinutes}
+          biddingEndAt={biddingEndAt}
+          hasBeenExtended={!!hasBeenExtended}
+        />
+      )}
       <Text variant="xs" weight="medium" color="black60">
         {label}
       </Text>
-      {!!extendedBiddingPeriodMinutes && !!cascadingEndTimeFeatureEnabled && (
+      {!!(extendedBiddingPeriodMinutes && !enableArtworkRedesign) && (
         <>
           <Spacer mt={1} />
           <Text variant="xs" color="black60" textAlign="center">

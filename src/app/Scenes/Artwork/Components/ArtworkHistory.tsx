@@ -15,7 +15,7 @@ export const ArtworkHistory: React.FC<ArtworkHistoryProps> = ({ artwork }) => {
   const sections = [
     { title: "Provenance", value: provenance, contextModule: Schema.ContextModules.Provenance },
     {
-      title: "Exhibition History",
+      title: "Exhibition history",
       value: exhibitionHistory,
       contextModule: Schema.ContextModules.ExhibitionHistory,
     },
@@ -29,14 +29,16 @@ export const ArtworkHistory: React.FC<ArtworkHistoryProps> = ({ artwork }) => {
     <Join separator={<Spacer pb={3} />}>
       {displaySections.map(({ title, value, contextModule }, index) => (
         <Box key={index}>
-          <Text variant="md" pb={2}>
+          <Text variant="md" pb={1}>
             {title}
           </Text>
           <ReadMore
             content={value || ""}
             contextModule={contextModule}
             maxChars={textLimit}
-            textStyle="sans"
+            textStyle="new"
+            textVariant="sm"
+            linkTextVariant="sm-display"
             trackingFlow={Schema.Flow.ArtworkDetails}
           />
         </Box>

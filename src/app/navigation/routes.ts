@@ -120,6 +120,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/search", "Search"),
     addRoute("/inbox", "Inbox"),
     addRoute("/my-profile", "MyProfile"),
+    addRoute("/my-profile/edit", "MyProfileEditForm"),
     addRoute("/activity", "Activity"),
     addRoute("/articles", "Articles"),
     addWebViewRoute("/articles/:articleID"),
@@ -142,7 +143,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/auction-registration/:saleID", "AuctionRegistration"),
     addRoute("/auction/:saleID", "Auction"),
     addRoute("/auction/:saleID/info", "AuctionInfo"),
-    addRoute("/auction-faq", "AuctionFAQ"),
+    addWebViewRoute("/auction-faq"),
     addRoute("/auction/:saleID/bid/:artworkID", "AuctionBidArtwork"),
     addRoute("/auction/:saleID/buyers-premium", "AuctionBuyersPremium"),
     addRoute("/gene/:geneID", "Gene"),
@@ -169,6 +170,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/admin", "Admin"),
     addRoute("/admin2", "Admin2"),
     addRoute("/about", "About"),
+    addRoute("/unlisted-artworks-faq", "UnlistedArtworksFAQScreen"),
     addRoute("/favorites", "Favorites"),
     addRoute("/my-account", "MyAccount"),
     addRoute("/my-account/edit-name", "MyAccountEditName"),
@@ -192,12 +194,13 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/my-account", "MyAccount"),
 
     addRoute("/my-collection", "MyCollection"),
-    addRoute("/my-collection/artwork/:artworkSlug", "MyCollectionArtwork"),
+    addRoute("/my-collection/artwork/:artworkId", "MyCollectionArtwork"),
     addRoute("/my-collection/artworks/new", "AddOrEditMyCollectionArtwork"),
     addRoute("/my-collection/artworks/:artworkID/edit", "AddOrEditMyCollectionArtwork"),
+    addRoute("/my-collection/artwork/:artworkID/price-estimate", "RequestForPriceEstimateScreen"),
     addRoute(
-      "/my-collection/artwork/:artworkID/request-for-price-estimate",
-      "RequestForPriceEstimateScreen"
+      "/my-collection/artwork/:artworkID/price-estimate/success",
+      "RequestForPriceEstimateConfirmationScreen"
     ),
 
     // TODO: Follow-up about below route names
@@ -207,11 +210,19 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
 
     addWebViewRoute("/conditions-of-sale"),
     addRoute("/artwork-classifications", "ArtworkAttributionClassFAQ"),
+    addRoute("/artwork-certificate-of-authenticity", "ArtworkCertificateAuthenticity"),
     addRoute("/artwork-submission-status", "ArtworkSubmissionStatusFAQ"),
     addRoute("/selling-with-artsy", "MyCollectionSellingWithartsyFAQ"),
 
     addRoute("/partner/:partnerID", "Partner"),
-    addRoute("/partner/:partnerID/works", "Partner"),
+    addRoute("/partner/:partnerID/works", "Partner", (params) => ({
+      ...params,
+      initialTab: "Artworks",
+    })),
+    addRoute("/partner/:partnerID/shows", "Partner", (params) => ({
+      ...params,
+      initialTab: "Shows",
+    })),
     addRoute("/partner/:partnerID/artists/:artistID", "Partner"),
     addRoute("/partner-locations/:partnerID", "PartnerLocations"),
 
@@ -230,7 +241,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/auctions", "Auctions"),
     addRoute("/lots-by-artists-you-follow", "LotsByArtistsYouFollow"),
     addRoute("/works-for-you", "WorksForYou"),
-    addRoute("/new-works-for-you", "NewWorksForYou"),
+    addRoute("/new-for-you", "NewWorksForYou"),
     addRoute("/reverse-image", "ReverseImage"),
     addWebViewRoute("/categories"),
     addWebViewRoute("/privacy"),

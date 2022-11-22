@@ -19,11 +19,10 @@ import { Box, Flex, Spacer, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp, useTracking } from "react-tracking"
+import { ArtworkEditionSetInformationFragmentContainer as ArtworkEditionSetInformation } from "./ArtworkEditionSetInformation"
 import { ArtworkExtraLinksFragmentContainer as ArtworkExtraLinks } from "./ArtworkExtraLinks"
 import { AuctionPriceFragmentContainer as AuctionPrice } from "./AuctionPrice"
 import { CommercialButtonsFragmentContainer as CommercialButtons } from "./CommercialButtons/CommercialButtons"
-import { CommercialEditionSetInformationFragmentContainer as CommercialEditionSetInformation } from "./CommercialEditionSetInformation"
-import { CommercialPartnerInformationFragmentContainer as CommercialPartnerInformation } from "./CommercialPartnerInformation"
 import { CreateArtworkAlertButtonsSectionFragmentContainer as CreateArtworkAlertButtonsSection } from "./CreateArtworkAlertButtonsSection"
 
 interface CommercialInformationProps extends CountdownTimerProps {
@@ -40,9 +39,8 @@ interface CommercialInformationProps extends CountdownTimerProps {
 // On Android, the useArtworkBidding fails to receive data, bringing the
 // ContextProvider down closer to this component fixed it. [Android Only]
 const CommercialInformationWebsocketWrapper: React.FC<CommercialInformationProps> = (props) => {
-  const cascadingEndTimeFeatureEnabled = useFeatureFlag("AREnableCascadingEndTimerLotPage")
-  const websocketEnabled =
-    cascadingEndTimeFeatureEnabled && !!props.artwork.sale?.cascadingEndTimeIntervalMinutes
+  const websocketEnabled = !!props.artwork.sale?.cascadingEndTimeIntervalMinutes
+
   return (
     <AuctionWebsocketContextProvider
       channelInfo={{
@@ -139,7 +137,7 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
 export const SaleAvailability: React.FC<{ saleMessage: string }> = ({ saleMessage }) => {
   return (
     <Flex flexWrap="nowrap" flexDirection="row" alignItems="center">
-      <Text variant="lg">{saleMessage}</Text>
+      <Text variant="lg-display">{saleMessage}</Text>
     </Flex>
   )
 }
@@ -156,7 +154,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
   setAuctionTimerState,
 }) => {
   const { trackEvent } = useTracking()
-  const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
+  const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
   const [editionSetID, setEditionSetID] = useState<string | null>(null)
   const { isAcquireable, isOfferable, isInquireable, isInAuction, sale, isForSale, isSold } =
     artwork
@@ -169,8 +167,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
     isInAuction && sale && timerState !== AuctionTimerState.CLOSED && isForSale
   const canTakeCommercialAction =
     isAcquireable || isOfferable || isInquireable || isBiddableInAuction
-  const shouldShowCreateArtworkAlertButton =
-    enableCreateArtworkAlert && (isSold || isInClosedAuction)
+  const shouldShowCreateArtworkAlertButton = isSold || isInClosedAuction
 
   useEffect(() => {
     const artworkIsInActiveAuction = artwork.isInAuction && timerState !== AuctionTimerState.CLOSED
@@ -207,37 +204,27 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
       newSaleMessage = "For sale"
     }
 
-    return (
-      <>
-        <SaleAvailability saleMessage={newSaleMessage ? newSaleMessage : saleMessage} />
-        {!artworkIsInClosedAuction && <CommercialPartnerInformation artwork={artwork} />}
-      </>
-    )
+    return <SaleAvailability saleMessage={newSaleMessage ? newSaleMessage : saleMessage} />
   }
 
   const renderPriceInformation = () => {
     if (isInAuction && isForSale) {
-      if (timerState === AuctionTimerState.LIVE_INTEGRATION_ONGOING) {
+      if (enableArtworkRedesign || timerState === AuctionTimerState.LIVE_INTEGRATION_ONGOING) {
         return null
       } else {
         return <AuctionPrice artwork={artwork} auctionState={timerState as AuctionTimerState} />
       }
     } else if (artwork.editionSets && artwork.editionSets.length > 1) {
-      return renderEditionSetArtwork()
+      return (
+        <ArtworkEditionSetInformation
+          artwork={artwork}
+          selectedEditionId={editionSetID}
+          onSelectEdition={setEditionSetID}
+        />
+      )
     } else {
       return renderSingleEditionArtwork()
     }
-  }
-
-  const renderEditionSetArtwork = () => {
-    return (
-      <CommercialEditionSetInformation
-        artwork={artwork}
-        setEditionSetId={(newEditionSetID) => {
-          setEditionSetID(newEditionSetID)
-        }}
-      />
-    )
   }
 
   const renderCommercialButtons = () => {
@@ -294,16 +281,17 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
           {renderCountdown()}
         </Box>
       )}
-      {!!(!!artistIsConsignable || isAcquireable || isOfferable || isBiddableInAuction) && (
-        <>
-          <Spacer mb={2} />
-          <ArtworkExtraLinks
-            artwork={artwork}
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            auctionState={timerState}
-          />
-        </>
-      )}
+      {!enableArtworkRedesign &&
+        !!(artistIsConsignable || isAcquireable || isOfferable || isBiddableInAuction) && (
+          <>
+            <Spacer mb={2} />
+            <ArtworkExtraLinks
+              artwork={artwork}
+              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+              auctionState={timerState}
+            />
+          </>
+        )}
     </>
   )
 }
@@ -329,7 +317,7 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(
         }
 
         editionSets {
-          id
+          internalID
         }
 
         saleArtwork {
@@ -354,11 +342,10 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(
         }
 
         ...CommercialButtons_artwork
-        ...CommercialPartnerInformation_artwork
-        ...CommercialEditionSetInformation_artwork
         ...ArtworkExtraLinks_artwork
         ...AuctionPrice_artwork
         ...CreateArtworkAlertButtonsSection_artwork
+        ...ArtworkEditionSetInformation_artwork
       }
     `,
     me: graphql`

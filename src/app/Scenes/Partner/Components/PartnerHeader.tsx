@@ -23,7 +23,7 @@ const PartnerHeader: React.FC<{
   return (
     <>
       <Box px={2} pb={1} pt={6}>
-        <Text variant="lg" mb={1}>
+        <Text variant="lg-display" mb={1}>
           {partner.name}
         </Text>
         <Flex flexDirection="row" justifyContent="space-between" alignItems="center">

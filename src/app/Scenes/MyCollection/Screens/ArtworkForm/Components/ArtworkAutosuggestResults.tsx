@@ -6,6 +6,7 @@ import { FadeIn } from "app/Components/FadeIn"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
+import { trim } from "lodash"
 import { Button, Flex } from "palette"
 import React, { useEffect } from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -16,7 +17,7 @@ export interface ArtworkAutosuggestResultsProps {
   relay: RelayPaginationProp
   keyword: string
   onPress?: (artworkID: string) => void
-  onSkipPress?: () => void
+  onSkipPress?: (artworkTitle?: string) => void
   setShowSkipAheadToAddArtworkLink: (showSkipAheadLink: boolean) => void
 }
 
@@ -50,7 +51,7 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
           <Flex alignItems="center">
             {/* Using `FadeIn` prevents the button from being displayed too early. */}
             <FadeIn delay={100} slide={false}>
-              <Button variant="outline" onPress={onSkipPress} mt={3}>
+              <Button variant="outline" onPress={() => onSkipPress?.(trim(keyword))} mt={3}>
                 Go to Add Artwork Details
               </Button>
             </FadeIn>
@@ -124,7 +125,7 @@ export const ArtworkAutosuggestResultsQueryRenderer: React.FC<{
   keyword: string
   artistSlug: string
   onPress?: (artworkId: string) => void
-  onSkipPress?: () => void
+  onSkipPress?: (artworkTitle?: string) => void
   setShowSkipAheadToAddArtworkLink: (showSkipAheadLink: boolean) => void
 }> = ({ keyword, artistSlug, onPress, onSkipPress, setShowSkipAheadToAddArtworkLink }) => {
   return (

@@ -13,7 +13,7 @@ describe("My Collection Artwork", () => {
   it("show new artwork screen ", () => {
     const { getByTestId } = renderWithHookWrappersTL(
       <MyCollectionArtworkScreen
-        artworkSlug="random-slug"
+        artworkId="random-id"
         artistInternalID="internal-id"
         medium="medium"
         category="medium"
@@ -32,7 +32,7 @@ describe("My Collection Artwork", () => {
     it("shows the edit button", async () => {
       const { findByText } = renderWithHookWrappersTL(
         <MyCollectionArtworkScreen
-          artworkSlug="random-slug"
+          artworkId="random-id"
           artistInternalID="internal-id"
           medium="medium"
           category="medium"

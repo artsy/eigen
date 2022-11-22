@@ -10,6 +10,7 @@
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <uses-feature android:name="android.hardware.camera.front" android:required="false" />
 
+
     <queries>
         <intent>
             <!-- Required to open mailto: links in SDK 30 and above -->
@@ -20,6 +21,11 @@
 
     <application android:name=".MainApplication" android:launchMode="singleTask" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="false" android:theme="@style/AppTheme">
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
+        <meta-data android:name='com.facebook.sdk.AutoLogAppEventsEnabled'
+           android:value='false'/>
+
+
 
         <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@mipmap/ic_notification" />
 
@@ -70,6 +76,7 @@
                 <data android:pathPrefix="/artist" />
                 <data android:pathPrefix="/artists" />
                 <data android:pathPrefix="/artwork-classifications" />
+                <data android:pathPrefix="/artwork-certificate-of-authenticity" />
                 <data android:pathPrefix="/artwork" />
                 <data android:pathPrefix="/artworks" />
                 <data android:pathPrefix="/auction-faq" />
@@ -101,14 +108,13 @@
                 <data android:pathPrefix="/my-collection" />
                 <data android:pathPrefix="/my-profile" />
                 <data android:pathPrefix="/my-profile/saved-addresses" />
+                <data android:pathPrefix="/new-for-you" />
                 <data android:pathPrefix="/orders" />
                 <data android:pathPrefix="/partner" />
                 <data android:pathPrefix="/privacy-request" />
-                <data android:pathPrefix="/privacy" />
                 <data android:pathPrefix="/sales" />
                 <data android:pathPrefix="/search" />
                 <data android:pathPrefix="/show" />
-                <data android:pathPrefix="/terms" />
                 <data android:pathPrefix="/user/conversations" />
                 <data android:pathPrefix="/user/purchases" />
                 <data android:pathPrefix="/viewing-room" />
@@ -133,5 +139,4 @@
             </intent-filter>
         </service>
     </application>
-
 </manifest>

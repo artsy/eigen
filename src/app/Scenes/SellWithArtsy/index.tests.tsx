@@ -2,10 +2,16 @@ import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { SellWithArtsyCustomRecentlySold } from "./Components/SellWithArtsyCustomRecentlySold"
+import { SellWithArtsyRecentlySold } from "./Components/SellWithArtsyRecentlySold"
 import { SellWithArtsyHomeQueryRenderer } from "./SellWithArtsyHome"
 
 jest.unmock("react-relay")
+
+jest.mock("../../utils/useStatusBarStyle", () => {
+  return {
+    useLightStatusBarStyle: jest.fn(),
+  }
+})
 
 describe("ConsignmentsHome index", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -23,7 +29,7 @@ describe("ConsignmentsHome index", () => {
 
     mockEnvironment.mock.resolveMostRecentOperation(MockPayloadGenerator.generate)
 
-    expect(tree.root.findAllByType(SellWithArtsyCustomRecentlySold)).toHaveLength(1)
+    expect(tree.root.findAllByType(SellWithArtsyRecentlySold)).toHaveLength(1)
   })
 
   it("tracks a cta tap in the header", () => {

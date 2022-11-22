@@ -1,5 +1,5 @@
 import { createGeminiUrl } from "app/Components/OpaqueImageView/createGeminiUrl"
-import { useIsStaging } from "app/store/GlobalStore"
+import { useDevToggle } from "app/store/GlobalStore"
 import _ from "lodash"
 import { Text, useColor } from "palette"
 import React, { useCallback, useRef, useState } from "react"
@@ -175,14 +175,16 @@ export const OpaqueImageView: React.FC<Props> = ({
     }
   }
 
-  const isStaging = useIsStaging()
+  const isDebugModeEnabled = useDevToggle("DTEnableNewImageLabel")
 
   const fastImageStyle = [{ height: fIHeight, width: fIWidth }, props.style]
-  const debugBorderStyles = isStaging ? { borderTopWidth: 2, borderColor: color("devpurple") } : {}
+  const debugBorderStyles = isDebugModeEnabled
+    ? { borderTopWidth: 2, borderColor: color("devpurple") }
+    : {}
 
   return (
     <View onLayout={onLayout} style={[fastImageStyle, debugBorderStyles]}>
-      {!!isStaging && (
+      {!!isDebugModeEnabled && (
         <View style={{ position: "absolute", zIndex: 1000, top: "50%" }}>
           <Text weight="medium" italic variant="xl" color="devpurple">
             NewImg

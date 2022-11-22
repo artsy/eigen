@@ -16,12 +16,12 @@ export const MyProfileSettings: React.FC<{}> = () => {
 
   return (
     <ScrollView>
-      <Text variant="lg" mx="2" mt="6">
+      <Text variant="lg-display" mx="2" mt="6">
         {"Settings"}
       </Text>
-      <Spacer mt={3} mb={2} />
-      <SectionHeading title="FAVORITES" />
       <Spacer my={1} />
+      <MenuItem title="Edit Profile" onPress={() => navigate("my-profile/edit")} />
+      <Separator my={1} borderColor={separatorColor} />
       <MenuItem title="Saved Alerts" onPress={() => navigate("my-profile/saved-search-alerts")} />
       <Separator my={1} borderColor={separatorColor} />
       <MenuItem
@@ -36,9 +36,9 @@ export const MyProfileSettings: React.FC<{}> = () => {
       />
       <Separator my={1} borderColor={separatorColor} />
 
-      <Spacer my={2} />
-      <SectionHeading title="ACCOUNT SETTINGS" />
-      <Spacer my={1} />
+      <Spacer mt={2} mb={1} />
+      <SectionHeading title="Account Settings" />
+      <Spacer mt={1} />
       <MenuItem title="Account" onPress={() => navigate("my-account")} />
       <Separator my={1} borderColor={separatorColor} />
       {!!showOrderHistory && (
@@ -102,7 +102,7 @@ export const MyProfileSettings: React.FC<{}> = () => {
 }
 
 export const SectionHeading: React.FC<{ title: string }> = ({ title }) => (
-  <Text variant="sm" color="black100" mb="1" mx="2">
+  <Text variant="sm-display" color="black60" mb="1" mx="2">
     {title}
   </Text>
 )

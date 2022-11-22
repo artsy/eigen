@@ -1,28 +1,9 @@
-<!--
-➡️ Use a PR title in the form of  `type(PROJECT-XXXX): what changed`
-➡️ Provide the Jira ticket in square brackets like [PROJECT-XXXX]
-
-❗️ If this is a work in progress, remember to prefix it with [WIP] and/or open a draft PR instead of normal PR
--->
+This PR resolves [] <!-- eg [PROJECT-XXXX] -->
 
 ### Description
-
 <!-- Info, implementation, how to get there, before & after screenshots & videos, follow-up work, etc -->
 
-This PR resolves []
 
-### QA Testing
-
-<!-- Please provide information on how to test this PR.
-These tests will be run in recent changes QA, they do not have to be extensive, just a high level feature sanity check, you should do your own extensive QA with your team. -->
-
-#### Acceptance Criteria
-
--
-
-#### Setup Instructions
-
--
 
 ### PR Checklist
 

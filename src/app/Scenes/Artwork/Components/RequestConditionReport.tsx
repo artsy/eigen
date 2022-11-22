@@ -121,7 +121,6 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
         <Button
           mt={1}
           size="small"
-          variant="fillGray"
           loading={requestingConditionReport}
           onPress={this.handleRequestConditionReportTap.bind(this)}
         >

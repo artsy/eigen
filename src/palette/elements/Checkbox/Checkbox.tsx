@@ -107,7 +107,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
 
           <Flex justifyContent="center" flex={1}>
             {!!text && (
-              <Text variant="md" color={textColor}>
+              <Text variant="sm-display" color={textColor}>
                 {text}
               </Text>
             )}

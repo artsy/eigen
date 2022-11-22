@@ -2,6 +2,7 @@ import SearchIcon from "app/Icons/SearchIcon"
 import {
   Flex,
   Input,
+  INPUT_HEIGHT,
   InputProps,
   InputRef,
   SpacingUnitV2,
@@ -71,7 +72,7 @@ export const SearchInput = forwardRef<InputRef, SearchInputProps>(
             }}
           />
         </Animated.View>
-        <Flex alignItems="center" justifyContent="center">
+        <Flex alignItems="center" justifyContent="center" maxHeight={INPUT_HEIGHT + 3}>
           {!!enableCancelButton && !!cancelButtonShown && (
             <Animated.View
               entering={FadeInRight.duration(CANCEL_BUTTON_DURATION)}

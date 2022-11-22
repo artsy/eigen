@@ -68,9 +68,6 @@ export type VolleyMetric =
 
 class VolleyClient {
   queue: VolleyMetric[] = []
-  get serviceName() {
-    return unsafe__getEnvironment().env === "staging" ? "eigen-staging" : "eigen"
-  }
   private _dispatch = throttle(
     () => {
       const metrics = this.queue
@@ -90,7 +87,7 @@ class VolleyClient {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          serviceName: this.serviceName,
+          serviceName: "eigen",
           metrics,
         }),
       }).catch(() => {

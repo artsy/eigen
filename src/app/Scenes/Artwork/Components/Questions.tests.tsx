@@ -42,7 +42,6 @@ describe("Questions", () => {
     await flushPromiseQueue()
 
     expect(getByText("Questions about this piece?")).toBeDefined()
-    expect(getByText("partner.name-1")).toBeDefined()
     expect(getByText("Contact Gallery")).toBeDefined()
   })
 })

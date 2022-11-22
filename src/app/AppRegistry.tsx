@@ -24,6 +24,8 @@ import { ArtistSeriesQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeries"
 import { ArtistSeriesFullArtistSeriesListQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
 import { ArtistShows2QueryRenderer } from "./Scenes/ArtistShows/ArtistShows2"
 import { ArtworkQueryRenderer, ArtworkScreenQuery } from "./Scenes/Artwork/Artwork"
+import { CertificateOfAuthenticity } from "./Scenes/Artwork/Components/CertificateAuthenticity"
+import { UnlistedArtworksFAQScreen } from "./Scenes/Artwork/Components/UnlistedArtworksFAQScreen"
 import { ArtworkAttributionClassFAQQueryRenderer } from "./Scenes/ArtworkAttributionClassFAQ/ArtworkAttributionClassFAQ"
 import { ArtworkMediumQueryRenderer } from "./Scenes/ArtworkMedium/ArtworkMedium"
 import { AuctionBuyersPremiumQueryRenderer } from "./Scenes/AuctionBuyersPremium/AuctionBuyersPremium"
@@ -73,18 +75,20 @@ import {
   MyCollectionScreenQuery,
 } from "./Scenes/MyCollection/MyCollection"
 import { ArtworkSubmissionStatusFAQ } from "./Scenes/MyCollection/Screens/Artwork/ArtworkSubmissionStatusFAQ"
+import { RequestForPriceEstimateConfirmationScreen } from "./Scenes/MyCollection/Screens/Artwork/Components/ArtworkInsights/RequestForPriceEstimate/RequestForPriceEstimateConfirmationScreen"
 import { RequestForPriceEstimateScreen } from "./Scenes/MyCollection/Screens/Artwork/Components/ArtworkInsights/RequestForPriceEstimate/RequestForPriceEstimateScreen"
 import {
   MyCollectionArtworkScreen,
   MyCollectionArtworkScreenQuery,
 } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
-import { MyCollectionSellingWithartsyFAQ } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionSellingWithartsyFAQ"
+import { MyCollectionSellingWithArtsyFAQ } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionSellingWithartsyFAQ"
 import { MyCollectionArtworkForm } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { AuctionResultsForArtistsYouCollect } from "./Scenes/MyCollection/Screens/Insights/AuctionResultsForArtistsYouCollect"
 import { CareerHighlightsBigCardsSwiper } from "./Scenes/MyCollection/Screens/Insights/CareerHighlightsBigCardsSwiper"
 import { MedianSalePriceAtAuction } from "./Scenes/MyCollection/Screens/Insights/MedianSalePriceAtAuction"
 import { DarkModeSettings } from "./Scenes/MyProfile/DarkModeSettings"
 import { MyProfile } from "./Scenes/MyProfile/MyProfile"
+import { MyProfileEditFormScreen } from "./Scenes/MyProfile/MyProfileEditForm"
 import { MyProfileHeaderMyCollectionAndSavedWorksScreenQuery } from "./Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { MyProfilePaymentQueryRenderer } from "./Scenes/MyProfile/MyProfilePayment"
 import { MyProfilePaymentNewCreditCard } from "./Scenes/MyProfile/MyProfilePaymentNewCreditCard"
@@ -101,7 +105,6 @@ import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerL
 import { PrivacyRequest } from "./Scenes/PrivacyRequest/PrivacyRequest"
 import { ReverseImage } from "./Scenes/ReverseImage/ReverseImage"
 import { SaleQueryRenderer, SaleScreenQuery } from "./Scenes/Sale/Sale"
-import { SaleFAQ } from "./Scenes/SaleFAQ/SaleFAQ"
 import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo/SaleInfo"
 import { SalesQueryRenderer, SalesScreenQuery } from "./Scenes/Sales/Sales"
 import { SavedAddressesQueryRenderer } from "./Scenes/SavedAddresses/SavedAddresses"
@@ -330,11 +333,11 @@ export const modules = defineModules({
   Artwork: reactModule(Artwork, {}, [ArtworkScreenQuery]),
   ArtworkMedium: reactModule(ArtworkMediumQueryRenderer),
   ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer),
+  ArtworkCertificateAuthenticity: reactModule(CertificateOfAuthenticity),
   ArtworkSubmissionStatusFAQ: reactModule(ArtworkSubmissionStatusFAQ),
   Auction: reactModule(SaleQueryRenderer, { fullBleed: true }, [SaleScreenQuery]),
   Auctions: reactModule(SalesQueryRenderer, {}, [SalesScreenQuery]),
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
-  AuctionFAQ: reactModule(SaleFAQ),
   AuctionResult: reactModule(AuctionResultQueryRenderer),
   AuctionResultsForArtistsYouFollow: reactModule(
     AuctionResultsForArtistsYouFollowQueryRenderer,
@@ -359,6 +362,7 @@ export const modules = defineModules({
     fullBleed: true,
   }),
   AuctionBuyersPremium: reactModule(AuctionBuyersPremiumQueryRenderer, {
+    fullBleed: true,
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,
   }),
@@ -417,7 +421,7 @@ export const modules = defineModules({
   MyCollectionArtwork: reactModule(MyCollectionArtworkScreen, { hidesBackButton: true }, [
     MyCollectionArtworkScreenQuery,
   ]),
-  MyCollectionSellingWithartsyFAQ: reactModule(MyCollectionSellingWithartsyFAQ),
+  MyCollectionSellingWithartsyFAQ: reactModule(MyCollectionSellingWithArtsyFAQ),
   MyProfile: reactModule(
     MyProfile,
     {
@@ -425,6 +429,7 @@ export const modules = defineModules({
     },
     [MyProfileHeaderMyCollectionAndSavedWorksScreenQuery, MyCollectionScreenQuery]
   ),
+  MyProfileEditForm: reactModule(MyProfileEditFormScreen),
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
   MyProfileSettings: reactModule(MyProfileSettings),
   OrderHistory: reactModule(OrderHistoryQueryRender),
@@ -439,13 +444,17 @@ export const modules = defineModules({
   PartnerLocations: reactModule(PartnerLocations),
   PrivacyRequest: reactModule(PrivacyRequest),
   RequestForPriceEstimateScreen: reactModule(RequestForPriceEstimateScreen),
+  RequestForPriceEstimateConfirmationScreen: reactModule(
+    RequestForPriceEstimateConfirmationScreen,
+    { hidesBackButton: true }
+  ),
   ReverseImage: reactModule(ReverseImage, {
     hidesBackButton: true,
     fullBleed: true,
     alwaysPresentModally: true,
     modalPresentationStyle: "fullScreen",
   }),
-  Sales: reactModule(SellWithArtsy, { isRootViewForTabName: "sell" }, [
+  Sales: reactModule(SellWithArtsy, { isRootViewForTabName: "sell", fullBleed: true }, [
     SellWithArtsyHomeScreenQuery,
   ]),
   SalesNotRootTabView: reactModule(SellWithArtsy),
@@ -457,6 +466,7 @@ export const modules = defineModules({
     alwaysPresentModally: true,
     hasOwnModalCloseButton: false,
   }),
+  UnlistedArtworksFAQScreen: reactModule(UnlistedArtworksFAQScreen),
   VanityURLEntity: reactModule(VanityURLEntityRenderer, { fullBleed: true }),
   ViewingRoom: reactModule(ViewingRoomQueryRenderer, { fullBleed: true }),
   ViewingRoomArtwork: reactModule(ViewingRoomArtworkScreen),

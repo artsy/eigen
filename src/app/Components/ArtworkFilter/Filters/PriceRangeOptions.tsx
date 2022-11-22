@@ -10,11 +10,28 @@ import {
   ArtworksFiltersStore,
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { DEFAULT_PRICE_RANGE as USER_PREFERRED_DEFAULT_PRICE_RANGE } from "app/Scenes/Search/UserPrefsModel"
+import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import {
+  MAX_SHOWN_RECENT_PRICE_RANGES,
+  useRecentPriceRanges,
+} from "app/store/RecentPriceRangesModel"
 import { useExperimentFlag } from "app/utils/experiments/hooks"
 import { debounce, sortBy } from "lodash"
-import { Flex, Histogram, HistogramBarEntity, Input, Spacer, Text, useColor } from "palette"
+import {
+  Flex,
+  Histogram,
+  HistogramBarEntity,
+  Input,
+  Join,
+  Pill,
+  Spacer,
+  Text,
+  useColor,
+  useSpace,
+} from "palette"
 import React, { useMemo, useState } from "react"
-import { ScrollView, useWindowDimensions } from "react-native"
+import { ScrollView, TouchableOpacity, useWindowDimensions } from "react-native"
 import { ArtworkFilterBackHeader } from "../components/ArtworkFilterBackHeader"
 import { Numeric, parsePriceRangeLabel } from "./helpers"
 
@@ -87,7 +104,10 @@ const getInputValue = (value: CustomRange[number]) => {
 
 export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = ({ navigation }) => {
   const { width } = useWindowDimensions()
+  const enableRecentPriceRanges = useFeatureFlag("ARRecentPriceRanges")
+  const priceRanges = usePriceRanges()
   const color = useColor()
+  const space = useSpace()
 
   const enableHistogram = useExperimentFlag("eigen-enable-price-histogram")
 
@@ -158,6 +178,21 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
     })
   }
 
+  const handlePrevPriceRangePress = (price: string) => {
+    const selectedRange = parseRange(price)
+    updateRange(selectedRange)
+  }
+
+  const isSelectedPriceRange = (price: string) => {
+    const [min, max] = parseRange(price)
+
+    return min === minValue && max === maxValue
+  }
+
+  const handleClearRecentPriceRanges = () => {
+    GlobalStore.actions.recentPriceRanges.clearAllPriceRanges()
+  }
+
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const histogramBars = getBarsFromAggregations(aggregations)
   const shouldDisplayHistogram = enableHistogram && histogramBars.length > 0
@@ -172,7 +207,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
       <Flex flexGrow={1}>
         <ScrollView scrollEnabled={false} keyboardShouldPersistTaps="handled">
           <Flex m={2}>
-            <Text variant="md">Choose Your Price Range</Text>
+            <Text variant="sm-display">Choose Your Price Range</Text>
           </Flex>
           <Flex flexDirection="row" mx={2}>
             <Input
@@ -249,8 +284,71 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
               </Text>
             </Flex>
           </Flex>
+
+          <Spacer mt={4} />
+
+          {!!enableRecentPriceRanges && priceRanges.length > 0 && (
+            <>
+              <Flex mx={2} flexDirection="row" justifyContent="space-between" alignItems="center">
+                <Text variant="sm">Apply a recent Price Range</Text>
+                <TouchableOpacity
+                  onPress={handleClearRecentPriceRanges}
+                  hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
+                >
+                  <Text variant="sm" style={{ textDecorationLine: "underline" }}>
+                    Clear
+                  </Text>
+                </TouchableOpacity>
+              </Flex>
+              <Spacer mt={1} />
+              <ScrollView
+                horizontal
+                contentContainerStyle={{ paddingHorizontal: space("2") }}
+                showsHorizontalScrollIndicator={false}
+              >
+                <Flex flexDirection="row">
+                  <Join separator={<Spacer ml={1} />}>
+                    {priceRanges.map((recentPrice) => {
+                      const [min, max] = parseRange(recentPrice)
+                      const label = parsePriceRangeLabel(min, max)
+
+                      return (
+                        <Pill
+                          key={recentPrice}
+                          rounded
+                          accessibilityLabel="Price range pill"
+                          selected={isSelectedPriceRange(recentPrice)}
+                          onPress={() => handlePrevPriceRangePress(recentPrice)}
+                        >
+                          {label}
+                        </Pill>
+                      )
+                    })}
+                  </Join>
+                </Flex>
+              </ScrollView>
+            </>
+          )}
         </ScrollView>
       </Flex>
     </Flex>
   )
+}
+
+const usePriceRanges = () => {
+  let recentPriceRanges = useRecentPriceRanges()
+  const userPreferredPriceRange = GlobalStore.useAppState((state) => state.userPrefs.priceRange)
+
+  if (userPreferredPriceRange !== USER_PREFERRED_DEFAULT_PRICE_RANGE) {
+    const slicedRecentPriceRanges = recentPriceRanges.slice(0, MAX_SHOWN_RECENT_PRICE_RANGES - 1)
+
+    // Remove duplicate price range that matches collector profile-sourced price
+    recentPriceRanges = slicedRecentPriceRanges.filter((priceRange) => {
+      return priceRange !== userPreferredPriceRange
+    })
+
+    return [...recentPriceRanges, userPreferredPriceRange]
+  }
+
+  return recentPriceRanges
 }

@@ -35,7 +35,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
     <ArtsyKeyboardAvoidingView>
       <ScrollView>
         <Box pr="2" pl="2">
-          <Text variant="lg" mt="6">
+          <Text variant="lg-display" mt="6">
             Delete My Account
           </Text>
           <Spacer mt="3" />

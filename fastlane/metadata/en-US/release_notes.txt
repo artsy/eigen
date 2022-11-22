@@ -1,6 +1,7 @@
 This update includes a number of improvements and bug fixes including:
 
-- See career highlights of artists you collect, when you add their works to My Collection.
-- Explore graphs showing median auction price by year of artists you collect, when you add their works to My Collection.
+- New notification preferences
+- New content cards on the home screen
+- Improvements to the artwork screen
 
 Have feedback? Email us at support@artsy.net

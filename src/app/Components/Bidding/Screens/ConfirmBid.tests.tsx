@@ -852,33 +852,16 @@ describe("cascading end times", () => {
     Date.now = () => 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
   })
 
-  describe("with cacsading end time feature enabled", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerLotPage: true })
-    })
-
-    it("sale endtime defaults to extendedBiddingEndtime", () => {
-      const { getByText } = renderWithWrappers(<ConfirmBid {...initialPropsForCascadingSale} />)
-      const timerText = getByText("00d 00h 00m 10s")
-      expect(timerText).toBeTruthy()
-    })
-
-    it("shows the sale's end time if the sale does not have cascading end times", () => {
-      const { getByText } = renderWithWrappers(<ConfirmBid {...initialPropsForNonCascadingSale} />)
-      const timerText = getByText("00d 00h 00m 10s")
-      expect(timerText).toBeTruthy()
-    })
+  it("sale endtime defaults to extendedBiddingEndtime", () => {
+    const { getByText } = renderWithWrappers(<ConfirmBid {...initialPropsForCascadingSale} />)
+    const timerText = getByText("00d 00h 00m 10s")
+    expect(timerText).toBeTruthy()
   })
 
-  describe("with cacsading end time feature disabled", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerLotPage: false })
-    })
-    it("shows the sale's end time", () => {
-      const { getByText } = renderWithWrappers(<ConfirmBid {...initialPropsForCascadingSale} />)
-      const timerText = getByText("00d 00h 00m 10s")
-      expect(timerText).toBeTruthy()
-    })
+  it("shows the sale's end time if the sale does not have cascading end times", () => {
+    const { getByText } = renderWithWrappers(<ConfirmBid {...initialPropsForNonCascadingSale} />)
+    const timerText = getByText("00d 00h 00m 10s")
+    expect(timerText).toBeTruthy()
   })
 })
 

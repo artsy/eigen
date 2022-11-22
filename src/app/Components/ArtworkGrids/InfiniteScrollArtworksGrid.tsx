@@ -320,7 +320,6 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
             updateRecentSearchesOnTap={updateRecentSearchesOnTap}
             {...itemComponentProps}
             height={imgHeight}
-            width={imgWidth}
           />
         )
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.

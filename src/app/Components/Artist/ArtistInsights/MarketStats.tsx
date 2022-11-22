@@ -104,7 +104,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
       <Flex flexDirection="row" alignItems="center">
         <InfoButton
           titleElement={
-            <Text variant="md" mr={0.5}>
+            <Text variant="sm-display" mr={0.5}>
               Market Signals
             </Text>
           }
@@ -133,24 +133,26 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
       {/* Market Stats Values */}
       <Flex flexDirection="row" flexWrap="wrap" mt={15}>
         <Flex width="50%">
-          <Text variant="lg" testID="annualLotsSold">
+          <Text variant="lg-display" testID="annualLotsSold">
             {selectedPriceInsight.annualLotsSold}
           </Text>
           <Text variant="sm">Yearly lots sold</Text>
         </Flex>
         <Flex width="50%">
-          <Text variant="lg">{formatSellThroughRate(selectedPriceInsight.sellThroughRate)}%</Text>
+          <Text variant="lg-display">
+            {formatSellThroughRate(selectedPriceInsight.sellThroughRate)}%
+          </Text>
           <Text variant="sm">Sell-through rate</Text>
         </Flex>
         <Flex width="50%" mt={2}>
-          <Text variant="lg">${formattedAverageValueSold}</Text>
+          <Text variant="lg-display">${formattedAverageValueSold}</Text>
           <Text variant="sm">Sale price</Text>
         </Flex>
         <Flex width="50%" mt={2}>
           <Flex width="50%" flexDirection="row" alignItems="center">
             <Join separator={<Spacer mr={0.5} />}>
               {deltaIcon}
-              <Text variant="lg">{formattedMedianSaleOverEstimatePercentage}%</Text>
+              <Text variant="lg-display">{formattedMedianSaleOverEstimatePercentage}%</Text>
             </Join>
           </Flex>
           <Text variant="sm">Sale price over estimate</Text>
@@ -208,7 +210,7 @@ const LoadingSkeleton = () => {
   return (
     <>
       <Flex flexDirection="row" alignItems="center">
-        <Text variant="md" mr={0.5}>
+        <Text variant="sm-display" mr={0.5}>
           Market Signals
         </Text>
       </Flex>

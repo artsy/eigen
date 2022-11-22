@@ -6,7 +6,7 @@ import {
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { compact } from "lodash"
 import { Flex, Spacer, Text, useColor } from "palette"
-import { GestureResponderEvent } from "react-native"
+import { GestureResponderEvent, PixelRatio } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import styled from "styled-components/native"
 import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "../ArtworkGrids/ArtworkGridItem"
@@ -47,6 +47,8 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   testID,
   ...restProps
 }) => {
+  const fontScale = PixelRatio.getFontScale()
+
   const artwork = useFragment(artworkFragment, restProps.artwork)
 
   const { artistNames, date, partner, title, image } = artwork
@@ -73,7 +75,8 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
           // Recently sold artworks require more space for the text container
           // to accommodate the estimate and realized price
           style={{
-            height: ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + (isRecentlySoldArtwork ? 10 : 0),
+            height:
+              fontScale * (ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + (isRecentlySoldArtwork ? 10 : 0)),
           }}
         >
           {!!lotLabel && (

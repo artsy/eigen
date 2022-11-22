@@ -15,7 +15,7 @@ interface OurProps {
 
 export const MyNewComponent: React.FC<OurProps> = (props) => {
   const someFunStuff = useACoolHook()
-  return <Text variant="lg">Hello world!</Text>
+  return <Text variant="lg-display">Hello world!</Text>
 }
 ```
 

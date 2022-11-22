@@ -32,6 +32,7 @@ import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
 import { SearchInput } from "./components/SearchInput"
 import { SearchPills } from "./components/SearchPills"
 import { ALLOWED_ALGOLIA_KEYS, DEFAULT_PILLS, TOP_PILL } from "./constants"
+import { CuratedCollections } from "./CuratedCollections"
 import { getContextModuleByPillName, isAlgoliaApiKeyExpiredError } from "./helpers"
 import { RecentSearches } from "./RecentSearches"
 import { RefetchWhenApiKeyExpiredContainer } from "./RefetchWhenApiKeyExpired"
@@ -61,6 +62,8 @@ export const Search: React.FC = () => {
   const indices = system?.algolia?.indices ?? []
   const indiceNames = indices.map((indice) => indice.name)
   const enableMaps = useFeatureFlag("AREnableMapScreen")
+  const displayCuratedCollections =
+    Platform.OS !== "ios" || useFeatureFlag("ARIosSearchTabCuratedCollections")
   const onRefetch = () => {
     if (isRefreshing) {
       return
@@ -229,6 +232,12 @@ export const Search: React.FC = () => {
             ) : (
               <Scrollable>
                 <RecentSearches />
+                {!!displayCuratedCollections && (
+                  <>
+                    <Spacer mb={3} />
+                    <CuratedCollections collections={queryData} />
+                  </>
+                )}
                 <Spacer mb={3} />
                 {!!enableMaps ? (
                   <Touchable onPress={() => navigate("/map")}>
@@ -287,6 +296,8 @@ export const SearchScreenQuery = graphql`
         }
       }
     }
+
+    ...CuratedCollections_collections
   }
 `
 

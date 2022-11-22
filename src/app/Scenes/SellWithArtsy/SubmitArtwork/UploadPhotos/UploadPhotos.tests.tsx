@@ -5,7 +5,8 @@ import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
 import { useTracking } from "react-tracking"
-import { createMockEnvironment } from "relay-test-utils"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { STEPS, SubmitSWAArtworkFlow } from "../SubmitArtwork"
 import { UploadPhotos } from "./UploadPhotos"
 
 jest.unmock("react-relay")
@@ -13,9 +14,9 @@ jest.unmock("react-relay")
 const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
 describe("UploadPhotos", () => {
-  const TestRenderer = () => (
+  const TestRenderer = ({ isLastStep = false }: { isLastStep?: boolean }) => (
     <RelayEnvironmentProvider environment={mockEnvironment}>
-      <UploadPhotos handlePress={jest.fn()} />
+      <UploadPhotos handlePress={jest.fn()} isLastStep={isLastStep} />
     </RelayEnvironmentProvider>
   )
 
@@ -71,12 +72,23 @@ describe("UploadPhotos", () => {
     })
 
     it("tracks uploadPhotosCompleted event on save", async () => {
-      const { UNSAFE_getByProps } = renderWithWrappers(<TestRenderer />)
+      const { UNSAFE_getByProps } = renderWithWrappers(
+        <SubmitSWAArtworkFlow navigation={jest.fn() as any} stepsInOrder={[STEPS.UploadPhotos]} />
+      )
       const SaveButton = UNSAFE_getByProps({
         testID: "Submission_Save_Photos_Button",
       })
 
       SaveButton.props.onPress()
+
+      mockEnvironment.mock.resolveMostRecentOperation((operation) => {
+        return MockPayloadGenerator.generate(operation, {
+          consignmentSubmission: () => ({
+            internalID: "54321",
+          }),
+        })
+      })
+
       await flushPromiseQueue()
 
       expect(trackEvent).toHaveBeenCalled()
@@ -84,7 +96,7 @@ describe("UploadPhotos", () => {
         action: ActionType.uploadPhotosCompleted,
         context_owner_type: OwnerType.consignmentFlow,
         context_module: ContextModule.uploadPhotos,
-        submission_id: "54321",
+        submission_id: '<mock-value-for-field-"internalID">',
         user_email: "user@mail.com",
         user_id: "1",
       })

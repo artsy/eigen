@@ -109,7 +109,7 @@ export const NewSaleLotsList: React.FC<NewSaleLotsListProps> = ({
   return (
     <Flex flex={0} my={4}>
       <Flex px={2} mb={2}>
-        <Text variant="md" ellipsizeMode="tail">
+        <Text variant="sm-display" ellipsizeMode="tail">
           Sorted by {sortMode?.displayText}
         </Text>
 

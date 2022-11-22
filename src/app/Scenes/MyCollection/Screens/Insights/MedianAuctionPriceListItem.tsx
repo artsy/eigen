@@ -1,6 +1,5 @@
 import { MedianAuctionPriceRail_me$data } from "__generated__/MedianAuctionPriceRail_me.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { Flex, NoArtworkIcon, Text, Touchable, useColor } from "palette"
 
 export type MedianSalePriceArtwork = NonNullable<
@@ -14,9 +13,6 @@ interface Props {
 
 export const MedianAuctionPriceListItem: React.FC<Props> = ({ artworks, onPress }) => {
   const color = useColor()
-  const enableMyCollectionInsightsMedianPrice = useFeatureFlag(
-    "AREnableMyCollectionInsightsMedianPrice"
-  )
 
   const firstItem = artworks[0]
   const restItems = artworks.slice(1)
@@ -63,9 +59,7 @@ export const MedianAuctionPriceListItem: React.FC<Props> = ({ artworks, onPress 
           </Flex>
           <Flex alignItems="flex-end">
             <Text variant="xs" weight="medium">
-              {enableMyCollectionInsightsMedianPrice
-                ? firstItem?.marketPriceInsights?.medianSalePriceDisplayText
-                : firstItem?.marketPriceInsights?.averageSalePriceDisplayText}
+              {firstItem?.marketPriceInsights?.medianSalePriceDisplayText}
             </Text>
           </Flex>
         </Flex>
@@ -86,9 +80,7 @@ export const MedianAuctionPriceListItem: React.FC<Props> = ({ artworks, onPress 
             </Flex>
             <Flex alignItems="flex-end">
               <Text variant="xs" weight="medium">
-                {enableMyCollectionInsightsMedianPrice
-                  ? artwork?.marketPriceInsights?.medianSalePriceDisplayText
-                  : artwork?.marketPriceInsights?.averageSalePriceDisplayText}
+                {artwork?.marketPriceInsights?.medianSalePriceDisplayText}
               </Text>
             </Flex>
           </Flex>

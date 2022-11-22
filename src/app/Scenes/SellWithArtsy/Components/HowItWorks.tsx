@@ -1,15 +1,5 @@
-import {
-  Box,
-  Flex,
-  IconProps,
-  ImageIcon,
-  Join,
-  Payment2Icon,
-  Spacer,
-  Tag2Icon,
-  Text,
-} from "palette"
-import { TextContainer } from "./TextContainer"
+import { StepWithImage } from "app/Components/StepWithImage/StepWithImage"
+import { Box, ImageIcon, Join, Payment2Icon, Spacer, Tag2Icon, Text } from "palette"
 
 const STEPS = [
   {
@@ -32,7 +22,7 @@ const STEPS = [
 export const HowItWorks: React.FC = () => {
   return (
     <Box px={2}>
-      <Text variant="lg">How it works</Text>
+      <Text variant="lg-display">How it works</Text>
 
       <Spacer mb={2} />
       <Join separator={<Spacer mb={2} />}>
@@ -41,29 +31,5 @@ export const HowItWorks: React.FC = () => {
         ))}
       </Join>
     </Box>
-  )
-}
-
-interface StepWithImageProps {
-  icon: React.FC<IconProps>
-  title: string
-  text: string
-}
-
-const StepWithImage: React.FC<StepWithImageProps> = ({ icon: Icon, text, title }) => {
-  return (
-    <Flex flexDirection="row">
-      <Box pr={1} mr={0.3} style={{ paddingTop: 4 }}>
-        <Icon width={18} height={18} />
-      </Box>
-
-      <TextContainer>
-        <Text variant="sm">{title}</Text>
-        <Spacer mb={0.3} />
-        <Text variant="sm" color="black60">
-          {text}
-        </Text>
-      </TextContainer>
-    </Flex>
   )
 }

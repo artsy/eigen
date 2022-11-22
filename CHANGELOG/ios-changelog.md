@@ -1,14 +1,27 @@
 ## Undeployed Changes
 
-### v7.0.0
+### v8.3.0
 
 - Status: **Beta**
 - Changelog:
 
+  - User facing changes:
+
+    - change copies for "Saved" tab - dimatretyak
+    - Fix Network status modal during the Onboarding - mounir
+    - Change naming on "Ways to Buy" filters - dimatretyak
+    - Add full screen modal carousel cards - mounir
+    - add "Consign with Artsy" section - dimatretyak
+    - Update profile UI - mounir
+    - Display recent price ranges - dimatretyak
+    - Layout issues when navigating to works-for-you from notification - gkartalis
+    - fix broken deeplinking for new-for-you - gkartalis
+    - Track ContactInformation in SWA Flow - kizito
+
   - Dev changes:
-    - Do not save the changelog update date - mounir
-    - Track link tap and AuctionResultsForYou Screen - kizito
-    - Add black owned banner to partner page - lily
+    - Adds some auth logs in sentry to monitor failures - Brian
+    - Track ContactInformation in SWA Flow - kizito
+    - Prepare ARReorderSWAArtworkSubmissionFlow for release - kizito
 
 <!-- DO NOT CHANGE -->
 

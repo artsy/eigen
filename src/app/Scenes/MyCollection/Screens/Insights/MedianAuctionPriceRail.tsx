@@ -7,7 +7,6 @@ import {
 import { MedianAuctionPriceRail_me$key } from "__generated__/MedianAuctionPriceRail_me.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { getVortexMedium } from "app/utils/marketPriceInsightHelpers"
 import { groupBy } from "lodash"
@@ -23,13 +22,6 @@ interface MedianAuctionPriceRailProps {
 }
 
 export const MedianAuctionPriceRail: React.FC<MedianAuctionPriceRailProps> = (props) => {
-  const enableMyCollectionInsightsPhase1Part4 = useFeatureFlag(
-    "AREnableMyCollectionInsightsPhase1Part4"
-  )
-  const enableMyCollectionInsightsMedianPrice = useFeatureFlag(
-    "AREnableMyCollectionInsightsMedianPrice"
-  )
-
   const me = useFragment(fragment, props.me)
   const artworks = extractNodes(me.priceInsightUpdates)
 
@@ -42,7 +34,7 @@ export const MedianAuctionPriceRail: React.FC<MedianAuctionPriceRailProps> = (pr
   const groupedArtworks = Object.values(groupBy(artworks, (artwork) => artwork?.artist?.name))
 
   return (
-    <Flex mb={4}>
+    <Flex mb={2}>
       <FlatList
         data={groupedArtworks}
         listKey="median-sale-prices"
@@ -50,30 +42,22 @@ export const MedianAuctionPriceRail: React.FC<MedianAuctionPriceRailProps> = (pr
           <Flex mx={2}>
             <SectionTitle
               capitalized={false}
-              title={
-                enableMyCollectionInsightsMedianPrice
-                  ? "Median Auction Price in the Last 3 Years"
-                  : "Average Auction Price in the Last 3 Years"
-              }
-              onPress={
-                enableMyCollectionInsightsPhase1Part4
-                  ? () => {
-                      const artistID = artworks[0].artist?.internalID
-                      const category = getVortexMedium(
-                        artworks[0].medium ?? "",
-                        artworks[0].mediumType?.name ?? ""
-                      )
-                      if (artistID && category) {
-                        tracking.trackEvent(tracks.tappedRailItem(artistID, category))
-                      }
-                      navigate(`/my-collection/median-sale-price-at-auction/${artistID}`, {
-                        passProps: {
-                          initialCategory: category,
-                        },
-                      })
-                    }
-                  : undefined
-              }
+              title="Median Auction Price in the Last 3 Years"
+              onPress={() => {
+                const artistID = artworks[0].artist?.internalID
+                const category = getVortexMedium(
+                  artworks[0].medium ?? "",
+                  artworks[0].mediumType?.name ?? ""
+                )
+                if (artistID && category) {
+                  tracking.trackEvent(tracks.tappedRailItem(artistID, category))
+                }
+                navigate(`/my-collection/median-sale-price-at-auction/${artistID}`, {
+                  passProps: {
+                    initialCategory: category,
+                  },
+                })
+              }}
               mb={2}
             />
           </Flex>
@@ -81,24 +65,19 @@ export const MedianAuctionPriceRail: React.FC<MedianAuctionPriceRailProps> = (pr
         renderItem={({ item }) => (
           <MedianAuctionPriceListItem
             artworks={item}
-            onPress={
-              enableMyCollectionInsightsPhase1Part4
-                ? (medium) => {
-                    const artistID = item[0].artist?.internalID
-                    const category =
-                      medium ||
-                      getVortexMedium(item[0].medium ?? "", item[0].mediumType?.name ?? "")
-                    if (artistID && category) {
-                      tracking.trackEvent(tracks.tappedRailItem(artistID, category))
-                    }
-                    navigate(`/my-collection/median-sale-price-at-auction/${artistID}`, {
-                      passProps: {
-                        initialCategory: category,
-                      },
-                    })
-                  }
-                : undefined
-            }
+            onPress={(medium) => {
+              const artistID = item[0].artist?.internalID
+              const category =
+                medium || getVortexMedium(item[0].medium ?? "", item[0].mediumType?.name ?? "")
+              if (artistID && category) {
+                tracking.trackEvent(tracks.tappedRailItem(artistID, category))
+              }
+              navigate(`/my-collection/median-sale-price-at-auction/${artistID}`, {
+                passProps: {
+                  initialCategory: category,
+                },
+              })
+            }}
           />
         )}
       />
@@ -124,7 +103,6 @@ const fragment = graphql`
             formattedNationalityAndBirthday
           }
           marketPriceInsights {
-            averageSalePriceDisplayText
             medianSalePriceDisplayText
           }
         }

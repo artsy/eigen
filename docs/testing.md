@@ -1,3 +1,6 @@
+Please also check these best practices 
+https://github.com/artsy/eigen/blob/main/docs/best_practices.md#testing
+
 # Testing with Relay [WIP]
 
 We have 3 ways of testing relay components:

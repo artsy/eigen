@@ -12,7 +12,6 @@ import {
   Spacer,
   Text,
 } from "palette"
-import { LayoutAnimation } from "react-native"
 import { SavedSearchAlertFormValues, SavedSearchPill } from "../SavedSearchAlertModel"
 import { SavedSearchStore } from "../SavedSearchStore"
 import { SavedSearchAlertSwitch } from "./SavedSearchAlertSwitch"
@@ -73,15 +72,6 @@ export const Form: React.FC<FormProps> = (props) => {
     isSaveAlertButtonDisabled = true
   }
 
-  const handleToggleEmailNotification = (value: boolean) => {
-    LayoutAnimation.configureNext({
-      ...LayoutAnimation.Presets.easeInEaseOut,
-      duration: 300,
-    })
-
-    onToggleEmailNotification(value)
-  }
-
   const handleUpdateEmailPreferencesPress = () => {
     if (onUpdateEmailPreferencesPress) {
       return onUpdateEmailPreferencesPress()
@@ -101,7 +91,7 @@ export const Form: React.FC<FormProps> = (props) => {
   return (
     <Box>
       {!isEditMode && (
-        <Text variant="lg" mb={4}>
+        <Text variant="lg-display" mb={4}>
           Create Alert
         </Text>
       )}
@@ -148,7 +138,7 @@ export const Form: React.FC<FormProps> = (props) => {
       <Spacer mt={2} />
       <SavedSearchAlertSwitch
         label="Email Alerts"
-        onChange={handleToggleEmailNotification}
+        onChange={onToggleEmailNotification}
         active={values.email}
       />
       {!!shouldShowEmailWarning && (

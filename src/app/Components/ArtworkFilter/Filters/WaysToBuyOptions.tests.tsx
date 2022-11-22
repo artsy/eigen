@@ -37,10 +37,10 @@ describe("Ways to Buy Options Screen", () => {
   it("renders the correct ways to buy options", () => {
     const { getByText } = renderWithWrappers(<MockWaysToBuyScreen initialData={initialState} />)
 
-    expect(getByText("Buy Now")).toBeTruthy()
+    expect(getByText("Purchase")).toBeTruthy()
     expect(getByText("Make Offer")).toBeTruthy()
     expect(getByText("Bid")).toBeTruthy()
-    expect(getByText("Inquire")).toBeTruthy()
+    expect(getByText("Contact Gallery")).toBeTruthy()
   })
 
   it.skip("does not display the default text when no filter selected on the filter modal screen", () => {
@@ -67,13 +67,13 @@ describe("Ways to Buy Options Screen", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {
-          displayText: "Buy Now",
-          paramName: FilterParamName.waysToBuyBuy,
+          displayText: "Purchase",
+          paramName: FilterParamName.waysToBuyPurchase,
           paramValue: true,
         },
         {
-          displayText: "Inquire",
-          paramName: FilterParamName.waysToBuyInquire,
+          displayText: "Contact Gallery",
+          paramName: FilterParamName.waysToBuyContactGallery,
           paramValue: true,
         },
         {
@@ -102,8 +102,8 @@ describe("Ways to Buy Options Screen", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {
-          displayText: "Buy Now",
-          paramName: FilterParamName.waysToBuyBuy,
+          displayText: "Purchase",
+          paramName: FilterParamName.waysToBuyPurchase,
           paramValue: true,
         },
       ],
@@ -125,7 +125,7 @@ describe("Ways to Buy Options Screen", () => {
     const options = getAllByA11yState({ checked: true })
 
     expect(options).toHaveLength(1)
-    expect(options[0]).toHaveTextContent("Buy Now")
+    expect(options[0]).toHaveTextContent("Purchase")
   })
 
   it("it toggles applied filters 'ON' and unapplied filters 'OFF", () => {
@@ -133,15 +133,15 @@ describe("Ways to Buy Options Screen", () => {
       selectedFilters: [],
       appliedFilters: [
         {
-          displayText: "Inquire",
-          paramName: FilterParamName.waysToBuyInquire,
+          displayText: "Contact Gallery",
+          paramName: FilterParamName.waysToBuyContactGallery,
           paramValue: true,
         },
       ],
       previouslyAppliedFilters: [
         {
-          displayText: "Inquire",
-          paramName: FilterParamName.waysToBuyInquire,
+          displayText: "Contact Gallery",
+          paramName: FilterParamName.waysToBuyContactGallery,
           paramValue: true,
         },
       ],
@@ -161,6 +161,6 @@ describe("Ways to Buy Options Screen", () => {
     const options = getAllByA11yState({ checked: true })
 
     expect(options).toHaveLength(1)
-    expect(options[0]).toHaveTextContent("Inquire")
+    expect(options[0]).toHaveTextContent("Contact Gallery")
   })
 })

@@ -1,13 +1,17 @@
-import { NotificationTypesEnum } from "__generated__/ActivityItem_item.graphql"
+import { ActionType } from "@artsy/cohesion"
+import { ClickedActivityPanelTab } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
 import { ActivityQuery } from "__generated__/ActivityQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"
 import { goBack } from "app/navigation/navigate"
-import { Flex, Text } from "palette"
+import { Flex } from "palette"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
+import { useTracking } from "react-tracking"
 import { ActivityList } from "./ActivityList"
+import { ActivityTabPlaceholder } from "./ActivityTabPlaceholder"
 import { NotificationType } from "./types"
+import { getNotificationTypes } from "./utils/getNotificationTypes"
 
 interface ActivityProps {
   type: NotificationType
@@ -15,23 +19,31 @@ interface ActivityProps {
 
 export const ActivityContent: React.FC<ActivityProps> = ({ type }) => {
   const types = getNotificationTypes(type)
-  const queryData = useLazyLoadQuery<ActivityQuery>(ActivityScreenQuery, {
-    count: 10,
-    types,
-  })
+  const queryData = useLazyLoadQuery<ActivityQuery>(
+    ActivityScreenQuery,
+    {
+      count: 10,
+      types,
+    },
+    {
+      fetchPolicy: "store-and-network",
+    }
+  )
 
-  return <ActivityList viewer={queryData.viewer} type={type} />
+  return <ActivityList viewer={queryData.viewer} me={queryData.me} type={type} />
 }
 
 export const ActivityContainer: React.FC<ActivityProps> = (props) => {
   return (
-    <Suspense fallback={<Placeholder />}>
+    <Suspense fallback={<ActivityTabPlaceholder />}>
       <ActivityContent {...props} />
     </Suspense>
   )
 }
 
 export const Activity = () => {
+  const tracking = useTracking()
+
   const tabs: TabProps[] = [
     {
       title: "All",
@@ -44,6 +56,11 @@ export const Activity = () => {
     },
   ]
 
+  const handleTabPress = (tabIndex: number) => {
+    const tab = tabs[tabIndex]
+    tracking.trackEvent(tracks.clickedActivityPanelTab(tab.title))
+  }
+
   return (
     <Flex flex={1}>
       <StickyTabPage
@@ -54,29 +71,27 @@ export const Activity = () => {
           </FancyModalHeader>
         }
         disableBackButtonUpdate
+        shouldTrackEventOnTabClick={false}
+        onTabPress={handleTabPress}
       />
     </Flex>
   )
 }
-
-const Placeholder = () => (
-  <Flex flex={1} justifyContent="center" alignItems="center">
-    <Text>Loading</Text>
-  </Flex>
-)
 
 const ActivityScreenQuery = graphql`
   query ActivityQuery($count: Int, $after: String, $types: [NotificationTypesEnum]) {
     viewer {
       ...ActivityList_viewer @arguments(count: $count, after: $after, types: $types)
     }
+    me {
+      ...ActivityList_me
+    }
   }
 `
 
-const getNotificationTypes = (type: NotificationType): NotificationTypesEnum[] | undefined => {
-  if (type === "alerts") {
-    return ["ARTWORK_ALERT"]
-  }
-
-  return []
+const tracks = {
+  clickedActivityPanelTab: (tabName: string): ClickedActivityPanelTab => ({
+    action: ActionType.clickedActivityPanelTab,
+    tab_name: tabName,
+  }),
 }

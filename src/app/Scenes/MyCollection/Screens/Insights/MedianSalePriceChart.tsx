@@ -1,4 +1,3 @@
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { formatLargeNumber } from "app/utils/formatLargeNumber"
 import { Flex, LineGraph, Text, useColor } from "palette"
 import { useScreenDimensions } from "shared/hooks"
@@ -29,8 +28,6 @@ export const MedianSalePriceChart: React.FC = () => {
 
   const { height: screenHeight, width: screenWidth } = useScreenDimensions()
 
-  const showHighlights = useFeatureFlag("AREnableMedianPriceChartCareerHighlights")
-
   const CHART_HEIGHT = screenHeight / 2.25
   const CHART_WIDTH = screenWidth
 
@@ -56,7 +53,7 @@ export const MedianSalePriceChart: React.FC = () => {
             chartHeight={CHART_HEIGHT}
             chartWidth={CHART_WIDTH}
             chartInterpolation="monotoneX"
-            showHighlights={showHighlights}
+            showHighlights
             highlightIconColor={color("yellow100")}
             data={threeYearLineChartData}
             bands={bands}
@@ -103,7 +100,7 @@ export const MedianSalePriceChart: React.FC = () => {
             chartHeight={CHART_HEIGHT}
             chartWidth={CHART_WIDTH}
             chartInterpolation="monotoneX"
-            showHighlights={showHighlights}
+            showHighlights
             highlightIconColor={color("yellow100")}
             data={eightYearLineChartData}
             bands={bands}
