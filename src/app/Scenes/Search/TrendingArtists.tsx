@@ -1,4 +1,4 @@
-import { PopularSearches_query$key } from "__generated__/PopularSearches_query.graphql"
+import { TrendingArtists_query$key } from "__generated__/TrendingArtists_query.graphql"
 import { extractNodes } from "app/utils/extractNodes"
 import { Spacer, Text } from "palette"
 import { useFragment } from "react-relay"
@@ -6,17 +6,17 @@ import { graphql } from "relay-runtime"
 import { AutosuggestSearchResult } from "./components/AutosuggestSearchResult"
 import { SearchResultList } from "./components/SearchResultList"
 
-interface PopularSearchesProps {
-  data: PopularSearches_query$key
+interface TrendingArtistsProps {
+  data: TrendingArtists_query$key
 }
 
-export const PopularSearches: React.FC<PopularSearchesProps> = ({ data }) => {
-  const result = useFragment(popularSearchesFragment, data)
+export const TrendingArtists: React.FC<TrendingArtistsProps> = ({ data }) => {
+  const result = useFragment(trendingArtistsFragment, data)
   const nodes = extractNodes(result.curatedTrendingArtists)
 
   return (
     <>
-      <Text variant="sm">Popular Searches</Text>
+      <Text variant="sm">Trending Artists</Text>
       <Spacer mb={2} />
       <SearchResultList
         results={nodes.map((node) => (
@@ -32,8 +32,8 @@ export const PopularSearches: React.FC<PopularSearchesProps> = ({ data }) => {
   )
 }
 
-const popularSearchesFragment = graphql`
-  fragment PopularSearches_query on Query {
+const trendingArtistsFragment = graphql`
+  fragment TrendingArtists_query on Query {
     curatedTrendingArtists(first: 3) {
       edges {
         node {
