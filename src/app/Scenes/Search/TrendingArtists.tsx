@@ -50,17 +50,18 @@ export const TrendingArtists: React.FC<TrendingArtistsProps> = ({ data }) => {
           return <ArtistCard artist={item} onPress={() => handleCardPress(item.slug)} />
         }}
         ItemSeparatorComponent={() => <Spacer width={15} />}
-        ListFooterComponent={isLoadingNext ? <LoadingIndicator /> : <Spacer mr={2} />}
+        ListFooterComponent={
+          <>
+            {!!hasNext && (
+              <Flex justifyContent="center" mx={3} height="200">
+                <Spinner />
+              </Flex>
+            )}
+            <Spacer mr={2} />
+          </>
+        }
       />
     </Box>
-  )
-}
-
-const LoadingIndicator = () => {
-  return (
-    <Flex justifyContent="center" ml={3} mr={5} height="200">
-      <Spinner />
-    </Flex>
   )
 }
 
