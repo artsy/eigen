@@ -94,7 +94,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
     }
     GlobalStore.actions.auth.setState({ sessionState: { isLoading: false } })
     InteractionManager.runAfterInteractions(() => {
-      Alert.alert("Try again", error.message, [
+      Alert.alert("No Artsy account found", error.message, [
         {
           text: "Cancel",
           style: "cancel",
