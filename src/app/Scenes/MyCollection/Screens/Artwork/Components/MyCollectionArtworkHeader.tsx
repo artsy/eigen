@@ -105,7 +105,7 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
   return (
     <Join separator={<Spacer my={1} />}>
       {/* ImageCarousel */}
-      {!!imagesToDisplay ? (
+      {!!imagesToDisplay && imagesToDisplay.length ? (
         <ImagesToDisplayCarousel
           images={imagesToDisplay as any}
           cardHeight={dimensions.height / 3.5}
