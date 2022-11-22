@@ -41,9 +41,10 @@ export const Versions = {
   RemoveDeviceId: 29,
   AddSubmissionIdForMyCollection: 30,
   AddRecentPriceRangesModel: 31,
+  AddUserPreferredPriceRange: 32,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddRecentPriceRangesModel
+export const CURRENT_APP_VERSION = Versions.AddUserPreferredPriceRange
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -245,6 +246,9 @@ export const artsyAppMigrations: Migrations = {
     state.recentPriceRanges = {
       ranges: [],
     }
+  },
+  [Versions.AddUserPreferredPriceRange]: (state) => {
+    state.userPrefs.priceRange = "*-*"
   },
 }
 
