@@ -34,6 +34,7 @@ import { SearchPills } from "./components/SearchPills"
 import { ALLOWED_ALGOLIA_KEYS, DEFAULT_PILLS, TOP_PILL } from "./constants"
 import { CuratedCollections } from "./CuratedCollections"
 import { getContextModuleByPillName, isAlgoliaApiKeyExpiredError } from "./helpers"
+import { PopularSearches } from "./PopularSearches"
 import { RecentSearches } from "./RecentSearches"
 import { RefetchWhenApiKeyExpiredContainer } from "./RefetchWhenApiKeyExpired"
 import { SearchContext, useSearchProviderValues } from "./SearchContext"
@@ -239,6 +240,8 @@ export const Search: React.FC = () => {
                   </>
                 )}
                 <Spacer mb={3} />
+                <PopularSearches data={queryData} />
+                <Spacer mb={3} />
                 {!!enableMaps ? (
                   <Touchable onPress={() => navigate("/map")}>
                     <CityGuideCTANew />
@@ -296,8 +299,8 @@ export const SearchScreenQuery = graphql`
         }
       }
     }
-
     ...CuratedCollections_collections
+    ...PopularSearches_query
   }
 `
 
