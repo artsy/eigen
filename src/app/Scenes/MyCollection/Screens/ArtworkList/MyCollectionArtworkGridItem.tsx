@@ -16,9 +16,13 @@ import { MyCollectionImageView } from "../../Components/MyCollectionImageView"
 
 interface MyCollectionArtworkGridItemProps {
   artwork: MyCollectionArtworkGridItem_artwork$data
+  myCollectionIsRefreshing?: boolean
 }
 
-const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = ({ artwork }) => {
+const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = ({
+  artwork,
+  myCollectionIsRefreshing,
+}) => {
   const { trackEvent } = useTracking()
   const imageURL =
     artwork.images?.find((i: any) => i?.isDefault)?.url ||
@@ -74,6 +78,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
           aspectRatio={image?.aspectRatio}
           artworkSlug={slug}
           artworkSubmissionId={submissionId}
+          myCollectionIsRefreshing={myCollectionIsRefreshing}
         />
         <Box maxWidth={width} mt={1} style={{ flex: 1 }}>
           <Text lineHeight="18" weight="regular" variant="xs" numberOfLines={2}>
