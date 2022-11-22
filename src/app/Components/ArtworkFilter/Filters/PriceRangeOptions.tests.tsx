@@ -219,7 +219,7 @@ describe("PriceRangeOptions", () => {
 
         const { queryByText } = getTree()
 
-        expect(queryByText("Apply a recent Price Range")).toBeNull()
+        expect(queryByText("Recent price ranges")).toBeNull()
         expect(queryByText("$0–500")).toBeNull()
       })
     })
@@ -240,7 +240,7 @@ describe("PriceRangeOptions", () => {
 
         const { getByText } = getTree()
 
-        expect(getByText("Apply a recent Price Range")).toBeTruthy()
+        expect(getByText("Recent price ranges")).toBeTruthy()
         expect(getByText("$0–500")).toBeTruthy()
         expect(getByText("$1,000–2,000")).toBeTruthy()
         expect(getByText("$3,000+")).toBeTruthy()
@@ -255,7 +255,7 @@ describe("PriceRangeOptions", () => {
 
         const { queryByText } = getTree()
 
-        expect(queryByText("Apply a recent Price Range")).toBeNull()
+        expect(queryByText("Recent price ranges")).toBeNull()
       })
 
       describe("the collector profile-sourced price range", () => {
@@ -324,7 +324,7 @@ describe("PriceRangeOptions", () => {
 
         fireEvent.press(getByText("Clear"))
 
-        expect(queryByText("Apply a recent Price Range")).toBeNull()
+        expect(queryByText("Recent price ranges")).toBeNull()
       })
     })
   })

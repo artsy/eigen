@@ -290,7 +290,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
           {!!enableRecentPriceRanges && priceRanges.length > 0 && (
             <>
               <Flex mx={2} flexDirection="row" justifyContent="space-between" alignItems="center">
-                <Text variant="sm">Apply a recent Price Range</Text>
+                <Text variant="sm">Recent price ranges</Text>
                 <TouchableOpacity
                   onPress={handleClearRecentPriceRanges}
                   hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
