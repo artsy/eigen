@@ -41,6 +41,7 @@ import { SearchResults } from "./SearchResults"
 import { TrendingArtists } from "./TrendingArtists"
 import { AlgoliaIndexKey } from "./types"
 import { PillType } from "./types"
+import { useDisplayCuratedCollections } from "./useDisplayCuratedCollections"
 
 const SearchInputContainer = connectSearchBox(SearchInput)
 
@@ -63,8 +64,7 @@ export const Search: React.FC = () => {
   const indices = system?.algolia?.indices ?? []
   const indiceNames = indices.map((indice) => indice.name)
   const enableMaps = useFeatureFlag("AREnableMapScreen")
-  const displayCuratedCollections =
-    Platform.OS !== "ios" || useFeatureFlag("ARIosSearchTabCuratedCollections")
+  const displayCuratedCollections = useDisplayCuratedCollections()
   const onRefetch = () => {
     if (isRefreshing) {
       return
