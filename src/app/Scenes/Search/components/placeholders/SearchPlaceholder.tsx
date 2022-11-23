@@ -4,49 +4,76 @@ import {
   PlaceholderText,
   ProvidePlaceholderContext,
   RandomWidthPlaceholderText,
-  useMemoizedRandom,
 } from "app/utils/placeholders"
 import { times } from "lodash"
 import { Box, Flex, Join, Spacer } from "palette"
+import { MAX_SHOWN_RECENT_SEARCHES, useRecentSearches } from "../../SearchModel"
 import { useDisplayCuratedCollections } from "../../useDisplayCuratedCollections"
+
+const RecentSearchesPlaceholder = () => {
+  const recentSearches = useRecentSearches(MAX_SHOWN_RECENT_SEARCHES)
+
+  if (recentSearches.length === 0) {
+    return (
+      <>
+        <PlaceholderText width="50%" height={25} />
+        <Spacer mt={1} />
+        <PlaceholderText height={67} />
+        <Spacer mt={1} />
+      </>
+    )
+  }
+
+  return (
+    <>
+      <PlaceholderText width="50%" height={20} />
+      <Spacer mt={1} />
+      {times(recentSearches.length).map((index) => (
+        <Flex key={`search-placeholder-${index}`} flexDirection="row" mb={2}>
+          <PlaceholderBox width={40} height={40} />
+          <Flex flex={1} ml={1}>
+            <PlaceholderRaggedText textHeight={15} numLines={2} />
+          </Flex>
+        </Flex>
+      ))}
+    </>
+  )
+}
+
+const TrendingArtistPlaceholder = () => {
+  return (
+    <>
+      <PlaceholderText width="50%" height={25} />
+      <Flex flexDirection="row" mt={2}>
+        <Join separator={<Spacer ml={1} />}>
+          {times(3).map((index) => (
+            <Flex key={index}>
+              <PlaceholderBox key={index} height={180} width={295} />
+              <Spacer mt={1} />
+              <PlaceholderText width={120} height={20} />
+              <RandomWidthPlaceholderText minWidth={30} maxWidth={90} height={20} />
+            </Flex>
+          ))}
+        </Join>
+      </Flex>
+    </>
+  )
+}
 
 export const SearchPlaceholder: React.FC = () => {
   const displayCuratedCollections = useDisplayCuratedCollections()
 
   return (
     <ProvidePlaceholderContext>
-      <Box p={2} pb={0}>
-        <PlaceholderBox height={46} />
-        <Spacer mt={30} />
-        <PlaceholderText width="50%" height={20} />
-        <Spacer mt={1} />
-        {times(4).map((index) => (
-          <Flex key={`search-placeholder-${index}`} flexDirection="row" mb={2}>
-            <PlaceholderBox width={40} height={40} />
-            <Flex flex={1} ml={1}>
-              <PlaceholderRaggedText textHeight={15} numLines={2} />
-            </Flex>
-          </Flex>
-        ))}
-      </Box>
+      <Box m={2} mb={0}>
+        {/* Search input */}
+        <PlaceholderBox height={50} />
+        <Spacer mt={2} />
 
-      {!!displayCuratedCollections && (
-        <Box mx={2}>
-          <PlaceholderText width="50%" height={20} />
-          <Flex flexDirection="row" mt={2}>
-            <Join separator={<Spacer ml={1} />}>
-              {times(3 + useMemoizedRandom() * 10).map((index) => (
-                <Flex key={index}>
-                  <PlaceholderBox key={index} height={180} width={295} />
-                  <Spacer mt={1} />
-                  <PlaceholderText width={120} height={20} />
-                  <RandomWidthPlaceholderText minWidth={30} maxWidth={90} height={20} />
-                </Flex>
-              ))}
-            </Join>
-          </Flex>
-        </Box>
-      )}
+        <RecentSearchesPlaceholder />
+
+        {!!displayCuratedCollections && <TrendingArtistPlaceholder />}
+      </Box>
     </ProvidePlaceholderContext>
   )
 }
