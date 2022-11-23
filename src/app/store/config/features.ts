@@ -217,6 +217,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     readyForRelease: false,
   },
+  AREnablePanOnStaticHeader: {
+    description: "Enable Scroll/Pan on StaticHeader",
+    showInAdminMenu: true,
+    readyForRelease: false,
+  },
   ARIosSearchTabCuratedCollections: {
     description: "Display curated collection on Search tab on ios",
     showInAdminMenu: true,

@@ -1,20 +1,23 @@
 import { VisualClueName } from "app/store/config/visualClues"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { useUpdateShouldHideBackButton } from "app/utils/hideBackButtonOnScroll"
 import { Schema } from "app/utils/track"
 import { useAutoCollapsingMeasuredView } from "app/utils/useAutoCollapsingMeasuredView"
 import { useGlobalState } from "app/utils/useGlobalState"
 import { Box } from "palette"
 import React, { EffectCallback, useEffect, useMemo, useRef, useState } from "react"
-import { View } from "react-native"
+import { FlatList, View } from "react-native"
 import Animated from "react-native-reanimated"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
 import { useAnimatedValue } from "./reanimatedHelpers"
 import { SnappyHorizontalRail } from "./SnappyHorizontalRail"
+import { StaticHeaderContainer } from "./StaticHeaderContainer"
 import { StickyTabPageContext, useStickyTabPageContext } from "./StickyTabPageContext"
 import { StickyTabPageFlatListContext } from "./StickyTabPageFlatList"
 import { StickyTabPageTabBar } from "./StickyTabPageTabBar"
 
+export type RegisteredListRefs = Record<number, FlatList<any>>
 export interface TabProps {
   initial?: boolean
   title: string
@@ -72,6 +75,8 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
     Array<JSX.Element | null>
   >([])
 
+  const enablePanOnStaticHeader = useFeatureFlag("AREnablePanOnStaticHeader")
+
   const { jsx: staticHeader, nativeHeight: staticHeaderHeight } =
     useAutoCollapsingMeasuredView(staticHeaderContent)
 
@@ -94,6 +99,8 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
   const headerOffsetY = useAnimatedValue(0)
 
   const railRef = useRef<SnappyHorizontalRail>(null)
+
+  const registeredListRefs = useRef<RegisteredListRefs>({})
 
   const shouldHideBackButton = Animated.lessOrEq(headerOffsetY, -10)
   const updateShouldHideBackButton = useUpdateShouldHideBackButton()
@@ -140,6 +147,9 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
           railRef.current?.setOffset(activeTabIndex.current * width)
           stickyRailRef.current?.setOffset(activeTabIndex.current * width)
         },
+        __INTERNAL__registerFlatListRef(ref: typeof FlatList, index: number) {
+          registeredListRefs.current[index] = ref as any
+        },
       }}
     >
       <View style={{ flex: 1, position: "relative", overflow: "hidden" }}>
@@ -158,6 +168,7 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
                     <StickyTabPageFlatListContext.Provider
                       value={{
                         tabIsActive: Animated.eq(index, activeTabIndexNative),
+                        __INTERNAL__indexInRail: index,
                         tabSpecificContentHeight:
                           tabSpecificStickyHeaderContentArray[index].nativeHeight!,
                         setJSX: (jsx) =>
@@ -183,10 +194,17 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
           }}
           pointerEvents="box-none"
         >
-          <Box backgroundColor="white">
-            {staticHeader}
-            {stickyHeader}
-          </Box>
+          {enablePanOnStaticHeader ? (
+            <StaticHeaderContainer registeredListRefs={registeredListRefs.current}>
+              {staticHeader}
+              {stickyHeader}
+            </StaticHeaderContainer>
+          ) : (
+            <Box backgroundColor="white100">
+              {staticHeader}
+              {stickyHeader}
+            </Box>
+          )}
           <SnappyHorizontalRail
             width={width * tabs.length}
             ref={stickyRailRef}
