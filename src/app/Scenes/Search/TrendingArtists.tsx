@@ -4,17 +4,17 @@ import { ArtistCardContainer as ArtistCard } from "app/Components/Home/ArtistRai
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex, Spacer, Spinner, Text } from "palette"
+import { Box, BoxProps, Flex, Spacer, Spinner, Text } from "palette"
 import { usePaginationFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 
-const MAX_TRENDING_ARTTISTS = 20
+const MAX_TRENDING_ARTTISTS_PER_RAIL = 20
 
-interface TrendingArtistsProps {
+interface TrendingArtistsProps extends BoxProps {
   data: TrendingArtists_query$key
 }
 
-export const TrendingArtists: React.FC<TrendingArtistsProps> = ({ data }) => {
+export const TrendingArtists: React.FC<TrendingArtistsProps> = ({ data, ...boxProps }) => {
   const {
     data: result,
     hasNext,
@@ -28,19 +28,23 @@ export const TrendingArtists: React.FC<TrendingArtistsProps> = ({ data }) => {
   }
 
   const loadMore = () => {
-    if (!hasNext || isLoadingNext || nodes.length >= MAX_TRENDING_ARTTISTS) {
+    if (!hasNext || isLoadingNext || nodes.length >= MAX_TRENDING_ARTTISTS_PER_RAIL) {
       return
     }
 
     loadNext(5)
   }
 
+  if (nodes.length === 0) {
+    return null
+  }
+
   return (
-    <>
+    <Box {...boxProps}>
       <Text variant="sm" mx={2}>
         Trending Artists
       </Text>
-      <Spacer mb={2} />
+      <Spacer mb={1} />
 
       <CardRailFlatList
         data={nodes}
@@ -61,7 +65,7 @@ export const TrendingArtists: React.FC<TrendingArtistsProps> = ({ data }) => {
           </>
         }
       />
-    </>
+    </Box>
   )
 }
 
