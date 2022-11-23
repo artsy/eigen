@@ -9,6 +9,7 @@ import { times } from "lodash"
 import { Box, Flex, Join, Spacer } from "palette"
 import { MAX_SHOWN_RECENT_SEARCHES, useRecentSearches } from "../../SearchModel"
 import { useDisplayCuratedCollections } from "../../useDisplayCuratedCollections"
+import { IMAGE_SIZE } from "../SearchResultImage"
 
 const RecentSearchesPlaceholder = () => {
   const recentSearches = useRecentSearches(MAX_SHOWN_RECENT_SEARCHES)
@@ -26,16 +27,18 @@ const RecentSearchesPlaceholder = () => {
 
   return (
     <>
-      <PlaceholderText width="50%" height={20} />
+      <PlaceholderText width="50%" height={25} />
       <Spacer mt={1} />
-      {times(recentSearches.length).map((index) => (
-        <Flex key={`search-placeholder-${index}`} flexDirection="row" mb={2}>
-          <PlaceholderBox width={40} height={40} />
-          <Flex flex={1} ml={1}>
-            <PlaceholderRaggedText textHeight={15} numLines={2} />
+      <Join separator={<Spacer mt={2} />}>
+        {times(recentSearches.length).map((index) => (
+          <Flex key={`search-placeholder-${index}`} height={IMAGE_SIZE} flexDirection="row">
+            <PlaceholderBox width={IMAGE_SIZE} height={IMAGE_SIZE} />
+            <Flex flex={1} ml={1}>
+              <PlaceholderRaggedText textHeight={15} numLines={2} />
+            </Flex>
           </Flex>
-        </Flex>
-      ))}
+        ))}
+      </Join>
     </>
   )
 }
@@ -44,7 +47,7 @@ const TrendingArtistPlaceholder = () => {
   return (
     <>
       <PlaceholderText width="50%" height={25} />
-      <Flex flexDirection="row" mt={2}>
+      <Flex flexDirection="row" mt={1}>
         <Join separator={<Spacer ml={1} />}>
           {times(3).map((index) => (
             <Flex key={index}>
@@ -71,6 +74,7 @@ export const SearchPlaceholder: React.FC = () => {
         <Spacer mt={2} />
 
         <RecentSearchesPlaceholder />
+        <Spacer mt={4} />
 
         {!!displayCuratedCollections && <TrendingArtistPlaceholder />}
       </Box>
