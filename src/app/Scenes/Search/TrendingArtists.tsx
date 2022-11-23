@@ -23,8 +23,8 @@ export const TrendingArtists: React.FC<TrendingArtistsProps> = ({ data }) => {
   } = usePaginationFragment<SearchQuery, TrendingArtists_query$key>(trendingArtistsFragment, data)
   const nodes = extractNodes(result.curatedTrendingArtists)
 
-  const handleCardPress = (slug: string) => {
-    navigate(`/artist/${slug}`)
+  const handleCardPress = (href: string) => {
+    navigate(href)
   }
 
   const loadMore = () => {
@@ -47,9 +47,9 @@ export const TrendingArtists: React.FC<TrendingArtistsProps> = ({ data }) => {
         keyExtractor={(node) => node.internalID}
         onEndReached={loadMore}
         renderItem={({ item }) => {
-          return <ArtistCard artist={item} onPress={() => handleCardPress(item.slug)} />
+          return <ArtistCard artist={item} onPress={() => handleCardPress(item.href!)} />
         }}
-        ItemSeparatorComponent={() => <Spacer width={15} />}
+        ItemSeparatorComponent={() => <Spacer ml={1} />}
         ListFooterComponent={
           <>
             {!!hasNext && (
@@ -74,7 +74,7 @@ const trendingArtistsFragment = graphql`
       edges {
         node {
           internalID
-          slug
+          href
           ...ArtistCard_artist
         }
       }
