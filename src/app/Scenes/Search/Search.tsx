@@ -38,8 +38,10 @@ import { RecentSearches } from "./RecentSearches"
 import { RefetchWhenApiKeyExpiredContainer } from "./RefetchWhenApiKeyExpired"
 import { SearchContext, useSearchProviderValues } from "./SearchContext"
 import { SearchResults } from "./SearchResults"
+import { TrendingArtists } from "./TrendingArtists"
 import { AlgoliaIndexKey } from "./types"
 import { PillType } from "./types"
+import { useDisplayCuratedCollections } from "./useDisplayCuratedCollections"
 
 const SearchInputContainer = connectSearchBox(SearchInput)
 
@@ -62,8 +64,7 @@ export const Search: React.FC = () => {
   const indices = system?.algolia?.indices ?? []
   const indiceNames = indices.map((indice) => indice.name)
   const enableMaps = useFeatureFlag("AREnableMapScreen")
-  const displayCuratedCollections =
-    Platform.OS !== "ios" || useFeatureFlag("ARIosSearchTabCuratedCollections")
+  const displayCuratedCollections = useDisplayCuratedCollections()
   const onRefetch = () => {
     if (isRefreshing) {
       return
@@ -231,21 +232,34 @@ export const Search: React.FC = () => {
               </>
             ) : (
               <Scrollable>
-                <RecentSearches />
+                <HorizontalPadding>
+                  <RecentSearches />
+                </HorizontalPadding>
+
                 {!!displayCuratedCollections && (
                   <>
-                    <Spacer mb={3} />
-                    <CuratedCollections collections={queryData} />
+                    <Spacer mb={4} />
+                    <TrendingArtists data={queryData} mb={4} />
+
+                    {/* TODO: Display curated collections as scrollable rail */}
+                    <HorizontalPadding>
+                      <CuratedCollections collections={queryData} />
+                    </HorizontalPadding>
                   </>
                 )}
+
                 <Spacer mb={3} />
-                {!!enableMaps ? (
-                  <Touchable onPress={() => navigate("/map")}>
-                    <CityGuideCTANew />
-                  </Touchable>
-                ) : (
-                  !isPad() && Platform.OS === "ios" && <CityGuideCTA />
-                )}
+
+                <HorizontalPadding>
+                  {!!enableMaps ? (
+                    <Touchable onPress={() => navigate("/map")}>
+                      <CityGuideCTANew />
+                    </Touchable>
+                  ) : (
+                    !isPad() && Platform.OS === "ios" && <CityGuideCTA />
+                  )}
+                </HorizontalPadding>
+
                 <Spacer mb="40px" />
               </Scrollable>
             )}
@@ -296,8 +310,8 @@ export const SearchScreenQuery = graphql`
         }
       }
     }
-
     ...CuratedCollections_collections
+    ...TrendingArtists_query
   }
 `
 
@@ -312,9 +326,12 @@ const Scrollable = styled(ScrollView).attrs(() => ({
   keyboardShouldPersistTaps: "handled",
 }))`
   flex: 1;
-  padding: 0 20px;
   padding-top: 20px;
 `
+
+const HorizontalPadding: React.FC = ({ children }) => {
+  return <Box px={2}>{children}</Box>
+}
 
 const tracks = {
   tappedPill: (contextModule: ContextModule, subject: string, query: string) => ({

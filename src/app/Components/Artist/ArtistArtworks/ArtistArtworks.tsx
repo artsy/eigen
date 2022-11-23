@@ -204,6 +204,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
             contextScreenOwnerType={OwnerType.artist}
             contextScreenOwnerId={artist.internalID}
             contextScreenOwnerSlug={artist.slug}
+            showSaveIcon
           />
         </>
       )

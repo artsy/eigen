@@ -227,6 +227,17 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     readyForRelease: false,
   },
+  AREnableArtworkGridSaveIcon: {
+    description: "Enable artwork grid save icon",
+    showInAdminMenu: true,
+    readyForRelease: true,
+    echoFlagKey: "AREnableArtworkGridSaveIcon",
+  },
+  AREnableSmallTredingArtistCardSize: {
+    description: "Use small size card for treding artists",
+    showInAdminMenu: true,
+    readyForRelease: false,
+  },
 })
 
 export interface DevToggleDescriptor {

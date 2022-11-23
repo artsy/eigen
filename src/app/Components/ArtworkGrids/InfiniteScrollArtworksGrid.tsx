@@ -84,6 +84,9 @@ export interface Props {
   /** Name of the parent screen's entity where the grid is located. For analytics purposes. */
   contextScreen?: string
 
+  /** Allow users to save artworks that are not lots to their saves & follows */
+  showSaveIcon?: boolean
+
   /** An array of child indices determining which children get docked to the top of the screen when scrolling.  */
   stickyHeaderIndices?: number[]
 
@@ -176,6 +179,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
   isMyCollection = false,
   useParentAwareScrollView = Platform.OS === "android",
   showLoadingSpinner = false,
+  showSaveIcon = false,
   updateRecentSearchesOnTap = false,
   itemComponentProps,
   width,
@@ -299,6 +303,12 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
       for (let row = 0; row < sectionedArtworks[column].length; row++) {
         const artwork = sectionedArtworks[column][row]
         const itemIndex = row * columnCount + column
+
+        const componentSpecificProps = isMyCollection
+          ? {}
+          : {
+              showSaveIcon,
+            }
         const ItemComponent = isMyCollection
           ? MyCollectionArtworkGridItemFragmentContainer
           : Artwork
@@ -323,6 +333,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
             {...itemComponentProps}
             height={imgHeight}
             myCollectionIsRefreshing={myCollectionIsRefreshing}
+            {...componentSpecificProps}
           />
         )
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.
