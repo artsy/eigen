@@ -1,7 +1,7 @@
 import { action, Action } from "easy-peasy"
 import { GlobalStore } from "./GlobalStore"
 
-export const MAX_SHOWN_RECENT_PRICE_RANGES = 3
+export const MAX_SHOWN_RECENT_PRICE_RANGES = 5
 
 export interface RecentPriceRangesModel {
   ranges: string[]

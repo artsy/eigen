@@ -85,25 +85,21 @@ export const features = defineFeatures({
   ARGoogleAuth: {
     readyForRelease: true,
     description: "Enable Google authentication",
-    showInAdminMenu: true,
     echoFlagKey: "ARGoogleAuth",
   },
   AREnableExampleExperiments: {
     // we can remove this as soon as we have a real experiment on Unleash
     readyForRelease: false,
     description: "Show example Unleash experiments",
-    showInAdminMenu: true,
   },
   AREnableQueriesPrefetching: {
     readyForRelease: true,
     description: "Enable query prefetching",
-    showInAdminMenu: true,
     echoFlagKey: "AREnableQueriesPrefetching",
   },
   ARAllowLinkSocialAccountsOnSignUp: {
     readyForRelease: true,
     description: "Allow linking of social accounts on sign up",
-    showInAdminMenu: true,
     echoFlagKey: "ARAllowLinkSocialAccountsOnSignUp",
   },
   AREnableImageSearch: {
@@ -114,7 +110,6 @@ export const features = defineFeatures({
   AREnableMyCollectionSearchBar: {
     readyForRelease: true,
     description: "Enable My Collection search bar",
-    showInAdminMenu: true,
     echoFlagKey: "AREnableMyCollectionSearchBar",
   },
   AREnablePlaceholderLayoutAnimation: {
@@ -125,18 +120,15 @@ export const features = defineFeatures({
   ARDarkModeSupport: {
     readyForRelease: false,
     description: "Support dark mode",
-    showInAdminMenu: true,
   },
   ARShowRequestPriceEstimateBanner: {
     readyForRelease: true,
     description: "Show request price estimate banner",
-    showInAdminMenu: true,
     echoFlagKey: "ARShowRequestPriceEstimateBanner",
   },
   ARShowMyCollectionDemandIndexHints: {
     readyForRelease: true,
     description: "Show demand index hints",
-    showInAdminMenu: true,
     echoFlagKey: "ARShowMyCollectionDemandIndexHints",
   },
   AREnablePriceEstimateRange: {
@@ -147,7 +139,6 @@ export const features = defineFeatures({
   AREnableHomeScreenArtworkRecommendations: {
     readyForRelease: true,
     description: "Enable Home Screen Artwork Recommendations",
-    showInAdminMenu: true,
     echoFlagKey: "AREnableHomeScreenArtworkRecommendations",
   },
   AREnableMapScreen: {
@@ -158,7 +149,6 @@ export const features = defineFeatures({
   AREnableAuctionShareButton: {
     readyForRelease: true,
     description: "Show share button in auction screen",
-    showInAdminMenu: true,
     echoFlagKey: "AREnableAuctionShareButton",
   },
   AREnableNewOpaqueImageComponent: {
@@ -170,24 +160,22 @@ export const features = defineFeatures({
   AREnableConversationalBuyNow: {
     readyForRelease: true,
     description: "Conversational Buy Now",
-    showInAdminMenu: true,
     echoFlagKey: "AREnableConversationalBuyNow",
   },
   AREnableMyCollectionInsights: {
     readyForRelease: true,
     description: "Enable My Collection insights tab",
-    showInAdminMenu: true,
     echoFlagKey: "AREnableMyCollectionInsights",
   },
   AREnableArtworksFromNonArtsyArtists: {
     readyForRelease: false,
     description: "Enable My Collection artworks from non-Artsy artists",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableArtworksFromNonArtsyArtists",
   },
   AREnableArtworksConnectionForAuction: {
     readyForRelease: true,
     description: "Use artworksConnection for Auction screen",
-    showInAdminMenu: true,
     echoFlagKey: "AREnableArtworksConnectionForAuction",
   },
   AREnableActivity: {
@@ -197,14 +185,14 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableActivity",
   },
   AREnableMyCollectionHFOnboarding: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable My Collection home feed onboarding",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableMyCollectionHFOnboarding",
   },
   AREnableCollectionsInOnboarding: {
-    description: "Replace genes with collections in onboarding",
-    showInAdminMenu: true,
     readyForRelease: true,
+    description: "Replace genes with collections in onboarding",
     echoFlagKey: "AREnableCollectionsInOnboarding",
   },
   AREnableNewRequestPriceEstimateLogic: {
@@ -233,6 +221,22 @@ export const features = defineFeatures({
     description: "Enable Scroll/Pan on StaticHeader",
     showInAdminMenu: true,
     readyForRelease: false,
+  },
+  ARIosSearchTabCuratedCollections: {
+    description: "Display curated collection on Search tab on ios",
+    showInAdminMenu: true,
+    readyForRelease: false,
+  },
+  AREnforceLargeNewWorksRail: {
+    description: "Enforce large new works rail",
+    showInAdminMenu: true,
+    readyForRelease: false,
+  },
+  AREnableArtworkGridSaveIcon: {
+    description: "Enable artwork grid save icon",
+    showInAdminMenu: true,
+    readyForRelease: true,
+    echoFlagKey: "AREnableArtworkGridSaveIcon",
   },
 })
 

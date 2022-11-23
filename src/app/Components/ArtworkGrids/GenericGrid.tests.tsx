@@ -1,14 +1,14 @@
-import { renderWithLayout } from "app/tests/renderWithLayout"
+import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import "react-native"
 
 import RelayGenericArtworksGrid, { GenericArtworksGrid } from "./GenericGrid"
 
+jest.unmock("react-relay")
+
 it("renders without throwing an error", () => {
   const artworks = [artwork(), artwork(), artwork()]
 
-  const layout = { width: 768 }
-
-  renderWithLayout(<RelayGenericArtworksGrid artworks={artworks as any} />, layout)
+  renderWithHookWrappersTL(<RelayGenericArtworksGrid artworks={artworks as any} />)
 })
 
 it("handles showing an update when there are new artworks", () => {

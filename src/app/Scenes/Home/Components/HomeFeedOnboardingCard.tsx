@@ -11,6 +11,7 @@ export interface HomeFeedOnboardingCardProps {
   image: ImageSourcePropType
   buttonText: string
   onPress: () => void
+  testID: string
 }
 
 export const HomeFeedOnboardingCard: React.FC<HomeFeedOnboardingCardProps> = ({
@@ -19,10 +20,11 @@ export const HomeFeedOnboardingCard: React.FC<HomeFeedOnboardingCardProps> = ({
   image,
   buttonText,
   onPress,
+  testID,
 }) => {
   return (
     <Touchable haptic="impactMedium" onPress={onPress}>
-      <Flex width={CARD_WIDTH} testID="my-collection-hf-onboadring-card">
+      <Flex width={CARD_WIDTH} testID={testID}>
         <Image
           width={CARD_WIDTH}
           source={image}

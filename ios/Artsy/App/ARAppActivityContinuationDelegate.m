@@ -55,8 +55,16 @@ static  NSString *SailthruLinkDomain = @"link.artsy.net";
 
 static void
 DecodeURL(NSURL *URL, void (^callback)(NSURL *URL)) {
-    // TODO: Decode Braze url
-    callback(URL);
+    if ([URL.host isEqualToString:@"click.artsy.net"]) {
+        NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithURL:URL completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if (response.URL) {
+                callback(response.URL);
+            }
+        }];
+        [task resume];
+    } else {
+        callback(URL);
+    }
 }
 
 @end

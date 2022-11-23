@@ -730,7 +730,6 @@ describe("App version Versions.AddSubmissionIdForMyCollection", () => {
     expect(migratedState.artworkSubmission.submission.submissionIdForMyCollection).toEqual("")
   })
 })
-
 describe("App version Versions.AddRecentPriceRangesModel", () => {
   const migrationToTest = Versions.AddRecentPriceRangesModel
 
@@ -746,5 +745,23 @@ describe("App version Versions.AddRecentPriceRangesModel", () => {
     }) as any
 
     expect(migratedState.recentPriceRanges.ranges).toEqual([])
+  })
+})
+
+describe("App version Versions.AddUserPreferredPriceRange", () => {
+  const migrationToTest = Versions.AddUserPreferredPriceRange
+
+  it("adds priceRange details to state", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.userPrefs.priceRange).toEqual("*-*")
   })
 })

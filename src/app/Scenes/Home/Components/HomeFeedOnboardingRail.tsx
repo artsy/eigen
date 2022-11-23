@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { HomeFeedOnboardingRail_onboardingModule$data } from "__generated__/HomeFeedOnboardingRail_onboardingModule.graphql"
 import { EmbeddedCarousel } from "app/Components/EmbeddedCarousel"
 import { switchTab } from "app/navigation/navigate"
@@ -5,6 +6,7 @@ import { Flex } from "palette"
 import React, { useState } from "react"
 import { ImageSourcePropType } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 import { HomeFeedModalCarousel } from "./HomeFeedModalCarousel/HomeFeedModalCarousel"
 import { HomeFeedOnboardingCard } from "./HomeFeedOnboardingCard"
 
@@ -30,6 +32,7 @@ interface OnboardingDataItem {
 
 export const HomeFeedOnboardingRail: React.FC<HomeFeedOnboardingRailProps> = (props) => {
   const { mb, title, onboardingModule } = props
+  const { trackEvent } = useTracking()
 
   const [isMyCollectionModalVisible, setIsMyCollectionModalVisible] = useState(false)
   const onboardingCardsData: OnboardingDataItem[] = [
@@ -48,7 +51,9 @@ export const HomeFeedOnboardingRail: React.FC<HomeFeedOnboardingRailProps> = (pr
             buttonText="Explore My Collection"
             onPress={() => {
               setIsMyCollectionModalVisible(true)
+              trackEvent(tracks.tappedExploreMyCollection())
             }}
+            testID="my-collection-hf-onboadring-card-my-collection"
           />
         </>
       ),
@@ -64,6 +69,7 @@ export const HomeFeedOnboardingRail: React.FC<HomeFeedOnboardingRailProps> = (pr
           onPress={() => {
             switchTab("sell")
           }}
+          testID="my-collection-hf-onboadring-card-swa"
         />
       ),
     },
@@ -96,3 +102,13 @@ export const HomeFeedOnboardingRailFragmentContainer = createFragmentContainer(
     `,
   }
 )
+
+const tracks = {
+  tappedExploreMyCollection: () => ({
+    action: ActionType.tappedExploreMyCollection,
+    context_screen: OwnerType.home,
+    context_screen_owner_type: OwnerType.home,
+    context_module: ContextModule.doMoreOnArtsy,
+    destination_screen_owner_type: OwnerType.myCollectionOnboarding,
+  }),
+}
