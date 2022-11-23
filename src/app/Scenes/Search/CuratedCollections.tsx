@@ -16,8 +16,12 @@ export const CuratedCollections: React.FC<CuratedCollectionsProps> = ({ collecti
       <SectionTitle title="Artsy Curated Collections" />
 
       <Join separator={<Spacer mb={2} />}>
-        {data.collections?.map((collection) => (
-          <CuratedCollectionItem key={collection!.internalID} collection={collection!} />
+        {data.collections?.map((collection, position) => (
+          <CuratedCollectionItem
+            key={collection!.internalID}
+            collection={collection!}
+            position={position}
+          />
         ))}
       </Join>
     </>
