@@ -4,10 +4,12 @@ import { ArtistCardContainer as ArtistCard } from "app/Components/Home/ArtistRai
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { Box, BoxProps, Flex, Spacer, Spinner } from "palette"
 import { usePaginationFragment } from "react-relay"
 import { graphql } from "relay-runtime"
+import { TrendingArtistCard } from "./components/TrendingArtistCard"
 
 const MAX_TRENDING_ARTTISTS_PER_RAIL = 20
 
@@ -16,6 +18,7 @@ interface TrendingArtistsProps extends BoxProps {
 }
 
 export const TrendingArtists: React.FC<TrendingArtistsProps> = ({ data, ...boxProps }) => {
+  const useSmallSizeCard = useFeatureFlag("AREnableSmallTredingArtistCardSize")
   const {
     data: result,
     hasNext,
@@ -48,16 +51,21 @@ export const TrendingArtists: React.FC<TrendingArtistsProps> = ({ data, ...boxPr
 
       <CardRailFlatList
         data={nodes}
+        initialNumToRender={useSmallSizeCard ? 3 : 2}
         keyExtractor={(node) => node.internalID}
         onEndReached={loadMore}
         renderItem={({ item }) => {
+          if (useSmallSizeCard) {
+            return <TrendingArtistCard artist={item} />
+          }
+
           return <ArtistCard artist={item} onPress={() => handleCardPress(item.href!)} />
         }}
         ItemSeparatorComponent={() => <Spacer ml={1} />}
         ListFooterComponent={
           <>
             {!!hasNext && (
-              <Flex justifyContent="center" mx={3} height="200">
+              <Flex justifyContent="center" mx={3} height={useSmallSizeCard ? 125 : 200}>
                 <Spinner />
               </Flex>
             )}
@@ -80,6 +88,7 @@ const trendingArtistsFragment = graphql`
           internalID
           href
           ...ArtistCard_artist
+          ...TrendingArtistCard_artist
         }
       }
     }
