@@ -2,9 +2,10 @@ import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { TrendingArtists_query$key } from "__generated__/TrendingArtists_query.graphql"
 import { ArtistCardContainer as ArtistCard } from "app/Components/Home/ArtistRails/ArtistCard"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
+import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Box, BoxProps, Flex, Spacer, Spinner, Text } from "palette"
+import { Box, BoxProps, Flex, Spacer, Spinner } from "palette"
 import { usePaginationFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 
@@ -41,10 +42,9 @@ export const TrendingArtists: React.FC<TrendingArtistsProps> = ({ data, ...boxPr
 
   return (
     <Box {...boxProps}>
-      <Text variant="sm" mx={2}>
-        Trending Artists
-      </Text>
-      <Spacer mb={1} />
+      <Box mx={2} mb={1}>
+        <SectionTitle title="Trending Artists" />
+      </Box>
 
       <CardRailFlatList
         data={nodes}
