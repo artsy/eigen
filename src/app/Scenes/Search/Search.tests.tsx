@@ -61,6 +61,7 @@ describe("Search Screen", () => {
 
   beforeEach(() => {
     require("app/relay/createEnvironment").reset()
+    ;(isPad as jest.Mock).mockReset()
     mockEnvironment = require("app/relay/createEnvironment").defaultEnvironment
   })
 
@@ -103,7 +104,7 @@ describe("Search Screen", () => {
 
   it("does not show city guide entrance when on iPad", async () => {
     const isPadMock = isPad as jest.Mock
-    isPadMock.mockImplementationOnce(() => true)
+    isPadMock.mockImplementation(() => true)
     renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
@@ -123,7 +124,7 @@ describe("Search Screen", () => {
       },
     })
     const isPadMock = isPad as jest.Mock
-    isPadMock.mockImplementationOnce(() => false)
+    isPadMock.mockImplementation(() => false)
     renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
