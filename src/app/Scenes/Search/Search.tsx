@@ -41,7 +41,7 @@ import { SearchResults } from "./SearchResults"
 import { TrendingArtists } from "./TrendingArtists"
 import { AlgoliaIndexKey } from "./types"
 import { PillType } from "./types"
-import { useDisplayCuratedCollections } from "./useDisplayCuratedCollections"
+import { useSearchDiscoveryContentEnabled } from "./useSearchDiscoveryContentEnabled"
 
 const SearchInputContainer = connectSearchBox(SearchInput)
 
@@ -64,7 +64,7 @@ export const Search: React.FC = () => {
   const indices = system?.algolia?.indices ?? []
   const indiceNames = indices.map((indice) => indice.name)
   const enableMaps = useFeatureFlag("AREnableMapScreen")
-  const displayCuratedCollections = useDisplayCuratedCollections()
+  const isSearchDiscoveryContentEnabled = useSearchDiscoveryContentEnabled()
   const onRefetch = () => {
     if (isRefreshing) {
       return
@@ -236,7 +236,7 @@ export const Search: React.FC = () => {
                   <RecentSearches />
                 </HorizontalPadding>
 
-                {!!displayCuratedCollections && (
+                {!!isSearchDiscoveryContentEnabled && (
                   <>
                     <Spacer mb={4} />
                     <TrendingArtists data={queryData} mb={4} />

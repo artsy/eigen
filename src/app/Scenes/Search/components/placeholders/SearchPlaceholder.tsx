@@ -8,7 +8,7 @@ import {
 import { times } from "lodash"
 import { Box, Flex, Join, Spacer } from "palette"
 import { MAX_SHOWN_RECENT_SEARCHES, useRecentSearches } from "../../SearchModel"
-import { useDisplayCuratedCollections } from "../../useDisplayCuratedCollections"
+import { useSearchDiscoveryContentEnabled } from "../../useSearchDiscoveryContentEnabled"
 import { IMAGE_SIZE } from "../SearchResultImage"
 
 const RecentSearchesPlaceholder = () => {
@@ -64,7 +64,7 @@ const TrendingArtistPlaceholder = () => {
 }
 
 export const SearchPlaceholder: React.FC = () => {
-  const displayCuratedCollections = useDisplayCuratedCollections()
+  const isSearchDiscoveryContentEnabled = useSearchDiscoveryContentEnabled()
 
   return (
     <ProvidePlaceholderContext>
@@ -76,7 +76,7 @@ export const SearchPlaceholder: React.FC = () => {
         <RecentSearchesPlaceholder />
         <Spacer mt={4} />
 
-        {!!displayCuratedCollections && <TrendingArtistPlaceholder />}
+        {!!isSearchDiscoveryContentEnabled && <TrendingArtistPlaceholder />}
       </Box>
     </ProvidePlaceholderContext>
   )
