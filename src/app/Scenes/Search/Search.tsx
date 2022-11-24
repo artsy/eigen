@@ -240,11 +240,7 @@ export const Search: React.FC = () => {
                   <>
                     <Spacer mb={4} />
                     <TrendingArtists data={queryData} mb={4} />
-
-                    {/* TODO: Display curated collections as scrollable rail */}
-                    <HorizontalPadding>
-                      <CuratedCollections collections={queryData} />
-                    </HorizontalPadding>
+                    <CuratedCollections collections={queryData} />
                   </>
                 )}
 
