@@ -7,7 +7,7 @@ So you want to write tests!
 
 ## Test helpers and wrappers, when to use them, and good examples
 
-- `extractTest` takes a component and returns any string that exists there, whether it's on a title, View or button. You can also check `extractTest.tests.tsx`.
+- `extractText` takes a component and returns any string that exists there, whether it's on a title, View or button. You can also check `extractTest.tests.tsx`.
 
 - `renderWithWrappers` Can be used on all components. Our default method for using a component. wraps the component with a number of wrappers such as TrackingProvider, GlobalStoreProvider, SafeAreaProvider, etc. Using `testing library`. See the list of wrappers [here](https://github.com/artsy/eigen/blob/main/src/app/tests/renderWithWrappers.tsx#L19-L25).
 
@@ -23,7 +23,7 @@ So you want to write tests!
 
 - `resolveMostRecentRelayOperation` resolves the query request. We always put it after rendering a component that has relay requests. Your rendered component makes a request and we use this function in tests to resolve it. Example file: [Inbox.tests.tsx](https://github.com/artsy/eigen/blob/c96dd0807555d69ca2e8655dc68085276d249080/src/app/Containers/Inbox.tests.tsx)
 
-- `rejectMostRecentRelayOperation` for example if network is off / bad / you have a server error. Example: [FollowArtistLink.tests.tsx](**add link here**)
+- `rejectMostRecentRelayOperation` for example if network is off / bad / you have a server error. Example: [FollowArtistLink.tests.tsx](https://github.com/artsy/eigen/blob/cfcdd1429732ea04dc26134e1bf4a4d4cb96f16e/src/app/Scenes/Artwork/Components/FollowArtistLink.tests.tsx)
 
 - `flushPromiseQueue` This is a hack - try to avoid it if possible.
 
