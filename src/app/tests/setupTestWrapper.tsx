@@ -53,6 +53,9 @@ export const setupTestWrapperTL = <T extends OperationType>({
   return { renderWithRelay }
 }
 
+/**
+ * @deprecated avoid using this, use setupTestWrapperTL (above) instead.
+ */
 export const setupTestWrapper = <T extends OperationType>({
   Component,
   query,
