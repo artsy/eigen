@@ -9,9 +9,17 @@ So you want to write tests!
 
 - We refer to this guide 👉 [How should I query?](https://callstack.github.io/react-native-testing-library/docs/how-should-i-query/) from `@testing-library/react-native` for querying components
 
+Based on the [Guiding Principles](https://testing-library.com/docs/guiding-principles/), your test should resemble how users interact with your code (component, page, etc.) as much as possible.
+
+Therefore we prefer using `screen.getByText`, `screen.getByDisplayValue`, etc, and as a last resort use a `testID` with `screen.getByTestId`.
+
 In our code base there is some "Old fashioned" testing used for Class components for example since they can only be used using the old way in combination with QueryRenderer etc
 
 The "new fashion" testing uses > relay v13 and we now prefer to use hooks whenever possible. We would for example use `useLazyLoadQuery` instead of a `QueryRenderer`.
+
+- [`relay-test-utils`](https://relay.dev/docs/guides/testing-relay-components/) is the framework we use for testing relay components, creating mock environments etc.
+
+- We don’t use snapshot tests; they produce too much churn for too little value. It’s okay to test that a component doesn’t throw when rendered, but use [`extractText`](https://github.com/artsy/eigen/blob/4c7c9be69ab1c2095f4d2fed11a040b1bde6eba8/src/lib/tests/extractText.ts) (or similar) to test the actual component tree.
 
 Our preferred methods to use are marked with a ⭐️, while the ones we'd like to avoid are marked as ❗️ depracated.
 
@@ -26,7 +34,7 @@ New fashion Example: [ArtworkConsignments.tests.tsx](https://github.com/artsy/ei
 Old fashioned: You can use a TestRendered to wrap your component with a QueryRenderer and pass it the test query data.
 Old fashion Example: [Inbox.tests.tsx](https://github.com/artsy/eigen/blob/c96dd0807555d69ca2e8655dc68085276d249080/src/app/Containers/Inbox.tests.tsx)
 
-- ⭐️ `renderWithWrappers` Our default method for using a component. Can be used on all components. wraps the component with a number of wrappers such as TrackingProvider, GlobalStoreProvider, SafeAreaProvider, etc. Using `testing library`. See the list of wrappers [here](https://github.com/artsy/eigen/blob/main/src/app/tests/renderWithWrappers.tsx#L19-L25).
+- ⭐️ [`renderWithWrappers`](https://github.com/artsy/eigen/blob/main/src/app/tests/renderWithWrappers.tsx#L88-L103) Our default method for using a component. Can be used on all components. wraps the component with a number of wrappers such as TrackingProvider, GlobalStoreProvider, SafeAreaProvider, etc. Using `testing library`. See the list of wrappers [here](https://github.com/artsy/eigen/blob/main/src/app/tests/renderWithWrappers.tsx#L19-L25).
 
 - ⭐️ `renderWithHookWrappersTL` Wraps the component with a relay hook environment, and a Suspense fallback. Example: [Activity.tests.tsx](https://github.com/artsy/eigen/blob/1a611488042f6eccfc62862fddf7d06a17087f0e/src/app/Scenes/Activity/Activity.tests.tsx)
 
@@ -55,11 +63,11 @@ t gives you access to all the [queries](https://callstack.github.io/react-native
 
 Suggestion: Would it make sense to either remove this abstraction alltogether, or suggest it as the main course of action?
 
-- `resolveMostRecentRelayOperation` resolves the query request. We use it after rendering a component that has relay requests. Your rendered component makes a request and we use this function in tests to resolve it. Example file: [Inbox.tests.tsx](https://github.com/artsy/eigen/blob/c96dd0807555d69ca2e8655dc68085276d249080/src/app/Containers/Inbox.tests.tsx)
+- [`resolveMostRecentRelayOperation`](https://github.com/artsy/eigen/blob/main/src/app/tests/resolveMostRecentRelayOperation.ts#L51-L64) resolves the query request. We use it after rendering a component that has relay requests. Your rendered component makes a request and we use this function in tests to resolve it. Example file: [Inbox.tests.tsx](https://github.com/artsy/eigen/blob/c96dd0807555d69ca2e8655dc68085276d249080/src/app/Containers/Inbox.tests.tsx)
 
-- `rejectMostRecentRelayOperation` for example if network is off / bad / you have a server error. Example: [FollowArtistLink.tests.tsx](https://github.com/artsy/eigen/blob/cfcdd1429732ea04dc26134e1bf4a4d4cb96f16e/src/app/Scenes/Artwork/Components/FollowArtistLink.tests.tsx)
+- [`rejectMostRecentRelayOperation`](https://github.com/artsy/eigen/blob/main/src/app/tests/rejectMostRecentRelayOperation.ts) for example if network is off / bad / you have a server error. Example: [FollowArtistLink.tests.tsx](https://github.com/artsy/eigen/blob/cfcdd1429732ea04dc26134e1bf4a4d4cb96f16e/src/app/Scenes/Artwork/Components/FollowArtistLink.tests.tsx)
 
-- `flushPromiseQueue` This is a hack - try to avoid it if possible.
+- [`flushPromiseQueue`](https://github.com/artsy/eigen/blob/476c3a280a8126056b1d093b51db3e4eba5dbeb2/src/app/tests/flushPromiseQueue.ts) This is a hack - try to avoid it if possible.
 
 flushPromiseQueue will resolve all promise operations.
 

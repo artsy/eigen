@@ -154,25 +154,7 @@ Refactoring components using HoCs in favour of hooks is encouraged.
 
 ### Testing
 
-We currently use [`@testing-library/react-native`](https://testing-library.com/docs/react-native-testing-library/intro/#:~:text=The%20React%20Native%20Testing%20Library,that%20encourages%20better%20testing%20practices.) as our preferred way of testing.
-
-But we also use `test-renderer` (in order of preference), that we'd ultimately like to remove.
-
-- For setting up a test environment and mocking requests:
-
-  - [`renderWithWrappers`](https://github.com/artsy/eigen/blob/main/src/app/tests/renderWithWrappers.tsx#L88-L103) is our preferred test render helper
-  - [`resolveMostRecentRelayOperation`](https://github.com/artsy/eigen/blob/main/src/app/tests/resolveMostRecentRelayOperation.ts#L51-L64) is our helper for resolving relay queries.
-  - [`rejectMostRecentRelayOperation`](https://github.com/artsy/eigen/blob/main/src/app/tests/rejectMostRecentRelayOperation.ts) is our helper for rejecting relay queries.
-  - [`relay-test-utils`](https://relay.dev/docs/guides/testing-relay-components/) is the preferred toolset.
-  - [`flushPromiseQueue`](https://github.com/artsy/eigen/blob/476c3a280a8126056b1d093b51db3e4eba5dbeb2/src/app/tests/flushPromiseQueue.ts) may be necessary to force mocked Relay responses to resolve in synchronous test cases.
-
-- We write native unit tests when we work with native code
-- We don’t use snapshot tests; they produce too much churn for too little value. It’s okay to test that a component doesn’t throw when rendered, but use [`extractText`](https://github.com/artsy/eigen/blob/4c7c9be69ab1c2095f4d2fed11a040b1bde6eba8/src/lib/tests/extractText.ts) (or similar) to test the actual component tree.
-
-#### How to write tests
-
-Based on the [Guiding Principles](https://testing-library.com/docs/guiding-principles/), your test should resemble how users interact with your code (component, page, etc.) as much as possible. Therefore we prefer using `screen.getByText`, `screen.getByDisplayValue`, etc, and as a last resort use a `testID` with `screen.getByTestId`.
-You can read more about that [here](https://callstack.github.io/react-native-testing-library/docs/how-should-i-query/).
+Please read more about testing here [/docs/testing.md]
 
 ### Navigation
 
