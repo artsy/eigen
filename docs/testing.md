@@ -9,7 +9,7 @@ So you want to write tests!
 
 - `extractTest` takes a component and returns any string that exists there, whether it's on a title, View or button. You can also check `extractTest.tests.tsx`.
 
-- `renderWithWrappers` Can be used on all components. Our default method for using a component. wraps the component with a number of wrappers such as TrackingProvider, GlobalStoreProvider, SafeAreaProvider, etc. Using `testing library`.
+- `renderWithWrappers` Can be used on all components. Our default method for using a component. wraps the component with a number of wrappers such as TrackingProvider, GlobalStoreProvider, SafeAreaProvider, etc. Using `testing library`. See the list of wrappers [here](https://github.com/artsy/eigen/blob/main/src/app/tests/renderWithWrappers.tsx#L19-L25).
 
 - `renderWithWrappersLEGACY`depracated - avoid this ❗️ uses ReactTestRenderer
 
