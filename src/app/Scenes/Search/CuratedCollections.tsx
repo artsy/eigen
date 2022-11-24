@@ -2,15 +2,18 @@ import { CuratedCollections_collections$key } from "__generated__/CuratedCollect
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { compact } from "lodash"
-import { Box, Spacer } from "palette"
+import { Box, BoxProps, Spacer } from "palette"
 import { graphql, useFragment } from "react-relay"
 import { CuratedCollectionItem } from "./CuratedCollectionItem"
 
-interface CuratedCollectionsProps {
+interface CuratedCollectionsProps extends BoxProps {
   collections: CuratedCollections_collections$key
 }
 
-export const CuratedCollections: React.FC<CuratedCollectionsProps> = ({ collections }) => {
+export const CuratedCollections: React.FC<CuratedCollectionsProps> = ({
+  collections,
+  ...boxProps
+}) => {
   const data = useFragment(CuratedCollectionsFragment, collections)
   const filledCollections = compact(data.collections)
 
@@ -19,7 +22,7 @@ export const CuratedCollections: React.FC<CuratedCollectionsProps> = ({ collecti
   }
 
   return (
-    <>
+    <Box {...boxProps}>
       <Box mx={2}>
         <SectionTitle title="Artsy Collections" />
       </Box>
@@ -32,7 +35,7 @@ export const CuratedCollections: React.FC<CuratedCollectionsProps> = ({ collecti
         }}
         ItemSeparatorComponent={() => <Spacer ml={1} />}
       />
-    </>
+    </Box>
   )
 }
 
