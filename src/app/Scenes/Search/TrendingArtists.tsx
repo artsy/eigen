@@ -4,8 +4,8 @@ import { ArtistCardContainer as ArtistCard } from "app/Components/Home/ArtistRai
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
+import { isPad } from "app/utils/hardware"
 import { Box, BoxProps, Flex, Spacer, Spinner } from "palette"
 import { usePaginationFragment } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -18,7 +18,7 @@ interface TrendingArtistsProps extends BoxProps {
 }
 
 export const TrendingArtists: React.FC<TrendingArtistsProps> = ({ data, ...boxProps }) => {
-  const useSmallSizeCard = useFeatureFlag("AREnableSmallTredingArtistCardSize")
+  const useSmallSizeCard = isPad()
   const {
     data: result,
     hasNext,
