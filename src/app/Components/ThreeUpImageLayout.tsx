@@ -6,7 +6,8 @@ interface ThreeUpImageLayoutProps {
   imageURLs: string[]
 }
 
-export const ITEM_HEIGHT = 180
+const LARGE_IMAGE_SIZE = 180
+const SMALL_IMAGE_SIZE = LARGE_IMAGE_SIZE / 2
 
 export const ThreeUpImageLayout: React.FC<ThreeUpImageLayoutProps> = ({ imageURLs }) => {
   // Ensure we have an array of exactly 3 URLs, copying over the last image if we have less than 3
@@ -16,18 +17,22 @@ export const ThreeUpImageLayout: React.FC<ThreeUpImageLayoutProps> = ({ imageURL
 
   return (
     <ArtworkImageContainer>
-      <ImageView width={ITEM_HEIGHT} height={ITEM_HEIGHT} imageURL={artworkImageURLs[0]} />
+      <ImageView
+        width={LARGE_IMAGE_SIZE}
+        height={LARGE_IMAGE_SIZE}
+        imageURL={artworkImageURLs[0]}
+      />
       <Division />
       <Box>
         <ImageView
-          width={ITEM_HEIGHT / 2}
-          height={ITEM_HEIGHT / 2}
+          width={SMALL_IMAGE_SIZE}
+          height={SMALL_IMAGE_SIZE}
           imageURL={artworkImageURLs[1]}
         />
         <Division horizontal />
         <ImageView
-          width={ITEM_HEIGHT / 2}
-          height={ITEM_HEIGHT / 2}
+          width={SMALL_IMAGE_SIZE}
+          height={SMALL_IMAGE_SIZE}
           imageURL={artworkImageURLs[2]}
         />
       </Box>
@@ -37,7 +42,7 @@ export const ThreeUpImageLayout: React.FC<ThreeUpImageLayoutProps> = ({ imageURL
 
 export const ArtworkImageContainer = styled.View`
   width: 100%;
-  height: ${ITEM_HEIGHT}px;
+  height: ${LARGE_IMAGE_SIZE}px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
