@@ -3,6 +3,10 @@
 So you want to write tests!
 
 - We use `@testing-library/react-native` and our helper `renderWithWrappers`. In the past we used ReactTestRenderer which we try to now move away from.
+
+- Get started https://callstack.github.io/react-native-testing-library/docs/getting-started/
+- API Queries https://callstack.github.io/react-native-testing-library/docs/api-queries/
+
 - We refer to this guide 👉 [How should I query?](https://callstack.github.io/react-native-testing-library/docs/how-should-i-query/) from `@testing-library/react-native` for querying components
 
 In our code base there is some "Old fashioned" testing used for Class components for example since they can only be used using the old way in combination with QueryRenderer etc
