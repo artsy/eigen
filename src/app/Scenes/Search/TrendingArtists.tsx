@@ -18,7 +18,7 @@ interface TrendingArtistsProps extends BoxProps {
 }
 
 export const TrendingArtists: React.FC<TrendingArtistsProps> = ({ data, ...boxProps }) => {
-  const useSmallSizeCard = isPad()
+  const useLargeSizeCard = isPad()
   const {
     data: result,
     hasNext,
@@ -51,15 +51,15 @@ export const TrendingArtists: React.FC<TrendingArtistsProps> = ({ data, ...boxPr
 
       <CardRailFlatList
         data={nodes}
-        initialNumToRender={useSmallSizeCard ? 3 : 2}
+        initialNumToRender={useLargeSizeCard ? 3 : 4}
         keyExtractor={(node) => node.internalID}
         onEndReached={loadMore}
         renderItem={({ item }) => {
-          if (useSmallSizeCard) {
-            return <TrendingArtistCard artist={item} />
+          if (useLargeSizeCard) {
+            return <ArtistCard artist={item} onPress={() => handleCardPress(item.href!)} />
           }
 
-          return <ArtistCard artist={item} onPress={() => handleCardPress(item.href!)} />
+          return <TrendingArtistCard artist={item} />
         }}
         ItemSeparatorComponent={() => <Spacer ml={1} />}
         ListFooterComponent={!!hasNext ? <LoadingIndicator /> : null}
