@@ -219,7 +219,7 @@
     "@react-native-community/cli-platform-ios": "6.2.0",
     "@testing-library/jest-native": "5.1.2",
     "@testing-library/react-hooks": "8.0.1",
-    "@testing-library/react-native": "11.4.0",
+    "@testing-library/react-native": "11.5.0",
     "@tsconfig/react-native": "2.0.2",
     "@types/argparse": "2.0.10",
     "@types/autosuggest-highlight": "3.1.1",
