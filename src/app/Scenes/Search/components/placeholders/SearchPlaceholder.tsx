@@ -1,3 +1,4 @@
+import { isPad } from "app/utils/hardware"
 import {
   PlaceholderBox,
   PlaceholderRaggedText,
@@ -19,8 +20,7 @@ const RecentSearchesPlaceholder = () => {
       <>
         <PlaceholderText width="50%" height={25} />
         <Spacer mt={1} />
-        <PlaceholderText height={67} />
-        <Spacer mt={1} />
+        <PlaceholderText height={66} marginBottom={0} />
       </>
     )
   }
@@ -43,7 +43,31 @@ const RecentSearchesPlaceholder = () => {
   )
 }
 
+const TrendingArtistLargeCard = () => {
+  return (
+    <>
+      <PlaceholderBox width={295} height={180} />
+      <Spacer mt={1} />
+      <PlaceholderText width={120} height={20} />
+      <RandomWidthPlaceholderText minWidth={30} maxWidth={90} height={20} />
+    </>
+  )
+}
+
+const TrendingArtistSmallCard = () => {
+  return (
+    <>
+      <PlaceholderBox width={140} height={105} />
+      <Spacer mt={1} />
+      <PlaceholderText width={120} height={15} />
+      <RandomWidthPlaceholderText minWidth={30} maxWidth={90} height={15} />
+    </>
+  )
+}
+
 const TrendingArtistPlaceholder = () => {
+  const isTablet = isPad()
+
   return (
     <>
       <PlaceholderText width="50%" height={25} />
@@ -51,10 +75,7 @@ const TrendingArtistPlaceholder = () => {
         <Join separator={<Spacer ml={1} />}>
           {times(3).map((index) => (
             <Flex key={index}>
-              <PlaceholderBox key={index} height={180} width={295} />
-              <Spacer mt={1} />
-              <PlaceholderText width={120} height={20} />
-              <RandomWidthPlaceholderText minWidth={30} maxWidth={90} height={20} />
+              {isTablet ? <TrendingArtistLargeCard /> : <TrendingArtistSmallCard />}
             </Flex>
           ))}
         </Join>
