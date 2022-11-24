@@ -236,15 +236,15 @@ export const Search: React.FC = () => {
                   <RecentSearches />
                 </HorizontalPadding>
 
-                {!!isSearchDiscoveryContentEnabled && (
+                {!!isSearchDiscoveryContentEnabled ? (
                   <>
                     <Spacer mb={4} />
                     <TrendingArtists data={queryData} mb={4} />
-                    <CuratedCollections collections={queryData} />
+                    <CuratedCollections collections={queryData} mb={4} />
                   </>
+                ) : (
+                  <Spacer mb={4} />
                 )}
-
-                <Spacer mb={3} />
 
                 <HorizontalPadding>
                   {!!enableMaps ? (
@@ -256,7 +256,7 @@ export const Search: React.FC = () => {
                   )}
                 </HorizontalPadding>
 
-                <Spacer mb="40px" />
+                <Spacer mb={4} />
               </Scrollable>
             )}
           </Flex>
