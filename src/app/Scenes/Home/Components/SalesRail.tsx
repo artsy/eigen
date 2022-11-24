@@ -1,13 +1,10 @@
 import { SalesRail_salesModule$data } from "__generated__/SalesRail_salesModule.graphql"
+import { ArtworkImagesComposition } from "app/Components/ArtworkImagesComposition"
 import {
-  CARD_RAIL_ARTWORKS_HEIGHT as ARTWORKS_HEIGHT,
-  CardRailArtworkImageContainer as ArtworkImageContainer,
   CardRailCard,
-  CardRailDivision as Division,
   CardRailMetadataContainer as MetadataContainer,
 } from "app/Components/Home/CardRailCard"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
-import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
@@ -84,11 +81,6 @@ const SalesRail: React.FC<Props & RailScrollProps> = ({
           // still be cautious to avoid crashes if this assumption is broken.
           const availableArtworkImageURLs = compact(imageURLs)
 
-          // Ensure we have an array of exactly 3 URLs, copying over the last image if we have less than 3
-          const artworkImageURLs = [null, null, null].reduce((acc: string[], _, i) => {
-            return [...acc, availableArtworkImageURLs[i] || acc[i - 1]]
-          }, [])
-
           return (
             <CardRailCard
               key={result?.href!}
@@ -103,27 +95,7 @@ const SalesRail: React.FC<Props & RailScrollProps> = ({
               }}
             >
               <View>
-                <ArtworkImageContainer>
-                  <ImageView
-                    width={ARTWORKS_HEIGHT}
-                    height={ARTWORKS_HEIGHT}
-                    imageURL={artworkImageURLs[0]}
-                  />
-                  <Division />
-                  <View>
-                    <ImageView
-                      width={ARTWORKS_HEIGHT / 2}
-                      height={ARTWORKS_HEIGHT / 2}
-                      imageURL={artworkImageURLs[1]}
-                    />
-                    <Division horizontal />
-                    <ImageView
-                      width={ARTWORKS_HEIGHT / 2}
-                      height={ARTWORKS_HEIGHT / 2}
-                      imageURL={artworkImageURLs[2]}
-                    />
-                  </View>
-                </ArtworkImageContainer>
+                <ArtworkImagesComposition imageURLs={availableArtworkImageURLs} />
                 <MetadataContainer>
                   <Text numberOfLines={2} lineHeight="20" variant="sm">
                     {result?.name}
