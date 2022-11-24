@@ -335,11 +335,6 @@ export const MyCollectionPlaceholder: React.FC = () => {
 
   return (
     <Flex>
-      <Flex flexDirection="row" justifyContent="space-between">
-        <Spacer />
-        <Spacer />
-        <PlaceholderText width={70} margin={20} />
-      </Flex>
       {/* collector's info */}
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
         <Flex flex={1}>
@@ -351,9 +346,8 @@ export const MyCollectionPlaceholder: React.FC = () => {
               <PlaceholderText width={80} height={25} />
               <PlaceholderText width={100} height={15} />
             </Flex>
-            <Flex justifyContent="center">
-              <PlaceholderBox width={20} height={20} />
-            </Flex>
+            {/* settings icon */}
+            <PlaceholderBox width={20} height={20} />
           </Flex>
           <Spacer my={1} />
         </Flex>
