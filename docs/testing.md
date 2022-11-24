@@ -53,9 +53,6 @@ Suggestion: Would it make sense to either remove this abstraction alltogether, o
 
 - `resolveMostRecentRelayOperation` resolves the query request. We use it after rendering a component that has relay requests. Your rendered component makes a request and we use this function in tests to resolve it. Example file: [Inbox.tests.tsx](https://github.com/artsy/eigen/blob/c96dd0807555d69ca2e8655dc68085276d249080/src/app/Containers/Inbox.tests.tsx)
 
-> ℹ️ Note: There might be some cases that you would want to use `flushPromiseQueue` after that, in order to wait for the request to be resolved.
-> Use it only if, after resolving, the request returns the suspense fallback component, and not the component. [Add example here]
-
 - `rejectMostRecentRelayOperation` for example if network is off / bad / you have a server error. Example: [FollowArtistLink.tests.tsx](https://github.com/artsy/eigen/blob/cfcdd1429732ea04dc26134e1bf4a4d4cb96f16e/src/app/Scenes/Artwork/Components/FollowArtistLink.tests.tsx)
 
 - `flushPromiseQueue` This is a hack - try to avoid it if possible.
@@ -66,9 +63,12 @@ This is usually called when promises have been used in a bad way, eg you return 
 
 Try to make a test run normally and if you are absolutely sure everything else is correct but the test still fails after a promise has been called (eg `resolveMostRecentRelayOperation` or `rejectMostRecentRelayOperation`) try adding this.
 
+💡 There might be some cases that you would want to use `flushPromiseQueue` after `resolveMostRecentRelayOperation`, in order to wait for the request to be resolved.
+Use it only if, after resolving, the request returns the suspense fallback component, and not the component. [Add example here]
+
 // TODO: remove flushPromiseQueue from everywhere [WIP]
 
-- `fetchMockResponseOnce` - do we really need this? What is it used for? 😇
+- `fetchMockResponseOnce` - do we really need this? What is it used for? 😇 More info [here](https://github.com/jefflau/jest-fetch-mock#jest-fetch-mock)
 
 - `mockTrackEvent` - mock data for tracking. We don't actually send this data to our data tracking provider for called analytics function `trackEvent`.
 
@@ -86,7 +86,7 @@ We ideally want to remove the functions below at some point.
 
 - `extractText` ❗️depracated❗️ was used along with enzyme in order to extract the text from elements (a title, View or button). You can also check `extractTest.tests.tsx`. Now that we use @testing-library/react-native there is no need for that anymore since the library itself has the ability to query for text with [byText](https://callstack.github.io/react-native-testing-library/docs/api-queries/#bytext).
 
-- `renderWithWrappersLEGACY` ❗️depracated❗️ uses ReactTestRenderer
+- `renderWithWrappersLEGACY` ❗️depracated❗️ uses ReactTestRenderer. We want to remove this. Use renderWithWrappers instead.
 
 - `setupTestWrapper` ❗️depracated❗️ uses ReactTestRenderer . Renders a test component and resolves the most recent operation. An abstraction that sometimes is convenient.
 
