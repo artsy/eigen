@@ -1,11 +1,11 @@
 import { FairsRail_fairsModule$data } from "__generated__/FairsRail_fairsModule.graphql"
-import { ArtworkImagesComposition } from "app/Components/ArtworkImagesComposition"
 import {
   CardRailCard,
   CardRailMetadataContainer as MetadataContainer,
 } from "app/Components/Home/CardRailCard"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { concat, take } from "lodash"
@@ -77,7 +77,7 @@ const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
               }}
             >
               <View>
-                <ArtworkImagesComposition imageURLs={artworkImageURLs} />
+                <ThreeUpImageLayout imageURLs={artworkImageURLs} />
                 <MetadataContainer>
                   <Text numberOfLines={1} lineHeight="20" variant="sm">
                     {result?.name}

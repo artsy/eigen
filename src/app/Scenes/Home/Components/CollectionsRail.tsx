@@ -1,11 +1,11 @@
 import { CollectionsRail_collectionsModule$data } from "__generated__/CollectionsRail_collectionsModule.graphql"
-import { ArtworkImagesComposition } from "app/Components/ArtworkImagesComposition"
 import {
   CardRailCard,
   CardRailMetadataContainer as MetadataContainer,
 } from "app/Components/Home/CardRailCard"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact } from "lodash"
@@ -74,7 +74,7 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
               }
             >
               <View>
-                <ArtworkImagesComposition imageURLs={artworkImageURLs} />
+                <ThreeUpImageLayout imageURLs={artworkImageURLs} />
                 <MetadataContainer>
                   <Text variant="sm" numberOfLines={1} weight="medium">
                     {result?.title}

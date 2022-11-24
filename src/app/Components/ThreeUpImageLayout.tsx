@@ -2,15 +2,13 @@ import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Box } from "palette"
 import styled from "styled-components/native"
 
-interface ArtworkImagesCompositionProps {
+interface ThreeUpImageLayoutProps {
   imageURLs: string[]
 }
 
 export const ITEM_HEIGHT = 180
 
-export const ArtworkImagesComposition: React.FC<ArtworkImagesCompositionProps> = ({
-  imageURLs,
-}) => {
+export const ThreeUpImageLayout: React.FC<ThreeUpImageLayoutProps> = ({ imageURLs }) => {
   // Ensure we have an array of exactly 3 URLs, copying over the last image if we have less than 3
   const artworkImageURLs = [null, null, null].reduce((acc: string[], _, i) => {
     return [...acc, imageURLs[i] || acc[i - 1]]

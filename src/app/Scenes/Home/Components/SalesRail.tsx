@@ -1,11 +1,11 @@
 import { SalesRail_salesModule$data } from "__generated__/SalesRail_salesModule.graphql"
-import { ArtworkImagesComposition } from "app/Components/ArtworkImagesComposition"
 import {
   CardRailCard,
   CardRailMetadataContainer as MetadataContainer,
 } from "app/Components/Home/CardRailCard"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
 import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
@@ -95,7 +95,7 @@ const SalesRail: React.FC<Props & RailScrollProps> = ({
               }}
             >
               <View>
-                <ArtworkImagesComposition imageURLs={availableArtworkImageURLs} />
+                <ThreeUpImageLayout imageURLs={availableArtworkImageURLs} />
                 <MetadataContainer>
                   <Text numberOfLines={2} lineHeight="20" variant="sm">
                     {result?.name}

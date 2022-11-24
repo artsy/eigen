@@ -11,7 +11,7 @@ import { View } from "react-native"
 import { useTracking } from "react-tracking"
 // @ts-ignore
 import styled from "styled-components/native"
-import { ArtworkImagesComposition } from "./ArtworkImagesComposition"
+import { ThreeUpImageLayout } from "./ThreeUpImageLayout"
 
 interface GenericArtistSeriesRailProps {
   collections:
@@ -73,7 +73,7 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
               }}
             >
               <View>
-                <ArtworkImagesComposition imageURLs={artworkImageURLs} />
+                <ThreeUpImageLayout imageURLs={artworkImageURLs} />
 
                 <MetadataContainer>
                   <GenericArtistSeriesTitle weight="medium" variant="sm">
