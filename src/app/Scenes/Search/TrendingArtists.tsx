@@ -51,7 +51,7 @@ export const TrendingArtists: React.FC<TrendingArtistsProps> = ({ data, ...boxPr
 
       <CardRailFlatList
         data={nodes}
-        initialNumToRender={useLargeSizeCard ? 3 : 4}
+        initialNumToRender={useLargeSizeCard ? 4 : 3}
         keyExtractor={(node) => node.internalID}
         onEndReached={loadMore}
         renderItem={({ item }) => {
