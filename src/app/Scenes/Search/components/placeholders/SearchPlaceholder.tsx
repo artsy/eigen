@@ -1,3 +1,4 @@
+import { CARD_WIDTH } from "app/Components/Home/CardRailCard"
 import { isPad } from "app/utils/hardware"
 import {
   PlaceholderBox,
@@ -49,7 +50,7 @@ const TrendingArtistLargeCard = () => {
       <PlaceholderBox width={295} height={180} />
       <Spacer mt={1} />
       <PlaceholderText width={120} height={20} />
-      <RandomWidthPlaceholderText minWidth={30} maxWidth={90} height={20} />
+      <RandomWidthPlaceholderText minWidth={30} maxWidth={90} height={20} marginBottom={0} />
     </>
   )
 }
@@ -60,7 +61,7 @@ const TrendingArtistSmallCard = () => {
       <PlaceholderBox width={140} height={105} />
       <Spacer mt={1} />
       <PlaceholderText width={120} height={15} />
-      <RandomWidthPlaceholderText minWidth={30} maxWidth={90} height={15} />
+      <RandomWidthPlaceholderText minWidth={30} maxWidth={90} height={15} marginBottom={0} />
     </>
   )
 }
@@ -84,6 +85,33 @@ const TrendingArtistPlaceholder = () => {
   )
 }
 
+const CuratedCollectionCardPlaceholder: React.FC = (props) => {
+  return (
+    <Box borderRadius={4} border="1px solid" borderColor="black10" overflow="hidden" {...props}>
+      <PlaceholderBox width={CARD_WIDTH} borderRadius={0} height={180} />
+      <Box m={15} mb={1}>
+        <PlaceholderText width={120} height={20} />
+        <RandomWidthPlaceholderText minWidth={30} maxWidth={90} height={20} />
+      </Box>
+    </Box>
+  )
+}
+
+const CuratedCollectionsPlaceholder = () => {
+  return (
+    <>
+      <PlaceholderText width="50%" height={25} />
+      <Flex flexDirection="row" mt={1}>
+        <Join separator={<Spacer ml={1} />}>
+          {times(3).map((index) => (
+            <CuratedCollectionCardPlaceholder key={`curated-collaction-card-${index}`} />
+          ))}
+        </Join>
+      </Flex>
+    </>
+  )
+}
+
 export const SearchPlaceholder: React.FC = () => {
   const isSearchDiscoveryContentEnabled = useSearchDiscoveryContentEnabled()
 
@@ -97,7 +125,13 @@ export const SearchPlaceholder: React.FC = () => {
         <RecentSearchesPlaceholder />
         <Spacer mt={4} />
 
-        {!!isSearchDiscoveryContentEnabled && <TrendingArtistPlaceholder />}
+        {!!isSearchDiscoveryContentEnabled && (
+          <>
+            <TrendingArtistPlaceholder />
+            <Spacer mt={4} />
+            <CuratedCollectionsPlaceholder />
+          </>
+        )}
       </Box>
     </ProvidePlaceholderContext>
   )
