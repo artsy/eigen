@@ -34,6 +34,7 @@ interface MyCollectionArtworksProps {
   relay: RelayPaginationProp
   showSearchBar: boolean
   setShowSearchBar: (show: boolean) => void
+  myCollectionIsRefreshing?: boolean
 }
 
 export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
@@ -41,6 +42,7 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
   relay,
   showSearchBar,
   setShowSearchBar,
+  myCollectionIsRefreshing,
 }) => {
   const { height: screenHeight } = useScreenDimensions()
   const enabledSearchBar = useFeatureFlag("AREnableMyCollectionSearchBar")
@@ -149,6 +151,7 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
       {filteredArtworks.length > 0 ? (
         viewOption === "grid" ? (
           <InfiniteScrollMyCollectionArtworksGridContainer
+            myCollectionIsRefreshing={myCollectionIsRefreshing}
             myCollectionConnection={me.myCollectionConnection!}
             hasMore={relay.hasMore}
             loadMore={relay.loadMore}

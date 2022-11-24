@@ -13,6 +13,7 @@ export interface MyCollectionImageViewProps {
   aspectRatio?: number
   artworkSlug: string
   artworkSubmissionId?: string | null
+  myCollectionIsRefreshing?: boolean
 }
 
 export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
@@ -22,6 +23,7 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
   aspectRatio,
   artworkSlug,
   artworkSubmissionId,
+  myCollectionIsRefreshing,
 }) => {
   const color = useColor()
   const [localImage, setLocalImage] = useState<LocalImage | null>(null)
@@ -33,7 +35,7 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
         setLocalImage(images[0])
       }
     })
-  }, [])
+  }, [myCollectionIsRefreshing])
 
   const {
     photosForMyCollection: { photos },
@@ -52,7 +54,20 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
   }, [])
 
   const renderImage = () => {
-    if (localImage) {
+    // prioritise imageURL
+    if (imageURL) {
+      const targetURL = imageURL.replace(":version", "square")
+      return (
+        <OpaqueImageView
+          testID="Image-Remote"
+          imageURL={targetURL}
+          retryFailedURLs
+          height={imageHeight}
+          width={imageWidth}
+          aspectRatio={aspectRatio}
+        />
+      )
+    } else if (localImage) {
       return (
         <RNImage
           testID="Image-Local"
@@ -78,18 +93,6 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
           source={{
             uri: localImageConsignments.path,
           }}
-        />
-      )
-    } else if (imageURL) {
-      const targetURL = imageURL.replace(":version", "square")
-      return (
-        <OpaqueImageView
-          testID="Image-Remote"
-          imageURL={targetURL}
-          retryFailedURLs
-          height={imageHeight}
-          width={imageWidth}
-          aspectRatio={aspectRatio}
         />
       )
     } else {
