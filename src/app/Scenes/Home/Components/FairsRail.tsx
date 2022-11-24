@@ -1,23 +1,19 @@
 import { FairsRail_fairsModule$data } from "__generated__/FairsRail_fairsModule.graphql"
-import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import {
+  CardRailCard,
+  CardRailMetadataContainer as MetadataContainer,
+} from "app/Components/Home/CardRailCard"
+import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
+import { navigate } from "app/navigation/navigate"
+import { extractNodes } from "app/utils/extractNodes"
+import { concat, take } from "lodash"
 import { bullet, Flex, Text } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-
-import {
-  CARD_RAIL_ARTWORKS_HEIGHT as ARTWORKS_HEIGHT,
-  CardRailArtworkImageContainer as ArtworkImageContainer,
-  CardRailCard,
-  CardRailDivision as Division,
-  CardRailMetadataContainer as MetadataContainer,
-} from "app/Components/Home/CardRailCard"
-import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
-import { navigate } from "app/navigation/navigate"
-import { extractNodes } from "app/utils/extractNodes"
-import { concat, take } from "lodash"
 import HomeAnalytics from "../homeAnalytics"
 import { RailScrollProps } from "./types"
 
@@ -81,27 +77,7 @@ const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
               }}
             >
               <View>
-                <ArtworkImageContainer>
-                  <ImageView
-                    width={ARTWORKS_HEIGHT}
-                    height={ARTWORKS_HEIGHT}
-                    imageURL={artworkImageURLs[0]}
-                  />
-                  <Division />
-                  <View>
-                    <ImageView
-                      width={ARTWORKS_HEIGHT / 2}
-                      height={ARTWORKS_HEIGHT / 2}
-                      imageURL={artworkImageURLs[1]}
-                    />
-                    <Division horizontal />
-                    <ImageView
-                      width={ARTWORKS_HEIGHT / 2}
-                      height={ARTWORKS_HEIGHT / 2}
-                      imageURL={artworkImageURLs[2]}
-                    />
-                  </View>
-                </ArtworkImageContainer>
+                <ThreeUpImageLayout imageURLs={artworkImageURLs} />
                 <MetadataContainer>
                   <Text numberOfLines={1} lineHeight="20" variant="sm">
                     {result?.name}

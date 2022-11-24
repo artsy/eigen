@@ -131,7 +131,7 @@ describe("Artist Series Rail", () => {
         "imageURL",
         "https://cindy-sherman-untitled-film-stills-3/medium.jpg"
       )
-      expect(UNSAFE_getAllByType(ImageView)[2]).toHaveProp("height", 88)
+      expect(UNSAFE_getAllByType(ImageView)[2]).toHaveProp("height", 90)
       expect(UNSAFE_getAllByType(ImageView)[2]).toHaveProp("width", 90)
     })
 
