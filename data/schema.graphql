@@ -1989,7 +1989,10 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Returns the associated Fair/Sale/Show
   context: ArtworkContext
-  contextGrids: [ArtworkContextGrid]
+  contextGrids(
+    # Whether to include the `RelatedArtworksGrid` module. Defaults to `true`; preferred behavior is to opt out with `false`.
+    includeRelatedArtworks: Boolean! = true
+  ): [ArtworkContextGrid]
 
   # The currency code used to pay for the artwork
   costCurrencyCode: String
