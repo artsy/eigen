@@ -122,6 +122,38 @@ describe(navigate, () => {
       `)
   })
 
+  describe("marketing links", async () => {
+    const fetch = jest.fn((_url, _init) =>
+      Promise.resolve({ url: "https://artsy.net/artist/kaws" })
+    )
+    // @ts-ignore
+    global.fetch = fetch
+    beforeEach(() => {
+      fetch.mockClear()
+    })
+
+    it("reroutes marketing links", async () => {
+      await navigate("https://click.artsy.net/artist/kaws")
+      expect(fetch).toHaveBeenCalledTimes(1)
+      expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalled()
+      expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any))
+        .toMatchInlineSnapshot(`
+          Array [
+            "home",
+            Object {
+              "hidesBackButton": true,
+              "moduleName": "Artist",
+              "props": Object {
+                "artistID": "kaws",
+              },
+              "replace": false,
+              "type": "react",
+            },
+          ]
+        `)
+    })
+  })
+
   describe("presents modals", () => {
     it("when the screen requires it", () => {
       navigate("https://live.artsy.net/blah")
