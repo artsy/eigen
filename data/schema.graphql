@@ -13046,6 +13046,12 @@ type Query {
     sort: ConsignmentSort
   ): ConsignmentConnection
 
+  # A conversation, usually between a user and a partner
+  conversation(
+    # The ID of the Conversation
+    id: String!
+  ): Conversation
+
   # Conversations, usually between a user and partner.
   conversationsConnection(
     after: String
@@ -16822,6 +16828,12 @@ type Viewer {
     # A slug for the city, conforming to Gravity's city slug naming conventions
     slug: String
   ): City
+
+  # A conversation, usually between a user and a partner
+  conversation(
+    # The ID of the Conversation
+    id: String!
+  ): Conversation
 
   # Conversations, usually between a user and partner.
   conversationsConnection(
