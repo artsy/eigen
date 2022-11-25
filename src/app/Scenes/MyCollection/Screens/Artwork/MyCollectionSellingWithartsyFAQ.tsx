@@ -63,9 +63,10 @@ export const MyCollectionSellingWithArtsyFAQ: React.FC = () => {
 
               <Text>
                 Or get in touch with one of our specialists at{" "}
-                <Text underline onPress={() => sendEmailWithMailTo("mailto:sell@artsymail.com")}>
-                  sell@artsymail.com.
+                <Text underline onPress={() => sendEmailWithMailTo("mailto:sell@artsy.net")}>
+                  sell@artsy.net
                 </Text>
+                {"."}
               </Text>
             </Flex>
           </Join>
