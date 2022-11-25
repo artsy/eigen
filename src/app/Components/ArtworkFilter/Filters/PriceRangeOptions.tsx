@@ -301,7 +301,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
             </Flex>
           </Flex>
 
-          <Spacer mt={4} />
+          <Spacer mt={2} />
 
           {!!enableRecentPriceRanges && priceRanges.length > 0 && (
             <>
