@@ -1,5 +1,4 @@
 import { TrendingArtistCard_artist$key } from "__generated__/TrendingArtistCard_artist.graphql"
-import { navigate } from "app/navigation/navigate"
 import { Flex, OpaqueImageView, Text } from "palette"
 import { TouchableHighlight } from "react-native"
 import { useFragment } from "react-relay"

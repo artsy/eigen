@@ -1,8 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import {
-  TappedCollectionGroup,
-  TappedCuratedCollection,
-} from "@artsy/cohesion/dist/Schema/Events/Tap"
+import { TappedCollectionGroup } from "@artsy/cohesion/dist/Schema/Events/Tap"
 import { CuratedCollectionItem_collection$key } from "__generated__/CuratedCollectionItem_collection.graphql"
 import { navigate } from "app/navigation/navigate"
 import { Flex, Spacer, Text, Touchable } from "palette"
