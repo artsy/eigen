@@ -30,8 +30,8 @@ import {
   useColor,
   useSpace,
 } from "palette"
-import React, { useMemo, useState } from "react"
-import { ScrollView, TouchableOpacity, useWindowDimensions } from "react-native"
+import React, { useMemo, useRef, useState } from "react"
+import { Platform, ScrollView, TouchableOpacity, useWindowDimensions } from "react-native"
 import { ArtworkFilterBackHeader } from "../components/ArtworkFilterBackHeader"
 import { Numeric, parsePriceRangeLabel } from "./helpers"
 
@@ -108,6 +108,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
   const priceRanges = usePriceRanges()
   const color = useColor()
   const space = useSpace()
+  const recentPriceRangeScrollRef = useRef<ScrollView>(null)
 
   const enableHistogram = useExperimentFlag("eigen-enable-price-histogram")
 
@@ -191,6 +192,10 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
 
   const handleClearRecentPriceRanges = () => {
     GlobalStore.actions.recentPriceRanges.clearAllPriceRanges()
+
+    if (Platform.OS === "android" && recentPriceRangeScrollRef.current) {
+      recentPriceRangeScrollRef.current.scrollTo({ x: 0, animated: false })
+    }
   }
 
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
@@ -302,6 +307,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
               </Flex>
               <Spacer mt={1} />
               <ScrollView
+                ref={recentPriceRangeScrollRef}
                 horizontal
                 contentContainerStyle={{ paddingHorizontal: space("2") }}
                 showsHorizontalScrollIndicator={false}
