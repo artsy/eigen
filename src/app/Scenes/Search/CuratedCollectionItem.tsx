@@ -1,5 +1,8 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { TappedCuratedCollection } from "@artsy/cohesion/dist/Schema/Events/Tap"
+import {
+  TappedCollectionGroup,
+  TappedCuratedCollection,
+} from "@artsy/cohesion/dist/Schema/Events/Tap"
 import { CuratedCollectionItem_collection$key } from "__generated__/CuratedCollectionItem_collection.graphql"
 import { navigate } from "app/navigation/navigate"
 import { Flex, Spacer, Text, Touchable } from "palette"
@@ -21,9 +24,7 @@ export const CuratedCollectionItem: React.FC<CuratedCollectionItemProps> = ({
   const thumbnail = item.thumbnailImage?.resized?.url || null
 
   const onPress = (collectionId: string, collectionSlug: string) => {
-    tracking.trackEvent(
-      trackingEvent.tappedCuratedCollection(collectionId, collectionSlug, position)
-    )
+    tracking.trackEvent(trackingEvent.tappedCollectionGroup(collectionId, collectionSlug, position))
 
     navigate(`/collection/${collectionSlug}`)
   }
@@ -63,17 +64,18 @@ const CuratedCollectionItemFragment = graphql`
 `
 
 const trackingEvent = {
-  tappedCuratedCollection: (
+  tappedCollectionGroup: (
     collectionId: string,
     collectionSlug: string,
     position: number
-  ): TappedCuratedCollection => ({
-    action: ActionType.tappedCuratedCollection,
+  ): TappedCollectionGroup => ({
+    action: ActionType.tappedCollectionGroup,
     context_module: ContextModule.curatedCollections,
     context_screen_owner_type: OwnerType.search,
     destination_screen_owner_type: OwnerType.collection,
     destination_screen_owner_slug: collectionSlug,
     destination_screen_owner_id: collectionId,
-    position,
+    horizontal_slide_position: position,
+    type: "thumbnail",
   }),
 }
