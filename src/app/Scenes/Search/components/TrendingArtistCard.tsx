@@ -7,23 +7,20 @@ import { graphql } from "relay-runtime"
 
 interface TrendingArtistCardProps {
   artist: TrendingArtistCard_artist$key
+  onPress: () => void
 }
 
 const CARD_WIDTH = 140
 const CARD_HEIGHT = 105
 
-export const TrendingArtistCard: React.FC<TrendingArtistCardProps> = ({ artist }) => {
+export const TrendingArtistCard: React.FC<TrendingArtistCardProps> = ({ artist, onPress }) => {
   const data = useFragment(TrendingArtistCardFragment, artist)
-
-  const handlePress = () => {
-    navigate(data.href!)
-  }
 
   return (
     <TouchableHighlight
       underlayColor="transparent"
       style={{ width: CARD_WIDTH, overflow: "hidden" }}
-      onPress={handlePress}
+      onPress={onPress}
     >
       <Flex>
         <OpaqueImageView imageURL={data.image?.url} width={CARD_WIDTH} height={CARD_HEIGHT} />
