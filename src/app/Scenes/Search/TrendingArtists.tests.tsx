@@ -2,6 +2,7 @@ import { fireEvent } from "@testing-library/react-native"
 import { TrendingArtists_Test_Query } from "__generated__/TrendingArtists_Test_Query.graphql"
 import { navigate } from "app/navigation/navigate"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -58,19 +59,52 @@ describe("TrendingArtists", () => {
 
     expect(navigate).toHaveBeenCalledWith("/artist/artist-one")
   })
+
+  it("should track event when an artist is tapped", async () => {
+    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Query: () => ({
+        curatedTrendingArtists,
+      }),
+    })
+
+    await flushPromiseQueue()
+
+    fireEvent.press(getByText("Artist Two"))
+
+    expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "action": "tappedArtistGroup",
+          "context_module": "trendingArtistsRail",
+          "context_screen_owner_type": "search",
+          "destination_screen_owner_id": "artist-two-id",
+          "destination_screen_owner_slug": "artist-two",
+          "destination_screen_owner_type": "artist",
+          "horizontal_slide_position": 1,
+          "type": "thumbnail",
+        },
+      ]
+    `)
+  })
 })
 
 const curatedTrendingArtists = {
   edges: [
     {
       node: {
+        internalID: "artist-one-id",
         href: "/artist/artist-one",
+        slug: "artist-one",
         name: "Artist One",
       },
     },
     {
       node: {
+        internalID: "artist-two-id",
         href: "/artist/artist-two",
+        slug: "artist-two",
         name: "Artist Two",
       },
     },
