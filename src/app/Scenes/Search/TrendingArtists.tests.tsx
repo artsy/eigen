@@ -60,7 +60,7 @@ describe("TrendingArtists", () => {
     expect(navigate).toHaveBeenCalledWith("/artist/artist-one")
   })
 
-  it("shoudl track event when an artist is tapped", async () => {
+  it("should track event when an artist is tapped", async () => {
     const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
