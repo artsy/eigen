@@ -65,7 +65,7 @@ export const passwordSchema = Yup.object().shape({
     .required("Password field is required"),
 })
 export const nameSchema = Yup.object().shape({
-  name: Yup.string().required("Full name field is required").trim(),
+  name: Yup.string().trim().required("Full name field is required"),
 })
 
 export const getCurrentRoute = () =>
