@@ -695,7 +695,7 @@ describe("Search Screen", () => {
       })
     })
 
-    describe("Artsy curated collections section", () => {
+    describe("Artsy Collections section", () => {
       it("should NOT be rendered when feature flag is disabled", async () => {
         __globalStoreTestUtils__?.injectFeatureFlags({
           AREnableSearchDiscoveryContentIOS: false,
@@ -711,7 +711,7 @@ describe("Search Screen", () => {
 
         await flushPromiseQueue()
 
-        expect(screen.queryByText("Artsy Curated Collections")).toBeNull()
+        expect(screen.queryByText("Artsy Collections")).toBeNull()
       })
 
       it("should be rendered when feature flag is enabled", async () => {
@@ -729,7 +729,7 @@ describe("Search Screen", () => {
 
         await flushPromiseQueue()
 
-        expect(screen.getByText("Artsy Curated Collections")).toBeTruthy()
+        expect(screen.getByText("Artsy Collections")).toBeTruthy()
       })
     })
   })
