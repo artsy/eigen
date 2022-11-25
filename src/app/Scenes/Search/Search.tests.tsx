@@ -61,6 +61,7 @@ describe("Search Screen", () => {
 
   beforeEach(() => {
     require("app/relay/createEnvironment").reset()
+    ;(isPad as jest.Mock).mockReset()
     mockEnvironment = require("app/relay/createEnvironment").defaultEnvironment
   })
 
@@ -77,13 +78,7 @@ describe("Search Screen", () => {
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
-        system: {
-          algolia: {
-            appID: "",
-            apiKey: "",
-            indices: [{ name: "Artist_staging", displayName: "Artists", key: "artist" }],
-          },
-        },
+        system,
       }),
     })
 
@@ -109,18 +104,12 @@ describe("Search Screen", () => {
 
   it("does not show city guide entrance when on iPad", async () => {
     const isPadMock = isPad as jest.Mock
-    isPadMock.mockImplementationOnce(() => true)
+    isPadMock.mockImplementation(() => true)
     renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
-        system: {
-          algolia: {
-            appID: "",
-            apiKey: "",
-            indices: [{ name: "Artist_staging", displayName: "Artists", key: "artist" }],
-          },
-        },
+        system,
       }),
     })
 
@@ -135,17 +124,11 @@ describe("Search Screen", () => {
       },
     })
     const isPadMock = isPad as jest.Mock
-    isPadMock.mockImplementationOnce(() => false)
+    isPadMock.mockImplementation(() => false)
     renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
-        system: {
-          algolia: {
-            appID: "",
-            apiKey: "",
-            indices: [{ name: "Artist_staging", displayName: "Artists", key: "artist" }],
-          },
-        },
+        system,
       }),
     })
 
@@ -157,13 +140,7 @@ describe("Search Screen", () => {
     renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
-        system: {
-          algolia: {
-            appID: "",
-            apiKey: "",
-            indices: [{ name: "Artist_staging", displayName: "Artists", key: "artist" }],
-          },
-        },
+        system,
       }),
     })
 
@@ -678,6 +655,84 @@ describe("Search Screen", () => {
       ]
     `)
   })
+
+  describe("Search discovery content", () => {
+    describe("Treding artists section", () => {
+      it("should NOT be rendered when feature flag is disabled", async () => {
+        __globalStoreTestUtils__?.injectFeatureFlags({
+          AREnableSearchDiscoveryContentIOS: false,
+          AREnableSearchDiscoveryContentAndroid: false,
+        })
+
+        renderWithWrappers(<TestRenderer />)
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Query: () => ({
+            system,
+          }),
+        })
+
+        await flushPromiseQueue()
+
+        expect(screen.queryByText("Trending Artists")).toBeNull()
+      })
+
+      it("should be rendered when feature flag is enabled", async () => {
+        __globalStoreTestUtils__?.injectFeatureFlags({
+          AREnableSearchDiscoveryContentIOS: true,
+          AREnableSearchDiscoveryContentAndroid: true,
+        })
+
+        renderWithWrappers(<TestRenderer />)
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Query: () => ({
+            system,
+          }),
+        })
+
+        await flushPromiseQueue()
+
+        expect(screen.getByText("Trending Artists")).toBeTruthy()
+      })
+    })
+
+    describe("Artsy curated collections section", () => {
+      it("should NOT be rendered when feature flag is disabled", async () => {
+        __globalStoreTestUtils__?.injectFeatureFlags({
+          AREnableSearchDiscoveryContentIOS: false,
+          AREnableSearchDiscoveryContentAndroid: false,
+        })
+
+        renderWithWrappers(<TestRenderer />)
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Query: () => ({
+            system,
+          }),
+        })
+
+        await flushPromiseQueue()
+
+        expect(screen.queryByText("Artsy Curated Collections")).toBeNull()
+      })
+
+      it("should be rendered when feature flag is enabled", async () => {
+        __globalStoreTestUtils__?.injectFeatureFlags({
+          AREnableSearchDiscoveryContentIOS: true,
+          AREnableSearchDiscoveryContentAndroid: true,
+        })
+
+        renderWithWrappers(<TestRenderer />)
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Query: () => ({
+            system,
+          }),
+        })
+
+        await flushPromiseQueue()
+
+        expect(screen.getByText("Artsy Curated Collections")).toBeTruthy()
+      })
+    })
+  })
 })
 
 const INDICES = [
@@ -686,3 +741,11 @@ const INDICES = [
   { name: "Gallery_staging", displayName: "Gallery", key: "partner_gallery" },
   { name: "Fair_staging", displayName: "Fair", key: "fair" },
 ]
+
+const system = {
+  algolia: {
+    appID: "",
+    apiKey: "",
+    indices: [{ name: "Artist_staging", displayName: "Artists", key: "artist" }],
+  },
+}

@@ -217,10 +217,22 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     readyForRelease: false,
   },
-  ARIosSearchTabCuratedCollections: {
-    description: "Display curated collection on Search tab on ios",
+  AREnablePanOnStaticHeader: {
+    description: "Enable Scroll/Pan on StaticHeader",
     showInAdminMenu: true,
     readyForRelease: false,
+  },
+  AREnableSearchDiscoveryContentIOS: {
+    description: "Display discovery content on Search tab on iOS",
+    showInAdminMenu: true,
+    readyForRelease: true,
+    echoFlagKey: "AREnableSearchDiscoveryContentIOS",
+  },
+  AREnableSearchDiscoveryContentAndroid: {
+    description: "Display discovery content on Search tab on Android",
+    showInAdminMenu: true,
+    readyForRelease: true,
+    echoFlagKey: "AREnableSearchDiscoveryContentAndroid",
   },
   AREnforceLargeNewWorksRail: {
     description: "Enforce large new works rail",

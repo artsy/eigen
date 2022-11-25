@@ -9,7 +9,7 @@ import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { BackButton } from "app/navigation/BackButton"
 import { goBack } from "app/navigation/navigate"
-import { addClue, GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -124,10 +124,13 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
       if (id) {
         track(id, email)
 
-        if (activeStep === stepsInOrder.length - 1) {
+        if (isLastStep) {
           refreshMyCollection()
           GlobalStore.actions.artworkSubmission.submission.resetSessionState()
-          addClue("ArtworkSubmissionMessage")
+          if (!values.myCollectionArtworkID) {
+            // add clue only if it is not MyCollectionArtwork that was submitted
+            GlobalStore.actions.visualClue.addClue("ArtworkSubmissionMessage")
+          }
           return navigation.navigate("ArtworkSubmittedScreen", { submissionId: id })
         }
 

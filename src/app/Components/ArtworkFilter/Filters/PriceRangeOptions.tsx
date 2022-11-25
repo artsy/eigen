@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType, SelectedRecentPriceRange } from "@artsy/cohesion"
 import MultiSlider from "@ptomasroos/react-native-multi-slider"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
@@ -30,13 +31,19 @@ import {
   useColor,
   useSpace,
 } from "palette"
-import React, { useMemo, useState } from "react"
-import { ScrollView, TouchableOpacity, useWindowDimensions } from "react-native"
+import React, { useMemo, useRef, useState } from "react"
+import { Platform, ScrollView, TouchableOpacity, useWindowDimensions } from "react-native"
+import { useTracking } from "react-tracking"
 import { ArtworkFilterBackHeader } from "../components/ArtworkFilterBackHeader"
 import { Numeric, parsePriceRangeLabel } from "./helpers"
 
 interface PriceRangeOptionsScreenProps
   extends StackScreenProps<ArtworkFilterNavigationStack, "PriceRangeOptionsScreen"> {}
+
+interface RecentPriceRangeEntity {
+  value: string
+  isCollectorProfileSources: boolean
+}
 
 const PARAM_NAME = FilterParamName.priceRange
 
@@ -108,6 +115,8 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
   const priceRanges = usePriceRanges()
   const color = useColor()
   const space = useSpace()
+  const tracking = useTracking()
+  const recentPriceRangeScrollRef = useRef<ScrollView>(null)
 
   const enableHistogram = useExperimentFlag("eigen-enable-price-histogram")
 
@@ -178,9 +187,12 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
     })
   }
 
-  const handlePrevPriceRangePress = (price: string) => {
-    const selectedRange = parseRange(price)
+  const handlePrevPriceRangePress = (priceRange: RecentPriceRangeEntity) => {
+    const { value, isCollectorProfileSources } = priceRange
+    const selectedRange = parseRange(value)
+
     updateRange(selectedRange)
+    tracking.trackEvent(tracks.selectedRecentPriceRange(isCollectorProfileSources))
   }
 
   const isSelectedPriceRange = (price: string) => {
@@ -191,6 +203,10 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
 
   const handleClearRecentPriceRanges = () => {
     GlobalStore.actions.recentPriceRanges.clearAllPriceRanges()
+
+    if (Platform.OS === "android" && recentPriceRangeScrollRef.current) {
+      recentPriceRangeScrollRef.current.scrollTo({ x: 0, animated: false })
+    }
   }
 
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
@@ -285,7 +301,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
             </Flex>
           </Flex>
 
-          <Spacer mt={4} />
+          <Spacer mt={2} />
 
           {!!enableRecentPriceRanges && priceRanges.length > 0 && (
             <>
@@ -302,6 +318,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
               </Flex>
               <Spacer mt={1} />
               <ScrollView
+                ref={recentPriceRangeScrollRef}
                 horizontal
                 contentContainerStyle={{ paddingHorizontal: space("2") }}
                 showsHorizontalScrollIndicator={false}
@@ -309,15 +326,16 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
                 <Flex flexDirection="row">
                   <Join separator={<Spacer ml={1} />}>
                     {priceRanges.map((recentPrice) => {
-                      const [min, max] = parseRange(recentPrice)
+                      const { value } = recentPrice
+                      const [min, max] = parseRange(value)
                       const label = parsePriceRangeLabel(min, max)
 
                       return (
                         <Pill
-                          key={recentPrice}
+                          key={value}
                           rounded
                           accessibilityLabel="Price range pill"
-                          selected={isSelectedPriceRange(recentPrice)}
+                          selected={isSelectedPriceRange(value)}
                           onPress={() => handlePrevPriceRangePress(recentPrice)}
                         >
                           {label}
@@ -335,7 +353,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
   )
 }
 
-const usePriceRanges = () => {
+const usePriceRanges = (): RecentPriceRangeEntity[] => {
   let recentPriceRanges = useRecentPriceRanges()
   const userPreferredPriceRange = GlobalStore.useAppState((state) => state.userPrefs.priceRange)
 
@@ -343,12 +361,24 @@ const usePriceRanges = () => {
     const slicedRecentPriceRanges = recentPriceRanges.slice(0, MAX_SHOWN_RECENT_PRICE_RANGES - 1)
 
     // Remove duplicate price range that matches collector profile-sourced price
-    recentPriceRanges = slicedRecentPriceRanges.filter((priceRange) => {
+    const filtered = slicedRecentPriceRanges.filter((priceRange) => {
       return priceRange !== userPreferredPriceRange
     })
 
-    return [...recentPriceRanges, userPreferredPriceRange]
+    recentPriceRanges = [...filtered, userPreferredPriceRange]
   }
 
-  return recentPriceRanges
+  return recentPriceRanges.map((value) => ({
+    value,
+    isCollectorProfileSources: value === userPreferredPriceRange,
+  }))
+}
+
+const tracks = {
+  selectedRecentPriceRange: (isCollectorProfileSources: boolean): SelectedRecentPriceRange => ({
+    action: ActionType.selectedRecentPriceRange,
+    context_module: ContextModule.recentPriceRanges,
+    context_screen_owner_type: OwnerType.artworkPriceFilter,
+    collector_profile_sourced: isCollectorProfileSources,
+  }),
 }

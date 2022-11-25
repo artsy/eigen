@@ -197,4 +197,88 @@ describe(SubmitArtwork, () => {
       )
     })
   })
+
+  describe("Submission VisualClues", () => {
+    const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+
+    let addClueSpy = jest
+      .spyOn(GlobalStore.actions.visualClue, "addClue")
+      .mockImplementation(() => null)
+    beforeEach(() => {
+      addClueSpy = jest
+        .spyOn(GlobalStore.actions.visualClue, "addClue")
+        .mockImplementation(() => null)
+    })
+    afterEach(() => {
+      GlobalStore.actions.artworkSubmission.submission.resetSessionState()
+    })
+
+    it("does not addClue ArtworkSubmissionMessage when submitting MyCollectionArtwork", async () => {
+      GlobalStore.actions.artworkSubmission.submission.initializeArtworkDetailsForm({
+        myCollectionArtworkID: "my-collection-artwork-id",
+      })
+
+      const { getByTestId } = renderWithWrappers(
+        <SubmitSWAArtworkFlow
+          navigation={jest.fn() as any}
+          stepsInOrder={[STEPS.ContactInformation]}
+        />
+      )
+
+      await flushPromiseQueue()
+
+      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, {
+          Me: () => ({
+            name: "User",
+            email: "user@user.com",
+            phoneNumber: { isValid: true, originalNumber: "+49 1753627282" },
+          }),
+        })
+      )
+
+      await flushPromiseQueue()
+
+      const contactInfoCTA = getByTestId("Submission_ContactInformation_Button")
+      fireEvent.press(contactInfoCTA)
+
+      await flushPromiseQueue()
+
+      expect(addClueSpy).not.toHaveBeenCalled()
+    })
+
+    it("addClue ArtworkSubmissionMessage when submitting other Artworks that are not MyCollectionArtwork", async () => {
+      GlobalStore.actions.artworkSubmission.submission.initializeArtworkDetailsForm({
+        myCollectionArtworkID: null,
+      })
+
+      const { getByTestId } = renderWithWrappers(
+        <SubmitSWAArtworkFlow
+          navigation={jest.fn() as any}
+          stepsInOrder={[STEPS.ContactInformation]}
+        />
+      )
+
+      await flushPromiseQueue()
+
+      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, {
+          Me: () => ({
+            name: "User",
+            email: "user@user.com",
+            phoneNumber: { isValid: true, originalNumber: "+49 1753627282" },
+          }),
+        })
+      )
+
+      await flushPromiseQueue()
+
+      const contactInfoCTA = getByTestId("Submission_ContactInformation_Button")
+      fireEvent.press(contactInfoCTA)
+
+      await flushPromiseQueue()
+
+      expect(addClueSpy).toHaveBeenCalledWith("ArtworkSubmissionMessage")
+    })
+  })
 })

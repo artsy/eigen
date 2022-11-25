@@ -77,13 +77,14 @@ describe("CuratedCollections", () => {
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
       Array [
         Object {
-          "action": "tappedCuratedCollection",
+          "action": "tappedCollectionGroup",
           "context_module": "curatedCollections",
           "context_screen_owner_type": "search",
           "destination_screen_owner_id": "8fbef3cc-9c4a-4baf-81e2-276724341ae8",
           "destination_screen_owner_slug": "blue-chip-artists",
           "destination_screen_owner_type": "collection",
-          "position": 0,
+          "horizontal_slide_position": 0,
+          "type": "thumbnail",
         },
       ]
     `)
