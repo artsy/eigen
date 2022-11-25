@@ -1,4 +1,5 @@
 import * as Sentry from "@sentry/react-native"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { isPad } from "app/utils/hardware"
 import React, { useCallback, useContext } from "react"
 import { Animated, FlatList, NativeScrollEvent, NativeSyntheticEvent, Platform } from "react-native"
@@ -21,7 +22,7 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
   onImagePressed,
 }) => {
   const screenDimensions = useScreenDimensions()
-
+  const enableAndroidImagesGallery = useFeatureFlag("AREnableAndroidImagesGallery")
   const embeddedCardBoundingBox = {
     width: screenDimensions.width,
     height: isPad() ? 460 : cardHeight,
@@ -67,7 +68,10 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
 
   const goFullScreen = useCallback(() => {
     onImagePressed?.()
-    if (Platform.OS === "ios" && !disableFullScreen) {
+    if (
+      (Platform.OS === "ios" && !disableFullScreen) ||
+      (Platform.OS === "android" && !!enableAndroidImagesGallery && !disableFullScreen)
+    ) {
       dispatch({ type: "TAPPED_TO_GO_FULL_SCREEN" })
     }
   }, [dispatch])

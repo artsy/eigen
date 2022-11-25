@@ -69,6 +69,7 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
       width: localImage.width,
       height: localImage.height,
       deepZoom: null,
+      largeImageURL: localImage.path,
     }))
   }
 
