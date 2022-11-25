@@ -227,10 +227,12 @@ export const MyCollectionArtworkFormMain: React.FC<
 
           <ScreenMargin>
             {modalType === "edit" && (
-              <Button
-                my={1}
-                variant="outline"
-                block
+              <Text
+                my={4}
+                variant="sm"
+                underline
+                color={color("red100")}
+                textAlign="center"
                 onPress={() => {
                   showActionSheetWithOptions(
                     {
@@ -250,7 +252,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 testID="DeleteButton"
               >
                 Delete artwork
-              </Button>
+              </Text>
             )}
           </ScreenMargin>
 
