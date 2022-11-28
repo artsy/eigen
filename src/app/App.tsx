@@ -7,7 +7,7 @@ import {
   SegmentTrackingProvider,
 } from "app/utils/track/SegmentTrackingProvider"
 import { useDeepLinks } from "app/utils/useDeepLinks"
-import { useStripeConfig } from "app/utils/useStripeConfig"
+// import { useStripeConfig } from "app/utils/useStripeConfig"
 import { useEffect } from "react"
 import { NativeModules, Platform, UIManager, View } from "react-native"
 import RNBootSplash from "react-native-bootsplash"
@@ -84,7 +84,7 @@ const Main = () => {
   const fpsCounter = useDevToggle("DTFPSCounter")
 
   useErrorReporting()
-  useStripeConfig()
+  // useStripeConfig()
   useWebViewCookies()
   useDeepLinks()
   useInitialNotification()

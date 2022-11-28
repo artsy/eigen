@@ -220,16 +220,16 @@ dependencies {
     api("com.squareup.okhttp3:logging-interceptor")
 
     implementation 'com.segment.analytics.android:analytics:4.+'
-    implementation 'com.segment.analytics.android.integrations:adjust:+'
-    implementation platform('com.google.firebase:firebase-bom:28.1.0')
+    implementation 'com.segment.analytics.android.integrations:adjust:0.3.5'
+    implementation platform('com.google.firebase:firebase-bom:31.1.0')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
-    implementation "com.google.firebase:firebase-analytics:19.0.0" // so we can see push notification reports on firebase
-    implementation 'com.google.firebase:firebase-messaging:21.1.0'
+    implementation "com.google.firebase:firebase-analytics" // so we can see push notification reports on firebase
+    implementation 'com.google.firebase:firebase-messaging:23.1.0'
 
     implementation 'commons-io:commons-io:2.8.0'
 
@@ -250,7 +250,7 @@ dependencies {
     implementation 'com.facebook.fresco:fresco:2.6.0'
     implementation 'com.facebook.fresco:animated-webp:2.6.0'
     implementation 'com.facebook.fresco:webpsupport:2.6.0'
-    implementation 'com.android.support:support-core-utils:24.2.1'
+    implementation 'com.android.support:support-core-utils:28.0.0'
 
 
     if (enableHermes) {

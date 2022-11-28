@@ -8,7 +8,7 @@ import { Select } from "palette/elements/Select/SelectV2"
 import React, { useEffect, useRef } from "react"
 import { commitMutation, graphql } from "react-relay"
 // @ts-ignore
-import stripe from "tipsi-stripe"
+// import stripe from "tipsi-stripe"
 import { MyAccountFieldEditScreen } from "../MyAccount/Components/MyAccountFieldEditScreen"
 import { __triggerRefresh } from "./MyProfilePayment"
 
@@ -100,164 +100,167 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
 
   const screenRef = useRef<MyAccountFieldEditScreen>(null)
 
-  return (
-    <MyAccountFieldEditScreen
-      ref={screenRef}
-      canSave={state.allPresent}
-      title="Add new card"
-      onSave={async (dismiss, alert) => {
-        try {
-          const stripeResult = await stripe.createTokenWithCard({
-            ...state.fields.creditCard.value?.params,
-            name: state.fields.fullName.value,
-            addressLine1: state.fields.addressLine1.value,
-            addressLine2: state.fields.addressLine2.value,
-            addressCity: state.fields.city.value,
-            addressState: state.fields.state.value,
-            addressCountry: state.fields.country.value,
-            addressZip: state.fields.postCode.value,
-          })
-          if (!stripeResult?.tokenId) {
-            throw new Error(
-              `Unexpected stripe card tokenization result ${JSON.stringify(stripeResult)}`
-            )
-          }
-          const gravityResult = await saveCreditCard(stripeResult.tokenId)
-          if (gravityResult.createCreditCard?.creditCardOrError?.creditCard) {
-            await __triggerRefresh?.()
-          } else {
-            // TODO: we can probably present these errors to the user?
-            throw new Error(
-              `Error trying to save card ${JSON.stringify(
-                gravityResult.createCreditCard?.creditCardOrError?.mutationError
-              )}`
-            )
-          }
-          dismiss()
-        } catch (e) {
-          console.error(e)
-          alert(
-            "Something went wrong while attempting to save your credit card. Please try again or contact us."
-          )
-        }
-      }}
-    >
-      <Stack spacing={2}>
-        <>
-          <InputTitle>Credit Card</InputTitle>
-          <LiteCreditCardInput
-            ref={paymentInfoRef}
-            onChange={(e) => {
-              actions.fields.creditCard.setValue({
-                valid: e.valid,
-                params: {
-                  cvc: e.values.cvc,
-                  expMonth: Number(e.values.expiry.split("/")[0]),
-                  expYear: Number(e.values.expiry.split("/")[1]),
-                  number: e.values.number,
-                },
-              })
-            }}
-          />
-        </>
-
-        <Input
-          title="Name on card"
-          placeholder="Full name"
-          onChangeText={actions.fields.fullName.setValue}
-          returnKeyType="next"
-          onSubmitEditing={() => addressLine1Ref.current?.focus()}
-        />
-        <Input
-          ref={addressLine1Ref}
-          title="Address line 1"
-          placeholder="Add street address"
-          onChangeText={actions.fields.addressLine1.setValue}
-          returnKeyType="next"
-          onSubmitEditing={() => addressLine2Ref.current?.focus()}
-        />
-        <Input
-          ref={addressLine2Ref}
-          title="Address line 2"
-          optional
-          placeholder="Add apt, floor, suite, etc."
-          onChangeText={actions.fields.addressLine2.setValue}
-          returnKeyType="next"
-          onSubmitEditing={() => cityRef.current?.focus()}
-        />
-        <Input
-          ref={cityRef}
-          title="City"
-          placeholder="Add city"
-          onChangeText={actions.fields.city.setValue}
-          returnKeyType="next"
-          onSubmitEditing={() => postalCodeRef.current?.focus()}
-        />
-        <Input
-          ref={postalCodeRef}
-          title="Postal Code"
-          placeholder="Add postal code"
-          onChangeText={actions.fields.postCode.setValue}
-          returnKeyType="next"
-          onSubmitEditing={() => stateRef.current?.focus()}
-        />
-        <Input
-          ref={stateRef}
-          title="State, province, or region"
-          placeholder="Add state, province, or region"
-          onChangeText={actions.fields.state.setValue}
-          onSubmitEditing={() => {
-            stateRef.current?.blur()
-            screenRef.current?.scrollToEnd()
-            setTimeout(() => {
-              countryRef.current?.open()
-            }, 100)
-          }}
-          returnKeyType="next"
-        />
-        <CountrySelect
-          ref={countryRef}
-          onSelectValue={actions.fields.country.setValue}
-          value={state.fields.country.value}
-        />
-      </Stack>
-    </MyAccountFieldEditScreen>
-  )
+  return <Text>Some text</Text>
 }
 
-const saveCreditCard = (token: string) => {
-  return new Promise<MyProfilePaymentNewCreditCardSaveCardMutation["response"]>(
-    (resolve, reject) => {
-      commitMutation<MyProfilePaymentNewCreditCardSaveCardMutation>(defaultEnvironment, {
-        mutation: graphql`
-          mutation MyProfilePaymentNewCreditCardSaveCardMutation($input: CreditCardInput!) {
-            createCreditCard(input: $input) {
-              creditCardOrError {
-                ... on CreditCardMutationSuccess {
-                  creditCard {
-                    internalID
-                  }
-                }
-                ... on CreditCardMutationFailure {
-                  mutationError {
-                    detail
-                    error
-                    message
-                  }
-                }
-              }
-            }
-          }
-        `,
-        onCompleted: resolve,
-        onError: reject,
-        variables: {
-          input: {
-            oneTimeUse: false,
-            token,
-          },
-        },
-      })
-    }
-  )
-}
+//   (
+//     <MyAccountFieldEditScreen
+//       ref={screenRef}
+//       canSave={state.allPresent}
+//       title="Add new card"
+//       onSave={async (dismiss, alert) => {
+//         try {
+//           const stripeResult = await stripe.createTokenWithCard({
+//             ...state.fields.creditCard.value?.params,
+//             name: state.fields.fullName.value,
+//             addressLine1: state.fields.addressLine1.value,
+//             addressLine2: state.fields.addressLine2.value,
+//             addressCity: state.fields.city.value,
+//             addressState: state.fields.state.value,
+//             addressCountry: state.fields.country.value,
+//             addressZip: state.fields.postCode.value,
+//           })
+//           if (!stripeResult?.tokenId) {
+//             throw new Error(
+//               `Unexpected stripe card tokenization result ${JSON.stringify(stripeResult)}`
+//             )
+//           }
+//           const gravityResult = await saveCreditCard(stripeResult.tokenId)
+//           if (gravityResult.createCreditCard?.creditCardOrError?.creditCard) {
+//             await __triggerRefresh?.()
+//           } else {
+//             // TODO: we can probably present these errors to the user?
+//             throw new Error(
+//               `Error trying to save card ${JSON.stringify(
+//                 gravityResult.createCreditCard?.creditCardOrError?.mutationError
+//               )}`
+//             )
+//           }
+//           dismiss()
+//         } catch (e) {
+//           console.error(e)
+//           alert(
+//             "Something went wrong while attempting to save your credit card. Please try again or contact us."
+//           )
+//         }
+//       }}
+//     >
+//       <Stack spacing={2}>
+//         <>
+//           <InputTitle>Credit Card</InputTitle>
+//           <LiteCreditCardInput
+//             ref={paymentInfoRef}
+//             onChange={(e) => {
+//               actions.fields.creditCard.setValue({
+//                 valid: e.valid,
+//                 params: {
+//                   cvc: e.values.cvc,
+//                   expMonth: Number(e.values.expiry.split("/")[0]),
+//                   expYear: Number(e.values.expiry.split("/")[1]),
+//                   number: e.values.number,
+//                 },
+//               })
+//             }}
+//           />
+//         </>
+
+//         <Input
+//           title="Name on card"
+//           placeholder="Full name"
+//           onChangeText={actions.fields.fullName.setValue}
+//           returnKeyType="next"
+//           onSubmitEditing={() => addressLine1Ref.current?.focus()}
+//         />
+//         <Input
+//           ref={addressLine1Ref}
+//           title="Address line 1"
+//           placeholder="Add street address"
+//           onChangeText={actions.fields.addressLine1.setValue}
+//           returnKeyType="next"
+//           onSubmitEditing={() => addressLine2Ref.current?.focus()}
+//         />
+//         <Input
+//           ref={addressLine2Ref}
+//           title="Address line 2"
+//           optional
+//           placeholder="Add apt, floor, suite, etc."
+//           onChangeText={actions.fields.addressLine2.setValue}
+//           returnKeyType="next"
+//           onSubmitEditing={() => cityRef.current?.focus()}
+//         />
+//         <Input
+//           ref={cityRef}
+//           title="City"
+//           placeholder="Add city"
+//           onChangeText={actions.fields.city.setValue}
+//           returnKeyType="next"
+//           onSubmitEditing={() => postalCodeRef.current?.focus()}
+//         />
+//         <Input
+//           ref={postalCodeRef}
+//           title="Postal Code"
+//           placeholder="Add postal code"
+//           onChangeText={actions.fields.postCode.setValue}
+//           returnKeyType="next"
+//           onSubmitEditing={() => stateRef.current?.focus()}
+//         />
+//         <Input
+//           ref={stateRef}
+//           title="State, province, or region"
+//           placeholder="Add state, province, or region"
+//           onChangeText={actions.fields.state.setValue}
+//           onSubmitEditing={() => {
+//             stateRef.current?.blur()
+//             screenRef.current?.scrollToEnd()
+//             setTimeout(() => {
+//               countryRef.current?.open()
+//             }, 100)
+//           }}
+//           returnKeyType="next"
+//         />
+//         <CountrySelect
+//           ref={countryRef}
+//           onSelectValue={actions.fields.country.setValue}
+//           value={state.fields.country.value}
+//         />
+//       </Stack>
+//     </MyAccountFieldEditScreen>
+//   )
+// }
+
+// const saveCreditCard = (token: string) => {
+//   return new Promise<MyProfilePaymentNewCreditCardSaveCardMutation["response"]>(
+//     (resolve, reject) => {
+//       commitMutation<MyProfilePaymentNewCreditCardSaveCardMutation>(defaultEnvironment, {
+//         mutation: graphql`
+//           mutation MyProfilePaymentNewCreditCardSaveCardMutation($input: CreditCardInput!) {
+//             createCreditCard(input: $input) {
+//               creditCardOrError {
+//                 ... on CreditCardMutationSuccess {
+//                   creditCard {
+//                     internalID
+//                   }
+//                 }
+//                 ... on CreditCardMutationFailure {
+//                   mutationError {
+//                     detail
+//                     error
+//                     message
+//                   }
+//                 }
+//               }
+//             }
+//           }
+//         `,
+//         onCompleted: resolve,
+//         onError: reject,
+//         variables: {
+//           input: {
+//             oneTimeUse: false,
+//             token,
+//           },
+//         },
+//       })
+//     }
+//   )
+// }

@@ -195,7 +195,6 @@
     "styled-components": "4.2.1",
     "styled-system": "5.1.5",
     "supercluster": "6.0.2",
-    "tipsi-stripe": "https://github.com/artsy/tipsi-stripe.git#fix-infinite-loop",
     "tsutils": "3.21.0",
     "unleash-proxy-client": "1.11.0",
     "url": "0.11.0",
