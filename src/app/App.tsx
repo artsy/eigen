@@ -87,14 +87,14 @@ const Main = () => {
   // useStripeConfig()
   useWebViewCookies()
   useDeepLinks()
-  useInitialNotification()
+  // useInitialNotification()
   useInitializeQueryPrefetching()
   useIdentifyUser()
   useSyncNativeAuthState()
 
-  useEffect(() => {
-    createAllChannels()
-  }, [])
+  // useEffect(() => {
+  //   createAllChannels()
+  // }, [])
   usePreferredThemeTracking()
   useScreenReaderTracking()
   useFreshInstallTracking()
