@@ -14,10 +14,13 @@ interface RecentPriceRangeEntity {
   isCollectorProfileSources: boolean
 }
 
-interface RecentPriceRangesProps {
-  onSelected: (priceRange: RecentPriceRangeEntity) => void
+interface RecentPriceRangesListProps {
   selectedRange: PriceRange
+  ranges: RecentPriceRangeEntity[]
+  onSelected: (priceRange: RecentPriceRangeEntity) => void
 }
+
+interface RecentPriceRangesProps extends Omit<RecentPriceRangesListProps, "ranges"> {}
 
 export const RecentPriceRanges: React.FC<RecentPriceRangesProps> = ({
   selectedRange,
@@ -34,13 +37,6 @@ export const RecentPriceRanges: React.FC<RecentPriceRangesProps> = ({
     if (Platform.OS === "android" && recentPriceRangeScrollRef.current) {
       recentPriceRangeScrollRef.current.scrollTo({ x: 0, animated: false })
     }
-  }
-
-  const isSelectedPriceRange = (price: string) => {
-    const [min, max] = parsePriceRange(price)
-    const [minValue, maxValue] = selectedRange
-
-    return min === minValue && max === maxValue
   }
 
   if (!enableRecentPriceRanges) {
@@ -60,36 +56,60 @@ export const RecentPriceRanges: React.FC<RecentPriceRangesProps> = ({
           </Text>
         </TouchableOpacity>
       </Flex>
-      <Spacer mt={1} />
-      <ScrollView
-        ref={recentPriceRangeScrollRef}
-        horizontal
-        contentContainerStyle={{ paddingHorizontal: space("2") }}
-        showsHorizontalScrollIndicator={false}
-      >
-        <Flex flexDirection="row">
-          <Join separator={<Spacer ml={1} />}>
-            {priceRanges.map((recentPrice) => {
-              const { value } = recentPrice
-              const [min, max] = parsePriceRange(value)
-              const label = parsePriceRangeLabel(min, max)
-
-              return (
-                <Pill
-                  key={value}
-                  rounded
-                  accessibilityLabel="Price range pill"
-                  selected={isSelectedPriceRange(value)}
-                  onPress={() => onSelected(recentPrice)}
-                >
-                  {label}
-                </Pill>
-              )
-            })}
-          </Join>
-        </Flex>
-      </ScrollView>
+      <Spacer mt={2} />
+      <RecentPriceRangesList
+        ranges={priceRanges}
+        selectedRange={selectedRange}
+        onSelected={onSelected}
+      />
     </>
+  )
+}
+
+const RecentPriceRangesList: React.FC<RecentPriceRangesListProps> = ({
+  selectedRange,
+  onSelected,
+}) => {
+  const priceRanges = usePriceRanges()
+  const space = useSpace()
+  const recentPriceRangeScrollRef = useRef<ScrollView>(null)
+
+  const isSelectedPriceRange = (price: string) => {
+    const [min, max] = parsePriceRange(price)
+    const [minValue, maxValue] = selectedRange
+
+    return min === minValue && max === maxValue
+  }
+
+  return (
+    <ScrollView
+      ref={recentPriceRangeScrollRef}
+      horizontal
+      contentContainerStyle={{ paddingHorizontal: space("2") }}
+      showsHorizontalScrollIndicator={false}
+    >
+      <Flex flexDirection="row">
+        <Join separator={<Spacer ml={1} />}>
+          {priceRanges.map((recentPrice) => {
+            const { value } = recentPrice
+            const [min, max] = parsePriceRange(value)
+            const label = parsePriceRangeLabel(min, max)
+
+            return (
+              <Pill
+                key={value}
+                rounded
+                accessibilityLabel="Price range pill"
+                selected={isSelectedPriceRange(value)}
+                onPress={() => onSelected(recentPrice)}
+              >
+                {label}
+              </Pill>
+            )
+          })}
+        </Join>
+      </Flex>
+    </ScrollView>
   )
 }
 
