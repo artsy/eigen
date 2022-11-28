@@ -58,7 +58,11 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
             auctionState={auctionState as AuctionTimerState}
             variant="outline"
           />
-          <BuyNowButtonFragmentContainer artwork={artworkData} editionSetID={selectedEditionId} />
+          <BuyNowButtonFragmentContainer
+            artwork={artworkData}
+            editionSetID={selectedEditionId}
+            renderSaleMessage
+          />
         </RowContainer>
       )
     }
