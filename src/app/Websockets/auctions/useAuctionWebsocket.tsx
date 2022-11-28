@@ -6,7 +6,7 @@ interface AuctionWebsocketData {
 }
 
 interface AuctionWebsocketParams {
-  lotID: string
+  lotID: string | null | undefined
   onChange: (data: AuctionWebsocketData) => void
 }
 

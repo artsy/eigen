@@ -6,6 +6,8 @@ import { TabVisualClues } from "./StickyTabPage"
 export const StickyTabPageContext = React.createContext<{
   staticHeaderHeight: Animated.Node<number> | null
   stickyHeaderHeight: Animated.Node<number> | null
+  stickyHeaderHeightRawValue: number
+  staticHeaderHeightRawValue: number
   headerOffsetY: Animated.Value<number>
   tabLabels: string[]
   tabVisualClues: Array<TabVisualClues | undefined>

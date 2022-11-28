@@ -3,7 +3,7 @@ import { useUpdateShouldHideBackButton } from "app/utils/hideBackButtonOnScroll"
 import { Schema } from "app/utils/track"
 import { useAutoCollapsingMeasuredView } from "app/utils/useAutoCollapsingMeasuredView"
 import { useGlobalState } from "app/utils/useGlobalState"
-import { Box } from "palette"
+import { Box, Text } from "palette"
 import React, { EffectCallback, useEffect, useMemo, useRef, useState } from "react"
 import { View } from "react-native"
 import Animated from "react-native-reanimated"
@@ -50,7 +50,7 @@ interface StickyTabPageProps {
  */
 export const StickyTabPage: React.FC<StickyTabPageProps> = ({
   tabs,
-  staticHeaderContent = <></>,
+  staticHeaderContent = <Text>YOLO</Text>,
   stickyHeaderContent = <StickyTabPageTabBar />,
   bottomContent,
   disableBackButtonUpdate,
@@ -72,8 +72,11 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
     Array<JSX.Element | null>
   >([])
 
-  const { jsx: staticHeader, nativeHeight: staticHeaderHeight } =
-    useAutoCollapsingMeasuredView(staticHeaderContent)
+  const {
+    jsx: staticHeader,
+    nativeHeight: staticHeaderHeight,
+    nativeHeightRawValue: staticHeaderHeightRawValue,
+  } = useAutoCollapsingMeasuredView(staticHeaderContent)
 
   const stickyRailRef = useRef<SnappyHorizontalRail>(null)
 
@@ -86,8 +89,11 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
     return useAutoCollapsingMeasuredView(tabSpecificStickyHeaderContent[i])
   })
 
-  const { jsx: stickyHeader, nativeHeight: stickyHeaderHeight } =
-    useAutoCollapsingMeasuredView(stickyHeaderContent)
+  const {
+    jsx: stickyHeader,
+    nativeHeight: stickyHeaderHeight,
+    nativeHeightRawValue: stickyHeaderHeightRawValue,
+  } = useAutoCollapsingMeasuredView(stickyHeaderContent)
 
   const tracking = useTracking()
 
@@ -118,6 +124,8 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
         activeTabIndex,
         staticHeaderHeight,
         stickyHeaderHeight,
+        stickyHeaderHeightRawValue,
+        staticHeaderHeightRawValue,
         headerOffsetY,
         tabLabels: tabs.map((tab) => tab.title),
         tabVisualClues: tabs.map((tab) => tab.visualClues),
@@ -154,7 +162,7 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
             >
               {tabs.map(({ content }, index) => {
                 return (
-                  <View style={{ backgroundColor: "green", flex: 1, width }} key={index}>
+                  <View style={{ flex: 1, width }} key={index}>
                     <StickyTabPageFlatListContext.Provider
                       value={{
                         tabIsActive: Animated.eq(index, activeTabIndexNative),

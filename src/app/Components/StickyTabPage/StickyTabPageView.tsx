@@ -6,9 +6,5 @@ interface StickyTabPageViewProps {
 }
 
 export const StickyTabPageView: React.FC<StickyTabPageViewProps> = ({ children }) => {
-  return (
-    <Flex bg="red150" flex={1}>
-      {children}
-    </Flex>
-  )
+  return <Flex flex={1}>{children}</Flex>
 }

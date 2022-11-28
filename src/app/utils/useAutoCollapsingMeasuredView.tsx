@@ -1,14 +1,16 @@
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import { View } from "react-native"
 import Animated from "react-native-reanimated"
 
 export function useAutoCollapsingMeasuredView(content: React.ReactChild | null) {
+  const [nativeHeightRawValue, setNativeHeightRawValue] = useState(__TEST__ ? 100 : -1)
   const nativeHeight = useRef<Animated.Value<number>>(
     __TEST__ ? new Animated.Value(100) : new Animated.Value(-1)
   ).current
 
   return {
     nativeHeight,
+    nativeHeightRawValue,
     jsx: (
       <Animated.View style={{ height: nativeHeight!, overflow: "hidden" }}>
         <View
@@ -27,6 +29,7 @@ export function useAutoCollapsingMeasuredView(content: React.ReactChild | null) 
           }
           onLayout={(e) => {
             nativeHeight.setValue(e.nativeEvent.layout.height)
+            setNativeHeightRawValue(e.nativeEvent.layout.height)
           }}
         >
           {content}

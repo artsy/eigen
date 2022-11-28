@@ -1,4 +1,4 @@
-import { MasonryFlashList } from "@shopify/flash-list"
+import { MasonryFlashList, MasonryFlashListProps } from "@shopify/flash-list"
 import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { Aggregations, FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
@@ -13,18 +13,21 @@ import {
   useArtworkFilters,
   useSelectedFiltersCount,
 } from "app/Components/ArtworkFilter/useArtworkFilters"
+import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { Props as InfiniteScrollGridProps } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PAGE_SIZE } from "app/Components/constants"
+import { useNativeValue } from "app/Components/StickyTabPage/reanimatedHelpers"
 import { useStickyTabPageContext } from "app/Components/StickyTabPage/StickyTabPageContext"
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageView } from "app/Components/StickyTabPage/StickyTabPageView"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
-import { Box, Flex, Message, OpaqueImageView, Text, useSpace } from "palette"
+import { Box, Flex, Message, useSpace } from "palette"
 import React, { useContext, useEffect, useState } from "react"
 import { ActivityIndicator, Platform, useWindowDimensions } from "react-native"
+import Animated from "react-native-reanimated"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
@@ -208,50 +211,74 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
       }
 
       const { height } = useWindowDimensions()
-      const { headerOffsetY } = useStickyTabPageContext()
+      const {
+        headerOffsetY,
+        stickyHeaderHeight,
+        staticHeaderHeight,
+        staticHeaderHeightRawValue,
+        stickyHeaderHeightRawValue,
+      } = useStickyTabPageContext()
 
       // TODO: remaining stuff
-      // 1. top list inset
+      // 1. top list inset (better way than this?)
       // 2. set proper header height vs 150
       // 3. scroll behaviour down and up when should we make the header go back down?
-      // 4. replace dummy artwork component with artwork component and see if it is flashing or not
+      // const staticHeaderHeightValue = useNativeValue(staticHeaderHeight!, 0)
+      console.warn({ staticHeaderHeightRawValue })
+
+      const handleOnScroll: MasonryFlashListProps<any>["onScroll"] = ({
+        nativeEvent: {
+          contentOffset: { y: contentOffsetY },
+        },
+      }) => {
+        console.warn("handleOnScroll START initial onscroll raw", staticHeaderHeightRawValue)
+        console.warn("handleOnScroll START initial onscroll", staticHeaderHeight)
+        let newHeaderOffset = -contentOffsetY
+
+        if (newHeaderOffset > 0) {
+          newHeaderOffset = 0
+        }
+
+        if (newHeaderOffset < -staticHeaderHeightRawValue) {
+          newHeaderOffset = -staticHeaderHeightRawValue
+        }
+
+        headerOffsetY.setValue(newHeaderOffset)
+        // flatlist/flashlist works while MAsonryFlashlist doesnt work 🤯
+        console.warn("handleOnScroll END", newHeaderOffset, staticHeaderHeightRawValue)
+      }
+
+      const stickyHeaderHeightValue = useNativeValue(
+        stickyHeaderHeight ?? new Animated.Value(0),
+        150
+      )
+      const staticHeaderHeightValue = useNativeValue(
+        staticHeaderHeight ?? new Animated.Value(0),
+        50
+      )
 
       return (
         <Box flex={1} height={height}>
           <MasonryFlashList
-            contentContainerStyle={{ paddingHorizontal: space(2) }}
-            onScroll={({
-              nativeEvent: {
-                contentOffset: { y: contentOffsetY },
-              },
-            }) => {
-              console.warn({ contentOffsetY })
-              let newHeaderOffset = -contentOffsetY
-
-              if (newHeaderOffset > 0) {
-                newHeaderOffset = 0
-              }
-
-              if (newHeaderOffset < -150) {
-                newHeaderOffset = -150
-              }
-
-              console.warn({ newHeaderOffset })
-              headerOffsetY.setValue(newHeaderOffset)
-              // Animated.greaterThan(Animated.multiply(-1, headerOffsetY), scrollOffsetY),
+            contentInset={{ top: stickyHeaderHeightValue + staticHeaderHeightValue }}
+            contentOffset={{
+              y: -stickyHeaderHeightValue - staticHeaderHeightValue - space(6),
+              x: 0,
             }}
+            scrollEventThrottle={0.00000000001}
+            contentContainerStyle={{ paddingHorizontal: space(2) }}
+            onScroll={handleOnScroll}
             data={artworkdata}
             numColumns={2}
             estimatedItemSize={width / 2}
-            renderItem={({ item }) => {
+            renderItem={({ item, columnIndex }) => {
+              const imgAspectRatio = item.image?.aspectRatio ?? 1
+              const imgWidth = width / 2 - space(2) - space(1)
+              const imgHeight = imgWidth / imgAspectRatio
+
               return (
-                <Flex backgroundColor="red">
-                  <Text>{item.title}</Text>
-                  <OpaqueImageView
-                    aspectRatio={item.image?.aspectRatio}
-                    width={width / 2 - space(2)}
-                    imageURL={item.image?.url}
-                  />
+                <Flex pl={columnIndex === 1 ? 1 : 0} pr={columnIndex === 0 ? 1 : 0} py={1}>
+                  <ArtworkGridItem artwork={item} height={imgHeight} />
                 </Flex>
               )
             }}
@@ -270,7 +297,6 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
             }
             onEndReachedThreshold={0.2}
             onEndReached={() => {
-              console.warn("i was called")
               fetchNextPage()
             }}
           />
@@ -342,6 +368,7 @@ export default createPaginationContainer(
                 url(version: "large")
                 aspectRatio
               }
+              ...ArtworkGridItem_artwork
             }
           }
           pageInfo {
