@@ -92,15 +92,34 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
             </Text>
           )}
           {!hideArtistName && !!artistNames && (
-            <Text numberOfLines={size === "small" ? 2 : 1} lineHeight="20" variant="sm">
+            <Text numberOfLines={size === "small" ? 2 : 1} lineHeight="20" variant="xs">
               {artistNames}
             </Text>
           )}
-          {!!(title || date) && (
-            <Text lineHeight="20" color="black60" numberOfLines={size === "small" ? 2 : 1}>
-              {[title, date].filter(Boolean).join(", ")}
-            </Text>
-          )}
+          <Flex flexDirection="row">
+            {!!title && (
+              <Text
+                lineHeight="20"
+                color="black60"
+                numberOfLines={size === "small" ? 2 : 1}
+                variant="xs"
+                fontStyle="italic"
+              >
+                {title}
+              </Text>
+            )}
+            {!!date && (
+              <Text
+                lineHeight="20"
+                color="black60"
+                numberOfLines={size === "small" ? 2 : 1}
+                variant="xs"
+              >
+                {title && date ? ", " : ""}
+                {date}
+              </Text>
+            )}
+          </Flex>
           {!hidePartnerName && !!partner?.name && (
             <Text lineHeight="20" color="black60" numberOfLines={1}>
               {partner?.name}
@@ -129,7 +148,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
           )}
 
           {!!saleMessage && !isRecentlySoldArtwork && (
-            <Text lineHeight="20" variant="xs" color="black60" numberOfLines={1}>
+            <Text lineHeight="20" variant="xs" color="black100" numberOfLines={1} fontWeight={500}>
               {saleMessage}
             </Text>
           )}
