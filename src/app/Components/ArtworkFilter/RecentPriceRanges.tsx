@@ -52,6 +52,8 @@ export const RecentPriceRanges: React.FC<RecentPriceRangesProps> = ({
 
         {!isEmptyPriceRanges && !!hasCustomPriceRange && (
           <TouchableOpacity
+            accessibilityRole="button"
+            accessibilityLabel="Clear price ranges"
             onPress={handleClearRecentPriceRanges}
             hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
           >
