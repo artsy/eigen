@@ -1,6 +1,7 @@
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import { ImageCarouselContext, ImageDescriptor } from "../ImageCarouselContext"
 
+import { Flex, Spinner } from "palette"
 import FastImage from "react-native-fast-image"
 import { Zoom } from "react-native-reanimated-zoom"
 import usePrevious from "react-use/lib/usePrevious"
@@ -12,6 +13,7 @@ export interface ImageZoomViewAndroidProps {
 }
 
 export const ImageZoomViewAndroid: React.FC<ImageZoomViewAndroidProps> = ({ image, index }) => {
+  const [isLoading, setIsLoading] = useState(false)
   const { dispatch, images, imageIndex, fullScreenState } = useContext(ImageCarouselContext)
   imageIndex.useUpdates()
   fullScreenState.useUpdates()
@@ -44,20 +46,53 @@ export const ImageZoomViewAndroid: React.FC<ImageZoomViewAndroidProps> = ({ imag
     }
   }, [imageIndex.current, previousImageIndex])
 
-  const { width: screenWidth } = useScreenDimensions()
+  const { width: screenWidth, height: screenHeight } = useScreenDimensions()
+
+  let imageHeight = (image.height! * screenWidth) / image.width!
+  let imageWidth = screenWidth
+
+  // Make sure image doesn't get out of bounds
+  if (imageHeight > screenHeight) {
+    imageWidth = (image.width! * screenHeight) / image.height!
+    imageHeight = screenHeight
+  }
 
   return (
-    <Zoom>
-      <FastImage
-        source={{
-          uri: image.largeImageURL!,
-        }}
-        style={{
-          width: screenWidth,
-          height: (image.height! * screenWidth) / image.width!,
-        }}
-        resizeMode={FastImage.resizeMode.contain}
-      />
-    </Zoom>
+    <Flex>
+      <Zoom>
+        <FastImage
+          source={{
+            uri: image.largeImageURL!,
+          }}
+          style={{
+            width: screenWidth,
+            height: imageHeight,
+          }}
+          resizeMode={FastImage.resizeMode.contain}
+          onLoadStart={() => {
+            setIsLoading(true)
+          }}
+          onLoadEnd={() => {
+            setIsLoading(false)
+          }}
+        />
+        {!!isLoading && (
+          <Flex
+            position="absolute"
+            top={0}
+            pt={imageHeight / 2}
+            left={0}
+            opacity={0.5}
+            backgroundColor="black10"
+            width={screenWidth}
+            height={imageHeight}
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Spinner />
+          </Flex>
+        )}
+      </Zoom>
+    </Flex>
   )
 }

@@ -48,8 +48,6 @@ export const ImageCarouselFullScreenAndroid = () => {
     [screenDimensions.orientation]
   )
 
-  console.log("initialScrollIndex => ", initialScrollIndex)
-
   return (
     // on mount we want the modal to be visible instantly and handle transitions elsewhere ourselves
     // on unmount we use it's built-in fade transition
