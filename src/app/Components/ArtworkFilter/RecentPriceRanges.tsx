@@ -97,9 +97,9 @@ const RecentPriceRangesList: React.FC<RecentPriceRangesListProps> = ({
 
   const isSelectedPriceRange = (price: string) => {
     const [min, max] = parsePriceRange(price)
-    const [minValue, maxValue] = selectedRange
+    const [selectedMin, selectedMax] = selectedRange
 
-    return min === minValue && max === maxValue
+    return min === selectedMin && max === selectedMax
   }
 
   return (
