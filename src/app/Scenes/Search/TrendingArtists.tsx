@@ -66,7 +66,7 @@ export const TrendingArtists: React.FC<TrendingArtistsProps> = ({ data, ...boxPr
           return <TrendingArtistCard artist={item} onPress={onPress} />
         }}
         ItemSeparatorComponent={() => <Spacer ml={1} />}
-        ListFooterComponent={!!hasNext ? <LoadingIndicator /> : null}
+        ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer mr={2} />}
       />
     </Box>
   )
