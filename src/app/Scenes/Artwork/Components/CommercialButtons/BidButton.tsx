@@ -3,9 +3,10 @@ import { BidButton_artwork$data } from "__generated__/BidButton_artwork.graphql"
 import { BidButton_me$data } from "__generated__/BidButton_me.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/navigation/navigate"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { bidderNeedsIdentityVerification } from "app/utils/auction/bidderNeedsIdentityVerification"
 import { Schema } from "app/utils/track"
-import { Button, ButtonProps, ClassTheme, Text } from "palette"
+import { Button, ButtonProps, ClassTheme, Text, TextProps } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import track from "react-tracking"
@@ -18,6 +19,11 @@ export interface BidButtonProps {
   auctionState: AuctionTimerState
   relay: RelayProp
   variant?: ButtonProps["variant"]
+  enableArtworkRedesign: boolean
+}
+
+interface IdentityVerificationRequiredMessageProps extends TextProps {
+  enableArtworkRedesign: boolean
 }
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -29,9 +35,19 @@ const getMyLotStanding = (artwork) =>
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const getHasBid = (myLotStanding) => !!(myLotStanding && myLotStanding.mostRecentBid)
 
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-const IdentityVerificationRequiredMessage = ({ onPress, ...remainderProps }) => (
-  <Text variant="sm" mt="1" color="black60" pb="1" textAlign="center" {...remainderProps}>
+const IdentityVerificationRequiredMessage: React.FC<IdentityVerificationRequiredMessageProps> = ({
+  onPress,
+  enableArtworkRedesign,
+  ...remainderProps
+}) => (
+  <Text
+    variant={enableArtworkRedesign ? "xs" : "sm"}
+    mt="1"
+    color="black60"
+    pb="1"
+    textAlign="center"
+    {...remainderProps}
+  >
     Identity verification required to bid.{" "}
     <Text style={{ textDecorationLine: "underline" }} onPress={onPress}>
       FAQ
@@ -120,6 +136,7 @@ export class BidButton extends React.Component<BidButtonProps> {
             </Button>
             {needsIdentityVerification && (
               <IdentityVerificationRequiredMessage
+                enableArtworkRedesign={this.props.enableArtworkRedesign}
                 onPress={() => this.redirectToIdentityVerificationFAQ()}
               />
             )}
@@ -128,10 +145,11 @@ export class BidButton extends React.Component<BidButtonProps> {
         {registrationStatus && !registrationStatus.qualifiedForBidding && (
           <>
             <Button width={100} block size="large" mt={1} variant={this.props.variant} disabled>
-              Registration pending
+              Registration Pending
             </Button>
-            {needsIdentityVerification && (
+            {needsIdentityVerification && !this.props.enableArtworkRedesign && (
               <IdentityVerificationRequiredMessage
+                enableArtworkRedesign={this.props.enableArtworkRedesign}
                 onPress={() => this.redirectToIdentityVerificationFAQ()}
               />
             )}
@@ -147,7 +165,7 @@ export class BidButton extends React.Component<BidButtonProps> {
   }
 
   renderIsLiveOpen() {
-    const { variant, artwork } = this.props
+    const { variant, artwork, enableArtworkRedesign } = this.props
     const { sale } = artwork
     const isWatchOnly = watchOnly(sale)
     return (
@@ -155,7 +173,12 @@ export class BidButton extends React.Component<BidButtonProps> {
         {isWatchOnly && (
           <ClassTheme>
             {({ color }) => (
-              <Text variant="xs" color={color("black60")} pb={1} textAlign="center">
+              <Text
+                variant={enableArtworkRedesign ? "sm-display" : "xs"}
+                color={color("black60")}
+                pb={1}
+                textAlign="center"
+              >
                 Registration closed
               </Text>
             )}
@@ -210,10 +233,11 @@ export class BidButton extends React.Component<BidButtonProps> {
       return (
         <>
           <Button width={100} block size="large" variant={variant} disabled>
-            Registration pending
+            Registration Pending
           </Button>
-          {needsIdentityVerification && (
+          {needsIdentityVerification && !this.props.enableArtworkRedesign && (
             <IdentityVerificationRequiredMessage
+              enableArtworkRedesign={this.props.enableArtworkRedesign}
               onPress={() => this.redirectToIdentityVerificationFAQ()}
             />
           )}
@@ -240,6 +264,7 @@ export class BidButton extends React.Component<BidButtonProps> {
             Register to bid
           </Button>
           <IdentityVerificationRequiredMessage
+            enableArtworkRedesign={this.props.enableArtworkRedesign}
             onPress={() => this.redirectToIdentityVerificationFAQ()}
           />
         </>
@@ -271,7 +296,13 @@ export class BidButton extends React.Component<BidButtonProps> {
   }
 }
 
-export const BidButtonFragmentContainer = createFragmentContainer(BidButton, {
+const BidButtonContainer: React.FC<Omit<BidButtonProps, "enableArtworkRedesign">> = (props) => {
+  const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
+
+  return <BidButton {...props} enableArtworkRedesign={enableArtworkRedesign} />
+}
+
+export const BidButtonFragmentContainer = createFragmentContainer(BidButtonContainer, {
   artwork: graphql`
     fragment BidButton_artwork on Artwork {
       slug
