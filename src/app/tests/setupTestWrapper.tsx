@@ -54,7 +54,7 @@ export const setupTestWrapperTL = <T extends OperationType>({
 }
 
 /**
- * @deprecated avoid using this, use setupTestWrapperTL (above) instead.
+ * @deprecated avoid using this, use setupTestWrapperTL instead.
  */
 export const setupTestWrapper = <T extends OperationType>({
   Component,
