@@ -276,6 +276,7 @@ describe("CommercialButtons", () => {
     expect(getByText("Purchase $8000")).toBeTruthy()
   })
 
+  // TODO: Copy test case for ArtworkStickyBottomContent
   it("doesn't render the Buy Now or Bid buttons when isInAuction and isBuyNowable but has sold via buy now", () => {
     const artwork = {
       ...ArtworkFixture,
