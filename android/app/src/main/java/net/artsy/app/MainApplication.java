@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.braze.Braze;
 import com.braze.support.BrazeLogger;
-import com.appboy.AppboyLifecycleCallbackListener;
+import com.braze.BrazeActivityLifecycleCallbackListener;
 import com.segment.analytics.android.integrations.adjust.AdjustIntegration;
 import com.segment.analytics.Analytics;
 import com.facebook.react.PackageList;
@@ -83,10 +83,10 @@ public class MainApplication extends Application implements ReactApplication {
       }
       final String token = task.getResult();
       Log.i(TAG, "TOKEN firebase messaging token " + token);
-      Braze.getInstance(applicationContext).registerAppboyPushMessages(token);
+      Braze.getInstance(applicationContext).setRegisteredPushToken(token);
     });
 
-    registerActivityLifecycleCallbacks(new AppboyLifecycleCallbackListener());
+    registerActivityLifecycleCallbacks(new BrazeActivityLifecycleCallbackListener());
   }
 
   /**

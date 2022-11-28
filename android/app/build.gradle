@@ -230,6 +230,7 @@ dependencies {
 
     implementation "com.google.firebase:firebase-analytics" // so we can see push notification reports on firebase
     implementation 'com.google.firebase:firebase-messaging:23.1.0'
+    implementation 'com.appboy:android-sdk-ui:23.3.+'
 
     implementation 'commons-io:commons-io:2.8.0'
 

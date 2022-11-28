@@ -12445,10 +12445,10 @@ react-nanny@2.12.0:
   resolved "https://registry.yarnpkg.com/react-nanny/-/react-nanny-2.12.0.tgz#8ee7d20319f81131fc1be50ddf3197f286a81dde"
   integrity sha512-oQ3Mo2oBPVELl96IHc43zVsCJUt8BYoEXoeBtPJzTfTTVezQx3/CRZZ+4Ck6TITxawRTUiOcU8v7EPaGpDk01A==
 
-react-native-appboy-sdk@1.35.1:
-  version "1.35.1"
-  resolved "https://registry.yarnpkg.com/react-native-appboy-sdk/-/react-native-appboy-sdk-1.35.1.tgz#b9c4e6d84b5460e175a93e9c708cf7b8f1f9c57a"
-  integrity sha512-LGBWl14LTy+jXGq35EponaHB148RJbN/k3+oMbeWAMZ851IUpeBwvL+qWU421MBieVBqO7oLFhT47GgFoya7mQ==
+react-native-appboy-sdk@1.40.0:
+  version "1.40.0"
+  resolved "https://registry.yarnpkg.com/react-native-appboy-sdk/-/react-native-appboy-sdk-1.40.0.tgz#04b237a806acb5da980608efcd702c4120a1da13"
+  integrity sha512-wBbk9/1PBhgVKiR44NHA8QYFS4nN6ajy9DAoLHDB08IC6Fq70YBnP4HHd5sYJzi98qu7yF7eN/dYo0ylXzEmSw==
 
 react-native-bootsplash@3.2.0:
   version "3.2.0"
