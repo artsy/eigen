@@ -1,4 +1,3 @@
-import { OwnerType } from "@artsy/cohesion"
 import { MasonryFlashList } from "@shopify/flash-list"
 import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
@@ -14,28 +13,18 @@ import {
   useArtworkFilters,
   useSelectedFiltersCount,
 } from "app/Components/ArtworkFilter/useArtworkFilters"
-import { Artwork } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
-import {
-  InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
-  Props as InfiniteScrollGridProps,
-} from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { Props as InfiniteScrollGridProps } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PAGE_SIZE } from "app/Components/constants"
+import { useStickyTabPageContext } from "app/Components/StickyTabPage/StickyTabPageContext"
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
-import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+import { StickyTabPageView } from "app/Components/StickyTabPage/StickyTabPageView"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
-import { Box, Flex, Message, OpaqueImageView, Spacer, Text, useSpace } from "palette"
-import { Masonry } from "palette/elements/VirtualizedMasonry"
+import { Box, Flex, Message, OpaqueImageView, Text, useSpace } from "palette"
 import React, { useContext, useEffect, useState } from "react"
-import {
-  ActivityIndicator,
-  FlatList,
-  Platform,
-  SafeAreaView,
-  useWindowDimensions,
-} from "react-native"
+import { ActivityIndicator, Platform, useWindowDimensions } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
@@ -87,7 +76,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
 
   return (
     <ArtworkFiltersStoreProvider>
-      <StickyTabPageScrollView keyboardShouldPersistTaps="handled">
+      <StickyTabPageView>
         <ArtistArtworksContainer
           {...props}
           artist={artist}
@@ -105,7 +94,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
           mode={FilterModalMode.ArtistArtworks}
           shouldShowCreateAlertButton
         />
-      </StickyTabPageScrollView>
+      </StickyTabPageView>
     </ArtworkFiltersStoreProvider>
   )
 }
@@ -219,29 +208,53 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
       }
 
       const { height } = useWindowDimensions()
+      const { headerOffsetY } = useStickyTabPageContext()
+
+      // TODO: remaining stuff
+      // 1. top list inset
+      // 2. set proper header height vs 150
+      // 3. scroll behaviour down and up when should we make the header go back down?
+      // 4. replace dummy artwork component with artwork component and see if it is flashing or not
 
       return (
         <Box flex={1} height={height}>
           <MasonryFlashList
+            contentContainerStyle={{ paddingHorizontal: space(2) }}
+            onScroll={({
+              nativeEvent: {
+                contentOffset: { y: contentOffsetY },
+              },
+            }) => {
+              console.warn({ contentOffsetY })
+              let newHeaderOffset = -contentOffsetY
+
+              if (newHeaderOffset > 0) {
+                newHeaderOffset = 0
+              }
+
+              if (newHeaderOffset < -150) {
+                newHeaderOffset = -150
+              }
+
+              console.warn({ newHeaderOffset })
+              headerOffsetY.setValue(newHeaderOffset)
+              // Animated.greaterThan(Animated.multiply(-1, headerOffsetY), scrollOffsetY),
+            }}
             data={artworkdata}
             numColumns={2}
             estimatedItemSize={width / 2}
-            // contentContainerStyle={{ paddingTop: space(2), paddingHorizontal: space(2) }}
-            renderItem={({ item, index }) => (
-              <Flex backgroundColor="red">
-                <Text>{item.title}</Text>
-                <OpaqueImageView
-                  aspectRatio={item.image?.aspectRatio}
-                  width={width / 2 - space(2)}
-                  imageURL={item.image?.url}
-                />
-              </Flex>
-              // <Artwork
-              //   artwork={item}
-              //   updateRecentSearchesOnTap
-              //   itemIndex={index}
-              // />
-            )}
+            renderItem={({ item }) => {
+              return (
+                <Flex backgroundColor="red">
+                  <Text>{item.title}</Text>
+                  <OpaqueImageView
+                    aspectRatio={item.image?.aspectRatio}
+                    width={width / 2 - space(2)}
+                    imageURL={item.image?.url}
+                  />
+                </Flex>
+              )
+            }}
             ListFooterComponent={() =>
               relay.isLoading() ? (
                 <Flex
@@ -329,7 +342,6 @@ export default createPaginationContainer(
                 url(version: "large")
                 aspectRatio
               }
-              ...ArtworkGridItem_artwork
             }
           }
           pageInfo {
@@ -340,7 +352,6 @@ export default createPaginationContainer(
           counts {
             total
           }
-          ...InfiniteScrollArtworksGrid_connection
         }
         statuses {
           artworks
