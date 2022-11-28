@@ -12,7 +12,8 @@ import styled from "styled-components/native"
 import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "../ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 
-export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = 90
+export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = 60
+
 export const ARTWORK_RAIL_CARD_IMAGE_HEIGHT = {
   small: 230,
   large: 320,
@@ -60,6 +61,13 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
       ? getUrgencyTag(artwork?.sale?.endAt)
       : null
 
+  const getTextHeightByArtworkSize = (cardSize: ArtworkCardSize) => {
+    if (cardSize === "small") {
+      return ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + 30
+    }
+    return ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + (isRecentlySoldArtwork ? 30 : 0)
+  }
+
   return (
     <ArtworkCard onPress={onPress || undefined} testID={testID}>
       <Flex alignItems="flex-end">
@@ -75,8 +83,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
           // Recently sold artworks require more space for the text container
           // to accommodate the estimate and realized price
           style={{
-            height:
-              fontScale * (ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + (isRecentlySoldArtwork ? 10 : 0)),
+            height: fontScale * getTextHeightByArtworkSize(size),
           }}
         >
           {!!lotLabel && (
