@@ -30,7 +30,7 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
   mb,
 }) => {
   const { trackEvent } = useTracking()
-
+  const enforceLargeRail = useFeatureFlag("AREnforceLargeNewWorksRail")
   const railVariant = useExperimentVariant("eigen-new-works-for-you-rail-size")
 
   trackExperimentVariant(
@@ -68,7 +68,7 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
             }}
           />
         </Flex>
-        {railVariant.variant === "experiment" || useFeatureFlag("AREnforceLargeNewWorksRail") ? (
+        {railVariant.variant === "experiment" || enforceLargeRail ? (
           <LargeArtworkRail
             artworks={artworks}
             onPress={(artwork, position) => {
