@@ -4,7 +4,7 @@ import {
   MAX_SHOWN_RECENT_PRICE_RANGES,
   useRecentPriceRanges,
 } from "app/store/RecentPriceRangesModel"
-import { Flex, Join, Pill, Spacer, Text, useSpace } from "palette"
+import { Box, Flex, Join, Pill, Spacer, Text, useSpace } from "palette"
 import { useRef } from "react"
 import { Platform, ScrollView, TouchableOpacity } from "react-native"
 import { parsePriceRange, parsePriceRangeLabel, PriceRange } from "./Filters/helpers"
@@ -30,6 +30,8 @@ export const RecentPriceRanges: React.FC<RecentPriceRangesProps> = ({
   const enableRecentPriceRanges = useFeatureFlag("ARRecentPriceRanges")
   const space = useSpace()
   const recentPriceRangeScrollRef = useRef<ScrollView>(null)
+  const isEmptyPriceRanges = priceRanges.length === 0
+  const hasCustomPriceRange = priceRanges.some((range) => !range.isCollectorProfileSources)
 
   const handleClearRecentPriceRanges = () => {
     GlobalStore.actions.recentPriceRanges.clearAllPriceRanges()
@@ -47,22 +49,41 @@ export const RecentPriceRanges: React.FC<RecentPriceRangesProps> = ({
     <>
       <Flex mx={2} flexDirection="row" justifyContent="space-between" alignItems="center">
         <Text variant="sm">Recent price ranges</Text>
-        <TouchableOpacity
-          onPress={handleClearRecentPriceRanges}
-          hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
-        >
-          <Text variant="sm" style={{ textDecorationLine: "underline" }}>
-            Clear
-          </Text>
-        </TouchableOpacity>
+
+        {!isEmptyPriceRanges && !!hasCustomPriceRange && (
+          <TouchableOpacity
+            onPress={handleClearRecentPriceRanges}
+            hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
+          >
+            <Text variant="sm" style={{ textDecorationLine: "underline" }}>
+              Clear
+            </Text>
+          </TouchableOpacity>
+        )}
       </Flex>
+
       <Spacer mt={2} />
-      <RecentPriceRangesList
-        ranges={priceRanges}
-        selectedRange={selectedRange}
-        onSelected={onSelected}
-      />
+
+      {isEmptyPriceRanges ? (
+        <EmptyState />
+      ) : (
+        <RecentPriceRangesList
+          ranges={priceRanges}
+          selectedRange={selectedRange}
+          onSelected={onSelected}
+        />
+      )}
     </>
+  )
+}
+
+const EmptyState = () => {
+  return (
+    <Box bg="black5" p={2} mx={2}>
+      <Text variant="sm-display" color="black60" textAlign="center">
+        Your recent price ranges will show here
+      </Text>
+    </Box>
   )
 }
 
