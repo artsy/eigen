@@ -3,12 +3,12 @@
 buildscript {
     ext {
         googlePlayServicesVersion = "17.0.0"
-        firebaseMessagingVersion = "21.1.0" // matching firebaseIidVersion to avoid duplicate class error
+        firebaseMessagingVersion = "23.1.0" // matching firebaseIidVersion to avoid duplicate class error
         buildToolsVersion = "30.0.2"
         minSdkVersion = 21
         compileSdkVersion = 33
         targetSdkVersion = 33
-        firebaseIidVersion = "21.1.0" // Needed for react-native-device-info
+        // firebaseIidVersion = "23.1.0" // Needed for react-native-device-info
         googlePlayServicesAuthVersion = "16.0.1"
         ndkVersion = "21.4.7075529"
     }
