@@ -6,11 +6,11 @@ import {
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { navigate, NavigateOptions } from "app/navigation/navigate"
-import { CreateSavedSearchAlert } from "app/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
-import {
-  CreateSavedSearchAlertParams,
-  SavedSearchAlertMutationResult,
-} from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
+// import { CreateSavedSearchAlert } from "app/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
+// import {
+//   CreateSavedSearchAlertParams,
+//   SavedSearchAlertMutationResult,
+// } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { useTracking } from "react-tracking"
 
 export interface CreateSavedSearchModalProps {
@@ -27,7 +27,7 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
   const tracking = useTracking()
   const popover = usePopoverMessage()
 
-  const handleComplete = (result: SavedSearchAlertMutationResult) => {
+  const handleComplete = (result: any) => {
     const { owner } = entity
 
     tracking.trackEvent(tracks.toggleSavedSearch(true, owner.type, owner.id, owner.slug, result.id))
@@ -51,15 +51,15 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
     })
   }
 
-  const params: CreateSavedSearchAlertParams = {
-    aggregations,
-    attributes,
-    entity,
-    onClosePress: closeModal,
-    onComplete: handleComplete,
-  }
+  // const params: CreateSavedSearchAlertParams = {
+  //   aggregations,
+  //   attributes,
+  //   entity,
+  //   onClosePress: closeModal,
+  //   onComplete: handleComplete,
+  // }
 
-  return <CreateSavedSearchAlert visible={visible} params={params} />
+  return <Text>Hamburger with cheese</Text>
 }
 
 export const tracks = {

@@ -4,10 +4,10 @@ import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { SwitchMenu } from "app/Components/SwitchMenu"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import {
-  getNotificationPermissionsStatus,
-  PushAuthorizationStatus,
-} from "app/utils/PushNotification"
+// import {
+//   getNotificationPermissionsStatus,
+//   PushAuthorizationStatus,
+// } from "app/utils/PushNotification"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import useAppState from "app/utils/useAppState"
 import { debounce } from "lodash"
@@ -116,7 +116,7 @@ export const MyProfilePushNotifications: React.FC<{
   isLoading: boolean
 }> = ({ me, relay, isLoading = false }) => {
   const [notificationAuthorizationStatus, setNotificationAuthorizationStatus] =
-    useState<PushAuthorizationStatus>(PushAuthorizationStatus.NotDetermined)
+    useState<any>("iono")
   const [userNotificationSettings, setUserNotificationSettings] =
     useState<MyProfilePushNotifications_me$data>(me)
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
@@ -132,7 +132,7 @@ export const MyProfilePushNotifications: React.FC<{
   useAppState({ onForeground })
 
   const getPermissionStatus = async () => {
-    const status = await getNotificationPermissionsStatus()
+    const status = false // await getNotificationPermissionsStatus()
     setNotificationAuthorizationStatus(status)
   }
 
@@ -173,11 +173,9 @@ export const MyProfilePushNotifications: React.FC<{
   const renderContent = () => (
     <View
       style={{
-        opacity: notificationAuthorizationStatus === PushAuthorizationStatus.Authorized ? 1 : 0.5,
+        opacity: 0.5,
       }}
-      pointerEvents={
-        notificationAuthorizationStatus === PushAuthorizationStatus.Authorized ? "auto" : "none"
-      }
+      pointerEvents="none"
     >
       <Join separator={<Separator my={1} />}>
         <NotificationPermissionsBox title="Purchase Updates" isLoading={isLoading}>
@@ -288,11 +286,9 @@ export const MyProfilePushNotifications: React.FC<{
       <ScrollView
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
       >
-        {notificationAuthorizationStatus === PushAuthorizationStatus.Denied && (
-          <OpenSettingsBanner />
-        )}
-        {notificationAuthorizationStatus === PushAuthorizationStatus.NotDetermined &&
-          Platform.OS === "ios" && <AllowPushNotificationsBanner />}
+        {" "}
+        (
+        <OpenSettingsBanner />){Platform.OS === "ios" && <AllowPushNotificationsBanner />}
         {renderContent()}
       </ScrollView>
     </PageWithSimpleHeader>

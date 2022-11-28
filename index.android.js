@@ -1,2 +1,2 @@
-require("./src/app/utils/PushNotification").configure()
+// require("./src/app/utils/PushNotification").configure()
 require("./index-common")
