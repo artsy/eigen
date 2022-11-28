@@ -58,14 +58,14 @@ export const ImageZoomViewAndroid: React.FC<ImageZoomViewAndroidProps> = ({ imag
   }
 
   return (
-    <Flex>
+    <Flex width={screenWidth} height={screenHeight} alignItems="center" justifyContent="center">
       <Zoom>
         <FastImage
           source={{
             uri: image.largeImageURL!,
           }}
           style={{
-            width: screenWidth,
+            width: imageWidth,
             height: imageHeight,
           }}
           resizeMode={FastImage.resizeMode.contain}
