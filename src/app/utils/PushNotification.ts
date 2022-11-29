@@ -4,7 +4,7 @@ import { navigate } from "app/navigation/navigate"
 import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
 import { GlobalStore, unsafe_getUserAccessToken } from "app/store/GlobalStore"
 import { PendingPushNotification } from "app/store/PendingPushNotificationModel"
-import { Alert, Linking, Platform } from "react-native"
+import { Alert, AlertButton, Linking, Platform } from "react-native"
 import Braze from "react-native-appboy-sdk"
 import { getDeviceId } from "react-native-device-info"
 import PushNotification, { ReceivedNotification } from "react-native-push-notification"
@@ -278,9 +278,49 @@ export const requestPushNotificationsPermission = async () => {
   const pushNotificationsPermissionsStatus = await getNotificationPermissionsStatus()
   if (pushNotificationsPermissionsStatus !== PushAuthorizationStatus.Authorized) {
     setTimeout(() => {
-      requestPushPermissionWithSoftAsk()
+      // TODO: Replace with settings prompt logic
+      if (true) {
+        showHowToEnableNotificationInstructionAlert()
+      } else {
+        requestPushPermissionWithSoftAsk()
+      }
     }, 3000)
   }
+}
+
+export const showHowToEnableNotificationInstructionAlert = () => {
+  const deviceText = Platform.select({
+    ios: "iOS",
+    android: "android",
+    default: "device",
+  })
+  const instruction = Platform.select({
+    ios: `Tap 'Artsy' and enable "Allow Notifications" for Artsy.`,
+    default: "",
+  })
+
+  const buttons: AlertButton[] = [
+    {
+      text: "Settings",
+      onPress: () => {
+        if (Platform.OS === "android") {
+          Linking.openSettings()
+        } else {
+          Linking.openURL("App-prefs:NOTIFICATIONS_ID")
+        }
+      },
+    },
+    {
+      text: "Cancel",
+      style: "cancel",
+    },
+  ]
+
+  Alert.alert(
+    "Artsy would like to send you notifications",
+    `To receive notifications for your alerts, you will need to enable them in your ${deviceText} Settings. ${instruction}`,
+    Platform.OS === "ios" ? buttons : buttons.reverse()
+  )
 }
 
 const requestPushPermissionWithSoftAsk = async () => {
