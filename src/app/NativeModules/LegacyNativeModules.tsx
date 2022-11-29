@@ -22,7 +22,6 @@ const noop: any = (name: string) => () =>
 
 interface LegacyNativeModules {
   ARTemporaryAPIModule: {
-    requestPrepromptNotificationPermissions(): void
     requestDirectNotificationPermissions(): void
     fetchNotificationPermissions(
       callback: (error: any, result: PushAuthorizationStatus) => void
@@ -145,7 +144,6 @@ const LegacyNativeModulesAndroid = {
   },
 
   ARTemporaryAPIModule: {
-    requestPrepromptNotificationPermissions: noop("requestPrepromptNotificationPermissions"),
     requestDirectNotificationPermissions: noop("requestDirectNotificationPermissions"),
     fetchNotificationPermissions: noop("fetchNotificationPermissions"),
     markNotificationsRead: noop("markNotificationsRead"),

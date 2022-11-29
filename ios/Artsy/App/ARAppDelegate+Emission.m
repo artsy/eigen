@@ -72,11 +72,6 @@
         [delegate registerForDeviceNotificationsWithApple];
     };
 
-    emission.APIModule.prepromptNotificationPermissionPrompter = ^() {
-        ARAppNotificationsDelegate *delegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
-        [delegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextOnboarding];
-    };
-
 #pragma mark - Native Module: Follow status
 
     emission.APIModule.notificationReadStatusAssigner = ^(RCTResponseSenderBlock block) {

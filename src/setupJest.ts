@@ -378,7 +378,6 @@ function getNativeModules(): OurNativeModules {
       reactStateUpdated: jest.fn(),
     },
     ARTemporaryAPIModule: {
-      requestPrepromptNotificationPermissions: jest.fn(),
       requestDirectNotificationPermissions: jest.fn(),
       fetchNotificationPermissions: jest.fn(),
       markNotificationsRead: jest.fn(),
@@ -458,7 +457,6 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
       reactStateUpdated: jest.fn(),
     },
     ARTemporaryAPIModule: {
-      requestPrepromptNotificationPermissions: jest.fn(),
       requestDirectNotificationPermissions: jest.fn(),
       fetchNotificationPermissions: jest.fn(),
       markNotificationsRead: jest.fn(),
