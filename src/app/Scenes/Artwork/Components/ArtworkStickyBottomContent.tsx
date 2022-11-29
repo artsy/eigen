@@ -28,7 +28,11 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
   }
 
   return (
-    <Box bg="white100" pb={safeAreaInsets.bottom}>
+    <Box
+      accessibilityLabel="Sticky bottom commercial section"
+      bg="white100"
+      pb={safeAreaInsets.bottom}
+    >
       <Separator />
       <Box px={2} py={1}>
         <ArtworkPrice artwork={artworkData} mb={1} />

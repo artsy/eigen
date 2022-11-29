@@ -49,7 +49,13 @@ export const ArtworkAuctionBidInfo: React.FC<ArtworkAuctionBidInfoProps> = ({
   }
 
   return (
-    <Flex flexDirection="row" justifyContent="space-between" alignItems="center" {...flexProps}>
+    <Flex
+      accessibilityLabel="Auction Bid Info"
+      flexDirection="row"
+      justifyContent="space-between"
+      alignItems="center"
+      {...flexProps}
+    >
       <Text variant="lg-display">{label}</Text>
       <Flex flexDirection="row" alignItems="center">
         {renderBidResultIcon()}

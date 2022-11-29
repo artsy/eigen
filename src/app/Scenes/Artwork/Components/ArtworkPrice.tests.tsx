@@ -1,4 +1,5 @@
 import { screen } from "@testing-library/react-native"
+import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
 import { Theme } from "palette"
@@ -33,6 +34,40 @@ describe("ArtworkPrice", () => {
       `,
     })
   }
+
+  describe("Auction bid info", () => {
+    it("should be displayed", async () => {
+      const { renderWithRelay } = getWrapper()
+
+      renderWithRelay({
+        Artwork: () => ({
+          isInAuction: true,
+        }),
+      })
+
+      await flushPromiseQueue()
+
+      expect(screen.getByLabelText("Auction Bid Info")).toBeTruthy()
+    })
+
+    it("should NOT be displayed for live sale in progress", async () => {
+      const { renderWithRelay } = getWrapper({
+        initialData: {
+          auctionState: AuctionTimerState.LIVE_INTEGRATION_ONGOING,
+        },
+      })
+
+      renderWithRelay({
+        Artwork: () => ({
+          isInAuction: true,
+        }),
+      })
+
+      await flushPromiseQueue()
+
+      expect(screen.queryByLabelText("Auction Bid Info")).toBeNull()
+    })
+  })
 
   describe("Exclude shipping and taxes label", () => {
     const { renderWithRelay } = getWrapper()
