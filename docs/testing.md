@@ -25,7 +25,7 @@ Our preferred methods to use are marked with a ⭐️, while the ones we'd like 
 
 ## Test helpers and wrappers, when to use them, and good examples
 
-- `TestRendered` is a component we create, using the component we want to test. We use a TestRendered when for example we want to create a mock query. We don't always need to use a test renderer.
+- `TestRenderer` is a component we create, using the component we want to test. We use a TestRenderer when for example we want to create a mock query. We don't always need to use a test renderer.
 
 New fashion: You can use useLazyLoadQuery inside a TestRendered which is the new relay hooks way for querying data and the way we generally want to swift towards.
 
