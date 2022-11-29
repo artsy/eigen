@@ -14,7 +14,7 @@ import {
 import { useExperimentFlag } from "app/utils/experiments/hooks"
 import { debounce, sortBy } from "lodash"
 import { Flex, Histogram, HistogramBarEntity, Input, Spacer, Text, useColor } from "palette"
-import React, { useMemo, useState } from "react"
+import React, { useMemo, useRef, useState } from "react"
 import { ScrollView, useWindowDimensions } from "react-native"
 import { useTracking } from "react-tracking"
 import { ArtworkFilterBackHeader } from "../components/ArtworkFilterBackHeader"
@@ -86,6 +86,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
   const { width } = useWindowDimensions()
   const color = useColor()
   const tracking = useTracking()
+  const screenScrollViewRef = useRef<ScrollView>(null)
 
   const enableHistogram = useExperimentFlag("eigen-enable-price-histogram")
 
@@ -164,103 +165,117 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
     tracking.trackEvent(tracks.selectedRecentPriceRange(isCollectorProfileSources))
   }
 
+  const handleMultiSliderValuesChangeStart = () => {
+    if (screenScrollViewRef.current) {
+      screenScrollViewRef.current.setNativeProps({ scrollEnabled: false })
+    }
+  }
+
+  const handleMultiSliderValuesChangeFinish = () => {
+    if (screenScrollViewRef.current) {
+      screenScrollViewRef.current.setNativeProps({ scrollEnabled: true })
+    }
+  }
+
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const histogramBars = getBarsFromAggregations(aggregations)
   const shouldDisplayHistogram = enableHistogram && histogramBars.length > 0
 
   return (
-    <Flex flexGrow={1}>
+    <Flex flex={1}>
       <ArtworkFilterBackHeader
         title={filterHeaderText}
         onLeftButtonPress={navigation.goBack}
         {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
       />
-      <Flex flexGrow={1}>
-        <ScrollView scrollEnabled={false} keyboardShouldPersistTaps="handled">
-          <Flex m={2}>
-            <Text variant="sm-display">Choose Your Price Range</Text>
-          </Flex>
-          <Flex flexDirection="row" mx={2}>
-            <Input
-              containerStyle={{ flex: 1 }}
-              description="Min"
-              fixedRightPlaceholder="$USD"
-              enableClearButton
-              keyboardType="number-pad"
-              value={getInputValue(minValue)}
-              onChangeText={handleTextChange(0)}
-              testID="price-min-input"
-              descriptionColor="black100"
-            />
-            <Spacer mx={2} />
-            <Input
-              containerStyle={{ flex: 1 }}
-              description="Max"
-              fixedRightPlaceholder="$USD"
-              enableClearButton
-              keyboardType="number-pad"
-              value={getInputValue(maxValue)}
-              onChangeText={handleTextChange(1)}
-              testID="price-max-input"
-              descriptionColor="black100"
-            />
-          </Flex>
-          <Spacer m={2} />
-          <Flex mx={`${20 + RANGE_DOT_SIZE / 2}px`}>
-            {!!shouldDisplayHistogram && (
-              <Flex mb={2}>
-                <Histogram bars={histogramBars} selectedRange={[sliderRange[0], sliderRange[1]]} />
-              </Flex>
-            )}
-            <Flex alignItems="center" testID="slider">
-              <MultiSlider
-                min={defaultMinValue}
-                max={defaultMaxValue}
-                step={SLIDER_STEP_VALUE}
-                snapped
-                // 40 here is the horizontal padding of the slider container
-                sliderLength={width - 40 - RANGE_DOT_SIZE}
-                onValuesChange={handleSliderValueChange}
-                allowOverlap={false}
-                values={sliderRange}
-                trackStyle={{
-                  backgroundColor: color("black30"),
-                }}
-                selectedStyle={{
-                  backgroundColor: color("blue100"),
-                }}
-                markerStyle={{
-                  height: RANGE_DOT_SIZE,
-                  width: RANGE_DOT_SIZE,
-                  borderRadius: RANGE_DOT_SIZE / 2,
-                  backgroundColor: color("white100"),
-                  borderColor: color("black10"),
-                  borderWidth: 1,
-                  shadowRadius: 2,
-                  elevation: 5,
-                }}
-                pressedMarkerStyle={{
-                  height: RANGE_DOT_SIZE,
-                  width: RANGE_DOT_SIZE,
-                  borderRadius: 16,
-                }}
-              />
+      <ScrollView ref={screenScrollViewRef} keyboardShouldPersistTaps="handled">
+        <Flex m={2}>
+          <Text variant="sm-display">Choose Your Price Range</Text>
+        </Flex>
+        <Flex flexDirection="row" mx={2}>
+          <Input
+            containerStyle={{ flex: 1 }}
+            description="Min"
+            fixedRightPlaceholder="$USD"
+            enableClearButton
+            keyboardType="number-pad"
+            value={getInputValue(minValue)}
+            onChangeText={handleTextChange(0)}
+            testID="price-min-input"
+            descriptionColor="black100"
+          />
+          <Spacer mx={2} />
+          <Input
+            containerStyle={{ flex: 1 }}
+            description="Max"
+            fixedRightPlaceholder="$USD"
+            enableClearButton
+            keyboardType="number-pad"
+            value={getInputValue(maxValue)}
+            onChangeText={handleTextChange(1)}
+            testID="price-max-input"
+            descriptionColor="black100"
+          />
+        </Flex>
+        <Spacer m={2} />
+        <Flex mx={`${20 + RANGE_DOT_SIZE / 2}px`}>
+          {!!shouldDisplayHistogram && (
+            <Flex mb={2}>
+              <Histogram bars={histogramBars} selectedRange={[sliderRange[0], sliderRange[1]]} />
             </Flex>
-            <Flex flexDirection="row" justifyContent="space-between">
-              <Text variant="xs" color="black60">
-                ${defaultMinValue}
-              </Text>
-              <Text variant="xs" color="black60">
-                ${defaultMaxValue}+
-              </Text>
-            </Flex>
+          )}
+          <Flex alignItems="center" testID="slider">
+            <MultiSlider
+              min={defaultMinValue}
+              max={defaultMaxValue}
+              step={SLIDER_STEP_VALUE}
+              snapped
+              // 40 here is the horizontal padding of the slider container
+              sliderLength={width - 40 - RANGE_DOT_SIZE}
+              onValuesChange={handleSliderValueChange}
+              onValuesChangeStart={handleMultiSliderValuesChangeStart}
+              onValuesChangeFinish={handleMultiSliderValuesChangeFinish}
+              allowOverlap={false}
+              values={sliderRange}
+              trackStyle={{
+                backgroundColor: color("black30"),
+              }}
+              selectedStyle={{
+                backgroundColor: color("blue100"),
+              }}
+              markerStyle={{
+                height: RANGE_DOT_SIZE,
+                width: RANGE_DOT_SIZE,
+                borderRadius: RANGE_DOT_SIZE / 2,
+                backgroundColor: color("white100"),
+                borderColor: color("black10"),
+                borderWidth: 1,
+                shadowRadius: 2,
+                elevation: 5,
+              }}
+              pressedMarkerStyle={{
+                height: RANGE_DOT_SIZE,
+                width: RANGE_DOT_SIZE,
+                borderRadius: 16,
+              }}
+            />
           </Flex>
+          <Flex flexDirection="row" justifyContent="space-between">
+            <Text variant="xs" color="black60">
+              ${defaultMinValue}
+            </Text>
+            <Text variant="xs" color="black60">
+              ${defaultMaxValue}+
+            </Text>
+          </Flex>
+        </Flex>
 
-          <Spacer mt={2} />
+        <Spacer mt={2} />
 
-          <RecentPriceRanges selectedRange={range} onSelected={handleRecentPriceRangeSelected} />
-        </ScrollView>
-      </Flex>
+        <RecentPriceRanges selectedRange={range} onSelected={handleRecentPriceRangeSelected} />
+
+        <Spacer mt={2} />
+      </ScrollView>
     </Flex>
   )
 }
