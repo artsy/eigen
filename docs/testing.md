@@ -19,7 +19,7 @@ The "new fashion" testing uses > relay v13 and we now prefer to use hooks whenev
 
 - [`relay-test-utils`](https://relay.dev/docs/guides/testing-relay-components/) is the framework we use for testing relay components, creating mock environments etc.
 
-- We don’t use snapshot tests; they produce too much churn for too little value. It’s okay to test that a component doesn’t throw when rendered, but use [`extractText`](https://github.com/artsy/eigen/blob/4c7c9be69ab1c2095f4d2fed11a040b1bde6eba8/src/lib/tests/extractText.ts) (or similar) to test the actual component tree.
+- We don’t use snapshot tests; they produce too much churn for too little value.
 
 Our preferred methods to use are marked with a ⭐️, while the ones we'd like to avoid are marked as ❗️ depracated.
 
