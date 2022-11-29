@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { navigate, popToRoot, switchTab } from "app/navigation/navigate"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { screen } from "app/utils/track/helpers"
 import { BackButton, Button, Flex, useSpace } from "palette"
 import { useEffect, useRef, useState } from "react"
 import { BackHandler, LayoutAnimation, Modal, TouchableOpacity } from "react-native"
@@ -49,7 +50,7 @@ export const HomeFeedModalCarouselContainer: React.FC<FullScreenCarouselProps> =
     if (isLastStep) {
       trackEvent(tracks.myCollectionOnboardingCompleted())
     }
-    trackEvent(tracks.visitMyCollectionOnboardingSlide(activeStep))
+    trackEvent(tracks.screen(activeStep.toString()))
   }, [activeStep])
 
   useEffect(() => {
@@ -270,4 +271,9 @@ const tracks = {
     context_module: ContextModule.myCollectionOnboarding,
     index: slideIndex,
   }),
+  screen: (slideIndex: string) =>
+    screen({
+      context_screen_owner_type: OwnerType.myCollectionOnboarding,
+      context_screen_owner_id: slideIndex,
+    }),
 }
