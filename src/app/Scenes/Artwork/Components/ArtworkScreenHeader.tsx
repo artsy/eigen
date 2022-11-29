@@ -17,7 +17,7 @@ interface SaveIconProps {
 }
 
 const SaveIcon: React.FC<SaveIconProps> = ({ isSaved }) =>
-  isSaved ? <HeartFillIcon fill="blue100" mr={1} /> : <HeartIcon mr={1} />
+  isSaved ? <HeartFillIcon fill="blue100" mr={0.5} /> : <HeartIcon mr={0.5} />
 
 interface ArtworkScreenHeaderProps {
   artwork: ArtworkScreenHeader_artwork$data
