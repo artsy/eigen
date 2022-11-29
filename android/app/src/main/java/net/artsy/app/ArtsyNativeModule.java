@@ -224,13 +224,14 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule implements Per
     // similar
     @ReactMethod
     public void requestPermission(Promise promise) {
-        Log.v("PUSH", "requestPermission");
-        pushPermissionsPromise = promise;
-        PermissionAwareActivity activity = (PermissionAwareActivity) getCurrentActivity();
-        activity.requestPermissions(
-                new String[] { Manifest.permission.POST_NOTIFICATIONS },
-                REQUEST_CODE_NOTIFICATION_PERMISSION,
-                this);
+        Log.v("PUSH", "requestPermission modified");
+        // pushPermissionsPromise = promise;
+        // PermissionAwareActivity activity = (PermissionAwareActivity)
+        // getCurrentActivity();
+        // activity.requestPermissions(
+        // new String[] { Manifest.permission.POST_NOTIFICATIONS },
+        // REQUEST_CODE_NOTIFICATION_PERMISSION,
+        // this);
     }
 
     @Override

@@ -4,7 +4,7 @@
     <string translatable="false" name="com_braze_custom_endpoint">sdk.iad-06.braze.com</string>
     <string name="com_appboy_api_key">3afa6308-dbf9-47c0-89e9-b9aed60f35ae</string>
     <string translatable="false" name="com_appboy_custom_endpoint">sdk.iad-06.braze.com</string>
-    <bool translatable="false" name="com_braze_firebase_cloud_messaging_registration_enabled">true</bool>
+    <bool translatable="false" name="com_braze_firebase_cloud_messaging_registration_enabled">false</bool>
     <string translatable="false" name="com_braze_firebase_cloud_messaging_sender_id">673710093763</string>
     <bool name="com_braze_handle_push_deep_links_automatically">true</bool>
     <drawable name="com_braze_push_small_notification_icon">@mipmap/ic_notification</drawable>
