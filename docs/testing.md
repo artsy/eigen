@@ -54,7 +54,7 @@ Example of a component with one request [PartnerLocationSection.tests.tsx](https
 
 It returns the function `renderWithRelay` which is similar to `renderWithWrappers`. Both `renderWithRelay` and `renderWithWrappers` use [render](https://testing-library.com/docs/angular-testing-library/api/#render) under the hood. I
 
-t gives you access to all the [queries](https://callstack.github.io/react-native-testing-library/docs/api-queries) such as getBy, getAllBy, queryBy, queryAllBy, findBy, findAllBy, etc.
+It gives you access to all the [queries](https://callstack.github.io/react-native-testing-library/docs/api-queries) such as getBy, getAllBy, queryBy, queryAllBy, findBy, findAllBy, etc.
 
 ❗️ It won't work if there is already a component using a query renderer. [eg?]
 
