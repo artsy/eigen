@@ -124,7 +124,7 @@ const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) =>
               {saveButtonText()}
               {/* this is a hacky way of preventing the save text / button to be jumpy when it changes to saved */}
               {!isSaved && !__TEST__ && (
-                <Text variant="sm-display" color="transparent">
+                <Text accessibilityElementsHidden variant="sm-display" color="transparent">
                   d
                 </Text>
               )}
