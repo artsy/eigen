@@ -6,11 +6,14 @@ import {
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { compact } from "lodash"
 import { Flex, Spacer, Text, useColor } from "palette"
+import { useMemo } from "react"
 import { GestureResponderEvent, PixelRatio } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import styled from "styled-components/native"
 import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "../ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
+import { LARGE_RAIL_IMAGE_WIDTH } from "./LargeArtworkRail"
+import { SMALL_RAIL_IMAGE_WIDTH } from "./SmallArtworkRail"
 
 export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = 60
 
@@ -68,18 +71,43 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     return ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + (isRecentlySoldArtwork ? 30 : 0)
   }
 
+  const containerWidth = useMemo(() => {
+    const imageDimensions = getImageDimensions({
+      width: image?.resized?.width ?? 0,
+      height: image?.resized?.height ?? 0,
+      maxHeight: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
+    })
+
+    switch (size) {
+      case "small":
+        return artwork.image?.resized?.width
+      case "large":
+        if (imageDimensions.width <= SMALL_RAIL_IMAGE_WIDTH) {
+          return SMALL_RAIL_IMAGE_WIDTH
+        } else if (imageDimensions.width >= LARGE_RAIL_IMAGE_WIDTH) {
+          return LARGE_RAIL_IMAGE_WIDTH
+        } else {
+          return imageDimensions.width
+        }
+
+      default:
+        assertNever(size)
+        break
+    }
+  }, [image?.resized?.height, image?.resized?.width])
+
   return (
     <ArtworkCard onPress={onPress || undefined} testID={testID}>
-      <Flex alignItems="flex-end">
+      <Flex>
         <ArtworkRailCardImage
-          containerWidth={artwork.image?.resized?.width}
+          containerWidth={containerWidth}
           image={image}
           size={size}
           urgencyTag={urgencyTag}
         />
         <Flex
           my={1}
-          width={artwork.image?.resized?.width}
+          width={containerWidth}
           // Recently sold artworks require more space for the text container
           // to accommodate the estimate and realized price
           style={{
@@ -194,12 +222,12 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
 
   return (
     <Flex>
-      <Flex alignItems="center" width={containerWidth}>
+      <Flex width={containerWidth}>
         <OpaqueImageView
           style={{ maxHeight: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size] }}
           imageURL={src}
           height={imageDimensions.height}
-          width={imageDimensions.width}
+          width={containerWidth!}
         />
       </Flex>
       {!!urgencyTag && (
