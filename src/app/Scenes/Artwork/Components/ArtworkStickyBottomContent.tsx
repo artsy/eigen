@@ -22,7 +22,6 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
   const artworkData = useFragment(artworkFragment, artwork)
   const meData = useFragment(meFragment, me)
   const auctionState = ArtworkStore.useStoreState((state) => state.auctionState)
-  const isLiveOngoing = auctionState === AuctionTimerState.LIVE_INTEGRATION_ONGOING
 
   if (!artworkData.isForSale || auctionState === AuctionTimerState.CLOSED) {
     return null
@@ -32,12 +31,7 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
     <Box bg="white100" pb={safeAreaInsets.bottom}>
       <Separator />
       <Box px={2} py={1}>
-        {!isLiveOngoing && (
-          <>
-            <ArtworkPrice artwork={artworkData} />
-            <Spacer mt={1} />
-          </>
-        )}
+        <ArtworkPrice artwork={artworkData} mb={1} />
         <ArtworkCommercialButtons artwork={artworkData} me={meData} />
       </Box>
     </Box>

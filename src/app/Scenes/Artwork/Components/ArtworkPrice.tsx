@@ -1,17 +1,17 @@
 import { ArtworkPrice_artwork$key } from "__generated__/ArtworkPrice_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { capitalize } from "lodash"
-import { Text } from "palette"
+import { Flex, FlexProps, Text } from "palette"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { ArtworkStore } from "../ArtworkStore"
 import { ArtworkAuctionBidInfo } from "./ArtworkAuctionBidInfo"
 
-interface ArtworkPriceProps {
+interface ArtworkPriceProps extends FlexProps {
   artwork: ArtworkPrice_artwork$key
 }
 
-export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({ artwork }) => {
+export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({ artwork, ...flexProps }) => {
   const data = useFragment(artworkPriceFragment, artwork)
   const selectedEditionId = ArtworkStore.useStoreState((state) => state.selectedEditionId)
   const auctionState = ArtworkStore.useStoreState((state) => state.auctionState)
@@ -55,7 +55,7 @@ export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({ artwork }) => {
       return null
     }
 
-    return <ArtworkAuctionBidInfo artwork={data} />
+    return <ArtworkAuctionBidInfo artwork={data} {...flexProps} />
   }
 
   if (editionSets.length > 1) {
@@ -66,10 +66,10 @@ export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({ artwork }) => {
 
   if (message) {
     return (
-      <>
+      <Flex {...flexProps}>
         <Text variant="lg-display">{message}</Text>
         {renderShippingAndTaxesInfo()}
-      </>
+      </Flex>
     )
   }
 

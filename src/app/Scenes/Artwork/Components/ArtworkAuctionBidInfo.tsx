@@ -1,13 +1,16 @@
 import { ArtworkAuctionBidInfo_artwork$key } from "__generated__/ArtworkAuctionBidInfo_artwork.graphql"
-import { CheckCircleFillIcon, CloseCircleFillIcon, Flex, Text } from "palette"
+import { CheckCircleFillIcon, CloseCircleFillIcon, Flex, FlexProps, Text } from "palette"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 
-interface ArtworkAuctionBidInfoProps {
+interface ArtworkAuctionBidInfoProps extends FlexProps {
   artwork: ArtworkAuctionBidInfo_artwork$key
 }
 
-export const ArtworkAuctionBidInfo: React.FC<ArtworkAuctionBidInfoProps> = ({ artwork }) => {
+export const ArtworkAuctionBidInfo: React.FC<ArtworkAuctionBidInfoProps> = ({
+  artwork,
+  ...flexProps
+}) => {
   const data = useFragment(artworkAuctionBidInfoFragment, artwork)
   const { counts, currentBid } = data.saleArtwork ?? {}
   const bidsCount = counts?.bidderPositions ?? 0
@@ -46,7 +49,7 @@ export const ArtworkAuctionBidInfo: React.FC<ArtworkAuctionBidInfoProps> = ({ ar
   }
 
   return (
-    <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+    <Flex flexDirection="row" justifyContent="space-between" alignItems="center" {...flexProps}>
       <Text variant="lg-display">{label}</Text>
       <Flex flexDirection="row" alignItems="center">
         {renderBidResultIcon()}
