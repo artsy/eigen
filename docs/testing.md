@@ -50,7 +50,7 @@ This is an abstraction that is sometimes convenient.
 
 Example of a component with one request [PartnerLocationSection.tests.tsx](https://github.com/artsy/eigen/blob/7703aa01103a06b69b650af11bc9903ab37b1c4b/src/app/Scenes/Partner/Components/PartnerLocationSection.tests.tsx#L21).
 
-`setupTestWrapperTL` can be used to replace the combination of **TestRendered** and **renderWithWrappers**.
+`setupTestWrapperTL` can be used to replace the combination of **TestRenderer** and **renderWithWrappers**.
 
 It returns the function `renderWithRelay` which is similar to `renderWithWrappers`. Both `renderWithRelay` and `renderWithWrappers` use [render](https://testing-library.com/docs/angular-testing-library/api/#render) under the hood. I
 
