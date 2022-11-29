@@ -31,7 +31,7 @@ New fashion: You can use useLazyLoadQuery inside a TestRendered which is the new
 
 New fashion Example: [ArtworkConsignments.tests.tsx](https://github.com/artsy/eigen/blob/6360ddb5304e6c5bb1dc207db13d5bf0a5d7d9b6/src/app/Scenes/Artwork/Components/ArtworkConsignments.tests.tsx#L28-L38)
 
-Old fashioned: You can use a TestRendered to wrap your component with a QueryRenderer and pass it the test query data.
+Old fashioned: You can use a TestRenderer to wrap your component with a QueryRenderer and pass the test query data.
 Old fashion Example: [Inbox.tests.tsx](https://github.com/artsy/eigen/blob/c96dd0807555d69ca2e8655dc68085276d249080/src/app/Containers/Inbox.tests.tsx)
 
 - ⭐️ [`renderWithWrappers`](https://github.com/artsy/eigen/blob/main/src/app/tests/renderWithWrappers.tsx#L88-L103) Our default method for using a component. Can be used on all components. wraps the component with a number of wrappers such as TrackingProvider, GlobalStoreProvider, SafeAreaProvider, etc. Using `testing library`. See the list of wrappers [here](https://github.com/artsy/eigen/blob/main/src/app/tests/renderWithWrappers.tsx#L19-L25).
