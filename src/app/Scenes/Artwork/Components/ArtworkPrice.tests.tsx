@@ -1,142 +1,149 @@
-import { screen } from "@testing-library/react-native"
+import { ArtworkPrice_Test_Query } from "__generated__/ArtworkPrice_Test_Query.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
-import { Theme } from "palette"
-import { graphql } from "relay-runtime"
-import { ArtworkStoreProvider, ArtworkStoreState } from "../ArtworkStore"
+import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { graphql, useLazyLoadQuery } from "react-relay"
+import { createMockEnvironment } from "relay-test-utils"
+import { ArtworkStoreModel, ArtworkStoreProvider } from "../ArtworkStore"
 import { ArtworkPrice } from "./ArtworkPrice"
 
 jest.unmock("react-relay")
 
-interface WrapperProps {
-  initialData?: Partial<ArtworkStoreState>
+interface TestRendererProps {
+  initialData?: Partial<ArtworkStoreModel>
 }
 
 describe("ArtworkPrice", () => {
-  const getWrapper = (props?: WrapperProps) => {
-    const { initialData } = props ?? {}
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
-    return setupTestWrapperTL({
-      Component: (relayProps) => (
-        <Theme>
-          <ArtworkStoreProvider initialData={initialData}>
-            <ArtworkPrice {...relayProps} />
-          </ArtworkStoreProvider>
-        </Theme>
-      ),
-      query: graphql`
+  beforeEach(() => {
+    mockEnvironment = createMockEnvironment()
+  })
+
+  const TestRenderer = (props?: TestRendererProps) => {
+    const data = useLazyLoadQuery<ArtworkPrice_Test_Query>(
+      graphql`
         query ArtworkPrice_Test_Query {
-          artwork(id: "test-artwork") {
+          artwork(id: "artworkID") {
             ...ArtworkPrice_artwork
           }
         }
       `,
-    })
+      {}
+    )
+
+    if (data.artwork) {
+      return (
+        <ArtworkStoreProvider initialData={props?.initialData}>
+          <ArtworkPrice artwork={data.artwork} />
+        </ArtworkStoreProvider>
+      )
+    }
+
+    return null
   }
 
   describe("Auction bid info", () => {
     it("should be displayed", async () => {
-      const { renderWithRelay } = getWrapper()
+      const { getByLabelText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-      renderWithRelay({
+      resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => ({
           isInAuction: true,
         }),
       })
-
       await flushPromiseQueue()
 
-      expect(screen.getByLabelText("Auction Bid Info")).toBeTruthy()
+      expect(getByLabelText("Auction Bid Info")).toBeTruthy()
     })
 
     it("should NOT be displayed for live sale in progress", async () => {
-      const { renderWithRelay } = getWrapper({
-        initialData: {
-          auctionState: AuctionTimerState.LIVE_INTEGRATION_ONGOING,
-        },
-      })
+      const { queryByLabelText } = renderWithHookWrappersTL(
+        <TestRenderer initialData={{ auctionState: AuctionTimerState.LIVE_INTEGRATION_ONGOING }} />,
+        mockEnvironment
+      )
 
-      renderWithRelay({
+      resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => ({
           isInAuction: true,
         }),
       })
-
       await flushPromiseQueue()
 
-      expect(screen.queryByLabelText("Auction Bid Info")).toBeNull()
+      expect(queryByLabelText("Auction Bid Info")).toBeNull()
     })
   })
 
   describe("Exclude shipping and taxes label", () => {
-    const { renderWithRelay } = getWrapper()
-
     it("should NOT be displayed", async () => {
-      renderWithRelay({
+      const { queryByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => ({
           isEligibleForOnPlatformTransaction: false,
           isInAuction: false,
           isPriceHidden: false,
         }),
       })
-
       await flushPromiseQueue()
 
-      expect(screen.queryByText("excl. Shipping and Taxes")).toBeNull()
+      expect(queryByText("excl. Shipping and Taxes")).toBeNull()
     })
 
     it("should NOT be displayed when artworks is in auction", async () => {
-      renderWithRelay({
+      const { queryByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => ({
           isEligibleForOnPlatformTransaction: true,
           isInAuction: true,
           isPriceHidden: false,
         }),
       })
-
       await flushPromiseQueue()
 
-      expect(screen.queryByText("excl. Shipping and Taxes")).toBeNull()
+      expect(queryByText("excl. Shipping and Taxes")).toBeNull()
     })
 
     it("should NOT be displayed when price is hidden for artwork", async () => {
-      renderWithRelay({
+      const { queryByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => ({
           isEligibleForOnPlatformTransaction: true,
           isInAuction: false,
           isPriceHidden: true,
         }),
       })
-
       await flushPromiseQueue()
 
-      expect(screen.queryByText("excl. Shipping and Taxes")).toBeNull()
+      expect(queryByText("excl. Shipping and Taxes")).toBeNull()
     })
 
     it("should be displayed when artworks is eligible for on-platform transaction", async () => {
-      renderWithRelay({
+      const { queryByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => ({
           isEligibleForOnPlatformTransaction: true,
           isInAuction: false,
           isPriceHidden: false,
         }),
       })
-
       await flushPromiseQueue()
 
-      expect(screen.queryByText("excl. Shipping and Taxes")).toBeTruthy()
+      expect(queryByText("excl. Shipping and Taxes")).toBeTruthy()
     })
   })
 
   it("should render the sale message of the selected edition set", async () => {
-    const { renderWithRelay } = getWrapper({
-      initialData: {
-        selectedEditionId: "edition-set-one",
-      },
-    })
+    const { queryByText } = renderWithHookWrappersTL(
+      <TestRenderer initialData={{ selectedEditionId: "edition-set-one" }} />,
+      mockEnvironment
+    )
 
-    renderWithRelay({
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => ({
         isInAuction: false,
         editionSets: [
@@ -153,13 +160,13 @@ describe("ArtworkPrice", () => {
     })
     await flushPromiseQueue()
 
-    expect(screen.getByText("$1000")).toBeTruthy()
+    expect(queryByText("$1000")).toBeTruthy()
   })
 
   it("should render the sale message", async () => {
-    const { renderWithRelay } = getWrapper()
+    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-    renderWithRelay({
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => ({
         isInAuction: false,
         saleMessage: "$1000",
@@ -167,13 +174,13 @@ describe("ArtworkPrice", () => {
     })
     await flushPromiseQueue()
 
-    expect(screen.getByText("$1000")).toBeTruthy()
+    expect(getByText("$1000")).toBeTruthy()
   })
 
   it("should render availability if the sale message is not available", async () => {
-    const { renderWithRelay } = getWrapper()
+    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-    renderWithRelay({
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => ({
         isInAuction: false,
         saleMessage: null,
@@ -182,6 +189,6 @@ describe("ArtworkPrice", () => {
     })
     await flushPromiseQueue()
 
-    expect(screen.getByText("For sale")).toBeTruthy()
+    expect(getByText("For sale")).toBeTruthy()
   })
 })
