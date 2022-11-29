@@ -5,6 +5,7 @@ import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/Globa
 import { GlobalStore, unsafe_getUserAccessToken } from "app/store/GlobalStore"
 import { PendingPushNotification } from "app/store/PendingPushNotificationModel"
 import { Alert, Linking, Platform } from "react-native"
+import Braze from "react-native-appboy-sdk"
 import { getDeviceId } from "react-native-device-info"
 import PushNotification, { ReceivedNotification } from "react-native-push-notification"
 import { logAction, logNotification } from "./loggers"
@@ -277,20 +278,38 @@ export const requestPushNotificationsPermission = async () => {
   const pushNotificationsPermissionsStatus = await getNotificationPermissionsStatus()
   if (pushNotificationsPermissionsStatus !== PushAuthorizationStatus.Authorized) {
     setTimeout(() => {
-      if (Platform.OS === "ios") {
-        LegacyNativeModules.ARTemporaryAPIModule.requestPrepromptNotificationPermissions()
-      } else {
-        Alert.alert(
-          "Artsy Would Like to Send You Notifications",
-          "Turn on notifications to get important updates about artists you follow.",
-          [
-            { text: "Dismiss", style: "cancel" },
-            { text: "Settings", onPress: () => Linking.openSettings() },
-          ]
-        )
-      }
+      requestPushPermissionWithSoftAsk()
     }, 3000)
   }
+}
+
+const requestPushPermissionWithSoftAsk = async () => {
+  Alert.alert(
+    "Artsy Would Like to Send You Notifications",
+    "Turn on notifications to get important updates about artists you follow.",
+    [
+      {
+        text: "Don't Allow",
+        onPress: () => {
+          return // do nothing
+        },
+        style: "cancel",
+      },
+      {
+        text: "OK",
+        onPress: () => {
+          // TODO: Make sure these are correct options
+          const permissionOptions = {
+            alert: true,
+            sound: true,
+            badge: true,
+            provisional: false,
+          }
+          Braze.requestPushPermission(permissionOptions)
+        },
+      },
+    ]
+  )
 }
 
 module.exports = {
