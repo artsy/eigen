@@ -39,7 +39,7 @@ export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({ artwork, ...flexProp
   }
 
   const renderShippingAndTaxesInfo = () => {
-    if (!data.isEligibleForOnPlatformTransaction || data.isInAuction) {
+    if (!data.isEligibleForOnPlatformTransaction || data.isInAuction || data.isPriceHidden) {
       return null
     }
 
@@ -82,6 +82,7 @@ const artworkPriceFragment = graphql`
     availability
     isInAuction
     isEligibleForOnPlatformTransaction
+    isPriceHidden
     taxInfo {
       displayText
     }

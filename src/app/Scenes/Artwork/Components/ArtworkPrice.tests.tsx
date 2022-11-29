@@ -42,6 +42,7 @@ describe("ArtworkPrice", () => {
         Artwork: () => ({
           isEligibleForOnPlatformTransaction: false,
           isInAuction: false,
+          isPriceHidden: false,
         }),
       })
 
@@ -55,6 +56,21 @@ describe("ArtworkPrice", () => {
         Artwork: () => ({
           isEligibleForOnPlatformTransaction: true,
           isInAuction: true,
+          isPriceHidden: false,
+        }),
+      })
+
+      await flushPromiseQueue()
+
+      expect(screen.queryByText("excl. Shipping and Taxes")).toBeNull()
+    })
+
+    it("should NOT be displayed when price is hidden for artwork", async () => {
+      renderWithRelay({
+        Artwork: () => ({
+          isEligibleForOnPlatformTransaction: true,
+          isInAuction: false,
+          isPriceHidden: true,
         }),
       })
 
@@ -68,6 +84,7 @@ describe("ArtworkPrice", () => {
         Artwork: () => ({
           isEligibleForOnPlatformTransaction: true,
           isInAuction: false,
+          isPriceHidden: false,
         }),
       })
 
