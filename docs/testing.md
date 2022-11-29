@@ -21,7 +21,7 @@ The "new fashion" testing uses > relay v13 and we now prefer to use hooks whenev
 
 - We don’t use snapshot tests; they produce too much churn for too little value.
 
-Our preferred methods to use are marked with a ⭐️, while the ones we'd like to avoid are marked as ❗️ depracated.
+Our preferred methods to use are marked with a ⭐️, while the ones we'd like to avoid are marked as ❗️ deprecated.
 
 ## Test helpers and wrappers, when to use them, and good examples
 
