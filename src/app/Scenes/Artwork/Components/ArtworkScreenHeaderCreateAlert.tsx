@@ -99,7 +99,7 @@ const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateAlertPro
         variant={isForSale ? "fillLight" : "fillDark"}
         onPress={handleCreateAlertPress}
       >
-        <Text variant="sm-display">Create Alert</Text>
+        <Text variant={isForSale ? "sm-display" : "xs"}>Create Alert</Text>
       </Button>
       <CreateSavedSearchModal
         visible={isCreateAlertModalVisible}
