@@ -1,10 +1,12 @@
 import { fireEvent } from "@testing-library/react-native"
 import { ArtworkEditionSetInformation_Test_Query } from "__generated__/ArtworkEditionSetInformation_Test_Query.graphql"
+import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { Text } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { ArtworkStoreProvider } from "../ArtworkStore"
+import { ArtworkStore, ArtworkStoreProvider } from "../ArtworkStore"
 import { ArtworkEditionSetInformationFragmentContainer as ArtworkEditionSetInformation } from "./ArtworkEditionSetInformation"
 
 jest.unmock("react-relay")
@@ -18,6 +20,12 @@ describe("ArtworkEditionSetInformation", () => {
     mockEnvironment = createMockEnvironment()
     selectedEditionId = artwork.editionSets[0].internalID
   })
+
+  const ArtworkStoreDebug = () => {
+    const artworkState = ArtworkStore.useStoreState((state) => state)
+
+    return <Text testID="debug">{JSON.stringify(artworkState)}</Text>
+  }
 
   const TestRenderer = () => {
     return (
@@ -40,6 +48,7 @@ describe("ArtworkEditionSetInformation", () => {
                   selectedEditionId={selectedEditionId}
                   onSelectEdition={onSelectEditionMock}
                 />
+                <ArtworkStoreDebug />
               </ArtworkStoreProvider>
             )
           }
@@ -72,6 +81,21 @@ describe("ArtworkEditionSetInformation", () => {
     fireEvent.press(getByText("Edition Set Two"))
 
     expect(onSelectEditionMock).toBeCalledWith("edition-set-two")
+  })
+
+  it("should keep the selected edtion set id in artwork store", () => {
+    const { getByText, getByTestId } = renderWithWrappers(<TestRenderer />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => artwork,
+    })
+
+    fireEvent.press(getByText("Edition Set Two"))
+
+    const artworkStateRaw = extractText(getByTestId("debug"))
+    const artworkState = JSON.parse(artworkStateRaw)
+
+    expect(artworkState.selectedEditionId).toBe("edition-set-two")
   })
 })
 
