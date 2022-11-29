@@ -19,6 +19,7 @@ import { Box, Flex, Spacer, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp, useTracking } from "react-tracking"
+import { ArtworkStore } from "../ArtworkStore"
 import { ArtworkEditionSetInformationFragmentContainer as ArtworkEditionSetInformation } from "./ArtworkEditionSetInformation"
 import { ArtworkExtraLinksFragmentContainer as ArtworkExtraLinks } from "./ArtworkExtraLinks"
 import { AuctionPriceFragmentContainer as AuctionPrice } from "./AuctionPrice"
@@ -155,6 +156,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
 }) => {
   const { trackEvent } = useTracking()
   const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
+  const setAuctionState = ArtworkStore.useStoreActions((action) => action.setAuctionState)
   const [editionSetID, setEditionSetID] = useState<string | null>(null)
   const { isAcquireable, isOfferable, isInquireable, isInAuction, sale, isForSale, isSold } =
     artwork
@@ -186,6 +188,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
   useEffect(() => {
     if (timerState) {
       setAuctionTimerState?.(timerState)
+      setAuctionState(timerState)
     }
   }, [timerState])
 
