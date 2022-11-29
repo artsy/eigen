@@ -2,7 +2,7 @@ import { ArtworkStickyBottomContent_artwork$key } from "__generated__/ArtworkSti
 import { ArtworkStickyBottomContent_me$key } from "__generated__/ArtworkStickyBottomContent_me.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
-import { Box, Separator, Spacer } from "palette"
+import { Box, Separator } from "palette"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { useScreenDimensions } from "shared/hooks"
