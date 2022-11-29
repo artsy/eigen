@@ -4,6 +4,7 @@ import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
+import { ArtworkStoreProvider } from "../ArtworkStore"
 import { ArtworkEditionSetInformationFragmentContainer as ArtworkEditionSetInformation } from "./ArtworkEditionSetInformation"
 
 jest.unmock("react-relay")
@@ -33,11 +34,13 @@ describe("ArtworkEditionSetInformation", () => {
         render={({ props }) => {
           if (props?.artwork) {
             return (
-              <ArtworkEditionSetInformation
-                artwork={props.artwork}
-                selectedEditionId={selectedEditionId}
-                onSelectEdition={onSelectEditionMock}
-              />
+              <ArtworkStoreProvider>
+                <ArtworkEditionSetInformation
+                  artwork={props.artwork}
+                  selectedEditionId={selectedEditionId}
+                  onSelectEdition={onSelectEditionMock}
+                />
+              </ArtworkStoreProvider>
             )
           }
 
