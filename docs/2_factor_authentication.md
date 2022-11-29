@@ -2,7 +2,7 @@
 
 **Disclaimer: This file is only intended for internal use, the notion documents will not be accessible for contributors outside the artsy organization.**
 
-You'll need to set up two factor authentication for logging in to sites like artsy.net and staging.artsy.net .
+You may need to set up two factor authentication for logging in to sites like artsy.net and staging.artsy.net .
 
 In order to do this, you need to set up two factor authentication on 1password in the following way:
 
