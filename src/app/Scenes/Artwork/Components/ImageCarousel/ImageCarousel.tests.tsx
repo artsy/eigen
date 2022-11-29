@@ -35,6 +35,7 @@ const artworkFixture: ImageCarouselTestsQuery["rawResponse"]["artwork"] = {
   images: [
     {
       url: "https://d32dm0rphc51dk.cloudfront.net/hA1DxfZHgx23SzeK0yv8Qw/medium.jpg",
+      largeImageURL: "https://d32dm0rphc51dk.cloudfront.net/hA1DxfZHgx23SzeK0yv8Qw/medium.jpg",
       width: 1024,
       height: 822,
       deepZoom: deepZoomFixture,
@@ -42,6 +43,7 @@ const artworkFixture: ImageCarouselTestsQuery["rawResponse"]["artwork"] = {
     },
     {
       url: "https://d32dm0rphc51dk.cloudfront.net/6rLY-WTbFTF1UwpqFnq3AA/medium.jpg",
+      largeImageURL: "https://d32dm0rphc51dk.cloudfront.net/6rLY-WTbFTF1UwpqFnq3AA/medium.jpg",
       width: 1024,
       height: 919,
       deepZoom: deepZoomFixture,
@@ -49,6 +51,7 @@ const artworkFixture: ImageCarouselTestsQuery["rawResponse"]["artwork"] = {
     },
     {
       url: "https://d32dm0rphc51dk.cloudfront.net/1FIiskS9THHPAkqYzmiH9Q/larger.jpg",
+      largeImageURL: "https://d32dm0rphc51dk.cloudfront.net/1FIiskS9THHPAkqYzmiH9Q/larger.jpg",
       width: 1024,
       height: 497,
       deepZoom: deepZoomFixture,
@@ -56,6 +59,7 @@ const artworkFixture: ImageCarouselTestsQuery["rawResponse"]["artwork"] = {
     },
     {
       url: "https://d32dm0rphc51dk.cloudfront.net/yjHx8ZW_wy5qybMiVtanmw/medium.jpg",
+      largeImageURL: "https://d32dm0rphc51dk.cloudfront.net/yjHx8ZW_wy5qybMiVtanmw/medium.jpg",
       width: 1024,
       height: 907,
       deepZoom: deepZoomFixture,
@@ -63,6 +67,7 @@ const artworkFixture: ImageCarouselTestsQuery["rawResponse"]["artwork"] = {
     },
     {
       url: "https://d32dm0rphc51dk.cloudfront.net/qPiYUxD-v8b5QnDaYS8OlQ/larger.jpg",
+      largeImageURL: "https://d32dm0rphc51dk.cloudfront.net/qPiYUxD-v8b5QnDaYS8OlQ/larger.jpg",
       width: 2800,
       height: 2100,
       deepZoom: deepZoomFixture,
@@ -74,18 +79,21 @@ const artworkFixture: ImageCarouselTestsQuery["rawResponse"]["artwork"] = {
 const localImages: CarouselImageDescriptor[] = [
   {
     url: "file:///this/is/not/a/real/image.jpg",
+    largeImageURL: "file:///this/is/not/a/real/image.jpg",
     width: 2800,
     height: 2100,
     deepZoom: null,
   },
   {
     url: "file:///this/is/not/a/real/image.jpg",
+    largeImageURL: "file:///this/is/not/a/real/image.jpg",
     width: 2800,
     height: 2100,
     deepZoom: null,
   },
   {
     url: "file:///this/is/not/a/real/image.jpg",
+    largeImageURL: "file:///this/is/not/a/real/image.jpg",
     width: 2800,
     height: 2100,
     deepZoom: null,

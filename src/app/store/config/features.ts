@@ -245,6 +245,11 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "AREnableArtworkGridSaveIcon",
   },
+  AREnableAndroidImagesGallery: {
+    description: "Enable images gallery on Android",
+    showInAdminMenu: true,
+    readyForRelease: false,
+  },
 })
 
 export interface DevToggleDescriptor {
