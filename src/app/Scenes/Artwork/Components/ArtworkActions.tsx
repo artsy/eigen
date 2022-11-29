@@ -2,7 +2,7 @@ import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkActionsSaveMutation } from "__generated__/ArtworkActionsSaveMutation.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { unsafe__getEnvironment } from "app/store/GlobalStore"
+import { unsafe__getEnvironment, unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import { cm2in } from "app/utils/conversions"
 import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { Schema, track } from "app/utils/track"
@@ -125,10 +125,10 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
     } = this.props
 
     const isOpenSale = sale && sale.isAuction && !sale.isClosed
-
+    const enableArtworkRedesign = unsafe_getFeatureFlag("ARArtworkRedesingPhase2")
     return (
       <Flex justifyContent="center" flexDirection="row" width="100%">
-        {isOpenSale ? (
+        {!!enableArtworkRedesign ? null : isOpenSale ? (
           <Touchable haptic onPress={() => this.handleArtworkSave()}>
             <UtilButton pr={2}>
               {is_saved ? (
