@@ -118,7 +118,7 @@ const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) =>
           onPress={handleArtworkSave}
           disabled={isInFlight}
         >
-          <Flex flexDirection="row" alignItems="center">
+          <Flex flexDirection="row" alignItems="center" pr={0.5}>
             <SaveIcon isSaved={!!isSaved} />
             <Text variant="sm-display" color={isSaved ? "blue100" : "black100"}>
               {saveButtonText()}
