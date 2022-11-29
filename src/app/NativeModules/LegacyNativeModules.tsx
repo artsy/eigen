@@ -22,7 +22,6 @@ const noop: any = (name: string) => () =>
 
 interface LegacyNativeModules {
   ARTemporaryAPIModule: {
-    requestDirectNotificationPermissions(): void
     fetchNotificationPermissions(
       callback: (error: any, result: PushAuthorizationStatus) => void
     ): void
@@ -144,7 +143,6 @@ const LegacyNativeModulesAndroid = {
   },
 
   ARTemporaryAPIModule: {
-    requestDirectNotificationPermissions: noop("requestDirectNotificationPermissions"),
     fetchNotificationPermissions: noop("fetchNotificationPermissions"),
     markNotificationsRead: noop("markNotificationsRead"),
     setApplicationIconBadgeNumber: () => {

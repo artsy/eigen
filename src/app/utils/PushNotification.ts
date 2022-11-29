@@ -312,6 +312,16 @@ const requestPushPermissionWithSoftAsk = async () => {
   )
 }
 
+export const requestDirectNotificationPermissions = () => {
+  const permissionOptions = {
+    alert: true,
+    sound: true,
+    badge: true,
+    provisional: false,
+  }
+  Braze.requestPushPermission(permissionOptions)
+}
+
 module.exports = {
   configure,
   saveToken,

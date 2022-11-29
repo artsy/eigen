@@ -2,11 +2,11 @@ import { MyProfilePushNotifications_me$data } from "__generated__/MyProfilePushN
 import { MyProfilePushNotificationsQuery } from "__generated__/MyProfilePushNotificationsQuery.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { SwitchMenu } from "app/Components/SwitchMenu"
-import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import {
   getNotificationPermissionsStatus,
   PushAuthorizationStatus,
+  requestDirectNotificationPermissions,
 } from "app/utils/PushNotification"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import useAppState from "app/utils/useAppState"
@@ -83,7 +83,7 @@ export const AllowPushNotificationsBanner = () => (
       <Button
         size="large"
         onPress={() => {
-          LegacyNativeModules.ARTemporaryAPIModule.requestDirectNotificationPermissions()
+          requestDirectNotificationPermissions()
         }}
       >
         Enable

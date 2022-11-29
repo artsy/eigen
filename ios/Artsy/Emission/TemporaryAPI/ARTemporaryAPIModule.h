@@ -4,8 +4,6 @@
 
 typedef void(^ARNotificationReadStatusAssigner)(RCTResponseSenderBlock block);
 
-typedef void(^ARNotificationPermissionsPrompter)();
-
 typedef void(^ARRelativeURLResolver)(NSString *path, RCTPromiseResolveBlock resolve, RCTPromiseRejectBlock reject);
 
 
@@ -13,10 +11,6 @@ typedef void(^ARRelativeURLResolver)(NSString *path, RCTPromiseResolveBlock reso
 /// v1 API access to get/set these bits of information.
 
 @interface ARTemporaryAPIModule : NSObject <RCTBridgeModule>
-
-
-// Just shows the apple dialog, used for explicitly asking permission in settings
-@property (nonatomic, copy, readwrite) ARNotificationPermissionsPrompter directNotificationPermissionPrompter;
 
 @property (nonatomic, copy, readwrite) ARNotificationReadStatusAssigner notificationReadStatusAssigner;
 
