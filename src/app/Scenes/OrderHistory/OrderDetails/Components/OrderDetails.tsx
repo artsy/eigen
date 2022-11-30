@@ -11,11 +11,12 @@ import { SectionList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ArtworkInfoSectionFragmentContainer } from "./ArtworkInfoSection"
 import { OrderDetailsHeaderFragmentContainer } from "./OrderDetailsHeader"
-import { CreditCardSummaryItemFragmentContainer } from "./OrderDetailsPayment"
+import { PaymentMethodSummaryItemFragmentContainer } from "./OrderDetailsPayment"
 import { ShipsToSectionFragmentContainer } from "./ShipsToSection"
 import { SoldBySectionFragmentContainer } from "./SoldBySection"
 import { SummarySectionFragmentContainer } from "./SummarySection"
 import { TrackOrderSectionFragmentContainer } from "./TrackOrderSection"
+import { WirePaymentSectionFragmentContainer } from "./WirePaymentSection"
 
 export interface OrderDetailsProps {
   order: OrderDetails_order$data
@@ -29,6 +30,9 @@ export interface SectionListItem {
 const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
   const partnerName = extractNodes(order?.lineItems)?.[0]?.artwork?.partner
   const fulfillmentType = order.requestedFulfillment?.__typename
+  const isProcessingWireTransfer =
+    order.paymentMethodDetails?.__typename === "WireTransfer" &&
+    order.state === "PROCESSING_APPROVAL"
   const isShipping = fulfillmentType === "CommerceShipArta" || fulfillmentType === "CommerceShip"
 
   const getShippingName = () => {
@@ -53,6 +57,10 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
       title: "Artwork Info",
       data: [<ArtworkInfoSectionFragmentContainer key="Artwork_InfoComponent" artwork={order} />],
     },
+    isProcessingWireTransfer && {
+      key: "WirePayment",
+      data: [<WirePaymentSectionFragmentContainer key="WirePaymentComponent" order={order} />],
+    },
     {
       key: "Summary_Section",
       title: "Order Summary",
@@ -62,7 +70,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
       key: "Payment_Method",
       title: "Payment Method",
       data: [
-        <CreditCardSummaryItemFragmentContainer key="Payment_MethodComponent" order={order} />,
+        <PaymentMethodSummaryItemFragmentContainer key="Payment_MethodComponent" order={order} />,
       ],
     },
     isShipping && {
@@ -184,6 +192,8 @@ export const OrderDetailsPlaceholder: React.FC<{}> = () => (
 export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
   order: graphql`
     fragment OrderDetails_order on CommerceOrder {
+      state
+
       requestedFulfillment {
         ... on CommerceShip {
           __typename
@@ -194,6 +204,18 @@ export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
           name
         }
         ... on CommercePickup {
+          __typename
+        }
+      }
+
+      paymentMethodDetails {
+        ... on CreditCard {
+          __typename
+        }
+        ... on BankAccount {
+          __typename
+        }
+        ... on WireTransfer {
           __typename
         }
       }
@@ -217,6 +239,7 @@ export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
       ...TrackOrderSection_section
       ...ShipsToSection_address
       ...SoldBySection_soldBy
+      ...WirePaymentSection_order
     }
   `,
 })
