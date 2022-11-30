@@ -204,7 +204,9 @@ export const ArtsyWebView = forwardRef<
           }
 
           // if it's an external url, or a route with a native view, use `navigate`
-          if (!__TEST__) innerRef.current?.stopLoading()
+          if (!__TEST__) {
+            innerRef.current?.stopLoading()
+          }
           navigate(targetURL)
           setLoadProgress(null)
         }}
@@ -220,7 +222,9 @@ export const ArtsyWebView = forwardRef<
 })
 
 const ProgressBar = ({ loadProgress }: { loadProgress: number | null }) => {
-  if (loadProgress === null) return null
+  if (loadProgress === null) {
+    return null
+  }
 
   const progressPercent = Math.max(loadProgress * 100, 2)
   return (
@@ -260,20 +264,28 @@ class CookieRequestAttempt {
   invalidated = false
   constructor(public url: string, public accessToken: string) {}
   async makeAttempt() {
-    if (this.invalidated) return
+    if (this.invalidated) {
+      return
+    }
 
     try {
       const res = await fetch(this.url, {
         method: "HEAD",
         headers: { "X-Access-Token": this.accessToken! },
       })
-      if (this.invalidated) return
+      if (this.invalidated) {
+        return
+      }
 
-      if (res.status > 400) throw new Error("couldn't authenticate")
+      if (res.status > 400) {
+        throw new Error("couldn't authenticate")
+      }
 
       addBreadcrumb({ message: `Successfully set up artsy web view cookies for ${this.url}` })
     } catch (e) {
-      if (this.invalidated) return
+      if (this.invalidated) {
+        return
+      }
 
       addBreadcrumb({
         message: `Retrying to set up artsy web view cookies in 20 seconds ${this.url}`,
