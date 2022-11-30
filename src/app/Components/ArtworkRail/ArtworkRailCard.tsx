@@ -124,30 +124,29 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
               {artistNames}
             </Text>
           )}
-          <Flex flexDirection="row">
-            {!!title && (
-              <Text
-                lineHeight="20"
-                color="black60"
-                numberOfLines={size === "small" ? 2 : 1}
-                variant="xs"
-                fontStyle="italic"
-              >
-                {title}
-              </Text>
-            )}
-            {!!date && (
-              <Text
-                lineHeight="20"
-                color="black60"
-                numberOfLines={size === "small" ? 2 : 1}
-                variant="xs"
-              >
-                {title && date ? ", " : ""}
-                {date}
-              </Text>
-            )}
-          </Flex>
+          {!!title && (
+            <Text
+              lineHeight="20"
+              color="black60"
+              numberOfLines={size === "small" ? 2 : 1}
+              variant="xs"
+              fontStyle="italic"
+            >
+              {title}
+              {!!date && (
+                <Text
+                  lineHeight="20"
+                  color="black60"
+                  numberOfLines={size === "small" ? 2 : 1}
+                  variant="xs"
+                >
+                  {title && date ? ", " : ""}
+                  {date}
+                </Text>
+              )}
+            </Text>
+          )}
+
           {!hidePartnerName && !!partner?.name && (
             <Text lineHeight="20" color="black60" numberOfLines={1}>
               {partner?.name}
