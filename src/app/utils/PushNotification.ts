@@ -4,6 +4,7 @@ import { navigate } from "app/navigation/navigate"
 import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
 import { GlobalStore, unsafe_getUserAccessToken } from "app/store/GlobalStore"
 import { PendingPushNotification } from "app/store/PendingPushNotificationModel"
+import moment from "moment"
 import { Alert, AlertButton, Linking, Platform } from "react-native"
 import Braze from "react-native-appboy-sdk"
 import { getDeviceId } from "react-native-device-info"
@@ -20,6 +21,7 @@ const MAX_ELAPSED_TAPPED_NOTIFICATION_TIME = 90 // seconds
 // Push prompt logic
 const HAS_SEEN_PUSH_SETTINGS_PROMPT = "HAS_SEEN_PUSH_SETTINGS_PROMPT"
 const HAS_SEEN_PUSH_SYSTEM_PROMPT = "HAS_SEEN_PUSH_SYSTEM_PROMPT"
+const LAST_SEEN_LOCAL_PROMPT = "LAST_SEEN_LOCAL_PROMPT"
 
 export const CHANNELS = [
   {
@@ -283,18 +285,33 @@ export const requestPushNotificationsPermission = async () => {
   if (pushNotificationsPermissionsStatus !== PushAuthorizationStatus.Authorized) {
     const hasSeenSettingsPrompt = await boolFromStorage(HAS_SEEN_PUSH_SETTINGS_PROMPT)
     const hasSeenSystemPrompt = await boolFromStorage(HAS_SEEN_PUSH_SYSTEM_PROMPT)
+    const showLocalPromptAgain = await shouldShowLocalPromptAgain()
     setTimeout(() => {
       if (
         pushNotificationsPermissionsStatus === PushAuthorizationStatus.Denied &&
         !hasSeenSettingsPrompt
       ) {
         showSettingsEnableNotificationsAlert()
-      } else if (!hasSeenSystemPrompt) {
+      } else if (!hasSeenSystemPrompt && showLocalPromptAgain) {
         requestPushPermissionWithSoftAsk()
       } else {
         requestDirectNotificationPermissions()
       }
     }, 3000)
+  }
+}
+
+const shouldShowLocalPromptAgain = async () => {
+  const lastSeenDateRaw = await AsyncStorage.getItem(LAST_SEEN_LOCAL_PROMPT)
+
+  if (lastSeenDateRaw) {
+    const lastSeenDate = JSON.parse(lastSeenDateRaw)
+    const aWeekAgo = moment().subtract(7, "days")
+    const seenMoreThanAWeekAgo = moment(lastSeenDate).isBefore(aWeekAgo)
+    return seenMoreThanAWeekAgo
+  } else {
+    // haven't seen before
+    return true
   }
 }
 
@@ -345,6 +362,9 @@ export const showSettingsEnableNotificationsAlert = () => {
 }
 
 export const requestPushPermissionWithSoftAsk = async () => {
+  const lastSeenLocalPrompt = moment()
+  AsyncStorage.setItem(LAST_SEEN_LOCAL_PROMPT, JSON.stringify(lastSeenLocalPrompt))
+
   Alert.alert(
     "Artsy Would Like to Send You Notifications",
     "Turn on notifications to get important updates about artists you follow.",

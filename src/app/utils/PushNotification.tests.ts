@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import { waitFor } from "@testing-library/react-native"
 import { navigate } from "app/navigation/navigate"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { PendingPushNotification } from "app/store/PendingPushNotificationModel"
@@ -6,6 +7,7 @@ import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificationPermissions"
 import { Platform } from "react-native"
 import PushNotification from "react-native-push-notification"
+import { act } from "react-test-renderer"
 import * as Push from "./PushNotification"
 
 Object.defineProperty(Platform, "OS", { get: jest.fn(() => "android") }) // We only use this for android only for now
@@ -211,10 +213,68 @@ describe("Push Notification Tests", () => {
     })
 
     it("should return Denied status when there is no permission to alert on Android", async () => {
-      mockFetchNotificationPermissions(true).mockImplementationOnce((cb) => cb({ alert: true }))
+      mockFetchNotificationPermissions(true).mockImplementationOnce((cb) => cb({ alert: false }))
       const status = await Push.getNotificationPermissionsStatus()
+      expect(status).toBe(Push.PushAuthorizationStatus.Denied)
+    })
+  })
 
-      expect(status).toBe(Push.PushAuthorizationStatus.Authorized)
+  describe("requesting permission", () => {
+    jest.useFakeTimers()
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("shows a settings prompt if the push is denied and we haven't show the settings prompt before", async () => {
+      // const mockSettingsPrompt = jest
+      //   .spyOn(Push, "showSettingsEnableNotificationsAlert")
+      //   .mockReturnValue()
+      // await act(() => {
+      //   // 4 seconds
+      //   mockFetchNotificationPermissions(true).mockImplementationOnce((cb) => cb({ alert: false }))
+      //   Push.requestPushNotificationsPermission()
+      //   jest.runAllTimers()
+      // })
+      // await waitFor(() => {
+      //   expect(mockSettingsPrompt).toHaveBeenCalled()
+      // })
+    })
+
+    it("does NOT show a settings prompt if we have shown it before", async () => {
+      // const mockSettingsPrompt = jest
+      //   .spyOn(Push, "showSettingsEnableNotificationsAlert")
+      //   .mockReturnValue()
+      // const mockRequestDirect = jest
+      //   .spyOn(Push, "requestDirectNotificationPermissions")
+      //   .mockReturnValue()
+      // act(() => {
+      //   // 4 seconds
+      //   // mock the global setting
+      //   mockFetchNotificationPermissions(true).mockImplementationOnce((cb) => cb({ alert: false }))
+      //   Push.requestPushNotificationsPermission()
+      //   jest.runAllTimers()
+      // })
+      // await waitFor(() => {
+      //   expect(mockRequestDirect).toHaveBeenCalled()
+      //   expect(mockSettingsPrompt).not.toHaveBeenCalled()
+      // })
+    })
+
+    it("shows a soft ask prompt if user HAS NOT seen the system dialog or the local prompt", async () => {
+      console.log("do something")
+    })
+
+    it("shows a soft ask prompt if user HAS NOT seen the system dialog or the local prompt", async () => {
+      console.log("do something")
+    })
+
+    it("shows a soft ask prompt if user HAS NOT seen the system dialog and HAS seen the local prompt but a week has passed", async () => {
+      console.log("do something")
+    })
+
+    it("requests system permissions otherwise", async () => {
+      console.log("do something")
     })
   })
 })
