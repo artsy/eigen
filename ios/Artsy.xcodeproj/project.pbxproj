@@ -3590,6 +3590,7 @@
 			buildConfigurationList = CB43272227E8FE5400B29DD6 /* Build configuration list for PBXNativeTarget "ArtsyTests" */;
 			buildPhases = (
 				21D9FBA2AAC48EBB99241E8F /* [CP] Check Pods Manifest.lock */,
+				1A4E3CD72937B915008F0C4F /* Setup .env from react-native-config */,
 				CB43271827E8FE5400B29DD6 /* Sources */,
 				CB43271927E8FE5400B29DD6 /* Frameworks */,
 				CB43271A27E8FE5400B29DD6 /* Resources */,
@@ -3822,6 +3823,24 @@
 			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		1A08BBFB291E6B7000062A70 /* Setup .env from react-native-config */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Setup .env from react-native-config";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cp \"${PROJECT_DIR}/../.env.shared\" \"${PROJECT_DIR}/../.env\"\n";
+		};
+		1A4E3CD72937B915008F0C4F /* Setup .env from react-native-config */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
