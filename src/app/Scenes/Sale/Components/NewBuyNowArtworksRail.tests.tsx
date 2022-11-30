@@ -32,11 +32,11 @@ describe("NewBuyNowArtworksRail", () => {
     mockEnvironment = createMockEnvironment()
   })
   it(`renders "Buy now" rail and artworks`, () => {
-    const { getByText, queryByText } = renderWithWrappers(<TestRenderer />)
+    const { getByText, getAllByText } = renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     expect(getByText("Artworks Available to Buy Now")).toBeDefined()
-    expect(queryByText("Best artwork ever")).toBeDefined()
+    expect(getAllByText("Best artwork ever")).toBeDefined()
   })
 
   it("renders nothing if there are no artworks", () => {
