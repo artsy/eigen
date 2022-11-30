@@ -8,7 +8,7 @@ export const DynamicIslandStagingIndicator = () => {
 
   if (!isStaging || !hasDynamicIsland) return null
 
-  let rect: { top: number; left: number } | undefined = undefined
+  let rect: { top: number; left: number } | undefined
 
   switch (DeviceInfo.getDeviceNameSync()) {
     case "iPhone 14 Pro":
