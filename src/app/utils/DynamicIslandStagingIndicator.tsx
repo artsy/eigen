@@ -6,7 +6,9 @@ export const DynamicIslandStagingIndicator = () => {
   const isStaging = useIsStaging()
   const hasDynamicIsland = DeviceInfo.hasDynamicIsland()
 
-  if (!isStaging || !hasDynamicIsland) return null
+  if (!isStaging || !hasDynamicIsland) {
+    return null
+  }
 
   let rect: { top: number; left: number } | undefined
 
@@ -21,7 +23,9 @@ export const DynamicIslandStagingIndicator = () => {
       console.warn("No rect for this device")
   }
 
-  if (rect === undefined) return null
+  if (rect === undefined) {
+    return null
+  }
 
   return (
     <Flex
