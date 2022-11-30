@@ -231,7 +231,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
   }
 
   const renderCommercialButtons = () => {
-    if (!!(canTakeCommercialAction && !isInClosedAuction)) {
+    if (!!(!enableArtworkRedesign && canTakeCommercialAction && !isInClosedAuction)) {
       return (
         <>
           {!hidesPriceInformation && <Spacer mb={2} />}
