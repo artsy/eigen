@@ -85,7 +85,7 @@ export interface Props {
   contextScreen?: string
 
   /** Allow users to save artworks that are not lots to their saves & follows */
-  showSaveIcon?: boolean
+  hideSaveIcon?: boolean
 
   /** An array of child indices determining which children get docked to the top of the screen when scrolling.  */
   stickyHeaderIndices?: number[]
@@ -179,7 +179,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
   isMyCollection = false,
   useParentAwareScrollView = Platform.OS === "android",
   showLoadingSpinner = false,
-  showSaveIcon = false,
+  hideSaveIcon = false,
   updateRecentSearchesOnTap = false,
   itemComponentProps,
   width,
@@ -307,7 +307,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
         const componentSpecificProps = isMyCollection
           ? {}
           : {
-              showSaveIcon,
+              hideSaveIcon,
             }
         const ItemComponent = isMyCollection
           ? MyCollectionArtworkGridItemFragmentContainer

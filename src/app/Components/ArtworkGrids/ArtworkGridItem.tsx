@@ -56,7 +56,7 @@ export interface ArtworkProps {
   hidePartner?: boolean
   /** Hide sale info */
   hideSaleInfo?: boolean
-  showSaveIcon?: boolean
+  hideSaveIcon?: boolean
   height?: number
   /** Show the lot number (Lot 213) */
   showLotLabel?: boolean
@@ -85,7 +85,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   hideUrgencyTags = false,
   hidePartner = false,
   hideSaleInfo = false,
-  showSaveIcon = false,
+  hideSaveIcon = false,
   showLotLabel = false,
   urgencyTagTextStyle,
   lotLabelTextStyle,
@@ -204,8 +204,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const canShowAuctionProgressBar =
     !!artwork.sale?.extendedBiddingPeriodMinutes && !!artwork.sale?.extendedBiddingIntervalMinutes
-
-  const isBiddableLot = artwork?.sale?.isAuction && !artwork.sale.isClosed
 
   return (
     <Touchable onPress={handleTap} testID={`artworkGridItem-${artwork.title}`}>
@@ -327,7 +325,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
               </Text>
             )}
           </Flex>
-          {!!showSaveIcon && !!eableArtworkGridSaveIcon && !isBiddableLot && (
+          {!!eableArtworkGridSaveIcon && !hideSaveIcon && (
             <Flex ml={0.2}>
               <Touchable haptic onPress={handleArtworkSave} testID="save-artwork-icon">
                 {artwork.isSaved ? (

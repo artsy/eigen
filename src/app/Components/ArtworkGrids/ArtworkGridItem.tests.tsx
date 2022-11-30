@@ -229,7 +229,7 @@ describe("save artworks", () => {
 
   it("favourites works", () => {
     const { getByTestId } = renderWithHookWrappersTL(
-      <Artwork showLotLabel showSaveIcon artwork={artworkProps({}) as any} />
+      <Artwork showLotLabel artwork={artworkProps({}) as any} />
     )
 
     expect(getByTestId("empty-heart-icon")).toBeTruthy()
@@ -243,19 +243,12 @@ describe("save artworks", () => {
     })
   })
 
-  it("is hidden for lots", () => {
-    const saleArtwork = {
-      lotLabel: "Lot 1",
-      sale: {
-        isClosed: false,
-        cascadingEndTimeIntervalMinutes: 1,
-      },
-    }
+  it("is not visible when hideSaveIcon prop is specified", () => {
     const { getByTestId } = renderWithHookWrappersTL(
-      <Artwork showLotLabel showSaveIcon artwork={artworkProps({ saleArtwork }) as any} />
+      <Artwork hideSaveIcon artwork={artworkProps({}) as any} />
     )
 
-    expect(() => getByTestId("save-artwork-icon")).toThrow()
+    expect(() => getByTestId("empty-heart-icon")).toThrow()
   })
 })
 
