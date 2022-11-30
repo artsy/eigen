@@ -17,6 +17,10 @@ export const HAS_PENDING_NOTIFICATION = "HAS_PENDING_NOTIFICATION"
 
 const MAX_ELAPSED_TAPPED_NOTIFICATION_TIME = 90 // seconds
 
+// Push prompt logic
+const HAS_SEEN_PUSH_SETTINGS_PROMPT = "HAS_SEEN_PUSH_SETTINGS_PROMPT"
+const HAS_SEEN_PUSH_SYSTEM_PROMPT = "HAS_SEEN_PUSH_SYSTEM_PROMPT"
+
 export const CHANNELS = [
   {
     name: "Artsy's default notifications channel",
@@ -277,21 +281,38 @@ export const getNotificationPermissionsStatus = (): Promise<PushAuthorizationSta
 export const requestPushNotificationsPermission = async () => {
   const pushNotificationsPermissionsStatus = await getNotificationPermissionsStatus()
   if (pushNotificationsPermissionsStatus !== PushAuthorizationStatus.Authorized) {
+    const hasSeenSettingsPrompt = await boolFromStorage(HAS_SEEN_PUSH_SETTINGS_PROMPT)
+    const hasSeenSystemPrompt = await boolFromStorage(HAS_SEEN_PUSH_SYSTEM_PROMPT)
     setTimeout(() => {
-      // TODO: Replace with settings prompt logic
-      if (true) {
-        showHowToEnableNotificationInstructionAlert()
-      } else {
+      if (
+        pushNotificationsPermissionsStatus === PushAuthorizationStatus.Denied &&
+        !hasSeenSettingsPrompt
+      ) {
+        showSettingsEnableNotificationsAlert()
+      } else if (!hasSeenSystemPrompt) {
         requestPushPermissionWithSoftAsk()
+      } else {
+        requestDirectNotificationPermissions()
       }
     }, 3000)
   }
 }
 
-export const showHowToEnableNotificationInstructionAlert = () => {
+const boolFromStorage = async (key: string) => {
+  const rawItem = await AsyncStorage.getItem(key)
+  if (rawItem === "true") {
+    return true
+  } else {
+    return false
+  }
+}
+
+export const showSettingsEnableNotificationsAlert = () => {
+  AsyncStorage.setItem(HAS_SEEN_PUSH_SETTINGS_PROMPT, "true")
+
   const deviceText = Platform.select({
     ios: "iOS",
-    android: "android",
+    android: "Android",
     default: "device",
   })
   const instruction = Platform.select({
@@ -323,7 +344,7 @@ export const showHowToEnableNotificationInstructionAlert = () => {
   )
 }
 
-const requestPushPermissionWithSoftAsk = async () => {
+export const requestPushPermissionWithSoftAsk = async () => {
   Alert.alert(
     "Artsy Would Like to Send You Notifications",
     "Turn on notifications to get important updates about artists you follow.",
@@ -338,14 +359,7 @@ const requestPushPermissionWithSoftAsk = async () => {
       {
         text: "OK",
         onPress: () => {
-          // TODO: Make sure these are correct options
-          const permissionOptions = {
-            alert: true,
-            sound: true,
-            badge: true,
-            provisional: false,
-          }
-          Braze.requestPushPermission(permissionOptions)
+          requestDirectNotificationPermissions()
         },
       },
     ]
@@ -353,6 +367,7 @@ const requestPushPermissionWithSoftAsk = async () => {
 }
 
 export const requestDirectNotificationPermissions = () => {
+  AsyncStorage.setItem(HAS_SEEN_PUSH_SYSTEM_PROMPT, "true")
   const permissionOptions = {
     alert: true,
     sound: true,
@@ -375,4 +390,7 @@ module.exports = {
   CHANNELS,
   PushAuthorizationStatus,
   requestPushNotificationsPermission,
+  requestDirectNotificationPermissions,
+  showSettingsEnableNotificationsAlert,
+  requestPushPermissionWithSoftAsk,
 }
