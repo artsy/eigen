@@ -14,6 +14,7 @@ import { getTimerInfo } from "app/utils/saleTime"
 import { Time } from "app/utils/useTimer"
 import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
 import { useArtworkBidding } from "app/Websockets/auctions/useArtworkBidding"
+import moment from "moment"
 import { Flex, Spacer, Text, TimerIcon } from "palette"
 import { Color } from "palette/Theme"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -161,6 +162,9 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
     return timerInfo.color as Color
   }
 
+  // display the timer and progress bar only when duration is positive and lot is biddable
+  const shouldShowTimer = !!isBiddableInAuction && moment.duration(duration).milliseconds() > 0
+
   return (
     <>
       <Flex flexDirection="row" flexWrap="wrap" justifyContent="space-between">
@@ -169,7 +173,7 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
             Lot {artwork.saleArtwork.lotLabel}
           </Text>
         )}
-        {!!isBiddableInAuction && (
+        {!!shouldShowTimer && (
           <>
             <Spacer mr={4} />
             <Flex flexDirection="row" alignItems="center">
@@ -188,7 +192,7 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
           </>
         )}
       </Flex>
-      {!!isBiddableInAuction && (
+      {!!shouldShowTimer && (
         <>
           <Flex alignItems="flex-end">
             <Text variant="xs" color="black60">
