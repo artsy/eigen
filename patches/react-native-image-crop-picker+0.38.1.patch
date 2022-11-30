@@ -1,6 +1,3 @@
-diff --git a/node_modules/react-native-image-crop-picker/ios/.DS_Store b/node_modules/react-native-image-crop-picker/ios/.DS_Store
-new file mode 100644
-index 0000000..e69de29
 diff --git a/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m b/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m
 index 3b867d1..6a19214 100644
 --- a/node_modules/react-native-image-crop-picker/ios/src/ImageCropPicker.m
