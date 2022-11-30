@@ -18,7 +18,7 @@ const TabContent = ({
 export const BottomTabsNavigator = () => {
   return (
     <Tab.Navigator
-      tabBar={() => <BottomTabs />}
+      tabBar={(props) => <BottomTabs {...props} />}
       backBehavior="firstRoute"
       screenOptions={{ headerShown: false }}
     >

@@ -1,3 +1,5 @@
+import { BottomTabBarProps } from "@react-navigation/bottom-tabs"
+import { findFocusedRoute } from "@react-navigation/native"
 import { GlobalStore, useFeatureFlag, useIsStaging } from "app/store/GlobalStore"
 import { Flex, Separator, useTheme } from "palette"
 import React, { useEffect } from "react"
@@ -6,9 +8,9 @@ import { useScreenDimensions } from "shared/hooks"
 import { BottomTabsButton } from "./BottomTabsButton"
 import { ICON_HEIGHT } from "./BottomTabsIcon"
 
-export const BottomTabs: React.FC = () => {
+export const BottomTabs: React.FC<BottomTabBarProps> = (props) => {
   const { color } = useTheme()
-
+  const focusedRoute = findFocusedRoute(props.state)
   const unreadConversationCount = GlobalStore.useAppState(
     (state) => state.bottomTabs.sessionState.unreadConversationCount
   )
@@ -26,6 +28,11 @@ export const BottomTabs: React.FC = () => {
   const enableMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
 
   const { bottom } = useScreenDimensions().safeAreaInsets
+
+  if ((focusedRoute?.params as any)?.shouldHideBottomTab) {
+    return null
+  }
+
   return (
     <Flex style={{ paddingBottom: bottom }}>
       <Separator
