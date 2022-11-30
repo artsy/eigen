@@ -29,6 +29,7 @@ import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironme
 import { useScreenDimensions } from "shared/hooks"
 import { ResponsiveValue } from "styled-system"
 import { OfferSubmittedModal } from "../Inbox/Components/Conversations/OfferSubmittedModal"
+import { ArtworkStoreProvider } from "./ArtworkStore"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { AboveTheFoldPlaceholder } from "./Components/AboveTheFoldArtworkPlaceholder"
@@ -41,6 +42,7 @@ import { ArtworkHistoryFragmentContainer as ArtworkHistory } from "./Components/
 import { ArtworkLotDetails } from "./Components/ArtworkLotDetails/ArtworkLotDetails"
 import { ArtworkScreenHeaderFragmentContainer } from "./Components/ArtworkScreenHeader"
 import { ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
+import { ArtworkStickyBottomContent } from "./Components/ArtworkStickyBottomContent"
 import { BelowTheFoldPlaceholder } from "./Components/BelowTheFoldPlaceholder"
 import { CommercialInformationFragmentContainer as CommercialInformation } from "./Components/CommercialInformation"
 import { ContextCardFragmentContainer as ContextCard } from "./Components/ContextCard"
@@ -455,41 +457,50 @@ export const Artwork: React.FC<ArtworkProps> = ({
         }}
         enabled={websocketEnabled}
       >
-        {fetchingData ? (
-          <ProvidePlaceholderContext>
-            <AboveTheFoldPlaceholder />
-          </ProvidePlaceholderContext>
-        ) : (
-          <>
-            {enableArtworkRedesign ? (
-              <ArtworkScreenHeaderFragmentContainer artwork={artworkAboveTheFold!} />
-            ) : (
-              <BackButton style={{ zIndex: 5, marginBottom: topInset + 3 }} />
-            )}
-            <FlatList<ArtworkPageSection>
-              keyboardShouldPersistTaps="handled"
-              data={sectionsData()}
-              ItemSeparatorComponent={() => (
-                <Box mx={2}>
-                  <Separator />
-                </Box>
+        <ArtworkStoreProvider
+          initialData={{
+            auctionState: getInitialAuctionTimerState(),
+          }}
+        >
+          {fetchingData ? (
+            <ProvidePlaceholderContext>
+              <AboveTheFoldPlaceholder />
+            </ProvidePlaceholderContext>
+          ) : (
+            <>
+              {enableArtworkRedesign ? (
+                <ArtworkScreenHeaderFragmentContainer artwork={artworkAboveTheFold!} />
+              ) : (
+                <BackButton style={{ zIndex: 5, marginBottom: topInset + 3 }} />
               )}
-              refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-              contentContainerStyle={{ paddingBottom: 40 }}
-              renderItem={({ item, index }) => (
-                <Box
-                  mt={index === 0 && enableArtworkRedesign ? 0 : item.verticalMargin ?? 3}
-                  mb={item.verticalMargin ?? 3}
-                  px={item.excludePadding ? 0 : 2}
-                >
-                  {item.element}
-                </Box>
+              <FlatList<ArtworkPageSection>
+                keyboardShouldPersistTaps="handled"
+                data={sectionsData()}
+                ItemSeparatorComponent={() => (
+                  <Box mx={2}>
+                    <Separator />
+                  </Box>
+                )}
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+                contentContainerStyle={{ paddingBottom: 40 }}
+                renderItem={({ item, index }) => (
+                  <Box
+                    mt={index === 0 && enableArtworkRedesign ? 0 : item.verticalMargin ?? 3}
+                    mb={item.verticalMargin ?? 3}
+                    px={item.excludePadding ? 0 : 2}
+                  >
+                    {item.element}
+                  </Box>
+                )}
+              />
+              {!!(enableArtworkRedesign && artworkAboveTheFold && me) && (
+                <ArtworkStickyBottomContent artwork={artworkAboveTheFold} me={me} />
               )}
-            />
-          </>
-        )}
-        <QAInfo />
-        <OfferSubmittedModal />
+            </>
+          )}
+          <QAInfo />
+          <OfferSubmittedModal />
+        </ArtworkStoreProvider>
       </AuctionWebsocketContextProvider>
     </ProvideScreenTracking>
   )
@@ -515,6 +526,7 @@ export const ArtworkContainer = createRefetchContainer(
         ...CreateArtworkAlertSection_artwork
         ...PartnerLink_artwork
         ...ArtworkLotDetails_artwork
+        ...ArtworkStickyBottomContent_artwork
         slug
         internalID
         id
