@@ -30,11 +30,11 @@ export const BottomTabs: React.FC<BottomTabBarProps> = (props) => {
   const { bottom } = useScreenDimensions().safeAreaInsets
 
   if ((focusedRoute?.params as any)?.shouldHideBottomTab) {
-    return null
+    return <></>
   }
 
   return (
-    <Flex style={{ paddingBottom: bottom }}>
+    <Flex position="absolute" left={0} right={0} bottom={0} paddingBottom={bottom} bg="white100">
       <Separator
         style={{
           borderColor: isStaging ? color("devpurple") : color("black10"),
