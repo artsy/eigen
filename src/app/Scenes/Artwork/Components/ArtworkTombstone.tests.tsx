@@ -10,8 +10,6 @@ import { ArtworkTombstoneFragmentContainer } from "./ArtworkTombstone"
 
 jest.unmock("react-relay")
 
-const mockRefetch = jest.fn()
-
 describe("ArtworkTombstone", () => {
   const { renderWithRelay } = setupTestWrapperTL({
     Component: (props) => (
@@ -107,6 +105,7 @@ describe("ArtworkTombstone", () => {
 
 const artworkTombstoneArtwork: ArtworkTombstone_artwork$data = {
   ...ArtworkFixture,
+  artists: [{ name: "Artist", href: "/artist" }],
   title: "Hello im a title",
   date: "1992",
 }
