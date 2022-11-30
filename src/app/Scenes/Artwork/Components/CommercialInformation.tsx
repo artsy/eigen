@@ -211,8 +211,24 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
   }
 
   const renderPriceInformation = () => {
+    if (enableArtworkRedesign) {
+      const editionSets = artwork.editionSets ?? []
+
+      if (editionSets.length > 1) {
+        return (
+          <ArtworkEditionSetInformation
+            artwork={artwork}
+            selectedEditionId={editionSetID}
+            onSelectEdition={setEditionSetID}
+          />
+        )
+      }
+
+      return null
+    }
+
     if (isInAuction && isForSale) {
-      if (enableArtworkRedesign || timerState === AuctionTimerState.LIVE_INTEGRATION_ONGOING) {
+      if (timerState === AuctionTimerState.LIVE_INTEGRATION_ONGOING) {
         return null
       } else {
         return <AuctionPrice artwork={artwork} auctionState={timerState as AuctionTimerState} />
