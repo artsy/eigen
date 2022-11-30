@@ -164,7 +164,6 @@ export const Countdown: React.FC<CountdownProps> = ({
   const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
 
   if (!!enableArtworkRedesign) {
-    // move this to the timer? up to the thing and return null ? ? ?
     return null
   }
 
