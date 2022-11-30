@@ -164,21 +164,8 @@ export const Countdown: React.FC<CountdownProps> = ({
   const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
 
   if (!!enableArtworkRedesign) {
-    return (
-      <Flex alignItems="center" accessibilityLabel="Countdown">
-        <Text variant="xs" weight="medium" color="black60">
-          {label}
-        </Text>
-        {!!extendedBiddingPeriodMinutes && (
-          <>
-            <Spacer mt={1} />
-            <Text variant="xs" color="black60" textAlign="center">
-              *Closure times may be extended to accommodate last-minute bids
-            </Text>
-          </>
-        )}
-      </Flex>
-    )
+    // move this to the timer? up to the thing and return null ? ? ?
+    return null
   }
 
   return (

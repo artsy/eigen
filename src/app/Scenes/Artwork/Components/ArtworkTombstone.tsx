@@ -11,12 +11,7 @@ export interface ArtworkTombstoneProps {
   refetchArtwork: () => void
 }
 
-export interface ArtworkTombstoneState {
-  showingMoreArtists: boolean
-  showAuthenticityCertificateModal: boolean
-}
-
-export const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork }) => {
+export const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork, refetchArtwork }) => {
   const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
 
   const getArtworkTitleAndMaybeDate = () => {
@@ -45,11 +40,11 @@ export const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork }) =
           </Text>
         </>
       )}
-      <ArtworkMakerTitleFragmentContainer artwork={artwork} />
       {!!enableArtworkRedesign && (
         <ArtworkLotTimerFragmentContainer artwork={artwork} refetchArtwork={refetchArtwork} />
       )}
 
+      <ArtworkMakerTitleFragmentContainer artwork={artwork} />
       <Flex flexDirection="row" flexWrap="wrap">
         <Text variant="lg-display" color="black60">
           {getArtworkTitleAndMaybeDate()}

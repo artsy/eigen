@@ -125,6 +125,7 @@ export const ArtworkLotTimerWrapper: React.FC<AuctionWebsocketWrapperProps> = (p
 }
 
 const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
+  label,
   artwork,
   timerState,
   duration,
@@ -135,10 +136,6 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
   const { isInAuction, sale, isForSale } = artwork
   const isBiddableInAuction =
     isInAuction && sale && timerState !== AuctionTimerState.CLOSED && isForSale
-
-  if (!isBiddableInAuction) {
-    return null
-  }
 
   const displayAuctionLotLabel =
     artwork.isInAuction &&
@@ -172,33 +169,46 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
             Lot {artwork.saleArtwork.lotLabel}
           </Text>
         )}
-        <Spacer mr={4} />
-        <Flex flexDirection="row" alignItems="center">
-          {sale.cascadingEndTimeIntervalMinutes ? (
-            <ModernTicker
-              duration={duration}
-              hasStarted={hasStarted}
-              isExtended={hasBeenExtended}
-              variant="md"
-            />
-          ) : (
-            <SimpleTicker duration={duration} separator="  " variant="md" />
-          )}
-          <TimerIcon height={24} width={24} fill={getColor()} ml={1} />
-        </Flex>
+        {!!isBiddableInAuction && (
+          <>
+            <Spacer mr={4} />
+            <Flex flexDirection="row" alignItems="center">
+              {sale.cascadingEndTimeIntervalMinutes ? (
+                <ModernTicker
+                  duration={duration}
+                  hasStarted={hasStarted}
+                  isExtended={hasBeenExtended}
+                  variant="md"
+                />
+              ) : (
+                <SimpleTicker duration={duration} separator="  " variant="md" />
+              )}
+              <TimerIcon height={24} width={24} fill={getColor()} ml={1} />
+            </Flex>
+          </>
+        )}
       </Flex>
-      <Spacer mt={1} />
-      {!!sale.extendedBiddingPeriodMinutes && !!sale.extendedBiddingIntervalMinutes && (
+      {!!isBiddableInAuction && (
         <>
-          <ArtworkAuctionProgressBar
-            startAt={sale.startAt}
-            extendedBiddingPeriodMinutes={sale.extendedBiddingPeriodMinutes}
-            extendedBiddingIntervalMinutes={sale.extendedBiddingIntervalMinutes}
-            biddingEndAt={biddingEndAt}
-            hasBeenExtended={!!hasBeenExtended}
-            height={5}
-          />
-          <Spacer mt={2} />
+          <Flex alignItems="flex-end">
+            <Text variant="xs" color="black60">
+              {label}
+            </Text>
+          </Flex>
+          <Spacer mt={1} />
+          {!!sale.extendedBiddingPeriodMinutes && !!sale.extendedBiddingIntervalMinutes && (
+            <>
+              <ArtworkAuctionProgressBar
+                startAt={sale.startAt}
+                extendedBiddingPeriodMinutes={sale.extendedBiddingPeriodMinutes}
+                extendedBiddingIntervalMinutes={sale.extendedBiddingIntervalMinutes}
+                biddingEndAt={biddingEndAt}
+                hasBeenExtended={!!hasBeenExtended}
+                height={5}
+              />
+              <Spacer mt={2} />
+            </>
+          )}
         </>
       )}
     </>
