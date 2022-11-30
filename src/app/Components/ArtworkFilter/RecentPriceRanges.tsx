@@ -1,5 +1,5 @@
 import { DEFAULT_PRICE_RANGE as USER_PREFERRED_DEFAULT_PRICE_RANGE } from "app/Scenes/Search/UserPrefsModel"
-import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import {
   MAX_SHOWN_RECENT_PRICE_RANGES,
   useRecentPriceRanges,
@@ -27,7 +27,6 @@ export const RecentPriceRanges: React.FC<RecentPriceRangesProps> = ({
   onSelected,
 }) => {
   const priceRanges = usePriceRanges()
-  const enableRecentPriceRanges = useFeatureFlag("ARRecentPriceRanges")
   const space = useSpace()
   const recentPriceRangeScrollRef = useRef<ScrollView>(null)
   const isEmptyPriceRanges = priceRanges.length === 0
@@ -39,10 +38,6 @@ export const RecentPriceRanges: React.FC<RecentPriceRangesProps> = ({
     if (Platform.OS === "android" && recentPriceRangeScrollRef.current) {
       recentPriceRangeScrollRef.current.scrollTo({ x: 0, animated: false })
     }
-  }
-
-  if (!enableRecentPriceRanges) {
-    return null
   }
 
   return (
