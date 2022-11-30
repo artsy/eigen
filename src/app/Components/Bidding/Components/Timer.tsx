@@ -1,7 +1,6 @@
 import { StateManager as CountdownStateManager } from "app/Components/Countdown"
 import { CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
 import { ModernTicker, SimpleTicker } from "app/Components/Countdown/Ticker"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { DateTime } from "luxon"
 import moment from "moment-timezone"
 import { Flex, Spacer, Text } from "palette"
@@ -161,12 +160,6 @@ export const Countdown: React.FC<CountdownProps> = ({
   extendedBiddingPeriodMinutes,
   biddingEndAt,
 }) => {
-  const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
-
-  if (!!enableArtworkRedesign) {
-    return null
-  }
-
   return (
     <Flex alignItems="center" accessibilityLabel="Countdown">
       {cascadingEndTimeIntervalMinutes ? (
@@ -186,7 +179,7 @@ export const Countdown: React.FC<CountdownProps> = ({
       <Text variant="xs" weight="medium" color="black60">
         {label}
       </Text>
-      {!!(extendedBiddingPeriodMinutes && !enableArtworkRedesign) && (
+      {!!extendedBiddingPeriodMinutes && (
         <>
           <Spacer mt={1} />
           <Text variant="xs" color="black60" textAlign="center">
