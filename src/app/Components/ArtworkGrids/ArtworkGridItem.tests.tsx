@@ -242,21 +242,6 @@ describe("save artworks", () => {
       expect(getByTestId("filled-heart-icon")).toBeTruthy()
     })
   })
-
-  it("is hidden for lots", () => {
-    const saleArtwork = {
-      lotLabel: "Lot 1",
-      sale: {
-        isClosed: false,
-        cascadingEndTimeIntervalMinutes: 1,
-      },
-    }
-    const { getByTestId } = renderWithHookWrappersTL(
-      <Artwork showLotLabel showSaveIcon artwork={artworkProps({ saleArtwork }) as any} />
-    )
-
-    expect(() => getByTestId("save-artwork-icon")).toThrow()
-  })
 })
 
 const artworkProps = ({

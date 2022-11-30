@@ -205,8 +205,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const canShowAuctionProgressBar =
     !!artwork.sale?.extendedBiddingPeriodMinutes && !!artwork.sale?.extendedBiddingIntervalMinutes
 
-  const isBiddableLot = artwork?.sale?.isAuction && !artwork.sale.isClosed
-
   return (
     <Touchable onPress={handleTap} testID={`artworkGridItem-${artwork.title}`}>
       <View ref={itemRef}>
@@ -327,7 +325,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
               </Text>
             )}
           </Flex>
-          {!!showSaveIcon && !!eableArtworkGridSaveIcon && !isBiddableLot && (
+          {!!showSaveIcon && !!eableArtworkGridSaveIcon && (
             <Flex ml={0.2}>
               <Touchable haptic onPress={handleArtworkSave} testID="save-artwork-icon">
                 {artwork.isSaved ? (
