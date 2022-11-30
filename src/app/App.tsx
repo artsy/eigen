@@ -34,7 +34,6 @@ import { useInitialNotification } from "./utils/useInitialNotification"
 import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
 import { useScreenReaderTracking } from "./utils/useScreenReaderTracking"
 import useSyncNativeAuthState from "./utils/useSyncAuthState"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { DynamicIslandStagingIndicator } from "./utils/DynamicIslandStagingIndicator"
 
 // don't open dev menu with shake. we use it for out own admin menu.
