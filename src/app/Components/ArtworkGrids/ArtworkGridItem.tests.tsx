@@ -243,7 +243,7 @@ describe("save artworks", () => {
     })
   })
 
-  it("is not possible when hideSaveIcon prop is specified", () => {
+  it("is not visible when hideSaveIcon prop is specified", () => {
     const { getByTestId } = renderWithHookWrappersTL(
       <Artwork hideSaveIcon artwork={artworkProps({}) as any} />
     )
