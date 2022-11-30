@@ -204,12 +204,6 @@ describe("PriceRangeOptions", () => {
   })
 
   describe("Recent price ranges analytics", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({
-        ARRecentPriceRanges: true,
-      })
-    })
-
     it("should correctly track analytics", () => {
       __globalStoreTestUtils__?.injectState({
         userPrefs: {
