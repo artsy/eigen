@@ -116,8 +116,8 @@ export const ArtsyWebViewPage = ({
           isPresentedModally={isPresentedModally}
           onNavigationStateChange={
             mimicBrowserBackButton
-              ? ({ canGoBack }) => {
-                  setCanGoBack(canGoBack)
+              ? (evt) => {
+                  setCanGoBack(evt.canGoBack)
                 }
               : undefined
           }
@@ -177,10 +177,10 @@ export const ArtsyWebView = forwardRef<
             setLoadProgress(e.nativeEvent.progress)
           }
         }}
-        onNavigationStateChange={({ url, ...restEvent }) => {
-          onNavigationStateChange?.({ ...restEvent, url })
+        onNavigationStateChange={(evt) => {
+          onNavigationStateChange?.(evt)
 
-          const targetURL = expandGoogleAdLink(url)
+          const targetURL = expandGoogleAdLink(evt.url)
 
           const result = matchRoute(targetURL)
 
@@ -212,11 +212,11 @@ export const ArtsyWebView = forwardRef<
         }}
       />
       <ProgressBar loadProgress={loadProgress} />
-      {showIndicator && (
+      {showIndicator ? (
         <Flex position="absolute" top={50} left={-25} style={{ transform: [{ rotate: "90deg" }] }}>
           <Text color="red">webview</Text>
         </Flex>
-      )}
+      ) : null}
     </Flex>
   )
 })
