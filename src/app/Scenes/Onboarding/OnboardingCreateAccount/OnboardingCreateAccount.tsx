@@ -100,19 +100,8 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
     ) => {
       switch (currentRoute) {
         case "OnboardingCreateAccountEmail":
-          const userExists = await GlobalStore.actions.auth.userExists({ email })
-
-          if (userExists) {
-            // When the user exists already we want to take them to the login screen
-            setErrors({
-              email: EMAIL_EXISTS_ERROR_MESSAGE,
-            })
-          } else {
-            // If the email is new continue with the sign up
-            __unsafe__createAccountNavigationRef.current?.navigate(
-              "OnboardingCreateAccountPassword"
-            )
-          }
+          // continue with the sign up
+          __unsafe__createAccountNavigationRef.current?.navigate("OnboardingCreateAccountPassword")
           break
         case "OnboardingCreateAccountPassword":
           __unsafe__createAccountNavigationRef.current?.navigate("OnboardingCreateAccountName")

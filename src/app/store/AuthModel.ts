@@ -163,7 +163,6 @@ export interface AuthModel {
   setState: Action<this, Partial<StateMapper<this, "1">>>
   getXAppToken: Thunk<this, void, {}, GlobalStoreModel, Promise<string>>
   getUser: Thunk<this, { accessToken: string }, {}, GlobalStoreModel>
-  userExists: Thunk<this, { email: string }, {}, GlobalStoreModel>
   signIn: Thunk<
     this,
     { email: string; onboardingState?: OnboardingState; onSignIn?: () => void } & OAuthParams,
@@ -281,18 +280,6 @@ export const getAuthModel = (): AuthModel => ({
       },
       body: payload.body ? JSON.stringify(payload.body) : undefined,
     })
-  }),
-  userExists: thunk(async (actions, { email }) => {
-    const result = await actions.gravityUnauthenticatedRequest({
-      path: `/api/v1/user?${stringify({ email })}`,
-    })
-    if (result.status === 200) {
-      return true
-    } else if (result.status === 404) {
-      return false
-    } else {
-      throw new Error(JSON.stringify(await result.json()))
-    }
   }),
   forgotPassword: thunk(async (actions, { email }) => {
     const result = await actions.gravityUnauthenticatedRequest({
