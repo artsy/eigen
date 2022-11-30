@@ -1,4 +1,5 @@
-import { ActionType, exceededUploadSize } from "@artsy/cohesion"
+import { ActionType, OwnerType } from "@artsy/cohesion"
+import { UploadSizeLimitExceeded } from "@artsy/cohesion/dist/Schema/Events/UploadSizeLimitExceeded"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { captureMessage } from "@sentry/react-native"
 import { storeLocalPhotos } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionImageUtil"
@@ -186,8 +187,8 @@ export const tracks = {
   hasExceededUploadSize: (
     uploadSizeInBytes: number,
     numberOfFiles: number
-  ): ExceededUploadSize => ({
-    action: ActionType.exceededUploadSize,
+  ): UploadSizeLimitExceeded => ({
+    action: ActionType.uploadSizeLimitExceeded,
     context_owner_type: OwnerType.sell,
     upload_size_in_kb: Math.floor(Math.log2(uploadSizeInBytes) / 10),
     number_of_files: numberOfFiles,
