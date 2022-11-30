@@ -630,6 +630,7 @@ export const ArtworkContainer = createRefetchContainer(
     me: graphql`
       fragment Artwork_me on Me {
         ...CommercialInformation_me
+        ...ArtworkStickyBottomContent_me
       }
     `,
   },
