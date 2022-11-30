@@ -7,13 +7,11 @@ import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import moment from "moment-timezone"
 import { Flex, Join, Separator, Text } from "palette"
-import React, { useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 import { PanResponder, Platform, ScrollView, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Markdown } from "app/Components/Markdown"
-import { StyledWebView } from "app/Components/StyledWebView"
 import { defaultRules } from "app/utils/renderMarkdown"
 import { sendEmail } from "app/utils/sendEmail"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -115,7 +113,7 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
             )}
             {Platform.OS === "ios" ? (
               <View {...(panResponder.current?.panHandlers || {})}>
-                <StyledWebView body={sale.description || ""} />
+                <Markdown rules={markdownRules}>{sale.description ?? ""}</Markdown>
               </View>
             ) : (
               <Markdown rules={markdownRules}>{sale.description || ""}</Markdown>
