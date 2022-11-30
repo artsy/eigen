@@ -13,14 +13,12 @@ import { Schema } from "app/utils/track"
 import { useWebViewCallback } from "app/utils/useWebViewEvent"
 import { Flex, Text } from "palette"
 import { parse as parseQueryString } from "query-string"
-import React, { useEffect, useRef, useState } from "react"
-import { Platform } from "react-native"
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import Share from "react-native-share"
 import WebView, { WebViewProps } from "react-native-webview"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
-import { parse as parseURL } from "url"
 import { FancyModalHeader } from "./FancyModal/FancyModalHeader"
 
 export interface ArtsyWebViewConfig {
@@ -32,10 +30,6 @@ export interface ArtsyWebViewConfig {
    */
   mimicBrowserBackButton?: boolean
   /**
-   * Set this to false if you want all clicked links to be handled by our `navigate` method.
-   */
-  allowWebViewInnerNavigation?: boolean
-  /**
    * Show the share URL button
    */
   showShareButton?: boolean
@@ -45,31 +39,28 @@ export interface ArtsyWebViewConfig {
   useRightCloseButton?: boolean
 }
 
-type CustomWebView = WebView & { shareTitleUrl: string }
+type WebViewWithShareTitleUrl = WebView & { shareTitleUrl: string }
 
-export const ArtsyWebViewPage: React.FC<
-  {
-    url: string
-    isPresentedModally?: boolean
-    backProps?: GoBackProps
-    backAction?: () => void
-  } & ArtsyWebViewConfig
-> = ({
+export const ArtsyWebViewPage = ({
   url,
   title,
-  isPresentedModally,
-  allowWebViewInnerNavigation = true,
+  isPresentedModally = false,
   mimicBrowserBackButton = true,
   useRightCloseButton = false,
-  showShareButton,
+  showShareButton = false,
   backProps,
   backAction,
-}) => {
+}: {
+  url: string
+  isPresentedModally?: boolean
+  backProps?: GoBackProps
+  backAction?: () => void
+} & ArtsyWebViewConfig) => {
   const paddingTop = isPresentedModally ? 0 : useScreenDimensions().safeAreaInsets.top
 
   const [canGoBack, setCanGoBack] = useState(false)
   const webURL = useEnvironment().webURL
-  const ref = useRef<CustomWebView>(null)
+  const ref = useRef<WebViewWithShareTitleUrl>(null)
 
   const tracking = useTracking()
   const handleArticleShare = async () => {
@@ -80,37 +71,23 @@ export const ArtsyWebViewPage: React.FC<
     const shareUrl = ref.current?.shareTitleUrl || uri
     tracking.trackEvent(tracks.share(shareUrl))
     try {
-      await Share.open({
-        url: shareUrl,
-      })
+      await Share.open({ url: shareUrl })
     } catch (error) {
       if (__DEV__) {
-        console.error("ArtsyWebView.tsx", error)
+        console.log("ArtsyWebView.tsx", error)
       }
     }
   }
 
-  const handleGoBack = () => {
-    if (backAction) {
-      backAction()
-    } else {
-      goBack(backProps)
-    }
-  }
+  const handleGoBack = () => (backAction ? backAction() : goBack(backProps))
 
-  const onRightButtonPress = () => {
-    if (showShareButton) {
-      return handleArticleShare()
-    } else if (useRightCloseButton) {
-      return handleGoBack()
-    }
-  }
+  const onRightButtonPress = () =>
+    showShareButton ? handleArticleShare() : useRightCloseButton ? handleGoBack() : null
 
   return (
     <Flex flex={1} pt={paddingTop} backgroundColor="white">
       <ArtsyKeyboardAvoidingView>
         <FancyModalHeader
-          rightCloseButton={useRightCloseButton}
           useXButton={isPresentedModally && !canGoBack}
           onLeftButtonPress={
             useRightCloseButton && !canGoBack
@@ -126,6 +103,7 @@ export const ArtsyWebViewPage: React.FC<
                 }
           }
           useShareButton={showShareButton}
+          rightCloseButton={useRightCloseButton}
           onRightButtonPress={
             showShareButton || useRightCloseButton ? onRightButtonPress : undefined
           }
@@ -135,12 +113,11 @@ export const ArtsyWebViewPage: React.FC<
         <ArtsyWebView
           url={url}
           ref={ref}
-          allowWebViewInnerNavigation={allowWebViewInnerNavigation}
           isPresentedModally={isPresentedModally}
           onNavigationStateChange={
             mimicBrowserBackButton
-              ? (ev) => {
-                  setCanGoBack(ev.canGoBack)
+              ? ({ canGoBack }) => {
+                  setCanGoBack(canGoBack)
                 }
               : undefined
           }
@@ -150,11 +127,10 @@ export const ArtsyWebViewPage: React.FC<
   )
 }
 
-export const ArtsyWebView = React.forwardRef<
-  CustomWebView,
+export const ArtsyWebView = forwardRef<
+  WebViewWithShareTitleUrl,
   {
     url: string
-    allowWebViewInnerNavigation?: boolean
     onNavigationStateChange?: WebViewProps["onNavigationStateChange"]
     isPresentedModally?: boolean
   }
@@ -162,12 +138,13 @@ export const ArtsyWebView = React.forwardRef<
   (
     {
       url,
-      allowWebViewInnerNavigation = true,
       onNavigationStateChange,
       isPresentedModally = false,
     },
     ref
   ) => {
+    const innerRef = useRef<WebViewWithShareTitleUrl>(null)
+    useImperativeHandle(ref, () => innerRef.current!)
     const userAgent = getCurrentEmissionState().userAgent
     const { callWebViewEventCallback } = useWebViewCallback()
 
@@ -180,7 +157,7 @@ export const ArtsyWebView = React.forwardRef<
     return (
       <Flex flex={1}>
         <WebView
-          ref={ref}
+          ref={innerRef}
           // sharedCookiesEnabled is required on iOS for the user to be implicitly logged into force/prediction
           // on android it works without it
           sharedCookiesEnabled
@@ -208,51 +185,28 @@ export const ArtsyWebView = React.forwardRef<
               setLoadProgress(e.nativeEvent.progress)
             }
           }}
-          onShouldStartLoadWithRequest={(ev) => {
-            const targetURL = expandGoogleAdLink(ev.url)
+
+          onNavigationStateChange={({ url, ...restEvent }) => {
+            onNavigationStateChange?.({ ...restEvent, url })
+
+            const targetURL = expandGoogleAdLink(url)
+
             const result = matchRoute(targetURL)
-            // On android onShouldStartLoadWithRequest is only called for actual navigation requests
-            // On iOS it is also called for other-origin script/resource requests, so we use
-            // isTopFrame to check that this request pertains to an actual navigation request
-            const isTopFrame = Platform.OS === "android" ? true : ev.isTopFrame
-            if (!isTopFrame || targetURL === uri) {
-              // we use `|| targetURL === uri` because otherwise, if the URI points to a
-              // page that can be handled natively, we'll jump directly out of a the web view.
-              return true
+
+            // if it's a route that we know we don't have a native view for, keep it in the webview
+            if (result.type === "match" && result.module === "ReactWebView") {
+              innerRef.current!.shareTitleUrl = targetURL
+              return
             }
 
-            // If the target URL points to another page that we can handle with a web view, let's go there
-            if (
-              allowWebViewInnerNavigation &&
-              result.type === "match" &&
-              result.module === "ReactWebView"
-            ) {
-              if (ref) {
-                ;(ref as any).current.shareTitleUrl = targetURL
-              }
-              return true
-            }
-
-            // In case of a webview presentaed modally, if the targetURL is a tab View,
-            // we need to dismiss the modal first to avoid having a tab rendered within the modal
-            const modulePathName = parseURL(targetURL).pathname?.split(/\/+/).filter(Boolean) ?? []
-            if (
-              isPresentedModally &&
-              result.type === "match" &&
-              modulePathName.length > 0 &&
-              BottomTabRoutes.includes("/" + modulePathName[0])
-            ) {
-              dismissModal()
-            }
-            // Otherwise use `navigate` to handle it like any other link in the app
+            // if it's an external url, or a route with a native view, use `navigate`
+            if (!__TEST__) innerRef.current?.stopLoading()
             navigate(targetURL)
             setLoadProgress(null)
-            return false
           }}
-          onNavigationStateChange={onNavigationStateChange}
         />
         <ProgressBar loadProgress={loadProgress} />
-        {showIndicator ? (
+        {showIndicator && (
           <Flex
             position="absolute"
             top={50}
@@ -261,16 +215,14 @@ export const ArtsyWebView = React.forwardRef<
           >
             <Text color="red">webview</Text>
           </Flex>
-        ) : null}
+        )}
       </Flex>
     )
   }
 )
 
-const ProgressBar: React.FC<{ loadProgress: number | null }> = ({ loadProgress }) => {
-  if (loadProgress === null) {
-    return null
-  }
+const ProgressBar = ({ loadProgress }: { loadProgress: number | null }) => {
+  if (loadProgress === null) return null
 
   const progressPercent = Math.max(loadProgress * 100, 2)
   return (
@@ -287,11 +239,11 @@ const ProgressBar: React.FC<{ loadProgress: number | null }> = ({ loadProgress }
 }
 
 export function useWebViewCookies() {
-  const accesstoken = GlobalStore.useAppState((store) => store.auth.userAccessToken)
+  const accessToken = GlobalStore.useAppState((store) => store.auth.userAccessToken)
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userID)
   const { webURL, predictionURL } = useEnvironment()
-  useUrlCookies(webURL, accesstoken, isLoggedIn)
-  useUrlCookies(predictionURL + "/login", accesstoken, isLoggedIn)
+  useUrlCookies(webURL, accessToken, isLoggedIn)
+  useUrlCookies(predictionURL + "/login", accessToken, isLoggedIn)
 }
 
 function useUrlCookies(url: string, accessToken: string | null, isLoggedIn: boolean) {
@@ -310,26 +262,21 @@ class CookieRequestAttempt {
   invalidated = false
   constructor(public url: string, public accessToken: string) {}
   async makeAttempt() {
-    if (this.invalidated) {
-      return
-    }
+    if (this.invalidated) return
+
     try {
       const res = await fetch(this.url, {
         method: "HEAD",
         headers: { "X-Access-Token": this.accessToken! },
       })
-      if (this.invalidated) {
-        return
-      }
+      if (this.invalidated) return
 
-      if (res.status > 400) {
-        throw new Error("couldn't authenticate")
-      }
+      if (res.status > 400) throw new Error("couldn't authenticate")
+
       addBreadcrumb({ message: `Successfully set up artsy web view cookies for ${this.url}` })
     } catch (e) {
-      if (this.invalidated) {
-        return
-      }
+      if (this.invalidated) return
+
       addBreadcrumb({
         message: `Retrying to set up artsy web view cookies in 20 seconds ${this.url}`,
       })
@@ -339,23 +286,15 @@ class CookieRequestAttempt {
 }
 
 function expandGoogleAdLink(url: string) {
-  const parsed = parseURL(url)
+  const parsed = new URL(url)
   if (parsed.host === "googleads.g.doubleclick.net") {
-    const adurl = parseQueryString(parsed.query ?? "").adurl as string | undefined
-    if (adurl && parseURL(adurl)) {
+    const adurl = parseQueryString(parsed.search ?? "").adurl as string | undefined
+    if (adurl && new URL(adurl)) {
       return adurl
     }
   }
   return url
 }
-
-// tslint:disable-next-line:variable-name
-export const __webViewTestUtils__ = __TEST__
-  ? {
-      ProgressBar,
-      expandGoogleAdLink,
-    }
-  : null
 
 const tracks = {
   share: (slug: string) => ({
@@ -365,3 +304,6 @@ const tracks = {
     context_screen_owner_slug: slug,
   }),
 }
+
+// tslint:disable-next-line:variable-name
+export const _test_expandGoogleAdLink = expandGoogleAdLink
