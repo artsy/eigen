@@ -6537,6 +6537,9 @@ type Conversation implements Node {
   from: ConversationInitiator!
   fromLastViewedMessageID: String
 
+  # The user who initiated the conversation
+  fromUser: User
+
   # A globally unique ID.
   id: ID!
   initialMessage: String!
