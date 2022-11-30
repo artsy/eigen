@@ -482,8 +482,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   </Box>
                 )}
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-                // TODO: Add `bottomStickyContentHeight` to paddingBottom
-                contentContainerStyle={{ paddingBottom: 40 }}
                 renderItem={({ item, index }) => (
                   <Box
                     mt={index === 0 && enableArtworkRedesign ? 0 : item.verticalMargin ?? 3}
