@@ -116,6 +116,23 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
             navigate("/storybook")
           }}
         />
+        <FeatureFlagMenuItem
+          title="Navigate to..."
+          onPress={() =>
+            Alert.prompt("Navigate to...", "Where should we navigate to?", [
+              {
+                text: "Go",
+                onPress: (url) => {
+                  if (!url) {
+                    return
+                  }
+
+                  dismissModal(() => navigate(url))
+                },
+              },
+            ])
+          }
+        />
         <Flex mx="2">
           <Separator my="1" />
         </Flex>

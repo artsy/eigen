@@ -179,7 +179,7 @@ const tracks = {
   },
 }
 
-export function dismissModal() {
+export function dismissModal(after?: () => void) {
   // We wait for interaction to finish before dismissing the modal, otherwise,
   // we might get a race condition that causes the UI to freeze
   InteractionManager.runAfterInteractions(() => {
@@ -187,6 +187,8 @@ export function dismissModal() {
     if (Platform.OS === "android") {
       navigationEvents.emit("modalDismissed")
     }
+
+    after?.()
   })
 }
 
