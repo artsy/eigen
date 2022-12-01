@@ -31,7 +31,8 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
   const partnerName = extractNodes(order?.lineItems)?.[0]?.artwork?.partner
   const fulfillmentType = order.requestedFulfillment?.__typename
   const isProcessingWireTransfer =
-    order.paymentMethodDetails?.__typename === "WireTransfer" &&
+    !!order.paymentMethod &&
+    order.paymentMethod === "WIRE_TRANSFER" &&
     order.state === "PROCESSING_APPROVAL"
   const isShipping = fulfillmentType === "CommerceShipArta" || fulfillmentType === "CommerceShip"
 
@@ -193,6 +194,7 @@ export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
   order: graphql`
     fragment OrderDetails_order on CommerceOrder {
       state
+      paymentMethod
 
       requestedFulfillment {
         ... on CommerceShip {
@@ -204,18 +206,6 @@ export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
           name
         }
         ... on CommercePickup {
-          __typename
-        }
-      }
-
-      paymentMethodDetails {
-        ... on CreditCard {
-          __typename
-        }
-        ... on BankAccount {
-          __typename
-        }
-        ... on WireTransfer {
           __typename
         }
       }

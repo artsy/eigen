@@ -135,9 +135,7 @@ describe(OrderDetailsQueryRender, () => {
       CommerceOrder: () => ({
         ...order,
         code: "111111111",
-        paymentMethodDetails: {
-          __typename: "WireTransfer",
-        },
+        paymentMethod: "WIRE_TRANSFER",
         state: "PROCESSING_APPROVAL",
       }),
     })
