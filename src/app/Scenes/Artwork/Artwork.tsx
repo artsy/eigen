@@ -153,6 +153,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
     }
   }, [])
 
+  // TODO: Remove this before the PR is merged
   useLayoutEffect(() => {
     setBottomTabVisibilityForCurrentScreen(false)
   }, [])
