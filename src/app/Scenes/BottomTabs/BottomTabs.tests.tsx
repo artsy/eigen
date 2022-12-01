@@ -28,15 +28,19 @@ beforeEach(() => {
   mockRelayEnvironment = createEnvironment() as any
 })
 
-function resolveUnreadConversationCountQuery(unreadConversationCount: number) {
+function resolveUnreadConversationCountQuery(
+  unreadConversationCount: number,
+  unreadNotificationsCount: number
+) {
   expect(mockRelayEnvironment.mock.getMostRecentOperation().request.node.operation.name).toBe(
-    "BottomTabsModelFetchCurrentUnreadConversationCountQuery"
+    "BottomTabsModelFetchAllNotificationsCountsQuery"
   )
   mockRelayEnvironment.mock.resolveMostRecentOperation((op) =>
     MockPayloadGenerator.generate(op, {
       Me() {
         return {
           unreadConversationCount,
+          unreadNotificationsCount,
         }
       },
     })
@@ -73,7 +77,41 @@ describe(BottomTabs, () => {
     })
   })
 
-  it(`fetches the current unread conversation count on mount`, async () => {
+  it(`displayes a blue dot on home icon if there are unread notifications`, async () => {
+    __globalStoreTestUtils__?.injectState({
+      bottomTabs: { sessionState: { unreadActivityPanelNotificationsCount: 4 } },
+    })
+    const tree = renderWithWrappersLEGACY(<TestWrapper />)
+
+    const homeButton = tree.root
+      .findAllByType(BottomTabsButton)
+      .find((button) => (button.props as ButtonProps).tab === "home")
+    expect((homeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
+
+    // need to prevent this test's requests from leaking into the next test
+    await act(async () => {
+      await flushPromiseQueue()
+    })
+  })
+
+  it(`doesn't display a blue dot on home icon if there are no unread notifications`, async () => {
+    __globalStoreTestUtils__?.injectState({
+      bottomTabs: { sessionState: { unreadActivityPanelNotificationsCount: 0 } },
+    })
+    const tree = renderWithWrappersLEGACY(<TestWrapper />)
+
+    const homeButton = tree.root
+      .findAllByType(BottomTabsButton)
+      .find((button) => (button.props as ButtonProps).tab === "home")
+    expect((homeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
+
+    // need to prevent this test's requests from leaking into the next test
+    await act(async () => {
+      await flushPromiseQueue()
+    })
+  })
+
+  it(`fetches the current unread conversation / notifications count on mount`, async () => {
     const tree = renderWithWrappersLEGACY(<TestWrapper />)
 
     await act(async () => {
@@ -82,7 +120,7 @@ describe(BottomTabs, () => {
 
     expect(mockRelayEnvironment.mock.getAllOperations()).toHaveLength(1)
 
-    resolveUnreadConversationCountQuery(5)
+    resolveUnreadConversationCountQuery(5, 1)
 
     await act(async () => {
       await flushPromiseQueue()
@@ -93,6 +131,12 @@ describe(BottomTabs, () => {
       .find((button) => (button.props as ButtonProps).tab === "inbox")
 
     expect((inboxButton!.props as ButtonProps).badgeCount).toBe(5)
+
+    const homeButton = tree.root
+      .findAllByType(BottomTabsButton)
+      .find((button) => (button.props as ButtonProps).tab === "home")
+
+    expect((homeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
   })
 
   it(`sets the application icon badge count`, async () => {
@@ -103,7 +147,7 @@ describe(BottomTabs, () => {
     })
 
     expect(mockRelayEnvironment.mock.getAllOperations()).toHaveLength(1)
-    resolveUnreadConversationCountQuery(9)
+    resolveUnreadConversationCountQuery(9, 0)
 
     await act(async () => {
       await flushPromiseQueue()
@@ -114,7 +158,7 @@ describe(BottomTabs, () => {
     ).toHaveBeenCalledWith(9)
   })
 
-  it(`fetches the current unread conversation count once in a while`, async () => {
+  it(`fetches the current unread conversation / notifications count once in a while`, async () => {
     let tree: ReactTestRenderer | null = null
     act(() => {
       tree = renderWithWrappersLEGACY(<TestWrapper />)
@@ -126,7 +170,7 @@ describe(BottomTabs, () => {
       await flushPromiseQueue()
     })
 
-    resolveUnreadConversationCountQuery(1)
+    resolveUnreadConversationCountQuery(1, 1)
 
     const intervalCallback = (useInterval as jest.Mock).mock.calls[0][0]
 
@@ -143,7 +187,7 @@ describe(BottomTabs, () => {
 
     expect(mockRelayEnvironment.mock.getAllOperations()).toHaveLength(1)
 
-    resolveUnreadConversationCountQuery(3)
+    resolveUnreadConversationCountQuery(3, 1)
 
     await act(async () => {
       await flushPromiseQueue()
@@ -155,5 +199,13 @@ describe(BottomTabs, () => {
       .find((button) => (button.props as ButtonProps).tab === "inbox")
 
     expect((inboxButton!.props as ButtonProps).badgeCount).toBe(3)
+
+    // @ts-ignore
+    const homeButton = tree.root
+      .findAllByType(BottomTabsButton)
+      // @ts-ignore
+      .find((button) => (button.props as ButtonProps).tab === "home")
+
+    expect((homeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
   })
 })

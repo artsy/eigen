@@ -252,7 +252,9 @@ export const artsyAppMigrations: Migrations = {
     state.userPrefs.priceRange = "*-*"
   },
   [Versions.AddUnreadActivityPanelNotificationsCount]: (state) => {
-    state.bottomTabs.unreadActivityPanelNotificationsCount = 0
+    state.bottomTabs.sessionState = {
+      unreadActivityPanelNotificationsCount: 0,
+    }
   },
 }
 

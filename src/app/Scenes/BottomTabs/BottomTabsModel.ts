@@ -1,6 +1,6 @@
 import { captureException } from "@sentry/react-native"
+import { BottomTabsModelFetchAllNotificationsCountsQuery } from "__generated__/BottomTabsModelFetchAllNotificationsCountsQuery.graphql"
 import { BottomTabsModelFetchCurrentUnreadConversationCountQuery } from "__generated__/BottomTabsModelFetchCurrentUnreadConversationCountQuery.graphql"
-import { BottomTabsModelFetchUnreadActivityPanelNotificationsCountQuery } from "__generated__/BottomTabsModelFetchUnreadActivityPanelNotificationsCountQuery.graphql"
 import { createEnvironment } from "app/relay/createEnvironment"
 import {
   metaphysicsURLMiddleware,
@@ -22,7 +22,7 @@ export interface BottomTabsModel {
   unreadConversationCountChanged: Action<BottomTabsModel, number>
   fetchCurrentUnreadConversationCount: Thunk<BottomTabsModel>
   unreadActivityPanelNotificationsCountChanged: Action<BottomTabsModel, number>
-  fetchUnreadActivityPanelNotificationsCount: Thunk<BottomTabsModel>
+  fetchAllNotificationsCounts: Thunk<BottomTabsModel>
   setTabProps: Action<BottomTabsModel, { tab: BottomTabType; props: object | undefined }>
 }
 
@@ -78,27 +78,33 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
         unreadActivityPanelNotificationsCount
     }
   ),
-  fetchUnreadActivityPanelNotificationsCount: thunk(async () => {
+  fetchAllNotificationsCounts: thunk(async () => {
     try {
-      const result =
-        await fetchQuery<BottomTabsModelFetchUnreadActivityPanelNotificationsCountQuery>(
-          createEnvironment([
-            [persistedQueryMiddleware(), metaphysicsURLMiddleware(), simpleLoggerMiddleware()],
-          ]),
-          graphql`
-            query BottomTabsModelFetchUnreadActivityPanelNotificationsCountQuery {
-              me @principalField {
-                unreadNotificationsCount
-              }
+      const result = await fetchQuery<BottomTabsModelFetchAllNotificationsCountsQuery>(
+        createEnvironment([
+          [persistedQueryMiddleware(), metaphysicsURLMiddleware(), simpleLoggerMiddleware()],
+        ]),
+        graphql`
+          query BottomTabsModelFetchAllNotificationsCountsQuery {
+            me @principalField {
+              unreadConversationCount
+              unreadNotificationsCount
             }
-          `,
-          {},
-          {
-            fetchPolicy: "network-only",
           }
-        ).toPromise()
+        `,
+        {},
+        {
+          fetchPolicy: "network-only",
+        }
+      ).toPromise()
 
+      const conversationsCount = result?.me?.unreadConversationCount
       const notificationsCount = result?.me?.unreadNotificationsCount
+
+      if (conversationsCount != null) {
+        GlobalStore.actions.bottomTabs.unreadConversationCountChanged(conversationsCount)
+        GlobalStore.actions.native.setApplicationIconBadgeNumber(conversationsCount)
+      }
 
       if (notificationsCount != null) {
         GlobalStore.actions.bottomTabs.unreadActivityPanelNotificationsCountChanged(
@@ -108,7 +114,7 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
     } catch (e) {
       if (__DEV__) {
         console.warn(
-          "[DEV] Couldn't fetch unreadNotificationsCount.\n\nIf it's happening reliably for you, there's a problem and you should look into it."
+          "[DEV] Couldn't fetch unread counts.\n\nIf it's happening reliably for you, there's a problem and you should look into it."
         )
         console.log(e)
       } else {

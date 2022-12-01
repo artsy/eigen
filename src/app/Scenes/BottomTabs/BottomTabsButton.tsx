@@ -17,8 +17,8 @@ export const BottomTabsButton: React.FC<{
   tab: BottomTabType
   badgeCount?: number
   visualClue?: VisualClueName
-  displayBlueDot?: boolean
-}> = ({ tab, badgeCount = 0, visualClue, displayBlueDot }) => {
+  forceDisplayVisualClue?: boolean
+}> = ({ tab, badgeCount = 0, visualClue, forceDisplayVisualClue }) => {
   const selectedTab = useSelectedTab()
   const isActive = selectedTab === tab
   const timeout = useRef<ReturnType<typeof setTimeout>>()
@@ -107,7 +107,7 @@ export const BottomTabsButton: React.FC<{
             </View>
           </IconWrapper>
         )}
-        {(!!showVisualClue(visualClue) || !!displayBlueDot) && (
+        {(!!showVisualClue(visualClue) || !!forceDisplayVisualClue) && (
           <IconWrapper>
             <View style={{ width: ICON_WIDTH, height: ICON_HEIGHT }}>
               <View

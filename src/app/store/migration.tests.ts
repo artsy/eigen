@@ -168,6 +168,7 @@ describe("artsy app store migrations", () => {
     }
 
     __globalStoreTestUtils__?.reset()
+
     expect(migrate({ state: { version: 0 } })).toEqual(
       sanitize(__globalStoreTestUtils__?.getCurrentState())
     )
@@ -780,6 +781,6 @@ describe("App version Versions.AddUnreadActivityPanelNotificationsCount", () => 
       toVersion: migrationToTest,
     }) as any
 
-    expect(migratedState.bottomTabs.unreadActivityPanelNotificationsCount).toEqual(0)
+    expect(migratedState.bottomTabs.sessionState.unreadActivityPanelNotificationsCount).toEqual(0)
   })
 })
