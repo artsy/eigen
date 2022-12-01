@@ -22,10 +22,6 @@ export interface BidButtonProps {
   enableArtworkRedesign: boolean
 }
 
-interface IdentityVerificationRequiredMessageProps extends TextProps {
-  enableArtworkRedesign: boolean
-}
-
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const watchOnly = (sale) =>
   sale.isRegistrationClosed && !sale?.registrationStatus?.qualifiedForBidding
@@ -35,25 +31,28 @@ const getMyLotStanding = (artwork) =>
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const getHasBid = (myLotStanding) => !!(myLotStanding && myLotStanding.mostRecentBid)
 
-const IdentityVerificationRequiredMessage: React.FC<IdentityVerificationRequiredMessageProps> = ({
+const IdentityVerificationRequiredMessage: React.FC<TextProps> = ({
   onPress,
-  enableArtworkRedesign,
   ...remainderProps
-}) => (
-  <Text
-    variant={enableArtworkRedesign ? "xs" : "sm"}
-    mt="1"
-    color="black60"
-    pb="1"
-    textAlign="center"
-    {...remainderProps}
-  >
-    Identity verification required to bid.{" "}
-    <Text style={{ textDecorationLine: "underline" }} onPress={onPress}>
-      FAQ
+}) => {
+  const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
+
+  return (
+    <Text
+      variant={enableArtworkRedesign ? "xs" : "sm"}
+      mt="1"
+      color="black60"
+      pb="1"
+      textAlign="center"
+      {...remainderProps}
+    >
+      Identity verification required to bid.{" "}
+      <Text style={{ textDecorationLine: "underline" }} onPress={onPress}>
+        FAQ
+      </Text>
     </Text>
-  </Text>
-)
+  )
+}
 
 @track()
 export class BidButton extends React.Component<BidButtonProps> {
@@ -136,7 +135,6 @@ export class BidButton extends React.Component<BidButtonProps> {
             </Button>
             {needsIdentityVerification && (
               <IdentityVerificationRequiredMessage
-                enableArtworkRedesign={this.props.enableArtworkRedesign}
                 onPress={() => this.redirectToIdentityVerificationFAQ()}
               />
             )}
@@ -149,7 +147,6 @@ export class BidButton extends React.Component<BidButtonProps> {
             </Button>
             {needsIdentityVerification && !this.props.enableArtworkRedesign && (
               <IdentityVerificationRequiredMessage
-                enableArtworkRedesign={this.props.enableArtworkRedesign}
                 onPress={() => this.redirectToIdentityVerificationFAQ()}
               />
             )}
@@ -237,7 +234,6 @@ export class BidButton extends React.Component<BidButtonProps> {
           </Button>
           {needsIdentityVerification && !this.props.enableArtworkRedesign && (
             <IdentityVerificationRequiredMessage
-              enableArtworkRedesign={this.props.enableArtworkRedesign}
               onPress={() => this.redirectToIdentityVerificationFAQ()}
             />
           )}
@@ -264,7 +260,6 @@ export class BidButton extends React.Component<BidButtonProps> {
             Register to bid
           </Button>
           <IdentityVerificationRequiredMessage
-            enableArtworkRedesign={this.props.enableArtworkRedesign}
             onPress={() => this.redirectToIdentityVerificationFAQ()}
           />
         </>
