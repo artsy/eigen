@@ -11,7 +11,9 @@ Sometimes we need to test a release build on the emulator or our local device, w
 - Run `yarn pod-install`, so that the jsbundle is added to your build.
 - Open the project in Xcode using `open ios/Artsy.xcworkspace`.
 - Select the `Artsy (Store)` scheme from the top bar.
-- Press play, and wait for the app to start on the simulator.
+- Go to all targets and enable the `Automatically manage signing` checkbox, and select the `Art.sy Inc.` team. You can do this by tapping on the top item `Artsy` on the navigator left sidebar, then you will see the targets exactly to the right of that sidebar. Go through all except `ArtsyTests`, click them, and on the right you go to `Signing & Capabilities` tab, and you will see the checkbox.
+- Do **not** commit these changes. Just reset them when you're done.
+- Press play, and wait for the app to start on your simulator or your device.
 
 ## Android
 

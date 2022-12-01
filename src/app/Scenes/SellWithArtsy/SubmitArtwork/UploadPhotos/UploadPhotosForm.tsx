@@ -1,3 +1,5 @@
+import { ActionType, OwnerType } from "@artsy/cohesion"
+import { UploadSizeLimitExceeded } from "@artsy/cohesion/dist/Schema/Events/UploadSizeLimitExceeded"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { captureMessage } from "@sentry/react-native"
 import { storeLocalPhotos } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionImageUtil"
@@ -11,9 +13,14 @@ import { useFormikContext } from "formik"
 import { Button, Flex, Spacer, Text } from "palette"
 import { PhotoRow } from "palette/elements/PhotoRow/PhotoRow"
 import React, { useEffect, useState } from "react"
+import { useTracking } from "react-tracking"
 import { removeAssetFromSubmission } from "../../mutations/removeAssetFromConsignmentSubmissionMutation"
 import { addPhotoToConsignment } from "./utils/addPhotoToConsignment"
-import { calculateSinglePhotoSize, isSizeLimitExceeded } from "./utils/calculatePhotoSize"
+import {
+  calculateSinglePhotoSize,
+  getPhotosSize,
+  isSizeLimitExceeded,
+} from "./utils/calculatePhotoSize"
 
 export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
   isAnyPhotoLoading,
@@ -22,6 +29,7 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
   const { submission } = GlobalStore.useAppState((state) => state.artworkSubmission)
   const { showActionSheetWithOptions } = useActionSheet()
   const [progress, setProgress] = useState<Record<string, number | undefined>>({})
+  const { trackEvent } = useTracking()
 
   useEffect(() => {
     // add initial photos when a My Collection artwork gets submitted
@@ -51,17 +59,19 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
         })
         if (uploadedPhoto?.id) {
           const sizedPhoto = calculateSinglePhotoSize(uploadedPhoto)
-          const isTotalSizeLimitExceeded = isSizeLimitExceeded([
-            ...values.photos,
-            ...processedPhotos,
-            sizedPhoto,
-          ])
+
+          const availablePhotos = [...values.photos, ...processedPhotos, sizedPhoto]
+          const isTotalSizeLimitExceeded = isSizeLimitExceeded(availablePhotos)
           // when total size limit exceeded, set photo's err state and stop the upload loop
           if (isTotalSizeLimitExceeded) {
             sizedPhoto.error = true
             sizedPhoto.errorMessage =
               "File exceeds the total size limit. Please delete photos or upload smaller file sizes."
             processedPhotos.push(sizedPhoto)
+
+            trackEvent(
+              tracks.hasExceededUploadSize(getPhotosSize(availablePhotos), availablePhotos.length)
+            )
             break
           }
           processedPhotos.push(sizedPhoto)
@@ -171,4 +181,16 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
       ))}
     </>
   )
+}
+
+export const tracks = {
+  hasExceededUploadSize: (
+    uploadSizeInBytes: number,
+    numberOfFiles: number
+  ): UploadSizeLimitExceeded => ({
+    action: ActionType.uploadSizeLimitExceeded,
+    context_owner_type: OwnerType.sell,
+    upload_size_in_kb: Math.floor(Math.log2(uploadSizeInBytes) / 10),
+    number_of_files: numberOfFiles,
+  }),
 }

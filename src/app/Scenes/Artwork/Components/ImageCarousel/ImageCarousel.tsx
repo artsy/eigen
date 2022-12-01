@@ -1,13 +1,15 @@
 import { captureMessage } from "@sentry/react-native"
 import { ImageCarousel_images$data } from "__generated__/ImageCarousel_images.graphql"
 import { createGeminiUrl } from "app/Components/OpaqueImageView/createGeminiUrl"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { isPad } from "app/utils/hardware"
 import { Flex } from "palette"
 import { useMemo } from "react"
-import { PixelRatio } from "react-native"
+import { PixelRatio, Platform } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 import { ImageCarouselFullScreen } from "./FullScreen/ImageCarouselFullScreen"
+import { ImageCarouselFullScreenAndroid } from "./FullScreen/ImageCarouselFullScreenAndroid"
 import { fitInside } from "./geometry"
 import {
   ImageCarouselContext,
@@ -24,6 +26,7 @@ interface MappedImageDescriptor extends Pick<ImageDescriptor, "deepZoom"> {
   width: number
   height: number
   url: string
+  largeImageURL: string | null
 }
 
 export interface ImageCarouselProps {
@@ -77,6 +80,7 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
                   height: height * PixelRatio.get(),
                 }),
           deepZoom: image.deepZoom,
+          largeImageURL: image.largeImageURL ?? image.url ?? null,
         }
       })
       .filter((mappedImage): mappedImage is MappedImageDescriptor => Boolean(mappedImage))
@@ -108,16 +112,31 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
       <Flex>
         <ImageCarouselEmbedded cardHeight={cardHeight} disableFullScreen={disableDeepZoom} />
         {images.length > 1 && <PaginationIndicator indicatorType={props.paginationIndicatorType} />}
-        {context.fullScreenState.current !== "none" && <ImageCarouselFullScreen />}
+        {context.fullScreenState.current !== "none" && <ImagesCarousel />}
       </Flex>
     </ImageCarouselContext.Provider>
   )
+}
+
+export const ImagesCarousel = () => {
+  const enableAndroidImagesGallery = useFeatureFlag("AREnableAndroidImagesGallery")
+
+  if (Platform.OS === "ios") {
+    return <ImageCarouselFullScreen />
+  }
+
+  if (enableAndroidImagesGallery) {
+    return <ImageCarouselFullScreenAndroid />
+  }
+
+  return null
 }
 
 export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarousel, {
   images: graphql`
     fragment ImageCarousel_images on Image @relay(plural: true) {
       url: imageURL
+      largeImageURL: url(version: "larger")
       width
       height
       imageVersions

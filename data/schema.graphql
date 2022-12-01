@@ -6537,6 +6537,9 @@ type Conversation implements Node {
   from: ConversationInitiator!
   fromLastViewedMessageID: String
 
+  # The user who initiated the conversation
+  fromUser: User
+
   # A globally unique ID.
   id: ID!
   initialMessage: String!
@@ -11127,6 +11130,7 @@ input MyCollectionCreateArtworkInput {
   # The given location of the user as structured data
   collectorLocation: EditableLocation
   costCurrencyCode: String
+  costMajor: Int
   costMinor: Int
   date: String
   depth: String
@@ -11138,6 +11142,8 @@ input MyCollectionCreateArtworkInput {
   isEdition: Boolean
   medium: String
   metric: String
+
+  # @deprecated use the cost major and cost minor fields instead
   pricePaidCents: Int
   pricePaidCurrency: String
   provenance: String
@@ -11208,6 +11214,7 @@ input MyCollectionUpdateArtworkInput {
   # The given location of the user as structured data
   collectorLocation: EditableLocation
   costCurrencyCode: String
+  costMajor: Int
   costMinor: Int
   date: String
   depth: String
@@ -11283,6 +11290,7 @@ type Notification implements Node {
   isUnread: Boolean!
   message: String!
   notificationType: NotificationTypesEnum!
+  objectsCount: Int!
   publishedAt(
     # pass `RELATIVE` to display the human-friendly date (e.g. "Today", "Yesterday", "5 days ago")
     format: String

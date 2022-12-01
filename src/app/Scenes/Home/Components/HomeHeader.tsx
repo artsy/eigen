@@ -17,8 +17,7 @@ export const HomeHeader: React.FC<HomeHeaderProps> = ({ me }) => {
         <ArtsyLogoIcon scale={0.75} />
         <ActivityIndicator hasNotifications={hasNotifications} />
       </Flex>
-      <Spacer mb="15px" />
-      <Spacer mb="2" />
+      <Spacer mb="1" />
     </Box>
   )
 }

@@ -16,7 +16,7 @@ type LargeArtworkRailProps = Omit<ArtworkRailProps, "artworks" | "size"> & {
   artworks: LargeArtworkRail_artworks$key
 }
 
-const IMAGE_WIDTH = 295
+export const LARGE_RAIL_IMAGE_WIDTH = 295
 
 export const LargeArtworkRail: React.FC<LargeArtworkRailProps> = ({ artworks, ...restProps }) => {
   const artworksData = useFragment(largeArtworksFragment, artworks)
@@ -37,7 +37,10 @@ export const LargeArtworkRailPlaceholder: React.FC = () => (
   <Join separator={<Spacer width={15} />}>
     {times(3 + useMemoizedRandom() * 10).map((index) => (
       <Flex key={index}>
-        <PlaceholderBox height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT.large} width={IMAGE_WIDTH} />
+        <PlaceholderBox
+          height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT.large}
+          width={LARGE_RAIL_IMAGE_WIDTH}
+        />
         <Spacer mb={2} />
         <PlaceholderText width={295} />
         <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />

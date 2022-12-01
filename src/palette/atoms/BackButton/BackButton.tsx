@@ -18,7 +18,14 @@ export const BackButton: React.FC<BackButtonProps> = ({
   hitSlop,
 }) => {
   return (
-    <TouchableOpacity hitSlop={hitSlop} style={containerStyle} onPress={onPress}>
+    <TouchableOpacity
+      hitSlop={hitSlop}
+      style={containerStyle}
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={showX ? "Close" : "Go back"}
+      accessibilityHint={showX ? "Dismiss this screen" : "Go back to the previous screen"}
+    >
       {showX ? (
         <CloseIcon fill={color} width={26} height={26} />
       ) : (
@@ -30,7 +37,12 @@ export const BackButton: React.FC<BackButtonProps> = ({
 
 export const BackButtonWithBackground: React.FC<BackButtonProps> = ({ onPress, showX = false }) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={showX ? "Close" : "Go back"}
+      accessibilityHint={showX ? "Dismiss this screen" : "Go back to the previous screen"}
+    >
       <Flex
         backgroundColor="white100"
         width={40}

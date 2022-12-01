@@ -7,6 +7,7 @@ import { ArtworkBelowTheFoldQuery } from "__generated__/ArtworkBelowTheFoldQuery
 import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRecentlyViewedQuery.graphql"
 import { AuctionTimerState, currentTimerState } from "app/Components/Bidding/Components/Timer"
 import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
+import { BackButton } from "app/navigation/BackButton"
 import { navigationEvents } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
@@ -24,6 +25,7 @@ import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } fro
 import { TrackingProp } from "react-tracking"
 import usePrevious from "react-use/lib/usePrevious"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { useScreenDimensions } from "shared/hooks"
 import { ResponsiveValue } from "styled-system"
 import { OfferSubmittedModal } from "../Inbox/Components/Conversations/OfferSubmittedModal"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
@@ -36,6 +38,7 @@ import { FaqAndSpecialistSectionFragmentContainer as FaqAndSpecialistSection } f
 import { ArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/ArtworkHeader"
 import { ArtworkHistoryFragmentContainer as ArtworkHistory } from "./Components/ArtworkHistory"
 import { ArtworkLotDetails } from "./Components/ArtworkLotDetails/ArtworkLotDetails"
+import { ArtworkScreenHeaderFragmentContainer } from "./Components/ArtworkScreenHeader"
 import { ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
 import { BelowTheFoldPlaceholder } from "./Components/BelowTheFoldPlaceholder"
 import { CommercialInformationFragmentContainer as CommercialInformation } from "./Components/CommercialInformation"
@@ -266,6 +269,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
     }
 
     if (
+      !enableArtworkRedesign &&
       !isEmpty(artworkAboveTheFold?.artists) &&
       !artworkAboveTheFold?.isSold &&
       !isInClosedAuction
@@ -411,6 +415,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   )
 
   const websocketEnabled = !!artworkBelowTheFold?.sale?.extendedBiddingIntervalMinutes
+  const topInset = useScreenDimensions().safeAreaInsets.top
 
   return (
     <ProvideScreenTracking
@@ -439,22 +444,33 @@ export const Artwork: React.FC<ArtworkProps> = ({
             <AboveTheFoldPlaceholder />
           </ProvidePlaceholderContext>
         ) : (
-          <FlatList<ArtworkPageSection>
-            keyboardShouldPersistTaps="handled"
-            data={sectionsData()}
-            ItemSeparatorComponent={() => (
-              <Box mx={2}>
-                <Separator />
-              </Box>
+          <>
+            {enableArtworkRedesign ? (
+              <ArtworkScreenHeaderFragmentContainer artwork={artworkAboveTheFold!} />
+            ) : (
+              <BackButton style={{ zIndex: 5, marginBottom: topInset + 3 }} />
             )}
-            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-            contentContainerStyle={{ paddingBottom: 40 }}
-            renderItem={({ item }) => (
-              <Box my={item.verticalMargin ?? 3} px={item.excludePadding ? 0 : 2}>
-                {item.element}
-              </Box>
-            )}
-          />
+            <FlatList<ArtworkPageSection>
+              keyboardShouldPersistTaps="handled"
+              data={sectionsData()}
+              ItemSeparatorComponent={() => (
+                <Box mx={2}>
+                  <Separator />
+                </Box>
+              )}
+              refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+              contentContainerStyle={{ paddingBottom: 40 }}
+              renderItem={({ item, index }) => (
+                <Box
+                  mt={index === 0 && enableArtworkRedesign ? 0 : item.verticalMargin ?? 3}
+                  mb={item.verticalMargin ?? 3}
+                  px={item.excludePadding ? 0 : 2}
+                >
+                  {item.element}
+                </Box>
+              )}
+            />
+          </>
         )}
         <QAInfo />
         <OfferSubmittedModal />
@@ -476,6 +492,7 @@ export const ArtworkContainer = createRefetchContainer(
   {
     artworkAboveTheFold: graphql`
       fragment Artwork_artworkAboveTheFold on Artwork {
+        ...ArtworkScreenHeader_artwork
         ...ArtworkHeader_artwork
         ...CommercialInformation_artwork
         ...FaqAndSpecialistSection_artwork
