@@ -1,3 +1,4 @@
+import { BottomTabBarProps } from "@react-navigation/bottom-tabs"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { ModalStack } from "app/navigation/ModalStack"
 import { createEnvironment } from "app/relay/createEnvironment"
@@ -43,12 +44,12 @@ function resolveUnreadConversationCountQuery(unreadConversationCount: number) {
   )
 }
 
-const TestWrapper: React.FC<{}> = ({}) => {
+const TestWrapper: React.FC<Partial<BottomTabBarProps>> = (props) => {
   return (
     <GlobalStoreProvider>
       <ModalStack>
         {/* @ts-ignore */}
-        <BottomTabs />
+        <BottomTabs {...props} />
       </ModalStack>
     </GlobalStoreProvider>
   )
@@ -156,5 +157,35 @@ describe(BottomTabs, () => {
       .find((button) => (button.props as ButtonProps).tab === "inbox")
 
     expect((inboxButton!.props as ButtonProps).badgeCount).toBe(3)
+  })
+
+  it("should not be rendered if the `shouldHideBottomTab` param is specified", async () => {
+    const state: BottomTabBarProps["state"] = {
+      history: [
+        {
+          key: "route-key",
+          type: "route",
+        },
+      ],
+      index: 0,
+      key: "tab-key",
+      routeNames: ["route-name"],
+      routes: [
+        {
+          key: "route-key",
+          name: "route",
+          params: {
+            shouldHideBottomTab: true,
+          },
+        },
+      ],
+      stale: false,
+      type: "tab",
+    }
+
+    const tree = renderWithWrappersLEGACY(<TestWrapper state={state} />)
+    const buttons = tree.root.findAllByType(BottomTabsButton)
+
+    expect(buttons).toHaveLength(0)
   })
 })
