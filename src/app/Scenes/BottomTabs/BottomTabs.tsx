@@ -30,7 +30,7 @@ export const BottomTabs: React.FC<BottomTabBarProps> = (props) => {
   const { bottom } = useScreenDimensions().safeAreaInsets
 
   if ((focusedRoute?.params as any)?.shouldHideBottomTab) {
-    return <></>
+    return null
   }
 
   return (
