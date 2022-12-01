@@ -91,7 +91,7 @@
   "dependenciesComments": {
     "@react-native-community/slider": "Needed by storybook, see install script here: https://gist.github.com/dannyhw/9b84973dcc6ff4fa2e86e32d571d294e",
     "react-native-vision-camera": "Needed for reverse image functionality, more context here: https://github.com/artsy/eigen/issues/7159",
-    "react-native": "Try running npx rnx-align-deps --requirements react-native@0.66.5 when upgrading to a version, here 0.66.5"
+    "react-native": "Try running `npx @rnx-kit/align-deps --requirements react-native@0.66.5` when upgrading to a version, here 0.66.5"
   },
   "dependencies": {
     "@artsy/cohesion": "4.81.0",
