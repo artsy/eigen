@@ -1,10 +1,3 @@
-//
-//  LiveAuctionReportProblemButton.swift
-//  Artsy
-//
-//  Created by Brian Beckerle on 10/31/22.
-//
-
 import Foundation
 
 @objc protocol LiveAuctionReportProblemButtonDelegate {
@@ -14,7 +7,6 @@ import Foundation
 class LiveAuctionReportProblemButton: ARFlatButton {
     var viewModel: LiveAuctionBiddingViewModelType
 
-    // TODO: can we avoid this being an IBOutlet, that is funky
     weak var delegate: LiveAuctionReportProblemButtonDelegate?
 
     init(viewModel: LiveAuctionBiddingViewModelType) {
@@ -61,10 +53,10 @@ class LiveAuctionReportProblemButton: ARFlatButton {
             shouldShowButton = false
             break
         }
-        setupUI("Report an Issue", background: white, border: .black, textColor: .black, hideButton: !shouldShowButton)
+        setupUI("Report an Issue", background: .white, border: .black, textColor: .black, hideButton: !shouldShowButton)
     }
 
-    fileprivate func setupUI(_ title: String, background: UIColor = .black, border: UIColor? = nil, textColor: UIColor = UIColor.white, hideButton: Bool = false) {
+    fileprivate func setupUI(_ title: String, background: UIColor = .black, border: UIColor? = nil, textColor: UIColor = .white, hideButton: Bool = false) {
         [UIControl.State.normal, .disabled].forEach { state in
 
             setAttributedTitle(NSAttributedString(string: title, attributes: [NSAttributedString.Key.foregroundColor: textColor]), for: state)
@@ -77,11 +69,3 @@ class LiveAuctionReportProblemButton: ARFlatButton {
         self.isHidden = hideButton
     }
 }
-
-private let white = UIColor.white
-private let purple = UIColor.artsyPurpleRegular()!
-private let green = UIColor.artsyGreenRegular()!
-private let red = UIColor.artsyRedRegular()!
-private let grey = UIColor.artsyGrayRegular()!
-private let greyMedium = UIColor.artsyGrayMedium()!
-private let passedGrey = UIColor(white: 0, alpha: 0.5)

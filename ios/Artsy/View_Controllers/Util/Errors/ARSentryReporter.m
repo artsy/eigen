@@ -1,10 +1,3 @@
-//
-//  ARSentryReporter.m
-//  Artsy
-//
-//  Created by Brian Beckerle on 11/1/22.
-//
-
 #import "ARSentryReporter.h"
 #import <Sentry/Sentry.h>
 

@@ -1,10 +1,3 @@
-//
-//  ARSentryReporter.h
-//  Artsy
-//
-//  Created by Brian Beckerle on 11/1/22.
-//
-
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
