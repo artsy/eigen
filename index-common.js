@@ -14,6 +14,7 @@ if (__DEV__) {
 }
 
 require("./src/app/errorReporting/sentrySetup").setupSentry({ environment: "bootstrap" })
+import "react-native-url-polyfill/auto"
 
 if (metaflags.startStorybook) {
   global.__STORYBOOK__ = true
