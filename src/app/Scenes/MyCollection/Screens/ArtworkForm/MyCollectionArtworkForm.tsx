@@ -325,11 +325,6 @@ export const updateArtwork = async (
   } = values
   const externalImageUrls = await uploadPhotos(photos)
 
-  let pricePaidCents
-  if (pricePaidDollars && !isNaN(Number(pricePaidDollars))) {
-    pricePaidCents = Number(pricePaidDollars) * 100
-  }
-
   if (values.attributionClass !== "LIMITED_EDITION") {
     others.editionNumber = ""
     others.editionSize = ""
@@ -340,7 +335,7 @@ export const updateArtwork = async (
       artistIds: artistSearchResult?.internalID ? [artistSearchResult?.internalID] : undefined,
       artists: artistDisplayName ? [{ displayName: artistDisplayName }] : undefined,
       externalImageUrls,
-      pricePaidCents,
+      costMajor: pricePaidDollars,
       pricePaidCurrency,
       ...cleanArtworkPayload(others),
     })
@@ -359,7 +354,7 @@ export const updateArtwork = async (
       artistIds: artistSearchResult?.internalID ? [artistSearchResult?.internalID] : [],
       artworkId: props.artwork.internalID,
       externalImageUrls,
-      pricePaidCents: pricePaidCents ?? null,
+      costMajor: pricePaidDollars,
       pricePaidCurrency,
       ...cleanArtworkPayload(others),
       ...explicitlyClearedFields(others, dirtyFormCheckValues),
