@@ -2,6 +2,7 @@ import { ActionType, AuthService, CreatedAccount } from "@artsy/cohesion"
 import { appleAuth } from "@invertase/react-native-apple-authentication"
 import CookieManager from "@react-native-cookies/cookies"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
+import { captureMessage } from "@sentry/react-native"
 import { OAuthProvider } from "app/auth/types"
 import * as RelayCache from "app/relay/RelayCache"
 import { isArtsyEmail } from "app/utils/general"
@@ -32,18 +33,22 @@ const showError = (
   provider: "facebook" | "apple" | "google"
 ) => {
   const providerName = capitalize(provider)
+
   if (res.error_description) {
     if (res.error_description.includes("no account linked to oauth token")) {
-      reject(
-        new AuthError(
-          `Your ${providerName} account is not linked to any Artsy account. ` +
-            "Please log in using your email and password if you have an Artsy account, " +
-            `or sign up on Artsy using ${providerName}. `
-        )
-      )
+      const message =
+        `Your ${providerName} account is not linked to any Artsy account. ` +
+        `If you already have an Artsy account and you want to log in to it via ${providerName},` +
+        `you will first need to sign up with ${providerName}. ` +
+        `You will then have the option to link the two accounts.
+        `
+      captureMessage("AUTH_FAILURE: " + message)
+      reject(new AuthError(message))
       return
     } else {
-      reject(new AuthError("Login attempt failed"))
+      const message = "Login attempt failed"
+      captureMessage("AUTH_FAILURE: " + message)
+      reject(new AuthError(message))
       return
     }
   }
@@ -84,6 +89,8 @@ const handleSignUpError = ({
     message = "Failed to sign up"
   }
 
+  captureMessage("AUTH_SIGN_UP_FAILURE: " + message)
+
   return {
     message,
     existingProviders,
@@ -119,7 +126,7 @@ type OAuthParams = EmailOAuthParams | FacebookOAuthParams | GoogleOAuthParams | 
 
 type OnboardingState = "none" | "incomplete" | "complete"
 
-interface AuthPromiseResolveType {
+export interface AuthPromiseResolveType {
   success: boolean
 }
 export interface AuthPromiseRejectType {
@@ -138,6 +145,9 @@ export interface AuthPromiseRejectType {
 
 export interface AuthModel {
   // State
+  sessionState: {
+    isLoading: boolean
+  }
   userID: string | null
   userAccessToken: string | null
   userAccessTokenExpiresIn: string | null
@@ -213,6 +223,9 @@ const clientSecret = __DEV__
   : Config.ARTSY_PROD_API_CLIENT_SECRET
 
 export const getAuthModel = (): AuthModel => ({
+  sessionState: {
+    isLoading: false,
+  },
   userID: null,
   userAccessToken: null,
   userAccessTokenExpiresIn: null,
@@ -365,7 +378,10 @@ export const getAuthModel = (): AuthModel => ({
       }
 
       if (user.id !== store.getState().previousSessionUserID) {
-        store.getStoreActions().search.clearRecentSearches()
+        const storeActions = store.getStoreActions()
+
+        storeActions.search.clearRecentSearches()
+        storeActions.recentPriceRanges.clearAllPriceRanges()
       }
 
       postEventToProviders(tracks.loggedIn(oauthProvider))
@@ -500,6 +516,7 @@ export const getAuthModel = (): AuthModel => ({
         }
         const accessToken = !isCancelled && (await AccessToken.getCurrentAccessToken())
         if (!accessToken) {
+          reject(new AuthError("Could not log in"))
           return
         }
 
@@ -719,11 +736,19 @@ export const getAuthModel = (): AuthModel => ({
       // because apple returns email only on the FIRST auth attempt, so we run sign up and sign in one by one
       let signInOrUp: "signIn" | "signUp" = "signUp"
 
-      const userInfo = await appleAuth.performRequest({
-        requestedOperation: appleAuth.Operation.LOGIN,
-        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-      })
+      const userInfo = await appleAuth
+        .performRequest({
+          requestedOperation: appleAuth.Operation.LOGIN,
+          requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+        })
+        .catch(() => {
+          // Use canceled apple auth
+          actions.setState({ sessionState: { isLoading: false } })
+        })
 
+      if (!userInfo) {
+        return
+      }
       const idToken = userInfo.identityToken
       if (!idToken) {
         reject(new AuthError("Failed to authenticate using apple sign in"))
@@ -821,8 +846,11 @@ export const getAuthModel = (): AuthModel => ({
   signOut: thunk(async () => {
     const signOutGoogle = async () => {
       try {
-        await GoogleSignin.revokeAccess()
-        await GoogleSignin.signOut()
+        const isSignedIn = await GoogleSignin.isSignedIn()
+        if (isSignedIn) {
+          await GoogleSignin.revokeAccess()
+          await GoogleSignin.signOut()
+        }
       } catch (error) {
         console.log("Failed to signout from Google")
         console.error(error)

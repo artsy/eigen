@@ -7,7 +7,7 @@ import { GlobalState, useGlobalState } from "../../../../utils/useGlobalState"
 
 export type ImageDescriptor = Pick<
   ImageCarousel_images$data[number],
-  "deepZoom" | "height" | "width" | "url"
+  "deepZoom" | "height" | "width" | "url" | "largeImageURL"
 >
 
 export type ImageCarouselAction =

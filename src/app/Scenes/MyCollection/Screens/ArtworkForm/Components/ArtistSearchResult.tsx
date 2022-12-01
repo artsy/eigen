@@ -6,7 +6,11 @@ export const ArtistSearchResult: React.FC<{
 }> = ({ result }) => {
   return (
     <Flex flexDirection="row" alignItems="center">
-      <Avatar src={result.imageUrl || undefined} size="xs" />
+      <Avatar
+        src={result.imageUrl || undefined}
+        initials={result.initials || undefined}
+        size="xs"
+      />
       <Spacer ml="1" />
       <Flex flex={1} flexDirection="column" justifyContent="center">
         <Text variant="sm-display" ellipsizeMode="tail" numberOfLines={1}>

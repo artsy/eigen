@@ -14,11 +14,12 @@ import {
   SectionListItem,
 } from "./Components/OrderDetails"
 import { OrderDetailsHeaderFragmentContainer } from "./Components/OrderDetailsHeader"
-import { CreditCardSummaryItemFragmentContainer } from "./Components/OrderDetailsPayment"
+import { PaymentMethodSummaryItemFragmentContainer } from "./Components/OrderDetailsPayment"
 import { ShipsToSectionFragmentContainer } from "./Components/ShipsToSection"
 import { SoldBySectionFragmentContainer } from "./Components/SoldBySection"
 import { SummarySectionFragmentContainer } from "./Components/SummarySection"
 import { TrackOrderSectionFragmentContainer } from "./Components/TrackOrderSection"
+import { WirePaymentSectionFragmentContainer } from "./Components/WirePaymentSection"
 
 jest.unmock("react-relay")
 
@@ -67,10 +68,11 @@ describe(OrderDetailsQueryRender, () => {
     expect(tree.findByType(OrderDetailsHeaderFragmentContainer)).toBeTruthy()
     expect(tree.findByType(ArtworkInfoSectionFragmentContainer)).toBeTruthy()
     expect(tree.findByType(SummarySectionFragmentContainer)).toBeTruthy()
-    expect(tree.findByType(CreditCardSummaryItemFragmentContainer)).toBeTruthy()
+    expect(tree.findByType(PaymentMethodSummaryItemFragmentContainer)).toBeTruthy()
     expect(tree.findByType(TrackOrderSectionFragmentContainer)).toBeTruthy()
     expect(tree.findByType(ShipsToSectionFragmentContainer)).toBeTruthy()
     expect(tree.findByType(SoldBySectionFragmentContainer)).toBeTruthy()
+    expect(tree.findAllByType(WirePaymentSectionFragmentContainer)).toHaveLength(0)
   })
 
   it("not render ShipsToSection when CommercePickup", () => {
@@ -125,5 +127,19 @@ describe(OrderDetailsQueryRender, () => {
       <OrderDetailsQueryRender orderID="21856921-fa90-4a36-a17e-dd52870952d2" />
     ).root
     expect(tree.findAllByType(OrderDetailsPlaceholder)).toHaveLength(1)
+  })
+
+  it("renders WirePaymentSection when payment method is wire transfer and order in processing approval state", () => {
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      CommerceOrder: () => ({
+        ...order,
+        code: "111111111",
+        paymentMethod: "WIRE_TRANSFER",
+        state: "PROCESSING_APPROVAL",
+      }),
+    })
+
+    expect(tree.findByType(WirePaymentSectionFragmentContainer)).toBeTruthy()
   })
 })

@@ -1,5 +1,9 @@
 This update includes a number of improvements and bug fixes including:
 
-- Fixed issue preventing some users from logging in via Facebook or Google accounts
+- Ability to enter a recovery code for two factor authentication
+- Exploring the benefits of My Collection through new descriptions in Home
+- Ability to upload artworks to My Collection by any artist, including those not on Artsy
+- Updated collector profile format
+- Fixing a bug which stopped the rarity of artworks in My Collection being shown
 
 Have feedback? Email us at support@artsy.net

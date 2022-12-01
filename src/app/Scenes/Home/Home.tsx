@@ -44,12 +44,13 @@ import { ActivityIndicator } from "./Components/ActivityIndicator"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { ArtworkRecommendationsRail } from "./Components/ArtworkRecommendationsRail"
 import { ContentCards } from "./Components/ContentCards"
+import { HomeFeedOnboardingRailFragmentContainer } from "./Components/HomeFeedOnboardingRail"
 import { HomeHeader } from "./Components/HomeHeader"
 import { NewWorksForYouRail } from "./Components/NewWorksForYouRail"
 import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
 import { RailScrollRef } from "./Components/types"
 
-const MODULE_SEPARATOR_HEIGHT = 6
+const MODULE_SEPARATOR_HEIGHT = 4
 
 interface HomeModule {
   title: string
@@ -98,6 +99,7 @@ const Home = (props: Props) => {
   } = props
 
   const enableArtworkRecommendations = useFeatureFlag("AREnableHomeScreenArtworkRecommendations")
+  const enableMyCollectionHFOnboarding = useFeatureFlag("AREnableMyCollectionHFOnboarding")
 
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
   let modules: HomeModule[] = compact([
@@ -106,7 +108,7 @@ const Home = (props: Props) => {
       title: "New Works for You",
       type: "newWorksForYou",
       data: newWorksForYou,
-      prefetchUrl: "/new-works-for-you",
+      prefetchUrl: "/new-for-you",
     },
     {
       title: "",
@@ -143,6 +145,12 @@ const Home = (props: Props) => {
       hidden: !articlesConnection,
       prefetchUrl: "/articles",
       prefetchVariables: articlesQueryVariables,
+    },
+    {
+      title: "Do More on Artsy",
+      type: "homeFeedOnboarding",
+      data: homePageBelow?.onboardingModule,
+      hidden: !enableMyCollectionHFOnboarding || !homePageBelow?.onboardingModule,
     },
     {
       title: "Recommended Artists",
@@ -216,6 +224,14 @@ const Home = (props: Props) => {
             }
 
             switch (item.type) {
+              case "homeFeedOnboarding":
+                return (
+                  <HomeFeedOnboardingRailFragmentContainer
+                    title={item.title}
+                    onboardingModule={item.data}
+                    mb={MODULE_SEPARATOR_HEIGHT}
+                  />
+                )
               case "contentCards":
                 return <ContentCards mb={MODULE_SEPARATOR_HEIGHT} />
               case "articles":
@@ -409,6 +425,9 @@ export const HomeFragmentContainer = createRefetchContainer(
         }
         marketingCollectionsModule {
           ...CollectionsRail_collectionsModule
+        }
+        onboardingModule @optionalField {
+          ...HomeFeedOnboardingRail_onboardingModule
         }
       }
     `,

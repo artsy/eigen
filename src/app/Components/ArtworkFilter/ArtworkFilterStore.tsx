@@ -195,8 +195,12 @@ export const DEFAULT_FILTERS: FilterArray = [
   { paramName: FilterParamName.locationCities, paramValue: [], displayText: "All" },
   { paramName: FilterParamName.colors, displayText: "All" },
   { paramName: FilterParamName.timePeriod, paramValue: [], displayText: "All" },
-  { paramName: FilterParamName.waysToBuyBuy, paramValue: false, displayText: "Buy Now" },
-  { paramName: FilterParamName.waysToBuyInquire, paramValue: false, displayText: "Inquire" },
+  { paramName: FilterParamName.waysToBuyPurchase, paramValue: false, displayText: "Purchase" },
+  {
+    paramName: FilterParamName.waysToBuyContactGallery,
+    paramValue: false,
+    displayText: "Contact Gallery",
+  },
   { paramName: FilterParamName.waysToBuyMakeOffer, paramValue: false, displayText: "Make Offer" },
   { paramName: FilterParamName.waysToBuyBid, paramValue: false, displayText: "Bid" },
   {

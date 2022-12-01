@@ -73,6 +73,10 @@ interface State {
   height?: number
 }
 
+/**
+ * @deprecated
+ * Use `OpaqueImageView` from palette instead.
+ */
 export default class OpaqueImageView extends React.Component<Props, State> {
   static defaultProps: Props = {
     placeholderBackgroundColor: "#E7E7E7", // this is black10. Change it to that when this component becomes a function component.

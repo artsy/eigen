@@ -1274,7 +1274,11 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     # Get only articles with 'standard', 'feature', 'series' or 'video' layouts.
     inEditorialFeed: Boolean
     last: Int
+
+    # DEPRECATION REASON: Use `size` instead
     limit: Int
+    page: Int
+    size: Int
     sort: ArticleSorts
   ): ArticleConnection
   artistSeriesConnection(
@@ -1518,6 +1522,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     first: Int
     isReference: Boolean
     last: Int
+    page: Int
 
     # The number of PartnerShows to return
     size: Int
@@ -1984,7 +1989,10 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Returns the associated Fair/Sale/Show
   context: ArtworkContext
-  contextGrids: [ArtworkContextGrid]
+  contextGrids(
+    # Whether to include the `RelatedArtworksGrid` module. Defaults to `true`; preferred behavior is to opt out with `false`.
+    includeRelatedArtworks: Boolean! = true
+  ): [ArtworkContextGrid]
 
   # The currency code used to pay for the artwork
   costCurrencyCode: String
@@ -2077,6 +2085,7 @@ type Artwork implements Node & Searchable & Sellable {
   # When in an auction, can the work be bought immediately
   isBuyNowable: Boolean
   isComparableWithAuctionResults: Boolean
+  isDisliked: Boolean!
   isDownloadable: Boolean
   isEdition: Boolean
 
@@ -6515,14 +6524,6 @@ type Conversation implements Node {
     # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
-
-  # Messages and other events in a conversation.
-  conversationEventConnection(
-    after: String
-    before: String
-    first: Int
-    last: Int
-  ): ConversationEventConnection
   createdAt(
     format: String
 
@@ -6535,6 +6536,9 @@ type Conversation implements Node {
   # The participant who initiated the conversation
   from: ConversationInitiator!
   fromLastViewedMessageID: String
+
+  # The user who initiated the conversation
+  fromUser: User
 
   # A globally unique ID.
   id: ID!
@@ -6624,28 +6628,6 @@ type ConversationEdge {
   node: Conversation
 }
 
-union ConversationEvent = ConversationOfferSubmitted | ConversationOrderStateChanged | Message
-
-# A connection to a list of items.
-type ConversationEventConnection {
-  # A list of edges.
-  edges: [ConversationEventEdge]
-  pageCursors: PageCursors!
-
-  # Information to aid in pagination.
-  pageInfo: PageInfo!
-  totalCount: Int
-}
-
-# An edge in a connection.
-type ConversationEventEdge {
-  # A cursor for use in pagination
-  cursor: String!
-
-  # The item at the end of the edge
-  node: ConversationEvent
-}
-
 # The participant who started the conversation, currently always a User
 type ConversationInitiator {
   email: String!
@@ -6673,51 +6655,12 @@ type ConversationItem {
 
 union ConversationItemType = Artwork | Show
 
-enum ConversationOfferPartyType {
-  BUYER
-  SELLER
-}
-
-# An offer submitted in a conversation
-type ConversationOfferSubmitted implements Node {
-  # A formatted price with various currency formatting options.
-  amount(
-    decimal: String = "."
-    disambiguate: Boolean = false
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
-  createdAt(
-    format: String
-
-    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
-    # http://www.iana.org/time-zones,
-    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-    timezone: String
-  ): String
-  fromParticipant: ConversationOfferPartyType
-  id: ID!
-  isCounter: Boolean
-  offerAmountChanged: Boolean
-}
-
-# A conversation order state change
-type ConversationOrderStateChanged implements Node {
-  createdAt(
-    format: String
-
-    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
-    # http://www.iana.org/time-zones,
-    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-    timezone: String
-  ): String
-  id: ID!
-  state: String!
-  stateReason: String
+input ConversationMessageAttachmentInput {
+  id: String
+  name: String!
+  size: String
+  type: String!
+  url: String!
 }
 
 # The participant responding to the conversation, currently always a Partner
@@ -6735,6 +6678,11 @@ type ConversationResponder {
 
   # The type of participant, e.g. Partner or User
   type: String!
+}
+
+enum ConversationsInputMode {
+  PARTNER
+  USER
 }
 
 type CreateAccountRequestMutationFailure {
@@ -7552,6 +7500,18 @@ type DisableSecondFactorPayload {
   secondFactorOrErrors: SecondFactorOrErrorsUnion!
 }
 
+input DislikeArtworkInput {
+  artworkID: String!
+  clientMutationId: String
+  remove: Boolean!
+}
+
+type DislikeArtworkPayload {
+  artwork: Artwork
+  clientMutationId: String
+  me: Me!
+}
+
 type DoNotUseThisPartner {
   display_name: String @deprecated(reason: "Use displayName")
   displayName: String
@@ -7869,6 +7829,8 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     # Get only articles with 'standard', 'feature', 'series' or 'video' layouts.
     inEditorialFeed: Boolean
     last: Int
+    page: Int
+    size: Int
     sort: ArticleSorts
   ): ArticleConnection
   artistsConnection(
@@ -9074,6 +9036,7 @@ type HomePage {
   # A list of enabled hero units to show on the requested platform
   heroUnits(platform: HomePageHeroUnitPlatform!): [HomePageHeroUnit]
   marketingCollectionsModule: HomePageMarketingCollectionsModule
+  onboardingModule: HomePageMyCollectionOnboardingModule
   salesModule: HomePageSalesModule
 }
 
@@ -9200,6 +9163,11 @@ type HomePageModulesParams {
   medium: String
   priceRange: String
   relatedArtistID: ID
+}
+
+type HomePageMyCollectionOnboardingModule {
+  showMyCollectionCard: Boolean!
+  showSWACard: Boolean!
 }
 
 type HomePageRelatedArtistArtworkModule {
@@ -9976,6 +9944,7 @@ type MarketingCollection {
   showHeaderArtworksRail: Boolean!
   slug: String!
   thumbnail: String
+  thumbnailImage: Image
   title: String!
   updatedAt: ISO8601DateTime!
 }
@@ -10233,8 +10202,13 @@ type Me implements Node {
   conversationsConnection(
     after: String
     before: String
+    dismissed: Boolean
     first: Int
+    hasMessage: Boolean
+    hasReply: Boolean
     last: Int
+    partnerId: String
+    type: ConversationsInputMode = USER
   ): ConversationConnection
   createdAt(
     format: String
@@ -10917,6 +10891,9 @@ type Mutation {
   deliverSecondFactor(input: DeliverSecondFactorInput!): DeliverSecondFactorPayload
   disableSavedSearch(input: DisableSavedSearchInput!): DisableSavedSearchPayload
   disableSecondFactor(input: DisableSecondFactorInput!): DisableSecondFactorPayload
+
+  # Add (or remove) an artwork to (from) a users dislikes.
+  dislikeArtwork(input: DislikeArtworkInput!): DislikeArtworkPayload
   enableSecondFactor(input: EnableSecondFactorInput!): EnableSecondFactorPayload
 
   # Mark sale as ended.
@@ -11153,6 +11130,7 @@ input MyCollectionCreateArtworkInput {
   # The given location of the user as structured data
   collectorLocation: EditableLocation
   costCurrencyCode: String
+  costMajor: Int
   costMinor: Int
   date: String
   depth: String
@@ -11164,6 +11142,8 @@ input MyCollectionCreateArtworkInput {
   isEdition: Boolean
   medium: String
   metric: String
+
+  # @deprecated use the cost major and cost minor fields instead
   pricePaidCents: Int
   pricePaidCurrency: String
   provenance: String
@@ -11234,6 +11214,7 @@ input MyCollectionUpdateArtworkInput {
   # The given location of the user as structured data
   collectorLocation: EditableLocation
   costCurrencyCode: String
+  costMajor: Int
   costMinor: Int
   date: String
   depth: String
@@ -11309,6 +11290,7 @@ type Notification implements Node {
   isUnread: Boolean!
   message: String!
   notificationType: NotificationTypesEnum!
+  objectsCount: Int!
   publishedAt(
     # pass `RELATIVE` to display the human-friendly date (e.g. "Today", "Yesterday", "5 days ago")
     format: String
@@ -11367,6 +11349,7 @@ input NotificationPreferenceInput {
 enum NotificationTypesEnum {
   ARTWORK_ALERT
   ARTWORK_PUBLISHED
+  PARTNER_SHOW_OPENED
   VIEWING_ROOM_PUBLISHED
 }
 
@@ -11634,6 +11617,19 @@ type Partner implements Node {
   displayFullPartnerPage: Boolean
   displayWorksSection: Boolean
   distinguishRepresentedArtists: Boolean
+
+  # Return partner documents if current user has CMS access.
+  documentsConnection(
+    after: String
+    artistID: String
+    before: String
+
+    # Filter documents by ID.
+    documentIDs: [String]
+    first: Int
+    last: Int
+    showID: String
+  ): PartnerDocumentConnection
   featuredShow: Show
 
   # Artworks Elastic Search results
@@ -11862,20 +11858,6 @@ type PartnerArtistCounts {
   ): FormattedNumber
 }
 
-type PartnerArtistDocument {
-  filename: String!
-
-  # A globally unique ID.
-  id: ID!
-
-  # A type-specific ID likely used as a database ID.
-  internalID: ID!
-  publicUrl: String!
-  size: Int!
-  title: String!
-  uri: String!
-}
-
 # A connection to a list of items.
 type PartnerArtistDocumentConnection {
   # A list of edges.
@@ -11893,7 +11875,7 @@ type PartnerArtistDocumentEdge {
   cursor: String!
 
   # The item at the end of the edge
-  node: PartnerArtistDocument
+  node: PartnerDocument
 }
 
 # An edge in a connection.
@@ -12067,6 +12049,40 @@ type PartnerCounts {
   ): FormattedNumber
 }
 
+type PartnerDocument {
+  filesize: Int!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific Gravity Mongo Document ID.
+  internalID: ID!
+  publicUrl: String! @deprecated(reason: "Prefer `publicURL`")
+  publicURL: String!
+  size: Int! @deprecated(reason: "Prefer `filesize`")
+  title: String!
+}
+
+# A connection to a list of items.
+type PartnerDocumentConnection {
+  # A list of edges.
+  edges: [PartnerDocumentEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type PartnerDocumentEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: PartnerDocument
+}
+
 # An edge in a connection.
 type PartnerEdge {
   # A cursor for use in pagination
@@ -12109,20 +12125,6 @@ type PartnersAggregationResults {
   slice: PartnersAggregation
 }
 
-type PartnerShowDocument {
-  filename: String!
-
-  # A globally unique ID.
-  id: ID!
-
-  # A type-specific ID likely used as a database ID.
-  internalID: ID!
-  publicUrl: String!
-  size: Int!
-  title: String!
-  uri: String!
-}
-
 # A connection to a list of items.
 type PartnerShowDocumentConnection {
   # A list of edges.
@@ -12140,7 +12142,7 @@ type PartnerShowDocumentEdge {
   cursor: String!
 
   # The item at the end of the edge
-  node: PartnerShowDocument
+  node: PartnerDocument
 }
 
 enum PartnerShowPartnerType {
@@ -13052,11 +13054,34 @@ type Query {
     sort: ConsignmentSort
   ): ConsignmentConnection
 
+  # A conversation, usually between a user and a partner
+  conversation(
+    # The ID of the Conversation
+    id: String!
+  ): Conversation
+
+  # Conversations, usually between a user and partner.
+  conversationsConnection(
+    after: String
+    before: String
+    dismissed: Boolean
+    first: Int
+    hasMessage: Boolean
+    hasReply: Boolean
+    last: Int
+    partnerId: String
+    type: ConversationsInputMode = USER
+  ): ConversationConnection
+
   # A user's credit card
   creditCard(
     # The ID of the Credit Card
     id: String!
   ): CreditCard
+  curatedMarketingCollections(size: Int): [MarketingCollection]
+
+  # A list of trending artists. Inferred from a manually curated collection of trending artworks.
+  curatedTrendingArtists(after: String, before: String, first: Int, last: Int): ArtistConnection
   departments: [Department!]!
 
   # Get an image info
@@ -13331,7 +13356,7 @@ type Query {
     id: String!
   ): Partner
 
-  # Retrieve all partner artist documents for a given partner and artist
+  # Retrieve all partner documents for a given partner
   partnerArtistDocumentsConnection(
     after: String
 
@@ -13345,7 +13370,7 @@ type Query {
     # The slug or ID of the Partner
     partnerID: String!
     size: Int
-  ): PartnerArtistDocumentConnection
+  ): PartnerArtistDocumentConnection @deprecated(reason: "Prefer `partner.documentsConnection`")
 
   # A list of Artworks for a partner
   partnerArtworks(
@@ -13414,7 +13439,7 @@ type Query {
     # The slug or ID of the Show
     showID: String!
     size: Int
-  ): PartnerShowDocumentConnection
+  ): PartnerShowDocumentConnection @deprecated(reason: "Prefer `partner.documentsConnection`")
 
   # Phone number information
   phoneNumber(phoneNumber: String!, regionCode: String): PhoneNumberType
@@ -14719,17 +14744,33 @@ union SendConfirmationEmailMutationType =
   | SendConfirmationEmailMutationSuccess
 
 input SendConversationMessageMutationInput {
+  # Attachments to the message
+  attachments: [ConversationMessageAttachmentInput!]
+
+  # Message body (html)
+  bodyHTML: String
+
+  # Message body (text)
   bodyText: String!
   clientMutationId: String
 
-  # The email address of the message sender
+  # Sender email, optionally including display string (like 'Jane Doe <jane@doe.com>').
   from: String!
+
+  # Sender user id
+  fromId: String
 
   # The id of the conversation to be updated
   id: String!
 
+  # Reply to all
+  replyAll: Boolean = true
+
   # The message being replied to
   replyToMessageID: String!
+
+  # Recepients emails.
+  to: [String]
 }
 
 type SendConversationMessageMutationPayload {
@@ -16051,6 +16092,9 @@ type User implements Node {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+
+  # Has the users identity been verified.
+  isIdentityVerified: Boolean!
   lastSignInAt(
     format: String
 
@@ -16280,6 +16324,9 @@ type UserAdminNotes {
     # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
+
+  # The user who created the note
+  creator: User
 
   # A globally unique ID.
   id: ID!
@@ -16549,8 +16596,8 @@ type Video {
   height: Int!
   id: ID!
 
-  # The url of the video
-  url: String!
+  # Returns a full-qualified url that can be embedded in an iframe player
+  playerUrl: String!
 
   # The width of the video
   width: Int!
@@ -16790,11 +16837,33 @@ type Viewer {
     slug: String
   ): City
 
+  # A conversation, usually between a user and a partner
+  conversation(
+    # The ID of the Conversation
+    id: String!
+  ): Conversation
+
+  # Conversations, usually between a user and partner.
+  conversationsConnection(
+    after: String
+    before: String
+    dismissed: Boolean
+    first: Int
+    hasMessage: Boolean
+    hasReply: Boolean
+    last: Int
+    partnerId: String
+    type: ConversationsInputMode = USER
+  ): ConversationConnection
+
   # A user's credit card
   creditCard(
     # The ID of the Credit Card
     id: String!
   ): CreditCard
+
+  # A list of trending artists. Inferred from a manually curated collection of trending artworks.
+  curatedTrendingArtists(after: String, before: String, first: Int, last: Int): ArtistConnection
   departments: [Department!]!
 
   # Get an image info
@@ -17029,7 +17098,7 @@ type Viewer {
     id: String!
   ): Partner
 
-  # Retrieve all partner artist documents for a given partner and artist
+  # Retrieve all partner documents for a given partner
   partnerArtistDocumentsConnection(
     after: String
 
@@ -17043,7 +17112,7 @@ type Viewer {
     # The slug or ID of the Partner
     partnerID: String!
     size: Int
-  ): PartnerArtistDocumentConnection
+  ): PartnerArtistDocumentConnection @deprecated(reason: "Prefer `partner.documentsConnection`")
 
   # A list of Artworks for a partner
   partnerArtworks(
@@ -17112,7 +17181,7 @@ type Viewer {
     # The slug or ID of the Show
     showID: String!
     size: Int
-  ): PartnerShowDocumentConnection
+  ): PartnerShowDocumentConnection @deprecated(reason: "Prefer `partner.documentsConnection`")
 
   # Phone number information
   phoneNumber(phoneNumber: String!, regionCode: String): PhoneNumberType
@@ -17311,6 +17380,9 @@ type ViewingRoom {
   # Datetime after which the viewing room is no longer viewable
   endAt: ISO8601DateTime
   exhibitionPeriod: String
+
+  # Datetime when viewing room first viewable
+  firstLiveAt: ISO8601DateTime
   heroImageURL: String @deprecated(reason: "Use image field instead")
   href: String
   image: ARImage

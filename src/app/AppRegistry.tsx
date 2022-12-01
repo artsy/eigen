@@ -88,6 +88,7 @@ import { CareerHighlightsBigCardsSwiper } from "./Scenes/MyCollection/Screens/In
 import { MedianSalePriceAtAuction } from "./Scenes/MyCollection/Screens/Insights/MedianSalePriceAtAuction"
 import { DarkModeSettings } from "./Scenes/MyProfile/DarkModeSettings"
 import { MyProfile } from "./Scenes/MyProfile/MyProfile"
+import { MyProfileEditFormScreen } from "./Scenes/MyProfile/MyProfileEditForm"
 import { MyProfileHeaderMyCollectionAndSavedWorksScreenQuery } from "./Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { MyProfilePaymentQueryRenderer } from "./Scenes/MyProfile/MyProfilePayment"
 import { MyProfilePaymentNewCreditCard } from "./Scenes/MyProfile/MyProfilePaymentNewCreditCard"
@@ -104,7 +105,6 @@ import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerL
 import { PrivacyRequest } from "./Scenes/PrivacyRequest/PrivacyRequest"
 import { ReverseImage } from "./Scenes/ReverseImage/ReverseImage"
 import { SaleQueryRenderer, SaleScreenQuery } from "./Scenes/Sale/Sale"
-import { SaleFAQ } from "./Scenes/SaleFAQ/SaleFAQ"
 import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo/SaleInfo"
 import { SalesQueryRenderer, SalesScreenQuery } from "./Scenes/Sales/Sales"
 import { SavedAddressesQueryRenderer } from "./Scenes/SavedAddresses/SavedAddresses"
@@ -330,7 +330,7 @@ export const modules = defineModules({
   ArtistShows: reactModule(ArtistShows2QueryRenderer),
   ArtistArticles: reactModule(ArtistArticlesQueryRenderer),
   ArtistSeries: reactModule(ArtistSeriesQueryRenderer),
-  Artwork: reactModule(Artwork, {}, [ArtworkScreenQuery]),
+  Artwork: reactModule(Artwork, { hidesBackButton: true }, [ArtworkScreenQuery]),
   ArtworkMedium: reactModule(ArtworkMediumQueryRenderer),
   ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer),
   ArtworkCertificateAuthenticity: reactModule(CertificateOfAuthenticity),
@@ -338,7 +338,6 @@ export const modules = defineModules({
   Auction: reactModule(SaleQueryRenderer, { fullBleed: true }, [SaleScreenQuery]),
   Auctions: reactModule(SalesQueryRenderer, {}, [SalesScreenQuery]),
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
-  AuctionFAQ: reactModule(SaleFAQ),
   AuctionResult: reactModule(AuctionResultQueryRenderer),
   AuctionResultsForArtistsYouFollow: reactModule(
     AuctionResultsForArtistsYouFollowQueryRenderer,
@@ -363,6 +362,7 @@ export const modules = defineModules({
     fullBleed: true,
   }),
   AuctionBuyersPremium: reactModule(AuctionBuyersPremiumQueryRenderer, {
+    fullBleed: true,
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,
   }),
@@ -429,6 +429,7 @@ export const modules = defineModules({
     },
     [MyProfileHeaderMyCollectionAndSavedWorksScreenQuery, MyCollectionScreenQuery]
   ),
+  MyProfileEditForm: reactModule(MyProfileEditFormScreen),
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
   MyProfileSettings: reactModule(MyProfileSettings),
   OrderHistory: reactModule(OrderHistoryQueryRender),

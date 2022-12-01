@@ -224,6 +224,9 @@ describe("MyCollectionArtworkForm", () => {
             data: mockArtistSearchResult,
           })
         )
+
+        await flushPromiseQueue()
+
         act(() => fireEvent.press(getByTestId("autosuggest-search-result-Banksy")))
 
         await flushPromiseQueue()
@@ -232,14 +235,27 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(getByText("Select an Artwork")).toBeTruthy()
 
+        act(() =>
+          fireEvent.changeText(getByPlaceholderText("Search artworks"), "Test Artwork Title")
+        )
+        act(() =>
+          mockEnvironment.mock.resolveMostRecentOperation({
+            errors: [],
+            data: mockArtworkSearchResult,
+          })
+        )
+
+        await flushPromiseQueue()
+
         act(() => fireEvent.press(getByTestId("my-collection-artwork-form-artwork-skip-button")))
 
         await flushPromiseQueue()
+
         // Edit Details Screen
 
         expect(getByText("Add Details")).toBeTruthy()
 
-        expect(getByTestId("TitleInput").props.value).toBe("")
+        expect(getByTestId("TitleInput").props.value).toBe("Test Artwork Title")
         expect(getByTestId("DateInput").props.value).toBe("")
         expect(getByTestId("MaterialsInput").props.value).toBe("")
         expect(getByTestId("WidthInput").props.value).toBe("")
@@ -531,6 +547,7 @@ describe("MyCollectionArtworkForm", () => {
         await flushPromiseQueue()
 
         // Select Artwork Screen
+
         act(() => fireEvent.changeText(getByPlaceholderText("Search artworks"), "banksy"))
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({
@@ -552,85 +569,6 @@ describe("MyCollectionArtworkForm", () => {
         await flushPromiseQueue()
 
         expect(getByTestId("saving-artwork-modal").props.visible).toBe(true)
-      })
-    })
-
-    describe("when AREnableMyCollectionInsights is disabled", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionInsights: false })
-      })
-
-      it("displays normal loading screen", async () => {
-        const assetCredentials = {
-          signature: "some-signature",
-          credentials: "some-credentials",
-          policyEncoded: "some-policy-encoded",
-          policyDocument: {
-            expiration: "some-expiration",
-            conditions: {
-              acl: "some-acl",
-              bucket: "some-bucket",
-              geminiKey: "some-gemini-key",
-              successActionStatus: "some-success-action-status",
-            },
-          },
-        }
-        getGeminiCredentialsForEnvironmentMock.mockReturnValue(Promise.resolve(assetCredentials))
-        uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
-
-        const { getByTestId, getByPlaceholderText } = renderWithHookWrappersTL(
-          <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} source={Tab.collection} />,
-          mockEnvironment
-        )
-
-        act(() =>
-          mockEnvironment.mock.resolveMostRecentOperation({
-            errors: [],
-            data: mockCollectedArtistsResult,
-          })
-        )
-
-        await flushPromiseQueue()
-
-        // Select Artist Screen
-
-        act(() =>
-          fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy")
-        )
-        act(() =>
-          mockEnvironment.mock.resolveMostRecentOperation({
-            errors: [],
-            data: mockArtistSearchResult,
-          })
-        )
-        await flushPromiseQueue()
-
-        act(() => fireEvent.press(getByTestId("autosuggest-search-result-Banksy")))
-
-        await flushPromiseQueue()
-
-        // Select Artwork Screen
-        act(() => fireEvent.changeText(getByPlaceholderText("Search artworks"), "banksy"))
-        act(() =>
-          mockEnvironment.mock.resolveMostRecentOperation({
-            errors: [],
-            data: mockArtworkSearchResult,
-          })
-        )
-        act(() => fireEvent.press(getByTestId("artworkGridItem-Morons")))
-
-        act(() =>
-          mockEnvironment.mock.resolveMostRecentOperation({ errors: [], data: mockArtworkResult })
-        )
-
-        await flushPromiseQueue()
-
-        // Complete Form
-        act(() => fireEvent.press(getByTestId("CompleteButton")))
-
-        await flushPromiseQueue()
-
-        expect(getByTestId("loading-modal").props.visible).toBe(true)
       })
     })
   })

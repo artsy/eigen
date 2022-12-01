@@ -12,6 +12,8 @@ export interface MyCollectionImageViewProps {
   imageHeight?: number
   aspectRatio?: number
   artworkSlug: string
+  artworkSubmissionId?: string | null
+  myCollectionIsRefreshing?: boolean
 }
 
 export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
@@ -20,6 +22,8 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
   imageHeight,
   aspectRatio,
   artworkSlug,
+  artworkSubmissionId,
+  myCollectionIsRefreshing,
 }) => {
   const color = useColor()
   const [localImage, setLocalImage] = useState<LocalImage | null>(null)
@@ -31,30 +35,27 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
         setLocalImage(images[0])
       }
     })
-  }, [])
-  const { photos } = GlobalStore.useAppState(
-    (state) => state.artworkSubmission.submission.photosForMyCollection
-  )
+  }, [myCollectionIsRefreshing])
+
+  const {
+    photosForMyCollection: { photos },
+    submissionIdForMyCollection,
+  } = GlobalStore.useAppState((state) => state.artworkSubmission.submission)
+
   useEffect(() => {
-    if (photos !== null && photos.length > 0) {
+    if (
+      photos !== null &&
+      photos.length > 0 &&
+      artworkSubmissionId &&
+      submissionIdForMyCollection === artworkSubmissionId
+    ) {
       setLocalImageConsignments(photos[0])
     }
   }, [])
 
   const renderImage = () => {
-    if (localImage) {
-      return (
-        <RNImage
-          testID="Image-Local"
-          style={{
-            width: imageWidth,
-            height: (imageWidth / localImage.width) * localImage.height,
-          }}
-          resizeMode="contain"
-          source={{ uri: localImage.path }}
-        />
-      )
-    } else if (imageURL) {
+    // prioritise imageURL
+    if (imageURL) {
       const targetURL = imageURL.replace(":version", "square")
       return (
         <OpaqueImageView
@@ -64,6 +65,18 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
           height={imageHeight}
           width={imageWidth}
           aspectRatio={aspectRatio}
+        />
+      )
+    } else if (localImage) {
+      return (
+        <RNImage
+          testID="Image-Local"
+          style={{
+            width: imageWidth,
+            height: (imageWidth / localImage.width) * localImage.height,
+          }}
+          resizeMode="contain"
+          source={{ uri: localImage.path }}
         />
       )
     } else if (localImageConsignments) {

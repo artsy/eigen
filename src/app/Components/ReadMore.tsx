@@ -27,7 +27,6 @@ interface Props {
   color?: ResponsiveValue<Color>
   textStyle?: "sans" | "new"
   testID?: string
-  type?: "show"
   textVariant?: PaletteTextProps["variant"]
   linkTextVariant?: PaletteTextProps["variant"]
 }
@@ -42,7 +41,6 @@ export const ReadMore = React.memo(
     contextModule,
     textStyle = "sans",
     testID,
-    type,
     textVariant = "xs",
     linkTextVariant = "xs",
   }: Props) => {
@@ -51,27 +49,24 @@ export const ReadMore = React.memo(
     const useNewTextStyles = textStyle === "new"
     const basicRules = defaultRules({ modal: presentLinksModally, useNewTextStyles })
     const TextComponent: React.ComponentType<PaletteTextProps> = PaletteText
-
     const textProps: PaletteTextProps = { variant: textVariant }
     const rules = {
       ...basicRules,
-      ...(type === "show" && {
-        list: {
-          ...basicRules.paragraph,
-          react: (
-            node: SimpleMarkdown.SingleASTNode,
-            output: SimpleMarkdown.Output<React.ReactNode>,
-            state: SimpleMarkdown.State
-          ) => {
-            return (
-              <TextComponent {...textProps} color={color || "black100"} key={state.key}>
-                {!isExpanded && Number(state.key) > 0 ? ` ${emdash} ` : null}
-                {output(node.content, state)}
-              </TextComponent>
-            )
-          },
+      list: {
+        ...basicRules.paragraph,
+        react: (
+          node: SimpleMarkdown.SingleASTNode,
+          output: SimpleMarkdown.Output<React.ReactNode>,
+          state: SimpleMarkdown.State
+        ) => {
+          return (
+            <TextComponent {...textProps} color={color || "black100"} key={state.key}>
+              {!isExpanded && Number(state.key) > 0 ? ` ${emdash} ` : null}
+              {output(node.content, state)}
+            </TextComponent>
+          )
         },
-      }),
+      },
       link: {
         ...basicRules.link,
         react: (

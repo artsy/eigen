@@ -17,19 +17,9 @@ commands:
           only-on-branch: <<parameters.branch>> # restrict queueing to a specific branch (default *)
   install-node:
     steps:
-      - run:
-          name: Install Node 14 (Required for Yarn)
-          command: |
-            set +e
-            touch $BASH_ENV
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
-            echo "HOMEBREW_NO_AUTO_UPDATE=1" >> $BASH_ENV
-            echo 'export NVM_DIR="$HOME/.nvm"' >> $BASH_ENV
-            echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
-            echo 'nvm install v16.18.0' >> $BASH_ENV
-            echo 'nvm alias default v16.18.0' >> $BASH_ENV
-            sudo mkdir ~/.config
-            sudo chown -R $USER:$GROUP ~/.config
+      - node/install:
+          install-yarn: true
+          node-version: "16.18.0"
   generate-checksums:
     steps:
       - run:
@@ -46,7 +36,7 @@ commands:
     steps:
       - run:
           name: "Set up .env file"
-          command: touch .env.shared && scripts/setup-env-for-ci
+          command: touch .env.shared && touch .env && scripts/setup-env-for-ci
   setup-awscli:
     steps:
       - run:
@@ -139,12 +129,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v11-pods-{{ checksum ".manifests/cocoapods" }}
+            - v12-pods-{{ checksum ".manifests/cocoapods" }}
       - run:
           name: Install Pods
           command: cd ios; bundle exec pod check --ignore-dev-pods || bundle exec pod install; cd ..;
       - save_cache:
-          key: v11-pods-{{ checksum ".manifests/cocoapods" }}
+          key: v12-pods-{{ checksum ".manifests/cocoapods" }}
           paths:
             - ios/Pods
             # this changes after pod install because we don't install dev tools on CI
@@ -154,7 +144,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v7-app_build_ios-{{ checksum ".manifests/app_build" }}
+            - v8-app_build_ios-{{ checksum ".manifests/app_build" }}
       - run:
           name: Download fonts from s3
           command: ./scripts/download-assets
@@ -162,7 +152,7 @@ commands:
           name: Build App
           command: ./scripts/ci-ios
       - save_cache:
-          key: v7-app_build_ios-{{ checksum ".manifests/app_build" }}
+          key: v8-app_build_ios-{{ checksum ".manifests/app_build" }}
           paths:
             - derived_data
             - node_modules/react-native-config
@@ -228,7 +218,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 14.0.1
+      xcode: 14.1.0
 
     steps:
       - checkout
@@ -272,7 +262,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 14.0.1
+      xcode: 14.1.0
 
     steps:
       - checkout
@@ -288,7 +278,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 14.0.1
+      xcode: 14.1.0
 
     steps:
       - checkout
@@ -369,7 +359,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 14.0.1
+      xcode: 14.1.0
 
     steps:
       - attach_workspace:
@@ -481,7 +471,7 @@ jobs:
     environment:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
     macos:
-      xcode: 14.0.1
+      xcode: 14.1.0
     steps:
       - checkout
       - install-gems

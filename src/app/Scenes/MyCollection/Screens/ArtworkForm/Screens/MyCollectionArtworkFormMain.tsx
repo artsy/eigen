@@ -61,13 +61,14 @@ export const MyCollectionArtworkFormMain: React.FC<
               text: "Discard",
               style: "destructive",
               onPress: () => {
-                GlobalStore.actions.myCollection.artwork.resetFormButKeepArtist()
+                GlobalStore.actions.myCollection.artwork.resetForm()
                 navigation.dispatch(e.data.action)
               },
             },
           ]
         )
       } else {
+        GlobalStore.actions.myCollection.artwork.resetForm()
         navigation.dispatch(e.data.action)
       }
     })
@@ -226,10 +227,12 @@ export const MyCollectionArtworkFormMain: React.FC<
 
           <ScreenMargin>
             {modalType === "edit" && (
-              <Button
-                my={1}
-                variant="outline"
-                block
+              <Text
+                my={4}
+                variant="sm"
+                underline
+                color={color("red100")}
+                textAlign="center"
                 onPress={() => {
                   showActionSheetWithOptions(
                     {
@@ -249,7 +252,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 testID="DeleteButton"
               >
                 Delete artwork
-              </Button>
+              </Text>
             )}
           </ScreenMargin>
 

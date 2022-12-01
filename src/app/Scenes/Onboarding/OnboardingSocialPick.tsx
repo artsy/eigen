@@ -1,11 +1,13 @@
 import { useNavigation } from "@react-navigation/native"
-import { AuthPromiseRejectType } from "app/store/AuthModel"
+import { captureMessage } from "@sentry/react-native"
+import LoadingModal from "app/Components/Modals/LoadingModal"
+import { AuthPromiseRejectType, AuthPromiseResolveType } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { osMajorVersion } from "app/utils/platformUtil"
 import { capitalize } from "lodash"
 import { Button, Flex, Join, Screen, Spacer, Text } from "palette"
 import { useEffect } from "react"
-import { Alert, Image, Platform } from "react-native"
+import { Alert, Image, InteractionManager, Platform } from "react-native"
 import { EnvelopeIcon } from "../../../palette/svgs/EnvelopeIcon"
 import { useFeatureFlag } from "../../store/GlobalStore"
 import { OnboardingNavigationStack } from "./Onboarding"
@@ -19,6 +21,8 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
   const navigation = useNavigation()
   const enableGoogleAuth = useFeatureFlag("ARGoogleAuth")
   const allowLinkingOnSignUp = useFeatureFlag("ARAllowLinkSocialAccountsOnSignUp")
+  const isLoading = GlobalStore.useAppState((state) => state.auth.sessionState.isLoading)
+
   const isIOS = Platform.OS === "ios"
 
   // When we land on OnboardingSocialPick coming from OnboardingCreateAccount or OnboardingLogin
@@ -80,41 +84,68 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
   }
 
   const handleError = (error: AuthPromiseRejectType) => {
+    captureMessage("AUTH_FAILURE: " + error.message)
+
     const canBeLinked =
       error.error === "User Already Exists" && error.meta && error.meta.existingProviders
     if (canBeLinked && allowLinkingOnSignUp) {
       handleErrorWithAlternativeProviders(error.meta)
       return
     }
-    Alert.alert("Try again", error.message)
+    GlobalStore.actions.auth.setState({ sessionState: { isLoading: false } })
+    InteractionManager.runAfterInteractions(() => {
+      Alert.alert("No Artsy account found", error.message, [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            // @ts-expect-error
+            navigation.replace(mode === "login" ? "OnboardingCreateAccount" : "OnboardingLogin", {
+              withFadeAnimation: true,
+            })
+          },
+        },
+      ])
+    })
   }
 
+  const handleSocialLogin = async (callback: () => Promise<AuthPromiseResolveType>) => {
+    GlobalStore.actions.auth.setState({ sessionState: { isLoading: true } })
+    InteractionManager.runAfterInteractions(() => {
+      callback().catch((error: AuthPromiseRejectType) => {
+        InteractionManager.runAfterInteractions(() => {
+          GlobalStore.actions.auth.setState({ sessionState: { isLoading: false } })
+          InteractionManager.runAfterInteractions(() => {
+            handleError(error)
+          })
+        })
+      })
+    })
+  }
   const continueWithApple = () =>
-    GlobalStore.actions.auth
-      .authApple({ agreedToReceiveEmails: true })
-      .catch((error: AuthPromiseRejectType) => handleError(error))
+    GlobalStore.actions.auth.authApple({ agreedToReceiveEmails: true })
 
   const continueWithGoogle = () =>
-    GlobalStore.actions.auth
-      .authGoogle({
-        signInOrUp: mode === "login" ? "signIn" : "signUp",
-        agreedToReceiveEmails: mode === "signup",
-      })
-      .catch((error: AuthPromiseRejectType) => handleError(error))
+    GlobalStore.actions.auth.authGoogle({
+      signInOrUp: mode === "login" ? "signIn" : "signUp",
+      agreedToReceiveEmails: mode === "signup",
+    })
 
   const continueWithFacebook = () =>
-    GlobalStore.actions.auth
-      .authFacebook({
-        signInOrUp: mode === "login" ? "signIn" : "signUp",
-        agreedToReceiveEmails: mode === "signup",
-      })
-      .catch((error: AuthPromiseRejectType) => handleError(error))
+    GlobalStore.actions.auth.authFacebook({
+      signInOrUp: mode === "login" ? "signIn" : "signUp",
+      agreedToReceiveEmails: mode === "signup",
+    })
 
   return (
     <Screen>
       <Screen.Header onBack={() => navigation.goBack()} />
       <Screen.Body>
         <Flex justifyContent="center" flex={1}>
+          <LoadingModal isVisible={isLoading} dark />
           <Join separator={<Spacer y={60} />}>
             <Text variant="xl">{mode === "login" ? "Log in" : "Sign Up"}</Text>
             <>
@@ -137,7 +168,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
 
               {Platform.OS === "ios" && osMajorVersion() >= 13 && (
                 <Button
-                  onPress={continueWithApple}
+                  onPress={() => handleSocialLogin(continueWithApple)}
                   block
                   haptic="impactMedium"
                   mb={1}
@@ -158,7 +189,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
 
               {!!enableGoogleAuth && (
                 <Button
-                  onPress={continueWithGoogle}
+                  onPress={() => handleSocialLogin(continueWithGoogle)}
                   block
                   haptic="impactMedium"
                   mb={1}
@@ -178,7 +209,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
               )}
 
               <Button
-                onPress={continueWithFacebook}
+                onPress={() => handleSocialLogin(continueWithFacebook)}
                 block
                 haptic="impactMedium"
                 mb={1}
@@ -224,9 +255,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
               <Text variant="sm-display">
                 {mode === "login" ? "Don’t have an account?" : "Already have an account?"}
               </Text>
-              <Text
-                variant="sm-display"
-                underline
+              <Button
                 onPress={() =>
                   // @ts-expect-error
                   navigation.replace(
@@ -236,9 +265,12 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
                     }
                   )
                 }
+                variant="text"
               >
-                {mode === "login" ? "Sign up" : "Log in"}
-              </Text>
+                <Text variant="sm-display" underline>
+                  {mode === "login" ? "Sign up" : "Log in"}
+                </Text>
+              </Button>
             </Flex>
           </Join>
         </Flex>

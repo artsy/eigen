@@ -18,6 +18,7 @@ import { PartnerSubscriberBannerFragmentContainer as PartnerSubscriberBanner } f
 
 interface Props {
   partner: Partner_partner$data
+  initialTab?: string
   relay: RelayRefetchProp
 }
 
@@ -29,7 +30,7 @@ interface Props {
 }))
 class Partner extends React.Component<Props> {
   render() {
-    const { partner } = this.props
+    const { partner, initialTab } = this.props
     const { partnerType, displayFullPartnerPage } = partner
 
     if (!displayFullPartnerPage && partnerType !== "Brand") {
@@ -52,7 +53,7 @@ class Partner extends React.Component<Props> {
           },
           {
             title: "Artworks",
-            initial: true,
+            initial: initialTab === "Artworks",
             content: (
               <ArtworkFiltersStoreProvider>
                 <PartnerArtwork partner={partner} />
@@ -61,6 +62,7 @@ class Partner extends React.Component<Props> {
           },
           {
             title: "Shows",
+            initial: initialTab === "Shows",
             content: <PartnerShows partner={partner} />,
           },
         ]}

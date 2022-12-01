@@ -113,18 +113,6 @@ Doesn't really need to be removed but can be if view hierarchy issue is fixed in
 
 We have a modal for showing a loading state and a onDismiss call that optionally displays an alert message, on iOS 14 we came across an issue where the alert was not displaying because when onDismiss was called the LoadingModal was still in the view heirarchy. The delay is a workaround.
 
-## react-native-config patch-package
-
-#### When can we remove this:
-
-Now.
-
-#### Explanation/Context:
-
-react-native-config loads the `.env` file by default. We wanted to use `.env.shared` and `.env.ci` instead. We did that by using a patch-package patch, to add our customization.
-
-We can do this better using https://github.com/luggit/react-native-config#ios-1. Take a look at https://artsyproduct.atlassian.net/browse/CX-949.
-
 ## @react-navigation/core patch-package
 
 #### When can we remove this:

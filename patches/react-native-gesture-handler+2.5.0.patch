@@ -1,0 +1,197 @@
+diff --git a/node_modules/react-native-gesture-handler/src/handlers/gestures/GestureDetector.tsx b/node_modules/react-native-gesture-handler/src/handlers/gestures/GestureDetector.tsx
+index 3a4c573..b4733af 100644
+--- a/node_modules/react-native-gesture-handler/src/handlers/gestures/GestureDetector.tsx
++++ b/node_modules/react-native-gesture-handler/src/handlers/gestures/GestureDetector.tsx
+@@ -1,45 +1,45 @@
+ import React, { useEffect, useRef } from 'react';
+-import {
+-  GestureType,
+-  HandlerCallbacks,
+-  BaseGesture,
+-  GestureRef,
+-  CALLBACK_TYPE,
+-} from './gesture';
+-import { Reanimated, SharedValue } from './reanimatedWrapper';
+-import { registerHandler, unregisterHandler } from '../handlersRegistry';
++import { Platform } from 'react-native';
++import { ActionType } from '../../ActionType';
++import { getShadowNodeFromRef } from '../../getShadowNodeFromRef';
+ import RNGestureHandlerModule from '../../RNGestureHandlerModule';
++import type RNGestureHandlerModuleWeb from '../../RNGestureHandlerModule.web';
++import { State } from '../../State';
++import { TouchEventType } from '../../TouchEventType';
++import { isFabric, tagMessage } from '../../utils';
++import { flingGestureHandlerProps } from '../FlingGestureHandler';
++import { forceTouchGestureHandlerProps } from '../ForceTouchGestureHandler';
+ import {
+   baseGestureHandlerWithMonitorProps,
+   filterConfig,
+   findNodeHandle,
++  GestureStateChangeEvent,
+   GestureTouchEvent,
+   GestureUpdateEvent,
+-  GestureStateChangeEvent,
+   HandlerStateChangeEvent,
+   scheduleFlushOperations,
+ } from '../gestureHandlerCommon';
+-import {
+-  GestureStateManager,
+-  GestureStateManagerType,
+-} from './gestureStateManager';
+-import { flingGestureHandlerProps } from '../FlingGestureHandler';
+-import { forceTouchGestureHandlerProps } from '../ForceTouchGestureHandler';
++import { registerHandler, unregisterHandler } from '../handlersRegistry';
+ import { longPressGestureHandlerProps } from '../LongPressGestureHandler';
+ import {
+-  panGestureHandlerProps,
+   panGestureHandlerCustomNativeProps,
++  panGestureHandlerProps,
+ } from '../PanGestureHandler';
+ import { tapGestureHandlerProps } from '../TapGestureHandler';
+-import { State } from '../../State';
+-import { TouchEventType } from '../../TouchEventType';
+-import { ComposedGesture } from './gestureComposition';
+-import { ActionType } from '../../ActionType';
+-import { isFabric, tagMessage } from '../../utils';
+-import { getShadowNodeFromRef } from '../../getShadowNodeFromRef';
+-import { Platform } from 'react-native';
+-import type RNGestureHandlerModuleWeb from '../../RNGestureHandlerModule.web';
+ import { onGestureHandlerEvent } from './eventReceiver';
++import {
++  BaseGesture,
++  CALLBACK_TYPE,
++  GestureRef,
++  GestureType,
++  HandlerCallbacks,
++} from './gesture';
++import { ComposedGesture } from './gestureComposition';
++import {
++  GestureStateManager,
++  GestureStateManagerType,
++} from './gestureStateManager';
++import { Reanimated, SharedValue } from './reanimatedWrapper';
+ 
+ declare const global: {
+   isFormsStackingContext: (node: unknown) => boolean | null; // JSI function
+@@ -55,15 +55,15 @@ const ALLOWED_PROPS = [
+   ...flingGestureHandlerProps,
+ ];
+ 
+-export type GestureConfigReference = {
++export interface GestureConfigReference {
+   config: GestureType[];
+   animatedEventHandler: unknown;
+   animatedHandlers: SharedValue<
+-    HandlerCallbacks<Record<string, unknown>>[] | null
++    Array<HandlerCallbacks<Record<string, unknown>>> | null
+   > | null;
+   firstExecution: boolean;
+   useReanimatedHook: boolean;
+-};
++}
+ 
+ function convertToHandlerTag(ref: GestureRef): number {
+   if (typeof ref === 'number') {
+@@ -213,9 +213,9 @@ function attachHandlers({
+ 
+     preparedGesture.animatedHandlers.value = (gesture
+       .filter(isAnimatedGesture)
+-      .map((g) => g.handlers) as unknown) as HandlerCallbacks<
++      .map((g) => g.handlers) as unknown) as Array<HandlerCallbacks<
+       Record<string, unknown>
+-    >[];
++    >>;
+   }
+ }
+ 
+@@ -245,26 +245,29 @@ function updateHandlers(
+     for (let i = 0; i < gesture.length; i++) {
+       const handler = preparedGesture.config[i];
+ 
+-      handler.config = gesture[i].config;
+-      handler.handlers = gesture[i].handlers;
++      // Some of the handlers may be missing in the gesture config object
++      if (Object.values(gesture[i].config).length > 0) {
++        handler.config = gesture[i].config;
++        handler.handlers = gesture[i].handlers;
+ 
+-      const requireToFail = extractValidHandlerTags(
+-        handler.config.requireToFail
+-      );
++        const requireToFail = extractValidHandlerTags(
++          handler.config.requireToFail
++        );
+ 
+-      const simultaneousWith = extractValidHandlerTags(
+-        handler.config.simultaneousWith
+-      );
++        const simultaneousWith = extractValidHandlerTags(
++          handler.config.simultaneousWith
++        );
+ 
+-      RNGestureHandlerModule.updateGestureHandler(
+-        handler.handlerTag,
+-        filterConfig(handler.config, ALLOWED_PROPS, {
+-          simultaneousHandlers: simultaneousWith,
+-          waitFor: requireToFail,
+-        })
+-      );
++        RNGestureHandlerModule.updateGestureHandler(
++          handler.handlerTag,
++          filterConfig(handler.config, ALLOWED_PROPS, {
++            simultaneousHandlers: simultaneousWith,
++            waitFor: requireToFail,
++          })
++        );
+ 
+-      registerHandler(handler.handlerTag, handler, handler.config.testId);
++        registerHandler(handler.handlerTag, handler, handler.config.testId);
++      }
+     }
+ 
+     if (preparedGesture.animatedHandlers) {
+@@ -272,9 +275,9 @@ function updateHandlers(
+         preparedGesture.animatedHandlers.value ?? [];
+       const newHandlersValue = (preparedGesture.config
+         .filter((g) => g.shouldUseReanimated) // ignore gestures that shouldn't run on UI
+-        .map((g) => g.handlers) as unknown) as HandlerCallbacks<
++        .map((g) => g.handlers) as unknown) as Array<HandlerCallbacks<
+         Record<string, unknown>
+-      >[];
++      >>;
+ 
+       // if amount of gesture configs changes, we need to update the callbacks in shared value
+       let shouldUpdateSharedValue =
+@@ -412,12 +415,12 @@ function useAnimatedGesture(
+   // react-native-reanimated is installed, which shouldn't change while running
+   // eslint-disable-next-line react-hooks/rules-of-hooks
+   const sharedHandlersCallbacks = Reanimated.useSharedValue<
+-    HandlerCallbacks<Record<string, unknown>>[] | null
++    Array<HandlerCallbacks<Record<string, unknown>>> | null
+   >(null);
+ 
+   // eslint-disable-next-line react-hooks/rules-of-hooks
+   const lastUpdateEvent = Reanimated.useSharedValue<
+-    (GestureUpdateEvent | undefined)[]
++    Array<GestureUpdateEvent | undefined>
+   >([]);
+ 
+   // not every gesture needs a state controller, init them lazily
+@@ -532,7 +535,7 @@ export const GestureDetector = (props: GestureDetectorProps) => {
+     animatedEventHandler: null,
+     animatedHandlers: null,
+     firstExecution: true,
+-    useReanimatedHook: useReanimatedHook,
++    useReanimatedHook,
+   }).current;
+ 
+   if (useReanimatedHook !== preparedGesture.useReanimatedHook) {
+@@ -597,7 +600,7 @@ export const GestureDetector = (props: GestureDetectorProps) => {
+ 
+   const refFunction = (ref: unknown) => {
+     if (ref !== null) {
+-      //@ts-ignore Just setting the ref
++      // @ts-ignore Just setting the ref
+       viewRef.current = ref;
+ 
+       if (isFabric()) {

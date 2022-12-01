@@ -22,6 +22,7 @@ const DEFAULT_CURRENCY =
   ) as Currency) ?? "USD"
 const DEFAULT_METRIC = "in"
 const DEFAULT_VIEW_OPTION = "grid"
+export const DEFAULT_PRICE_RANGE = "*-*"
 // please update this when adding new user preferences
 export interface UserPrefs {
   pricePaidCurrency: Currency
@@ -32,9 +33,11 @@ export interface UserPrefs {
 export interface UserPrefsModel {
   currency: Currency
   metric: Metric | ""
+  priceRange: string
   artworkViewOption: ViewOption
   setCurrency: Action<this, Currency>
   setMetric: Action<this, Metric>
+  setPriceRange: Action<this, string>
   fetchRemoteUserPrefs: Thunk<UserPrefsModel>
   didRehydrate: ThunkOn<UserPrefsModel, {}, GlobalStoreModel>
   setArtworkViewOption: Action<this, ViewOption>
@@ -44,6 +47,7 @@ export const getUserPrefsModel = (): UserPrefsModel => ({
   currency: DEFAULT_CURRENCY,
   metric: DEFAULT_METRIC,
   artworkViewOption: DEFAULT_VIEW_OPTION,
+  priceRange: DEFAULT_PRICE_RANGE,
   setCurrency: action((state, currency) => {
     if (currencies.includes(currency)) {
       state.currency = currency
@@ -58,14 +62,23 @@ export const getUserPrefsModel = (): UserPrefsModel => ({
       console.warn("Metric/Dimension Unit not supported")
     }
   }),
+  setPriceRange: action((state, priceRange) => {
+    state.priceRange = priceRange
+  }),
   fetchRemoteUserPrefs: thunk(async () => {
     const me = await fetchMe()
 
     if (!me) {
       return
     }
+
     GlobalStore.actions.userPrefs.setMetric(me?.lengthUnitPreference.toLowerCase() as Metric)
     GlobalStore.actions.userPrefs.setCurrency(me?.currencyPreference as Currency)
+
+    if (me.priceRange) {
+      const priceRange = parsePriceRange(me.priceRange)
+      GlobalStore.actions.userPrefs.setPriceRange(priceRange)
+    }
   }),
   didRehydrate: thunkOn(
     (_, storeActions) => storeActions.rehydrate,
@@ -90,6 +103,7 @@ const fetchMe = async () => {
         me {
           lengthUnitPreference
           currencyPreference
+          priceRange
         }
       }
     `,
@@ -97,4 +111,27 @@ const fetchMe = async () => {
   ).toPromise()
 
   return result?.me
+}
+
+const parsePriceRange = (priceRange: string) => {
+  const [min, max] = priceRange.split(":").map((v) => {
+    const value = parseInt(v, 10)
+
+    if (isNaN(value)) {
+      return "*"
+    }
+
+    return value
+  })
+
+  // "No budget in mind" option is selected
+  if (min === -1 && max === 1000000000000) {
+    return DEFAULT_PRICE_RANGE
+  }
+
+  if (min === -1) {
+    return ["*", max].join("-")
+  }
+
+  return [min, max].join("-")
 }

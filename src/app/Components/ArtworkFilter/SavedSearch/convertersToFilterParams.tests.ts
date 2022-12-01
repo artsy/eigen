@@ -372,14 +372,14 @@ describe("convertWaysToBuyToFilterParams", () => {
 
     expect(result).toEqual([
       {
-        displayText: "Buy Now",
+        displayText: "Purchase",
         paramValue: true,
-        paramName: FilterParamName.waysToBuyBuy,
+        paramName: FilterParamName.waysToBuyPurchase,
       },
       {
-        displayText: "Inquire",
+        displayText: "Contact Gallery",
         paramValue: true,
-        paramName: FilterParamName.waysToBuyInquire,
+        paramName: FilterParamName.waysToBuyContactGallery,
       },
     ])
   })

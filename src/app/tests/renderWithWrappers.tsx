@@ -1,6 +1,7 @@
 import { render } from "@testing-library/react-native"
 import { PopoverMessageProvider } from "app/Components/PopoverMessage/PopoverMessageProvider"
 import { ToastProvider } from "app/Components/Toast/toastHook"
+import { defaultEnvironment } from "app/relay/createEnvironment"
 import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { combineProviders } from "app/utils/combineProviders"
 import { track } from "app/utils/track"
@@ -102,7 +103,10 @@ export const renderWithWrappers = (component: ReactElement) => {
   }
 }
 
-export const renderWithHookWrappersTL = (component: ReactElement, environment: Environment) => {
+export const renderWithHookWrappersTL = (
+  component: ReactElement,
+  environment: Environment = defaultEnvironment
+) => {
   const jsx = (
     <RelayEnvironmentProvider environment={environment}>
       <Suspense fallback="Loading...">{component}</Suspense>

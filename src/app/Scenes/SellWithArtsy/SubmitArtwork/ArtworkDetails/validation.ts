@@ -28,10 +28,10 @@ export interface ArtworkDetailsFormModel {
   width: string
   depth: string
   provenance: string
-  state: ConsignmentSubmissionStateAggregation
-  utmMedium: string | undefined
-  utmSource: string | undefined
-  utmTerm: string | undefined
+  state?: ConsignmentSubmissionStateAggregation
+  utmMedium?: string
+  utmSource?: string
+  utmTerm?: string
   location: Location
   source: ConsignmentSubmissionSource | null
   myCollectionArtworkID: string | null

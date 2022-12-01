@@ -40,24 +40,34 @@ export interface NavigateOptions {
 let lastInvocation = { url: "", timestamp: 0 }
 
 export async function navigate(url: string, options: NavigateOptions = {}) {
-  // handle artsy:// urls, we can just remove it
-  url = url.replace("artsy://", "")
+  let targetURL = url
 
-  visualize("NAV", url, { url, options }, "DTShowNavigationVisualiser")
+  // handle artsy:// urls, we can just remove it
+  targetURL = url.replace("artsy://", "")
+
+  visualize("NAV", targetURL, { targetURL, options }, "DTShowNavigationVisualiser")
 
   // Debounce double taps
   const ignoreDebounce = options.ignoreDebounce ?? false
   if (
-    lastInvocation.url === url &&
+    lastInvocation.url === targetURL &&
     Date.now() - lastInvocation.timestamp < 1000 &&
     !ignoreDebounce
   ) {
     return
   }
 
-  lastInvocation = { url, timestamp: Date.now() }
+  lastInvocation = { url: targetURL, timestamp: Date.now() }
 
-  const result = matchRoute(url)
+  // marketing url requires redirect
+  if (targetURL.startsWith("https://click.artsy.net")) {
+    const response = await fetch(targetURL)
+    if (response.url) {
+      targetURL = response.url
+    }
+  }
+
+  const result = matchRoute(targetURL)
 
   if (result.type === "external_url") {
     Linking.openURL(result.url)
@@ -169,7 +179,7 @@ const tracks = {
   },
 }
 
-export function dismissModal() {
+export function dismissModal(after?: () => void) {
   // We wait for interaction to finish before dismissing the modal, otherwise,
   // we might get a race condition that causes the UI to freeze
   InteractionManager.runAfterInteractions(() => {
@@ -177,6 +187,8 @@ export function dismissModal() {
     if (Platform.OS === "android") {
       navigationEvents.emit("modalDismissed")
     }
+
+    after?.()
   })
 }
 
