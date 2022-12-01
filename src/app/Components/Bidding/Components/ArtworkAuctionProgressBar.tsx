@@ -42,13 +42,9 @@ export const ArtworkAuctionProgressBar: React.FC<ArtworkAuctionProgressBarProps>
   const percentComplete =
     (parsedSecondsUntilEnd + parsedMinutesUntilEnd * 60) / (extendedBiddingDuration * 60)
 
-  const renderProgressBar = isWithinExtendedBiddingPeriod || hasBeenExtended
+  if (!(isWithinExtendedBiddingPeriod || hasBeenExtended)) {
+    return null
+  }
 
-  return (
-    <>
-      {renderProgressBar && (
-        <ProgressBar height={height} trackColor="red100" progress={percentComplete * 100} />
-      )}
-    </>
-  )
+  return <ProgressBar height={height} trackColor="red100" progress={percentComplete * 100} />
 }

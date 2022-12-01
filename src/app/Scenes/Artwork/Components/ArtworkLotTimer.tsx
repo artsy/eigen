@@ -194,11 +194,9 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
       </Flex>
       {!!shouldShowTimer && (
         <>
-          <Flex alignItems="flex-end">
-            <Text variant="xs" color="black60">
-              {label}
-            </Text>
-          </Flex>
+          <Text variant="xs" color="black60" textAlign="right">
+            {label}
+          </Text>
           <Spacer mt={1} />
           {!!sale.extendedBiddingPeriodMinutes && !!sale.extendedBiddingIntervalMinutes && (
             <>
