@@ -298,7 +298,7 @@ extension LiveAuctionLotViewController: LiveAuctionReportProblemButtonDelegate {
     }
 
     private func reportAlertController() -> UIAlertController {
-        let alertController = UIAlertController(title: "Sorry for the Trouble", message: "Briefly describe your issue and we will look into it. If it persists you can contact support@artsy.net", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Describe the issue", message: "Contact support@artsy.net if you need more help.", preferredStyle: .alert)
 
         let reportAction = UIAlertAction(title: "Report", style: .default) { (_) in
             let descriptionTextField = alertController.textFields![0] as UITextField

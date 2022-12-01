@@ -61,7 +61,7 @@ class LiveAuctionReportProblemButton: ARFlatButton {
             shouldShowButton = false
             break
         }
-        setupUI("Report a Problem", background: white, border: .black, textColor: .black, hideButton: !shouldShowButton)
+        setupUI("Report an Issue", background: white, border: .black, textColor: .black, hideButton: !shouldShowButton)
     }
 
     fileprivate func setupUI(_ title: String, background: UIColor = .black, border: UIColor? = nil, textColor: UIColor = UIColor.white, hideButton: Bool = false) {
