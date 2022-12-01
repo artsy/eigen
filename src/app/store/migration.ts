@@ -42,9 +42,10 @@ export const Versions = {
   AddSubmissionIdForMyCollection: 30,
   AddRecentPriceRangesModel: 31,
   AddUserPreferredPriceRange: 32,
+  AddUnreadActivityPanelNotificationsCount: 33,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddUserPreferredPriceRange
+export const CURRENT_APP_VERSION = Versions.AddUnreadActivityPanelNotificationsCount
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -249,6 +250,9 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.AddUserPreferredPriceRange]: (state) => {
     state.userPrefs.priceRange = "*-*"
+  },
+  [Versions.AddUnreadActivityPanelNotificationsCount]: (state) => {
+    state.bottomTabs.unreadActivityPanelNotificationsCount = 0
   },
 }
 

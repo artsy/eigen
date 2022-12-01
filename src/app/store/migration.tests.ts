@@ -765,3 +765,21 @@ describe("App version Versions.AddUserPreferredPriceRange", () => {
     expect(migratedState.userPrefs.priceRange).toEqual("*-*")
   })
 })
+
+describe("App version Versions.AddUnreadActivityPanelNotificationsCount", () => {
+  const migrationToTest = Versions.AddUnreadActivityPanelNotificationsCount
+
+  it("adds unreadActivityPanelNotificationsCount to state", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.bottomTabs.unreadActivityPanelNotificationsCount).toEqual(0)
+  })
+})
