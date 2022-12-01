@@ -11130,6 +11130,7 @@ input MyCollectionCreateArtworkInput {
   # The given location of the user as structured data
   collectorLocation: EditableLocation
   costCurrencyCode: String
+  costMajor: Int
   costMinor: Int
   date: String
   depth: String
@@ -11141,6 +11142,8 @@ input MyCollectionCreateArtworkInput {
   isEdition: Boolean
   medium: String
   metric: String
+
+  # @deprecated use the cost major and cost minor fields instead
   pricePaidCents: Int
   pricePaidCurrency: String
   provenance: String
@@ -11211,6 +11214,7 @@ input MyCollectionUpdateArtworkInput {
   # The given location of the user as structured data
   collectorLocation: EditableLocation
   costCurrencyCode: String
+  costMajor: Int
   costMinor: Int
   date: String
   depth: String
