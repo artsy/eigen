@@ -11,11 +11,17 @@ const consignArgs: TappedConsignArgs = {
 
 interface HeaderProps {
   onConsignPress: (tappedConsignArgs: TappedConsignArgs) => void
+  onInquiryPress: () => void
 }
 
-export const Header: React.FC<HeaderProps> = ({ onConsignPress }) => {
-  const handlePress = () => {
+export const Header: React.FC<HeaderProps> = ({ onConsignPress, onInquiryPress }) => {
+  const handleSubmitPress = () => {
     onConsignPress(consignArgs)
+  }
+
+  const handleInquiryPress = () => {
+    // TODO: Tracking
+    onInquiryPress()
   }
   const screenDimensions = useScreenDimensions()
 
@@ -41,10 +47,20 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress }) => {
 
         <Spacer mb={3} />
 
-        <Button testID="header-cta" variant="fillLight" block onPress={handlePress} haptic>
+        <Button testID="header-cta" variant="fillLight" block onPress={handleSubmitPress} haptic>
           <Text variant="sm" weight="medium">
             Submit an Artwork
           </Text>
+        </Button>
+        <Spacer mb={2} />
+        <Button
+          testID="header-inquiry-cta"
+          variant="outlineLight"
+          block
+          onPress={handleInquiryPress}
+          haptic
+        >
+          <Text variant="sm">Get in Touch</Text>
         </Button>
 
         <Spacer mb={2} />

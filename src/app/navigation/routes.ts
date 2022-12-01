@@ -206,6 +206,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     // TODO: Follow-up about below route names
     addRoute("/collections/my-collection/artworks/new/submissions/new", "SubmitArtwork"),
     addRoute("/consign/submission", "SubmitArtwork"),
+    addRoute("/sell/inquiry", "SellWithArtsyInquiry"),
     addRoute("/collections/my-collection/marketing-landing", "SalesNotRootTabView"),
 
     addWebViewRoute("/conditions-of-sale"),
