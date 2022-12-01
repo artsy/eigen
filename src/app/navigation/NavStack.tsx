@@ -1,7 +1,6 @@
 import { findFocusedRoute, Route, useIsFocused, useNavigationState } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { AppModule, modules } from "app/AppRegistry"
-import { ICON_HEIGHT } from "app/Scenes/BottomTabs/BottomTabsIcon"
 import { useBottomTabBarHeight } from "app/Scenes/BottomTabs/useBottomTabBarHeight"
 import { isPad } from "app/utils/hardware"
 import { createContext, useState } from "react"
