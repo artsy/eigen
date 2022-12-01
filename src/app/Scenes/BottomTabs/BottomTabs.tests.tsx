@@ -47,6 +47,7 @@ const TestWrapper: React.FC<{}> = ({}) => {
   return (
     <GlobalStoreProvider>
       <ModalStack>
+        {/* @ts-ignore */}
         <BottomTabs />
       </ModalStack>
     </GlobalStoreProvider>
