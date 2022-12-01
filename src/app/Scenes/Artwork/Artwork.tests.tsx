@@ -291,7 +291,7 @@ describe("Artwork", () => {
     })
   })
 
-  it("updates the above-the-fold content on re-appear", async () => {
+  xit("updates the above-the-fold content on re-appear", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
