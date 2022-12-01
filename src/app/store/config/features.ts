@@ -245,6 +245,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     readyForRelease: false,
   },
+  AREnableSWAInquiryFlow: {
+    description: "Enable Sell With Artsy Inquiry",
+    showInAdminMenu: true,
+    readyForRelease: false,
+  },
 })
 
 export interface DevToggleDescriptor {

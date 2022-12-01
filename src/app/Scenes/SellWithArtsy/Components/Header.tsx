@@ -1,4 +1,5 @@
 import { ContextModule, OwnerType, TappedConsignArgs } from "@artsy/cohesion"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { Button, Flex, Spacer, Text } from "palette"
 import { ImageBackground } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
@@ -24,6 +25,8 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress, onInquiryPress }
     onInquiryPress()
   }
   const screenDimensions = useScreenDimensions()
+
+  const enableInquiry = useFeatureFlag("AREnableSWAInquiryFlow")
 
   return (
     <ImageBackground
@@ -52,16 +55,21 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress, onInquiryPress }
             Submit an Artwork
           </Text>
         </Button>
-        <Spacer mb={2} />
-        <Button
-          testID="header-inquiry-cta"
-          variant="outlineLight"
-          block
-          onPress={handleInquiryPress}
-          haptic
-        >
-          <Text variant="sm">Get in Touch</Text>
-        </Button>
+
+        {!!enableInquiry && (
+          <>
+            <Spacer mb={2} />
+            <Button
+              testID="header-inquiry-cta"
+              variant="outlineLight"
+              block
+              onPress={handleInquiryPress}
+              haptic
+            >
+              <Text variant="sm">Get in Touch</Text>
+            </Button>
+          </>
+        )}
 
         <Spacer mb={2} />
 
