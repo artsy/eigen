@@ -1,4 +1,4 @@
-import Clipboard from "@react-native-community/clipboard"
+import Clipboard from "@react-native-clipboard/clipboard"
 import { SaleHeader_sale$data } from "__generated__/SaleHeader_sale.graphql"
 import { CustomShareSheet, CustomShareSheetItem } from "app/Components/CustomShareSheet"
 import { getShareURL } from "app/Components/ShareSheet/helpers"

@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, CustomService, OwnerType, Share, share } from "@artsy/cohesion"
-import Clipboard from "@react-native-community/clipboard"
+import Clipboard from "@react-native-clipboard/clipboard"
 import { InstagramStoryViewShot } from "app/Scenes/Artwork/Components/InstagramStoryViewShot"
 import { Schema } from "app/utils/track"
 import { useCanOpenURL } from "app/utils/useCanOpenURL"

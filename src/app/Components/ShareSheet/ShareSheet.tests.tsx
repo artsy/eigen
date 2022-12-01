@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import Clipboard from "@react-native-community/clipboard"
+import Clipboard from "@react-native-clipboard/clipboard"
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
