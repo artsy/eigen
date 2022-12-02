@@ -51,8 +51,8 @@ import { NewWorksForYouRail } from "./Components/NewWorksForYouRail"
 import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
 import { RailScrollRef } from "./Components/types"
 
-const MODULE_SEPARATOR_HEIGHT = 6
 const LARGE_MODULE_SEPARATOR_HEIGHT = 4
+const MODULE_SEPARATOR_HEIGHT = 6
 
 interface HomeModule {
   title: string
@@ -319,7 +319,7 @@ const Home = (props: Props) => {
                       enableLargeNewWorksForYouRail
                         ? LARGE_MODULE_SEPARATOR_HEIGHT
                         : MODULE_SEPARATOR_HEIGHT
-                    } // using less spacing for large artwork rails
+                    }
                   />
                 )
               case "recommended-artists":
