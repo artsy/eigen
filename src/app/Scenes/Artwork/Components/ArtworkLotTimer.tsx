@@ -48,83 +48,82 @@ const AuctionoWebsocketWrapper: React.FC<AuctionWebsocketWrapperProps> = (props)
 
 export const ArtworkLotTimerWrapper: React.FC<AuctionWebsocketWrapperProps> = (props) => {
   const { artwork, refetchArtwork } = props
-  if (artwork.isInAuction && artwork.saleArtwork && artwork.sale) {
-    const {
-      isPreview,
-      isClosed,
-      cascadingEndTimeIntervalMinutes,
-      liveStartAt: liveStartsAt,
-      startAt: startsAt,
-      endAt: saleEndAt,
-    } = props.artwork.sale || {}
-
-    const { endAt: lotEndAt, extendedBiddingEndAt, lotID } = artwork.saleArtwork
-
-    const initialBiddingEndAt = extendedBiddingEndAt ?? lotEndAt ?? saleEndAt
-
-    const { currentBiddingEndAt, lotSaleExtended } = useArtworkBidding({
-      lotID,
-      lotEndAt,
-      biddingEndAt: initialBiddingEndAt,
-      onDataReceived: refetchArtwork,
-    })
-
-    return (
-      <TimeOffsetProvider>
-        <CountdownStateManager
-          CountdownComponent={RenderCountdown as any}
-          onCurrentTickerState={() => {
-            const state = currentTimerState({
-              isPreview: isPreview || undefined,
-              isClosed: isClosed || undefined,
-              liveStartsAt: liveStartsAt || undefined,
-              lotEndAt,
-              biddingEndAt: currentBiddingEndAt,
-            })
-            const { label, date, hasStarted } = relevantStateData(state, {
-              liveStartsAt: liveStartsAt || undefined,
-              startsAt: startsAt || undefined,
-              lotEndAt,
-              biddingEndAt: currentBiddingEndAt,
-            })
-
-            return {
-              label,
-              date,
-              state,
-              hasStarted,
-              cascadingEndTimeIntervalMinutes,
-              hasBeenExtended: lotSaleExtended,
-              biddingEndAt: currentBiddingEndAt,
-            }
-          }}
-          onNextTickerState={({ state }) => {
-            const nextState = nextTimerState(state as AuctionTimerState, {
-              liveStartsAt: liveStartsAt || undefined,
-            })
-            const { label, date, hasStarted } = relevantStateData(nextState, {
-              liveStartsAt: liveStartsAt || undefined,
-              startsAt: startsAt || undefined,
-              lotEndAt,
-              biddingEndAt: currentBiddingEndAt,
-            })
-
-            return {
-              state: nextState,
-              date,
-              label,
-              hasStarted,
-              hasBeenExtended: lotSaleExtended,
-              biddingEndAt: currentBiddingEndAt,
-            }
-          }}
-          {...(props as any)}
-        />
-      </TimeOffsetProvider>
-    )
-  } else {
+  if (!(artwork.isInAuction && artwork.saleArtwork && artwork.sale)) {
     return null
   }
+  const {
+    isPreview,
+    isClosed,
+    cascadingEndTimeIntervalMinutes,
+    liveStartAt: liveStartsAt,
+    startAt: startsAt,
+    endAt: saleEndAt,
+  } = props.artwork.sale || {}
+
+  const { endAt: lotEndAt, extendedBiddingEndAt, lotID } = artwork.saleArtwork
+
+  const initialBiddingEndAt = extendedBiddingEndAt ?? lotEndAt ?? saleEndAt
+
+  const { currentBiddingEndAt, lotSaleExtended } = useArtworkBidding({
+    lotID,
+    lotEndAt,
+    biddingEndAt: initialBiddingEndAt,
+    onDataReceived: refetchArtwork,
+  })
+
+  return (
+    <TimeOffsetProvider>
+      <CountdownStateManager
+        CountdownComponent={RenderCountdown as any}
+        onCurrentTickerState={() => {
+          const state = currentTimerState({
+            isPreview: isPreview || undefined,
+            isClosed: isClosed || undefined,
+            liveStartsAt: liveStartsAt || undefined,
+            lotEndAt,
+            biddingEndAt: currentBiddingEndAt,
+          })
+          const { label, date, hasStarted } = relevantStateData(state, {
+            liveStartsAt: liveStartsAt || undefined,
+            startsAt: startsAt || undefined,
+            lotEndAt,
+            biddingEndAt: currentBiddingEndAt,
+          })
+
+          return {
+            label,
+            date,
+            state,
+            hasStarted,
+            cascadingEndTimeIntervalMinutes,
+            hasBeenExtended: lotSaleExtended,
+            biddingEndAt: currentBiddingEndAt,
+          }
+        }}
+        onNextTickerState={({ state }) => {
+          const nextState = nextTimerState(state as AuctionTimerState, {
+            liveStartsAt: liveStartsAt || undefined,
+          })
+          const { label, date, hasStarted } = relevantStateData(nextState, {
+            liveStartsAt: liveStartsAt || undefined,
+            startsAt: startsAt || undefined,
+            lotEndAt,
+            biddingEndAt: currentBiddingEndAt,
+          })
+
+          return {
+            state: nextState,
+            date,
+            label,
+            hasStarted,
+            hasBeenExtended: lotSaleExtended,
+            biddingEndAt: currentBiddingEndAt,
+          }
+        }}
+        {...(props as any)}
+      />
+    </TimeOffsetProvider>
+  )
 }
 
 const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
@@ -168,12 +167,19 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
   // display the timer and progress bar only when duration is positive and lot is biddable
   const shouldShowTimer = !!isBiddableInAuction && moment.duration(duration).milliseconds() > 0
 
+  const isBiddingClosed = !artwork.saleArtwork?.endedAt
+
   return (
     <>
-      <Flex flexDirection="row" flexWrap="wrap" justifyContent="space-between">
+      <Flex flexDirection="row" flexWrap="wrap" justifyContent="space-between" alignItems="center">
         {!!displayAuctionLotLabel && (
           <Text variant="md" color="black100">
             Lot {artwork.saleArtwork.lotLabel}
+          </Text>
+        )}
+        {!!isBiddingClosed && (
+          <Text variant="sm-display" textAlign="right">
+            Bidding closed
           </Text>
         )}
         {!!shouldShowTimer && (
@@ -230,6 +236,7 @@ export const ArtworkLotTimerFragmentContainer = createFragmentContainer(Auctiono
         lotID
         endAt
         extendedBiddingEndAt
+        endedAt
       }
       sale {
         internalID
