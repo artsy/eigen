@@ -126,6 +126,18 @@ export const ArtworkLotTimerWrapper: React.FC<AuctionWebsocketWrapperProps> = (p
   )
 }
 
+const BiddingClosed: React.FC<{ isBiddingClosed: boolean }> = ({ isBiddingClosed }) => {
+  if (isBiddingClosed) {
+    return null
+  }
+
+  return (
+    <Text variant="sm-display" textAlign="right">
+      Bidding closed
+    </Text>
+  )
+}
+
 const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
   label,
   artwork,
@@ -167,7 +179,7 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
   // display the timer and progress bar only when duration is positive and lot is biddable
   const shouldShowTimer = !!isBiddableInAuction && moment.duration(duration).milliseconds() > 0
 
-  const isBiddingClosed = !artwork.saleArtwork?.endedAt
+  const isBiddingClosed = !artwork.saleArtwork?.endedAt && timerState === AuctionTimerState.CLOSED
 
   return (
     <>
@@ -177,12 +189,8 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
             Lot {artwork.saleArtwork.lotLabel}
           </Text>
         )}
-        {!!isBiddingClosed && (
-          <Text variant="sm-display" textAlign="right">
-            Bidding closed
-          </Text>
-        )}
-        {!!shouldShowTimer && (
+
+        {!!shouldShowTimer ? (
           <>
             <Spacer mr={4} />
             <Flex flexDirection="row" alignItems="center">
@@ -199,6 +207,8 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
               <TimerIcon height={24} width={24} fill={getColor()} ml={1} />
             </Flex>
           </>
+        ) : (
+          <BiddingClosed isBiddingClosed={isBiddingClosed} />
         )}
       </Flex>
       {!!shouldShowTimer && (
