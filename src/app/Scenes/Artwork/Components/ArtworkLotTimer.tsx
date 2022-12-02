@@ -17,6 +17,7 @@ import { useArtworkBidding } from "app/Websockets/auctions/useArtworkBidding"
 import moment from "moment"
 import { Flex, Spacer, Text, TimerIcon } from "palette"
 import { Color } from "palette/Theme"
+import { useEffect } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp } from "react-tracking"
 
@@ -134,11 +135,18 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
   hasStarted,
   biddingEndAt,
   hasBeenExtended,
+  setAuctionTimerState,
 }) => {
   const { sale, isForSale } = artwork
   const isBiddableInAuction = timerState !== AuctionTimerState.CLOSED && isForSale
 
   const displayAuctionLotLabel = !!artwork.saleArtwork?.lotLabel && !artwork.sale?.isClosed
+
+  useEffect(() => {
+    if (timerState) {
+      setAuctionTimerState?.(timerState)
+    }
+  }, [timerState])
 
   const getColor = () => {
     if (!duration) {
