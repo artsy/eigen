@@ -1,5 +1,5 @@
 import { ContextModule, CustomService, OwnerType, share } from "@artsy/cohesion"
-import Clipboard from "@react-native-community/clipboard"
+import Clipboard from "@react-native-clipboard/clipboard"
 import { ArtworkHeader_artwork$data } from "__generated__/ArtworkHeader_artwork.graphql"
 import { CustomShareSheet, CustomShareSheetItem } from "app/Components/CustomShareSheet"
 import { useToast } from "app/Components/Toast/toastHook"
