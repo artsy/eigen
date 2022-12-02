@@ -23,7 +23,7 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
   const meData = useFragment(meFragment, me)
   const auctionState = ArtworkStore.useStoreState((state) => state.auctionState)
 
-  if (!artworkData.isForSale || auctionState === AuctionTimerState.CLOSED) {
+  if (!artworkData.isForSale || artworkData.isSold || auctionState === AuctionTimerState.CLOSED) {
     return null
   }
 
@@ -45,6 +45,7 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
 const artworkFragment = graphql`
   fragment ArtworkStickyBottomContent_artwork on Artwork {
     isForSale
+    isSold
     ...ArtworkPrice_artwork
     ...ArtworkCommercialButtons_artwork
   }

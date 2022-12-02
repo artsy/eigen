@@ -61,6 +61,20 @@ describe("ArtworkStickyBottomContent", () => {
     expect(queryByLabelText("Sticky bottom commercial section")).toBeNull()
   })
 
+  it("should NOT be rendered when artwork is sold", async () => {
+    const { queryByLabelText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => ({
+        ...artwork,
+        isSold: true,
+      }),
+    })
+    await flushPromiseQueue()
+
+    expect(queryByLabelText("Sticky bottom commercial section")).toBeNull()
+  })
+
   it("should NOT be rendered when auction is closed", async () => {
     const { queryByLabelText } = renderWithHookWrappersTL(
       <TestRenderer initialData={{ auctionState: AuctionTimerState.CLOSED }} />,
@@ -89,4 +103,5 @@ describe("ArtworkStickyBottomContent", () => {
 
 const artwork = {
   isForSale: true,
+  isSold: false,
 }
