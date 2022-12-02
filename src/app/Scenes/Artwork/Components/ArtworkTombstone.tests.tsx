@@ -101,6 +101,64 @@ describe("ArtworkTombstone", () => {
       expect(screen.queryByText("Lots will close at 1-minute intervals.")).toBeNull()
     })
   })
+
+  describe("Sale Message for not for sale artworks", () => {
+    describe("with ARArtworkRedesingPhase2 switched set to true", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ ARArtworkRedesingPhase2: true })
+      })
+
+      it("should render the sale message when artwork is not for sale", () => {
+        renderWithRelay({
+          Artwork: () => ({
+            isForSale: false,
+            saleMessage: "On loan",
+          }),
+        })
+
+        expect(screen.queryByText("On loan")).toBeTruthy()
+      })
+
+      it("should not render the sale message when artwork is not for sale", () => {
+        renderWithRelay({
+          Artwork: () => ({
+            isForSale: true,
+            saleMessage: "For sale",
+          }),
+        })
+
+        expect(screen.queryByText("For sale")).toBeNull()
+      })
+    })
+
+    describe("with ARArtworkRedesingPhase2 switched set to false", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ ARArtworkRedesingPhase2: false })
+      })
+
+      it("should not render the sale message when artwork is not for sale", () => {
+        renderWithRelay({
+          Artwork: () => ({
+            isForSale: false,
+            saleMessage: "On loan",
+          }),
+        })
+
+        expect(screen.queryByText("On loan")).toBeNull()
+      })
+
+      it("should not render the sale message when artwork is not for sale", () => {
+        renderWithRelay({
+          Artwork: () => ({
+            isForSale: true,
+            saleMessage: "For sale",
+          }),
+        })
+
+        expect(screen.queryByText("For sale")).toBeNull()
+      })
+    })
+  })
 })
 
 const artworkTombstoneArtwork: ArtworkTombstone_artwork$data = {
@@ -108,6 +166,7 @@ const artworkTombstoneArtwork: ArtworkTombstone_artwork$data = {
   title: "Hello im a title",
   medium: "Painting",
   date: "1992",
+  isForSale: true,
 }
 
 const artworkTombstoneAuctionArtwork = {
