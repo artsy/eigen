@@ -366,7 +366,7 @@ jobs:
           at: ../workspace
       - restore_cache:
           keys:
-            - v7-test-success-{{ checksum "../workspace/.manifests/native_code" }}
+            - v8-test-success-{{ checksum "../workspace/.manifests/native_code" }}
       # we can quit the macos build early if there were no native code changes
       # and we're not on the beta branch
       - run:
@@ -403,7 +403,7 @@ jobs:
           name: Run tests if native code has changed
           command: ls xcode_test_raw.log || ./scripts/ci-test-ios
       - save_cache:
-          key: v7-test-success-{{ checksum ".manifests/native_code" }}
+          key: v8-test-success-{{ checksum ".manifests/native_code" }}
           paths:
             - xcode_test_raw.log
 
