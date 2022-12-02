@@ -634,7 +634,9 @@ describe("Artwork", () => {
 
       await flushPromiseQueue()
 
-      expect(screen.queryByText("Be covered by the Artsy Guarantee")).toBeTruthy()
+      expect(
+        screen.queryByText("Be covered by the Artsy Guarantee when you checkout with Artsy")
+      ).toBeTruthy()
     })
 
     it("should not be displayed when ineligible for artsy guarantee", async () => {
@@ -650,7 +652,9 @@ describe("Artwork", () => {
 
       await flushPromiseQueue()
 
-      expect(screen.queryByText("Be covered by the Artsy Guarantee")).toBeNull()
+      expect(
+        screen.queryByText("Be covered by the Artsy Guarantee when you checkout with Artsy")
+      ).toBeNull()
     })
   })
 
