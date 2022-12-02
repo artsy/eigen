@@ -139,8 +139,6 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
   const { sale, isForSale } = artwork
   const isBiddableInAuction = timerState !== AuctionTimerState.CLOSED && isForSale
 
-  const displayAuctionLotLabel = !!artwork.saleArtwork?.lotLabel && !artwork.sale?.isClosed
-
   useEffect(() => {
     if (timerState) {
       setAuctionTimerState?.(timerState)
@@ -172,7 +170,7 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
   return (
     <>
       <Flex flexDirection="row" flexWrap="wrap" justifyContent="space-between" alignItems="center">
-        {!!displayAuctionLotLabel && (
+        {!!artwork.saleArtwork?.lotLabel && (
           <Text variant="md" color="black100">
             Lot {artwork.saleArtwork.lotLabel}
           </Text>
