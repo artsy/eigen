@@ -46,7 +46,8 @@ const AuctionoWebsocketWrapper: React.FC<AuctionWebsocketWrapperProps> = (props)
 }
 
 export const ArtworkLotTimerWrapper: React.FC<AuctionWebsocketWrapperProps> = (props) => {
-  if (props.artwork.isInAuction && props.artwork.saleArtwork) {
+  const { artwork, refetchArtwork } = props
+  if (artwork.isInAuction && artwork.saleArtwork && artwork.sale) {
     const {
       isPreview,
       isClosed,
@@ -56,7 +57,7 @@ export const ArtworkLotTimerWrapper: React.FC<AuctionWebsocketWrapperProps> = (p
       endAt: saleEndAt,
     } = props.artwork.sale || {}
 
-    const { endAt: lotEndAt, extendedBiddingEndAt, lotID } = props.artwork.saleArtwork
+    const { endAt: lotEndAt, extendedBiddingEndAt, lotID } = artwork.saleArtwork
 
     const initialBiddingEndAt = extendedBiddingEndAt ?? lotEndAt ?? saleEndAt
 
@@ -64,7 +65,7 @@ export const ArtworkLotTimerWrapper: React.FC<AuctionWebsocketWrapperProps> = (p
       lotID,
       lotEndAt,
       biddingEndAt: initialBiddingEndAt,
-      onDataReceived: props.refetchArtwork,
+      onDataReceived: refetchArtwork,
     })
 
     return (
@@ -134,16 +135,10 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
   biddingEndAt,
   hasBeenExtended,
 }) => {
-  const { isInAuction, sale, isForSale } = artwork
-  const isBiddableInAuction =
-    isInAuction && sale && timerState !== AuctionTimerState.CLOSED && isForSale
+  const { sale, isForSale } = artwork
+  const isBiddableInAuction = timerState !== AuctionTimerState.CLOSED && isForSale
 
-  const displayAuctionLotLabel =
-    artwork.isInAuction &&
-    artwork.saleArtwork &&
-    artwork.saleArtwork.lotLabel &&
-    artwork.sale &&
-    !artwork.sale.isClosed
+  const displayAuctionLotLabel = !!artwork.saleArtwork?.lotLabel && !artwork.sale?.isClosed
 
   const getColor = () => {
     if (!duration) {
@@ -177,7 +172,7 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
           <>
             <Spacer mr={4} />
             <Flex flexDirection="row" alignItems="center">
-              {sale.cascadingEndTimeIntervalMinutes ? (
+              {sale?.cascadingEndTimeIntervalMinutes ? (
                 <ModernTicker
                   duration={duration}
                   hasStarted={hasStarted}
@@ -198,7 +193,7 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
             {label}
           </Text>
           <Spacer mt={1} />
-          {!!sale.extendedBiddingPeriodMinutes && !!sale.extendedBiddingIntervalMinutes && (
+          {!!sale?.extendedBiddingPeriodMinutes && !!sale?.extendedBiddingIntervalMinutes && (
             <>
               <ArtworkAuctionProgressBar
                 startAt={sale.startAt}
