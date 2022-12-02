@@ -48,6 +48,15 @@ export const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork }) =
           {getArtworkTitleAndMaybeDate()}
         </Text>
       </Flex>
+
+      {!!enableArtworkRedesign && !artwork.isForSale && (
+        <>
+          <Spacer mt={2} />
+          <Text variant="md" color="black100">
+            {artwork.saleMessage}
+          </Text>
+        </>
+      )}
       {!!artwork.isInAuction && !artwork.sale?.isClosed && (
         <>
           {!!(artwork.sale?.cascadingEndTimeIntervalMinutes && !enableArtworkRedesign) && (
@@ -82,6 +91,8 @@ export const ArtworkTombstoneFragmentContainer = createFragmentContainer(Artwork
       isInAuction
       medium
       date
+      isForSale
+      saleMessage
       saleArtwork {
         lotLabel
         estimate
