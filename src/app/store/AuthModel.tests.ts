@@ -69,53 +69,6 @@ describe("AuthModel", () => {
     })
   })
 
-  describe("userExists", () => {
-    beforeEach(async () => {
-      mockFetchJsonOnce({
-        xapp_token: "my-special-token",
-        expires_in: "never",
-      })
-      await GlobalStore.actions.auth.getXAppToken()
-      mockFetch.mockClear()
-    })
-
-    it("makes a request to gravity's /user endpoint", async () => {
-      mockFetchResponseOnce({ status: 200 })
-      await GlobalStore.actions.auth.userExists({ email: "user@example.com" })
-      expect(mockFetch).toHaveBeenCalledTimes(1)
-      expect(mockFetch.mock.calls[0][0]).toMatchInlineSnapshot(
-        `"https://stagingapi.artsy.net/api/v1/user?email=user%40example.com"`
-      )
-    })
-
-    it("returns true if response is 200", async () => {
-      mockFetchResponseOnce({ status: 200 })
-      const result = await GlobalStore.actions.auth.userExists({ email: "user@example.com" })
-
-      expect(result).toBe(true)
-    })
-
-    it("returns false if response is 404", async () => {
-      mockFetchResponseOnce({ status: 404 })
-      const result = await GlobalStore.actions.auth.userExists({ email: "user@example.com" })
-
-      expect(result).toBe(false)
-    })
-
-    it("throws an error if something else happened", async () => {
-      mockFetchResponseOnce({ status: 500, json: () => Promise.resolve({ error: "bad times" }) })
-      let error: Error | null = null
-      try {
-        await GlobalStore.actions.auth.userExists({ email: "user@example.com" })
-      } catch (e) {
-        error = e as Error
-      }
-
-      expect(error).not.toBe(null)
-      expect(error).toMatchInlineSnapshot(`[Error: {"error":"bad times"}]`)
-    })
-  })
-
   describe("signIn", () => {
     beforeEach(async () => {
       mockFetchJsonOnce({
