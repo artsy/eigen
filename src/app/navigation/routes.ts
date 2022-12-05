@@ -15,7 +15,7 @@ export function matchRoute(
   | { type: "external_url"; url: string } {
   if (isProtocolEncoded(url)) {
     // if entire url is encoded, decode!
-    // Else user will land on VanityUrlEntity for url that otherwise would have been valid
+    // else user will land on VanityUrlEntity for url that otherwise would have been valid
     url = decodeUrl(url)
   }
   let parsed = parse(url)

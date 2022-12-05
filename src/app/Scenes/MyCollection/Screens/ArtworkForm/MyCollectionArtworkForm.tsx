@@ -35,7 +35,7 @@ import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
 import { deletedPhotos } from "../../utils/deletedPhotos"
 import { SavingArtworkModal } from "./Components/SavingArtworkModal"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
-import { removeLocalPhotos, storeLocalPhotos, uploadPhotos } from "./MyCollectionImageUtil"
+import { storeLocalPhotos, uploadPhotos } from "./MyCollectionImageUtil"
 import { MyCollectionAddPhotos } from "./Screens/MyCollectionArtworkFormAddPhotos"
 import { MyCollectionArtworkFormArtist } from "./Screens/MyCollectionArtworkFormArtist"
 import { MyCollectionArtworkFormArtwork } from "./Screens/MyCollectionArtworkFormArtwork"
@@ -365,13 +365,14 @@ export const updateArtwork = async (
       ...explicitlyClearedFields(others, dirtyFormCheckValues),
     })
 
+    const slug = response.myCollectionUpdateArtwork?.artworkOrError?.artwork?.slug
+    // if the user has updated images, save to local store
+    if (slug) {
+      storeLocalPhotos(slug, photos)
+    }
     const deletedImages = deletedPhotos(dirtyFormCheckValues.photos, photos)
     for (const photo of deletedImages) {
       await deleteArtworkImage(props.artwork.internalID, photo.id)
-    }
-    const slug = response.myCollectionUpdateArtwork?.artworkOrError?.artwork?.slug
-    if (slug) {
-      removeLocalPhotos(slug)
     }
   }
 }

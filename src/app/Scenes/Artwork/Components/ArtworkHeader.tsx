@@ -1,5 +1,5 @@
 import { ContextModule, CustomService, OwnerType, share } from "@artsy/cohesion"
-import Clipboard from "@react-native-community/clipboard"
+import Clipboard from "@react-native-clipboard/clipboard"
 import { ArtworkHeader_artwork$data } from "__generated__/ArtworkHeader_artwork.graphql"
 import { CustomShareSheet, CustomShareSheetItem } from "app/Components/CustomShareSheet"
 import { useToast } from "app/Components/Toast/toastHook"
@@ -31,6 +31,7 @@ import { UnlistedArtworksBanner } from "./UnlistedArtworksBanner"
 
 interface ArtworkHeaderProps {
   artwork: ArtworkHeader_artwork$data
+  refetchArtwork: () => void
 }
 
 export enum VisibilityLevels {
@@ -40,7 +41,7 @@ export enum VisibilityLevels {
 }
 
 export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
-  const { artwork } = props
+  const { artwork, refetchArtwork } = props
   const screenDimensions = useScreenDimensions()
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const { trackEvent } = useTracking()
@@ -146,7 +147,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
         </Flex>
         <Spacer mb={4} />
         <Box px={2}>
-          <ArtworkTombstone artwork={artwork} />
+          <ArtworkTombstone artwork={artwork} refetchArtwork={refetchArtwork} />
         </Box>
       </Box>
       <CustomShareSheet visible={shareSheetVisible} setVisible={setShareSheetVisible}>

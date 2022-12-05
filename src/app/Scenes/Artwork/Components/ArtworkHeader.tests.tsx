@@ -8,8 +8,10 @@ import { UnlistedArtworksBanner } from "./UnlistedArtworksBanner"
 
 jest.mock("react-native-view-shot", () => ({}))
 
+const mockRefetch = jest.fn()
+
 const TestRenderer: React.FC = () => {
-  return <ArtworkHeader artwork={ArtworkFixture} />
+  return <ArtworkHeader artwork={ArtworkFixture} refetchArtwork={mockRefetch} />
 }
 
 describe("ArtworkHeader", () => {
@@ -34,7 +36,9 @@ describe("ArtworkHeader", () => {
         ...ArtworkFixture,
         visibilityLevel: VisibilityLevels.UNLISTED,
       }
-      const { container } = renderWithWrappers(<ArtworkHeader artwork={artwork} />)
+      const { container } = renderWithWrappers(
+        <ArtworkHeader artwork={artwork} refetchArtwork={mockRefetch} />
+      )
       expect(container.findAllByType(UnlistedArtworksBanner).length).toEqual(1)
     })
 
@@ -44,7 +48,9 @@ describe("ArtworkHeader", () => {
           ...ArtworkFixture,
           visibilityLevel: VisibilityLevels.LISTED,
         }
-        const { container } = renderWithWrappers(<ArtworkHeader artwork={artwork} />)
+        const { container } = renderWithWrappers(
+          <ArtworkHeader artwork={artwork} refetchArtwork={mockRefetch} />
+        )
         expect(container.findAllByType(UnlistedArtworksBanner)).toHaveLength(0)
       })
     })
@@ -55,7 +61,9 @@ describe("ArtworkHeader", () => {
           ...ArtworkFixture,
           visibilityLevel: null,
         }
-        const { container } = renderWithWrappers(<ArtworkHeader artwork={artwork} />)
+        const { container } = renderWithWrappers(
+          <ArtworkHeader artwork={artwork} refetchArtwork={mockRefetch} />
+        )
         expect(container.findAllByType(UnlistedArtworksBanner)).toHaveLength(0)
       })
     })

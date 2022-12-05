@@ -269,22 +269,20 @@ describe("Artwork", () => {
     expect(tree.root.findAllByType(ArtworkDetails)).toHaveLength(1)
   })
 
-  // TODO: This test keeps failing randomly on CI, so we're disabling it for now.
-  xit("marks the artwork as viewed", () => {
+  it("marks the artwork as viewed", () => {
     renderWithWrappersLEGACY(<TestRenderer />)
-    const slug = "test artwork id"
 
-    mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
-      Artwork() {
-        return { slug }
-      },
-    })
+    mockMostRecentOperation("ArtworkAboveTheFoldQuery")
+
+    expect(environment.mock.getMostRecentOperation().request.node.operation.name).toEqual(
+      "ArtworkMarkAsRecentlyViewedQuery"
+    )
 
     expect(environment.mock.getMostRecentOperation()).toMatchObject({
       request: {
         variables: {
           input: {
-            artwork_id: slug,
+            artwork_id: '<mock-value-for-field-"slug">',
           },
         },
       },
@@ -325,6 +323,9 @@ describe("Artwork", () => {
     mockMostRecentOperation("RequestConditionReportQuery")
 
     navigationEvents.emit("modalDismissed")
+
+    await flushPromiseQueue()
+
     mockMostRecentOperation("ArtworkRefetchQuery", {
       Artwork() {
         return { slug: "completely-different-slug" }
@@ -417,7 +418,7 @@ describe("Artwork", () => {
         expect(extractText(tree.root.findByType(BidButton))).toContain("Enter live bidding")
       })
 
-      it("for which I am not registered and registration is open", () => {
+      it("for which I am not registered and registration is open", async () => {
         const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
         mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
@@ -430,6 +431,8 @@ describe("Artwork", () => {
             )
           },
         })
+
+        await flushPromiseQueue()
 
         expect(tree.root.findAllByType(Countdown)).toHaveLength(1)
         expect(tree.root.findByType(Countdown).props.label).toBe("In progress")
@@ -631,7 +634,9 @@ describe("Artwork", () => {
 
       await flushPromiseQueue()
 
-      expect(screen.queryByText("Be covered by the Artsy Guarantee")).toBeTruthy()
+      expect(
+        screen.queryByText("Be covered by the Artsy Guarantee when you checkout with Artsy")
+      ).toBeTruthy()
     })
 
     it("should not be displayed when ineligible for artsy guarantee", async () => {
@@ -647,7 +652,9 @@ describe("Artwork", () => {
 
       await flushPromiseQueue()
 
-      expect(screen.queryByText("Be covered by the Artsy Guarantee")).toBeNull()
+      expect(
+        screen.queryByText("Be covered by the Artsy Guarantee when you checkout with Artsy")
+      ).toBeNull()
     })
   })
 

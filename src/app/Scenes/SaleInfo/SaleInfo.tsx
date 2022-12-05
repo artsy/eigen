@@ -1,22 +1,20 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { SaleInfo_me$data } from "__generated__/SaleInfo_me.graphql"
 import { SaleInfo_sale$data } from "__generated__/SaleInfo_sale.graphql"
 import { SaleInfoQueryRendererQuery } from "__generated__/SaleInfoQueryRendererQuery.graphql"
+import { Markdown } from "app/Components/Markdown"
 import { MenuItem } from "app/Components/MenuItem"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { PlaceholderText } from "app/utils/placeholders"
-import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import moment from "moment-timezone"
-import { Flex, Join, Separator, Text } from "palette"
-import React, { useEffect, useRef } from "react"
-import { PanResponder, Platform, ScrollView, View } from "react-native"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-
-import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { Markdown } from "app/Components/Markdown"
-import { StyledWebView } from "app/Components/StyledWebView"
 import { defaultRules } from "app/utils/renderMarkdown"
+import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { sendEmail } from "app/utils/sendEmail"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
+import moment from "moment-timezone"
+import { Flex, Join, Separator, Text } from "palette"
+import { useEffect, useRef } from "react"
+import { PanResponder, Platform, ScrollView, View } from "react-native"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { navigate } from "../../navigation/navigate"
 import { PlaceholderBox } from "../../utils/placeholders"
 import { RegisterToBidButtonContainer } from "../Sale/Components/RegisterToBidButton"
@@ -115,7 +113,7 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
             )}
             {Platform.OS === "ios" ? (
               <View {...(panResponder.current?.panHandlers || {})}>
-                <StyledWebView body={sale.description || ""} />
+                <Markdown rules={markdownRules}>{sale.description ?? ""}</Markdown>
               </View>
             ) : (
               <Markdown rules={markdownRules}>{sale.description || ""}</Markdown>

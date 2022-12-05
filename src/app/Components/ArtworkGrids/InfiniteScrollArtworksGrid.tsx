@@ -84,6 +84,9 @@ export interface Props {
   /** Name of the parent screen's entity where the grid is located. For analytics purposes. */
   contextScreen?: string
 
+  /** Allow users to save artworks that are not lots to their saves & follows */
+  hideSaveIcon?: boolean
+
   /** An array of child indices determining which children get docked to the top of the screen when scrolling.  */
   stickyHeaderIndices?: number[]
 
@@ -127,6 +130,7 @@ interface PrivateProps {
   loadMore: RelayPaginationProp["loadMore"]
   hasMore: RelayPaginationProp["hasMore"]
   isLoading?: RelayPaginationProp["isLoading"]
+  myCollectionIsRefreshing?: boolean
 }
 
 interface MapperProps extends Omit<PrivateProps, "connection"> {
@@ -175,6 +179,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
   isMyCollection = false,
   useParentAwareScrollView = Platform.OS === "android",
   showLoadingSpinner = false,
+  hideSaveIcon = false,
   updateRecentSearchesOnTap = false,
   itemComponentProps,
   width,
@@ -195,6 +200,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
   contextScreenOwnerSlug,
   contextScreenOwnerId,
   contextScreenOwnerType,
+  myCollectionIsRefreshing,
 }) => {
   const getSectionDimension = (gridWidth: number | null | undefined) => {
     // Setting the dimension to 1 for tests to avoid adjusting the screen width
@@ -297,6 +303,12 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
       for (let row = 0; row < sectionedArtworks[column].length; row++) {
         const artwork = sectionedArtworks[column][row]
         const itemIndex = row * columnCount + column
+
+        const componentSpecificProps = isMyCollection
+          ? {}
+          : {
+              hideSaveIcon,
+            }
         const ItemComponent = isMyCollection
           ? MyCollectionArtworkGridItemFragmentContainer
           : Artwork
@@ -320,6 +332,8 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
             updateRecentSearchesOnTap={updateRecentSearchesOnTap}
             {...itemComponentProps}
             height={imgHeight}
+            myCollectionIsRefreshing={myCollectionIsRefreshing}
+            {...componentSpecificProps}
           />
         )
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.

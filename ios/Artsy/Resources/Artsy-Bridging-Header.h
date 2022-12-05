@@ -48,7 +48,6 @@
 #import "ARExternalWebBrowserViewController.h"
 
 #import "UIViewController+SimpleChildren.h"
-#import "UIViewController+ARUserActivity.h"
 #import "ARMenuAwareViewController.h"
 #import "ARSharingController.h"
 
@@ -105,6 +104,7 @@
 #import "UIDevice-Hardware.h"
 #import "AREmission.h"
 #import "ARComponentViewController.h"
+#import "ARNotificationView.h"
 
 #import "ARTNativeScreenPresenterModule.h"
 
@@ -113,3 +113,6 @@
 
 // Admin
 #import "ARAdminSettingsViewController.h"
+
+// Sentry Swift Access
+#import "ARSentryReporter.h"

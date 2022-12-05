@@ -1,4 +1,4 @@
-import Clipboard from "@react-native-community/clipboard"
+import Clipboard from "@react-native-clipboard/clipboard"
 import { Toast } from "app/Components/Toast/Toast"
 import { DevToggleName } from "app/store/config/features"
 import { unsafe_getDevToggle } from "app/store/GlobalStore"

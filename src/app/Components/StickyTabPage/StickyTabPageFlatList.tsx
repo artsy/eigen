@@ -3,9 +3,12 @@ import React, { createContext, useContext, useRef, useState } from "react"
 import { FlatList, FlatListProps } from "react-native"
 import Animated from "react-native-reanimated"
 import { useAnimatedValue } from "./reanimatedHelpers"
-import { useStickyTabPageContext } from "./StickyTabPageContext"
+import { StickyTabPageContext, useStickyTabPageContext } from "./StickyTabPageContext"
 
 interface FlatListRequiredContext {
+  /** This is the position/index of the Flatlist in the SnappyHorizontalRail.
+   */
+  __INTERNAL__indexInRail: number
   tabIsActive: Animated.Node<number>
   tabSpecificContentHeight: Animated.Node<number> | null
   setJSX(jsx: JSX.Element | null): void
@@ -14,6 +17,8 @@ interface FlatListRequiredContext {
 export const StickyTabPageFlatListContext = createContext<FlatListRequiredContext>(null as any)
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
+
+export type StickyTabPageFlatListType = typeof AnimatedFlatList
 
 export interface StickyTabSection {
   key: string // must be unique per-tab
@@ -38,7 +43,10 @@ export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = (props) =
   if (!stickyHeaderHeight) {
     throw new Error("invalid state, mounted flat list before stickyHeaderHeight was determined")
   }
-  const { tabIsActive, tabSpecificContentHeight } = useContext(StickyTabPageFlatListContext)
+  const { tabIsActive, tabSpecificContentHeight, __INTERNAL__indexInRail } = useContext(
+    StickyTabPageFlatListContext
+  )
+  const { __INTERNAL__registerFlatListRef } = useContext(StickyTabPageContext)
 
   const totalStickyHeaderHeight = Animated.add(stickyHeaderHeight, tabSpecificContentHeight ?? 0)
 
@@ -107,6 +115,9 @@ export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = (props) =
         showsVerticalScrollIndicator={false}
         ref={(ref) => {
           flatListRef.current = ref as any
+
+          __INTERNAL__registerFlatListRef(ref as any, __INTERNAL__indexInRail)
+
           if (props.innerRef) {
             props.innerRef.current = ref as any
           }

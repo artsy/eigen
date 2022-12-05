@@ -7,7 +7,7 @@ If things are not going right some of the things you can try are
 - `yarn install:all`
 - `yarn relay`
 - `yarn pod-install-repo-update`
-- `open ios/Artsy.xcworkspace` and build the app again
+- `open ios/Artsy.xcworkspace` -> Product -> Clean Build Folder (shift + command + K) **then** build the app again
 - `yarn doctor`
 
 Still nothing?

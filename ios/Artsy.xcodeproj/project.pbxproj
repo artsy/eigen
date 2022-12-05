@@ -222,6 +222,16 @@
 		CB43299D27FE0D9000B29DD6 /* CloseButtonLargeHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE325DD27E275A200395A93 /* CloseButtonLargeHighlighted@2x.png */; };
 		CB43299E27FE0DB100B29DD6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CB43278427E8FEE400B29DD6 /* InfoPlist.strings */; };
 		CB61B85427B585F00007922D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB61B85327B585F00007922D /* GoogleService-Info.plist */; };
+		CB762B2A291054D500881194 /* LiveAuctionReportProblemButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB762B29291054D500881194 /* LiveAuctionReportProblemButton.swift */; };
+		CB762B2D29119F0700881194 /* ARSentryReporter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB762B2C29119F0700881194 /* ARSentryReporter.m */; };
+		CB762B372911A5E100881194 /* ARVIRModalClose.png in Resources */ = {isa = PBXBuildFile; fileRef = CB762B2F2911A5E100881194 /* ARVIRModalClose.png */; };
+		CB762B382911A5E100881194 /* ARVIRTick.png in Resources */ = {isa = PBXBuildFile; fileRef = CB762B302911A5E100881194 /* ARVIRTick.png */; };
+		CB762B392911A5E100881194 /* ARVIRModalClose@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB762B312911A5E100881194 /* ARVIRModalClose@3x.png */; };
+		CB762B3A2911A5E100881194 /* ARVIRTick@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB762B322911A5E100881194 /* ARVIRTick@2x.png */; };
+		CB762B3B2911A5E100881194 /* ARVIRTick@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB762B332911A5E100881194 /* ARVIRTick@3x.png */; };
+		CB762B3C2911A5E100881194 /* ARVIRModalClose@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB762B342911A5E100881194 /* ARVIRModalClose@2x.png */; };
+		CB762B3D2911A5E100881194 /* ARVIRShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = CB762B352911A5E100881194 /* ARVIRShadow.png */; };
+		CB762B3E2911A5E100881194 /* ar_vir_opening_frame.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB762B362911A5E100881194 /* ar_vir_opening_frame.jpg */; };
 		CBE3211C27D9615000395A93 /* OldAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3210827D9615000395A93 /* OldAdminView.swift */; };
 		CBE3211D27D9615000395A93 /* ARTCityGuideViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3210927D9615000395A93 /* ARTCityGuideViewManager.m */; };
 		CBE3211E27D9615000395A93 /* ARTLiveAuctionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3210C27D9615000395A93 /* ARTLiveAuctionViewManager.m */; };
@@ -236,10 +246,8 @@
 		CBE3267527E275A300395A93 /* UIView+HitTestExpansion.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3246827E275A100395A93 /* UIView+HitTestExpansion.m */; };
 		CBE3267627E275A300395A93 /* NSAttributedString+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3246C27E275A100395A93 /* NSAttributedString+Additions.swift */; };
 		CBE3267727E275A300395A93 /* UIImageView+AsyncImageLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3246E27E275A100395A93 /* UIImageView+AsyncImageLoading.m */; };
-		CBE3267827E275A300395A93 /* UIView+ScrollToTop.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3246F27E275A100395A93 /* UIView+ScrollToTop.m */; };
 		CBE3267927E275A300395A93 /* NSDate+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3247127E275A100395A93 /* NSDate+Util.m */; };
 		CBE3267A27E275A300395A93 /* UILabel+Styling.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3247427E275A100395A93 /* UILabel+Styling.swift */; };
-		CBE3267B27E275A300395A93 /* UIViewController+ARUserActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3247527E275A100395A93 /* UIViewController+ARUserActivity.m */; };
 		CBE3267C27E275A300395A93 /* UIImage+ImageFromColor.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3247627E275A100395A93 /* UIImage+ImageFromColor.m */; };
 		CBE3267D27E275A300395A93 /* UIViewController+Popovers.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3247727E275A100395A93 /* UIViewController+Popovers.m */; };
 		CBE3267E27E275A300395A93 /* NSArray+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3247927E275A100395A93 /* NSArray+Additions.m */; };
@@ -247,7 +255,6 @@
 		CBE3268027E275A300395A93 /* NSKeyedUnarchiver+ErrorLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3247F27E275A100395A93 /* NSKeyedUnarchiver+ErrorLogging.m */; };
 		CBE3268127E275A300395A93 /* UIViewController+SimpleChildren.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248027E275A100395A93 /* UIViewController+SimpleChildren.m */; };
 		CBE3268227E275A300395A93 /* NSDate+DateRange.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248127E275A100395A93 /* NSDate+DateRange.m */; };
-		CBE3268327E275A300395A93 /* UIViewController+WithLoadedData.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248227E275A100395A93 /* UIViewController+WithLoadedData.m */; };
 		CBE3268427E275A300395A93 /* UIView+OldSchoolSnapshots.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248327E275A100395A93 /* UIView+OldSchoolSnapshots.m */; };
 		CBE3268527E275A300395A93 /* UIViewController+FullScreenLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248527E275A100395A93 /* UIViewController+FullScreenLoading.m */; };
 		CBE3268627E275A300395A93 /* PanDirectionGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248627E275A100395A93 /* PanDirectionGestureRecognizer.swift */; };
@@ -259,7 +266,6 @@
 		CBE3269227E275A300395A93 /* ARAppNotificationsDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249827E275A100395A93 /* ARAppNotificationsDelegate.m */; };
 		CBE3269327E275A300395A93 /* ARAppStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249A27E275A100395A93 /* ARAppStatus.m */; };
 		CBE3269427E275A300395A93 /* ARAnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249B27E275A100395A93 /* ARAnalyticsConstants.m */; };
-		CBE3269527E275A300395A93 /* ARModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249D27E275A100395A93 /* ARModalViewController.m */; };
 		CBE3269627E275A300395A93 /* ArtsyEcho.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249F27E275A100395A93 /* ArtsyEcho.m */; };
 		CBE3269727E275A300395A93 /* ARApplicationShortcutItemDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324A127E275A100395A93 /* ARApplicationShortcutItemDelegate.m */; };
 		CBE3269827E275A300395A93 /* ARAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324A227E275A100395A93 /* ARAppDelegate.m */; };
@@ -349,14 +355,6 @@
 		CBE326EE27E275A300395A93 /* ARAugmentedFloorBasedVIRViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3253B27E275A100395A93 /* ARAugmentedFloorBasedVIRViewController.m */; };
 		CBE326EF27E275A300395A93 /* ARAugmentedVIRSetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3253C27E275A100395A93 /* ARAugmentedVIRSetupViewController.m */; };
 		CBE326F027E275A300395A93 /* ARVIRHorizontalPlaneInteractionController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3253F27E275A100395A93 /* ARVIRHorizontalPlaneInteractionController.m */; };
-		CBE326F127E275A300395A93 /* ARVIRModalClose.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE3254127E275A100395A93 /* ARVIRModalClose.png */; };
-		CBE326F227E275A300395A93 /* ARVIRTick.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE3254227E275A100395A93 /* ARVIRTick.png */; };
-		CBE326F327E275A300395A93 /* ARVIRModalClose@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE3254327E275A100395A93 /* ARVIRModalClose@3x.png */; };
-		CBE326F427E275A300395A93 /* ARVIRTick@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE3254427E275A100395A93 /* ARVIRTick@2x.png */; };
-		CBE326F527E275A300395A93 /* ARVIRTick@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE3254527E275A100395A93 /* ARVIRTick@3x.png */; };
-		CBE326F627E275A300395A93 /* ARVIRModalClose@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE3254627E275A100395A93 /* ARVIRModalClose@2x.png */; };
-		CBE326F727E275A300395A93 /* ARVIRShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE3254727E275A100395A93 /* ARVIRShadow.png */; };
-		CBE326F827E275A300395A93 /* ar_vir_opening_frame.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CBE3254827E275A100395A93 /* ar_vir_opening_frame.jpg */; };
 		CBE326F927E275A300395A93 /* ARAugmentedRealityConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3254927E275A100395A93 /* ARAugmentedRealityConfig.m */; };
 		CBE326FA27E275A300395A93 /* ARInformationView.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3254C27E275A100395A93 /* ARInformationView.m */; };
 		CBE326FB27E275A300395A93 /* live_auctions_socket.json in Resources */ = {isa = PBXBuildFile; fileRef = CBE3254D27E275A100395A93 /* live_auctions_socket.json */; };
@@ -963,6 +961,17 @@
 		CB43299727FDFE6400B29DD6 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		CB43299927FDFE6B00B29DD6 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		CB61B85327B585F00007922D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CB762B29291054D500881194 /* LiveAuctionReportProblemButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveAuctionReportProblemButton.swift; sourceTree = "<group>"; };
+		CB762B2B29119F0700881194 /* ARSentryReporter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARSentryReporter.h; sourceTree = "<group>"; };
+		CB762B2C29119F0700881194 /* ARSentryReporter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARSentryReporter.m; sourceTree = "<group>"; };
+		CB762B2F2911A5E100881194 /* ARVIRModalClose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ARVIRModalClose.png; sourceTree = "<group>"; };
+		CB762B302911A5E100881194 /* ARVIRTick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ARVIRTick.png; sourceTree = "<group>"; };
+		CB762B312911A5E100881194 /* ARVIRModalClose@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRModalClose@3x.png"; sourceTree = "<group>"; };
+		CB762B322911A5E100881194 /* ARVIRTick@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRTick@2x.png"; sourceTree = "<group>"; };
+		CB762B332911A5E100881194 /* ARVIRTick@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRTick@3x.png"; sourceTree = "<group>"; };
+		CB762B342911A5E100881194 /* ARVIRModalClose@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRModalClose@2x.png"; sourceTree = "<group>"; };
+		CB762B352911A5E100881194 /* ARVIRShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ARVIRShadow.png; sourceTree = "<group>"; };
+		CB762B362911A5E100881194 /* ar_vir_opening_frame.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ar_vir_opening_frame.jpg; sourceTree = "<group>"; };
 		CBA7CF22282BF6310025AEA5 /* Artsy_Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Artsy_Tests-Info.plist"; sourceTree = "<group>"; };
 		CBE3210827D9615000395A93 /* OldAdminView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OldAdminView.swift; sourceTree = "<group>"; };
 		CBE3210927D9615000395A93 /* ARTCityGuideViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTCityGuideViewManager.m; sourceTree = "<group>"; };
@@ -983,7 +992,6 @@
 		CBE3246127E275A100395A93 /* UITableViewController+Animations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewController+Animations.swift"; sourceTree = "<group>"; };
 		CBE3246227E275A100395A93 /* UIViewController+Popovers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Popovers.h"; sourceTree = "<group>"; };
 		CBE3246327E275A100395A93 /* UIImage+ImageFromColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageFromColor.h"; sourceTree = "<group>"; };
-		CBE3246427E275A100395A93 /* UIViewController+ARUserActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+ARUserActivity.h"; sourceTree = "<group>"; };
 		CBE3246527E275A100395A93 /* NSString+StringBetweenStrings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+StringBetweenStrings.m"; sourceTree = "<group>"; };
 		CBE3246627E275A100395A93 /* Int+Metrification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int+Metrification.swift"; sourceTree = "<group>"; };
 		CBE3246727E275A100395A93 /* UIDevice-Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice-Hardware.m"; sourceTree = "<group>"; };
@@ -994,26 +1002,21 @@
 		CBE3246C27E275A100395A93 /* NSAttributedString+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Additions.swift"; sourceTree = "<group>"; };
 		CBE3246D27E275A100395A93 /* NSKeyedUnarchiver+ErrorLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSKeyedUnarchiver+ErrorLogging.h"; sourceTree = "<group>"; };
 		CBE3246E27E275A100395A93 /* UIImageView+AsyncImageLoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AsyncImageLoading.m"; sourceTree = "<group>"; };
-		CBE3246F27E275A100395A93 /* UIView+ScrollToTop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ScrollToTop.m"; sourceTree = "<group>"; };
 		CBE3247027E275A100395A93 /* UIViewController+FullScreenLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+FullScreenLoading.h"; sourceTree = "<group>"; };
 		CBE3247127E275A100395A93 /* NSDate+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Util.m"; sourceTree = "<group>"; };
 		CBE3247227E275A100395A93 /* UIView+OldSchoolSnapshots.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+OldSchoolSnapshots.h"; sourceTree = "<group>"; };
-		CBE3247327E275A100395A93 /* UIViewController+WithLoadedData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+WithLoadedData.h"; sourceTree = "<group>"; };
 		CBE3247427E275A100395A93 /* UILabel+Styling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+Styling.swift"; sourceTree = "<group>"; };
-		CBE3247527E275A100395A93 /* UIViewController+ARUserActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+ARUserActivity.m"; sourceTree = "<group>"; };
 		CBE3247627E275A100395A93 /* UIImage+ImageFromColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageFromColor.m"; sourceTree = "<group>"; };
 		CBE3247727E275A100395A93 /* UIViewController+Popovers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Popovers.m"; sourceTree = "<group>"; };
 		CBE3247827E275A100395A93 /* UIView+HitTestExpansion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+HitTestExpansion.h"; sourceTree = "<group>"; };
 		CBE3247927E275A100395A93 /* NSArray+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Additions.m"; sourceTree = "<group>"; };
 		CBE3247A27E275A100395A93 /* UIDevice-Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice-Hardware.h"; sourceTree = "<group>"; };
 		CBE3247B27E275A100395A93 /* NSString+StringBetweenStrings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+StringBetweenStrings.h"; sourceTree = "<group>"; };
-		CBE3247C27E275A100395A93 /* UIView+ScrollToTop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ScrollToTop.h"; sourceTree = "<group>"; };
 		CBE3247D27E275A100395A93 /* UIImageView+AsyncImageLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AsyncImageLoading.h"; sourceTree = "<group>"; };
 		CBE3247E27E275A100395A93 /* UIViewController+Traits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Traits.swift"; sourceTree = "<group>"; };
 		CBE3247F27E275A100395A93 /* NSKeyedUnarchiver+ErrorLogging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSKeyedUnarchiver+ErrorLogging.m"; sourceTree = "<group>"; };
 		CBE3248027E275A100395A93 /* UIViewController+SimpleChildren.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+SimpleChildren.m"; sourceTree = "<group>"; };
 		CBE3248127E275A100395A93 /* NSDate+DateRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+DateRange.m"; sourceTree = "<group>"; };
-		CBE3248227E275A100395A93 /* UIViewController+WithLoadedData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+WithLoadedData.m"; sourceTree = "<group>"; };
 		CBE3248327E275A100395A93 /* UIView+OldSchoolSnapshots.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+OldSchoolSnapshots.m"; sourceTree = "<group>"; };
 		CBE3248427E275A100395A93 /* NSDate+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Util.h"; sourceTree = "<group>"; };
 		CBE3248527E275A100395A93 /* UIViewController+FullScreenLoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+FullScreenLoading.m"; sourceTree = "<group>"; };
@@ -1030,7 +1033,6 @@
 		CBE3249A27E275A100395A93 /* ARAppStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppStatus.m; sourceTree = "<group>"; };
 		CBE3249B27E275A100395A93 /* ARAnalyticsConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAnalyticsConstants.m; sourceTree = "<group>"; };
 		CBE3249C27E275A100395A93 /* ARAppDelegate+Echo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegate+Echo.h"; sourceTree = "<group>"; };
-		CBE3249D27E275A100395A93 /* ARModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARModalViewController.m; sourceTree = "<group>"; };
 		CBE3249E27E275A100395A93 /* AROptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROptions.h; sourceTree = "<group>"; };
 		CBE3249F27E275A100395A93 /* ArtsyEcho.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArtsyEcho.m; sourceTree = "<group>"; };
 		CBE324A027E275A100395A93 /* ARAppDelegate+Emission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegate+Emission.h"; sourceTree = "<group>"; };
@@ -1051,7 +1053,6 @@
 		CBE324B027E275A100395A93 /* ARAppDelegate+Emission.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARAppDelegate+Emission.m"; sourceTree = "<group>"; };
 		CBE324B127E275A100395A93 /* ArtsyEcho.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArtsyEcho.h; sourceTree = "<group>"; };
 		CBE324B227E275A100395A93 /* AROptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROptions.m; sourceTree = "<group>"; };
-		CBE324B327E275A100395A93 /* ARModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARModalViewController.h; sourceTree = "<group>"; };
 		CBE324B427E275A100395A93 /* ARFonts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFonts.h; sourceTree = "<group>"; };
 		CBE324B527E275A100395A93 /* EchoNew.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = EchoNew.json; sourceTree = "<group>"; };
 		CBE324B627E275A100395A93 /* ARUserActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserActivity.m; sourceTree = "<group>"; };
@@ -1169,14 +1170,6 @@
 		CBE3253C27E275A100395A93 /* ARAugmentedVIRSetupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAugmentedVIRSetupViewController.m; sourceTree = "<group>"; };
 		CBE3253E27E275A100395A93 /* ARVIRHorizontalPlaneInteractionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARVIRHorizontalPlaneInteractionController.h; sourceTree = "<group>"; };
 		CBE3253F27E275A100395A93 /* ARVIRHorizontalPlaneInteractionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARVIRHorizontalPlaneInteractionController.m; sourceTree = "<group>"; };
-		CBE3254127E275A100395A93 /* ARVIRModalClose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ARVIRModalClose.png; sourceTree = "<group>"; };
-		CBE3254227E275A100395A93 /* ARVIRTick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ARVIRTick.png; sourceTree = "<group>"; };
-		CBE3254327E275A100395A93 /* ARVIRModalClose@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRModalClose@3x.png"; sourceTree = "<group>"; };
-		CBE3254427E275A100395A93 /* ARVIRTick@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRTick@2x.png"; sourceTree = "<group>"; };
-		CBE3254527E275A100395A93 /* ARVIRTick@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRTick@3x.png"; sourceTree = "<group>"; };
-		CBE3254627E275A100395A93 /* ARVIRModalClose@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRModalClose@2x.png"; sourceTree = "<group>"; };
-		CBE3254727E275A100395A93 /* ARVIRShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ARVIRShadow.png; sourceTree = "<group>"; };
-		CBE3254827E275A100395A93 /* ar_vir_opening_frame.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ar_vir_opening_frame.jpg; sourceTree = "<group>"; };
 		CBE3254927E275A100395A93 /* ARAugmentedRealityConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAugmentedRealityConfig.m; sourceTree = "<group>"; };
 		CBE3254B27E275A100395A93 /* ARInformationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARInformationView.h; sourceTree = "<group>"; };
 		CBE3254C27E275A100395A93 /* ARInformationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARInformationView.m; sourceTree = "<group>"; };
@@ -2519,6 +2512,21 @@
 			path = Stubs;
 			sourceTree = "<group>";
 		};
+		CB762B2E2911A5E100881194 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+				CB762B2F2911A5E100881194 /* ARVIRModalClose.png */,
+				CB762B302911A5E100881194 /* ARVIRTick.png */,
+				CB762B312911A5E100881194 /* ARVIRModalClose@3x.png */,
+				CB762B322911A5E100881194 /* ARVIRTick@2x.png */,
+				CB762B332911A5E100881194 /* ARVIRTick@3x.png */,
+				CB762B342911A5E100881194 /* ARVIRModalClose@2x.png */,
+				CB762B352911A5E100881194 /* ARVIRShadow.png */,
+				CB762B362911A5E100881194 /* ar_vir_opening_frame.jpg */,
+			);
+			path = "New Group";
+			sourceTree = "<group>";
+		};
 		CB8672711C005915043C63E8 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -2607,41 +2615,35 @@
 			isa = PBXGroup;
 			children = (
 				CBE3246127E275A100395A93 /* UITableViewController+Animations.swift */,
-				CBE3246227E275A100395A93 /* UIViewController+Popovers.h */,
-				CBE3246327E275A100395A93 /* UIImage+ImageFromColor.h */,
-				CBE3246427E275A100395A93 /* UIViewController+ARUserActivity.h */,
-				CBE3246527E275A100395A93 /* NSString+StringBetweenStrings.m */,
 				CBE3246627E275A100395A93 /* Int+Metrification.swift */,
-				CBE3246727E275A100395A93 /* UIDevice-Hardware.m */,
-				CBE3246827E275A100395A93 /* UIView+HitTestExpansion.m */,
-				CBE3246927E275A100395A93 /* NSArray+Additions.h */,
-				CBE3246A27E275A100395A93 /* NSDate+DateRange.h */,
-				CBE3246B27E275A100395A93 /* UIViewController+SimpleChildren.h */,
 				CBE3246C27E275A100395A93 /* NSAttributedString+Additions.swift */,
-				CBE3246D27E275A100395A93 /* NSKeyedUnarchiver+ErrorLogging.h */,
-				CBE3246E27E275A100395A93 /* UIImageView+AsyncImageLoading.m */,
-				CBE3246F27E275A100395A93 /* UIView+ScrollToTop.m */,
-				CBE3247027E275A100395A93 /* UIViewController+FullScreenLoading.h */,
-				CBE3247127E275A100395A93 /* NSDate+Util.m */,
-				CBE3247227E275A100395A93 /* UIView+OldSchoolSnapshots.h */,
-				CBE3247327E275A100395A93 /* UIViewController+WithLoadedData.h */,
-				CBE3247427E275A100395A93 /* UILabel+Styling.swift */,
-				CBE3247527E275A100395A93 /* UIViewController+ARUserActivity.m */,
+				CBE3246327E275A100395A93 /* UIImage+ImageFromColor.h */,
 				CBE3247627E275A100395A93 /* UIImage+ImageFromColor.m */,
+				CBE3246227E275A100395A93 /* UIViewController+Popovers.h */,
 				CBE3247727E275A100395A93 /* UIViewController+Popovers.m */,
 				CBE3247827E275A100395A93 /* UIView+HitTestExpansion.h */,
+				CBE3246827E275A100395A93 /* UIView+HitTestExpansion.m */,
+				CBE3247427E275A100395A93 /* UILabel+Styling.swift */,
+				CBE3246927E275A100395A93 /* NSArray+Additions.h */,
 				CBE3247927E275A100395A93 /* NSArray+Additions.m */,
 				CBE3247A27E275A100395A93 /* UIDevice-Hardware.h */,
+				CBE3246727E275A100395A93 /* UIDevice-Hardware.m */,
 				CBE3247B27E275A100395A93 /* NSString+StringBetweenStrings.h */,
-				CBE3247C27E275A100395A93 /* UIView+ScrollToTop.h */,
+				CBE3246527E275A100395A93 /* NSString+StringBetweenStrings.m */,
 				CBE3247D27E275A100395A93 /* UIImageView+AsyncImageLoading.h */,
+				CBE3246E27E275A100395A93 /* UIImageView+AsyncImageLoading.m */,
 				CBE3247E27E275A100395A93 /* UIViewController+Traits.swift */,
+				CBE3246D27E275A100395A93 /* NSKeyedUnarchiver+ErrorLogging.h */,
 				CBE3247F27E275A100395A93 /* NSKeyedUnarchiver+ErrorLogging.m */,
+				CBE3246B27E275A100395A93 /* UIViewController+SimpleChildren.h */,
 				CBE3248027E275A100395A93 /* UIViewController+SimpleChildren.m */,
+				CBE3246A27E275A100395A93 /* NSDate+DateRange.h */,
 				CBE3248127E275A100395A93 /* NSDate+DateRange.m */,
-				CBE3248227E275A100395A93 /* UIViewController+WithLoadedData.m */,
+				CBE3247227E275A100395A93 /* UIView+OldSchoolSnapshots.h */,
 				CBE3248327E275A100395A93 /* UIView+OldSchoolSnapshots.m */,
 				CBE3248427E275A100395A93 /* NSDate+Util.h */,
+				CBE3247127E275A100395A93 /* NSDate+Util.m */,
+				CBE3247027E275A100395A93 /* UIViewController+FullScreenLoading.h */,
 				CBE3248527E275A100395A93 /* UIViewController+FullScreenLoading.m */,
 			);
 			path = Apple;
@@ -2673,10 +2675,10 @@
 				CBE3249727E275A100395A93 /* ARAppActivityContinuationDelegate.m */,
 				CBE3249827E275A100395A93 /* ARAppNotificationsDelegate.m */,
 				CBE3249927E275A100395A93 /* ARTArtsyNativeModule.h */,
+				CBE324AE27E275A100395A93 /* ARTArtsyNativeModule.m */,
 				CBE3249A27E275A100395A93 /* ARAppStatus.m */,
 				CBE3249B27E275A100395A93 /* ARAnalyticsConstants.m */,
 				CBE3249C27E275A100395A93 /* ARAppDelegate+Echo.h */,
-				CBE3249D27E275A100395A93 /* ARModalViewController.m */,
 				CBE3249E27E275A100395A93 /* AROptions.h */,
 				CBE3249F27E275A100395A93 /* ArtsyEcho.m */,
 				CBE324A027E275A100395A93 /* ARAppDelegate+Emission.h */,
@@ -2692,12 +2694,10 @@
 				CBE324AB27E275A100395A93 /* ARAnalyticsConstants.h */,
 				CBE324AC27E275A100395A93 /* ARAppDelegate+Echo.m */,
 				CBE324AD27E275A100395A93 /* ARAppStatus.h */,
-				CBE324AE27E275A100395A93 /* ARTArtsyNativeModule.m */,
 				CBE324AF27E275A100395A93 /* ARApplicationShortcutItemDelegate.h */,
 				CBE324B027E275A100395A93 /* ARAppDelegate+Emission.m */,
 				CBE324B127E275A100395A93 /* ArtsyEcho.h */,
 				CBE324B227E275A100395A93 /* AROptions.m */,
-				CBE324B327E275A100395A93 /* ARModalViewController.h */,
 				CBE324B427E275A100395A93 /* ARFonts.h */,
 				CBE324B527E275A100395A93 /* EchoNew.json */,
 				CBE324B627E275A100395A93 /* ARUserActivity.m */,
@@ -2792,6 +2792,7 @@
 				CBE324E527E275A100395A93 /* LiveAuctionsAdminViewController.swift */,
 				CBE324E627E275A100395A93 /* Views */,
 				CBE324F427E275A100395A93 /* LiveAuctionBidButton.swift */,
+				CB762B29291054D500881194 /* LiveAuctionReportProblemButton.swift */,
 				CBE324F527E275A100395A93 /* LiveAuctionPlaceMaxBidViewController.swift */,
 			);
 			path = Live_Auctions;
@@ -2912,6 +2913,8 @@
 			children = (
 				CBE3251D27E275A100395A93 /* ARNetworkErrorManager.h */,
 				CBE3251E27E275A100395A93 /* ARNetworkErrorManager.m */,
+				CB762B2B29119F0700881194 /* ARSentryReporter.h */,
+				CB762B2C29119F0700881194 /* ARSentryReporter.m */,
 			);
 			path = Errors;
 			sourceTree = "<group>";
@@ -2941,11 +2944,11 @@
 		CBE3253127E275A100395A93 /* ARVIR */ = {
 			isa = PBXGroup;
 			children = (
+				CB762B2E2911A5E100881194 /* New Group */,
 				CBE3253227E275A100395A93 /* Nodes */,
 				CBE3253727E275A100395A93 /* ARAugmentedRealityConfig.h */,
 				CBE3253827E275A100395A93 /* VCs */,
 				CBE3253D27E275A100395A93 /* AR */,
-				CBE3254027E275A100395A93 /* New Group */,
 				CBE3254927E275A100395A93 /* ARAugmentedRealityConfig.m */,
 				CBE3254A27E275A100395A93 /* Views */,
 			);
@@ -2981,21 +2984,6 @@
 				CBE3253F27E275A100395A93 /* ARVIRHorizontalPlaneInteractionController.m */,
 			);
 			path = AR;
-			sourceTree = "<group>";
-		};
-		CBE3254027E275A100395A93 /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-				CBE3254127E275A100395A93 /* ARVIRModalClose.png */,
-				CBE3254227E275A100395A93 /* ARVIRTick.png */,
-				CBE3254327E275A100395A93 /* ARVIRModalClose@3x.png */,
-				CBE3254427E275A100395A93 /* ARVIRTick@2x.png */,
-				CBE3254527E275A100395A93 /* ARVIRTick@3x.png */,
-				CBE3254627E275A100395A93 /* ARVIRModalClose@2x.png */,
-				CBE3254727E275A100395A93 /* ARVIRShadow.png */,
-				CBE3254827E275A100395A93 /* ar_vir_opening_frame.jpg */,
-			);
-			path = "New Group";
 			sourceTree = "<group>";
 		};
 		CBE3254A27E275A100395A93 /* Views */ = {
@@ -3664,20 +3652,18 @@
 				CBE326FB27E275A300395A93 /* live_auctions_socket.json in Resources */,
 				CBE3275D27E275A400395A93 /* CloseButtonLargeHighlighted@2x.png in Resources */,
 				1AE9F26B2902DA87002A561B /* Tests-Store.xcconfig in Resources */,
-				CBE326F327E275A300395A93 /* ARVIRModalClose@3x.png in Resources */,
 				CBE3276B27E275A400395A93 /* navigation_more_arrow_horizontal@2x.png in Resources */,
 				1AE9F2682902DA87002A561B /* Tests-Debug.xcconfig in Resources */,
-				CBE326F627E275A300395A93 /* ARVIRModalClose@2x.png in Resources */,
 				CBE3272D27E275A400395A93 /* ViewInRoom_Bench@2x.png in Resources */,
 				CBE3275227E275A400395A93 /* RefreshIcon@2x.png in Resources */,
 				CBE3274F27E275A400395A93 /* CircleXRed.png in Resources */,
 				CBE3276427E275A400395A93 /* followButtonChecked.png in Resources */,
-				CBE326F427E275A300395A93 /* ARVIRTick@2x.png in Resources */,
 				CBE3277F27E275A400395A93 /* static_sale_data.graphql in Resources */,
 				CBE3273D27E275A400395A93 /* FooterBackground@2x.png in Resources */,
 				CBE3275427E275A400395A93 /* Chevron_White_Left@2x.png in Resources */,
 				CBE3276227E275A400395A93 /* full_logo_black_large@2x.png in Resources */,
 				CBE3275827E275A400395A93 /* paddle@2x.png in Resources */,
+				CB762B3D2911A5E100881194 /* ARVIRShadow.png in Resources */,
 				CBE3272927E275A400395A93 /* ViewInRoom_Wall@2x.png in Resources */,
 				CB61B85427B585F00007922D /* GoogleService-Info.plist in Resources */,
 				CBE3273F27E275A400395A93 /* Hash@2x.png in Resources */,
@@ -3698,13 +3684,12 @@
 				CBE3273827E275A400395A93 /* followButtonChecked@3x.png in Resources */,
 				CBE3275527E275A400395A93 /* Range@2x.png in Resources */,
 				CBE3274327E275A400395A93 /* full_logo_white_small@2x.png in Resources */,
-				CBE326F127E275A300395A93 /* ARVIRModalClose.png in Resources */,
 				CBE3272C27E275A400395A93 /* ViewInRoom_Base@2x.png in Resources */,
 				1A4B97D0283CFA1E00878EAE /* fonts in Resources */,
 				CBE3274127E275A400395A93 /* followButton@2x.png in Resources */,
-				CBE326F827E275A300395A93 /* ar_vir_opening_frame.jpg in Resources */,
 				CBE326D127E275A300395A93 /* live_auctions_static.json in Resources */,
 				CBE3273027E275A400395A93 /* SmallMoreVerticalArrow.png in Resources */,
+				CB762B372911A5E100881194 /* ARVIRModalClose.png in Resources */,
 				CBE3274D27E275A400395A93 /* ARVIRRefresh@3x.png in Resources */,
 				CBE3273927E275A400395A93 /* followButtonChecked@2x.png in Resources */,
 				1AE9F2692902DA87002A561B /* Shared.xcconfig in Resources */,
@@ -3716,6 +3701,7 @@
 				1AE9F26A2902DA87002A561B /* App-Store.xcconfig in Resources */,
 				CBE3274727E275A400395A93 /* BackChevron.png in Resources */,
 				CBE3272E27E275A400395A93 /* ViewInRoom_BaseNoBench@2x.png in Resources */,
+				CB762B3C2911A5E100881194 /* ARVIRModalClose@2x.png in Resources */,
 				1AE9F2672902DA87002A561B /* BrazeExt.xcconfig in Resources */,
 				CBE3273727E275A400395A93 /* navigation_more_arrow_vertical@2x.png in Resources */,
 				CBE3275327E275A400395A93 /* CircleCheckGreen@2x.png in Resources */,
@@ -3723,7 +3709,6 @@
 				1AE9F2652902DA87002A561B /* App-Debug.xcconfig in Resources */,
 				CBE3274E27E275A400395A93 /* CloseButtonLarge@2x.png in Resources */,
 				CBE3278527E275A400395A93 /* InfoPlist.strings in Resources */,
-				CBE326F527E275A300395A93 /* ARVIRTick@3x.png in Resources */,
 				CBE3275F27E275A400395A93 /* BackChevron@2x.png in Resources */,
 				CBE3275627E275A400395A93 /* Thumb@2x.png in Resources */,
 				CBE3274927E275A400395A93 /* CircularCancelButton@2x.png in Resources */,
@@ -3734,17 +3719,20 @@
 				CBE3276527E275A400395A93 /* full_logo_black_medium@2x.png in Resources */,
 				CBE3273427E275A400395A93 /* MoreArrow@2x.png in Resources */,
 				CBE3269F27E275A300395A93 /* EchoNew.json in Resources */,
+				CB762B3A2911A5E100881194 /* ARVIRTick@2x.png in Resources */,
+				CB762B392911A5E100881194 /* ARVIRModalClose@3x.png in Resources */,
 				CBE3274A27E275A400395A93 /* followButton.png in Resources */,
 				CBE3275C27E275A400395A93 /* ARVIRRefresh@2x.png in Resources */,
-				CBE326F727E275A300395A93 /* ARVIRShadow.png in Resources */,
 				CBE3275B27E275A400395A93 /* CircleCheckGreen@3x.png in Resources */,
 				CBE3273527E275A400395A93 /* ARVIRBack@3x.png in Resources */,
 				CBE3274C27E275A400395A93 /* full_logo_white_large@2x.png in Resources */,
 				CBE3272A27E275A400395A93 /* ViewInRoom_Man_3@2x.png in Resources */,
 				CBE3275927E275A400395A93 /* CircleCheckGreen.png in Resources */,
+				CB762B3B2911A5E100881194 /* ARVIRTick@3x.png in Resources */,
 				CBE3276127E275A400395A93 /* CircularCancelButton.png in Resources */,
 				1AE9F2642902DA87002A561B /* App.xcconfig in Resources */,
 				CBE3276927E275A400395A93 /* BackChevron@3x.png in Resources */,
+				CB762B382911A5E100881194 /* ARVIRTick.png in Resources */,
 				CBE3273E27E275A400395A93 /* serif_modal_close@2x.png in Resources */,
 				CBE3273227E275A400395A93 /* SearchButton@3x.png in Resources */,
 				CBE3276827E275A400395A93 /* Thumb.png in Resources */,
@@ -3754,11 +3742,11 @@
 				CBE3273A27E275A400395A93 /* AuctionRefineCheck.png in Resources */,
 				CBE3275027E275A400395A93 /* Artsy_Logo.png in Resources */,
 				CBE3276327E275A400395A93 /* BackArrow_Highlighted@2x.png in Resources */,
-				CBE326F227E275A300395A93 /* ARVIRTick.png in Resources */,
 				B3EFFC7412D94886B32A2B10 /* Unica77LL-Italic.otf in Resources */,
 				B7F9E6E6D6604CC691827F1D /* Unica77LL-Medium.otf in Resources */,
 				4A9190A1CCE54CE09384C9FC /* Unica77LL-MediumItalic.otf in Resources */,
 				9DE2CA6EF6024B2DAF877CB2 /* Unica77LL-Regular.otf in Resources */,
+				CB762B3E2911A5E100881194 /* ar_vir_opening_frame.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3947,7 +3935,6 @@
 				CBE3279227E275A400395A93 /* User.m in Sources */,
 				CBE3211D27D9615000395A93 /* ARTCityGuideViewManager.m in Sources */,
 				CBE3277927E275A400395A93 /* ArtsyAPI+Notifications.m in Sources */,
-				CBE3268327E275A300395A93 /* UIViewController+WithLoadedData.m in Sources */,
 				CBE3267327E275A300395A93 /* Int+Metrification.swift in Sources */,
 				CBE326CE27E275A300395A93 /* LiveAuctionBidButton.swift in Sources */,
 				CBE326DE27E275A300395A93 /* UIViewController+InnermostTopViewController.m in Sources */,
@@ -4017,7 +4004,6 @@
 				CBE3267C27E275A300395A93 /* UIImage+ImageFromColor.m in Sources */,
 				CBE3266F27E275A300395A93 /* ARAppConstants.m in Sources */,
 				CBE326B427E275A300395A93 /* LiveAuctionStaticDataFetcher+Stubs.swift in Sources */,
-				CBE3267827E275A300395A93 /* UIView+ScrollToTop.m in Sources */,
 				CBE3277327E275A400395A93 /* ArtsyAPI+Pages.m in Sources */,
 				CBE326FD27E275A300395A93 /* ARAdminSettingsViewController.m in Sources */,
 				CBE326C827E275A300395A93 /* LiveAuctionBiddingViewModel.swift in Sources */,
@@ -4069,7 +4055,6 @@
 				CBE3278A27E275A400395A93 /* Partner.m in Sources */,
 				CBE3279827E275A400395A93 /* SaleStatusType.swift in Sources */,
 				CBE3271827E275A300395A93 /* ARBidButton.m in Sources */,
-				CBE3267B27E275A300395A93 /* UIViewController+ARUserActivity.m in Sources */,
 				CBE326BF27E275A300395A93 /* LiveAuctionLotListStickyCellCollectionViewLayout.swift in Sources */,
 				1A4B97BF283CDD5A00878EAE /* RCTScrollView+Artsy.m in Sources */,
 				CBE326A127E275A300395A93 /* ARDefaultNavigationTransition.m in Sources */,
@@ -4155,6 +4140,7 @@
 				CBE3270527E275A300395A93 /* LiveAuctionPlainLotCollectionViewLayout.swift in Sources */,
 				CBE3269427E275A300395A93 /* ARAnalyticsConstants.m in Sources */,
 				CBE3270927E275A300395A93 /* StoryboardImages.swift in Sources */,
+				CB762B2A291054D500881194 /* LiveAuctionReportProblemButton.swift in Sources */,
 				CBE326E027E275A300395A93 /* ARBackButton.m in Sources */,
 				1A4B97C2283CDD5A00878EAE /* ARMapComponentViewController.m in Sources */,
 				CBE3268727E275A300395A93 /* ORStackView+ArtsyViews.m in Sources */,
@@ -4168,12 +4154,12 @@
 				1A4B97BE283CDD5A00878EAE /* ARScrollViewHelpers.m in Sources */,
 				CBE326B227E275A300395A93 /* LiveAuctionLotSetViewController.swift in Sources */,
 				1A4B97C1283CDD5A00878EAE /* ARTemporaryAPIModule.m in Sources */,
-				CBE3269527E275A300395A93 /* ARModalViewController.m in Sources */,
 				CBE326D627E275A300395A93 /* AuctionSaleNetworkModel.swift in Sources */,
 				CBE3278227E275A400395A93 /* ARRouter+GraphQL.m in Sources */,
 				CBE326D227E275A300395A93 /* AuctionBiddersNetworkModel.swift in Sources */,
 				1A4E5119283F91BA0008EF35 /* Artsy+UILabels.m in Sources */,
 				CBE3267927E275A300395A93 /* NSDate+Util.m in Sources */,
+				CB762B2D29119F0700881194 /* ARSentryReporter.m in Sources */,
 				CBE326E227E275A300395A93 /* ARNavigationController.m in Sources */,
 				CBE3271527E275A300395A93 /* ARSeparatorViews.m in Sources */,
 				CBE3277A27E275A400395A93 /* ArtsyAPI+Sales.m in Sources */,

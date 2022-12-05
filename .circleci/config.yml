@@ -129,12 +129,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v11-pods-{{ checksum ".manifests/cocoapods" }}
+            - v12-pods-{{ checksum ".manifests/cocoapods" }}
       - run:
           name: Install Pods
           command: cd ios; bundle exec pod check --ignore-dev-pods || bundle exec pod install; cd ..;
       - save_cache:
-          key: v11-pods-{{ checksum ".manifests/cocoapods" }}
+          key: v12-pods-{{ checksum ".manifests/cocoapods" }}
           paths:
             - ios/Pods
             # this changes after pod install because we don't install dev tools on CI
@@ -144,7 +144,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v7-app_build_ios-{{ checksum ".manifests/app_build" }}
+            - v8-app_build_ios-{{ checksum ".manifests/app_build" }}
       - run:
           name: Download fonts from s3
           command: ./scripts/download-assets
@@ -152,7 +152,7 @@ commands:
           name: Build App
           command: ./scripts/ci-ios
       - save_cache:
-          key: v7-app_build_ios-{{ checksum ".manifests/app_build" }}
+          key: v8-app_build_ios-{{ checksum ".manifests/app_build" }}
           paths:
             - derived_data
             - node_modules/react-native-config
@@ -218,7 +218,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 14.0.1
+      xcode: 14.1.0
 
     steps:
       - checkout
@@ -262,7 +262,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 14.0.1
+      xcode: 14.1.0
 
     steps:
       - checkout
@@ -278,7 +278,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 14.0.1
+      xcode: 14.1.0
 
     steps:
       - checkout
@@ -359,14 +359,14 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 14.0.1
+      xcode: 14.1.0
 
     steps:
       - attach_workspace:
           at: ../workspace
       - restore_cache:
           keys:
-            - v7-test-success-{{ checksum "../workspace/.manifests/native_code" }}
+            - v8-test-success-{{ checksum "../workspace/.manifests/native_code" }}
       # we can quit the macos build early if there were no native code changes
       # and we're not on the beta branch
       - run:
@@ -403,7 +403,7 @@ jobs:
           name: Run tests if native code has changed
           command: ls xcode_test_raw.log || ./scripts/ci-test-ios
       - save_cache:
-          key: v7-test-success-{{ checksum ".manifests/native_code" }}
+          key: v8-test-success-{{ checksum ".manifests/native_code" }}
           paths:
             - xcode_test_raw.log
 
@@ -471,7 +471,7 @@ jobs:
     environment:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
     macos:
-      xcode: 14.0.1
+      xcode: 14.1.0
     steps:
       - checkout
       - install-gems

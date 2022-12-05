@@ -12,6 +12,7 @@ import { Range } from "./helpers"
 import { PriceRangeOptionsScreen } from "./PriceRangeOptions"
 
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { debounce } from "lodash"
 import { Input } from "palette"
 
@@ -202,75 +203,57 @@ describe("PriceRangeOptions", () => {
     queryByDisplayValue("1242135")
   })
 
-  describe("Recent price ranges", () => {
-    describe("when feature flag is disabled", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({
-          ARRecentPriceRanges: false,
-        })
+  describe("Recent price ranges analytics", () => {
+    it("should correctly track analytics", () => {
+      __globalStoreTestUtils__?.injectState({
+        userPrefs: {
+          priceRange: "0-5000",
+        },
+        recentPriceRanges: {
+          ranges: ["0-100"],
+        },
       })
 
-      it("should NOT be rendered", () => {
-        __globalStoreTestUtils__?.injectState({
-          recentPriceRanges: {
-            ranges: ["*-500"],
+      const { getByText } = getTree()
+
+      fireEvent.press(getByText("$0–100"))
+
+      expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "action": "selectedRecentPriceRange",
+            "collector_profile_sourced": false,
+            "context_module": "recentPriceRanges",
+            "context_screen_owner_type": "artworkPriceFilter",
           },
-        })
-
-        const { queryByText } = getTree()
-
-        expect(queryByText("Apply a recent Price Range")).toBeNull()
-        expect(queryByText("$0–500")).toBeNull()
-      })
+        ]
+      `)
     })
 
-    describe("when feature flag is enabled", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({
-          ARRecentPriceRanges: true,
-        })
+    it("should correctly track analytics when the collector profile-sourced price range is selected", () => {
+      __globalStoreTestUtils__?.injectState({
+        userPrefs: {
+          priceRange: "0-5000",
+        },
+        recentPriceRanges: {
+          ranges: ["0-100"],
+        },
       })
 
-      it("should be rendered", () => {
-        __globalStoreTestUtils__?.injectState({
-          recentPriceRanges: {
-            ranges: ["*-500", "1000-2000", "3000-*"],
+      const { getByText } = getTree()
+
+      fireEvent.press(getByText("$0–5,000"))
+
+      expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "action": "selectedRecentPriceRange",
+            "collector_profile_sourced": true,
+            "context_module": "recentPriceRanges",
+            "context_screen_owner_type": "artworkPriceFilter",
           },
-        })
-
-        const { getByText } = getTree()
-
-        expect(getByText("Apply a recent Price Range")).toBeTruthy()
-        expect(getByText("$0–500")).toBeTruthy()
-        expect(getByText("$1,000–2,000")).toBeTruthy()
-        expect(getByText("$3,000+")).toBeTruthy()
-      })
-
-      it("should NOT be rendered if recent price ranges are empty", () => {
-        __globalStoreTestUtils__?.injectState({
-          recentPriceRanges: {
-            ranges: [],
-          },
-        })
-
-        const { queryByText } = getTree()
-
-        expect(queryByText("Apply a recent Price Range")).toBeNull()
-      })
-
-      it("should correctly clear the recent price ranges when `Clear` button is pressed", () => {
-        __globalStoreTestUtils__?.injectState({
-          recentPriceRanges: {
-            ranges: ["*-500", "1000-2000", "3000-*"],
-          },
-        })
-
-        const { queryByText, getByText } = getTree()
-
-        fireEvent.press(getByText("Clear"))
-
-        expect(queryByText("Apply a recent Price Range")).toBeNull()
-      })
+        ]
+      `)
     })
   })
 })

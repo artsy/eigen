@@ -18,12 +18,15 @@ export function createGeminiUrl({
 }) {
   const src = encodeURIComponent(imageURL)
 
+  const roundedHeight = Math.round(height)
+  const roundedWidth = Math.round(width)
+
   const params = [
-    `height=${height}`,
+    `height=${roundedHeight}`,
     `quality=${imageQuality}`,
     `resize_to=${resizeMode}`,
     `src=${src}`,
-    `width=${width}`,
+    `width=${roundedWidth}`,
   ]
 
   if (Platform.OS === "android" || (Platform.OS === "ios" && osMajorVersion() >= 13)) {

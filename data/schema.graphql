@@ -1989,7 +1989,10 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Returns the associated Fair/Sale/Show
   context: ArtworkContext
-  contextGrids: [ArtworkContextGrid]
+  contextGrids(
+    # Whether to include the `RelatedArtworksGrid` module. Defaults to `true`; preferred behavior is to opt out with `false`.
+    includeRelatedArtworks: Boolean! = true
+  ): [ArtworkContextGrid]
 
   # The currency code used to pay for the artwork
   costCurrencyCode: String
@@ -6533,6 +6536,9 @@ type Conversation implements Node {
   # The participant who initiated the conversation
   from: ConversationInitiator!
   fromLastViewedMessageID: String
+
+  # The user who initiated the conversation
+  fromUser: User
 
   # A globally unique ID.
   id: ID!
@@ -11124,6 +11130,7 @@ input MyCollectionCreateArtworkInput {
   # The given location of the user as structured data
   collectorLocation: EditableLocation
   costCurrencyCode: String
+  costMajor: Int
   costMinor: Int
   date: String
   depth: String
@@ -11135,6 +11142,8 @@ input MyCollectionCreateArtworkInput {
   isEdition: Boolean
   medium: String
   metric: String
+
+  # @deprecated use the cost major and cost minor fields instead
   pricePaidCents: Int
   pricePaidCurrency: String
   provenance: String
@@ -11205,6 +11214,7 @@ input MyCollectionUpdateArtworkInput {
   # The given location of the user as structured data
   collectorLocation: EditableLocation
   costCurrencyCode: String
+  costMajor: Int
   costMinor: Int
   date: String
   depth: String
@@ -11280,6 +11290,7 @@ type Notification implements Node {
   isUnread: Boolean!
   message: String!
   notificationType: NotificationTypesEnum!
+  objectsCount: Int!
   publishedAt(
     # pass `RELATIVE` to display the human-friendly date (e.g. "Today", "Yesterday", "5 days ago")
     format: String
@@ -11683,6 +11694,8 @@ type Partner implements Node {
   ): FilterArtworksConnection
   fullProfileEligible: Boolean @deprecated(reason: "Prefer displayFullPartnerPage")
   hasFairPartnership: Boolean
+
+  # The url for a partner. May be `null` if partner is not eligible for page.
   href: String
 
   # A globally unique ID.
@@ -13042,6 +13055,12 @@ type Query {
     # Return consignments sorted by input (default sort by id)
     sort: ConsignmentSort
   ): ConsignmentConnection
+
+  # A conversation, usually between a user and a partner
+  conversation(
+    # The ID of the Conversation
+    id: String!
+  ): Conversation
 
   # Conversations, usually between a user and partner.
   conversationsConnection(
@@ -16820,6 +16839,12 @@ type Viewer {
     slug: String
   ): City
 
+  # A conversation, usually between a user and a partner
+  conversation(
+    # The ID of the Conversation
+    id: String!
+  ): Conversation
+
   # Conversations, usually between a user and partner.
   conversationsConnection(
     after: String
@@ -17357,6 +17382,9 @@ type ViewingRoom {
   # Datetime after which the viewing room is no longer viewable
   endAt: ISO8601DateTime
   exhibitionPeriod: String
+
+  # Datetime when viewing room first viewable
+  firstLiveAt: ISO8601DateTime
   heroImageURL: String @deprecated(reason: "Use image field instead")
   href: String
   image: ARImage

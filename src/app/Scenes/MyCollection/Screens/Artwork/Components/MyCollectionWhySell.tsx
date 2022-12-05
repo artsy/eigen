@@ -18,12 +18,12 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
   const { trackEvent } = useTracking()
   const artwork = useFragment(artworkFragment, props.artwork)
 
-  const isInProgress = artwork.consignmentSubmission?.inProgress
-  const isSold = artwork.consignmentSubmission?.isSold
+  const submissionId = artwork.submissionId
 
-  if (isInProgress || isSold) {
+  if (submissionId) {
     return null
   }
+
   let setContextModule = ContextModule.sellFooter
   let setContextScreen: Schema.PageNames
   if (contextModule === "insights") {
@@ -111,10 +111,7 @@ const artworkFragment = graphql`
     depth
     provenance
     artworkLocation
-    consignmentSubmission {
-      inProgress
-      isSold
-    }
+    submissionId
   }
 `
 const tracks = {
