@@ -16,14 +16,14 @@ import { extractText } from "app/tests/extractText"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { merge } from "lodash"
 import _ from "lodash"
 import { Touchable } from "palette"
 import { Suspense } from "react"
 import { ActivityIndicator } from "react-native"
 import { act } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
+import { createMockEnvironment } from "relay-test-utils"
 import { Artwork, ArtworkQueryRenderer } from "./Artwork"
 import { ArtworkDetails } from "./Components/ArtworkDetails"
 import { ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
@@ -32,13 +32,6 @@ import { CommercialInformation } from "./Components/CommercialInformation"
 import { ContextCard } from "./Components/ContextCard"
 import { ImageCarousel } from "./Components/ImageCarousel/ImageCarousel"
 import { OtherWorksFragmentContainer } from "./Components/OtherWorks/OtherWorks"
-
-type ArtworkQueries =
-  | "ArtworkAboveTheFoldQuery"
-  | "ArtworkBelowTheFoldQuery"
-  | "ArtworkMarkAsRecentlyViewedQuery"
-  | "ArtworkRefetchQuery"
-  | "RequestConditionReportQuery"
 
 jest.unmock("react-relay")
 
@@ -65,21 +58,6 @@ jest.mock("app/Components/Bidding/Context/TimeOffsetProvider", () => {
 describe("Artwork", () => {
   let environment: ReturnType<typeof createMockEnvironment>
 
-  function mockMostRecentOperation(name: ArtworkQueries, mockResolvers: MockResolvers = {}) {
-    expect(environment.mock.getMostRecentOperation().request.node.operation.name).toBe(name)
-    environment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
-        ID({ path }) {
-          // need to make sure the artwork has a stable ID between Above and Below queries otherwise bad cache behaviour
-          if (_.isEqual(path, ["artwork", "id"])) {
-            return "artwork-id"
-          }
-        },
-        ...mockResolvers,
-      })
-      return result
-    })
-  }
   const TestRenderer = ({ isVisible = true }) => (
     // not 100% sure why we need a suspense fallback here but I guess new relay (v9) containers
     // use suspense and one of the containers in our tree is suspending itself only in tests :|
@@ -106,7 +84,8 @@ describe("Artwork", () => {
 
   it("renders above the fold content before the full query has been resolved", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    mockMostRecentOperation("ArtworkAboveTheFoldQuery")
+    // ArtworkAboveTheFoldQuery
+    resolveMostRecentRelayOperation(environment)
     expect(tree.root.findAllByType(ImageCarousel)).toHaveLength(1)
     expect(tree.root.findAllByType(CommercialInformation)).toHaveLength(1)
     expect(tree.root.findAllByType(ActivityIndicator)).toHaveLength(1)
@@ -115,9 +94,13 @@ describe("Artwork", () => {
 
   it("renders all content after the full query has been resolved", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    mockMostRecentOperation("ArtworkAboveTheFoldQuery")
-    mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
-    mockMostRecentOperation("ArtworkBelowTheFoldQuery")
+
+    // ArtworkAboveTheFoldQuery
+    resolveMostRecentRelayOperation(environment)
+    // ArtworkMarkAsRecentlyViewedQuery
+    resolveMostRecentRelayOperation(environment)
+    // ArtworkBelowTheFoldQuery
+    resolveMostRecentRelayOperation(environment)
     await flushPromiseQueue()
     expect(tree.root.findAllByType(ImageCarousel)).toHaveLength(1)
     expect(tree.root.findAllByType(CommercialInformation)).toHaveLength(1)
@@ -127,10 +110,14 @@ describe("Artwork", () => {
 
   describe("artist series components", () => {
     it("renders when there are artist series to show", async () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer />)
-      mockMostRecentOperation("ArtworkAboveTheFoldQuery")
-      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
-      mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+      renderWithWrappers(<TestRenderer />)
+
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkMarkAsRecentlyViewedQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkBelowTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
         Artwork() {
           return {
             artist: {
@@ -147,16 +134,22 @@ describe("Artwork", () => {
           }
         },
       })
+
       await flushPromiseQueue()
-      expect(tree.root.findAllByType(ArtistSeriesMoreSeries)).toHaveLength(1)
-      expect(tree.root.findAllByType(ArtworksInSeriesRail)).toHaveLength(1)
+
+      expect(screen.UNSAFE_queryAllByType(ArtistSeriesMoreSeries)).toHaveLength(1)
+      expect(screen.UNSAFE_queryAllByType(ArtworksInSeriesRail)).toHaveLength(1)
     })
 
     it("does not render when there are no artist series to show", async () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
-      mockMostRecentOperation("ArtworkAboveTheFoldQuery")
-      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
-      mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkMarkAsRecentlyViewedQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkBelowTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
         Artwork() {
           return {
             artist: {
@@ -175,14 +168,18 @@ describe("Artwork", () => {
           }
         },
       })
+
       await flushPromiseQueue()
+
       expect(tree.root.findAllByType(ArtistSeriesMoreSeries)).toHaveLength(0)
       expect(tree.root.findAllByType(ArtworksInSeriesRail)).toHaveLength(0)
     })
 
     it("tracks a click to an artist series item", async () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
-      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
         Artwork() {
           return {
             internalID: "artwork123",
@@ -190,8 +187,10 @@ describe("Artwork", () => {
           }
         },
       })
-      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
-      mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+      // ArtworkMarkAsRecentlyViewedQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkBelowTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
         Artwork() {
           return {
             slug: "my-cool-artwork",
@@ -246,9 +245,13 @@ describe("Artwork", () => {
 
   it("renders the ArtworkDetails component when conditionDescription is null but canRequestLotConditionsReport is true", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    mockMostRecentOperation("ArtworkAboveTheFoldQuery")
-    mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
-    mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+
+    // ArtworkAboveTheFoldQuery
+    resolveMostRecentRelayOperation(environment)
+    // ArtworkMarkAsRecentlyViewedQuery
+    resolveMostRecentRelayOperation(environment)
+    // ArtworkBelowTheFoldQuery
+    resolveMostRecentRelayOperation(environment, {
       Artwork() {
         return {
           category: null,
@@ -272,7 +275,8 @@ describe("Artwork", () => {
   it("marks the artwork as viewed", () => {
     renderWithWrappersLEGACY(<TestRenderer />)
 
-    mockMostRecentOperation("ArtworkAboveTheFoldQuery")
+    // ArtworkAboveTheFoldQuery
+    resolveMostRecentRelayOperation(environment)
 
     expect(environment.mock.getMostRecentOperation().request.node.operation.name).toEqual(
       "ArtworkMarkAsRecentlyViewedQuery"
@@ -282,7 +286,7 @@ describe("Artwork", () => {
       request: {
         variables: {
           input: {
-            artwork_id: '<mock-value-for-field-"slug">',
+            artwork_id: "slug-1",
           },
         },
       },
@@ -292,7 +296,8 @@ describe("Artwork", () => {
   it("updates the above-the-fold content on re-appear", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-    mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+    // ArtworkAboveTheFoldQuery
+    resolveMostRecentRelayOperation(environment, {
       Artwork() {
         return { slug: "my-special-artwork" }
       },
@@ -313,20 +318,25 @@ describe("Artwork", () => {
         },
       },
     })
-    mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
-    mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+
+    // ArtworkMarkAsRecentlyViewedQuery
+    resolveMostRecentRelayOperation(environment)
+
+    // ArtworkBelowTheFoldQuery
+    resolveMostRecentRelayOperation(environment, {
       Artwork() {
         return { slug: "my-special-artwork" }
       },
     })
 
-    mockMostRecentOperation("RequestConditionReportQuery")
+    resolveMostRecentRelayOperation(environment)
 
     navigationEvents.emit("modalDismissed")
 
     await flushPromiseQueue()
 
-    mockMostRecentOperation("ArtworkRefetchQuery", {
+    // ArtworkRefetchQuery
+    resolveMostRecentRelayOperation(environment, {
       Artwork() {
         return { slug: "completely-different-slug" }
       },
@@ -349,7 +359,9 @@ describe("Artwork", () => {
         },
       },
     })
-    mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+
+    // ArtworkMarkAsRecentlyViewedQuery
+    resolveMostRecentRelayOperation(environment)
 
     expect(tree.root.findByType(Artwork).props.artworkAboveTheFold.slug).toBe(
       "completely-different-slug"
@@ -357,11 +369,18 @@ describe("Artwork", () => {
   })
 
   it("does not show a contextCard if the work is in a non-auction sale", async () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      ARArtworkRedesingPhase2: false,
+    })
+
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-    mockMostRecentOperation("ArtworkAboveTheFoldQuery")
-    mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
-    mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+    // ArtworkAboveTheFoldQuery
+    resolveMostRecentRelayOperation(environment)
+    // ArtworkMarkAsRecentlyViewedQuery
+    resolveMostRecentRelayOperation(environment)
+    // ArtworkBelowTheFoldQuery
+    resolveMostRecentRelayOperation(environment, {
       Artwork() {
         return {
           isForSale: false,
@@ -373,6 +392,7 @@ describe("Artwork", () => {
         }
       },
     })
+
     await flushPromiseQueue()
 
     expect(tree.root.findAllByType(ContextCard)).toHaveLength(0)
@@ -380,11 +400,19 @@ describe("Artwork", () => {
   })
 
   it("does show a contextCard if the work is in an auction", async () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      ARArtworkRedesingPhase2: false,
+    })
+
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-    mockMostRecentOperation("ArtworkAboveTheFoldQuery")
-    mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
-    mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+    // ArtworkAboveTheFoldQuery
+    resolveMostRecentRelayOperation(environment)
+    // ArtworkMarkAsRecentlyViewedQuery
+    resolveMostRecentRelayOperation(environment)
+
+    // ArtworkBelowTheFoldQuery
+    resolveMostRecentRelayOperation(environment, {
       Sale() {
         return {
           isAuction: true,
@@ -399,10 +427,17 @@ describe("Artwork", () => {
 
   describe("Live Auction States", () => {
     describe("has the correct state for a work that is in an auction that is currently live", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({
+          ARArtworkRedesingPhase2: false,
+        })
+      })
+
       it("for which I am registered", () => {
         const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-        mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        // ArtworkAboveTheFoldQuery
+        resolveMostRecentRelayOperation(environment, {
           Artwork() {
             return merge(
               {},
@@ -421,7 +456,8 @@ describe("Artwork", () => {
       it("for which I am not registered and registration is open", async () => {
         const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-        mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        // ArtworkAboveTheFoldQuery
+        resolveMostRecentRelayOperation(environment, {
           Artwork() {
             return merge(
               {},
@@ -443,7 +479,8 @@ describe("Artwork", () => {
       it("for which I am not registered and registration is closed", () => {
         const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-        mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        // ArtworkAboveTheFoldQuery
+        resolveMostRecentRelayOperation(environment, {
           Artwork() {
             return merge(
               {},
@@ -468,7 +505,8 @@ describe("Artwork", () => {
 
       const { queryByA11yHint } = renderWithWrappers(<TestRenderer />)
 
-      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           partner: {
             name: "Test Partner",
@@ -484,7 +522,8 @@ describe("Artwork", () => {
 
       const { queryByA11yHint } = renderWithWrappers(<TestRenderer />)
 
-      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           partner: {
             name: "Test Partner",
@@ -497,10 +536,15 @@ describe("Artwork", () => {
   })
 
   describe("Create Alert button", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ ARArtworkRedesingPhase2: false })
+    })
+
     it("should display create artwork alert section by default", () => {
       const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
 
-      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isSold: false,
           isInAuction: false,
@@ -520,7 +564,8 @@ describe("Artwork", () => {
     it("should not display create artwork alert button section when artwork doesn't have any artist", () => {
       const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
 
-      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isSold: false,
           isInAuction: false,
@@ -536,7 +581,8 @@ describe("Artwork", () => {
     it("should display create artwork alert buttons section when artwork is sold", () => {
       const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
 
-      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isSold: true,
           isInAuction: false,
@@ -551,7 +597,8 @@ describe("Artwork", () => {
     it("should display create artwork alert buttons section when artwork is in closed auction", () => {
       const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
 
-      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isSold: false,
           isInAuction: true,
@@ -576,9 +623,12 @@ describe("Artwork", () => {
     it("should be rendered when the work has `for sale` availability", () => {
       const { queryByText } = renderWithWrappers(<TestRenderer />)
 
-      mockMostRecentOperation("ArtworkAboveTheFoldQuery")
-      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
-      mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkMarkAsRecentlyViewedQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkBelowTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isForSale: true,
         }),
@@ -589,10 +639,12 @@ describe("Artwork", () => {
 
     it("should NOT be rendered if the work has any other availability", () => {
       const { queryByText } = renderWithWrappers(<TestRenderer />)
-
-      mockMostRecentOperation("ArtworkAboveTheFoldQuery")
-      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
-      mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkMarkAsRecentlyViewedQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkBelowTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isForSale: false,
         }),
@@ -604,13 +656,16 @@ describe("Artwork", () => {
     it("should NOT be rendered if the work is in auction", () => {
       const { queryByText } = renderWithWrappers(<TestRenderer />)
 
-      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isInAuction: true,
         }),
       })
-      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
-      mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+      // ArtworkMarkAsRecentlyViewedQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkBelowTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isForSale: false,
         }),
@@ -624,13 +679,16 @@ describe("Artwork", () => {
     it("should be displayed when eligible for artsy guarantee", async () => {
       renderWithWrappers(<TestRenderer />)
 
-      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isEligibleForArtsyGuarantee: true,
         }),
       })
-      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
-      mockMostRecentOperation("ArtworkBelowTheFoldQuery")
+      // ArtworkMarkAsRecentlyViewedQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkBelowTheFoldQuery
+      resolveMostRecentRelayOperation(environment)
 
       await flushPromiseQueue()
 
@@ -642,13 +700,16 @@ describe("Artwork", () => {
     it("should not be displayed when ineligible for artsy guarantee", async () => {
       renderWithWrappers(<TestRenderer />)
 
-      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isEligibleForArtsyGuarantee: false,
         }),
       })
-      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
-      mockMostRecentOperation("ArtworkBelowTheFoldQuery")
+      // ArtworkMarkAsRecentlyViewedQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkBelowTheFoldQuery
+      resolveMostRecentRelayOperation(environment)
 
       await flushPromiseQueue()
 
@@ -668,9 +729,12 @@ describe("Artwork", () => {
     it("shows consign link if at least 1 artist is consignable", async () => {
       renderWithWrappers(<TestRenderer />)
 
-      mockMostRecentOperation("ArtworkAboveTheFoldQuery")
-      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
-      mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkMarkAsRecentlyViewedQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkBelowTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isForSale: true,
           artists: [
@@ -689,7 +753,8 @@ describe("Artwork", () => {
     it("doesn't render section", async () => {
       renderWithWrappers(<TestRenderer />)
 
-      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isAcquireable: false,
           isOfferable: false,
@@ -697,8 +762,10 @@ describe("Artwork", () => {
           sale: null,
         }),
       })
-      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
-      mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+      // ArtworkMarkAsRecentlyViewedQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkBelowTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isForSale: false,
           artists: [
