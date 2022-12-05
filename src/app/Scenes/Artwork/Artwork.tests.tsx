@@ -247,6 +247,7 @@ describe("Artwork", () => {
   it("renders the ArtworkDetails component when conditionDescription is null but canRequestLotConditionsReport is true", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
     mockMostRecentOperation("ArtworkAboveTheFoldQuery")
+    await flushPromiseQueue()
     mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
     mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
       Artwork() {
@@ -297,6 +298,8 @@ describe("Artwork", () => {
         return { slug: "my-special-artwork" }
       },
     })
+
+    await flushPromiseQueue()
     expect(tree.root.findByType(Artwork).props.artworkAboveTheFold.slug).toBe("my-special-artwork")
 
     expect(environment.mock.getMostRecentOperation()).toMatchObject({
