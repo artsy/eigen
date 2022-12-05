@@ -45,6 +45,7 @@ export const CommercialButtons: React.FC<CommercialButtonProps> = ({
               variant="outline"
               artwork={artwork}
               editionSetID={editionSetID ?? null}
+              renderSaleMessage
             />
           </>
         ) : (
