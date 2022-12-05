@@ -10,13 +10,12 @@ import {
 import { TimeOffsetProvider } from "app/Components/Bidding/Context/TimeOffsetProvider"
 import { StateManager as CountdownStateManager } from "app/Components/Countdown"
 import { CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
 import { useArtworkBidding } from "app/Websockets/auctions/useArtworkBidding"
 import { capitalize } from "lodash"
 import { Box, Flex, Spacer, Text } from "palette"
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp, useTracking } from "react-tracking"
 import { ArtworkStore } from "../ArtworkStore"
@@ -155,9 +154,8 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
   setAuctionTimerState,
 }) => {
   const { trackEvent } = useTracking()
-  const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
   const setAuctionState = ArtworkStore.useStoreActions((action) => action.setAuctionState)
-  const [editionSetID, setEditionSetID] = useState<string | null>(null)
+  const editionSetID = ArtworkStore.useStoreState((state) => state.selectedEditionId)
   const { isAcquireable, isOfferable, isInquireable, isInAuction, sale, isForSale, isSold } =
     artwork
 
@@ -211,22 +209,6 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
   }
 
   const renderPriceInformation = () => {
-    if (enableArtworkRedesign) {
-      const editionSets = artwork.editionSets ?? []
-
-      if (editionSets.length > 1) {
-        return (
-          <ArtworkEditionSetInformation
-            artwork={artwork}
-            selectedEditionId={editionSetID}
-            onSelectEdition={setEditionSetID}
-          />
-        )
-      }
-
-      return null
-    }
-
     if (isInAuction && isForSale) {
       if (timerState === AuctionTimerState.LIVE_INTEGRATION_ONGOING) {
         return null
@@ -234,20 +216,14 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
         return <AuctionPrice artwork={artwork} auctionState={timerState as AuctionTimerState} />
       }
     } else if (artwork.editionSets && artwork.editionSets.length > 1) {
-      return (
-        <ArtworkEditionSetInformation
-          artwork={artwork}
-          selectedEditionId={editionSetID}
-          onSelectEdition={setEditionSetID}
-        />
-      )
+      return <ArtworkEditionSetInformation artwork={artwork} />
     } else {
       return renderSingleEditionArtwork()
     }
   }
 
   const renderCommercialButtons = () => {
-    if (!!(!enableArtworkRedesign && canTakeCommercialAction && !isInClosedAuction)) {
+    if (!!(canTakeCommercialAction && !isInClosedAuction)) {
       return (
         <>
           {!hidesPriceInformation && <Spacer mb={2} />}
@@ -267,7 +243,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
   }
 
   const renderCountdown = () => {
-    if (!!isBiddableInAuction && !enableArtworkRedesign) {
+    if (!!isBiddableInAuction) {
       return (
         <>
           <Spacer mb={2} />
@@ -300,17 +276,16 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
           {renderCountdown()}
         </Box>
       )}
-      {!enableArtworkRedesign &&
-        !!(artistIsConsignable || isAcquireable || isOfferable || isBiddableInAuction) && (
-          <>
-            <Spacer mb={2} />
-            <ArtworkExtraLinks
-              artwork={artwork}
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              auctionState={timerState}
-            />
-          </>
-        )}
+      {!!(artistIsConsignable || isAcquireable || isOfferable || isBiddableInAuction) && (
+        <>
+          <Spacer mb={2} />
+          <ArtworkExtraLinks
+            artwork={artwork}
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+            auctionState={timerState}
+          />
+        </>
+      )}
     </>
   )
 }
