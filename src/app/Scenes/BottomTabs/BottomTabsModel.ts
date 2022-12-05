@@ -20,6 +20,7 @@ export interface BottomTabsModel {
   unreadConversationCountChanged: Action<BottomTabsModel, number>
   fetchCurrentUnreadConversationCount: Thunk<BottomTabsModel>
   setTabProps: Action<BottomTabsModel, { tab: BottomTabType; props: object | undefined }>
+  toggleBottomTabForCurrentTab: Action<BottomTabsModel, { isVisible: boolean }>
 }
 
 export const getBottomTabsModel = (): BottomTabsModel => ({
@@ -69,5 +70,11 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
   }),
   setTabProps: action((state, { tab, props }) => {
     state.sessionState.tabProps[tab] = props
+  }),
+  toggleBottomTabForCurrentTab: action((state, { isVisible }) => {
+    const selectedTab = state.sessionState.selectedTab
+    state.sessionState.tabProps[selectedTab] = {
+      isVisibleTab: isVisible,
+    }
   }),
 })

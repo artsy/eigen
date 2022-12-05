@@ -12,7 +12,7 @@ import { BackButton } from "app/navigation/BackButton"
 import { navigationEvents } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { QAInfoPanel } from "app/utils/QAInfo"
@@ -149,6 +149,14 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
     return () => {
       navigationEvents.removeListener("modalDismissed", handleModalDismissed)
+    }
+  }, [])
+
+  useEffect(() => {
+    GlobalStore.actions.bottomTabs.toggleBottomTabForCurrentTab({ isVisible: false })
+
+    return () => {
+      GlobalStore.actions.bottomTabs.toggleBottomTabForCurrentTab({ isVisible: true })
     }
   }, [])
 
