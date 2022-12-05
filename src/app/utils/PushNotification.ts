@@ -9,9 +9,6 @@ import { getDeviceId } from "react-native-device-info"
 import PushNotification, { ReceivedNotification } from "react-native-push-notification"
 import { logAction, logNotification } from "./loggers"
 import {
-  boolFromStorage,
-  HAS_SEEN_PUSH_SETTINGS_PROMPT,
-  HAS_SEEN_PUSH_SYSTEM_PROMPT,
   hasSeenSettingsPrompt,
   hasSeenSystemPrompt,
   requestDirectNotificationPermissions,

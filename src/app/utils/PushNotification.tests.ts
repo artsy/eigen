@@ -11,7 +11,7 @@ import { act } from "react-test-renderer"
 import * as Push from "./PushNotification"
 import * as pushNotificationUtils from "./pushNotificationUtils"
 
-Object.defineProperty(Platform, "OS", { get: jest.fn(() => "android") }) // We only use this for android only for now
+// Object.defineProperty(Platform, "OS", { get: jest.fn(() => "android") }) // We only use this for android only for now
 const mockFetch = jest.fn()
 
 ;(global as any).fetch = mockFetch
@@ -30,6 +30,7 @@ beforeEach(() => {
 describe("Push Notification Tests", () => {
   beforeEach(async () => {
     jest.clearAllMocks()
+    Platform.OS = "android"
     await AsyncStorage.clear()
   })
 
@@ -227,7 +228,7 @@ describe("Push Notification Tests", () => {
       jest.clearAllMocks()
     })
 
-    it.only("shows a settings prompt if the push is denied and we haven't show the settings prompt before", async () => {
+    it("shows a settings prompt if the push is denied and we haven't show the settings prompt before", async () => {
       const mockSettingsPrompt = jest.spyOn(
         pushNotificationUtils,
         "showSettingsEnableNotificationsAlert"
@@ -249,31 +250,59 @@ describe("Push Notification Tests", () => {
     })
 
     it("does NOT show a settings prompt if we have shown it before", async () => {
-      // const mockSettingsPrompt = jest
-      //   .spyOn(Push, "showSettingsEnableNotificationsAlert")
-      //   .mockReturnValue()
-      // const mockRequestDirect = jest
-      //   .spyOn(Push, "requestDirectNotificationPermissions")
-      //   .mockReturnValue()
-      // act(() => {
-      //   // 4 seconds
-      //   // mock the global setting
-      //   mockFetchNotificationPermissions(true).mockImplementationOnce((cb) => cb({ alert: false }))
-      //   Push.requestPushNotificationsPermission()
-      //   jest.runAllTimers()
-      // })
-      // await waitFor(() => {
-      //   expect(mockRequestDirect).toHaveBeenCalled()
-      //   expect(mockSettingsPrompt).not.toHaveBeenCalled()
-      // })
+      const mockSettingsPrompt = jest.spyOn(
+        pushNotificationUtils,
+        "showSettingsEnableNotificationsAlert"
+      )
+      mockSettingsPrompt.mockReturnValue()
+
+      // has seen settings prompt before
+      const mockHasSeenSettings = jest.spyOn(pushNotificationUtils, "hasSeenSettingsPrompt")
+      mockHasSeenSettings.mockReturnValue(Promise.resolve(true))
+
+      act(() => {
+        mockFetchNotificationPermissions(true).mockImplementationOnce((cb) => cb({ alert: false }))
+        Push.requestPushNotificationsPermission()
+        jest.runAllTimers()
+      })
+
+      await waitFor(() => {
+        expect(mockSettingsPrompt).not.toHaveBeenCalled()
+      })
     })
 
-    it("shows a soft ask prompt if user HAS NOT seen the system dialog or the local prompt", async () => {
-      console.log("do something")
-    })
+    it.only("shows a soft ask prompt if user HAS NOT seen the system dialog or the local prompt", async () => {
+      // push permission is not determined
+      mockFetchNotificationPermissions(false).mockImplementationOnce((cb) =>
+        cb(null, Push.PushAuthorizationStatus.NotDetermined)
+      )
+      Platform.OS = "ios"
 
-    it("shows a soft ask prompt if user HAS NOT seen the system dialog or the local prompt", async () => {
-      console.log("do something")
+      // has NOT seen local prompt before
+      const shouldShowLocalPromptAgain = jest.spyOn(
+        pushNotificationUtils,
+        "shouldShowLocalPromptAgain"
+      )
+      shouldShowLocalPromptAgain.mockReturnValue(Promise.resolve(true))
+
+      // has NOT seen system prompt before
+      const mockHasSeenSystem = jest.spyOn(pushNotificationUtils, "hasSeenSystemPrompt")
+      mockHasSeenSystem.mockReturnValue(Promise.resolve(false))
+
+      const mockShowSoftAskPrompt = jest.spyOn(
+        pushNotificationUtils,
+        "requestPushPermissionWithSoftAsk"
+      )
+      mockShowSoftAskPrompt.mockReturnValue(Promise.resolve())
+
+      act(() => {
+        Push.requestPushNotificationsPermission()
+        jest.runAllTimers()
+      })
+
+      await waitFor(() => {
+        expect(mockShowSoftAskPrompt).toHaveBeenCalled()
+      })
     })
 
     it("shows a soft ask prompt if user HAS NOT seen the system dialog and HAS seen the local prompt but a week has passed", async () => {
