@@ -121,10 +121,6 @@ export const ArtworkScreenHeaderCreateAlertFragmentContainer = createFragmentCon
         internalID
         slug
         isForSale
-        sale {
-          isAuction
-          isClosed
-        }
         artists {
           internalID
           name

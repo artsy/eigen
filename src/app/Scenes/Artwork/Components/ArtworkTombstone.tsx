@@ -2,19 +2,16 @@ import { ArtworkTombstone_artwork$data } from "__generated__/ArtworkTombstone_ar
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Box, comma, Flex, Spacer, Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
+import { ArtworkLotTimerFragmentContainer } from "./ArtworkLotTimer"
 import { ArtworkMakerTitleFragmentContainer } from "./ArtworkMakerTitle"
 import { CascadingEndTimesBanner } from "./CascadingEndTimesBanner"
 
 export interface ArtworkTombstoneProps {
   artwork: ArtworkTombstone_artwork$data
+  refetchArtwork: () => void
 }
 
-export interface ArtworkTombstoneState {
-  showingMoreArtists: boolean
-  showAuthenticityCertificateModal: boolean
-}
-
-export const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork }) => {
+export const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork, refetchArtwork }) => {
   const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
 
   const getArtworkTitleAndMaybeDate = () => {
@@ -30,7 +27,8 @@ export const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork }) =
     artwork.saleArtwork &&
     artwork.saleArtwork.lotLabel &&
     artwork.sale &&
-    !artwork.sale.isClosed
+    !artwork.sale.isClosed &&
+    !enableArtworkRedesign
 
   return (
     <Box textAlign="left">
@@ -42,6 +40,10 @@ export const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork }) =
           </Text>
         </>
       )}
+      {!!enableArtworkRedesign && (
+        <ArtworkLotTimerFragmentContainer artwork={artwork} refetchArtwork={refetchArtwork} />
+      )}
+
       <ArtworkMakerTitleFragmentContainer artwork={artwork} />
       <Flex flexDirection="row" flexWrap="wrap">
         <Text variant="lg-display" color="black60">
@@ -87,9 +89,9 @@ export const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork }) =
 export const ArtworkTombstoneFragmentContainer = createFragmentContainer(ArtworkTombstone, {
   artwork: graphql`
     fragment ArtworkTombstone_artwork on Artwork {
+      ...ArtworkLotTimer_artwork
       title
       isInAuction
-      medium
       date
       isForSale
       saleMessage
@@ -106,6 +108,10 @@ export const ArtworkTombstoneFragmentContainer = createFragmentContainer(Artwork
         extendedBiddingIntervalMinutes
       }
       ...ArtworkMakerTitle_artwork
+      artists {
+        name
+        href
+      }
     }
   `,
 })

@@ -229,7 +229,14 @@ export const Artwork: React.FC<ArtworkProps> = ({
     if (artworkAboveTheFold && me) {
       sections.push({
         key: "header",
-        element: <ArtworkHeader artwork={artworkAboveTheFold} />,
+        element: (
+          <ArtworkHeader
+            artwork={artworkAboveTheFold}
+            refetchArtwork={() =>
+              relay.refetch({ artworkID: internalID }, null, () => null, { force: true })
+            }
+          />
+        ),
         excludePadding: true,
       })
 

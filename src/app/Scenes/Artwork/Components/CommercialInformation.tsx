@@ -248,7 +248,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
   }
 
   const renderCountdown = () => {
-    if (!!isBiddableInAuction) {
+    if (!!isBiddableInAuction && !enableArtworkRedesign) {
       return (
         <>
           <Spacer mb={2} />

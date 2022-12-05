@@ -163,8 +163,8 @@ describe("ArtworkTombstone", () => {
 
 const artworkTombstoneArtwork: ArtworkTombstone_artwork$data = {
   ...ArtworkFixture,
+  artists: [{ name: "Artist", href: "/artist" }],
   title: "Hello im a title",
-  medium: "Painting",
   date: "1992",
   isForSale: true,
 }

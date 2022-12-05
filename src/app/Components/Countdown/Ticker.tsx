@@ -1,12 +1,12 @@
 import { getTimerInfo } from "app/utils/saleTime"
 import { Time } from "app/utils/useTimer"
 import { Duration } from "moment"
-import { Flex, Text } from "palette"
+import { Flex, Text, TextProps } from "palette"
 import React from "react"
 import { CountdownTimerProps } from "./CountdownTimer"
 
 interface TimeSectionProps {
-  textProps: ExtractProps<typeof Text>
+  textProps: TextProps
   time: string
   label: string
 }
@@ -66,7 +66,7 @@ export const LabeledTicker: React.FC<LabeledTickerProps> = ({
   )
 }
 
-interface SimpleTickerProps extends ExtractProps<typeof Text> {
+interface SimpleTickerProps extends TextProps {
   duration: CountdownTimerProps["duration"]
   separator: string
 }
@@ -84,13 +84,18 @@ export const SimpleTicker: React.FC<SimpleTickerProps> = ({ duration, separator,
   )
 }
 
-interface ModernTickerProps {
+interface ModernTickerProps extends TextProps {
   duration: CountdownTimerProps["duration"]
   hasStarted?: boolean
   isExtended?: boolean
 }
 
-export const ModernTicker: React.FC<ModernTickerProps> = ({ duration, hasStarted, isExtended }) => {
+export const ModernTicker: React.FC<ModernTickerProps> = ({
+  duration,
+  hasStarted,
+  isExtended,
+  ...rest
+}) => {
   if (!duration) {
     return null
   }
@@ -103,7 +108,7 @@ export const ModernTicker: React.FC<ModernTickerProps> = ({ duration, hasStarted
   const timerInfo = getTimerInfo(time, { hasStarted, isExtended })
 
   return (
-    <Text color={timerInfo.color} accessibilityLabel="Modern Ticker">
+    <Text color={timerInfo.color} accessibilityLabel="Modern Ticker" {...rest}>
       {timerInfo.copy}
     </Text>
   )
