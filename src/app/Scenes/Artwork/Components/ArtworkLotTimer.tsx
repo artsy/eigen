@@ -51,6 +51,7 @@ export const ArtworkLotTimerWrapper: React.FC<AuctionWebsocketWrapperProps> = (p
   if (!(artwork.isInAuction && artwork.saleArtwork && artwork.sale)) {
     return null
   }
+
   const {
     isPreview,
     isClosed,
@@ -185,7 +186,7 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
         {!!shouldShowTimer && (
           <>
             <Spacer mr={4} />
-            <Flex flexDirection="row" alignItems="center">
+            <Flex flexDirection="row" alignItems="center" accessibilityLabel="CountdownTimer">
               {sale?.cascadingEndTimeIntervalMinutes ? (
                 <ModernTicker
                   duration={duration}
