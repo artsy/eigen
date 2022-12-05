@@ -24,7 +24,7 @@ import {
   useColor,
 } from "palette"
 import { CollapseMenu } from "palette/elements/CollapseMenu"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import {
   Alert,
   AlertButton,
@@ -61,7 +61,7 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
   const userEmail = GlobalStore.useAppState((s) => s.auth.userEmail)
 
   useEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       BackHandler.addEventListener("hardwareBackPress", handleBackButton)
 
       return () => BackHandler.removeEventListener("hardwareBackPress", handleBackButton)
@@ -106,7 +106,7 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
           <FeatureFlagMenuItem
             title="Go to old Dev Menu"
             onPress={() => {
-              navigate("/admin", { modal: true }) // hcange these too?
+              navigate("/admin", { modal: true })
             }}
           />
         )}

@@ -29,7 +29,7 @@ export const DevMenuWrapper: React.FC = ({ children }) => {
 
         if (state.numTaps >= 5) {
           state.numTaps = 0
-          navigate("/admin2")
+          navigate("/dev-menu")
         }
         return false
       }}

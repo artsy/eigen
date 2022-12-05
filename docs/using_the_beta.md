@@ -23,4 +23,4 @@ To access it, do the following steps:
 If you are a dev or using an artsy email, you can access the dev menu quickly:
 
 - Just shake your device.
-- Otherwise, go to Safari and type `artsy:///admin2` into the address bar (note the triple-slash).
+- Otherwise, go to Safari and type `artsy:///dev-menu` into the address bar (note the triple-slash).

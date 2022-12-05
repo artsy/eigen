@@ -57,7 +57,7 @@ const useRageShakeAdminMenu = () => {
         return
       }
 
-      navigate("/admin2")
+      navigate("/dev-menu")
     })
 
     return () => {
