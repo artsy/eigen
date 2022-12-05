@@ -12,10 +12,15 @@ import { Action, action, Thunk, thunk } from "easy-peasy"
 import { fetchQuery, graphql } from "react-relay"
 import { BottomTabType } from "./BottomTabType"
 
+export interface UnreadCounts {
+  unreadConversationCount: number
+  unreadActivityPanelNotificationsCount: number
+}
+
 export interface BottomTabsModel {
   sessionState: {
-    unreadConversationCount: number
-    unreadActivityPanelNotificationsCount: number
+    unreadCounts: UnreadCounts
+    displayUnreadActivityPanelIndicator: boolean
     tabProps: Partial<{ [k in BottomTabType]: object }>
     selectedTab: BottomTabType
   }
@@ -23,18 +28,22 @@ export interface BottomTabsModel {
   fetchCurrentUnreadConversationCount: Thunk<BottomTabsModel>
   unreadActivityPanelNotificationsCountChanged: Action<BottomTabsModel, number>
   fetchAllNotificationsCounts: Thunk<BottomTabsModel>
+  displayUnreadActivityPanelIndicatorChanged: Action<BottomTabsModel, boolean>
   setTabProps: Action<BottomTabsModel, { tab: BottomTabType; props: object | undefined }>
 }
 
 export const getBottomTabsModel = (): BottomTabsModel => ({
   sessionState: {
-    unreadConversationCount: 0,
-    unreadActivityPanelNotificationsCount: 0,
+    unreadCounts: {
+      unreadConversationCount: 0,
+      unreadActivityPanelNotificationsCount: 0,
+    },
+    displayUnreadActivityPanelIndicator: false,
     tabProps: {},
     selectedTab: "home",
   },
   unreadConversationCountChanged: action((state, unreadConversationCount) => {
-    state.sessionState.unreadConversationCount = unreadConversationCount
+    state.sessionState.unreadCounts.unreadConversationCount = unreadConversationCount
   }),
   fetchCurrentUnreadConversationCount: thunk(async () => {
     try {
@@ -55,11 +64,11 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
         }
       ).toPromise()
 
-      if (result?.me?.unreadConversationCount != null) {
-        GlobalStore.actions.bottomTabs.unreadConversationCountChanged(
-          result.me.unreadConversationCount
-        )
-        GlobalStore.actions.native.setApplicationIconBadgeNumber(result.me.unreadConversationCount)
+      const conversationsCount = result?.me?.unreadConversationCount
+
+      if (conversationsCount !== null) {
+        GlobalStore.actions.bottomTabs.unreadConversationCountChanged(conversationsCount ?? 0)
+        GlobalStore.actions.native.setApplicationIconBadgeNumber(conversationsCount ?? 0)
       }
     } catch (e) {
       if (__DEV__) {
@@ -74,7 +83,20 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
   }),
   unreadActivityPanelNotificationsCountChanged: action(
     (state, unreadActivityPanelNotificationsCount) => {
-      state.sessionState.unreadActivityPanelNotificationsCount =
+      // we want to display the indicator only when there is a new notification
+      if (
+        unreadActivityPanelNotificationsCount >
+        state.sessionState.unreadCounts.unreadActivityPanelNotificationsCount
+      ) {
+        state.sessionState.displayUnreadActivityPanelIndicator = true
+      } else {
+        if (state.sessionState.displayUnreadActivityPanelIndicator) {
+          state.sessionState.displayUnreadActivityPanelIndicator =
+            !!unreadActivityPanelNotificationsCount
+        }
+      }
+
+      state.sessionState.unreadCounts.unreadActivityPanelNotificationsCount =
         unreadActivityPanelNotificationsCount
     }
   ),
@@ -101,14 +123,14 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
       const conversationsCount = result?.me?.unreadConversationCount
       const notificationsCount = result?.me?.unreadNotificationsCount
 
-      if (conversationsCount != null) {
-        GlobalStore.actions.bottomTabs.unreadConversationCountChanged(conversationsCount)
-        GlobalStore.actions.native.setApplicationIconBadgeNumber(conversationsCount)
+      if (conversationsCount !== null) {
+        GlobalStore.actions.bottomTabs.unreadConversationCountChanged(conversationsCount ?? 0)
+        GlobalStore.actions.native.setApplicationIconBadgeNumber(conversationsCount ?? 0)
       }
 
-      if (notificationsCount != null) {
+      if (notificationsCount !== null) {
         GlobalStore.actions.bottomTabs.unreadActivityPanelNotificationsCountChanged(
-          notificationsCount
+          notificationsCount ?? 0
         )
       }
     } catch (e) {
@@ -122,6 +144,11 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
       }
     }
   }),
+  displayUnreadActivityPanelIndicatorChanged: action(
+    (state, displayUnreadActivityPanelIndicator) => {
+      state.sessionState.displayUnreadActivityPanelIndicator = displayUnreadActivityPanelIndicator
+    }
+  ),
   setTabProps: action((state, { tab, props }) => {
     state.sessionState.tabProps[tab] = props
   }),

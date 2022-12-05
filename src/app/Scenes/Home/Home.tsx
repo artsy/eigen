@@ -351,7 +351,7 @@ const Home = (props: Props) => {
                 return null
             }
           }}
-          ListHeaderComponent={<HomeHeader me={meAbove} />}
+          ListHeaderComponent={<HomeHeader />}
           ListFooterComponent={() => <Flex mb={3}>{!!loading && <BelowTheFoldPlaceholder />}</Flex>}
           keyExtractor={(_item, index) => String(index)}
         />
@@ -433,7 +433,6 @@ export const HomeFragmentContainer = createRefetchContainer(
     `,
     meAbove: graphql`
       fragment Home_meAbove on Me {
-        ...HomeHeader_me
         ...EmailConfirmationBanner_me
         ...LotsByFollowedArtistsRail_me
       }

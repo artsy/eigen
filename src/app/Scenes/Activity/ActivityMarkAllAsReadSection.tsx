@@ -1,6 +1,5 @@
 import { captureException } from "@sentry/react-native"
 import { ActivityMarkAllAsReadSectionMutation } from "__generated__/ActivityMarkAllAsReadSectionMutation.graphql"
-import { GlobalStore } from "app/store/GlobalStore"
 import { Button, Flex, Text } from "palette"
 import { useMutation } from "react-relay"
 import { ConnectionHandler, graphql, RecordSourceSelectorProxy } from "relay-runtime"
@@ -31,8 +30,6 @@ export const ActivityMarkAllAsReadSection: React.FC<ActivityMarkAllAsReadSection
           if (errorMessage) {
             throw new Error(errorMessage)
           }
-
-          GlobalStore.actions.bottomTabs.unreadActivityPanelNotificationsCountChanged(0)
         },
       })
     } catch (e) {

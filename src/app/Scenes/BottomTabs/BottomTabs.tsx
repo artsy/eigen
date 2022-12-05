@@ -10,11 +10,11 @@ export const BottomTabs: React.FC = () => {
   const { color } = useTheme()
 
   const unreadConversationCount = GlobalStore.useAppState(
-    (state) => state.bottomTabs.sessionState.unreadConversationCount
+    (state) => state.bottomTabs.sessionState.unreadCounts.unreadConversationCount
   )
 
-  const unreadActivityPanelNotificationsCount = GlobalStore.useAppState(
-    (state) => state.bottomTabs.sessionState.unreadActivityPanelNotificationsCount
+  const displayUnreadActivityPanelIndicator = GlobalStore.useAppState(
+    (state) => state.bottomTabs.sessionState.displayUnreadActivityPanelIndicator
   )
 
   useEffect(() => {
@@ -38,10 +38,7 @@ export const BottomTabs: React.FC = () => {
         }}
       />
       <Flex flexDirection="row" height={ICON_HEIGHT} px={1}>
-        <BottomTabsButton
-          tab="home"
-          forceDisplayVisualClue={unreadActivityPanelNotificationsCount > 0}
-        />
+        <BottomTabsButton tab="home" forceDisplayVisualClue={displayUnreadActivityPanelIndicator} />
         <BottomTabsButton tab="search" />
         <BottomTabsButton tab="inbox" badgeCount={unreadConversationCount} />
         <BottomTabsButton tab="sell" />
