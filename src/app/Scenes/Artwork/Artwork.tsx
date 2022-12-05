@@ -28,7 +28,6 @@ import usePrevious from "react-use/lib/usePrevious"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { useScreenDimensions } from "shared/hooks"
 import { ResponsiveValue } from "styled-system"
-import { setBottomTabVisibilityForCurrentScreen } from "../BottomTabs/setBottomTabVisibilityForCurrentScreen"
 import { OfferSubmittedModal } from "../Inbox/Components/Conversations/OfferSubmittedModal"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
@@ -151,11 +150,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
     return () => {
       navigationEvents.removeListener("modalDismissed", handleModalDismissed)
     }
-  }, [])
-
-  // TODO: Remove this before the PR is merged
-  useLayoutEffect(() => {
-    setBottomTabVisibilityForCurrentScreen(false)
   }, [])
 
   // This is a hack to make useEffect behave exactly like didComponentUpdate.
