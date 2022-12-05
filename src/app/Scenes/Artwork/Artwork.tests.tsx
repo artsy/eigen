@@ -76,6 +76,10 @@ describe("Artwork", () => {
   beforeEach(() => {
     require("app/relay/createEnvironment").reset()
     environment = require("app/relay/createEnvironment").defaultEnvironment
+
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      ARArtworkRedesingPhase2: false,
+    })
   })
 
   afterEach(() => {
@@ -183,7 +187,6 @@ describe("Artwork", () => {
         Artwork() {
           return {
             internalID: "artwork123",
-            isEligibleForArtsyGuarantee: false,
           }
         },
       })
@@ -195,6 +198,7 @@ describe("Artwork", () => {
           return {
             slug: "my-cool-artwork",
             internalID: "artwork123",
+            isEligibleForArtsyGuarantee: false,
             artist: {
               artistSeriesConnection: {
                 totalCount: 5,
@@ -367,63 +371,6 @@ describe("Artwork", () => {
     expect(tree.root.findByType(Artwork).props.artworkAboveTheFold.slug).toBe(
       "completely-different-slug"
     )
-  })
-
-  it("does not show a contextCard if the work is in a non-auction sale", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({
-      ARArtworkRedesingPhase2: false,
-    })
-
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-
-    // ArtworkAboveTheFoldQuery
-    resolveMostRecentRelayOperation(environment)
-    // ArtworkMarkAsRecentlyViewedQuery
-    resolveMostRecentRelayOperation(environment)
-    // ArtworkBelowTheFoldQuery
-    resolveMostRecentRelayOperation(environment, {
-      Artwork() {
-        return {
-          isForSale: false,
-        }
-      },
-      Sale() {
-        return {
-          isAuction: false,
-        }
-      },
-    })
-
-    await flushPromiseQueue()
-
-    expect(tree.root.findAllByType(ContextCard)).toHaveLength(0)
-    expect(tree.root.findAllByType(OtherWorksFragmentContainer)).toHaveLength(1)
-  })
-
-  it("does show a contextCard if the work is in an auction", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({
-      ARArtworkRedesingPhase2: false,
-    })
-
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-
-    // ArtworkAboveTheFoldQuery
-    resolveMostRecentRelayOperation(environment)
-    // ArtworkMarkAsRecentlyViewedQuery
-    resolveMostRecentRelayOperation(environment)
-
-    // ArtworkBelowTheFoldQuery
-    resolveMostRecentRelayOperation(environment, {
-      Sale() {
-        return {
-          isAuction: true,
-        }
-      },
-    })
-
-    await flushPromiseQueue()
-
-    expect(tree.root.findAllByType(ContextCard)).toHaveLength(1)
   })
 
   describe("Live Auction States", () => {
@@ -702,15 +649,15 @@ describe("Artwork", () => {
       renderWithWrappers(<TestRenderer />)
 
       // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkMarkAsRecentlyViewedQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkBelowTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
           isEligibleForArtsyGuarantee: false,
         }),
       })
-      // ArtworkMarkAsRecentlyViewedQuery
-      resolveMostRecentRelayOperation(environment)
-      // ArtworkBelowTheFoldQuery
-      resolveMostRecentRelayOperation(environment)
 
       await flushPromiseQueue()
 
@@ -720,66 +667,312 @@ describe("Artwork", () => {
     })
   })
 
-  describe("Consigments", () => {
+  describe("Context Card", () => {
+    it("should NOT be displayed if the work is in a non-auction sale", async () => {
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
+
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkMarkAsRecentlyViewedQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkBelowTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
+        Artwork() {
+          return {
+            isForSale: false,
+          }
+        },
+        Sale() {
+          return {
+            isAuction: false,
+          }
+        },
+      })
+      await flushPromiseQueue()
+
+      expect(tree.root.findAllByType(ContextCard)).toHaveLength(0)
+      expect(tree.root.findAllByType(OtherWorksFragmentContainer)).toHaveLength(1)
+    })
+
+    it("should be displayed if the work is in an auction", async () => {
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
+
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkMarkAsRecentlyViewedQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkBelowTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
+        Sale() {
+          return {
+            isAuction: true,
+          }
+        },
+      })
+
+      await flushPromiseQueue()
+
+      expect(tree.root.findAllByType(ContextCard)).toHaveLength(1)
+    })
+  })
+
+  describe("About the work section", () => {
+    it("should NOT be rendered", async () => {
+      renderWithWrappers(<TestRenderer />)
+
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkMarkAsRecentlyViewedQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkBelowTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
+        Artwork: () => ({
+          description: null,
+          additionalInformation: null,
+        }),
+      })
+
+      await flushPromiseQueue()
+
+      expect(screen.queryByText("About the work")).toBeNull()
+    })
+
+    it("should be rendered", async () => {
+      renderWithWrappers(<TestRenderer />)
+
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkMarkAsRecentlyViewedQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkBelowTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
+        Artwork: () => ({
+          description: "Artwork Description",
+        }),
+      })
+
+      await flushPromiseQueue()
+
+      expect(screen.getByText("About the work")).toBeTruthy()
+    })
+  })
+
+  describe("Provenance/Exhibition history/Bibliography", () => {
+    it("should NOT be rendered", async () => {
+      renderWithWrappers(<TestRenderer />)
+
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkMarkAsRecentlyViewedQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkBelowTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
+        Artwork: () => ({
+          provenance: null,
+          exhibitionHistory: null,
+          literature: null,
+        }),
+      })
+
+      await flushPromiseQueue()
+
+      expect(screen.queryByText("Provenance")).toBeNull()
+      expect(screen.queryByText("Exhibition history")).toBeNull()
+      expect(screen.queryByText("Bibliography")).toBeNull()
+    })
+
+    it("should be rendered", async () => {
+      renderWithWrappers(<TestRenderer />)
+
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkMarkAsRecentlyViewedQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkBelowTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
+        Artwork: () => ({
+          provenance: "Text",
+          exhibitionHistory: "Text",
+          literature: "Text",
+        }),
+      })
+
+      await flushPromiseQueue()
+
+      expect(screen.getByText("Provenance")).toBeTruthy()
+      expect(screen.getByText("Exhibition history")).toBeTruthy()
+      expect(screen.getByText("Bibliography")).toBeTruthy()
+    })
+  })
+
+  describe("About the artist", () => {
+    it("should NOT be rendered", async () => {
+      renderWithWrappers(<TestRenderer />)
+
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkMarkAsRecentlyViewedQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkBelowTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
+        Artwork: () => ({
+          artist: null,
+        }),
+      })
+
+      await flushPromiseQueue()
+
+      expect(screen.queryByText("About the artist")).toBeNull()
+    })
+
+    it("should be rendered", async () => {
+      renderWithWrappers(<TestRenderer />)
+
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkMarkAsRecentlyViewedQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkBelowTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
+        Artwork: () => ({
+          artist: {
+            biographyBlurb: {
+              text: "Artist Text",
+            },
+          },
+        }),
+      })
+
+      await flushPromiseQueue()
+
+      expect(screen.getByText("About the artist")).toBeTruthy()
+    })
+  })
+
+  describe("Other works", () => {
+    it("should NOT be rendered", async () => {
+      renderWithWrappers(<TestRenderer />)
+
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkMarkAsRecentlyViewedQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkBelowTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
+        Artwork: () => ({
+          contextGrids: [
+            {
+              title: "Grid Name",
+              artworks: {
+                edges: [],
+              },
+            },
+          ],
+        }),
+      })
+
+      await flushPromiseQueue()
+
+      expect(screen.queryByText("Grid Name")).toBeNull()
+    })
+
+    it("should be rendered", async () => {
+      renderWithWrappers(<TestRenderer />)
+
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkMarkAsRecentlyViewedQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkBelowTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
+        Artwork: () => ({
+          // skip about the artist section
+          artist: null,
+          contextGrids: [
+            {
+              title: "Grid Name",
+              artworks: {
+                edges: [
+                  {
+                    node: {
+                      internalID: "Grid Node One",
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        }),
+      })
+
+      await flushPromiseQueue()
+
+      expect(screen.queryByText("Grid Name")).toBeTruthy()
+    })
+  })
+
+  describe("when ARArtworkRedesingPhase2 feature flag is enabled", () => {
     beforeEach(() => {
       __globalStoreTestUtils__?.injectFeatureFlags({
         ARArtworkRedesingPhase2: true,
       })
     })
 
-    it("shows consign link if at least 1 artist is consignable", async () => {
-      renderWithWrappers(<TestRenderer />)
+    describe("Consigments", () => {
+      it("shows consign link if at least 1 artist is consignable", async () => {
+        renderWithWrappers(<TestRenderer />)
 
-      // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment)
-      // ArtworkMarkAsRecentlyViewedQuery
-      resolveMostRecentRelayOperation(environment)
-      // ArtworkBelowTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
-        Artwork: () => ({
-          isForSale: true,
-          artists: [
-            {
-              name: "Santa",
-              isConsignable: true,
-            },
-          ],
-        }),
+        // ArtworkAboveTheFoldQuery
+        resolveMostRecentRelayOperation(environment)
+        // ArtworkMarkAsRecentlyViewedQuery
+        resolveMostRecentRelayOperation(environment)
+        // ArtworkBelowTheFoldQuery
+        resolveMostRecentRelayOperation(environment, {
+          Artwork: () => ({
+            isForSale: true,
+            artists: [
+              {
+                name: "Santa",
+                isConsignable: true,
+              },
+            ],
+          }),
+        })
+        await flushPromiseQueue()
+
+        expect(screen.queryByText(/Consign with Artsy/)).toBeTruthy()
       })
-      await flushPromiseQueue()
 
-      expect(screen.queryByText(/Consign with Artsy/)).toBeTruthy()
-    })
+      it("doesn't render section", async () => {
+        renderWithWrappers(<TestRenderer />)
 
-    it("doesn't render section", async () => {
-      renderWithWrappers(<TestRenderer />)
+        // ArtworkAboveTheFoldQuery
+        resolveMostRecentRelayOperation(environment, {
+          Artwork: () => ({
+            isAcquireable: false,
+            isOfferable: false,
+            isInAuction: false,
+            sale: null,
+          }),
+        })
+        // ArtworkMarkAsRecentlyViewedQuery
+        resolveMostRecentRelayOperation(environment)
+        // ArtworkBelowTheFoldQuery
+        resolveMostRecentRelayOperation(environment, {
+          Artwork: () => ({
+            isForSale: false,
+            artists: [
+              {
+                name: "Santa",
+                isConsignable: false,
+              },
+            ],
+          }),
+        })
+        await flushPromiseQueue()
 
-      // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
-        Artwork: () => ({
-          isAcquireable: false,
-          isOfferable: false,
-          isInAuction: false,
-          sale: null,
-        }),
+        expect(screen.queryByText(/Consign with Artsy/)).toBeNull()
       })
-      // ArtworkMarkAsRecentlyViewedQuery
-      resolveMostRecentRelayOperation(environment)
-      // ArtworkBelowTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
-        Artwork: () => ({
-          isForSale: false,
-          artists: [
-            {
-              name: "Santa",
-              isConsignable: false,
-            },
-          ],
-        }),
-      })
-      await flushPromiseQueue()
-
-      expect(screen.queryByText(/Consign with Artsy/)).toBeNull()
     })
   })
 })

@@ -79,8 +79,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const { internalID, slug, isInAuction, partner: partnerAbove } = artworkAboveTheFold || {}
   const { isPreview, isClosed, liveStartAt } = artworkAboveTheFold?.sale ?? {}
-  const { partner, sale, contextGrids, artistSeriesConnection, artist, context } =
-    artworkBelowTheFold || {}
+  const { contextGrids, artistSeriesConnection, artist, context } = artworkBelowTheFold || {}
 
   const getInitialAuctionTimerState = () => {
     if (isInAuction) {
@@ -98,9 +97,11 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const isInClosedAuction = isInAuction && auctionTimerState === AuctionTimerState.CLOSED
 
   const shouldRenderPartner = () => {
-    if ((sale && sale.isBenefit) || (sale && sale.isGalleryAuction)) {
+    const { sale, partner } = artworkBelowTheFold ?? {}
+
+    if (sale?.isBenefit || sale?.isGalleryAuction) {
       return false
-    } else if (partner && partner.type && partner.type !== "Auction House") {
+    } else if (partner?.type && partner.type !== "Auction House") {
       return true
     } else {
       return false
@@ -127,22 +128,15 @@ export const Artwork: React.FC<ArtworkProps> = ({
     return (artist?.artistSeriesConnection?.totalCount ?? 0) > 0
   }
 
-  const shouldRenderLotDetails = () => {
-    return enableArtworkRedesign && isInAuction && sale && artworkAboveTheFold?.saleArtwork
-  }
-
   const shouldRenderConsignmentsSection = () => {
     const { isAcquireable, isOfferable } = artworkAboveTheFold ?? {}
-    const { isForSale } = artworkBelowTheFold ?? {}
+    const { isForSale, sale } = artworkBelowTheFold ?? {}
     const artists = artworkBelowTheFold?.artists ?? []
     const consignableArtists = artists.filter((currentArtist) => !!currentArtist?.isConsignable)
     const isBiddableInAuction =
       isInAuction && sale && auctionTimerState !== AuctionTimerState.CLOSED && isForSale
 
-    return (
-      enableArtworkRedesign &&
-      (consignableArtists.length || isAcquireable || isOfferable || isBiddableInAuction)
-    )
+    return consignableArtists.length || isAcquireable || isOfferable || isBiddableInAuction
   }
 
   useEffect(() => {
@@ -258,18 +252,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (shouldRenderLotDetails()) {
-      sections.push({
-        key: "lotDetailsSection",
-        element: (
-          <ArtworkLotDetails
-            artwork={artworkAboveTheFold!}
-            auctionState={auctionTimerState as AuctionTimerState}
-          />
-        ),
-      })
-    }
-
     if (!enableConversationalBuyNow && !!partnerAbove?.name && artworkAboveTheFold) {
       sections.push({
         key: "partnerSection",
@@ -279,7 +261,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
     }
 
     if (
-      !enableArtworkRedesign &&
       !isEmpty(artworkAboveTheFold?.artists) &&
       !artworkAboveTheFold?.isSold &&
       !isInClosedAuction
@@ -314,10 +295,12 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    sections.push({
-      key: "artworkDetails",
-      element: <ArtworkDetails artwork={artworkBelowTheFold} />,
-    })
+    if (artworkAboveTheFold) {
+      sections.push({
+        key: "artworkDetails",
+        element: <ArtworkDetails artwork={artworkAboveTheFold} />,
+      })
+    }
 
     if (
       artworkBelowTheFold.provenance ||
@@ -334,13 +317,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
       sections.push({
         key: "aboutArtist",
         element: <AboutArtist artwork={artworkBelowTheFold} />,
-      })
-    }
-
-    if (shouldRenderConsignmentsSection()) {
-      sections.push({
-        key: "consignments",
-        element: <ArtworkConsignments artwork={artworkBelowTheFold} />,
       })
     }
 
@@ -370,7 +346,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (!!artworkAboveTheFold?.isEligibleForArtsyGuarantee) {
+    if (!!artworkBelowTheFold?.isEligibleForArtsyGuarantee) {
       sections.push({
         key: "artsyGuarantee",
         element: <ArtsyGuarantee />,
@@ -381,6 +357,156 @@ export const Artwork: React.FC<ArtworkProps> = ({
       sections.push({
         key: "contextCard",
         element: <ContextCard artwork={artworkBelowTheFold} />,
+      })
+    }
+
+    if (shouldRenderArtworksInArtistSeries()) {
+      sections.push({
+        key: "artworksInSeriesRail",
+        element: <ArtworksInSeriesRail artwork={artworkBelowTheFold} />,
+      })
+    }
+
+    if (artworkAboveTheFold && shouldRenderArtistSeriesMoreSeries()) {
+      sections.push({
+        key: "artistSeriesMoreSeries",
+        element: (
+          <ArtistSeriesMoreSeries
+            contextScreenOwnerId={artworkAboveTheFold.internalID}
+            contextScreenOwnerSlug={artworkAboveTheFold.slug}
+            contextScreenOwnerType={OwnerType.artwork}
+            artist={artist}
+            artistSeriesHeader="Series from this artist"
+            headerVariant="md"
+          />
+        ),
+      })
+    }
+
+    if (shouldRenderOtherWorks()) {
+      sections.push({
+        key: "otherWorks",
+        element: <OtherWorks artwork={artworkBelowTheFold} />,
+      })
+    }
+
+    return sections
+  }
+
+  const redesignedSectionsData = (): ArtworkPageSection[] => {
+    const sections: ArtworkPageSection[] = []
+
+    if (artworkAboveTheFold) {
+      sections.push({
+        key: "header",
+        element: (
+          <ArtworkHeader
+            artwork={artworkAboveTheFold}
+            refetchArtwork={() =>
+              relay.refetch({ artworkID: internalID }, null, () => null, { force: true })
+            }
+          />
+        ),
+        excludePadding: true,
+        excludeSeparator: true,
+      })
+
+      sections.push({
+        key: "artworkDetails",
+        element: <ArtworkDetails artwork={artworkAboveTheFold} />,
+      })
+    }
+
+    if (isInAuction && artworkAboveTheFold?.sale && artworkAboveTheFold?.saleArtwork) {
+      sections.push({
+        key: "lotDetailsSection",
+        element: (
+          <ArtworkLotDetails
+            artwork={artworkAboveTheFold!}
+            auctionState={auctionTimerState as AuctionTimerState}
+          />
+        ),
+      })
+    }
+
+    if (!artworkBelowTheFold) {
+      sections.push({
+        key: "belowTheFoldPlaceholder",
+        element: <BelowTheFoldPlaceholder />,
+      })
+
+      return sections
+    }
+
+    if (
+      artworkBelowTheFold.provenance ||
+      artworkBelowTheFold.exhibitionHistory ||
+      artworkBelowTheFold.literature
+    ) {
+      sections.push({
+        key: "history",
+        element: <ArtworkHistory artwork={artworkBelowTheFold} />,
+      })
+    }
+
+    if (artworkBelowTheFold.description || artworkBelowTheFold.additionalInformation) {
+      sections.push({
+        key: "aboutWork",
+        element: <AboutWork artwork={artworkBelowTheFold} />,
+      })
+    }
+
+    if (artist && artist.biographyBlurb) {
+      sections.push({
+        key: "aboutArtist",
+        element: <AboutArtist artwork={artworkBelowTheFold} />,
+      })
+    }
+
+    if (context && context.__typename === "Sale" && context.isAuction) {
+      sections.push({
+        key: "contextCard",
+        element: <ContextCard artwork={artworkBelowTheFold} />,
+      })
+    }
+
+    if (shouldRenderPartner()) {
+      sections.push({
+        key: "partnerCard",
+        element: (
+          <PartnerCard
+            shouldShowQuestions={
+              !!(
+                enableConversationalBuyNow &&
+                artworkBelowTheFold &&
+                (artworkAboveTheFold?.isAcquireable ||
+                  (!artworkAboveTheFold?.isInquireable && artworkAboveTheFold?.isOfferable))
+              )
+            }
+            artwork={artworkBelowTheFold}
+          />
+        ),
+      })
+    }
+
+    if (!!(artworkBelowTheFold.isForSale && !isInAuction)) {
+      sections.push({
+        key: "shippingAndTaxes",
+        element: <ShippingAndTaxesFragmentContainer artwork={artworkBelowTheFold!} />,
+      })
+    }
+
+    if (!!artworkBelowTheFold?.isEligibleForArtsyGuarantee) {
+      sections.push({
+        key: "artsyGuarantee",
+        element: <ArtsyGuarantee />,
+      })
+    }
+
+    if (shouldRenderConsignmentsSection()) {
+      sections.push({
+        key: "consignments",
+        element: <ArtworkConsignments artwork={artworkBelowTheFold} />,
       })
     }
 
@@ -467,22 +593,41 @@ export const Artwork: React.FC<ArtworkProps> = ({
               )}
               <FlatList<ArtworkPageSection>
                 keyboardShouldPersistTaps="handled"
-                data={sectionsData()}
-                ItemSeparatorComponent={() => (
-                  <Box mx={2}>
-                    <Separator />
-                  </Box>
-                )}
+                data={enableArtworkRedesign ? redesignedSectionsData() : sectionsData()}
+                ItemSeparatorComponent={(props) => {
+                  const { leadingItem: item } = props
+
+                  if (item.excludeSeparator) {
+                    return <Box mt={4} />
+                  }
+
+                  if (enableArtworkRedesign) {
+                    return (
+                      <Box mx={2} my={4}>
+                        <Separator />
+                      </Box>
+                    )
+                  }
+
+                  return (
+                    <Box mx={2}>
+                      <Separator />
+                    </Box>
+                  )
+                }}
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-                renderItem={({ item, index }) => (
-                  <Box
-                    mt={index === 0 && enableArtworkRedesign ? 0 : item.verticalMargin ?? 3}
-                    mb={item.verticalMargin ?? 3}
-                    px={item.excludePadding ? 0 : 2}
-                  >
-                    {item.element}
-                  </Box>
-                )}
+                contentContainerStyle={{ paddingBottom: 40 }}
+                renderItem={({ item }) => {
+                  if (enableArtworkRedesign) {
+                    return <Box px={item.excludePadding ? 0 : 2}>{item.element}</Box>
+                  }
+
+                  return (
+                    <Box my={item.verticalMargin ?? 3} px={item.excludePadding ? 0 : 2}>
+                      {item.element}
+                    </Box>
+                  )
+                }}
               />
               {!!(enableArtworkRedesign && artworkAboveTheFold && me) && (
                 <ArtworkStickyBottomContent artwork={artworkAboveTheFold} me={me} />
@@ -501,6 +646,7 @@ interface ArtworkPageSection {
   key: string
   element: JSX.Element
   excludePadding?: boolean
+  excludeSeparator?: boolean
   // use verticalMargin to pass custom spacing between separator and section
   verticalMargin?: ResponsiveValue<number>
 }
@@ -518,6 +664,7 @@ export const ArtworkContainer = createRefetchContainer(
         ...PartnerLink_artwork
         ...ArtworkLotDetails_artwork
         ...ArtworkStickyBottomContent_artwork
+        ...ArtworkDetails_artwork
         slug
         internalID
         id
@@ -526,7 +673,6 @@ export const ArtworkContainer = createRefetchContainer(
         isBiddable
         isInquireable
         isSold
-        isEligibleForArtsyGuarantee
         isInAuction
         availability
         artists {
@@ -606,11 +752,11 @@ export const ArtworkContainer = createRefetchContainer(
         artists {
           isConsignable
         }
+        isEligibleForArtsyGuarantee
         ...PartnerCard_artwork
         ...AboutWork_artwork
         ...OtherWorks_artwork
         ...AboutArtist_artwork
-        ...ArtworkDetails_artwork
         ...ContextCard_artwork
         ...ArtworkHistory_artwork
         ...ArtworksInSeriesRail_artwork

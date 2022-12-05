@@ -69,16 +69,20 @@ export const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork, ref
               />
             </Flex>
           )}
-          <Spacer mb={1} />
-          {!!artwork.partner && (
-            <Text variant="sm" color="black100" weight="medium">
-              {artwork.partner.name}
-            </Text>
-          )}
-          {!!artwork.saleArtwork && !!artwork.saleArtwork.estimate && (
-            <Text variant="sm" color="black60">
-              Estimated value: {artwork.saleArtwork.estimate}
-            </Text>
+          {!enableArtworkRedesign && (
+            <>
+              <Spacer mb={1} />
+              {!!artwork.partner && (
+                <Text variant="sm" color="black100" weight="medium">
+                  {artwork.partner.name}
+                </Text>
+              )}
+              {!!artwork.saleArtwork && !!artwork.saleArtwork.estimate && (
+                <Text variant="sm" color="black60">
+                  Estimated value: {artwork.saleArtwork.estimate}
+                </Text>
+              )}
+            </>
           )}
         </>
       )}
