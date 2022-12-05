@@ -176,19 +176,4 @@ describe("ArtworkPrice", () => {
 
     expect(getByText("$1000")).toBeTruthy()
   })
-
-  it("should render availability if the sale message is not available", async () => {
-    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Artwork: () => ({
-        isInAuction: false,
-        saleMessage: null,
-        availability: "for sale",
-      }),
-    })
-    await flushPromiseQueue()
-
-    expect(getByText("For sale")).toBeTruthy()
-  })
 })

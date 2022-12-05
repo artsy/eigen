@@ -1,6 +1,5 @@
 import { ArtworkPrice_artwork$key } from "__generated__/ArtworkPrice_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
-import { capitalize } from "lodash"
 import { Flex, FlexProps, Text } from "palette"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -17,18 +16,6 @@ export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({ artwork, ...flexProp
   const auctionState = ArtworkStore.useStoreState((state) => state.auctionState)
   const editionSets = data.editionSets ?? []
   let message = null
-
-  const getMessage = () => {
-    if (data.saleMessage) {
-      return data.saleMessage
-    }
-
-    if (data.availability) {
-      return capitalize(data.availability)
-    }
-
-    return
-  }
 
   const getEditionSetMessage = () => {
     const selectedEdition = editionSets.find((editionSet) => {
@@ -61,7 +48,7 @@ export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({ artwork, ...flexProp
   if (editionSets.length > 1) {
     message = getEditionSetMessage()
   } else {
-    message = getMessage()
+    message = data.saleMessage
   }
 
   if (message) {
