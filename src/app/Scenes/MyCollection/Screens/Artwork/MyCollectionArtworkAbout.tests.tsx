@@ -172,8 +172,29 @@ describe("MyCollectionArtworkAbout", () => {
       "Unable to find an element with text: Interested in Selling This Work?"
     )
   })
+  it("does not render Submit for Sale section if P1 artist and artwork was submited to sale", () => {
+    const { getByText } = renderWithWrappers(<TestRenderer />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Query: () => ({
+        artwork: {
+          artist: {
+            targetSupply: {
+              isP1: false,
+            },
+          },
+          submissionId: "someId",
+        },
+      }),
+    })
+
+    expect(() => getByText("Interested in Selling This Work?")).toThrow(
+      "Unable to find an element with text: Interested in Selling This Work?"
+    )
+  })
 })
 
+// submissionId: "someId",
 const artworkDataAvailable = {
   artwork: {
     category: "Oil on Canvas",
@@ -197,6 +218,7 @@ const artworkDataAvailable = {
         isP1: true,
       },
     },
+    submissionId: null,
   },
   marketPriceInsights: {
     lowRangeCents: 1780000,
