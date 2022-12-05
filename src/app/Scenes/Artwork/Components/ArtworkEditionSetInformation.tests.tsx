@@ -1,24 +1,22 @@
 import { fireEvent } from "@testing-library/react-native"
 import { ArtworkEditionSetInformation_Test_Query } from "__generated__/ArtworkEditionSetInformation_Test_Query.graphql"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { Text } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { ArtworkStore, ArtworkStoreProvider } from "../ArtworkStore"
+import { ArtworkStore, ArtworkStoreModel, ArtworkStoreProvider } from "../ArtworkStore"
 import { ArtworkEditionSetInformationFragmentContainer as ArtworkEditionSetInformation } from "./ArtworkEditionSetInformation"
 
 jest.unmock("react-relay")
 
 describe("ArtworkEditionSetInformation", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  let selectedEditionId: string
-  const onSelectEditionMock = jest.fn()
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
-    selectedEditionId = artwork.editionSets[0].internalID
   })
 
   const ArtworkStoreDebug = () => {
@@ -39,15 +37,15 @@ describe("ArtworkEditionSetInformation", () => {
           }
         `}
         variables={{}}
-        render={({ props }) => {
-          if (props?.artwork) {
+        render={({ props: relayProps }) => {
+          if (relayProps?.artwork) {
             return (
-              <ArtworkStoreProvider>
-                <ArtworkEditionSetInformation
-                  artwork={props.artwork}
-                  selectedEditionId={selectedEditionId}
-                  onSelectEdition={onSelectEditionMock}
-                />
+              <ArtworkStoreProvider
+                initialData={{
+                  selectedEditionId: artwork.editionSets[0].internalID,
+                }}
+              >
+                <ArtworkEditionSetInformation artwork={relayProps.artwork} />
                 <ArtworkStoreDebug />
               </ArtworkStoreProvider>
             )
@@ -59,28 +57,37 @@ describe("ArtworkEditionSetInformation", () => {
     )
   }
 
-  it("should correctly render the sale message for the selected edition set", () => {
-    selectedEditionId = artwork.editionSets[1].internalID
-    const { getByLabelText } = renderWithWrappers(<TestRenderer />)
+  describe("when ARArtworkRedesingPhase2 feature flag is disabled", () => {
+    it("the sale message for the selected edition set should be rendered", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        ARArtworkRedesingPhase2: false,
+      })
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Artwork: () => artwork,
+      const { getByLabelText } = renderWithWrappers(<TestRenderer />)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => artwork,
+      })
+
+      const saleMessageElement = getByLabelText("Selected edition set")
+      expect(saleMessageElement).toHaveTextContent("$1000")
     })
-
-    const saleMessageElement = getByLabelText("Selected edition set")
-    expect(saleMessageElement).toHaveTextContent("$2000")
   })
 
-  it("should call `onSelectEdition` handler with the selected edition set id", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
+  describe("when ARArtworkRedesingPhase2 feature flag is enabled", () => {
+    it("the sale message for the selected edition set should NOT be rendered", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        ARArtworkRedesingPhase2: true,
+      })
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Artwork: () => artwork,
+      const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => artwork,
+      })
+
+      expect(queryByLabelText("Selected edition set")).toBeNull()
     })
-
-    fireEvent.press(getByText("Edition Set Two"))
-
-    expect(onSelectEditionMock).toBeCalledWith("edition-set-two")
   })
 
   it("should keep the selected edtion set id in artwork store", () => {

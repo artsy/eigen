@@ -16,7 +16,7 @@ import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/Auction
 import { useArtworkBidding } from "app/Websockets/auctions/useArtworkBidding"
 import { capitalize } from "lodash"
 import { Box, Flex, Spacer, Text } from "palette"
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp, useTracking } from "react-tracking"
 import { ArtworkStore } from "../ArtworkStore"
@@ -157,7 +157,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
   const { trackEvent } = useTracking()
   const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
   const setAuctionState = ArtworkStore.useStoreActions((action) => action.setAuctionState)
-  const [editionSetID, setEditionSetID] = useState<string | null>(null)
+  const editionSetID = ArtworkStore.useStoreState((state) => state.selectedEditionId)
   const { isAcquireable, isOfferable, isInquireable, isInAuction, sale, isForSale, isSold } =
     artwork
 
@@ -215,13 +215,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
       const editionSets = artwork.editionSets ?? []
 
       if (editionSets.length > 1) {
-        return (
-          <ArtworkEditionSetInformation
-            artwork={artwork}
-            selectedEditionId={editionSetID}
-            onSelectEdition={setEditionSetID}
-          />
-        )
+        return <ArtworkEditionSetInformation artwork={artwork} />
       }
 
       return null
@@ -234,13 +228,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
         return <AuctionPrice artwork={artwork} auctionState={timerState as AuctionTimerState} />
       }
     } else if (artwork.editionSets && artwork.editionSets.length > 1) {
-      return (
-        <ArtworkEditionSetInformation
-          artwork={artwork}
-          selectedEditionId={editionSetID}
-          onSelectEdition={setEditionSetID}
-        />
-      )
+      return <ArtworkEditionSetInformation artwork={artwork} />
     } else {
       return renderSingleEditionArtwork()
     }

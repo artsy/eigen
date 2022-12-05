@@ -36,6 +36,7 @@ import { AboveTheFoldPlaceholder } from "./Components/AboveTheFoldArtworkPlaceho
 import { ArtsyGuarantee } from "./Components/ArtsyGuarantee"
 import { ArtworkConsignments } from "./Components/ArtworkConsignments"
 import { ArtworkDetails } from "./Components/ArtworkDetails"
+import { ArtworkEditionSetInformationFragmentContainer as ArtworkEditionSetInformation } from "./Components/ArtworkEditionSetInformation"
 import { FaqAndSpecialistSectionFragmentContainer as FaqAndSpecialistSection } from "./Components/ArtworkExtraLinks/FaqAndSpecialistSection"
 import { ArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/ArtworkHeader"
 import { ArtworkHistoryFragmentContainer as ArtworkHistory } from "./Components/ArtworkHistory"
@@ -411,6 +412,14 @@ export const Artwork: React.FC<ArtworkProps> = ({
         excludeSeparator: true,
       })
 
+      if ((artworkAboveTheFold.editionSets ?? []).length > 1) {
+        sections.push({
+          key: "selectEditionSet",
+          element: <ArtworkEditionSetInformation artwork={artworkAboveTheFold} />,
+          excludeSeparator: true,
+        })
+      }
+
       sections.push({
         key: "artworkDetails",
         element: <ArtworkDetails artwork={artworkAboveTheFold} />,
@@ -665,6 +674,7 @@ export const ArtworkContainer = createRefetchContainer(
         ...ArtworkLotDetails_artwork
         ...ArtworkStickyBottomContent_artwork
         ...ArtworkDetails_artwork
+        ...ArtworkEditionSetInformation_artwork
         slug
         internalID
         id
@@ -690,6 +700,9 @@ export const ArtworkContainer = createRefetchContainer(
           name
           href
           isLinkable
+        }
+        editionSets {
+          internalID
         }
       }
     `,

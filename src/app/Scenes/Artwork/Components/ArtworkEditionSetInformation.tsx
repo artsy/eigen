@@ -1,4 +1,5 @@
 import { ArtworkEditionSetInformation_artwork$data } from "__generated__/ArtworkEditionSetInformation_artwork.graphql"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { Box, Separator, Spacer, Text } from "palette"
 import { createFragmentContainer } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -7,15 +8,11 @@ import { ArtworkEditionSetsFragmentContainer as ArtworkEditionSets } from "./Art
 
 interface ArtworkEditionSetInformationProps {
   artwork: ArtworkEditionSetInformation_artwork$data
-  selectedEditionId: string | null
-  onSelectEdition: (editionId: string) => void
 }
 
-const ArtworkEditionSetInformation: React.FC<ArtworkEditionSetInformationProps> = ({
-  artwork,
-  selectedEditionId,
-  onSelectEdition,
-}) => {
+const ArtworkEditionSetInformation: React.FC<ArtworkEditionSetInformationProps> = ({ artwork }) => {
+  const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
+  const selectedEditionId = ArtworkStore.useStoreState((state) => state.selectedEditionId)
   const setSelectedEditionId = ArtworkStore.useStoreActions((action) => action.setSelectedEditionId)
   const editionSets = artwork.editionSets ?? []
   const selectedEdition = editionSets.find((editionSet) => {
@@ -23,8 +20,17 @@ const ArtworkEditionSetInformation: React.FC<ArtworkEditionSetInformationProps> 
   })
 
   const handleSelectEdition = (editionId: string) => {
-    onSelectEdition(editionId)
     setSelectedEditionId(editionId)
+  }
+
+  if (enableArtworkRedesign) {
+    return (
+      <>
+        <Separator />
+        <ArtworkEditionSets artwork={artwork} onSelectEdition={handleSelectEdition} />
+        <Separator />
+      </>
+    )
   }
 
   return (
