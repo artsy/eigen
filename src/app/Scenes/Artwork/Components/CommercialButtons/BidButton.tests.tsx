@@ -12,6 +12,7 @@ import {
   RegisteredBidder,
 } from "app/__fixtures__/ArtworkBidAction"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { merge as _merge } from "lodash"
@@ -44,6 +45,9 @@ describe("BidButton", () => {
     Settings.now = () => new Date("2019-08-15T12:00:00+00:00").valueOf()
 
     mockEnvironment = createMockEnvironment()
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      ARArtworkRedesingPhase2: false,
+    })
   })
 
   afterAll(() => {
@@ -163,7 +167,7 @@ describe("BidButton", () => {
         Me: () => meFixture,
       })
 
-      expect(getByText("Registration pending")).toBeTruthy()
+      expect(getByText("Registration Pending")).toBeTruthy()
     })
 
     it("displays 'Identity verification is required' if the sale requires identity verification and the user is registered but not verified", () => {
@@ -181,7 +185,7 @@ describe("BidButton", () => {
         Me: () => me,
       })
 
-      expect(getByText("Registration pending")).toBeTruthy()
+      expect(getByText("Registration Pending")).toBeTruthy()
       expect(getByText("Identity verification required to bid.")).toBeTruthy()
     })
 
@@ -200,7 +204,7 @@ describe("BidButton", () => {
         Me: () => me,
       })
 
-      expect(getByText("Registration pending")).toBeTruthy()
+      expect(getByText("Registration Pending")).toBeTruthy()
       expect(queryByText("Identity verification required to bid.")).toBeFalsy()
     })
 
@@ -263,7 +267,7 @@ describe("BidButton", () => {
         Me: () => meFixture,
       })
 
-      expect(getByText("Registration pending")).toBeTruthy()
+      expect(getByText("Registration Pending")).toBeTruthy()
     })
 
     it("with registered bidder", () => {
@@ -401,7 +405,7 @@ describe("BidButton", () => {
         Me: () => meFixture,
       })
 
-      expect(getByText("Registration pending")).toBeTruthy()
+      expect(getByText("Registration Pending")).toBeTruthy()
     })
 
     it("with registered bidder", () => {

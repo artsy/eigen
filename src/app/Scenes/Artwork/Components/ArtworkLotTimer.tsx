@@ -20,6 +20,7 @@ import { Color } from "palette/Theme"
 import { useEffect } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp } from "react-tracking"
+import { ArtworkStore } from "../ArtworkStore"
 
 interface AuctionWebsocketWrapperProps extends CountdownTimerProps {
   artwork: ArtworkLotTimer_artwork$data
@@ -139,10 +140,12 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
 }) => {
   const { sale, isForSale } = artwork
   const isBiddableInAuction = timerState !== AuctionTimerState.CLOSED && isForSale
+  const setAuctionState = ArtworkStore.useStoreActions((action) => action.setAuctionState)
 
   useEffect(() => {
     if (timerState) {
       setAuctionTimerState?.(timerState)
+      setAuctionState(timerState)
     }
   }, [timerState])
 

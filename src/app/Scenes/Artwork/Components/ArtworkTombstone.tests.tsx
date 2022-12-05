@@ -6,6 +6,7 @@ import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
 import { Theme } from "palette"
 import { graphql } from "react-relay"
+import { ArtworkStoreProvider } from "../ArtworkStore"
 import { ArtworkTombstoneFragmentContainer } from "./ArtworkTombstone"
 
 jest.unmock("react-relay")
@@ -15,7 +16,9 @@ describe("ArtworkTombstone", () => {
     Component: (props) => (
       <Theme>
         <GlobalStoreProvider>
-          <ArtworkTombstoneFragmentContainer {...props} />
+          <ArtworkStoreProvider>
+            <ArtworkTombstoneFragmentContainer {...props} />
+          </ArtworkStoreProvider>
         </GlobalStoreProvider>
       </Theme>
     ),

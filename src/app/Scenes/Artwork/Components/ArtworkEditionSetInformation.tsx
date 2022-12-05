@@ -2,6 +2,7 @@ import { ArtworkEditionSetInformation_artwork$data } from "__generated__/Artwork
 import { Box, Separator, Spacer, Text } from "palette"
 import { createFragmentContainer } from "react-relay"
 import { graphql } from "relay-runtime"
+import { ArtworkStore } from "../ArtworkStore"
 import { ArtworkEditionSetsFragmentContainer as ArtworkEditionSets } from "./ArtworkEditionSets"
 
 interface ArtworkEditionSetInformationProps {
@@ -15,15 +16,21 @@ const ArtworkEditionSetInformation: React.FC<ArtworkEditionSetInformationProps> 
   selectedEditionId,
   onSelectEdition,
 }) => {
+  const setSelectedEditionId = ArtworkStore.useStoreActions((action) => action.setSelectedEditionId)
   const editionSets = artwork.editionSets ?? []
   const selectedEdition = editionSets.find((editionSet) => {
     return editionSet?.internalID === selectedEditionId
   })
 
+  const handleSelectEdition = (editionId: string) => {
+    onSelectEdition(editionId)
+    setSelectedEditionId(editionId)
+  }
+
   return (
     <>
       <Box mt={-3}>
-        <ArtworkEditionSets artwork={artwork} onSelectEdition={onSelectEdition} />
+        <ArtworkEditionSets artwork={artwork} onSelectEdition={handleSelectEdition} />
       </Box>
       <Separator />
 
