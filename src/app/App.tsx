@@ -48,7 +48,7 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true)
 }
 
-const useRageShakeAdminMenu = () => {
+const useRageShakeDevMenu = () => {
   const userIsDev = GlobalStore.useAppState((s) => s.artsyPrefs.userIsDev.value)
 
   useEffect(() => {
@@ -67,7 +67,7 @@ const useRageShakeAdminMenu = () => {
 }
 
 const Main = () => {
-  useRageShakeAdminMenu()
+  useRageShakeDevMenu()
   useDebugging()
   useEffect(() => {
     GoogleSignin.configure({

@@ -76,7 +76,7 @@ export const __globalStoreTestUtils__ = __TEST__
         this.injectState({ artsyPrefs: { environment: { env: "production" } } })
       },
       injectFeatureFlags(options: Partial<FeatureMap>) {
-        this.injectState({ artsyPrefs: { features: { adminOverrides: options } } })
+        this.injectState({ artsyPrefs: { features: { localOverrides: options } } })
       },
       getCurrentState: () => globalStoreInstance().getState(),
       dispatchedActions: [] as Action[],

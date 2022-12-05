@@ -106,7 +106,7 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
           <FeatureFlagMenuItem
             title="Go to old Dev Menu"
             onPress={() => {
-              navigate("/admin", { modal: true })
+              navigate("/dev-menu-old", { modal: true })
             }}
           />
         )}
@@ -158,7 +158,7 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
             title="Revert all feature flags to default"
             titleColor="red100"
             onPress={() => {
-              GlobalStore.actions.artsyPrefs.features.clearAdminOverrides()
+              GlobalStore.actions.artsyPrefs.features.clearLocalOverrides()
             }}
           />
         </CollapseMenu>
@@ -295,7 +295,7 @@ const Buttons: React.FC<{ onClose(): void }> = ({ onClose }) => {
 const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
   const config = GlobalStore.useAppState((s) => s.artsyPrefs)
   const currentValue = config.features.flags[flagKey]
-  const isAdminOverrideInEffect = flagKey in config.features.adminOverrides
+  const isLocalOverrideInEffect = flagKey in config.features.localOverrides
   const valText = currentValue ? "Yes" : "No"
   const description = features[flagKey].description ?? flagKey
 
@@ -307,7 +307,7 @@ const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
           {
             text: "Override with 'Yes'",
             onPress() {
-              GlobalStore.actions.artsyPrefs.features.setAdminOverride({
+              GlobalStore.actions.artsyPrefs.features.setLocalOverride({
                 key: flagKey,
                 value: true,
               })
@@ -316,16 +316,16 @@ const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
           {
             text: "Override with 'No'",
             onPress() {
-              GlobalStore.actions.artsyPrefs.features.setAdminOverride({
+              GlobalStore.actions.artsyPrefs.features.setLocalOverride({
                 key: flagKey,
                 value: false,
               })
             },
           },
           {
-            text: isAdminOverrideInEffect ? "Revert to default value" : "Keep default value",
+            text: isLocalOverrideInEffect ? "Revert to default value" : "Keep default value",
             onPress() {
-              GlobalStore.actions.artsyPrefs.features.setAdminOverride({
+              GlobalStore.actions.artsyPrefs.features.setLocalOverride({
                 key: flagKey,
                 value: null,
               })
@@ -335,7 +335,7 @@ const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
         ])
       }}
       value={
-        isAdminOverrideInEffect ? (
+        isLocalOverrideInEffect ? (
           <Text variant="sm-display" color="black100" fontWeight="bold">
             {valText}
           </Text>
@@ -364,7 +364,7 @@ const DevToggleItem: React.FC<{ toggleKey: DevToggleName }> = ({ toggleKey }) =>
           {
             text: currentValue ? "Keep turned ON" : "Turn ON",
             onPress() {
-              GlobalStore.actions.artsyPrefs.features.setAdminOverride({
+              GlobalStore.actions.artsyPrefs.features.setLocalOverride({
                 key: toggleKey,
                 value: true,
               })
@@ -374,7 +374,7 @@ const DevToggleItem: React.FC<{ toggleKey: DevToggleName }> = ({ toggleKey }) =>
           {
             text: currentValue ? "Turn OFF" : "Keep turned OFF",
             onPress() {
-              GlobalStore.actions.artsyPrefs.features.setAdminOverride({
+              GlobalStore.actions.artsyPrefs.features.setLocalOverride({
                 key: toggleKey,
                 value: false,
               })
@@ -436,7 +436,7 @@ const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const { env, adminOverrides, strings } = GlobalStore.useAppState(
     (store) => store.artsyPrefs.environment
   )
-  // show custom url options if there are already admin overrides in effect, or if the user has tapped the option
+  // show custom url options if there are already local overrides in effect, or if the user has tapped the option
   // to set custom overrides during the lifetime of this component
   const [showCustomURLOptions, setShowCustomURLOptions] = useState(
     Object.keys(adminOverrides).length > 0

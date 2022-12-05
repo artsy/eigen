@@ -167,7 +167,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/conversation/:conversationID", "Conversation"),
     addRoute("/conversation/:conversationID/details", "ConversationDetails"),
     addRoute("/user/conversations/:conversationID", "Conversation"),
-    addRoute("/admin", "Admin"),
+    addRoute("/dev-menu-old", "DevMenuOld"),
     addRoute("/dev-menu", "DevMenu"),
     addRoute("/about", "About"),
     addRoute("/unlisted-artworks-faq", "UnlistedArtworksFAQScreen"),

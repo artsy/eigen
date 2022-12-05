@@ -766,3 +766,25 @@ describe("App version Versions.AddUserPreferredPriceRange", () => {
     expect(migratedState.userPrefs.priceRange).toEqual("*-*")
   })
 })
+
+describe("App version Versions.RenameAdminToLocalOverridesForFeatures", () => {
+  const migrationToTest = Versions.RenameAdminToLocalOverridesForFeatures
+
+  it("adds renames things correctly", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    expect(previousState.features.adminOverrides).toEqual({})
+    previousState.features.adminOverrides = { testKey: true }
+    expect(previousState.features.adminOverrides).toEqual({ testKey: true })
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.features.localOverrides).toEqual({ testKey: true })
+  })
+})
