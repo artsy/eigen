@@ -7,7 +7,7 @@ import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRela
 import { Text } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { ArtworkStore, ArtworkStoreModel, ArtworkStoreProvider } from "../ArtworkStore"
+import { ArtworkStore, ArtworkStoreProvider } from "../ArtworkStore"
 import { ArtworkEditionSetInformationFragmentContainer as ArtworkEditionSetInformation } from "./ArtworkEditionSetInformation"
 
 jest.unmock("react-relay")
@@ -37,15 +37,15 @@ describe("ArtworkEditionSetInformation", () => {
           }
         `}
         variables={{}}
-        render={({ props: relayProps }) => {
-          if (relayProps?.artwork) {
+        render={({ props }) => {
+          if (props?.artwork) {
             return (
               <ArtworkStoreProvider
                 initialData={{
                   selectedEditionId: artwork.editionSets[0].internalID,
                 }}
               >
-                <ArtworkEditionSetInformation artwork={relayProps.artwork} />
+                <ArtworkEditionSetInformation artwork={props.artwork} />
                 <ArtworkStoreDebug />
               </ArtworkStoreProvider>
             )

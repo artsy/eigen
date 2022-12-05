@@ -19,7 +19,7 @@ import { QAInfoPanel } from "app/utils/QAInfo"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
 import { isEmpty } from "lodash"
-import { Box, Separator } from "palette"
+import { Box, Separator, useSpace } from "palette"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
@@ -73,6 +73,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   relay,
   tracking,
 }) => {
+  const space = useSpace()
   const [refreshing, setRefreshing] = useState(false)
   const [fetchingData, setFetchingData] = useState(false)
   const enableConversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
@@ -625,7 +626,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   )
                 }}
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-                contentContainerStyle={{ paddingBottom: 40 }}
+                contentContainerStyle={{ paddingBottom: space(4) }}
                 renderItem={({ item }) => {
                   if (enableArtworkRedesign) {
                     return <Box px={item.excludePadding ? 0 : 2}>{item.element}</Box>
