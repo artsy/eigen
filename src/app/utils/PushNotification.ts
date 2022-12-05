@@ -4,12 +4,21 @@ import { navigate } from "app/navigation/navigate"
 import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
 import { GlobalStore, unsafe_getUserAccessToken } from "app/store/GlobalStore"
 import { PendingPushNotification } from "app/store/PendingPushNotificationModel"
-import moment from "moment"
-import { Alert, AlertButton, Linking, Platform } from "react-native"
-import Braze from "react-native-appboy-sdk"
+import { Platform } from "react-native"
 import { getDeviceId } from "react-native-device-info"
 import PushNotification, { ReceivedNotification } from "react-native-push-notification"
 import { logAction, logNotification } from "./loggers"
+import {
+  boolFromStorage,
+  HAS_SEEN_PUSH_SETTINGS_PROMPT,
+  HAS_SEEN_PUSH_SYSTEM_PROMPT,
+  hasSeenSettingsPrompt,
+  hasSeenSystemPrompt,
+  requestDirectNotificationPermissions,
+  requestPushPermissionWithSoftAsk,
+  shouldShowLocalPromptAgain,
+  showSettingsEnableNotificationsAlert,
+} from "./pushNotificationUtils"
 import { AnalyticsConstants } from "./track/constants"
 import { SegmentTrackingProvider } from "./track/SegmentTrackingProvider"
 
@@ -17,11 +26,6 @@ export const PUSH_NOTIFICATION_TOKEN = "PUSH_NOTIFICATION_TOKEN"
 export const HAS_PENDING_NOTIFICATION = "HAS_PENDING_NOTIFICATION"
 
 const MAX_ELAPSED_TAPPED_NOTIFICATION_TIME = 90 // seconds
-
-// Push prompt logic
-const HAS_SEEN_PUSH_SETTINGS_PROMPT = "HAS_SEEN_PUSH_SETTINGS_PROMPT"
-const HAS_SEEN_PUSH_SYSTEM_PROMPT = "HAS_SEEN_PUSH_SYSTEM_PROMPT"
-const LAST_SEEN_LOCAL_PROMPT = "LAST_SEEN_LOCAL_PROMPT"
 
 export const CHANNELS = [
   {
@@ -282,119 +286,34 @@ export const getNotificationPermissionsStatus = (): Promise<PushAuthorizationSta
 
 export const requestPushNotificationsPermission = async () => {
   const pushNotificationsPermissionsStatus = await getNotificationPermissionsStatus()
+
+  console.log("pushNotificationsPermissionsStatus", pushNotificationsPermissionsStatus)
   if (pushNotificationsPermissionsStatus !== PushAuthorizationStatus.Authorized) {
-    const hasSeenSettingsPrompt = await boolFromStorage(HAS_SEEN_PUSH_SETTINGS_PROMPT)
-    const hasSeenSystemPrompt = await boolFromStorage(HAS_SEEN_PUSH_SYSTEM_PROMPT)
+    const seenSettingsPrompt = await hasSeenSettingsPrompt()
+    const seenSystemPrompt = await hasSeenSystemPrompt()
     const showLocalPromptAgain = await shouldShowLocalPromptAgain()
+
+    console.log("before set timeout", {
+      seenSettingsPrompt,
+      seenSystemPrompt,
+      showLocalPromptAgain,
+    })
     setTimeout(() => {
       if (
         pushNotificationsPermissionsStatus === PushAuthorizationStatus.Denied &&
-        !hasSeenSettingsPrompt
+        !seenSettingsPrompt
       ) {
+        console.log("showSettingsEnableNotificationsAlert()")
         showSettingsEnableNotificationsAlert()
-      } else if (!hasSeenSystemPrompt && showLocalPromptAgain) {
+      } else if (!seenSystemPrompt && showLocalPromptAgain) {
+        console.log("requestPushPermissionWithSoftAsk()")
         requestPushPermissionWithSoftAsk()
       } else {
+        console.log("requestDirectNotificationPermissions()")
         requestDirectNotificationPermissions()
       }
     }, 3000)
   }
-}
-
-const shouldShowLocalPromptAgain = async () => {
-  const lastSeenDateRaw = await AsyncStorage.getItem(LAST_SEEN_LOCAL_PROMPT)
-
-  if (lastSeenDateRaw) {
-    const lastSeenDate = JSON.parse(lastSeenDateRaw)
-    const aWeekAgo = moment().subtract(7, "days")
-    const seenMoreThanAWeekAgo = moment(lastSeenDate).isBefore(aWeekAgo)
-    return seenMoreThanAWeekAgo
-  } else {
-    // haven't seen before
-    return true
-  }
-}
-
-const boolFromStorage = async (key: string) => {
-  const rawItem = await AsyncStorage.getItem(key)
-  if (rawItem === "true") {
-    return true
-  } else {
-    return false
-  }
-}
-
-export const showSettingsEnableNotificationsAlert = () => {
-  AsyncStorage.setItem(HAS_SEEN_PUSH_SETTINGS_PROMPT, "true")
-
-  const deviceText = Platform.select({
-    ios: "iOS",
-    android: "Android",
-    default: "device",
-  })
-  const instruction = Platform.select({
-    ios: `Tap 'Artsy' and enable "Allow Notifications" for Artsy.`,
-    default: "",
-  })
-
-  const buttons: AlertButton[] = [
-    {
-      text: "Settings",
-      onPress: () => {
-        if (Platform.OS === "android") {
-          Linking.openSettings()
-        } else {
-          Linking.openURL("App-prefs:NOTIFICATIONS_ID")
-        }
-      },
-    },
-    {
-      text: "Cancel",
-      style: "cancel",
-    },
-  ]
-
-  Alert.alert(
-    "Artsy would like to send you notifications",
-    `To receive notifications for your alerts, you will need to enable them in your ${deviceText} Settings. ${instruction}`,
-    Platform.OS === "ios" ? buttons : buttons.reverse()
-  )
-}
-
-export const requestPushPermissionWithSoftAsk = async () => {
-  const lastSeenLocalPrompt = moment()
-  AsyncStorage.setItem(LAST_SEEN_LOCAL_PROMPT, JSON.stringify(lastSeenLocalPrompt))
-
-  Alert.alert(
-    "Artsy Would Like to Send You Notifications",
-    "Turn on notifications to get important updates about artists you follow.",
-    [
-      {
-        text: "Don't Allow",
-        onPress: () => {
-          return // do nothing
-        },
-        style: "cancel",
-      },
-      {
-        text: "OK",
-        onPress: () => {
-          requestDirectNotificationPermissions()
-        },
-      },
-    ]
-  )
-}
-
-export const requestDirectNotificationPermissions = () => {
-  AsyncStorage.setItem(HAS_SEEN_PUSH_SYSTEM_PROMPT, "true")
-  const permissionOptions = {
-    alert: true,
-    sound: true,
-    badge: true,
-    provisional: false,
-  }
-  Braze.requestPushPermission(permissionOptions)
 }
 
 module.exports = {
@@ -410,7 +329,4 @@ module.exports = {
   CHANNELS,
   PushAuthorizationStatus,
   requestPushNotificationsPermission,
-  requestDirectNotificationPermissions,
-  showSettingsEnableNotificationsAlert,
-  requestPushPermissionWithSoftAsk,
 }

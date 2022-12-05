@@ -9,6 +9,7 @@ import { Platform } from "react-native"
 import PushNotification from "react-native-push-notification"
 import { act } from "react-test-renderer"
 import * as Push from "./PushNotification"
+import * as pushNotificationUtils from "./pushNotificationUtils"
 
 Object.defineProperty(Platform, "OS", { get: jest.fn(() => "android") }) // We only use this for android only for now
 const mockFetch = jest.fn()
@@ -226,19 +227,25 @@ describe("Push Notification Tests", () => {
       jest.clearAllMocks()
     })
 
-    it("shows a settings prompt if the push is denied and we haven't show the settings prompt before", async () => {
-      // const mockSettingsPrompt = jest
-      //   .spyOn(Push, "showSettingsEnableNotificationsAlert")
-      //   .mockReturnValue()
-      // await act(() => {
-      //   // 4 seconds
-      //   mockFetchNotificationPermissions(true).mockImplementationOnce((cb) => cb({ alert: false }))
-      //   Push.requestPushNotificationsPermission()
-      //   jest.runAllTimers()
-      // })
-      // await waitFor(() => {
-      //   expect(mockSettingsPrompt).toHaveBeenCalled()
-      // })
+    it.only("shows a settings prompt if the push is denied and we haven't show the settings prompt before", async () => {
+      const mockSettingsPrompt = jest.spyOn(
+        pushNotificationUtils,
+        "showSettingsEnableNotificationsAlert"
+      )
+      mockSettingsPrompt.mockReturnValue()
+
+      const mockHasSeenSettings = jest.spyOn(pushNotificationUtils, "hasSeenSettingsPrompt")
+      mockHasSeenSettings.mockReturnValue(Promise.resolve(false))
+
+      act(() => {
+        mockFetchNotificationPermissions(true).mockImplementationOnce((cb) => cb({ alert: false }))
+        Push.requestPushNotificationsPermission()
+        jest.runAllTimers()
+      })
+
+      await waitFor(() => {
+        expect(mockSettingsPrompt).toHaveBeenCalled()
+      })
     })
 
     it("does NOT show a settings prompt if we have shown it before", async () => {
