@@ -4,7 +4,7 @@ import { Flex } from "palette"
 import React, { useRef } from "react"
 import { Platform } from "react-native"
 
-export const AdminMenuWrapper: React.FC = ({ children }) => {
+export const DevMenuWrapper: React.FC = ({ children }) => {
   const userIsDev = GlobalStore.useAppState((store) => store.artsyPrefs.userIsDev.value)
   const gestureState = useRef({ lastTapTimestamp: 0, numTaps: 0 })
 

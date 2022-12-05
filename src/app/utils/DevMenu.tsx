@@ -24,7 +24,7 @@ import {
   useColor,
 } from "palette"
 import { CollapseMenu } from "palette/elements/CollapseMenu"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import {
   Alert,
   AlertButton,
@@ -43,7 +43,7 @@ import Keychain from "react-native-keychain"
 import { useUnleashEnvironment } from "./experiments/hooks"
 
 const configurableFeatureFlagKeys = Object.entries(features)
-  .filter(([_, { showInAdminMenu }]) => showInAdminMenu)
+  .filter(([_, { showInDevMenu }]) => showInDevMenu)
   .map(([k]) => k as FeatureName)
 
 const configurableDevToggleKeys = sortBy(
@@ -51,7 +51,7 @@ const configurableDevToggleKeys = sortBy(
   ([k, { description }]) => description ?? k
 ).map(([k]) => k as DevToggleName)
 
-export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = () => dismissModal() }) => {
+export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void }) => {
   const [featureFlagQuery, setFeatureFlagQuery] = useState("")
   const [devToolQuery, setDevToolQuery] = useState("")
   const migrationVersion = GlobalStore.useAppState((s) => s.version)
@@ -87,7 +87,7 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = () => dismi
     >
       <Flex flexDirection="row" justifyContent="space-between">
         <Text variant="lg-display" pb="2" px="2">
-          Admin Settings
+          Dev Settings
         </Text>
         <Buttons onClose={onClose} />
       </Flex>
@@ -104,9 +104,9 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = () => dismi
         </Text>
         {Platform.OS === "ios" && (
           <FeatureFlagMenuItem
-            title="Go to old Admin menu"
+            title="Go to old Dev Menu"
             onPress={() => {
-              navigate("/admin", { modal: true })
+              navigate("/admin", { modal: true }) // hcange these too?
             }}
           />
         )}

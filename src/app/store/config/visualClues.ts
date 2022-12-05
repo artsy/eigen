@@ -2,7 +2,7 @@ export type VisualClueName = keyof typeof visualClues
 
 export interface VisualClueDescriptor {
   /**
-   * Provide a short description for the admin menu
+   * Provide a short description for the dev menu
    */
   readonly description?: string
 }

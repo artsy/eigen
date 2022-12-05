@@ -56,16 +56,16 @@ First you need to add the new feature block in `src/app/store/config/features.ts
 +  ARShowMarketingBanner: {
 +    readyForRelease: false,
 +    description: "Show new marketing banners",
-+    showInAdminMenu: true,
++    showInDevMenu: true,
 +  },
    AROptionsInquiryCheckout: {
      readyForRelease: false,
      description: "Enable inquiry checkout",
-     showInAdminMenu: true,
+     showInDevMenu: true,
    }
 ```
 
-The `description` property is what makes it possible to override the feature flag from the [admin menu](/admin_menu.md).
+The `description` property is what makes it possible to override the feature flag from the [dev menu](/dev_menu.md).
 
 We also need to add a flag in Echo, our remote feature flags configuration service.
 [Here](https://github.com/artsy/echo/commit/978a103e2c67a8010fabb2184f84aaef31d16f93) is an example PR for how to do that.
@@ -101,12 +101,12 @@ This is marked as unsafe because it will not cause react components to re-render
 
 To enable your feature on a physical or virtual device
 
-- Open the admin menu by pressing `command + control + z` on a mac. If this doesn't work:
+- Open the dev menu by pressing `command + control + z` on a mac. If this doesn't work:
 
-  - Log in to the app with an admin account (eg your artsy email)
+  - Log in to the app (eg your artsy email)
   - Enable Developer mode by going to Profile > About and tapping "Version" 7 times.
   - See a notification "Developer mode enabled"
-  - Now if you press `command + control + z` you should see the Admin Menu
+  - Now if you press `command + control + z` you should see the Dev Menu
 
 - Toggle the feature flag to "Yes".
 
@@ -132,15 +132,15 @@ Your feature is ready for release 🎉
 
 Let's go to `src/app/store/config/features.ts` find our feature and set `readyForRelease` to `true`.
 
-Consider also removing the entry from the admin menu if developers will no longer need to override the flag, by setting showInAdminMenu to false.
+Consider also removing the entry from the dev menu if developers will no longer need to override the flag, by setting showInDevMenu to false.
 
 ```diff
    ARShowMarketingBanner: {
 -    readyForRelease: false,
 +    readyForRelease: true,
      description: "Show new marketing banners",
--    showInAdminMenu: true,
-+    showInAdminMenu: false,
+-    showInDevMenu: true,
++    showInDevMenu: false,
    },
 ```
 
@@ -173,12 +173,12 @@ Once the feature flag is no longer needed:
 -  ARShowMarketingBanner: {
 -    readyForRelease: false,
 -    description: "Show new marketing banners",
--   showInAdminMenu: true,
+-   showInDevMenu: true,
 -  },
    AROptionsInquiryCheckout: {
      readyForRelease: false,
      description: "Enable inquiry checkout",
-     showInAdminMenu: true,
+     showInDevMenu: true,
    }
 ```
 

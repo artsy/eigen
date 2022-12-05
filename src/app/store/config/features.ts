@@ -3,11 +3,11 @@ import { echoLaunchJson } from "app/utils/jsonFiles"
 import { GlobalStore } from "../GlobalStore"
 
 interface FeatureDescriptorCommonTypes {
-  /** Provide a short description for the admin menu. */
+  /** Provide a short description for the dev menu. */
   readonly description?: string
 
-  /** Whether or not to show the feature flag in the admin menu. Consider also providing a description. */
-  readonly showInAdminMenu?: boolean
+  /** Whether or not to show the feature flag in the dev menu. Consider also providing a description. */
+  readonly showInDevMenu?: boolean
 }
 
 export interface FeatureDescriptorReadyForRelease {
@@ -105,7 +105,7 @@ export const features = defineFeatures({
   AREnableImageSearch: {
     readyForRelease: false,
     description: "Enable search with image",
-    showInAdminMenu: true,
+    showInDevMenu: true,
   },
   AREnableMyCollectionSearchBar: {
     readyForRelease: true,
@@ -134,7 +134,7 @@ export const features = defineFeatures({
   AREnablePriceEstimateRange: {
     readyForRelease: false,
     description: "Enable My Collection Price Estimate Range",
-    showInAdminMenu: false,
+    showInDevMenu: false,
   },
   AREnableHomeScreenArtworkRecommendations: {
     readyForRelease: true,
@@ -144,7 +144,7 @@ export const features = defineFeatures({
   AREnableMapScreen: {
     readyForRelease: false,
     description: "Enable Crossplatform Map Screen",
-    showInAdminMenu: true,
+    showInDevMenu: true,
   },
   AREnableAuctionShareButton: {
     readyForRelease: true,
@@ -154,7 +154,7 @@ export const features = defineFeatures({
   AREnableNewOpaqueImageComponent: {
     readyForRelease: true,
     description: "Enable New Image Component",
-    showInAdminMenu: true,
+    showInDevMenu: true,
     echoFlagKey: "AREnableNewOpaqueImageComponent",
   },
   AREnableConversationalBuyNow: {
@@ -170,7 +170,7 @@ export const features = defineFeatures({
   AREnableArtworksFromNonArtsyArtists: {
     readyForRelease: false,
     description: "Enable My Collection artworks from non-Artsy artists",
-    showInAdminMenu: true,
+    showInDevMenu: true,
     echoFlagKey: "AREnableArtworksFromNonArtsyArtists",
   },
   AREnableArtworksConnectionForAuction: {
@@ -181,13 +181,13 @@ export const features = defineFeatures({
   AREnableActivity: {
     readyForRelease: true,
     description: "Enable Activity",
-    showInAdminMenu: true,
+    showInDevMenu: true,
     echoFlagKey: "AREnableActivity",
   },
   AREnableMyCollectionHFOnboarding: {
     readyForRelease: true,
     description: "Enable My Collection home feed onboarding",
-    showInAdminMenu: true,
+    showInDevMenu: true,
     echoFlagKey: "AREnableMyCollectionHFOnboarding",
   },
   AREnableCollectionsInOnboarding: {
@@ -197,60 +197,60 @@ export const features = defineFeatures({
   },
   AREnableNewRequestPriceEstimateLogic: {
     description: "Enable new request price estimate logic",
-    showInAdminMenu: true,
+    showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "AREnableNewRequestPriceEstimateLogic",
   },
   ARReorderSWAArtworkSubmissionFlow: {
     description: "Reorder SWA Artwork submission flow",
-    showInAdminMenu: true,
+    showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "ARReorderSWAArtworkSubmissionFlow",
   },
   ARArtworkRedesingPhase2: {
     description: "Enable redesigned artwork page (phase 2)",
-    showInAdminMenu: true,
+    showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "ARArtworkRedesingPhase2",
   },
   AREnablePanOnStaticHeader: {
     description: "Enable Scroll/Pan on StaticHeader",
-    showInAdminMenu: true,
+    showInDevMenu: true,
     readyForRelease: false,
   },
   AREnableSearchDiscoveryContentIOS: {
     description: "Display discovery content on Search tab on iOS",
-    showInAdminMenu: true,
+    showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "AREnableSearchDiscoveryContentIOS",
   },
   AREnableSearchDiscoveryContentAndroid: {
     description: "Display discovery content on Search tab on Android",
-    showInAdminMenu: true,
+    showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "AREnableSearchDiscoveryContentAndroid",
   },
   AREnforceLargeNewWorksRail: {
     description: "Enforce large new works rail",
-    showInAdminMenu: true,
+    showInDevMenu: true,
     readyForRelease: false,
   },
   AREnableArtworkGridSaveIcon: {
     description: "Enable artwork grid save icon",
-    showInAdminMenu: true,
+    showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "AREnableArtworkGridSaveIcon",
   },
   AREnableAndroidImagesGallery: {
     description: "Enable images gallery on Android",
-    showInAdminMenu: true,
+    showInDevMenu: true,
     readyForRelease: false,
   },
 })
 
 export interface DevToggleDescriptor {
   /**
-   * Provide a short description for the admin menu.
+   * Provide a short description for the dev menu.
    */
   readonly description: string
   /**
