@@ -302,6 +302,7 @@ describe("Artwork", () => {
         return { slug: "my-special-artwork" }
       },
     })
+
     expect(tree.root.findByType(Artwork).props.artworkAboveTheFold.slug).toBe("my-special-artwork")
 
     expect(environment.mock.getMostRecentOperation()).toMatchObject({
