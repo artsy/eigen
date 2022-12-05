@@ -7,6 +7,7 @@ import { ArtworkBelowTheFoldQuery } from "__generated__/ArtworkBelowTheFoldQuery
 import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRecentlyViewedQuery.graphql"
 import { AuctionTimerState, currentTimerState } from "app/Components/Bidding/Components/Timer"
 import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
+import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
 import { BackButton } from "app/navigation/BackButton"
 import { navigationEvents } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
