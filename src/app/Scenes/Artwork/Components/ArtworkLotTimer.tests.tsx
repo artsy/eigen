@@ -1,6 +1,7 @@
 import { screen } from "@testing-library/react-native"
 import { ArtworkLotTimer_artwork$data } from "__generated__/ArtworkLotTimer_artwork.graphql"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { ArtworkStoreProvider } from "../ArtworkStore"
 import { ArtworkLotTimerWrapper } from "./ArtworkLotTimer"
 
 describe("CommercialInformation buttons and coundtown timer", () => {
@@ -13,12 +14,14 @@ describe("CommercialInformation buttons and coundtown timer", () => {
 
   it("renders Lot label and CountDownTimer when Artwork is in an auction", async () => {
     renderWithWrappers(
-      <ArtworkLotTimerWrapper
-        artwork={artwork}
-        tracking={{ trackEvent: jest.fn() } as any}
-        refetchArtwork={jest.fn()}
-        hasStarted
-      />
+      <ArtworkStoreProvider>
+        <ArtworkLotTimerWrapper
+          artwork={artwork}
+          tracking={{ trackEvent: jest.fn() } as any}
+          refetchArtwork={jest.fn()}
+          hasStarted
+        />
+      </ArtworkStoreProvider>
     )
 
     expect(screen.queryByText("Lot 123")).toBeTruthy()
@@ -27,12 +30,14 @@ describe("CommercialInformation buttons and coundtown timer", () => {
 
   it("renders CountDownTimer with the sale artwork's end time when Artwork is in a cascading end time auction", () => {
     renderWithWrappers(
-      <ArtworkLotTimerWrapper
-        artwork={artwork}
-        tracking={{ trackEvent: jest.fn() } as any}
-        refetchArtwork={jest.fn()}
-        hasStarted
-      />
+      <ArtworkStoreProvider>
+        <ArtworkLotTimerWrapper
+          artwork={artwork}
+          tracking={{ trackEvent: jest.fn() } as any}
+          refetchArtwork={jest.fn()}
+          hasStarted
+        />
+      </ArtworkStoreProvider>
     )
 
     expect(screen.queryByText("Lot 123")).toBeTruthy()
@@ -42,20 +47,22 @@ describe("CommercialInformation buttons and coundtown timer", () => {
 
   it("should render bidding closed and no timer if bidding is closed", () => {
     renderWithWrappers(
-      <ArtworkLotTimerWrapper
-        artwork={
-          {
-            ...artwork,
-            saleArtwork: {
-              ...artwork.saleArtwork,
-              endedAt: "2019-08-16T20:20:00+00:00",
-            },
-          } as ArtworkLotTimer_artwork$data
-        }
-        tracking={{ trackEvent: jest.fn() } as any}
-        refetchArtwork={jest.fn()}
-        hasStarted
-      />
+      <ArtworkStoreProvider>
+        <ArtworkLotTimerWrapper
+          artwork={
+            {
+              ...artwork,
+              saleArtwork: {
+                ...artwork.saleArtwork,
+                endedAt: "2019-08-16T20:20:00+00:00",
+              },
+            } as ArtworkLotTimer_artwork$data
+          }
+          tracking={{ trackEvent: jest.fn() } as any}
+          refetchArtwork={jest.fn()}
+          hasStarted
+        />
+      </ArtworkStoreProvider>
     )
 
     expect(screen.queryByText("Lot 123")).toBeTruthy()
