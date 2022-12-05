@@ -116,24 +116,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     }];
 }
 
-#if !TARGET_IPHONE_SIMULATOR
-- (ARCellData *)generateNotificationTokenPasteboardCopy;
-{
-    return [self tappableCellDataWithTitle:@"Copy Push Notification Token" selection:^{
-        NSString *deviceToken = [[NSUserDefaults standardUserDefaults] valueForKey:ARAPNSDeviceTokenKey];
-        [[UIPasteboard generalPasteboard] setValue:deviceToken forPasteboardType:(NSString *)kUTTypePlainText];
-    }];
-}
-
-- (ARCellData *)requestNotificationsAlert;
-{
-    return [self tappableCellDataWithTitle:@"Request Receiving Notifications" selection:^{
-        [[[ARAppNotificationsDelegate alloc] init] registerForDeviceNotificationsWithApple];
-    }];
-}
-#endif
-
-
 - (ARSectionData *)createLabsSection
 {
     ARSectionData *labsSectionData = [[ARSectionData alloc] init];
