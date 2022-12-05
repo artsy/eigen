@@ -45,7 +45,7 @@ export const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ show }) => {
       key: "title",
       element: (
         <Box mx={2}>
-          <Text variant="lg">About</Text>
+          <Text variant="lg-display">About</Text>
         </Box>
       ),
     },
@@ -93,7 +93,7 @@ export const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ show }) => {
                 <Text variant="sm" mb={0.5}>
                   Press Release
                 </Text>
-                <ReadMore type="show" content={show.pressRelease} textStyle="sans" maxChars={500} />
+                <ReadMore content={show.pressRelease} textStyle="sans" maxChars={500} />
               </Box>
             ),
           },

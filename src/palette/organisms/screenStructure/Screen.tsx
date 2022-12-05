@@ -1,5 +1,5 @@
 import { BackButton, BackButtonWithBackground, Spacer, SpacingUnit } from "palette"
-import { Flex, FlexProps } from "palette/elements"
+import { Flex, FlexProps, Text, Touchable } from "palette/elements"
 import { createContext, useContext, useEffect, useState } from "react"
 import {
   getChildByType,
@@ -80,9 +80,10 @@ const NAVBAR_HEIGHT = 44
 
 interface HeaderProps {
   onBack?: () => void
+  onSkip?: () => void
 }
 
-export const Header: React.FC<HeaderProps> = ({ onBack }) => {
+export const Header: React.FC<HeaderProps> = ({ onBack, onSkip }) => {
   useUpdateScreenContext({ header: "regular" })
   const insets = useSafeAreaInsets()
 
@@ -90,11 +91,29 @@ export const Header: React.FC<HeaderProps> = ({ onBack }) => {
     <Flex
       mt={insets.top}
       height={NAVBAR_HEIGHT}
-      px={SCREEN_HORIZONTAL_PADDING}
       flexDirection="row"
       alignItems="center"
+      justifyContent="space-between"
+      px={SCREEN_HORIZONTAL_PADDING}
     >
-      <BackButton onPress={onBack} />
+      <Flex>
+        {!!onBack && (
+          <BackButton
+            onPress={onBack}
+            containerStyle={{ flex: 1, justifyContent: "center" }}
+            hitSlop={{ left: 20, right: 20 }}
+          />
+        )}
+      </Flex>
+      {!!onSkip && (
+        <Touchable haptic="impactLight" onPress={onSkip}>
+          <Flex height="100%" justifyContent="center">
+            <Text textAlign="right" variant="xs">
+              Skip
+            </Text>
+          </Flex>
+        </Touchable>
+      )}
     </Flex>
   )
 }

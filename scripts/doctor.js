@@ -130,7 +130,7 @@ const checkDetectSecretsExists = () => {
   } catch (e) {
     NO(
       `Your ${r`detect-secrets`} is missing or not linked.`,
-      `Run ${g`yarn install:all`} or ${g`pip install -r requirements.txt`} to install, and then make sure it's in your $PATH.`
+      `Run ${g`yarn install:all`} to install, and then make sure it's in your $PATH.`
     )
   }
 }

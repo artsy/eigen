@@ -49,7 +49,7 @@ export async function loadDevNavigationStateCache(
 // So whenever we find out it changed, we save it
 export function useReloadedDevNavigationState(
   stackID: string | undefined,
-  ref: React.RefObject<NavigationContainerRef>
+  ref: React.RefObject<NavigationContainerRef<any>>
 ) {
   if (!__DEV__ || !stackID) {
     return

@@ -2,6 +2,7 @@ import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import {
   ArtworkDetailsCompleted,
   ConsignmentSubmitted,
+  ContactInformationCompleted,
   SubmitAnotherArtwork,
   UploadPhotosCompleted,
   ViewArtworkMyCollection,
@@ -27,6 +28,15 @@ export const uploadPhotosCompletedEvent: SubmissionEvent<UploadPhotosCompleted> 
   action: ActionType.uploadPhotosCompleted,
   context_owner_type: OwnerType.consignmentFlow,
   context_module: ContextModule.uploadPhotos,
+  ...eventPayload(...rest),
+})
+
+export const contactInformationCompletedEvent: SubmissionEvent<ContactInformationCompleted> = (
+  ...rest
+) => ({
+  action: ActionType.contactInformationCompleted,
+  context_owner_type: OwnerType.consignmentFlow,
+  context_module: ContextModule.contactInformation,
   ...eventPayload(...rest),
 })
 

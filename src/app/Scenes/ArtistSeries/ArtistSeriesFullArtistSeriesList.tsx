@@ -30,7 +30,7 @@ export const FullArtistSeriesList: React.FC<FullArtistSeriesListProps> = ({ arti
     >
       <ScrollView>
         <Box px="2" py="2">
-          <Text variant="md" weight="medium" textAlign="center">
+          <Text variant="sm-display" weight="medium" textAlign="center">
             Artist Series
           </Text>
         </Box>

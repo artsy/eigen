@@ -1,4 +1,4 @@
-import { addCollectedArtwork, OwnerType } from "@artsy/cohesion"
+import { ActionType, AddCollectedArtwork, ContextModule, OwnerType } from "@artsy/cohesion"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
 import { MyCollection_me$data } from "__generated__/MyCollection_me.graphql"
@@ -146,7 +146,7 @@ const MyCollection: React.FC<{
             }}
             haptic
           >
-            Add Works
+            Upload Artwork
           </Button>
         </ArtworksFilterHeader>
         {!!showNewWorksMessage && (
@@ -202,6 +202,7 @@ const MyCollection: React.FC<{
           // Extend the container flex when there are no artworks for accurate vertical centering
           flexGrow: artworks.length ? undefined : 1,
           justifyContent: artworks.length ? "flex-start" : "center",
+          height: artworks.length ? "auto" : "100%",
         }}
         refreshControl={
           <StickTabPageRefreshControl onRefresh={refetch} refreshing={isRefreshing} />
@@ -211,11 +212,11 @@ const MyCollection: React.FC<{
         keyboardShouldPersistTaps="handled"
       >
         <MyCollectionArtworks
-          innerFlatlistRef={innerFlatListRef}
           me={me}
           relay={relay}
           showSearchBar={showSearchBar}
           setShowSearchBar={setShowSearchBar}
+          myCollectionIsRefreshing={isRefreshing}
         />
         {!!showDevAddButton && (
           <Button
@@ -252,6 +253,7 @@ export const MyCollectionContainer = createPaginationContainer(
           edges {
             node {
               id
+              internalID
               medium
               title
               pricePaid {
@@ -334,11 +336,6 @@ export const MyCollectionPlaceholder: React.FC = () => {
 
   return (
     <Flex>
-      <Flex flexDirection="row" justifyContent="space-between">
-        <Spacer />
-        <Spacer />
-        <PlaceholderText width={70} margin={20} />
-      </Flex>
       {/* collector's info */}
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
         <Flex flex={1}>
@@ -350,9 +347,8 @@ export const MyCollectionPlaceholder: React.FC = () => {
               <PlaceholderText width={80} height={25} />
               <PlaceholderText width={100} height={15} />
             </Flex>
-            <Flex justifyContent="center">
-              <PlaceholderBox width={20} height={20} />
-            </Flex>
+            {/* settings icon */}
+            <PlaceholderBox width={20} height={20} />
           </Flex>
           <Spacer my={1} />
         </Flex>
@@ -411,7 +407,12 @@ export const MyCollectionPlaceholder: React.FC = () => {
 }
 
 const tracks = {
-  addCollectedArtwork,
+  addCollectedArtwork: (): AddCollectedArtwork => ({
+    action: ActionType.addCollectedArtwork,
+    context_module: ContextModule.myCollectionHome,
+    context_owner_type: OwnerType.myCollection,
+    platform: "mobile",
+  }),
 }
 
 export type MyCollectionArtworkEdge = NonNullable<

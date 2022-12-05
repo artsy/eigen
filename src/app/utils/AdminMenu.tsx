@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import * as Sentry from "@sentry/react-native"
 import { MenuItem } from "app/Components/MenuItem"
+import { SearchInput } from "app/Components/SearchInput"
 import { useToast } from "app/Components/Toast/toastHook"
 import { eigenSentryReleaseName } from "app/errorReporting/sentrySetup"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
@@ -22,6 +23,7 @@ import {
   Touchable,
   useColor,
 } from "palette"
+import { CollapseMenu } from "palette/elements/CollapseMenu"
 import React, { useEffect, useState } from "react"
 import {
   Alert,
@@ -38,7 +40,6 @@ import {
 import Config from "react-native-config"
 import { getBuildNumber, getUniqueId, getVersion } from "react-native-device-info"
 import Keychain from "react-native-keychain"
-import { useScreenDimensions } from "shared/hooks"
 import { useUnleashEnvironment } from "./experiments/hooks"
 
 const configurableFeatureFlagKeys = Object.entries(features)
@@ -51,6 +52,8 @@ const configurableDevToggleKeys = sortBy(
 ).map(([k]) => k as DevToggleName)
 
 export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModal }) => {
+  const [featureFlagQuery, setFeatureFlagQuery] = useState("")
+  const [devToolQuery, setDevToolQuery] = useState("")
   const migrationVersion = GlobalStore.useAppState((s) => s.version)
   const server = GlobalStore.useAppState((s) => s.artsyPrefs.environment.strings.webURL).slice(
     "https://".length
@@ -80,11 +83,10 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
         bottom: 0,
         backgroundColor: "white",
       }}
-      pb="2"
-      pt={useScreenDimensions().safeAreaInsets.top + 20}
+      py="2"
     >
       <Flex flexDirection="row" justifyContent="space-between">
-        <Text variant="lg" pb="2" px="2">
+        <Text variant="lg-display" pb="2" px="2">
           Admin Settings
         </Text>
         <Buttons onClose={onClose} />
@@ -114,6 +116,23 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
             navigate("/storybook")
           }}
         />
+        <FeatureFlagMenuItem
+          title="Navigate to..."
+          onPress={() =>
+            Alert.prompt("Navigate to...", "Where should we navigate to?", [
+              {
+                text: "Go",
+                onPress: (url) => {
+                  if (!url) {
+                    return
+                  }
+
+                  dismissModal(() => navigate(url))
+                },
+              },
+            ])
+          }
+        />
         <Flex mx="2">
           <Separator my="1" />
         </Flex>
@@ -124,106 +143,124 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
           <Separator my="1" />
         </Flex>
 
-        <Text variant="md" my="1" mx="2">
-          Feature Flags
-        </Text>
-        {configurableFeatureFlagKeys.map((flagKey) => {
-          return <FeatureFlagItem key={flagKey} flagKey={flagKey} />
-        })}
-        <FeatureFlagMenuItem
-          title="Revert all feature flags to default"
-          onPress={() => {
-            GlobalStore.actions.artsyPrefs.features.clearAdminOverrides()
-          }}
-        />
+        <CollapseMenu title="Feature Flags">
+          <Flex px={2} mb={1}>
+            <SearchInput onChangeText={setFeatureFlagQuery} placeholder="Search feature flags" />
+          </Flex>
+          {configurableFeatureFlagKeys
+            .filter((flagKey) =>
+              features[flagKey].description?.toLowerCase().includes(featureFlagQuery.toLowerCase())
+            )
+            .map((flagKey) => {
+              return <FeatureFlagItem key={flagKey} flagKey={flagKey} />
+            })}
+          <FeatureFlagMenuItem
+            title="Revert all feature flags to default"
+            titleColor="red100"
+            onPress={() => {
+              GlobalStore.actions.artsyPrefs.features.clearAdminOverrides()
+            }}
+          />
+        </CollapseMenu>
+
         <Flex mx="2">
           <Separator my="1" />
         </Flex>
-        <Text variant="md" my="1" mx="2">
-          Tools
-        </Text>
-        {configurableDevToggleKeys.map((devToggleKey) => {
-          return <DevToggleItem key={devToggleKey} toggleKey={devToggleKey} />
-        })}
-        <MenuItem
-          title="Migration version"
-          rightView={
-            <Flex flexDirection="row" alignItems="center">
-              <RNButton
-                title="-"
-                onPress={() => GlobalStore.actions._setVersion(migrationVersion - 1)}
-              />
-              <Text>{migrationVersion}</Text>
-              <RNButton
-                title="+"
-                onPress={() => GlobalStore.actions._setVersion(migrationVersion + 1)}
-              />
-            </Flex>
-          }
-        />
-        <FeatureFlagMenuItem
-          title={`Migration name: "${
-            (Object.entries(Versions).find(([_, v]) => v === migrationVersion) ?? ["N/A"])[0]
-          }"`}
-          disabled
-        />
-        <FeatureFlagMenuItem
-          title="Clear Keychain"
-          onPress={() => {
-            Keychain.resetInternetCredentials(server)
-          }}
-        />
-        <FeatureFlagMenuItem
-          title="Open RN Dev Menu"
-          onPress={() => NativeModules.DevMenu.show()}
-        />
-        <FeatureFlagMenuItem
-          title="Clear AsyncStorage"
-          onPress={() => {
-            AsyncStorage.clear()
-          }}
-        />
-        <FeatureFlagMenuItem
-          title="Clear Relay Cache"
-          onPress={() => {
-            RelayCache.clearAll()
-          }}
-        />
-        <FeatureFlagMenuItem title={`Active Unleash env: ${capitalize(unleashEnv)}`} />
-        <FeatureFlagMenuItem
-          title="Log out"
-          onPress={() => {
-            GlobalStore.actions.auth.signOut()
-          }}
-        />
-        <FeatureFlagMenuItem
-          title="Throw Sentry Error"
-          onPress={() => {
-            if (!Config.SENTRY_DSN) {
-              Alert.alert(
-                "No Sentry DSN available",
-                __DEV__ ? "Set it in .env.shared and re-build the app." : undefined
-              )
-              return
+        <CollapseMenu title="Dev tools">
+          <Flex px={2} mb={1}>
+            <SearchInput onChangeText={setDevToolQuery} placeholder="Search dev tools" />
+          </Flex>
+
+          {configurableDevToggleKeys
+            .filter((flagKey) =>
+              devToggles[flagKey].description?.toLowerCase().includes(devToolQuery.toLowerCase())
+            )
+            .map((devToggleKey) => {
+              return <DevToggleItem key={devToggleKey} toggleKey={devToggleKey} />
+            })}
+
+          <MenuItem
+            title="Migration version"
+            rightView={
+              <Flex flexDirection="row" alignItems="center">
+                <RNButton
+                  title="-"
+                  onPress={() => GlobalStore.actions._setVersion(migrationVersion - 1)}
+                />
+                <Text>{migrationVersion}</Text>
+                <RNButton
+                  title="+"
+                  onPress={() => GlobalStore.actions._setVersion(migrationVersion + 1)}
+                />
+              </Flex>
             }
-            throw Error("Sentry test error")
-          }}
-        />
-        <FeatureFlagMenuItem
-          title="Trigger Sentry Native Crash"
-          onPress={() => {
-            if (!Config.SENTRY_DSN) {
-              Alert.alert(
-                "No Sentry DSN available",
-                __DEV__ ? "Set it in .env.shared and re-build the app." : undefined
-              )
-              return
-            }
-            Sentry.nativeCrash()
-          }}
-        />
-        <FeatureFlagMenuItem title={`Sentry release name: "${eigenSentryReleaseName()}"`} />
-        <FeatureFlagMenuItem title={`Device ID: "${getUniqueId()}"`} />
+          />
+          <FeatureFlagMenuItem
+            title={`Migration name: "${
+              (Object.entries(Versions).find(([_, v]) => v === migrationVersion) ?? ["N/A"])[0]
+            }"`}
+            disabled
+          />
+          <FeatureFlagMenuItem
+            title="Clear Keychain"
+            onPress={() => {
+              Keychain.resetInternetCredentials(server)
+            }}
+          />
+          <FeatureFlagMenuItem
+            title="Open RN Dev Menu"
+            onPress={() => NativeModules.DevMenu.show()}
+          />
+          <FeatureFlagMenuItem
+            title="Clear AsyncStorage"
+            onPress={() => {
+              AsyncStorage.clear()
+            }}
+          />
+          <FeatureFlagMenuItem
+            title="Clear Relay Cache"
+            onPress={() => {
+              RelayCache.clearAll()
+            }}
+          />
+          <FeatureFlagMenuItem title={`Active Unleash env: ${capitalize(unleashEnv)}`} />
+
+          <FeatureFlagMenuItem
+            title="Throw Sentry Error"
+            onPress={() => {
+              if (!Config.SENTRY_DSN) {
+                Alert.alert(
+                  "No Sentry DSN available",
+                  __DEV__ ? "Set it in .env.shared and re-build the app." : undefined
+                )
+                return
+              }
+              throw Error("Sentry test error")
+            }}
+          />
+          <FeatureFlagMenuItem
+            title="Trigger Sentry Native Crash"
+            onPress={() => {
+              if (!Config.SENTRY_DSN) {
+                Alert.alert(
+                  "No Sentry DSN available",
+                  __DEV__ ? "Set it in .env.shared and re-build the app." : undefined
+                )
+                return
+              }
+              Sentry.nativeCrash()
+            }}
+          />
+          <FeatureFlagMenuItem title={`Sentry release name: "${eigenSentryReleaseName()}"`} />
+          <FeatureFlagMenuItem title={`Device ID: "${getUniqueId()}"`} />
+          <FeatureFlagMenuItem
+            title="Log out"
+            titleColor="red100"
+            onPress={() => {
+              GlobalStore.actions.auth.signOut()
+            }}
+          />
+        </CollapseMenu>
       </ScrollView>
     </Flex>
   )
@@ -299,11 +336,11 @@ const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
       }}
       value={
         isAdminOverrideInEffect ? (
-          <Text variant="md" color="black100" fontWeight="bold">
+          <Text variant="sm-display" color="black100" fontWeight="bold">
             {valText}
           </Text>
         ) : (
-          <Text variant="md" color="black60">
+          <Text variant="sm-display" color="black60">
             {valText}
           </Text>
         )
@@ -348,11 +385,11 @@ const DevToggleItem: React.FC<{ toggleKey: DevToggleName }> = ({ toggleKey }) =>
       }}
       value={
         currentValue ? (
-          <Text variant="md" color="black100" fontWeight="bold">
+          <Text variant="sm-display" color="black100" fontWeight="bold">
             {valText}
           </Text>
         ) : (
-          <Text variant="md" color="black60">
+          <Text variant="sm-display" color="black60">
             {valText}
           </Text>
         )
@@ -467,7 +504,7 @@ const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     {description}
                   </Text>
                   <Flex key={key} flexDirection="row" justifyContent="space-between">
-                    <Text variant="xs">{strings[key as EnvironmentKey]}</Text>
+                    <Text variant="sm-display">{strings[key as EnvironmentKey]}</Text>
                   </Flex>
                 </Flex>
                 <ChevronIcon fill="black60" direction="right" />
@@ -483,8 +520,9 @@ export const FeatureFlagMenuItem: React.FC<{
   disabled?: boolean
   onPress?: () => void
   title: React.ReactNode
+  titleColor?: string
   value?: React.ReactNode
-}> = ({ disabled = false, onPress, title, value }) => {
+}> = ({ disabled = false, onPress, title, titleColor = "black100", value }) => {
   const color = useColor()
   return (
     <Touchable onPress={onPress} underlayColor={color("black5")} disabled={disabled}>
@@ -497,12 +535,14 @@ export const FeatureFlagMenuItem: React.FC<{
         pr="15px"
       >
         <Flex flexDirection="row" mr="2" flex={5}>
-          <Text variant="md">{title}</Text>
+          <Text variant="sm-display" color={titleColor}>
+            {title}
+          </Text>
         </Flex>
         {!!value && (
           <Flex flex={2} flexDirection="row" alignItems="center">
             <Flex flex={3}>
-              <Text variant="md" color="black60" numberOfLines={1} textAlign="right">
+              <Text variant="sm-display" color="black60" numberOfLines={1} textAlign="right">
                 {value}
               </Text>
             </Flex>

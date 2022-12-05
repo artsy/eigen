@@ -5,6 +5,10 @@ require 'spaceship'
 require 'fileutils'
 require 'json'
 
+require 'dotenv'
+
+Dotenv.load('../.env.shared')
+
 skip_docs
 
 before_all do
@@ -84,7 +88,7 @@ lane :ship_beta_ios do
         changelog: beta_readme,
         itc_provider: 'ArtsyInc',
         distribute_external: true,
-        groups: ['Artsy People'])
+        groups: ['Artsy People', 'Applause People'])
 end
 
 lane :update_version_string do
@@ -159,6 +163,12 @@ lane :ship_beta_android_play_store do
   sh("yarn jetifier")
   sh("yarn relay")
 
+  # upload will overwrite past versions unless we explicitly tell it to retain some
+  # cap at 20 for now, if we need more feel free to update!
+  past_version_codes = google_play_track_version_codes(
+    track: "alpha",
+  ).first(20)
+
   vname, vcode = set_build_version_android
   tag_and_push(tag: "android-#{vname}-#{vcode}")
 
@@ -181,8 +191,9 @@ lane :ship_beta_android_play_store do
     track: "alpha",
     skip_upload_apk: true,
     skip_upload_metadata: true,
+    skip_upload_changelogs: true,
     skip_upload_images: true,
-    skip_upload_screenshots: true,
+    skip_upload_screenshots: true
   )
 end
 
@@ -212,21 +223,33 @@ lane :ship_beta_android_firebase do
 end
 
 lane :promote_beta_android do
-  current_version_code = google_play_track_version_codes(
+  # android versions are listed most recent first, limit to 20
+  version_codes = google_play_track_version_codes(
     track: "alpha",
-  ).first
+  ).first(20)
+
+  UI.header "Last 20 Android builds"
+
+  selected_version_code = UI.select("Which build would you like to release?: ", version_codes)
+
+  if UI.confirm("Are you sure you would like to release '#{selected_version_code}'?")
+    UI.success "Continuing the release!"
+  else
+    UI.user_error!("Stopping the train!")
+  end
 
   supply(
     track: 'alpha',
-    version_code: current_version_code,
+    version_code: selected_version_code,
     track_promote_to: 'production',
     rollout: '0.1',
     skip_upload_metadata: true,
+    skip_upload_changelogs: true,
     skip_upload_images: true,
     skip_upload_screenshots: true,
   )
 
-  vname, vcode = set_build_version_android(version_code: current_version_code)
+  vname, vcode = set_build_version_android(version_code: selected_version_code)
   tag_and_push(tag: "android-#{vname}-#{vcode}-submission")
 end
 
@@ -239,8 +262,8 @@ lane :promote_beta_ios do
     in_house: false,
   )
 
-   # There seems to be some delta between spaceship + deliver token format
-   token = Spaceship::ConnectAPI::Token.create(
+  # There seems to be some delta between spaceship + deliver token format
+  token = Spaceship::ConnectAPI::Token.create(
     key_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ID'],
     issuer_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
     key: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_CONTENT_BASE64'],
@@ -253,11 +276,21 @@ lane :promote_beta_ios do
   app = Spaceship::ConnectAPI::App.find('net.artsy.artsy')
   next_app_store_version = app.get_edit_app_store_version.version_string
 
-  # app.builds are listed most recent first; we are assuming that we're shipping the most recent beta.
-  latest_build = app.get_builds.first
-  build_number = latest_build.version
+  # app.builds are listed most recent first, limit to 20
+  builds = app.get_builds.first(20).map { |build| build.version }
 
-  puts "Let's deliver beta #{next_app_store_version} (#{build_number}) with build number #{build_number}."
+  UI.header "Last 20 iOS builds"
+
+  build_number = UI.select("Which build would you like to release?: ", builds)
+
+  if UI.confirm("Are you sure you would like to release '#{build_number}'?")
+    UI.success "Continuing the release!"
+  else
+    UI.user_error!("Stopping the train!")
+  end
+
+  UI.success("Let's deliver beta #{next_app_store_version} (#{build_number}) with build number #{build_number}.")
+
   deliver(
     api_key: api_key,
     app_version: app_json['version'],
@@ -289,7 +322,7 @@ lane :promote_beta_ios do
     }
   )
 
-  puts 'Tagging submission and pushing to GitHub.'
+  UI.message('Tagging submission and pushing to GitHub.')
 
   # Apple's API returns truncated version/build numbers (eg: 2020.03.19.18 becomes 2020.3.19.18)
   # So we need to add back leading zeroes
@@ -304,7 +337,7 @@ lane :promote_beta_ios do
   build_version = detruncated_components.join('.')
 
   tag_and_push(tag: "ios-#{next_app_store_version}-#{build_version}-submission")
-  puts 'All done.'
+  UI.success('All done!')
 end
 
 lane :flag_android_beta do |options|
@@ -319,6 +352,7 @@ lane :upload_sentry_artifacts do |options|
   sentry_release_name = options[:sentry_release_name]
   platform = options[:platform]
   dist_version = options[:dist_version]
+  sentry_cli_path="node_modules/@sentry/cli/bin/sentry-cli"
 
   project_slug = 'eigen'
   org_slug = 'artsynet'
@@ -345,11 +379,29 @@ lane :upload_sentry_artifacts do |options|
     outfile = '~/index.android.bundle'
   end
 
-  sentry_create_release(auth_token: ENV['SentryUploadAuthKey'],
-                        org_slug: org_slug,
-                        project_slug: project_slug,
-                        version: sentry_release_name,
-                        finalize: false)
+  begin
+    sentry_create_release(auth_token: ENV['SentryUploadAuthKey'],
+      sentry_cli_path: sentry_cli_path,
+      org_slug: org_slug,
+      project_slug: project_slug,
+      version: sentry_release_name,
+      finalize: false)
+  rescue StandardError => e
+      message = 'Creating release for sentry failed. This can happen if sentry cli is out of date.'
+      puts message
+      slack(
+        message: message,
+        success: false,
+        payload: {
+          'Circle Build' => ENV['CIRCLE_BUILD_URL'],
+          'Exception' => e.message
+        },
+        default_payloads: [:last_git_commit_hash]
+      )
+      puts e.message
+      puts e.backtrace.join("\n\t")
+  end
+
   puts "Created a release for #{project_slug}"
 
   if platform == "ios"
@@ -362,6 +414,7 @@ lane :upload_sentry_artifacts do |options|
     Dir.glob(File.join(dsyms_path, '*.dSYM')).each do |dsym_path|
       # No need to specify `dist` as the build number is encoded in the dSYM's Info.plist
       sentry_upload_dsym(auth_token: ENV['SentryUploadAuthKey'],
+                         sentry_cli_path: sentry_cli_path,
                          org_slug: org_slug,
                          project_slug: project_slug,
                          dsym_path: dsym_path)
@@ -371,6 +424,7 @@ lane :upload_sentry_artifacts do |options|
 
   begin
     sentry_upload_file(auth_token: ENV['SentryUploadAuthKey'],
+                        sentry_cli_path: sentry_cli_path,
                          org_slug: org_slug,
                          project_slug: project_slug,
                          version: sentry_release_name,
@@ -380,6 +434,7 @@ lane :upload_sentry_artifacts do |options|
     puts "Uploaded source js for #{project_slug}"
 
     sentry_upload_sourcemap(auth_token: ENV['SentryUploadAuthKey'],
+                          sentry_cli_path: sentry_cli_path,
                             org_slug: org_slug,
                             project_slug: project_slug,
                             version: sentry_release_name,

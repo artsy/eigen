@@ -126,7 +126,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
           <>
             {!!viewingRoom.pullQuote && (
               <Flex mx="2">
-                <Text testID="pull-quote" variant="lg" textAlign="center">
+                <Text testID="pull-quote" variant="lg-display" textAlign="center">
                   {viewingRoom.pullQuote}
                 </Text>
               </Flex>

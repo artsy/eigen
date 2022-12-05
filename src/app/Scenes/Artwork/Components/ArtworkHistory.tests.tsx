@@ -16,7 +16,7 @@ describe("Artwork History", () => {
     const { queryByText } = renderWithWrappers(<ArtworkHistory artwork={artworkHistoryInfo} />)
 
     expect(queryByText("Provenance")).toBeTruthy()
-    expect(queryByText("Exhibition History")).toBeTruthy()
+    expect(queryByText("Exhibition history")).toBeTruthy()
     expect(queryByText("Bibliography")).toBeTruthy()
   })
 
@@ -31,7 +31,7 @@ describe("Artwork History", () => {
     const { queryByText } = renderWithWrappers(<ArtworkHistory artwork={artworkHistoryInfo} />)
 
     expect(queryByText("Provenance")).toBeTruthy()
-    expect(queryByText("Exhibition History")).toBeNull()
+    expect(queryByText("Exhibition history")).toBeNull()
     expect(queryByText("Bibliography")).toBeTruthy()
   })
 
@@ -48,7 +48,7 @@ describe("Artwork History", () => {
     )
 
     expect(queryByText("Provenance")).toBeNull()
-    expect(queryByText("Exhibition History")).toBeNull()
+    expect(queryByText("Exhibition history")).toBeNull()
     expect(queryByText("Bibliography")).toBeNull()
     expect(toJSON()).toBeNull()
   })

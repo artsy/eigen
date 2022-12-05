@@ -1,17 +1,17 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
 import { MyCollectionArtworkDemandIndex_artwork$key } from "__generated__/MyCollectionArtworkDemandIndex_artwork.graphql"
-import { MyCollectionArtworkDemandIndex_marketPriceInsights$key } from "__generated__/MyCollectionArtworkDemandIndex_marketPriceInsights.graphql"
+import { MyCollectionArtworkDemandIndex_artworkPriceInsights$key } from "__generated__/MyCollectionArtworkDemandIndex_artworkPriceInsights.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import HighDemandIcon from "app/Icons/HighDemandIcon"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { Flex, Spacer, Text, TriangleDown } from "palette"
+import { Flex, Separator, Spacer, Text, TriangleDown } from "palette"
 import LinearGradient from "react-native-linear-gradient"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface MyCollectionArtworkDemandIndexProps {
   artwork: MyCollectionArtworkDemandIndex_artwork$key
-  marketPriceInsights: MyCollectionArtworkDemandIndex_marketPriceInsights$key
+  marketPriceInsights: MyCollectionArtworkDemandIndex_artworkPriceInsights$key
 }
 
 export const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandIndexProps> = (
@@ -21,8 +21,9 @@ export const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandI
 
   const artwork = useFragment(artworkFragment, props.artwork)
 
-  const marketPriceInsights = useFragment(marketPriceInsightsFragment, props.marketPriceInsights)
+  const marketPriceInsights = useFragment(artworkPriceInsightsFragment, props.marketPriceInsights)
 
+  const { demandRankDisplayText } = marketPriceInsights
   if (!artwork || !marketPriceInsights?.demandRank) {
     return null
   }
@@ -30,7 +31,7 @@ export const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandI
   const demandRank = Number((marketPriceInsights.demandRank * 10).toFixed(2))
 
   return (
-    <Flex mb={2}>
+    <Flex mt={1}>
       <InfoButton
         title="Demand index"
         modalContent={
@@ -46,12 +47,17 @@ export const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandI
       />
 
       <Spacer my={1} />
-      <DemandRankScale demandRank={demandRank} />
+      <DemandRankScale demandRank={demandRank} demandRankDisplayText={demandRankDisplayText} />
+
+      <Separator my={2} borderColor="black10" />
     </Flex>
   )
 }
 
-const DemandRankScale: React.FC<{ demandRank: number }> = ({ demandRank }) => {
+const DemandRankScale: React.FC<{ demandRank: number; demandRankDisplayText: string | null }> = ({
+  demandRank,
+  demandRankDisplayText,
+}) => {
   const enableDemandIndexHints = useFeatureFlag("ARShowMyCollectionDemandIndexHints")
 
   let width = demandRank * 10
@@ -72,7 +78,7 @@ const DemandRankScale: React.FC<{ demandRank: number }> = ({ demandRank }) => {
         {!!enableDemandIndexHints && (
           <Flex flexDirection="row" alignItems="center" mb={1}>
             {!!isHighDemand && <HighDemandIcon style={{ marginTop: 2, marginRight: 2 }} />}
-            <Text color={color}>{getDemandRankText(demandRank)}</Text>
+            <Text color={color}>{demandRankDisplayText}</Text>
           </Flex>
         )}
       </Flex>
@@ -116,18 +122,6 @@ const ProgressBar: React.FC<{ width: number }> = ({ width }) => {
   )
 }
 
-const getDemandRankText = (demandRank: number) => {
-  if (demandRank >= 9) {
-    return "High Demand"
-  } else if (demandRank >= 7) {
-    return "Active Demand"
-  } else if (demandRank >= 4) {
-    return "Moderate Demand"
-  }
-
-  return "Less Active Demand"
-}
-
 const artworkFragment = graphql`
   fragment MyCollectionArtworkDemandIndex_artwork on Artwork {
     internalID
@@ -135,9 +129,10 @@ const artworkFragment = graphql`
   }
 `
 
-const marketPriceInsightsFragment = graphql`
-  fragment MyCollectionArtworkDemandIndex_marketPriceInsights on MarketPriceInsights {
+const artworkPriceInsightsFragment = graphql`
+  fragment MyCollectionArtworkDemandIndex_artworkPriceInsights on ArtworkPriceInsights {
     demandRank
+    demandRankDisplayText
   }
 `
 

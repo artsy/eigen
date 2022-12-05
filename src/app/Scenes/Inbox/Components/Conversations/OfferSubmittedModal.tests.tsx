@@ -25,9 +25,9 @@ describe("OfferSubmittedModal", () => {
     const { getByText } = renderWithWrappers(<OfferSubmittedModal />)
     act(() => callback?.({ orderCode: "1234", message: "Test message" }))
 
-    expect(getByText("Your offer has been submitted")).toBeTruthy()
+    expect(getByText("Thank you, your offer has been submitted")).toBeTruthy()
     expect(getByText("Negotiation with the gallery will continue in the Inbox.")).toBeTruthy()
-    expect(getByText("Offer number 1234")).toBeTruthy()
+    expect(getByText("Offer #1234")).toBeTruthy()
     expect(getByText("Test message")).toBeTruthy()
     expect(goBack).toHaveBeenCalledTimes(1)
   })

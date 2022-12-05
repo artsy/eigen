@@ -1,5 +1,6 @@
 #!/usr/bin/env yarn ts-node
 
+// tslint:disable-next-line
 require("dotenv").config()
 
 import { GraphQLClient } from "graphql-request"
@@ -26,7 +27,10 @@ const login = async (): Promise<{ userId: string; accessToken: string }> => {
   )
   await page.click('aria/pushbutton[name="Log in"]')
   await page.waitForNavigation()
-  const { id: userId, accessToken } = await page.evaluate("sd.CURRENT_USER")
+  const { id: userId, accessToken } = (await page.evaluate("sd.CURRENT_USER")) as {
+    id: string
+    accessToken: string
+  }
   console.log("Logged in.")
   return { userId, accessToken }
 }
@@ -120,6 +124,7 @@ const doIt = async (): Promise<never> => {
           log(JSON.stringify(response))
         } catch (e) {
           stdout.write("x")
+          // @ts-expect-error
           errors.push({ request: req, error: e })
         }
       })

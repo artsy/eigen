@@ -1,19 +1,35 @@
-import { Flex } from "palette"
+import { Color, Flex } from "palette"
 import { ChevronIcon, CloseIcon } from "palette/svgs"
-import { TouchableOpacity } from "react-native"
+import { TouchableOpacity, TouchableOpacityProps } from "react-native"
 
 interface BackButtonProps {
   onPress?: () => void
   showX?: boolean
+  color?: Color
+  containerStyle?: TouchableOpacityProps["style"]
+  hitSlop?: TouchableOpacityProps["hitSlop"]
 }
 
-export const BackButton: React.FC<BackButtonProps> = ({ onPress, showX = false }) => {
+export const BackButton: React.FC<BackButtonProps> = ({
+  onPress,
+  showX = false,
+  color = "black100",
+  containerStyle,
+  hitSlop,
+}) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity
+      hitSlop={hitSlop}
+      style={containerStyle}
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={showX ? "Close" : "Go back"}
+      accessibilityHint={showX ? "Dismiss this screen" : "Go back to the previous screen"}
+    >
       {showX ? (
-        <CloseIcon fill="black100" width={26} height={26} />
+        <CloseIcon fill={color} width={26} height={26} />
       ) : (
-        <ChevronIcon direction="left" />
+        <ChevronIcon direction="left" fill={color} />
       )}
     </TouchableOpacity>
   )
@@ -21,7 +37,12 @@ export const BackButton: React.FC<BackButtonProps> = ({ onPress, showX = false }
 
 export const BackButtonWithBackground: React.FC<BackButtonProps> = ({ onPress, showX = false }) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={showX ? "Close" : "Go back"}
+      accessibilityHint={showX ? "Dismiss this screen" : "Go back to the previous screen"}
+    >
       <Flex
         backgroundColor="white100"
         width={40}

@@ -1,38 +1,48 @@
-import { addCollectedArtwork } from "@artsy/cohesion"
+import { ActionType, AddCollectedArtwork, ContextModule, OwnerType } from "@artsy/cohesion"
 import { MyCollection_me$data } from "__generated__/MyCollection_me.graphql"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ZeroState } from "app/Components/States/ZeroState"
 import { navigate, popToRoot } from "app/navigation/navigate"
-import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore, useDevToggle, useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
-import { Button, Flex, LockIcon, Spacer, Text } from "palette"
-import React, { useState } from "react"
-import { FlatList, LayoutAnimation, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
+import { Button, Flex, LockIcon, Spacer, Text, useSpace } from "palette"
+import { useState } from "react"
+import {
+  Alert,
+  Image,
+  InteractionManager,
+  LayoutAnimation,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+} from "react-native"
+
 import { graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
+import { refreshMyCollection } from "../../utils/refreshHelpers"
 import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { MyCollectionArtworkList } from "./Components/MyCollectionArtworkList"
 import { MyCollectionSearchBar } from "./Components/MyCollectionSearchBar"
+import { myCollectionDeleteArtwork } from "./mutations/myCollectionDeleteArtwork"
 import { MyCollectionArtworkEdge } from "./MyCollection"
 import { localSortAndFilterArtworks } from "./utils/localArtworkSortAndFilter"
 
 interface MyCollectionArtworksProps {
   me: MyCollection_me$data
   relay: RelayPaginationProp
-  innerFlatlistRef?: React.MutableRefObject<{ getNode(): FlatList<any> } | null>
   showSearchBar: boolean
   setShowSearchBar: (show: boolean) => void
+  myCollectionIsRefreshing?: boolean
 }
 
 export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
   me,
   relay,
-  innerFlatlistRef,
   showSearchBar,
   setShowSearchBar,
+  myCollectionIsRefreshing,
 }) => {
   const { height: screenHeight } = useScreenDimensions()
   const enabledSearchBar = useFeatureFlag("AREnableMyCollectionSearchBar")
@@ -47,6 +57,8 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
   const filterOptions = ArtworksFiltersStore.useStoreState((state) => state.filterOptions)
 
   const artworks = extractNodes(me?.myCollectionConnection)
+
+  const showMyCollectionDeleteAllArtworks = useDevToggle("DTMyCollectionDeleteAllArtworks")
 
   const filteredArtworks = localSortAndFilterArtworks(
     artworks as any,
@@ -87,16 +99,59 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
           <MyCollectionSearchBar
             searchString={keywordFilter}
             onChangeText={setKeywordFilter}
-            innerFlatListRef={innerFlatlistRef}
             onIsFocused={(isFocused) => {
               setMinHeight(isFocused ? screenHeight : undefined)
             }}
           />
         )}
       </Flex>
+      {!!showMyCollectionDeleteAllArtworks && artworks.length > 0 && (
+        <Button
+          onPress={() => {
+            Alert.alert(
+              "Delete all artworks",
+              "Are you sure you want to delete all artworks in your collection?",
+              [
+                {
+                  text: "Cancel",
+                  style: "cancel",
+                },
+                {
+                  text: "OK",
+                  onPress: async () => {
+                    await Promise.all(
+                      artworks.map(async (artwork) => {
+                        await myCollectionDeleteArtwork(artwork.internalID)
+                      })
+                    )
+                      .then(() => {
+                        InteractionManager.runAfterInteractions(() => {
+                          Alert.alert("All artworks deleted")
+                          refreshMyCollection()
+                        })
+                      })
+                      .catch(() => {
+                        InteractionManager.runAfterInteractions(() => {
+                          Alert.alert("Couldn't delete your artworks")
+                        })
+                      })
+                  },
+                  style: "destructive",
+                },
+              ]
+            )
+          }}
+          block
+          variant="outlineGray"
+          mb={1}
+        >
+          <Text color="red100">Delete all artworks</Text>
+        </Button>
+      )}
       {filteredArtworks.length > 0 ? (
         viewOption === "grid" ? (
           <InfiniteScrollMyCollectionArtworksGridContainer
+            myCollectionIsRefreshing={myCollectionIsRefreshing}
             myCollectionConnection={me.myCollectionConnection!}
             hasMore={relay.hasMore}
             loadMore={relay.loadMore}
@@ -144,17 +199,30 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
 
 const MyCollectionZeroState: React.FC = () => {
   const { trackEvent } = useTracking()
+  const space = useSpace()
+
+  const image = require("images/my-collection-empty-state.webp")
 
   return (
     <ZeroState
-      title="Primed and ready for artworks."
-      subtitle="Add works from your collection to access price and market insights."
+      bigTitle="Your Art Collection in Your Pocket"
+      subtitle="Access market insights and manage your collection online."
+      image={
+        <Image
+          source={image}
+          resizeMode="contain"
+          style={{
+            alignSelf: "center",
+            marginVertical: space(2),
+          }}
+        />
+      }
       callToAction={
         <>
           <Button
             testID="add-artwork-button-zero-state"
             onPress={() => {
-              trackEvent(addCollectedArtwork())
+              trackEvent(tracks.addCollectedArtwork())
               navigate("my-collection/artworks/new", {
                 passProps: {
                   mode: "add",
@@ -165,7 +233,7 @@ const MyCollectionZeroState: React.FC = () => {
             }}
             block
           >
-            Upload Your Artwork
+            Upload Artwork
           </Button>
           <Flex flexDirection="row" justifyContent="center" alignItems="center" py={1}>
             <LockIcon fill="black60" />
@@ -218,3 +286,12 @@ export const MyCollectionFilterPropsFragment = graphql`
     }
   }
 `
+
+const tracks = {
+  addCollectedArtwork: (): AddCollectedArtwork => ({
+    action: ActionType.addCollectedArtwork,
+    context_module: ContextModule.myCollectionHome,
+    context_owner_type: OwnerType.myCollection,
+    platform: "mobile",
+  }),
+}

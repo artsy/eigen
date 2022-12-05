@@ -13,11 +13,14 @@ export const InputTitle: React.FC<{ optional?: boolean; required?: boolean }> = 
 
   return (
     <Theme>
-      <Text variant="md" style={{ fontSize: 13, marginBottom: 2, textTransform: "uppercase" }}>
+      <Text
+        variant="sm-display"
+        style={{ fontSize: 13, marginBottom: 2, textTransform: "uppercase" }}
+      >
         {title}
         {!!required && (
           <Text
-            variant="md"
+            variant="sm-display"
             style={{ fontSize: 13, textTransform: "none" }}
             color={color("black60")}
           >
@@ -27,7 +30,7 @@ export const InputTitle: React.FC<{ optional?: boolean; required?: boolean }> = 
         )}
         {!!optional && (
           <Text
-            variant="md"
+            variant="sm-display"
             style={{ fontSize: 13, textTransform: "none" }}
             color={color("black60")}
           >

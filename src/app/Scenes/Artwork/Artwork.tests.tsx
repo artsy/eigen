@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import {
   ArtworkFromLiveAuctionRegistrationClosed,
   ArtworkFromLiveAuctionRegistrationOpen,
@@ -28,21 +29,20 @@ import { ArtworkDetails } from "./Components/ArtworkDetails"
 import { ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
 import { BidButton } from "./Components/CommercialButtons/BidButton"
 import { CommercialInformation } from "./Components/CommercialInformation"
-import { CommercialPartnerInformation } from "./Components/CommercialPartnerInformation"
 import { ContextCard } from "./Components/ContextCard"
 import { ImageCarousel } from "./Components/ImageCarousel/ImageCarousel"
 import { OtherWorksFragmentContainer } from "./Components/OtherWorks/OtherWorks"
-import { PartnerLink } from "./Components/PartnerLink"
-import { Questions } from "./Components/Questions"
 
 type ArtworkQueries =
   | "ArtworkAboveTheFoldQuery"
   | "ArtworkBelowTheFoldQuery"
   | "ArtworkMarkAsRecentlyViewedQuery"
   | "ArtworkRefetchQuery"
+  | "RequestConditionReportQuery"
 
 jest.unmock("react-relay")
 
+// TODO: remove the use of renderWithWrappersLEGACY
 jest.mock("app/Components/Bidding/Context/TimeOffsetProvider", () => {
   class TimeOffsetProvider extends require("react").Component {
     static childContextTypes = {
@@ -98,8 +98,6 @@ describe("Artwork", () => {
   beforeEach(() => {
     require("app/relay/createEnvironment").reset()
     environment = require("app/relay/createEnvironment").defaultEnvironment
-    // TODO: Remove it when AREnableCreateArtworkAlert flag is true in Echo
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: false })
   })
 
   afterEach(() => {
@@ -136,10 +134,16 @@ describe("Artwork", () => {
         Artwork() {
           return {
             artist: {
+              biographyBlurb: null,
               artistSeriesConnection: {
                 totalCount: 5,
               },
             },
+            // Hide some other sections
+            // otherwise arties series components will not be found
+            sale: null,
+            partner: null,
+            context: null,
           }
         },
       })
@@ -163,6 +167,11 @@ describe("Artwork", () => {
             artistSeriesConnection: {
               edges: [],
             },
+            // Hide some other sections
+            // otherwise arties series components will not be found
+            sale: null,
+            partner: null,
+            context: null,
           }
         },
       })
@@ -177,6 +186,7 @@ describe("Artwork", () => {
         Artwork() {
           return {
             internalID: "artwork123",
+            isEligibleForArtsyGuarantee: false,
           }
         },
       })
@@ -205,6 +215,11 @@ describe("Artwork", () => {
                 ],
               },
             },
+            // Hide some other sections
+            // otherwise arties series components will not be found
+            sale: null,
+            partner: null,
+            context: null,
           }
         },
       })
@@ -256,41 +271,22 @@ describe("Artwork", () => {
 
   it("marks the artwork as viewed", () => {
     renderWithWrappersLEGACY(<TestRenderer />)
-    const slug = "test artwork id"
 
-    mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
-      Artwork() {
-        return { slug }
-      },
-    })
+    mockMostRecentOperation("ArtworkAboveTheFoldQuery")
+
+    expect(environment.mock.getMostRecentOperation().request.node.operation.name).toEqual(
+      "ArtworkMarkAsRecentlyViewedQuery"
+    )
 
     expect(environment.mock.getMostRecentOperation()).toMatchObject({
       request: {
         variables: {
           input: {
-            artwork_id: slug,
+            artwork_id: '<mock-value-for-field-"slug">',
           },
         },
       },
     })
-  })
-
-  it("refetches on re-appear", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsLotConditionReport: false })
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-
-    mockMostRecentOperation("ArtworkAboveTheFoldQuery")
-    mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
-    mockMostRecentOperation("ArtworkBelowTheFoldQuery")
-
-    expect(environment.mock.getAllOperations()).toHaveLength(0)
-
-    navigationEvents.emit("modalDismissed")
-    mockMostRecentOperation("ArtworkRefetchQuery")
-
-    tree.update(<TestRenderer isVisible={false} />)
-    tree.update(<TestRenderer isVisible />)
-    mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
   })
 
   it("updates the above-the-fold content on re-appear", async () => {
@@ -324,7 +320,12 @@ describe("Artwork", () => {
       },
     })
 
+    mockMostRecentOperation("RequestConditionReportQuery")
+
     navigationEvents.emit("modalDismissed")
+
+    await flushPromiseQueue()
+
     mockMostRecentOperation("ArtworkRefetchQuery", {
       Artwork() {
         return { slug: "completely-different-slug" }
@@ -361,6 +362,11 @@ describe("Artwork", () => {
     mockMostRecentOperation("ArtworkAboveTheFoldQuery")
     mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
     mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+      Artwork() {
+        return {
+          isForSale: false,
+        }
+      },
       Sale() {
         return {
           isAuction: false,
@@ -391,26 +397,6 @@ describe("Artwork", () => {
     expect(tree.root.findAllByType(ContextCard)).toHaveLength(1)
   })
 
-  it("renders buy now contact gallery when feature flag is enabled", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: true })
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-
-    mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
-      Artwork: () => ({
-        slug: "test-artwork",
-        isAcquireable: true,
-        partner: { name: "XYZ Gallery" },
-      }),
-    })
-    mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
-    mockMostRecentOperation("ArtworkBelowTheFoldQuery")
-
-    await flushPromiseQueue()
-
-    expect(tree.root.findAllByType(Questions)).toHaveLength(1)
-    expect(tree.root.findAllByType(PartnerLink)).toHaveLength(1)
-  })
-
   describe("Live Auction States", () => {
     describe("has the correct state for a work that is in an auction that is currently live", () => {
       it("for which I am registered", () => {
@@ -427,13 +413,12 @@ describe("Artwork", () => {
           },
         })
 
-        expect(tree.root.findAllByType(CommercialPartnerInformation)).toHaveLength(0)
         expect(tree.root.findAllByType(Countdown)).toHaveLength(1)
         expect(tree.root.findByType(Countdown).props.label).toBe("In progress")
         expect(extractText(tree.root.findByType(BidButton))).toContain("Enter live bidding")
       })
 
-      it("for which I am not registered and registration is open", () => {
+      it("for which I am not registered and registration is open", async () => {
         const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
         mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
@@ -447,7 +432,8 @@ describe("Artwork", () => {
           },
         })
 
-        expect(tree.root.findAllByType(CommercialPartnerInformation)).toHaveLength(0)
+        await flushPromiseQueue()
+
         expect(tree.root.findAllByType(Countdown)).toHaveLength(1)
         expect(tree.root.findByType(Countdown).props.label).toBe("In progress")
         expect(extractText(tree.root.findByType(BidButton))).toContain("Registration closed")
@@ -468,7 +454,6 @@ describe("Artwork", () => {
           },
         })
 
-        expect(tree.root.findAllByType(CommercialPartnerInformation)).toHaveLength(0)
         expect(tree.root.findAllByType(Countdown)).toHaveLength(1)
         expect(tree.root.findByType(Countdown).props.label).toBe("In progress")
         expect(extractText(tree.root.findByType(Countdown))).toContain("00d  00h  00m  00s")
@@ -478,10 +463,6 @@ describe("Artwork", () => {
   })
 
   describe("Partner Section", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: true })
-    })
-
     it("should not display partner link if CBN flag is on", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: true })
 
@@ -516,10 +497,6 @@ describe("Artwork", () => {
   })
 
   describe("Create Alert button", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: true })
-    })
-
     it("should display create artwork alert section by default", () => {
       const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
 
@@ -592,6 +569,149 @@ describe("Artwork", () => {
 
       expect(queryByLabelText("Create artwork alert section")).toBeFalsy()
       expect(queryByLabelText("Create artwork alert buttons section")).toBeTruthy()
+    })
+  })
+
+  describe("Shipping and taxes", () => {
+    it("should be rendered when the work has `for sale` availability", () => {
+      const { queryByText } = renderWithWrappers(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery")
+      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+      mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+        Artwork: () => ({
+          isForSale: true,
+        }),
+      })
+
+      expect(queryByText("Shipping and taxes")).toBeDefined()
+    })
+
+    it("should NOT be rendered if the work has any other availability", () => {
+      const { queryByText } = renderWithWrappers(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery")
+      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+      mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+        Artwork: () => ({
+          isForSale: false,
+        }),
+      })
+
+      expect(queryByText("Shipping and taxes")).toBeNull()
+    })
+
+    it("should NOT be rendered if the work is in auction", () => {
+      const { queryByText } = renderWithWrappers(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        Artwork: () => ({
+          isInAuction: true,
+        }),
+      })
+      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+      mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+        Artwork: () => ({
+          isForSale: false,
+        }),
+      })
+
+      expect(queryByText("Shipping and taxes")).toBeNull()
+    })
+  })
+
+  describe("Artsy Guarantee section", () => {
+    it("should be displayed when eligible for artsy guarantee", async () => {
+      renderWithWrappers(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        Artwork: () => ({
+          isEligibleForArtsyGuarantee: true,
+        }),
+      })
+      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+      mockMostRecentOperation("ArtworkBelowTheFoldQuery")
+
+      await flushPromiseQueue()
+
+      expect(
+        screen.queryByText("Be covered by the Artsy Guarantee when you checkout with Artsy")
+      ).toBeTruthy()
+    })
+
+    it("should not be displayed when ineligible for artsy guarantee", async () => {
+      renderWithWrappers(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        Artwork: () => ({
+          isEligibleForArtsyGuarantee: false,
+        }),
+      })
+      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+      mockMostRecentOperation("ArtworkBelowTheFoldQuery")
+
+      await flushPromiseQueue()
+
+      expect(
+        screen.queryByText("Be covered by the Artsy Guarantee when you checkout with Artsy")
+      ).toBeNull()
+    })
+  })
+
+  describe("Consigments", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        ARArtworkRedesingPhase2: true,
+      })
+    })
+
+    it("shows consign link if at least 1 artist is consignable", async () => {
+      renderWithWrappers(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery")
+      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+      mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+        Artwork: () => ({
+          isForSale: true,
+          artists: [
+            {
+              name: "Santa",
+              isConsignable: true,
+            },
+          ],
+        }),
+      })
+      await flushPromiseQueue()
+
+      expect(screen.queryByText(/Consign with Artsy/)).toBeTruthy()
+    })
+
+    it("doesn't render section", async () => {
+      renderWithWrappers(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        Artwork: () => ({
+          isAcquireable: false,
+          isOfferable: false,
+          isInAuction: false,
+          sale: null,
+        }),
+      })
+      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+      mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+        Artwork: () => ({
+          isForSale: false,
+          artists: [
+            {
+              name: "Santa",
+              isConsignable: false,
+            },
+          ],
+        }),
+      })
+      await flushPromiseQueue()
+
+      expect(screen.queryByText(/Consign with Artsy/)).toBeNull()
     })
   })
 })

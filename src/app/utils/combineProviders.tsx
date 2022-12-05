@@ -1,4 +1,6 @@
-type ProviderList = Array<React.FC | React.ComponentClass<{ children: React.ReactNode }>>
+type ProviderList = Array<
+  React.FC | React.ComponentClass<{ children: React.ReactNode }> | React.ComponentType
+>
 
 /**
  * This function can takes a list of Providers and returns

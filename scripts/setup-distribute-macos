@@ -9,3 +9,7 @@ bundle exec fastlane update_plugins
 ./scripts/setup-awscli
 
 aws s3 cp s3://artsy-citadel/eigen/GoogleService-Info.plist ios/Artsy/GoogleService-Info.plist
+aws s3 cp s3://artsy-citadel/eigen/release.keystore android/app/release.keystore
+aws s3 cp s3://artsy-citadel/eigen/android-secret.json android-secret.json
+aws s3 cp s3://artsy-citadel/eigen/eigen-firebase-app-distribution.json eigen-firebase-app-distribution.json
+aws s3 cp s3://artsy-citadel/eigen/google-services.json android/app/google-services.json

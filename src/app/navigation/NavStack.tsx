@@ -1,9 +1,10 @@
-import { Route, useIsFocused, useNavigationState } from "@react-navigation/native"
+import { findFocusedRoute, Route, useIsFocused, useNavigationState } from "@react-navigation/native"
+import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { AppModule, modules } from "app/AppRegistry"
+import { useBottomTabBarHeight } from "app/Scenes/BottomTabs/useBottomTabBarHeight"
 import { isPad } from "app/utils/hardware"
-import React, { useState } from "react"
+import { createContext, useState } from "react"
 import { View } from "react-native"
-import { createNativeStackNavigator } from "react-native-screens/native-stack"
 import { ProvideScreenDimensions, useScreenDimensions } from "shared/hooks"
 import { ArtsyKeyboardAvoidingViewContext } from "shared/utils"
 import { BackButton } from "./BackButton"
@@ -76,6 +77,7 @@ export const NavStack: React.FC<{
   rootModuleName: AppModule
   rootModuleProps?: any
 }> = ({ id, rootModuleName, rootModuleProps }) => {
+  const bottomTabBarHeight = useBottomTabBarHeight()
   const initialParams: ScreenProps = {
     moduleName: rootModuleName,
     props: rootModuleProps,
@@ -84,11 +86,18 @@ export const NavStack: React.FC<{
 
   return (
     <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-        stackAnimation: rootModuleProps?.isPresentedModally ? "slide_from_right" : undefined,
-        contentStyle: { backgroundColor: "white" },
-        screenOrientation: isPad() ? "default" : "portrait",
+      screenOptions={(props) => {
+        const focusedRoute = findFocusedRoute(props.navigation.getState())
+        const shouldHideBottomTab = (focusedRoute?.params as any)?.shouldHideBottomTab
+
+        return {
+          headerShown: false,
+          contentStyle: {
+            backgroundColor: "white",
+            marginBottom: shouldHideBottomTab ? 0 : bottomTabBarHeight,
+          },
+          orientation: isPad() ? "default" : "portrait",
+        }
       }}
     >
       <Stack.Screen name={"screen:" + id} component={ScreenWrapper} initialParams={initialParams} />
@@ -96,7 +105,7 @@ export const NavStack: React.FC<{
   )
 }
 
-export const LegacyBackButtonContext = React.createContext<{
+export const LegacyBackButtonContext = createContext<{
   updateShouldHideBackButton(shouldHideBackButton: boolean): void
 }>({
   updateShouldHideBackButton() {

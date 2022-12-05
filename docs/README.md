@@ -5,6 +5,7 @@
 ## Getting Started
 
 - [Getting Started](getting_started.md)
+- [Troubleshooting](troubleshooting.md)
 
 ## Meandering Around
 

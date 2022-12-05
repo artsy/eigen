@@ -16,21 +16,35 @@ import { MyCollectionImageView } from "../../Components/MyCollectionImageView"
 
 interface MyCollectionArtworkGridItemProps {
   artwork: MyCollectionArtworkGridItem_artwork$data
+  myCollectionIsRefreshing?: boolean
 }
 
-const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = ({ artwork }) => {
+const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = ({
+  artwork,
+  myCollectionIsRefreshing,
+}) => {
   const { trackEvent } = useTracking()
   const imageURL =
     artwork.images?.find((i: any) => i?.isDefault)?.url ||
     (artwork.images && artwork.images[0]?.url)
   const { width } = useScreenDimensions()
 
-  const { artist, artistNames, internalID, medium, mediumType, slug, title, image, date } = artwork
+  const {
+    artist,
+    artistNames,
+    internalID,
+    medium,
+    mediumType,
+    slug,
+    title,
+    image,
+    date,
+    submissionId,
+  } = artwork
 
   // consistent with how sections are derived in InfiniteScrollArtworksGrid
   const screen = useScreenDimensions()
-  const isPadHorizontal = isPad() && screen.width > screen.height
-  const sectionCount = isPad() ? (isPadHorizontal ? 4 : 3) : 2
+  const sectionCount = isPad() ? 3 : 2
   const imageWidth = (screen.width - DEFAULT_SECTION_MARGIN * (sectionCount + 1)) / sectionCount
 
   const isP1Artist = artwork.artist?.targetSupply?.isP1
@@ -63,6 +77,8 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
           imageURL={imageURL ?? undefined}
           aspectRatio={image?.aspectRatio}
           artworkSlug={slug}
+          artworkSubmissionId={submissionId}
+          myCollectionIsRefreshing={myCollectionIsRefreshing}
         />
         <Box maxWidth={width} mt={1} style={{ flex: 1 }}>
           <Text lineHeight="18" weight="regular" variant="xs" numberOfLines={2}>
@@ -112,6 +128,7 @@ export const MyCollectionArtworkGridItemFragmentContainer = createFragmentContai
         artistNames
         medium
         slug
+        submissionId
         title
         date
         marketPriceInsights {

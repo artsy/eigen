@@ -7,9 +7,8 @@ import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { debounce } from "lodash"
 import { Flex, Input, Text, useTheme } from "palette"
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import {
-  FlatList,
   LayoutAnimation,
   NativeSyntheticEvent,
   TextInput,
@@ -22,7 +21,6 @@ import Animated from "react-native-reanimated"
 export interface MyCollectionSearchBarProps {
   onChangeText: ((text: string) => void) | undefined
   onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void
-  innerFlatListRef?: React.MutableRefObject<{ getNode(): FlatList<any> } | null>
   searchString: string
   onIsFocused?: (isFocused: boolean) => void
 }
@@ -30,7 +28,6 @@ export interface MyCollectionSearchBarProps {
 export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
   onChangeText,
   onFocus,
-  innerFlatListRef,
   searchString = "",
   onIsFocused,
 }) => {
@@ -69,13 +66,10 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
     () =>
       Animated.call(
         [staticHeaderHeight, hasRunFocusedAnimation],
-        ([staticHeaderHeightValue, hasFinishedAnimationLoop]) => {
+        ([, hasFinishedAnimationLoop]) => {
           if (hasFinishedAnimationLoop) {
             return
           }
-          innerFlatListRef?.current
-            ?.getNode()
-            .scrollToOffset({ offset: Number(staticHeaderHeightValue), animated: true })
           hasRunFocusedAnimation.setValue(new Animated.Value(1))
         }
       ),
@@ -91,9 +85,9 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
   }
 
   return (
-    <Flex my={1}>
+    <Flex>
       {isFocused ? (
-        <Flex flexDirection="row" alignItems="center" my={0.5}>
+        <Flex flexDirection="row" alignItems="center">
           <Input
             testID="MyCollectionSearchBarInput"
             placeholder="Search by Artist, Artwork or Keyword"
@@ -109,6 +103,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
             value={value}
             returnKeyType="done"
             fontSize={14}
+            autoCorrect={false}
           />
 
           <TouchableOpacity
@@ -133,7 +128,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
           </TouchableOpacity>
         </Flex>
       ) : (
-        <Flex>
+        <Flex my={1}>
           <Flex flexDirection="row" justifyContent="space-between">
             <Flex flex={1} mr={1} justifyContent="center">
               <TouchableWithoutFeedback
@@ -152,7 +147,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
                 }}
                 hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
               >
-                <Flex py={1} my={0.5} flexDirection="row" width="100%">
+                <Flex flexDirection="row" width="100%">
                   <SearchIcon width={18} height={18} />
                   <Text ml={1} variant="xs">
                     {value.length > 0 ? value : "Search Your Collection"}
@@ -160,7 +155,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
                 </Flex>
               </TouchableWithoutFeedback>
             </Flex>
-            <Flex py={1} my={0.5} flexDirection="row">
+            <Flex flexDirection="row">
               <Flex mr={1}>
                 <TouchableWithoutFeedback
                   testID="MyCollectionSearchListIconTouchable"

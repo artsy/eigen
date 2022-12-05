@@ -21,7 +21,6 @@ const PartnerOverviewFixture: NonNullable<PartnerOverviewTestsQuery["rawResponse
     bio: "",
   },
   artists: {
-    pageInfo: null as any,
     edges: [],
   },
   locations: null,
@@ -143,10 +142,8 @@ const artists: NonNullable<
   NonNullable<PartnerOverviewTestsQuery["rawResponse"]["partner"]>["artists"]
 >["edges"] = [
   {
-    cursor: "a",
     id: "a",
     node: {
-      __typename: "Artist",
       id: "QXJ0aXN0OjU4NDU4ZDA2NzYyMmRkNjQ1YjAwMTA1OQ==",
       internalID: "58458d067622dd645b001059",
       slug: "virgil-abloh",
@@ -166,10 +163,8 @@ const artists: NonNullable<
     },
   },
   {
-    cursor: "b",
     id: "b",
     node: {
-      __typename: "Artist",
       id: "QXJ0aXN0OjU4M2UwNGIwYjIwMmEzNjQ2NzAwMDVhYg==",
       internalID: "583e04b0b202a364670005ab",
       slug: "alex-israel-and-bret-easton-ellis",
@@ -185,29 +180,6 @@ const artists: NonNullable<
       },
       counts: {
         artworks: 0,
-      },
-    },
-  },
-  {
-    cursor: "c",
-    id: "c",
-    node: {
-      __typename: "Artist",
-      id: "QXJ0aXN0OjRmMDY0ODMxODUwMWZhMTBjYTAwMDAxMA==",
-      internalID: "4f0648318501fa10ca000010",
-      slug: "william-anastasi",
-      name: "William Anastasi",
-      initials: "WA",
-      href: "/artist/william-anastasi",
-      is_followed: false,
-      nationality: "American",
-      birthday: "1933",
-      deathday: "",
-      image: {
-        url: "https://d32dm0rphc51dk.cloudfront.net/1cUF7xHvhU9_R1ucmSRoPg/tall.jpg",
-      },
-      counts: {
-        artworks: 2,
       },
     },
   },

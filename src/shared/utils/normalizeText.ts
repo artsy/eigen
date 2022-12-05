@@ -240,10 +240,11 @@ for (const { letters, base } of defaultDiacriticsRemovalMap) {
 }
 
 // "what?" version ... http://jsperf.com/diacritics/12
-export function normalizeText(text: string, trim: boolean = true) {
-  text = trim ? text.trim() : text
+export function normalizeText(text: string | null, trim: boolean = true) {
+  let textString = text || ""
+  textString = trim ? textString.trim() : textString
   return (
-    text
+    textString
       .toLocaleLowerCase()
       // remove diacritics which can be decomposed via unicode
       // https://stackoverflow.com/questions/990904/remove-accents-diacritics-in-a-string-in-javascript

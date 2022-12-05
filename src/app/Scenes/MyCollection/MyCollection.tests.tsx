@@ -1,11 +1,10 @@
-import { addCollectedArtwork } from "@artsy/cohesion"
-import { fireEvent, RenderAPI } from "@testing-library/react-native"
 import { MyCollectionTestsQuery } from "__generated__/MyCollectionTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 
+import { fireEvent, screen } from "@testing-library/react-native"
 import { navigate } from "app/navigation/navigate"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
@@ -14,7 +13,7 @@ import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { act, ReactTestRenderer } from "react-test-renderer"
+import { ReactTestRenderer } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { MyCollectionContainer } from "./MyCollection"
@@ -69,11 +68,9 @@ describe("MyCollection", () => {
 
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, mockResolvers)
-      )
-    })
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, mockResolvers)
+    )
     return tree
   }
 
@@ -94,9 +91,9 @@ describe("MyCollection", () => {
     })
 
     it("shows zerostate", () => {
-      expect(extractText(tree.root)).toContain("Primed and ready for artworks.")
+      expect(extractText(tree.root)).toContain("Your Art Collection in Your Pocket")
       expect(extractText(tree.root)).toContain(
-        "Add works from your collection to access price and market insights."
+        "Access market insights and manage your collection online."
       )
     })
 
@@ -117,7 +114,16 @@ describe("MyCollection", () => {
       addArtworkButton.props.onPress()
 
       expect(mockTrackEvent).toHaveBeenCalledTimes(1)
-      expect(mockTrackEvent).toHaveBeenCalledWith(addCollectedArtwork())
+      expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "action": "addCollectedArtwork",
+          "context_module": "myCollectionHome",
+          "context_owner_type": "myCollection",
+          "platform": "mobile",
+        },
+      ]
+    `)
     })
   })
 
@@ -134,33 +140,31 @@ describe("MyCollection", () => {
   })
 
   describe("sorting and filtering", () => {
-    it("filters and sorts without crashing", async () => {
-      const renderApi = renderWithWrappers(<TestRenderer />)
+    it.skip("filters and sorts without crashing", async () => {
+      renderWithWrappers(<TestRenderer />)
 
-      act(() => {
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          Me: () => ({
-            myCollectionConnection,
-          }),
-        })
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Me: () => ({
+          myCollectionConnection,
+        }),
       })
 
-      await applyFilter(renderApi, "Sort By", "Price Paid (High to Low)")
-      await applyFilter(renderApi, "Artists", "Banksy")
-      // await applyFilter(renderApi, "Rarity", "Unique")
-      // await applyFilter(renderApi, "Medium", "Print")
-      // await applyFilter(renderApi, "Price", "$0-1,000")
-      // await applyFilter(renderApi, "Size", "Small (under 40cm)")
+      await applyFilter("Sort By", "Price Paid (High to Low)")
+      await applyFilter("Artists", "Banksy")
+      // await applyFilter("Rarity", "Unique")
+      // await applyFilter("Medium", "Print")
+      // await applyFilter("Price", "$0-1,000")
+      // await applyFilter("Size", "Small (under 40cm)")
     })
   })
 })
 
-const applyFilter = async (renderApi: RenderAPI, filterName: string, filterOption: string) => {
+const applyFilter = async (filterName: string, filterOption: string) => {
   await flushPromiseQueue()
-  act(() => fireEvent.press(renderApi.getByTestId("sort-and-filter-button")))
-  act(() => fireEvent.press(renderApi.getByText(filterName)))
-  act(() => fireEvent.press(renderApi.getByText(filterOption)))
-  act(() => fireEvent.press(renderApi.getByText("Show Results")))
+  fireEvent.press(screen.getByTestId("sort-and-filter-button"))
+  fireEvent.press(screen.getByText(filterName))
+  fireEvent.press(screen.getByText(filterOption))
+  fireEvent.press(screen.getByText("Show Results"))
 }
 
 const myCollectionConnection = {

@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: ./scripts/deploy-ios
+      - run: ./scripts/deploy-beta-ios
 
       - name: Trigger release
         # CircleCI doesn't automatically run builds on the beta branch (only main and PRs)

@@ -1,5 +1,6 @@
 import { ContextModule } from "@artsy/cohesion"
 import { Schema } from "app/utils/track"
+import { Flex } from "palette"
 import { FC } from "react"
 import { connectInfiniteHits, connectStateResults } from "react-instantsearch-core"
 import { useTracking } from "react-tracking"
@@ -70,13 +71,15 @@ export const SearchResults: FC<SearchResultsProps> = ({ selectedPill, query, onR
 
   if (selectedPill.key === TOP_PILL.key) {
     return (
-      <AutosuggestResults
-        query={query}
-        showResultType
-        showQuickNavigationButtons
-        showOnRetryErrorMessage
-        trackResultPress={handleTrackAutosuggestResultPress}
-      />
+      <Flex p={2}>
+        <AutosuggestResults
+          query={query}
+          showResultType
+          showQuickNavigationButtons
+          showOnRetryErrorMessage
+          trackResultPress={handleTrackAutosuggestResultPress}
+        />
+      </Flex>
     )
   }
 

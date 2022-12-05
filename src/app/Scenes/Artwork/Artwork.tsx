@@ -7,6 +7,8 @@ import { ArtworkBelowTheFoldQuery } from "__generated__/ArtworkBelowTheFoldQuery
 import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRecentlyViewedQuery.graphql"
 import { AuctionTimerState, currentTimerState } from "app/Components/Bidding/Components/Timer"
 import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
+import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
+import { BackButton } from "app/navigation/BackButton"
 import { navigationEvents } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
@@ -24,15 +26,20 @@ import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } fro
 import { TrackingProp } from "react-tracking"
 import usePrevious from "react-use/lib/usePrevious"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { useScreenDimensions } from "shared/hooks"
 import { ResponsiveValue } from "styled-system"
 import { OfferSubmittedModal } from "../Inbox/Components/Conversations/OfferSubmittedModal"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { AboveTheFoldPlaceholder } from "./Components/AboveTheFoldArtworkPlaceholder"
-import { ArtworkDetailsFragmentContainer as ArtworkDetails } from "./Components/ArtworkDetails"
+import { ArtsyGuarantee } from "./Components/ArtsyGuarantee"
+import { ArtworkConsignments } from "./Components/ArtworkConsignments"
+import { ArtworkDetails } from "./Components/ArtworkDetails"
 import { FaqAndSpecialistSectionFragmentContainer as FaqAndSpecialistSection } from "./Components/ArtworkExtraLinks/FaqAndSpecialistSection"
 import { ArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/ArtworkHeader"
 import { ArtworkHistoryFragmentContainer as ArtworkHistory } from "./Components/ArtworkHistory"
+import { ArtworkLotDetails } from "./Components/ArtworkLotDetails/ArtworkLotDetails"
+import { ArtworkScreenHeaderFragmentContainer } from "./Components/ArtworkScreenHeader"
 import { ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
 import { BelowTheFoldPlaceholder } from "./Components/BelowTheFoldPlaceholder"
 import { CommercialInformationFragmentContainer as CommercialInformation } from "./Components/CommercialInformation"
@@ -44,7 +51,7 @@ import {
 } from "./Components/OtherWorks/OtherWorks"
 import { PartnerCardFragmentContainer as PartnerCard } from "./Components/PartnerCard"
 import { PartnerLink } from "./Components/PartnerLink"
-import { Questions } from "./Components/Questions"
+import { ShippingAndTaxesFragmentContainer } from "./Components/ShippingAndTaxes"
 
 interface ArtworkProps {
   artworkAboveTheFold: Artwork_artworkAboveTheFold$data | null
@@ -66,29 +73,12 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const [refreshing, setRefreshing] = useState(false)
   const [fetchingData, setFetchingData] = useState(false)
   const enableConversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
-  const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
+  const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
 
   const { internalID, slug, isInAuction, partner: partnerAbove } = artworkAboveTheFold || {}
   const { isPreview, isClosed, liveStartAt } = artworkAboveTheFold?.sale ?? {}
-  const {
-    category,
-    canRequestLotConditionsReport,
-    conditionDescription,
-    signature,
-    signatureInfo,
-    certificateOfAuthenticity,
-    framed,
-    series,
-    publisher,
-    manufacturer,
-    imageRights,
-    partner,
-    sale,
-    contextGrids,
-    artistSeriesConnection,
-    artist,
-    context,
-  } = artworkBelowTheFold || {}
+  const { partner, sale, contextGrids, artistSeriesConnection, artist, context } =
+    artworkBelowTheFold || {}
 
   const getInitialAuctionTimerState = () => {
     if (isInAuction) {
@@ -104,22 +94,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
     getInitialAuctionTimerState()
   )
   const isInClosedAuction = isInAuction && auctionTimerState === AuctionTimerState.CLOSED
-
-  const shouldRenderDetails = () => {
-    return !!(
-      category ||
-      canRequestLotConditionsReport ||
-      conditionDescription ||
-      signature ||
-      signatureInfo ||
-      certificateOfAuthenticity ||
-      framed ||
-      series ||
-      publisher ||
-      manufacturer ||
-      imageRights
-    )
-  }
 
   const shouldRenderPartner = () => {
     if ((sale && sale.isBenefit) || (sale && sale.isGalleryAuction)) {
@@ -149,6 +123,24 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const shouldRenderArtistSeriesMoreSeries = () => {
     return (artist?.artistSeriesConnection?.totalCount ?? 0) > 0
+  }
+
+  const shouldRenderLotDetails = () => {
+    return enableArtworkRedesign && isInAuction && sale && artworkAboveTheFold?.saleArtwork
+  }
+
+  const shouldRenderConsignmentsSection = () => {
+    const { isAcquireable, isOfferable } = artworkAboveTheFold ?? {}
+    const { isForSale } = artworkBelowTheFold ?? {}
+    const artists = artworkBelowTheFold?.artists ?? []
+    const consignableArtists = artists.filter((currentArtist) => !!currentArtist?.isConsignable)
+    const isBiddableInAuction =
+      isInAuction && sale && auctionTimerState !== AuctionTimerState.CLOSED && isForSale
+
+    return (
+      enableArtworkRedesign &&
+      (consignableArtists.length || isAcquireable || isOfferable || isBiddableInAuction)
+    )
   }
 
   useEffect(() => {
@@ -237,7 +229,14 @@ export const Artwork: React.FC<ArtworkProps> = ({
     if (artworkAboveTheFold && me) {
       sections.push({
         key: "header",
-        element: <ArtworkHeader artwork={artworkAboveTheFold} />,
+        element: (
+          <ArtworkHeader
+            artwork={artworkAboveTheFold}
+            refetchArtwork={() =>
+              relay.refetch({ artworkID: internalID }, null, () => null, { force: true })
+            }
+          />
+        ),
         excludePadding: true,
       })
 
@@ -257,12 +256,19 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (
-      enableCreateArtworkAlert &&
-      !enableConversationalBuyNow &&
-      !!partnerAbove?.name &&
-      artworkAboveTheFold
-    ) {
+    if (shouldRenderLotDetails()) {
+      sections.push({
+        key: "lotDetailsSection",
+        element: (
+          <ArtworkLotDetails
+            artwork={artworkAboveTheFold!}
+            auctionState={auctionTimerState as AuctionTimerState}
+          />
+        ),
+      })
+    }
+
+    if (!enableConversationalBuyNow && !!partnerAbove?.name && artworkAboveTheFold) {
       sections.push({
         key: "partnerSection",
         element: <PartnerLink artwork={artworkAboveTheFold} />,
@@ -271,19 +277,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
     }
 
     if (
-      enableConversationalBuyNow &&
-      artworkBelowTheFold &&
-      (artworkAboveTheFold?.isAcquireable ||
-        (!artworkAboveTheFold?.isInquireable && artworkAboveTheFold?.isOfferable))
-    ) {
-      sections.push({
-        key: "contactGallery",
-        element: <Questions artwork={artworkBelowTheFold} />,
-      })
-    }
-
-    if (
-      enableCreateArtworkAlert &&
+      !enableArtworkRedesign &&
       !isEmpty(artworkAboveTheFold?.artists) &&
       !artworkAboveTheFold?.isSold &&
       !isInClosedAuction
@@ -295,10 +289,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (
-      !!(artworkAboveTheFold?.isAcquireable || artworkAboveTheFold?.isOfferable) &&
-      enableCreateArtworkAlert
-    ) {
+    if (!!(artworkAboveTheFold?.isAcquireable || artworkAboveTheFold?.isOfferable)) {
       sections.push({
         key: "faqSection",
         element: <FaqAndSpecialistSection artwork={artworkAboveTheFold} />,
@@ -321,12 +312,10 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (shouldRenderDetails()) {
-      sections.push({
-        key: "artworkDetails",
-        element: <ArtworkDetails artwork={artworkBelowTheFold} />,
-      })
-    }
+    sections.push({
+      key: "artworkDetails",
+      element: <ArtworkDetails artwork={artworkBelowTheFold} />,
+    })
 
     if (
       artworkBelowTheFold.provenance ||
@@ -346,10 +335,43 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
+    if (shouldRenderConsignmentsSection()) {
+      sections.push({
+        key: "consignments",
+        element: <ArtworkConsignments artwork={artworkBelowTheFold} />,
+      })
+    }
+
     if (shouldRenderPartner()) {
       sections.push({
         key: "partnerCard",
-        element: <PartnerCard artwork={artworkBelowTheFold} />,
+        element: (
+          <PartnerCard
+            shouldShowQuestions={
+              !!(
+                enableConversationalBuyNow &&
+                artworkBelowTheFold &&
+                (artworkAboveTheFold?.isAcquireable ||
+                  (!artworkAboveTheFold?.isInquireable && artworkAboveTheFold?.isOfferable))
+              )
+            }
+            artwork={artworkBelowTheFold}
+          />
+        ),
+      })
+    }
+
+    if (!!(artworkBelowTheFold.isForSale && !isInAuction)) {
+      sections.push({
+        key: "shippingAndTaxes",
+        element: <ShippingAndTaxesFragmentContainer artwork={artworkBelowTheFold!} />,
+      })
+    }
+
+    if (!!artworkAboveTheFold?.isEligibleForArtsyGuarantee) {
+      sections.push({
+        key: "artsyGuarantee",
+        element: <ArtsyGuarantee />,
       })
     }
 
@@ -377,6 +399,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
             contextScreenOwnerType={OwnerType.artwork}
             artist={artist}
             artistSeriesHeader="Series from this artist"
+            headerVariant="md"
           />
         ),
       })
@@ -400,6 +423,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   )
 
   const websocketEnabled = !!artworkBelowTheFold?.sale?.extendedBiddingIntervalMinutes
+  const topInset = useScreenDimensions().safeAreaInsets.top
 
   return (
     <ProvideScreenTracking
@@ -428,22 +452,33 @@ export const Artwork: React.FC<ArtworkProps> = ({
             <AboveTheFoldPlaceholder />
           </ProvidePlaceholderContext>
         ) : (
-          <FlatList<ArtworkPageSection>
-            keyboardShouldPersistTaps="handled"
-            data={sectionsData()}
-            ItemSeparatorComponent={() => (
-              <Box mx={2}>
-                <Separator />
-              </Box>
+          <>
+            {enableArtworkRedesign ? (
+              <ArtworkScreenHeaderFragmentContainer artwork={artworkAboveTheFold!} />
+            ) : (
+              <BackButton style={{ zIndex: 5, marginBottom: topInset + 3 }} />
             )}
-            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-            contentContainerStyle={{ paddingBottom: 40 }}
-            renderItem={({ item }) => (
-              <Box my={item.verticalMargin ?? 3} px={item.excludePadding ? 0 : 2}>
-                {item.element}
-              </Box>
-            )}
-          />
+            <FlatList<ArtworkPageSection>
+              keyboardShouldPersistTaps="handled"
+              data={sectionsData()}
+              ItemSeparatorComponent={() => (
+                <Box mx={2}>
+                  <Separator />
+                </Box>
+              )}
+              refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+              contentContainerStyle={{ paddingBottom: 40 }}
+              renderItem={({ item, index }) => (
+                <Box
+                  mt={index === 0 && enableArtworkRedesign ? 0 : item.verticalMargin ?? 3}
+                  mb={item.verticalMargin ?? 3}
+                  px={item.excludePadding ? 0 : 2}
+                >
+                  {item.element}
+                </Box>
+              )}
+            />
+          </>
         )}
         <QAInfo />
         <OfferSubmittedModal />
@@ -465,11 +500,13 @@ export const ArtworkContainer = createRefetchContainer(
   {
     artworkAboveTheFold: graphql`
       fragment Artwork_artworkAboveTheFold on Artwork {
+        ...ArtworkScreenHeader_artwork
         ...ArtworkHeader_artwork
         ...CommercialInformation_artwork
         ...FaqAndSpecialistSection_artwork
         ...CreateArtworkAlertSection_artwork
         ...PartnerLink_artwork
+        ...ArtworkLotDetails_artwork
         slug
         internalID
         id
@@ -478,6 +515,7 @@ export const ArtworkContainer = createRefetchContainer(
         isBiddable
         isInquireable
         isSold
+        isEligibleForArtsyGuarantee
         isInAuction
         availability
         artists {
@@ -487,6 +525,9 @@ export const ArtworkContainer = createRefetchContainer(
           isClosed
           isPreview
           liveStartAt
+        }
+        saleArtwork {
+          internalID
         }
         partner {
           name
@@ -502,6 +543,7 @@ export const ArtworkContainer = createRefetchContainer(
         provenance
         exhibitionHistory
         literature
+        isForSale
         partner {
           type
           id
@@ -522,25 +564,6 @@ export const ArtworkContainer = createRefetchContainer(
           isGalleryAuction
           extendedBiddingIntervalMinutes
         }
-        category
-        canRequestLotConditionsReport
-        conditionDescription {
-          details
-        }
-        signature
-        signatureInfo {
-          details
-        }
-        certificateOfAuthenticity {
-          details
-        }
-        framed {
-          details
-        }
-        series
-        publisher
-        manufacturer
-        imageRights
         context {
           __typename
           ... on Sale {
@@ -569,6 +592,9 @@ export const ArtworkContainer = createRefetchContainer(
             }
           }
         }
+        artists {
+          isConsignable
+        }
         ...PartnerCard_artwork
         ...AboutWork_artwork
         ...OtherWorks_artwork
@@ -577,7 +603,8 @@ export const ArtworkContainer = createRefetchContainer(
         ...ContextCard_artwork
         ...ArtworkHistory_artwork
         ...ArtworksInSeriesRail_artwork
-        ...Questions_artwork
+        ...ShippingAndTaxes_artwork
+        ...ArtworkConsignments_artwork
       }
     `,
     me: graphql`
@@ -614,43 +641,45 @@ export const ArtworkQueryRenderer: React.FC<{
   tracking?: TrackingProp
 }> = ({ artworkID, environment, ...others }) => {
   return (
-    <RetryErrorBoundaryLegacy
-      render={() => {
-        return (
-          <AboveTheFoldQueryRenderer<ArtworkAboveTheFoldQuery, ArtworkBelowTheFoldQuery>
-            environment={environment || defaultEnvironment}
-            above={{
-              query: ArtworkScreenQuery,
-              variables: { artworkID },
-            }}
-            below={{
-              query: graphql`
-                query ArtworkBelowTheFoldQuery($artworkID: String!) {
-                  artwork(id: $artworkID) {
-                    ...Artwork_artworkBelowTheFold
+    <>
+      <RetryErrorBoundaryLegacy
+        render={() => {
+          return (
+            <AboveTheFoldQueryRenderer<ArtworkAboveTheFoldQuery, ArtworkBelowTheFoldQuery>
+              environment={environment || defaultEnvironment}
+              above={{
+                query: ArtworkScreenQuery,
+                variables: { artworkID },
+              }}
+              below={{
+                query: graphql`
+                  query ArtworkBelowTheFoldQuery($artworkID: String!) {
+                    artwork(id: $artworkID) {
+                      ...Artwork_artworkBelowTheFold
+                    }
                   }
-                }
-              `,
-              variables: { artworkID },
-            }}
-            render={{
-              renderPlaceholder: () => <AboveTheFoldPlaceholder artworkID={artworkID} />,
-              renderComponent: ({ above, below }) => {
-                return (
-                  <ArtworkContainer
-                    artworkAboveTheFold={above.artwork}
-                    artworkBelowTheFold={below?.artwork ?? null}
-                    me={above.me}
-                    {...others}
-                  />
-                )
-              },
-            }}
-            fetchPolicy="store-and-network"
-            cacheConfig={{ force: true }}
-          />
-        )
-      }}
-    />
+                `,
+                variables: { artworkID },
+              }}
+              render={{
+                renderPlaceholder: () => <AboveTheFoldPlaceholder artworkID={artworkID} />,
+                renderComponent: ({ above, below }) => {
+                  return (
+                    <ArtworkContainer
+                      artworkAboveTheFold={above.artwork}
+                      artworkBelowTheFold={below?.artwork ?? null}
+                      me={above.me}
+                      {...others}
+                    />
+                  )
+                },
+              }}
+              fetchPolicy="store-and-network"
+              cacheConfig={{ force: true }}
+            />
+          )
+        }}
+      />
+    </>
   )
 }

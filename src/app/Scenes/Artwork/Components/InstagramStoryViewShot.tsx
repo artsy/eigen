@@ -41,7 +41,7 @@ export const InstagramStoryViewShot: React.FC<InstagramStoryViewShotProps> = ({
   const scale = width / InstagramStoryBackgroundDimensions.width
 
   return (
-    <Flex {...offscreenStyle} alignItems="center">
+    <Flex style={offscreenStyle} alignItems="center">
       <ViewShot
         ref={shotRef}
         options={{ format: "png", result: "base64" }}
@@ -58,11 +58,17 @@ export const InstagramStoryViewShot: React.FC<InstagramStoryViewShotProps> = ({
           justifyContent="space-between"
         >
           <Flex flex={1}>
-            <Text variant="md" weight="medium">
+            <Text variant="sm-display" weight="medium">
               {artist}
             </Text>
             {title ? (
-              <Text variant="md" italic opacity={0.6} mt={10 * scale} ellipsizeMode="middle">
+              <Text
+                variant="sm-display"
+                italic
+                opacity={0.6}
+                mt={10 * scale}
+                ellipsizeMode="middle"
+              >
                 {title}
               </Text>
             ) : null}

@@ -21,7 +21,11 @@ export const FeatureHeader: React.FC<FeatureHeaderProps> = ({ feature }) => {
     <OpaqueImageView imageURL={feature.image?.url} width={imageWidth} height={imageHeight} />
   )
   const title = (
-    <Text variant="lg" style={{ fontSize: 42, lineHeight: 50, maxWidth: "80%" }} textAlign="center">
+    <Text
+      variant="lg-display"
+      style={{ fontSize: 42, lineHeight: 50, maxWidth: "80%" }}
+      textAlign="center"
+    >
       {feature.name}
     </Text>
   )

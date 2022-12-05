@@ -1,8 +1,8 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@5.0.2
-  queue: eddiewebb/queue@1.7.0
+  node: circleci/node@5.0.3
+  queue: eddiewebb/queue@1.8.1
   horizon: artsy/release@0.0.1
 
 commands:
@@ -17,19 +17,9 @@ commands:
           only-on-branch: <<parameters.branch>> # restrict queueing to a specific branch (default *)
   install-node:
     steps:
-      - run:
-          name: Install Node 14 (Required for Yarn)
-          command: |
-            set +e
-            touch $BASH_ENV
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
-            echo "HOMEBREW_NO_AUTO_UPDATE=1" >> $BASH_ENV
-            echo 'export NVM_DIR="$HOME/.nvm"' >> $BASH_ENV
-            echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
-            echo 'nvm install v14.17.1' >> $BASH_ENV
-            echo 'nvm alias default v14.17.1' >> $BASH_ENV
-            sudo mkdir ~/.config
-            sudo chown -R $USER:$GROUP ~/.config
+      - node/install:
+          install-yarn: true
+          node-version: "16.18.0"
   generate-checksums:
     steps:
       - run:
@@ -39,14 +29,14 @@ commands:
             scripts/generate-manifest.js .manifests/node_modules '^yarn\.lock$' '^patches/' '^package\.json$'
             scripts/generate-manifest.js .manifests/js_transform '^\.manifests/node_modules' '^babel\.config\.js' '^relay\.config\.js' '^jest\.config\.js'
             scripts/generate-manifest.js .manifests/js_bundle '^\.manifests/js_transform' '^data/' '^index\.ios\.js' '^src/(?!.*(__mocks__|__fixtures__))'
-            scripts/generate-manifest.js .manifests/cocoapods '^Podfile' '^Gemfile'
-            scripts/generate-manifest.js .manifests/native_code '^\.manifests/node_modules' '^Podfile' '^Gemfile' '^dist/' '^Artsy' '^patches/react-native' '^\.env\.example'
+            scripts/generate-manifest.js .manifests/cocoapods '^ios/Podfile' '^Gemfile'
+            scripts/generate-manifest.js .manifests/native_code '^\.manifests/node_modules' '^ios/Podfile' '^Gemfile' '^dist/' '^ios/Artsy' '^patches/react-native' '^\.env\.example'
             scripts/generate-manifest.js .manifests/android_native '^\.manifests/node_modules' '^android/' '^patches/react-native' '^\.env\.example'
   setup-env-file:
     steps:
       - run:
           name: "Set up .env file"
-          command: touch .env.shared && scripts/setup-env-for-ci
+          command: touch .env.shared && touch .env && scripts/setup-env-for-ci
   setup-awscli:
     steps:
       - run:
@@ -56,12 +46,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v6-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
+            - v8-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
       - run:
           name: Install node modules
           command: ls node_modules || yarn install
       - save_cache:
-          key: v6-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
+          key: v8-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
           paths:
             - node_modules
   run-relay-compiler:
@@ -103,19 +93,19 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v7-js_bundle-{{ checksum ".manifests/js_bundle" }}
+            - v8-js_bundle-{{ checksum ".manifests/js_bundle" }}
       - restore_cache:
           keys:
-            - v6-metro-{{ checksum ".manifests/js_transform" }}
+            - v7-metro-{{ checksum ".manifests/js_transform" }}
       - run:
           name: Bundle emission
           command: ls dist/jsbundle.js || yarn bundle-for-native-ci:ios
       - save_cache:
-          key: v6-metro-{{ checksum ".manifests/js_transform" }}
+          key: v7-metro-{{ checksum ".manifests/js_transform" }}
           paths:
             - .metro
       - save_cache:
-          key: v7-js_bundle-{{ checksum ".manifests/js_bundle" }}
+          key: v8-js_bundle-{{ checksum ".manifests/js_bundle" }}
           paths:
             - dist/jsbundle.js
             - dist/jsbundle.js.map
@@ -124,7 +114,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v4-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
+            - v5-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
       - run:
           name: Bundle install
           command: bundle check || bundle install
@@ -132,19 +122,19 @@ commands:
             BUNDLE_JOBS: 4
             BUNDLE_RETRY: 3
       - save_cache:
-          key: v4-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
+          key: v5-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
           paths:
             - .vendor
   install-cocoapods:
     steps:
       - restore_cache:
           keys:
-            - v9-pods-{{ checksum ".manifests/cocoapods" }}
+            - v12-pods-{{ checksum ".manifests/cocoapods" }}
       - run:
           name: Install Pods
           command: cd ios; bundle exec pod check --ignore-dev-pods || bundle exec pod install; cd ..;
       - save_cache:
-          key: v9-pods-{{ checksum ".manifests/cocoapods" }}
+          key: v12-pods-{{ checksum ".manifests/cocoapods" }}
           paths:
             - ios/Pods
             # this changes after pod install because we don't install dev tools on CI
@@ -154,7 +144,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v7-app_build_ios-{{ checksum ".manifests/app_build" }}
+            - v8-app_build_ios-{{ checksum ".manifests/app_build" }}
       - run:
           name: Download fonts from s3
           command: ./scripts/download-assets
@@ -162,7 +152,7 @@ commands:
           name: Build App
           command: ./scripts/ci-ios
       - save_cache:
-          key: v7-app_build_ios-{{ checksum ".manifests/app_build" }}
+          key: v8-app_build_ios-{{ checksum ".manifests/app_build" }}
           paths:
             - derived_data
             - node_modules/react-native-config
@@ -216,7 +206,8 @@ commands:
 jobs:
   detect-secrets:
     docker:
-      - image: artsy/detect-secrets:1.3.0
+      - image: artsy/detect-secrets:ci # pragma: allowlist secret
+    resource_class: small
     working_directory: /usr/src/app
     steps:
       - checkout
@@ -227,19 +218,19 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 13.4.1
+      xcode: 14.1.0
 
     steps:
       - checkout
       - install-node
       - run:
           name: Deploy beta
-          command: ./scripts/deploy-both
+          command: ./scripts/deploy-beta-both
 
   update-metaphysics:
     executor:
       name: node/default
-      tag: "14.17.1"
+      tag: "16.18.0"
     steps:
       - checkout
       - generate-checksums
@@ -253,7 +244,7 @@ jobs:
   check-pr:
     executor:
       name: node/default
-      tag: "14.17.1"
+      tag: "16.18.0"
     steps:
       - checkout
       - generate-checksums
@@ -271,7 +262,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 13.4.1
+      xcode: 14.1.0
 
     steps:
       - checkout
@@ -287,7 +278,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 13.4.1
+      xcode: 14.1.0
 
     steps:
       - checkout
@@ -300,7 +291,7 @@ jobs:
   check-metaphysics-freshness:
     executor:
       name: node/default
-      tag: "14.17.1"
+      tag: "16.18.0"
     steps:
       - checkout
       - run:
@@ -329,7 +320,7 @@ jobs:
   build-test-js:
     executor:
       name: node/default
-      tag: "14.17.1"
+      tag: "16.18.0"
     resource_class: large
     steps:
       - checkout
@@ -368,14 +359,14 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 13.4.1
+      xcode: 14.1.0
 
     steps:
       - attach_workspace:
           at: ../workspace
       - restore_cache:
           keys:
-            - v7-test-success-{{ checksum "../workspace/.manifests/native_code" }}
+            - v8-test-success-{{ checksum "../workspace/.manifests/native_code" }}
       # we can quit the macos build early if there were no native code changes
       # and we're not on the beta branch
       - run:
@@ -412,7 +403,7 @@ jobs:
           name: Run tests if native code has changed
           command: ls xcode_test_raw.log || ./scripts/ci-test-ios
       - save_cache:
-          key: v7-test-success-{{ checksum ".manifests/native_code" }}
+          key: v8-test-success-{{ checksum ".manifests/native_code" }}
           paths:
             - xcode_test_raw.log
 
@@ -462,43 +453,10 @@ jobs:
           name: Deploy if beta - play store and firebase
           command: ./scripts/deploy-if-beta-branch-android BOTH
 
-  promote-beta-to-app-store:
-    environment:
-      BUNDLE_PATH: .vendor # path to install gems and use for caching
-    macos:
-      xcode: 13.4.1
-    steps:
-      - checkout
-      - install-gems
-      - await-previous-builds:
-          branch: app_store_submission
-      - run:
-          name: Promote if app_store_submission
-          command: ./scripts/promote-if-appstore-submission-branch
-
-  promote-beta-to-play-store:
-    environment:
-      BUNDLE_PATH: .vendor # path to install gems and use for caching
-
-    docker:
-      - image: circleci/android:api-29-node
-
-    steps:
-      - checkout
-      - install-gems
-      - await-previous-builds:
-          branch: play_store_submission
-      - run:
-          name: Setup
-          command: ./scripts/setup-distribute
-      - run:
-          name: Promote if play_store_submission
-          command: ./scripts/promote-if-playstore-submission-branch
-
   update-changelog:
     executor:
       name: node/default
-      tag: "14.17.1"
+      tag: "16.18.0"
 
     steps:
       - checkout
@@ -513,7 +471,7 @@ jobs:
     environment:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
     macos:
-      xcode: 13.4.1
+      xcode: 14.1.0
     steps:
       - checkout
       - install-gems
@@ -569,18 +527,6 @@ workflows:
             branches:
               only:
                 - release-ios-app
-  promote:
-    jobs:
-      - promote-beta-to-app-store:
-          filters:
-            branches:
-              only:
-                - app_store_submission
-      - promote-beta-to-play-store:
-          filters:
-            branches:
-              only:
-                - play_store_submission
 
   test-build-deploy:
     jobs:

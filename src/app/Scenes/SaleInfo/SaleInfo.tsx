@@ -1,22 +1,20 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { SaleInfo_me$data } from "__generated__/SaleInfo_me.graphql"
 import { SaleInfo_sale$data } from "__generated__/SaleInfo_sale.graphql"
 import { SaleInfoQueryRendererQuery } from "__generated__/SaleInfoQueryRendererQuery.graphql"
+import { Markdown } from "app/Components/Markdown"
 import { MenuItem } from "app/Components/MenuItem"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { PlaceholderText } from "app/utils/placeholders"
-import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import moment from "moment-timezone"
-import { Flex, Join, Separator, Text } from "palette"
-import React, { useEffect, useRef } from "react"
-import { PanResponder, Platform, ScrollView, View } from "react-native"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-
-import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { Markdown } from "app/Components/Markdown"
-import { StyledWebView } from "app/Components/StyledWebView"
 import { defaultRules } from "app/utils/renderMarkdown"
+import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { sendEmail } from "app/utils/sendEmail"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
+import moment from "moment-timezone"
+import { Flex, Join, Separator, Text } from "palette"
+import { useEffect, useRef } from "react"
+import { PanResponder, Platform, ScrollView, View } from "react-native"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { navigate } from "../../navigation/navigate"
 import { PlaceholderBox } from "../../utils/placeholders"
 import { RegisterToBidButtonContainer } from "../Sale/Components/RegisterToBidButton"
@@ -30,7 +28,7 @@ interface Props {
 const AuctionSupport = () => {
   return (
     <Flex mt={1}>
-      <Text variant="md" px={2} mb={15}>
+      <Text variant="sm-display" px={2} mb={15}>
         Auction support
       </Text>
       <MenuItem
@@ -51,7 +49,7 @@ const AuctionSupport = () => {
 
 const AuctionIsLive = () => (
   <Flex px={2} testID="live-auction">
-    <Text variant="md" mb={2} mt={1}>
+    <Text variant="sm-display" mb={2} mt={1}>
       This is a live auction
     </Text>
     <Text variant="sm" color="black" fontSize={15}>
@@ -99,8 +97,8 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
         <Join separator={<Separator my={2} />}>
           {/*  About Auction */}
           <Flex px={2} mt={70}>
-            <Text variant="lg">About this auction</Text>
-            <Text variant="md" mt={1} mb={3}>
+            <Text variant="lg-display">About this auction</Text>
+            <Text variant="sm-display" mt={1} mb={3}>
               {sale.name}
             </Text>
             {saleStatus(sale.startAt, sale.endAt, sale.registrationEndsAt) === "closed" || (
@@ -115,7 +113,7 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
             )}
             {Platform.OS === "ios" ? (
               <View {...(panResponder.current?.panHandlers || {})}>
-                <StyledWebView body={sale.description || ""} />
+                <Markdown rules={markdownRules}>{sale.description ?? ""}</Markdown>
               </View>
             ) : (
               <Markdown rules={markdownRules}>{sale.description || ""}</Markdown>
@@ -190,7 +188,7 @@ const BuyersPremium: React.FC<{ sale: SaleInfo_sale$data }> = (props) => {
   }
   return (
     <Flex px={2}>
-      <Text variant="md" mb={2} mt={1}>
+      <Text variant="sm-display" mb={2} mt={1}>
         Buyer's Premium for this Auction
       </Text>
       {premiumDisplay}
@@ -201,7 +199,7 @@ const BuyersPremium: React.FC<{ sale: SaleInfo_sale$data }> = (props) => {
 const SaleInfoPlaceholder = () => (
   <Join separator={<Separator my={2} />}>
     <Flex px={2} mt={70}>
-      <Text variant="lg">About this auction</Text>
+      <Text variant="lg-display">About this auction</Text>
       <Separator my={1} />
       <PlaceholderBox marginBottom={20} height={30} width={200 + Math.random() * 100} />
       <PlaceholderBox marginBottom={10} height={50} />

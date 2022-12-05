@@ -10,16 +10,19 @@ extension LatestArticles {
         var body: some SwiftUI.View {
             let artsyLogo = UIImage(named: "BlackArtsyLogo")!
             let articles = entry.articles[0...1]
+            let artsyUrl = WidgetUrl.from(link: "https://www.artsy.net")!
             
             VStack() {
                 HStack(alignment: .center) {
-                    Text("LATEST ARTICLES")
-                        .foregroundColor(.black)
-                        .font(.system(size: 10, weight: .medium))
-                    Spacer()
-                    Image(uiImage: artsyLogo)
-                        .resizable()
-                        .frame(width: 20, height: 20)
+                    Link(destination: artsyUrl) {
+                        Text("LATEST ARTICLES")
+                            .foregroundColor(.black)
+                            .font(.system(size: 10, weight: .medium))
+                        Spacer()
+                        Image(uiImage: artsyLogo)
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                    }
                 }
                 Spacer()
                 VStack() {

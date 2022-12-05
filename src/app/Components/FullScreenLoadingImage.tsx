@@ -1,11 +1,11 @@
-import { CircularSpinner, Flex, Spacer, Text } from "palette"
+import { CircularSpinner, Flex, Spacer, SpacingUnitTheme, Text } from "palette"
 import { ImageBackground, ImageSourcePropType, StyleSheet } from "react-native"
 import { SpaceProps } from "styled-system"
 
 interface FullScreenLoadingImageProps {
   loadingText: string
   imgSource: ImageSourcePropType
-  spacerHeight?: SpaceProps["my"]
+  spacerHeight?: SpaceProps<SpacingUnitTheme>["my"]
 }
 
 export const FullScreenLoadingImage: React.FC<FullScreenLoadingImageProps> = ({
@@ -24,7 +24,7 @@ export const FullScreenLoadingImage: React.FC<FullScreenLoadingImageProps> = ({
 
         <Spacer my={spacerHeight} />
 
-        <Text variant="md" color="white100" textAlign="center">
+        <Text variant="sm-display" color="white100" textAlign="center">
           {loadingText}
         </Text>
       </Flex>

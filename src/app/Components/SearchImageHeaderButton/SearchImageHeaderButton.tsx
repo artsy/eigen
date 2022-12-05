@@ -1,53 +1,52 @@
+import { ActionType, OwnerType, TappedReverseImageSearch } from "@artsy/cohesion"
+import { navigate } from "app/navigation/navigate"
+import { ReverseImageOwner } from "app/Scenes/ReverseImage/types"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { useImageSearch } from "app/utils/useImageSearch"
-import { AddIcon, Box, Spinner } from "palette"
-import { TouchableOpacity } from "react-native"
-import { useScreenDimensions } from "shared/hooks"
+import { AddIcon } from "palette"
+import { useTracking } from "react-tracking"
+import { HeaderButton } from "../HeaderButton"
 
-const CAMERA_ICON_CONTAINER_SIZE = 40
 const CAMERA_ICON_SIZE = 20
 
-interface SearchImageHeaderButtonProps {
+export interface SearchImageHeaderButtonProps {
   isImageSearchButtonVisible: boolean
+  owner: ReverseImageOwner
 }
 
 export const SearchImageHeaderButton: React.FC<SearchImageHeaderButtonProps> = ({
   isImageSearchButtonVisible,
+  owner,
 }) => {
-  const isImageSearchEnabled = isImageSearchButtonVisible && useFeatureFlag("AREnableImageSearch")
-  const { searchingByImage, handleSeachByImage } = useImageSearch()
+  const tracking = useTracking()
+  const isImageSearchEnabled = useFeatureFlag("AREnableImageSearch")
 
-  if (!isImageSearchEnabled) {
-    return null
+  const handleSearchPress = () => {
+    tracking.trackEvent(tracks.tappedReverseImageSearch(owner))
+    navigate("/reverse-image", {
+      passProps: {
+        owner,
+      },
+    })
   }
 
   return (
-    <TouchableOpacity
+    <HeaderButton
       accessibilityLabel="Search by image"
-      style={{
-        position: "absolute",
-        // the margin top here is the exact same as src/app/navigation/BackButton
-        // in order to align the back button with the search button
-        top: 13 + useScreenDimensions().safeAreaInsets.top,
-        right: 12,
-      }}
-      onPress={handleSeachByImage}
-      disabled={searchingByImage}
+      shouldHide={!isImageSearchButtonVisible || !isImageSearchEnabled}
+      position="right"
+      onPress={handleSearchPress}
     >
-      <Box
-        width={CAMERA_ICON_CONTAINER_SIZE}
-        height={CAMERA_ICON_CONTAINER_SIZE}
-        borderRadius={CAMERA_ICON_CONTAINER_SIZE / 2}
-        bg="white"
-        justifyContent="center"
-        alignItems="center"
-      >
-        {searchingByImage ? (
-          <Spinner size="small" />
-        ) : (
-          <AddIcon width={CAMERA_ICON_SIZE} height={CAMERA_ICON_SIZE} />
-        )}
-      </Box>
-    </TouchableOpacity>
+      <AddIcon width={CAMERA_ICON_SIZE} height={CAMERA_ICON_SIZE} />
+    </HeaderButton>
   )
+}
+
+const tracks = {
+  tappedReverseImageSearch: (owner: ReverseImageOwner): TappedReverseImageSearch => ({
+    action: ActionType.tappedReverseImageSearch,
+    context_screen_owner_type: OwnerType.reverseImageSearch,
+    owner_type: owner.type,
+    owner_id: owner.id,
+    owner_slug: owner.slug,
+  }),
 }

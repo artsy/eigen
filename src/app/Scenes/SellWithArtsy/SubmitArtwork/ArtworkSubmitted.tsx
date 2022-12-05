@@ -6,7 +6,7 @@ import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { Box, Button, Flex, Spacer, Text } from "palette"
 import { ArtsyLogoHeader } from "palette/elements/Header/ArtsyLogoHeader"
-import { ScrollView } from "react-native-gesture-handler"
+import { ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
 import { submitAnotherArtworkEvent, viewArtworkMyCollectionEvent } from "../utils/TrackingEvent"
 import { SubmitArtworkOverviewNavigationStack } from "./SubmitArtwork"
@@ -31,8 +31,8 @@ export const ArtworkSubmittedScreen: React.FC<ArtworkSubmittedScreenNavigationPr
       <ScrollView>
         <Box>
           <ArtsyLogoHeader />
-          <Text variant="lg" mx="2">
-            Your Artwork has been submitted
+          <Text variant="lg-display" mx="2">
+            Your Artwork Has Been Submitted
           </Text>
           <Spacer mb={2} />
           <Text mx="2" color="black60">
@@ -55,7 +55,7 @@ export const ArtworkSubmittedScreen: React.FC<ArtworkSubmittedScreenNavigationPr
                 navigation.replace("SubmitArtworkScreen")
               }}
             >
-              Submit another Artwork
+              Submit Another Artwork
             </Button>
             <Spacer mb={2} />
             <Button

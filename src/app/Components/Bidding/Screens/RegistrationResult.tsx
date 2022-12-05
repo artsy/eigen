@@ -74,7 +74,7 @@ const markdownRules = defaultRules({
       match: blockRegex(/^((?:[^\n]|\n(?! *\n))+)(?:\n *)/),
       react: (node, output, state) => {
         return (
-          <Text variant="md" key={state.key} textAlign="center">
+          <Text variant="sm-display" key={state.key} textAlign="center">
             {output(node.content, state)}
           </Text>
         )
@@ -177,7 +177,7 @@ export class RegistrationResult extends React.Component<RegistrationResultProps>
               {msg}
             </Markdown>
           </Flex>
-          <Button variant="outline" onPress={dismissModal} block width={100}>
+          <Button variant="outline" onPress={() => dismissModal()} block width={100}>
             {status === RegistrationStatus.RegistrationStatusPending
               ? "View works in this sale"
               : "Continue"}

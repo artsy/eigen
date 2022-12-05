@@ -24,7 +24,7 @@ export const CollectionHeader: React.FC<CollectionHeaderProps> = (props) => {
       <Box mb={2}>
         <OpaqueImageView imageURL={url} height={HEADER_IMAGE_HEIGHT} width={screenWidth} />
       </Box>
-      <Text variant="lg" mx={2} mb={collectionTitleMargin}>
+      <Text variant="lg-display" mx={2} mb={collectionTitleMargin}>
         {title}
       </Text>
       {!!collectionDescription && (

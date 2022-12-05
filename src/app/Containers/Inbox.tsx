@@ -16,14 +16,17 @@ import { EmitterSubscription, View, ViewProps } from "react-native"
 import ScrollableTabView, { TabBarProps } from "react-native-scrollable-tab-view"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
+const BIDS_TAB_INDEX = 0
+const INQUIRIES_TAB_INDEX = 1
 // Tabs
 interface TabWrapperProps extends ViewProps {
   tabLabel: string
+  _tests_isActiveTab: boolean
 }
 
 const TabWrapper = (props: TabWrapperProps) => <View {...props} />
 
-const InboxTabs = (props: TabBarProps) => (
+export const InboxTabs = (props: TabBarProps) => (
   <>
     <Flex flexDirection="row" px={1.5} mb={2}>
       {props.tabs?.map((name: JSX.Element, page: number) => {
@@ -38,7 +41,7 @@ const InboxTabs = (props: TabBarProps) => (
             <Text
               mr={2}
               color="black100"
-              variant="lg"
+              variant="lg-display"
               onPress={() => {
                 if (!__TEST__) {
                   props.goToPage?.(page)
@@ -118,16 +121,25 @@ export class Inbox extends React.Component<Props, State> {
     const newTab: Tab = tabIndex === 0 ? Tab.bids : Tab.inquiries
     this.setState({ activeTab: newTab })
   }
-
   render() {
+    const hasActiveBids = (this.props.me.myBids?.active ?? []).length > 0
+    const initialPageNumber = hasActiveBids ? BIDS_TAB_INDEX : INQUIRIES_TAB_INDEX
+
     return (
       <ScrollableTabView
         style={{ paddingTop: 30 }}
-        initialPage={0}
+        initialPage={initialPageNumber}
         renderTabBar={() => <InboxTabs />}
         onChangeTab={({ i }: { i: number }) => this.handleNavigationTab(i)}
       >
-        <TabWrapper tabLabel="Bids" key="bids" style={{ flexGrow: 1, justifyContent: "center" }}>
+        <TabWrapper
+          tabLabel="Bids"
+          key="bids"
+          style={{ flexGrow: 1, justifyContent: "center" }}
+          // this is for testing purposes
+          _tests_isActiveTab={initialPageNumber === BIDS_TAB_INDEX}
+          testID="tabWrapper-bids"
+        >
           <MyBidsContainer
             isActiveTab={this.props.isVisible && this.state.activeTab === Tab.bids}
             me={this.props.me}
@@ -136,7 +148,10 @@ export class Inbox extends React.Component<Props, State> {
         <TabWrapper
           tabLabel="Inquiries"
           key="inquiries"
-          style={{ flexGrow: 1, justifyContent: "flex-start" }}
+          style={{ flex: 1, justifyContent: "flex-start" }}
+          // this is fr testing purposes
+          _tests_isActiveTab={initialPageNumber === INQUIRIES_TAB_INDEX}
+          testID="tabWrapper-inquiries"
         >
           <ConversationsContainer
             me={this.props.me}
@@ -155,6 +170,16 @@ export const InboxContainer = createRefetchContainer(
       fragment Inbox_me on Me {
         ...Conversations_me
         ...MyBids_me
+        myBids {
+          active {
+            sale {
+              internalID
+            }
+            saleArtworks {
+              internalID
+            }
+          }
+        }
       }
     `,
   },
@@ -194,7 +219,7 @@ export const InboxQueryRenderer: React.FC<{ isVisible: boolean }> = (props) => {
 
 export const InboxPlaceholder: React.FC<{}> = () => {
   return (
-    <Flex height="100%">
+    <Flex height="100%" testID="inbox-placeholder">
       <Flex flexDirection="row" mx={2} mt={3} mb={1}>
         <PlaceholderText width={60} height={26} />
         <Spacer mx={1} />

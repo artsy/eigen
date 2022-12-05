@@ -1,4 +1,6 @@
+import { fireEvent } from "@testing-library/react-native"
 import { CareerHighlightsRailTestQuery } from "__generated__/CareerHighlightsRailTestQuery.graphql"
+import { navigate } from "app/navigation/navigate"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -56,8 +58,8 @@ describe("CareerHighlightsRail", () => {
     expect(getByText("Artist was in a group show at a major institution.")).toBeTruthy()
 
     // plural
-    expect(getByText("Artists are collected by a major institutions.")).toBeTruthy()
-    expect(getByText("Artists were reviewed by a major art publications.")).toBeTruthy()
+    expect(getByText("Artists are collected by major institutions.")).toBeTruthy()
+    expect(getByText("Artists were reviewed by major art publications.")).toBeTruthy()
 
     // promo card
     expect(getByText("Discover career highlights for your artists.")).toBeTruthy()
@@ -91,5 +93,28 @@ describe("CareerHighlightsRail", () => {
     await flushPromiseQueue()
 
     expect(queryByTestId("career-highlight-cards-flatlist")).toBeFalsy()
+  })
+
+  it("navigates to the correct screen with correct passProps", async () => {
+    const { getByTestId } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    act(() => {
+      mockEnvironment.mock.resolveMostRecentOperation({
+        data: {
+          me: {
+            myCollectionInfo: {
+              artistInsightsCount: {
+                BIENNIAL: 1,
+              },
+            },
+          },
+        },
+      })
+    })
+    await flushPromiseQueue()
+
+    fireEvent(getByTestId("career-highlight-card-item"), "press")
+    expect(navigate).toHaveBeenCalledWith("/my-collection/career-highlights", {
+      passProps: { careerHighlightsAvailableTypes: ["BIENNIAL"], type: "BIENNIAL" },
+    })
   })
 })

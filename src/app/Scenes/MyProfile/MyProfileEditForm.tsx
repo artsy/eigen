@@ -4,11 +4,8 @@ import { EditableLocation } from "__generated__/ConfirmBidUpdateUserMutation.gra
 import { MyProfileEditForm_me$key } from "__generated__/MyProfileEditForm_me.graphql"
 import { MyProfileEditFormQuery } from "__generated__/MyProfileEditFormQuery.graphql"
 import { Image } from "app/Components/Bidding/Elements/Image"
-import {
-  buildLocationDisplay,
-  DetailedLocationAutocomplete,
-} from "app/Components/DetailedLocationAutocomplete"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { buildLocationDisplay, LocationAutocomplete } from "app/Components/LocationAutocomplete"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { navigate } from "app/navigation/navigate"
 import { getConvertedImageUrlFromS3 } from "app/utils/getConvertedImageUrlFromS3"
@@ -42,14 +39,16 @@ import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
 import { MyProfileContext } from "./MyProfileProvider"
 import { useHandleEmailVerification, useHandleIDVerification } from "./useHandleVerification"
 
-const PRIMARY_LOCATION_OFFSET = 240
 const ICON_SIZE = 22
 
+interface EditableLocationProps extends EditableLocation {
+  display: string | null
+}
 interface EditMyProfileValuesSchema {
   photo: string
   name: string
   displayLocation: { display: string | null }
-  location: EditableLocation | null
+  location: EditableLocationProps | null
   profession: string
   otherRelevantPositions: string
   bio: string
@@ -72,13 +71,12 @@ export const MyProfileEditForm: React.FC = () => {
   const color = useColor()
   const navigation = useNavigation()
 
-  const scrollViewRef = useRef<ScrollView>(null)
-
   const { showActionSheetWithOptions } = useActionSheet()
 
   const nameInputRef = useRef<Input>(null)
   const bioInputRef = useRef<TextInput>(null)
   const relevantPositionsInputRef = useRef<Input>(null)
+  const professionInputRef = useRef<Input>(null)
   const locationInputRef = useRef<Input>(null)
 
   const [loading, setLoading] = useState<boolean>(false)
@@ -113,9 +111,11 @@ export const MyProfileEditForm: React.FC = () => {
     otherRelevantPositions,
     bio,
   }: Partial<EditMyProfileValuesSchema>) => {
+    const updatedLocation = { ...location }
+    delete updatedLocation.display
     const payload = {
       name,
-      ...(location ? { location } : {}),
+      ...(location ? { location: updatedLocation } : {}),
       profession,
       otherRelevantPositions,
       bio,
@@ -135,8 +135,8 @@ export const MyProfileEditForm: React.FC = () => {
       validateOnBlur: true,
       initialValues: {
         name: me?.name ?? "",
-        displayLocation: { display: buildLocationDisplay(me?.location || null) },
-        location: null,
+        displayLocation: { display: buildLocationDisplay(me?.location ?? null) },
+        location: me?.location ?? null,
         profession: me?.profession ?? "",
         otherRelevantPositions: me?.otherRelevantPositions ?? "",
         bio: me?.bio ?? "",
@@ -243,17 +243,16 @@ export const MyProfileEditForm: React.FC = () => {
                 }}
               />
 
-              <DetailedLocationAutocomplete
-                locationInputRef={locationInputRef}
+              <LocationAutocomplete
+                allowCustomLocation
+                inputRef={locationInputRef}
                 title="Primary location"
                 placeholder="City name"
                 returnKeyType="next"
-                initialLocation={values.displayLocation?.display!}
-                onFocus={() =>
-                  requestAnimationFrame(() =>
-                    scrollViewRef.current?.scrollTo({ y: PRIMARY_LOCATION_OFFSET })
-                  )
-                }
+                onSubmitEditing={() => {
+                  professionInputRef.current?.focus()
+                }}
+                displayLocation={buildLocationDisplay(values.location)}
                 onChange={({ city, country, postalCode, state, stateCode }) => {
                   setFieldValue("location", {
                     city: city ?? "",
@@ -266,6 +265,7 @@ export const MyProfileEditForm: React.FC = () => {
               />
 
               <Input
+                ref={professionInputRef}
                 title="Profession"
                 onChangeText={handleChange("profession")}
                 onBlur={() => validateForm()}
@@ -377,7 +377,7 @@ const LoadingSkeleton = () => {
   return (
     <ProvidePlaceholderContext>
       <Flex alignItems="center" mt={2}>
-        <Text variant="md" mr={0.5}>
+        <Text variant="sm-display" mr={0.5}>
           Edit Profile
         </Text>
       </Flex>

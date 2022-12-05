@@ -23,8 +23,4 @@ extension UILabel {
 
         self.attributedText = attributedText
     }
-
-    func resizeFont(to size: CGFloat) {
-        font = font.withSize(size)
-    }
 }

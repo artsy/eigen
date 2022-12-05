@@ -65,6 +65,7 @@ export const AutosuggestSearchResult: React.FC<{
     if (onResultPress) {
       onResultPress(result)
     } else {
+      // @ts-expect-error
       inputRef.current?.blur()
       // need to wait a tick to push next view otherwise the input won't blur ¯\_(ツ)_/¯
       setTimeout(() => {
@@ -79,7 +80,6 @@ export const AutosuggestSearchResult: React.FC<{
 
       if (trackResultPress) {
         trackResultPress(result, itemIndex)
-
         return
       }
 
@@ -87,6 +87,7 @@ export const AutosuggestSearchResult: React.FC<{
         action_type: displayingRecentResult
           ? Schema.ActionNames.ARAnalyticsSearchRecentItemSelected
           : Schema.ActionNames.ARAnalyticsSearchItemSelected,
+        // @ts-expect-error
         query: queryRef.current,
         selected_object_type: result.displayType || result.__typename,
         selected_object_slug: result.slug,
@@ -96,6 +97,8 @@ export const AutosuggestSearchResult: React.FC<{
 
   const resultType = getResultType(result)
 
+  const initials = result.__typename === "Artist" ? result.initials : undefined
+
   return (
     <>
       <Touchable
@@ -103,7 +106,11 @@ export const AutosuggestSearchResult: React.FC<{
         testID={`autosuggest-search-result-${result.displayLabel}`}
       >
         <Flex height={IMAGE_SIZE} flexDirection="row" alignItems="center">
-          <SearchResultImage imageURL={result.imageUrl} resultType={resultType} />
+          <SearchResultImage
+            imageURL={result.imageUrl}
+            initials={initials}
+            resultType={resultType}
+          />
 
           <Spacer ml={1} />
 
@@ -148,6 +155,7 @@ export const AutosuggestSearchResult: React.FC<{
               Icon={ArtworkIcon}
               rounded
               onPress={() => onPress({ artistTab: "Artworks" })}
+              block
             >
               Artworks
             </Pill>
@@ -157,6 +165,7 @@ export const AutosuggestSearchResult: React.FC<{
               Icon={AuctionIcon}
               rounded
               onPress={() => onPress({ artistTab: "Insights" })}
+              block
             >
               Auction Results
             </Pill>

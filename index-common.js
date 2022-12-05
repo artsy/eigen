@@ -14,6 +14,7 @@ if (__DEV__) {
 }
 
 require("./src/app/errorReporting/sentrySetup").setupSentry({ environment: "bootstrap" })
+import "react-native-url-polyfill/auto"
 
 if (metaflags.startStorybook) {
   global.__STORYBOOK__ = true
@@ -21,7 +22,6 @@ if (metaflags.startStorybook) {
 } else {
   const appName = require("./app.json").appName
   require("react-native-gesture-handler")
-  require("react-native-screens").enableScreens()
   const { AppRegistry } = require("react-native")
   const { App } = require("./src/app/App")
   AppRegistry.registerComponent(appName, () => App)

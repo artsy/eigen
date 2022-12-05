@@ -14,16 +14,6 @@ Explain why the hack was added.
 
 👀 See comment on top of file for template.
 
-## cleanup-detect-secrets script in postinstall
-
-#### When can we remove this:
-
-We can remove at any point after 20 july 2022.
-
-#### Explanation/Context:
-
-This is just a cleanup script that removes the artsy detect secrets formula from brew, and the python one, both of which we used at some point, but not anymore. good to make sure other devs have the right tool installed in their PATH, and remove any old deps we had.
-
 ## EchoNew.json
 
 #### When can we remove this:
@@ -50,6 +40,16 @@ https://github.com/ivpusic/react-native-image-crop-picker/pull/1354
 
 We do some swizzling in our AppDelegate that causes [[UIApplication sharedApplication] delegate] window] to return nil, this is used by image-crop-picker to find the currently presented viewController to present the picker onto. This patch looks for our custom window subclass (ARWindow) instead and uses that to find the presented viewController. Note we cannot reliably use the lastWindow rather than checking for our custom subclass because in some circumstances this is not our window but an apple window for example UIInputWindow used for managing the keyboard.
 
+## react-native patch-package (EXCLUDED_ARCHS part only).
+
+#### When can we remove this:
+
+When we upgrade to react-native 0.67 or later.
+
+#### Explanation/Context:
+
+This is an old restriction for an old hermes version. It's messing with our xcodeproj file for non-M1 macs, so we patch it out for now. That restriction is fixed and removed on RN 0.67.
+
 ## react-native patch-package (stacktrace-parser part only).
 
 #### When can we remove this:
@@ -59,24 +59,6 @@ When this is merged: https://github.com/facebook/react-native/pull/30345.
 #### Explanation/Context:
 
 For some reason CircleCI kept giving an error when running tests `TypeError: stacktraceParser.parse is not a function`. Once I moved the require higher up, things started working again.
-
-# Mapbox patches:
-
-We have a few mapbox related hacks + patches. Grouping here for convenience.
-
-## hardcode mapbox version to at least 6.3.0 using $ReactNativeMapboxGLIOSVersion
-
-#### When can we remove this:
-
-When @react-native-mapbox-gl/maps uses mapbox-ios at least 6.3.0
-
-#### Explanation/Context:
-
-Version 6.3 added support for Xcode 12 and iOS 14. Without this hardcoding we get version 5.7. Let's keep the hardcode, at least until they give us at least that version with the npm package.
-
-To check which version comes with, either remove `$ReactNativeMapboxGLIOSVersion` and after `pod install` check the `Podfile.lock` for version, or look on github https://github.com/react-native-mapbox-gl/maps/blob/main/CHANGELOG.md for versions bundle with an npm version.
-
-Update tried again with mapbox 8.4.0 and getting 5.9 and still need the hard coded requirement, try again next time we update mapbox.
 
 ## react-native-mapbox-gl/maps - postinstall script
 
@@ -130,18 +112,6 @@ Doesn't really need to be removed but can be if view hierarchy issue is fixed in
 #### Explanation/Context:
 
 We have a modal for showing a loading state and a onDismiss call that optionally displays an alert message, on iOS 14 we came across an issue where the alert was not displaying because when onDismiss was called the LoadingModal was still in the view heirarchy. The delay is a workaround.
-
-## react-native-config patch-package
-
-#### When can we remove this:
-
-Now.
-
-#### Explanation/Context:
-
-react-native-config loads the `.env` file by default. We wanted to use `.env.shared` and `.env.ci` instead. We did that by using a patch-package patch, to add our customization.
-
-We can do this better using https://github.com/luggit/react-native-config#ios-1. Take a look at https://artsyproduct.atlassian.net/browse/CX-949.
 
 ## @react-navigation/core patch-package
 
@@ -346,7 +316,6 @@ When [this](https://github.com/storybookjs/react-native/pull/345) is merged, or 
 
 Storybook does not render outside the safe area, so for `Screen` and friends, we can't really use storybook otherwise. With this patch, we can now render outside the safe area, by adding `parameters: { noSafeArea: true }` in the new form of stories.
 
-
 ## Podfile postinstall code_signing_required = NO
 
 #### When can we remove this:
@@ -357,3 +326,13 @@ Maybe we don't? We can try to remove it at any point, and see if it works. Try w
 
 This is needed because xcode 14 says that React-Core-AccessibilityResources and some other pods require a development team.
 We don't really need a dev team for these. Probably some future version of cocoapods will fix this.
+
+## react-native-reanimated patch-package
+
+#### When can we remove this:
+
+Once we can remove it and have `yarn type-check` pass. They have some broken types and they are messing with our typechecking, so we will ignore until they are fixed, maybe in a future version.
+
+#### Explanation/Context:
+
+Types failing because of broken types in the package.

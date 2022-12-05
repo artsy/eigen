@@ -15,6 +15,8 @@ describe(getOrderStatus, () => {
 
   describe("with shipment status", () => {
     it("returns correct statuses", () => {
+      mockLineItem = { shipment: { status: "draft" } }
+      expect(getOrderStatus("APPROVED", mockLineItem)).toBe("pending")
       mockLineItem = { shipment: { status: "pending" } }
       expect(getOrderStatus("APPROVED", mockLineItem)).toBe("processing")
       mockLineItem = { shipment: { status: "confirmed" } }

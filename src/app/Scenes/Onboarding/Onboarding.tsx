@@ -18,8 +18,7 @@ import {
 } from "./OnboardingCreateAccount/OnboardingCreateAccount"
 import { OnboardingLogin, OnboardingLoginWithEmail } from "./OnboardingLogin"
 import { OnboardingLoginWithOTP, OTPMode } from "./OnboardingLoginWithOTP"
-import { OnboardingPersonalization } from "./OnboardingPersonalization/OnboardingPersonalization"
-import { OnboardingPersonalization2 } from "./OnboardingPersonalization2/OnboardingPersonalization2"
+import { OnboardingQuiz } from "./OnboardingQuiz/OnboardingQuiz"
 import { AppleToken, GoogleOrFacebookToken, OnboardingSocialLink } from "./OnboardingSocialLink"
 import { OnboardingWebView, OnboardingWebViewRoute } from "./OnboardingWebView"
 import { OnboardingWelcome } from "./OnboardingWelcome"
@@ -48,6 +47,13 @@ export type OnboardingNavigationStack = {
   OnboardingWebView: { url: OnboardingWebViewRoute }
 }
 
+declare global {
+  namespace ReactNavigation {
+    // tslint:disable-next-line: no-empty-interface
+    interface RootParamList extends OnboardingNavigationStack {}
+  }
+}
+
 const StackNavigator = createStackNavigator<OnboardingNavigationStack>()
 
 export const OnboardingWelcomeScreens = () => {
@@ -55,10 +61,10 @@ export const OnboardingWelcomeScreens = () => {
     <NavigationContainer independent>
       <StackNavigator.Navigator
         initialRouteName="OnboardingWelcome"
-        headerMode="screen"
         screenOptions={{
           ...TransitionPresets.SlideFromRightIOS,
           headerShown: false,
+          headerMode: "screen",
         }}
       >
         <StackNavigator.Screen name="OnboardingWelcome" component={OnboardingWelcome} />
@@ -104,7 +110,6 @@ export const OnboardingWelcomeScreens = () => {
 export const Onboarding = () => {
   const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
   const showNetworkUnavailableModal = useFeatureFlag("ARShowNetworkUnavailableModal")
-  const isNewOnboardingEnabled = useFeatureFlag("AREnableNewOnboarding")
   const fpsCounter = useDevToggle("DTFPSCounter")
 
   return (
@@ -112,15 +117,7 @@ export const Onboarding = () => {
       <ArtsyKeyboardAvoidingViewContext.Provider
         value={{ isVisible: true, isPresentedModally: false, bottomOffset: 0 }}
       >
-        {onboardingState === "incomplete" ? (
-          isNewOnboardingEnabled ? (
-            <OnboardingPersonalization2 />
-          ) : (
-            <OnboardingPersonalization />
-          )
-        ) : (
-          <OnboardingWelcomeScreens />
-        )}
+        {onboardingState === "incomplete" ? <OnboardingQuiz /> : <OnboardingWelcomeScreens />}
         {!!showNetworkUnavailableModal && <NetworkAwareProvider />}
       </ArtsyKeyboardAvoidingViewContext.Provider>
       {!!fpsCounter && <FPSCounter style={{ bottom: Platform.OS === "ios" ? 40 : undefined }} />}

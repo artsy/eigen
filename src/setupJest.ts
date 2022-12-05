@@ -110,6 +110,7 @@ jest.mock("@react-navigation/native", () => {
     useNavigation: () => ({
       navigate: mockNavigate,
       dispatch: jest.fn(),
+      addListener: jest.fn(),
     }),
   }
 })
@@ -119,7 +120,7 @@ jest.mock("react-native-share", () => ({
 }))
 
 jest.mock("react-native-device-info", () => ({
-  getBuildNumber: jest.fn(),
+  getBuildNumber: () => "some-build-number",
   getVersion: jest.fn(),
   getModel: () => "testDevice",
   getUserAgentSync: jest.fn(),
@@ -168,6 +169,7 @@ jest.mock("@react-native-google-signin/google-signin", () => ({
     configure: jest.fn(),
     getTokens: jest.fn(),
     hasPlayServices: jest.fn(),
+    isSignedIn: jest.fn(),
     revokeAccess: jest.fn(),
     signIn: jest.fn(),
     signOut: jest.fn(),
@@ -223,6 +225,11 @@ jest.mock("react-native-localize", () => ({
   },
 }))
 
+// tslint:disable-next-line: no-var-requires
+require("react-native-reanimated/src/reanimated2/jestUtils").setUpTests()
+// @ts-expect-error
+// tslint:disable-next-line:no-empty
+global.__reanimatedWorkletInit = () => {}
 jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))
 
 jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
@@ -270,6 +277,13 @@ jest.mock("react-native-gesture-handler", () => {
     TouchableWithoutFeedback,
   }
 })
+
+jest.mock("react-native-image-crop-picker", () => ({
+  openPicker: jest.fn(),
+  openCamera: jest.fn(),
+  cleanSingle: jest.fn(),
+  clean: jest.fn(),
+}))
 
 jest.mock("react-native-config", () => {
   const mockConfig = {
@@ -588,3 +602,17 @@ jest.mock("app/utils/track/providers.tsx", () => ({
   postEventToProviders: jest.fn(),
   _addTrackingProvider: jest.fn(),
 }))
+
+jest.mock("@gorhom/bottom-sheet", () => {
+  const RN = require("react-native")
+
+  return {
+    __esModule: true,
+    default: RN.View, // mocks the BottomSheet
+    BottomSheetScrollView: RN.ScrollView,
+    namedExport: {
+      ...require("react-native-reanimated/mock"),
+      ...jest.requireActual("@gorhom/bottom-sheet"),
+    },
+  }
+})

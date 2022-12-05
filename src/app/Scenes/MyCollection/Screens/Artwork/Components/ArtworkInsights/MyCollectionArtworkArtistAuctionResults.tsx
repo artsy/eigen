@@ -32,7 +32,7 @@ export const MyCollectionArtworkArtistAuctionResults: React.FC<
   }
 
   return (
-    <Flex mb={6}>
+    <Flex mb={4}>
       <SectionTitle
         title={`Auction Results for ${artwork?.artist?.name}`}
         onPress={() => {

@@ -6,15 +6,25 @@ type FollowButtonProps = Omit<
   "variant" | "size" | "longestText" | "icon" | "children"
 > & {
   isFollowed: boolean
+  variant?: "v1" | "v2"
 }
 
-export const FollowButton: React.FC<FollowButtonProps> = ({ isFollowed, ...rest }) => {
+export const FollowButton: React.FC<FollowButtonProps> = ({
+  isFollowed,
+  variant = "v1",
+  ...rest
+}) => {
+  const style: { variant: ButtonProps["variant"] } =
+    variant === "v2"
+      ? { variant: "fillLight" }
+      : { variant: isFollowed ? "outline" : "outlineGray" }
+
   return (
     <Button
-      variant={isFollowed ? "outline" : "outlineGray"}
       size="small"
       longestText="Following"
       icon={isFollowed && <CheckIcon fill="black60" width="16px" height="16px" />}
+      {...style}
       {...rest}
     >
       {isFollowed ? "Following" : "Follow"}

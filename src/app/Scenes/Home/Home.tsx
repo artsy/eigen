@@ -40,15 +40,17 @@ import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { articlesQueryVariables } from "../Articles/Articles"
 import { lotsByArtistsYouFollowDefaultVariables } from "../LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import { ViewingRoomsHomeMainRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
+import { ActivityIndicator } from "./Components/ActivityIndicator"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { ArtworkRecommendationsRail } from "./Components/ArtworkRecommendationsRail"
-import { HomeHeroContainer } from "./Components/HomeHero"
+import { ContentCards } from "./Components/ContentCards"
+import { HomeFeedOnboardingRailFragmentContainer } from "./Components/HomeFeedOnboardingRail"
+import { HomeHeader } from "./Components/HomeHeader"
 import { NewWorksForYouRail } from "./Components/NewWorksForYouRail"
 import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
-import { TroveFragmentContainer } from "./Components/Trove"
 import { RailScrollRef } from "./Components/types"
 
-const MODULE_SEPARATOR_HEIGHT = 6
+const MODULE_SEPARATOR_HEIGHT = 4
 
 interface HomeModule {
   title: string
@@ -97,6 +99,7 @@ const Home = (props: Props) => {
   } = props
 
   const enableArtworkRecommendations = useFeatureFlag("AREnableHomeScreenArtworkRecommendations")
+  const enableMyCollectionHFOnboarding = useFeatureFlag("AREnableMyCollectionHFOnboarding")
 
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
   let modules: HomeModule[] = compact([
@@ -105,7 +108,13 @@ const Home = (props: Props) => {
       title: "New Works for You",
       type: "newWorksForYou",
       data: newWorksForYou,
-      prefetchUrl: "/new-works-for-you",
+      prefetchUrl: "/new-for-you",
+    },
+    {
+      title: "",
+      type: "contentCards",
+      data: {},
+      prefetchUrl: "",
     },
     { title: "Your Active Bids", type: "artwork", data: homePageAbove?.activeBidsArtworkModule },
     {
@@ -138,6 +147,12 @@ const Home = (props: Props) => {
       prefetchVariables: articlesQueryVariables,
     },
     {
+      title: "Do More on Artsy",
+      type: "homeFeedOnboarding",
+      data: homePageBelow?.onboardingModule,
+      hidden: !enableMyCollectionHFOnboarding || !homePageBelow?.onboardingModule,
+    },
+    {
       title: "Recommended Artists",
       type: "recommended-artists",
       data: meBelow,
@@ -147,7 +162,6 @@ const Home = (props: Props) => {
       type: "shows",
       data: showsByFollowedArtists,
     },
-    { title: "Trove", type: "trove", data: homePageBelow },
     {
       title: "Viewing Rooms",
       type: "viewing-rooms",
@@ -210,6 +224,16 @@ const Home = (props: Props) => {
             }
 
             switch (item.type) {
+              case "homeFeedOnboarding":
+                return (
+                  <HomeFeedOnboardingRailFragmentContainer
+                    title={item.title}
+                    onboardingModule={item.data}
+                    mb={MODULE_SEPARATOR_HEIGHT}
+                  />
+                )
+              case "contentCards":
+                return <ContentCards mb={MODULE_SEPARATOR_HEIGHT} />
               case "articles":
                 return (
                   <ArticlesRailFragmentContainer
@@ -315,9 +339,6 @@ const Home = (props: Props) => {
                     mb={MODULE_SEPARATOR_HEIGHT}
                   />
                 )
-
-              case "trove":
-                return <TroveFragmentContainer trove={item.data} mb={MODULE_SEPARATOR_HEIGHT} />
               case "viewing-rooms":
                 return (
                   <ViewingRoomsHomeMainRail
@@ -330,7 +351,7 @@ const Home = (props: Props) => {
                 return null
             }
           }}
-          ListHeaderComponent={HomeHeader}
+          ListHeaderComponent={<HomeHeader me={meAbove} />}
           ListFooterComponent={() => <Flex mb={3}>{!!loading && <BelowTheFoldPlaceholder />}</Flex>}
           keyExtractor={(_item, index) => String(index)}
         />
@@ -339,19 +360,6 @@ const Home = (props: Props) => {
     </ProvideScreenTracking>
   )
 }
-
-const HomeHeader: React.FC<{ homePageAbove: Home_homePageAbove$data | null }> = ({
-  homePageAbove,
-}) => (
-  <Box mb={1} mt={2}>
-    <Flex alignItems="center">
-      <ArtsyLogoIcon scale={0.75} />
-    </Flex>
-    <Spacer mb="15px" />
-    {!!homePageAbove && <HomeHeroContainer homePage={homePageAbove} />}
-    <Spacer mb="2" />
-  </Box>
-)
 
 const useHandleRefresh = (relay: RelayRefetchProp, modules: any[]) => {
   const scrollRefs = useRef<Array<RefObject<RailScrollRef>>>(modules.map((_) => createRef()))
@@ -383,8 +391,7 @@ export const HomeFragmentContainer = createRefetchContainer(
   {
     // Make sure not to include modules that are part of "homePageBelow"
     homePageAbove: graphql`
-      fragment Home_homePageAbove on HomePage
-      @argumentDefinitions(heroImageVersion: { type: "HomePageHeroUnitImageVersion" }) {
+      fragment Home_homePageAbove on HomePage {
         activeBidsArtworkModule: artworkModule(key: ACTIVE_BIDS) {
           id
           ...ArtworkModuleRail_rail
@@ -396,13 +403,11 @@ export const HomeFragmentContainer = createRefetchContainer(
           id
           ...ArtistRail_rail
         }
-        ...HomeHero_homePage @arguments(heroImageVersion: $heroImageVersion)
       }
     `,
     // Make sure to exclude all modules that are part of "homePageAbove"
     homePageBelow: graphql`
-      fragment Home_homePageBelow on HomePage
-      @argumentDefinitions(heroImageVersion: { type: "HomePageHeroUnitImageVersion" }) {
+      fragment Home_homePageBelow on HomePage @argumentDefinitions {
         recentlyViewedWorksArtworkModule: artworkModule(key: RECENTLY_VIEWED_WORKS) {
           id
           ...ArtworkModuleRail_rail
@@ -421,12 +426,14 @@ export const HomeFragmentContainer = createRefetchContainer(
         marketingCollectionsModule {
           ...CollectionsRail_collectionsModule
         }
-        ...HomeHero_homePage @arguments(heroImageVersion: $heroImageVersion)
-        ...Trove_trove @arguments(heroImageVersion: $heroImageVersion)
+        onboardingModule @optionalField {
+          ...HomeFeedOnboardingRail_onboardingModule
+        }
       }
     `,
     meAbove: graphql`
       fragment Home_meAbove on Me {
+        ...HomeHeader_me
         ...EmailConfirmationBanner_me
         ...LotsByFollowedArtistsRail_me
       }
@@ -460,12 +467,12 @@ export const HomeFragmentContainer = createRefetchContainer(
     `,
   },
   graphql`
-    query HomeRefetchQuery($heroImageVersion: HomePageHeroUnitImageVersion!) {
+    query HomeRefetchQuery {
       homePage @optionalField {
-        ...Home_homePageAbove @arguments(heroImageVersion: $heroImageVersion)
+        ...Home_homePageAbove
       }
       homePageBelow: homePage @optionalField {
-        ...Home_homePageBelow @arguments(heroImageVersion: $heroImageVersion)
+        ...Home_homePageBelow
       }
       me @optionalField {
         ...Home_meAbove
@@ -533,6 +540,7 @@ const HomePlaceholder: React.FC = () => {
       <Box mb={1} mt={2}>
         <Flex alignItems="center">
           <ArtsyLogoIcon scale={0.75} />
+          <ActivityIndicator hasNotifications={false} />
         </Flex>
       </Box>
       <Spacer mb={4} />
@@ -632,9 +640,9 @@ export const HomeQueryRenderer: React.FC = () => {
       environment={defaultEnvironment}
       above={{
         query: graphql`
-          query HomeAboveTheFoldQuery($heroImageVersion: HomePageHeroUnitImageVersion) {
+          query HomeAboveTheFoldQuery {
             homePage @optionalField {
-              ...Home_homePageAbove @arguments(heroImageVersion: $heroImageVersion)
+              ...Home_homePageAbove
             }
             me @optionalField {
               ...Home_meAbove
@@ -648,16 +656,16 @@ export const HomeQueryRenderer: React.FC = () => {
             }
           }
         `,
-        variables: { heroImageVersion: isPad() ? "WIDE" : "NARROW" },
+        variables: {},
       }}
       below={{
         query: graphql`
-          query HomeBelowTheFoldQuery($heroImageVersion: HomePageHeroUnitImageVersion) {
+          query HomeBelowTheFoldQuery {
             newWorksForYou: viewer @optionalField {
               ...Home_newWorksForYou
             }
             homePage @optionalField {
-              ...Home_homePageBelow @arguments(heroImageVersion: $heroImageVersion)
+              ...Home_homePageBelow
             }
             featured: viewingRooms(featured: true) @optionalField {
               ...Home_featured

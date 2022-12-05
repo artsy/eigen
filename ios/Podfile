@@ -10,6 +10,7 @@ require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 
+project 'Artsy.xcodeproj'
 platform :ios, '12.1'
 inhibit_all_warnings! # ignore all warnings from all pods
 
@@ -94,9 +95,9 @@ target 'Artsy' do
   pod 'Pulley', git: 'https://github.com/artsy/Pulley.git', branch: 'master'
 
   # Facebook
-  pod 'FBSDKCoreKit', '9.3.0'
-  pod 'FBSDKLoginKit', '9.3.0'
-  pod 'FBSDKShareKit', '9.3.0'
+  pod 'FBSDKCoreKit', '15.0.0'
+  pod 'FBSDKLoginKit', '15.0.0'
+  pod 'FBSDKShareKit', '15.0.0'
 
   # Google & Firebase
   pod 'GoogleSignIn', '5.0.2'
@@ -162,6 +163,7 @@ target 'Artsy' do
             config.build_settings['EXPANDED_CODE_SIGN_IDENTITY'] = ""
             config.build_settings['CODE_SIGNING_REQUIRED'] = "NO"
             config.build_settings['CODE_SIGNING_ALLOWED'] = "NO"
+            config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
         end
     end
 

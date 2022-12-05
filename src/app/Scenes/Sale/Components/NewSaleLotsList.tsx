@@ -109,7 +109,7 @@ export const NewSaleLotsList: React.FC<NewSaleLotsListProps> = ({
   return (
     <Flex flex={0} my={4}>
       <Flex px={2} mb={2}>
-        <Text variant="md" ellipsizeMode="tail">
+        <Text variant="sm-display" ellipsizeMode="tail">
           Sorted by {sortMode?.displayText}
         </Text>
 
@@ -181,7 +181,7 @@ export const NewSaleLotsListContainer = createPaginationContainer(
           first: $count
           after: $cursor
           input: $input
-          aggregations: [TOTAL]
+          aggregations: [TOTAL, FOLLOWED_ARTISTS]
         ) @connection(key: "NewSaleLotsList__artworksConnection") {
           counts {
             total
@@ -209,7 +209,7 @@ export const NewSaleLotsListContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query NewSaleLotsListQuery(
+      query NewSaleLotsListRefetchQuery(
         $saleID: ID!
         $count: Int
         $cursor: String

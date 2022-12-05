@@ -23,6 +23,8 @@ Example Links:
 - [CustomSizeInputs.tests.tsx](src/app/Components/ArtworkFilter/Filters/CustomSizeInputs.tests.tsx)
 - [SizesOptionsScreen.tests.tsx](src/app/Components/ArtworkFilter/Filters/SizesOptionsScreen.tests.tsx)
 
+Read more about how we do testing on [docs/testing.md](docs/testing.md)
+
 ## I want to write a test with relay.
 
 Similar to above. For `relay` testing we use `resolveMostRecentRelayOperation` to mock the most recent operation.
@@ -102,3 +104,15 @@ One good example is in [OnboardingLogin.tsx](src/app/Scenes/Onboarding/Onboardin
 Links:
 
 - [OnboardingLogin.tsx](src/app/Scenes/Onboarding/OnboardingLogin.tsx)
+
+## I want to do an animation.
+
+We use `react-native-reanimated` for that.
+Here are some examples.
+
+Links:
+
+- [OnboardingWelcome.tsx](src/app/Scenes/Onboarding/OnboardingWelcome.tsx)
+- [Search.tsx](src/app/Scenes/Search/Search.tsx)
+- [AnimatableHeaderLargeTitle.tsx](src/app/Components/AnimatableHeader/AnimatableHeaderLargeTitle.tsx)
+- [AnimatableHeader.tsx](src/app/Components/AnimatableHeader/AnimatableHeader.tsx)

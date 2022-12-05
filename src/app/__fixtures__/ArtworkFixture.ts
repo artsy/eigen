@@ -18,6 +18,7 @@ export const ArtworkFixture = {
   isInquireable: false,
   isInAuction: false,
   isBuyNowable: false,
+  visibilityLevel: null,
   inquiryQuestions: [
     { question: "Price & Availability" },
     { question: "Shipping" },
@@ -36,7 +37,7 @@ export const ArtworkFixture = {
   medium: "photograph",
   attributionClass: {
     name: "Unique",
-    shortArrayDescription: ["This is", "a unique work"],
+    shortArrayDescription: ["", "Unique work"],
   },
   editionOf: "",
   image: {

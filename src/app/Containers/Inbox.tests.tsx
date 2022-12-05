@@ -1,70 +1,88 @@
-import { InboxTestsQuery } from "__generated__/InboxTestsQuery.graphql"
-import { ConversationsContainer } from "app/Scenes/Inbox/Components/Conversations/Conversations"
-import { MyBidsContainer } from "app/Scenes/MyBids/MyBids"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { screen } from "@testing-library/react-native"
+import { InboxScreenTestQuery } from "__generated__/InboxScreenTestQuery.graphql"
+import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
+import { ReactNode } from "react"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { OperationDescriptor } from "relay-runtime"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
-import { InboxContainer } from "./Inbox"
+import { createMockEnvironment } from "relay-test-utils"
+import { InboxContainer, InboxPlaceholder } from "./Inbox"
 
 jest.unmock("react-relay")
-jest.unmock("react-native-scrollable-tab-view")
 
-jest.mock("app/Scenes/Inbox/Components/Conversations/Conversations", () => {
+// impossible to test react-native-scrollable-tab-view without a mock
+jest.mock("react-native-scrollable-tab-view", () => {
   return {
-    ConversationsContainer: () => "(The ConversationsContainer)",
+    __esModule: true, // needed to mock the default export
+    default: (props: { children: ReactNode[] }) => {
+      // Just render first child
+      return props.children
+    },
+    DefaultTabBar: () => null,
   }
 })
 
-jest.mock("app/Scenes/MyBids/MyBids", () => {
-  return {
-    MyBidsContainer: () => "(The MyBidsContainer)",
-  }
-})
+describe("renders Inbox component", () => {
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
-let env: ReturnType<typeof createMockEnvironment>
+  beforeEach(() => {
+    mockEnvironment = createMockEnvironment()
+  })
 
-const getWrapper = (mockResolvers: MockResolvers = {}) => {
-  env = createMockEnvironment()
-
-  const TestRenderer = () => (
-    <QueryRenderer<InboxTestsQuery>
-      environment={env}
-      variables={{}}
+  const TestRendered = () => (
+    <QueryRenderer<InboxScreenTestQuery>
+      environment={mockEnvironment}
       query={graphql`
-        query InboxTestsQuery @relay_test_operation {
+        query InboxScreenTestQuery @relay_test_operation {
           me {
             ...Inbox_me
           }
         }
       `}
-      render={({ props, error }) => {
-        if (props) {
-          return <InboxContainer me={props!.me!} isVisible />
-        } else if (error) {
-          console.error(error)
-        }
-      }}
+      variables={{}}
+      render={renderWithPlaceholder({
+        // this is due to broken types with renderWithPlaceholder which is a legacy component
+        // @ts-ignore
+        Container: (props) => <InboxContainer {...props} isVisible />,
+        renderPlaceholder: () => <InboxPlaceholder />,
+      })}
     />
   )
 
-  const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
+  describe("Checking user bids", () => {
+    it("Renders the placeholder 👹", async () => {
+      renderWithWrappers(<TestRendered />)
+      expect(screen.getByTestId("inbox-placeholder")).toBeTruthy()
+    })
 
-  env.mock.resolveMostRecentOperation((operation: OperationDescriptor) => {
-    return MockPayloadGenerator.generate(operation, mockResolvers)
+    it("NO active bids -> Inquiries tab is active", async () => {
+      renderWithWrappers(<TestRendered />)
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Me: () => ({
+          myBids: {
+            active: [],
+          },
+        }),
+      })
+      await flushPromiseQueue()
+      expect(screen.queryByTestId("tabWrapper-inquiries")).toHaveProp("_tests_isActiveTab", true)
+      expect(screen.queryByTestId("tabWrapper-bids")).toHaveProp("_tests_isActiveTab", false)
+    })
+
+    it("Active bids -> Bids tab is active", async () => {
+      renderWithWrappers(<TestRendered />)
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Me: () => ({
+          myBids: {
+            active: [{ sale: { internalID: "123" }, saleArtworks: { internalID: "456" } }],
+          },
+        }),
+      })
+      await flushPromiseQueue()
+      expect(screen.queryByTestId("tabWrapper-bids")).toHaveProp("_tests_isActiveTab", true)
+      expect(screen.queryByTestId("tabWrapper-inquiries")).toHaveProp("_tests_isActiveTab", false)
+    })
   })
-
-  return wrapper
-}
-
-it("renders without throwing an error", () => {
-  getWrapper()
-})
-
-it("renders bids tab by default when bids are enabled", () => {
-  const tree = getWrapper()
-  expect(tree.root.findAllByType(MyBidsContainer).length).toEqual(1)
-  expect(tree.root.findAllByType(ConversationsContainer).length).toEqual(0)
 })

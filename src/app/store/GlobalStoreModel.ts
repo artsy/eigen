@@ -16,16 +16,13 @@ import { ArtsyPrefsModel, getArtsyPrefsModel } from "./ArtsyPrefsModel"
 import { AuthModel, getAuthModel } from "./AuthModel"
 import { unsafe__getEnvironment } from "./GlobalStore"
 import { CURRENT_APP_VERSION } from "./migration"
-import {
-  getMyCollectionCareerHighlightsModel,
-  MyCollectionCareerHighlightsModel,
-} from "./MyCollectionCareerHighlightsModel"
 import { getNativeModel, NativeModel } from "./NativeModel"
 import {
   getPendingPushNotificationModel,
   PendingPushNotificationModel,
 } from "./PendingPushNotificationModel"
 import { assignDeep, sanitize } from "./persistence"
+import { getRecentPriceRangesModel, RecentPriceRangesModel } from "./RecentPriceRangesModel"
 import {
   getRequestedPriceEstimatesModel,
   RequestedPriceEstimatesModel,
@@ -49,10 +46,10 @@ interface GlobalStoreStateModel {
   artsyPrefs: ArtsyPrefsModel
   userPrefs: UserPrefsModel
   devicePrefs: DevicePrefsModel
-  myCollectionCareerHighlights: MyCollectionCareerHighlightsModel
   visualClue: VisualClueModel
   artworkSubmission: SubmissionModel
   requestedPriceEstimates: RequestedPriceEstimatesModel
+  recentPriceRanges: RecentPriceRangesModel
 }
 export interface GlobalStoreModel extends GlobalStoreStateModel {
   rehydrate: Action<this, DeepPartial<State<GlobalStoreStateModel>>>
@@ -92,11 +89,17 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
         artsyPrefs: existingConfig,
         search,
         auth: { userID },
+        recentPriceRanges,
       } = store.getState()
 
       // keep existing config state
       const config = sanitize(existingConfig) as typeof existingConfig
-      actions.reset({ artsyPrefs: config, search, auth: { previousSessionUserID: userID } })
+      actions.reset({
+        artsyPrefs: config,
+        search,
+        recentPriceRanges,
+        auth: { previousSessionUserID: userID },
+      })
     }
   ),
   didRehydrate: thunkOn(
@@ -125,9 +128,9 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   pendingPushNotification: getPendingPushNotificationModel(),
   userPrefs: getUserPrefsModel(),
   visualClue: getVisualClueModel(),
-  myCollectionCareerHighlights: getMyCollectionCareerHighlightsModel(),
   artworkSubmission: getSubmissionModel(),
   requestedPriceEstimates: getRequestedPriceEstimatesModel(),
+  recentPriceRanges: getRecentPriceRangesModel(),
 
   // for dev only.
   _setVersion: action((state, newVersion) => {

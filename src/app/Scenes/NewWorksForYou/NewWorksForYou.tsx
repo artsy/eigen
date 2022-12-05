@@ -12,7 +12,7 @@ import { Box, SimpleMessage, Spacer } from "palette"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 const SCREEN_TITLE = "New Works for You"
-const PAGE_SIZE = 20
+const PAGE_SIZE = 100
 
 interface NewWorksForYouProps {
   relay: RelayPaginationProp
@@ -52,9 +52,13 @@ export const NewWorksForYouFragmentContainer = createPaginationContainer(
   {
     viewer: graphql`
       fragment NewWorksForYou_viewer on Viewer
-      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
-        artworks: artworksForUser(after: $cursor, first: $count, includeBackfill: true)
-          @connection(key: "NewWorksForYou_artworks") {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 100 }, cursor: { type: "String" }) {
+        artworks: artworksForUser(
+          after: $cursor
+          first: $count
+          includeBackfill: true
+          maxWorksPerArtist: 3
+        ) @connection(key: "NewWorksForYou_artworks") {
           edges {
             node {
               id

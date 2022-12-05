@@ -55,7 +55,7 @@ export const OrderHistory: React.FC<{ me: OrderHistory_me$data; relay: RelayPagi
         )}
         ListEmptyComponent={
           <Flex flex={1} flexDirection="column" justifyContent="center" alignItems="center" px={15}>
-            <Text variant="md" color={color("black60")}>
+            <Text variant="sm-display" color={color("black60")}>
               No orders
             </Text>
           </Flex>
@@ -115,7 +115,7 @@ export const OrderHistoryContainer = createPaginationContainer(
         cursor: { type: "String" }
         states: {
           type: "[CommerceOrderStateEnum!]"
-          defaultValue: [APPROVED, CANCELED, FULFILLED, REFUNDED, SUBMITTED]
+          defaultValue: [APPROVED, CANCELED, FULFILLED, REFUNDED, SUBMITTED, PROCESSING_APPROVAL]
         }
       ) {
         orders(first: $count, after: $cursor, states: $states)

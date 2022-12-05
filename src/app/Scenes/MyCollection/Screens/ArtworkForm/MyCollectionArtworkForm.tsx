@@ -1,4 +1,10 @@
-import { deleteCollectedArtwork } from "@artsy/cohesion"
+import {
+  ActionType,
+  ContextModule,
+  DeleteCollectedArtwork,
+  OwnerType,
+  SaveCollectedArtwork,
+} from "@artsy/cohesion"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
@@ -13,13 +19,14 @@ import {
   explicitlyClearedFields,
 } from "app/Scenes/MyCollection/utils/cleanArtworkPayload"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { addClue, GlobalStore, setVisualClueAsSeen, useFeatureFlag } from "app/store/GlobalStore"
+import { addClue, GlobalStore, setVisualClueAsSeen } from "app/store/GlobalStore"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { isEqual } from "lodash"
-import React, { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Alert, InteractionManager } from "react-native"
 import { useTracking } from "react-tracking"
+import { refreshMyCollectionInsights } from "../../../../utils/refreshHelpers"
 import { deleteArtworkImage } from "../../mutations/deleteArtworkImage"
 import { myCollectionCreateArtwork } from "../../mutations/myCollectionCreateArtwork"
 import { myCollectionDeleteArtwork } from "../../mutations/myCollectionDeleteArtwork"
@@ -28,7 +35,7 @@ import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
 import { deletedPhotos } from "../../utils/deletedPhotos"
 import { SavingArtworkModal } from "./Components/SavingArtworkModal"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
-import { removeLocalPhotos, storeLocalPhotos, uploadPhotos } from "./MyCollectionImageUtil"
+import { storeLocalPhotos, uploadPhotos } from "./MyCollectionImageUtil"
 import { MyCollectionAddPhotos } from "./Screens/MyCollectionArtworkFormAddPhotos"
 import { MyCollectionArtworkFormArtist } from "./Screens/MyCollectionArtworkFormArtist"
 import { MyCollectionArtworkFormArtwork } from "./Screens/MyCollectionArtworkFormArtwork"
@@ -57,6 +64,7 @@ export type ArtworkFormScreen = {
   }
   ArtworkFormMain: {
     mode: ArtworkFormMode
+    isSubmission?: boolean
     clearForm(): void
     onDelete(): void
     onHeaderBackButtonPress(): void
@@ -76,7 +84,7 @@ export type MyCollectionArtworkFormProps = { onSuccess?: () => void } & (
     }
 )
 
-const navContainerRef = { current: null as NavigationContainerRef | null }
+const navContainerRef = { current: null as NavigationContainerRef<any> | null }
 
 export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (props) => {
   const { trackEvent } = useTracking()
@@ -98,49 +106,58 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
 
   const { showActionSheetWithOptions } = useActionSheet()
 
-  const showMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
-
   const handleSubmit = async (values: ArtworkFormValues) => {
+    if (loading) {
+      return
+    }
+
     setLoading(true)
+
+    updateMyUserProfile({
+      currencyPreference: preferredCurrency,
+      lengthUnitPreference: preferredMetric.toUpperCase() as LengthUnitPreference,
+    })
 
     try {
       await Promise.all([
         // This is to satisfy showing the insights modal for 2500 ms
-        __TEST__ || !showMyCollectionInsights
-          ? undefined
-          : new Promise((resolve) => setTimeout(resolve, 2500)),
-        updateMyUserProfile({
-          currencyPreference: preferredCurrency,
-          lengthUnitPreference: preferredMetric.toUpperCase() as LengthUnitPreference,
-        }),
+        __TEST__ ? undefined : new Promise((resolve) => setTimeout(resolve, 2500)),
+        ,
         updateArtwork(values, dirtyFormCheckValues, props).then((hasMarketPriceInsights) => {
           setSavingArtworkModalDisplayText(
             hasMarketPriceInsights ? "Generating market data" : "Saving artwork"
           )
         }),
       ])
-      if (showMyCollectionInsights) {
-        setIsArtworkSaved(true)
-        // simulate requesting market data
-        await new Promise((resolve) => setTimeout(resolve, 2000))
-      }
-      refreshMyCollection()
-      setLoading(false)
-      // Go back to my collection screen after the loading modal is hidden
-      InteractionManager.runAfterInteractions(() => {
-        props.onSuccess?.()
-      })
     } catch (e) {
-      if (__DEV__) {
-        console.error(e)
-      } else {
-        captureException(e)
-      }
-      Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
+      __DEV__ ? console.error(e) : captureException(e)
+
+      Alert.alert("Artwork could not be saved.", typeof e === "string" ? e : undefined)
+
       setLoading(false)
-    } finally {
-      setIsArtworkSaved(false)
+
+      return
     }
+
+    try {
+      // Adding tracking after a successfully adding an artwork
+      if (props.mode === "add") {
+        trackEvent(tracks.saveCollectedArtwork())
+      }
+
+      setIsArtworkSaved(true)
+      // simulate requesting market data
+      await new Promise((resolve) => setTimeout(resolve, 2000))
+
+      refreshMyCollection()
+      refreshMyCollectionInsights({})
+    } catch (e) {
+      __DEV__ ? console.error(e) : captureException(e)
+    }
+
+    InteractionManager.runAfterInteractions(() => {
+      props.onSuccess?.()
+    })
   }
 
   useEffect(() => {
@@ -204,7 +221,12 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       }
     }
 
-    GlobalStore.actions.myCollection.artwork.resetFormButKeepArtist()
+    if (props.mode === "edit") {
+      // Reset the form with the initial values from the artwork
+      GlobalStore.actions.myCollection.artwork.updateFormValues(dirtyFormCheckValues)
+    } else {
+      GlobalStore.actions.myCollection.artwork.resetFormButKeepArtist()
+    }
   }
 
   const onHeaderBackButtonPress = () => {
@@ -230,7 +252,6 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
           detachInactiveScreens={false}
           screenOptions={{
             headerShown: false,
-            safeAreaInsets: { top: 0, bottom: 0, left: 0, right: 0 },
             cardStyle: { backgroundColor: "white" },
           }}
         >
@@ -256,11 +277,22 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
           <Stack.Screen
             name="ArtworkFormMain"
             component={MyCollectionArtworkFormMain}
-            initialParams={{ onDelete, clearForm, mode: props.mode, onHeaderBackButtonPress }}
+            initialParams={{
+              onDelete,
+              clearForm,
+              mode: props.mode,
+              onHeaderBackButtonPress,
+              isSubmission: (() => {
+                if (props.mode === "edit") {
+                  return !!props.artwork.consignmentSubmission?.displayText
+                }
+                return false
+              })(),
+            }}
           />
           <Stack.Screen name="AddPhotos" component={MyCollectionAddPhotos} />
         </Stack.Navigator>
-        {showMyCollectionInsights && props.mode === "add" ? (
+        {props.mode === "add" ? (
           <SavingArtworkModal
             testID="saving-artwork-modal"
             isVisible={loading}
@@ -333,21 +365,33 @@ export const updateArtwork = async (
       ...explicitlyClearedFields(others, dirtyFormCheckValues),
     })
 
+    const slug = response.myCollectionUpdateArtwork?.artworkOrError?.artwork?.slug
+    // if the user has updated images, save to local store
+    if (slug) {
+      storeLocalPhotos(slug, photos)
+    }
     const deletedImages = deletedPhotos(dirtyFormCheckValues.photos, photos)
     for (const photo of deletedImages) {
       await deleteArtworkImage(props.artwork.internalID, photo.id)
-    }
-    const slug = response.myCollectionUpdateArtwork?.artworkOrError?.artwork?.slug
-    if (slug) {
-      removeLocalPhotos(slug)
     }
   }
 }
 
 const tracks = {
-  deleteCollectedArtwork: (internalID: string, slug: string) => {
-    return deleteCollectedArtwork({ contextOwnerId: internalID, contextOwnerSlug: slug })
-  },
+  deleteCollectedArtwork: (internalID: string, slug: string): DeleteCollectedArtwork => ({
+    action: ActionType.deleteCollectedArtwork,
+    context_module: ContextModule.myCollectionArtwork,
+    context_owner_id: internalID,
+    context_owner_slug: slug,
+    context_owner_type: OwnerType.myCollectionArtwork,
+    platform: "mobile",
+  }),
+  saveCollectedArtwork: (): SaveCollectedArtwork => ({
+    action: ActionType.saveCollectedArtwork,
+    context_module: ContextModule.myCollectionHome,
+    context_owner_type: OwnerType.myCollection,
+    platform: "mobile",
+  }),
 }
 
 const addArtworkMessages = async ({

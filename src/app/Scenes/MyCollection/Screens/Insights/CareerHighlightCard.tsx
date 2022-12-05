@@ -1,6 +1,3 @@
-import { navigate, popToRoot } from "app/navigation/navigate"
-import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { GlobalStore } from "app/store/GlobalStore"
 import {
   Button,
   FairIcon,
@@ -12,7 +9,6 @@ import {
   SoloIcon,
   Text,
   Touchable,
-  useColor,
 } from "palette"
 import { Fragment, FunctionComponent } from "react"
 import { Image } from "react-native"
@@ -28,41 +24,24 @@ export type CareerHighlightKind =
 interface CareerHighlightsCardProps {
   count: number
   type: CareerHighlightKind
+  onPress: () => void
 }
 
-export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({ count, type }) => {
+export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({
+  count,
+  type,
+  onPress,
+}) => {
   if (count === 0) {
     return null
   }
 
-  const color = useColor()
-
-  const { label, Icon, isNew } = getCareerHiglight(type, count)
+  const { label, Icon } = getCareerHiglight(type, count)
 
   return (
-    <Touchable
-      haptic
-      onPress={() => {
-        // TODO: Navigate to detail card
-      }}
-    >
+    <Touchable haptic onPress={onPress} testID="career-highlight-card-item">
       <Flex p={1} height={135} width={205} background="white" border={1} borderColor="black10">
-        <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
-          <Flex backgroundColor={color("blue100")} px={0.5} mt={0.2}>
-            {!!isNew && (
-              <Flex style={{ paddingVertical: 2, paddingHorizontal: 2 }}>
-                <Text
-                  mt="-1px"
-                  fontSize={11}
-                  lineHeight={16}
-                  color="white100"
-                  key={`${isNew}-${type}`}
-                >
-                  New
-                </Text>
-              </Flex>
-            )}
-          </Flex>
+        <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
           <Flex
             width={26}
             height={26}
@@ -77,7 +56,7 @@ export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({ coun
           </Flex>
         </Flex>
         <Flex justifyContent="flex-end" flex={1}>
-          <Text variant="xl" color="blue100">
+          <Text variant="lg-display" color="blue100">
             {count}
           </Text>
           <Text variant="xs" color="black100">
@@ -89,32 +68,30 @@ export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({ coun
   )
 }
 
-export const CareerHighlightPromotionalCard: React.FC = () => {
+interface CareerHighlightPromotionalCardProps {
+  onPress: () => void
+  onButtonPress: () => void
+}
+
+export const CareerHighlightPromotionalCard: React.FC<CareerHighlightPromotionalCardProps> = ({
+  onPress,
+  onButtonPress,
+}) => {
   return (
-    <Touchable
-      haptic
-      onPress={() => {
-        // TODO: Navigate to detail card
-      }}
-    >
-      <Flex ml={2} width={200} height={135} backgroundColor="white100" flexDirection="row">
+    <Touchable haptic onPress={onPress}>
+      <Flex
+        width={200}
+        height={135}
+        backgroundColor="white100"
+        flexDirection="row"
+        border={1}
+        borderColor="black10"
+      >
         <Flex p={1} flex={1}>
           <Flex flex={1} justifyContent="center">
             <Text variant="xs">Discover career highlights for your artists.</Text>
           </Flex>
-          <Button
-            size="small"
-            testID="career-highlight-promo-card-button"
-            onPress={() => {
-              navigate("my-collection/artworks/new", {
-                passProps: {
-                  mode: "add",
-                  source: Tab.insights,
-                  onSuccess: popToRoot,
-                },
-              })
-            }}
-          >
+          <Button onPress={onButtonPress} size="small">
             Upload Artwork
           </Button>
         </Flex>
@@ -125,63 +102,56 @@ export const CareerHighlightPromotionalCard: React.FC = () => {
   )
 }
 
-const getCareerHiglight = (type: CareerHighlightKind, count: number) => {
-  const careerHighlights = GlobalStore.useAppState(
-    (state) => state.myCollectionCareerHighlights.careerHighlights
-  )
-
+export const getCareerHiglight = (type: CareerHighlightKind, count: number) => {
   let label: string = ""
   let Icon: FunctionComponent<IconProps> = Fragment
 
   // plural
   const pl = count > 1
+  const ending = pl ? "s" : ""
+  const article = pl ? "" : "a "
 
   switch (type) {
     case "BIENNIAL":
-      label = `${pl ? "Artists were" : "Artist was"} included in a major biennial${pl ? "s" : ""}.`
+      label = `${pl ? "Artists were" : "Artist was"} included in ${article}major biennial${ending}.`
       Icon = FairIcon
       break
     case "COLLECTED":
-      label = `${pl ? "Artists are" : "Artist is"} collected by a major institution${
-        pl ? "s" : ""
-      }.`
+      label = `${
+        pl ? "Artists are" : "Artist is"
+      } collected by ${article}major institution${ending}.`
       Icon = MuseumIcon
       break
     case "GROUP_SHOW":
-      label = `${pl ? "Artists were" : "Artist was"} in a group show at a major institution${
-        pl ? "s" : ""
-      }.`
+      label = `${
+        pl ? "Artists were" : "Artist was"
+      } in a group show at ${article}major institution${ending}.`
       Icon = GroupIcon
       break
     case "REVIEWED":
-      label = `${pl ? "Artists were" : "Artist was"} reviewed by a major art publication${
-        pl ? "s" : ""
-      }.`
+      label = `${
+        pl ? "Artists were" : "Artist was"
+      } reviewed by ${article}major art publication${ending}.`
       Icon = PublicationIcon
       break
 
     case "SOLO_SHOW":
-      label = `${pl ? "Artists" : "Artist"} had a solo show at a major institution${pl ? "s" : ""}.`
+      label = `${
+        pl ? "Artists" : "Artist"
+      } had a solo show at ${article}major institution${ending}.`
       Icon = SoloIcon
       break
     /*
     case "": // TODO: Collected by artists
-      label = `${pl ? "Artists are" : "Artist is"} collected by a major private collector${
-        pl ? "s" : ""
-      }.`
+      label = `${pl ? "Artists are" : "Artist is"} collected by ${article}major private collector${ending}.`
       Icon = ArtworkIcon
       break
     case "": // TODO: Major prize - TBD
-      label = `${pl ? "Artists were" : "Artist was"} awarded a major prize${pl ? "s" : ""}.`
+      label = `${pl ? "Artists were" : "Artist was"} awarded ${article}major prize${ending}.`
       Icon = CertificateIcon
       break
     */
   }
 
-  // A career higlight is new if the user hasen't seen it at all or if the number is higher
-  // than the number that has been seen by the user the last time.
-  const isNew = !careerHighlights[type] || careerHighlights[type].count < count
-  // const isNew = !careerHighlights[type] || careerHighlights[type].count < count
-
-  return { label, Icon, isNew }
+  return { label, Icon }
 }

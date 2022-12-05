@@ -31,7 +31,7 @@ static BOOL useClosedFonts = YES;
         CFErrorRef errorRef = NULL;
         if (CTFontManagerRegisterGraphicsFont(font, &errorRef) == NO) {
             NSError *error = (__bridge NSError *)errorRef;
-            if (error.code == kCTFontManagerErrorAlreadyRegistered) {
+            if (error.code == kCTFontManagerErrorAlreadyRegistered || error.code == kCTFontManagerErrorDuplicatedName) {
                 // nop - the font must have been registered by someone else already.
             } else {
                 @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:error.localizedDescription userInfo:@{ NSUnderlyingErrorKey: error }];

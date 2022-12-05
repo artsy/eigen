@@ -2,7 +2,7 @@ import { addRoute, addWebViewRoute, matchRoute, replaceParams } from "app/naviga
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 
 describe("artsy.net routes", () => {
-  it(`routes to Home`, () => {
+  it("routes to Home", () => {
     const expected = {
       type: "match",
       module: "Home",
@@ -817,7 +817,7 @@ describe("artsy.net routes", () => {
       Object {
         "module": "MyCollectionArtwork",
         "params": Object {
-          "artworkSlug": "123",
+          "artworkId": "123",
         },
         "type": "match",
       }
@@ -826,7 +826,7 @@ describe("artsy.net routes", () => {
       Object {
         "module": "MyCollectionArtwork",
         "params": Object {
-          "artworkSlug": "456",
+          "artworkId": "456",
         },
         "type": "match",
       }
@@ -899,6 +899,17 @@ describe("artsy.net routes", () => {
       Object {
         "module": "Partner",
         "params": Object {
+          "initialTab": "Artworks",
+          "partnerID": ":partnerID",
+        },
+        "type": "match",
+      }
+    `)
+    expect(matchRoute("/partner/:partnerID/shows")).toMatchInlineSnapshot(`
+      Object {
+        "module": "Partner",
+        "params": Object {
+          "initialTab": "Shows",
           "partnerID": ":partnerID",
         },
         "type": "match",
@@ -1240,7 +1251,7 @@ describe("other domains", () => {
   })
 })
 
-describe(replaceParams, () => {
+describe("replaceParams", () => {
   it("replaces the params in a url with params from an object", () => {
     expect(replaceParams("/artist/:id", { id: "banksy" })).toBe("/artist/banksy")
     expect(
@@ -1261,7 +1272,7 @@ describe(replaceParams, () => {
   })
 })
 
-describe(addWebViewRoute, () => {
+describe("addWebViewRoute", () => {
   it("returns a route matcher for web views", () => {
     const matcher = addWebViewRoute("/conditions-of-sale")
     expect(matcher.module).toBe("ReactWebView")
@@ -1290,7 +1301,7 @@ describe(addWebViewRoute, () => {
   })
 })
 
-describe(addRoute, () => {
+describe("addRoute", () => {
   it("returns a route matcher for a route", () => {
     expect(
       addRoute("/home/:id/thing/:slug/other_thing/:slug2", "Home").match([

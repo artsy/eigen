@@ -152,8 +152,10 @@ describe("renderMarkdown", () => {
   })
 })
 
-function visitTree(tree: unknown, visit: (node: React.ReactElement) => void) {
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+function visitTree(
+  tree: React.ReactElement<any> | Array<React.ReactElement<any>>,
+  visit: (node: React.ReactElement) => void
+) {
   if (React.isValidElement(tree)) {
     visit(tree)
     React.Children.forEach((tree.props as any).children, (child) => visitTree(child, visit))

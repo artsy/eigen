@@ -4,11 +4,10 @@ import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
 import { filter } from "lodash"
-import { Box, Join, Separator, Spacer } from "palette"
+import { Box, Join, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ContextGridCTA } from "./ContextGridCTA"
-import { Header } from "./Header"
 
 type OtherWorksGrid = NonNullable<NonNullable<OtherWorks_artwork$data["contextGrids"]>[number]>
 type ArtworkGrid = NonNullable<
@@ -42,7 +41,9 @@ export const OtherWorksFragmentContainer = createFragmentContainer<{
         >
           {gridsToShow.map((grid, index) => (
             <React.Fragment key={`Grid-${index}`}>
-              <Header title={grid.title!} />
+              <Text variant="md" textAlign="left">
+                {grid.title}
+              </Text>
               <Spacer mb={2} />
               <GenericGrid
                 trackingFlow={Schema.Flow.RecommendedArtworks}

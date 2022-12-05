@@ -67,7 +67,6 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
     if (contentYScrollOffset.current - 2 * auctionResultYOffset <= SCROLL_UP_TO_SHOW_THRESHOLD) {
       auctionResultYOffset += ARTIST_HEADER_HEIGHT
     }
-    flatListRef.current?.getNode().scrollToOffset({ animated: true, offset: auctionResultYOffset })
   }, [auctionResultsYCoordinate, contentYScrollOffset])
 
   // Show or hide floating filter button depending on the scroll position

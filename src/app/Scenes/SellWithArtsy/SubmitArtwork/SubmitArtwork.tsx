@@ -3,29 +3,71 @@ import { ContextModule } from "@artsy/cohesion"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
+import { captureMessage } from "@sentry/react-native"
+import { ErrorView } from "app/Components/ErrorView/ErrorView"
+import { FancyModal } from "app/Components/FancyModal/FancyModal"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { BackButton } from "app/navigation/BackButton"
 import { goBack } from "app/navigation/navigate"
-import { GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { isEqual } from "lodash"
-import { CollapsibleMenuItem, Flex, Join, Separator, Spacer } from "palette"
+import { CollapsibleMenuItem, Flex, Join, Separator, Spacer, Text } from "palette"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
-import { toggledAccordionEvent } from "../utils/TrackingEvent"
+import {
+  artworkDetailsCompletedEvent,
+  consignmentSubmittedEvent,
+  contactInformationCompletedEvent,
+  toggledAccordionEvent,
+  uploadPhotosCompletedEvent,
+} from "../utils/TrackingEvent"
 import { ArtworkDetails } from "./ArtworkDetails/ArtworkDetails"
+import { createOrUpdateSubmission } from "./ArtworkDetails/utils/createOrUpdateSubmission"
+import { ArtworkDetailsFormModel } from "./ArtworkDetails/validation"
 import { ArtworkSubmittedScreen } from "./ArtworkSubmitted"
 import { ContactInformationQueryRenderer } from "./ContactInformation/ContactInformation"
+import { ContactInformationFormModel } from "./ContactInformation/validation"
 import { UploadPhotos } from "./UploadPhotos/UploadPhotos"
+
+export enum STEPS {
+  ArtworkDetails = "ArtworkDetails",
+  UploadPhotos = "UploadPhotos",
+  ContactInformation = "ContactInformation",
+}
+
+const DEFAULT_STEPS_IN_ORDER: STEPS[] = [
+  STEPS.ArtworkDetails,
+  STEPS.UploadPhotos,
+  STEPS.ContactInformation,
+]
 
 interface SubmitArtworkScreenNavigationProps
   extends StackScreenProps<SubmitArtworkOverviewNavigationStack, "SubmitArtworkScreen"> {}
 
 export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> = ({
   navigation,
+}) => {
+  const enableReorderedSubmissionFlow = useFeatureFlag("ARReorderSWAArtworkSubmissionFlow")
+  const STEPS_IN_ORDER: typeof DEFAULT_STEPS_IN_ORDER = enableReorderedSubmissionFlow
+    ? [STEPS.ContactInformation, STEPS.ArtworkDetails, STEPS.UploadPhotos]
+    : DEFAULT_STEPS_IN_ORDER
+
+  return <SubmitSWAArtworkFlow navigation={navigation} stepsInOrder={STEPS_IN_ORDER} />
+}
+
+interface SubmitSWAArtworkFlowProps {
+  navigation: SubmitArtworkScreenNavigationProps["navigation"]
+  stepsInOrder: STEPS[]
+}
+
+export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
+  navigation,
+  stepsInOrder,
 }) => {
   const { trackEvent } = useTracking()
   const { showActionSheetWithOptions } = useActionSheet()
@@ -35,52 +77,114 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
     dirtyArtworkDetailsValues,
   } = GlobalStore.useAppState((store) => store.artworkSubmission.submission)
 
+  const { userID, userEmail } = GlobalStore.useAppState((state) => state.auth)
+
+  // By default the userEmail is the user's email, but they can change that email in the form,
+  // and when they do we want to continue the tracking with the new email
+  const [desiredEmail, setDesiredEmail] = useState(userEmail)
+
   const [activeStep, setActiveStep] = useState(0)
+
+  const [hasError, setHasError] = useState(false)
 
   const artworkDetailsFromValuesRef = useRef(artworkDetails)
   artworkDetailsFromValuesRef.current = artworkDetails
 
-  const items = [
-    {
-      overtitle: "Step 1 of 3",
-      title: "Artwork Details",
-      contextModule: ContextModule.artworkDetails,
-      Content: (
-        <ArtworkDetails
-          handlePress={() => {
-            expandCollapsibleMenuContent(1)
-            setActiveStep(1)
-          }}
-        />
-      ),
-    },
-    {
-      overtitle: "Step 2 of 3",
-      title: "Upload Photos",
-      contextModule: ContextModule.uploadPhotos,
-      Content: (
-        <UploadPhotos
-          handlePress={() => {
-            expandCollapsibleMenuContent(2)
-            setActiveStep(2)
-          }}
-        />
-      ),
-    },
-    {
-      overtitle: "Step 3 of 3",
-      title: "Contact Information",
-      contextModule: ContextModule.contactInformation,
-      Content: (
-        <ContactInformationQueryRenderer
-          handlePress={(submissionId: string) => {
-            refreshMyCollection()
-            navigation.navigate("ArtworkSubmittedScreen", { submissionId })
-          }}
-        />
-      ),
-    },
-  ]
+  const track = (id: string, email?: string | null) => {
+    if (activeStep === stepsInOrder.length - 1) {
+      trackEvent(consignmentSubmittedEvent(id, email, userID))
+    }
+
+    const step = stepsInOrder[activeStep]
+
+    if (step === STEPS.ArtworkDetails) {
+      trackEvent(artworkDetailsCompletedEvent(id, email, userID))
+    } else if (step === STEPS.UploadPhotos) {
+      trackEvent(uploadPhotosCompletedEvent(id, email, userID))
+    } else if (step === STEPS.ContactInformation) {
+      trackEvent(contactInformationCompletedEvent(id, email, userID))
+    }
+  }
+
+  const handlePress = async (
+    formValues: ArtworkDetailsFormModel | ContactInformationFormModel | {}
+  ) => {
+    const isLastStep = activeStep === stepsInOrder.length - 1
+    const values = {
+      ...artworkDetails,
+      ...formValues,
+      state: (isLastStep ? "SUBMITTED" : undefined) as ArtworkDetailsFormModel["state"],
+    } as ArtworkDetailsFormModel & ContactInformationFormModel
+
+    const email = values.userEmail ? values.userEmail : desiredEmail
+
+    try {
+      const id = await createOrUpdateSubmission(values, submissionID)
+
+      if (id) {
+        track(id, email)
+
+        if (isLastStep) {
+          refreshMyCollection()
+          GlobalStore.actions.artworkSubmission.submission.resetSessionState()
+          if (!values.myCollectionArtworkID) {
+            // add clue only if it is not MyCollectionArtwork that was submitted
+            GlobalStore.actions.visualClue.addClue("ArtworkSubmissionMessage")
+          }
+          return navigation.navigate("ArtworkSubmittedScreen", { submissionId: id })
+        }
+
+        GlobalStore.actions.artworkSubmission.submission.setSubmissionId(id)
+
+        if (stepsInOrder[activeStep] === STEPS.ArtworkDetails) {
+          GlobalStore.actions.artworkSubmission.submission.setArtworkDetailsForm(
+            formValues as ArtworkDetailsFormModel
+          )
+        }
+      }
+    } catch (error) {
+      // Error with mutation.
+      captureMessage(JSON.stringify(error))
+      setHasError(true)
+      return
+    }
+
+    if (email && email !== desiredEmail) {
+      setDesiredEmail(email)
+    }
+    expandCollapsibleMenuContent(activeStep + 1)
+    setActiveStep(activeStep + 1)
+  }
+
+  const items = stepsInOrder.map((step, index) => {
+    const staticValues = { overtitle: `Step ${index + 1} of ${stepsInOrder.length}` }
+    const isLastStep = index === stepsInOrder.length - 1
+    switch (step) {
+      case STEPS.ArtworkDetails:
+        return {
+          ...staticValues,
+          title: "Artwork Details",
+          contextModule: ContextModule.artworkDetails,
+          Content: <ArtworkDetails handlePress={handlePress} isLastStep={isLastStep} />,
+        }
+      case STEPS.UploadPhotos:
+        return {
+          ...staticValues,
+          title: "Upload Photos",
+          contextModule: ContextModule.uploadPhotos,
+          Content: <UploadPhotos handlePress={handlePress} isLastStep={isLastStep} />,
+        }
+      case STEPS.ContactInformation:
+        return {
+          ...staticValues,
+          title: "Contact Information",
+          contextModule: ContextModule.contactInformation,
+          Content: (
+            <ContactInformationQueryRenderer handlePress={handlePress} isLastStep={isLastStep} />
+          ),
+        }
+    }
+  })
 
   const stepsRefs = useRef<CollapsibleMenuItem[]>(new Array(items.length).fill(null)).current
   const scrollViewRef = useRef<ScrollView>(null)
@@ -185,6 +289,16 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
               ))}
             </Join>
           </ScrollView>
+          <FancyModal visible={hasError} onBackgroundPressed={() => setHasError(false)}>
+            <FancyModalHeader onRightButtonPress={() => setHasError(false)} rightCloseButton>
+              <Text variant="md">Error</Text>
+            </FancyModalHeader>
+            <ErrorView
+              message={`We encountered an error while ${
+                activeStep !== stepsInOrder.length - 1 ? "saving" : "submitting"
+              } the Artwork. Please try again shortly`}
+            />
+          </FancyModal>
         </Flex>
       </ArtsyKeyboardAvoidingView>
     </ProvideScreenTrackingWithCohesionSchema>
@@ -203,10 +317,10 @@ export const SubmitArtwork = () => {
   return (
     <NavigationContainer independent>
       <StackNavigator.Navigator
-        headerMode="screen"
         detachInactiveScreens={false}
         screenOptions={{
           headerShown: false,
+          headerMode: "screen",
           cardStyle: { backgroundColor: "white" },
         }}
       >

@@ -1,111 +1,57 @@
+import { screen } from "@testing-library/react-native"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
-import { AutosuggestSearchResult } from "./components/AutosuggestSearchResult"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { RecentSearches } from "./RecentSearches"
 import { SearchContext } from "./SearchContext"
 import { RecentSearch } from "./SearchModel"
 
-const banksy: RecentSearch = {
-  type: "AUTOSUGGEST_RESULT_TAPPED",
-  props: {
-    displayLabel: "Banksy",
-    displayType: "Artist",
-    href: "https://artsy.com/artist/banksy",
-    imageUrl: "https://org-name.my-cloud-provider.com/bucket-hash/content-hash.jpg",
-    __typename: "Artist",
-  },
-}
+const [banksy, andyWarhol, keithHaring, yayoiKusama, joanMitchell, anniAlbers] = [
+  ["Banksy", "banksy"],
+  ["Andy Warhol", "andy-warhol"],
+  ["Keith Haring", "keith-haring"],
+  ["Yayoi Kusama", "yayoi-kusama"],
+  ["Joan Mitchell", "joan-mitchell"],
+  ["Anni Albers", "anni-albers"],
+].map(
+  ([name, slug]): RecentSearch => ({
+    type: "AUTOSUGGEST_RESULT_TAPPED",
+    props: {
+      displayLabel: name,
+      displayType: "Artist",
+      href: `https://artsy.com/artist/${slug}`,
+      imageUrl: "https://org-name.my-cloud-provider.com/bucket-hash/content-hash.jpg",
+      __typename: "Artist",
+    },
+  })
+)
 
-const andyWarhol: RecentSearch = {
-  type: "AUTOSUGGEST_RESULT_TAPPED",
-  props: {
-    displayLabel: "Andy Warhol",
-    displayType: "Artist",
-    href: "https://artsy.com/artist/andy-warhol",
-    imageUrl: "https://org-name.my-cloud-provider.com/bucket-hash/content-hash.jpg",
-    __typename: "Artist",
-  },
-}
-
-const keithHaring: RecentSearch = {
-  type: "AUTOSUGGEST_RESULT_TAPPED",
-  props: {
-    displayLabel: "Keith Haring",
-    displayType: "Artist",
-    href: "https://artsy.com/artist/keith-haring",
-    imageUrl: "https://org-name.my-cloud-provider.com/bucket-hash/content-hash.jpg",
-    __typename: "Artist",
-  },
-}
-
-const yayoiKusama: RecentSearch = {
-  type: "AUTOSUGGEST_RESULT_TAPPED",
-  props: {
-    displayLabel: "Yayoi Kusama",
-    displayType: "Artist",
-    href: "https://artsy.com/artist/yayoi-kusama",
-    imageUrl: "https://org-name.my-cloud-provider.com/bucket-hash/content-hash.jpg",
-    __typename: "Artist",
-  },
-}
-
-const joanMitchell: RecentSearch = {
-  type: "AUTOSUGGEST_RESULT_TAPPED",
-  props: {
-    displayLabel: "Joan Mitchell",
-    displayType: "Artist",
-    href: "https://artsy.com/artist/joan-mitchell",
-    imageUrl: "https://org-name.my-cloud-provider.com/bucket-hash/content-hash.jpg",
-    __typename: "Artist",
-  },
-}
-
-const anniAlbers: RecentSearch = {
-  type: "AUTOSUGGEST_RESULT_TAPPED",
-  props: {
-    displayLabel: "Anni Albers",
-    displayType: "Artist",
-    href: "https://artsy.com/artist/anni-albers",
-    imageUrl: "https://org-name.my-cloud-provider.com/bucket-hash/content-hash.jpg",
-    __typename: "Artist",
-  },
-}
-
-const TestPage = () => {
-  return (
-    <SearchContext.Provider value={{ inputRef: { current: null }, queryRef: { current: null } }}>
-      <RecentSearches />
-    </SearchContext.Provider>
-  )
-}
+const TestPage = () => (
+  <SearchContext.Provider value={{ inputRef: { current: null }, queryRef: { current: null } }}>
+    <RecentSearches />
+  </SearchContext.Provider>
+)
 
 describe("Recent Searches", () => {
   it("has an empty state", () => {
-    const tree = renderWithWrappersLEGACY(<TestPage />)
+    renderWithWrappers(<TestPage />)
 
-    expect(extractText(tree.root)).toMatchInlineSnapshot(
-      `"Recent SearchesWe’ll save your recent searches here"`
-    )
-    expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(0)
+    expect(screen.queryByText("We’ll save your recent searches here")).toBeTruthy()
   })
 
   it("shows recent searches if there were any", () => {
-    const tree = renderWithWrappersLEGACY(<TestPage />)
+    renderWithWrappers(<TestPage />)
 
     GlobalStore.actions.search.addRecentSearch(banksy)
 
-    expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(1)
-    expect(extractText(tree.root)).toContain("Banksy")
+    expect(screen.queryByText("Banksy")).toBeTruthy()
 
     GlobalStore.actions.search.addRecentSearch(andyWarhol)
 
-    expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(2)
-    expect(extractText(tree.root)).toContain("Andy Warhol")
+    expect(screen.queryByText("Banksy")).toBeTruthy()
   })
 
   it("shows a maxiumum of 5 searches", () => {
-    const tree = renderWithWrappersLEGACY(<TestPage />)
+    renderWithWrappers(<TestPage />)
 
     GlobalStore.actions.search.addRecentSearch(banksy)
     GlobalStore.actions.search.addRecentSearch(andyWarhol)
@@ -114,12 +60,11 @@ describe("Recent Searches", () => {
     GlobalStore.actions.search.addRecentSearch(joanMitchell)
     GlobalStore.actions.search.addRecentSearch(anniAlbers)
 
-    expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(5)
-    expect(extractText(tree.root)).not.toContain("Banksy")
-    expect(extractText(tree.root)).toContain("Andy Warhol")
-    expect(extractText(tree.root)).toContain("Keith Haring")
-    expect(extractText(tree.root)).toContain("Yayoi Kusama")
-    expect(extractText(tree.root)).toContain("Joan Mitchell")
-    expect(extractText(tree.root)).toContain("Anni Albers")
+    expect(screen.queryByText("Banksy")).toBeNull()
+    expect(screen.queryByText("Andy Warhol")).toBeTruthy()
+    expect(screen.queryByText("Keith Haring")).toBeTruthy()
+    expect(screen.queryByText("Yayoi Kusama")).toBeTruthy()
+    expect(screen.queryByText("Joan Mitchell")).toBeTruthy()
+    expect(screen.queryByText("Anni Albers")).toBeTruthy()
   })
 })

@@ -4,14 +4,19 @@ import {
   ArtworkRailCard_artwork$key,
 } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
-import { Flex, Text, useColor } from "palette"
-import { GestureResponderEvent } from "react-native"
+import { compact } from "lodash"
+import { Flex, Spacer, Text, useColor } from "palette"
+import { useMemo } from "react"
+import { GestureResponderEvent, PixelRatio } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import styled from "styled-components/native"
-import { saleMessageOrBidInfo } from "../ArtworkGrids/ArtworkGridItem"
+import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "../ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
+import { LARGE_RAIL_IMAGE_WIDTH } from "./LargeArtworkRail"
+import { SMALL_RAIL_IMAGE_WIDTH } from "./SmallArtworkRail"
 
-export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = 90
+export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = 60
+
 export const ARTWORK_RAIL_CARD_IMAGE_HEIGHT = {
   small: 230,
   large: 320,
@@ -20,42 +25,94 @@ export const ARTWORK_RAIL_CARD_IMAGE_HEIGHT = {
 export type ArtworkCardSize = "small" | "large"
 
 export interface ArtworkRailCardProps {
-  onPress?: (event: GestureResponderEvent) => void
   artwork: ArtworkRailCard_artwork$key
-  lotLabel?: string | null
-  testID?: string
-  size: ArtworkCardSize
-  hidePartnerName?: boolean
   hideArtistName?: boolean
+  hidePartnerName?: boolean
+  isRecentlySoldArtwork?: boolean
+  lotLabel?: string | null
+  lowEstimateDisplay?: string
+  highEstimateDisplay?: string
+  onPress?: (event: GestureResponderEvent) => void
+  priceRealizedDisplay?: string
+  size: ArtworkCardSize
+  testID?: string
 }
 
 export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
-  onPress,
-  testID,
-  lotLabel,
-  size,
-  hidePartnerName = false,
   hideArtistName = false,
+  hidePartnerName = false,
+  isRecentlySoldArtwork = false,
+  lotLabel,
+  lowEstimateDisplay,
+  highEstimateDisplay,
+  onPress,
+  priceRealizedDisplay,
+  size,
+  testID,
   ...restProps
 }) => {
+  const fontScale = PixelRatio.getFontScale()
+
   const artwork = useFragment(artworkFragment, restProps.artwork)
 
   const { artistNames, date, partner, title, image } = artwork
 
-  const saleMessage = saleMessageOrBidInfo({ artwork, isSmallTile: true })
+  const saleMessage = defaultSaleMessageOrBidInfo({ artwork, isSmallTile: true })
+
   const urgencyTag =
     artwork?.sale?.isAuction && !artwork?.sale?.isClosed
       ? getUrgencyTag(artwork?.sale?.endAt)
       : null
 
+  const getTextHeightByArtworkSize = (cardSize: ArtworkCardSize) => {
+    if (cardSize === "small") {
+      return ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + 30
+    }
+    return ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + (isRecentlySoldArtwork ? 30 : 0)
+  }
+
+  const containerWidth = useMemo(() => {
+    const imageDimensions = getImageDimensions({
+      width: image?.resized?.width ?? 0,
+      height: image?.resized?.height ?? 0,
+      maxHeight: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
+    })
+
+    switch (size) {
+      case "small":
+        return artwork.image?.resized?.width
+      case "large":
+        if (imageDimensions.width <= SMALL_RAIL_IMAGE_WIDTH) {
+          return SMALL_RAIL_IMAGE_WIDTH
+        } else if (imageDimensions.width >= LARGE_RAIL_IMAGE_WIDTH) {
+          return LARGE_RAIL_IMAGE_WIDTH
+        } else {
+          return imageDimensions.width
+        }
+
+      default:
+        assertNever(size)
+        break
+    }
+  }, [image?.resized?.height, image?.resized?.width])
+
   return (
     <ArtworkCard onPress={onPress || undefined} testID={testID}>
-      <Flex alignItems="flex-end">
-        <ArtworkRailCardImage image={image} size={size} urgencyTag={urgencyTag} />
+      <Flex>
+        <ArtworkRailCardImage
+          containerWidth={containerWidth}
+          image={image}
+          size={size}
+          urgencyTag={urgencyTag}
+        />
         <Flex
           my={1}
-          width={artwork.image?.resized?.width}
-          style={{ height: ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT }}
+          width={containerWidth}
+          // Recently sold artworks require more space for the text container
+          // to accommodate the estimate and realized price
+          style={{
+            height: fontScale * getTextHeightByArtworkSize(size),
+          }}
         >
           {!!lotLabel && (
             <Text lineHeight="20" color="black60" numberOfLines={1}>
@@ -63,22 +120,62 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
             </Text>
           )}
           {!hideArtistName && !!artistNames && (
-            <Text numberOfLines={size === "small" ? 2 : 1} lineHeight="20" variant="sm">
+            <Text numberOfLines={size === "small" ? 2 : 1} lineHeight="20" variant="xs">
               {artistNames}
             </Text>
           )}
-          {!!(title || date) && (
-            <Text lineHeight="20" color="black60" numberOfLines={size === "small" ? 2 : 1}>
-              {[title, date].filter(Boolean).join(", ")}
+          {!!title && (
+            <Text
+              lineHeight="20"
+              color="black60"
+              numberOfLines={size === "small" ? 2 : 1}
+              variant="xs"
+              fontStyle="italic"
+            >
+              {title}
+              {!!date && (
+                <Text
+                  lineHeight="20"
+                  color="black60"
+                  numberOfLines={size === "small" ? 2 : 1}
+                  variant="xs"
+                >
+                  {title && date ? ", " : ""}
+                  {date}
+                </Text>
+              )}
             </Text>
           )}
+
           {!hidePartnerName && !!partner?.name && (
             <Text lineHeight="20" color="black60" numberOfLines={1}>
               {partner?.name}
             </Text>
           )}
-          {!!saleMessage && (
-            <Text lineHeight="20" variant="xs" color="black60" numberOfLines={1}>
+          {!!isRecentlySoldArtwork && size === "large" && (
+            <>
+              <Spacer mt={2} />
+              <Flex flexDirection="row" justifyContent="space-between">
+                <Text variant="xs" color="black60" numberOfLines={1} fontWeight="500">
+                  Estimate
+                </Text>
+                <Text variant="xs" color="black60" numberOfLines={1} fontWeight="500">
+                  {compact([lowEstimateDisplay, highEstimateDisplay]).join("—")}
+                </Text>
+              </Flex>
+              <Flex flexDirection="row" justifyContent="space-between">
+                <Text variant="xs" color="blue100" numberOfLines={1} fontWeight="500">
+                  Sold For (incl. premium)
+                </Text>
+                <Text variant="xs" color="blue100" numberOfLines={1} fontWeight="500">
+                  {priceRealizedDisplay}
+                </Text>
+              </Flex>
+            </>
+          )}
+
+          {!!saleMessage && !isRecentlySoldArtwork && (
+            <Text lineHeight="20" variant="xs" color="black100" numberOfLines={1} fontWeight={500}>
               {saleMessage}
             </Text>
           )}
@@ -92,12 +189,14 @@ export interface ArtworkRailCardImageProps {
   image: ArtworkRailCard_artwork$data["image"]
   size: ArtworkCardSize
   urgencyTag?: string | null
+  containerWidth?: number | null
 }
 
 const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
   image,
   size,
   urgencyTag = null,
+  containerWidth,
 }) => {
   const color = useColor()
 
@@ -114,15 +213,22 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
     )
   }
 
+  const imageDimensions = getImageDimensions({
+    width: width ?? 0,
+    height: height ?? 0,
+    maxHeight: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
+  })
+
   return (
     <Flex>
-      <OpaqueImageView
-        style={{ maxHeight: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size] }}
-        resizeMode="contain"
-        imageURL={src}
-        height={height || 0}
-        width={width || 0}
-      />
+      <Flex width={containerWidth}>
+        <OpaqueImageView
+          style={{ maxHeight: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size] }}
+          imageURL={src}
+          height={imageDimensions.height}
+          width={containerWidth!}
+        />
+      </Flex>
       {!!urgencyTag && (
         <Flex
           backgroundColor={color("white100")}
@@ -141,6 +247,23 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
       )}
     </Flex>
   )
+}
+
+const getImageDimensions = ({
+  height,
+  width,
+  maxHeight,
+}: {
+  height: number
+  width: number
+  maxHeight: number
+}) => {
+  const aspectRatio = width / height
+  if (height > maxHeight) {
+    const maxWidth = maxHeight * aspectRatio
+    return { width: maxWidth, height: maxHeight }
+  }
+  return { width, height }
 }
 
 const artworkFragment = graphql`

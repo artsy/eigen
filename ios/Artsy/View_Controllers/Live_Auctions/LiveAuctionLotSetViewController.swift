@@ -19,7 +19,7 @@ class LiveAuctionLotSetViewController: UIViewController {
     fileprivate var saleIsOnHold = false
     fileprivate var pageViewScrollView: UIScrollView?
     fileprivate var saleAvailabilityObserver: ObserverToken<SaleAvailabilityState>?
-    fileprivate var progressBarBottomConstraintAtRestConstant: CGFloat = -165
+    fileprivate var progressBarBottomConstraintAtRestConstant: CGFloat = -205
     fileprivate var collectionViewBottomConstraint: CGFloat = -288
     fileprivate var progressBarBottomConstraint: NSLayoutConstraint?
     fileprivate let saleNetworkModel = AuctionSaleNetworkModel()

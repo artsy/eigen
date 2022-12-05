@@ -7,8 +7,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { AuctionIcon, Box, Button, Flex, GenomeIcon, Input, Spacer, Text } from "palette"
 import React, { useState } from "react"
-import { Alert, InteractionManager } from "react-native"
-import { ScrollView } from "react-native-gesture-handler"
+import { Alert, InteractionManager, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import { color } from "styled-system"
@@ -36,7 +35,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
     <ArtsyKeyboardAvoidingView>
       <ScrollView>
         <Box pr="2" pl="2">
-          <Text variant="lg" mt="6">
+          <Text variant="lg-display" mt="6">
             Delete My Account
           </Text>
           <Spacer mt="3" />

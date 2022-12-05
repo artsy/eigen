@@ -1,4 +1,4 @@
-import { editCollectedArtwork } from "@artsy/cohesion"
+import { ActionType, ContextModule, EditCollectedArtwork, OwnerType } from "@artsy/cohesion"
 import { MyCollectionArtworkQuery } from "__generated__/MyCollectionArtworkQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
@@ -7,6 +7,8 @@ import { goBack, navigate, popToRoot } from "app/navigation/navigate"
 import { GlobalStore } from "app/store/GlobalStore"
 import { getVortexMedium } from "app/utils/marketPriceInsightHelpers"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { compact } from "lodash"
 import { Flex, Text } from "palette/elements"
 import React, { Suspense, useCallback } from "react"
@@ -23,7 +25,7 @@ export enum Tab {
 }
 
 const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
-  artworkSlug,
+  artworkId,
   artistInternalID,
   medium,
   category,
@@ -31,7 +33,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
   const { trackEvent } = useTracking()
 
   const data = useLazyLoadQuery<MyCollectionArtworkQuery>(MyCollectionArtworkScreenQuery, {
-    artworkSlug,
+    artworkId: artworkId || "",
     // To not let the whole query fail if the artwork doesn't has an artist
     artistInternalID: artistInternalID || "",
     // TODO: Fix this logic once we only need category to fetch insights
@@ -57,7 +59,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
       passProps: {
         mode: "edit",
         artwork: data.artwork,
-        onSuccess: popToRoot,
+        onSuccess: goBack,
         onDelete: popToRoot,
       },
     })
@@ -96,7 +98,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
       <FancyModalHeader
         onLeftButtonPress={goBack}
         rightButtonText="Edit"
-        onRightButtonPress={!data.artwork.consignmentSubmission ? handleEdit : undefined}
+        onRightButtonPress={handleEdit}
         hideBottomDivider
       />
       {!!shouldShowInsightsTab ? (
@@ -119,8 +121,8 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
 }
 
 export const MyCollectionArtworkScreenQuery = graphql`
-  query MyCollectionArtworkQuery($artworkSlug: String!, $artistInternalID: ID!, $medium: String!) {
-    artwork(id: $artworkSlug) {
+  query MyCollectionArtworkQuery($artworkId: String!, $artistInternalID: ID!, $medium: String!) {
+    artwork(id: $artworkId) {
       ...MyCollectionArtwork_sharedProps @relay(mask: false)
       ...MyCollectionArtworkHeader_artwork
       ...MyCollectionArtworkInsights_artwork
@@ -130,10 +132,15 @@ export const MyCollectionArtworkScreenQuery = graphql`
       }
       artist {
         internalID
+        initials
         formattedNationalityAndBirthday
         auctionResultsConnection(first: 3, sort: DATE_DESC) {
           totalCount
         }
+      }
+      marketPriceInsights {
+        ...MyCollectionArtworkArtistMarket_artworkPriceInsights
+        ...MyCollectionArtworkDemandIndex_artworkPriceInsights
       }
     }
     marketPriceInsights(artistId: $artistInternalID, medium: $medium) @optionalField {
@@ -158,30 +165,43 @@ const MyCollectionArtworkPlaceholder = () => (
   </ProvidePlaceholderContext>
 )
 export interface MyCollectionArtworkScreenProps {
-  artworkSlug: string
-  artistInternalID: string
-  medium: string
-  category: string
+  artworkId: string | null
+  artistInternalID: string | null
+  medium: string | null
+  category: string | null
 }
 
 export const MyCollectionArtworkScreen: React.FC<MyCollectionArtworkScreenProps> = (props) => {
   return (
-    <RetryErrorBoundary
-      notFoundTitle="Artwork no longer in My Collection"
-      notFoundText="You previously deleted this artwork."
-      notFoundBackButtonText="Back to My Collection"
-    >
-      <Suspense fallback={<MyCollectionArtworkPlaceholder />}>
-        <MyCollectionArtwork {...props} />
-      </Suspense>
-    </RetryErrorBoundary>
+    <ProvideScreenTrackingWithCohesionSchema info={tracks.screen(props.artworkId || "")}>
+      <RetryErrorBoundary
+        notFoundTitle="Artwork no longer in My Collection"
+        notFoundText="You previously deleted this artwork."
+        notFoundBackButtonText="Back to My Collection"
+      >
+        <Suspense fallback={<MyCollectionArtworkPlaceholder />}>
+          <MyCollectionArtwork {...props} />
+        </Suspense>
+      </RetryErrorBoundary>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 
 const tracks = {
-  editCollectedArtwork: (internalID: string, slug: string) => {
-    return editCollectedArtwork({ contextOwnerId: internalID, contextOwnerSlug: slug })
-  },
+  editCollectedArtwork: (internalID: string, slug: string): EditCollectedArtwork => ({
+    action: ActionType.editCollectedArtwork,
+    context_module: ContextModule.myCollectionArtwork,
+    context_owner_id: internalID,
+    context_owner_slug: slug,
+    context_owner_type: OwnerType.myCollectionArtwork,
+    platform: "mobile",
+  }),
+
+  screen: (id: string) =>
+    screen({
+      context_screen_owner_type: OwnerType.myCollectionArtwork,
+      context_screen_owner_id: id,
+    }),
 }
 
 /**
@@ -201,11 +221,13 @@ export const ArtworkMetaProps = graphql`
         isP1
       }
     }
-    consignmentSubmission {
-      inProgress
-    }
     artistNames
     category
+    # needed to show the banner inside the edit artwork view
+    # TODO: move logic to the edit artwork view https://artsyproduct.atlassian.net/browse/CX-2846
+    consignmentSubmission {
+      displayText
+    }
     pricePaid {
       display
       minor

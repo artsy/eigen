@@ -1,7 +1,12 @@
 import { NavigationContainer, Route } from "@react-navigation/native"
-import { createStackNavigator } from "@react-navigation/stack"
-import { AppModule } from "app/AppRegistry"
+import {
+  CardStyleInterpolators,
+  createStackNavigator,
+  StackCardStyleInterpolator,
+} from "@react-navigation/stack"
+import { AppModule, modules } from "app/AppRegistry"
 import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
+import { Platform } from "react-native"
 import { NavStack } from "./NavStack"
 import { useReloadedDevNavigationState } from "./useReloadedDevNavigationState"
 
@@ -18,8 +23,26 @@ export const ModalStack: React.FC = ({ children }) => {
   return (
     <NavigationContainer ref={__unsafe_mainModalStackRef} initialState={initialState}>
       <Stack.Navigator
-        mode="modal"
-        screenOptions={{ headerShown: false, cardStyle: { backgroundColor: "white" } }}
+        screenOptions={({ route }) => {
+          const rootModuleName: AppModule | undefined = (route.params as any)?.rootModuleName
+          let cardStyleInterpolator: StackCardStyleInterpolator | undefined
+
+          // Note: Modal screens always opens at full height on Android
+          if (Platform.OS === "ios" && rootModuleName) {
+            const module = modules[rootModuleName]
+
+            if (module.options.modalPresentationStyle === "fullScreen") {
+              cardStyleInterpolator = CardStyleInterpolators.forVerticalIOS
+            }
+          }
+
+          return {
+            presentation: "modal",
+            headerShown: false,
+            cardStyle: { backgroundColor: "white" },
+            cardStyleInterpolator,
+          }
+        }}
       >
         <Stack.Screen name="root">{() => children}</Stack.Screen>
         <Stack.Screen name="modal" component={ModalNavStack} />

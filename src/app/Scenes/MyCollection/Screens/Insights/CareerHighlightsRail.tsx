@@ -1,7 +1,9 @@
 import { CareerHighlightsRail_me$key } from "__generated__/CareerHighlightsRail_me.graphql"
-import { Flex, Spacer, useColor } from "palette"
+import { EmbeddedCarousel } from "app/Components/EmbeddedCarousel"
+import { navigate, popToRoot } from "app/navigation/navigate"
+import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { Flex, useColor } from "palette"
 import React from "react"
-import { FlatList } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import {
@@ -23,7 +25,7 @@ export const CareerHighlightsRail: React.FC<CareerHighlightsRailProps> = (props)
 
   const careerHighlightData = Object.entries(me.myCollectionInfo.artistInsightsCount)
     .map((a) => ({
-      kind: a[0],
+      kind: a[0] as CareerHighlightKind,
       count: a[1],
     }))
     .filter((a) => a.count > 0)
@@ -32,18 +34,46 @@ export const CareerHighlightsRail: React.FC<CareerHighlightsRailProps> = (props)
     return null
   }
 
+  const careerHighlightsAvailableTypes: CareerHighlightKind[] = []
+  careerHighlightData.map((i) => {
+    return careerHighlightsAvailableTypes.push(i.kind)
+  })
+
   return (
-    <Flex px={2} py={1} mb={2} backgroundColor={color("black5")}>
-      <FlatList
+    <Flex py={1} mb={4} backgroundColor={color("black5")}>
+      <EmbeddedCarousel
         testID="career-highlight-cards-flatlist"
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        ItemSeparatorComponent={() => <Spacer mx={1} />}
-        ListFooterComponent={() => <CareerHighlightPromotionalCard />}
-        style={{ overflow: "visible" }}
+        ListFooterComponent={() => (
+          <Flex ml={2} mr={2}>
+            <CareerHighlightPromotionalCard
+              onPress={() => {
+                navigate("/my-collection/career-highlights", {
+                  passProps: { openPromoCard: true, careerHighlightsAvailableTypes },
+                })
+              }}
+              onButtonPress={() => {
+                navigate("my-collection/artworks/new", {
+                  passProps: {
+                    mode: "add",
+                    source: Tab.insights,
+                    onSuccess: popToRoot,
+                  },
+                })
+              }}
+            />
+          </Flex>
+        )}
         data={careerHighlightData}
         renderItem={({ item }) => (
-          <CareerHighlightsCard count={item.count} type={item.kind as CareerHighlightKind} />
+          <CareerHighlightsCard
+            count={item.count}
+            type={item.kind}
+            onPress={() => {
+              navigate("/my-collection/career-highlights", {
+                passProps: { type: item.kind, careerHighlightsAvailableTypes },
+              })
+            }}
+          />
         )}
       />
     </Flex>

@@ -24,6 +24,11 @@ export const AUCTION_HOUSE_OPTIONS: FilterData[] = [
     paramName: FilterParamName.organizations,
     paramValue: "Phillips",
   },
+  {
+    displayText: "Bonhams",
+    paramName: FilterParamName.organizations,
+    paramValue: "Bonhams",
+  },
 ]
 
 interface AuctionHouseOptionsScreenProps

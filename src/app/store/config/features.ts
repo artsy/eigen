@@ -85,50 +85,22 @@ export const features = defineFeatures({
   ARGoogleAuth: {
     readyForRelease: true,
     description: "Enable Google authentication",
-    showInAdminMenu: true,
     echoFlagKey: "ARGoogleAuth",
   },
   AREnableExampleExperiments: {
     // we can remove this as soon as we have a real experiment on Unleash
     readyForRelease: false,
     description: "Show example Unleash experiments",
-    showInAdminMenu: true,
   },
   AREnableQueriesPrefetching: {
     readyForRelease: true,
     description: "Enable query prefetching",
-    showInAdminMenu: true,
     echoFlagKey: "AREnableQueriesPrefetching",
   },
   ARAllowLinkSocialAccountsOnSignUp: {
     readyForRelease: true,
     description: "Allow linking of social accounts on sign up",
-    showInAdminMenu: true,
     echoFlagKey: "ARAllowLinkSocialAccountsOnSignUp",
-  },
-  AREnableCascadingEndTimerLotPage: {
-    readyForRelease: true,
-    description: "Enable cascading end times on the lot page",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableCascadingEndTimerLotPage",
-  },
-  AREnableCascadingEndTimerSalePageDetails: {
-    readyForRelease: true,
-    description: "Enable cascading end times on the sale page details",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableCascadingEndTimerSalePageDetails",
-  },
-  AREnableCascadingEndTimerSalePageGrid: {
-    readyForRelease: true,
-    description: "Enable cascading end times on the sale page lot grid",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableCascadingEndTimerSalePageGrid",
-  },
-  AREnableCascadingEndTimerHomeSalesRail: {
-    readyForRelease: true,
-    description: "Enable cascading end times on the Sales Rail on Home screen",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableCascadingEndTimerHomeSalesRail",
   },
   AREnableImageSearch: {
     readyForRelease: false,
@@ -138,7 +110,6 @@ export const features = defineFeatures({
   AREnableMyCollectionSearchBar: {
     readyForRelease: true,
     description: "Enable My Collection search bar",
-    showInAdminMenu: true,
     echoFlagKey: "AREnableMyCollectionSearchBar",
   },
   AREnablePlaceholderLayoutAnimation: {
@@ -146,26 +117,18 @@ export const features = defineFeatures({
     description: "Enable placeholder layout animation",
     echoFlagKey: "AREnablePlaceholderLayoutAnimation",
   },
-  AREnableAvalaraPhase2: {
-    readyForRelease: false,
-    description: "Enable Avalara Phase 2",
-    showInAdminMenu: true,
-  },
   ARDarkModeSupport: {
     readyForRelease: false,
     description: "Support dark mode",
-    showInAdminMenu: true,
   },
   ARShowRequestPriceEstimateBanner: {
     readyForRelease: true,
     description: "Show request price estimate banner",
-    showInAdminMenu: true,
     echoFlagKey: "ARShowRequestPriceEstimateBanner",
   },
   ARShowMyCollectionDemandIndexHints: {
     readyForRelease: true,
     description: "Show demand index hints",
-    showInAdminMenu: true,
     echoFlagKey: "ARShowMyCollectionDemandIndexHints",
   },
   AREnablePriceEstimateRange: {
@@ -176,7 +139,6 @@ export const features = defineFeatures({
   AREnableHomeScreenArtworkRecommendations: {
     readyForRelease: true,
     description: "Enable Home Screen Artwork Recommendations",
-    showInAdminMenu: true,
     echoFlagKey: "AREnableHomeScreenArtworkRecommendations",
   },
   AREnableMapScreen: {
@@ -187,77 +149,101 @@ export const features = defineFeatures({
   AREnableAuctionShareButton: {
     readyForRelease: true,
     description: "Show share button in auction screen",
-    showInAdminMenu: true,
     echoFlagKey: "AREnableAuctionShareButton",
   },
-  AREnableNewOpaqueImageView: {
+  AREnableNewOpaqueImageComponent: {
     readyForRelease: true,
-    description: "Enable New Opaque Image View",
+    description: "Enable New Image Component",
     showInAdminMenu: true,
-    echoFlagKey: "AREnableNewOpaqueImageView",
+    echoFlagKey: "AREnableNewOpaqueImageComponent",
   },
   AREnableConversationalBuyNow: {
     readyForRelease: true,
     description: "Conversational Buy Now",
-    showInAdminMenu: true,
     echoFlagKey: "AREnableConversationalBuyNow",
-  },
-  AREnableCompleteProfileMessage: {
-    readyForRelease: true,
-    description: "Enable Collector Profile Complete Message",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableCompleteProfileMessage",
   },
   AREnableMyCollectionInsights: {
     readyForRelease: true,
     description: "Enable My Collection insights tab",
-    showInAdminMenu: true,
     echoFlagKey: "AREnableMyCollectionInsights",
-  },
-  AREnableMyCollectionInsightsPhase1Part1: {
-    readyForRelease: true,
-    description: "Enable MyC insights Ph 1 Pt 1",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableMyCollectionInsightsPhase1Part1",
-  },
-  AREnableMyCollectionInsightsPhase1Part2: {
-    readyForRelease: true,
-    description: "Enable MyC insights Ph 1 Pt 2",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableMyCollectionInsightsPhase1Part2",
-  },
-  AREnableMyCollectionInsightsPhase1Part3: {
-    readyForRelease: false,
-    description: "Enable MyC insights Ph 1 Pt 3",
-    showInAdminMenu: true,
-  },
-  AREnableNotFoundFailureView: {
-    readyForRelease: true,
-    description: "Enable Not Found Failure View",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableNotFoundFailureView",
   },
   AREnableArtworksFromNonArtsyArtists: {
     readyForRelease: false,
     description: "Enable My Collection artworks from non-Artsy artists",
     showInAdminMenu: true,
-  },
-  AREnableCreateArtworkAlert: {
-    readyForRelease: true,
-    description: "Enable Create Alert on Artwork pages",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableCreateArtworkAlert",
-  },
-  AREnableNewOnboarding: {
-    readyForRelease: false,
-    description: "Enable new Onboarding flow",
-    showInAdminMenu: true,
+    echoFlagKey: "AREnableArtworksFromNonArtsyArtists",
   },
   AREnableArtworksConnectionForAuction: {
     readyForRelease: true,
     description: "Use artworksConnection for Auction screen",
-    showInAdminMenu: true,
     echoFlagKey: "AREnableArtworksConnectionForAuction",
+  },
+  AREnableActivity: {
+    readyForRelease: true,
+    description: "Enable Activity",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableActivity",
+  },
+  AREnableMyCollectionHFOnboarding: {
+    readyForRelease: true,
+    description: "Enable My Collection home feed onboarding",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableMyCollectionHFOnboarding",
+  },
+  AREnableCollectionsInOnboarding: {
+    readyForRelease: true,
+    description: "Replace genes with collections in onboarding",
+    echoFlagKey: "AREnableCollectionsInOnboarding",
+  },
+  AREnableNewRequestPriceEstimateLogic: {
+    description: "Enable new request price estimate logic",
+    showInAdminMenu: true,
+    readyForRelease: true,
+    echoFlagKey: "AREnableNewRequestPriceEstimateLogic",
+  },
+  ARReorderSWAArtworkSubmissionFlow: {
+    description: "Reorder SWA Artwork submission flow",
+    showInAdminMenu: true,
+    readyForRelease: true,
+    echoFlagKey: "ARReorderSWAArtworkSubmissionFlow",
+  },
+  ARArtworkRedesingPhase2: {
+    description: "Enable redesigned artwork page (phase 2)",
+    showInAdminMenu: true,
+    readyForRelease: false,
+  },
+  AREnablePanOnStaticHeader: {
+    description: "Enable Scroll/Pan on StaticHeader",
+    showInAdminMenu: true,
+    readyForRelease: false,
+  },
+  AREnableSearchDiscoveryContentIOS: {
+    description: "Display discovery content on Search tab on iOS",
+    showInAdminMenu: true,
+    readyForRelease: true,
+    echoFlagKey: "AREnableSearchDiscoveryContentIOS",
+  },
+  AREnableSearchDiscoveryContentAndroid: {
+    description: "Display discovery content on Search tab on Android",
+    showInAdminMenu: true,
+    readyForRelease: true,
+    echoFlagKey: "AREnableSearchDiscoveryContentAndroid",
+  },
+  AREnforceLargeNewWorksRail: {
+    description: "Enforce large new works rail",
+    showInAdminMenu: true,
+    readyForRelease: false,
+  },
+  AREnableArtworkGridSaveIcon: {
+    description: "Enable artwork grid save icon",
+    showInAdminMenu: true,
+    readyForRelease: true,
+    echoFlagKey: "AREnableArtworkGridSaveIcon",
+  },
+  AREnableAndroidImagesGallery: {
+    description: "Enable images gallery on Android",
+    showInAdminMenu: true,
+    readyForRelease: false,
   },
 })
 
@@ -304,6 +290,9 @@ export const devToggles = defineDevToggles({
   DTEasyMyCollectionArtworkCreation: {
     description: "MyCollection artworks easy add",
   },
+  DTMyCollectionDeleteAllArtworks: {
+    description: "MyCollection delete all artworks",
+  },
   DTShowWebviewIndicator: {
     description: "Webview indicator",
   },
@@ -321,6 +310,9 @@ export const devToggles = defineDevToggles({
   },
   DTShowErrorInLoadFailureView: {
     description: "Show error in load failure view",
+  },
+  DTEnableNewImageLabel: {
+    description: "Show a label on new OpaqueImageView",
   },
 })
 

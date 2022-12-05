@@ -39,10 +39,12 @@ export const Versions = {
   AddZipCodeAndCountryCodeInSubmissionArtworkDetails: 27,
   AddDirtyFormValuesToSubmissionState: 28,
   RemoveDeviceId: 29,
-  AddMyCollectionCareerHighlights: 30,
+  AddSubmissionIdForMyCollection: 30,
+  AddRecentPriceRangesModel: 31,
+  AddUserPreferredPriceRange: 32,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddMyCollectionCareerHighlights
+export const CURRENT_APP_VERSION = Versions.AddUserPreferredPriceRange
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -237,10 +239,16 @@ export const artsyAppMigrations: Migrations = {
   [Versions.RemoveDeviceId]: (state) => {
     delete state.native.deviceId
   },
-  [Versions.AddMyCollectionCareerHighlights]: (state) => {
-    state.myCollectionCareerHighlights = {
-      careerHighlights: {},
+  [Versions.AddSubmissionIdForMyCollection]: (state) => {
+    state.artworkSubmission.submission.submissionIdForMyCollection = ""
+  },
+  [Versions.AddRecentPriceRangesModel]: (state) => {
+    state.recentPriceRanges = {
+      ranges: [],
     }
+  },
+  [Versions.AddUserPreferredPriceRange]: (state) => {
+    state.userPrefs.priceRange = "*-*"
   },
 }
 

@@ -5,10 +5,22 @@ import { Currency } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { isEmpty } from "lodash"
-import { Box, Button, Flex, Input, Join, Separator, Spacer, Text } from "palette"
+import {
+  Box,
+  Button,
+  Flex,
+  Input,
+  Join,
+  Message,
+  Separator,
+  Spacer,
+  Text,
+  useColor,
+  useSpace,
+} from "palette"
 import { Select } from "palette/elements/Select"
 import React, { useEffect } from "react"
-import { Alert, ScrollView, TouchableOpacity } from "react-native"
+import { Alert, Image, ScrollView, TouchableOpacity } from "react-native"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import { ScreenMargin } from "../../../Components/ScreenMargin"
 import { ArrowDetails } from "../Components/ArrowDetails"
@@ -27,6 +39,9 @@ export const MyCollectionArtworkFormMain: React.FC<
   const artworkActions = GlobalStore.actions.myCollection.artwork
   const artworkState = GlobalStore.useAppState((state) => state.myCollection.artwork)
   const { formik } = useArtworkForm()
+  const color = useColor()
+  const space = useSpace()
+
   const { showActionSheetWithOptions } = useActionSheet()
   const modalType = route.params.mode
   const addOrEditLabel = modalType === "edit" ? "Edit" : "Add"
@@ -46,13 +61,14 @@ export const MyCollectionArtworkFormMain: React.FC<
               text: "Discard",
               style: "destructive",
               onPress: () => {
-                GlobalStore.actions.myCollection.artwork.resetFormButKeepArtist()
+                GlobalStore.actions.myCollection.artwork.resetForm()
                 navigation.dispatch(e.data.action)
               },
             },
           ]
         )
       } else {
+        GlobalStore.actions.myCollection.artwork.resetForm()
         navigation.dispatch(e.data.action)
       }
     })
@@ -87,6 +103,19 @@ export const MyCollectionArtworkFormMain: React.FC<
           {addOrEditLabel} Details
         </FancyModalHeader>
         <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
+          {!!route.params.isSubmission && (
+            <Message
+              containerStyle={{ marginX: space(2) }}
+              title="Changes will only appear in My Collection. They will not be applied to your sale submission."
+              IconComponent={() => (
+                <Image
+                  source={require("images/info.webp")}
+                  style={{ tintColor: color("black100") }}
+                />
+              )}
+            />
+          )}
+
           <Flex p={2}>
             <Join separator={<Spacer my={1} />}>
               {formik.values.artistSearchResult ? (
@@ -113,6 +142,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 accessibilityLabel="Title"
                 value={formikValues.title}
               />
+              <CategoryPicker />
               <Input
                 title="Year"
                 keyboardType="number-pad"
@@ -123,7 +153,6 @@ export const MyCollectionArtworkFormMain: React.FC<
                 accessibilityLabel="Year"
                 value={formikValues.date}
               />
-              <CategoryPicker />
               <Input
                 title="Materials"
                 placeholder="Materials"
@@ -198,10 +227,12 @@ export const MyCollectionArtworkFormMain: React.FC<
 
           <ScreenMargin>
             {modalType === "edit" && (
-              <Button
-                my={1}
-                variant="outline"
-                block
+              <Text
+                my={4}
+                variant="sm"
+                underline
+                color={color("red100")}
+                textAlign="center"
                 onPress={() => {
                   showActionSheetWithOptions(
                     {
@@ -221,7 +252,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 testID="DeleteButton"
               >
                 Delete artwork
-              </Button>
+              </Text>
             )}
           </ScreenMargin>
 

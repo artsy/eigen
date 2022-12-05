@@ -3,18 +3,13 @@ import { MyCollectionArtworkAboutWork_marketPriceInsights$key } from "__generate
 import { formatCentsToDollars } from "app/Scenes/MyCollection/utils/formatCentsToDollars"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { capitalize } from "lodash"
-import { Flex, Text } from "palette"
+import { Flex } from "palette"
 import { graphql, useFragment } from "react-relay"
-import { Field } from "../Field"
+import { Field, MetaDataField } from "../Field"
 
 interface EstimatePriceType {
   lowRangeCents: number | null
   highRangeCents: number | null
-}
-
-interface DimensionsType {
-  in: string | null
-  cm: string | null
 }
 
 interface MyCollectionArtworkAboutWorkProps {
@@ -30,9 +25,18 @@ export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWork
 
   const enablePriceEstimateRange = useFeatureFlag("AREnablePriceEstimateRange")
 
-  const { category, medium, dimensions, date, provenance } = artwork
+  const {
+    category,
+    medium,
+    attributionClass,
+    dimensions,
+    artworkLocation,
+    date,
+    provenance,
+    metric,
+    pricePaid,
+  } = artwork
 
-  const dimensionsText = getDimensionsText(dimensions)
   // FIXME: types of these values are unknown (coming from MP), so it needs to be casted to Number to work properly here
   const estimatePrice = getEstimatePrice({
     lowRangeCents: Number(marketPriceInsights?.lowRangeCents),
@@ -41,16 +45,15 @@ export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWork
 
   return (
     <Flex mb={4}>
-      <Text variant="lg" my={1}>
-        About the work
-      </Text>
-
       {!!enablePriceEstimateRange && <Field label="Estimate Range" value={estimatePrice} />}
-      <Field label="Medium" value={capitalize(category!)} />
-      <Field label="Materials" value={capitalize(medium!)} />
-      <Field label="Dimensions" value={dimensionsText} />
-      <Field label="Year created" value={date} />
-      <Field label="Provenance" value={provenance} />
+      <MetaDataField label="Medium" value={capitalize(category!)} />
+      <MetaDataField label="Materials" value={capitalize(medium!)} />
+      <MetaDataField label="Rarity" value={capitalize(attributionClass?.name || undefined)} />
+      <MetaDataField label="Dimensions" value={metric === "in" ? dimensions?.in : dimensions?.cm} />
+      <MetaDataField label="Location" value={artworkLocation} />
+      <MetaDataField label="Year created" value={date} />
+      <MetaDataField label="Provenance" value={provenance} />
+      <MetaDataField label="Price Paid" value={pricePaid?.display} />
     </Flex>
   )
 }
@@ -59,12 +62,20 @@ const artworkFragment = graphql`
   fragment MyCollectionArtworkAboutWork_artwork on Artwork {
     category
     medium
+    metric
     dimensions {
       in
       cm
     }
     date
     provenance
+    attributionClass {
+      name
+    }
+    artworkLocation
+    pricePaid {
+      display
+    }
   }
 `
 
@@ -74,14 +85,6 @@ const marketPriceInsightsFragment = graphql`
     highRangeCents
   }
 `
-
-export const getDimensionsText = (dimensions: DimensionsType | null) => {
-  if (dimensions === null) {
-    return ""
-  }
-
-  return [dimensions.in, dimensions.cm].filter((d) => d).join("\n")
-}
 
 export const getEstimatePrice = ({ lowRangeCents, highRangeCents }: EstimatePriceType) => {
   if (!lowRangeCents || !highRangeCents) {

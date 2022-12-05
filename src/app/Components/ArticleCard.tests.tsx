@@ -1,6 +1,5 @@
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
-import "react-native"
-import { TouchableWithoutFeedback } from "react-native-gesture-handler"
+import { TouchableWithoutFeedback } from "react-native"
 import { ArticleCard } from "./ArticleCard"
 
 it("renders without throwing an error", () => {

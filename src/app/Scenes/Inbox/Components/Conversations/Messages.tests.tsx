@@ -144,7 +144,7 @@ describe("messages with order updates", () => {
     })
 
     expect(extractText(tree.root)).toMatch(
-      "To protect your payment, always communicate and pay through the Artsy platform."
+      "To be covered by the Artsy Guarantee, always communicate and pay through the Artsy platform."
     )
     const toast = tree.root.findAllByType(Flex)[0]
     jest.advanceTimersByTime(150)
@@ -233,12 +233,12 @@ describe("messages with order updates", () => {
   it("does not remove 'Offer accepted' events when payment succeeds", () => {
     const day1Time1 = "2020-03-18T02:58:37.699Z"
     const day1Time2 = "2020-03-18T02:59:37.699Z"
-
     const tree = withConversationItems(getWrapper, {
       events: [
         {
           __typename: "CommerceOrderStateChangedEvent",
           orderUpdateState: "offer_approved",
+          state: "APPROVED",
           createdAt: day1Time1,
         },
         {
@@ -255,7 +255,6 @@ describe("messages with order updates", () => {
       .findAllByType(Text)
       .filter((element) => element.props.color !== "black30")
       .map((element) => extractText(element))
-
     expect(messagesAndUpdates).toContain("Offer Accepted")
   })
 

@@ -129,6 +129,8 @@ reports
 # Homebrew lock file
 Brewfile.lock.json
 
+# for tsconfig `incremental`
+tsconfig.tsbuildinfo
 
 #########################################################
 # Keep this rule last.

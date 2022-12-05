@@ -7,7 +7,7 @@ import Spinner from "app/Components/Spinner"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { isPad } from "app/utils/hardware"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
-import { Flex, quoteLeft, quoteRight, Spacer, Text, useSpace } from "palette"
+import { Flex, quoteLeft, quoteRight, Spacer, Text } from "palette"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -30,6 +30,7 @@ const SUBSEQUENT_BATCH_SIZE = 64
 
 const AutosuggestResultsFlatList: React.FC<{
   query: string
+  prependResults?: AutosuggestResult[]
   // if results are null that means we are waiting on a response from MP
   results: AutosuggestResults_results$data | null
   relay: RelayPaginationProp
@@ -38,6 +39,8 @@ const AutosuggestResultsFlatList: React.FC<{
   onResultPress?: OnResultPress
   trackResultPress?: TrackResultPress
   ListEmptyComponent?: React.ComponentType<any>
+  ListHeaderComponent?: React.ComponentType<any>
+  HeaderComponent?: React.ComponentType<any>
 }> = ({
   query,
   results: latestResults,
@@ -47,8 +50,10 @@ const AutosuggestResultsFlatList: React.FC<{
   onResultPress,
   trackResultPress,
   ListEmptyComponent = EmptyList,
+  ListHeaderComponent = () => <Spacer mb={2} />,
+  HeaderComponent = null,
+  prependResults = [],
 }) => {
-  const space = useSpace()
   const [shouldShowLoadingPlaceholder, setShouldShowLoadingPlaceholder] = useState(true)
   const loadMore = useCallback(() => relay.loadMore(SUBSEQUENT_BATCH_SIZE), [])
 
@@ -108,63 +113,77 @@ const AutosuggestResultsFlatList: React.FC<{
   const results = useRef(latestResults)
   results.current = latestResults || results.current
 
-  const nodes: AutosuggestResult[] = useMemo(
-    () =>
+  const nodes: AutosuggestResult[] = useMemo(() => {
+    const excludedIDs = prependResults.map((result) => result.internalID)
+
+    const edges =
       results.current?.results?.edges?.map((e, i) => ({ ...e?.node!, key: e?.node?.href! + i })) ??
-      [],
-    [results.current]
-  )
+      []
+    const filteredEdges = edges.filter((node) => !excludedIDs.includes(node.internalID))
+
+    return filteredEdges
+  }, [results.current, prependResults])
+
+  const allNodes = [...prependResults, ...nodes]
 
   // We want to show a loading spinner at the bottom so long as there are more results to be had
   const hasMoreResults =
     results.current && results.current.results?.edges?.length! > 0 && relay.hasMore()
+
   const ListFooterComponent = useMemo(() => {
     return () => (
-      <Flex justifyContent="center" p={3} pb={6}>
+      <Flex justifyContent="center" p={3} pb={6} height={250}>
         {hasMoreResults ? <Spinner /> : null}
       </Flex>
     )
   }, [hasMoreResults])
 
-  const noResults = results.current && results.current.results?.edges?.length === 0
+  const noResults = results.current && allNodes.length === 0
+
+  const showHeaderComponent = HeaderComponent && !!(allNodes.length > 0)
 
   if (shouldShowLoadingPlaceholder) {
     return (
       <ProvidePlaceholderContext>
+        {!!HeaderComponent && <HeaderComponent />}
+        {!!ListHeaderComponent && <ListHeaderComponent />}
         <AutosuggestResultsPlaceholder showResultType={showResultType} />
       </ProvidePlaceholderContext>
     )
   }
 
   return (
-    <AboveTheFoldFlatList<AutosuggestResult>
-      listRef={flatListRef}
-      initialNumToRender={isPad() ? 24 : 12}
-      style={{ flex: 1, padding: space(2) }}
-      data={nodes}
-      showsVerticalScrollIndicator={false}
-      ListFooterComponent={ListFooterComponent}
-      keyboardDismissMode="on-drag"
-      keyboardShouldPersistTaps="handled"
-      ListEmptyComponent={noResults ? () => <ListEmptyComponent query={query} /> : null}
-      renderItem={({ item, index }) => {
-        return (
-          <Flex mb={2}>
-            <AutosuggestSearchResult
-              highlight={query}
-              result={item}
-              showResultType={showResultType}
-              onResultPress={onResultPress}
-              showQuickNavigationButtons={showQuickNavigationButtons}
-              trackResultPress={trackResultPress}
-              itemIndex={index}
-            />
-          </Flex>
-        )
-      }}
-      onScrollBeginDrag={onScrollBeginDrag}
-      onEndReached={onEndReached}
-    />
+    <Flex>
+      {!!showHeaderComponent && <HeaderComponent />}
+      <AboveTheFoldFlatList<AutosuggestResult>
+        ListHeaderComponent={ListHeaderComponent}
+        listRef={flatListRef}
+        initialNumToRender={isPad() ? 24 : 12}
+        data={allNodes}
+        showsVerticalScrollIndicator={false}
+        ListFooterComponent={ListFooterComponent}
+        keyboardDismissMode="on-drag"
+        keyboardShouldPersistTaps="handled"
+        ListEmptyComponent={noResults ? () => <ListEmptyComponent query={query} /> : null}
+        renderItem={({ item, index }) => {
+          return (
+            <Flex mb={2}>
+              <AutosuggestSearchResult
+                highlight={query}
+                result={item}
+                showResultType={showResultType}
+                onResultPress={onResultPress}
+                showQuickNavigationButtons={showQuickNavigationButtons}
+                trackResultPress={trackResultPress}
+                itemIndex={index}
+              />
+            </Flex>
+          )
+        }}
+        onScrollBeginDrag={onScrollBeginDrag}
+        onEndReached={onEndReached}
+      />
+    </Flex>
   )
 }
 
@@ -173,11 +192,11 @@ const EmptyList: React.FC<{ query: string }> = ({ query }) => {
     <>
       <Spacer mt={1} />
       <Spacer mt={2} />
-      <Text variant="md" textAlign="center">
+      <Text variant="sm-display" textAlign="center">
         Sorry, we couldn’t find anything for {quoteLeft}
         {query}.{quoteRight}
       </Text>
-      <Text variant="md" color="black60" textAlign="center">
+      <Text variant="sm-display" color="black60" textAlign="center">
         Please try searching again with a different spelling.
       </Text>
     </>
@@ -217,8 +236,10 @@ const AutosuggestResultsContainer = createPaginationContainer(
                 slug
               }
               ... on Artist {
-                internalID
                 formattedNationalityAndBirthday
+                internalID
+                initials
+                isPersonalArtist
                 slug
                 statuses {
                   artworks
@@ -259,21 +280,27 @@ const AutosuggestResultsContainer = createPaginationContainer(
 export const AutosuggestResults: React.FC<{
   query: string
   entities?: AutosuggestResultsQuery["variables"]["entities"]
+  prependResults?: any[]
   showResultType?: boolean
   showQuickNavigationButtons?: boolean
   showOnRetryErrorMessage?: boolean
   onResultPress?: OnResultPress
   trackResultPress?: TrackResultPress
+  HeaderComponent?: React.ComponentType<any>
+  ListHeaderComponent?: React.ComponentType<any>
   ListEmptyComponent?: React.ComponentType<any>
 }> = React.memo(
   ({
     query,
     entities,
+    prependResults,
     showResultType,
     showQuickNavigationButtons,
     showOnRetryErrorMessage,
     onResultPress,
     trackResultPress,
+    HeaderComponent,
+    ListHeaderComponent,
     ListEmptyComponent,
   }) => {
     return (
@@ -303,12 +330,15 @@ export const AutosuggestResults: React.FC<{
           return (
             <AutosuggestResultsContainer
               query={query}
+              prependResults={prependResults}
               results={props}
               showResultType={showResultType}
               showQuickNavigationButtons={showQuickNavigationButtons}
               onResultPress={onResultPress}
               trackResultPress={trackResultPress}
               ListEmptyComponent={ListEmptyComponent}
+              ListHeaderComponent={ListHeaderComponent}
+              HeaderComponent={HeaderComponent}
             />
           )
         }}

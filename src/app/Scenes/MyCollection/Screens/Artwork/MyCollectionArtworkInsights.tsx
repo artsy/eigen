@@ -3,7 +3,7 @@ import { MyCollectionArtworkInsights_marketPriceInsights$key } from "__generated
 import { MyCollectionArtworkInsights_me$key } from "__generated__/MyCollectionArtworkInsights_me.graphql"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { Flex, Spacer } from "palette"
+import { Flex } from "palette"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { MyCollectionArtworkArtistAuctionResults } from "./Components/ArtworkInsights/MyCollectionArtworkArtistAuctionResults"
@@ -33,39 +33,30 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
 
   const isP1Artist = artwork.artist?.targetSupply?.isP1
 
-  const showPriceEstimateBanner =
-    useFeatureFlag("ARShowRequestPriceEstimateBanner") &&
-    isP1Artist &&
-    Number((marketPriceInsights?.demandRank ?? 0) * 10) >= 9
-
   return (
     <StickyTabPageScrollView>
-      <Flex my={3}>
-        {!!marketPriceInsights && (
+      <Flex mb={3} mt={2}>
+        {!!artwork.marketPriceInsights && (
           <>
             <MyCollectionArtworkDemandIndex
               artwork={artwork}
-              marketPriceInsights={marketPriceInsights}
+              marketPriceInsights={artwork.marketPriceInsights}
             />
-            {!showPriceEstimateBanner && <Spacer p={1} />}
           </>
         )}
 
-        {!!showPriceEstimateBanner && (
-          <>
-            <RequestForPriceEstimateBanner
-              me={me}
-              artwork={artwork}
-              marketPriceInsights={marketPriceInsights}
-            />
-            <Spacer p={2} />
-          </>
-        )}
-
-        {!!marketPriceInsights && (
-          <MyCollectionArtworkArtistMarket
+        {!!useFeatureFlag("ARShowRequestPriceEstimateBanner") && (
+          <RequestForPriceEstimateBanner
+            me={me}
             artwork={artwork}
             marketPriceInsights={marketPriceInsights}
+          />
+        )}
+
+        {!!artwork.marketPriceInsights && (
+          <MyCollectionArtworkArtistMarket
+            artwork={artwork}
+            marketPriceInsights={artwork.marketPriceInsights}
           />
         )}
 
@@ -73,7 +64,7 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
 
         <MyCollectionArtworkArtistAuctionResults artwork={artwork} />
 
-        <MyCollectionWhySell artwork={artwork} contextModule="insights" />
+        {!!isP1Artist && <MyCollectionWhySell artwork={artwork} contextModule="insights" />}
       </Flex>
     </StickyTabPageScrollView>
   )
@@ -89,23 +80,22 @@ const artworkFragment = graphql`
         isP1
       }
     }
-    consignmentSubmission {
-      displayText
-    }
     ...RequestForPriceEstimateBanner_artwork
     ...MyCollectionArtworkDemandIndex_artwork
     ...MyCollectionArtworkArtistMarket_artwork
     ...MyCollectionArtworkComparableWorks_artwork
     ...MyCollectionArtworkArtistAuctionResults_artwork
     ...MyCollectionWhySell_artwork
+    marketPriceInsights {
+      ...MyCollectionArtworkArtistMarket_artworkPriceInsights
+      ...MyCollectionArtworkDemandIndex_artworkPriceInsights
+    }
   }
 `
 
 const marketPriceInsightsFragment = graphql`
   fragment MyCollectionArtworkInsights_marketPriceInsights on MarketPriceInsights {
     demandRank
-    ...MyCollectionArtworkDemandIndex_marketPriceInsights
-    ...MyCollectionArtworkArtistMarket_marketPriceInsights
     ...RequestForPriceEstimateBanner_marketPriceInsights
   }
 `

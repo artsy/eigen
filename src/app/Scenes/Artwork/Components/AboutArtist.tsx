@@ -44,8 +44,10 @@ export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
             content={text}
             contextModule={Schema.ContextModules.ArtistBiography}
             maxChars={textLimit}
-            textStyle="sans"
+            textStyle="new"
             trackingFlow={Schema.Flow.AboutTheArtist}
+            textVariant="sm"
+            linkTextVariant="sm-display"
           />
         </Box>
       )}
