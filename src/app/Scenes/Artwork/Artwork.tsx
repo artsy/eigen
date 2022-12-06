@@ -17,7 +17,10 @@ import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { QAInfoPanel } from "app/utils/QAInfo"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
+import {
+  AuctionWebsocketChannelInfo,
+  AuctionWebsocketContextProvider,
+} from "app/Websockets/auctions/AuctionSocketContext"
 import { isEmpty } from "lodash"
 import { Box, Separator, useSpace } from "palette"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
@@ -29,7 +32,7 @@ import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironme
 import { useScreenDimensions } from "shared/hooks"
 import { ResponsiveValue } from "styled-system"
 import { OfferSubmittedModal } from "../Inbox/Components/Conversations/OfferSubmittedModal"
-import { ArtworkStoreProvider } from "./ArtworkStore"
+import { ArtworkStore, ArtworkStoreProvider } from "./ArtworkStore"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { AboveTheFoldPlaceholder } from "./Components/AboveTheFoldArtworkPlaceholder"
@@ -80,22 +83,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
 
   const { internalID, slug, isInAuction, partner: partnerAbove } = artworkAboveTheFold || {}
-  const { isPreview, isClosed, liveStartAt } = artworkAboveTheFold?.sale ?? {}
   const { contextGrids, artistSeriesConnection, artist, context } = artworkBelowTheFold || {}
-
-  const getInitialAuctionTimerState = () => {
-    if (isInAuction) {
-      return currentTimerState({
-        isPreview: isPreview || undefined,
-        isClosed: isClosed || undefined,
-        liveStartsAt: liveStartAt || undefined,
-      })
-    }
-  }
-
-  const [auctionTimerState, setAuctionTimerState] = useState<string | undefined>(
-    getInitialAuctionTimerState()
-  )
+  const auctionTimerState = ArtworkStore.useStoreState((state) => state.auctionState)
   const isInClosedAuction = isInAuction && auctionTimerState === AuctionTimerState.CLOSED
 
   const shouldRenderPartner = () => {
@@ -248,7 +237,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
             refetchArtwork={() =>
               relay.refetch({ artworkID: internalID }, null, () => null, { force: true })
             }
-            setAuctionTimerState={setAuctionTimerState}
           />
         ),
       })
@@ -560,95 +548,69 @@ export const Artwork: React.FC<ArtworkProps> = ({
     />
   )
 
-  const websocketEnabled = !!artworkBelowTheFold?.sale?.extendedBiddingIntervalMinutes
   const topInset = useScreenDimensions().safeAreaInsets.top
 
+  if (fetchingData) {
+    return (
+      <ProvidePlaceholderContext>
+        <AboveTheFoldPlaceholder />
+      </ProvidePlaceholderContext>
+    )
+  }
+
   return (
-    <ProvideScreenTracking
-      info={{
-        context_screen: Schema.PageNames.ArtworkPage,
-        context_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
-        context_screen_owner_slug: slug,
-        context_screen_owner_id: internalID,
-        // @ts-ignore
-        availability: artworkAboveTheFold?.availability,
-        acquireable: artworkAboveTheFold?.isAcquireable,
-        inquireable: artworkAboveTheFold?.isInquireable,
-        offerable: artworkAboveTheFold?.isOfferable,
-        biddable: artworkAboveTheFold?.isBiddable,
-      }}
-    >
-      <AuctionWebsocketContextProvider
-        channelInfo={{
-          channel: "SalesChannel",
-          sale_id: artworkBelowTheFold?.sale?.internalID,
+    <>
+      {enableArtworkRedesign ? (
+        <ArtworkScreenHeaderFragmentContainer artwork={artworkAboveTheFold!} />
+      ) : (
+        <BackButton style={{ zIndex: 5, marginBottom: topInset + 3 }} />
+      )}
+      <FlatList<ArtworkPageSection>
+        keyboardShouldPersistTaps="handled"
+        data={enableArtworkRedesign ? redesignedSectionsData() : sectionsData()}
+        ItemSeparatorComponent={(props) => {
+          const { leadingItem: item } = props
+
+          if (item.excludeSeparator) {
+            return <Box mt={4} />
+          }
+
+          if (enableArtworkRedesign) {
+            return (
+              <Box mx={2} my={4}>
+                <Separator />
+              </Box>
+            )
+          }
+
+          return (
+            <Box mx={2}>
+              <Separator />
+            </Box>
+          )
         }}
-        enabled={websocketEnabled}
-      >
-        <ArtworkStoreProvider
-          initialData={{
-            auctionState: getInitialAuctionTimerState(),
-          }}
-        >
-          {fetchingData ? (
-            <ProvidePlaceholderContext>
-              <AboveTheFoldPlaceholder />
-            </ProvidePlaceholderContext>
-          ) : (
-            <>
-              {enableArtworkRedesign ? (
-                <ArtworkScreenHeaderFragmentContainer artwork={artworkAboveTheFold!} />
-              ) : (
-                <BackButton style={{ zIndex: 5, marginBottom: topInset + 3 }} />
-              )}
-              <FlatList<ArtworkPageSection>
-                keyboardShouldPersistTaps="handled"
-                data={enableArtworkRedesign ? redesignedSectionsData() : sectionsData()}
-                ItemSeparatorComponent={(props) => {
-                  const { leadingItem: item } = props
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        contentContainerStyle={{ paddingBottom: space(4) }}
+        renderItem={({ item }) => {
+          if (enableArtworkRedesign) {
+            return <Box px={item.excludePadding ? 0 : 2}>{item.element}</Box>
+          }
 
-                  if (item.excludeSeparator) {
-                    return <Box mt={4} />
-                  }
+          return (
+            <Box my={item.verticalMargin ?? 3} px={item.excludePadding ? 0 : 2}>
+              {item.element}
+            </Box>
+          )
+        }}
+      />
 
-                  if (enableArtworkRedesign) {
-                    return (
-                      <Box mx={2} my={4}>
-                        <Separator />
-                      </Box>
-                    )
-                  }
+      {!!(enableArtworkRedesign && artworkAboveTheFold && me) && (
+        <ArtworkStickyBottomContent artwork={artworkAboveTheFold} me={me} />
+      )}
 
-                  return (
-                    <Box mx={2}>
-                      <Separator />
-                    </Box>
-                  )
-                }}
-                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-                contentContainerStyle={{ paddingBottom: space(4) }}
-                renderItem={({ item }) => {
-                  if (enableArtworkRedesign) {
-                    return <Box px={item.excludePadding ? 0 : 2}>{item.element}</Box>
-                  }
-
-                  return (
-                    <Box my={item.verticalMargin ?? 3} px={item.excludePadding ? 0 : 2}>
-                      {item.element}
-                    </Box>
-                  )
-                }}
-              />
-              {!!(enableArtworkRedesign && artworkAboveTheFold && me) && (
-                <ArtworkStickyBottomContent artwork={artworkAboveTheFold} me={me} />
-              )}
-            </>
-          )}
-          <QAInfo />
-          <OfferSubmittedModal />
-        </ArtworkStoreProvider>
-      </AuctionWebsocketContextProvider>
-    </ProvideScreenTracking>
+      <QAInfo />
+      <OfferSubmittedModal />
+    </>
   )
 }
 
@@ -661,8 +623,57 @@ interface ArtworkPageSection {
   verticalMargin?: ResponsiveValue<number>
 }
 
+const ArtworkProvidersContainer: React.FC<ArtworkProps> = (props) => {
+  const { artworkAboveTheFold, artworkBelowTheFold } = props
+  const { isInAuction } = artworkAboveTheFold || {}
+  const { isPreview, isClosed, liveStartAt } = artworkAboveTheFold?.sale ?? {}
+  const websocketEnabled = !!artworkBelowTheFold?.sale?.extendedBiddingIntervalMinutes
+
+  const getInitialAuctionTimerState = () => {
+    if (isInAuction) {
+      return currentTimerState({
+        isPreview: isPreview || undefined,
+        isClosed: isClosed || undefined,
+        liveStartsAt: liveStartAt || undefined,
+      })
+    }
+  }
+
+  const trackingInfo: Schema.PageView = {
+    context_screen: Schema.PageNames.ArtworkPage,
+    context_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
+    context_screen_owner_slug: artworkAboveTheFold?.slug,
+    context_screen_owner_id: artworkAboveTheFold?.internalID,
+    // @ts-ignore
+    availability: artworkAboveTheFold?.availability,
+    acquireable: artworkAboveTheFold?.isAcquireable,
+    inquireable: artworkAboveTheFold?.isInquireable,
+    offerable: artworkAboveTheFold?.isOfferable,
+    biddable: artworkAboveTheFold?.isBiddable,
+  }
+
+  const socketChannelInfo: AuctionWebsocketChannelInfo = {
+    channel: "SalesChannel",
+    sale_id: artworkAboveTheFold?.sale?.internalID,
+  }
+
+  return (
+    <ProvideScreenTracking info={trackingInfo}>
+      <AuctionWebsocketContextProvider channelInfo={socketChannelInfo} enabled={websocketEnabled}>
+        <ArtworkStoreProvider
+          initialData={{
+            auctionState: getInitialAuctionTimerState(),
+          }}
+        >
+          <Artwork {...props} />
+        </ArtworkStoreProvider>
+      </AuctionWebsocketContextProvider>
+    </ProvideScreenTracking>
+  )
+}
+
 export const ArtworkContainer = createRefetchContainer(
-  Artwork,
+  ArtworkProvidersContainer,
   {
     artworkAboveTheFold: graphql`
       fragment Artwork_artworkAboveTheFold on Artwork {
@@ -690,6 +701,7 @@ export const ArtworkContainer = createRefetchContainer(
           name
         }
         sale {
+          internalID
           isClosed
           isPreview
           liveStartAt
@@ -729,7 +741,6 @@ export const ArtworkContainer = createRefetchContainer(
           ...ArtistSeriesMoreSeries_artist
         }
         sale {
-          internalID
           id
           isBenefit
           isGalleryAuction

@@ -40,6 +40,7 @@ export const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork, ref
           </Text>
         </>
       )}
+
       {!!enableArtworkRedesign && (
         <ArtworkLotTimerFragmentContainer artwork={artwork} refetchArtwork={refetchArtwork} />
       )}

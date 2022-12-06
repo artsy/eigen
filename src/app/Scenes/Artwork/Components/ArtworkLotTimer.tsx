@@ -29,7 +29,6 @@ interface AuctionWebsocketWrapperProps extends CountdownTimerProps {
   biddingEndAt?: string
   hasBeenExtended?: boolean
   refetchArtwork: () => void
-  setAuctionTimerState?: (auctionTimerState: string) => void
 }
 
 const AuctionoWebsocketWrapper: React.FC<AuctionWebsocketWrapperProps> = (props) => {
@@ -136,7 +135,6 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
   hasStarted,
   biddingEndAt,
   hasBeenExtended,
-  setAuctionTimerState,
 }) => {
   const { sale, isForSale } = artwork
   const isBiddableInAuction = timerState !== AuctionTimerState.CLOSED && isForSale
@@ -144,7 +142,6 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
 
   useEffect(() => {
     if (timerState) {
-      setAuctionTimerState?.(timerState)
       setAuctionState(timerState)
     }
   }, [timerState])
