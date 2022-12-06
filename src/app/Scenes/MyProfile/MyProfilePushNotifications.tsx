@@ -6,8 +6,8 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import {
   getNotificationPermissionsStatus,
   PushAuthorizationStatus,
-  requestDirectNotificationPermissions,
 } from "app/utils/PushNotification"
+import { requestDirectNotificationPermissions } from "app/utils/pushNotificationUtils"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import useAppState from "app/utils/useAppState"
 import { debounce } from "lodash"

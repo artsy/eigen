@@ -5,8 +5,8 @@ import {
 import {
   getNotificationPermissionsStatus,
   PushAuthorizationStatus,
-  requestDirectNotificationPermissions,
 } from "app/utils/PushNotification"
+import { requestDirectNotificationPermissions } from "app/utils/pushNotificationUtils"
 import { Alert, AlertButton, Linking, Platform } from "react-native"
 
 export const requestNotificationPermissions = () => {
