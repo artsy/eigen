@@ -1,6 +1,8 @@
+import Clipboard from "@react-native-community/clipboard"
 import { WirePaymentSection_order$data } from "__generated__/WirePaymentSection_order.graphql"
+import { useToast } from "app/Components/Toast/toastHook"
 import { sendEmail } from "app/utils/sendEmail"
-import { Flex, Spacer, Text } from "palette"
+import { Flex, LinkIcon, Spacer, Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
@@ -15,6 +17,36 @@ const NumberedListItem: React.FC<{ index: number }> = ({ children, index }) => (
     {children}
   </Flex>
 )
+
+const PaymentInfoItem: React.FC<{ label: string; value: string }> = ({ label, value }) => (
+  <Flex flexDirection="row" alignItems="center">
+    <Text>{label}: </Text>
+    <CopySection value={value} />
+  </Flex>
+)
+
+const CopySection: React.FC<{ value: string }> = ({ value }) => {
+  const toast = useToast()
+
+  const handleCopyPress = () => {
+    Clipboard.setString(value)
+    toast.show("Copied", "middle")
+  }
+
+  return (
+    <Text
+      onPress={handleCopyPress}
+      style={{
+        flexDirection: "row",
+      }}
+    >
+      <Text fontStyle="italic" underline>
+        {value}
+      </Text>
+      <LinkIcon width={12} height={12} />
+    </Text>
+  )
+}
 
 const WirePaymentSection: React.FC<Props> = ({ order: { code } }) => (
   <Flex>
@@ -39,7 +71,14 @@ const WirePaymentSection: React.FC<Props> = ({ order: { code } }) => (
       <NumberedListItem index={3}>
         <Text>
           Once you have made the transfer, please email{" "}
-          <Text color="blue100" onPress={() => sendEmail("orders@artsy.net")}>
+          <Text
+            color="blue100"
+            onPress={() =>
+              sendEmail("orders@artsy.net", {
+                subject: `Proof of wire transfer payment (#${code})`,
+              })
+            }
+          >
             orders@artsy.net
           </Text>{" "}
           with your proof of payment.
@@ -52,11 +91,14 @@ const WirePaymentSection: React.FC<Props> = ({ order: { code } }) => (
         Send wire transfer to
       </Text>
       <Spacer mt={1} />
-      <Text>Account name: Art.sy Inc.</Text>
-      <Text>Account number: 4243851425</Text>
-      <Text>Routing number: 121000248</Text>
-      <Text>International SWIFT: WFBIUS6S</Text>
+
+      <PaymentInfoItem label="Account name" value="Art.sy Inc." />
+      <PaymentInfoItem label="Account number" value="4243851425" />
+      <PaymentInfoItem label="Routing number" value="121000248" />
+      <PaymentInfoItem label="International SWIFT" value="WFBIUS6S" />
+
       <Spacer mt={2} />
+
       <Text fontWeight="bold" color="black100">
         Bank address
       </Text>
@@ -65,8 +107,11 @@ const WirePaymentSection: React.FC<Props> = ({ order: { code } }) => (
       <Text>420 Montgomery Street</Text>
       <Text>San Francisco, CA 9410</Text>
       <Spacer mt={2} />
-      <Text fontStyle="italic">
-        Add order number #{code} to the notes section in your wire transfer.
+
+      <Text>
+        <Text fontStyle="italic">Add order number #</Text>
+        <CopySection value={code} />
+        <Text fontStyle="italic"> to the notes section in your wire transfer.</Text>
       </Text>
     </Flex>
   </Flex>
