@@ -74,17 +74,7 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
   const { unleashEnv } = useUnleashEnvironment()
 
   return (
-    <Flex
-      style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: "white",
-      }}
-      py="2"
-    >
+    <Flex position="absolute" top={0} left={0} right={0} bottom={0} py="2">
       <Flex flexDirection="row" justifyContent="space-between">
         <Text variant="lg-display" pb="2" px="2">
           Dev Settings
@@ -93,7 +83,7 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
       </Flex>
 
       <ScrollView
-        style={{ flex: 1, backgroundColor: "white", borderRadius: 4, overflow: "hidden" }}
+        style={{ flex: 1, borderRadius: 4, overflow: "hidden" }}
         contentContainerStyle={{ paddingVertical: 10 }}
       >
         <Text variant="xs" color="grey" mx="2">
