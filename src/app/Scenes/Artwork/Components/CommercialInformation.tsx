@@ -33,7 +33,6 @@ interface CommercialInformationProps extends CountdownTimerProps {
   biddingEndAt?: string
   hasBeenExtended?: boolean
   refetchArtwork: () => void
-  setAuctionTimerState?: (auctionTimerState: string) => void
 }
 
 // On Android, the useArtworkBidding fails to receive data, bringing the
@@ -151,7 +150,6 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
   hasStarted,
   biddingEndAt,
   hasBeenExtended,
-  setAuctionTimerState,
 }) => {
   const { trackEvent } = useTracking()
   const setAuctionState = ArtworkStore.useStoreActions((action) => action.setAuctionState)
@@ -185,7 +183,6 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
 
   useEffect(() => {
     if (timerState) {
-      setAuctionTimerState?.(timerState)
       setAuctionState(timerState)
     }
   }, [timerState])
