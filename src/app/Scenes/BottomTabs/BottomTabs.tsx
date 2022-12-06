@@ -10,7 +10,7 @@ export const BottomTabs: React.FC = () => {
   const { color } = useTheme()
 
   const unreadConversationCount = GlobalStore.useAppState(
-    (state) => state.bottomTabs.sessionState.unreadCounts.unreadConversationCount
+    (state) => state.bottomTabs.sessionState.unreadCounts.unreadConversation
   )
 
   const displayUnreadActivityPanelIndicator = GlobalStore.useAppState(

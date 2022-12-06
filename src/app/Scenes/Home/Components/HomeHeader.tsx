@@ -4,7 +4,7 @@ import { ActivityIndicator } from "./ActivityIndicator"
 
 export const HomeHeader: React.FC = () => {
   const hasNotifications = GlobalStore.useAppState(
-    (state) => state.bottomTabs.sessionState.unreadCounts.unreadActivityPanelNotificationsCount > 0
+    (state) => state.bottomTabs.sessionState.unreadCounts.unreadActivityPanelNotifications > 0
   )
 
   return (

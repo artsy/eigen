@@ -13,8 +13,8 @@ import { fetchQuery, graphql } from "react-relay"
 import { BottomTabType } from "./BottomTabType"
 
 export interface UnreadCounts {
-  unreadConversationCount: number
-  unreadActivityPanelNotificationsCount: number
+  unreadConversation: number
+  unreadActivityPanelNotifications: number
 }
 
 export interface BottomTabsModel {
@@ -35,15 +35,15 @@ export interface BottomTabsModel {
 export const getBottomTabsModel = (): BottomTabsModel => ({
   sessionState: {
     unreadCounts: {
-      unreadConversationCount: 0,
-      unreadActivityPanelNotificationsCount: 0,
+      unreadConversation: 0,
+      unreadActivityPanelNotifications: 0,
     },
     displayUnreadActivityPanelIndicator: false,
     tabProps: {},
     selectedTab: "home",
   },
   unreadConversationCountChanged: action((state, unreadConversationCount) => {
-    state.sessionState.unreadCounts.unreadConversationCount = unreadConversationCount
+    state.sessionState.unreadCounts.unreadConversation = unreadConversationCount
   }),
   fetchCurrentUnreadConversationCount: thunk(async () => {
     try {
@@ -81,25 +81,19 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
       }
     }
   }),
-  unreadActivityPanelNotificationsCountChanged: action(
-    (state, unreadActivityPanelNotificationsCount) => {
-      // we want to display the indicator only when there is a new notification
-      if (
-        unreadActivityPanelNotificationsCount >
-        state.sessionState.unreadCounts.unreadActivityPanelNotificationsCount
-      ) {
-        state.sessionState.displayUnreadActivityPanelIndicator = true
-      } else {
-        if (state.sessionState.displayUnreadActivityPanelIndicator) {
-          state.sessionState.displayUnreadActivityPanelIndicator =
-            !!unreadActivityPanelNotificationsCount
-        }
-      }
-
-      state.sessionState.unreadCounts.unreadActivityPanelNotificationsCount =
-        unreadActivityPanelNotificationsCount
+  unreadActivityPanelNotificationsCountChanged: action((state, unreadCount) => {
+    // we want to display the indicator only when there is a new notification
+    if (unreadCount > state.sessionState.unreadCounts.unreadActivityPanelNotifications) {
+      state.sessionState.displayUnreadActivityPanelIndicator = true
     }
-  ),
+
+    // when the user marked all notifications as read
+    if (unreadCount === 0) {
+      state.sessionState.displayUnreadActivityPanelIndicator = false
+    }
+
+    state.sessionState.unreadCounts.unreadActivityPanelNotifications = unreadCount
+  }),
   fetchAllNotificationsCounts: thunk(async () => {
     try {
       const result = await fetchQuery<BottomTabsModelFetchAllNotificationsCountsQuery>(

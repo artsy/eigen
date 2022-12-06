@@ -131,7 +131,7 @@ describe(persist, () => {
     await persist({
       bottomTabs: {
         selectedTab: "home",
-        sessionState: { unreadCounts: { unreadConversationCount: 5 } },
+        sessionState: { unreadCounts: { unreadConversation: 5 } },
       },
     } as any)
     expect(JSON.parse((await AsyncStorage.getItem(STORAGE_KEY)) ?? "")).toEqual({
@@ -142,7 +142,7 @@ describe(persist, () => {
     await persist({
       bottomTabs: {
         selectedTab: "home",
-        sessionState: { unreadCounts: { unreadConversationCount: 5 } },
+        sessionState: { unreadCounts: { unreadConversation: 5 } },
       },
     } as any)
     expect(JSON.parse((await AsyncStorage.getItem(STORAGE_KEY)) ?? "")).toEqual({
@@ -151,7 +151,7 @@ describe(persist, () => {
     await persist({
       bottomTabs: {
         selectedTab: "explore",
-        sessionState: { unreadCounts: { unreadConversationCount: 5 } },
+        sessionState: { unreadCounts: { unreadConversation: 5 } },
       },
     } as any)
     expect(JSON.parse((await AsyncStorage.getItem(STORAGE_KEY)) ?? "")).toEqual({

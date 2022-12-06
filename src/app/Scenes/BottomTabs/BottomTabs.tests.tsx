@@ -62,7 +62,7 @@ type ButtonProps = React.ComponentProps<typeof BottomTabsButton>
 describe(BottomTabs, () => {
   it(`displays the current unread notifications count`, async () => {
     __globalStoreTestUtils__?.injectState({
-      bottomTabs: { sessionState: { unreadCounts: { unreadConversationCount: 4 } } },
+      bottomTabs: { sessionState: { unreadCounts: { unreadConversation: 4 } } },
     })
     const tree = renderWithWrappersLEGACY(<TestWrapper />)
 
@@ -72,9 +72,7 @@ describe(BottomTabs, () => {
     expect((inboxButton!.props as ButtonProps).badgeCount).toBe(4)
 
     // need to prevent this test's requests from leaking into the next test
-    await act(async () => {
-      await flushPromiseQueue()
-    })
+    await flushPromiseQueue()
   })
 
   it(`displays a blue dot on home icon if there are unread notifications`, async () => {
@@ -89,14 +87,12 @@ describe(BottomTabs, () => {
     expect((homeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
 
     // need to prevent this test's requests from leaking into the next test
-    await act(async () => {
-      await flushPromiseQueue()
-    })
+    await flushPromiseQueue()
   })
 
   it(`doesn't display a blue dot on home icon if there are no unread notifications`, async () => {
     __globalStoreTestUtils__?.injectState({
-      bottomTabs: { sessionState: { unreadCounts: { unreadActivityPanelNotificationsCount: 0 } } },
+      bottomTabs: { sessionState: { unreadCounts: { unreadActivityPanelNotifications: 0 } } },
     })
     const tree = renderWithWrappersLEGACY(<TestWrapper />)
 
@@ -106,25 +102,19 @@ describe(BottomTabs, () => {
     expect((homeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
 
     // need to prevent this test's requests from leaking into the next test
-    await act(async () => {
-      await flushPromiseQueue()
-    })
+    await flushPromiseQueue()
   })
 
   it(`fetches the current unread conversation / notifications count on mount`, async () => {
     const tree = renderWithWrappersLEGACY(<TestWrapper />)
 
-    await act(async () => {
-      await flushPromiseQueue()
-    })
+    await flushPromiseQueue()
 
     expect(mockRelayEnvironment.mock.getAllOperations()).toHaveLength(1)
 
     resolveUnreadConversationCountQuery(5, 1)
 
-    await act(async () => {
-      await flushPromiseQueue()
-    })
+    await flushPromiseQueue()
 
     const inboxButton = tree.root
       .findAllByType(BottomTabsButton)
@@ -142,16 +132,12 @@ describe(BottomTabs, () => {
   it(`sets the application icon badge count`, async () => {
     renderWithWrappersLEGACY(<TestWrapper />)
 
-    await act(async () => {
-      await flushPromiseQueue()
-    })
+    await flushPromiseQueue()
 
     expect(mockRelayEnvironment.mock.getAllOperations()).toHaveLength(1)
     resolveUnreadConversationCountQuery(9, 0)
 
-    await act(async () => {
-      await flushPromiseQueue()
-    })
+    await flushPromiseQueue()
 
     expect(
       LegacyNativeModules.ARTemporaryAPIModule.setApplicationIconBadgeNumber
@@ -166,32 +152,25 @@ describe(BottomTabs, () => {
 
     expect(useInterval).toHaveBeenCalledWith(expect.any(Function), expect.any(Number))
 
-    await act(async () => {
-      await flushPromiseQueue()
-    })
+    await flushPromiseQueue()
 
     resolveUnreadConversationCountQuery(1, 1)
 
     const intervalCallback = (useInterval as jest.Mock).mock.calls[0][0]
 
-    await act(async () => {
-      await flushPromiseQueue()
-    })
+    await flushPromiseQueue()
 
     expect(mockRelayEnvironment.mock.getAllOperations()).toHaveLength(0)
     act(() => intervalCallback())
 
-    await act(async () => {
-      await flushPromiseQueue()
-    })
+    await flushPromiseQueue()
 
     expect(mockRelayEnvironment.mock.getAllOperations()).toHaveLength(1)
 
     resolveUnreadConversationCountQuery(3, 1)
 
-    await act(async () => {
-      await flushPromiseQueue()
-    })
+    await flushPromiseQueue()
+
     // @ts-ignore
     const inboxButton = tree.root
       .findAllByType(BottomTabsButton)
