@@ -198,6 +198,7 @@ export const getStaticFilterOptionsByMode = (
         filterOptionToDisplayConfigMap.sizes,
         filterOptionToDisplayConfigMap.year,
         filterOptionToDisplayConfigMap.organizations,
+        filterOptionToDisplayConfigMap.includeUpcoming,
       ]
 
     case FilterModalMode.Custom:
@@ -385,6 +386,13 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     displayText: FilterDisplayName.estimateRange,
     filterType: "estimateRange",
     ScreenComponent: "EstimateRangeOptionsScreen",
+  },
+  includeUpcoming: {
+    displayText: FilterDisplayName.includeUpcoming,
+    filterType: "includeUpcoming",
+    // @ts-ignore
+    ScreenComponent: "none",
+    configType: FilterConfigTypes.FilterScreenCheckboxItem,
   },
   partnerIDs: {
     displayText: FilterDisplayName.partnerIDs,

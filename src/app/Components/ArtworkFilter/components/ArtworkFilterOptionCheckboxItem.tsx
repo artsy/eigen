@@ -29,7 +29,7 @@ export const ArtworkFilterOptionCheckboxItem: React.FC<ArtworkFilterOptionCheckb
 
   const setValueOnFilters = (value: boolean) => {
     selectFiltersAction({
-      paramName: FilterParamName.showOnlySubmittedArtworks,
+      paramName: item.filterType as FilterParamName,
       paramValue: value,
       displayText: item.displayText,
     })
