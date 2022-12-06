@@ -1,7 +1,8 @@
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { PlaceholderBox, PlaceholderText, RandomWidthPlaceholderText } from "app/utils/placeholders"
+import { PlaceholderBox, PlaceholderText, RandomNumberGenerator } from "app/utils/placeholders"
 import { times } from "lodash"
 import { Flex, Join, Separator, Spacer, useSpace } from "palette"
+import { useMemo } from "react"
 import { useImagePlaceholderDimensions } from "../helpers"
 
 interface AboveTheFoldPlaceholderProps {
@@ -25,6 +26,19 @@ const ArtworkActionsPlaceholder = () => {
   )
 }
 
+const ArtworkDetailPlaceholderText = () => {
+  const length = useMemo(() => {
+    const rng = new RandomNumberGenerator(Math.random())
+
+    return rng.next({
+      from: 0.2,
+      to: 1,
+    })
+  }, [])
+
+  return <PlaceholderText flex={length} height={20} />
+}
+
 const ArtworkDetailsPlaceholder = () => {
   return (
     <Join separator={<Spacer mt={1} />}>
@@ -32,7 +46,7 @@ const ArtworkDetailsPlaceholder = () => {
         <Flex key={`detail-row-${index}`} flexDirection="row">
           <PlaceholderText width={128} height={20} />
           <Spacer mr={2} />
-          <RandomWidthPlaceholderText minWidth={100} maxWidth={250} height={20} />
+          <ArtworkDetailPlaceholderText />
         </Flex>
       ))}
     </Join>
