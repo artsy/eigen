@@ -14,6 +14,7 @@ const parsePRDescription = require("./parsePRDescription").parsePRDescription
 const ora = require("ora")
 const prettier = require("prettier")
 const appVersion = require("../../app.json").version
+require("dotenv").config({ path: ".env.changelog" })
 
 const octokit = new Octokit({ auth: process.env.CHANGELOG_GITHUB_TOKEN_KEY })
 
@@ -81,7 +82,10 @@ async function getPRsBeforeDate(commitDate) {
       direction: "desc",
       per_page: 20,
     },
-    (/** @type {{ data: import('@octokit/rest').PullsGetResponse[]; }} */ response, /** @type {() => void} */ done) => {
+    (
+      /** @type {{ data: import('@octokit/rest').PullsGetResponse[]; }} */ response,
+      /** @type {() => void} */ done
+    ) => {
       // Bail when some of the PRs were merged before the tag
       if (response.data.find((pr) => isMergedAfter(pr.merged_at, commitDate))) {
         return response.data

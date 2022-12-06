@@ -453,20 +453,20 @@ jobs:
           name: Deploy if beta - play store and firebase
           command: ./scripts/deploy-if-beta-branch-android BOTH
 
-  update-changelog:
-    executor:
-      name: node/default
-      tag: "16.18.0"
+  # update-changelog:
+  #   executor:
+  #     name: node/default
+  #     tag: "16.18.0"
 
-    steps:
-      - checkout
-      - generate-checksums
-      - install-node-modules
-      - run:
-          name: Update Changelog
-          command: node scripts/changelog/commitChangelog.js
-      - store_artifacts:
-          path: .manifests
+  #   steps:
+  #     - checkout
+  #     - generate-checksums
+  #     - install-node-modules
+  #     - run:
+  #         name: Update Changelog
+  #         command: node scripts/changelog/commitChangelog.js
+  #     - store_artifacts:
+  #         path: .manifests
   release-ios-app:
     environment:
       BUNDLE_PATH: .vendor # path to install gems and use for caching

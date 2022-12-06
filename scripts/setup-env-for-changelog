@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+aws s3 cp s3://artsy-citadel/dev/.env.changelog .env.changelog

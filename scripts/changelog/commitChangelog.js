@@ -5,6 +5,7 @@ const updatePlatfromChangeLog = require("./generatePlatformChangelog").updatePla
 const Octokit = require("@octokit/rest")
 const ora = require("ora")
 const { exec } = require("../helpers/exec")
+require("dotenv").config({ path: ".env.changelog" })
 
 const DEFAULT_CHANGELOG_BRANCH = "update-changelog"
 
@@ -87,8 +88,9 @@ const createAndMergePullRequest = async () => {
 
 const main = async () => {
   // Make sure we are on a clean branch and checkout to it
-  forceCheckout()
+  // forceCheckout()
   // Run the changelog updater
+  console.log(process.env)
   await Promise.all([
     updatePlatfromChangeLog("android", "beta"),
     updatePlatfromChangeLog("ios", "beta"),
@@ -101,7 +103,7 @@ const main = async () => {
     return
   }
   // Otherwise, Commit and push changes to the update changelog branch
-  commitAndPushChanges()
+  // commitAndPushChanges()
   // Check if there is an open PR already
   // If yes, no further action needed, quit
   if (await pullRequestAlreadyExists()) {
@@ -109,7 +111,7 @@ const main = async () => {
     return
   }
   // Otherwise, Create a pull request and merge it
-  await createAndMergePullRequest()
+  // await createAndMergePullRequest()
 }
 
 main()
