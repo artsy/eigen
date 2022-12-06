@@ -706,6 +706,11 @@ describe("Artwork", () => {
         Sale() {
           return {
             isAuction: true,
+            // Hide some other sections, otherwise the test will fail
+            isEligibleForArtsyGuarantee: false,
+            provenance: null,
+            exhibitionHistory: null,
+            literature: null,
           }
         },
       })

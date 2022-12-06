@@ -473,6 +473,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
+    if (shouldRenderConsignmentsSection()) {
+      sections.push({
+        key: "consignments",
+        element: <ArtworkConsignments artwork={artworkBelowTheFold} />,
+      })
+    }
+
     if (context && context.__typename === "Sale" && context.isAuction) {
       sections.push({
         key: "contextCard",
@@ -510,13 +517,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
       sections.push({
         key: "artsyGuarantee",
         element: <ArtsyGuarantee />,
-      })
-    }
-
-    if (shouldRenderConsignmentsSection()) {
-      sections.push({
-        key: "consignments",
-        element: <ArtworkConsignments artwork={artworkBelowTheFold} />,
       })
     }
 
