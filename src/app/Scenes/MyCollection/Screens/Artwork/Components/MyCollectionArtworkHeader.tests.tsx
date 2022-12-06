@@ -55,8 +55,7 @@ describe("MyCollectionArtworkHeader", () => {
     })
 
     expect(getByText("some artist name")).toBeTruthy()
-    expect(getByText("some title")).toBeTruthy()
-    expect(getByText(", Jan 20th")).toBeTruthy()
+    expect(getByText("some title, Jan 20th")).toBeTruthy()
   })
 
   it("fires the analytics tracking event when image is pressed", () => {

@@ -1,4 +1,4 @@
-import { fireEvent, screen, within } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { FilterModalTestsQuery } from "__generated__/FilterModalTestsQuery.graphql"
 import {
   AnimatedArtworkFilterButton,
@@ -222,7 +222,7 @@ describe("Filter modal states", () => {
 
     const { getByText } = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
 
-    expect(within(getByText("Sort By")).getByText("• 1")).toBeTruthy()
+    expect(getByText("Sort By • 1")).toBeTruthy()
   })
 
   it("displays the currently selected medium option number on the filter screen", () => {
@@ -248,7 +248,7 @@ describe("Filter modal states", () => {
 
     const { getByText } = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
 
-    expect(within(getByText("Medium")).getByText("• 1")).toBeTruthy()
+    expect(getByText("Medium • 1")).toBeTruthy()
   })
 
   it("displays the filter screen apply button correctly when no filters are selected", () => {
@@ -322,12 +322,12 @@ describe("Filter modal states", () => {
 
     const { getByText } = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
 
-    expect(within(getByText("Sort By")).getByText("• 1")).toBeTruthy()
+    expect(getByText("Sort By • 1")).toBeTruthy()
     expect(getByText("Rarity")).toBeTruthy()
-    expect(within(getByText("Medium")).getByText("• 1")).toBeTruthy()
-    expect(within(getByText("Price")).getByText("• 1")).toBeTruthy()
-    expect(within(getByText("Ways to Buy")).getByText("• 1")).toBeTruthy()
-    expect(within(getByText("Time Period")).getByText("• 2")).toBeTruthy()
+    expect(getByText("Medium • 1")).toBeTruthy()
+    expect(getByText("Price • 1")).toBeTruthy()
+    expect(getByText("Ways to Buy • 1")).toBeTruthy()
+    expect(getByText("Time Period • 2")).toBeTruthy()
   })
 })
 
@@ -359,7 +359,7 @@ describe("Clearing filters", () => {
       <MockFilterScreen initialState={injectedState} />
     )
 
-    expect(within(getByText("Sort By")).getByText("• 1")).toBeTruthy()
+    expect(getByText("Sort By • 1")).toBeTruthy()
     fireEvent.press(getByText("Clear All"))
 
     expect(getByText("Sort By")).toBeTruthy()

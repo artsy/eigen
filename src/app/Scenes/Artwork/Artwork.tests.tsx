@@ -276,27 +276,6 @@ describe("Artwork", () => {
     expect(tree.root.findAllByType(ArtworkDetails)).toHaveLength(1)
   })
 
-  it("marks the artwork as viewed", () => {
-    renderWithWrappersLEGACY(<TestRenderer />)
-
-    // ArtworkAboveTheFoldQuery
-    resolveMostRecentRelayOperation(environment)
-
-    expect(environment.mock.getMostRecentOperation().request.node.operation.name).toEqual(
-      "ArtworkMarkAsRecentlyViewedQuery"
-    )
-
-    expect(environment.mock.getMostRecentOperation()).toMatchObject({
-      request: {
-        variables: {
-          input: {
-            artwork_id: "slug-1",
-          },
-        },
-      },
-    })
-  })
-
   it("updates the above-the-fold content on re-appear", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 

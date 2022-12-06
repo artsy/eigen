@@ -1,4 +1,3 @@
-import { within } from "@testing-library/react-native"
 import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
@@ -54,7 +53,7 @@ describe("AttributionClassOptions Screen", () => {
 
     const { getByText } = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
 
-    expect(within(getByText("Rarity")).getByText("• 2")).toBeTruthy()
+    expect(getByText("Rarity • 2")).toBeTruthy()
   })
 
   it("toggles selected filters 'ON' and unselected filters 'OFF", () => {
