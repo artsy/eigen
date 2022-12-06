@@ -9,8 +9,6 @@ export const HAS_SEEN_PUSH_SYSTEM_PROMPT = "HAS_SEEN_PUSH_SYSTEM_PROMPT"
 export const LAST_SEEN_LOCAL_PROMPT = "LAST_SEEN_LOCAL_PROMPT"
 
 export const showSettingsEnableNotificationsAlert = () => {
-  console.log("shouldn't get here")
-
   AsyncStorage.setItem(HAS_SEEN_PUSH_SETTINGS_PROMPT, "true")
 
   const deviceText = Platform.select({

@@ -283,30 +283,19 @@ export const getNotificationPermissionsStatus = (): Promise<PushAuthorizationSta
 
 export const requestPushNotificationsPermission = async () => {
   const pushNotificationsPermissionsStatus = await getNotificationPermissionsStatus()
-
-  console.log("pushNotificationsPermissionsStatus", pushNotificationsPermissionsStatus)
   if (pushNotificationsPermissionsStatus !== PushAuthorizationStatus.Authorized) {
     const seenSettingsPrompt = await hasSeenSettingsPrompt()
     const seenSystemPrompt = await hasSeenSystemPrompt()
     const showLocalPromptAgain = await shouldShowLocalPromptAgain()
-
-    console.log("before set timeout", {
-      seenSettingsPrompt,
-      seenSystemPrompt,
-      showLocalPromptAgain,
-    })
     setTimeout(() => {
       if (
         pushNotificationsPermissionsStatus === PushAuthorizationStatus.Denied &&
         !seenSettingsPrompt
       ) {
-        console.log("showSettingsEnableNotificationsAlert()")
         showSettingsEnableNotificationsAlert()
       } else if (!seenSystemPrompt && showLocalPromptAgain) {
-        console.log("requestPushPermissionWithSoftAsk()")
         requestPushPermissionWithSoftAsk()
       } else {
-        console.log("requestDirectNotificationPermissions()")
         requestDirectNotificationPermissions()
       }
     }, 3000)
