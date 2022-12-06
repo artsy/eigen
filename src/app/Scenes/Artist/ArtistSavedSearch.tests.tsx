@@ -1,4 +1,4 @@
-import { fireEvent, screen, within } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
@@ -63,9 +63,9 @@ describe("Saved search banner on artist screen", () => {
 
     fireEvent.press(screen.getByText("Sort & Filter"))
 
-    expect(within(screen.getByText("Sort By")).getByText("• 1")).toBeTruthy()
-    expect(within(screen.getByText("Rarity")).getByText("• 2")).toBeTruthy()
-    expect(within(screen.getByText("Ways to Buy")).getByText("• 2")).toBeTruthy()
+    expect(screen.getByText("Sort By • 1")).toBeTruthy()
+    expect(screen.getByText("Rarity • 2")).toBeTruthy()
+    expect(screen.getByText("Ways to Buy • 2")).toBeTruthy()
   })
 
   it("should an error message when something went wrong during the search criteria query", async () => {

@@ -41,17 +41,16 @@ describe("Notable Works Rail", () => {
   })
 
   it("renders without throwing an error when 3 or more notable artworks", async () => {
-    const { getByText, getAllByText } = renderWithWrappers(<TestWrapper />)
+    const { getByText } = renderWithWrappers(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => artistMockData,
     })
 
-    expect(getByText("My Second Greatest Art")).toBeTruthy()
-    expect(getByText("My Second Greatest Art").props.fontStyle).toEqual("italic")
-    expect(getAllByText(", 2020").length).toEqual(3)
-    expect(getByText("My Greatest Art")).toBeTruthy()
-    expect(getByText("My Third Greatest Art")).toBeTruthy()
+    expect(getByText("My Second Greatest Art, 2020")).toBeTruthy()
+    expect(getByText("My Second Greatest Art, 2020")).toHaveProp("fontStyle", "italic")
+    expect(getByText("My Greatest Art, 2020")).toBeTruthy()
+    expect(getByText("My Third Greatest Art, 2020")).toBeTruthy()
   })
 
   describe("Notable artwork metadata", () => {

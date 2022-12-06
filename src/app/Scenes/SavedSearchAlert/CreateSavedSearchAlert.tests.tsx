@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { FilterData, FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
@@ -175,9 +175,9 @@ describe("CreateSavedSearchAlert", () => {
       expect(toggles).toHaveLength(2)
     })
 
-    it("email toggle is disabled by default if the user has not allowed email notifications", async () => {
+    fit("email toggle is disabled by default if the user has not allowed email notifications", async () => {
       setStatusForPushNotifications(PushAuthorizationStatus.Authorized)
-      const { findAllByA11yState } = renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Viewer: () => ({
@@ -189,7 +189,9 @@ describe("CreateSavedSearchAlert", () => {
 
       await flushPromiseQueue()
 
-      const toggles = await findAllByA11yState({ selected: false })
+      // failure
+      screen.debug()
+      const toggles = screen.queryByA11yState({ selected: false })
       expect(toggles).toHaveLength(1)
     })
 
@@ -212,7 +214,7 @@ describe("CreateSavedSearchAlert", () => {
         }),
       })
       await flushPromiseQueue()
-
+      // failure
       expect(toggles).toHaveLength(1)
     })
 
@@ -227,7 +229,7 @@ describe("CreateSavedSearchAlert", () => {
         }),
       })
       await flushPromiseQueue()
-
+      // failure
       expect(toggles).toHaveLength(1)
     })
   })

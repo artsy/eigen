@@ -123,7 +123,7 @@ describe("BidButton", () => {
         identityVerified: false,
       }
 
-      const { getByText } = renderWithWrappers(
+      const { queryByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.PREVIEW} />
       )
 
@@ -132,8 +132,8 @@ describe("BidButton", () => {
         Me: () => me,
       })
 
-      expect(getByText("Register to bid")).toBeTruthy()
-      expect(getByText("Identity verification required to bid.")).toBeTruthy()
+      expect(queryByText("Register to bid")).toBeTruthy()
+      expect(queryByText(/Identity verification required to bid./)).toBeTruthy()
     })
 
     it("does not display 'Identity verification is required' if the sale requires identity verification and the user is verified", () => {
@@ -186,7 +186,7 @@ describe("BidButton", () => {
       })
 
       expect(getByText("Registration Pending")).toBeTruthy()
-      expect(getByText("Identity verification required to bid.")).toBeTruthy()
+      expect(getByText(/Identity verification required to bid./)).toBeTruthy()
     })
 
     it("does not display 'Identity verification is required' if the sale requires identity verification and the user is registered and verified", () => {
@@ -205,7 +205,7 @@ describe("BidButton", () => {
       })
 
       expect(getByText("Registration Pending")).toBeTruthy()
-      expect(queryByText("Identity verification required to bid.")).toBeFalsy()
+      expect(queryByText(/Identity verification required to bid./)).toBeFalsy()
     })
 
     it("with registered bidder", () => {
@@ -318,7 +318,7 @@ describe("BidButton", () => {
         })
 
         expect(getByText("Register to bid")).toBeTruthy()
-        expect(getByText("Identity verification required to bid.")).toBeTruthy()
+        expect(getByText(/Identity verification required to bid./)).toBeTruthy()
       })
 
       it("displays 'Bid' if the user is verified", () => {
@@ -456,7 +456,7 @@ describe("BidButton", () => {
         })
 
         expect(getByText("Register to bid")).toBeTruthy()
-        expect(getByText("Identity verification required to bid.")).toBeTruthy()
+        expect(getByText(/Identity verification required to bid./)).toBeTruthy()
       })
 
       it("displays 'Bid' if the user is verified", () => {

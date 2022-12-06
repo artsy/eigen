@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { NewBuyNowArtworksRailTestsQuery } from "__generated__/NewBuyNowArtworksRailTestsQuery.graphql"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
@@ -32,11 +33,11 @@ describe("NewBuyNowArtworksRail", () => {
     mockEnvironment = createMockEnvironment()
   })
   it(`renders "Buy now" rail and artworks`, () => {
-    const { getByText, getAllByText } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
-    expect(getByText("Artworks Available to Buy Now")).toBeDefined()
-    expect(getAllByText("Best artwork ever")).toBeDefined()
+    expect(screen.queryByText("Artworks Available to Buy Now")).toBeDefined()
+    expect(screen.queryAllByText("Best artwork ever, 2019")).toBeDefined()
   })
 
   it("renders nothing if there are no artworks", () => {
