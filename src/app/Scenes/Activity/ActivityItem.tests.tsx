@@ -204,6 +204,40 @@ describe("ActivityItem", () => {
       expect(label).toBeTruthy()
     })
   })
+
+  describe("remaining artworks count", () => {
+    it("should NOT be rendered if there are less or equal to 4", async () => {
+      const { queryByLabelText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Notification: () => ({
+          ...notification,
+          objectsCount: 4,
+        }),
+      })
+      await flushPromiseQueue()
+
+      expect(queryByLabelText("Remaining artworks count")).toBeFalsy()
+    })
+
+    it("should be rendered if there are more than 4", async () => {
+      const { getByText, getByLabelText } = renderWithHookWrappersTL(
+        <TestRenderer />,
+        mockEnvironment
+      )
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Notification: () => ({
+          ...notification,
+          objectsCount: 5,
+        }),
+      })
+      await flushPromiseQueue()
+
+      expect(getByLabelText("Remaining artworks count")).toBeTruthy()
+      expect(getByText("+ 1")).toBeTruthy()
+    })
+  })
 })
 
 const artworks = [
@@ -264,8 +298,8 @@ const notification = {
   isUnread: false,
   notificationType: "ARTWORK_PUBLISHED",
   targetHref: targetUrl,
+  objectsCount: 4,
   artworksConnection: {
-    totalCount: 4,
     edges: artworks,
   },
 }
