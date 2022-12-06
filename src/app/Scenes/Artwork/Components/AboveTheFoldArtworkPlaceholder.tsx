@@ -1,10 +1,95 @@
-import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
-import { Flex, Separator, Spacer, useSpace } from "palette"
+import { useFeatureFlag } from "app/store/GlobalStore"
+import { PlaceholderBox, PlaceholderText, RandomWidthPlaceholderText } from "app/utils/placeholders"
+import { times } from "lodash"
+import { Flex, Join, Separator, Spacer, useSpace } from "palette"
 import { useImagePlaceholderDimensions } from "../helpers"
 
-export const AboveTheFoldPlaceholder: React.FC<{ artworkID?: string }> = ({ artworkID }) => {
+interface AboveTheFoldPlaceholderProps {
+  artworkID?: string
+}
+
+const ArtworkActionsPlaceholder = () => {
   const space = useSpace()
 
+  return (
+    <Flex flexDirection="row" justifyContent="center">
+      {times(2).map((index) => (
+        <PlaceholderBox
+          key={`auction-${index}`}
+          width={50}
+          height={18}
+          marginHorizontal={space(1)}
+        />
+      ))}
+    </Flex>
+  )
+}
+
+const ArtworkDetailsPlaceholder = () => {
+  return (
+    <Join separator={<Spacer mt={1} />}>
+      {times(10).map((index) => (
+        <Flex key={`detail-row-${index}`} flexDirection="row">
+          <PlaceholderText width={128} height={20} />
+          <Spacer mr={2} />
+          <RandomWidthPlaceholderText minWidth={100} maxWidth={250} height={20} />
+        </Flex>
+      ))}
+    </Join>
+  )
+}
+
+const RedesignedAboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> = ({
+  artworkID,
+}) => {
+  const space = useSpace()
+  const { width, height } = useImagePlaceholderDimensions(artworkID)
+
+  return (
+    <Flex flex={1}>
+      {/* Header */}
+      <Flex height={44} px={2} alignItems="center" flexDirection="row">
+        <Flex flex={1} flexDirection="row" justifyContent="space-between">
+          <PlaceholderBox width={20} height={20} />
+
+          <Flex flexDirection="row">
+            <PlaceholderBox width={80} height={20} marginRight={space(1)} />
+            <PlaceholderBox width={140} height={20} />
+          </Flex>
+        </Flex>
+      </Flex>
+
+      {/* Artwork thumbnail */}
+      <Flex mx="auto">
+        <PlaceholderBox width={width} height={height} />
+      </Flex>
+
+      <Spacer mt={1} />
+
+      {/* Content */}
+      <Flex px={2}>
+        {/* save/share buttons */}
+        <ArtworkActionsPlaceholder />
+
+        <Spacer mb={4} />
+
+        {/* Artist name */}
+        <PlaceholderText width={100} height={30} />
+
+        {/* Artwork tombstone details */}
+        <PlaceholderText width={250} height={26} />
+
+        <Spacer mb={4} />
+
+        {/* Artwork details */}
+        <ArtworkDetailsPlaceholder />
+      </Flex>
+    </Flex>
+  )
+}
+
+const CurrentAboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> = ({ artworkID }) => {
+  const space = useSpace()
   const { width, height } = useImagePlaceholderDimensions(artworkID)
 
   return (
@@ -45,4 +130,14 @@ export const AboveTheFoldPlaceholder: React.FC<{ artworkID?: string }> = ({ artw
       </Flex>
     </Flex>
   )
+}
+
+export const AboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> = (props) => {
+  const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
+
+  if (enableArtworkRedesign) {
+    return <RedesignedAboveTheFoldPlaceholder {...props} />
+  }
+
+  return <CurrentAboveTheFoldPlaceholder {...props} />
 }
