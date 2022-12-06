@@ -51,7 +51,7 @@ const configurableDevToggleKeys = sortBy(
   ([k, { description }]) => description ?? k
 ).map(([k]) => k as DevToggleName)
 
-export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModal }) => {
+export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = () => dismissModal() }) => {
   const [featureFlagQuery, setFeatureFlagQuery] = useState("")
   const [devToolQuery, setDevToolQuery] = useState("")
   const migrationVersion = GlobalStore.useAppState((s) => s.version)
