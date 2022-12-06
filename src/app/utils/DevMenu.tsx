@@ -55,7 +55,7 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
   const [featureFlagQuery, setFeatureFlagQuery] = useState("")
   const [devToolQuery, setDevToolQuery] = useState("")
   const migrationVersion = GlobalStore.useAppState((s) => s.version)
-  const server = GlobalStore.useAppState((s) => s.artsyPrefs.environment.strings.webURL).slice(
+  const server = GlobalStore.useAppState((s) => s.devicePrefs.environment.strings.webURL).slice(
     "https://".length
   )
   const userEmail = GlobalStore.useAppState((s) => s.auth.userEmail)
@@ -419,9 +419,9 @@ function envMenuOption(
   return {
     text,
     onPress() {
-      GlobalStore.actions.artsyPrefs.environment.clearAdminOverrides()
+      GlobalStore.actions.devicePrefs.environment.clearLocalOverrides()
       if (env !== currentEnv) {
-        GlobalStore.actions.artsyPrefs.environment.setEnv(env)
+        GlobalStore.actions.devicePrefs.environment.setEnv(env)
         onClose()
         GlobalStore.actions.auth.signOut()
       } else {
@@ -433,13 +433,13 @@ function envMenuOption(
 
 const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const color = useColor()
-  const { env, adminOverrides, strings } = GlobalStore.useAppState(
-    (store) => store.artsyPrefs.environment
+  const { env, localOverrides, strings } = GlobalStore.useAppState(
+    (store) => store.devicePrefs.environment
   )
   // show custom url options if there are already local overrides in effect, or if the user has tapped the option
   // to set custom overrides during the lifetime of this component
   const [showCustomURLOptions, setShowCustomURLOptions] = useState(
-    Object.keys(adminOverrides).length > 0
+    Object.keys(localOverrides).length > 0
   )
 
   return (
@@ -482,7 +482,7 @@ const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   Object.entries(presets).map(([name, value]) => ({
                     text: name,
                     onPress: () => {
-                      GlobalStore.actions.artsyPrefs.environment.setAdminOverride({
+                      GlobalStore.actions.devicePrefs.environment.setLocalOverride({
                         key: key as EnvironmentKey,
                         value,
                       })

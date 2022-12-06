@@ -7,7 +7,6 @@ import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { logAction } from "app/utils/loggers"
 import { createStore, createTypedHooks, StoreProvider } from "easy-peasy"
 import { Platform } from "react-native"
-// @ts-ignore
 import { getBuildNumber, getUserAgentSync } from "react-native-device-info"
 import { Action, Middleware } from "redux"
 import { version } from "./../../../app.json"
@@ -73,7 +72,7 @@ export const __globalStoreTestUtils__ = __TEST__
         GlobalStore.actions.__inject(state)
       },
       setProductionMode() {
-        this.injectState({ artsyPrefs: { environment: { env: "production" } } })
+        this.injectState({ devicePrefs: { environment: { env: "production" } } })
       },
       injectFeatureFlags(options: Partial<FeatureMap>) {
         this.injectState({ artsyPrefs: { features: { localOverrides: options } } })
@@ -258,7 +257,7 @@ export function unsafe__getSelectedTab(): BottomTabType {
 }
 
 export function useIsStaging() {
-  return GlobalStore.useAppState((state) => state.artsyPrefs.environment.env === "staging")
+  return GlobalStore.useAppState((state) => state.devicePrefs.environment.env === "staging")
 }
 
 /**
@@ -268,17 +267,21 @@ export function useIsStaging() {
  */
 export function unsafe__getEnvironment() {
   const {
-    environment: { env, strings },
     echo: { stripePublishableKey },
     userIsDev: { value },
   } = globalStoreInstance().getState().artsyPrefs
+  const {
+    environment: { env, strings },
+  } = globalStoreInstance().getState().devicePrefs
   return { ...strings, stripePublishableKey, env, userIsDev: value }
 }
 
 export function useEnvironment() {
   const {
-    environment: { env, strings },
     echo: { stripePublishableKey },
   } = GlobalStore.useAppState((state) => state.artsyPrefs)
+  const {
+    environment: { env, strings },
+  } = GlobalStore.useAppState((state) => state.devicePrefs)
   return { ...strings, stripePublishableKey, env }
 }

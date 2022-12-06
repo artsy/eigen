@@ -242,7 +242,7 @@ export const getAuthModel = (): AuthModel => ({
       // TODO: handle expiry
       return xAppToken
     }
-    const gravityBaseURL = context.getStoreState().artsyPrefs.environment.strings.gravityURL
+    const gravityBaseURL = context.getStoreState().devicePrefs.environment.strings.gravityURL
     const tokenURL = `${gravityBaseURL}/api/v1/xapp_token?${stringify({
       client_id: clientKey,
       client_secret: clientSecret,
@@ -267,7 +267,7 @@ export const getAuthModel = (): AuthModel => ({
     throw new Error("Unable to get x-app-token from " + tokenURL)
   }),
   gravityUnauthenticatedRequest: thunk(async (actions, payload, context) => {
-    const gravityBaseURL = context.getStoreState().artsyPrefs.environment.strings.gravityURL
+    const gravityBaseURL = context.getStoreState().devicePrefs.environment.strings.gravityURL
     const xAppToken = await actions.getXAppToken()
 
     return await fetch(`${gravityBaseURL}${payload.path}`, {
@@ -358,7 +358,7 @@ export const getAuthModel = (): AuthModel => ({
 
       if (oauthProvider === "email") {
         Keychain.setInternetCredentials(
-          store.getStoreState().artsyPrefs.environment.strings.webURL.slice("https://".length),
+          store.getStoreState().devicePrefs.environment.strings.webURL.slice("https://".length),
           email,
           args.password
         )

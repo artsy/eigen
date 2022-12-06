@@ -1,8 +1,11 @@
+import { EnvironmentModel, getEnvironmentModel } from "app/store/config/EnvironmentModel"
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
 import { action, Action, computed, Computed } from "easy-peasy"
 import { Appearance } from "react-native"
 
 export interface DevicePrefsModel {
+  environment: EnvironmentModel
+
   // color scheme
   colorScheme: Computed<this, "light" | "dark", GlobalStoreModel>
   usingSystemColorScheme: boolean
@@ -13,6 +16,8 @@ export interface DevicePrefsModel {
 }
 
 export const getDevicePrefsModel = (): DevicePrefsModel => ({
+  environment: getEnvironmentModel(),
+
   colorScheme: computed([(_, store) => store], (store) => {
     if (!store.artsyPrefs.features.flags.ARDarkModeSupport) {
       return "light"
