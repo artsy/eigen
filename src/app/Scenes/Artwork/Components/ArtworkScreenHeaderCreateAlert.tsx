@@ -14,7 +14,7 @@ import {
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { compact, isEmpty } from "lodash"
-import { BellIcon, Button, Spacer, Text } from "palette"
+import { BellIcon, Button, Text } from "palette"
 import { useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -92,11 +92,11 @@ const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateAlertPro
 
   return (
     <>
-      <Spacer mr={0.5} />
       <Button
         icon={<BellIcon fill={isForSale ? "black100" : "white100"} />}
         size="small"
-        variant={isForSale ? "fillLight" : "fillDark"}
+        variant={isForSale ? "text" : "fillDark"}
+        containerSize={isForSale ? { mx: 0 } : undefined}
         onPress={handleCreateAlertPress}
       >
         <Text variant={isForSale ? "sm-display" : "xs"}>Create Alert</Text>
