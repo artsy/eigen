@@ -153,8 +153,10 @@ export const Search: React.FC = () => {
   }, [searchClient, enableImprovedSearchPills])
 
   const onTextChange = useCallback(
-    (value) => {
-      handleResetSearchInput()
+    (value: string) => {
+      if (value.length === 0) {
+        handleResetSearchInput()
+      }
 
       if (enableImprovedSearchPills && shouldStartSearching(value)) {
         updateIndicesInfo(value)

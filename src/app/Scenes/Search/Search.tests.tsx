@@ -565,14 +565,14 @@ describe("Search Screen", () => {
       expect(screen.queryByA11yState({ selected: true })).toHaveTextContent("Top")
     })
 
-    it("when the query is changed", () => {
+    it("when search query is changed", () => {
       const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
 
       fireEvent(searchInput, "changeText", "12")
       fireEvent(screen.getByText("Artists"), "press")
       fireEvent(searchInput, "changeText", "123")
 
-      expect(screen.queryByA11yState({ selected: true })).toHaveTextContent("Top")
+      expect(screen.queryByA11yState({ selected: true })).toHaveTextContent("Artists")
     })
 
     it("when clear button is pressed", () => {
