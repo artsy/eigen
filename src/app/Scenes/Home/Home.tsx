@@ -22,6 +22,7 @@ import { FairsRailFragmentContainer } from "app/Scenes/Home/Components/FairsRail
 import { SalesRailFragmentContainer } from "app/Scenes/Home/Components/SalesRail"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
+import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { isPad } from "app/utils/hardware"
 import {
   PlaceholderBox,
@@ -50,7 +51,8 @@ import { NewWorksForYouRail } from "./Components/NewWorksForYouRail"
 import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
 import { RailScrollRef } from "./Components/types"
 
-const MODULE_SEPARATOR_HEIGHT = 4
+const LARGE_MODULE_SEPARATOR_HEIGHT = 4
+const MODULE_SEPARATOR_HEIGHT = 6
 
 interface HomeModule {
   title: string
@@ -100,6 +102,9 @@ const Home = (props: Props) => {
 
   const enableArtworkRecommendations = useFeatureFlag("AREnableHomeScreenArtworkRecommendations")
   const enableMyCollectionHFOnboarding = useFeatureFlag("AREnableMyCollectionHFOnboarding")
+  const enableLargeNewWorksForYouRail =
+    useExperimentVariant("eigen-new-works-for-you-rail-size").variant === "experiment" ||
+    useFeatureFlag("AREnforceLargeNewWorksRail")
 
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
   let modules: HomeModule[] = compact([
@@ -310,7 +315,11 @@ const Home = (props: Props) => {
                     title={item.title}
                     artworkConnection={item.data}
                     scrollRef={scrollRefs.current[index]}
-                    mb={MODULE_SEPARATOR_HEIGHT}
+                    mb={
+                      enableLargeNewWorksForYouRail
+                        ? LARGE_MODULE_SEPARATOR_HEIGHT
+                        : MODULE_SEPARATOR_HEIGHT
+                    }
                   />
                 )
               case "recommended-artists":
