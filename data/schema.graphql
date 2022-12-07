@@ -7581,6 +7581,9 @@ input EditableLocation {
   # The city the location is based in
   city: String
 
+  # The optional location coordinates. [lat, lng]
+  coordinates: [Float!]
+
   # The county the location is based in
   country: String
 
