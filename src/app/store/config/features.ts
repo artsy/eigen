@@ -246,6 +246,12 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     readyForRelease: false,
   },
+  AREnableLargeArtworkRailSaveIcon: {
+    description: "Enable save icon for large artwork rails",
+    showInAdminMenu: true,
+    readyForRelease: true,
+    echoFlagKey: "AREnableLargeArtworkRailSaveIcon",
+  },
 })
 
 export interface DevToggleDescriptor {

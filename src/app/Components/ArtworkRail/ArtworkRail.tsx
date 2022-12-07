@@ -17,6 +17,7 @@ interface CommonArtworkRailProps {
   onEndReached?: () => void
   onEndReachedThreshold?: number
   size: ArtworkCardSize
+  showSaveIcon?: boolean
 }
 
 export interface ArtworkRailProps extends CommonArtworkRailProps {
@@ -37,6 +38,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
   ListFooterComponent = SpacerComponent,
   hideArtistName = false,
   artworks,
+  showSaveIcon = false,
 }) => {
   return (
     <PrefetchFlatList
@@ -56,13 +58,14 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
       contentContainerStyle={{ alignItems: "flex-end" }}
       renderItem={({ item, index }) => (
         <ArtworkRailCard
+          artwork={item}
+          hidePartnerName
+          hideArtistName={hideArtistName}
           onPress={() => {
             onPress?.(item, index)
           }}
-          artwork={item}
+          showSaveIcon={showSaveIcon}
           size={size}
-          hidePartnerName
-          hideArtistName={hideArtistName}
         />
       )}
       keyExtractor={(item, index) => String(item.slug || index)}
