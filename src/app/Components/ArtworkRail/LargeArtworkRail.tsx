@@ -1,5 +1,4 @@
 import { LargeArtworkRail_artworks$key } from "__generated__/LargeArtworkRail_artworks.graphql"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import {
   PlaceholderBox,
   PlaceholderText,
@@ -22,14 +21,7 @@ export const LARGE_RAIL_IMAGE_WIDTH = 295
 export const LargeArtworkRail: React.FC<LargeArtworkRailProps> = ({ artworks, ...restProps }) => {
   const artworksData = useFragment(largeArtworksFragment, artworks)
 
-  return (
-    <ArtworkRail
-      artworks={artworksData}
-      showSaveIcon={useFeatureFlag("AREnableLargeArtworkRailSaveIcon")}
-      {...restProps}
-      size="large"
-    />
-  )
+  return <ArtworkRail artworks={artworksData} {...restProps} size="large" />
 }
 
 const largeArtworksFragment = graphql`

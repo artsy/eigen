@@ -82,6 +82,7 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
               )
               navigate(artwork.href!)
             }}
+            showSaveIcon={useFeatureFlag("AREnableLargeArtworkRailSaveIcon")}
           />
         ) : (
           <SmallArtworkRail
