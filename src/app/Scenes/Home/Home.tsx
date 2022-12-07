@@ -9,6 +9,7 @@ import { Home_showsByFollowedArtists$data } from "__generated__/Home_showsByFoll
 import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
+import { LargeArtworkRailPlaceholder } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { SmallArtworkRailPlaceholder } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { ArtistRailFragmentContainer } from "app/Components/Home/ArtistRails/ArtistRail"
 import { RecommendedArtistsRailFragmentContainer } from "app/Components/Home/ArtistRails/RecommendedArtistsRail"
@@ -543,6 +544,10 @@ const BelowTheFoldPlaceholder: React.FC = () => {
 }
 
 const HomePlaceholder: React.FC = () => {
+  const enableLargeNewWorksForYouRail =
+    useFeatureFlag("AREnforceLargeNewWorksRail") ||
+    useExperimentVariant("eigen-new-works-for-you-rail-size").variant === "experiment"
+
   return (
     <Flex>
       <Box mb={1} mt={2}>
@@ -558,8 +563,12 @@ const HomePlaceholder: React.FC = () => {
         <Box ml={2} mr={2}>
           <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
           <Spacer mb={0.3} />
-          <Flex flexDirection="row" mt={1}>
-            <SmallArtworkRailPlaceholder />
+          <Flex flexDirection="row">
+            {enableLargeNewWorksForYouRail ? (
+              <LargeArtworkRailPlaceholder />
+            ) : (
+              <SmallArtworkRailPlaceholder />
+            )}
           </Flex>
         </Box>
       }
