@@ -51,8 +51,8 @@ const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) =>
       optimisticResponse: {
         saveArtwork: {
           artwork: {
-            id: artwork.internalID,
-            isSaved: !artwork.isSaved,
+            id: artwork.id,
+            isSaved: !isSaved,
           },
         },
       },
@@ -141,6 +141,7 @@ export const ArtworkScreenHeaderFragmentContainer = createFragmentContainer(Artw
   artwork: graphql`
     fragment ArtworkScreenHeader_artwork on Artwork {
       ...ArtworkScreenHeaderCreateAlert_artwork
+      id
       internalID
       slug
       isSaved
