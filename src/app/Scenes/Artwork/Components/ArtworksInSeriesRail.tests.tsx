@@ -124,6 +124,7 @@ describe("ArtworksInSeriesRail", () => {
                   {
                     node: {
                       id: "abc123",
+                      isSaved: false,
                       slug: "alex-katz-departure-28",
                       internalID: "5a20271ccd530e50722ae2df",
                       href: "/artwork/alex-katz-departure-28",
@@ -153,6 +154,7 @@ describe("ArtworksInSeriesRail", () => {
                   {
                     node: {
                       id: "abc456",
+                      isSaved: false,
                       slug: "alex-katz-departure-56",
                       internalID: "594c3b40b202a34d4f9810fe",
                       href: "/artwork/alex-katz-departure-56",
@@ -182,6 +184,7 @@ describe("ArtworksInSeriesRail", () => {
                   {
                     node: {
                       id: "abc789",
+                      isSaved: false,
                       slug: "alex-katz-departure-2-ada",
                       internalID: "5daa29db5f3f9d000e059e00",
                       href: "/artwork/alex-katz-departure-2-ada",
@@ -211,6 +214,7 @@ describe("ArtworksInSeriesRail", () => {
                   {
                     node: {
                       id: "xyz123",
+                      isSaved: false,
                       slug: "alex-katz-park-avenue-departure",
                       internalID: "5e7123b39d099c0011959efd",
                       href: "/artwork/alex-katz-park-avenue-departure",
@@ -240,6 +244,7 @@ describe("ArtworksInSeriesRail", () => {
                   {
                     node: {
                       id: "abc012",
+                      isSaved: false,
                       slug: "alex-katz-departure-cut-out-2",
                       internalID: "5959da15c9dc2404d231179f",
                       href: "/artwork/alex-katz-departure-cut-out-2",

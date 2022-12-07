@@ -98,6 +98,7 @@ const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] 
           id: "another-another-id-2",
           href: "/artwork/another-another-id-3",
           artistNames: "Artist Name",
+          isSaved: false,
           date: "2020",
           partner: null,
           image: {
@@ -122,6 +123,7 @@ const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] 
       {
         node: {
           id: "another-another-id",
+          isSaved: false,
           href: "/artwork/another-another-id-3",
           artistNames: "Artist Name",
           date: "2020",
@@ -153,6 +155,7 @@ const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] 
       {
         node: {
           id: "another-another-id-3",
+          isSaved: false,
           href: "/artwork/another-another-id-3",
           artistNames: "Artist Name",
           date: "2020",
