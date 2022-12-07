@@ -14,7 +14,7 @@ import {
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { compact, isEmpty } from "lodash"
-import { BellIcon, Button, Text } from "palette"
+import { BellIcon, Button } from "palette"
 import { useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -97,9 +97,10 @@ const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateAlertPro
         size="small"
         variant={isForSale ? "text" : "fillDark"}
         containerSize={isForSale ? { mx: 0 } : undefined}
+        textVariant={isForSale ? "sm-display" : "xs"}
         onPress={handleCreateAlertPress}
       >
-        <Text variant={isForSale ? "sm-display" : "xs"}>Create Alert</Text>
+        Create Alert
       </Button>
       <CreateSavedSearchModal
         visible={isCreateAlertModalVisible}
