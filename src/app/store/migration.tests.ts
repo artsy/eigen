@@ -168,6 +168,7 @@ describe("artsy app store migrations", () => {
     }
 
     __globalStoreTestUtils__?.reset()
+
     expect(migrate({ state: { version: 0 } })).toEqual(
       sanitize(__globalStoreTestUtils__?.getCurrentState())
     )
