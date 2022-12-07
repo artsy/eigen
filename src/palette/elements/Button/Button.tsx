@@ -14,6 +14,11 @@ import { Flex } from "../Flex"
 import { Spinner } from "../Spinner"
 import { Text, useTextStyleForPalette } from "../Text"
 
+interface ContainerSize {
+  height: number
+  mx: number
+}
+
 export interface ButtonProps extends BoxProps {
   children: React.ReactNode
 
@@ -55,6 +60,8 @@ export interface ButtonProps extends BoxProps {
 
   /** Used only for tests and stories */
   testOnly_state?: DisplayState
+
+  containerSize?: Partial<ContainerSize>
 }
 
 enum DisplayState {
@@ -78,6 +85,7 @@ export const Button: React.FC<ButtonProps> = ({
   variant = "fillDark",
   testOnly_state,
   testID,
+  containerSize: containerSizeProp,
   ...rest
 }) => {
   const textStyle = useTextStyleForPalette(size === "small" ? "xs" : "sm")
@@ -97,7 +105,7 @@ export const Button: React.FC<ButtonProps> = ({
       ? DisplayState.Disabled
       : innerDisplayState) // otherwise use the inner state for pressed or enabled
 
-  const getSize = (): { height: number; mx: number } => {
+  const getSize = (): ContainerSize => {
     switch (size) {
       case "small":
         return { height: 30, mx: 15 }
@@ -165,10 +173,10 @@ export const Button: React.FC<ButtonProps> = ({
               style={{
                 backgroundColor: springProps.backgroundColor,
                 borderColor: springProps.borderColor,
-                height: containerSize.height,
+                height: containerSizeProp?.height ?? containerSize.height,
               }}
             >
-              <Flex mx={containerSize.mx}>
+              <Flex mx={containerSizeProp?.mx ?? containerSize.mx}>
                 <Flex height="100%" flexDirection="row" alignItems="center" justifyContent="center">
                   {iconPosition === "left-start" && !!icon ? (
                     <Box position="absolute" left={0}>
