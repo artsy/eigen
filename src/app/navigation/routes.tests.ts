@@ -636,7 +636,7 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to dev menu", () => {
+  it("routes to Dev Menu", () => {
     expect(matchRoute("/dev-menu")).toMatchInlineSnapshot(`
       Object {
         "module": "DevMenu",
@@ -646,7 +646,7 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to old dev menu", () => {
+  it("routes to old Dev Menu", () => {
     expect(matchRoute("/dev-menu-old")).toMatchInlineSnapshot(`
       Object {
         "module": "DevMenuOld",

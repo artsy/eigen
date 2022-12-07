@@ -3,10 +3,10 @@ import { echoLaunchJson } from "app/utils/jsonFiles"
 import { GlobalStore } from "../GlobalStore"
 
 interface FeatureDescriptorCommonTypes {
-  /** Provide a short description for the dev menu. */
+  /** Provide a short description for the Dev Menu. */
   readonly description?: string
 
-  /** Whether or not to show the feature flag in the dev menu. Consider also providing a description. */
+  /** Whether or not to show the feature flag in the Dev Menu. Consider also providing a description. */
   readonly showInDevMenu?: boolean
 }
 
@@ -250,7 +250,7 @@ export const features = defineFeatures({
 
 export interface DevToggleDescriptor {
   /**
-   * Provide a short description for the dev menu.
+   * Provide a short description for the Dev Menu.
    */
   readonly description: string
   /**
