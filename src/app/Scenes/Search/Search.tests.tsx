@@ -8,7 +8,6 @@ import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRela
 import { useExperimentFlag } from "app/utils/experiments/hooks"
 import { isPad } from "app/utils/hardware"
 import { Pill } from "palette"
-import { Keyboard } from "react-native"
 import { RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { SearchScreen } from "./Search"
@@ -310,30 +309,6 @@ describe("Search Screen", () => {
       expect(screen.queryByText("Auction")).toBeTruthy()
       expect(screen.queryByText("Gallery")).toBeTruthy()
       expect(screen.queryByText("Fair")).toBeTruthy()
-    })
-
-    it("hide keyboard when selecting other pill", async () => {
-      renderWithWrappers(<TestRenderer />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Query: () => ({
-          system: {
-            algolia: {
-              appID: "",
-              apiKey: "",
-              indices: [{ name: "Artist_staging", displayName: "Artist", key: "artist" }],
-            },
-          },
-        }),
-      })
-
-      await flushPromiseQueue()
-
-      const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
-      const keyboardDismissSpy = jest.spyOn(Keyboard, "dismiss")
-      fireEvent(searchInput, "changeText", "Ba")
-      fireEvent(screen.getByText("Artist"), "press")
-      expect(keyboardDismissSpy).toHaveBeenCalled()
     })
 
     it("should track event when a pill is tapped", async () => {
