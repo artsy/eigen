@@ -4,7 +4,6 @@
 #import "ARAugmentedFloorBasedVIRViewController.h"
 #import "ArtsyEcho.h"
 #import "AROptions.h"
-#import "ARModalViewController.h"
 #import "ARAppDelegate+Echo.h"
 #import "ARAuctionWebViewController.h"
 #import "Artsy-Swift.h"
@@ -176,7 +175,7 @@ RCT_EXPORT_METHOD(presentEmailComposerWithSubject:(NSString *)subject toAddress:
 {
     UIViewController *vc = [[ARAppDelegate sharedInstance] window].rootViewController;
 
-    while ([vc presentedViewController] && [[vc presentedViewController] isKindOfClass:ARModalViewController.class]) {
+    while ([vc presentedViewController]) {
         vc = [vc presentedViewController];
     }
 

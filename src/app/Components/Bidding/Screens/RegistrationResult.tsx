@@ -163,7 +163,7 @@ export class RegistrationResult extends React.Component<RegistrationResultProps>
     return (
       <View style={{ flex: 1 }}>
         <Theme>
-          <FancyModalHeader useXButton onLeftButtonPress={dismissModal} />
+          <FancyModalHeader useXButton onLeftButtonPress={() => dismissModal()} />
         </Theme>
         <View style={{ padding: 20 }}>
           <Flex alignItems="center">
@@ -177,7 +177,7 @@ export class RegistrationResult extends React.Component<RegistrationResultProps>
               {msg}
             </Markdown>
           </Flex>
-          <Button variant="outline" onPress={dismissModal} block width={100}>
+          <Button variant="outline" onPress={() => dismissModal()} block width={100}>
             {status === RegistrationStatus.RegistrationStatusPending
               ? "View works in this sale"
               : "Continue"}

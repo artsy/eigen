@@ -15,7 +15,7 @@ import { useSearchInsightsConfig } from "app/utils/useSearchInsightsConfig"
 import { Box, Flex, Spacer, Text, Touchable } from "palette"
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Configure, connectSearchBox, InstantSearch } from "react-instantsearch-native"
-import { Keyboard, Platform, ScrollView } from "react-native"
+import { Platform, ScrollView } from "react-native"
 import {
   FetchPolicy,
   fetchQuery,
@@ -153,8 +153,10 @@ export const Search: React.FC = () => {
   }, [searchClient, enableImprovedSearchPills])
 
   const onTextChange = useCallback(
-    (value) => {
-      handleResetSearchInput()
+    (value: string) => {
+      if (value.length === 0) {
+        handleResetSearchInput()
+      }
 
       if (enableImprovedSearchPills && shouldStartSearching(value)) {
         updateIndicesInfo(value)
@@ -176,7 +178,6 @@ export const Search: React.FC = () => {
 
     setSearchState((prevState) => ({ ...prevState, page: 1 }))
     setSelectedPill(pill)
-    Keyboard.dismiss()
     trackEvent(tracks.tappedPill(contextModule, pill.displayName, searchState.query!))
   }
 

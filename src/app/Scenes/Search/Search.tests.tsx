@@ -8,7 +8,6 @@ import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRela
 import { useExperimentFlag } from "app/utils/experiments/hooks"
 import { isPad } from "app/utils/hardware"
 import { Pill } from "palette"
-import { Keyboard } from "react-native"
 import { RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { SearchScreen } from "./Search"
@@ -312,30 +311,6 @@ describe("Search Screen", () => {
       expect(screen.queryByText("Fair")).toBeTruthy()
     })
 
-    it("hide keyboard when selecting other pill", async () => {
-      renderWithWrappers(<TestRenderer />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Query: () => ({
-          system: {
-            algolia: {
-              appID: "",
-              apiKey: "",
-              indices: [{ name: "Artist_staging", displayName: "Artist", key: "artist" }],
-            },
-          },
-        }),
-      })
-
-      await flushPromiseQueue()
-
-      const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
-      const keyboardDismissSpy = jest.spyOn(Keyboard, "dismiss")
-      fireEvent(searchInput, "changeText", "Ba")
-      fireEvent(screen.getByText("Artist"), "press")
-      expect(keyboardDismissSpy).toHaveBeenCalled()
-    })
-
     it("should track event when a pill is tapped", async () => {
       renderWithWrappers(<TestRenderer />)
 
@@ -565,14 +540,14 @@ describe("Search Screen", () => {
       expect(screen.queryByA11yState({ selected: true })).toHaveTextContent("Top")
     })
 
-    it("when the query is changed", () => {
+    it("when search query is changed", () => {
       const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
 
       fireEvent(searchInput, "changeText", "12")
       fireEvent(screen.getByText("Artists"), "press")
       fireEvent(searchInput, "changeText", "123")
 
-      expect(screen.queryByA11yState({ selected: true })).toHaveTextContent("Top")
+      expect(screen.queryByA11yState({ selected: true })).toHaveTextContent("Artists")
     })
 
     it("when clear button is pressed", () => {

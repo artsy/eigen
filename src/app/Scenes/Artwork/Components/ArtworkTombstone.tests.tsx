@@ -6,6 +6,7 @@ import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
 import { Theme } from "palette"
 import { graphql } from "react-relay"
+import { ArtworkStoreProvider } from "../ArtworkStore"
 import { ArtworkTombstoneFragmentContainer } from "./ArtworkTombstone"
 
 jest.unmock("react-relay")
@@ -15,7 +16,9 @@ describe("ArtworkTombstone", () => {
     Component: (props) => (
       <Theme>
         <GlobalStoreProvider>
-          <ArtworkTombstoneFragmentContainer {...props} />
+          <ArtworkStoreProvider>
+            <ArtworkTombstoneFragmentContainer {...props} />
+          </ArtworkStoreProvider>
         </GlobalStoreProvider>
       </Theme>
     ),
@@ -65,8 +68,8 @@ describe("ArtworkTombstone", () => {
   })
 
   describe("for an artwork in a sale with cascading end times or popcorn bidding", () => {
-    const cascadingMessage = "Lots will close at 1-minute intervals."
-    const popcornMessage = "Closing times may be extended due to last-minute competitive bidding. "
+    const cascadingMessage = /Lots will close at 1-minute intervals./
+    const popcornMessage = /Closing times may be extended due to last-minute competitive bidding./
     it("renders the notification banner with cascading message", () => {
       renderWithRelay({
         Artwork: () => ({
@@ -101,13 +104,72 @@ describe("ArtworkTombstone", () => {
       expect(screen.queryByText("Lots will close at 1-minute intervals.")).toBeNull()
     })
   })
+
+  describe("Sale Message for not for sale artworks", () => {
+    describe("with ARArtworkRedesingPhase2 switched set to true", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ ARArtworkRedesingPhase2: true })
+      })
+
+      it("should render the sale message when artwork is not for sale", () => {
+        renderWithRelay({
+          Artwork: () => ({
+            isForSale: false,
+            saleMessage: "On loan",
+          }),
+        })
+
+        expect(screen.queryByText("On loan")).toBeTruthy()
+      })
+
+      it("should not render the sale message when artwork is not for sale", () => {
+        renderWithRelay({
+          Artwork: () => ({
+            isForSale: true,
+            saleMessage: "For sale",
+          }),
+        })
+
+        expect(screen.queryByText("For sale")).toBeNull()
+      })
+    })
+
+    describe("with ARArtworkRedesingPhase2 switched set to false", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ ARArtworkRedesingPhase2: false })
+      })
+
+      it("should not render the sale message when artwork is not for sale", () => {
+        renderWithRelay({
+          Artwork: () => ({
+            isForSale: false,
+            saleMessage: "On loan",
+          }),
+        })
+
+        expect(screen.queryByText("On loan")).toBeNull()
+      })
+
+      it("should not render the sale message when artwork is not for sale", () => {
+        renderWithRelay({
+          Artwork: () => ({
+            isForSale: true,
+            saleMessage: "For sale",
+          }),
+        })
+
+        expect(screen.queryByText("For sale")).toBeNull()
+      })
+    })
+  })
 })
 
 const artworkTombstoneArtwork: ArtworkTombstone_artwork$data = {
   ...ArtworkFixture,
+  artists: [{ name: "Artist", href: "/artist" }],
   title: "Hello im a title",
-  medium: "Painting",
   date: "1992",
+  isForSale: true,
 }
 
 const artworkTombstoneAuctionArtwork = {

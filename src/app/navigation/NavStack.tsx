@@ -86,7 +86,9 @@ export const NavStack: React.FC<{
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        contentStyle: { backgroundColor: "white" },
+        contentStyle: {
+          backgroundColor: "white",
+        },
         orientation: isPad() ? "default" : "portrait",
       }}
     >

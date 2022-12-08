@@ -215,6 +215,12 @@ extension PrivateFunctions {
         bidButton.delegate = self
         metadataStack.addSubview(bidButton, withTopMargin: "0", sideMargin: sideMargin)
 
+        // Report a problem button
+        let reportButton = LiveAuctionReportProblemButton(viewModel: biddingViewModel)
+        reportButton.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .vertical)
+        reportButton.delegate = self
+        metadataStack.addSubview(reportButton, withTopMargin: "10", sideMargin: sideMargin)
+
         // Bid history setup.
         let historyViewController = LiveAuctionBidHistoryViewController(lotViewModel: lotViewModel)
         bidHistoryViewController = historyViewController
@@ -282,5 +288,43 @@ extension LiveAuctionLotViewController: LiveAuctionBidButtonDelegate {
         guard let pageVC = parent else { return }
         guard let auctionVC = pageVC.parent else { return }
         auctionVC.present(nav, animated: true) { button.isEnabled = true }
+    }
+}
+
+extension LiveAuctionLotViewController: LiveAuctionReportProblemButtonDelegate {
+    func reportButtonReportedProblem() {
+        let alert = reportAlertController()
+        self.present(alert, animated: true)
+    }
+
+    private func reportAlertController() -> UIAlertController {
+        let alertController = UIAlertController(title: "Describe the issue", message: "Contact support@artsy.net if you need more help.", preferredStyle: .alert)
+
+        let reportAction = UIAlertAction(title: "Report", style: .default) { (_) in
+            let descriptionTextField = alertController.textFields![0] as UITextField
+
+            let description = descriptionTextField.text
+            self.reportToSentry(description: description ?? "")
+        }
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
+
+        alertController.addTextField { (textField) in
+            textField.placeholder = "Describe your issue"
+        }
+
+        alertController.addAction(reportAction)
+        alertController.addAction(cancelAction)
+        return alertController
+    }
+
+    private func reportToSentry(description: String) {
+        let userID = User.current().userID
+        let saleID = salesPerson.liveSaleID
+        ARSentryReporter.reportProblem(forUserID: userID ?? "unknown", inSale: saleID, withDescription: description)
+        ARNotificationView.showNotice(in: self.view, title: "Thanks for reporting.", time: 3.0) {
+            // do nothing
+            return
+        }
     }
 }

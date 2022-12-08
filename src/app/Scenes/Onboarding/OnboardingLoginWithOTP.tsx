@@ -84,7 +84,9 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
                 handleChange("otp")(text)
               }}
               onBlur={() => validateForm()}
-              placeholder="Enter an authentication code"
+              placeholder={
+                recoveryCodeMode ? "Enter a recovery code" : "Enter an authentication code"
+              }
               placeholderTextColor={color("black30")}
               title={recoveryCodeMode ? "Recovery code" : "Authentication code"}
               returnKeyType="done"

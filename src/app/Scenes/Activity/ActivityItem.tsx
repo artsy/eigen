@@ -23,6 +23,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
   const tracking = useTracking()
   const item = useFragment(activityItemFragment, props.item)
   const artworks = extractNodes(item.artworksConnection)
+  const remainingArtworksCount = item.objectsCount - 4
 
   const getNotificationType = () => {
     if (item.notificationType === "ARTWORK_ALERT") {
@@ -95,6 +96,12 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
                 </Flex>
               )
             })}
+
+            {remainingArtworksCount > 0 && (
+              <Text variant="xs" color="black60" accessibilityLabel="Remaining artworks count">
+                + {remainingArtworksCount}
+              </Text>
+            )}
           </Flex>
         </Flex>
 
@@ -121,6 +128,7 @@ const activityItemFragment = graphql`
     targetHref
     isUnread
     notificationType
+    objectsCount
     artworksConnection(first: 4) {
       edges {
         node {

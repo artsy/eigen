@@ -4,11 +4,12 @@ import {
   ArtworkRailCard_artwork$key,
 } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
+import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { compact } from "lodash"
-import { Flex, Spacer, Text, useColor } from "palette"
+import { Flex, HeartFillIcon, HeartIcon, Spacer, Text, Touchable, useColor } from "palette"
 import { useMemo } from "react"
 import { GestureResponderEvent, PixelRatio } from "react-native"
-import { graphql, useFragment } from "react-relay"
+import { graphql, useFragment, useMutation } from "react-relay"
 import styled from "styled-components/native"
 import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "../ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
@@ -16,6 +17,7 @@ import { LARGE_RAIL_IMAGE_WIDTH } from "./LargeArtworkRail"
 import { SMALL_RAIL_IMAGE_WIDTH } from "./SmallArtworkRail"
 
 export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = 60
+const SAVE_ICON_SIZE = 26
 
 export const ARTWORK_RAIL_CARD_IMAGE_HEIGHT = {
   small: 230,
@@ -34,6 +36,7 @@ export interface ArtworkRailCardProps {
   highEstimateDisplay?: string
   onPress?: (event: GestureResponderEvent) => void
   priceRealizedDisplay?: string
+  showSaveIcon?: boolean
   size: ArtworkCardSize
   testID?: string
 }
@@ -47,15 +50,16 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   highEstimateDisplay,
   onPress,
   priceRealizedDisplay,
+  showSaveIcon = false,
   size,
   testID,
   ...restProps
 }) => {
   const fontScale = PixelRatio.getFontScale()
-
+  const [saveArtwork] = useMutation(SaveArtworkMutation)
   const artwork = useFragment(artworkFragment, restProps.artwork)
 
-  const { artistNames, date, partner, title, image } = artwork
+  const { artistNames, date, partner, title, id, internalID, image, isSaved } = artwork
 
   const saleMessage = defaultSaleMessageOrBidInfo({ artwork, isSmallTile: true })
 
@@ -96,6 +100,31 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     }
   }, [image?.resized?.height, image?.resized?.width])
 
+  const handleArtworkSave = () => {
+    saveArtwork({
+      variables: {
+        input: {
+          artworkID: internalID,
+          remove: isSaved,
+        },
+      },
+      optimisticResponse: {
+        saveArtwork: {
+          artwork: {
+            id,
+            isSaved: !isSaved,
+          },
+        },
+      },
+      onCompleted: () => {
+        refreshFavoriteArtworks()
+      },
+      onError: () => {
+        refreshFavoriteArtworks()
+      },
+    })
+  }
+
   return (
     <ArtworkCard onPress={onPress || undefined} testID={testID}>
       <Flex>
@@ -113,71 +142,106 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
           style={{
             height: fontScale * getTextHeightByArtworkSize(size),
           }}
+          flexDirection="row"
+          justifyContent="space-between"
         >
-          {!!lotLabel && (
-            <Text lineHeight="20" color="black60" numberOfLines={1}>
-              Lot {lotLabel}
-            </Text>
-          )}
-          {!hideArtistName && !!artistNames && (
-            <Text numberOfLines={size === "small" ? 2 : 1} lineHeight="20" variant="xs">
-              {artistNames}
-            </Text>
-          )}
-          {!!title && (
-            <Text
-              lineHeight="20"
-              color="black60"
-              numberOfLines={size === "small" ? 2 : 1}
-              variant="xs"
-              fontStyle="italic"
-            >
-              {title}
-              {!!date && (
-                <Text
-                  lineHeight="20"
-                  color="black60"
-                  numberOfLines={size === "small" ? 2 : 1}
-                  variant="xs"
-                >
-                  {title && date ? ", " : ""}
-                  {date}
-                </Text>
-              )}
-            </Text>
-          )}
+          <Flex>
+            {!!lotLabel && (
+              <Text lineHeight="20" color="black60" numberOfLines={1}>
+                Lot {lotLabel}
+              </Text>
+            )}
+            {!hideArtistName && !!artistNames && (
+              <Text numberOfLines={size === "small" ? 2 : 1} lineHeight="20" variant="xs">
+                {artistNames}
+              </Text>
+            )}
+            {!!title && (
+              <Text
+                lineHeight="20"
+                color="black60"
+                numberOfLines={size === "small" ? 2 : 1}
+                variant="xs"
+                fontStyle="italic"
+              >
+                {title}
+                {!!date && (
+                  <Text
+                    lineHeight="20"
+                    color="black60"
+                    numberOfLines={size === "small" ? 2 : 1}
+                    variant="xs"
+                  >
+                    {title && date ? ", " : ""}
+                    {date}
+                  </Text>
+                )}
+              </Text>
+            )}
 
-          {!hidePartnerName && !!partner?.name && (
-            <Text lineHeight="20" color="black60" numberOfLines={1}>
-              {partner?.name}
-            </Text>
-          )}
-          {!!isRecentlySoldArtwork && size === "large" && (
-            <>
-              <Spacer mt={2} />
-              <Flex flexDirection="row" justifyContent="space-between">
-                <Text variant="xs" color="black60" numberOfLines={1} fontWeight="500">
-                  Estimate
-                </Text>
-                <Text variant="xs" color="black60" numberOfLines={1} fontWeight="500">
-                  {compact([lowEstimateDisplay, highEstimateDisplay]).join("—")}
-                </Text>
-              </Flex>
-              <Flex flexDirection="row" justifyContent="space-between">
-                <Text variant="xs" color="blue100" numberOfLines={1} fontWeight="500">
-                  Sold For (incl. premium)
-                </Text>
-                <Text variant="xs" color="blue100" numberOfLines={1} fontWeight="500">
-                  {priceRealizedDisplay}
-                </Text>
-              </Flex>
-            </>
-          )}
+            {!hidePartnerName && !!partner?.name && (
+              <Text lineHeight="20" color="black60" numberOfLines={1}>
+                {partner?.name}
+              </Text>
+            )}
+            {!!isRecentlySoldArtwork && size === "large" && (
+              <>
+                <Spacer mt={2} />
+                <Flex flexDirection="row" justifyContent="space-between">
+                  <Text variant="xs" color="black60" numberOfLines={1} fontWeight="500">
+                    Estimate
+                  </Text>
+                  <Text variant="xs" color="black60" numberOfLines={1} fontWeight="500">
+                    {compact([lowEstimateDisplay, highEstimateDisplay]).join("—")}
+                  </Text>
+                </Flex>
+                <Flex flexDirection="row" justifyContent="space-between">
+                  <Text variant="xs" color="blue100" numberOfLines={1} fontWeight="500">
+                    Sold For (incl. premium)
+                  </Text>
+                  <Text variant="xs" color="blue100" numberOfLines={1} fontWeight="500">
+                    {priceRealizedDisplay}
+                  </Text>
+                </Flex>
+              </>
+            )}
 
-          {!!saleMessage && !isRecentlySoldArtwork && (
-            <Text lineHeight="20" variant="xs" color="black100" numberOfLines={1} fontWeight={500}>
-              {saleMessage}
-            </Text>
+            {!!saleMessage && !isRecentlySoldArtwork && (
+              <Text
+                lineHeight="20"
+                variant="xs"
+                color="black100"
+                numberOfLines={1}
+                fontWeight={500}
+              >
+                {saleMessage}
+              </Text>
+            )}
+          </Flex>
+          {!!showSaveIcon && (
+            <Flex ml={0.2}>
+              <Touchable
+                haptic
+                hitSlop={{ bottom: 5, right: 5, left: 5, top: 5 }}
+                onPress={handleArtworkSave}
+                testID="save-artwork-icon"
+              >
+                {isSaved ? (
+                  <HeartFillIcon
+                    testID="filled-heart-icon"
+                    height={SAVE_ICON_SIZE}
+                    width={SAVE_ICON_SIZE}
+                    fill="blue100"
+                  />
+                ) : (
+                  <HeartIcon
+                    testID="empty-heart-icon"
+                    height={SAVE_ICON_SIZE}
+                    width={SAVE_ICON_SIZE}
+                  />
+                )}
+              </Touchable>
+            </Flex>
           )}
         </Flex>
       </Flex>
@@ -266,6 +330,17 @@ const getImageDimensions = ({
   return { width, height }
 }
 
+const SaveArtworkMutation = graphql`
+  mutation ArtworkRailCardSaveArtworkMutation($input: SaveArtworkInput!) {
+    saveArtwork(input: $input) {
+      artwork {
+        id
+        isSaved
+      }
+    }
+  }
+`
+
 const artworkFragment = graphql`
   fragment ArtworkRailCard_artwork on Artwork @argumentDefinitions(width: { type: "Int" }) {
     id
@@ -283,6 +358,7 @@ const artworkFragment = graphql`
       }
       aspectRatio
     }
+    isSaved
     sale {
       isAuction
       isClosed

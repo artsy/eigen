@@ -4,8 +4,9 @@ import { ActivityQuery } from "__generated__/ActivityQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"
 import { goBack } from "app/navigation/navigate"
+import { GlobalStore } from "app/store/GlobalStore"
 import { Flex } from "palette"
-import { Suspense } from "react"
+import { Suspense, useEffect } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ActivityList } from "./ActivityList"
@@ -34,6 +35,10 @@ export const ActivityContent: React.FC<ActivityProps> = ({ type }) => {
 }
 
 export const ActivityContainer: React.FC<ActivityProps> = (props) => {
+  useEffect(() => {
+    GlobalStore.actions.bottomTabs.displayUnreadActivityPanelIndicatorChanged(false)
+  }, [])
+
   return (
     <Suspense fallback={<ActivityTabPlaceholder />}>
       <ActivityContent {...props} />

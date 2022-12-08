@@ -14,6 +14,7 @@ export interface BuyNowButtonProps {
   variant?: ButtonProps["variant"]
   // EditionSetID is passed down from the edition selected by the user
   editionSetID: string | null
+  renderSaleMessage?: boolean
 }
 
 export interface State {
@@ -121,7 +122,7 @@ export class BuyNowButton extends React.Component<BuyNowButtonProps, State> {
   }
 
   render() {
-    const { variant, artwork } = this.props
+    const { variant, artwork, renderSaleMessage } = this.props
     const { isCommittingCreateOrderMutation } = this.state
 
     return (
@@ -134,9 +135,7 @@ export class BuyNowButton extends React.Component<BuyNowButtonProps, State> {
         width={100}
         haptic
       >
-        {variant && variant === "outline" && artwork.saleMessage
-          ? `Purchase ${artwork.saleMessage}`
-          : "Purchase"}
+        {renderSaleMessage && artwork.saleMessage ? `Purchase ${artwork.saleMessage}` : "Purchase"}
       </Button>
     )
   }

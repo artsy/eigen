@@ -119,7 +119,7 @@ describe("MyCollectionArtworkInsights", () => {
   })
 
   describe("display of Submit for Sale section", () => {
-    it("renders Submit for Sale section if P1 artist", () => {
+    it("renders Submit for Sale section if P1 artist and artwork was not submitted to sale", () => {
       const { getByText } = renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
@@ -130,6 +130,7 @@ describe("MyCollectionArtworkInsights", () => {
                 isP1: true,
               },
             },
+            submissionId: null,
           },
         }),
       })
@@ -147,6 +148,26 @@ describe("MyCollectionArtworkInsights", () => {
                 isP1: false,
               },
             },
+          },
+        }),
+      })
+
+      expect(() => getByText("Interested in Selling This Work?")).toThrow(
+        "Unable to find an element with text: Interested in Selling This Work?"
+      )
+    })
+    it("does not render Submit for Sale section if P1 artist and artwork was submited to sale", () => {
+      const { getByText } = renderWithWrappers(<TestRenderer />)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Query: () => ({
+          artwork: {
+            artist: {
+              targetSupply: {
+                isP1: true,
+              },
+            },
+            submissionId: "someId",
           },
         }),
       })

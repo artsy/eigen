@@ -9,6 +9,7 @@ import { Home_showsByFollowedArtists$data } from "__generated__/Home_showsByFoll
 import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
+import { LargeArtworkRailPlaceholder } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { SmallArtworkRailPlaceholder } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { ArtistRailFragmentContainer } from "app/Components/Home/ArtistRails/ArtistRail"
 import { RecommendedArtistsRailFragmentContainer } from "app/Components/Home/ArtistRails/RecommendedArtistsRail"
@@ -22,6 +23,7 @@ import { FairsRailFragmentContainer } from "app/Scenes/Home/Components/FairsRail
 import { SalesRailFragmentContainer } from "app/Scenes/Home/Components/SalesRail"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
+import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { isPad } from "app/utils/hardware"
 import {
   PlaceholderBox,
@@ -50,7 +52,8 @@ import { NewWorksForYouRail } from "./Components/NewWorksForYouRail"
 import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
 import { RailScrollRef } from "./Components/types"
 
-const MODULE_SEPARATOR_HEIGHT = 4
+const LARGE_MODULE_SEPARATOR_HEIGHT = 4
+const MODULE_SEPARATOR_HEIGHT = 6
 
 interface HomeModule {
   title: string
@@ -100,6 +103,9 @@ const Home = (props: Props) => {
 
   const enableArtworkRecommendations = useFeatureFlag("AREnableHomeScreenArtworkRecommendations")
   const enableMyCollectionHFOnboarding = useFeatureFlag("AREnableMyCollectionHFOnboarding")
+  const enableLargeNewWorksForYouRail =
+    useExperimentVariant("eigen-new-works-for-you-rail-size").variant === "experiment" ||
+    useFeatureFlag("AREnforceLargeNewWorksRail")
 
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
   let modules: HomeModule[] = compact([
@@ -310,7 +316,11 @@ const Home = (props: Props) => {
                     title={item.title}
                     artworkConnection={item.data}
                     scrollRef={scrollRefs.current[index]}
-                    mb={MODULE_SEPARATOR_HEIGHT}
+                    mb={
+                      enableLargeNewWorksForYouRail
+                        ? LARGE_MODULE_SEPARATOR_HEIGHT
+                        : MODULE_SEPARATOR_HEIGHT
+                    }
                   />
                 )
               case "recommended-artists":
@@ -351,7 +361,7 @@ const Home = (props: Props) => {
                 return null
             }
           }}
-          ListHeaderComponent={<HomeHeader me={meAbove} />}
+          ListHeaderComponent={<HomeHeader />}
           ListFooterComponent={() => <Flex mb={3}>{!!loading && <BelowTheFoldPlaceholder />}</Flex>}
           keyExtractor={(_item, index) => String(index)}
         />
@@ -433,7 +443,6 @@ export const HomeFragmentContainer = createRefetchContainer(
     `,
     meAbove: graphql`
       fragment Home_meAbove on Me {
-        ...HomeHeader_me
         ...EmailConfirmationBanner_me
         ...LotsByFollowedArtistsRail_me
       }
@@ -535,6 +544,10 @@ const BelowTheFoldPlaceholder: React.FC = () => {
 }
 
 const HomePlaceholder: React.FC = () => {
+  const enableLargeNewWorksForYouRail =
+    useFeatureFlag("AREnforceLargeNewWorksRail") ||
+    useExperimentVariant("eigen-new-works-for-you-rail-size").variant === "experiment"
+
   return (
     <Flex>
       <Box mb={1} mt={2}>
@@ -550,8 +563,12 @@ const HomePlaceholder: React.FC = () => {
         <Box ml={2} mr={2}>
           <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
           <Spacer mb={0.3} />
-          <Flex flexDirection="row" mt={1}>
-            <SmallArtworkRailPlaceholder />
+          <Flex flexDirection="row">
+            {enableLargeNewWorksForYouRail ? (
+              <LargeArtworkRailPlaceholder />
+            ) : (
+              <SmallArtworkRailPlaceholder />
+            )}
           </Flex>
         </Box>
       }

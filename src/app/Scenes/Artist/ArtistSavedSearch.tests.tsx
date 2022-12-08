@@ -1,9 +1,8 @@
-import { fireEvent, screen, within } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import _ from "lodash"
-import "react-native"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { ArtistQueryRenderer } from "./Artist"
@@ -61,11 +60,11 @@ describe("Saved search banner on artist screen", () => {
     mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
 
-    fireEvent.press(screen.getByText("Sort & Filter"))
+    act(() => fireEvent.press(screen.getByText("Sort & Filter")))
 
-    expect(within(screen.getByText("Sort By")).getByText("• 1")).toBeTruthy()
-    expect(within(screen.getByText("Rarity")).getByText("• 2")).toBeTruthy()
-    expect(within(screen.getByText("Ways to Buy")).getByText("• 2")).toBeTruthy()
+    expect(screen.getByText("Sort By • 1")).toBeTruthy()
+    expect(screen.getByText("Rarity • 2")).toBeTruthy()
+    expect(screen.getByText("Ways to Buy • 2")).toBeTruthy()
   })
 
   it("should an error message when something went wrong during the search criteria query", async () => {

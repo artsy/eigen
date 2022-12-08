@@ -44,8 +44,6 @@ describe("WirePaymentSection", () => {
     expect(getByText("Proceed with the wire transfer to complete your purchase")).toBeTruthy()
     expect(getByText("Send wire transfer to")).toBeTruthy()
     expect(getByText("Bank address")).toBeTruthy()
-    expect(
-      getByText(`Add order number #${order.code} to the notes section in your wire transfer.`)
-    ).toBeTruthy()
+    expect(getByText(order.code)).toBeTruthy()
   })
 })

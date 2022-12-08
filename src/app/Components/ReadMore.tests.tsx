@@ -79,7 +79,7 @@ describe("ReadMore", () => {
       />
     )
 
-    expect(within(getByText(/This/)).getByText(/te/)).toBeTruthy()
+    expect(getByText(/This te/)).toBeTruthy()
     expect(
       getByText(`Read${nbsp}more`, {
         normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
@@ -128,13 +128,12 @@ describe("ReadMore", () => {
 
     // should display - first... Read more in the beginning
     expect(screen.queryByText(text)).toBeFalsy()
-    expect(screen.queryByText("- first...")).toBeTruthy()
-    expect(screen.queryByText("Read more")).toBeTruthy()
+    expect(screen.queryByText("- first... Read more")).toBeTruthy()
 
-    fireEvent.press(screen.getByText("Read more"))
+    fireEvent.press(screen.getByText(/Read more/))
 
     // after pressing read more, read more goes away and the full text is displayed
     expect(screen.queryByText(text)).toBeTruthy()
-    expect(screen.queryByText("Read more")).toBeFalsy()
+    expect(screen.queryByText(/Read more/)).toBeFalsy()
   })
 })

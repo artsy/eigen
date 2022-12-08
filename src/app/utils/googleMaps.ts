@@ -77,7 +77,7 @@ export const getLocationDetails = async ({
 
   return {
     city,
-    coordinates: [lat, lng],
+    coordinates: lat && lng ? [lat, lng] : undefined,
     country,
     countryCode,
     state,

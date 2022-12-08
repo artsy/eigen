@@ -32,6 +32,7 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
   const { trackEvent } = useTracking()
   const enforceLargeRail = useFeatureFlag("AREnforceLargeNewWorksRail")
   const railVariant = useExperimentVariant("eigen-new-works-for-you-rail-size")
+  const enableSaveIcon = useFeatureFlag("AREnableLargeArtworkRailSaveIcon")
 
   trackExperimentVariant(
     "eigen-new-works-for-you-rail-size",
@@ -82,6 +83,7 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
               )
               navigate(artwork.href!)
             }}
+            showSaveIcon={enableSaveIcon}
           />
         ) : (
           <SmallArtworkRail

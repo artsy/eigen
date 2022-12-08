@@ -41,17 +41,16 @@ describe("Notable Works Rail", () => {
   })
 
   it("renders without throwing an error when 3 or more notable artworks", async () => {
-    const { getByText, getAllByText } = renderWithWrappers(<TestWrapper />)
+    const { getByText } = renderWithWrappers(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => artistMockData,
     })
 
-    expect(getByText("My Second Greatest Art")).toBeTruthy()
-    expect(getByText("My Second Greatest Art").props.fontStyle).toEqual("italic")
-    expect(getAllByText(", 2020").length).toEqual(3)
-    expect(getByText("My Greatest Art")).toBeTruthy()
-    expect(getByText("My Third Greatest Art")).toBeTruthy()
+    expect(getByText("My Second Greatest Art, 2020")).toBeTruthy()
+    expect(getByText("My Second Greatest Art, 2020")).toHaveProp("fontStyle", "italic")
+    expect(getByText("My Greatest Art, 2020")).toBeTruthy()
+    expect(getByText("My Third Greatest Art, 2020")).toBeTruthy()
   })
 
   describe("Notable artwork metadata", () => {
@@ -99,6 +98,7 @@ const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] 
           id: "another-another-id-2",
           href: "/artwork/another-another-id-3",
           artistNames: "Artist Name",
+          isSaved: false,
           date: "2020",
           partner: null,
           image: {
@@ -123,6 +123,7 @@ const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] 
       {
         node: {
           id: "another-another-id",
+          isSaved: false,
           href: "/artwork/another-another-id-3",
           artistNames: "Artist Name",
           date: "2020",
@@ -154,6 +155,7 @@ const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] 
       {
         node: {
           id: "another-another-id-3",
+          isSaved: false,
           href: "/artwork/another-another-id-3",
           artistNames: "Artist Name",
           date: "2020",

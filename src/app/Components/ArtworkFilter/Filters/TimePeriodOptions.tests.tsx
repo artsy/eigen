@@ -1,4 +1,3 @@
-import { within } from "@testing-library/react-native"
 import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtworkFiltersState } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -89,7 +88,7 @@ describe("TimePeriodOptions Screen", () => {
     it("displays the number of the selected filters on the filter modal screen", () => {
       const { getByText } = renderWithWrappers(<MockFilterScreen initialState={state} />)
 
-      expect(within(getByText("Time Period")).getByText("• 1")).toBeTruthy()
+      expect(getByText("Time Period • 1")).toBeTruthy()
     })
 
     it("toggles selected filters 'ON' and unselected filters 'OFF", async () => {

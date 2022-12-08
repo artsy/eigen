@@ -17,12 +17,14 @@ interface ConnectionCallbacks {
   disconnected?: () => void
 }
 
-interface AuctionWebsocketContextProviderProps {
+export interface AuctionWebsocketChannelInfo {
+  channel: string
+  [id: string]: string | undefined
+}
+
+export interface AuctionWebsocketContextProviderProps {
   enabled: boolean
-  channelInfo: {
-    channel: string
-    [id: string]: string | undefined
-  }
+  channelInfo: AuctionWebsocketChannelInfo
   callbacks?: ConnectionCallbacks
 }
 

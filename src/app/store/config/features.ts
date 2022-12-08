@@ -210,7 +210,8 @@ export const features = defineFeatures({
   ARArtworkRedesingPhase2: {
     description: "Enable redesigned artwork page (phase 2)",
     showInAdminMenu: true,
-    readyForRelease: false,
+    readyForRelease: true,
+    echoFlagKey: "ARArtworkRedesingPhase2",
   },
   AREnablePanOnStaticHeader: {
     description: "Enable Scroll/Pan on StaticHeader",
@@ -244,6 +245,12 @@ export const features = defineFeatures({
     description: "Enable images gallery on Android",
     showInAdminMenu: true,
     readyForRelease: false,
+  },
+  AREnableLargeArtworkRailSaveIcon: {
+    description: "Enable save icon for large artwork rails",
+    showInAdminMenu: true,
+    readyForRelease: true,
+    echoFlagKey: "AREnableLargeArtworkRailSaveIcon",
   },
   AREnableSWAInquiryFlow: {
     description: "Enable Sell With Artsy Inquiry",

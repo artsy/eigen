@@ -24,6 +24,7 @@ import { usePurgeCacheOnAppUpdate } from "./relay/usePurgeCacheOnAppUpdate"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
+import { DynamicIslandStagingIndicator } from "./utils/DynamicIslandStagingIndicator"
 import { createAllChannels, savePendingToken } from "./utils/PushNotification"
 import { useInitializeQueryPrefetching } from "./utils/queryPrefetching"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
@@ -153,5 +154,7 @@ export const App = () => (
     <AdminMenuWrapper>
       <Main />
     </AdminMenuWrapper>
+
+    <DynamicIslandStagingIndicator />
   </AppProviders>
 )

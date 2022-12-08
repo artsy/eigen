@@ -51,7 +51,7 @@ const configurableDevToggleKeys = sortBy(
   ([k, { description }]) => description ?? k
 ).map(([k]) => k as DevToggleName)
 
-export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModal }) => {
+export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = () => dismissModal() }) => {
   const [featureFlagQuery, setFeatureFlagQuery] = useState("")
   const [devToolQuery, setDevToolQuery] = useState("")
   const migrationVersion = GlobalStore.useAppState((s) => s.version)
@@ -115,6 +115,23 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
           onPress={() => {
             navigate("/storybook")
           }}
+        />
+        <FeatureFlagMenuItem
+          title="Navigate to..."
+          onPress={() =>
+            Alert.prompt("Navigate to...", "Where should we navigate to?", [
+              {
+                text: "Go",
+                onPress: (url) => {
+                  if (!url) {
+                    return
+                  }
+
+                  dismissModal(() => navigate(url))
+                },
+              },
+            ])
+          }
         />
         <Flex mx="2">
           <Separator my="1" />

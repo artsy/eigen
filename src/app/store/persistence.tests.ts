@@ -129,7 +129,10 @@ describe(persist, () => {
   })
   it("omits the sessionStorage key", async () => {
     await persist({
-      bottomTabs: { selectedTab: "home", sessionState: { unreadConversationCount: 5 } },
+      bottomTabs: {
+        selectedTab: "home",
+        sessionState: { unreadCounts: { unreadConversation: 5 } },
+      },
     } as any)
     expect(JSON.parse((await AsyncStorage.getItem(STORAGE_KEY)) ?? "")).toEqual({
       bottomTabs: { selectedTab: "home" },
@@ -137,13 +140,19 @@ describe(persist, () => {
   })
   it("overwrites the previous value", async () => {
     await persist({
-      bottomTabs: { selectedTab: "home", sessionState: { unreadConversationCount: 5 } },
+      bottomTabs: {
+        selectedTab: "home",
+        sessionState: { unreadCounts: { unreadConversation: 5 } },
+      },
     } as any)
     expect(JSON.parse((await AsyncStorage.getItem(STORAGE_KEY)) ?? "")).toEqual({
       bottomTabs: { selectedTab: "home" },
     })
     await persist({
-      bottomTabs: { selectedTab: "explore", sessionState: { unreadConversationCount: 5 } },
+      bottomTabs: {
+        selectedTab: "explore",
+        sessionState: { unreadCounts: { unreadConversation: 5 } },
+      },
     } as any)
     expect(JSON.parse((await AsyncStorage.getItem(STORAGE_KEY)) ?? "")).toEqual({
       bottomTabs: { selectedTab: "explore" },

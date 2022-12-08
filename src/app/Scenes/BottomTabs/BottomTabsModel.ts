@@ -1,4 +1,5 @@
 import { captureException } from "@sentry/react-native"
+import { BottomTabsModelFetchAllNotificationsCountsQuery } from "__generated__/BottomTabsModelFetchAllNotificationsCountsQuery.graphql"
 import { BottomTabsModelFetchCurrentUnreadConversationCountQuery } from "__generated__/BottomTabsModelFetchCurrentUnreadConversationCountQuery.graphql"
 import { createEnvironment } from "app/relay/createEnvironment"
 import {
@@ -11,25 +12,38 @@ import { Action, action, Thunk, thunk } from "easy-peasy"
 import { fetchQuery, graphql } from "react-relay"
 import { BottomTabType } from "./BottomTabType"
 
+export interface UnreadCounts {
+  unreadConversation: number
+  unreadActivityPanelNotifications: number
+}
+
 export interface BottomTabsModel {
   sessionState: {
-    unreadConversationCount: number
+    unreadCounts: UnreadCounts
+    displayUnreadActivityPanelIndicator: boolean
     tabProps: Partial<{ [k in BottomTabType]: object }>
     selectedTab: BottomTabType
   }
   unreadConversationCountChanged: Action<BottomTabsModel, number>
   fetchCurrentUnreadConversationCount: Thunk<BottomTabsModel>
+  unreadActivityPanelNotificationsCountChanged: Action<BottomTabsModel, number>
+  fetchAllNotificationsCounts: Thunk<BottomTabsModel>
+  displayUnreadActivityPanelIndicatorChanged: Action<BottomTabsModel, boolean>
   setTabProps: Action<BottomTabsModel, { tab: BottomTabType; props: object | undefined }>
 }
 
 export const getBottomTabsModel = (): BottomTabsModel => ({
   sessionState: {
-    unreadConversationCount: 0,
+    unreadCounts: {
+      unreadConversation: 0,
+      unreadActivityPanelNotifications: 0,
+    },
+    displayUnreadActivityPanelIndicator: false,
     tabProps: {},
     selectedTab: "home",
   },
   unreadConversationCountChanged: action((state, unreadConversationCount) => {
-    state.sessionState.unreadConversationCount = unreadConversationCount
+    state.sessionState.unreadCounts.unreadConversation = unreadConversationCount
   }),
   fetchCurrentUnreadConversationCount: thunk(async () => {
     try {
@@ -50,11 +64,11 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
         }
       ).toPromise()
 
-      if (result?.me?.unreadConversationCount != null) {
-        GlobalStore.actions.bottomTabs.unreadConversationCountChanged(
-          result.me.unreadConversationCount
-        )
-        GlobalStore.actions.native.setApplicationIconBadgeNumber(result.me.unreadConversationCount)
+      const conversationsCount = result?.me?.unreadConversationCount
+
+      if (conversationsCount !== null) {
+        GlobalStore.actions.bottomTabs.unreadConversationCountChanged(conversationsCount ?? 0)
+        GlobalStore.actions.native.setApplicationIconBadgeNumber(conversationsCount ?? 0)
       }
     } catch (e) {
       if (__DEV__) {
@@ -67,6 +81,68 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
       }
     }
   }),
+  unreadActivityPanelNotificationsCountChanged: action((state, unreadCount) => {
+    // we want to display the indicator only when there is a new notification
+    if (unreadCount > state.sessionState.unreadCounts.unreadActivityPanelNotifications) {
+      state.sessionState.displayUnreadActivityPanelIndicator = true
+    }
+
+    // when the user marked all notifications as read
+    if (unreadCount === 0) {
+      state.sessionState.displayUnreadActivityPanelIndicator = false
+    }
+
+    state.sessionState.unreadCounts.unreadActivityPanelNotifications = unreadCount
+  }),
+  fetchAllNotificationsCounts: thunk(async () => {
+    try {
+      const result = await fetchQuery<BottomTabsModelFetchAllNotificationsCountsQuery>(
+        createEnvironment([
+          [persistedQueryMiddleware(), metaphysicsURLMiddleware(), simpleLoggerMiddleware()],
+        ]),
+        graphql`
+          query BottomTabsModelFetchAllNotificationsCountsQuery {
+            me @principalField {
+              unreadConversationCount
+              unreadNotificationsCount
+            }
+          }
+        `,
+        {},
+        {
+          fetchPolicy: "network-only",
+        }
+      ).toPromise()
+
+      const conversationsCount = result?.me?.unreadConversationCount
+      const notificationsCount = result?.me?.unreadNotificationsCount
+
+      if (conversationsCount !== null) {
+        GlobalStore.actions.bottomTabs.unreadConversationCountChanged(conversationsCount ?? 0)
+        GlobalStore.actions.native.setApplicationIconBadgeNumber(conversationsCount ?? 0)
+      }
+
+      if (notificationsCount !== null) {
+        GlobalStore.actions.bottomTabs.unreadActivityPanelNotificationsCountChanged(
+          notificationsCount ?? 0
+        )
+      }
+    } catch (e) {
+      if (__DEV__) {
+        console.warn(
+          "[DEV] Couldn't fetch unread counts.\n\nIf it's happening reliably for you, there's a problem and you should look into it."
+        )
+        console.log(e)
+      } else {
+        captureException(e)
+      }
+    }
+  }),
+  displayUnreadActivityPanelIndicatorChanged: action(
+    (state, displayUnreadActivityPanelIndicator) => {
+      state.sessionState.displayUnreadActivityPanelIndicator = displayUnreadActivityPanelIndicator
+    }
+  ),
   setTabProps: action((state, { tab, props }) => {
     state.sessionState.tabProps[tab] = props
   }),

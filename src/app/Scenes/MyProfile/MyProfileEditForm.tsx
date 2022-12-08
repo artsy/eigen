@@ -253,13 +253,14 @@ export const MyProfileEditForm: React.FC = () => {
                   professionInputRef.current?.focus()
                 }}
                 displayLocation={buildLocationDisplay(values.location)}
-                onChange={({ city, country, postalCode, state, stateCode }) => {
+                onChange={({ city, country, postalCode, state, stateCode, coordinates }) => {
                   setFieldValue("location", {
                     city: city ?? "",
                     country: country ?? "",
                     postalCode: postalCode ?? "",
                     state: state ?? "",
                     stateCode: stateCode ?? "",
+                    coordinates,
                   })
                 }}
               />
