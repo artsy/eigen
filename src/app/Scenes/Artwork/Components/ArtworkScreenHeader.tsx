@@ -1,5 +1,6 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArtworkScreenHeader_artwork$data } from "__generated__/ArtworkScreenHeader_artwork.graphql"
+import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { goBack } from "app/navigation/navigate"
 import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { Schema } from "app/utils/track"
@@ -8,6 +9,7 @@ import { isEmpty } from "lodash"
 import { BackButton, Button, Flex, HeartFillIcon, HeartIcon, useSpace } from "palette"
 import { createFragmentContainer, graphql, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
+import { ArtworkStore } from "../ArtworkStore"
 import { ArtworkScreenHeaderCreateAlertFragmentContainer } from "./ArtworkScreenHeaderCreateAlert"
 
 const HEADER_HEIGHT = 44
@@ -26,6 +28,7 @@ interface ArtworkScreenHeaderProps {
 const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) => {
   const { trackEvent } = useTracking()
   const space = useSpace()
+  const auctionState = ArtworkStore.useStoreState((state) => state.auctionState)
 
   const { isSaved, sale } = artwork
 
@@ -78,7 +81,10 @@ const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) =>
     })
   }
 
-  const isOpenSale = !isEmpty(sale) && sale?.isAuction && !sale.isClosed
+  const isOpenSale =
+    !isEmpty(sale) &&
+    sale?.isAuction &&
+    (!sale.isClosed || auctionState !== AuctionTimerState.CLOSED)
 
   const saveButtonText = () => {
     if (isOpenSale) {
