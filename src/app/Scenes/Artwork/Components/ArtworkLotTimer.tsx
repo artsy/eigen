@@ -233,7 +233,7 @@ export const ArtworkLotTimerFragmentContainer = createFragmentContainer(Auctiono
       isInAuction
       isForSale
       saleArtwork {
-        lotLabel
+        lotLabel(trim: true)
         lotID
         endAt
         extendedBiddingEndAt
