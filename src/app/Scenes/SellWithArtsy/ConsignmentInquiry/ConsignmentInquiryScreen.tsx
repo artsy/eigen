@@ -11,7 +11,7 @@ import { CloseIcon } from "palette"
 import { useEffect, useState } from "react"
 import { useTracking } from "react-tracking"
 import { commitMutation, Environment, graphql } from "relay-runtime"
-import { ArtsyKeyboardAvoidingViewContext } from "shared/utils"
+import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import * as Yup from "yup"
 import { ConsignmentInquiryConfirmation } from "./ConsignmentInquiryConfirmation"
 import { ConsignmentInquiryForm } from "./ConsignmentInquiryForm"
@@ -136,10 +136,11 @@ export const ConsignmentInquiryScreen: React.FC<InquiryScreenProps> = ({
 
   return (
     <FormikProvider value={formik}>
-      <ArtsyKeyboardAvoidingViewContext.Provider
-        value={{ isVisible: true, isPresentedModally: false, bottomOffset: 10 }}
-      >
-        <ConsignmentInquiryForm />
+      <>
+        <ArtsyKeyboardAvoidingView>
+          <ConsignmentInquiryForm />
+        </ArtsyKeyboardAvoidingView>
+
         <FancyModal visible={showAbandonModal && !showConfirmedModal}>
           <FancyModalHeader
             hideBottomDivider
@@ -161,7 +162,7 @@ export const ConsignmentInquiryScreen: React.FC<InquiryScreenProps> = ({
         >
           <ConsignmentInquiryConfirmation />
         </FancyModal>
-      </ArtsyKeyboardAvoidingViewContext.Provider>
+      </>
     </FormikProvider>
   )
 }
