@@ -46,7 +46,8 @@ export const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
   const [predictions, setPredictions] = useState<SimpleLocation[]>([])
   const [selectedLocation, setSelectedLocation] = useState(initialLocation)
   const [query, setQuery] = useState(selectedLocation?.name || displayLocation)
-  const ref = inputRef || useRef<Input>(null)
+  const innerRef = useRef<Input>(null)
+  const ref = inputRef || innerRef
 
   const selectedLocationQuery = selectedLocation?.name || displayLocation
 
