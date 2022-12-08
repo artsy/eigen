@@ -13,7 +13,7 @@ export const BottomTabs: React.FC<BottomTabBarProps> = (props) => {
   const { color } = useTheme()
   const focusedRoute = findFocusedRoute(props.state)
   const params = focusedRoute?.params as any
-  const module = modules[params.moduleName as AppModule]
+  const module = modules[params?.moduleName as AppModule]
   const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
   const unreadConversationCount = GlobalStore.useAppState(
     (state) => state.bottomTabs.sessionState.unreadCounts.unreadConversation

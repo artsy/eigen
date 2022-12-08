@@ -53,7 +53,7 @@ const TestWrapper: React.FC<Partial<BottomTabBarProps>> = (props) => {
     <GlobalStoreProvider>
       <ModalStack>
         {/* @ts-ignore */}
-        <BottomTabs {...props} />
+        <BottomTabs state={navigationState} {...props} />
       </ModalStack>
     </GlobalStoreProvider>
   )
@@ -190,28 +190,20 @@ describe(BottomTabs, () => {
     expect((homeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
   })
 
-  it("should not be rendered if the `shouldHideBottomTab` param is specified", async () => {
+  it("should not be rendered if the `hidesBottomTabs` option is specified", async () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ ARArtworkRedesingPhase2: true })
+
     const state: BottomTabBarProps["state"] = {
-      history: [
-        {
-          key: "route-key",
-          type: "route",
-        },
-      ],
-      index: 0,
-      key: "tab-key",
-      routeNames: ["route-name"],
+      ...navigationState,
       routes: [
         {
           key: "route-key",
           name: "route",
           params: {
-            shouldHideBottomTab: true,
+            moduleName: "Artwork",
           },
         },
       ],
-      stale: false,
-      type: "tab",
     }
 
     const tree = renderWithWrappersLEGACY(<TestWrapper state={state} />)
@@ -220,3 +212,26 @@ describe(BottomTabs, () => {
     expect(buttons).toHaveLength(0)
   })
 })
+
+const navigationState: BottomTabBarProps["state"] = {
+  history: [
+    {
+      key: "route-key",
+      type: "route",
+    },
+  ],
+  index: 0,
+  key: "tab-key",
+  routeNames: ["route-name"],
+  routes: [
+    {
+      key: "route-key",
+      name: "route",
+      params: {
+        moduleName: "moduleName",
+      },
+    },
+  ],
+  stale: false,
+  type: "tab",
+}
