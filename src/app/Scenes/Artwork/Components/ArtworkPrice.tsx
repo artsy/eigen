@@ -1,5 +1,6 @@
 import { ArtworkPrice_artwork$key } from "__generated__/ArtworkPrice_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { Flex, FlexProps, Text } from "palette"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -11,6 +12,7 @@ interface ArtworkPriceProps extends FlexProps {
 }
 
 export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({ artwork, ...flexProps }) => {
+  const displaySmallerPriceLabel = useFeatureFlag("ARDisplaySmallerPriceForStickySection")
   const data = useFragment(artworkPriceFragment, artwork)
   const selectedEditionId = ArtworkStore.useStoreState((state) => state.selectedEditionId)
   const auctionState = ArtworkStore.useStoreState((state) => state.auctionState)
@@ -54,7 +56,7 @@ export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({ artwork, ...flexProp
   if (message) {
     return (
       <Flex {...flexProps}>
-        <Text variant="lg-display">{message}</Text>
+        <Text variant={displaySmallerPriceLabel ? "sm" : "lg-display"}>{message}</Text>
         {renderShippingAndTaxesInfo()}
       </Flex>
     )

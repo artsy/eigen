@@ -2,12 +2,10 @@ import { ArtworkStickyBottomContent_artwork$key } from "__generated__/ArtworkSti
 import { ArtworkStickyBottomContent_me$key } from "__generated__/ArtworkStickyBottomContent_me.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
-import { setBottomTabVisibilityForCurrentScreen } from "app/Scenes/BottomTabs/setBottomTabVisibilityForCurrentScreen"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { Box, Separator } from "palette"
-import { useLayoutEffect } from "react"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
-import { useScreenDimensions } from "shared/hooks"
 import { ArtworkCommercialButtons } from "./ArtworkCommercialButtons"
 import { ArtworkPrice } from "./ArtworkPrice"
 
@@ -20,30 +18,27 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
   artwork,
   me,
 }) => {
-  const { safeAreaInsets } = useScreenDimensions()
   const artworkData = useFragment(artworkFragment, artwork)
   const meData = useFragment(meFragment, me)
+  const displayOnlyCommercialButtons = useFeatureFlag(
+    "ARDisplayOnlyCommercialButtonForStickySection"
+  )
+  const displaySmallerPriceLabel = useFeatureFlag("ARDisplaySmallerPriceForStickySection")
   const auctionState = ArtworkStore.useStoreState((state) => state.auctionState)
   const skipRender =
     !artworkData.isForSale || artworkData.isSold || auctionState === AuctionTimerState.CLOSED
-
-  useLayoutEffect(() => {
-    setBottomTabVisibilityForCurrentScreen(skipRender)
-  }, [skipRender])
 
   if (skipRender) {
     return null
   }
 
   return (
-    <Box
-      accessibilityLabel="Sticky bottom commercial section"
-      bg="white100"
-      pb={safeAreaInsets.bottom}
-    >
+    <Box accessibilityLabel="Sticky bottom commercial section" bg="white100">
       <Separator />
       <Box px={2} py={1}>
-        <ArtworkPrice artwork={artworkData} mb={1} />
+        {!!(displaySmallerPriceLabel || !displayOnlyCommercialButtons) && (
+          <ArtworkPrice artwork={artworkData} mb={1} />
+        )}
         <ArtworkCommercialButtons artwork={artworkData} me={meData} />
       </Box>
     </Box>

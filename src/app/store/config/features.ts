@@ -252,6 +252,16 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "AREnableLargeArtworkRailSaveIcon",
   },
+  ARDisplayOnlyCommercialButtonForStickySection: {
+    description: "Display only commercial buttons for sticky bottom section on artwork screen",
+    showInAdminMenu: true,
+    readyForRelease: false,
+  },
+  ARDisplaySmallerPriceForStickySection: {
+    description: "Display smaller price label for sticky bottom section on artwork screen",
+    showInAdminMenu: true,
+    readyForRelease: false,
+  },
 })
 
 export interface DevToggleDescriptor {
