@@ -1313,6 +1313,9 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     earliestCreatedYear: Int
     first: Int
 
+    # Include upcoming auction results
+    includeUpcoming: Boolean = true
+
     # Filter by artwork title or description keyword search
     keyword: String
     last: Int
@@ -10275,6 +10278,9 @@ type Me implements Node {
     # Filter auction results by earliest created at year
     earliestCreatedYear: Int
     first: Int
+
+    # Include upcoming auction results
+    includeUpcoming: Boolean = true
     last: Int
 
     # Filter auction results by latest created at year
@@ -10486,6 +10492,9 @@ type Me implements Node {
     # Filter auction results by earliest created at year
     earliestCreatedYear: Int
     first: Int
+
+    # Include upcoming auction results
+    includeUpcoming: Boolean = true
     last: Int
 
     # Filter auction results by latest created at year
