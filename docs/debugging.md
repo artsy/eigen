@@ -1,18 +1,18 @@
 # Debugging
 
-Eigen has two developer menus: The regular react-native In-App Developer Menu + An Admin Settings Menu.
+Eigen has two developer menus: The regular react-native In-App Developer Menu + our own Dev Settings Menu.
 
-## Admin Settings Menu
+## Our Own Dev Settings Menu
 
 This is a custom menu that we use for all our in house built-in debugging features (clearing relay cache, throwing sentry errors, showing analytics events ...etc) in addition to enabling/disabling feature flags.
 
-![admin-settings-menu](./screenshots/admin-settings-menu.png)
+![dev-settings-menu](./screenshots/dev-settings-menu.png)
 
 By default, this menu is disabled if you are running the app in a production build or if you are on staging in a non-artsy mail account. To enable it:
 
 1. Run the app in the simulator or a real device.
    1a. Developer mode should be on in you are developing (`__DEV__` is true, or you are logged in with an artsy email). Make sure it is, by going to Profile > About. If "Version" has a one pixel purple line on the right, then you are good to go. If not, then you need to tap "Version" 7 times quickly, to enable developer mode.
-2. Simulate a ‘shake’ event (<kbd>^⌘Z</kbd>), which will bring up the dev menu.
+2. Simulate a ‘shake’ event (<kbd>^⌘Z</kbd>), which will bring up the Dev Menu.
 
 ## In-App Developer Menu
 

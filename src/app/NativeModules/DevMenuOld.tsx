@@ -4,7 +4,7 @@ import { requireNativeComponent, View } from "react-native"
 
 const ARTOldAdminView = requireNativeComponent("ARTOldAdminView")
 
-export const Admin: React.FC = () => {
+export const DevMenuOld = () => {
   const handleModalDismiss = () => {
     dismissModal()
   }

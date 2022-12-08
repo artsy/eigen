@@ -12,8 +12,8 @@ import { InboxQueryRenderer, InboxScreenQuery } from "./Containers/Inbox"
 import { InquiryQueryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { WorksForYouQueryRenderer, WorksForYouScreenQuery } from "./Containers/WorksForYou"
-import { Admin } from "./NativeModules/Admin"
 import { CityGuideView } from "./NativeModules/CityGuideView"
+import { DevMenuOld } from "./NativeModules/DevMenuOld"
 import { LiveAuctionView } from "./NativeModules/LiveAuctionView"
 import { About } from "./Scenes/About/About"
 import { Activity } from "./Scenes/Activity/Activity"
@@ -128,7 +128,7 @@ import {
 } from "./Scenes/ViewingRoom/ViewingRoomsList"
 import { GlobalStore, useSelectedTab } from "./store/GlobalStore"
 import { propsStore } from "./store/PropsStore"
-import { AdminMenu } from "./utils/AdminMenu"
+import { DevMenu } from "./utils/DevMenu"
 import { addTrackingProvider, Schema, screenTrack } from "./utils/track"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import {
@@ -321,8 +321,8 @@ export const modules = defineModules({
   Activity: reactModule(Activity, {
     hidesBackButton: true,
   }),
-  Admin: reactModule(Admin, { alwaysPresentModally: true }),
-  Admin2: reactModule(AdminMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
+  DevMenuOld: reactModule(DevMenuOld, { alwaysPresentModally: true }),
+  DevMenu: reactModule(DevMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   About: reactModule(About),
   AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkForm, { hidesBackButton: true }),
   Articles: reactModule(ArticlesScreen, {}, [ArticlesScreenQuery]),

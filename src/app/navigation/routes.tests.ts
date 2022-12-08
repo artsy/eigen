@@ -636,10 +636,20 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to Admin", () => {
-    expect(matchRoute("/admin")).toMatchInlineSnapshot(`
+  it("routes to Dev Menu", () => {
+    expect(matchRoute("/dev-menu")).toMatchInlineSnapshot(`
       Object {
-        "module": "Admin",
+        "module": "DevMenu",
+        "params": Object {},
+        "type": "match",
+      }
+    `)
+  })
+
+  it("routes to old Dev Menu", () => {
+    expect(matchRoute("/dev-menu-old")).toMatchInlineSnapshot(`
+      Object {
+        "module": "DevMenuOld",
         "params": Object {},
         "type": "match",
       }

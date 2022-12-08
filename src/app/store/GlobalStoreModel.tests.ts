@@ -76,7 +76,7 @@ describe("GlobalStoreModel", () => {
 
   it("can have feature flags changed/injected", () => {
     expect(
-      __globalStoreTestUtils__?.getCurrentState().artsyPrefs.features.adminOverrides
+      __globalStoreTestUtils__?.getCurrentState().artsyPrefs.features.localOverrides
     ).toStrictEqual({})
     expect(
       __globalStoreTestUtils__?.getCurrentState().artsyPrefs.features.flags.ARDarkModeSupport
@@ -85,7 +85,7 @@ describe("GlobalStoreModel", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ ARDarkModeSupport: true })
 
     expect(
-      __globalStoreTestUtils__?.getCurrentState().artsyPrefs.features.adminOverrides
+      __globalStoreTestUtils__?.getCurrentState().artsyPrefs.features.localOverrides
     ).toStrictEqual({ ARDarkModeSupport: true })
     expect(
       __globalStoreTestUtils__?.getCurrentState().artsyPrefs.features.flags.ARDarkModeSupport

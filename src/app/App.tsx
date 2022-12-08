@@ -1,6 +1,6 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
-import { AdminMenuWrapper } from "app/utils/AdminMenuWrapper"
+import { DevMenuWrapper } from "app/utils/DevMenuWrapper"
 import { addTrackingProvider } from "app/utils/track"
 import {
   SEGMENT_TRACKING_PROVIDER,
@@ -36,7 +36,7 @@ import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
 import { useScreenReaderTracking } from "./utils/useScreenReaderTracking"
 import useSyncNativeAuthState from "./utils/useSyncAuthState"
 
-// don't open dev menu with shake. we use it for out own admin menu.
+// don't open RN dev menu with shake. we use it for our own Dev Menu.
 if (__DEV__) {
   NativeModules.DevSettings.setIsShakeToShowDevMenuEnabled(false)
 }
@@ -48,7 +48,7 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true)
 }
 
-const useRageShakeAdminMenu = () => {
+const useRageShakeDevMenu = () => {
   const userIsDev = GlobalStore.useAppState((s) => s.artsyPrefs.userIsDev.value)
 
   useEffect(() => {
@@ -57,7 +57,7 @@ const useRageShakeAdminMenu = () => {
         return
       }
 
-      navigate("/admin2")
+      navigate("/dev-menu")
     })
 
     return () => {
@@ -67,7 +67,7 @@ const useRageShakeAdminMenu = () => {
 }
 
 const Main = () => {
-  useRageShakeAdminMenu()
+  useRageShakeDevMenu()
   useDebugging()
   useEffect(() => {
     GoogleSignin.configure({
@@ -151,9 +151,9 @@ const Main = () => {
 
 export const App = () => (
   <AppProviders>
-    <AdminMenuWrapper>
+    <DevMenuWrapper>
       <Main />
-    </AdminMenuWrapper>
+    </DevMenuWrapper>
 
     <DynamicIslandStagingIndicator />
   </AppProviders>

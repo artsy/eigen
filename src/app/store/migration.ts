@@ -42,9 +42,11 @@ export const Versions = {
   AddSubmissionIdForMyCollection: 30,
   AddRecentPriceRangesModel: 31,
   AddUserPreferredPriceRange: 32,
+  RenameAdminToLocalOverridesForFeatures: 33,
+  MoveEnvironmentToDevicePrefsAndRenameAdminToLocal: 34,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddUserPreferredPriceRange
+export const CURRENT_APP_VERSION = Versions.MoveEnvironmentToDevicePrefsAndRenameAdminToLocal
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -249,6 +251,16 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.AddUserPreferredPriceRange]: (state) => {
     state.userPrefs.priceRange = "*-*"
+  },
+  [Versions.RenameAdminToLocalOverridesForFeatures]: (state) => {
+    state.artsyPrefs.features.localOverrides = state.artsyPrefs.features.adminOverrides
+    delete state.artsyPrefs.features.adminOverrides
+  },
+  [Versions.MoveEnvironmentToDevicePrefsAndRenameAdminToLocal]: (state) => {
+    state.devicePrefs.environment = state.artsyPrefs.environment
+    delete state.artsyPrefs.environment
+    state.devicePrefs.environment.localOverrides = state.devicePrefs.environment.adminOverrides
+    delete state.devicePrefs.environment.adminOverrides
   },
 }
 

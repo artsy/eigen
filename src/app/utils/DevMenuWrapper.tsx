@@ -4,7 +4,7 @@ import { Flex } from "palette"
 import React, { useRef } from "react"
 import { Platform } from "react-native"
 
-export const AdminMenuWrapper: React.FC = ({ children }) => {
+export const DevMenuWrapper: React.FC = ({ children }) => {
   const userIsDev = GlobalStore.useAppState((store) => store.artsyPrefs.userIsDev.value)
   const gestureState = useRef({ lastTapTimestamp: 0, numTaps: 0 })
 
@@ -29,7 +29,7 @@ export const AdminMenuWrapper: React.FC = ({ children }) => {
 
         if (state.numTaps >= 5) {
           state.numTaps = 0
-          navigate("/admin2")
+          navigate("/dev-menu")
         }
         return false
       }}

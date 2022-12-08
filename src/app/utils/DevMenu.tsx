@@ -24,7 +24,7 @@ import {
   useColor,
 } from "palette"
 import { CollapseMenu } from "palette/elements/CollapseMenu"
-import React, { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import {
   Alert,
   AlertButton,
@@ -43,7 +43,7 @@ import Keychain from "react-native-keychain"
 import { useUnleashEnvironment } from "./experiments/hooks"
 
 const configurableFeatureFlagKeys = Object.entries(features)
-  .filter(([_, { showInAdminMenu }]) => showInAdminMenu)
+  .filter(([_, { showInDevMenu }]) => showInDevMenu)
   .map(([k]) => k as FeatureName)
 
 const configurableDevToggleKeys = sortBy(
@@ -51,17 +51,17 @@ const configurableDevToggleKeys = sortBy(
   ([k, { description }]) => description ?? k
 ).map(([k]) => k as DevToggleName)
 
-export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = () => dismissModal() }) => {
+export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void }) => {
   const [featureFlagQuery, setFeatureFlagQuery] = useState("")
   const [devToolQuery, setDevToolQuery] = useState("")
   const migrationVersion = GlobalStore.useAppState((s) => s.version)
-  const server = GlobalStore.useAppState((s) => s.artsyPrefs.environment.strings.webURL).slice(
+  const server = GlobalStore.useAppState((s) => s.devicePrefs.environment.strings.webURL).slice(
     "https://".length
   )
   const userEmail = GlobalStore.useAppState((s) => s.auth.userEmail)
 
   useEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       BackHandler.addEventListener("hardwareBackPress", handleBackButton)
 
       return () => BackHandler.removeEventListener("hardwareBackPress", handleBackButton)
@@ -74,26 +74,16 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = () => dismi
   const { unleashEnv } = useUnleashEnvironment()
 
   return (
-    <Flex
-      style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: "white",
-      }}
-      py="2"
-    >
+    <Flex position="absolute" top={0} left={0} right={0} bottom={0} py="2">
       <Flex flexDirection="row" justifyContent="space-between">
         <Text variant="lg-display" pb="2" px="2">
-          Admin Settings
+          Dev Settings
         </Text>
         <Buttons onClose={onClose} />
       </Flex>
 
       <ScrollView
-        style={{ flex: 1, backgroundColor: "white", borderRadius: 4, overflow: "hidden" }}
+        style={{ flex: 1, borderRadius: 4, overflow: "hidden" }}
         contentContainerStyle={{ paddingVertical: 10 }}
       >
         <Text variant="xs" color="grey" mx="2">
@@ -104,9 +94,9 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = () => dismi
         </Text>
         {Platform.OS === "ios" && (
           <FeatureFlagMenuItem
-            title="Go to old Admin menu"
+            title="Go to old Dev Menu"
             onPress={() => {
-              navigate("/admin", { modal: true })
+              navigate("/dev-menu-old", { modal: true })
             }}
           />
         )}
@@ -158,7 +148,7 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = () => dismi
             title="Revert all feature flags to default"
             titleColor="red100"
             onPress={() => {
-              GlobalStore.actions.artsyPrefs.features.clearAdminOverrides()
+              GlobalStore.actions.artsyPrefs.features.clearLocalOverrides()
             }}
           />
         </CollapseMenu>
@@ -295,7 +285,7 @@ const Buttons: React.FC<{ onClose(): void }> = ({ onClose }) => {
 const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
   const config = GlobalStore.useAppState((s) => s.artsyPrefs)
   const currentValue = config.features.flags[flagKey]
-  const isAdminOverrideInEffect = flagKey in config.features.adminOverrides
+  const isLocalOverrideInEffect = flagKey in config.features.localOverrides
   const valText = currentValue ? "Yes" : "No"
   const description = features[flagKey].description ?? flagKey
 
@@ -307,7 +297,7 @@ const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
           {
             text: "Override with 'Yes'",
             onPress() {
-              GlobalStore.actions.artsyPrefs.features.setAdminOverride({
+              GlobalStore.actions.artsyPrefs.features.setLocalOverride({
                 key: flagKey,
                 value: true,
               })
@@ -316,16 +306,16 @@ const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
           {
             text: "Override with 'No'",
             onPress() {
-              GlobalStore.actions.artsyPrefs.features.setAdminOverride({
+              GlobalStore.actions.artsyPrefs.features.setLocalOverride({
                 key: flagKey,
                 value: false,
               })
             },
           },
           {
-            text: isAdminOverrideInEffect ? "Revert to default value" : "Keep default value",
+            text: isLocalOverrideInEffect ? "Revert to default value" : "Keep default value",
             onPress() {
-              GlobalStore.actions.artsyPrefs.features.setAdminOverride({
+              GlobalStore.actions.artsyPrefs.features.setLocalOverride({
                 key: flagKey,
                 value: null,
               })
@@ -335,7 +325,7 @@ const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
         ])
       }}
       value={
-        isAdminOverrideInEffect ? (
+        isLocalOverrideInEffect ? (
           <Text variant="sm-display" color="black100" fontWeight="bold">
             {valText}
           </Text>
@@ -364,7 +354,7 @@ const DevToggleItem: React.FC<{ toggleKey: DevToggleName }> = ({ toggleKey }) =>
           {
             text: currentValue ? "Keep turned ON" : "Turn ON",
             onPress() {
-              GlobalStore.actions.artsyPrefs.features.setAdminOverride({
+              GlobalStore.actions.artsyPrefs.features.setLocalOverride({
                 key: toggleKey,
                 value: true,
               })
@@ -374,7 +364,7 @@ const DevToggleItem: React.FC<{ toggleKey: DevToggleName }> = ({ toggleKey }) =>
           {
             text: currentValue ? "Turn OFF" : "Keep turned OFF",
             onPress() {
-              GlobalStore.actions.artsyPrefs.features.setAdminOverride({
+              GlobalStore.actions.artsyPrefs.features.setLocalOverride({
                 key: toggleKey,
                 value: false,
               })
@@ -419,9 +409,9 @@ function envMenuOption(
   return {
     text,
     onPress() {
-      GlobalStore.actions.artsyPrefs.environment.clearAdminOverrides()
+      GlobalStore.actions.devicePrefs.environment.clearLocalOverrides()
       if (env !== currentEnv) {
-        GlobalStore.actions.artsyPrefs.environment.setEnv(env)
+        GlobalStore.actions.devicePrefs.environment.setEnv(env)
         onClose()
         GlobalStore.actions.auth.signOut()
       } else {
@@ -433,13 +423,13 @@ function envMenuOption(
 
 const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const color = useColor()
-  const { env, adminOverrides, strings } = GlobalStore.useAppState(
-    (store) => store.artsyPrefs.environment
+  const { env, localOverrides, strings } = GlobalStore.useAppState(
+    (store) => store.devicePrefs.environment
   )
-  // show custom url options if there are already admin overrides in effect, or if the user has tapped the option
+  // show custom url options if there are already local overrides in effect, or if the user has tapped the option
   // to set custom overrides during the lifetime of this component
   const [showCustomURLOptions, setShowCustomURLOptions] = useState(
-    Object.keys(adminOverrides).length > 0
+    Object.keys(localOverrides).length > 0
   )
 
   return (
@@ -482,7 +472,7 @@ const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   Object.entries(presets).map(([name, value]) => ({
                     text: name,
                     onPress: () => {
-                      GlobalStore.actions.artsyPrefs.environment.setAdminOverride({
+                      GlobalStore.actions.devicePrefs.environment.setLocalOverride({
                         key: key as EnvironmentKey,
                         value,
                       })

@@ -37,7 +37,7 @@ yarn start-storybook
 
 ```
 
-The screen can also be opened from the admin menu.
+The screen can also be opened from the Dev Menu.
 
 **Run Storybook**
 

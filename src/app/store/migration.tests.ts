@@ -766,3 +766,50 @@ describe("App version Versions.AddUserPreferredPriceRange", () => {
     expect(migratedState.userPrefs.priceRange).toEqual("*-*")
   })
 })
+
+describe("App version Versions.RenameAdminToLocalOverridesForFeatures", () => {
+  const migrationToTest = Versions.RenameAdminToLocalOverridesForFeatures
+
+  it("adds renames things correctly", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    expect(previousState.artsyPrefs.features.adminOverrides).toEqual({})
+    previousState.artsyPrefs.features.adminOverrides = { testKey: true }
+    expect(previousState.artsyPrefs.features.adminOverrides).toEqual({ testKey: true })
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.artsyPrefs.features.localOverrides).toEqual({ testKey: true })
+    expect(migratedState.artsyPrefs.features.adminOverrides).toEqual(undefined)
+  })
+})
+
+describe("App version Versions.MoveEnvironmentToDevicePrefsAndRenameAdminToLocal", () => {
+  const migrationToTest = Versions.MoveEnvironmentToDevicePrefsAndRenameAdminToLocal
+
+  it("moves and renames things correctly", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    expect(previousState.artsyPrefs.environment.adminOverrides).toEqual({})
+    previousState.artsyPrefs.environment.adminOverrides = { testKey: true }
+    expect(previousState.artsyPrefs.environment.adminOverrides).toEqual({ testKey: true })
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.devicePrefs.environment.localOverrides).toEqual({ testKey: true })
+    expect(migratedState.devicePrefs.environment.adminOverrides).toEqual(undefined)
+    expect(migratedState.artsyPrefs.environment).toEqual(undefined)
+  })
+})
