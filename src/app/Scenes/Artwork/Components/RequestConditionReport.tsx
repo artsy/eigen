@@ -4,7 +4,6 @@ import { RequestConditionReportMutation } from "__generated__/RequestConditionRe
 import { RequestConditionReportQuery } from "__generated__/RequestConditionReportQuery.graphql"
 import { Modal } from "app/Components/Modal"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import { Schema, track } from "app/utils/track"
 import { Button, Flex } from "palette"
 import { Component } from "react"
@@ -114,7 +113,6 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
       errorModalText,
       showConditionReportRequestedModal,
     } = this.state
-    const enableNewArtworkScreen = unsafe_getFeatureFlag("ARArtworkRedesingPhase2")
     const conditionReportText = `We have received your request.\nThe condition report will be sent to ${me?.email}.\nFor questions contact [specialist@artsy.net](mailto:specialist@artsy.net).`
 
     return (
@@ -125,7 +123,7 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
           loading={requestingConditionReport}
           onPress={this.handleRequestConditionReportTap.bind(this)}
         >
-          {enableNewArtworkScreen ? "Request a report" : "Request condition report"}
+          {"Request a Report"}
         </Button>
         <Flex height={0}>
           <Modal

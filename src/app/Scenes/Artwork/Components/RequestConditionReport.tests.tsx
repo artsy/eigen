@@ -63,14 +63,6 @@ describe("RequestConditionReport", () => {
   }
 
   describe("component", () => {
-    // remove this after we flip ARArtworkRedesingPhase2 to true and change
-    // Request condition report copy to Request a Report
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({
-        ARArtworkRedesingPhase2: false,
-      })
-    })
-
     it("renders correctly", () => {
       const { queryByText, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
@@ -79,7 +71,7 @@ describe("RequestConditionReport", () => {
         Artwork: () => artwork,
       })
 
-      expect(queryByText("Request condition report")).toBeTruthy()
+      expect(queryByText("Request a Report")).toBeTruthy()
       expect(getByLabelText("Condition Report Requested Modal")).toHaveProp("visible", false)
       expect(getByLabelText("Condition Report Requested Error Modal")).toHaveProp("visible", false)
     })
@@ -92,8 +84,8 @@ describe("RequestConditionReport", () => {
         Artwork: () => artwork,
       })
 
-      expect(queryByText("Request condition report")).toBeTruthy()
-      fireEvent.press(getByText("Request condition report"))
+      expect(queryByText("Request a Report")).toBeTruthy()
+      fireEvent.press(getByText("Request a Report"))
 
       // successfully tracks the press of the button
       expect(mockPostEventToProviders).toHaveBeenCalledTimes(1)
@@ -135,22 +127,6 @@ describe("RequestConditionReport", () => {
       expect(getByLabelText("Condition Report Requested Modal")).toHaveProp("visible", false)
     })
 
-    it("displays different text when ARArtworkRedesingPhase2 ff is true", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({
-        ARArtworkRedesingPhase2: true,
-      })
-
-      renderWithWrappers(<TestRenderer />)
-
-      resolveMostRecentRelayOperation(env, {
-        Me: () => me,
-        Artwork: () => artwork,
-      })
-
-      expect(screen.queryByText("Request condition report")).toBeNull()
-      expect(screen.queryByText("Request a report")).toBeTruthy()
-    })
-
     it("displays correct text when ARArtworkRedesingPhase2 ff is false", () => {
       renderWithWrappers(<TestRenderer />)
 
@@ -159,7 +135,7 @@ describe("RequestConditionReport", () => {
         Artwork: () => artwork,
       })
 
-      expect(screen.queryByText("Request condition report")).toBeTruthy()
+      expect(screen.queryByText("Request a Report")).toBeTruthy()
     })
 
     it("shows a success modal on success", async () => {
@@ -170,8 +146,8 @@ describe("RequestConditionReport", () => {
         Artwork: () => artwork,
       })
 
-      expect(queryByText("Request condition report")).toBeTruthy()
-      fireEvent.press(getByText("Request condition report"))
+      expect(queryByText("Request a Report")).toBeTruthy()
+      fireEvent.press(getByText("Request a Report"))
 
       // successfully tracks the press of the button
       expect(mockPostEventToProviders).toHaveBeenCalledTimes(1)
