@@ -1,7 +1,8 @@
-import { act, fireEvent, waitFor } from "@testing-library/react-native"
+import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { RequestConditionReport_artwork$data } from "__generated__/RequestConditionReport_artwork.graphql"
 import { RequestConditionReport_me$data } from "__generated__/RequestConditionReport_me.graphql"
 import { RequestConditionReportTestQuery } from "__generated__/RequestConditionReportTestQuery.graphql"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockPostEventToProviders } from "app/tests/globallyMockedStuff"
 import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
@@ -70,7 +71,7 @@ describe("RequestConditionReport", () => {
         Artwork: () => artwork,
       })
 
-      expect(queryByText("Request condition report")).toBeTruthy()
+      expect(queryByText("Request a Report")).toBeTruthy()
       expect(getByLabelText("Condition Report Requested Modal")).toHaveProp("visible", false)
       expect(getByLabelText("Condition Report Requested Error Modal")).toHaveProp("visible", false)
     })
@@ -83,8 +84,8 @@ describe("RequestConditionReport", () => {
         Artwork: () => artwork,
       })
 
-      expect(queryByText("Request condition report")).toBeTruthy()
-      fireEvent.press(getByText("Request condition report"))
+      expect(queryByText("Request a Report")).toBeTruthy()
+      fireEvent.press(getByText("Request a Report"))
 
       // successfully tracks the press of the button
       expect(mockPostEventToProviders).toHaveBeenCalledTimes(1)
@@ -126,6 +127,17 @@ describe("RequestConditionReport", () => {
       expect(getByLabelText("Condition Report Requested Modal")).toHaveProp("visible", false)
     })
 
+    it("displays correct text when ARArtworkRedesingPhase2 ff is false", () => {
+      renderWithWrappers(<TestRenderer />)
+
+      resolveMostRecentRelayOperation(env, {
+        Me: () => me,
+        Artwork: () => artwork,
+      })
+
+      expect(screen.queryByText("Request a Report")).toBeTruthy()
+    })
+
     it("shows a success modal on success", async () => {
       const { getByText, queryByText, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
@@ -134,8 +146,8 @@ describe("RequestConditionReport", () => {
         Artwork: () => artwork,
       })
 
-      expect(queryByText("Request condition report")).toBeTruthy()
-      fireEvent.press(getByText("Request condition report"))
+      expect(queryByText("Request a Report")).toBeTruthy()
+      fireEvent.press(getByText("Request a Report"))
 
       // successfully tracks the press of the button
       expect(mockPostEventToProviders).toHaveBeenCalledTimes(1)
