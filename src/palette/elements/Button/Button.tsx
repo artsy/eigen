@@ -1,4 +1,4 @@
-import { Spacer } from "palette"
+import { Spacer, TextVariantV3 } from "palette"
 import { useColor } from "palette/hooks"
 import { useState } from "react"
 import { PressableProps, TextStyle } from "react-native"
@@ -55,6 +55,8 @@ export interface ButtonProps extends BoxProps {
 
   /** Used only for tests and stories */
   testOnly_state?: DisplayState
+
+  textVariant?: TextVariantV3
 }
 
 enum DisplayState {
@@ -78,9 +80,11 @@ export const Button: React.FC<ButtonProps> = ({
   variant = "fillDark",
   testOnly_state,
   testID,
+  textVariant,
   ...rest
 }) => {
-  const textStyle = useTextStyleForPalette(size === "small" ? "xs" : "sm")
+  const textVariantBySize = size === "small" ? "xs" : "sm"
+  const textStyle = useTextStyleForPalette(textVariant ?? textVariantBySize)
 
   const [innerDisplayState, setInnerDisplayState] = useState(DisplayState.Enabled)
 

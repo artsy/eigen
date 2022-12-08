@@ -97,7 +97,7 @@ export const ArtworkTombstoneFragmentContainer = createFragmentContainer(Artwork
       isForSale
       saleMessage
       saleArtwork {
-        lotLabel
+        lotLabel(trim: true)
         estimate
       }
       partner {

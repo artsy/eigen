@@ -5,7 +5,7 @@ import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { Schema } from "app/utils/track"
 import { userHadMeaningfulInteraction } from "app/utils/userHadMeaningfulInteraction"
 import { isEmpty } from "lodash"
-import { BackButton, Flex, HeartFillIcon, HeartIcon, Text, Touchable, useSpace } from "palette"
+import { BackButton, Button, Flex, HeartFillIcon, HeartIcon, useSpace } from "palette"
 import { createFragmentContainer, graphql, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtworkScreenHeaderCreateAlertFragmentContainer } from "./ArtworkScreenHeaderCreateAlert"
@@ -29,7 +29,7 @@ const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) =>
 
   const { isSaved, sale } = artwork
 
-  const [commit, isInFlight] = useMutation(graphql`
+  const [commit] = useMutation(graphql`
     mutation ArtworkScreenHeaderSaveMutation($input: SaveArtworkInput!) {
       saveArtwork(input: $input) {
         artwork {
@@ -111,26 +111,20 @@ const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) =>
       </Flex>
 
       <Flex flexDirection="row" alignItems="center">
-        <Touchable
+        <Button
+          icon={<SaveIcon isSaved={!!isSaved} />}
+          size="small"
+          variant="text"
           accessibilityRole="button"
           accessibilityLabel={saveButtonText()}
           haptic
           onPress={handleArtworkSave}
-          disabled={isInFlight}
+          longestText={isOpenSale ? "Watch lot" : "Saved"}
+          textVariant="sm-display"
         >
-          <Flex flexDirection="row" alignItems="center" pr={0.5}>
-            <SaveIcon isSaved={!!isSaved} />
-            <Text variant="sm-display" color={isSaved ? "blue100" : "black100"}>
-              {saveButtonText()}
-              {/* this is a hacky way of preventing the save text / button to be jumpy when it changes to saved */}
-              {!isSaved && !__TEST__ && (
-                <Text accessibilityElementsHidden variant="sm-display" color="transparent">
-                  d
-                </Text>
-              )}
-            </Text>
-          </Flex>
-        </Touchable>
+          {saveButtonText()}
+        </Button>
+
         <ArtworkScreenHeaderCreateAlertFragmentContainer artwork={artwork} />
       </Flex>
     </Flex>
