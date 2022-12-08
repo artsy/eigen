@@ -5506,7 +5506,7 @@ type ConsignmentInquiry {
   email: String!
 
   # id of the ConsignmentInquiry
-  id: Int!
+  internalID: Int!
 
   # Message of the inquirer
   message: String!
