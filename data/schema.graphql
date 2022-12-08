@@ -5501,6 +5501,34 @@ type ConsignmentEdge {
   node: Consignment
 }
 
+type ConsignmentInquiry {
+  # Email of inquirer
+  email: String!
+
+  # id of the ConsignmentInquiry
+  id: Int!
+
+  # Message of the inquirer
+  message: String!
+
+  # Name of the inquirer
+  name: String!
+
+  # Phone number of the inquirer
+  phoneNumber: String
+
+  # gravity user id if user is logged in
+  userId: String
+}
+
+type ConsignmentInquiryMutationFailure {
+  mutationError: GravityMutationError
+}
+
+type ConsignmentInquiryMutationSuccess {
+  consignmentInquiry: ConsignmentInquiry
+}
+
 # Consignment Offer
 type ConsignmentOffer {
   commissionPercentWhole: Int
@@ -6795,6 +6823,24 @@ type CreateBidderPayload {
   bidder: Bidder
   clientMutationId: String
 }
+
+input CreateConsignmentInquiryMutationInput {
+  clientMutationId: String
+  email: String!
+  message: String!
+  name: String!
+  phoneNumber: String
+  userId: String
+}
+
+type CreateConsignmentInquiryMutationPayload {
+  clientMutationId: String
+  consignmentInquiryOrError: CreateConsignmentInquiryMutationType
+}
+
+union CreateConsignmentInquiryMutationType =
+    ConsignmentInquiryMutationFailure
+  | ConsignmentInquiryMutationSuccess
 
 input CreateGeminiEntryForAssetInput {
   clientMutationId: String
@@ -10927,6 +10973,11 @@ type Mutation {
 
   # Creates a bidder position
   createBidderPosition(input: BidderPositionInput!): BidderPositionPayload
+
+  # Make inquiry about consignments
+  createConsignmentInquiry(
+    input: CreateConsignmentInquiryMutationInput!
+  ): CreateConsignmentInquiryMutationPayload
   createConsignmentOffer(
     # Parameters for CreateOfferMutation
     input: CreateOfferMutationInput!
@@ -14286,7 +14337,10 @@ type SaleArtwork implements ArtworkEdgeInterface & Node {
   isWatching: Boolean
   isWithReserve: Boolean
   lotID: String
-  lotLabel: String
+  lotLabel(
+    # Whether to trim anything past the first alphanumeric chunk
+    trim: Boolean = false
+  ): String
   lotState: CausalityLotState
   lowEstimate: SaleArtworkLowEstimate
   minimumNextBid: SaleArtworkMinimumNextBid
