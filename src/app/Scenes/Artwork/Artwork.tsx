@@ -31,6 +31,7 @@ import usePrevious from "react-use/lib/usePrevious"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { useScreenDimensions } from "shared/hooks"
 import { ResponsiveValue } from "styled-system"
+import { setBottomTabVisibilityForCurrentScreen } from "../BottomTabs/setBottomTabVisibilityForCurrentScreen"
 import { OfferSubmittedModal } from "../Inbox/Components/Conversations/OfferSubmittedModal"
 import { ArtworkStore, ArtworkStoreProvider } from "./ArtworkStore"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
@@ -129,6 +130,12 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
     return consignableArtists.length || isAcquireable || isOfferable || isBiddableInAuction
   }
+
+  useEffect(() => {
+    if (enableArtworkRedesign) {
+      setBottomTabVisibilityForCurrentScreen(false)
+    }
+  }, [enableArtworkRedesign])
 
   useEffect(() => {
     markArtworkAsRecentlyViewed()

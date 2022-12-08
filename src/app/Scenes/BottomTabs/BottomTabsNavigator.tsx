@@ -1,32 +1,18 @@
-import { BottomTabNavigationProp, createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import { findFocusedRoute } from "@react-navigation/native"
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { AppModule } from "app/AppRegistry"
 import { NavStack } from "app/navigation/NavStack"
-import { View } from "react-native"
 import { BottomTabs } from "./BottomTabs"
 import { BottomTabType } from "./BottomTabType"
-import { useBottomTabBarHeight } from "./useBottomTabBarHeight"
 
 const Tab = createBottomTabNavigator()
 
 const TabContent = ({
   route,
-  navigation,
 }: {
   route: { params: { tabName: BottomTabType; rootModuleName: AppModule } }
-  navigation: BottomTabNavigationProp<Record<BottomTabType, object | undefined>>
 }) => {
-  const bottomTabBarHeight = useBottomTabBarHeight()
-  const focusedRoute = findFocusedRoute(navigation.getState())
-  const shouldHideBottomTab = (focusedRoute?.params as any)?.shouldHideBottomTab
-  const bottomOffset = shouldHideBottomTab ? 0 : bottomTabBarHeight
-
   // TODO: simplify this, we probably can get rid of NavStack
-  return (
-    <View style={{ flex: 1, marginBottom: bottomOffset }}>
-      <NavStack id={route.params.tabName} rootModuleName={route.params.rootModuleName} />
-    </View>
-  )
+  return <NavStack id={route.params.tabName} rootModuleName={route.params.rootModuleName} />
 }
 
 export const BottomTabsNavigator = () => {
