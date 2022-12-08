@@ -32,7 +32,7 @@ export interface InquiryFormikSchema {
 }
 
 const ValidationSchema = Yup.object().shape({
-  name: Yup.string().required("Name field is required").min(1, "Name field is required"),
+  name: Yup.string().trim().required("Name field is required").min(1, "Name field is required"),
   email: Yup.string()
     .required("Email field is required")
     .email("Please provide a valid email address"),
