@@ -674,7 +674,7 @@ describe("Artwork", () => {
     })
 
     it("should be displayed if the work is in an auction", async () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment)
@@ -696,7 +696,8 @@ describe("Artwork", () => {
 
       await flushPromiseQueue()
 
-      expect(tree.root.findAllByType(ContextCard)).toHaveLength(1)
+      expect(screen.queryByText("Auction")).toBeTruthy()
+      expect(screen.queryByLabelText("Context Card Image")).toBeTruthy()
     })
   })
 
