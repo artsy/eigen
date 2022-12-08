@@ -2,6 +2,7 @@ import { findFocusedRoute, Route, useIsFocused, useNavigationState } from "@reac
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { AppModule, modules } from "app/AppRegistry"
 import { useBottomTabBarHeight } from "app/Scenes/BottomTabs/useBottomTabBarHeight"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { isPad } from "app/utils/hardware"
 import { createContext, useState } from "react"
 import { View } from "react-native"
@@ -78,6 +79,7 @@ export const NavStack: React.FC<{
   rootModuleProps?: any
 }> = ({ id, rootModuleName, rootModuleProps }) => {
   const bottomTabBarHeight = useBottomTabBarHeight()
+  const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
   const initialParams: ScreenProps = {
     moduleName: rootModuleName,
     props: rootModuleProps,
@@ -90,7 +92,7 @@ export const NavStack: React.FC<{
         const focusedRoute = findFocusedRoute(props.navigation.getState())
         const params = focusedRoute?.params as any
         const isPresentedModally = params?.props?.isPresentedModally
-        const shouldHideBottomTab = params?.shouldHideBottomTab
+        const module = modules[params.moduleName as AppModule]
         const options: any = {
           headerShown: false,
           contentStyle: {
@@ -100,9 +102,7 @@ export const NavStack: React.FC<{
           orientation: isPad() ? "default" : "portrait",
         }
 
-        // We don't display bottom tabs for modal
-        // For this reason there is no need to add bottom offset
-        if (isPresentedModally || shouldHideBottomTab) {
+        if (isPresentedModally || (enableArtworkRedesign && module?.options?.hidesBottomTabs)) {
           options.contentStyle.marginBottom = 0
         }
 

@@ -1,5 +1,6 @@
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs"
 import { findFocusedRoute } from "@react-navigation/native"
+import { AppModule, modules } from "app/AppRegistry"
 import { GlobalStore, useFeatureFlag, useIsStaging } from "app/store/GlobalStore"
 import { Flex, Separator, useTheme } from "palette"
 import React, { useEffect } from "react"
@@ -11,6 +12,9 @@ import { ICON_HEIGHT } from "./BottomTabsIcon"
 export const BottomTabs: React.FC<BottomTabBarProps> = (props) => {
   const { color } = useTheme()
   const focusedRoute = findFocusedRoute(props.state)
+  const params = focusedRoute?.params as any
+  const module = modules[params.moduleName as AppModule]
+  const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
   const unreadConversationCount = GlobalStore.useAppState(
     (state) => state.bottomTabs.sessionState.unreadCounts.unreadConversation
   )
@@ -33,7 +37,7 @@ export const BottomTabs: React.FC<BottomTabBarProps> = (props) => {
 
   const { bottom } = useScreenDimensions().safeAreaInsets
 
-  if ((focusedRoute?.params as any)?.shouldHideBottomTab) {
+  if (enableArtworkRedesign && module?.options?.hidesBottomTabs) {
     return null
   }
 
