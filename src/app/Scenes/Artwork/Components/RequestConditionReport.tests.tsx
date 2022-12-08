@@ -1,7 +1,8 @@
-import { act, fireEvent, waitFor } from "@testing-library/react-native"
+import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { RequestConditionReport_artwork$data } from "__generated__/RequestConditionReport_artwork.graphql"
 import { RequestConditionReport_me$data } from "__generated__/RequestConditionReport_me.graphql"
 import { RequestConditionReportTestQuery } from "__generated__/RequestConditionReportTestQuery.graphql"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockPostEventToProviders } from "app/tests/globallyMockedStuff"
 import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
@@ -62,6 +63,14 @@ describe("RequestConditionReport", () => {
   }
 
   describe("component", () => {
+    // remove this after we flip ARArtworkRedesingPhase2 to true and change
+    // Request condition report copy to Request a Report
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        ARArtworkRedesingPhase2: false,
+      })
+    })
+
     it("renders correctly", () => {
       const { queryByText, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
@@ -124,6 +133,33 @@ describe("RequestConditionReport", () => {
 
       expect(getByLabelText("Condition Report Requested Error Modal")).toHaveProp("visible", true)
       expect(getByLabelText("Condition Report Requested Modal")).toHaveProp("visible", false)
+    })
+
+    it("displays different text when ARArtworkRedesingPhase2 ff is true", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        ARArtworkRedesingPhase2: true,
+      })
+
+      renderWithWrappers(<TestRenderer />)
+
+      resolveMostRecentRelayOperation(env, {
+        Me: () => me,
+        Artwork: () => artwork,
+      })
+
+      expect(screen.queryByText("Request condition report")).toBeNull()
+      expect(screen.queryByText("Request a report")).toBeTruthy()
+    })
+
+    it("displays correct text when ARArtworkRedesingPhase2 ff is false", () => {
+      renderWithWrappers(<TestRenderer />)
+
+      resolveMostRecentRelayOperation(env, {
+        Me: () => me,
+        Artwork: () => artwork,
+      })
+
+      expect(screen.queryByText("Request condition report")).toBeTruthy()
     })
 
     it("shows a success modal on success", async () => {
