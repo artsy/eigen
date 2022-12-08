@@ -5,9 +5,9 @@ import { useRef } from "react"
 import { Platform, ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
-import { InquiryFormikSchema } from "./SWAInquiryScreen"
+import { InquiryFormikSchema } from "./ConsignmentInquiryScreen"
 
-export const InquiryForm = () => {
+export const ConsignmentInquiryForm = () => {
   const { safeAreaInsets } = useScreenDimensions()
   const { values, handleChange, errors, setErrors, handleSubmit, isValid, dirty } =
     useFormikContext<InquiryFormikSchema>()

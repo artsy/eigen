@@ -1,7 +1,14 @@
-import { ContextModule, OwnerType, TappedConsignArgs } from "@artsy/cohesion"
+import {
+  ActionType,
+  ContextModule,
+  OwnerType,
+  TappedConsignArgs,
+  TappedConsignmentInquiry,
+} from "@artsy/cohesion"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Button, Flex, Spacer, Text } from "palette"
 import { ImageBackground } from "react-native"
+import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
 
 const consignArgs: TappedConsignArgs = {
@@ -16,12 +23,13 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ onConsignPress, onInquiryPress }) => {
+  const { trackEvent } = useTracking()
   const handleSubmitPress = () => {
     onConsignPress(consignArgs)
   }
 
   const handleInquiryPress = () => {
-    // TODO: Tracking
+    trackEvent(tracks.consignmentInquiryTapped())
     onInquiryPress()
   }
   const screenDimensions = useScreenDimensions()
@@ -79,4 +87,14 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress, onInquiryPress }
       </Flex>
     </ImageBackground>
   )
+}
+
+const tracks = {
+  consignmentInquiryTapped: (): TappedConsignmentInquiry => ({
+    action: ActionType.tappedConsignmentInquiry,
+    context_module: ContextModule.sellHeader,
+    context_screen: OwnerType.sell,
+    context_screen_owner_type: OwnerType.sell,
+    subject: "Get in Touch",
+  }),
 }

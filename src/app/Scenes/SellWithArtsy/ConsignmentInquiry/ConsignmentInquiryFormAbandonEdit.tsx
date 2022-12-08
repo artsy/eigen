@@ -1,7 +1,9 @@
 import { popToRoot } from "app/navigation/navigate"
 import { Box, Button, Spacer, Text } from "palette"
 
-export const InquiryFormAbandonEdit: React.FC<{ onDismiss: () => void }> = ({ onDismiss }) => {
+export const ConsignmentInquiryFormAbandonEdit: React.FC<{ onDismiss: () => void }> = ({
+  onDismiss,
+}) => {
   return (
     <Box px={2}>
       <Text variant="lg-display" mb={2}>

@@ -1,7 +1,7 @@
 import { popToRoot } from "app/navigation/navigate"
 import { ArtsyLogoIcon, Box, Button, Flex, Text } from "palette"
 
-export const SWAInquiryConfirmation: React.FC<{}> = () => {
+export const ConsignmentInquiryConfirmation: React.FC<{}> = () => {
   return (
     <Box mt={2} px={2}>
       <Flex mb={4}>

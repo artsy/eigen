@@ -73,6 +73,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
                     email: me?.email ?? "",
                     name: me?.name ?? "",
                     phone: me?.phone ?? "",
+                    userId: me?.internalID ?? undefined,
                   },
                 })
               }
@@ -122,6 +123,7 @@ const SellWithArtsyHomeContainer = createFragmentContainer(SellWithArtsyHome, {
   `,
   me: graphql`
     fragment SellWithArtsyHome_me on Me {
+      internalID
       name
       email
       phone
