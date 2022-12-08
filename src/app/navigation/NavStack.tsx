@@ -95,14 +95,15 @@ export const NavStack: React.FC<{
           headerShown: false,
           contentStyle: {
             backgroundColor: "white",
+            marginBottom: bottomTabBarHeight,
           },
           orientation: isPad() ? "default" : "portrait",
         }
 
         // We don't display bottom tabs for modal
         // For this reason there is no need to add bottom offset
-        if (!isPresentedModally && !shouldHideBottomTab) {
-          options.contentStyle.marginBottom = bottomTabBarHeight
+        if (isPresentedModally || shouldHideBottomTab) {
+          options.contentStyle.marginBottom = 0
         }
 
         return options

@@ -132,7 +132,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
   }
 
   useEffect(() => {
-    setBottomTabVisibilityForCurrentScreen(!enableArtworkRedesign)
+    if (enableArtworkRedesign) {
+      setBottomTabVisibilityForCurrentScreen(false)
+    }
   }, [enableArtworkRedesign])
 
   useEffect(() => {
