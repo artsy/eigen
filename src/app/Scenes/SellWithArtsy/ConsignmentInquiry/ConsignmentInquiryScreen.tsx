@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { SentConsignmentInquiry } from "@artsy/cohesion/dist/Schema/Events/Consignments"
 import { useNavigation } from "@react-navigation/native"
+import { ConsignmentInquiryScreenMutation } from "__generated__/ConsignmentInquiryScreenMutation.graphql"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { useToast } from "app/Components/Toast/toastHook"
@@ -20,7 +21,7 @@ interface InquiryScreenProps {
   name: string
   email: string
   phone: string
-  userId: string
+  userId?: string
 }
 
 export interface InquiryFormikSchema {
@@ -42,22 +43,24 @@ export const createConsignmentInquiry = (
   environment: Environment,
   onCompleted: (response: ConsignmentInquiryScreenMutation["response"]) => void,
   onError: () => void,
-  input: InquiryFormikSchema & { userId: string }
+  input: InquiryFormikSchema & { userId?: string }
 ) => {
   commitMutation<ConsignmentInquiryScreenMutation>(environment, {
     mutation: graphql`
       mutation ConsignmentInquiryScreenMutation($input: CreateConsignmentInquiryMutationInput!) {
-        consignmentInquiryOrError {
-          ... on ConsignmentInquiryMutationSuccess {
-            consignmentInquiry {
-              id
+        createConsignmentInquiry(input: $input) {
+          consignmentInquiryOrError {
+            ... on ConsignmentInquiryMutationSuccess {
+              consignmentInquiry {
+                internalID
+              }
             }
-          }
-          ... on ConsignmentInquiryMutationFailure {
-            mutationError {
-              error
-              message
-              statusCode
+            ... on ConsignmentInquiryMutationFailure {
+              mutationError {
+                error
+                message
+                statusCode
+              }
             }
           }
         }
@@ -106,7 +109,8 @@ export const ConsignmentInquiryScreen: React.FC<InquiryScreenProps> = ({
       const input = { email, name, phoneNumber, message, userId }
       const onCompleted = (response: ConsignmentInquiryScreenMutation["response"]) => {
         const consignmentInquiryId =
-          response.createConsignmentInquiry?.consignmentInquiryOrError?.consignmentInquiry.id
+          response.createConsignmentInquiry?.consignmentInquiryOrError?.consignmentInquiry
+            ?.internalID
         const error =
           response.createConsignmentInquiry?.consignmentInquiryOrError?.mutationError?.message
 
@@ -163,7 +167,7 @@ export const ConsignmentInquiryScreen: React.FC<InquiryScreenProps> = ({
 }
 
 const tracks = {
-  sentConsignmentInquiry: (consignmentInquiryId: bigint): SentConsignmentInquiry => ({
+  sentConsignmentInquiry: (consignmentInquiryId: number): SentConsignmentInquiry => ({
     action: ActionType.sentConsignmentInquiry,
     context_module: ContextModule.consignmentInquiryForm,
     context_screen_owner_type: OwnerType.consignmentInquiry,
