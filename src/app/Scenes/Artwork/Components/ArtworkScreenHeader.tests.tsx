@@ -1,5 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkScreenHeaderTestQuery } from "__generated__/ArtworkScreenHeaderTestQuery.graphql"
+import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { goBack } from "app/navigation/navigate"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
@@ -7,9 +8,14 @@ import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
+import { ArtworkStoreModel, ArtworkStoreProvider } from "../ArtworkStore"
 import { ArtworkScreenHeaderFragmentContainer } from "./ArtworkScreenHeader"
 
 jest.unmock("react-relay")
+
+interface TestRendererProps {
+  initialData?: Partial<ArtworkStoreModel>
+}
 
 describe("ArtworkScreenHeader", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -18,26 +24,30 @@ describe("ArtworkScreenHeader", () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  const TestRenderer = () => (
-    <QueryRenderer<ArtworkScreenHeaderTestQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query ArtworkScreenHeaderTestQuery @relay_test_operation @raw_response_type {
-          artwork(id: "some-artwork") {
-            ...ArtworkScreenHeader_artwork
-          }
-        }
-      `}
-      variables={{}}
-      render={({ props, error }) => {
-        if (props?.artwork) {
-          return <ArtworkScreenHeaderFragmentContainer artwork={props.artwork} />
-        } else if (error) {
-          console.log(error)
-        }
-      }}
-    />
-  )
+  const TestRenderer = (testProps: TestRendererProps) => {
+    return (
+      <ArtworkStoreProvider initialData={testProps?.initialData}>
+        <QueryRenderer<ArtworkScreenHeaderTestQuery>
+          environment={mockEnvironment}
+          query={graphql`
+            query ArtworkScreenHeaderTestQuery @relay_test_operation @raw_response_type {
+              artwork(id: "some-artwork") {
+                ...ArtworkScreenHeader_artwork
+              }
+            }
+          `}
+          variables={{}}
+          render={({ props, error }) => {
+            if (props?.artwork) {
+              return <ArtworkScreenHeaderFragmentContainer artwork={props.artwork} />
+            } else if (error) {
+              console.log(error)
+            }
+          }}
+        />
+      </ArtworkStoreProvider>
+    )
+  }
 
   it("renders the header", async () => {
     renderWithWrappers(<TestRenderer />)
@@ -187,7 +197,7 @@ describe("ArtworkScreenHeader", () => {
   })
 
   it("renders Save text if the artwork is a closed sale", async () => {
-    renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer initialData={{ auctionState: AuctionTimerState.CLOSED }} />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => ({
