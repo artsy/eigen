@@ -248,7 +248,7 @@ export const features = defineFeatures({
   },
   AREnableLargeArtworkRailSaveIcon: {
     description: "Enable save icon for large artwork rails",
-    showInAdminMenu: true,
+    showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "AREnableLargeArtworkRailSaveIcon",
   },
