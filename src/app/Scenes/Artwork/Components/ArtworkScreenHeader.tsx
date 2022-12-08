@@ -5,7 +5,7 @@ import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { Schema } from "app/utils/track"
 import { userHadMeaningfulInteraction } from "app/utils/userHadMeaningfulInteraction"
 import { isEmpty } from "lodash"
-import { BackButton, Button, Flex, HeartFillIcon, HeartIcon, Spacer, useSpace } from "palette"
+import { BackButton, Button, Flex, HeartFillIcon, HeartIcon, useSpace } from "palette"
 import { createFragmentContainer, graphql, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtworkScreenHeaderCreateAlertFragmentContainer } from "./ArtworkScreenHeaderCreateAlert"
@@ -124,8 +124,6 @@ const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) =>
         >
           {saveButtonText()}
         </Button>
-
-        <Spacer mr={2} />
 
         <ArtworkScreenHeaderCreateAlertFragmentContainer artwork={artwork} />
       </Flex>
