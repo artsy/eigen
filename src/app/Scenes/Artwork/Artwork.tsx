@@ -12,7 +12,7 @@ import { BackButton } from "app/navigation/BackButton"
 import { navigationEvents } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { QAInfoPanel } from "app/utils/QAInfo"
@@ -81,6 +81,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const [fetchingData, setFetchingData] = useState(false)
   const enableConversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
   const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
+  const isDeepZoomModalVisible = GlobalStore.useAppState(
+    (store) => store.devicePrefs.sessionState.isDeepZoomModalVisible
+  )
 
   const { internalID, slug, isInAuction, partner: partnerAbove } = artworkAboveTheFold || {}
   const { contextGrids, artistSeriesConnection, artist, context } = artworkBelowTheFold || {}
@@ -188,6 +191,11 @@ export const Artwork: React.FC<ArtworkProps> = ({
   }
 
   const handleModalDismissed = () => {
+    // If the deep zoom modal is visible, we don't want to refetch the artwork
+    // This results in app crash, while testing. This wouldn't occur on Prod
+    if (isDeepZoomModalVisible) {
+      return
+    }
     setFetchingData(true)
     refetch(() => setFetchingData(false))
     return true

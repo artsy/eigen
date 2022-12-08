@@ -1,3 +1,4 @@
+import { GlobalStore } from "app/store/GlobalStore"
 import { useCallback, useContext, useEffect, useMemo } from "react"
 import { FlatList, Modal, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
@@ -15,10 +16,12 @@ export const ImageCarouselFullScreenAndroid = () => {
   const { images, dispatch, fullScreenState, imageIndex } = useContext(ImageCarouselContext)
   fullScreenState.useUpdates()
   const initialScrollIndex = useMemo(() => imageIndex.current, [])
+  const { setIsDeepZoomModalVisible } = GlobalStore.actions.devicePrefs
 
   const onClose = useCallback(() => {
     if (fullScreenState.current === "entered") {
       dispatch({ type: "FULL_SCREEN_DISMISSED" })
+      setIsDeepZoomModalVisible(false)
     }
   }, [])
 
@@ -67,10 +70,6 @@ export const ImageCarouselFullScreenAndroid = () => {
           keyExtractor={(item) => item.url!}
           renderItem={renderItem}
           key={screenDimensions.orientation}
-          contentContainerStyle={{
-            justifyContent: "center",
-            alignItems: "center",
-          }}
           initialScrollIndex={initialScrollIndex}
           getItemLayout={(_, index) => ({
             index,
