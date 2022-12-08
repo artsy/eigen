@@ -89,7 +89,7 @@ export const NavStack: React.FC<{
       screenOptions={(props) => {
         const focusedRoute = findFocusedRoute(props.navigation.getState())
         const params = focusedRoute?.params as any
-        const isPresentedModally = params?.isPresentedModally
+        const isPresentedModally = params?.props?.isPresentedModally
         const shouldHideBottomTab = params?.shouldHideBottomTab
         const options: any = {
           headerShown: false,
@@ -99,6 +99,8 @@ export const NavStack: React.FC<{
           orientation: isPad() ? "default" : "portrait",
         }
 
+        // We don't display bottom tabs for modal
+        // For this reason there is no need to add bottom offset
         if (!isPresentedModally && !shouldHideBottomTab) {
           options.contentStyle.marginBottom = bottomTabBarHeight
         }
