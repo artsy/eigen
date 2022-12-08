@@ -54,6 +54,7 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
   }, [])
 
   const renderImage = () => {
+    // Use local image if it exists to avoid images being displayed with a wrong aspect ratio while they are being processed by Gemini
     if (localImage) {
       return (
         <RNImage
