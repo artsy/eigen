@@ -122,15 +122,28 @@ describe("ArtworkTombstone", () => {
         expect(screen.queryByText("On loan")).toBeTruthy()
       })
 
-      it("should not render the sale message when artwork is not for sale", () => {
+      it("should not render the sale message when artwork is for sale", () => {
         renderWithRelay({
           Artwork: () => ({
             isForSale: true,
+            isSold: false,
             saleMessage: "For sale",
           }),
         })
 
         expect(screen.queryByText("For sale")).toBeNull()
+      })
+
+      it("should render the sale message when artwork is not for sale and sold", () => {
+        renderWithRelay({
+          Artwork: () => ({
+            isForSale: false,
+            isSold: true,
+            saleMessage: "Sold",
+          }),
+        })
+
+        expect(screen.queryByText("Sold")).toBeTruthy()
       })
     })
 
