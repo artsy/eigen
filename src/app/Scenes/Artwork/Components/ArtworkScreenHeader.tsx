@@ -119,7 +119,6 @@ const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) =>
           accessibilityLabel={saveButtonText()}
           haptic
           onPress={handleArtworkSave}
-          containerSize={{ mx: 0 }}
           longestText={isOpenSale ? "Watch lot" : "Saved"}
           textVariant="sm-display"
         >

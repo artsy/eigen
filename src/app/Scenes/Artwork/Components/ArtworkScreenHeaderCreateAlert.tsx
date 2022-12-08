@@ -96,7 +96,6 @@ const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateAlertPro
         icon={<BellIcon fill={isForSale ? "black100" : "white100"} />}
         size="small"
         variant={isForSale ? "text" : "fillDark"}
-        containerSize={isForSale ? { mx: 0 } : undefined}
         textVariant={isForSale ? "sm-display" : "xs"}
         haptic
         onPress={handleCreateAlertPress}
