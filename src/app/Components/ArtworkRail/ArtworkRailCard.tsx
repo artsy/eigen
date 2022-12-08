@@ -145,7 +145,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
           flexDirection="row"
           justifyContent="space-between"
         >
-          <Flex>
+          <Flex flex={1}>
             {!!lotLabel && (
               <Text lineHeight="20" color="black60" numberOfLines={1}>
                 Lot {lotLabel}

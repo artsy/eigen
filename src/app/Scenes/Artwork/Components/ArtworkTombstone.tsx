@@ -14,14 +14,6 @@ export interface ArtworkTombstoneProps {
 export const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork, refetchArtwork }) => {
   const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
 
-  const getArtworkTitleAndMaybeDate = () => {
-    if (artwork.date) {
-      return `${artwork.title!}${comma} ${artwork.date}`
-    }
-
-    return artwork.title!
-  }
-
   const displayAuctionLotLabel =
     artwork.isInAuction &&
     artwork.saleArtwork &&
@@ -47,8 +39,12 @@ export const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork, ref
 
       <ArtworkMakerTitleFragmentContainer artwork={artwork} />
       <Flex flexDirection="row" flexWrap="wrap">
-        <Text variant="lg-display" color="black60">
-          {getArtworkTitleAndMaybeDate()}
+        <Text color="black60">
+          <Text variant="lg-display" italic>
+            {artwork.title}
+            {!!artwork.date && `${comma} `}
+          </Text>
+          {!!artwork.date && <Text variant="lg-display">{artwork.date}</Text>}
         </Text>
       </Flex>
 

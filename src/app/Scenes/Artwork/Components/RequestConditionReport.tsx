@@ -113,7 +113,6 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
       errorModalText,
       showConditionReportRequestedModal,
     } = this.state
-
     const conditionReportText = `We have received your request.\nThe condition report will be sent to ${me?.email}.\nFor questions contact [specialist@artsy.net](mailto:specialist@artsy.net).`
 
     return (
@@ -124,7 +123,7 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
           loading={requestingConditionReport}
           onPress={this.handleRequestConditionReportTap.bind(this)}
         >
-          Request condition report
+          {"Request a Report"}
         </Button>
         <Flex height={0}>
           <Modal
