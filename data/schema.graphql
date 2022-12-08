@@ -14286,7 +14286,10 @@ type SaleArtwork implements ArtworkEdgeInterface & Node {
   isWatching: Boolean
   isWithReserve: Boolean
   lotID: String
-  lotLabel: String
+  lotLabel(
+    # Whether to trim anything past the first alphanumeric chunk
+    trim: Boolean = false
+  ): String
   lotState: CausalityLotState
   lowEstimate: SaleArtworkLowEstimate
   minimumNextBid: SaleArtworkMinimumNextBid
