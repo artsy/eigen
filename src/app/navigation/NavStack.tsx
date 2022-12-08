@@ -1,6 +1,7 @@
-import { Route, useIsFocused, useNavigationState } from "@react-navigation/native"
+import { findFocusedRoute, Route, useIsFocused, useNavigationState } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { AppModule, modules } from "app/AppRegistry"
+import { useBottomTabBarHeight } from "app/Scenes/BottomTabs/useBottomTabBarHeight"
 import { isPad } from "app/utils/hardware"
 import { createContext, useState } from "react"
 import { View } from "react-native"
@@ -76,6 +77,7 @@ export const NavStack: React.FC<{
   rootModuleName: AppModule
   rootModuleProps?: any
 }> = ({ id, rootModuleName, rootModuleProps }) => {
+  const bottomTabBarHeight = useBottomTabBarHeight()
   const initialParams: ScreenProps = {
     moduleName: rootModuleName,
     props: rootModuleProps,
@@ -84,12 +86,24 @@ export const NavStack: React.FC<{
 
   return (
     <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-        contentStyle: {
-          backgroundColor: "white",
-        },
-        orientation: isPad() ? "default" : "portrait",
+      screenOptions={(props) => {
+        const focusedRoute = findFocusedRoute(props.navigation.getState())
+        const params = focusedRoute?.params as any
+        const isPresentedModally = params?.isPresentedModally
+        const shouldHideBottomTab = params?.shouldHideBottomTab
+        const options: any = {
+          headerShown: false,
+          contentStyle: {
+            backgroundColor: "white",
+          },
+          orientation: isPad() ? "default" : "portrait",
+        }
+
+        if (!isPresentedModally && !shouldHideBottomTab) {
+          options.contentStyle.marginBottom = bottomTabBarHeight
+        }
+
+        return options
       }}
     >
       <Stack.Screen name={"screen:" + id} component={ScreenWrapper} initialParams={initialParams} />
