@@ -103,9 +103,7 @@ const Home = (props: Props) => {
 
   const enableArtworkRecommendations = useFeatureFlag("AREnableHomeScreenArtworkRecommendations")
   const enableMyCollectionHFOnboarding = useFeatureFlag("AREnableMyCollectionHFOnboarding")
-  const enableLargeNewWorksForYouRail =
-    useExperimentVariant("eigen-new-works-for-you-rail-size").variant === "experiment" ||
-    useFeatureFlag("AREnforceLargeNewWorksRail")
+  const enableLargeNewWorksForYouRail = useLargeNewWorksForYouRail()
 
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
   let modules: HomeModule[] = compact([
@@ -371,6 +369,12 @@ const Home = (props: Props) => {
   )
 }
 
+const useLargeNewWorksForYouRail = () => {
+  const railVariant = useExperimentVariant("eigen-new-works-for-you-rail-size")
+  const enforceLargeRail = useFeatureFlag("AREnforceLargeNewWorksRail")
+  return railVariant.variant === "experiment" || enforceLargeRail
+}
+
 const useHandleRefresh = (relay: RelayRefetchProp, modules: any[]) => {
   const scrollRefs = useRef<Array<RefObject<RailScrollRef>>>(modules.map((_) => createRef()))
   const scrollRailsToTop = () => scrollRefs.current.forEach((r) => r.current?.scrollToTop())
@@ -544,9 +548,8 @@ const BelowTheFoldPlaceholder: React.FC = () => {
 }
 
 const HomePlaceholder: React.FC = () => {
-  const enableLargeNewWorksForYouRail =
-    useFeatureFlag("AREnforceLargeNewWorksRail") ||
-    useExperimentVariant("eigen-new-works-for-you-rail-size").variant === "experiment"
+  const enableLargeNewWorksForYouRail = useLargeNewWorksForYouRail()
+  const randomValue = useMemoizedRandom()
 
   return (
     <Flex>
@@ -581,7 +584,7 @@ const HomePlaceholder: React.FC = () => {
         <Spacer mb={0.3} />
         <Flex flexDirection="row" mt={0.5}>
           <Join separator={<Spacer width={15} />}>
-            {times(3 + useMemoizedRandom() * 10).map((index) => (
+            {times(3 + randomValue * 10).map((index) => (
               <Flex key={index}>
                 <PlaceholderBox key={index} height={180} width={295} />
                 <Spacer mb={1} mt={0.3} />

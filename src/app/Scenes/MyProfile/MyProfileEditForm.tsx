@@ -407,7 +407,7 @@ const LoadingSkeleton = () => {
   )
 }
 
-const renderVerifiedRow = ({ title, subtitle }: { title: string; subtitle: string }) => {
+const VerifiedRow: React.FC<{ title: string; subtitle: string }> = ({ title, subtitle }) => {
   const color = useColor()
 
   return (
@@ -442,10 +442,10 @@ const ProfileVerifications = ({
     <Flex testID="profile-verifications" pr={2}>
       {/* ID Verification */}
       {isIDVerified ? (
-        renderVerifiedRow({
-          title: "ID Verified",
-          subtitle: "For details, see FAQs or contact verification@artsy.net",
-        })
+        <VerifiedRow
+          title="ID Verified"
+          subtitle="For details, see FAQs or contact verification@artsy.net"
+        />
       ) : (
         <Flex flexDirection="row">
           <Flex mt="3px">
@@ -480,10 +480,10 @@ const ProfileVerifications = ({
 
       {/* Email Verification */}
       {emailConfirmed ? (
-        renderVerifiedRow({
-          title: "Email Address Verified",
-          subtitle: "Secure your account and receive updates about your transactions on Artsy.",
-        })
+        <VerifiedRow
+          title="Email Address Verified"
+          subtitle="Secure your account and receive updates about your transactions on Artsy."
+        />
       ) : (
         <Flex flexDirection="row">
           <Flex mt="3px">
