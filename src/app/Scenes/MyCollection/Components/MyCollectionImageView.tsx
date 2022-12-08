@@ -54,20 +54,8 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
   }, [])
 
   const renderImage = () => {
-    // prioritise imageURL
-    if (imageURL) {
-      const targetURL = imageURL.replace(":version", "square")
-      return (
-        <OpaqueImageView
-          testID="Image-Remote"
-          imageURL={targetURL}
-          retryFailedURLs
-          height={imageHeight}
-          width={imageWidth}
-          aspectRatio={aspectRatio}
-        />
-      )
-    } else if (localImage) {
+    // Use local image if it exists to avoid images being displayed with a wrong aspect ratio while they are being processed by Gemini
+    if (localImage) {
       return (
         <RNImage
           testID="Image-Local"
@@ -93,6 +81,18 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
           source={{
             uri: localImageConsignments.path,
           }}
+        />
+      )
+    } else if (imageURL) {
+      const targetURL = imageURL.replace(":version", "square")
+      return (
+        <OpaqueImageView
+          testID="Image-Remote"
+          imageURL={targetURL}
+          retryFailedURLs
+          height={imageHeight}
+          width={imageWidth}
+          aspectRatio={aspectRatio}
         />
       )
     } else {
