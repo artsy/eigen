@@ -170,6 +170,7 @@ const artworkTombstoneArtwork: ArtworkTombstone_artwork$data = {
   title: "Hello im a title",
   date: "1992",
   isForSale: true,
+  isSold: false,
 }
 
 const artworkTombstoneAuctionArtwork = {
