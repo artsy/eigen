@@ -5,11 +5,13 @@ import {
 } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
+import { Schema } from "app/utils/track"
 import { compact } from "lodash"
 import { Flex, HeartFillIcon, HeartIcon, Spacer, Text, Touchable, useColor } from "palette"
 import { useMemo } from "react"
 import { GestureResponderEvent, PixelRatio } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"
+import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "../ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
@@ -55,11 +57,12 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   testID,
   ...restProps
 }) => {
+  const { trackEvent } = useTracking()
   const fontScale = PixelRatio.getFontScale()
   const [saveArtwork] = useMutation(SaveArtworkMutation)
   const artwork = useFragment(artworkFragment, restProps.artwork)
 
-  const { artistNames, date, partner, title, id, internalID, image, isSaved } = artwork
+  const { artistNames, date, id, image, internalID, isSaved, partner, slug, title } = artwork
 
   const saleMessage = defaultSaleMessageOrBidInfo({ artwork, isSmallTile: true })
 
@@ -123,6 +126,8 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
         refreshFavoriteArtworks()
       },
     })
+
+    trackEvent(tracks.saveOrUnsave(isSaved, internalID, slug))
   }
 
   return (
@@ -385,3 +390,13 @@ const ArtworkCard = styled.TouchableHighlight.attrs(() => ({
   underlayColor: themeGet("colors.white100"),
   activeOpacity: 0.8,
 }))``
+
+const tracks = {
+  saveOrUnsave: (isSaved?: boolean | null, internalID?: string, slug?: string) => ({
+    action_name: isSaved ? Schema.ActionNames.ArtworkUnsave : Schema.ActionNames.ArtworkSave,
+    context_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
+    context_module: Schema.ContextModules.ArtworkActions,
+    context_screen_owner_id: internalID,
+    context_screen_owner_slug: slug,
+  }),
+}
