@@ -98,6 +98,7 @@ const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateAlertPro
         variant={isForSale ? "text" : "fillDark"}
         containerSize={isForSale ? { mx: 0 } : undefined}
         textVariant={isForSale ? "sm-display" : "xs"}
+        haptic
         onPress={handleCreateAlertPress}
       >
         Create Alert
