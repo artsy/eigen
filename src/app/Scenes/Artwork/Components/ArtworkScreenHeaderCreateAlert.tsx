@@ -26,7 +26,7 @@ interface ArtworkScreenHeaderCreateAlertProps {
 const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateAlertProps> = ({
   artwork,
 }) => {
-  const { isForSale } = artwork
+  const { isForSale, isSold } = artwork
   const { trackEvent } = useTracking()
   const [isCreateAlertModalVisible, setIsCreateAlertModalVisible] = useState(false)
 
@@ -90,16 +90,18 @@ const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateAlertPro
     trackEvent(event)
   }
 
+  const isAvailableForSale = isForSale && !isSold
+
   return (
     <>
       <Spacer mr={0.5} />
       <Button
-        icon={<BellIcon fill={isForSale ? "black100" : "white100"} />}
+        icon={<BellIcon fill={isAvailableForSale ? "black100" : "white100"} />}
         size="small"
-        variant={isForSale ? "fillLight" : "fillDark"}
+        variant={isAvailableForSale ? "text" : "fillDark"}
         onPress={handleCreateAlertPress}
       >
-        <Text variant={isForSale ? "sm-display" : "xs"}>Create Alert</Text>
+        <Text variant={isAvailableForSale ? "sm-display" : "xs"}>Create Alert</Text>
       </Button>
       <CreateSavedSearchModal
         visible={isCreateAlertModalVisible}
@@ -121,6 +123,7 @@ export const ArtworkScreenHeaderCreateAlertFragmentContainer = createFragmentCon
         internalID
         slug
         isForSale
+        isSold
         artists {
           internalID
           name

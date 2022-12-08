@@ -14,6 +14,8 @@ export interface ArtworkTombstoneProps {
 export const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork, refetchArtwork }) => {
   const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
 
+  const isUnavailableForSale = !artwork.isForSale || artwork.isSold
+
   const displayAuctionLotLabel =
     artwork.isInAuction &&
     artwork.saleArtwork &&
@@ -48,7 +50,7 @@ export const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork, ref
         </Text>
       </Flex>
 
-      {!!enableArtworkRedesign && !artwork.isForSale && (
+      {!!enableArtworkRedesign && !!isUnavailableForSale && (
         <>
           <Spacer mt={2} />
           <Text variant="md" color="black100">
@@ -95,6 +97,7 @@ export const ArtworkTombstoneFragmentContainer = createFragmentContainer(Artwork
       isInAuction
       date
       isForSale
+      isSold
       saleMessage
       saleArtwork {
         lotLabel
