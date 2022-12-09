@@ -137,13 +137,13 @@ describe(BottomTabs, () => {
     await flushPromiseQueue()
 
     expect(mockRelayEnvironment.mock.getAllOperations()).toHaveLength(1)
-    resolveUnreadConversationCountQuery(9, 0)
+    resolveUnreadConversationCountQuery(9, 1)
 
     await flushPromiseQueue()
 
     expect(
       LegacyNativeModules.ARTemporaryAPIModule.setApplicationIconBadgeNumber
-    ).toHaveBeenCalledWith(9)
+    ).toHaveBeenCalledWith(10)
   })
 
   it(`fetches the current unread conversation / notifications count once in a while`, async () => {
