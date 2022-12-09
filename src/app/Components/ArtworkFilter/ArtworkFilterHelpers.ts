@@ -97,7 +97,7 @@ export const ParamDefaultValues = {
   estimateRange: "",
   height: "*-*",
   includeArtworksByFollowedArtists: false,
-  includeUpcoming: undefined,
+  includeUpcoming: true,
   inquireableOnly: false,
   keyword: "",
   latestCreatedYear: undefined,
@@ -262,7 +262,7 @@ const DEFAULT_SHOW_ARTWORKS_PARAMS = {
 const DEFAULT_AUCTION_RESULT_PARAMS = {
   sort: "DATE_DESC",
   allowEmptyCreatedDates: true,
-  includeUpcoming: undefined,
+  includeUpcoming: true,
 } as FilterParams
 
 const DEFAULT_GENE_ARTWORK_PARAMS = {

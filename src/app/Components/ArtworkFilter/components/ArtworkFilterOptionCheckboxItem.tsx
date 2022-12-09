@@ -1,5 +1,9 @@
 import { Checkbox } from "palette"
-import { FilterParamName, getUnitedSelectedAndAppliedFilters } from "../ArtworkFilterHelpers"
+import {
+  defaultCommonFilterOptions,
+  FilterParamName,
+  getUnitedSelectedAndAppliedFilters,
+} from "../ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "../ArtworkFilterStore"
 import { ArtworkFilterOptionItem, ArtworkFilterOptionItemProps } from "./ArtworkFilterOptionItem"
 
@@ -21,11 +25,18 @@ export const ArtworkFilterOptionCheckboxItem: React.FC<ArtworkFilterOptionCheckb
 
   const storeFilterType = ArtworksFiltersStore.useStoreState((state) => state.filterType)
 
-  const checked = !!getUnitedSelectedAndAppliedFilters({
-    filterType: storeFilterType,
-    selectedFilters,
-    previouslyAppliedFilters,
-  }).find((f) => f.paramName === item.filterType)?.paramValue
+  const getChecked = () => {
+    if (selectedFilters.length === 0 && previouslyAppliedFilters.length === 0) {
+      return defaultCommonFilterOptions[item.filterType as FilterParamName]
+    }
+
+    return !!getUnitedSelectedAndAppliedFilters({
+      filterType: storeFilterType,
+      selectedFilters,
+      previouslyAppliedFilters,
+    }).find((f) => f.paramName === item.filterType)?.paramValue
+  }
+  const checked = getChecked()
 
   const setValueOnFilters = (value: boolean) => {
     selectFiltersAction({
@@ -46,7 +57,7 @@ export const ArtworkFilterOptionCheckboxItem: React.FC<ArtworkFilterOptionCheckb
       onPress={onPress}
       RightAccessoryItem={
         <Checkbox
-          checked={checked}
+          checked={!!checked}
           onPress={onPress}
           testID="ArtworkFilterOptionCheckboxItemCheckbox"
         />

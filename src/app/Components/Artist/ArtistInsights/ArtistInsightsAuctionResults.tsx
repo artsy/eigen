@@ -223,6 +223,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
         count: { type: "Int", defaultValue: 10 }
         cursor: { type: "String" }
         earliestCreatedYear: { type: "Int", defaultValue: 1000 }
+        includeUpcoming: { type: "Boolean", defaultValue: true }
         keyword: { type: "String" }
         latestCreatedYear: { type: "Int", defaultValue: 2050 }
         organizations: { type: "[String]" }
@@ -239,6 +240,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
           categories: $categories
           earliestCreatedYear: $earliestCreatedYear
           first: $count
+          includeUpcoming: $includeUpcoming
           keyword: $keyword
           latestCreatedYear: $latestCreatedYear
           organizations: $organizations
@@ -280,6 +282,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
         $count: Int!
         $cursor: String
         $earliestCreatedYear: Int
+        $includeUpcoming: Boolean
         $keyword: String
         $latestCreatedYear: Int
         $organizations: [String]
@@ -294,6 +297,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
               count: $count
               cursor: $cursor
               earliestCreatedYear: $earliestCreatedYear
+              includeUpcoming: $includeUpcoming
               keyword: $keyword
               latestCreatedYear: $latestCreatedYear
               organizations: $organizations
