@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import {
   ArtworkFromLiveAuctionRegistrationClosed,
   ArtworkFromLiveAuctionRegistrationOpen,
@@ -6,36 +6,28 @@ import {
   RegisteredBidder,
 } from "app/__fixtures__/ArtworkBidAction"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
-import { Countdown } from "app/Components/Bidding/Components/Timer"
 import { ModalStack } from "app/navigation/ModalStack"
 import { navigationEvents } from "app/navigation/navigate"
-import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
 import { ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { extractText } from "app/tests/extractText"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { merge } from "lodash"
 import _ from "lodash"
-import { Touchable } from "palette"
 import { Suspense } from "react"
 import { ActivityIndicator } from "react-native"
-import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { Artwork, ArtworkQueryRenderer } from "./Artwork"
 import { ArtworkDetails } from "./Components/ArtworkDetails"
 import { ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
-import { BidButton } from "./Components/CommercialButtons/BidButton"
 import { CommercialInformation } from "./Components/CommercialInformation"
-import { ContextCard } from "./Components/ContextCard"
 import { ImageCarousel } from "./Components/ImageCarousel/ImageCarousel"
 import { OtherWorksFragmentContainer } from "./Components/OtherWorks/OtherWorks"
 
 jest.unmock("react-relay")
 
-// TODO: remove the use of renderWithWrappersLEGACY
 jest.mock("app/Components/Bidding/Context/TimeOffsetProvider", () => {
   class TimeOffsetProvider extends require("react").Component {
     static childContextTypes = {
@@ -87,17 +79,21 @@ describe("Artwork", () => {
   })
 
   it("renders above the fold content before the full query has been resolved", async () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
+
     // ArtworkAboveTheFoldQuery
     resolveMostRecentRelayOperation(environment)
-    expect(tree.root.findAllByType(ImageCarousel)).toHaveLength(1)
-    expect(tree.root.findAllByType(CommercialInformation)).toHaveLength(1)
-    expect(tree.root.findAllByType(ActivityIndicator)).toHaveLength(1)
-    expect(tree.root.findAllByType(ArtworkDetails)).toHaveLength(0)
+
+    await flushPromiseQueue()
+
+    expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeTruthy()
+    expect(screen.UNSAFE_queryByType(CommercialInformation)).toBeTruthy()
+    expect(screen.UNSAFE_queryByType(ActivityIndicator)).toBeTruthy()
+    expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeNull()
   })
 
   it("renders all content after the full query has been resolved", async () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     // ArtworkAboveTheFoldQuery
     resolveMostRecentRelayOperation(environment)
@@ -105,11 +101,13 @@ describe("Artwork", () => {
     resolveMostRecentRelayOperation(environment)
     // ArtworkBelowTheFoldQuery
     resolveMostRecentRelayOperation(environment)
+
     await flushPromiseQueue()
-    expect(tree.root.findAllByType(ImageCarousel)).toHaveLength(1)
-    expect(tree.root.findAllByType(CommercialInformation)).toHaveLength(1)
-    expect(tree.root.findAllByType(ActivityIndicator)).toHaveLength(0)
-    expect(tree.root.findAllByType(ArtworkDetails)).toHaveLength(1)
+
+    expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeTruthy()
+    expect(screen.UNSAFE_queryByType(CommercialInformation)).toBeTruthy()
+    expect(screen.UNSAFE_queryByType(ActivityIndicator)).toBeNull()
+    expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeTruthy()
   })
 
   describe("artist series components", () => {
@@ -141,12 +139,12 @@ describe("Artwork", () => {
 
       await flushPromiseQueue()
 
-      expect(screen.UNSAFE_queryAllByType(ArtistSeriesMoreSeries)).toHaveLength(1)
-      expect(screen.UNSAFE_queryAllByType(ArtworksInSeriesRail)).toHaveLength(1)
+      expect(screen.UNSAFE_queryByType(ArtistSeriesMoreSeries)).toBeTruthy()
+      expect(screen.UNSAFE_queryByType(ArtworksInSeriesRail)).toBeTruthy()
     })
 
     it("does not render when there are no artist series to show", async () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment)
@@ -154,33 +152,31 @@ describe("Artwork", () => {
       resolveMostRecentRelayOperation(environment)
       // ArtworkBelowTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
-        Artwork() {
-          return {
-            artist: {
-              artistSeriesConnection: {
-                totalCount: 0,
-              },
-            },
+        Artwork: () => ({
+          artist: {
             artistSeriesConnection: {
-              edges: [],
+              totalCount: 0,
             },
-            // Hide some other sections
-            // otherwise arties series components will not be found
-            sale: null,
-            partner: null,
-            context: null,
-          }
-        },
+          },
+          artistSeriesConnection: {
+            edges: [],
+          },
+          // Hide some other sections
+          // otherwise arties series components will not be found
+          sale: null,
+          partner: null,
+          context: null,
+        }),
       })
 
       await flushPromiseQueue()
 
-      expect(tree.root.findAllByType(ArtistSeriesMoreSeries)).toHaveLength(0)
-      expect(tree.root.findAllByType(ArtworksInSeriesRail)).toHaveLength(0)
+      expect(screen.UNSAFE_queryByType(ArtistSeriesMoreSeries)).toBeNull()
+      expect(screen.UNSAFE_queryByType(ArtworksInSeriesRail)).toBeNull()
     })
 
     it("tracks a click to an artist series item", async () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
@@ -226,10 +222,12 @@ describe("Artwork", () => {
           }
         },
       })
+
       await flushPromiseQueue()
 
-      const artistSeriesButton = tree.root.findByType(ArtistSeriesListItem).findByType(Touchable)
-      act(() => artistSeriesButton.props.onPress())
+      const artistSeriesButton = screen.getByLabelText("Artist Series List Item")
+
+      fireEvent.press(artistSeriesButton)
 
       expect(mockTrackEvent).toHaveBeenCalledWith({
         action: "tappedArtistSeriesGroup",
@@ -248,7 +246,7 @@ describe("Artwork", () => {
   })
 
   it("renders the ArtworkDetails component when conditionDescription is null but canRequestLotConditionsReport is true", async () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     // ArtworkAboveTheFoldQuery
     resolveMostRecentRelayOperation(environment)
@@ -272,11 +270,14 @@ describe("Artwork", () => {
         }
       },
     })
+
     await flushPromiseQueue()
-    expect(tree.root.findAllByType(ArtworkDetails)).toHaveLength(1)
+
+    expect(screen.queryByLabelText("Artwork Details")).toBeTruthy()
   })
 
   it("updates the above-the-fold content on re-appear", async () => {
+    // TODO: remove the use of renderWithWrappersLEGACY
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     // ArtworkAboveTheFoldQuery
@@ -285,6 +286,8 @@ describe("Artwork", () => {
         return { slug: "my-special-artwork" }
       },
     })
+
+    await flushPromiseQueue()
 
     expect(tree.root.findByType(Artwork).props.artworkAboveTheFold.slug).toBe("my-special-artwork")
 
@@ -361,7 +364,7 @@ describe("Artwork", () => {
       })
 
       it("for which I am registered", () => {
-        const tree = renderWithWrappersLEGACY(<TestRenderer />)
+        renderWithWrappers(<TestRenderer />)
 
         // ArtworkAboveTheFoldQuery
         resolveMostRecentRelayOperation(environment, {
@@ -375,13 +378,13 @@ describe("Artwork", () => {
           },
         })
 
-        expect(tree.root.findAllByType(Countdown)).toHaveLength(1)
-        expect(tree.root.findByType(Countdown).props.label).toBe("In progress")
-        expect(extractText(tree.root.findByType(BidButton))).toContain("Enter live bidding")
+        expect(screen.queryByLabelText("Countdown")).toBeTruthy()
+        expect(screen.queryByText("In progress")).toBeTruthy()
+        expect(screen.queryByText("Enter live bidding")).toBeTruthy()
       })
 
       it("for which I am not registered and registration is open", async () => {
-        const tree = renderWithWrappersLEGACY(<TestRenderer />)
+        renderWithWrappers(<TestRenderer />)
 
         // ArtworkAboveTheFoldQuery
         resolveMostRecentRelayOperation(environment, {
@@ -397,14 +400,14 @@ describe("Artwork", () => {
 
         await flushPromiseQueue()
 
-        expect(tree.root.findAllByType(Countdown)).toHaveLength(1)
-        expect(tree.root.findByType(Countdown).props.label).toBe("In progress")
-        expect(extractText(tree.root.findByType(BidButton))).toContain("Registration closed")
-        expect(extractText(tree.root.findByType(BidButton))).toContain("Watch live bidding")
+        expect(screen.queryByLabelText("Countdown")).toBeTruthy()
+        expect(screen.queryByText("Watch live bidding")).toBeTruthy()
+        expect(screen.queryByText("In progress")).toBeTruthy()
+        expect(screen.queryByText("Registration closed")).toBeTruthy()
       })
 
       it("for which I am not registered and registration is closed", () => {
-        const tree = renderWithWrappersLEGACY(<TestRenderer />)
+        renderWithWrappers(<TestRenderer />)
 
         // ArtworkAboveTheFoldQuery
         resolveMostRecentRelayOperation(environment, {
@@ -418,10 +421,10 @@ describe("Artwork", () => {
           },
         })
 
-        expect(tree.root.findAllByType(Countdown)).toHaveLength(1)
-        expect(tree.root.findByType(Countdown).props.label).toBe("In progress")
-        expect(extractText(tree.root.findByType(Countdown))).toContain("00d  00h  00m  00s")
-        expect(extractText(tree.root.findByType(BidButton))).toContain("Enter live bidding")
+        expect(screen.queryByLabelText("Countdown")).toBeTruthy()
+        expect(screen.queryByText("In progress")).toBeTruthy()
+        expect(screen.queryByText("Enter live bidding")).toBeTruthy()
+        expect(screen.queryByText("00d  00h  00m  00s")).toBeTruthy()
       })
     })
   })
@@ -648,32 +651,6 @@ describe("Artwork", () => {
 
   describe("Context Card", () => {
     it("should NOT be displayed if the work is in a non-auction sale", async () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer />)
-
-      // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment)
-      // ArtworkMarkAsRecentlyViewedQuery
-      resolveMostRecentRelayOperation(environment)
-      // ArtworkBelowTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
-        Artwork() {
-          return {
-            isForSale: false,
-          }
-        },
-        Sale() {
-          return {
-            isAuction: false,
-          }
-        },
-      })
-      await flushPromiseQueue()
-
-      expect(tree.root.findAllByType(ContextCard)).toHaveLength(0)
-      expect(tree.root.findAllByType(OtherWorksFragmentContainer)).toHaveLength(1)
-    })
-
-    it("should be displayed if the work is in an auction", async () => {
       renderWithWrappers(<TestRenderer />)
 
       // ArtworkAboveTheFoldQuery
@@ -682,16 +659,43 @@ describe("Artwork", () => {
       resolveMostRecentRelayOperation(environment)
       // ArtworkBelowTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
-        Sale() {
-          return {
+        Artwork: () => ({
+          isForSale: false,
+          context: {
+            isAuction: false,
+          },
+        }),
+      })
+
+      await flushPromiseQueue()
+
+      expect(screen.queryByText("Auction")).toBeNull()
+      expect(screen.UNSAFE_queryByType(OtherWorksFragmentContainer)).toBeTruthy()
+    })
+
+    it("should be displayed if the work is in an auction", async () => {
+      renderWithWrappers(<TestRenderer />)
+
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
+        Artwork: () => ({
+          slug: "/whatever",
+        }),
+      })
+      // ArtworkMarkAsRecentlyViewedQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkBelowTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
+        Artwork: () => ({
+          exhibitionHistory: null,
+          provenance: null,
+          literature: null,
+          isEligibleForArtsyGuarantee: false,
+          context: {
+            __typename: "Sale",
             isAuction: true,
-            // Hide some other sections, otherwise the test will fail
-            isEligibleForArtsyGuarantee: false,
-            provenance: null,
-            exhibitionHistory: null,
-            literature: null,
-          }
-        },
+          },
+        }),
       })
 
       await flushPromiseQueue()
