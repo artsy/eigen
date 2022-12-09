@@ -8,7 +8,7 @@ import {
 } from "app/relay/middlewares/metaphysicsMiddleware"
 import { simpleLoggerMiddleware } from "app/relay/middlewares/simpleLoggerMiddleware"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Action, action, Thunk, thunk } from "easy-peasy"
+import { Action, action, Thunk, thunk, ThunkOn, thunkOn } from "easy-peasy"
 import { fetchQuery, graphql } from "react-relay"
 import { BottomTabType } from "./BottomTabType"
 
@@ -24,6 +24,7 @@ export interface BottomTabsModel {
     tabProps: Partial<{ [k in BottomTabType]: object }>
     selectedTab: BottomTabType
   }
+  syncApplicationIconBadgeNumber: ThunkOn<BottomTabsModel>
   unreadConversationCountChanged: Action<BottomTabsModel, number>
   fetchCurrentUnreadConversationCount: Thunk<BottomTabsModel>
   unreadActivityPanelNotificationsCountChanged: Action<BottomTabsModel, number>
@@ -42,6 +43,18 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
     tabProps: {},
     selectedTab: "home",
   },
+  syncApplicationIconBadgeNumber: thunkOn(
+    (actions) => [
+      actions.unreadConversationCountChanged,
+      actions.unreadActivityPanelNotificationsCountChanged,
+    ],
+    (_actions, _payload, { getState }) => {
+      const { unreadActivityPanelNotifications, unreadConversation } =
+        getState().sessionState.unreadCounts
+      const totalCount = unreadActivityPanelNotifications + unreadConversation
+      GlobalStore.actions.native.setApplicationIconBadgeNumber(totalCount)
+    }
+  ),
   unreadConversationCountChanged: action((state, unreadConversationCount) => {
     state.sessionState.unreadCounts.unreadConversation = unreadConversationCount
   }),
@@ -68,7 +81,6 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
 
       if (conversationsCount !== null) {
         GlobalStore.actions.bottomTabs.unreadConversationCountChanged(conversationsCount ?? 0)
-        GlobalStore.actions.native.setApplicationIconBadgeNumber(conversationsCount ?? 0)
       }
     } catch (e) {
       if (__DEV__) {
@@ -117,16 +129,10 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
       const conversationsCount = result?.me?.unreadConversationCount
       const notificationsCount = result?.me?.unreadNotificationsCount
 
-      if (conversationsCount !== null) {
-        GlobalStore.actions.bottomTabs.unreadConversationCountChanged(conversationsCount ?? 0)
-        GlobalStore.actions.native.setApplicationIconBadgeNumber(conversationsCount ?? 0)
-      }
-
-      if (notificationsCount !== null) {
-        GlobalStore.actions.bottomTabs.unreadActivityPanelNotificationsCountChanged(
-          notificationsCount ?? 0
-        )
-      }
+      GlobalStore.actions.bottomTabs.unreadConversationCountChanged(conversationsCount ?? 0)
+      GlobalStore.actions.bottomTabs.unreadActivityPanelNotificationsCountChanged(
+        notificationsCount ?? 0
+      )
     } catch (e) {
       if (__DEV__) {
         console.warn(
