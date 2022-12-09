@@ -2,6 +2,7 @@ import { ArtworkStickyBottomContent_artwork$key } from "__generated__/ArtworkSti
 import { ArtworkStickyBottomContent_me$key } from "__generated__/ArtworkStickyBottomContent_me.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
+import { useIsStaging } from "app/store/GlobalStore"
 import { Box, Separator } from "palette"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -18,6 +19,7 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
   artwork,
   me,
 }) => {
+  const isStaging = useIsStaging()
   const { safeAreaInsets } = useScreenDimensions()
   const artworkData = useFragment(artworkFragment, artwork)
   const meData = useFragment(meFragment, me)
@@ -32,6 +34,10 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
       accessibilityLabel="Sticky bottom commercial section"
       bg="white100"
       pb={safeAreaInsets.bottom}
+      {...(!!isStaging && {
+        borderBottomWidth: 2,
+        borderBottomColor: "devpurple",
+      })}
     >
       <Separator />
       <Box px={2} py={1}>

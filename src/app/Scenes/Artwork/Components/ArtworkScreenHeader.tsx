@@ -2,6 +2,7 @@ import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArtworkScreenHeader_artwork$data } from "__generated__/ArtworkScreenHeader_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { goBack } from "app/navigation/navigate"
+import { useIsStaging } from "app/store/GlobalStore"
 import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { Schema } from "app/utils/track"
 import { userHadMeaningfulInteraction } from "app/utils/userHadMeaningfulInteraction"
@@ -27,6 +28,7 @@ interface ArtworkScreenHeaderProps {
 
 const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) => {
   const { trackEvent } = useTracking()
+  const isStaging = useIsStaging()
   const space = useSpace()
   const auctionState = ArtworkStore.useStoreState((state) => state.auctionState)
 
@@ -103,6 +105,10 @@ const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) =>
       px={2}
       accessibilityRole="header"
       accessibilityLabel="Artwork page header"
+      {...(!!isStaging && {
+        borderBottomWidth: 2,
+        borderBottomColor: "devpurple",
+      })}
     >
       <Flex>
         <BackButton
