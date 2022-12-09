@@ -1,6 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkScreenHeaderTestQuery } from "__generated__/ArtworkScreenHeaderTestQuery.graphql"
-import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { goBack } from "app/navigation/navigate"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
@@ -55,7 +54,6 @@ describe("ArtworkScreenHeader", () => {
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => ({
         isSaved: false,
-        isForSale: true,
         artists: [{ name: "test" }],
       }),
     })
@@ -64,7 +62,7 @@ describe("ArtworkScreenHeader", () => {
 
     expect(screen.queryByLabelText("Artwork page header")).toBeTruthy()
     expect(screen.queryByLabelText("Go back")).toBeTruthy()
-    expect(screen.queryByText("Save")).toBeTruthy()
+    expect(screen.queryByLabelText("Save button")).toBeTruthy()
     expect(screen.queryByText("Create Alert")).toBeTruthy()
   })
 
@@ -89,7 +87,6 @@ describe("ArtworkScreenHeader", () => {
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => ({
           isSaved: false,
-          isForSale: false,
           artists: [],
         }),
       })
@@ -97,7 +94,7 @@ describe("ArtworkScreenHeader", () => {
       await flushPromiseQueue()
 
       expect(screen.queryByLabelText("Go back")).toBeTruthy()
-      expect(screen.queryByText("Save")).toBeTruthy()
+      expect(screen.queryByLabelText("Save button")).toBeTruthy()
       expect(screen.queryByText("Create Alert")).toBeFalsy()
     })
 
@@ -127,26 +124,6 @@ describe("ArtworkScreenHeader", () => {
   })
 
   describe("Save button", () => {
-    it("renders Watch lot text if the artwork is an open sale", async () => {
-      renderWithWrappers(<TestRenderer />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artwork: () => ({
-          isSaved: false,
-          isForSale: false,
-          sale: {
-            isAuction: true,
-            isClosed: false,
-          },
-        }),
-      })
-
-      await flushPromiseQueue()
-
-      expect(screen.queryByText("Watch lot")).toBeTruthy()
-      expect(screen.queryByText(/Save/)).toBeNull()
-    })
-
     it("should trigger save mutation when user presses save button", async () => {
       renderWithWrappers(<TestRenderer />)
 
@@ -158,9 +135,9 @@ describe("ArtworkScreenHeader", () => {
 
       await flushPromiseQueue()
 
-      expect(screen.queryByText("Save")).toBeTruthy()
+      expect(screen.getByLabelText("Save button")).toBeTruthy()
 
-      fireEvent.press(screen.getByText("Save"))
+      fireEvent.press(screen.getByLabelText("Save button"))
 
       expect(mockEnvironment.mock.getMostRecentOperation().request.node.operation.name).toBe(
         "ArtworkScreenHeaderSaveMutation"
@@ -178,7 +155,7 @@ describe("ArtworkScreenHeader", () => {
 
       await flushPromiseQueue()
 
-      fireEvent.press(screen.getByText("Save"))
+      fireEvent.press(screen.getByLabelText("Save button"))
 
       resolveMostRecentRelayOperation(mockEnvironment, {})
 
@@ -194,25 +171,5 @@ describe("ArtworkScreenHeader", () => {
         ]
       `)
     })
-  })
-
-  it("renders Save text if the artwork is a closed sale", async () => {
-    renderWithWrappers(<TestRenderer initialData={{ auctionState: AuctionTimerState.CLOSED }} />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Artwork: () => ({
-        isSaved: false,
-        isForSale: false,
-        sale: {
-          isAuction: true,
-          isClosed: true,
-        },
-      }),
-    })
-
-    await flushPromiseQueue()
-
-    expect(screen.queryByText("Watch lot")).toBeNull()
-    expect(screen.queryByText(/Save/)).toBeTruthy()
   })
 })

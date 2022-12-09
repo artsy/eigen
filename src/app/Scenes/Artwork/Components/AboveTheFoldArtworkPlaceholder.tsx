@@ -68,7 +68,7 @@ const RedesignedAboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> 
 
           <Flex flexDirection="row" alignItems="center">
             <PlaceholderBox width={25} height={25} marginRight={space(2)} />
-            <PlaceholderBox width={105} height={30} />
+            <PlaceholderBox width={105} height={25} />
           </Flex>
         </Flex>
       </Flex>
