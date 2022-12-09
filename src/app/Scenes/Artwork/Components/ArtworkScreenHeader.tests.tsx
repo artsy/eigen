@@ -7,14 +7,10 @@ import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { ArtworkStoreModel, ArtworkStoreProvider } from "../ArtworkStore"
+import { ArtworkStoreProvider } from "../ArtworkStore"
 import { ArtworkScreenHeaderFragmentContainer } from "./ArtworkScreenHeader"
 
 jest.unmock("react-relay")
-
-interface TestRendererProps {
-  initialData?: Partial<ArtworkStoreModel>
-}
 
 describe("ArtworkScreenHeader", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -23,9 +19,9 @@ describe("ArtworkScreenHeader", () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  const TestRenderer = (testProps: TestRendererProps) => {
+  const TestRenderer = () => {
     return (
-      <ArtworkStoreProvider initialData={testProps?.initialData}>
+      <ArtworkStoreProvider>
         <QueryRenderer<ArtworkScreenHeaderTestQuery>
           environment={mockEnvironment}
           query={graphql`
