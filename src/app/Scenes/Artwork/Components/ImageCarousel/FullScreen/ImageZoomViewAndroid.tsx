@@ -1,7 +1,8 @@
 import { useContext, useEffect, useState } from "react"
 import { ImageCarouselContext, ImageDescriptor } from "../ImageCarouselContext"
 
-import { Flex, Spinner } from "palette"
+import { Flex, Spinner, useColor } from "palette"
+import { LayoutAnimation } from "react-native"
 import FastImage from "react-native-fast-image"
 import { Zoom } from "react-native-reanimated-zoom"
 import usePrevious from "react-use/lib/usePrevious"
@@ -14,6 +15,9 @@ export interface ImageZoomViewAndroidProps {
 
 export const ImageZoomViewAndroid: React.FC<ImageZoomViewAndroidProps> = ({ image, index }) => {
   const [isLoading, setIsLoading] = useState(false)
+  const [opacity, setOpacity] = useState(0)
+  const color = useColor()
+
   const { dispatch, images, imageIndex, fullScreenState } = useContext(ImageCarouselContext)
   imageIndex.useUpdates()
   fullScreenState.useUpdates()
@@ -67,13 +71,21 @@ export const ImageZoomViewAndroid: React.FC<ImageZoomViewAndroidProps> = ({ imag
           style={{
             width: imageWidth,
             height: imageHeight,
+            opacity,
+            backgroundColor: color("black10"),
           }}
           resizeMode={FastImage.resizeMode.contain}
           onLoadStart={() => {
-            setIsLoading(true)
+            requestAnimationFrame(() => {
+              setIsLoading(true)
+            })
           }}
           onLoadEnd={() => {
-            setIsLoading(false)
+            requestAnimationFrame(() => {
+              LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+              setOpacity(1)
+              setIsLoading(false)
+            })
           }}
         />
         {!!isLoading && (

@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/react-native"
-import { useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { isPad } from "app/utils/hardware"
 import React, { useCallback, useContext } from "react"
 import { Animated, FlatList, NativeScrollEvent, NativeSyntheticEvent, Platform } from "react-native"
@@ -23,6 +23,8 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
 }) => {
   const screenDimensions = useScreenDimensions()
   const enableAndroidImagesGallery = useFeatureFlag("AREnableAndroidImagesGallery")
+  const { setIsDeepZoomModalVisible } = GlobalStore.actions.devicePrefs
+
   const embeddedCardBoundingBox = {
     width: screenDimensions.width,
     height: isPad() ? 460 : cardHeight,
@@ -73,6 +75,11 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
       (Platform.OS === "android" && !!enableAndroidImagesGallery && !disableFullScreen)
     ) {
       dispatch({ type: "TAPPED_TO_GO_FULL_SCREEN" })
+      // This is here to avoid a bug where the modal would show up with the dev menu at the same
+      // time while in dev. This won't happen in prod for users though
+      if (Platform.OS === "android") {
+        setIsDeepZoomModalVisible(true)
+      }
     }
   }, [dispatch])
 
