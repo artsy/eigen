@@ -190,7 +190,7 @@ const Home = (props: Props) => {
       type: "fairs",
       data: homePageBelow?.fairsModule,
     },
-    { title: "Popular Artists", type: "artist", data: homePageBelow?.popularArtistsArtistModule },
+    { title: "Trending Artists", type: "artist", data: homePageBelow?.popularArtistsArtistModule },
     {
       title: "Recently Viewed",
       type: "artwork",
@@ -430,7 +430,7 @@ export const HomeFragmentContainer = createRefetchContainer(
           id
           ...ArtworkModuleRail_rail
         }
-        popularArtistsArtistModule: artistModule(key: POPULAR) {
+        popularArtistsArtistModule: artistModule(key: CURATED_TRENDING) {
           id
           ...ArtistRail_rail
         }
