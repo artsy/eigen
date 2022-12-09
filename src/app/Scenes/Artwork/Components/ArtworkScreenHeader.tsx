@@ -7,20 +7,25 @@ import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { Schema } from "app/utils/track"
 import { userHadMeaningfulInteraction } from "app/utils/userHadMeaningfulInteraction"
 import { isEmpty } from "lodash"
-import { BackButton, Button, Flex, HeartFillIcon, HeartIcon, useSpace } from "palette"
+import { BackButton, Flex, HeartFillIcon, HeartIcon, Spacer, Touchable, useSpace } from "palette"
 import { createFragmentContainer, graphql, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtworkStore } from "../ArtworkStore"
 import { ArtworkScreenHeaderCreateAlertFragmentContainer } from "./ArtworkScreenHeaderCreateAlert"
 
 const HEADER_HEIGHT = 44
+const SAVE_ICON_SIZE = 25
 
 interface SaveIconProps {
   isSaved: boolean
 }
 
 const SaveIcon: React.FC<SaveIconProps> = ({ isSaved }) =>
-  isSaved ? <HeartFillIcon fill="blue100" mr={0.5} /> : <HeartIcon mr={0.5} />
+  isSaved ? (
+    <HeartFillIcon fill="blue100" width={SAVE_ICON_SIZE} height={SAVE_ICON_SIZE} />
+  ) : (
+    <HeartIcon width={SAVE_ICON_SIZE} height={SAVE_ICON_SIZE} />
+  )
 
 interface ArtworkScreenHeaderProps {
   artwork: ArtworkScreenHeader_artwork$data
@@ -123,19 +128,16 @@ const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) =>
       </Flex>
 
       <Flex flexDirection="row" alignItems="center">
-        <Button
-          icon={<SaveIcon isSaved={!!isSaved} />}
-          size="small"
-          variant="text"
+        <Touchable
           accessibilityRole="button"
-          accessibilityLabel={saveButtonText()}
+          accessibilityLabel="Save button"
           haptic
           onPress={handleArtworkSave}
-          longestText={isOpenSale ? "Watch lot" : "Saved"}
-          textVariant="sm-display"
         >
-          {saveButtonText()}
-        </Button>
+          <SaveIcon isSaved={!!isSaved} />
+        </Touchable>
+
+        <Spacer ml={2} />
 
         <ArtworkScreenHeaderCreateAlertFragmentContainer artwork={artwork} />
       </Flex>
