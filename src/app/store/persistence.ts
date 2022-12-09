@@ -10,6 +10,9 @@ export const STORAGE_KEY = "artsy-app-state"
 
 export const LEGACY_SEARCH_STORAGE_KEY = "SEARCH/RECENT_SEARCHES"
 
+/**
+ * Removes sessionState and computed properties.
+ */
 export function sanitize(object: unknown, path: Array<string | number> = []): unknown {
   if (isPlainObject(object)) {
     const result = {} as any

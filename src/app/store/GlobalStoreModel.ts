@@ -86,16 +86,19 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
     (a) => a.auth.signOut,
     (actions, _, store) => {
       const {
-        artsyPrefs: existingConfig,
+        artsyPrefs: existingArtsyConfig,
+        devicePrefs: existingDeviceConfig,
         search,
         auth: { userID },
         recentPriceRanges,
       } = store.getState()
 
       // keep existing config state
-      const config = sanitize(existingConfig) as typeof existingConfig
+      const artsyConfig = sanitize(existingArtsyConfig) as typeof existingArtsyConfig
+      const deviceConfig = sanitize(existingDeviceConfig) as typeof existingDeviceConfig
       actions.reset({
-        artsyPrefs: config,
+        artsyPrefs: artsyConfig,
+        devicePrefs: deviceConfig,
         search,
         recentPriceRanges,
         auth: { previousSessionUserID: userID },
