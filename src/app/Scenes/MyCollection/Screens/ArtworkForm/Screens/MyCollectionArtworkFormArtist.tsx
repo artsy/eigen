@@ -37,6 +37,8 @@ export const MyCollectionArtworkFormArtist: React.FC<
   }
 
   const handleSkipPress = async (artistDisplayName: string) => {
+    GlobalStore.actions.myCollection.artwork.resetForm()
+
     requestAnimationFrame(() => {
       GlobalStore.actions.myCollection.artwork.updateFormValues({
         artistDisplayName,
