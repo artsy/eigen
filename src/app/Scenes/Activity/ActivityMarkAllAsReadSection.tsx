@@ -32,8 +32,7 @@ export const ActivityMarkAllAsReadSection: React.FC<ActivityMarkAllAsReadSection
             throw new Error(errorMessage)
           }
 
-          // update unread counts and app icon counter
-          GlobalStore.actions.bottomTabs.fetchAllNotificationsCounts()
+          GlobalStore.actions.bottomTabs.unreadActivityPanelNotificationsCountChanged(0)
         },
       })
     } catch (e) {
