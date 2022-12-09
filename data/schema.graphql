@@ -15950,7 +15950,7 @@ type UpdateConversationMutationPayload {
   conversation: Conversation
 }
 
-type updateMessageFailure {
+type UpdateMessageFailure {
   mutationError: GravityMutationError
 }
 
@@ -15968,12 +15968,12 @@ type UpdateMessageMutationPayload {
   clientMutationId: String
 
   # On success: the updated conversation
-  conversationOrError: updateMessageResponseOrError
+  conversationOrError: UpdateMessageResponseOrError
 }
 
-union updateMessageResponseOrError = updateMessageFailure | updateMessageSuccess
+union UpdateMessageResponseOrError = UpdateMessageFailure | UpdateMessageSuccess
 
-type updateMessageSuccess {
+type UpdateMessageSuccess {
   conversation: Conversation
 }
 
