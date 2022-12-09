@@ -13,6 +13,7 @@ import {
   SavedSearchEntityArtist,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { compact, isEmpty } from "lodash"
 import { BellIcon, Button } from "palette"
 import { useState } from "react"
@@ -29,6 +30,8 @@ const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateAlertPro
   const { isForSale } = artwork
   const { trackEvent } = useTracking()
   const [isCreateAlertModalVisible, setIsCreateAlertModalVisible] = useState(false)
+  const enableImprovedHeaderActions = useFeatureFlag("AREnableImprovedHeaderActions")
+  const defaultButtonVariant = enableImprovedHeaderActions ? "outlineGray" : "text"
 
   const hasArtists = !isEmpty(artwork.artists) && artwork.artists!.length > 0
 
@@ -95,7 +98,7 @@ const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateAlertPro
       <Button
         icon={<BellIcon fill={isForSale ? "black100" : "white100"} />}
         size="small"
-        variant={isForSale ? "text" : "fillDark"}
+        variant={isForSale ? defaultButtonVariant : "fillDark"}
         textVariant={isForSale ? "sm-display" : "xs"}
         haptic
         onPress={handleCreateAlertPress}

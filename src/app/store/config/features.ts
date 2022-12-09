@@ -252,6 +252,11 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "AREnableLargeArtworkRailSaveIcon",
   },
+  AREnableImprovedHeaderActions: {
+    description: "Enable improved header actions for artwork screen",
+    showInDevMenu: true,
+    readyForRelease: false,
+  },
 })
 
 export interface DevToggleDescriptor {
