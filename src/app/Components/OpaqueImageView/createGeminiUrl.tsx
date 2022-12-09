@@ -29,7 +29,7 @@ export function createGeminiUrl({
     `width=${roundedWidth}`,
   ]
 
-  if (Platform.OS === "android" || (Platform.OS === "ios" && osMajorVersion() >= 13)) {
+  if (Platform.OS === "android" || (Platform.OS === "ios" && osMajorVersion() >= 14)) {
     params.push("convert_to=webp")
   }
 
