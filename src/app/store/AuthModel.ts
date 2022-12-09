@@ -69,8 +69,8 @@ const handleSignUpError = ({
 
   if (errorObject?.error === "User Already Exists") {
     message = `Your ${
-      providerName === "Email" ? "" : providerName
-    } email account is linked to an Artsy user account please Log in using your email and password instead.`
+      oauthProvider === "email" ? "" : providerName + " "
+    }email account is linked to an Artsy user account. Please log in using your email and password instead.`
     const authentications = (errorObject?.providers ?? []) as string[]
     if (errorObject?.has_password && oauthProvider !== "email") {
       existingProviders = ["email"]
