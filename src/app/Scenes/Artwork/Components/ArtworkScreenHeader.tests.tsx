@@ -58,7 +58,7 @@ describe("ArtworkScreenHeader", () => {
 
     expect(screen.queryByLabelText("Artwork page header")).toBeTruthy()
     expect(screen.queryByLabelText("Go back")).toBeTruthy()
-    expect(screen.queryByLabelText("Save button")).toBeTruthy()
+    expect(screen.queryByLabelText("Save artwork")).toBeTruthy()
     expect(screen.queryByText("Create Alert")).toBeTruthy()
   })
 
@@ -90,7 +90,7 @@ describe("ArtworkScreenHeader", () => {
       await flushPromiseQueue()
 
       expect(screen.queryByLabelText("Go back")).toBeTruthy()
-      expect(screen.queryByLabelText("Save button")).toBeTruthy()
+      expect(screen.queryByLabelText("Save artwork")).toBeTruthy()
       expect(screen.queryByText("Create Alert")).toBeFalsy()
     })
 
@@ -131,9 +131,9 @@ describe("ArtworkScreenHeader", () => {
 
       await flushPromiseQueue()
 
-      expect(screen.getByLabelText("Save button")).toBeTruthy()
+      expect(screen.getByLabelText("Save artwork")).toBeTruthy()
 
-      fireEvent.press(screen.getByLabelText("Save button"))
+      fireEvent.press(screen.getByLabelText("Save artwork"))
 
       expect(mockEnvironment.mock.getMostRecentOperation().request.node.operation.name).toBe(
         "ArtworkScreenHeaderSaveMutation"
@@ -151,7 +151,7 @@ describe("ArtworkScreenHeader", () => {
 
       await flushPromiseQueue()
 
-      fireEvent.press(screen.getByLabelText("Save button"))
+      fireEvent.press(screen.getByLabelText("Save artwork"))
 
       resolveMostRecentRelayOperation(mockEnvironment, {})
 

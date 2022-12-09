@@ -112,7 +112,7 @@ const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) =>
       <Flex flexDirection="row" alignItems="center">
         <Touchable
           accessibilityRole="button"
-          accessibilityLabel="Save button"
+          accessibilityLabel="Save artwork"
           haptic
           onPress={handleArtworkSave}
         >
