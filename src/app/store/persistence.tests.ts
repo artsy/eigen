@@ -11,7 +11,7 @@ import {
 
 jest.mock("./migration", () => ({ migrate: jest.fn((a) => a.state) }))
 
-describe(sanitize, () => {
+describe("sanitize", () => {
   const fixture = {
     sessionState: { blah: true },
     get computedProperty() {
@@ -55,7 +55,7 @@ describe(sanitize, () => {
   })
 })
 
-describe(assignDeep, () => {
+describe("assignDeep", () => {
   it("merges one object into another, modifying the underlying object", () => {
     const obj = {
       foo: true,

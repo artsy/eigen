@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import Clipboard from "@react-native-clipboard/clipboard"
 import * as Sentry from "@sentry/react-native"
 import { MenuItem } from "app/Components/MenuItem"
 import { SearchInput } from "app/Components/SearchInput"
@@ -38,7 +39,7 @@ import {
   TouchableOpacity,
 } from "react-native"
 import Config from "react-native-config"
-import { getBuildNumber, getUniqueId, getVersion } from "react-native-device-info"
+import { getBuildNumber, getUniqueIdSync, getVersion } from "react-native-device-info"
 import Keychain from "react-native-keychain"
 import { useUnleashEnvironment } from "./experiments/hooks"
 
@@ -59,6 +60,7 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
     "https://".length
   )
   const userEmail = GlobalStore.useAppState((s) => s.auth.userEmail)
+  const toast = useToast()
 
   useEffect(
     useCallback(() => {
@@ -242,7 +244,13 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
             }}
           />
           <FeatureFlagMenuItem title={`Sentry release name: "${eigenSentryReleaseName()}"`} />
-          <FeatureFlagMenuItem title={`Device ID: "${getUniqueId()}"`} />
+          <FeatureFlagMenuItem
+            title={`Device ID: ${getUniqueIdSync()}`}
+            onPress={() => {
+              Clipboard.setString(getUniqueIdSync())
+              toast.show("Copied to clipboard", "middle")
+            }}
+          />
           <FeatureFlagMenuItem
             title="Log out"
             titleColor="red100"
@@ -530,7 +538,7 @@ export const FeatureFlagMenuItem: React.FC<{
           </Text>
         </Flex>
         {!!value && (
-          <Flex flex={2} flexDirection="row" alignItems="center">
+          <Flex flex={3} flexDirection="row" alignItems="center">
             <Flex flex={3}>
               <Text variant="sm-display" color="black60" numberOfLines={1} textAlign="right">
                 {value}
