@@ -1,25 +1,27 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArtworkScreenHeader_artwork$data } from "__generated__/ArtworkScreenHeader_artwork.graphql"
-import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { goBack } from "app/navigation/navigate"
 import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { Schema } from "app/utils/track"
 import { userHadMeaningfulInteraction } from "app/utils/userHadMeaningfulInteraction"
-import { isEmpty } from "lodash"
-import { BackButton, Button, Flex, HeartFillIcon, HeartIcon, useSpace } from "palette"
+import { BackButton, Flex, HeartFillIcon, HeartIcon, Spacer, Touchable, useSpace } from "palette"
 import { createFragmentContainer, graphql, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
-import { ArtworkStore } from "../ArtworkStore"
 import { ArtworkScreenHeaderCreateAlertFragmentContainer } from "./ArtworkScreenHeaderCreateAlert"
 
 const HEADER_HEIGHT = 44
+const SAVE_ICON_SIZE = 25
 
 interface SaveIconProps {
   isSaved: boolean
 }
 
 const SaveIcon: React.FC<SaveIconProps> = ({ isSaved }) =>
-  isSaved ? <HeartFillIcon fill="blue100" mr={0.5} /> : <HeartIcon mr={0.5} />
+  isSaved ? (
+    <HeartFillIcon fill="blue100" width={SAVE_ICON_SIZE} height={SAVE_ICON_SIZE} />
+  ) : (
+    <HeartIcon width={SAVE_ICON_SIZE} height={SAVE_ICON_SIZE} />
+  )
 
 interface ArtworkScreenHeaderProps {
   artwork: ArtworkScreenHeader_artwork$data
@@ -28,9 +30,7 @@ interface ArtworkScreenHeaderProps {
 const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) => {
   const { trackEvent } = useTracking()
   const space = useSpace()
-  const auctionState = ArtworkStore.useStoreState((state) => state.auctionState)
-
-  const { isSaved, sale } = artwork
+  const { isSaved } = artwork
 
   const [commit] = useMutation(graphql`
     mutation ArtworkScreenHeaderSaveMutation($input: SaveArtworkInput!) {
@@ -81,19 +81,6 @@ const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) =>
     })
   }
 
-  const isOpenSale =
-    !isEmpty(sale) &&
-    sale?.isAuction &&
-    (!sale.isClosed || auctionState !== AuctionTimerState.CLOSED)
-
-  const saveButtonText = () => {
-    if (isOpenSale) {
-      return "Watch lot"
-    }
-
-    return isSaved ? "Saved" : "Save"
-  }
-
   return (
     <Flex
       height={HEADER_HEIGHT}
@@ -117,19 +104,16 @@ const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) =>
       </Flex>
 
       <Flex flexDirection="row" alignItems="center">
-        <Button
-          icon={<SaveIcon isSaved={!!isSaved} />}
-          size="small"
-          variant="text"
+        <Touchable
           accessibilityRole="button"
-          accessibilityLabel={saveButtonText()}
+          accessibilityLabel="Save artwork"
           haptic
           onPress={handleArtworkSave}
-          longestText={isOpenSale ? "Watch lot" : "Saved"}
-          textVariant="sm-display"
         >
-          {saveButtonText()}
-        </Button>
+          <SaveIcon isSaved={!!isSaved} />
+        </Touchable>
+
+        <Spacer ml={2} />
 
         <ArtworkScreenHeaderCreateAlertFragmentContainer artwork={artwork} />
       </Flex>
@@ -145,10 +129,6 @@ export const ArtworkScreenHeaderFragmentContainer = createFragmentContainer(Artw
       internalID
       slug
       isSaved
-      sale {
-        isAuction
-        isClosed
-      }
     }
   `,
 })
