@@ -101,7 +101,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ artwork }) => {
   const displayItems = listItems.filter((item) => !!item.value)
 
   return (
-    <Box>
+    <Box accessibilityLabel="Artwork Details">
       <Join separator={<Spacer mt={1} />}>
         {displayItems.map((item, index) => (
           <ArtworkDetailsRow key={`${item.title}-${index}`} title={item.title} value={item.value} />

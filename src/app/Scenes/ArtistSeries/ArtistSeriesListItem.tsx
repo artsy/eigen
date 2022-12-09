@@ -57,6 +57,8 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
 
   return (
     <Touchable
+      accessibilityLabel="Artist Series List Item"
+      accessibilityRole="button"
       underlayColor={color("black5")}
       // the negative margin here is for resetting padding of 20 that all the parent components of this instance
       // have and to avoid changing the component tree in multiple spots.
