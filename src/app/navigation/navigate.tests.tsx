@@ -43,6 +43,7 @@ describe(navigate, () => {
           "home",
           Object {
             "hidesBackButton": true,
+            "hidesBottomTabs": true,
             "moduleName": "Artwork",
             "props": Object {
               "artworkID": "josef-albers-homage-to-the-square",

@@ -285,6 +285,7 @@ export interface ViewOptions {
   hasOwnModalCloseButton?: boolean
   alwaysPresentModally?: boolean
   hidesBackButton?: boolean
+  hidesBottomTabs?: boolean
   fullBleed?: boolean
   ignoreTabs?: boolean
   // If this module is the root view of a particular tab, name it here
@@ -330,7 +331,15 @@ export const modules = defineModules({
   ArtistShows: reactModule(ArtistShows2QueryRenderer),
   ArtistArticles: reactModule(ArtistArticlesQueryRenderer),
   ArtistSeries: reactModule(ArtistSeriesQueryRenderer),
-  Artwork: reactModule(Artwork, { hidesBackButton: true }, [ArtworkScreenQuery]),
+  Artwork: reactModule(
+    Artwork,
+    {
+      hidesBackButton: true,
+      // Only when ARArtworkRedesingPhase2 feature flag is enabled
+      hidesBottomTabs: true,
+    },
+    [ArtworkScreenQuery]
+  ),
   ArtworkMedium: reactModule(ArtworkMediumQueryRenderer),
   ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer),
   ArtworkCertificateAuthenticity: reactModule(CertificateOfAuthenticity),
