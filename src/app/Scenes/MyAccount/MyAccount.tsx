@@ -110,7 +110,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
                 ) : (
                   <Flex flexDirection="row" alignItems="center">
                     <Image
-                      source={require(`images/facebook.webp`)}
+                      source={require(`images/facebook.png`)}
                       resizeMode="contain"
                       style={{ marginRight: 10 }}
                     />
@@ -138,7 +138,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
                   ) : (
                     <Flex flexDirection="row" alignItems="center">
                       <Image
-                        source={require(`images/google.webp`)}
+                        source={require(`images/google.png`)}
                         resizeMode="contain"
                         style={{ marginRight: 10 }}
                       />
@@ -166,7 +166,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
                   ) : (
                     <Flex flexDirection="row" alignItems="center">
                       <Image
-                        source={require(`images/apple.webp`)}
+                        source={require(`images/apple.png`)}
                         resizeMode="contain"
                         style={{ marginRight: 10, tintColor: "black" }}
                       />

@@ -48,7 +48,7 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
             {!!userProfileImagePath ? (
               <Avatar src={userProfileImagePath} size="xs" />
             ) : (
-              <Image source={require("images/profile_placeholder_avatar.webp")} />
+              <Image source={require("images/profile_placeholder_avatar.png")} />
             )}
           </TouchableOpacity>
         </Box>

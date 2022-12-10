@@ -14,7 +14,7 @@ export const SavingArtworkModal: React.FC<SavingArtworkModalProps & ModalProps> 
   <Modal animationType="fade" visible={isVisible} {...rest} transparent statusBarTranslucent>
     <FullScreenLoadingImage
       loadingText={loadingText}
-      imgSource={require("images/InsightsLoadingImage.webp")}
+      imgSource={require("images/InsightsLoadingImage.png")}
     />
   </Modal>
 )

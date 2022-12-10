@@ -18,7 +18,7 @@ export const OnboardingPostFollowLoadingScreen = () => {
     <Screen>
       <Screen.Background>
         <FullScreenLoadingImage
-          imgSource={require("images/HirstTheWonder.webp")}
+          imgSource={require("images/HirstTheWonder.png")}
           loadingText={text}
           spacerHeight="70px"
         />

@@ -60,7 +60,7 @@ export const AnimatedTooltip: React.FC = () => {
           hitSlop={{ bottom: 40, right: 40, left: 40, top: 40 }}
           onPress={() => setIsTooltipVisible(false)}
         >
-          <Image source={require("images/close-x.webp")} />
+          <Image source={require("images/close-x.png")} />
         </TouchableOpacity>
       </Flex>
     </AnimatedFlex>

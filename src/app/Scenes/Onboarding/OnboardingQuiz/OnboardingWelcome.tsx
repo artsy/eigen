@@ -48,11 +48,11 @@ const OnboardingWelcome = () => {
     .easing(Easing.out(Easing.quad))
 
   const onboardingImages = [
-    require("images/OnboardingImage0AdesinaPaintingOfRechel.webp"),
-    require("images/OnboardingImage1KatzYellowFlags.webp"),
-    require("images/OnboardingImage2SuperFutureKidHazyDaisy2022.webp"),
-    require("images/OnboardingImage3WangTheSnowflakeThatComesAlive.webp"),
-    require("images/OnboardingImage4AndyWarholCow.webp"),
+    require("images/OnboardingImage0AdesinaPaintingOfRechel.jpg"),
+    require("images/OnboardingImage1KatzYellowFlags.jpg"),
+    require("images/OnboardingImage2SuperFutureKidHazyDaisy2022.jpg"),
+    require("images/OnboardingImage3WangTheSnowflakeThatComesAlive.jpg"),
+    require("images/OnboardingImage4AndyWarholCow.jpg"),
   ]
 
   const { width: screenWidth } = useScreenDimensions()

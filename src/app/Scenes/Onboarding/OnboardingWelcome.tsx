@@ -3,7 +3,6 @@ import {
   ArtsyNativeModule,
   DEFAULT_NAVIGATION_BAR_COLOR,
 } from "app/NativeModules/ArtsyNativeModule"
-import backgoundImage from "images/WelcomeImage.webp"
 import { ArtsyLogoWhiteIcon, Button, Flex, Screen, Spacer, Text, useTheme } from "palette"
 import React, { useEffect } from "react"
 import { Dimensions, Image, Platform } from "react-native"
@@ -21,7 +20,7 @@ import { OnboardingNavigationStack } from "./Onboarding"
 interface OnboardingWelcomeProps
   extends StackScreenProps<OnboardingNavigationStack, "OnboardingWelcome"> {}
 
-const imgProps = Image.resolveAssetSource(backgoundImage)
+const imgProps = Image.resolveAssetSource(require("images/WelcomeImage.jpg"))
 
 export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation }) => {
   const { space } = useTheme()
@@ -97,7 +96,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
           ]}
         >
           <Image
-            source={require("images/WelcomeImage.webp")}
+            source={require("images/WelcomeImage.jpg")}
             resizeMode="cover"
             style={{ height: screenHeight }}
           />
