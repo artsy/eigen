@@ -3,6 +3,7 @@ import {
   ArtsyNativeModule,
   DEFAULT_NAVIGATION_BAR_COLOR,
 } from "app/NativeModules/ArtsyNativeModule"
+import backgroundImage from "images/WelcomeImage.jpg"
 import { ArtsyLogoWhiteIcon, Button, Flex, Screen, Spacer, Text, useTheme } from "palette"
 import React, { useEffect } from "react"
 import { Dimensions, Image, Platform } from "react-native"
@@ -20,7 +21,7 @@ import { OnboardingNavigationStack } from "./Onboarding"
 interface OnboardingWelcomeProps
   extends StackScreenProps<OnboardingNavigationStack, "OnboardingWelcome"> {}
 
-const imgProps = Image.resolveAssetSource(require("images/WelcomeImage.jpg"))
+const imgProps = Image.resolveAssetSource(backgroundImage)
 
 export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation }) => {
   const { space } = useTheme()
