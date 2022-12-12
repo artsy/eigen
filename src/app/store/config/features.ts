@@ -254,7 +254,7 @@ export const features = defineFeatures({
   },
   AREnableConsignmentInquiryFlow: {
     description: "Enable Sell With Artsy Inquiry",
-    showInAdminMenu: true,
+    showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "AREnableConsignmentInquiryFlow",
   },
