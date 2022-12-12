@@ -178,12 +178,6 @@ export const features = defineFeatures({
     description: "Use artworksConnection for Auction screen",
     echoFlagKey: "AREnableArtworksConnectionForAuction",
   },
-  AREnableActivity: {
-    readyForRelease: true,
-    description: "Enable Activity",
-    showInDevMenu: true,
-    echoFlagKey: "AREnableActivity",
-  },
   AREnableMyCollectionHFOnboarding: {
     readyForRelease: true,
     description: "Enable My Collection home feed onboarding",
