@@ -51,16 +51,20 @@ export const MultiSelectCheckOptionScreen: React.FC<MultiSelectOptionScreenProps
           keyExtractor={(_item, index) => String(index)}
           data={filterOptions}
           ItemSeparatorComponent={() => <Separator />}
-          renderItem={({ item }) => (
-            <Box ml={0.5}>
-              <CheckMarkOptionListItem
-                hasExtraLeftPadding={shouldAddIndent?.(item)}
-                item={item}
-                onSelect={onSelect}
-                selected={isSelected(item) as boolean}
-              />
-            </Box>
-          )}
+          renderItem={({ item }) => {
+            const selected = isSelected(item) as boolean
+
+            return (
+              <Box ml={0.5} accessibilityState={{ checked: selected }}>
+                <CheckMarkOptionListItem
+                  hasExtraLeftPadding={shouldAddIndent?.(item)}
+                  item={item}
+                  onSelect={onSelect}
+                  selected={selected}
+                />
+              </Box>
+            )
+          }}
         />
       </Flex>
     </Flex>
