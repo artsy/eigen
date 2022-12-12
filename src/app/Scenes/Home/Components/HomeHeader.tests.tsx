@@ -10,12 +10,6 @@ describe("HomeHeader", () => {
   }
 
   describe("Activity", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({
-        AREnableActivity: true,
-      })
-    })
-
     it("should NOT render unread indicator when there are no unread notifications", async () => {
       __globalStoreTestUtils__?.injectState({
         bottomTabs: {
