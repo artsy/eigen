@@ -86,7 +86,7 @@ const SavedWorks: React.FC<Props> = ({ me, relay, onDataFetching }) => {
             <>
               <Spacer mt={1} />
               <Image
-                source={require("images/SavesEmptyStateImage.webp")}
+                source={require("images/SavesEmptyStateImage.png")}
                 resizeMode="contain"
                 style={{
                   alignSelf: "center",

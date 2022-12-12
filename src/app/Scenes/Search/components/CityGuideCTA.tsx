@@ -7,7 +7,7 @@ import { Image, TouchableOpacity } from "react-native"
 
 export class CityGuideCTA extends React.Component {
   render() {
-    const cityGuideMapImage = require("images/city-guide-bg.webp")
+    const cityGuideMapImage = require("images/city-guide-bg.png")
     return (
       <ClassTheme>
         {({ color }) => (

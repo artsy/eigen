@@ -82,7 +82,7 @@ export const EmailConfirmationBanner: React.FC<Props> = ({ me, relay }) => {
               </Text>
 
               <TouchableWithoutFeedback onPress={() => toggleVisible(false)}>
-                <Image source={require("images/close-x.webp")} />
+                <Image source={require("images/close-x.png")} />
               </TouchableWithoutFeedback>
             </Flex>
           </TouchableWithoutFeedback>

@@ -278,10 +278,10 @@ interface LinkAccountButtonProps {
 export function LinkAccountButton({ onPress, provider, loading }: LinkAccountButtonProps) {
   const titleizedProvider = capitalize(provider)
   const imageSources: Record<OAuthProvider, ImageSourcePropType> = {
-    facebook: require(`images/facebook.webp`),
-    google: require(`images/google.webp`),
-    email: require(`images/email.webp`),
-    apple: require(`images/apple.webp`),
+    facebook: require(`images/facebook.png`),
+    google: require(`images/google.png`),
+    email: require(`images/email.png`),
+    apple: require(`images/apple.png`),
   }
   return (
     <Button

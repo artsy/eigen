@@ -220,7 +220,7 @@ export const MyProfileEditForm: React.FC = () => {
                 {!!values.photo ? (
                   <Avatar src={values.photo} size="md" />
                 ) : (
-                  <Image source={require("images/profile_placeholder_avatar.webp")} />
+                  <Image source={require("images/profile_placeholder_avatar.png")} />
                 )}
               </Box>
             </Touchable>

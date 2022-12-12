@@ -3,7 +3,7 @@ import { ClassTheme, Flex, Spacer, Text, Touchable } from "palette"
 import { Image } from "react-native"
 
 export const CityGuideCTANew = () => {
-  const mapImage = require("images/city-guide.webp")
+  const mapImage = require("images/city-guide.png")
 
   return (
     <ClassTheme>
