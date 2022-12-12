@@ -11,9 +11,9 @@ interface MarketingCollectionHeaderProps {
 }
 
 export const images: Record<OnboardingMarketingCollectionSlug, ImageSourcePropType> = {
-  "artists-on-the-rise": require("images/CohnMakeAMountain.webp"),
-  "trove-editors-picks": require("images/HirstTheWonder.webp"),
-  "top-auction-lots": require("images/HirstTheWonder.webp"),
+  "artists-on-the-rise": require("images/CohnMakeAMountain.jpg"),
+  "trove-editors-picks": require("images/HirstTheWonder.png"),
+  "top-auction-lots": require("images/HirstTheWonder.png"),
 }
 
 const SAVE_INSTRUCTIONS = "Love an artwork? Tap twice to save it."

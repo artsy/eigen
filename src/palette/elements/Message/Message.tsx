@@ -93,7 +93,7 @@ export const Message: React.FC<MessageProps> = ({
                 hitSlop={{ bottom: 10, right: 10, left: 10, top: 10 }}
               >
                 <Image
-                  source={require("images/close-x.webp")}
+                  source={require("images/close-x.png")}
                   style={{ tintColor: color("black100") }}
                 />
               </TouchableOpacity>

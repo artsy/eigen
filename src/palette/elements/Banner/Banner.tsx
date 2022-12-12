@@ -73,7 +73,7 @@ export const Banner: React.FC<BannerProps> = ({
                 hitSlop={{ bottom: 40, right: 40, left: 40, top: 40 }}
               >
                 <Image
-                  source={require("images/close-x.webp")}
+                  source={require("images/close-x.png")}
                   style={{ tintColor: color("black100") }}
                 />
               </TouchableOpacity>
