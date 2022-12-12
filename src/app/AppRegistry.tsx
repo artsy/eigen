@@ -112,6 +112,7 @@ import { SavedAddressesFormQueryRenderer } from "./Scenes/SavedAddresses/SavedAd
 import { EditSavedSearchAlertQueryRenderer } from "./Scenes/SavedSearchAlert/EditSavedSearchAlert"
 import { SavedSearchAlertsListQueryRenderer } from "./Scenes/SavedSearchAlertsList/SavedSearchAlertsList"
 import { SearchScreen, SearchScreenQuery } from "./Scenes/Search/Search"
+import { ConsignmentInquiryScreen } from "./Scenes/SellWithArtsy/ConsignmentInquiry/ConsignmentInquiryScreen"
 import { SellWithArtsyHomeScreenQuery } from "./Scenes/SellWithArtsy/SellWithArtsyHome"
 import { SubmitArtwork } from "./Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
 import { SellWithArtsy } from "./Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils"
@@ -475,6 +476,7 @@ export const modules = defineModules({
     alwaysPresentModally: true,
     hasOwnModalCloseButton: false,
   }),
+  ConsignmentInquiry: reactModule(ConsignmentInquiryScreen),
   UnlistedArtworksFAQScreen: reactModule(UnlistedArtworksFAQScreen),
   VanityURLEntity: reactModule(VanityURLEntityRenderer, { fullBleed: true }),
   ViewingRoom: reactModule(ViewingRoomQueryRenderer, { fullBleed: true }),

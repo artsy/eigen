@@ -1,6 +1,14 @@
-import { ContextModule, OwnerType, TappedConsignArgs } from "@artsy/cohesion"
+import {
+  ActionType,
+  ContextModule,
+  OwnerType,
+  TappedConsignArgs,
+  TappedConsignmentInquiry,
+} from "@artsy/cohesion"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { Button, Flex, Spacer, Text } from "palette"
 import { ImageBackground } from "react-native"
+import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
 
 const consignArgs: TappedConsignArgs = {
@@ -11,13 +19,22 @@ const consignArgs: TappedConsignArgs = {
 
 interface HeaderProps {
   onConsignPress: (tappedConsignArgs: TappedConsignArgs) => void
+  onInquiryPress: () => void
 }
 
-export const Header: React.FC<HeaderProps> = ({ onConsignPress }) => {
-  const handlePress = () => {
+export const Header: React.FC<HeaderProps> = ({ onConsignPress, onInquiryPress }) => {
+  const { trackEvent } = useTracking()
+  const handleSubmitPress = () => {
     onConsignPress(consignArgs)
   }
+
+  const handleInquiryPress = () => {
+    trackEvent(tracks.consignmentInquiryTapped())
+    onInquiryPress()
+  }
   const screenDimensions = useScreenDimensions()
+
+  const enableInquiry = useFeatureFlag("AREnableConsignmentInquiryFlow")
 
   return (
     <ImageBackground
@@ -41,11 +58,26 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress }) => {
 
         <Spacer mb={3} />
 
-        <Button testID="header-cta" variant="fillLight" block onPress={handlePress} haptic>
+        <Button testID="header-cta" variant="fillLight" block onPress={handleSubmitPress} haptic>
           <Text variant="sm" weight="medium">
             Submit an Artwork
           </Text>
         </Button>
+
+        {!!enableInquiry && (
+          <>
+            <Spacer mb={2} />
+            <Button
+              testID="header-inquiry-cta"
+              variant="outlineLight"
+              block
+              onPress={handleInquiryPress}
+              haptic
+            >
+              <Text variant="sm">Get in Touch</Text>
+            </Button>
+          </>
+        )}
 
         <Spacer mb={2} />
 
@@ -55,4 +87,14 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress }) => {
       </Flex>
     </ImageBackground>
   )
+}
+
+const tracks = {
+  consignmentInquiryTapped: (): TappedConsignmentInquiry => ({
+    action: ActionType.tappedConsignmentInquiry,
+    context_module: ContextModule.sellHeader,
+    context_screen: OwnerType.sell,
+    context_screen_owner_type: OwnerType.sell,
+    subject: "Get in Touch",
+  }),
 }

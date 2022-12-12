@@ -1,4 +1,5 @@
 import { ContextModule, OwnerType, tappedConsign, TappedConsignArgs } from "@artsy/cohesion"
+import { SellWithArtsyHome_me$data } from "__generated__/SellWithArtsyHome_me.graphql"
 import { SellWithArtsyHome_recentlySoldArtworksTypeConnection$data } from "__generated__/SellWithArtsyHome_recentlySoldArtworksTypeConnection.graphql"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { navigate } from "app/navigation/navigate"
@@ -27,9 +28,13 @@ const consignArgs: TappedConsignArgs = {
 
 interface SellWithArtsyHomeProps {
   recentlySoldArtworks?: SellWithArtsyHome_recentlySoldArtworksTypeConnection$data
+  me?: SellWithArtsyHome_me$data
 }
 
-export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({ recentlySoldArtworks }) => {
+export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
+  recentlySoldArtworks,
+  me,
+}) => {
   useLightStatusBarStyle()
 
   const { height: screenHeight } = useScreenDimensions()
@@ -60,7 +65,19 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({ recentlySo
       <Flex flex={1} justifyContent="center" alignItems="center" minHeight={screenHeight}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Flex pb={5}>
-            <Header onConsignPress={handleConsignPress} />
+            <Header
+              onConsignPress={handleConsignPress}
+              onInquiryPress={() =>
+                navigate("/sell/inquiry", {
+                  passProps: {
+                    email: me?.email ?? "",
+                    name: me?.name ?? "",
+                    phone: me?.phone ?? "",
+                    userId: me?.internalID ?? undefined,
+                  },
+                })
+              }
+            />
 
             <Spacer mb={4} />
 
@@ -104,6 +121,14 @@ const SellWithArtsyHomeContainer = createFragmentContainer(SellWithArtsyHome, {
       ...SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection
     }
   `,
+  me: graphql`
+    fragment SellWithArtsyHome_me on Me {
+      internalID
+      name
+      email
+      phone
+    }
+  `,
 })
 
 interface SellWithArtsyHomeQueryRendererProps {
@@ -114,6 +139,9 @@ export const SellWithArtsyHomeScreenQuery = graphql`
   query SellWithArtsyHomeQuery {
     recentlySoldArtworks {
       ...SellWithArtsyHome_recentlySoldArtworksTypeConnection
+    }
+    me {
+      ...SellWithArtsyHome_me
     }
   }
 `

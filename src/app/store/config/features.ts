@@ -252,6 +252,12 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "AREnableLargeArtworkRailSaveIcon",
   },
+  AREnableConsignmentInquiryFlow: {
+    description: "Enable Sell With Artsy Inquiry",
+    showInAdminMenu: true,
+    readyForRelease: true,
+    echoFlagKey: "AREnableConsignmentInquiryFlow",
+  },
 })
 
 export interface DevToggleDescriptor {
