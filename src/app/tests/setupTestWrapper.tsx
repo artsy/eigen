@@ -1,15 +1,15 @@
-import { act, render, RenderResult } from "@testing-library/react-native"
+import { act, RenderResult } from "@testing-library/react-native"
 import { QueryRenderer, RelayEnvironmentProvider } from "react-relay"
 import { GraphQLTaggedNode, OperationType } from "relay-runtime"
 import { createMockEnvironment, MockPayloadGenerator, RelayMockEnvironment } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
-import { renderWithWrappersLEGACY } from "./renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "./renderWithWrappers"
 
 interface SetupTestWrapper<T extends OperationType> {
   // TODO: Component: React.ComponentType<T['response']> type errors here
   Component: React.ComponentType<any>
   preloaded?: boolean
-  query: GraphQLTaggedNode
+  query?: GraphQLTaggedNode
   variables?: T["variables"]
 }
 
@@ -49,7 +49,7 @@ export const setupTestWrapperTL = <T extends OperationType>({
       )
     }
 
-    const view = render(<TestRenderer />)
+    const view = renderWithWrappers(<TestRenderer />)
 
     act(() => {
       const resolve = preloaded
