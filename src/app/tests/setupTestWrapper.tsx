@@ -9,7 +9,7 @@ interface SetupTestWrapper<T extends OperationType> {
   // TODO: Component: React.ComponentType<T['response']> type errors here
   Component: React.ComponentType<any>
   preloaded?: boolean
-  query: GraphQLTaggedNode
+  query?: GraphQLTaggedNode
   variables?: T["variables"]
 }
 
