@@ -11,7 +11,6 @@ import {
   ArtworksFiltersStore,
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { useExperimentFlag } from "app/utils/experiments/hooks"
 import { debounce, sortBy } from "lodash"
 import { Flex, Histogram, HistogramBarEntity, Input, Spacer, Text, useColor } from "palette"
 import React, { useMemo, useRef, useState } from "react"
@@ -87,8 +86,6 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
   const color = useColor()
   const tracking = useTracking()
   const screenScrollViewRef = useRef<ScrollView>(null)
-
-  const enableHistogram = useExperimentFlag("eigen-enable-price-histogram")
 
   const [defaultMinValue, defaultMaxValue] = DEFAULT_RANGE
 
@@ -179,7 +176,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
 
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const histogramBars = getBarsFromAggregations(aggregations)
-  const shouldDisplayHistogram = enableHistogram && histogramBars.length > 0
+  const shouldDisplayHistogram = histogramBars.length > 0
 
   return (
     <Flex flex={1}>
