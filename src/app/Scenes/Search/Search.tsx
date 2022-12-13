@@ -113,7 +113,6 @@ export const Search: React.FC = () => {
   const { trackEvent } = useTracking()
 
   const exampleExperiments = useFeatureFlag("AREnableExampleExperiments")
-  const enableImprovedSearchPills = useExperimentFlag("eigen-enable-improved-search-pills")
   const smudgeValue = useExperimentVariant("test-search-smudge")
   nonCohesionTracks.experimentVariant(
     "test-search-smudge",
@@ -134,23 +133,23 @@ export const Search: React.FC = () => {
       return {
         ...other,
         type: "algolia",
-        disabled: enableImprovedSearchPills && !indicesInfo[name]?.hasResults,
+        disabled: !indicesInfo[name]?.hasResults,
         indexName: name,
       }
     })
 
     return [...DEFAULT_PILLS, ...formattedIndices]
-  }, [indices, indicesInfo, enableImprovedSearchPills])
+  }, [indices, indicesInfo])
 
   useEffect(() => {
     /**
      * Refetch up-to-date info about Algolia indices for specified search query
      * when Algolia API key expired and request failed (we get a fresh Algolia API key and send request again)
      */
-    if (enableImprovedSearchPills && searchClient && shouldStartSearching(searchQuery)) {
+    if (searchClient && shouldStartSearching(searchQuery)) {
       updateIndicesInfo(searchQuery)
     }
-  }, [searchClient, enableImprovedSearchPills])
+  }, [searchClient])
 
   const onTextChange = useCallback(
     (value: string) => {
@@ -158,11 +157,11 @@ export const Search: React.FC = () => {
         handleResetSearchInput()
       }
 
-      if (enableImprovedSearchPills && shouldStartSearching(value)) {
+      if (shouldStartSearching(value)) {
         updateIndicesInfo(value)
       }
     },
-    [searchClient, enableImprovedSearchPills]
+    [searchClient]
   )
 
   if (!searchClient || !searchInsightsConfigured) {
