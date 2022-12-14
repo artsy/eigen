@@ -168,7 +168,9 @@ export const ArtworkFilterOptionsScreen: React.FC<
                 item={item}
                 count={selectedFiltersCount}
                 onPress={() => {
-                  navigateToNextFilterScreen(item.ScreenComponent)
+                  navigateToNextFilterScreen(
+                    item.ScreenComponent as keyof ArtworkFilterNavigationStack
+                  )
                 }}
               />
             )
@@ -390,7 +392,6 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
   includeUpcoming: {
     displayText: FilterDisplayName.includeUpcoming,
     filterType: "includeUpcoming",
-    // @ts-ignore
     ScreenComponent: "none",
     configType: FilterConfigTypes.FilterScreenCheckboxItem,
   },
