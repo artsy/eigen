@@ -27,15 +27,16 @@ export const PartnerArtwork: React.FC<{
   const [isFilterArtworksModalVisible, setIsFilterArtworksModalVisible] = useState(false)
 
   const artworks = get(partner, (p) => p.artworks)
+  const artworksCount = (artworks?.edges ?? []).length
 
   return (
     <>
       <StickyTabPageScrollView>
         <Spacer mb={2} />
 
-        {artworks ? (
+        {artworksCount > 0 ? (
           <InfiniteScrollArtworksGrid
-            connection={artworks}
+            connection={artworks!}
             loadMore={relay.loadMore}
             hasMore={relay.hasMore}
           />
