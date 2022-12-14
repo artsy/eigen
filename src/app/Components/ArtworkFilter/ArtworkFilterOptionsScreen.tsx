@@ -168,7 +168,9 @@ export const ArtworkFilterOptionsScreen: React.FC<
                 item={item}
                 count={selectedFiltersCount}
                 onPress={() => {
-                  navigateToNextFilterScreen(item.ScreenComponent)
+                  navigateToNextFilterScreen(
+                    item.ScreenComponent as keyof ArtworkFilterNavigationStack
+                  )
                 }}
               />
             )
@@ -198,6 +200,7 @@ export const getStaticFilterOptionsByMode = (
         filterOptionToDisplayConfigMap.sizes,
         filterOptionToDisplayConfigMap.year,
         filterOptionToDisplayConfigMap.organizations,
+        filterOptionToDisplayConfigMap.includeUpcoming,
       ]
 
     case FilterModalMode.Custom:
@@ -385,6 +388,12 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     displayText: FilterDisplayName.estimateRange,
     filterType: "estimateRange",
     ScreenComponent: "EstimateRangeOptionsScreen",
+  },
+  includeUpcoming: {
+    displayText: FilterDisplayName.includeUpcoming,
+    filterType: "includeUpcoming",
+    ScreenComponent: "none",
+    configType: FilterConfigTypes.FilterScreenCheckboxItem,
   },
   partnerIDs: {
     displayText: FilterDisplayName.partnerIDs,

@@ -1,6 +1,6 @@
 import { Checkbox } from "palette"
-import { FilterParamName, getUnitedSelectedAndAppliedFilters } from "../ArtworkFilterHelpers"
-import { ArtworksFiltersStore } from "../ArtworkFilterStore"
+import { FilterParamName } from "../ArtworkFilterHelpers"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "../ArtworkFilterStore"
 import { ArtworkFilterOptionItem, ArtworkFilterOptionItemProps } from "./ArtworkFilterOptionItem"
 
 export interface ArtworkFilterOptionCheckboxItemProps
@@ -13,30 +13,22 @@ export const ArtworkFilterOptionCheckboxItem: React.FC<ArtworkFilterOptionCheckb
     (state) => state.selectFiltersAction
   )
 
-  const selectedFilters = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
+  const selectedOptions = useSelectedOptionsDisplay()
 
-  const previouslyAppliedFilters = ArtworksFiltersStore.useStoreState(
-    (state) => state.previouslyAppliedFilters
-  )
-
-  const storeFilterType = ArtworksFiltersStore.useStoreState((state) => state.filterType)
-
-  const checked = !!getUnitedSelectedAndAppliedFilters({
-    filterType: storeFilterType,
-    selectedFilters,
-    previouslyAppliedFilters,
-  }).find((f) => f.paramName === item.filterType)?.paramValue
+  const selectedOption = !!selectedOptions.find((option) => option.paramName === item.filterType)
+    ?.paramValue
 
   const setValueOnFilters = (value: boolean) => {
     selectFiltersAction({
-      paramName: FilterParamName.showOnlySubmittedArtworks,
+      paramName: item.filterType as FilterParamName,
       paramValue: value,
       displayText: item.displayText,
     })
   }
 
   const onPress = () => {
-    const nextValue = !checked
+    const nextValue = !selectedOption
+
     setValueOnFilters(nextValue)
   }
 
@@ -46,7 +38,7 @@ export const ArtworkFilterOptionCheckboxItem: React.FC<ArtworkFilterOptionCheckb
       onPress={onPress}
       RightAccessoryItem={
         <Checkbox
-          checked={checked}
+          checked={!!selectedOption}
           onPress={onPress}
           testID="ArtworkFilterOptionCheckboxItemCheckbox"
         />

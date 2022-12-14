@@ -24,13 +24,13 @@ export type FilterScreen =
   | "year"
 
 // Please add other filter screen item that uses a checkbox as right accessory item here
-export type FilterScreenCheckboxItem = "showOnlySubmittedArtworks"
+export type FilterScreenCheckboxItem = "showOnlySubmittedArtworks" | "includeUpcoming"
 
 export interface FilterDisplayConfig {
   configType?: FilterConfigTypes // optional to specify whether the FilterDisplayConfig is FilterScreen or FilterScreenCheckboxItem or others to come
   filterType: FilterScreen | FilterScreenCheckboxItem
   displayText: string
-  ScreenComponent: keyof ArtworkFilterNavigationStack
+  ScreenComponent: keyof ArtworkFilterNavigationStack | "none"
 
   // for `local` filtering
   values?: any[]

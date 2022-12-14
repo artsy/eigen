@@ -22,6 +22,7 @@ export enum FilterDisplayName {
   viewAs = "View as",
   waysToBuy = "Ways to Buy",
   year = "Artwork Date",
+  includeUpcoming = "Show upcoming auction results",
 }
 
 // General filter types and objects
@@ -55,6 +56,7 @@ export enum FilterParamName {
   waysToBuyContactGallery = "inquireableOnly",
   waysToBuyMakeOffer = "offerable",
   width = "width",
+  includeUpcoming = "includeUpcoming",
 }
 
 // Types for the parameters passed to Relay
@@ -95,13 +97,14 @@ export const ParamDefaultValues = {
   estimateRange: "",
   height: "*-*",
   includeArtworksByFollowedArtists: false,
+  includeUpcoming: true,
   inquireableOnly: false,
+  keyword: "",
   latestCreatedYear: undefined,
   locationCities: [],
   majorPeriods: [],
   materialsTerms: [],
   medium: "*",
-  keyword: "",
   offerable: false,
   organizations: undefined,
   partnerIDs: [],
@@ -127,9 +130,10 @@ export const defaultCommonFilterOptions = {
   earliestCreatedYear: ParamDefaultValues.earliestCreatedYear,
   estimateRange: ParamDefaultValues.estimateRange,
   height: ParamDefaultValues.height,
-  keyword: ParamDefaultValues.keyword,
   includeArtworksByFollowedArtists: ParamDefaultValues.includeArtworksByFollowedArtists,
+  includeUpcoming: ParamDefaultValues.includeUpcoming,
   inquireableOnly: ParamDefaultValues.inquireableOnly,
+  keyword: ParamDefaultValues.keyword,
   latestCreatedYear: ParamDefaultValues.latestCreatedYear,
   locationCities: ParamDefaultValues.locationCities,
   majorPeriods: ParamDefaultValues.majorPeriods,
@@ -139,8 +143,8 @@ export const defaultCommonFilterOptions = {
   organizations: ParamDefaultValues.organizations,
   partnerIDs: ParamDefaultValues.partnerIDs,
   priceRange: ParamDefaultValues.priceRange,
-  sizes: ParamDefaultValues.sizes,
   showOnlySubmittedArtworks: ParamDefaultValues.showOnlySubmittedArtworks,
+  sizes: ParamDefaultValues.sizes,
   sort: ParamDefaultValues.sortArtworks,
   viewAs: ParamDefaultValues.viewAs,
   width: ParamDefaultValues.width,
@@ -258,6 +262,7 @@ const DEFAULT_SHOW_ARTWORKS_PARAMS = {
 const DEFAULT_AUCTION_RESULT_PARAMS = {
   sort: "DATE_DESC",
   allowEmptyCreatedDates: true,
+  // includeUpcoming: true,
 } as FilterParams
 
 const DEFAULT_GENE_ARTWORK_PARAMS = {
