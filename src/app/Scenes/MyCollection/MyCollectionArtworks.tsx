@@ -169,6 +169,7 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
           />
         ) : (
           <MyCollectionArtworkList
+            myCollectionIsRefreshing={myCollectionIsRefreshing}
             myCollectionConnection={me.myCollectionConnection}
             hasMore={relay.hasMore}
             loadMore={relay.loadMore}

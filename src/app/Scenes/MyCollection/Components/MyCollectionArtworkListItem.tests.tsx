@@ -4,7 +4,10 @@ import { MyCollectionArtworkListItemTestsQuery } from "__generated__/MyCollectio
 import { navigate } from "app/navigation/navigate"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { LocalImage } from "app/utils/LocalImageStore"
+import * as LocalImageStore from "app/utils/LocalImageStore"
 import { graphql, QueryRenderer } from "react-relay"
+import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MyCollectionArtworkListItem } from "./MyCollectionArtworkListItem"
 
@@ -145,5 +148,28 @@ describe("MyCollectionArtworkListItem", () => {
     })
 
     expect(getByTestId("test-high-demand-icon")).toBeTruthy()
+  })
+
+  describe("Images", () => {
+    it("displays local image if available", () => {
+      const localImageStoreMock = jest.spyOn(LocalImageStore, "retrieveLocalImages")
+      const localImage: LocalImage = {
+        path: "some-local-path",
+        width: 10,
+        height: 10,
+      }
+      const retrievalPromise = new Promise<LocalImage[]>((resolve) => {
+        resolve([localImage])
+      })
+      localImageStoreMock.mockImplementation(() => retrievalPromise)
+
+      act(async () => {
+        await retrievalPromise
+        const { getByTestId } = renderWithWrappers(<TestRenderer />)
+        const image = getByTestId("Image-Local")
+        expect(image).toBeDefined()
+        expect(image.props.source).toEqual({ uri: "some-local-path" })
+      })
+    })
   })
 })
