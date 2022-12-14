@@ -28,6 +28,8 @@ export const PartnerArtwork: React.FC<{
 
   const artworks = get(partner, (p) => p.artworks)
   const artworksCount = (artworks?.edges ?? []).length
+  const emptyText =
+    "There are no matching works from this gallery.\nTry changing your search filters"
 
   return (
     <>
@@ -41,7 +43,7 @@ export const PartnerArtwork: React.FC<{
             hasMore={relay.hasMore}
           />
         ) : (
-          <TabEmptyState text="There is no artwork from this gallery yet" />
+          <TabEmptyState text={emptyText} />
         )}
       </StickyTabPageScrollView>
 

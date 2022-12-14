@@ -61,7 +61,8 @@ describe("PartnerArtwork", () => {
       }),
     })
 
-    const emptyText = "There is no artwork from this gallery yet"
+    const emptyText =
+      "There are no matching works from this gallery.\nTry changing your search filters"
     expect(screen.getByText(emptyText)).toBeTruthy()
   })
 })
