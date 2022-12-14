@@ -28,6 +28,7 @@ export const TrendingArtists: React.FC<TrendingArtistsProps> = ({ data, ...boxPr
     isLoadingNext,
     loadNext,
   } = usePaginationFragment<SearchQuery, TrendingArtists_query$key>(trendingArtistsFragment, data)
+  console.log({ data })
   const nodes = extractNodes(result.curatedTrendingArtists)
 
   const loadMore = () => {
