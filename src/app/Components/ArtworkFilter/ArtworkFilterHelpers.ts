@@ -262,7 +262,7 @@ const DEFAULT_SHOW_ARTWORKS_PARAMS = {
 const DEFAULT_AUCTION_RESULT_PARAMS = {
   sort: "DATE_DESC",
   allowEmptyCreatedDates: true,
-  includeUpcoming: true,
+  // includeUpcoming: true,
 } as FilterParams
 
 const DEFAULT_GENE_ARTWORK_PARAMS = {
