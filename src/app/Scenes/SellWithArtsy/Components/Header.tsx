@@ -23,7 +23,7 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress }) => {
     <ImageBackground
       style={{ height: 430, width: screenDimensions.width }}
       resizeMode="cover"
-      source={require("images/SellWithArtsyHeader.png")}
+      source={require("images/SellWithArtsyHeader.jpg")}
     >
       <Flex px={2} pb={2} justifyContent="flex-end" height="100%">
         <Flex>

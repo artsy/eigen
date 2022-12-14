@@ -96,7 +96,7 @@ export const CareerHighlightPromotionalCard: React.FC<CareerHighlightPromotional
           </Button>
         </Flex>
 
-        <Image source={require("images/career-highlights-promo-background-image.png")} />
+        <Image source={require("images/career-highlights-promo-background-image.jpg")} />
       </Flex>
     </Touchable>
   )

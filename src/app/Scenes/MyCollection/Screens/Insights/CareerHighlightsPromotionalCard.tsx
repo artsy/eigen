@@ -40,7 +40,7 @@ export const CareerHighlightsPromotionalCard: React.FC = () => {
       <Flex mt={4} flex={1} justifyContent="flex-end">
         <Image
           style={{ width: "100%", height: "100%" }}
-          source={require("images/careerHighlightsPromotionalCardImage.png")}
+          source={require("images/careerHighlightsPromotionalCardImage.jpg")}
         />
       </Flex>
     </Flex>
