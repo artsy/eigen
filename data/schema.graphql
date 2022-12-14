@@ -16796,7 +16796,14 @@ type UserPurchasesEdge {
   # The item at the end of the edge
   node: Artwork
   ownerType: String
-  saleDate: String
+  saleDate(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
   salePrice: Float
   source: String
 }
