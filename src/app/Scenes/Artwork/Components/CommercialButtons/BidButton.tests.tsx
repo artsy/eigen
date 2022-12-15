@@ -45,6 +45,9 @@ describe("BidButton", () => {
     Settings.now = () => new Date("2019-08-15T12:00:00+00:00").valueOf()
 
     mockEnvironment = createMockEnvironment()
+  })
+
+  beforeEach(() => {
     __globalStoreTestUtils__?.injectFeatureFlags({
       ARArtworkRedesingPhase2: false,
     })
