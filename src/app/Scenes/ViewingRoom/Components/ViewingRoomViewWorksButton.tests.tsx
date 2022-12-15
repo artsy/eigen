@@ -1,49 +1,34 @@
-import { ViewingRoomViewWorksButtonTestsQuery } from "__generated__/ViewingRoomViewWorksButtonTestsQuery.graphql"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { navigate } from "app/navigation/navigate"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
-import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { TouchableHighlight } from "react-native"
-import { graphql, QueryRenderer } from "react-relay"
+import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { tracks, ViewingRoomViewWorksButtonContainer } from "./ViewingRoomViewWorksButton"
 
 jest.unmock("react-relay")
 
 describe("ViewingRoomViewWorksButton", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  const TestRenderer = () => (
-    <QueryRenderer<ViewingRoomViewWorksButtonTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query ViewingRoomViewWorksButtonTestsQuery {
-          viewingRoom(id: "unused") {
-            ...ViewingRoomViewWorksButton_viewingRoom
-          }
+  const { renderWithRelay } = setupTestWrapperTL({
+    Component: (props) => <ViewingRoomViewWorksButtonContainer {...props} />,
+    query: graphql`
+      query ViewingRoomViewWorksButtonTestsQuery {
+        viewingRoom(id: "unused") {
+          ...ViewingRoomViewWorksButton_viewingRoom
         }
-      `}
-      render={renderWithLoadProgress(ViewingRoomViewWorksButtonContainer)}
-      variables={{}}
-    />
-  )
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+      }
+    `,
   })
 
   it("navigates to artworks page + calls tracking on button press", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
-        ViewingRoom: () => ({
-          artworksForCount: { totalCount: 42 },
-          slug: "gallery-name-viewing-room-name",
-          internalID: "2955ab33-c205-44ea-93d2-514cd7ee2bcd",
-        }),
-      })
-      return result
+    renderWithRelay({
+      ViewingRoom: () => ({
+        artworksForCount: { totalCount: 42 },
+        slug: "gallery-name-viewing-room-name",
+        internalID: "2955ab33-c205-44ea-93d2-514cd7ee2bcd",
+      }),
     })
 
-    tree.root.findByType(TouchableHighlight).props.onPress()
+    fireEvent.press(screen.getByText("View works (42)"))
 
     expect(navigate).toHaveBeenCalledWith("/viewing-room/gallery-name-viewing-room-name/artworks")
 

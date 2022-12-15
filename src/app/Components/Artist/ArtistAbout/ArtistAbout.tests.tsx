@@ -1,11 +1,9 @@
-import { ArtistAboutTestsQuery } from "__generated__/ArtistAboutTestsQuery.graphql"
+import { screen } from "@testing-library/react-native"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { ModalStack } from "app/navigation/ModalStack"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import Biography from "../Biography"
 import { ArtistAboutContainer } from "./ArtistAbout"
 import { ArtistAboutShowsFragmentContainer } from "./ArtistAboutShows"
@@ -13,47 +11,32 @@ import { ArtistAboutShowsFragmentContainer } from "./ArtistAboutShows"
 jest.unmock("react-relay")
 
 describe("ArtistAbout", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  const TestRenderer = () => (
-    <QueryRenderer<ArtistAboutTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query ArtistAboutTestsQuery($artistID: String!) @relay_test_operation {
-          artist(id: $artistID) {
-            ...ArtistAbout_artist
-          }
+  const { renderWithRelay } = setupTestWrapperTL({
+    Component: (props) => (
+      <ModalStack>
+        <StickyTabPage
+          tabs={[
+            {
+              title: "test",
+              content: <ArtistAboutContainer artist={props.artist} />,
+            },
+          ]}
+        />
+      </ModalStack>
+    ),
+    query: graphql`
+      query ArtistAboutTestsQuery($artistID: String!) @relay_test_operation {
+        artist(id: $artistID) {
+          ...ArtistAbout_artist
         }
-      `}
-      variables={{ artistID: "artist-id" }}
-      render={({ props }) => {
-        if (!props?.artist) {
-          return null
-        }
-        return (
-          <ModalStack>
-            <StickyTabPage
-              tabs={[
-                {
-                  title: "test",
-                  content: <ArtistAboutContainer artist={props.artist} />,
-                },
-              ]}
-            />
-          </ModalStack>
-        )
-      }}
-    />
-  )
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+      }
+    `,
+    variables: { artistID: "artist-id" },
   })
 
   describe("Biography", () => {
     it("is shown when the artist has metadata", () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      renderWithRelay({
         Boolean: (context) => {
           if (context.name === "hasMetadata") {
             return true
@@ -61,13 +44,11 @@ describe("ArtistAbout", () => {
         },
       })
 
-      expect(tree.root.findAllByType(Biography).length).toEqual(1)
+      expect(screen.UNSAFE_queryAllByType(Biography)).toHaveLength(1)
     })
 
     it("is hidden when the artist has metadata", () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      renderWithRelay({
         Boolean: (context) => {
           if (context.name === "hasMetadata") {
             return false
@@ -75,17 +56,15 @@ describe("ArtistAbout", () => {
         },
       })
 
-      expect(tree.root.findAllByType(Biography).length).toEqual(0)
+      expect(screen.UNSAFE_queryAllByType(Biography)).toHaveLength(0)
     })
   })
 
   describe("ArtistAboutShows", () => {
     it("is rendered by default", () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer />)
+      renderWithRelay()
 
-      resolveMostRecentRelayOperation(mockEnvironment)
-
-      expect(tree.root.findAllByType(ArtistAboutShowsFragmentContainer).length).toEqual(1)
+      expect(screen.UNSAFE_queryByType(ArtistAboutShowsFragmentContainer)).toBeTruthy()
     })
   })
 })
