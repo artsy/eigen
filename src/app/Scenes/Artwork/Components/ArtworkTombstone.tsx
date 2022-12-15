@@ -22,6 +22,9 @@ export const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork, ref
     !artwork.sale.isClosed &&
     !enableArtworkRedesign
 
+  const shouldDisplaySaleMessage =
+    !!enableArtworkRedesign && !artwork.isForSale && !!artwork.saleMessage
+
   return (
     <Box textAlign="left">
       {!!displayAuctionLotLabel && (
@@ -47,8 +50,7 @@ export const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork, ref
           {!!artwork.date && <Text variant="lg-display">{artwork.date}</Text>}
         </Text>
       </Flex>
-
-      {!!enableArtworkRedesign && !artwork.isForSale && (
+      {!!shouldDisplaySaleMessage && (
         <>
           <Spacer mt={2} />
           <Text variant="md" color="black100">
