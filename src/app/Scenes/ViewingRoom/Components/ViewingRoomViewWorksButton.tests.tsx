@@ -28,11 +28,7 @@ describe("ViewingRoomViewWorksButton", () => {
       }),
     })
 
-    const buttonText = "View works (42)"
-
-    expect(screen.queryByText(buttonText)).toBeTruthy()
-
-    fireEvent.press(screen.getByText(buttonText))
+    fireEvent.press(screen.getByText("View works (42)"))
 
     expect(navigate).toHaveBeenCalledWith("/viewing-room/gallery-name-viewing-room-name/artworks")
 
