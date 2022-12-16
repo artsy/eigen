@@ -1195,11 +1195,6 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
-          paramName: "includeUpcoming",
-          paramValue: true,
-        },
-        {
-          displayText: "All",
           paramName: "partnerIDs",
           paramValue: [],
         },
@@ -1318,11 +1313,6 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
-          paramName: "includeUpcoming",
-          paramValue: true,
-        },
-        {
-          displayText: "All",
           paramName: "partnerIDs",
           paramValue: [],
         },
@@ -1433,11 +1423,6 @@ describe("selectedOptionsUnion", () => {
           displayText: "All",
           paramName: "sizes",
           paramValue: [],
-        },
-        {
-          displayText: "All",
-          paramName: "includeUpcoming",
-          paramValue: true,
         },
         {
           displayText: "All",
@@ -1560,11 +1545,6 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
-          paramName: "includeUpcoming",
-          paramValue: true,
-        },
-        {
-          displayText: "All",
           paramName: "partnerIDs",
           paramValue: [],
         },
@@ -1681,11 +1661,6 @@ describe("selectedOptionsUnion", () => {
           displayText: "All",
           paramName: "sizes",
           paramValue: [],
-        },
-        {
-          displayText: "All",
-          paramName: "includeUpcoming",
-          paramValue: true,
         },
         {
           displayText: "All",
@@ -1823,11 +1798,6 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
-          paramName: "includeUpcoming",
-          paramValue: true,
-        },
-        {
-          displayText: "All",
           paramName: "partnerIDs",
           paramValue: [],
         },
@@ -1925,11 +1895,6 @@ describe("selectedOptionsUnion", () => {
           displayText: "All",
           paramName: "sizes",
           paramValue: [],
-        },
-        {
-          displayText: "All",
-          paramName: "includeUpcoming",
-          paramValue: true,
         },
         {
           displayText: "All",
@@ -2054,11 +2019,6 @@ describe("selectedOptionsUnion", () => {
           displayText: "All",
           paramName: "sizes",
           paramValue: [],
-        },
-        {
-          displayText: "All",
-          paramName: "includeUpcoming",
-          paramValue: true,
         },
         {
           displayText: "All",
@@ -2187,11 +2147,6 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
-          paramName: "includeUpcoming",
-          paramValue: true,
-        },
-        {
-          displayText: "All",
           paramName: "partnerIDs",
           paramValue: [],
         },
@@ -2299,11 +2254,6 @@ describe("selectedOptionsUnion", () => {
           displayText: "All",
           paramName: "sizes",
           paramValue: [],
-        },
-        {
-          displayText: "All",
-          paramName: "includeUpcoming",
-          paramValue: true,
         },
         {
           displayText: "All",

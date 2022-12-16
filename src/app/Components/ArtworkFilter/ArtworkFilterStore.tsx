@@ -190,7 +190,6 @@ export const DEFAULT_FILTERS: FilterArray = [
   { paramName: FilterParamName.organizations, paramValue: [], displayText: "All" },
   { paramName: FilterParamName.priceRange, paramValue: "*-*", displayText: "All" },
   { paramName: FilterParamName.sizes, paramValue: [], displayText: "All" },
-  { paramName: FilterParamName.includeUpcoming, paramValue: true, displayText: "All" },
   { paramName: FilterParamName.partnerIDs, paramValue: [], displayText: "All" },
   { paramName: FilterParamName.keyword, paramValue: "", displayText: "All" },
   { paramName: FilterParamName.locationCities, paramValue: [], displayText: "All" },
