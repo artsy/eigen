@@ -14053,6 +14053,7 @@ type Quiz {
     page: Int
     size: Int
   ): QuizArtworkConnection
+  savedArtworks: [Artwork!]!
 }
 
 # A connection to a list of items.
