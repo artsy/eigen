@@ -28,29 +28,12 @@ export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsSc
     (state) => state.selectFiltersAction
   )
   const counts = ArtworksFiltersStore.useStoreState((state) => state.counts)
-  const filterType = ArtworksFiltersStore.useStoreState((state) => state.filterType)
-  const localFilterOptions = ArtworksFiltersStore.useStoreState((state) => state.filterOptions)
 
   const selectedArtistIFollowOption = selectedOptions.find((value) => {
     return value.paramName === FilterParamName.artistsIFollow
   })
 
-  let artistDisplayOptions: FilterData[] = []
-  if (filterType === "local") {
-    artistDisplayOptions = (localFilterOptions ?? []).find((o) => o.filterType === "artistIDs")!
-      .values!
-  } else {
-    const aggregation = aggregationForFilter(FilterParamName.artistIDs, aggregations)
-    artistDisplayOptions =
-      aggregation?.counts.map((aggCount) => {
-        return {
-          displayText: aggCount.name,
-          paramName: FilterParamName.artistIDs,
-          paramValue: aggCount.value,
-          filterKey: "artist",
-        }
-      }) ?? []
-  }
+  const artistDisplayOptions = useDisplayOptions()
 
   const { handleSelect, isSelected } = useMultiSelect({
     options: artistDisplayOptions,
@@ -104,4 +87,33 @@ export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsSc
       navigation={navigation}
     />
   )
+}
+
+const useDisplayOptions = () => {
+  const filterType = ArtworksFiltersStore.useStoreState((state) => state.filterType)
+  const localFilterOptions = ArtworksFiltersStore.useStoreState((state) => state.filterOptions)
+  const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
+
+  let artistDisplayOptions: FilterData[] = []
+
+  if (filterType === "local") {
+    const localArtistFilterOption = (localFilterOptions ?? []).find((filterOption) => {
+      return filterOption.filterType === "artistIDs"
+    })
+    artistDisplayOptions = localArtistFilterOption?.values ?? []
+  } else {
+    const aggregation = aggregationForFilter(FilterParamName.artistIDs, aggregations)
+    const counts = aggregation?.counts ?? []
+
+    artistDisplayOptions = counts.map((aggCount) => {
+      return {
+        displayText: aggCount.name,
+        paramName: FilterParamName.artistIDs,
+        paramValue: aggCount.value,
+        filterKey: "artist",
+      }
+    })
+  }
+
+  return artistDisplayOptions
 }
