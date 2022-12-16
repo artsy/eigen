@@ -1327,7 +1327,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   auctionResultsConnection(
     after: String
 
-    # Filter auction results by empty artwork created date values
+    # Allow auction results with empty created date values
     allowEmptyCreatedDates: Boolean = true
     before: String
 
@@ -1337,9 +1337,6 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     # Filter auction results by earliest created at year
     earliestCreatedYear: Int
     first: Int
-
-    # Include upcoming auction results
-    includeUpcoming: Boolean = true
 
     # Filter by artwork title or description keyword search
     keyword: String
@@ -1357,6 +1354,9 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     # Filter auction results by Artwork sizes
     sizes: [ArtworkSizes]
     sort: AuctionResultSorts
+
+    # State of the returned auction results (can be past, upcoming, or all)
+    state: AuctionResultsState
   ): AuctionResultConnection
 
   # In applicable contexts, this is what the artist (as a suggestion) is based on.
@@ -2736,6 +2736,12 @@ enum AuctionResultSorts {
   DATE_DESC
   ESTIMATE_AND_DATE_DESC
   PRICE_AND_DATE_DESC
+}
+
+enum AuctionResultsState {
+  ALL
+  PAST
+  UPCOMING
 }
 
 type AuctionsArtsyBidder {
@@ -10372,7 +10378,7 @@ type Me implements Node {
   auctionResultsByFollowedArtists(
     after: String
 
-    # Filter auction results by empty artwork created date values
+    # Allow auction results with empty created date values
     allowEmptyCreatedDates: Boolean = true
     before: String
 
@@ -10382,9 +10388,6 @@ type Me implements Node {
     # Filter auction results by earliest created at year
     earliestCreatedYear: Int
     first: Int
-
-    # Include upcoming auction results
-    includeUpcoming: Boolean = true
     last: Int
 
     # Filter auction results by latest created at year
@@ -10399,6 +10402,9 @@ type Me implements Node {
     # Filter auction results by Artwork sizes
     sizes: [ArtworkSizes]
     sort: AuctionResultSorts
+
+    # State of the returned auction results (can be past, upcoming, or all)
+    state: AuctionResultsState
   ): AuctionResultConnection
   auctionsLotStandingConnection(
     after: String
@@ -10586,7 +10592,7 @@ type Me implements Node {
   myCollectionAuctionResults(
     after: String
 
-    # Filter auction results by empty artwork created date values
+    # Allow auction results with empty created date values
     allowEmptyCreatedDates: Boolean = true
     before: String
 
@@ -10596,9 +10602,6 @@ type Me implements Node {
     # Filter auction results by earliest created at year
     earliestCreatedYear: Int
     first: Int
-
-    # Include upcoming auction results
-    includeUpcoming: Boolean = true
     last: Int
 
     # Filter auction results by latest created at year
@@ -10613,6 +10616,9 @@ type Me implements Node {
     # Filter auction results by Artwork sizes
     sizes: [ArtworkSizes]
     sort: AuctionResultSorts
+
+    # State of the returned auction results (can be past, upcoming, or all)
+    state: AuctionResultsState
   ): AuctionResultConnection
   myCollectionConnection(
     after: String
