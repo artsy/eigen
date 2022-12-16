@@ -13,6 +13,7 @@ import {
 
 import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
 import { sortBy } from "lodash"
+import { useMemo } from "react"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { useMultiSelect } from "./useMultiSelect"
 
@@ -28,23 +29,25 @@ export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsSc
     (state) => state.selectFiltersAction
   )
   const counts = ArtworksFiltersStore.useStoreState((state) => state.counts)
+  const artistDisplayOptions = useDisplayOptions()
 
   const selectedArtistIFollowOption = selectedOptions.find((value) => {
     return value.paramName === FilterParamName.artistsIFollow
   })
-
-  const artistDisplayOptions = useDisplayOptions()
+  const sortedArtistOptions = useMemo(
+    () => sortBy(artistDisplayOptions, ["displayText"]),
+    [artistDisplayOptions]
+  )
 
   const { handleSelect, isSelected } = useMultiSelect({
     options: artistDisplayOptions,
     paramName: FilterParamName.artistIDs,
   })
 
-  const formattedArtistOptions = artistDisplayOptions.map((option) => ({
+  const formattedArtistOptions = sortedArtistOptions.map((option) => ({
     ...option,
     paramValue: isSelected(option),
   }))
-  const sortedArtistOptions = sortBy(formattedArtistOptions, ["displayText"])
 
   // If FOLLOWED_ARTISTS is included in the list of available aggregations, it means
   // the user has at least one artist they follow (basically necessary for a fair).
@@ -54,7 +57,7 @@ export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsSc
   const hasFollowedArtistsInCounts = !!counts.followedArtists
 
   // Add in Artists I Follow at the start of the list
-  let allOptions: FilterData[] = sortedArtistOptions
+  let allOptions: FilterData[] = formattedArtistOptions
 
   if (hasFollowedArtistsInAggregations || hasFollowedArtistsInCounts) {
     allOptions = [
@@ -63,7 +66,7 @@ export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsSc
         paramName: FilterParamName.artistsIFollow,
         paramValue: !!selectedArtistIFollowOption?.paramValue,
       },
-      ...sortedArtistOptions,
+      ...formattedArtistOptions,
     ]
   }
 
@@ -89,23 +92,25 @@ export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsSc
   )
 }
 
-const useDisplayOptions = () => {
+const useDisplayOptions = (): FilterData[] => {
   const filterType = ArtworksFiltersStore.useStoreState((state) => state.filterType)
   const localFilterOptions = ArtworksFiltersStore.useStoreState((state) => state.filterOptions)
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
 
-  let artistDisplayOptions: FilterData[] = []
+  return useMemo(() => {
+    if (filterType === "local") {
+      const options = localFilterOptions ?? []
+      const localArtistFilterOption = options.find((filterOption) => {
+        return filterOption.filterType === "artistIDs"
+      })
 
-  if (filterType === "local") {
-    const localArtistFilterOption = (localFilterOptions ?? []).find((filterOption) => {
-      return filterOption.filterType === "artistIDs"
-    })
-    artistDisplayOptions = localArtistFilterOption?.values ?? []
-  } else {
+      return localArtistFilterOption?.values ?? []
+    }
+
     const aggregation = aggregationForFilter(FilterParamName.artistIDs, aggregations)
     const counts = aggregation?.counts ?? []
 
-    artistDisplayOptions = counts.map((aggCount) => {
+    return counts.map((aggCount) => {
       return {
         displayText: aggCount.name,
         paramName: FilterParamName.artistIDs,
@@ -113,7 +118,5 @@ const useDisplayOptions = () => {
         filterKey: "artist",
       }
     })
-  }
-
-  return artistDisplayOptions
+  }, [filterType, aggregations, localFilterOptions])
 }
