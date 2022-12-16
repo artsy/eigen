@@ -7165,7 +7165,7 @@ input CreateUserInterestForUserInput {
 type CreateUserInterestForUserPayload {
   clientMutationId: String
 
-  # On success: UserInterest. On failure: MutationError.
+  # On success: UserInterest, User. On failure: MutationError.
   userInterestOrError: createUserInterestForUserResponseOrError
 }
 
@@ -7174,6 +7174,7 @@ union createUserInterestForUserResponseOrError =
   | createUserInterestForUserSuccess
 
 type createUserInterestForUserSuccess {
+  user: User
   userInterest: UserInterest
 }
 
@@ -7570,12 +7571,15 @@ input DeleteUserInterestForUserInput {
 
   # The ID of the UserInterest to delete.
   id: String!
+
+  # An optional ID of a User.
+  userId: String
 }
 
 type DeleteUserInterestForUserPayload {
   clientMutationId: String
 
-  # On success: UserInterest. On failure: MutationError.
+  # On success: UserInterest and optionally a User. On failure: MutationError.
   userInterestOrError: deleteUserInterestForUserResponseOrError
 }
 
@@ -7584,6 +7588,7 @@ union deleteUserInterestForUserResponseOrError =
   | deleteUserInterestForUserSuccess
 
 type deleteUserInterestForUserSuccess {
+  user: User
   userInterest: UserInterest
 }
 
