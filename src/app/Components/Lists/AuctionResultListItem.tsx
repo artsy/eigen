@@ -121,9 +121,9 @@ const AuctionResultListItem: React.FC<Props> = ({
               <Flex>
                 <Text variant="xs" fontWeight="500" testID="price">
                   {auctionResult.priceRealized?.display}
+                  {!!showPriceUSD && auctionResult.priceRealized?.display ? ` ${bullet} ` : ""}
                   {!!showPriceUSD && (
                     <Text variant="xs" testID="priceUSD">
-                      {` ${bullet} `}
                       {auctionResult.priceRealized?.displayUSD}
                     </Text>
                   )}{" "}
