@@ -570,6 +570,8 @@ export const getAuthModel = (): AuthModel => ({
             if (resultGravitySignUp.success) {
               resolve({ success: true })
               return
+            } else if (resultGravitySignUp.error === "blocked_attempt") {
+              reject(new AuthError("Attempt blocked"))
             } else {
               reject(
                 new AuthError(
@@ -685,6 +687,8 @@ export const getAuthModel = (): AuthModel => ({
           if (resultGravitySignUp.success) {
             resolve({ success: true })
             return
+          } else if (resultGravitySignUp.error === "blocked_attempt") {
+            reject(new AuthError("Attempt blocked"))
           } else {
             reject(
               new AuthError(
