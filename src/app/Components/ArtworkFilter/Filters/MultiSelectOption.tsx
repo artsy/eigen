@@ -43,10 +43,7 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
   onRightButtonPress,
   rightButtonText,
 }) => {
-  const space = useSpace()
-  const { width } = useScreenDimensions()
   const [query, setQuery] = useState("")
-  const optionTextMaxWidth = width - OPTION_PADDING * 3 - space(OPTIONS_MARGIN_LEFT) - CHECK_SIZE
 
   const filteredOptions = filterOptions.filter((option) =>
     option.displayText.toLowerCase().includes(query.toLowerCase())
@@ -80,28 +77,18 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
     const disabled = itemIsDisabled(item)
     const selected = itemIsSelected(item)
 
-    return (
-      <Box ml={OPTIONS_MARGIN_LEFT}>
-        <TouchableRow
-          onPress={() => {
-            const currentParamValue = item.paramValue as boolean
-            onSelect(item, !currentParamValue)
-          }}
-          disabled={disabled}
-          testID="multi-select-option-button"
-          accessibilityState={{ checked: selected }}
-        >
-          <OptionListItem>
-            <Box maxWidth={optionTextMaxWidth}>
-              <Text variant="xs" color="black100">
-                {item.displayText}
-              </Text>
-            </Box>
+    const handlePress = () => {
+      const currentParamValue = item.paramValue as boolean
+      onSelect(item, !currentParamValue)
+    }
 
-            <Check selected={selected} disabled={disabled} />
-          </OptionListItem>
-        </TouchableRow>
-      </Box>
+    return (
+      <MultiSelectOptionItem
+        item={item}
+        selected={selected}
+        disabled={disabled}
+        onPress={handlePress}
+      />
     )
   }
 
@@ -153,6 +140,45 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
         )}
       </Flex>
     </Flex>
+  )
+}
+
+interface MultiSelectOptionItemProps {
+  item: FilterData
+  selected: boolean
+  disabled: boolean
+  onPress: () => void
+}
+
+const MultiSelectOptionItem: React.FC<MultiSelectOptionItemProps> = ({
+  item,
+  disabled,
+  selected,
+  onPress,
+}) => {
+  const space = useSpace()
+  const { width } = useScreenDimensions()
+  const optionTextMaxWidth = width - OPTION_PADDING * 3 - space(OPTIONS_MARGIN_LEFT) - CHECK_SIZE
+
+  return (
+    <Box ml={OPTIONS_MARGIN_LEFT} height={50}>
+      <TouchableRow
+        onPress={onPress}
+        disabled={disabled}
+        testID="multi-select-option-button"
+        accessibilityState={{ checked: selected }}
+      >
+        <OptionListItem>
+          <Box maxWidth={optionTextMaxWidth}>
+            <Text variant="xs" color="black100">
+              {item.displayText}
+            </Text>
+          </Box>
+
+          <Check selected={selected} disabled={disabled} />
+        </OptionListItem>
+      </TouchableRow>
+    </Box>
   )
 }
 
