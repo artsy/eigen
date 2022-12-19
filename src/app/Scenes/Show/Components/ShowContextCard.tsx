@@ -105,7 +105,7 @@ const ContextCard: React.FC<ContextCardProps> = ({
   )
 
   return (
-    <Box {...rest}>
+    <Box {...rest} testID="ShowContextCard">
       <SectionTitle title={sectionTitle} onPress={onPress} />
 
       <TouchableOpacity onPress={onPress}>
