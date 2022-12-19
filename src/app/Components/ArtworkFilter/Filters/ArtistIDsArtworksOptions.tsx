@@ -13,7 +13,7 @@ import {
 
 import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
 import { sortBy } from "lodash"
-import { useMemo } from "react"
+import { useCallback, useMemo } from "react"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { useMultiSelect } from "./useMultiSelect"
 
@@ -70,17 +70,20 @@ export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsSc
     ]
   }
 
-  const selectOption = (option: FilterData, updatedValue: boolean) => {
-    if (option.paramName === FilterParamName.artistsIFollow) {
-      selectFiltersAction({
-        displayText: "All Artists I Follow",
-        paramName: FilterParamName.artistsIFollow,
-        paramValue: !selectedArtistIFollowOption?.paramValue,
-      })
-    } else {
-      handleSelect(option, updatedValue)
-    }
-  }
+  const selectOption = useCallback(
+    (option: FilterData, updatedValue: boolean) => {
+      if (option.paramName === FilterParamName.artistsIFollow) {
+        selectFiltersAction({
+          displayText: "All Artists I Follow",
+          paramName: FilterParamName.artistsIFollow,
+          paramValue: !selectedArtistIFollowOption?.paramValue,
+        })
+      } else {
+        handleSelect(option, updatedValue)
+      }
+    },
+    [selectedArtistIFollowOption, handleSelect]
+  )
 
   return (
     <MultiSelectOptionScreen

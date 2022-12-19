@@ -5,7 +5,7 @@ import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components
 import { SearchInput } from "app/Components/SearchInput"
 import { TouchableRow } from "app/Components/TouchableRow"
 import { Box, Check, CHECK_SIZE, Flex, Text, useSpace } from "palette"
-import React, { useState } from "react"
+import React, { memo, useCallback, useState } from "react"
 import { FlatList, ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 import styled from "styled-components/native"
@@ -75,15 +75,18 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
     }
   }
 
+  const handleItemPress = useCallback(
+    (item: FilterData) => {
+      const currentParamValue = item.paramValue as boolean
+      onSelect(item, !currentParamValue)
+    },
+    [onSelect]
+  )
+
   const renderItem = ({ item, index }: RenderItemProps) => {
     const disabled = itemIsDisabled(item)
     const selected = itemIsSelected(item)
     const key = `multie-select-option-item-${index}`
-
-    const handlePress = () => {
-      const currentParamValue = item.paramValue as boolean
-      onSelect(item, !currentParamValue)
-    }
 
     return (
       <MultiSelectOptionItem
@@ -91,7 +94,7 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
         item={item}
         selected={selected}
         disabled={disabled}
-        onPress={handlePress}
+        onPress={handleItemPress}
       />
     )
   }
@@ -152,40 +155,47 @@ interface MultiSelectOptionItemProps {
   item: FilterData
   selected: boolean
   disabled: boolean
-  onPress: () => void
+  onPress: (item: FilterData) => void
 }
 
-const MultiSelectOptionItem: React.FC<MultiSelectOptionItemProps> = ({
-  item,
-  disabled,
-  selected,
-  onPress,
-}) => {
-  const space = useSpace()
-  const { width } = useScreenDimensions()
-  const optionTextMaxWidth = width - OPTION_PADDING * 3 - space(OPTIONS_MARGIN_LEFT) - CHECK_SIZE
-
+const areEqual = (prevProps: MultiSelectOptionItemProps, nextProps: MultiSelectOptionItemProps) => {
   return (
-    <Box ml={OPTIONS_MARGIN_LEFT} height={OPTION_HEIGHT}>
-      <TouchableRow
-        onPress={onPress}
-        disabled={disabled}
-        testID="multi-select-option-button"
-        accessibilityState={{ checked: selected }}
-      >
-        <OptionListItem>
-          <Box maxWidth={optionTextMaxWidth}>
-            <Text variant="xs" color="black100">
-              {item.displayText}
-            </Text>
-          </Box>
-
-          <Check selected={selected} disabled={disabled} />
-        </OptionListItem>
-      </TouchableRow>
-    </Box>
+    prevProps.selected === nextProps.selected &&
+    prevProps.disabled === nextProps.disabled &&
+    prevProps.item.displayText === nextProps.item.displayText &&
+    prevProps.onPress === nextProps.onPress
   )
 }
+
+const MultiSelectOptionItem: React.FC<MultiSelectOptionItemProps> = memo(
+  ({ item, disabled, selected, onPress }) => {
+    const space = useSpace()
+    const { width } = useScreenDimensions()
+    const optionTextMaxWidth = width - OPTION_PADDING * 3 - space(OPTIONS_MARGIN_LEFT) - CHECK_SIZE
+
+    return (
+      <Box ml={OPTIONS_MARGIN_LEFT} height={OPTION_HEIGHT}>
+        <TouchableRow
+          onPress={() => onPress(item)}
+          disabled={disabled}
+          testID="multi-select-option-button"
+          accessibilityState={{ checked: selected }}
+        >
+          <OptionListItem>
+            <Box maxWidth={optionTextMaxWidth}>
+              <Text variant="xs" color="black100">
+                {item.displayText}
+              </Text>
+            </Box>
+
+            <Check selected={selected} disabled={disabled} />
+          </OptionListItem>
+        </TouchableRow>
+      </Box>
+    )
+  },
+  areEqual
+)
 
 export const OptionListItem = styled(Flex)`
   flex-direction: row;

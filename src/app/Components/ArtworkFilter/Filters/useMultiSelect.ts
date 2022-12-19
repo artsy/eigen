@@ -71,24 +71,21 @@ export const useMultiSelect = ({
     }
   }
 
-  const handleSelect = useCallback(
-    (option: FilterData, updatedValue: boolean) => {
-      if (updatedValue) {
-        // Append the paramValue
-        setNextParamValues((prev) => {
-          return [...prev, getParamValue(option)]
+  const handleSelect = useCallback((option: FilterData, updatedValue: boolean) => {
+    if (updatedValue) {
+      // Append the paramValue
+      setNextParamValues((prev) => {
+        return [...prev, getParamValue(option)]
+      })
+    } else {
+      // Remove the paramValue
+      setNextParamValues((prev) => {
+        return prev.filter((value) => {
+          return value !== getParamValue(option)
         })
-      } else {
-        // Remove the paramValue
-        setNextParamValues((prev) => {
-          return prev.filter((value) => {
-            return value !== getParamValue(option)
-          })
-        })
-      }
-    },
-    [getParamValue]
-  )
+      })
+    }
+  }, [])
 
   const isSelected = (option: FilterData) => {
     return nextParamValues.includes(getParamValue(option))
