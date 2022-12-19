@@ -54,7 +54,13 @@ const showError = (
   }
 }
 
-type SignInStatus = "failure" | "success" | "otp_missing" | "on_demand_otp_missing" | "invalid_otp"
+type SignInStatus =
+  | "failure"
+  | "success"
+  | "otp_missing"
+  | "on_demand_otp_missing"
+  | "invalid_otp"
+  | "auth_blocked"
 
 const handleSignUpError = ({
   errorObject,
@@ -343,6 +349,10 @@ export const getAuthModel = (): AuthModel => ({
         scope: "offline_access",
       },
     })
+
+    if (result.status === 403) {
+      return "auth_blocked"
+    }
 
     if (result.status === 201) {
       const { expires_in, access_token: userAccessToken } = await result.json()

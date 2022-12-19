@@ -1,10 +1,11 @@
 import { StackScreenProps } from "@react-navigation/stack"
+import { captureMessage } from "@sentry/react-native"
 import { BackButton } from "app/navigation/BackButton"
 import { GlobalStore } from "app/store/GlobalStore"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { Box, Button, Flex, Input, Spacer, Text, useColor } from "palette"
 import React, { useEffect, useRef } from "react"
-import { ScrollView } from "react-native"
+import { Alert, ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import * as Yup from "yup"
@@ -197,6 +198,22 @@ export const OnboardingLoginWithEmail: React.FC<OnboardingLoginProps> = ({ navig
         navigation.navigate("OnboardingLoginWithOTP", { email, password, otpMode: "standard" })
       } else if (res === "on_demand_otp_missing") {
         navigation.navigate("OnboardingLoginWithOTP", { email, password, otpMode: "on_demand" })
+      }
+
+      if (res === "auth_blocked") {
+        Alert.alert(
+          "Something went wrong.",
+          "Sign in attempt blocked. Please try again from a different network or contact support@artsy.net for help.",
+          [
+            {
+              text: "OK",
+              onPress: () => {
+                captureMessage("AUTH_BLOCKED: Sign in unauthorized reported")
+              },
+            },
+          ]
+        )
+        return
       }
 
       if (res !== "success" && res !== "otp_missing" && res !== "on_demand_otp_missing") {
