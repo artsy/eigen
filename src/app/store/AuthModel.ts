@@ -474,6 +474,14 @@ export const getAuthModel = (): AuthModel => ({
       return { success: true, message: "" }
     }
 
+    if (result.status === 403) {
+      return {
+        success: false,
+        error: "blocked_attempt",
+        message: "Sign up attempt blocked",
+      }
+    }
+
     const resultJson = await result.json()
 
     const { message, existingProviders } = handleSignUpError({
