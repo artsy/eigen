@@ -12,6 +12,7 @@ import styled from "styled-components/native"
 
 const OPTIONS_MARGIN_LEFT = 0.5
 const OPTION_PADDING = 15
+const OPTION_HEIGHT = 50
 
 interface MultiSelectOptionScreenProps {
   navigation: StackNavigationProp<ParamListBase>
@@ -27,6 +28,11 @@ interface MultiSelectOptionScreenProps {
   isDisabled?: (item: FilterData) => boolean
   onSelect: (filterData: FilterData, updatedValue: boolean) => void
   onRightButtonPress?: () => void
+}
+
+interface RenderItemProps {
+  item: FilterData
+  index: number
 }
 
 export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = ({
@@ -69,13 +75,10 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
     }
   }
 
-  const keyExtractor = (_item: FilterData, index: number) => {
-    return String(index)
-  }
-
-  const renderItem = (item: FilterData) => {
+  const renderItem = ({ item, index }: RenderItemProps) => {
     const disabled = itemIsDisabled(item)
     const selected = itemIsSelected(item)
+    const key = `multie-select-option-item-${index}`
 
     const handlePress = () => {
       const currentParamValue = item.paramValue as boolean
@@ -84,6 +87,7 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
 
     return (
       <MultiSelectOptionItem
+        key={key}
         item={item}
         selected={selected}
         disabled={disabled}
@@ -122,20 +126,21 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
       <Flex flexGrow={1}>
         {useScrollView ? (
           <ScrollView style={{ flex: 1 }}>
-            {filteredOptions.map((option, index) => (
-              <React.Fragment key={keyExtractor(option, index)}>
-                {renderItem(option)}
-              </React.Fragment>
-            ))}
+            {filteredOptions.map((option, index) => renderItem({ item: option, index }))}
             {footerComponent}
           </ScrollView>
         ) : (
           <FlatList<FilterData>
             style={{ flex: 1 }}
-            keyExtractor={keyExtractor}
             data={filteredOptions}
             ListFooterComponent={footerComponent}
-            renderItem={({ item }) => renderItem(item)}
+            renderItem={renderItem}
+            windowSize={11}
+            getItemLayout={(_, index) => ({
+              length: OPTION_HEIGHT,
+              offset: index * OPTION_HEIGHT,
+              index,
+            })}
           />
         )}
       </Flex>
@@ -161,7 +166,7 @@ const MultiSelectOptionItem: React.FC<MultiSelectOptionItemProps> = ({
   const optionTextMaxWidth = width - OPTION_PADDING * 3 - space(OPTIONS_MARGIN_LEFT) - CHECK_SIZE
 
   return (
-    <Box ml={OPTIONS_MARGIN_LEFT} height={50}>
+    <Box ml={OPTIONS_MARGIN_LEFT} height={OPTION_HEIGHT}>
       <TouchableRow
         onPress={onPress}
         disabled={disabled}
