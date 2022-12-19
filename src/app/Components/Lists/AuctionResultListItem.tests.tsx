@@ -76,11 +76,11 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(tree.findByProps({ testID: "price" }).props.children).toBe("$one gazillion")
+    expect(extractText(tree.findByProps({ testID: "price" }))).toBe("$one gazillion (-10% est)")
     expect(tree.findAllByProps({ testID: "priceUSD" }).length).toBe(0)
   })
 
-  it.only("renders price in USD when currency is not USD", () => {
+  it("renders price in USD when currency is not USD", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({

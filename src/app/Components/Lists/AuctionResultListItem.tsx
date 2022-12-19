@@ -91,7 +91,6 @@ const AuctionResultListItem: React.FC<Props> = ({
                 {!!auctionResult.dateText &&
                   auctionResult.dateText !== "" &&
                   `, ${auctionResult.dateText}`}
-                {/* </Text> */}
               </Text>
             </Flex>
 
