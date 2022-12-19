@@ -1,7 +1,7 @@
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
-import { captureMessage } from "@sentry/react-native"
 import { BackButton } from "app/navigation/BackButton"
+import { showBlockedAuthError } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { Box, Button, Flex, Spacer, Text, useColor } from "palette"
@@ -114,19 +114,7 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
 
             if (!res.success) {
               if (res.error === "blocked_attempt") {
-                Alert.alert(
-                  "Something went wrong.",
-                  "Sign in attempt blocked. Please try again from a different network or contact support@artsy.net for help.",
-                  [
-                    {
-                      text: "OK",
-                      onPress: () => {
-                        captureMessage("AUTH_BLOCKED: Sign up unauthorized reported")
-                      },
-                    },
-                  ]
-                )
-                return
+                showBlockedAuthError("sign up")
               } else {
                 Alert.alert("Try again", res.message)
               }

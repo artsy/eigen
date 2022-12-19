@@ -10,7 +10,7 @@ import { postEventToProviders } from "app/utils/track/providers"
 import { action, Action, Computed, computed, StateMapper, thunk, Thunk } from "easy-peasy"
 import { capitalize } from "lodash"
 import { stringify } from "qs"
-import { Platform } from "react-native"
+import { Alert, Platform } from "react-native"
 import Config from "react-native-config"
 import {
   AccessToken,
@@ -102,6 +102,24 @@ const handleSignUpError = ({
     existingProviders,
   }
 }
+
+export const showBlockedAuthError = (mode: "sign in" | "sign up") => {
+  const messagePrefix = mode === "sign in" ? "Sign in" : "Sign up"
+  Alert.alert(
+    "Something went wrong.",
+    messagePrefix +
+      " attempt blocked. Please try again from a different network or contact support@artsy.net for help.",
+    [
+      {
+        text: "OK",
+        onPress: () => {
+          captureMessage("AUTH_BLOCKED: Sign in unauthorized reported")
+        },
+      },
+    ]
+  )
+}
+
 interface EmailOAuthParams {
   oauthProvider: "email"
   email: string
