@@ -730,8 +730,12 @@ export const getAuthModel = (): AuthModel => ({
               return
             }
           } else {
-            const res = await resultGravityAccessToken.json()
-            showError(res, reject, "google")
+            if (resultGravityAccessToken.status === 403) {
+              reject(new AuthError("Attempt blocked"))
+            } else {
+              const res = await resultGravityAccessToken.json()
+              showError(res, reject, "google")
+            }
           }
         }
       } catch (e) {
