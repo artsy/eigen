@@ -113,7 +113,7 @@ export const showBlockedAuthError = (mode: "sign in" | "sign up") => {
       {
         text: "OK",
         onPress: () => {
-          captureMessage("AUTH_BLOCKED: Sign in unauthorized reported")
+          captureMessage("AUTH_BLOCKED: " + messagePrefix + " unauthorized reported")
         },
       },
     ]
@@ -860,8 +860,12 @@ export const getAuthModel = (): AuthModel => ({
             return
           }
         } else {
-          const res = await resultGravityAccessToken.json()
-          showError(res, reject, "apple")
+          if (resultGravityAccessToken.status === 403) {
+            reject(new AuthError("Attempt blocked"))
+          } else {
+            const res = await resultGravityAccessToken.json()
+            showError(res, reject, "apple")
+          }
         }
       }
     })
