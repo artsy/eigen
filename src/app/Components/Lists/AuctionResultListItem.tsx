@@ -1,10 +1,11 @@
 import { AuctionResultListItem_auctionResult$data } from "__generated__/AuctionResultListItem_auctionResult.graphql"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { auctionResultHasPrice, auctionResultText } from "app/Scenes/AuctionResult/helpers"
 import { QAInfoManualPanel, QAInfoRow } from "app/utils/QAInfo"
 import { capitalize } from "lodash"
 import moment from "moment"
 import { bullet, Flex, NoArtworkIcon, Spacer, Text, Touchable, useColor } from "palette"
+import { Stopwatch } from "palette/svgs/sf"
+import FastImage from "react-native-fast-image"
 import { createFragmentContainer, graphql } from "react-relay"
 import { AuctionResultsMidEstimate } from "../AuctionResult/AuctionResultMidEstimate"
 
@@ -39,28 +40,34 @@ const AuctionResultListItem: React.FC<Props> = ({
         {/* Sale Artwork Thumbnail Image */}
         {!auctionResult.images?.thumbnail?.url ? (
           <Flex
-            width={60}
-            height={60}
+            width={100}
+            height={130}
             borderRadius={2}
-            backgroundColor="black10"
+            backgroundColor="black5"
             alignItems="center"
             justifyContent="center"
           >
-            <NoArtworkIcon width={28} height={28} opacity={0.3} />
+            <NoArtworkIcon width={30} height={30} fill="black60" />
           </Flex>
         ) : (
           <Flex
-            width={60}
-            height={60}
+            width={100}
+            height={130}
             borderRadius={2}
-            backgroundColor="black"
+            backgroundColor="bla ck"
             alignItems="center"
             justifyContent="center"
             overflow="hidden"
             // To align the image with the text we have to add top margin to compensate the line height.
             style={{ marginTop: 3 }}
           >
-            <OpaqueImageView width={60} height={60} imageURL={auctionResult.images.thumbnail.url} />
+            <FastImage
+              style={{ backgroundColor: color("black5"), height: 130, width: 100 }}
+              source={{
+                uri: auctionResult.images.thumbnail.url,
+              }}
+              resizeMode={FastImage.resizeMode.contain}
+            />
           </Flex>
         )}
 
@@ -69,31 +76,37 @@ const AuctionResultListItem: React.FC<Props> = ({
           <Flex flex={3}>
             <Flex>
               {!!showArtistName && !!auctionResult.artist?.name && (
-                <Text variant="xs" ellipsizeMode="middle" numberOfLines={2}>
+                <Text variant="xs" color="black100" numberOfLines={2}>
                   {auctionResult.artist?.name}
                 </Text>
               )}
               <Text
                 variant="xs"
                 ellipsizeMode="middle"
-                color="black60"
-                numberOfLines={2}
-                italic
+                color="black100"
+                numberOfLines={1}
                 style={{ flexShrink: 1 }}
               >
                 {auctionResult.title}
-                <Text variant="xs" color="black60">
-                  {!!auctionResult.dateText &&
-                    auctionResult.dateText !== "" &&
-                    `, ${auctionResult.dateText}`}
-                </Text>
+                {!!auctionResult.dateText &&
+                  auctionResult.dateText !== "" &&
+                  `, ${auctionResult.dateText}`}
               </Text>
             </Flex>
+
             {!!auctionResult.mediumText && (
               <Text variant="xs" color="black60" numberOfLines={1}>
                 {capitalize(auctionResult.mediumText)}
               </Text>
             )}
+
+            {!!auctionResult.dimensionText && (
+              <Text variant="xs" color="black60" numberOfLines={1}>
+                {auctionResult.dimensionText}
+              </Text>
+            )}
+
+            <Spacer mt={1} />
 
             {!!auctionResult.saleDate && (
               <Text variant="xs" color="black60" numberOfLines={1} testID="saleInfo">
@@ -102,36 +115,29 @@ const AuctionResultListItem: React.FC<Props> = ({
                 {auctionResult.organization}
               </Text>
             )}
-          </Flex>
 
-          {/* Sale Artwork Auction Result */}
-          <Flex alignItems="flex-end" pl={15}>
             {auctionResultHasPrice(auctionResult) ? (
-              <Flex alignItems="flex-end">
+              <Flex>
                 <Text variant="xs" fontWeight="500" testID="price">
                   {auctionResult.priceRealized?.display}
+                  {!!showPriceUSD && auctionResult.priceRealized?.display ? ` ${bullet} ` : ""}
+                  {!!showPriceUSD && (
+                    <Text variant="xs" testID="priceUSD">
+                      {auctionResult.priceRealized?.displayUSD}
+                    </Text>
+                  )}{" "}
+                  {!!auctionResult.performance?.mid && (
+                    <AuctionResultsMidEstimate
+                      value={auctionResult.performance.mid}
+                      shortDescription="est"
+                    />
+                  )}
                 </Text>
-                {!!showPriceUSD && (
-                  <Text variant="xs" color="black60" testID="priceUSD">
-                    {auctionResult.priceRealized?.displayUSD}
-                  </Text>
-                )}
-                {!!auctionResult.performance?.mid && (
-                  <AuctionResultsMidEstimate
-                    value={auctionResult.performance.mid}
-                    shortDescription="est"
-                  />
-                )}
               </Flex>
             ) : (
-              <Flex alignItems="flex-end">
-                <Text
-                  variant="xs"
-                  fontWeight="bold"
-                  style={{ width: 100 }}
-                  textAlign="right"
-                  testID="price"
-                >
+              <Flex flexDirection="row" alignItems="center">
+                <Stopwatch height={15} width={15} mr={0.5} />
+                <Text variant="xs" testID="price" italic>
                   {auctionResultText(auctionResult)}
                 </Text>
               </Flex>
@@ -169,6 +175,7 @@ export const AuctionResultListItemFragmentContainer = createFragmentContainer(
         estimate {
           low
         }
+        dimensionText
         mediumText
         organization
         boughtIn

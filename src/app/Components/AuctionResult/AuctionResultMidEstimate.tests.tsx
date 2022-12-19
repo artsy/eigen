@@ -1,5 +1,5 @@
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
-import { DecreaseIcon, IncreaseIcon, Text } from "palette"
+import { Text } from "palette"
 import { AuctionResultsMidEstimate } from "./AuctionResultMidEstimate"
 
 describe("AuctionResultMidEstimate", () => {
@@ -7,7 +7,6 @@ describe("AuctionResultMidEstimate", () => {
     const tree = renderWithWrappersLEGACY(
       <AuctionResultsMidEstimate value="25%" shortDescription="mid-estimate" />
     )
-    expect(tree.root.findAllByType(IncreaseIcon).length).toEqual(1)
     expect(tree.root.findAllByType(Text)[0].props.color).toEqual("green100")
   })
 
@@ -15,7 +14,6 @@ describe("AuctionResultMidEstimate", () => {
     const tree = renderWithWrappersLEGACY(
       <AuctionResultsMidEstimate value="-25%" shortDescription="mid-estimate" />
     )
-    expect(tree.root.findAllByType(DecreaseIcon).length).toEqual(1)
     expect(tree.root.findAllByType(Text)[0].props.color).toEqual("red100")
   })
 
@@ -30,13 +28,7 @@ describe("AuctionResultMidEstimate", () => {
       <AuctionResultsMidEstimate value="-2%" shortDescription="mid-estimate" />
     )
     expect(instance1.root.findAllByType(Text)[0].props.color).toEqual("black60")
-    expect(instance1.root.findAllByType(IncreaseIcon).length).toEqual(1)
-    expect(instance1.root.findAllByType(IncreaseIcon)[0].props.fill).toEqual("black60")
     expect(instance2.root.findAllByType(Text)[0].props.color).toEqual("black60")
-    expect(instance2.root.findAllByType(IncreaseIcon).length).toEqual(1)
-    expect(instance2.root.findAllByType(IncreaseIcon)[0].props.fill).toEqual("black60")
     expect(instance3.root.findAllByType(Text)[0].props.color).toEqual("black60")
-    expect(instance3.root.findAllByType(DecreaseIcon).length).toEqual(1)
-    expect(instance3.root.findAllByType(DecreaseIcon)[0].props.fill).toEqual("black60")
   })
 })
