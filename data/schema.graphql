@@ -3493,7 +3493,19 @@ type CollectorProfileArtists {
 }
 
 type CollectorProfileType {
+  artsyUserSince(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  bio: String
   collectorLevel: Int
+
+  # List of artists the Collector is interested in.
+  collectorProfileArtists: [CollectorProfileArtists]
   companyName: String
   companyWebsite: String
   confirmedBuyerAt(
@@ -3505,14 +3517,20 @@ type CollectorProfileType {
     timezone: String
   ): String
   email: String
+  emailConfirmed: Boolean
+  icon: Image
 
   # A globally unique ID.
   id: ID!
+  identityVerified: Boolean
   institutionalAffiliations: String
   intents: [String]
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+  isActiveBidder: Boolean
+  isActiveInquirer: Boolean
+  location: MyLocation
   loyaltyApplicantAt(
     format: String
 
@@ -3522,7 +3540,14 @@ type CollectorProfileType {
     timezone: String
   ): String
   name: String
+
+  # Collector's position with relevant institutions
+  otherRelevantPositions: String
+
+  # User ID of the collector profile's owner
+  ownerID: ID!
   privacy: String
+  profession: String
   professionalBuyerAppliedAt(
     format: String
 
@@ -16035,8 +16060,20 @@ input UpdateCollectorProfileInput {
 }
 
 type UpdateCollectorProfilePayload {
+  artsyUserSince(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  bio: String
   clientMutationId: String
   collectorLevel: Int
+
+  # List of artists the Collector is interested in.
+  collectorProfileArtists: [CollectorProfileArtists]
   companyName: String
   companyWebsite: String
   confirmedBuyerAt(
@@ -16048,14 +16085,20 @@ type UpdateCollectorProfilePayload {
     timezone: String
   ): String
   email: String
+  emailConfirmed: Boolean
+  icon: Image
 
   # A globally unique ID.
   id: ID!
+  identityVerified: Boolean
   institutionalAffiliations: String
   intents: [String]
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+  isActiveBidder: Boolean
+  isActiveInquirer: Boolean
+  location: MyLocation
   loyaltyApplicantAt(
     format: String
 
@@ -16065,7 +16108,14 @@ type UpdateCollectorProfilePayload {
     timezone: String
   ): String
   name: String
+
+  # Collector's position with relevant institutions
+  otherRelevantPositions: String
+
+  # User ID of the collector profile's owner
+  ownerID: ID!
   privacy: String
+  profession: String
   professionalBuyerAppliedAt(
     format: String
 
