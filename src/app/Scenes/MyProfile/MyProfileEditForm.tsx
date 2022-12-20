@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, EditedUserProfile, OwnerType } from "@artsy/cohesion"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { useNavigation } from "@react-navigation/native"
 import { EditableLocation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
@@ -32,6 +33,7 @@ import {
 import React, { Suspense, useContext, useEffect, useRef, useState } from "react"
 import { ScrollView, TextInput } from "react-native"
 import { useLazyLoadQuery, useRefetchableFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 import { graphql } from "relay-runtime"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import * as Yup from "yup"
@@ -61,6 +63,7 @@ const editMyProfileSchema = Yup.object().shape({
 })
 
 export const MyProfileEditForm: React.FC = () => {
+  const { trackEvent } = useTracking()
   const data = useLazyLoadQuery<MyProfileEditFormQuery>(MyProfileEditFormScreenQuery, {})
 
   const [me, refetch] = useRefetchableFragment<MyProfileEditFormQuery, MyProfileEditForm_me$key>(
@@ -152,6 +155,8 @@ export const MyProfileEditForm: React.FC = () => {
               didUpdatePhoto && (await uploadProfilePhoto(photo)),
             ])
           )
+
+          trackEvent(tracks.editedUserProfile)
         } catch (error) {
           console.error("Failed to update user profile ", error)
         } finally {
@@ -539,4 +544,13 @@ const VerificationBanner = ({ resultText }: { resultText: string }) => {
       </Flex>
     </Flex>
   )
+}
+
+const tracks = {
+  editedUserProfile: (): EditedUserProfile => ({
+    action: ActionType.editedUserProfile,
+    context_screen: ContextModule.collectorProfile,
+    context_screen_owner_type: OwnerType.editProfile,
+    platform: "mobile",
+  }),
 }
