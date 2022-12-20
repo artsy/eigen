@@ -15,7 +15,7 @@ export const AuctionResultsMidEstimate: React.FC<AuctionResultsMidEstimateProps>
 
   return (
     <Text variant={textVariant} color={color} fontWeight="500">
-      ({value[0] === "-" ? "+" : "-"}
+      ({value[0] === "-" ? "-" : "+"}
       {new Intl.NumberFormat().format(Number(value.replace(/%|-/gm, "")))}%
       {!!shortDescription && ` ${shortDescription}`})
     </Text>

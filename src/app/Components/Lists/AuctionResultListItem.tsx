@@ -54,7 +54,6 @@ const AuctionResultListItem: React.FC<Props> = ({
             width={100}
             height={130}
             borderRadius={2}
-            backgroundColor="bla ck"
             alignItems="center"
             justifyContent="center"
             overflow="hidden"
@@ -62,7 +61,10 @@ const AuctionResultListItem: React.FC<Props> = ({
             style={{ marginTop: 3 }}
           >
             <FastImage
-              style={{ backgroundColor: color("black5"), height: 130, width: 100 }}
+              style={{
+                height: 130,
+                width: 100,
+              }}
               source={{
                 uri: auctionResult.images.thumbnail.url,
               }}
