@@ -50,42 +50,48 @@ export const useMultiSelect = ({
     [nextParamValues, options]
   )
 
-  const getParamValue = (option: FilterData) => {
-    // (property) FilterData.paramValue?: string | number | boolean | string[] | undefined
-    switch (typeof option.paramValue) {
-      case "undefined":
-      case "boolean":
-      case "object": // string[]
-        // For dealing with things like our MultiSelectOptionScreen which
-        // requires options with boolean paramValues:
-        // Find the string paramValue within options using the displayText
-        return String(
-          options.find(({ displayText }) => {
-            return displayText === option.displayText
-          })!.paramValue
-        )
+  const getParamValue = useCallback(
+    (option: FilterData) => {
+      // (property) FilterData.paramValue?: string | number | boolean | string[] | undefined
+      switch (typeof option.paramValue) {
+        case "undefined":
+        case "boolean":
+        case "object": // string[]
+          // For dealing with things like our MultiSelectOptionScreen which
+          // requires options with boolean paramValues:
+          // Find the string paramValue within options using the displayText
+          return String(
+            options.find(({ displayText }) => {
+              return displayText === option.displayText
+            })!.paramValue
+          )
 
-      case "string":
-      case "number":
-        return String(option.paramValue)
-    }
-  }
+        case "string":
+        case "number":
+          return String(option.paramValue)
+      }
+    },
+    [options]
+  )
 
-  const handleSelect = useCallback((option: FilterData, updatedValue: boolean) => {
-    if (updatedValue) {
-      // Append the paramValue
-      setNextParamValues((prev) => {
-        return [...prev, getParamValue(option)]
-      })
-    } else {
-      // Remove the paramValue
-      setNextParamValues((prev) => {
-        return prev.filter((value) => {
-          return value !== getParamValue(option)
+  const handleSelect = useCallback(
+    (option: FilterData, updatedValue: boolean) => {
+      if (updatedValue) {
+        // Append the paramValue
+        setNextParamValues((prev) => {
+          return [...prev, getParamValue(option)]
         })
-      })
-    }
-  }, [])
+      } else {
+        // Remove the paramValue
+        setNextParamValues((prev) => {
+          return prev.filter((value) => {
+            return value !== getParamValue(option)
+          })
+        })
+      }
+    },
+    [getParamValue]
+  )
 
   const isSelected = (option: FilterData) => {
     return nextParamValues.includes(getParamValue(option))
