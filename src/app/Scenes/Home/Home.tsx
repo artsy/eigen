@@ -48,6 +48,7 @@ import { ArtworkRecommendationsRail } from "./Components/ArtworkRecommendationsR
 import { ContentCards } from "./Components/ContentCards"
 import { HomeFeedOnboardingRailFragmentContainer } from "./Components/HomeFeedOnboardingRail"
 import { HomeHeader } from "./Components/HomeHeader"
+import { HomeUpcomingAuctionsRail } from "./Components/HomeUpcomingAuctionsRail"
 import { NewWorksForYouRail } from "./Components/NewWorksForYouRail"
 import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
 import { RailScrollRef } from "./Components/types"
@@ -103,6 +104,7 @@ const Home = (props: Props) => {
 
   const enableArtworkRecommendations = useFeatureFlag("AREnableHomeScreenArtworkRecommendations")
   const enableMyCollectionHFOnboarding = useFeatureFlag("AREnableMyCollectionHFOnboarding")
+  const showUpcomingAuctionResultsRail = useFeatureFlag("ARShowUpcomingAuctionResultsRails")
   const enableLargeNewWorksForYouRail = useLargeNewWorksForYouRail()
 
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
@@ -136,6 +138,12 @@ const Home = (props: Props) => {
       prefetchUrl: "/auctions",
     },
     // Below-The-Fold Modules
+    {
+      title: "Upcoming Auctions",
+      type: "upcoming-auctions",
+      data: meBelow,
+      hidden: !showUpcomingAuctionResultsRail,
+    },
     {
       title: "Latest Auction Results",
       type: "auction-results",
@@ -347,6 +355,14 @@ const Home = (props: Props) => {
                     mb={MODULE_SEPARATOR_HEIGHT}
                   />
                 )
+              case "upcoming-auctions":
+                return (
+                  <HomeUpcomingAuctionsRail
+                    title={item.title}
+                    me={item.data}
+                    mb={MODULE_SEPARATOR_HEIGHT}
+                  />
+                )
               case "viewing-rooms":
                 return (
                   <ViewingRoomsHomeMainRail
@@ -456,6 +472,7 @@ export const HomeFragmentContainer = createRefetchContainer(
         ...AuctionResultsRail_me
         ...RecommendedArtistsRail_me
         ...ArtworkRecommendationsRail_me
+        ...HomeUpcomingAuctionsRail_me
       }
     `,
     articlesConnection: graphql`

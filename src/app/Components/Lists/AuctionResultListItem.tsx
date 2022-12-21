@@ -1,20 +1,23 @@
 import { AuctionResultListItem_auctionResult$data } from "__generated__/AuctionResultListItem_auctionResult.graphql"
+import { navigate } from "app/navigation/navigate"
 import { auctionResultHasPrice, auctionResultText } from "app/Scenes/AuctionResult/helpers"
 import { QAInfoManualPanel, QAInfoRow } from "app/utils/QAInfo"
 import { capitalize } from "lodash"
 import moment from "moment"
 import { bullet, Flex, NoArtworkIcon, Spacer, Text, Touchable, useColor } from "palette"
 import { Stopwatch } from "palette/svgs/sf"
+import { Dimensions } from "react-native"
 import FastImage from "react-native-fast-image"
 import { createFragmentContainer, graphql } from "react-relay"
 import { AuctionResultsMidEstimate } from "../AuctionResult/AuctionResultMidEstimate"
 
 interface Props {
   auctionResult: AuctionResultListItem_auctionResult$data
-  onPress: () => void
-  showArtistName?: boolean
-  withHorizontalPadding?: boolean
   first?: boolean
+  onPress?: () => void
+  showArtistName?: boolean
+  width?: number
+  withHorizontalPadding?: boolean
 }
 
 const IMAGE_WIDTH = 100
@@ -22,12 +25,15 @@ const IMAGE_HEIGHT = 130
 
 const AuctionResultListItem: React.FC<Props> = ({
   auctionResult,
+  first,
   onPress,
   showArtistName,
+  width,
   withHorizontalPadding = true,
-  first,
 }) => {
   const color = useColor()
+
+  const { width: screenWidth } = Dimensions.get("screen")
 
   const showPriceUSD = auctionResult.priceRealized?.displayUSD && auctionResult.currency !== "USD"
 
@@ -38,8 +44,23 @@ const AuctionResultListItem: React.FC<Props> = ({
   )
 
   return (
-    <Touchable underlayColor={color("black5")} onPress={onPress}>
-      <Flex px={withHorizontalPadding ? 2 : 0} pb={1} pt={first ? 0 : 1} flexDirection="row">
+    <Touchable
+      underlayColor={color("black5")}
+      onPress={() => {
+        if (onPress) {
+          onPress()
+        } else {
+          navigate(`/artist/${auctionResult.artistID}/auction-result/${auctionResult.internalID}`)
+        }
+      }}
+    >
+      <Flex
+        px={withHorizontalPadding ? 2 : 0}
+        pb={1}
+        pt={first ? 0 : 1}
+        flexDirection="row"
+        width={width || screenWidth}
+      >
         {/* Sale Artwork Thumbnail Image */}
         {!auctionResult.images?.thumbnail?.url ? (
           <Flex
@@ -166,6 +187,7 @@ export const AuctionResultListItemFragmentContainer = createFragmentContainer(
         dateText
         id
         internalID
+        artistID
         artist {
           name
         }

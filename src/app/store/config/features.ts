@@ -252,6 +252,11 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "AREnableConsignmentInquiryFlow",
   },
+  ARShowUpcomingAuctionResultsRails: {
+    description: "Show upcoming auction rails",
+    showInDevMenu: true,
+    readyForRelease: false,
+  },
 })
 
 export interface DevToggleDescriptor {
