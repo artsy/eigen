@@ -104,6 +104,7 @@ const Home = (props: Props) => {
 
   const enableArtworkRecommendations = useFeatureFlag("AREnableHomeScreenArtworkRecommendations")
   const enableMyCollectionHFOnboarding = useFeatureFlag("AREnableMyCollectionHFOnboarding")
+  const showUpcomingAuctionResultsRail = useFeatureFlag("ARShowUpcomingAuctionResultsRails")
   const enableLargeNewWorksForYouRail = useLargeNewWorksForYouRail()
 
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
@@ -206,6 +207,7 @@ const Home = (props: Props) => {
       title: "Similar to Works You've Viewed",
       type: "artwork",
       data: homePageBelow?.similarToRecentlyViewedArtworkModule,
+      hidden: !showUpcomingAuctionResultsRail,
     },
   ])
 
