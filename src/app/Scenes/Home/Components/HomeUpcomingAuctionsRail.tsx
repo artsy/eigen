@@ -42,7 +42,7 @@ export const HomeUpcomingAuctionsRail: React.FC<HomeUpcomingAuctionsRailProps> =
       <FlatList
         horizontal
         data={filteredAuctionResults}
-        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
         initialNumToRender={3}
         renderItem={({ item }) => (
           <AuctionResultListItemFragmentContainer auctionResult={item} width={screenWidth * 0.9} />
