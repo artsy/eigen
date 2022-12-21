@@ -3524,6 +3524,7 @@ type CollectorProfileType {
   # A globally unique ID.
   id: ID!
   identityVerified: Boolean
+    @deprecated(reason: "identityVerified is going to be removed, use isIdentityVerified instead")
   institutionalAffiliations: String
   intents: [String]
 
@@ -3532,6 +3533,7 @@ type CollectorProfileType {
   isActiveBidder: Boolean
   isActiveInquirer: Boolean
   isEmailConfirmed: Boolean
+  isIdentityVerified: Boolean
   location: MyLocation
   loyaltyApplicantAt(
     format: String
@@ -5595,8 +5597,15 @@ type ConsignmentInquiry {
   userId: String
 }
 
+type ConsignmentInquiryMutationError {
+  error: String
+  message: String!
+  statusCode: Int
+  type: String
+}
+
 type ConsignmentInquiryMutationFailure {
-  mutationError: GravityMutationError
+  mutationError: ConsignmentInquiryMutationError
 }
 
 type ConsignmentInquiryMutationSuccess {
@@ -9773,6 +9782,7 @@ type InquirerCollectorProfile {
   # A globally unique ID.
   id: ID!
   identityVerified: Boolean
+    @deprecated(reason: "identityVerified is going to be removed, use isIdentityVerified instead")
   institutionalAffiliations: String
   intents: [String]
 
@@ -9781,6 +9791,7 @@ type InquirerCollectorProfile {
   isActiveBidder: Boolean
   isActiveInquirer: Boolean
   isEmailConfirmed: Boolean
+  isIdentityVerified: Boolean
   location: MyLocation
   loyaltyApplicantAt(
     format: String
@@ -16102,6 +16113,7 @@ type UpdateCollectorProfilePayload {
   # A globally unique ID.
   id: ID!
   identityVerified: Boolean
+    @deprecated(reason: "identityVerified is going to be removed, use isIdentityVerified instead")
   institutionalAffiliations: String
   intents: [String]
 
@@ -16110,6 +16122,7 @@ type UpdateCollectorProfilePayload {
   isActiveBidder: Boolean
   isActiveInquirer: Boolean
   isEmailConfirmed: Boolean
+  isIdentityVerified: Boolean
   location: MyLocation
   loyaltyApplicantAt(
     format: String
