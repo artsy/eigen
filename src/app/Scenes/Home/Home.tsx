@@ -208,7 +208,6 @@ const Home = (props: Props) => {
       title: "Similar to Works You've Viewed",
       type: "artwork",
       data: homePageBelow?.similarToRecentlyViewedArtworkModule,
-      hidden: !showUpcomingAuctionResultsRail,
     },
   ])
 
