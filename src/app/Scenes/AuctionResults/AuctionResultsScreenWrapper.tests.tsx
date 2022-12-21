@@ -1,9 +1,13 @@
-import { AuctionResultsForArtistsYouFollowTestsQuery } from "__generated__/AuctionResultsForArtistsYouFollowTestsQuery.graphql"
+import { AuctionResultsScreenWrapperTestsQuery } from "__generated__/AuctionResultsScreenWrapperTestsQuery.graphql"
+import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { AuctionResultsForArtistsYouFollowContainer } from "./AuctionResultsForArtistsYouFollow"
+import {
+  AuctionResultsScreenWrapperContainer,
+  AuctionResultsState,
+} from "./AuctionResultsScreenWrapper"
 
 jest.unmock("react-relay")
 
@@ -11,20 +15,22 @@ describe("AuctionResultsForArtistsYouFollowContainer", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   const TestRenderer = () => (
-    <QueryRenderer<AuctionResultsForArtistsYouFollowTestsQuery>
+    <QueryRenderer<AuctionResultsScreenWrapperTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query AuctionResultsForArtistsYouFollowTestsQuery($first: Int!, $after: String)
+        query AuctionResultsScreenWrapperTestsQuery($first: Int!, $after: String)
         @relay_test_operation {
           me {
-            ...AuctionResultsForArtistsYouFollow_me @arguments(first: $first, after: $after)
+            ...AuctionResultsScreenWrapper_me @arguments(first: $first, after: $after)
           }
         }
       `}
       variables={{ after: "YXJyYXljb25uZWN0aW9uOjA", first: 3 }}
       render={({ props }) => {
-        if (props) {
-          return <AuctionResultsForArtistsYouFollowContainer me={props.me} />
+        if (props?.me) {
+          return (
+            <AuctionResultsScreenWrapperContainer me={props.me} state={AuctionResultsState.ALL} />
+          )
         }
         return null
       }}
@@ -48,7 +54,10 @@ describe("AuctionResultsForArtistsYouFollowContainer", () => {
       }),
     })
 
-    expect(tree.root.findAllByType(AuctionResultsForArtistsYouFollowContainer)).toHaveLength(1)
+    expect(extractText(tree.root.findAllByType(AuctionResultsScreenWrapperContainer)[0])).toContain(
+      "Latest Auction Results"
+    )
+    expect(tree.root.findAllByType(AuctionResultsScreenWrapperContainer)).toHaveLength(1)
   })
 })
 

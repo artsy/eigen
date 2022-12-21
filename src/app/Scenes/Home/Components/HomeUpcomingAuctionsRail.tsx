@@ -1,6 +1,7 @@
 import { HomeUpcomingAuctionsRail_me$key } from "__generated__/HomeUpcomingAuctionsRail_me.graphql"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Flex } from "palette"
 import { FlatList } from "react-native"
@@ -35,7 +36,7 @@ export const HomeUpcomingAuctionsRail: React.FC<HomeUpcomingAuctionsRailProps> =
         <SectionTitle
           title={title}
           onPress={() => {
-            // do nothing
+            navigate("/upcoming-auction-results")
           }}
         />
       </Flex>
