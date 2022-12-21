@@ -13,10 +13,12 @@ import { PAGE_SIZE } from "app/Components/constants"
 import Spinner from "app/Components/Spinner"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { debounce } from "lodash"
+import { DateTime } from "luxon"
 import { Box, bullet, Flex, Separator, Spacer, Text } from "palette"
 import React, { useCallback, useEffect, useMemo, useState } from "react"
-import { FlatList, View } from "react-native"
+import { SectionList, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
@@ -135,6 +137,40 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
   const resultsString =
     Number(artist.auctionResultsConnection?.totalCount) === 1 ? "result" : "results"
 
+  const auctionResultsByState = useMemo(() => {
+    const res: Array<{
+      title: string
+      data: Array<
+        ExtractNodeType<ArtistInsightsAuctionResults_artist$data["auctionResultsConnection"]>
+      >
+      count: number
+    }> = [
+      {
+        title: "Upcoming Auctions",
+        data: [],
+        count: artist.upcomingAuctionResults?.totalCount || 0,
+      },
+      {
+        title: "Past Auctions",
+        data: [],
+        count: artist.pastAuctionResults?.totalCount || 0,
+      },
+    ]
+
+    auctionResults.forEach((auctionResult) => {
+      if (
+        auctionResult.saleDate &&
+        DateTime.fromISO(auctionResult.saleDate) >= DateTime.fromISO(DateTime.now().toISO())
+      ) {
+        res[0].data.push(auctionResult)
+      } else {
+        res[1].data.push(auctionResult)
+      }
+    })
+
+    return res.filter((section) => section.count > 0)
+  }, [auctionResults])
+
   return (
     <View
       // Setting min height to keep scroll position when user searches with the keyword filter.
@@ -172,8 +208,8 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
       </Flex>
       {auctionResults.length ? (
         <Flex py={2}>
-          <FlatList
-            data={auctionResults}
+          <SectionList
+            sections={auctionResultsByState}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
               <AuctionResultListItemFragmentContainer
@@ -183,6 +219,14 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
                   navigate(`/artist/${artist?.slug!}/auction-result/${item.internalID}`)
                 }}
               />
+            )}
+            renderSectionHeader={({ section: { title, count } }) => (
+              <Flex px={2}>
+                <Text variant="sm-display">{title}</Text>
+                <Text variant="xs" color="black60">
+                  {count} result{count > 1 ? "s" : ""}
+                </Text>
+              </Flex>
             )}
             ItemSeparatorComponent={AuctionResultListSeparator}
             style={{ width: useScreenDimensions().width, left: -20 }}
@@ -233,6 +277,12 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
         slug
         id
         internalID
+        pastAuctionResults: auctionResultsConnection(state: PAST) {
+          totalCount
+        }
+        upcomingAuctionResults: auctionResultsConnection(state: UPCOMING) {
+          totalCount
+        }
         auctionResultsConnection(
           after: $cursor
           allowEmptyCreatedDates: $allowEmptyCreatedDates
@@ -254,6 +304,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
             node {
               id
               internalID
+              saleDate
               ...AuctionResultListItem_auctionResult
             }
           }
