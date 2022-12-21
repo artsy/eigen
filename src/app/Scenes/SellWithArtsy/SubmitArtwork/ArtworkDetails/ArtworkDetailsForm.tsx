@@ -14,10 +14,11 @@ import {
   Spacer,
   Text,
 } from "palette"
-import { Select } from "palette/elements/Select"
-import React, { useEffect, useState } from "react"
+import { Select, SelectOption } from "palette/elements/Select"
+import React, { useEffect, useRef, useState } from "react"
 import { ArtistAutosuggest } from "../../../../Components/ArtistAutosuggest/ArtistAutosuggest"
 import { InfoModal } from "./InfoModal/InfoModal"
+import { acceptableCategoriesForSubmission } from "./utils/acceptableCategoriesForSubmission"
 import { limitedEditionValue, rarityOptions } from "./utils/rarityOptions"
 import { ArtworkDetailsFormModel, countriesRequirePostalCode } from "./validation"
 
@@ -35,6 +36,12 @@ export const ArtworkDetailsForm: React.FC = () => {
       GlobalStore.actions.artworkSubmission.submission.setDirtyArtworkDetailsValues(values)
     }
   }, [values])
+
+  const categories = useRef<Array<SelectOption<string>>>(
+    acceptableCategoriesForSubmission()
+  ).current
+
+  console.log("categories", categories)
 
   return (
     <>
@@ -57,6 +64,16 @@ export const ArtworkDetailsForm: React.FC = () => {
         value={values.year}
         onChangeText={(e) => setFieldValue("year", e)}
         accessibilityLabel="Year"
+      />
+      <StandardSpace />
+      <Select
+        onSelectValue={(category) => setFieldValue("category", category)}
+        value={values.category}
+        enableSearch={false}
+        title="Medium"
+        placeholder="Select"
+        testID="Submission_CategorySelect"
+        options={categories}
       />
       <StandardSpace />
       <Input

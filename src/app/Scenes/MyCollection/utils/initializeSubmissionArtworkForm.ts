@@ -1,4 +1,8 @@
 import { MyCollectionWhySell_artwork$data } from "__generated__/MyCollectionWhySell_artwork.graphql"
+import {
+  AcceptableCategoryValue,
+  formatCategoryValueForSubmission,
+} from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/acceptableCategoriesForSubmission"
 import { GlobalStore } from "app/store/GlobalStore"
 import { getAttributionClassValueByName } from "app/utils/artworkRarityClassifications"
 
@@ -11,6 +15,9 @@ export const initializeSubmissionArtworkForm = (artwork: MyCollectionWhySell_art
     title: artwork.title ?? "",
     year: artwork.date ?? "",
     medium: artwork.medium ?? "",
+    category: artwork.mediumType?.name
+      ? (formatCategoryValueForSubmission(artwork.mediumType?.name) as AcceptableCategoryValue)
+      : null,
     attributionClass: getAttributionClassValueByName(artwork.attributionClass?.name),
     editionNumber: artwork.editionNumber ?? "",
     editionSizeFormatted: artwork.editionSize ?? "",
