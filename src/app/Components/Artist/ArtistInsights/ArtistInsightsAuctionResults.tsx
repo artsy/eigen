@@ -277,10 +277,28 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
         slug
         id
         internalID
-        pastAuctionResults: auctionResultsConnection(state: PAST) {
+        pastAuctionResults: auctionResultsConnection(
+          state: PAST
+          allowEmptyCreatedDates: $allowEmptyCreatedDates
+          categories: $categories
+          earliestCreatedYear: $earliestCreatedYear
+          keyword: $keyword
+          latestCreatedYear: $latestCreatedYear
+          organizations: $organizations
+          sizes: $sizes
+        ) {
           totalCount
         }
-        upcomingAuctionResults: auctionResultsConnection(state: UPCOMING) {
+        upcomingAuctionResults: auctionResultsConnection(
+          state: UPCOMING
+          allowEmptyCreatedDates: $allowEmptyCreatedDates
+          categories: $categories
+          earliestCreatedYear: $earliestCreatedYear
+          keyword: $keyword
+          latestCreatedYear: $latestCreatedYear
+          organizations: $organizations
+          sizes: $sizes
+        ) {
           totalCount
         }
         auctionResultsConnection(
