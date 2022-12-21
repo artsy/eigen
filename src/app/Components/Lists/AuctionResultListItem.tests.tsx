@@ -76,7 +76,7 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(extractText(tree.findByProps({ testID: "price" }))).toBe("$one gazillion (-10% est)")
+    expect(extractText(tree.findByProps({ testID: "price" }))).toBe("$one gazillion (+10% est)")
     expect(tree.findAllByProps({ testID: "priceUSD" }).length).toBe(0)
   })
 
@@ -109,7 +109,7 @@ describe("AuctionResults", () => {
     })
 
     expect(extractText(tree.findByProps({ testID: "price" }))).toBe(
-      "€one gazillion • $one gazillion (-10% est)"
+      "€one gazillion • $one gazillion (+10% est)"
     )
     expect(extractText(tree.findByProps({ testID: "priceUSD" }))).toBe("$one gazillion")
   })
