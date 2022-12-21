@@ -17,6 +17,9 @@ interface Props {
   first?: boolean
 }
 
+const IMAGE_WIDTH = 100
+const IMAGE_HEIGHT = 130
+
 const AuctionResultListItem: React.FC<Props> = ({
   auctionResult,
   onPress,
@@ -40,8 +43,8 @@ const AuctionResultListItem: React.FC<Props> = ({
         {/* Sale Artwork Thumbnail Image */}
         {!auctionResult.images?.thumbnail?.url ? (
           <Flex
-            width={100}
-            height={130}
+            width={IMAGE_WIDTH}
+            height={IMAGE_HEIGHT}
             borderRadius={2}
             backgroundColor="black5"
             alignItems="center"
@@ -51,8 +54,8 @@ const AuctionResultListItem: React.FC<Props> = ({
           </Flex>
         ) : (
           <Flex
-            width={100}
-            height={130}
+            width={IMAGE_WIDTH}
+            height={IMAGE_HEIGHT}
             borderRadius={2}
             alignItems="center"
             justifyContent="center"
@@ -62,13 +65,13 @@ const AuctionResultListItem: React.FC<Props> = ({
           >
             <FastImage
               style={{
-                height: 130,
+                height: IMAGE_HEIGHT,
                 width: 100,
               }}
               source={{
                 uri: auctionResult.images.thumbnail.url,
               }}
-              resizeMode={FastImage.resizeMode.contain}
+              resizeMode={FastImage.resizeMode.cover}
             />
           </Flex>
         )}
