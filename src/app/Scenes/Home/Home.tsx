@@ -142,6 +142,7 @@ const Home = (props: Props) => {
       title: "Upcoming Auctions",
       type: "upcoming-auctions",
       data: meBelow,
+      hidden: !showUpcomingAuctionResultsRail,
     },
     {
       title: "Latest Auction Results",
@@ -207,7 +208,6 @@ const Home = (props: Props) => {
       title: "Similar to Works You've Viewed",
       type: "artwork",
       data: homePageBelow?.similarToRecentlyViewedArtworkModule,
-      hidden: !showUpcomingAuctionResultsRail,
     },
   ])
 
