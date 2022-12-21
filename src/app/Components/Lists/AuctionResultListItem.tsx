@@ -9,6 +9,7 @@ import { Stopwatch } from "palette/svgs/sf"
 import { Dimensions } from "react-native"
 import FastImage from "react-native-fast-image"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useScreenDimensions } from "shared/hooks/useScreenDimensions"
 import { AuctionResultsMidEstimate } from "../AuctionResult/AuctionResultMidEstimate"
 
 interface Props {
