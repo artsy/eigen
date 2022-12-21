@@ -41,8 +41,6 @@ export const ArtworkDetailsForm: React.FC = () => {
     acceptableCategoriesForSubmission()
   ).current
 
-  console.log("categories", categories)
-
   return (
     <>
       <ArtistAutosuggest />
