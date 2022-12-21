@@ -11,7 +11,10 @@ export type AcceptableCategoryValue = AcceptableValuesMapKey
 
 // By having this ACCEPTABLE_VALUES_MAP structure, we are forced to update this list
 // whenever ConsignmentSubmissionCategoryAggregation changes, because yarn tsc will fail
-const ACCEPTABLE_VALUES_MAP: Record<AcceptableValuesMapKey, AcceptableCategoryValue> = {
+export const ACCEPTABLE_CATEGORY_VALUES_MAP: Record<
+  AcceptableValuesMapKey,
+  AcceptableCategoryValue
+> = {
   ARCHITECTURE: "ARCHITECTURE",
   DESIGN_DECORATIVE_ART: "DESIGN_DECORATIVE_ART",
   DRAWING_COLLAGE_OR_OTHER_WORK_ON_PAPER: "DRAWING_COLLAGE_OR_OTHER_WORK_ON_PAPER",
@@ -44,7 +47,7 @@ export const formatCategoryValueForSubmission = (categoryValue: string) => {
 export const acceptableCategoriesForSubmission = () => {
   const categories = artworkMediumCategories.map((medium) => {
     const newVal = formatCategoryValueForSubmission(medium.value)
-    if (ACCEPTABLE_VALUES_MAP[newVal as AcceptableValuesMapKey]) {
+    if (ACCEPTABLE_CATEGORY_VALUES_MAP[newVal as AcceptableValuesMapKey]) {
       return { label: medium.label, value: newVal }
     }
     return null
