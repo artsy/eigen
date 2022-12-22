@@ -3,6 +3,7 @@ import { SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$data } from
 import { SmallArtworkRail_artworks$data } from "__generated__/SmallArtworkRail_artworks.graphql"
 import { ArtworkCardSize, ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
+import { Schema } from "app/utils/track"
 import { Spacer } from "palette"
 import React, { ReactElement } from "react"
 import { FlatList } from "react-native"
@@ -18,6 +19,7 @@ interface CommonArtworkRailProps {
   onEndReachedThreshold?: number
   size: ArtworkCardSize
   showSaveIcon?: boolean
+  trackingContextScreenOwnerType?: Schema.OwnerEntityTypes
 }
 
 export interface ArtworkRailProps extends CommonArtworkRailProps {
@@ -39,6 +41,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
   hideArtistName = false,
   artworks,
   showSaveIcon = false,
+  trackingContextScreenOwnerType,
 }) => {
   return (
     <PrefetchFlatList
@@ -66,6 +69,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
           }}
           showSaveIcon={showSaveIcon}
           size={size}
+          trackingContextScreenOwnerType={trackingContextScreenOwnerType}
         />
       )}
       keyExtractor={(item, index) => String(item.slug || index)}

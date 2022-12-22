@@ -57,6 +57,18 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
     return null
   }
 
+  const handleOnArtworkPress = (artwork: any, position: any) => {
+    trackEvent(
+      HomeAnalytics.artworkThumbnailTapEvent(
+        ContextModule.newWorksForYouRail,
+        artwork.slug,
+        position,
+        "single"
+      )
+    )
+    navigate(artwork.href!)
+  }
+
   return (
     <Flex mb={mb}>
       <View ref={railRef}>
@@ -72,33 +84,15 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
         {railVariant.variant === "experiment" || enforceLargeRail ? (
           <LargeArtworkRail
             artworks={artworks}
-            onPress={(artwork, position) => {
-              trackEvent(
-                HomeAnalytics.artworkThumbnailTapEvent(
-                  ContextModule.newWorksForYouRail,
-                  artwork.slug,
-                  position,
-                  "single"
-                )
-              )
-              navigate(artwork.href!)
-            }}
+            onPress={handleOnArtworkPress}
             showSaveIcon={enableSaveIcon}
+            trackingContextScreenOwnerType={Schema.OwnerEntityTypes.Home}
           />
         ) : (
           <SmallArtworkRail
             artworks={smallArtworks}
-            onPress={(artwork, position) => {
-              trackEvent(
-                HomeAnalytics.artworkThumbnailTapEvent(
-                  ContextModule.newWorksForYouRail,
-                  artwork.slug,
-                  position,
-                  "single"
-                )
-              )
-              navigate(artwork.href!)
-            }}
+            onPress={handleOnArtworkPress}
+            trackingContextScreenOwnerType={Schema.OwnerEntityTypes.Home}
           />
         )}
       </View>
