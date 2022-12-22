@@ -5,7 +5,7 @@ import {
 } from "./AuctionResultsScreenWrapper"
 
 export const AuctionResultsForArtistsYouFollowQueryRenderer = () => {
-  return <AuctionResultsScreenScreenWrapperQueryQueryRenderer state={AuctionResultsState.ALL} />
+  return <AuctionResultsScreenScreenWrapperQueryQueryRenderer state={AuctionResultsState.PAST} />
 }
 
 export const AuctionResultsForArtistsYouFollowPrefetchQuery = graphql`
