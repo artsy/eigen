@@ -311,6 +311,14 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
       if (hasEarliestCreatedYearFilterEnabled || hasLatestCreatedYearFilterEnabled) {
         --selectedFiltersSum
       }
+
+      const hasFilteredUpcomingAuctionResults =
+        appliedFiltersState.find((filter) => filter.paramName === FilterParamName.state)
+          ?.paramValue === "ALL"
+
+      if (hasFilteredUpcomingAuctionResults) {
+        --selectedFiltersSum
+      }
     }
     // For Sale Artworks, the artistsIDs and the includeArtworksByFollowedArtists filters behave like one
     // Therefore we need to decrement the number of filters by one to give the user the impression they are one
