@@ -1,4 +1,4 @@
-import { Text, TextProps } from "palette"
+import { Flex, Text, TextProps } from "palette"
 
 interface AuctionResultsMidEstimateProps {
   value: string
@@ -14,11 +14,21 @@ export const AuctionResultsMidEstimate: React.FC<AuctionResultsMidEstimateProps>
   const color = ratioColor(value)
 
   return (
-    <Text variant={textVariant} color={color} fontWeight="500">
-      ({value[0] === "-" ? "-" : "+"}
-      {new Intl.NumberFormat().format(Number(value.replace(/%|-/gm, "")))}%
-      {!!shortDescription && ` ${shortDescription}`})
-    </Text>
+    <Flex flexDirection="row" pt="3px">
+      <Text variant={textVariant} color={color} fontWeight="500">
+        ({value[0] === "-" ? "-" : "+"}
+        {new Intl.NumberFormat().format(Number(value.replace(/%|-/gm, "")))}%
+      </Text>
+      {!!shortDescription && (
+        <Text variant={textVariant} color={color} fontWeight="500">
+          {" "}
+          {shortDescription}
+        </Text>
+      )}
+      <Text variant={textVariant} color={color} fontWeight="500">
+        )
+      </Text>
+    </Flex>
   )
 }
 

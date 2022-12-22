@@ -255,7 +255,8 @@ export const features = defineFeatures({
   ARShowUpcomingAuctionResultsRails: {
     description: "Show upcoming auction rails",
     showInDevMenu: true,
-    readyForRelease: false,
+    readyForRelease: true,
+    echoFlagKey: "ARShowUpcomingAuctionResultsRails",
   },
 })
 
