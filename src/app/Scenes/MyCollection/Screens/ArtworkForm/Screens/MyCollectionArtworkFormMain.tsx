@@ -3,6 +3,7 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Currency } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
+import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { isEmpty } from "lodash"
 import {
@@ -91,6 +92,10 @@ export const MyCollectionArtworkFormMain: React.FC<
     )
   }
 
+  const handleCategory = (category: string) => {
+    formik.handleChange("category")(category)
+  }
+
   return (
     <>
       <ArtsyKeyboardAvoidingView>
@@ -142,7 +147,11 @@ export const MyCollectionArtworkFormMain: React.FC<
                 accessibilityLabel="Title"
                 value={formikValues.title}
               />
-              <CategoryPicker />
+              <CategoryPicker<string>
+                value={formikValues.category}
+                options={artworkMediumCategories}
+                handleChange={handleCategory}
+              />
               <Input
                 title="Year"
                 keyboardType="number-pad"

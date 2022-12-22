@@ -1,6 +1,7 @@
 import { ConsignmentSubmissionCategoryAggregation } from "__generated__/createConsignSubmissionMutation.graphql"
 import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { compact } from "lodash"
+import { SelectOption } from "palette/elements/Select"
 
 type AcceptableValuesMapKey = Exclude<
   ConsignmentSubmissionCategoryAggregation,
@@ -41,13 +42,15 @@ export const formatCategoryValueForSubmission = (categoryValue: string) => {
       }
       return accumulator
     }, [] as string[])
-    .join("_")
+    .join("_") as AcceptableCategoryValue
 }
 
-export const acceptableCategoriesForSubmission = () => {
+export const acceptableCategoriesForSubmission = (): Array<
+  SelectOption<AcceptableCategoryValue>
+> => {
   const categories = artworkMediumCategories.map((medium) => {
     const newVal = formatCategoryValueForSubmission(medium.value)
-    if (ACCEPTABLE_CATEGORY_VALUES_MAP[newVal as AcceptableValuesMapKey]) {
+    if (ACCEPTABLE_CATEGORY_VALUES_MAP[newVal]) {
       return { label: medium.label, value: newVal }
     }
     return null
