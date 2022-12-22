@@ -41,6 +41,7 @@ export interface ArtworkRailCardProps {
   showSaveIcon?: boolean
   size: ArtworkCardSize
   testID?: string
+  trackingContextScreenOwnerType?: Schema.OwnerEntityTypes
 }
 
 export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
@@ -55,6 +56,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   showSaveIcon = false,
   size,
   testID,
+  trackingContextScreenOwnerType,
   ...restProps
 }) => {
   const { trackEvent } = useTracking()
@@ -127,7 +129,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
       },
     })
 
-    trackEvent(tracks.saveOrUnsave(isSaved, internalID, slug))
+    trackEvent(tracks.saveOrUnsave(isSaved, internalID, slug, trackingContextScreenOwnerType))
   }
 
   return (
@@ -392,9 +394,14 @@ const ArtworkCard = styled.TouchableHighlight.attrs(() => ({
 }))``
 
 const tracks = {
-  saveOrUnsave: (isSaved?: boolean | null, internalID?: string, slug?: string) => ({
+  saveOrUnsave: (
+    isSaved?: boolean | null,
+    internalID?: string,
+    slug?: string,
+    contextScreenOwnerType: Schema.OwnerEntityTypes | undefined = Schema.OwnerEntityTypes.Artwork
+  ) => ({
     action_name: isSaved ? Schema.ActionNames.ArtworkUnsave : Schema.ActionNames.ArtworkSave,
-    context_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
+    context_screen_owner_type: contextScreenOwnerType,
     context_module: Schema.ContextModules.ArtworkActions,
     context_screen_owner_id: internalID,
     context_screen_owner_slug: slug,
