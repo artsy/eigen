@@ -69,7 +69,7 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me$data } & Props> =
 export const AuctionResultsRailFragmentContainer = createFragmentContainer(AuctionResultsRail, {
   me: graphql`
     fragment AuctionResultsRail_me on Me {
-      auctionResultsByFollowedArtists(first: 3) {
+      auctionResultsByFollowedArtists(first: 3, state: PAST) {
         totalCount
         edges {
           cursor

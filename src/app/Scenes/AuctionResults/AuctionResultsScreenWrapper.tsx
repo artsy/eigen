@@ -162,7 +162,7 @@ export enum AuctionResultsState {
 const getTitleByState = (state: AuctionResultsState) => {
   switch (state) {
     case AuctionResultsState.PAST:
-      return "Past Auction Results"
+      return "Latest Auction Results"
     case AuctionResultsState.UPCOMING:
       return "Upcoming Auction Results"
     case AuctionResultsState.ALL:
@@ -173,7 +173,7 @@ const getTitleByState = (state: AuctionResultsState) => {
 const getDescriptionByState = (state: AuctionResultsState) => {
   switch (state) {
     case AuctionResultsState.PAST:
-      return "See past auction results for the artists you follow"
+      return "See auction results for the artists you follow"
     case AuctionResultsState.UPCOMING:
       return "Discover upcoming auctions for artists you follow"
     case AuctionResultsState.ALL:

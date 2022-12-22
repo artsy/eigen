@@ -46,7 +46,11 @@ export const HomeUpcomingAuctionsRail: React.FC<HomeUpcomingAuctionsRailProps> =
         showsHorizontalScrollIndicator={false}
         initialNumToRender={3}
         renderItem={({ item }) => (
-          <AuctionResultListItemFragmentContainer auctionResult={item} width={screenWidth * 0.9} />
+          <AuctionResultListItemFragmentContainer
+            showArtistName
+            auctionResult={item}
+            width={screenWidth * 0.9}
+          />
         )}
       />
     </Flex>

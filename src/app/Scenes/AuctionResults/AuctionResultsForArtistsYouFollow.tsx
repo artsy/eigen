@@ -11,7 +11,7 @@ export const AuctionResultsForArtistsYouFollowQueryRenderer = () => {
 export const AuctionResultsForArtistsYouFollowPrefetchQuery = graphql`
   query AuctionResultsForArtistsYouFollowPrefetchQuery {
     me {
-      ...AuctionResultsScreenWrapper_me @arguments(state: ALL)
+      ...AuctionResultsScreenWrapper_me @arguments(state: PAST)
     }
   }
 `
