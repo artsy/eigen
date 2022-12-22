@@ -93,6 +93,9 @@ const artworkFragment = graphql`
     title
     date
     medium
+    mediumType {
+      name
+    }
     artist {
       internalID
       name

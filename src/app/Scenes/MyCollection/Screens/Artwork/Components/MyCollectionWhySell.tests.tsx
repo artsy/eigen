@@ -158,6 +158,7 @@ describe("MyCollectionWhySell", () => {
           artist: "Banksy",
           artistId: "4dd1584de0091e000100207c",
           attributionClass: "UNIQUE",
+          category: null,
           depth: "13",
           dimensionsMetric: "cm",
           editionNumber: "11",

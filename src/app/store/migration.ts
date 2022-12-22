@@ -44,9 +44,10 @@ export const Versions = {
   AddUserPreferredPriceRange: 32,
   RenameAdminToLocalOverridesForFeatures: 33,
   MoveEnvironmentToDevicePrefsAndRenameAdminToLocal: 34,
+  AddCategoryToSubmissionArtworkDetails: 35,
 }
 
-export const CURRENT_APP_VERSION = Versions.MoveEnvironmentToDevicePrefsAndRenameAdminToLocal
+export const CURRENT_APP_VERSION = Versions.AddCategoryToSubmissionArtworkDetails
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -261,6 +262,10 @@ export const artsyAppMigrations: Migrations = {
     delete state.artsyPrefs.environment
     state.devicePrefs.environment.localOverrides = state.devicePrefs.environment.adminOverrides
     delete state.devicePrefs.environment.adminOverrides
+  },
+  [Versions.AddCategoryToSubmissionArtworkDetails]: (state) => {
+    state.artworkSubmission.submission.artworkDetails.category = null
+    state.artworkSubmission.submission.dirtyArtworkDetailsValues.category = null
   },
 }
 

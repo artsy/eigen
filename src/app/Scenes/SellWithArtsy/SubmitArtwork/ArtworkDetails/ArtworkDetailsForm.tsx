@@ -1,4 +1,5 @@
 import { buildLocationDisplay, LocationAutocomplete } from "app/Components/LocationAutocomplete"
+import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/CategoryPicker"
 import { GlobalStore } from "app/store/GlobalStore"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
 import { LocationWithDetails } from "app/utils/googleMaps"
@@ -14,10 +15,14 @@ import {
   Spacer,
   Text,
 } from "palette"
-import { Select } from "palette/elements/Select"
-import React, { useEffect, useState } from "react"
+import { Select, SelectOption } from "palette/elements/Select"
+import React, { useEffect, useRef, useState } from "react"
 import { ArtistAutosuggest } from "../../../../Components/ArtistAutosuggest/ArtistAutosuggest"
 import { InfoModal } from "./InfoModal/InfoModal"
+import {
+  acceptableCategoriesForSubmission,
+  AcceptableCategoryValue,
+} from "./utils/acceptableCategoriesForSubmission"
 import { limitedEditionValue, rarityOptions } from "./utils/rarityOptions"
 import { ArtworkDetailsFormModel, countriesRequirePostalCode } from "./validation"
 
@@ -35,6 +40,10 @@ export const ArtworkDetailsForm: React.FC = () => {
       GlobalStore.actions.artworkSubmission.submission.setDirtyArtworkDetailsValues(values)
     }
   }, [values])
+
+  const categories = useRef<Array<SelectOption<AcceptableCategoryValue>>>(
+    acceptableCategoriesForSubmission()
+  ).current
 
   return (
     <>
@@ -57,6 +66,13 @@ export const ArtworkDetailsForm: React.FC = () => {
         value={values.year}
         onChangeText={(e) => setFieldValue("year", e)}
         accessibilityLabel="Year"
+      />
+      <StandardSpace />
+      <CategoryPicker<AcceptableCategoryValue | null>
+        handleChange={(category) => setFieldValue("category", category)}
+        options={categories}
+        required={false}
+        value={values.category}
       />
       <StandardSpace />
       <Input
