@@ -22,9 +22,12 @@ export const AuctionResultsMidEstimate: React.FC<AuctionResultsMidEstimateProps>
       {!!shortDescription && (
         <Text variant={textVariant} color={color} fontWeight="500">
           {" "}
-          {shortDescription})
+          {shortDescription}
         </Text>
       )}
+      <Text variant={textVariant} color={color} fontWeight="500">
+        )
+      </Text>
     </Flex>
   )
 }
