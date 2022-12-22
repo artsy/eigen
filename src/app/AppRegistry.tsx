@@ -31,9 +31,13 @@ import { ArtworkMediumQueryRenderer } from "./Scenes/ArtworkMedium/ArtworkMedium
 import { AuctionBuyersPremiumQueryRenderer } from "./Scenes/AuctionBuyersPremium/AuctionBuyersPremium"
 import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
 import {
+  AuctionResultsForArtistsYouFollowPrefetchQuery,
   AuctionResultsForArtistsYouFollowQueryRenderer,
-  AuctionResultsForArtistsYouFollowScreenQuery,
-} from "./Scenes/AuctionResultsForArtistsYouFollow/AuctionResultsForArtistsYouFollow"
+} from "./Scenes/AuctionResults/AuctionResultsForArtistsYouFollow"
+import {
+  AuctionResultsUpcomingPrefetchQuery,
+  AuctionResultsUpcomingQueryRenderer,
+} from "./Scenes/AuctionResults/AuctionResultsUpcoming"
 import { BottomTabs } from "./Scenes/BottomTabs/BottomTabs"
 import { BottomTabOption, BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
 import { CityView } from "./Scenes/City/City"
@@ -348,13 +352,18 @@ export const modules = defineModules({
   Auction: reactModule(SaleQueryRenderer, { fullBleed: true }, [SaleScreenQuery]),
   Auctions: reactModule(SalesQueryRenderer, {}, [SalesScreenQuery]),
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
+
   AuctionResult: reactModule(AuctionResultQueryRenderer),
   AuctionResultsForArtistsYouFollow: reactModule(
     AuctionResultsForArtistsYouFollowQueryRenderer,
     {},
-    [AuctionResultsForArtistsYouFollowScreenQuery]
+    [AuctionResultsForArtistsYouFollowPrefetchQuery]
   ),
   AuctionResultsForArtistsYouCollect: reactModule(AuctionResultsForArtistsYouCollect),
+  UpcomingAuctionResults: reactModule(AuctionResultsUpcomingQueryRenderer, {}, [
+    AuctionResultsUpcomingPrefetchQuery,
+  ]),
+
   MedianSalePriceAtAuction: reactModule(MedianSalePriceAtAuction),
   CareerHighlightsBigCardsSwiper: reactModule(CareerHighlightsBigCardsSwiper, {
     alwaysPresentModally: true,
@@ -478,6 +487,7 @@ export const modules = defineModules({
   }),
   ConsignmentInquiry: reactModule(ConsignmentInquiryScreen),
   UnlistedArtworksFAQScreen: reactModule(UnlistedArtworksFAQScreen),
+
   VanityURLEntity: reactModule(VanityURLEntityRenderer, { fullBleed: true }),
   ViewingRoom: reactModule(ViewingRoomQueryRenderer, { fullBleed: true }),
   ViewingRoomArtwork: reactModule(ViewingRoomArtworkScreen),
