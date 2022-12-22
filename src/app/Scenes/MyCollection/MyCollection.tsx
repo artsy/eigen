@@ -255,6 +255,9 @@ export const MyCollectionContainer = createPaginationContainer(
               id
               internalID
               medium
+              mediumType {
+                name
+              }
               title
               pricePaid {
                 minor
