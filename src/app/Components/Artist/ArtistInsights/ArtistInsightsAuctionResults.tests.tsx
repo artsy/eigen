@@ -70,7 +70,7 @@ describe("ArtistInsightsAuctionResults", () => {
     />
   )
 
-  describe("Upcoming auction reuslt", () => {
+  describe("Upcoming auction results", () => {
     it("are shown when upcoming auction results are available", () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer initialData={initialState} />)
       resolveMostRecentRelayOperation(mockEnvironment, {
