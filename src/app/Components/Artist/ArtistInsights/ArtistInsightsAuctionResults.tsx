@@ -12,6 +12,7 @@ import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { PAGE_SIZE } from "app/Components/constants"
 import Spinner from "app/Components/Spinner"
 import { navigate } from "app/navigation/navigate"
+import { AuctionResultsState } from "app/Scenes/AuctionResults/AuctionResultsScreenWrapper"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { debounce } from "lodash"
@@ -138,38 +139,51 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
     Number(artist.auctionResultsConnection?.totalCount) === 1 ? "result" : "results"
 
   const auctionResultsByState = useMemo(() => {
+    const appliedAuctionResultsStateFilter = appliedFilters?.find(
+      (filter) => filter.paramName === FilterParamName.state
+    )?.paramValue
+
+    const hideUpcomingAuctions = appliedAuctionResultsStateFilter === AuctionResultsState.PAST
+
     const res: Array<{
+      id: "upcoming" | "past"
       title: string
       data: Array<
         ExtractNodeType<ArtistInsightsAuctionResults_artist$data["auctionResultsConnection"]>
       >
       count: number
-    }> = [
-      {
+    }> = []
+
+    // We don't want to show the upcoming auctions section if the user has already filtered them out
+    if (!hideUpcomingAuctions) {
+      res.push({
+        id: "upcoming",
         title: "Upcoming Auctions",
         data: [],
         count: artist.upcomingAuctionResults?.totalCount || 0,
-      },
-      {
-        title: "Past Auctions",
-        data: [],
-        count: artist.pastAuctionResults?.totalCount || 0,
-      },
-    ]
+      })
+    }
+
+    res.push({
+      id: "past",
+      title: "Past Auctions",
+      data: [],
+      count: artist.pastAuctionResults?.totalCount || 0,
+    })
 
     auctionResults.forEach((auctionResult) => {
       if (
         auctionResult.saleDate &&
         DateTime.fromISO(auctionResult.saleDate) >= DateTime.fromISO(DateTime.now().toISO())
       ) {
-        res[0].data.push(auctionResult)
+        res.find((item) => item.id === "upcoming")?.data.push(auctionResult)
       } else {
-        res[1].data.push(auctionResult)
+        res.find((item) => item.id === "past")?.data.push(auctionResult)
       }
     })
 
     return res.filter((section) => section.count > 0)
-  }, [auctionResults])
+  }, [auctionResults, appliedFilters])
 
   return (
     <View
@@ -272,6 +286,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
         organizations: { type: "[String]" }
         sizes: { type: "[ArtworkSizes]" }
         sort: { type: "AuctionResultSorts", defaultValue: DATE_DESC }
+        state: { type: "AuctionResultsState", defaultValue: ALL }
       ) {
         birthday
         slug
@@ -312,6 +327,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
           organizations: $organizations
           sizes: $sizes
           sort: $sort
+          state: $state
         ) @connection(key: "artist_auctionResultsConnection") {
           createdYearRange {
             startAt
@@ -354,6 +370,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
         $organizations: [String]
         $sizes: [ArtworkSizes]
         $sort: AuctionResultSorts
+        $state: AuctionResultsState
       ) {
         artist(id: $artistID) {
           ...ArtistInsightsAuctionResults_artist
@@ -368,6 +385,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
               organizations: $organizations
               sizes: $sizes
               sort: $sort
+              state: $state
             )
         }
       }
