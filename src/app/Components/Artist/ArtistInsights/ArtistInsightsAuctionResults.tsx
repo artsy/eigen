@@ -217,40 +217,38 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
         />
       </Flex>
       {auctionResults.length ? (
-        <Flex py={2}>
-          <SectionList
-            sections={auctionResultsByState}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <AuctionResultListItemFragmentContainer
-                auctionResult={item}
-                onPress={() => {
-                  tracking.trackEvent(tracks.tapAuctionGroup(item.internalID, artist.internalID))
-                  navigate(`/artist/${artist?.slug!}/auction-result/${item.internalID}`)
-                }}
-              />
-            )}
-            renderSectionHeader={({ section: { title, count } }) => (
-              <Flex px={2} mb={2}>
-                <Text variant="sm-display">{title}</Text>
-                <Text variant="xs" color="black60">
-                  {count} result{count > 1 ? "s" : ""}
-                </Text>
+        <SectionList
+          sections={auctionResultsByState}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <AuctionResultListItemFragmentContainer
+              auctionResult={item}
+              onPress={() => {
+                tracking.trackEvent(tracks.tapAuctionGroup(item.internalID, artist.internalID))
+                navigate(`/artist/${artist?.slug!}/auction-result/${item.internalID}`)
+              }}
+            />
+          )}
+          renderSectionHeader={({ section: { title, count } }) => (
+            <Flex px={2} my={2}>
+              <Text variant="sm-display">{title}</Text>
+              <Text variant="xs" color="black60">
+                {count} result{count > 1 ? "s" : ""}
+              </Text>
+            </Flex>
+          )}
+          ItemSeparatorComponent={AuctionResultListSeparator}
+          style={{ width: useScreenDimensions().width, left: -20 }}
+          onEndReached={loadMoreAuctionResults}
+          ListFooterComponent={
+            loadingMoreData ? (
+              <Flex my={4}>
+                <Spinner />
               </Flex>
-            )}
-            ItemSeparatorComponent={AuctionResultListSeparator}
-            style={{ width: useScreenDimensions().width, left: -20 }}
-            onEndReached={loadMoreAuctionResults}
-            ListFooterComponent={
-              loadingMoreData ? (
-                <Flex my={4}>
-                  <Spinner />
-                </Flex>
-              ) : null
-            }
-            contentContainerStyle={{ paddingBottom: 20 }}
-          />
-        </Flex>
+            ) : null
+          }
+          contentContainerStyle={{ paddingBottom: 20 }}
+        />
       ) : (
         <Box my="80px">
           <FilteredArtworkGridZeroState
