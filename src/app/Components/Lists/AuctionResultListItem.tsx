@@ -174,7 +174,7 @@ const AuctionResultPriceSection = ({
 
   if (auctionResultHasPrice(auctionResult)) {
     return (
-      <Flex>
+      <Text>
         <Text variant="xs" fontWeight="500" testID="price">
           {auctionResult.priceRealized?.display}
           {!!showPriceUSD && auctionResult.priceRealized?.display ? ` ${bullet} ` : ""}
@@ -183,14 +183,11 @@ const AuctionResultPriceSection = ({
               {auctionResult.priceRealized?.displayUSD}
             </Text>
           )}{" "}
-          {!!auctionResult.performance?.mid && (
-            <AuctionResultsMidEstimate
-              value={auctionResult.performance.mid}
-              shortDescription="est"
-            />
-          )}
         </Text>
-      </Flex>
+        {!!auctionResult.performance?.mid && (
+          <AuctionResultsMidEstimate value={auctionResult.performance.mid} shortDescription="est" />
+        )}
+      </Text>
     )
   }
 
