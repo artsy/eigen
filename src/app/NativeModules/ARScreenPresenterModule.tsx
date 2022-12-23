@@ -6,7 +6,7 @@ import {
   TabActions,
 } from "@react-navigation/native"
 import { ViewDescriptor } from "app/navigation/navigate"
-import { scrollToTopForTab } from "app/navigation/useScrollToTopByTab"
+import { scrollToTopForTab } from "app/navigation/useScrollToTopForTab"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import immer from "immer-peasy"
 import { last } from "lodash"

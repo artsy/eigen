@@ -14,7 +14,7 @@ import { SmallArtworkRailPlaceholder } from "app/Components/ArtworkRail/SmallArt
 import { ArtistRailFragmentContainer } from "app/Components/Home/ArtistRails/ArtistRail"
 import { RecommendedArtistsRailFragmentContainer } from "app/Components/Home/ArtistRails/RecommendedArtistsRail"
 import { LotsByFollowedArtistsRailContainer } from "app/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail"
-import { useScrollToTopByTab } from "app/navigation/useScrollToTopByTab"
+import { useScrollToTopForTab } from "app/navigation/useScrollToTopForTab"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { ArtworkModuleRailFragmentContainer } from "app/Scenes/Home/Components/ArtworkModuleRail"
 import { AuctionResultsRailFragmentContainer } from "app/Scenes/Home/Components/AuctionResultsRail"
@@ -91,7 +91,7 @@ const Home = (props: Props) => {
     prefetchUrl("sales")
   }, [])
 
-  useScrollToTopByTab(listRef)
+  useScrollToTopForTab(listRef)
 
   const {
     homePageAbove,

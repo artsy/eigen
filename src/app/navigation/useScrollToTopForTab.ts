@@ -56,7 +56,7 @@ function getScrollableNode(ref: React.RefObject<ScrollableWrapper>) {
 
 const scrollsByTab: Partial<Record<BottomTabType, React.RefObject<ScrollableWrapper> | null>> = {}
 
-export const useScrollToTopByTab = (ref: RefObject<ScrollableWrapper>) => {
+export const useScrollToTopForTab = (ref: RefObject<ScrollableWrapper>) => {
   const selectedTab = useSelectedTab()
 
   useEffect(() => {
