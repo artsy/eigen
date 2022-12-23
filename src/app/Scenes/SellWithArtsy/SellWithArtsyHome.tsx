@@ -39,7 +39,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
   const listRef = useRef<ScrollView | null>(null)
 
   useLightStatusBarStyle()
-  useScrollToTopForTab(listRef)
+  useScrollToTopForTab("sell", listRef)
 
   const { height: screenHeight } = useScreenDimensions()
   const tracking = useTracking()

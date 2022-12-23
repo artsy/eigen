@@ -91,7 +91,7 @@ const Home = (props: Props) => {
     prefetchUrl("sales")
   }, [])
 
-  useScrollToTopForTab(listRef)
+  useScrollToTopForTab("home", listRef)
 
   const {
     homePageAbove,
