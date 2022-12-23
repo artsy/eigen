@@ -231,7 +231,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
               />
             )}
             renderSectionHeader={({ section: { title, count } }) => (
-              <Flex px={2}>
+              <Flex px={2} mb={2}>
                 <Text variant="sm-display">{title}</Text>
                 <Text variant="xs" color="black60">
                   {count} result{count > 1 ? "s" : ""}
