@@ -24,7 +24,6 @@ const IMAGE_HEIGHT = 130
 
 const AuctionResultListItem: React.FC<Props> = ({
   auctionResult,
-  first,
   onPress,
   showArtistName,
   width,
@@ -49,13 +48,7 @@ const AuctionResultListItem: React.FC<Props> = ({
         }
       }}
     >
-      <Flex
-        px={withHorizontalPadding ? 2 : 0}
-        pb={1}
-        pt={first ? 0 : 1}
-        flexDirection="row"
-        width={width}
-      >
+      <Flex px={withHorizontalPadding ? 2 : 0} flexDirection="row" width={width}>
         {/* Sale Artwork Thumbnail Image */}
         {!auctionResult.images?.thumbnail?.url ? (
           <Flex
@@ -174,8 +167,8 @@ const AuctionResultPriceSection = ({
 
   if (auctionResultHasPrice(auctionResult)) {
     return (
-      <Flex>
-        <Text variant="xs" fontWeight="500" testID="price">
+      <Text testID="price">
+        <Text variant="xs" fontWeight="500">
           {auctionResult.priceRealized?.display}
           {!!showPriceUSD && auctionResult.priceRealized?.display ? ` ${bullet} ` : ""}
           {!!showPriceUSD && (
@@ -183,14 +176,11 @@ const AuctionResultPriceSection = ({
               {auctionResult.priceRealized?.displayUSD}
             </Text>
           )}{" "}
-          {!!auctionResult.performance?.mid && (
-            <AuctionResultsMidEstimate
-              value={auctionResult.performance.mid}
-              shortDescription="est"
-            />
-          )}
         </Text>
-      </Flex>
+        {!!auctionResult.performance?.mid && (
+          <AuctionResultsMidEstimate value={auctionResult.performance.mid} shortDescription="est" />
+        )}
+      </Text>
     )
   }
 
@@ -204,7 +194,7 @@ const AuctionResultPriceSection = ({
   )
 }
 
-export const AuctionResultListSeparator = () => <Spacer px={2} />
+export const AuctionResultListSeparator = () => <Spacer px={2} pt={2} />
 
 export const AuctionResultListItemFragmentContainer = createFragmentContainer(
   AuctionResultListItem,

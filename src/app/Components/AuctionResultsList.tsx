@@ -71,6 +71,7 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
         keyExtractor={(item) => item.internalID}
         stickySectionHeadersEnabled
         ListHeaderComponent={ListHeaderComponent}
+        ItemSeparatorComponent={() => <Flex mt={2} />}
         renderSectionHeader={({ section: { sectionTitle } }) => (
           <Flex bg="white" mx="2">
             <Text my="2" variant="sm-display">
