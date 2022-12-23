@@ -3,12 +3,13 @@ import { SellWithArtsyHome_me$data } from "__generated__/SellWithArtsyHome_me.gr
 import { SellWithArtsyHome_recentlySoldArtworksTypeConnection$data } from "__generated__/SellWithArtsyHome_recentlySoldArtworksTypeConnection.graphql"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { navigate } from "app/navigation/navigate"
+import { useScrollToTopForTab } from "app/navigation/useScrollToTopForTab"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { GlobalStore } from "app/store/GlobalStore"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useLightStatusBarStyle } from "app/utils/useStatusBarStyle"
 import { Button, Flex, Screen, Spacer, Text } from "palette"
-import React, { useEffect } from "react"
+import React, { useEffect, useRef } from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -35,7 +36,10 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
   recentlySoldArtworks,
   me,
 }) => {
+  const listRef = useRef<ScrollView | null>(null)
+
   useLightStatusBarStyle()
+  useScrollToTopForTab(listRef)
 
   const { height: screenHeight } = useScreenDimensions()
   const tracking = useTracking()
@@ -63,7 +67,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
   return (
     <Screen.Background>
       <Flex flex={1} justifyContent="center" alignItems="center" minHeight={screenHeight}>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView ref={listRef} showsVerticalScrollIndicator={false}>
           <Flex pb={5}>
             <Header
               onConsignPress={handleConsignPress}
