@@ -2,7 +2,14 @@
 // Original implementation: https://github.com/react-navigation/react-navigation/blob/main/packages/native/src/useScrollToTop.tsx
 
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
-import { RefObject, useEffect } from "react"
+import { EventEmitter } from "events"
+import { RefObject, useCallback, useEffect } from "react"
+
+export const scrollToTopEvents = new EventEmitter()
+
+interface ScrollToTopEvent {
+  tabName: BottomTabType
+}
 
 interface ScrollOptions {
   x?: number
@@ -61,6 +68,26 @@ export const useScrollToTopForTab = (tab: BottomTabType, ref: RefObject<Scrollab
   }, [ref])
 }
 
+export const useTabPressEventListener = (handler: (data: ScrollToTopEvent) => void) => {
+  useEffect(() => {
+    scrollToTopEvents.addListener("tabPress", handler)
+
+    return () => {
+      scrollToTopEvents.removeListener("tabPress", handler)
+    }
+  }, [handler])
+}
+
+export const useScrollToTopListener = () => {
+  useTabPressEventListener(
+    useCallback((data: ScrollToTopEvent) => {
+      if (data.tabName) {
+        scrollToTopForTab(data.tabName)
+      }
+    }, [])
+  )
+}
+
 export const scrollToTopForTab = (tab: BottomTabType) => {
   const listRef = scrollsByTab[tab]
 
@@ -89,4 +116,12 @@ export const scrollToTopForTab = (tab: BottomTabType) => {
       scrollable.scrollResponderScrollTo({ y: 0, animated: true })
     }
   })
+}
+
+export const emitScrollToTopForTab = (tabName: BottomTabType) => {
+  const data: ScrollToTopEvent = {
+    tabName,
+  }
+
+  scrollToTopEvents.emit("tabPress", data)
 }

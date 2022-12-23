@@ -20,6 +20,7 @@ import { useErrorReporting } from "./errorReporting/hooks"
 import { ArtsyNativeModule, DEFAULT_NAVIGATION_BAR_COLOR } from "./NativeModules/ArtsyNativeModule"
 import { ModalStack } from "./navigation/ModalStack"
 import { navigate } from "./navigation/navigate"
+import { useScrollToTopListener } from "./navigation/useScrollToTopForTab"
 import { usePurgeCacheOnAppUpdate } from "./relay/usePurgeCacheOnAppUpdate"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
@@ -100,6 +101,7 @@ const Main = () => {
   useScreenReaderTracking()
   useFreshInstallTracking()
   usePurgeCacheOnAppUpdate()
+  useScrollToTopListener()
 
   useEffect(() => {
     if (isHydrated) {
