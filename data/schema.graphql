@@ -2621,6 +2621,7 @@ type AuctionResult implements Node {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+  isUpcoming: Boolean
   location: String
   mediumText: String
   organization: String

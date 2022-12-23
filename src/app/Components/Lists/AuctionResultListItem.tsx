@@ -32,8 +32,6 @@ const AuctionResultListItem: React.FC<Props> = ({
 }) => {
   const color = useColor()
 
-  const showPriceUSD = auctionResult.priceRealized?.displayUSD && auctionResult.currency !== "USD"
-
   const QAInfo: React.FC = () => (
     <QAInfoManualPanel position="absolute" top={0} left={95}>
       <QAInfoRow name="id" value={auctionResult.internalID} />
@@ -139,37 +137,70 @@ const AuctionResultListItem: React.FC<Props> = ({
               </Text>
             )}
 
-            {auctionResultHasPrice(auctionResult) ? (
-              <Flex>
-                <Text variant="xs" fontWeight="500" testID="price">
-                  {auctionResult.priceRealized?.display}
-                  {!!showPriceUSD && auctionResult.priceRealized?.display ? ` ${bullet} ` : ""}
-                  {!!showPriceUSD && (
-                    <Text variant="xs" testID="priceUSD">
-                      {auctionResult.priceRealized?.displayUSD}
-                    </Text>
-                  )}{" "}
-                  {!!auctionResult.performance?.mid && (
-                    <AuctionResultsMidEstimate
-                      value={auctionResult.performance.mid}
-                      shortDescription="est"
-                    />
-                  )}
-                </Text>
-              </Flex>
-            ) : (
-              <Flex flexDirection="row" alignItems="center">
-                <Stopwatch height={15} width={15} mr={0.5} />
-                <Text variant="xs" testID="price" italic>
-                  {auctionResultText(auctionResult)}
-                </Text>
-              </Flex>
-            )}
+            <AuctionResultPriceSection auctionResult={auctionResult} />
           </Flex>
         </Flex>
       </Flex>
       <QAInfo />
     </Touchable>
+  )
+}
+
+const AuctionResultPriceSection = ({
+  auctionResult,
+}: {
+  auctionResult: AuctionResultListItem_auctionResult$data
+}) => {
+  if (auctionResult.isUpcoming) {
+    if (!!auctionResult.estimate?.display) {
+      return (
+        <Text variant="xs" fontWeight="500" testID="price">
+          {auctionResult.estimate.display}
+          <Text variant="xs" fontWeight="400">
+            {" "}
+            (est)
+          </Text>
+        </Text>
+      )
+    }
+    return (
+      <Text variant="xs" testID="price" italic>
+        Estimate not available
+      </Text>
+    )
+  }
+
+  const showPriceUSD = auctionResult.priceRealized?.displayUSD && auctionResult.currency !== "USD"
+
+  if (auctionResultHasPrice(auctionResult)) {
+    return (
+      <Flex>
+        <Text variant="xs" fontWeight="500" testID="price">
+          {auctionResult.priceRealized?.display}
+          {!!showPriceUSD && auctionResult.priceRealized?.display ? ` ${bullet} ` : ""}
+          {!!showPriceUSD && (
+            <Text variant="xs" testID="priceUSD">
+              {auctionResult.priceRealized?.displayUSD}
+            </Text>
+          )}{" "}
+          {!!auctionResult.performance?.mid && (
+            <AuctionResultsMidEstimate
+              value={auctionResult.performance.mid}
+              shortDescription="est"
+            />
+          )}
+        </Text>
+      </Flex>
+    )
+  }
+
+  return (
+    <Flex flexDirection="row" alignItems="center">
+      <Stopwatch height={15} width={15} mr={0.5} />
+      <Text variant="xs" testID="price" italic>
+        {auctionResultText(auctionResult)}
+      </Text>
+    </Flex>
   )
 }
 
@@ -188,6 +219,7 @@ export const AuctionResultListItemFragmentContainer = createFragmentContainer(
         artist {
           name
         }
+        isUpcoming
         images {
           thumbnail {
             url(version: "square140")
@@ -198,6 +230,7 @@ export const AuctionResultListItemFragmentContainer = createFragmentContainer(
         }
         estimate {
           low
+          display
         }
         dimensionText
         mediumText
