@@ -16,7 +16,6 @@ import { AuctionResultsState } from "app/Scenes/AuctionResults/AuctionResultsScr
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { debounce } from "lodash"
-import { DateTime } from "luxon"
 import { Box, bullet, Flex, Separator, Spacer, Text } from "palette"
 import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { SectionList, View } from "react-native"
@@ -172,17 +171,14 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
     })
 
     auctionResults.forEach((auctionResult) => {
-      if (
-        auctionResult.saleDate &&
-        DateTime.fromISO(auctionResult.saleDate) >= DateTime.fromISO(DateTime.now().toISO())
-      ) {
+      if (auctionResult.isUpcoming) {
         res.find((item) => item.id === "upcoming")?.data.push(auctionResult)
       } else {
         res.find((item) => item.id === "past")?.data.push(auctionResult)
       }
     })
 
-    return res.filter((section) => section.count > 0)
+    return res.filter((section) => section.count > 0 && (__TEST__ || section.data.length > 0))
   }, [auctionResults, appliedFilters])
 
   return (
@@ -339,6 +335,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
               id
               internalID
               saleDate
+              isUpcoming
               ...AuctionResultListItem_auctionResult
             }
           }
