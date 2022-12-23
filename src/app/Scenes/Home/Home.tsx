@@ -14,6 +14,7 @@ import { SmallArtworkRailPlaceholder } from "app/Components/ArtworkRail/SmallArt
 import { ArtistRailFragmentContainer } from "app/Components/Home/ArtistRails/ArtistRail"
 import { RecommendedArtistsRailFragmentContainer } from "app/Components/Home/ArtistRails/RecommendedArtistsRail"
 import { LotsByFollowedArtistsRailContainer } from "app/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail"
+import { useScrollToTopByTab } from "app/navigation/useScrollToTopByTab"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { ArtworkModuleRailFragmentContainer } from "app/Scenes/Home/Components/ArtworkModuleRail"
 import { AuctionResultsRailFragmentContainer } from "app/Scenes/Home/Components/AuctionResultsRail"
@@ -37,7 +38,7 @@ import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { compact, times } from "lodash"
 import { ArtsyLogoIcon, Box, Flex, Join, Spacer } from "palette"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
-import { Alert, RefreshControl, View, ViewProps } from "react-native"
+import { Alert, FlatList, RefreshControl, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { articlesQueryVariables } from "../Articles/Articles"
 import { lotsByArtistsYouFollowDefaultVariables } from "../LotsByArtistsYouFollow/LotsByArtistsYouFollow"
@@ -81,6 +82,7 @@ interface Props extends ViewProps {
 
 const Home = (props: Props) => {
   const prefetchUrl = usePrefetch()
+  const listRef = useRef<FlatList | null>(null)
 
   useEffect(() => {
     prefetchUrl("search")
@@ -88,6 +90,8 @@ const Home = (props: Props) => {
     prefetchUrl("inbox")
     prefetchUrl("sales")
   }, [])
+
+  useScrollToTopByTab(listRef)
 
   const {
     homePageAbove,
@@ -222,6 +226,7 @@ const Home = (props: Props) => {
     >
       <View style={{ flex: 1 }}>
         <AboveTheFoldFlatList<HomeModule>
+          listRef={listRef}
           testID="home-flat-list"
           data={modules}
           initialNumToRender={5}

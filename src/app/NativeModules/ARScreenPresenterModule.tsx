@@ -6,6 +6,7 @@ import {
   TabActions,
 } from "@react-navigation/native"
 import { ViewDescriptor } from "app/navigation/navigate"
+import { scrollToTopForTab } from "app/navigation/useScrollToTopByTab"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import immer from "immer-peasy"
 import { last } from "lodash"
@@ -115,10 +116,8 @@ export const ARScreenPresenterModule: typeof NativeModules["ARScreenPresenterMod
       state.routes = [state.routes[0]]
       state.index = 0
     })
-    if (__DEV__) {
-      // TODO: scroll to top
-      console.warn("TODO: scroll to top")
-    }
+
+    scrollToTopForTab(selectedTab)
   },
   popToRootOrScrollToTop(selectedTab: BottomTabType) {
     updateTabStackState(selectedTab, (state) => {
@@ -126,10 +125,7 @@ export const ARScreenPresenterModule: typeof NativeModules["ARScreenPresenterMod
         state.routes = [state.routes[0]]
         state.index = 0
       } else {
-        if (__DEV__) {
-          // TODO: scroll to top
-          console.warn("TODO: scroll to top")
-        }
+        scrollToTopForTab(selectedTab)
       }
     })
   },
