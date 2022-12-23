@@ -2,7 +2,6 @@
 // Original implementation: https://github.com/react-navigation/react-navigation/blob/main/packages/native/src/useScrollToTop.tsx
 
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
-import { useSelectedTab } from "app/store/GlobalStore"
 import { RefObject, useEffect } from "react"
 
 interface ScrollOptions {
