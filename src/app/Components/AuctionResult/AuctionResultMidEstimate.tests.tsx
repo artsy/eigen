@@ -1,5 +1,5 @@
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
-import { Flex, Text } from "palette"
+import { Text } from "react-native"
 import { extractText } from "../../tests/extractText"
 import { AuctionResultsMidEstimate } from "./AuctionResultMidEstimate"
 
@@ -8,17 +8,17 @@ describe("AuctionResultMidEstimate", () => {
     const tree = renderWithWrappersLEGACY(
       <AuctionResultsMidEstimate value="25%" shortDescription="short description" />
     )
-    expect(extractText(tree.root.findAllByType(Flex)[0])).toContain("short description")
+    expect(extractText(tree.root.findAllByType(Text)[0])).toContain("short description")
   })
   it("renders properly when the percentage is greater than 5", () => {
     const tree = renderWithWrappersLEGACY(<AuctionResultsMidEstimate value="25%" />)
-    expect(extractText(tree.root.findAllByType(Flex)[0])).toEqual("(+25%)")
+    expect(extractText(tree.root.findAllByType(Text)[0])).toEqual("(+25%)")
     expect(tree.root.findAllByType(Text)[0].props.color).toEqual("green100")
   })
 
   it("renders properly when the percentage is less than -5", () => {
     const tree = renderWithWrappersLEGACY(<AuctionResultsMidEstimate value="-25%" />)
-    expect(extractText(tree.root.findAllByType(Flex)[0])).toEqual("(-25%)")
+    expect(extractText(tree.root.findAllByType(Text)[0])).toEqual("(-25%)")
     expect(tree.root.findAllByType(Text)[0].props.color).toEqual("red100")
   })
 
@@ -29,8 +29,8 @@ describe("AuctionResultMidEstimate", () => {
     expect(instance1.root.findAllByType(Text)[0].props.color).toEqual("black60")
     expect(instance2.root.findAllByType(Text)[0].props.color).toEqual("black60")
     expect(instance3.root.findAllByType(Text)[0].props.color).toEqual("black60")
-    expect(extractText(instance1.root.findAllByType(Flex)[0])).toEqual("(+2%)")
-    expect(extractText(instance2.root.findAllByType(Flex)[0])).toEqual("(+2%)")
-    expect(extractText(instance3.root.findAllByType(Flex)[0])).toEqual("(-2%)")
+    expect(extractText(instance1.root.findAllByType(Text)[0])).toEqual("(+2%)")
+    expect(extractText(instance2.root.findAllByType(Text)[0])).toEqual("(+2%)")
+    expect(extractText(instance3.root.findAllByType(Text)[0])).toEqual("(-2%)")
   })
 })
