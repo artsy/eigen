@@ -37,7 +37,7 @@
     "open-url": "npx uri-scheme open",
     "postinstall": "yarn init-metaflags; prettier --write package.json; ./scripts/update-echo",
     "prepare": "patch-package && husky install",
-    "prettier-project": "yarn run prettier-write 'src/**/*.{ts,tsx}'",
+    "prettier-project": "yarn run prettier-write 'src/**/*.{ts,tsx,js,jsx}'",
     "prettier-write": "prettier --write",
     "relay": "[ -f data/complete.queryMap.json ] || echo '{}' > data/complete.queryMap.json && relay-compiler",
     "setup:artsy": "./scripts/setup-env-for-artsy",
