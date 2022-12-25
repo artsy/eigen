@@ -95,7 +95,7 @@ export const Touchable: React.FC<TouchableProps> = ({
 
   return contextActions !== undefined ? (
     <ContextMenu actions={contextActions} onPress={contextOnPress}>
-      <Flex borderWidth={1} borderColor="red">
+      <Flex borderWidth={1}>
         <InnerTouchable />
       </Flex>
     </ContextMenu>

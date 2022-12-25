@@ -1,10 +1,12 @@
-import { ScreenOwnerType, tappedMainArtworkGrid } from "@artsy/cohesion"
+import { ContextModule, OwnerType, ScreenOwnerType, tappedMainArtworkGrid } from "@artsy/cohesion"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 
+import { ArtworkGridItemSaveMutation } from "__generated__/ArtworkGridItemSaveMutation.graphql"
 import { navigate } from "app/navigation/navigate"
+import { defaultEnvironment } from "app/relay/createEnvironment"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import {
@@ -13,6 +15,7 @@ import {
   RandomNumberGenerator,
 } from "app/utils/placeholders"
 import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
+import { userHadMeaningfulInteraction } from "app/utils/userHadMeaningfulInteraction"
 import { useArtworkBidding } from "app/Websockets/auctions/useArtworkBidding"
 import {
   Box,
@@ -27,7 +30,7 @@ import {
 } from "palette"
 import React, { useRef } from "react"
 import { View } from "react-native"
-import { createFragmentContainer, graphql, useMutation } from "react-relay"
+import { commitMutation, createFragmentContainer, graphql, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
 import { DurationProvider } from "../Countdown"
 import { LotCloseInfo } from "./LotCloseInfo"
@@ -206,7 +209,47 @@ export const Artwork: React.FC<ArtworkProps> = ({
     !!artwork.sale?.extendedBiddingPeriodMinutes && !!artwork.sale?.extendedBiddingIntervalMinutes
 
   return (
-    <Touchable onPress={handleTap} testID={`artworkGridItem-${artwork.title}`}>
+    <Touchable
+      onPress={handleTap}
+      testID={`artworkGridItem-${artwork.title}`}
+      onLongPress={[
+        {
+          title: artwork.isSaved ? "Remove from saved" : "Save",
+          systemIcon: artwork.isSaved ? "heart.fill" : "heart",
+          onPress: () => {
+            commitMutation<ArtworkGridItemSaveMutation>(defaultEnvironment, {
+              mutation: graphql`
+                mutation ArtworkGridItemSaveMutation($input: SaveArtworkInput!) {
+                  saveArtwork(input: $input) {
+                    artwork {
+                      id
+                      isSaved
+                    }
+                  }
+                }
+              `,
+              variables: { input: { artworkID: artwork.internalID, remove: artwork.isSaved } },
+              // @ts-expect-error RELAY 12 MIGRATION
+              optimisticResponse: {
+                saveArtwork: {
+                  artwork: {
+                    id: artwork.id,
+                    isSaved: !artwork.isSaved,
+                  },
+                },
+              },
+              onCompleted: () =>
+                userHadMeaningfulInteraction({
+                  contextModule: ContextModule.artworkMetadata,
+                  contextOwnerType: OwnerType.artwork,
+                  contextOwnerId: artwork.internalID,
+                  contextOwnerSlug: artwork.slug,
+                }),
+            })
+          },
+        },
+      ]}
+    >
       <View ref={itemRef}>
         {!!artwork.image && (
           <View>
