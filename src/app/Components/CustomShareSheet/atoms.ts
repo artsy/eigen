@@ -1,7 +1,11 @@
 import { atom, useAtom } from "jotai"
 
+type Item =
+  | { type: "artwork"; slug: string; currentImageIndex?: number }
+  | { type: "sale"; slug: string }
+
 const visibleAtom = atom(false)
-const itemAtom = atom<{ type: "artwork"; slug: string; currentImageIndex?: number } | null>(null)
+const itemAtom = atom<Item | null>(null)
 
 export const useCustomShareSheet = () => {
   const [, setVisible] = useAtom(visibleAtom)

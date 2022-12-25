@@ -1,17 +1,9 @@
-import Clipboard from "@react-native-clipboard/clipboard"
 import { SaleHeader_sale$data } from "__generated__/SaleHeader_sale.graphql"
-import {
-  CustomShareSheet,
-  CustomShareSheetItem,
-} from "app/Components/CustomShareSheet/CustomShareSheet"
-import { getShareURL } from "app/Components/ShareSheet/helpers"
-import { useToast } from "app/Components/Toast/toastHook"
+import { useCustomShareSheet } from "app/Components/CustomShareSheet/atoms"
 import { getAbsoluteTimeOfSale, saleTime, useRelativeTimeOfSale } from "app/utils/saleTime"
 import moment from "moment"
-import { Flex, LinkIcon, MoreIcon, ShareIcon, Text, Touchable } from "palette"
-import React, { useState } from "react"
+import { Flex, ShareIcon, Text, Touchable } from "palette"
 import { Animated, Dimensions, View } from "react-native"
-import RNShare, { ShareOptions } from "react-native-share"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 import { CaretButton } from "../../../Components/Buttons/CaretButton"
@@ -28,11 +20,8 @@ interface Props {
 }
 
 export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
-  const [shareSheetVisible, setShareSheetVisible] = useState(false)
-
+  const sharesheet = useCustomShareSheet()
   const enableAuctionShare = useFeatureFlag("AREnableAuctionShareButton")
-
-  const toast = useToast()
 
   const saleTimeDetails = saleTime(sale)
 
@@ -41,31 +30,6 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
   const relativeTimeOfSale = useRelativeTimeOfSale(sale)
 
   const cascadingEndTimeFeatureEnabled = sale.cascadingEndTimeIntervalMinutes
-
-  const handleCopyLinkPress = () => {
-    const clipboardLink = getShareURL(sale.href!)
-
-    setShareSheetVisible(false)
-    Clipboard.setString(clipboardLink)
-    toast.show("Copied to Clipboard", "middle", { Icon: ShareIcon })
-  }
-
-  const handleMorePress = async () => {
-    try {
-      const url = getShareURL(sale.href!)
-      const message = sale.name + " on Artsy"
-      const shareOptions: ShareOptions = {
-        title: message,
-        message: message + "\n" + url,
-      }
-
-      await RNShare.open(shareOptions)
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setShareSheetVisible(false)
-    }
-  }
 
   return (
     <>
@@ -138,9 +102,7 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
             {!!enableAuctionShare && (
               <Flex flex={0.1}>
                 <Touchable
-                  onPress={() => {
-                    setShareSheetVisible(true)
-                  }}
+                  onPress={() => void sharesheet.show({ type: "sale", slug: sale.slug })}
                   style={{
                     width: 30,
                     justifyContent: "flex-end",
@@ -193,11 +155,6 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
           />
         </Flex>
       </View>
-
-      <CustomShareSheet visible={shareSheetVisible} setVisible={setShareSheetVisible}>
-        <CustomShareSheetItem title="More" Icon={<MoreIcon />} onPress={handleMorePress} />
-        <CustomShareSheetItem title="Copy link" Icon={<LinkIcon />} onPress={handleCopyLinkPress} />
-      </CustomShareSheet>
     </>
   )
 }

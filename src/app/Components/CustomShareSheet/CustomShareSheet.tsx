@@ -184,7 +184,7 @@ interface CustomShareSheetItemProps {
   onPress?: () => void
 }
 
-const CustomShareSheetItem: React.FC<CustomShareSheetItemProps> = ({ title, Icon, onPress }) => (
+const CustomShareSheetItem = ({ title, Icon, onPress }: CustomShareSheetItemProps) => (
   <Touchable onPress={onPress}>
     <Flex width="100%" height={60} flexDirection="row" alignItems="center" px="2">
       {Icon}
