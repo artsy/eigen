@@ -20,13 +20,8 @@ storiesOf("Touchable", module)
       <Touchable
         onPress={() => console.warn("regular")}
         onLongPress={[
-          {
-            title: "Action 1",
-            subtitletitle: "Description 1",
-            systemIcon: "heart",
-            onPress: () => console.warn("1"),
-          },
-          { title: "Action 2", subtitletitle: "Description 2", onPress: () => console.warn("2") },
+          { title: "Action 1", systemIcon: "heart", onPress: () => console.warn("1") },
+          { title: "Action 2", onPress: () => console.warn("2") },
         ]}
       >
         <Text>Regular and Context press</Text>

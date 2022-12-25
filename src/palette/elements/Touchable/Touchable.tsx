@@ -6,7 +6,7 @@ import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 import { useColor } from "../../hooks"
 import { Flex } from "../Flex"
 
-interface ContextAction extends ContextMenuAction {
+interface ContextAction extends Omit<ContextMenuAction, "subtitletitle"> {
   onPress?: () => void
 }
 
@@ -59,7 +59,7 @@ export const Touchable: React.FC<TouchableProps> = ({
   const contextActions = isActions(onLongPress)
     ? onLongPress.map((action) => {
         const { onPress: ignored, ...rest } = action
-        return rest
+        return { subtitletitle: "", ...rest }
       })
     : undefined
 
