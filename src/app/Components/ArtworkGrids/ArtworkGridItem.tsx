@@ -33,6 +33,7 @@ import { View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
 import { DurationProvider } from "../Countdown"
+import { useCustomShareSheet } from "../CustomShareSheet/atoms"
 import { LotCloseInfo } from "./LotCloseInfo"
 import { LotProgressBar } from "./LotProgressBar"
 
@@ -103,6 +104,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const eableArtworkGridSaveIcon = useFeatureFlag("AREnableArtworkGridSaveIcon")
   const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageComponent")
   const [saveArtwork] = useMutation(SaveArtworkMutation)
+  const sharesheet = useCustomShareSheet()
 
   let filterParams: any
 
@@ -247,6 +249,11 @@ export const Artwork: React.FC<ArtworkProps> = ({
                 }),
             })
           },
+        },
+        {
+          title: "Share",
+          systemIcon: "square.and.arrow.up",
+          onPress: () => sharesheet.show({ type: "artwork", slug: artwork.slug }),
         },
       ]}
     >

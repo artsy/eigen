@@ -5,6 +5,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { RelayEnvironmentProvider } from "react-relay"
 import { ProvideScreenDimensions } from "shared/hooks"
+import { CustomShareSheet } from "./Components/CustomShareSheet/CustomShareSheet"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
 import { PopoverMessageProvider } from "./Components/PopoverMessage/PopoverMessageProvider"
 import { RetryErrorBoundary } from "./Components/RetryErrorBoundary"
@@ -37,7 +38,10 @@ export const AppProviders = ({ children }: { children?: React.ReactNode }) =>
       ToastProvider, // uses: GlobalStoreProvider
       GravityWebsocketContextProvider, // uses GlobalStoreProvider
     ],
-    children
+    <>
+      {children}
+      <CustomShareSheet />
+    </>
   )
 
 // Providers with preset props

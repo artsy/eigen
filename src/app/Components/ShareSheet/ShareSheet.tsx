@@ -9,7 +9,7 @@ import { ScrollView } from "react-native"
 import RNShare, { ShareOptions } from "react-native-share"
 import ViewShot from "react-native-view-shot"
 import { useTracking } from "react-tracking"
-import { CustomShareSheet, CustomShareSheetItem } from "../CustomShareSheet"
+import { CustomShareSheet, CustomShareSheetItem } from "../CustomShareSheet/CustomShareSheet"
 import { useToast } from "../Toast/toastHook"
 import { getBase64Data, getShareMessage, getShareURL } from "./helpers"
 

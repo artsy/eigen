@@ -1,6 +1,9 @@
 import Clipboard from "@react-native-clipboard/clipboard"
 import { SaleHeader_sale$data } from "__generated__/SaleHeader_sale.graphql"
-import { CustomShareSheet, CustomShareSheetItem } from "app/Components/CustomShareSheet"
+import {
+  CustomShareSheet,
+  CustomShareSheetItem,
+} from "app/Components/CustomShareSheet/CustomShareSheet"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
 import { useToast } from "app/Components/Toast/toastHook"
 import { getAbsoluteTimeOfSale, saleTime, useRelativeTimeOfSale } from "app/utils/saleTime"
