@@ -1,13 +1,12 @@
-import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArtistHeaderFloatingButtons_artist$data } from "__generated__/ArtistHeaderFloatingButtons_artist.graphql"
 import { HeaderButton } from "app/Components/HeaderButton"
-import { ShareSheet } from "app/Components/ShareSheet/ShareSheet"
 import { useStickyTabPageContext } from "app/Components/StickyTabPage/StickyTabPageContext"
 import { goBack } from "app/navigation/navigate"
 import { ChevronIcon, ShareIcon } from "palette"
-import React, { Fragment, useRef, useState } from "react"
+import React, { useRef, useState } from "react"
 import Animated, { block, call, cond, onChange, set, useCode } from "react-native-reanimated"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useCustomShareSheet } from "../CustomShareSheet/atoms"
 
 interface ArtistHeaderFloatingButtonsProps {
   artist: ArtistHeaderFloatingButtons_artist$data
@@ -20,7 +19,7 @@ const SHARE_ICON_SIZE = 23
 export const ArtistHeaderFloatingButtons: React.FC<ArtistHeaderFloatingButtonsProps> = ({
   artist,
 }) => {
-  const [shareSheetVisible, setShareSheetVisible] = useState(false)
+  const sharesheet = useCustomShareSheet()
   const [hideButton, setHideButton] = useState(false)
   const { headerOffsetY } = useStickyTabPageContext()
 
@@ -41,12 +40,8 @@ export const ArtistHeaderFloatingButtons: React.FC<ArtistHeaderFloatingButtonsPr
     []
   )
 
-  const handleSharePress = () => {
-    setShareSheetVisible(true)
-  }
-
   return (
-    <Fragment>
+    <>
       <HeaderButton
         shouldHide={hideButton}
         position="left"
@@ -58,27 +53,18 @@ export const ArtistHeaderFloatingButtons: React.FC<ArtistHeaderFloatingButtonsPr
 
       <HeaderButton
         shouldHide={hideButton}
-        onPress={handleSharePress}
+        onPress={() =>
+          sharesheet.show({
+            type: "artist",
+            slug: artist.slug,
+          })
+        }
         position="right"
         applySafeAreaTopInsets={false}
       >
         <ShareIcon width={SHARE_ICON_SIZE} height={SHARE_ICON_SIZE} />
       </HeaderButton>
-
-      <ShareSheet
-        entry={{
-          internalID: artist.internalID,
-          slug: artist.slug,
-          href: artist.href!,
-          artistNames: [artist.name!],
-          imageURL: artist.image?.url ?? undefined,
-        }}
-        ownerType={OwnerType.artist}
-        contextModule={ContextModule.artistHeader}
-        visible={shareSheetVisible}
-        setVisible={setShareSheetVisible}
-      />
-    </Fragment>
+    </>
   )
 }
 

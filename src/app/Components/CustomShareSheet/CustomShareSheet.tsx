@@ -49,6 +49,7 @@ export const CustomShareSheet = () => {
   const toast = useToast()
   const shotRef = useRef<ViewShot>(null)
   const { trackEvent } = useTracking()
+  // TODO: we need to handle thr artist and the sale case
   const data = useLazyLoadQuery<CustomShareSheet_ArtworkQuery>(artworkQuery, {
     slug: item?.slug ?? "",
     skip: !item,
@@ -234,6 +235,20 @@ const artworkQuery = graphql`
   }
 `
 
+const artistQuery = graphql`
+  query CustomShareSheet_ArtistQuery($slug: String!, $skip: Boolean!) {
+    artist(id: $slug) @skip(if: $skip) {
+      internalID
+      slug
+      href
+      name
+      image {
+        url(version: "large")
+      }
+    }
+  }
+`
+// TODO: needs the other stuff, like sale and artist
 export const tracks = {
   customShare: (service: string, id: string, slug?: string): ShareType => ({
     action: ActionType.share,

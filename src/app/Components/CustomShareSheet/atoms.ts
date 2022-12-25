@@ -1,8 +1,5 @@
 import { atom, useAtom } from "jotai"
-
-type Item =
-  | { type: "artwork"; slug: string; currentImageIndex?: number }
-  | { type: "sale"; slug: string }
+import { Item } from "./types"
 
 const visibleAtom = atom(false)
 const itemAtom = atom<Item | null>(null)

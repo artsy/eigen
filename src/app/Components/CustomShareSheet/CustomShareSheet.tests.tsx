@@ -6,7 +6,8 @@ import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { useCanOpenURL } from "app/utils/useCanOpenURL"
 import Share from "react-native-share"
 import * as helpers from "./helpers"
-import { ShareSheet, ShareSheetProps } from "./ShareSheet"
+
+// TODO: these tests need some rewriting
 
 const setVisibleMock = jest.fn()
 

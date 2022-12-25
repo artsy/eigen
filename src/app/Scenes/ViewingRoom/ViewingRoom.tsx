@@ -1,6 +1,6 @@
 import { ViewingRoom_viewingRoom$data } from "__generated__/ViewingRoom_viewingRoom.graphql"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
-import { getShareURL } from "app/Components/ShareSheet/helpers"
+import { getShareURL } from "app/Components/CustomShareSheet/helpers"
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
