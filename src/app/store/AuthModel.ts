@@ -105,10 +105,12 @@ const handleSignUpError = ({
 
 export const showBlockedAuthError = (mode: "sign in" | "sign up") => {
   const messagePrefix = mode === "sign in" ? "Sign in" : "Sign up"
+  const innerMessage = mode === "sign in" ? "signing in" : "signing up"
   Alert.alert(
-    "Something went wrong.",
-    messagePrefix +
-      " attempt blocked. Please try again from a different network or contact support@artsy.net for help.",
+    messagePrefix + " attempt blocked",
+    "Please try " +
+      innerMessage +
+      " from a different internet connection or contact support@artsy.net for help.",
     [
       {
         text: "OK",
