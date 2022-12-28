@@ -316,7 +316,7 @@ export const MyProfileEditForm: React.FC = () => {
               <ProfileVerifications
                 isIDVerified={!!me?.isIdentityVerified}
                 canRequestEmailConfirmation={!!me?.canRequestEmailConfirmation}
-                emailConfirmed={!!me?.emailConfirmed}
+                isEmailConfirmed={!!me?.isEmailConfirmed}
                 handleEmailVerification={handleEmailVerification}
                 handleIDVerification={handleIDVerification}
               />
@@ -355,7 +355,7 @@ const meFragment = graphql`
       url(version: "thumbnail")
     }
     email
-    emailConfirmed
+    isEmailConfirmed
     isIdentityVerified
     canRequestEmailConfirmation
   }
@@ -430,13 +430,13 @@ const VerifiedRow: React.FC<{ title: string; subtitle: string }> = ({ title, sub
 
 const ProfileVerifications = ({
   canRequestEmailConfirmation,
-  emailConfirmed,
+  isEmailConfirmed,
   handleEmailVerification,
   handleIDVerification,
   isIDVerified,
 }: {
   canRequestEmailConfirmation: boolean
-  emailConfirmed: boolean
+  isEmailConfirmed: boolean
   handleEmailVerification: () => void
   handleIDVerification: () => void
   isIDVerified: boolean
@@ -484,7 +484,7 @@ const ProfileVerifications = ({
       <Spacer height={30} />
 
       {/* Email Verification */}
-      {emailConfirmed ? (
+      {isEmailConfirmed ? (
         <VerifiedRow
           title="Email Address Verified"
           subtitle="Secure your account and receive updates about your transactions on Artsy."

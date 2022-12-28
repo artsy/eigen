@@ -58,7 +58,7 @@ describe("MyProfileEditForm", () => {
           resolveMostRecentRelayOperation(mockEnvironment, {
             Me: () => ({
               canRequestEmailConfirmation: false,
-              emailConfirmed: true,
+              isEmailConfirmed: true,
             }),
           })
           expect(getByText("Email Address Verified")).toBeTruthy()
@@ -71,7 +71,7 @@ describe("MyProfileEditForm", () => {
           resolveMostRecentRelayOperation(mockEnvironment, {
             Me: () => ({
               canRequestEmailConfirmation: true,
-              emailConfirmed: false,
+              isEmailConfirmed: false,
             }),
           })
           expect(getByText("Verify Your Email")).toBeTruthy()
@@ -82,7 +82,7 @@ describe("MyProfileEditForm", () => {
           resolveMostRecentRelayOperation(mockEnvironment, {
             Me: () => ({
               canRequestEmailConfirmation: true,
-              emailConfirmed: false,
+              isEmailConfirmed: false,
             }),
           })
           const VerifyYouEmailButton = getByTestId("verify-your-email")
@@ -112,7 +112,7 @@ describe("MyProfileEditForm", () => {
           resolveMostRecentRelayOperation(mockEnvironment, {
             Me: () => ({
               canRequestEmailConfirmation: false,
-              emailConfirmed: false,
+              isEmailConfirmed: false,
             }),
           })
           const VerifyYouEmailButton = getByTestId("verify-your-email")
