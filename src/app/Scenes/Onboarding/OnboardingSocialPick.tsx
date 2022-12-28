@@ -1,7 +1,11 @@
 import { useNavigation } from "@react-navigation/native"
 import { captureMessage } from "@sentry/react-native"
 import LoadingModal from "app/Components/Modals/LoadingModal"
-import { AuthPromiseRejectType, AuthPromiseResolveType } from "app/store/AuthModel"
+import {
+  AuthPromiseRejectType,
+  AuthPromiseResolveType,
+  showBlockedAuthError,
+} from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { osMajorVersion } from "app/utils/platformUtil"
 import { capitalize } from "lodash"
@@ -93,7 +97,18 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
       return
     }
     GlobalStore.actions.auth.setState({ sessionState: { isLoading: false } })
+
     InteractionManager.runAfterInteractions(() => {
+      const errorMode = error.message === "Attempt blocked" ? "attempt blocked" : "no account"
+      showErrorAlert(errorMode, error)
+    })
+  }
+
+  const showErrorAlert = (
+    errorMode: "no account" | "attempt blocked",
+    error: AuthPromiseRejectType
+  ) => {
+    if (errorMode === "no account") {
       Alert.alert("No Artsy account found", error.message, [
         {
           text: "Cancel",
@@ -109,7 +124,10 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
           },
         },
       ])
-    })
+    } else {
+      const blockedMode = mode === "login" ? "sign in" : "sign up"
+      showBlockedAuthError(blockedMode)
+    }
   }
 
   const handleSocialLogin = async (callback: () => Promise<AuthPromiseResolveType>) => {
