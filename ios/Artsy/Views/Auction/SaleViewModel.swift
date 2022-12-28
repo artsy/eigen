@@ -27,8 +27,8 @@ class SaleViewModel: NSObject {
         return sale.requireIdentityVerification
     }
 
-    var identityVerified: Bool {
-        return me.identityVerified
+    var isIdentityVerified: Bool {
+        return me.isIdentityVerified
     }
 
     var auctionState: ARAuctionState {

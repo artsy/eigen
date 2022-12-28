@@ -72,7 +72,7 @@ describe("SaleCard", () => {
         requireIdentityVerification: true,
       }),
       Me: () => ({
-        identityVerified: false,
+        isIdentityVerified: false,
         pendingIdentityVerification: { internalID: "idv-id" },
       }),
     })

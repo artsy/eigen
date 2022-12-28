@@ -498,7 +498,7 @@ const RegistrationContainer = createFragmentContainer(Registration, {
   me: graphql`
     fragment Registration_me on Me {
       hasCreditCards
-      identityVerified
+      isIdentityVerified
       phoneNumber {
         isValid
         display(format: E164)

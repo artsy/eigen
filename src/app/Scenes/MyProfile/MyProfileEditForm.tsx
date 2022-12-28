@@ -314,7 +314,7 @@ export const MyProfileEditForm: React.FC = () => {
               />
 
               <ProfileVerifications
-                isIDVerified={!!me?.identityVerified}
+                isIDVerified={!!me?.isIdentityVerified}
                 canRequestEmailConfirmation={!!me?.canRequestEmailConfirmation}
                 emailConfirmed={!!me?.emailConfirmed}
                 handleEmailVerification={handleEmailVerification}
@@ -356,7 +356,7 @@ const meFragment = graphql`
     }
     email
     emailConfirmed
-    identityVerified
+    isIdentityVerified
     canRequestEmailConfirmation
   }
 `

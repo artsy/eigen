@@ -132,7 +132,7 @@ describe("MyProfileEditForm", () => {
         const { getByText } = renderWithWrappers(<TestRenderer />)
         resolveMostRecentRelayOperation(mockEnvironment, {
           Me: () => ({
-            identityVerified: true,
+            isIdentityVerified: true,
           }),
         })
         expect(getByText("ID Verified")).toBeTruthy()
@@ -141,7 +141,7 @@ describe("MyProfileEditForm", () => {
         const { getByText } = renderWithWrappers(<TestRenderer />)
         resolveMostRecentRelayOperation(mockEnvironment, {
           Me: () => ({
-            identityVerified: false,
+            isIdentityVerified: false,
           }),
         })
         expect(getByText("Verify Your ID")).toBeTruthy()

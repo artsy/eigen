@@ -180,7 +180,7 @@ private extension AuctionTitleView {
         let faqRange = (identityVerificationAttributedString.string as NSString).range(of: "FAQ")
         identityVerificationAttributedString.addAttribute(NSAttributedString.Key.underlineStyle, value:  NSUnderlineStyle.single.rawValue, range: faqRange)
 
-        let showIdentityVerification = !viewModel.identityVerified && viewModel.requireIdentityVerification
+        let showIdentityVerification = !viewModel.isIdentityVerified && viewModel.requireIdentityVerification
         let registrationLabel = ARSerifLabel().then {
             $0.attributedText = showIdentityVerification ? identityVerificationAttributedString : NSAttributedString(string: "Registration required to bid")
             $0.font = UIFont.serifFont(withSize: 16)

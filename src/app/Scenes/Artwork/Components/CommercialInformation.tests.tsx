@@ -25,7 +25,7 @@ describe("CommercialInformation", () => {
         <ArtworkStoreProvider>
           <CommercialInformationTimerWrapper
             artwork={ForSaleArtwork as any}
-            me={{ identityVerified: false } as any}
+            me={{ isIdentityVerified: false } as any}
             refetchArtwork={jest.fn()}
           />
         </ArtworkStoreProvider>
@@ -47,7 +47,7 @@ describe("CommercialInformation", () => {
         <ArtworkStoreProvider>
           <CommercialInformationTimerWrapper
             artwork={ForSaleArtwork as any}
-            me={{ identityVerified: false } as any}
+            me={{ isIdentityVerified: false } as any}
             refetchArtwork={jest.fn()}
           />
         </ArtworkStoreProvider>
@@ -74,7 +74,7 @@ describe("CommercialInformation", () => {
         <ArtworkStoreProvider>
           <CommercialInformationTimerWrapper
             artwork={Artwork as any}
-            me={{ identityVerified: false } as any}
+            me={{ isIdentityVerified: false } as any}
             timerState={AuctionTimerState.CLOSED}
             refetchArtwork={jest.fn()}
           />
@@ -98,7 +98,7 @@ describe("CommercialInformation", () => {
         <ArtworkStoreProvider>
           <CommercialInformationTimerWrapper
             artwork={OnHoldArtwork as any}
-            me={{ identityVerified: false } as any}
+            me={{ isIdentityVerified: false } as any}
             refetchArtwork={jest.fn()}
           />
         </ArtworkStoreProvider>
@@ -120,7 +120,7 @@ describe("CommercialInformation", () => {
         <ArtworkStoreProvider>
           <CommercialInformationTimerWrapper
             artwork={SoldArtwork as any}
-            me={{ identityVerified: false } as any}
+            me={{ isIdentityVerified: false } as any}
             refetchArtwork={jest.fn()}
           />
         </ArtworkStoreProvider>
@@ -142,7 +142,7 @@ describe("CommercialInformation", () => {
         <ArtworkStoreProvider>
           <CommercialInformationTimerWrapper
             artwork={ForSaleArtwork as any}
-            me={{ identityVerified: false } as any}
+            me={{ isIdentityVerified: false } as any}
             refetchArtwork={jest.fn()}
           />
         </ArtworkStoreProvider>
@@ -171,7 +171,7 @@ describe("CommercialInformation", () => {
         <ArtworkStoreProvider>
           <CommercialInformationTimerWrapper
             artwork={workInEndedAuction as any}
-            me={{ identityVerified: false } as any}
+            me={{ isIdentityVerified: false } as any}
             refetchArtwork={jest.fn()}
           />
         </ArtworkStoreProvider>
@@ -226,7 +226,7 @@ describe("CommercialInformation", () => {
         <ArtworkStoreProvider>
           <CommercialInformationTimerWrapper
             artwork={CommercialInformationArtworkNoData as any}
-            me={{ identityVerified: false } as any}
+            me={{ isIdentityVerified: false } as any}
             refetchArtwork={jest.fn()}
           />
         </ArtworkStoreProvider>
@@ -243,7 +243,7 @@ describe("CommercialInformation", () => {
         <ArtworkStoreProvider>
           <CommercialInformationTimerWrapper
             artwork={CommercialInformationArtwork as any}
-            me={{ identityVerified: false } as any}
+            me={{ isIdentityVerified: false } as any}
             refetchArtwork={jest.fn()}
           />
         </ArtworkStoreProvider>
@@ -292,7 +292,7 @@ describe("CommercialInformation", () => {
         <ArtworkStoreProvider>
           <CommercialInformationTimerWrapper
             artwork={artworkWithEditionSets as any}
-            me={{ identityVerified: false } as any}
+            me={{ isIdentityVerified: false } as any}
             refetchArtwork={jest.fn()}
           />
         </ArtworkStoreProvider>
@@ -329,7 +329,7 @@ describe("CommercialInformation buttons and coundtown timer", () => {
         <ArtworkStoreProvider>
           <CommercialInformationTimerWrapper
             artwork={CommercialInformationArtworkInAuction as any}
-            me={{ identityVerified: false } as any}
+            me={{ isIdentityVerified: false } as any}
             tracking={{ trackEvent: jest.fn() } as any}
             refetchArtwork={jest.fn()}
           />
@@ -346,7 +346,7 @@ describe("CommercialInformation buttons and coundtown timer", () => {
         <ArtworkStoreProvider>
           <CommercialInformationTimerWrapper
             artwork={CommercialInformationArtworkInCascadingEndTimeAuction as any}
-            me={{ identityVerified: false } as any}
+            me={{ isIdentityVerified: false } as any}
             tracking={{ trackEvent: jest.fn() } as any}
             refetchArtwork={jest.fn()}
             hasStarted
@@ -373,7 +373,7 @@ describe("CommercialInformation buttons and coundtown timer", () => {
         <ArtworkStoreProvider>
           <CommercialInformationTimerWrapper
             artwork={CommercialInformationSoldArtworkInAuction as any}
-            me={{ identityVerified: false } as any}
+            me={{ isIdentityVerified: false } as any}
             tracking={{ trackEvent: jest.fn() } as any}
             refetchArtwork={jest.fn()}
           />
@@ -392,7 +392,7 @@ describe("CommercialInformation buttons and coundtown timer", () => {
         <ArtworkStoreProvider>
           <CommercialInformationTimerWrapper
             artwork={CommercialInformationAcquierableArtwork as any}
-            me={{ identityVerified: false } as any}
+            me={{ isIdentityVerified: false } as any}
             refetchArtwork={jest.fn()}
           />
         </ArtworkStoreProvider>
@@ -410,7 +410,7 @@ describe("CommercialInformation buttons and coundtown timer", () => {
         <ArtworkStoreProvider>
           <CommercialInformationTimerWrapper
             artwork={CommercialInformationArtworkInCascadingEndTimeAuction as any}
-            me={{ identityVerified: false } as any}
+            me={{ isIdentityVerified: false } as any}
             tracking={{ trackEvent: jest.fn() } as any}
             refetchArtwork={jest.fn()}
             hasStarted
@@ -453,7 +453,7 @@ describe("ArtworkExtraLinks", () => {
         <ArtworkStoreProvider>
           <CommercialInformationTimerWrapper
             artwork={inquireableArtwork as any}
-            me={{ identityVerified: false } as any}
+            me={{ isIdentityVerified: false } as any}
             refetchArtwork={jest.fn()}
           />
         </ArtworkStoreProvider>
@@ -480,7 +480,7 @@ describe("ArtworkExtraLinks", () => {
         <ArtworkStoreProvider>
           <CommercialInformationTimerWrapper
             artwork={acquireableArtwork as any}
-            me={{ identityVerified: false } as any}
+            me={{ isIdentityVerified: false } as any}
             refetchArtwork={jest.fn()}
           />
         </ArtworkStoreProvider>
@@ -507,7 +507,7 @@ describe("ArtworkExtraLinks", () => {
         <ArtworkStoreProvider>
           <CommercialInformationTimerWrapper
             artwork={offerableArtwork as any}
-            me={{ identityVerified: false } as any}
+            me={{ isIdentityVerified: false } as any}
             refetchArtwork={jest.fn()}
           />
         </ArtworkStoreProvider>
@@ -528,7 +528,7 @@ describe("ArtworkExtraLinks", () => {
         <ArtworkStoreProvider>
           <CommercialInformationTimerWrapper
             artwork={nonConsignableBiddableArtwork as any}
-            me={{ identityVerified: false } as any}
+            me={{ isIdentityVerified: false } as any}
             tracking={{ trackEvent: jest.fn() } as any}
             refetchArtwork={jest.fn()}
           />
