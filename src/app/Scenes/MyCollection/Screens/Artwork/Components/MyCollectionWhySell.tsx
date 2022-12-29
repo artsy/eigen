@@ -80,7 +80,6 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
             selling with Artsy.
           </Text>
         </Text>
-        <Separator mt={2} />
       </>
     </Flex>
   )
