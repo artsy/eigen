@@ -102,8 +102,6 @@ export const countriesRequirePostalCode = [
   "NL", // Netherlands
 ]
 
-const usPostalCodeErrorMessage = "Please enter a 5-digit US zip code."
-
 export const artworkDetailsValidationSchema = Yup.object().shape({
   artist: Yup.string().trim(),
   artistId: Yup.string().required(
@@ -134,16 +132,5 @@ export const artworkDetailsValidationSchema = Yup.object().shape({
     city: Yup.string().required().trim(),
     state: Yup.string(),
     country: Yup.string(),
-    zipCode: Yup.string().when("countryCode", {
-      is: (countryCode) => countryCode?.toUpperCase() === "US",
-      then: Yup.string()
-        .required(usPostalCodeErrorMessage)
-        .matches(/^[0-9]{5}$/, usPostalCodeErrorMessage)
-        .trim(),
-      otherwise: Yup.string().when("countryCode", {
-        is: (countryCode) => countriesRequirePostalCode.includes(countryCode?.toUpperCase()),
-        then: Yup.string().required("Please enter a valid zip/postal code for your region").trim(),
-      }),
-    }),
   }),
 })
