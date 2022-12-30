@@ -139,14 +139,14 @@ const Home = (props: Props) => {
     },
     // Below-The-Fold Modules
     {
-      title: "Upcoming Auctions",
-      type: "upcoming-auctions",
+      title: "Upcoming Auction Results",
+      type: "upcoming-auction-results",
       data: meBelow,
       hidden: !showUpcomingAuctionResultsRail,
     },
     {
       title: "Latest Auction Results",
-      type: "auction-results",
+      type: "latest-auction-results",
       data: meBelow,
       prefetchUrl: "/auction-results-for-artists-you-follow",
     },
@@ -281,7 +281,7 @@ const Home = (props: Props) => {
                     mb={MODULE_SEPARATOR_HEIGHT - 2}
                   />
                 )
-              case "auction-results":
+              case "latest-auction-results":
                 return (
                   <AuctionResultsRailFragmentContainer
                     title={item.title}
@@ -355,7 +355,7 @@ const Home = (props: Props) => {
                     mb={MODULE_SEPARATOR_HEIGHT}
                   />
                 )
-              case "upcoming-auctions":
+              case "upcoming-auction-results":
                 return (
                   <HomeUpcomingAuctionsRail
                     title={item.title}
