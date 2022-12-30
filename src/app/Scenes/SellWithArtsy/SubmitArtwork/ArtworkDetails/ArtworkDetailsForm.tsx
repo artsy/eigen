@@ -179,6 +179,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         <Box width="31%">
           <Input
             title="Depth"
+            optional
             keyboardType="decimal-pad"
             testID="Submission_DepthInput"
             value={values.depth}
