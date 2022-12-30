@@ -172,31 +172,6 @@ describe("ContactInformationForm", () => {
 
       expect(getByText("Please enter a valid email address.")).toBeTruthy()
     })
-
-    it("displays error message for phone number", async () => {
-      const { getByText, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          Me: () => ({
-            ...mockQueryData,
-          }),
-        })
-      )
-
-      await flushPromiseQueue()
-
-      const inputs = {
-        emailInput: getByPlaceholderText("Your email address"),
-        phoneInput: getByPlaceholderText("(000) 000-0000"),
-      }
-
-      fireEvent.changeText(inputs.phoneInput, "12")
-      fireEvent.changeText(inputs.emailInput, "aa")
-
-      await flushPromiseQueue()
-
-      expect(getByText("Please enter a valid phone number.")).toBeTruthy()
-    })
   })
 
   describe("analytics", () => {

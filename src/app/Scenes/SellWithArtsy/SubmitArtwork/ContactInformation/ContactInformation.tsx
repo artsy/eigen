@@ -2,6 +2,7 @@ import { ContactInformation_me$data } from "__generated__/ContactInformation_me.
 import { ContactInformationQueryRendererQuery } from "__generated__/ContactInformationQueryRendererQuery.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { Formik } from "formik"
+import { noop } from "lodash"
 import { CTAButton, Flex, Input, Spacer, Text } from "palette"
 import { PhoneInput } from "palette/elements/Input/PhoneInput/PhoneInput"
 import React, { useState } from "react"
@@ -15,8 +16,6 @@ export const ContactInformation: React.FC<{
 }> = ({ handlePress, me, isLastStep }) => {
   const [isNameInputFocused, setIsNameInputFocused] = useState(false)
   const [isEmailInputFocused, setIsEmailInputFocused] = useState(false)
-  const [isPhoneInputFocused, setIsPhoneInputFocused] = useState(false)
-  const [isValidNumber, setIsValidNumber] = useState(false)
 
   const handleFormSubmit = (formValues: ContactInformationFormModel) => {
     handlePress(formValues)
@@ -69,22 +68,15 @@ export const ContactInformation: React.FC<{
             placeholder="(000) 000-0000"
             onChangeText={handleChange("userPhone")}
             value={values.userPhone}
-            onBlur={() => setIsPhoneInputFocused(false)}
-            setValidation={setIsValidNumber}
-            onFocus={() => setIsPhoneInputFocused(true)}
+            setValidation={noop}
             accessibilityLabel="Phone number"
             shouldDisplayLocalError={false}
-            error={
-              !isPhoneInputFocused && values.userPhone && !isValidNumber && errors.userPhone
-                ? errors.userPhone
-                : ""
-            }
           />
           <Spacer mt={6} />
           <CTAButton
             testID="Submission_ContactInformation_Button"
             onPress={handleSubmit}
-            disabled={!isValid || !isValidNumber}
+            disabled={!isValid}
           >
             {isLastStep ? "Submit Artwork" : "Save & Continue"}
           </CTAButton>
