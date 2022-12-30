@@ -254,16 +254,33 @@ lane :promote_beta_android do
 end
 
 lane :test_s3_upload do
-  puts("here is where I should upload to s3")
+  app_version = "710"
+  app_path = "../android/app/build/outputs/bundle/release/app-release.aab"
 
-  sh("aws s3 cp ../some.txt s3://artsy-citadel/dev/eigen-builds/android/some.txt")
+  sh("aws s3 cp " + app_path + " s3://artsy-citadel/dev/eigen-builds/android/" + app_version + ".aab")
 end
 
 lane :test_s3_read do
-  puts("here is where I should read from s3")
+  s3_files_output = sh("aws s3 ls s3://artsy-citadel/dev/eigen-builds/android/")
 
-  sh("aws s3 cp s3://artsy-citadel/dev/eigen-builds/android/some.txt ../another.txt")
-  sh("less ../another.txt")
+  aab_filename_regex = /\d+\.aab/
+  matches = s3_files_output.scan(aab_filename_regex)
+
+  # sort in descending order
+  sorted_matches = matches.sort_by { |s| s.scan(/\d+/).first.to_i }.reverse
+
+  # android builds are listed most recent first, limit to 20
+  builds = sorted_matches.first(20)
+
+  UI.header "Last 20 Android builds"
+
+  selected_build = UI.select("Which build would you like to release?: ", builds)
+
+  if UI.confirm("Are you sure you would like to release '#{selected_build}'?")
+    UI.success "Continuing the release!"
+  else
+    UI.user_error!("Stopping the train!")
+  end
 end
 
 lane :promote_beta_ios do
