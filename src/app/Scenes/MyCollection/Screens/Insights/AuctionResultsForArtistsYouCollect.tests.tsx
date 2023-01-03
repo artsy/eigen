@@ -8,13 +8,17 @@ import { AuctionResultsForArtistsYouCollect } from "./AuctionResultsForArtistsYo
 jest.unmock("react-relay")
 
 describe("AuctionResultsForArtistsYouCollect", () => {
-  const mockEnvironment: ReturnType<typeof createMockEnvironment>
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   const TestRenderer = () => (
     <RelayEnvironmentProvider environment={mockEnvironment}>
       <AuctionResultsForArtistsYouCollect />
     </RelayEnvironmentProvider>
   )
+
+  beforeEach(() => {
+    mockEnvironment = createMockEnvironment()
+  })
 
   it("renders auction results", async () => {
     const { getByTestId } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
