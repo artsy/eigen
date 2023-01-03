@@ -77,11 +77,6 @@ export const features = defineFeatures({
     description: "Enable Shows in homepage",
     echoFlagKey: "AREnableShowsRail",
   },
-  ARShowNetworkUnavailableModal: {
-    readyForRelease: true,
-    description: "Enable network unavailable modal",
-    echoFlagKey: "ARShowNetworkUnavailableModal",
-  },
   ARGoogleAuth: {
     readyForRelease: true,
     description: "Enable Google authentication",
