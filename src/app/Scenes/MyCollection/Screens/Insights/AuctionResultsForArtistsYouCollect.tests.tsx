@@ -1,4 +1,3 @@
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
@@ -9,18 +8,13 @@ import { AuctionResultsForArtistsYouCollect } from "./AuctionResultsForArtistsYo
 jest.unmock("react-relay")
 
 describe("AuctionResultsForArtistsYouCollect", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+  const mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   const TestRenderer = () => (
     <RelayEnvironmentProvider environment={mockEnvironment}>
       <AuctionResultsForArtistsYouCollect />
     </RelayEnvironmentProvider>
   )
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionInsights: true })
-  })
 
   it("renders auction results", async () => {
     const { getByTestId } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)

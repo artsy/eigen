@@ -1,4 +1,3 @@
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
@@ -34,11 +33,6 @@ describe("CareerHighlightsBigCardsSwiper", () => {
       />
     </RelayEnvironmentProvider>
   )
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionInsights: true })
-  })
 
   it("renders the swiper and all slides when the data for all types is available", async () => {
     const { getByTestId } = renderWithHookWrappersTL(
