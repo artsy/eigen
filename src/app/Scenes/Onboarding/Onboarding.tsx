@@ -10,7 +10,6 @@ import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
 import { NetworkAwareProvider } from "app/utils/NetworkAwareProvider"
 import { Platform, View } from "react-native"
 import { ArtsyKeyboardAvoidingViewContext } from "shared/utils"
-import { useFeatureFlag } from "../../store/GlobalStore"
 import { ForgotPassword } from "./ForgotPassword"
 import {
   OnboardingCreateAccount,
@@ -109,7 +108,6 @@ export const OnboardingWelcomeScreens = () => {
 }
 export const Onboarding = () => {
   const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
-  const showNetworkUnavailableModal = useFeatureFlag("ARShowNetworkUnavailableModal")
   const fpsCounter = useDevToggle("DTFPSCounter")
 
   return (
@@ -118,7 +116,7 @@ export const Onboarding = () => {
         value={{ isVisible: true, isPresentedModally: false, bottomOffset: 0 }}
       >
         {onboardingState === "incomplete" ? <OnboardingQuiz /> : <OnboardingWelcomeScreens />}
-        {!!showNetworkUnavailableModal && <NetworkAwareProvider />}
+        <NetworkAwareProvider />
       </ArtsyKeyboardAvoidingViewContext.Provider>
       {!!fpsCounter && <FPSCounter style={{ bottom: Platform.OS === "ios" ? 40 : undefined }} />}
     </View>
