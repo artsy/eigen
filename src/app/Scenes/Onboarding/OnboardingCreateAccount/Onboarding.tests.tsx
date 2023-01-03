@@ -28,15 +28,8 @@ describe("Onboarding", () => {
     expect(tree.root.findAllByType(OnboardingWelcomeScreens).length).toEqual(0)
   })
 
-  it("renders NetworkAwareProvider when ARShowNetworkUnavailableModal is set to true", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ ARShowNetworkUnavailableModal: true })
+  it("renders NetworkAwareProvider", () => {
     const tree = renderWithWrappersLEGACY(<Onboarding />)
     expect(tree.root.findAllByType(NetworkAwareProvider).length).toEqual(1)
-  })
-
-  it("does not render NetworkAwareProvider when ARShowNetworkUnavailableModal is set to false", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ ARShowNetworkUnavailableModal: false })
-    const tree = renderWithWrappersLEGACY(<Onboarding />)
-    expect(tree.root.findAllByType(NetworkAwareProvider).length).toEqual(0)
   })
 })

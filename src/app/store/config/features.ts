@@ -72,11 +72,6 @@ export const features = defineFeatures({
     description: "Enable Trove in homepage",
     echoFlagKey: "AREnableTrove",
   },
-  ARShowNetworkUnavailableModal: {
-    readyForRelease: true,
-    description: "Enable network unavailable modal",
-    echoFlagKey: "ARShowNetworkUnavailableModal",
-  },
   ARGoogleAuth: {
     readyForRelease: true,
     description: "Enable Google authentication",
