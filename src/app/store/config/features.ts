@@ -67,11 +67,6 @@ export const features = defineFeatures({
     readyForRelease: false,
     description: "Enable Saved Addresses",
   },
-  AREnableShowsRail: {
-    readyForRelease: true,
-    description: "Enable Shows in homepage",
-    echoFlagKey: "AREnableShowsRail",
-  },
   ARGoogleAuth: {
     readyForRelease: true,
     description: "Enable Google authentication",
