@@ -133,6 +133,9 @@ const ArtistAutosuggestScreenQuery = graphql`
           edges {
             node {
               __typename
+              counts {
+                artworks
+              }
               displayLabel
               formattedNationalityAndBirthday
               imageUrl
