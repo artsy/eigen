@@ -35,6 +35,10 @@ describe("CareerHighlightsBigCardsSwiper", () => {
   )
 
   it("renders the swiper and all slides when the data for all types is available", async () => {
+    beforeEach(() => {
+      mockEnvironment = createMockEnvironment()
+    })
+
     const { getByTestId } = renderWithHookWrappersTL(
       <TestRendererAllTypesAvailable />,
       mockEnvironment
