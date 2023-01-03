@@ -29,7 +29,7 @@ export const MyCollectionArtworkFormArtist: React.FC<
     })
     await GlobalStore.actions.myCollection.artwork.setArtistSearchResult(result)
 
-    if (result.isPersonalArtist) {
+    if (result.isPersonalArtist || result.counts?.artworks === 0) {
       navigation.navigate("ArtworkFormMain", { ...route.params })
     } else {
       navigation.navigate("ArtworkFormArtwork", { ...route.params })
