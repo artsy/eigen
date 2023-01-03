@@ -189,6 +189,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/settings/dark-mode", "DarkModeSettings"),
     addRoute("/local-discovery", "LocalDiscovery"),
     addRoute("/privacy-request", "PrivacyRequest"),
+    addWebViewRoute("/price-database"),
 
     addRoute("/orders", "OrderHistory"),
 
