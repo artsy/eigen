@@ -78,6 +78,7 @@ export const ConsignmentInquiryScreen: React.FC<InquiryScreenProps> = ({
   phone,
   userId,
 }) => {
+  const [formIsDirty, setFormIsDirty] = useState(false)
   const [showAbandonModal, setShowAbandonModal] = useState(false)
   const [showConfirmedModal, setShowConfirmedModal] = useState(false)
   const navigation = useNavigation()
@@ -91,10 +92,14 @@ export const ConsignmentInquiryScreen: React.FC<InquiryScreenProps> = ({
         navigation.dispatch(e.data.action)
         return
       }
-      setShowAbandonModal(true)
+      if (formIsDirty) {
+        setShowAbandonModal(true)
+        return
+      }
+      navigation.dispatch(e.data.action)
     })
     return backListener
-  }, [navigation])
+  }, [navigation, showAbandonModal, showConfirmedModal, formIsDirty])
 
   const formik = useFormik<InquiryFormikSchema>({
     validateOnChange: true,
@@ -134,11 +139,18 @@ export const ConsignmentInquiryScreen: React.FC<InquiryScreenProps> = ({
     validationSchema: ValidationSchema,
   })
 
+  const updateDirty = () => {
+    if (formIsDirty) {
+      return
+    }
+    setFormIsDirty(true)
+  }
+
   return (
     <FormikProvider value={formik}>
       <>
         <ArtsyKeyboardAvoidingView>
-          <ConsignmentInquiryForm />
+          <ConsignmentInquiryForm onAnyFieldEdited={updateDirty} />
         </ArtsyKeyboardAvoidingView>
 
         <FancyModal visible={showAbandonModal && !showConfirmedModal}>
