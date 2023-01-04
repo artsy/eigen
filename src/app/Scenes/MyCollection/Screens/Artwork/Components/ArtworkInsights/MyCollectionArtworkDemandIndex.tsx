@@ -3,7 +3,6 @@ import { MyCollectionArtworkDemandIndex_artwork$key } from "__generated__/MyColl
 import { MyCollectionArtworkDemandIndex_artworkPriceInsights$key } from "__generated__/MyCollectionArtworkDemandIndex_artworkPriceInsights.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import HighDemandIcon from "app/Icons/HighDemandIcon"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { Flex, Separator, Spacer, Text, TriangleDown } from "palette"
 import LinearGradient from "react-native-linear-gradient"
 import { graphql, useFragment } from "react-relay"
@@ -58,8 +57,6 @@ const DemandRankScale: React.FC<{ demandRank: number; demandRankDisplayText: str
   demandRank,
   demandRankDisplayText,
 }) => {
-  const enableDemandIndexHints = useFeatureFlag("ARShowMyCollectionDemandIndexHints")
-
   let width = demandRank * 10
   if (width > 100) {
     width = 100
@@ -75,12 +72,10 @@ const DemandRankScale: React.FC<{ demandRank: number; demandRankDisplayText: str
         <Text color={color} variant="xl">
           {adjustedDemandRank}
         </Text>
-        {!!enableDemandIndexHints && (
-          <Flex flexDirection="row" alignItems="center" mb={1}>
-            {!!isHighDemand && <HighDemandIcon style={{ marginTop: 2, marginRight: 2 }} />}
-            <Text color={color}>{demandRankDisplayText}</Text>
-          </Flex>
-        )}
+        <Flex flexDirection="row" alignItems="center" mb={1}>
+          {!!isHighDemand && <HighDemandIcon style={{ marginTop: 2, marginRight: 2 }} />}
+          <Text color={color}>{demandRankDisplayText}</Text>
+        </Flex>
       </Flex>
       <ProgressBar width={width} />
       <Spacer />

@@ -4,7 +4,6 @@ import { MyCollectionArtworkGridItem_artwork$data } from "__generated__/MyCollec
 import { DEFAULT_SECTION_MARGIN } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import HighDemandIcon from "app/Icons/HighDemandIcon"
 import { navigate } from "app/navigation/navigate"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { isPad } from "app/utils/hardware"
 import { Box, Flex, Text } from "palette"
 import { View } from "react-native"
@@ -50,8 +49,6 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
   const isP1Artist = artwork.artist?.targetSupply?.isP1
   const isHighDemand = Number((artwork.marketPriceInsights?.demandRank || 0) * 10) >= 9
 
-  const showDemandIndexHints = useFeatureFlag("ARShowMyCollectionDemandIndexHints")
-
   const showHighDemandIcon = isP1Artist && isHighDemand
 
   return (
@@ -83,7 +80,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
         <Box maxWidth={width} mt={1} style={{ flex: 1 }}>
           <Text lineHeight="18" weight="regular" variant="xs" numberOfLines={2}>
             {artistNames}
-            {!!showHighDemandIcon && !!showDemandIndexHints && (
+            {!!showHighDemandIcon && (
               <Flex testID="test-high-demand-icon">
                 <HighDemandIcon style={{ marginLeft: 2, marginBottom: -2 }} />
               </Flex>

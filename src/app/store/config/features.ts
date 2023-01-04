@@ -111,11 +111,6 @@ export const features = defineFeatures({
     description: "Show request price estimate banner",
     echoFlagKey: "ARShowRequestPriceEstimateBanner",
   },
-  ARShowMyCollectionDemandIndexHints: {
-    readyForRelease: true,
-    description: "Show demand index hints",
-    echoFlagKey: "ARShowMyCollectionDemandIndexHints",
-  },
   AREnablePriceEstimateRange: {
     readyForRelease: false,
     description: "Enable My Collection Price Estimate Range",
