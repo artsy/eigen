@@ -126,11 +126,6 @@ export const features = defineFeatures({
     description: "Enable Crossplatform Map Screen",
     showInDevMenu: true,
   },
-  AREnableAuctionShareButton: {
-    readyForRelease: true,
-    description: "Show share button in auction screen",
-    echoFlagKey: "AREnableAuctionShareButton",
-  },
   AREnableNewOpaqueImageComponent: {
     readyForRelease: true,
     description: "Enable New Image Component",

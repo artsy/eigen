@@ -14,7 +14,6 @@ import { useScreenDimensions } from "shared/hooks"
 import { CaretButton } from "../../../Components/Buttons/CaretButton"
 import OpaqueImageView from "../../../Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "../../../navigation/navigate"
-import { useFeatureFlag } from "../../../store/GlobalStore"
 
 export const COVER_IMAGE_HEIGHT = 260
 const SHARE_ICON_SIZE = 23
@@ -26,8 +25,6 @@ interface Props {
 
 export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
   const [shareSheetVisible, setShareSheetVisible] = useState(false)
-
-  const enableAuctionShare = useFeatureFlag("AREnableAuctionShareButton")
 
   const toast = useToast()
 
@@ -132,24 +129,22 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
                 {sale.name}
               </Text>
             </Flex>
-            {!!enableAuctionShare && (
-              <Flex flex={0.1}>
-                <Touchable
-                  onPress={() => {
-                    setShareSheetVisible(true)
-                  }}
-                  style={{
-                    width: 30,
-                    justifyContent: "flex-end",
-                    alignItems: "center",
-                  }}
-                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                  haptic="impactLight"
-                >
-                  <ShareIcon width={SHARE_ICON_SIZE} height={SHARE_ICON_SIZE} />
-                </Touchable>
-              </Flex>
-            )}
+            <Flex flex={0.1}>
+              <Touchable
+                onPress={() => {
+                  setShareSheetVisible(true)
+                }}
+                style={{
+                  width: 30,
+                  justifyContent: "flex-end",
+                  alignItems: "center",
+                }}
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                haptic="impactLight"
+              >
+                <ShareIcon width={SHARE_ICON_SIZE} height={SHARE_ICON_SIZE} />
+              </Touchable>
+            </Flex>
           </Flex>
           {cascadingEndTimeFeatureEnabled ? (
             <>
