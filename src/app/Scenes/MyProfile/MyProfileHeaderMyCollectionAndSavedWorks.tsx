@@ -3,7 +3,6 @@ import { MyProfileHeaderMyCollectionAndSavedWorks_me$data } from "__generated__/
 import { MyProfileHeaderMyCollectionAndSavedWorksQuery } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorksQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -26,10 +25,6 @@ export enum Tab {
 export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
   me: MyProfileHeaderMyCollectionAndSavedWorks_me$data
 }> = ({ me }) => {
-  // We are using unsafe_getfeatureflag here because we want to avoid breaking the rule of hooks
-  // inside the StickyTabPage
-  const showMyCollectionInsights = unsafe_getFeatureFlag("AREnableMyCollectionInsights")
-
   return (
     <StickyTabPage
       disableBackButtonUpdate
@@ -39,7 +34,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
           content: <MyCollectionQueryRenderer />,
           initial: true,
         },
-        !!showMyCollectionInsights && {
+        {
           title: Tab.insights,
           content: <MyCollectionInsightsQR />,
           visualClues: [

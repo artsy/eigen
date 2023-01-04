@@ -142,11 +142,6 @@ export const features = defineFeatures({
     description: "Conversational Buy Now",
     echoFlagKey: "AREnableConversationalBuyNow",
   },
-  AREnableMyCollectionInsights: {
-    readyForRelease: true,
-    description: "Enable My Collection insights tab",
-    echoFlagKey: "AREnableMyCollectionInsights",
-  },
   AREnableArtworksFromNonArtsyArtists: {
     readyForRelease: false,
     description: "Enable My Collection artworks from non-Artsy artists",

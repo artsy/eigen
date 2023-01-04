@@ -33,7 +33,6 @@ export const BottomTabs: React.FC<BottomTabBarProps> = (props) => {
   }, 1000 * 60)
 
   const isStaging = useIsStaging()
-  const enableMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
 
   const { bottom } = useScreenDimensions().safeAreaInsets
 
@@ -53,10 +52,7 @@ export const BottomTabs: React.FC<BottomTabBarProps> = (props) => {
         <BottomTabsButton tab="search" />
         <BottomTabsButton tab="inbox" badgeCount={unreadConversationCount} />
         <BottomTabsButton tab="sell" />
-        <BottomTabsButton
-          tab="profile"
-          visualClue={enableMyCollectionInsights ? "MyCollectionInsights" : undefined}
-        />
+        <BottomTabsButton tab="profile" visualClue="MyCollectionInsights" />
       </Flex>
     </Flex>
   )
