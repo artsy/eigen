@@ -97,11 +97,6 @@ export const features = defineFeatures({
     description: "Enable My Collection search bar",
     echoFlagKey: "AREnableMyCollectionSearchBar",
   },
-  AREnablePlaceholderLayoutAnimation: {
-    readyForRelease: true,
-    description: "Enable placeholder layout animation",
-    echoFlagKey: "AREnablePlaceholderLayoutAnimation",
-  },
   ARDarkModeSupport: {
     readyForRelease: false,
     description: "Support dark mode",
