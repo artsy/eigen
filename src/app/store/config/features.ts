@@ -121,11 +121,6 @@ export const features = defineFeatures({
     description: "Enable My Collection Price Estimate Range",
     showInDevMenu: false,
   },
-  AREnableHomeScreenArtworkRecommendations: {
-    readyForRelease: true,
-    description: "Enable Home Screen Artwork Recommendations",
-    echoFlagKey: "AREnableHomeScreenArtworkRecommendations",
-  },
   AREnableMapScreen: {
     readyForRelease: false,
     description: "Enable Crossplatform Map Screen",

@@ -102,7 +102,6 @@ const Home = (props: Props) => {
     relay,
   } = props
 
-  const enableArtworkRecommendations = useFeatureFlag("AREnableHomeScreenArtworkRecommendations")
   const enableMyCollectionHFOnboarding = useFeatureFlag("AREnableMyCollectionHFOnboarding")
   const showUpcomingAuctionResultsRail = useFeatureFlag("ARShowUpcomingAuctionResultsRails")
   const enableLargeNewWorksForYouRail = useLargeNewWorksForYouRail()
@@ -190,7 +189,6 @@ const Home = (props: Props) => {
       title: "Artwork Recommendations",
       type: "artworkRecommendations",
       data: meBelow,
-      hidden: !enableArtworkRecommendations,
     },
     {
       title: "Featured Fairs",
