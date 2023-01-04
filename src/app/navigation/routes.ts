@@ -216,6 +216,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/artwork-certificate-of-authenticity", "ArtworkCertificateAuthenticity"),
     addRoute("/artwork-submission-status", "ArtworkSubmissionStatusFAQ"),
     addRoute("/selling-with-artsy", "MyCollectionSellingWithartsyFAQ"),
+    addWebViewRoute("/meet-the-specialists"),
 
     addRoute("/partner/:partnerID", "Partner"),
     addRoute("/partner/:partnerID/works", "Partner", (params) => ({
