@@ -1,17 +1,36 @@
+import { useNavigation } from "@react-navigation/native"
 import { navigate } from "app/navigation/navigate"
 import { useFormikContext } from "formik"
 import { Box, Button, Input, LinkText, PhoneInput, Spacer, Text } from "palette"
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import { Platform, ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 import { InquiryFormikSchema } from "./ConsignmentInquiryScreen"
 
-export const ConsignmentInquiryForm: React.FC<{ onAnyFieldEdited?: () => void }> = ({
-  onAnyFieldEdited,
-}) => {
+export const ConsignmentInquiryForm: React.FC<{
+  confirmLeaveEdit: (v: boolean) => void
+  canPopScreen: boolean
+}> = ({ confirmLeaveEdit, canPopScreen }) => {
   const { safeAreaInsets } = useScreenDimensions()
   const { values, handleChange, errors, setErrors, handleSubmit, isValid, dirty } =
     useFormikContext<InquiryFormikSchema>()
+
+  const navigation = useNavigation()
+
+  useEffect(() => {
+    const backListener = navigation.addListener("beforeRemove", (e) => {
+      e.preventDefault()
+      if (canPopScreen) {
+        navigation.dispatch(e.data.action)
+      }
+      if (dirty) {
+        confirmLeaveEdit(true)
+        return
+      }
+      navigation.dispatch(e.data.action)
+    })
+    return backListener
+  }, [canPopScreen, dirty, navigation])
 
   const ScrollViewRef = useRef<ScrollView>(null)
   const nameInputRef = useRef<Input>(null)
@@ -45,7 +64,6 @@ export const ConsignmentInquiryForm: React.FC<{ onAnyFieldEdited?: () => void }>
   }
 
   const handleOnChangeText = (field: keyof InquiryFormikSchema, text: string) => {
-    onAnyFieldEdited?.()
     if (errors[field]) {
       setErrors({
         [field]: undefined,
