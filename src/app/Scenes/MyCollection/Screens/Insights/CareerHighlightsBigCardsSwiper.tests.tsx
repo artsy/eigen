@@ -34,11 +34,11 @@ describe("CareerHighlightsBigCardsSwiper", () => {
     </RelayEnvironmentProvider>
   )
 
-  it("renders the swiper and all slides when the data for all types is available", async () => {
-    beforeEach(() => {
-      mockEnvironment = createMockEnvironment()
-    })
+  beforeEach(() => {
+    mockEnvironment = createMockEnvironment()
+  })
 
+  it("renders the swiper and all slides when the data for all types is available", async () => {
     const { getByTestId } = renderWithHookWrappersTL(
       <TestRendererAllTypesAvailable />,
       mockEnvironment
