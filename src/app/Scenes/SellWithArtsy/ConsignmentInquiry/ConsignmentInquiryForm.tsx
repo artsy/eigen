@@ -1,15 +1,36 @@
+import { useNavigation } from "@react-navigation/native"
 import { navigate } from "app/navigation/navigate"
 import { useFormikContext } from "formik"
 import { Box, Button, Input, LinkText, PhoneInput, Spacer, Text } from "palette"
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import { Platform, ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 import { InquiryFormikSchema } from "./ConsignmentInquiryScreen"
 
-export const ConsignmentInquiryForm = () => {
-  const { safeAreaInsets, height } = useScreenDimensions()
+export const ConsignmentInquiryForm: React.FC<{
+  confirmLeaveEdit: (v: boolean) => void
+  canPopScreen: boolean
+}> = ({ confirmLeaveEdit, canPopScreen }) => {
+  const { safeAreaInsets } = useScreenDimensions()
   const { values, handleChange, errors, setErrors, handleSubmit, isValid, dirty } =
     useFormikContext<InquiryFormikSchema>()
+
+  const navigation = useNavigation()
+
+  useEffect(() => {
+    const backListener = navigation.addListener("beforeRemove", (e) => {
+      e.preventDefault()
+      if (canPopScreen) {
+        navigation.dispatch(e.data.action)
+      }
+      if (dirty) {
+        confirmLeaveEdit(true)
+        return
+      }
+      navigation.dispatch(e.data.action)
+    })
+    return backListener
+  }, [canPopScreen, dirty, navigation])
 
   const ScrollViewRef = useRef<ScrollView>(null)
   const nameInputRef = useRef<Input>(null)
@@ -42,16 +63,20 @@ export const ConsignmentInquiryForm = () => {
     })
   }
 
+  const handleOnChangeText = (field: keyof InquiryFormikSchema, text: string) => {
+    if (errors[field]) {
+      setErrors({
+        [field]: undefined,
+      })
+    }
+    handleChange(field)(text)
+  }
+
   return (
     <ScrollView
       ref={ScrollViewRef}
       keyboardDismissMode="interactive"
       keyboardShouldPersistTaps="handled"
-      contentContainerStyle={{
-        // If we autofocus on MessageInput, KeyboardAvoidingView does not displace Form all the
-        // way to the bottom. Specifying minHeight enables us to autoscroll down
-        minHeight: height * 1.2,
-      }}
     >
       <Box pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px={2}>
         <Box my={3}>
@@ -63,16 +88,10 @@ export const ConsignmentInquiryForm = () => {
             ref={nameInputRef}
             testID="swa-inquiry-name-input"
             title="Name"
-            autoFocus={!values.name}
             autoCapitalize="words"
             autoCorrect={false}
             onChangeText={(text) => {
-              if (errors.name) {
-                setErrors({
-                  name: undefined,
-                })
-              }
-              handleChange("name")(text)
+              handleOnChangeText("name", text.trim())
             }}
             onSubmitEditing={() => jumpToNextField("name")}
             blurOnSubmit={false}
@@ -88,17 +107,11 @@ export const ConsignmentInquiryForm = () => {
             ref={emailInputRef}
             testID="swa-inquiry-email-input"
             title="Email"
-            autoFocus={!!values.name && !values.email}
             autoCapitalize="none"
             enableClearButton
             keyboardType="email-address"
             onChangeText={(text) => {
-              if (errors.email) {
-                setErrors({
-                  email: undefined,
-                })
-              }
-              handleChange("email")(text.trim())
+              handleOnChangeText("email", text.trim())
             }}
             onSubmitEditing={() => jumpToNextField("email")}
             blurOnSubmit={false}
@@ -116,9 +129,10 @@ export const ConsignmentInquiryForm = () => {
             testID="swa-inquiry-phone-input"
             style={{ flex: 1 }}
             title="Phone number"
-            autoFocus={!!values.email && !!values.name && !values.phoneNumber}
             placeholder="(000) 000-0000"
-            onChangeText={handleChange("phoneNumber")}
+            onChangeText={(text) => {
+              handleOnChangeText("phoneNumber", text.trim())
+            }}
             onSubmitEditing={() => jumpToNextField("phone")}
             value={values.phoneNumber}
             setValidation={() => null}
@@ -135,15 +149,9 @@ export const ConsignmentInquiryForm = () => {
             numberOfLines={4}
             multiline
             autoCapitalize="none"
-            autoFocus={!!values.email && !!values.name && !!values.phoneNumber}
             onFocus={showMessageInputFully}
             onChangeText={(text) => {
-              if (errors.message) {
-                setErrors({
-                  message: undefined,
-                })
-              }
-              handleChange("message")(text.trimStart())
+              handleOnChangeText("message", text.trimStart())
             }}
             onSubmitEditing={() => jumpToNextField("message")}
             blurOnSubmit={false}
