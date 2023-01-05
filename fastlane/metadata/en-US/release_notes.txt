@@ -1,10 +1,7 @@
 This update includes a number of improvements and bug fixes including:
 
-- Updated artwork page: find important artwork information more easily
-- Price filter improvements: see your recently used price ranges while searching
-- Better notifications: a blue dot on Home tab indicates when you have unread notifications
-- New ways to search: see trending artists and Artsy curated collections on the search page
-- Easier to save: save artworks directly from a page with multiple artworks
-- Images improvements: fixes an issue with images not appearing on iOS 13 and below
+- Upcoming Auctions listed on the homepage and in My Collection Insights
+- New look for Auction Results
+- Easy filtering for Auction Results
 
 Have feedback? Email us at support@artsy.net
