@@ -15,7 +15,7 @@ import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { sendEmail } from "app/utils/sendEmail"
 import { useFormik } from "formik"
-import { compact, isArray } from "lodash"
+import { compact, isArray, isEmpty } from "lodash"
 import {
   Avatar,
   Box,
@@ -25,6 +25,7 @@ import {
   Flex,
   Input,
   Join,
+  Message,
   Spacer,
   Text,
   Touchable,
@@ -200,6 +201,13 @@ export const MyProfileEditForm: React.FC = () => {
     navigation.goBack()
   }
 
+  const showCompleteYourProfileBanner =
+    !me?.name ||
+    isEmpty(me?.location?.city) ||
+    !me?.otherRelevantPositions ||
+    !me?.profession ||
+    !me?.bio
+
   return (
     <>
       <FancyModalHeader
@@ -209,6 +217,16 @@ export const MyProfileEditForm: React.FC = () => {
       >
         Edit Profile
       </FancyModalHeader>
+
+      {showCompleteYourProfileBanner && (
+        <Message
+          variant="info"
+          title="Complete your profile and make a great impression"
+          text="Galleries are more likely to respond to collectors with complete profiles and a brief bio."
+          showCloseButton
+        />
+      )}
+
       <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
         <Join separator={<Spacer py={1} />}>
           <Flex flexDirection="row" alignItems="center" px={2} mt={2}>
