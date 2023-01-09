@@ -1,12 +1,11 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { SentConsignmentInquiry } from "@artsy/cohesion/dist/Schema/Events/Consignments"
 import { ConsignmentInquiryScreenMutation } from "__generated__/ConsignmentInquiryScreenMutation.graphql"
+import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { useToast } from "app/Components/Toast/toastHook"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { FormikProvider, useFormik } from "formik"
-import { CloseIcon } from "palette"
 import { useState } from "react"
 import { useTracking } from "react-tracking"
 import { commitMutation, Environment, graphql } from "relay-runtime"
@@ -14,7 +13,6 @@ import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import * as Yup from "yup"
 import { ConsignmentInquiryConfirmation } from "./ConsignmentInquiryConfirmation"
 import { ConsignmentInquiryForm } from "./ConsignmentInquiryForm"
-import { ConsignmentInquiryFormAbandonEdit } from "./ConsignmentInquiryFormAbandonEdit"
 
 interface InquiryScreenProps {
   name: string
@@ -132,20 +130,15 @@ export const ConsignmentInquiryScreen: React.FC<InquiryScreenProps> = ({
           />
         </ArtsyKeyboardAvoidingView>
 
-        <FancyModal visible={showAbandonModal && !showConfirmedModal}>
-          <FancyModalHeader
-            hideBottomDivider
-            renderRightButton={() => <CloseIcon width={26} height={26} />}
-            onRightButtonPress={() => {
-              setShowAbandonModal(false)
-            }}
-          />
-          <ConsignmentInquiryFormAbandonEdit
-            onDismiss={() => {
-              setShowAbandonModal(false)
-            }}
-          />
-        </FancyModal>
+        <AbandonFlowModal
+          isVisible={showAbandonModal && !showConfirmedModal}
+          title="Leave without sending message?"
+          subtitle="Your message to the Sell with Artsy specialists will not been sent."
+          leaveButtonTitle="Leave Without Sending"
+          continueButtonTitle="Continue Editing Message"
+          onDismiss={() => setShowAbandonModal(false)}
+        />
+
         <FancyModal
           fullScreen
           visible={showConfirmedModal && !showAbandonModal}
