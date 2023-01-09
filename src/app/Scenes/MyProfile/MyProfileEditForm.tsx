@@ -15,7 +15,7 @@ import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { sendEmail } from "app/utils/sendEmail"
 import { useFormik } from "formik"
-import { compact, isArray, isEmpty } from "lodash"
+import { compact, isArray } from "lodash"
 import {
   Avatar,
   Box,
@@ -201,12 +201,7 @@ export const MyProfileEditForm: React.FC = () => {
     navigation.goBack()
   }
 
-  const showCompleteYourProfileBanner =
-    !me?.name ||
-    isEmpty(me?.location?.city) ||
-    !me?.otherRelevantPositions ||
-    !me?.profession ||
-    !me?.bio
+  const showCompleteYourProfileBanner = !me?.collectorProfile?.isProfileComplete
 
   return (
     <>
@@ -376,6 +371,9 @@ const meFragment = graphql`
     emailConfirmed
     identityVerified
     canRequestEmailConfirmation
+    collectorProfile {
+      isProfileComplete
+    }
   }
 `
 

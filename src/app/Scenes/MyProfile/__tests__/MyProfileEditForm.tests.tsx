@@ -152,7 +152,7 @@ describe("MyProfileEditForm", () => {
       it("shows when the user has empty fields in their profile", () => {
         const { getByText } = renderWithWrappers(<TestRenderer />)
         resolveMostRecentRelayOperation(mockEnvironment, {
-          Me: () => ({ name: "name", location: { city: "" } }),
+          Me: () => ({ collectorProfile: { isProfileComplete: false } }),
         })
 
         expect(getByText("Complete your profile and make a great impression")).toBeTruthy()
@@ -161,14 +161,9 @@ describe("MyProfileEditForm", () => {
       it("does not show when the user has completed their profile", () => {
         const { queryByText } = renderWithWrappers(<TestRenderer />)
         resolveMostRecentRelayOperation(mockEnvironment, {
-          Me: () => ({
-            name: "name",
-            location: { city: "city", country: "country" },
-            profession: "profession",
-            otherRelevantPositions: "otherRelevantPositions",
-            bio: "bio",
-          }),
+          Me: () => ({ collectorProfile: { isProfileComplete: true } }),
         })
+
         expect(queryByText("Complete your profile and make a great impression")).toBeFalsy()
       })
     })
