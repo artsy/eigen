@@ -1,5 +1,6 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
+import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Currency } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -20,7 +21,7 @@ import {
   useSpace,
 } from "palette"
 import { Select } from "palette/elements/Select"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { Alert, Image, ScrollView, TouchableOpacity } from "react-native"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import { ScreenMargin } from "../../../Components/ScreenMargin"
@@ -39,6 +40,7 @@ export const MyCollectionArtworkFormMain: React.FC<
 > = ({ route, navigation }) => {
   const artworkActions = GlobalStore.actions.myCollection.artwork
   const artworkState = GlobalStore.useAppState((state) => state.myCollection.artwork)
+  const [showAbandonModal, setShowAbandonModal] = useState(false)
   const { formik } = useArtworkForm()
   const color = useColor()
   const space = useSpace()
@@ -100,13 +102,27 @@ export const MyCollectionArtworkFormMain: React.FC<
     <>
       <ArtsyKeyboardAvoidingView>
         <FancyModalHeader
-          onLeftButtonPress={route.params.onHeaderBackButtonPress}
+          onLeftButtonPress={
+            isFormDirty() && modalType === "edit"
+              ? () => setShowAbandonModal(true)
+              : route.params.onHeaderBackButtonPress
+          }
           rightButtonText={isFormDirty() ? "Clear" : undefined}
           onRightButtonPress={isFormDirty() ? () => route.params.clearForm() : undefined}
           hideBottomDivider
         >
           {addOrEditLabel} Details
         </FancyModalHeader>
+
+        <AbandonFlowModal
+          isVisible={showAbandonModal && modalType === "edit"}
+          title="Leave without saving?"
+          subtitle="Changes you have made so far will not be saved."
+          leaveButtonTitle="Leave Without Saving"
+          continueButtonTitle="Continue Editing"
+          onDismiss={() => setShowAbandonModal(false)}
+        />
+
         <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
           {!!route.params.isSubmission && (
             <Message
