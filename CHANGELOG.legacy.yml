@@ -4,7 +4,7 @@ upcoming:
   version: 6.10.1
   date: TBD
   dev:
-    - Add new adress form - random
+    - Add new adress form
     - Add apple authentication - dzmitry
     - Add google authentication - dzmitry
     - Add new onboarding feature flag on ios - dzmitry
