@@ -6,6 +6,11 @@ orbs:
   horizon: artsy/release@0.0.1
 
 commands:
+  add_write_ssh_key:
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "f7:04:52:6a:ce:a6:f5:19:88:f7:c8:f6:1e:ef:47:4b"
   await-previous-builds:
     parameters:
       branch:
@@ -223,6 +228,7 @@ jobs:
     steps:
       - checkout
       - install-node
+      - add_write_ssh_key
       - run:
           name: Deploy beta
           command: ./scripts/deploy-beta-both
@@ -421,6 +427,7 @@ jobs:
 
       - await-previous-builds:
           branch: beta-ios
+      - add_write_ssh_key
       - run:
           name: Deploy if beta
           no_output_timeout: 20m
@@ -449,6 +456,7 @@ jobs:
           key: v6-test-success-{{ checksum "../workspace/.manifests/android_native" }}
           paths:
             - build-success.log
+      - add_write_ssh_key
       - run:
           name: Deploy if beta - play store and firebase
           command: ./scripts/deploy-if-beta-branch-android BOTH
@@ -462,6 +470,7 @@ jobs:
       - checkout
       - generate-checksums
       - install-node-modules
+      - add_write_ssh_key
       - run:
           name: Update Changelog
           command: node scripts/changelog/commitChangelog.js
@@ -475,6 +484,7 @@ jobs:
     steps:
       - checkout
       - install-gems
+      - add_write_ssh_key
       - run:
           name: Release app version
           command: ./scripts/release-ios-app-branch
