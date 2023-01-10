@@ -12,6 +12,7 @@
     - App ConsignmentInquiry Improvements - kizito
 
   - Dev changes:
+    - Rename Consignment Inquiry Feature Flag - kizito
     - remove unused `CityGuideNewCTA` code - dimatretyak
     - Throw error when `exec` function breaks - mrsltun
     - update sentry-cli - gkartalis
