@@ -10,7 +10,7 @@ commands:
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "f7:04:52:6a:ce:a6:f5:19:88:f7:c8:f6:1e:ef:47:4b"
+            - "d1:2c:3f:65:3a:37:d2:be:0c:ed:27:23:86:c4:3c:df"
   await-previous-builds:
     parameters:
       branch:
