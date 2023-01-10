@@ -34,7 +34,7 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress, onInquiryPress }
   }
   const screenDimensions = useScreenDimensions()
 
-  const enableInquiry = useFeatureFlag("AREnableConsignmentInquiryFlow")
+  const enableInquiry = useFeatureFlag("AREnableConsignmentInquiry")
 
   return (
     <ImageBackground

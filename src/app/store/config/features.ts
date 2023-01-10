@@ -206,11 +206,11 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "AREnableLargeArtworkRailSaveIcon",
   },
-  AREnableConsignmentInquiryFlow: {
+  AREnableConsignmentInquiry: {
     description: "Enable Sell With Artsy Inquiry",
     showInDevMenu: true,
     readyForRelease: true,
-    echoFlagKey: "AREnableConsignmentInquiryFlow",
+    echoFlagKey: "AREnableConsignmentInquiry",
   },
   ARShowUpcomingAuctionResultsRails: {
     description: "Show upcoming auction rails",
