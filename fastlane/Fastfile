@@ -620,6 +620,22 @@ lane :check_flags do
   slack(message: message, default_payloads: [])
 end
 
+lane :test_silence_until do
+  silence_beta_failures_until = ENV['FASTLANE_SILENCE_BETA_FAILURES_UNTIL']
+  silence_until_date = Date.parse(silence_beta_failures_until)
+  today = Date.today
+
+  if silence_until_date <= today
+    puts("silence until date passed we should NOT silence")
+  else
+    puts("silence until date not yet passed we SHOULD silence")
+  end
+
+  puts("Got silence until timestamp: " + silence_beta_failures_until)
+
+  puts("Got today: " + today.to_s)
+end
+
 error do |lane, exception|
   silence_beta_failures = ENV['FASTLANE_SILENCE_BETA_FAILURES']
   if lane == :ship_beta or lane == :ship_beta_ios or lane == :ship_beta_android
