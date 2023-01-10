@@ -622,6 +622,9 @@ end
 
 error do |lane, exception|
   if lane == :ship_beta or lane == :ship_beta_ios or lane == :ship_beta_android
+    # Set this var if you want to silence beta failure alerts for a while
+    # E.g. you are working on a ci change
+    # Takes a date of format 2023-01-01, recommend only setting for 1 day in future
     silence_beta_failures_until = ENV['FASTLANE_SILENCE_BETA_FAILURES_UNTIL']
     if silence_beta_failures_until != nil
       silence_until_date = Date.parse(silence_beta_failures_until)
