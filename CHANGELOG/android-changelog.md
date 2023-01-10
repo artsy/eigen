@@ -7,10 +7,13 @@
 
   - User facing changes:
 
+    - Add complete your profile banner in Edit Profile screen - mrsltun
     - added confirmation modal to the edit artwork screen -daria
     - App ConsignmentInquiry Improvements - kizito
 
   - Dev changes:
+    - remove unused `CityGuideNewCTA` code - dimatretyak
+    - Throw error when `exec` function breaks - mrsltun
     - update sentry-cli - gkartalis
 
 <!-- DO NOT CHANGE -->
