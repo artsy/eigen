@@ -5,9 +5,8 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "./renderWithWrappers"
 
-interface SetupTestWrapper<T extends OperationType> {
-  // TODO: Component: React.ComponentType<T['response']> type errors here
-  Component: React.ComponentType<any>
+interface SetupTestWrapperTL<T extends OperationType> {
+  Component: React.ComponentType<T["response"]>
   preloaded?: boolean
   query?: GraphQLTaggedNode
   variables?: T["variables"]
@@ -40,8 +39,8 @@ type RenderWithRelay = RenderResult & {
  * })
  *
  * it('works', () => {
- *   const { getByText } = renderWithRelay()
- *   expect(getByText('name')).toBeTruthy()
+ *   renderWithRelay()
+ *   expect(screen.getByText('name')).toBeTruthy()
  * })
  *
  * @example - Using fragments
@@ -68,11 +67,11 @@ type RenderWithRelay = RenderResult & {
  * })
  *
  * it('works', () => {
- *   const { getByText } = renderWithRelay({
+ *   renderWithRelay({
  *     Me: () => ({ name: 'Mock Name' })
  *   })
  *
- *   expect(getByText('name')).toEqual('Mock Name')
+ *   expect(screen.getByText('name')).toEqual('Mock Name')
  * })
  */
 export const setupTestWrapperTL = <T extends OperationType>({
@@ -80,7 +79,7 @@ export const setupTestWrapperTL = <T extends OperationType>({
   preloaded = false,
   query,
   variables = {},
-}: SetupTestWrapper<T>) => {
+}: SetupTestWrapperTL<T>) => {
   const renderWithRelay = (
     mockResolvers: MockResolvers = {},
     initialProps: any = {}
@@ -97,7 +96,6 @@ export const setupTestWrapperTL = <T extends OperationType>({
               query={query}
               render={({ props, error }) => {
                 if (props) {
-                  // @ts-ignore
                   return <Component {...props} {...initialProps} />
                 } else if (error) {
                   console.error(error)
@@ -136,6 +134,12 @@ export const setupTestWrapperTL = <T extends OperationType>({
   }
 
   return { renderWithRelay }
+}
+
+interface SetupTestWrapper<T extends OperationType> {
+  Component: React.ComponentType<any>
+  query: GraphQLTaggedNode
+  variables?: T["variables"]
 }
 
 /**
