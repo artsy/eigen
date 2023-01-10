@@ -1,7 +1,7 @@
 import { act, RenderResult } from "@testing-library/react-native"
 import { QueryRenderer, RelayEnvironmentProvider } from "react-relay"
 import { GraphQLTaggedNode, OperationType } from "relay-runtime"
-import { createMockEnvironment, MockPayloadGenerator, RelayMockEnvironment } from "relay-test-utils"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "./renderWithWrappers"
 
@@ -13,16 +13,79 @@ interface SetupTestWrapper<T extends OperationType> {
   variables?: T["variables"]
 }
 
-type RenderWithRelay = RenderResult & { env: RelayMockEnvironment }
-
+type RenderWithRelay = RenderResult & {
+  env: ReturnType<typeof createMockEnvironment>
+}
+/**
+ * Creates a test renderer which can be used to render a variety of relay
+ * query configurations.
+ *
+ * @example - Full Queries
+ *
+ * const Foo = () => {
+ *   const data = useLazyLoadQuery(graphql`
+ *     query FooQuery {
+ *       me {
+ *         name
+ *       }
+ *     }
+ *  `)
+ *
+ *  return <Text>{data.me.name}</Text>
+ * }
+ *
+ * const { renderWithRelay } = setupTestWrapper({
+ *   Component: Foo
+ * })
+ *
+ * it('works', () => {
+ *   const { getByText } = renderWithRelay()
+ *   expect(getByText('name')).toBeTruthy()
+ * })
+ *
+ * @example - Using fragments
+ *
+ * const Bar = () => {
+ *   const data = useFragment(graphql`
+ *     fragment Bar_me on Me {
+ *       name
+ *     }
+ *  `)
+ *
+ *  return <Text>{data.name}</Text>
+ * }
+ *
+ * const { renderWithRelay } = setupTestWrapper({
+ *   Component: Bar,
+ *   query: graphql`
+ *     query BarTestQuery @relay_test_operation {
+ *       me {
+ *         ...Bar_me
+ *       }
+ *     }
+ *   `
+ * })
+ *
+ * it('works', () => {
+ *   const { getByText } = renderWithRelay({
+ *     Me: () => ({ name: 'Mock Name' })
+ *   })
+ *
+ *   expect(getByText('name')).toEqual('Mock Name')
+ * })
+ */
 export const setupTestWrapperTL = <T extends OperationType>({
   Component,
   preloaded = false,
   query,
   variables = {},
 }: SetupTestWrapper<T>) => {
-  const renderWithRelay = (mockResolvers: MockResolvers = {}): RenderWithRelay => {
+  const renderWithRelay = (
+    mockResolvers: MockResolvers = {},
+    initialProps: any = {}
+  ): RenderWithRelay => {
     const env = createMockEnvironment()
+
     const TestRenderer = () => {
       return (
         <>
@@ -34,7 +97,7 @@ export const setupTestWrapperTL = <T extends OperationType>({
               render={({ props, error }) => {
                 if (props) {
                   // @ts-ignore
-                  return <Component {...props} />
+                  return <Component {...props} {...initialProps} />
                 } else if (error) {
                   console.error(error)
                 }
@@ -42,7 +105,7 @@ export const setupTestWrapperTL = <T extends OperationType>({
             />
           ) : (
             <RelayEnvironmentProvider environment={env}>
-              <Component />
+              <Component {...initialProps} />
             </RelayEnvironmentProvider>
           )}
         </>
