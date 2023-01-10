@@ -11,6 +11,7 @@ commands:
       - add_ssh_keys:
           fingerprints:
             - "d1:2c:3f:65:3a:37:d2:be:0c:ed:27:23:86:c4:3c:df"
+            - "fd:3c:e8:5a:ce:e0:b4:4a:f8:e3:25:54:c0:df:5d:c4"
   await-previous-builds:
     parameters:
       branch:
