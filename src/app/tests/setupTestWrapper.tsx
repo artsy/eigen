@@ -16,6 +16,7 @@ interface SetupTestWrapper<T extends OperationType> {
 type RenderWithRelay = RenderResult & {
   env: ReturnType<typeof createMockEnvironment>
 }
+
 /**
  * Creates a test renderer which can be used to render a variety of relay
  * query configurations.
