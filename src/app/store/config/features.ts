@@ -111,11 +111,6 @@ export const features = defineFeatures({
     description: "Enable My Collection Price Estimate Range",
     showInDevMenu: false,
   },
-  AREnableMapScreen: {
-    readyForRelease: false,
-    description: "Enable Crossplatform Map Screen",
-    showInDevMenu: true,
-  },
   AREnableNewOpaqueImageComponent: {
     readyForRelease: true,
     description: "Enable New Image Component",
