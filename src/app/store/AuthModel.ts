@@ -38,7 +38,7 @@ const showError = (
     if (res.error_description.includes("no account linked to oauth token")) {
       const message =
         `Your ${providerName} account is not linked to any Artsy account. ` +
-        `If you already have an Artsy account and you want to log in to it via ${providerName},` +
+        `If you already have an Artsy account and you want to log in to it via ${providerName}, ` +
         `you will first need to sign up with ${providerName}. ` +
         `You will then have the option to link the two accounts.
         `
