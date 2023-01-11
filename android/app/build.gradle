@@ -132,7 +132,8 @@ def enableHermes = project.ext.react.get("enableHermes", false)
  */
 def nativeArchitectures = project.getProperties().get("reactNativeDebugArchitectures")
 
-def password = System.getenv('ANDROID_KEYSTORE_PASSWORD')
+def storePassword = System.getenv('ANDROID_KEYSTORE_PASSWORD')
+def keyPassword = System.getenv('ANDROID_KEY_PASSWORD')
 
 android {
     ndkVersion rootProject.ext.ndkVersion
@@ -171,9 +172,9 @@ android {
         }
         release {
             storeFile file('release.keystore')
-            storePassword password
+            storePassword storePassword
             keyAlias 'release'
-            keyPassword password
+            keyPassword keyPassword
         }
     }
     buildTypes {
