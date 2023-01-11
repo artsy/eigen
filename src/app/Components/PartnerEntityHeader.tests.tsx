@@ -1,4 +1,5 @@
 import { screen } from "@testing-library/react-native"
+import { PartnerEntityHeaderTestsQuery } from "__generated__/PartnerEntityHeaderTestsQuery.graphql"
 import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { PartnerEntityHeaderFragmentContainer } from "./PartnerEntityHeader"
@@ -6,7 +7,7 @@ import { PartnerEntityHeaderFragmentContainer } from "./PartnerEntityHeader"
 jest.unmock("react-relay")
 
 describe("PartnerEntityHeader", () => {
-  const { renderWithRelay } = setupTestWrapperTL({
+  const { renderWithRelay } = setupTestWrapperTL<PartnerEntityHeaderTestsQuery>({
     Component: (props) => <PartnerEntityHeaderFragmentContainer partner={props.partner!} />,
     query: graphql`
       query PartnerEntityHeaderTestsQuery($id: String!) @relay_test_operation {

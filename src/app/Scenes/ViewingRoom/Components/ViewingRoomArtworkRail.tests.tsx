@@ -1,4 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native"
+import { ViewingRoomArtworkRailTestsQuery } from "__generated__/ViewingRoomArtworkRailTestsQuery.graphql"
 import { navigate } from "app/navigation/navigate"
 import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
 import { postEventToProviders } from "app/utils/track/providers"
@@ -9,8 +10,8 @@ jest.unmock("react-relay")
 jest.unmock("react-tracking")
 
 describe("ViewingRoomArtworkRail", () => {
-  const { renderWithRelay } = setupTestWrapperTL({
-    Component: (props) => <ViewingRoomArtworkRailContainer {...props} />,
+  const { renderWithRelay } = setupTestWrapperTL<ViewingRoomArtworkRailTestsQuery>({
+    Component: ({ viewingRoom }) => <ViewingRoomArtworkRailContainer viewingRoom={viewingRoom!} />,
     query: graphql`
       query ViewingRoomArtworkRailTestsQuery {
         viewingRoom(id: "unused") {

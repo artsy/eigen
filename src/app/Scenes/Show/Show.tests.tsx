@@ -1,4 +1,5 @@
 import { screen } from "@testing-library/react-native"
+import { ShowTestsQuery } from "__generated__/ShowTestsQuery.graphql"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -7,8 +8,8 @@ import { Show, ShowFragmentContainer } from "./Show"
 jest.unmock("react-relay")
 
 describe("Show", () => {
-  const { renderWithRelay } = setupTestWrapperTL({
-    Component: (props) => <ShowFragmentContainer show={props.show} />,
+  const { renderWithRelay } = setupTestWrapperTL<ShowTestsQuery>({
+    Component: ({ show }) => <ShowFragmentContainer show={show!} />,
     query: graphql`
       query ShowTestsQuery($showID: String!) @relay_test_operation {
         show(id: $showID) {

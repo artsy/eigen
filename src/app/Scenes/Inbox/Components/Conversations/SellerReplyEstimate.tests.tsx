@@ -1,19 +1,17 @@
+import { SellerReplyEstimate_Test_Query } from "__generated__/SellerReplyEstimate_Test_Query.graphql"
 import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
-import { Theme } from "palette"
 import { graphql } from "react-relay"
 import { SellerReplyEstimateFragmentContainer } from "./SellerReplyEstimate"
 
 jest.unmock("react-relay")
 
 describe("SellerReplyEstimateFragmentContainer", () => {
-  const { renderWithRelay } = setupTestWrapperTL({
+  const { renderWithRelay } = setupTestWrapperTL<SellerReplyEstimate_Test_Query>({
     Component: ({ me }) => {
       return (
-        <Theme>
-          <SellerReplyEstimateFragmentContainer
-            order={me.conversation.orderConnection.edges[0].node}
-          />
-        </Theme>
+        <SellerReplyEstimateFragmentContainer
+          order={me!.conversation!.orderConnection!.edges![0]!.node!}
+        />
       )
     },
     query: graphql`

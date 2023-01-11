@@ -1,4 +1,5 @@
 import { screen } from "@testing-library/react-native"
+import { ArtistHeaderTestsQuery } from "__generated__/ArtistHeaderTestsQuery.graphql"
 import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeader"
 import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -6,8 +7,8 @@ import { graphql } from "react-relay"
 jest.unmock("react-relay")
 
 describe("ArtistHeader", () => {
-  const { renderWithRelay } = setupTestWrapperTL({
-    Component: (props) => <ArtistHeaderFragmentContainer artist={props.artist} />,
+  const { renderWithRelay } = setupTestWrapperTL<ArtistHeaderTestsQuery>({
+    Component: ({ artist }) => <ArtistHeaderFragmentContainer artist={artist!} />,
     query: graphql`
       query ArtistHeaderTestsQuery($artistID: String!) @relay_test_operation {
         artist(id: $artistID) {

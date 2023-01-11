@@ -1,20 +1,16 @@
 import { fireEvent, screen } from "@testing-library/react-native"
+import { ArtworkMakerTitle_Test_Query } from "__generated__/ArtworkMakerTitle_Test_Query.graphql"
 import { navigate } from "app/navigation/navigate"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
-import { Theme } from "palette"
 import { graphql } from "react-relay"
 import { ArtworkMakerTitleFragmentContainer } from "./ArtworkMakerTitle"
 
 jest.unmock("react-relay")
 
 describe("ArtworkMakerTitle", () => {
-  const { renderWithRelay } = setupTestWrapperTL({
-    Component: (props) => (
-      <Theme>
-        <ArtworkMakerTitleFragmentContainer {...props} />
-      </Theme>
-    ),
+  const { renderWithRelay } = setupTestWrapperTL<ArtworkMakerTitle_Test_Query>({
+    Component: ({ artwork }) => <ArtworkMakerTitleFragmentContainer artwork={artwork!} />,
     query: graphql`
       query ArtworkMakerTitle_Test_Query {
         artwork(id: "test-artwork") {

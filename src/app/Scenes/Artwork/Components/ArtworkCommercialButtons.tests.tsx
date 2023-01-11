@@ -1,4 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native"
+import { ArtworkCommercialButtons_Test_Query } from "__generated__/ArtworkCommercialButtons_Test_Query.graphql"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/navigation/navigate"
@@ -14,7 +15,7 @@ import { ArtworkCommercialButtons } from "./ArtworkCommercialButtons"
 jest.unmock("react-relay")
 
 describe("ArtworkCommercialButtons", () => {
-  const { renderWithRelay } = setupTestWrapperTL({
+  const { renderWithRelay } = setupTestWrapperTL<ArtworkCommercialButtons_Test_Query>({
     Component: (props) => (
       <ArtworkInquiryContext.Provider
         value={{
@@ -22,8 +23,8 @@ describe("ArtworkCommercialButtons", () => {
           dispatch: jest.fn(),
         }}
       >
-        <ArtworkStoreProvider initialData={{ auctionState: props.auctionState ?? null }}>
-          <ArtworkCommercialButtons artwork={props.artwork} me={props.me} />
+        <ArtworkStoreProvider>
+          <ArtworkCommercialButtons artwork={props.artwork!} me={props.me!} />
         </ArtworkStoreProvider>
       </ArtworkInquiryContext.Provider>
     ),
@@ -47,6 +48,7 @@ describe("ArtworkCommercialButtons", () => {
       isOfferable: true,
       isInquireable: false,
     }
+
     renderWithRelay({
       Artwork: () => artwork,
       Me: () => meFixture,

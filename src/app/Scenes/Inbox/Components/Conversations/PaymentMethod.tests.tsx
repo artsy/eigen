@@ -1,17 +1,17 @@
+import { PaymentMethod_Test_Query } from "__generated__/PaymentMethod_Test_Query.graphql"
 import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
-import { Theme } from "palette"
 import { graphql } from "react-relay"
 import { PaymentMethodFragmentContainer } from "./PaymentMethod"
 
 jest.unmock("react-relay")
 
 describe("PaymentMethodFragmentContainer", () => {
-  const { renderWithRelay } = setupTestWrapperTL({
+  const { renderWithRelay } = setupTestWrapperTL<PaymentMethod_Test_Query>({
     Component: ({ me }) => {
       return (
-        <Theme>
-          <PaymentMethodFragmentContainer order={me.conversation.orderConnection.edges[0].node} />
-        </Theme>
+        <PaymentMethodFragmentContainer
+          order={me!.conversation!.orderConnection!.edges![0]!.node!}
+        />
       )
     },
     query: graphql`

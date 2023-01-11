@@ -1,8 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
+import { HomeFeedOnboardingRailTestsQuery } from "__generated__/HomeFeedOnboardingRailTestsQuery.graphql"
 import { switchTab } from "app/navigation/navigate"
 import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
-import { Theme } from "palette"
-import { SafeAreaProvider } from "react-native-safe-area-context"
 import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { HomeFeedOnboardingRailFragmentContainer } from "./HomeFeedOnboardingRail"
@@ -12,17 +11,13 @@ jest.unmock("react-relay")
 describe("HomeFeedOnboardingRail", () => {
   const trackEvent = useTracking().trackEvent
 
-  const { renderWithRelay } = setupTestWrapperTL({
-    Component: (props) => {
+  const { renderWithRelay } = setupTestWrapperTL<HomeFeedOnboardingRailTestsQuery>({
+    Component: ({ homePage }) => {
       return (
-        <Theme>
-          <SafeAreaProvider>
-            <HomeFeedOnboardingRailFragmentContainer
-              onboardingModule={props.homePage.onboardingModule}
-              title="Do More on Artsy"
-            />
-          </SafeAreaProvider>
-        </Theme>
+        <HomeFeedOnboardingRailFragmentContainer
+          onboardingModule={homePage!.onboardingModule!}
+          title="Do More on Artsy"
+        />
       )
     },
     query: graphql`

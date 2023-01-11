@@ -1,18 +1,13 @@
+import { AttachmentList_Test_Query } from "__generated__/AttachmentList_Test_Query.graphql"
 import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
-import { Theme } from "palette"
-import "react-native"
 import { graphql } from "react-relay"
 import { AttachmentListFragmentContainer } from "./AttachmentList"
 
 jest.unmock("react-relay")
 
 describe("AttachmentListFragmentContainer", () => {
-  const { renderWithRelay } = setupTestWrapperTL({
-    Component: ({ me }) => (
-      <Theme>
-        <AttachmentListFragmentContainer conversation={me.conversation} />
-      </Theme>
-    ),
+  const { renderWithRelay } = setupTestWrapperTL<AttachmentList_Test_Query>({
+    Component: ({ me }) => <AttachmentListFragmentContainer conversation={me?.conversation!} />,
     query: graphql`
       query AttachmentList_Test_Query {
         me {

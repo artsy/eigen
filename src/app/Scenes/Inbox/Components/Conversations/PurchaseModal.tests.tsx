@@ -1,20 +1,16 @@
 import { fireEvent } from "@testing-library/react-native"
-import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
+import { PurchaseModalTestQuery } from "__generated__/PurchaseModalTestQuery.graphql"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
-import { Theme } from "palette"
 import { graphql } from "react-relay"
 import { PurchaseModalFragmentContainer } from "./PurchaseModal"
 
 jest.unmock("react-relay")
 
 describe("PurchaseModal", () => {
-  const { renderWithRelay } = setupTestWrapperTL({
-    Component: (props) => (
-      <Theme>
-        <GlobalStoreProvider>
-          <PurchaseModalFragmentContainer artwork={props.artwork} conversationID="1234" />
-        </GlobalStoreProvider>
-      </Theme>
+  const { renderWithRelay } = setupTestWrapperTL<PurchaseModalTestQuery>({
+    Component: ({ artwork }) => (
+      <PurchaseModalFragmentContainer artwork={artwork!} conversationID="1234" />
     ),
     query: graphql`
       query PurchaseModalTestQuery @relay_test_operation {
