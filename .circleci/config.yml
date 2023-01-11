@@ -291,6 +291,7 @@ jobs:
       - checkout
       - generate-checksums
       - install-gems
+      - add_write_ssh_key
       - run:
           name: Test app signing
           command: bundle exec fastlane test_app_signing
