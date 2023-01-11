@@ -32,6 +32,11 @@ ios_targets = {
   'net.artsy.artsy.BrazePushServiceExtension' => { :name => 'BrazePushServiceExtension', :plist_path => '../ios/BrazePushServiceExtension/Info.plist' }
 }
 
+lane :test_app_signing do
+  ios_target_ids = ios_targets.keys
+  sync_code_signing(app_identifier: ios_target_ids, type: 'appstore')
+end
+
 lane :ship_beta_ios do
   api_key = app_store_connect_api_key(
     key_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ID'],

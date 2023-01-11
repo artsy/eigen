@@ -280,6 +280,21 @@ jobs:
           name: Check flags
           command: ./scripts/biweekly-flag-check.sh
 
+  test-ios-signing:
+    environment:
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
+
+    macos:
+      xcode: 14.0.1
+
+    steps:
+      - checkout
+      - generate-checksums
+      - install-gems
+      - run:
+          name: Test app signing
+          command: bundle exec fastlane test_app_signing
+
   check-if-app-has-been-approved-for-release:
     environment:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
@@ -573,6 +588,14 @@ workflows:
               only:
                 - beta-ios
                 - beta-android
+      - test-ios-signing:
+          filters:
+            branches:
+              ignore:
+                - app_store_submission
+                - play_store_submission
+                - beta-android
+                - update-changelog
       - build-test-app-ios:
           filters:
             branches:
