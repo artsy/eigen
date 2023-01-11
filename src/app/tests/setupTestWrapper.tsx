@@ -39,7 +39,9 @@ type RenderWithRelay = RenderResult & {
  * })
  *
  * it('works', () => {
- *   renderWithRelay()
+ *   renderWithRelay({
+ *     Me: () => ({ name: "name" })
+ *   })
  *   expect(screen.getByText('name')).toBeTruthy()
  * })
  *
