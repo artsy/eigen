@@ -10,8 +10,8 @@ extension FullBleed {
             StaticConfiguration(kind: Widget.kind, provider: Provider()) { entry in
                 View(entry: entry)
             }
-            .configurationDisplayName("Trove")
-            .description("The best works on Artsy this week.")
+            .configurationDisplayName("New This Week")
+            .description("A curated selection of newly uploaded works from galleries, fairs, and auctions.")
             .supportedFamilies(View.supportedFamilies)
         }
     }
