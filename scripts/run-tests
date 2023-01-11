@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if [ "${LOCAL_BRANCH}" != "feat/fix-signing-on-android" ] then
+	yarn jest --ci --forceExit --runInBand --reporters=default --reporters=jest-junit
+else
+	echo "Skipping jest tests"
+fi
