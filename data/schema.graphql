@@ -10564,6 +10564,7 @@ type Me implements Node {
 
   # User has confirmed their email address
   emailConfirmed: Boolean!
+    @deprecated(reason: "emailConfirmed is going to be removed, use isEmailConfirmed instead")
 
   # Frequency of marketing emails.
   emailFrequency: String
@@ -10583,6 +10584,7 @@ type Me implements Node {
     id: String!
   ): IdentityVerification
   identityVerified: Boolean
+    @deprecated(reason: "identityVerified is going to be removed, use isIdentityVerified instead")
   initials(length: Int = 3): String
   inquiryIntroduction: String
 
@@ -10601,6 +10603,10 @@ type Me implements Node {
       reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
     )
   isCollector: Boolean!
+
+  # User has confirmed their email address
+  isEmailConfirmed: Boolean!
+  isIdentityVerified: Boolean
 
   # List of lab features for this user
   labFeatures: [String!]!
