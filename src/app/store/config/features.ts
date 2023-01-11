@@ -67,21 +67,6 @@ export const features = defineFeatures({
     readyForRelease: false,
     description: "Enable Saved Addresses",
   },
-  AREnableTrove: {
-    readyForRelease: true,
-    description: "Enable Trove in homepage",
-    echoFlagKey: "AREnableTrove",
-  },
-  AREnableShowsRail: {
-    readyForRelease: true,
-    description: "Enable Shows in homepage",
-    echoFlagKey: "AREnableShowsRail",
-  },
-  ARShowNetworkUnavailableModal: {
-    readyForRelease: true,
-    description: "Enable network unavailable modal",
-    echoFlagKey: "ARShowNetworkUnavailableModal",
-  },
   ARGoogleAuth: {
     readyForRelease: true,
     description: "Enable Google authentication",
@@ -112,11 +97,6 @@ export const features = defineFeatures({
     description: "Enable My Collection search bar",
     echoFlagKey: "AREnableMyCollectionSearchBar",
   },
-  AREnablePlaceholderLayoutAnimation: {
-    readyForRelease: true,
-    description: "Enable placeholder layout animation",
-    echoFlagKey: "AREnablePlaceholderLayoutAnimation",
-  },
   ARDarkModeSupport: {
     readyForRelease: false,
     description: "Support dark mode",
@@ -126,30 +106,10 @@ export const features = defineFeatures({
     description: "Show request price estimate banner",
     echoFlagKey: "ARShowRequestPriceEstimateBanner",
   },
-  ARShowMyCollectionDemandIndexHints: {
-    readyForRelease: true,
-    description: "Show demand index hints",
-    echoFlagKey: "ARShowMyCollectionDemandIndexHints",
-  },
   AREnablePriceEstimateRange: {
     readyForRelease: false,
     description: "Enable My Collection Price Estimate Range",
     showInDevMenu: false,
-  },
-  AREnableHomeScreenArtworkRecommendations: {
-    readyForRelease: true,
-    description: "Enable Home Screen Artwork Recommendations",
-    echoFlagKey: "AREnableHomeScreenArtworkRecommendations",
-  },
-  AREnableMapScreen: {
-    readyForRelease: false,
-    description: "Enable Crossplatform Map Screen",
-    showInDevMenu: true,
-  },
-  AREnableAuctionShareButton: {
-    readyForRelease: true,
-    description: "Show share button in auction screen",
-    echoFlagKey: "AREnableAuctionShareButton",
   },
   AREnableNewOpaqueImageComponent: {
     readyForRelease: true,
@@ -161,11 +121,6 @@ export const features = defineFeatures({
     readyForRelease: true,
     description: "Conversational Buy Now",
     echoFlagKey: "AREnableConversationalBuyNow",
-  },
-  AREnableMyCollectionInsights: {
-    readyForRelease: true,
-    description: "Enable My Collection insights tab",
-    echoFlagKey: "AREnableMyCollectionInsights",
   },
   AREnableArtworksFromNonArtsyArtists: {
     readyForRelease: false,
@@ -246,11 +201,11 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "AREnableLargeArtworkRailSaveIcon",
   },
-  AREnableConsignmentInquiryFlow: {
+  AREnableConsignmentInquiry: {
     description: "Enable Sell With Artsy Inquiry",
     showInDevMenu: true,
     readyForRelease: true,
-    echoFlagKey: "AREnableConsignmentInquiryFlow",
+    echoFlagKey: "AREnableConsignmentInquiry",
   },
   ARShowUpcomingAuctionResultsRails: {
     description: "Show upcoming auction rails",

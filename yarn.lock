@@ -222,10 +222,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@artsy/cohesion@4.87.0":
-  version "4.87.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.87.0.tgz#3e175dee9029e4a34dc5f86e202e90594c303860"
-  integrity sha512-2rSoC1637AxTvOF7B9np2GKM67PRMn5Q3EOiGLGRMroc2OPNweTsjox73qbmguAvslGwzbjGRDMBzQ6zmqO5NA==
+"@artsy/cohesion@4.92.0":
+  version "4.92.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.92.0.tgz#23a8e68ca5b197aa20704f6430b1f1decf7b7d18"
+  integrity sha512-sHQWbtehJjN/176RsBy9A6ywIvn6UwE7qcQjVKBPNF1h6WJmF6lDRuLVL0bfziwkMKUV6vCQ2Tg3gEhgBC/DmA==
   dependencies:
     core-js "3"
 
@@ -3496,10 +3496,10 @@
     "@sentry/utils" "6.12.0"
     tslib "^1.9.3"
 
-"@sentry/cli@2.10.0":
-  version "2.10.0"
-  resolved "https://registry.yarnpkg.com/@sentry/cli/-/cli-2.10.0.tgz#ff89ae60724742dfafab93006ec2056cc2d74e9b"
-  integrity sha512-VQnGXPQCqJyxirmUWkNznq3YYklDwDfbogok3lPHaL3r0bhgcNwt/bZxeycpaqk5I7myKNUYW8RG+F1YERODSw==
+"@sentry/cli@2.11.0":
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/@sentry/cli/-/cli-2.11.0.tgz#a324cd1ae98e7d206f5ed739dc40c9728eb0fce8"
+  integrity sha512-qfCf/R0VhmlWcdfu2rntejqbIgovx7FQTwFreQpbISlB/JS9xHF8KEEJXZTdDFoPCi2H9KHg4CPUsCNAKbAdMA==
   dependencies:
     https-proxy-agent "^5.0.0"
     node-fetch "^2.6.7"

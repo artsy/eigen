@@ -1,6 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
-import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { useExperimentFlag, useExperimentVariant } from "app/utils/experiments/hooks"
 import {
@@ -12,7 +11,7 @@ import { Schema } from "app/utils/track"
 import { useAlgoliaClient } from "app/utils/useAlgoliaClient"
 import { useAlgoliaIndices } from "app/utils/useAlgoliaIndices"
 import { useSearchInsightsConfig } from "app/utils/useSearchInsightsConfig"
-import { Box, Flex, Spacer, Text, Touchable } from "palette"
+import { Box, Flex, Spacer, Text } from "palette"
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Configure, connectSearchBox, InstantSearch } from "react-instantsearch-native"
 import { Platform, ScrollView } from "react-native"
@@ -27,7 +26,6 @@ import { useTracking } from "react-tracking"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import styled from "styled-components"
 import { CityGuideCTA } from "./components/CityGuideCTA"
-import { CityGuideCTANew } from "./components/CityGuideCTANew"
 import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
 import { SearchInput } from "./components/SearchInput"
 import { SearchPills } from "./components/SearchPills"
@@ -63,7 +61,6 @@ export const Search: React.FC = () => {
   const { system } = queryData
   const indices = system?.algolia?.indices ?? []
   const indiceNames = indices.map((indice) => indice.name)
-  const enableMaps = useFeatureFlag("AREnableMapScreen")
   const isSearchDiscoveryContentEnabled = useSearchDiscoveryContentEnabled()
   const onRefetch = () => {
     if (isRefreshing) {
@@ -189,6 +186,14 @@ export const Search: React.FC = () => {
     setSelectedPill(TOP_PILL)
   }
 
+  const renderCityGuideCTA = () => {
+    if (Platform.OS === "ios" && !isPad()) {
+      return <CityGuideCTA />
+    }
+
+    return null
+  }
+
   return (
     <SearchContext.Provider value={searchProviderValues}>
       <ArtsyKeyboardAvoidingView>
@@ -200,11 +205,6 @@ export const Search: React.FC = () => {
         >
           <Configure clickAnalytics />
           <RefetchWhenApiKeyExpiredContainer refetch={onRefetch} />
-          {!!enableMaps && (
-            <Flex p={2} pb={1}>
-              <Text variant="xl">Explore</Text>
-            </Flex>
-          )}
           <Flex p={2} pb={0}>
             <SearchInputContainer
               placeholder="Search artists, artworks, galleries, etc"
@@ -246,15 +246,7 @@ export const Search: React.FC = () => {
                   <Spacer mb={4} />
                 )}
 
-                <HorizontalPadding>
-                  {!!enableMaps ? (
-                    <Touchable onPress={() => navigate("/map")}>
-                      <CityGuideCTANew />
-                    </Touchable>
-                  ) : (
-                    !isPad() && Platform.OS === "ios" && <CityGuideCTA />
-                  )}
-                </HorizontalPadding>
+                <HorizontalPadding>{renderCityGuideCTA()}</HorizontalPadding>
 
                 <Spacer mb={4} />
               </Scrollable>

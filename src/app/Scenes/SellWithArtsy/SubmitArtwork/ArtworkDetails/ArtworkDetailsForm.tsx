@@ -24,16 +24,14 @@ import {
   AcceptableCategoryValue,
 } from "./utils/acceptableCategoriesForSubmission"
 import { limitedEditionValue, rarityOptions } from "./utils/rarityOptions"
-import { ArtworkDetailsFormModel, countriesRequirePostalCode } from "./validation"
+import { ArtworkDetailsFormModel } from "./validation"
 
 const StandardSpace = () => <Spacer mt={4} />
 
 export const ArtworkDetailsForm: React.FC = () => {
-  const { values, errors, setFieldValue, touched, handleBlur, setFieldTouched } =
-    useFormikContext<ArtworkDetailsFormModel>()
+  const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
   const [isRarityInfoModalVisible, setIsRarityInfoModalVisible] = useState(false)
   const [isProvenanceInfoModalVisible, setIsProvenanceInfoModalVisible] = useState(false)
-  const [isZipInputFocused, setIsZipInputFocused] = useState(false)
 
   useEffect(() => {
     if (values) {
@@ -181,6 +179,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         <Box width="31%">
           <Input
             title="Depth"
+            optional
             keyboardType="decimal-pad"
             testID="Submission_DepthInput"
             value={values.depth}
@@ -238,35 +237,8 @@ export const ArtworkDetailsForm: React.FC = () => {
             country: country ?? "",
             countryCode: countryCode ?? "",
           })
-
-          if (!countryCode) {
-            setFieldValue("location.zipCode", "")
-            setFieldTouched("location.zipCode", false)
-          }
         }}
       />
-      {countriesRequirePostalCode.includes(values.location.countryCode.toUpperCase()) && (
-        <>
-          <Spacer m={2} />
-          <Input
-            title="Zip/Postal code"
-            placeholder="Zip/postal code where artwork is located"
-            testID="Submission_ZipInput"
-            value={values.location.zipCode}
-            onBlur={(e) => {
-              setIsZipInputFocused(false)
-              handleBlur("location.zipCode")(e)
-            }}
-            onFocus={() => setIsZipInputFocused(true)}
-            error={
-              !isZipInputFocused && touched.location?.zipCode && errors.location?.zipCode
-                ? errors.location.zipCode
-                : ""
-            }
-            onChangeText={(e) => setFieldValue("location.zipCode", e)}
-          />
-        </>
-      )}
       <StandardSpace />
     </>
   )

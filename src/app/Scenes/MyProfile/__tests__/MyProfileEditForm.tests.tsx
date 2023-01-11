@@ -147,5 +147,25 @@ describe("MyProfileEditForm", () => {
         expect(getByText("Verify Your ID")).toBeTruthy()
       })
     })
+
+    describe("Complete your profile banner", () => {
+      it("shows when the user has empty fields in their profile", () => {
+        const { getByText } = renderWithWrappers(<TestRenderer />)
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Me: () => ({ collectorProfile: { isProfileComplete: false } }),
+        })
+
+        expect(getByText("Complete your profile and make a great impression")).toBeTruthy()
+      })
+
+      it("does not show when the user has completed their profile", () => {
+        const { queryByText } = renderWithWrappers(<TestRenderer />)
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Me: () => ({ collectorProfile: { isProfileComplete: true } }),
+        })
+
+        expect(queryByText("Complete your profile and make a great impression")).toBeFalsy()
+      })
+    })
   })
 })

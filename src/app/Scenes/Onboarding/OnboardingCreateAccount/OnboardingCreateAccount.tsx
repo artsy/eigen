@@ -1,6 +1,7 @@
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
 import { BackButton } from "app/navigation/BackButton"
+import { showBlockedAuthError } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { Box, Button, Flex, Spacer, Text, useColor } from "palette"
@@ -110,11 +111,15 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
               name: name.trim(),
               agreedToReceiveEmails,
             })
+
             if (!res.success) {
-              Alert.alert("Try again", res.message)
+              if (res.error === "blocked_attempt") {
+                showBlockedAuthError("sign up")
+              } else {
+                Alert.alert("Try again", res.message)
+              }
             }
           }
-
           break
 
         default:

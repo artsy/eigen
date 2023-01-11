@@ -94,7 +94,7 @@
     "react-native": "Try running `npx @rnx-kit/align-deps --requirements react-native@0.66.5` when upgrading to a version, here 0.66.5"
   },
   "dependencies": {
-    "@artsy/cohesion": "4.87.0",
+    "@artsy/cohesion": "4.92.0",
     "@artsy/palette-tokens": "4.0.1",
     "@artsy/to-title-case": "1.1.0",
     "@expo/react-native-action-sheet": "3.8.0",
@@ -120,7 +120,7 @@
     "@segment/analytics-react-native": "1.5.2",
     "@segment/analytics-react-native-adjust": "1.5.0",
     "@segment/analytics-react-native-appboy": "1.5.0",
-    "@sentry/cli": "2.10.0",
+    "@sentry/cli": "2.11.0",
     "@sentry/react-native": "3.2.13",
     "@storybook/addon-actions": "6.3.13",
     "@storybook/addon-controls": "6.3.13",

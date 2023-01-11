@@ -189,6 +189,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/settings/dark-mode", "DarkModeSettings"),
     addRoute("/local-discovery", "LocalDiscovery"),
     addRoute("/privacy-request", "PrivacyRequest"),
+    addWebViewRoute("/price-database"),
 
     addRoute("/orders", "OrderHistory"),
 
@@ -215,6 +216,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/artwork-certificate-of-authenticity", "ArtworkCertificateAuthenticity"),
     addRoute("/artwork-submission-status", "ArtworkSubmissionStatusFAQ"),
     addRoute("/selling-with-artsy", "MyCollectionSellingWithartsyFAQ"),
+    addWebViewRoute("/meet-the-specialists"),
 
     addRoute("/partner/:partnerID", "Partner"),
     addRoute("/partner/:partnerID/works", "Partner", (params) => ({

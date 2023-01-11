@@ -19,6 +19,7 @@ const DESCRIPTION_LINES = fontScale > 1 ? 4 : 3
 
 const ContentCard: React.FC<CardProps> = ({ item }) => {
   const { width: screenWidth } = useScreenDimensions()
+  const cardImageWidth = screenWidth > 700 ? screenWidth / 2 : CARD_IMAGE_WIDTH
   const handlePress = () => {
     ReactAppboy.logContentCardClicked(item.id)
 
@@ -34,9 +35,9 @@ const ContentCard: React.FC<CardProps> = ({ item }) => {
           height={CARD_HEIGHT}
           imageURL={item.image}
           resizeMode="cover"
-          width={CARD_IMAGE_WIDTH}
+          width={cardImageWidth}
         />
-        <Box p={2} width={screenWidth - CARD_IMAGE_WIDTH}>
+        <Box p={2} width={screenWidth - cardImageWidth}>
           <Text color="white100" mb={1} numberOfLines={2} variant="lg-display">
             {item.title}
           </Text>

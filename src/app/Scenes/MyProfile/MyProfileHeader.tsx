@@ -68,7 +68,7 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
           onPress={() => navigate("/my-profile/settings")}
           style={{ height: "100%" }}
         >
-          <SettingsIcon height={18} width={18} fill="black100" />
+          <SettingsIcon height={24} width={24} fill="black100" />
         </Touchable>
       </Flex>
 

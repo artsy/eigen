@@ -10,7 +10,7 @@ import { postEventToProviders } from "app/utils/track/providers"
 import { action, Action, Computed, computed, StateMapper, thunk, Thunk } from "easy-peasy"
 import { capitalize } from "lodash"
 import { stringify } from "qs"
-import { Platform } from "react-native"
+import { Alert, Platform } from "react-native"
 import Config from "react-native-config"
 import {
   AccessToken,
@@ -54,7 +54,13 @@ const showError = (
   }
 }
 
-type SignInStatus = "failure" | "success" | "otp_missing" | "on_demand_otp_missing" | "invalid_otp"
+type SignInStatus =
+  | "failure"
+  | "success"
+  | "otp_missing"
+  | "on_demand_otp_missing"
+  | "invalid_otp"
+  | "auth_blocked"
 
 const handleSignUpError = ({
   errorObject,
@@ -96,6 +102,26 @@ const handleSignUpError = ({
     existingProviders,
   }
 }
+
+export const showBlockedAuthError = (mode: "sign in" | "sign up") => {
+  const messagePrefix = mode === "sign in" ? "Sign in" : "Sign up"
+  const innerMessage = mode === "sign in" ? "signing in" : "signing up"
+  Alert.alert(
+    messagePrefix + " attempt blocked",
+    "Please try " +
+      innerMessage +
+      " from a different internet connection or contact support@artsy.net for help.",
+    [
+      {
+        text: "OK",
+        onPress: () => {
+          captureMessage("AUTH_BLOCKED: " + messagePrefix + " unauthorized reported")
+        },
+      },
+    ]
+  )
+}
+
 interface EmailOAuthParams {
   oauthProvider: "email"
   email: string
@@ -344,6 +370,10 @@ export const getAuthModel = (): AuthModel => ({
       },
     })
 
+    if (result.status === 403) {
+      return "auth_blocked"
+    }
+
     if (result.status === 201) {
       const { expires_in, access_token: userAccessToken } = await result.json()
       const user = await actions.getUser({ accessToken: userAccessToken })
@@ -464,6 +494,14 @@ export const getAuthModel = (): AuthModel => ({
       return { success: true, message: "" }
     }
 
+    if (result.status === 403) {
+      return {
+        success: false,
+        error: "blocked_attempt",
+        message: "Sign up attempt blocked",
+      }
+    }
+
     const resultJson = await result.json()
 
     const { message, existingProviders } = handleSignUpError({
@@ -534,6 +572,8 @@ export const getAuthModel = (): AuthModel => ({
             if (resultGravitySignUp.success) {
               resolve({ success: true })
               return
+            } else if (resultGravitySignUp.error === "blocked_attempt") {
+              reject(new AuthError("Attempt blocked"))
             } else {
               reject(
                 new AuthError(
@@ -582,8 +622,12 @@ export const getAuthModel = (): AuthModel => ({
                 return
               }
             } else {
-              const res = await resultGravityAccessToken.json()
-              showError(res, reject, "facebook")
+              if (resultGravityAccessToken.status === 403) {
+                reject(new AuthError("Attempt blocked"))
+              } else {
+                const res = await resultGravityAccessToken.json()
+                showError(res, reject, "facebook")
+              }
             }
           }
         }
@@ -645,6 +689,8 @@ export const getAuthModel = (): AuthModel => ({
           if (resultGravitySignUp.success) {
             resolve({ success: true })
             return
+          } else if (resultGravitySignUp.error === "blocked_attempt") {
+            reject(new AuthError("Attempt blocked"))
           } else {
             reject(
               new AuthError(
@@ -694,8 +740,12 @@ export const getAuthModel = (): AuthModel => ({
               return
             }
           } else {
-            const res = await resultGravityAccessToken.json()
-            showError(res, reject, "google")
+            if (resultGravityAccessToken.status === 403) {
+              reject(new AuthError("Attempt blocked"))
+            } else {
+              const res = await resultGravityAccessToken.json()
+              showError(res, reject, "google")
+            }
           }
         }
       } catch (e) {
@@ -824,8 +874,12 @@ export const getAuthModel = (): AuthModel => ({
             return
           }
         } else {
-          const res = await resultGravityAccessToken.json()
-          showError(res, reject, "apple")
+          if (resultGravityAccessToken.status === 403) {
+            reject(new AuthError("Attempt blocked"))
+          } else {
+            const res = await resultGravityAccessToken.json()
+            showError(res, reject, "apple")
+          }
         }
       }
     })

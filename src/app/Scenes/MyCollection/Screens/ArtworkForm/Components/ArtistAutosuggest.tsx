@@ -129,10 +129,13 @@ const ArtistAutosuggestScreenQuery = graphql`
   query ArtistAutosuggestQuery {
     me {
       myCollectionInfo {
-        collectedArtistsConnection(first: 100) {
+        collectedArtistsConnection(first: 100, includePersonalArtists: true) {
           edges {
             node {
               __typename
+              counts {
+                artworks
+              }
               displayLabel
               formattedNationalityAndBirthday
               imageUrl

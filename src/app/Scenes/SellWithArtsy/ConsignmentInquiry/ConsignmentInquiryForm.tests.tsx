@@ -20,7 +20,8 @@ jest.mock("formik", () => ({
 }))
 
 describe("ConsignmentInquiryForm", () => {
-  const getWrapper = () => renderWithWrappers(<ConsignmentInquiryForm />)
+  const getWrapper = () =>
+    renderWithWrappers(<ConsignmentInquiryForm canPopScreen confirmLeaveEdit={jest.fn} />)
   it("renders with fields prepopulated", () => {
     const tree = getWrapper()
     const nameInput = tree.getByTestId("swa-inquiry-name-input")
