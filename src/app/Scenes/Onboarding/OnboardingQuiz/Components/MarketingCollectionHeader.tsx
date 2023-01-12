@@ -12,7 +12,7 @@ interface MarketingCollectionHeaderProps {
 
 export const images: Record<OnboardingMarketingCollectionSlug, ImageSourcePropType> = {
   "artists-on-the-rise": require("images/CohnMakeAMountain.jpg"),
-  "trove-editors-picks": require("images/HirstTheWonder.jpg"),
+  "curators-picks-emerging": require("images/HirstTheWonder.jpg"),
   "top-auction-lots": require("images/HirstTheWonder.jpg"),
 }
 

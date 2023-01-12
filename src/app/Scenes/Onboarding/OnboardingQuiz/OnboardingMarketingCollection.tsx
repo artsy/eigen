@@ -11,7 +11,7 @@ import { images, MarketingCollectionHeader } from "./Components/MarketingCollect
 
 export type OnboardingMarketingCollectionSlug =
   | "artists-on-the-rise"
-  | "trove-editors-picks"
+  | "curators-picks-emerging"
   | "top-auction-lots"
 
 interface OnboardingMarketingCollectionProps {
