@@ -6,16 +6,15 @@ import {
   ViroTrackingStateConstants,
 } from "@viro-community/react-viro"
 import React, { useEffect, useState } from "react"
-import { StyleSheet } from "react-native"
 
-let source
-let height
-let width
+let source: string
+let height: number
+let width: number
 
 const HelloWorldSceneAR = () => {
   const [image, setImage] = useState(null)
 
-  function onInitialized(state, reason) {
+  function onInitialized(state: number) {
     if (state === ViroTrackingStateConstants.TRACKING_NORMAL) {
       setImage(
         <ViroImage source={{ uri: source }} height={height} width={width} rotation={[0, 0, 0]} />
@@ -34,7 +33,7 @@ const HelloWorldSceneAR = () => {
   )
 }
 
-export const ArtworkViewInRoom = (props) => {
+export const ArtworkViewInRoom = (props: { source: string; height: number; width: number }) => {
   useEffect(() => {
     console.log("artwork view in room")
     source = props.source

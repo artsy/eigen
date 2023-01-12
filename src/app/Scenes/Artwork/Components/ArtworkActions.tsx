@@ -102,10 +102,8 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
   }))
   openViewInRoom() {
     const {
-      artwork: { image, id, slug, heightCm, widthCm },
+      artwork: { image, heightCm, widthCm },
     } = this.props
-    const heightIn = cm2in(heightCm!)
-    const widthIn = cm2in(widthCm!)
 
     navigate("/view-in-room", {
       passProps: {
