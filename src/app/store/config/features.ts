@@ -92,11 +92,6 @@ export const features = defineFeatures({
     description: "Enable search with image",
     showInDevMenu: true,
   },
-  AREnableMyCollectionSearchBar: {
-    readyForRelease: true,
-    description: "Enable My Collection search bar",
-    echoFlagKey: "AREnableMyCollectionSearchBar",
-  },
   ARDarkModeSupport: {
     readyForRelease: false,
     description: "Support dark mode",
