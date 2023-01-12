@@ -150,7 +150,7 @@ const Home = (props: Props) => {
       prefetchUrl: "/auction-results-for-artists-you-follow",
     },
     {
-      title: "Market News",
+      title: "Artsy Editorial",
       type: "articles",
       data: articlesConnection,
       hidden: !articlesConnection,

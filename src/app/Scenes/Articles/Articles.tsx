@@ -37,7 +37,7 @@ export const Articles: React.FC = () => {
       articles={articles as any}
       isLoading={() => isLoadingNext}
       hasMore={() => hasNext}
-      title="Market News"
+      title="Artsy Editorial"
       refreshing={refreshing}
       handleLoadMore={handleLoadMore}
       handleRefresh={handleRefresh}
