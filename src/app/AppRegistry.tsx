@@ -70,9 +70,9 @@ import { NewMapScreen } from "./Scenes/Map/NewMap"
 import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
 import { MyAccountDeleteAccountQueryRenderer } from "./Scenes/MyAccount/MyAccountDeleteAccount"
 import { MyAccountEditEmailQueryRenderer } from "./Scenes/MyAccount/MyAccountEditEmail"
-import { MyAccountEditNameQueryRenderer } from "./Scenes/MyAccount/MyAccountEditName"
 import { MyAccountEditPassword } from "./Scenes/MyAccount/MyAccountEditPassword"
 import { MyAccountEditPhoneQueryRenderer } from "./Scenes/MyAccount/MyAccountEditPhone"
+import { MyAccountEditPriceRangeQueryRenderer } from "./Scenes/MyAccount/MyAccountEditPriceRange"
 import { MyBidsQueryRenderer } from "./Scenes/MyBids/MyBids"
 import {
   MyCollectionQueryRenderer,
@@ -431,7 +431,9 @@ export const modules = defineModules({
   NewMap: reactModule(NewMapScreen, { fullBleed: true }),
   MyAccount: reactModule(MyAccountQueryRenderer),
   MyAccountEditEmail: reactModule(MyAccountEditEmailQueryRenderer, { hidesBackButton: true }),
-  MyAccountEditName: reactModule(MyAccountEditNameQueryRenderer, { hidesBackButton: true }),
+  MyAccountEditPriceRange: reactModule(MyAccountEditPriceRangeQueryRenderer, {
+    hidesBackButton: true,
+  }),
   MyAccountEditPassword: reactModule(MyAccountEditPassword, { hidesBackButton: true }),
   MyAccountEditPhone: reactModule(MyAccountEditPhoneQueryRenderer, { hidesBackButton: true }),
   MyAccountDeleteAccount: reactModule(MyAccountDeleteAccountQueryRenderer),

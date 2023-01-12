@@ -15,6 +15,7 @@ import { times } from "lodash"
 import { Box, Button, Flex, Spacer, Text } from "palette"
 import { ActivityIndicator, Image, Platform, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
+import { PRICE_BUCKETS } from "./MyAccountEditPriceRange"
 
 const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, relay }) => {
   const hasOnlyOneAuth = me.authentications.length + (me.hasPassword ? 1 : 0) < 2
@@ -69,11 +70,6 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
     <PageWithSimpleHeader title="Account">
       <ScrollView contentContainerStyle={{ paddingTop: 10 }}>
         <MenuItem
-          title="Full Name"
-          value={me.name}
-          onPress={() => navigate("my-account/edit-name")}
-        />
-        <MenuItem
           title="Email"
           value={me.email}
           ellipsizeMode="middle"
@@ -85,6 +81,15 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
           title="Phone"
           value={me.phone || "Add phone"}
           onPress={() => navigate("my-account/edit-phone")}
+        />
+        <MenuItem
+          title="Price Range"
+          value={
+            me.priceRange
+              ? PRICE_BUCKETS.filter((i) => me.priceRange === i.value)[0].label
+              : "Select a price range"
+          }
+          onPress={() => navigate("my-account/edit-price-range")}
         />
         {!!me.hasPassword && (
           <MenuItem
@@ -211,11 +216,13 @@ const MyAccountPlaceholder: React.FC = () => {
 export const MyAccountContainer = createFragmentContainer(MyAccount, {
   me: graphql`
     fragment MyAccount_me on Me {
-      name
       email
       phone
       paddleNumber
       hasPassword
+      priceRange
+      priceRangeMax
+      priceRangeMin
       authentications {
         provider
       }

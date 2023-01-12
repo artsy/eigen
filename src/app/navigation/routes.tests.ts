@@ -722,10 +722,10 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to MyAccountEditName", () => {
-    expect(matchRoute("/my-account/edit-name")).toMatchInlineSnapshot(`
+  it("routes to MyAccountEditPriceRange", () => {
+    expect(matchRoute("/my-account/edit-price-range")).toMatchInlineSnapshot(`
       Object {
-        "module": "MyAccountEditName",
+        "module": "MyAccountEditPriceRange",
         "params": Object {},
         "type": "match",
       }
