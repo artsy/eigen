@@ -11,7 +11,7 @@ import { BuyNowButtonFragmentContainer } from "./CommercialButtons/BuyNowButton"
 import { InquiryButtonsFragmentContainer } from "./CommercialButtons/InquiryButtons"
 import { MakeOfferButtonFragmentContainer } from "./CommercialButtons/MakeOfferButton"
 
-export interface ArtworkCommercialButtonsProps {
+interface ArtworkCommercialButtonsProps {
   artwork: ArtworkCommercialButtons_artwork$key
   me: ArtworkCommercialButtons_me$key
 }
