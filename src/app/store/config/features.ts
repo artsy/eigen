@@ -82,11 +82,6 @@ export const features = defineFeatures({
     description: "Enable query prefetching",
     echoFlagKey: "AREnableQueriesPrefetching",
   },
-  ARAllowLinkSocialAccountsOnSignUp: {
-    readyForRelease: true,
-    description: "Allow linking of social accounts on sign up",
-    echoFlagKey: "ARAllowLinkSocialAccountsOnSignUp",
-  },
   AREnableImageSearch: {
     readyForRelease: false,
     description: "Enable search with image",
