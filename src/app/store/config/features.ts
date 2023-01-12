@@ -173,7 +173,8 @@ export const features = defineFeatures({
   AREnableAndroidImagesGallery: {
     description: "Enable images gallery on Android",
     showInDevMenu: true,
-    readyForRelease: false,
+    readyForRelease: true,
+    echoFlagKey: "AREnableAndroidImagesGallery",
   },
   AREnableLargeArtworkRailSaveIcon: {
     description: "Enable save icon for large artwork rails",
