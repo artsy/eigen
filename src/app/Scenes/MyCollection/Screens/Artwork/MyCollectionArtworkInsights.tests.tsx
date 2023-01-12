@@ -1,6 +1,5 @@
 import { MyCollectionArtworkInsightsTestsQuery } from "__generated__/MyCollectionArtworkInsightsTestsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
@@ -87,10 +86,6 @@ describe("MyCollectionArtworkInsights", () => {
   })
 
   describe("Conditional Display of RequestForPriceEstimateBanner", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ ARShowRequestPriceEstimateBanner: true })
-    })
-
     it("does not display RequestForPriceEstimateBanner when Artist is not P1", () => {
       const { queryByTestId } = renderWithWrappers(<TestRenderer />)
       resolveMostRecentRelayOperation(mockEnvironment, {

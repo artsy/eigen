@@ -101,11 +101,6 @@ export const features = defineFeatures({
     readyForRelease: false,
     description: "Support dark mode",
   },
-  ARShowRequestPriceEstimateBanner: {
-    readyForRelease: true,
-    description: "Show request price estimate banner",
-    echoFlagKey: "ARShowRequestPriceEstimateBanner",
-  },
   AREnablePriceEstimateRange: {
     readyForRelease: false,
     description: "Enable My Collection Price Estimate Range",
