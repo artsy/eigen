@@ -263,7 +263,7 @@ export const selectedOptionsUnion = ({
     local: {
       paramName: FilterParamName.sort,
       paramValue: "",
-      displayText: "Recommendeds",
+      displayText: "Recommended",
     },
   }[filterType]
 
