@@ -82,10 +82,7 @@ export const setupTestWrapperTL = <T extends OperationType>({
   query,
   variables = {},
 }: SetupTestWrapperTL<T>) => {
-  const renderWithRelay = (
-    mockResolvers: MockResolvers = {},
-    initialProps: any = {}
-  ): RenderWithRelay => {
+  const renderWithRelay = (mockResolvers: MockResolvers = {}, props: any = {}): RenderWithRelay => {
     const env = createMockEnvironment()
 
     const TestRenderer = () => {
@@ -96,9 +93,9 @@ export const setupTestWrapperTL = <T extends OperationType>({
               environment={env}
               variables={variables}
               query={query}
-              render={({ props, error }) => {
-                if (props) {
-                  return <Component {...props} {...initialProps} />
+              render={({ props: relayProps, error }) => {
+                if (relayProps) {
+                  return <Component {...relayProps} {...props} />
                 } else if (error) {
                   console.error(error)
                 }
@@ -106,7 +103,7 @@ export const setupTestWrapperTL = <T extends OperationType>({
             />
           ) : (
             <RelayEnvironmentProvider environment={env}>
-              <Component {...initialProps} />
+              <Component {...props} />
             </RelayEnvironmentProvider>
           )}
         </>
