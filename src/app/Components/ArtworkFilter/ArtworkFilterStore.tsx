@@ -227,7 +227,7 @@ export const selectedOptionsUnion = ({
     artwork: {
       paramName: FilterParamName.sort,
       paramValue: "-decayed_merch",
-      displayText: "Default",
+      displayText: "Recommended",
     },
     saleArtwork: {
       paramName: FilterParamName.sort,
@@ -253,17 +253,17 @@ export const selectedOptionsUnion = ({
     geneArtwork: {
       paramName: FilterParamName.sort,
       paramValue: "-partner_updated_at",
-      displayText: "Default",
+      displayText: "Recommended",
     },
     tagArtwork: {
       paramName: FilterParamName.sort,
       paramValue: "-partner_updated_at",
-      displayText: "Default",
+      displayText: "Recommended",
     },
     local: {
       paramName: FilterParamName.sort,
       paramValue: "",
-      displayText: "Default",
+      displayText: "Recommendeds",
     },
   }[filterType]
 
