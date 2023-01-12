@@ -5,7 +5,7 @@ import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/Filter
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ZeroState } from "app/Components/States/ZeroState"
 import { navigate, popToRoot } from "app/navigation/navigate"
-import { GlobalStore, useDevToggle, useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { Button, Flex, LockIcon, Spacer, Text, useSpace } from "palette"
 import { useState } from "react"
@@ -45,7 +45,6 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
   myCollectionIsRefreshing,
 }) => {
   const { height: screenHeight } = useScreenDimensions()
-  const enabledSearchBar = useFeatureFlag("AREnableMyCollectionSearchBar")
 
   const [minHeight, setMinHeight] = useState<number | undefined>(undefined)
   const [initialScrollPosition, setInitialScrollPosition] = useState(-1)
@@ -165,7 +164,7 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
               )
             }
             scrollEventThrottle={100}
-            onScroll={enabledSearchBar ? handleScroll : undefined}
+            onScroll={handleScroll}
           />
         ) : (
           <MyCollectionArtworkList
@@ -184,7 +183,7 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
               )
             }
             scrollEventThrottle={100}
-            onScroll={enabledSearchBar ? handleScroll : undefined}
+            onScroll={handleScroll}
           />
         )
       ) : (

@@ -82,29 +82,14 @@ export const features = defineFeatures({
     description: "Enable query prefetching",
     echoFlagKey: "AREnableQueriesPrefetching",
   },
-  ARAllowLinkSocialAccountsOnSignUp: {
-    readyForRelease: true,
-    description: "Allow linking of social accounts on sign up",
-    echoFlagKey: "ARAllowLinkSocialAccountsOnSignUp",
-  },
   AREnableImageSearch: {
     readyForRelease: false,
     description: "Enable search with image",
     showInDevMenu: true,
   },
-  AREnableMyCollectionSearchBar: {
-    readyForRelease: true,
-    description: "Enable My Collection search bar",
-    echoFlagKey: "AREnableMyCollectionSearchBar",
-  },
   ARDarkModeSupport: {
     readyForRelease: false,
     description: "Support dark mode",
-  },
-  ARShowRequestPriceEstimateBanner: {
-    readyForRelease: true,
-    description: "Show request price estimate banner",
-    echoFlagKey: "ARShowRequestPriceEstimateBanner",
   },
   AREnablePriceEstimateRange: {
     readyForRelease: false,

@@ -24,7 +24,6 @@ interface OnboardingSocialPickProps {
 export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode }) => {
   const navigation = useNavigation()
   const enableGoogleAuth = useFeatureFlag("ARGoogleAuth")
-  const allowLinkingOnSignUp = useFeatureFlag("ARAllowLinkSocialAccountsOnSignUp")
   const isLoading = GlobalStore.useAppState((state) => state.auth.sessionState.isLoading)
 
   const isIOS = Platform.OS === "ios"
@@ -92,7 +91,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
 
     const canBeLinked =
       error.error === "User Already Exists" && error.meta && error.meta.existingProviders
-    if (canBeLinked && allowLinkingOnSignUp) {
+    if (canBeLinked) {
       handleErrorWithAlternativeProviders(error.meta)
       return
     }

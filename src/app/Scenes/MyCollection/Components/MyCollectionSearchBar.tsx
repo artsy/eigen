@@ -4,7 +4,7 @@ import { GridViewIcon } from "app/Icons/GridViewIcon"
 import { ListViewIcon } from "app/Icons/ListViewIcon"
 import SearchIcon from "app/Icons/SearchIcon"
 import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
-import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { debounce } from "lodash"
 import { Flex, Input, Text, useTheme } from "palette"
 import { useEffect, useMemo, useRef, useState } from "react"
@@ -38,8 +38,6 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
   const hasRunFocusedAnimation = useAnimatedValue(1)
 
   const [value, setValue] = useState(searchString)
-
-  const enabledSearchBar = useFeatureFlag("AREnableMyCollectionSearchBar")
 
   const { staticHeaderHeight } = useStickyTabPageContext()
 
@@ -79,10 +77,6 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
   useEffect(() => {
     debouncedSetKeywordFilter(value)
   }, [value])
-
-  if (!enabledSearchBar) {
-    return null
-  }
 
   return (
     <Flex>

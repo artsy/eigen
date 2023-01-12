@@ -2,7 +2,6 @@ import { MyCollectionArtworkInsights_artwork$key } from "__generated__/MyCollect
 import { MyCollectionArtworkInsights_marketPriceInsights$key } from "__generated__/MyCollectionArtworkInsights_marketPriceInsights.graphql"
 import { MyCollectionArtworkInsights_me$key } from "__generated__/MyCollectionArtworkInsights_me.graphql"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { Flex } from "palette"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -45,13 +44,11 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
           </>
         )}
 
-        {!!useFeatureFlag("ARShowRequestPriceEstimateBanner") && (
-          <RequestForPriceEstimateBanner
-            me={me}
-            artwork={artwork}
-            marketPriceInsights={marketPriceInsights}
-          />
-        )}
+        <RequestForPriceEstimateBanner
+          me={me}
+          artwork={artwork}
+          marketPriceInsights={marketPriceInsights}
+        />
 
         {!!artwork.marketPriceInsights && (
           <MyCollectionArtworkArtistMarket
