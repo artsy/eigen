@@ -24,7 +24,7 @@
         ar_keypath(User.new, userID) : @"id",
         ar_keypath(User.new, email) : @"email",
         ar_keypath(User.new, defaultProfileID) : @"default_profile_id",
-        ar_keypath(User.new, isIdentityVerified) : @"identity_verified",
+        ar_keypath(User.new, identityVerified) : @"identity_verified",
     };
 }
 
