@@ -1,13 +1,13 @@
 import { fireEvent } from "@testing-library/react-native"
 import { OAuthProvider } from "app/auth/types"
-import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Platform } from "react-native"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { OnboardingNavigationStack } from "./Onboarding"
-import { LinkAccountButton, OnboardingSocialLink } from "./OnboardingSocialLink"
+import { OnboardingSocialLink } from "./OnboardingSocialLink"
 
 jest.unmock("react-relay")
 
@@ -42,40 +42,8 @@ describe("OnboardingSocialLink", () => {
     )
   }
 
-  it("Only permitted providers buttons are shown", () => {
-    // google auth is not permitted
-    __globalStoreTestUtils__?.injectFeatureFlags({ ARGoogleAuth: false })
-    Platform.OS = "ios"
-    Object.defineProperty(Platform, "Version", {
-      get: () => 14,
-    })
-
-    const tree = getWrapper()
-    expect(tree.UNSAFE_getAllByType(LinkAccountButton).length).toEqual(2)
-    expect(() => tree.getByTestId("linkWithGoogle")).toThrowError(
-      "Unable to find an element with testID: linkWithGoogle"
-    )
-  })
-
-  it("Only displays Email Form when only 'email' is the only existing permitted provider", () => {
-    // google auth is not permitted
-    __globalStoreTestUtils__?.injectFeatureFlags({ ARGoogleAuth: false })
-    // apple auth is not allowed
-    Platform.OS = "android"
-    // providers we can display LinkAccountButtons for
-    const providers: OAuthProvider[] = ["email", "google", "apple"]
-    const params = { ...defaultParams, providers }
-    const tree = getWrapper(params)
-
-    expect(tree.getByTestId("artsySocialLinkPasswordInput")).toBeDefined()
-    expect(() => tree.UNSAFE_getAllByType(LinkAccountButton).length).toThrowError(
-      "No instances found"
-    )
-  })
-
   describe("Link Account Buttons", () => {
     it("Google Link Account Button logs in With Google and passes onSignIn callback", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ ARGoogleAuth: true })
       const spy = jest.spyOn(GlobalStore.actions.auth, "authGoogle")
       const params = { ...defaultParams, providers: ["email", "google"] as OAuthProvider[] }
       const tree = getWrapper(params)

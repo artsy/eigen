@@ -81,6 +81,6 @@ const tracks = {
     experiment_name: name,
     variation_id: enabled ? variant : false,
     variation_name: enabled ? variant : false,
-    // payload,
+    payload,
   }),
 }

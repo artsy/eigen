@@ -13,7 +13,6 @@ import { Button, Flex, Join, Screen, Spacer, Text } from "palette"
 import { useEffect } from "react"
 import { Alert, Image, InteractionManager, Platform } from "react-native"
 import { EnvelopeIcon } from "../../../palette/svgs/EnvelopeIcon"
-import { useFeatureFlag } from "../../store/GlobalStore"
 import { OnboardingNavigationStack } from "./Onboarding"
 import { AppleToken, GoogleOrFacebookToken } from "./OnboardingSocialLink"
 
@@ -23,8 +22,6 @@ interface OnboardingSocialPickProps {
 
 export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode }) => {
   const navigation = useNavigation()
-  const enableGoogleAuth = useFeatureFlag("ARGoogleAuth")
-  const allowLinkingOnSignUp = useFeatureFlag("ARAllowLinkSocialAccountsOnSignUp")
   const isLoading = GlobalStore.useAppState((state) => state.auth.sessionState.isLoading)
 
   const isIOS = Platform.OS === "ios"
@@ -92,7 +89,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
 
     const canBeLinked =
       error.error === "User Already Exists" && error.meta && error.meta.existingProviders
-    if (canBeLinked && allowLinkingOnSignUp) {
+    if (canBeLinked) {
       handleErrorWithAlternativeProviders(error.meta)
       return
     }
@@ -205,26 +202,24 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
                 </Button>
               )}
 
-              {!!enableGoogleAuth && (
-                <Button
-                  onPress={() => handleSocialLogin(continueWithGoogle)}
-                  block
-                  haptic="impactMedium"
-                  mb={1}
-                  variant="outline"
-                  iconPosition="left-start"
-                  icon={
-                    <Image
-                      source={require("images/google.png")}
-                      resizeMode="contain"
-                      style={{ marginRight: 10 }}
-                    />
-                  }
-                  testID="continueWithGoogle"
-                >
-                  Continue with Google
-                </Button>
-              )}
+              <Button
+                onPress={() => handleSocialLogin(continueWithGoogle)}
+                block
+                haptic="impactMedium"
+                mb={1}
+                variant="outline"
+                iconPosition="left-start"
+                icon={
+                  <Image
+                    source={require("images/google.png")}
+                    resizeMode="contain"
+                    style={{ marginRight: 10 }}
+                  />
+                }
+                testID="continueWithGoogle"
+              >
+                Continue with Google
+              </Button>
 
               <Button
                 onPress={() => handleSocialLogin(continueWithFacebook)}
@@ -247,8 +242,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
             </>
 
             <Text variant="xs" color="black60" textAlign="center">
-              By tapping Continue with Facebook
-              {!!enableGoogleAuth ? ", Google" : ""}
+              By tapping Continue with Facebook, Google
               {isIOS ? " or Apple" : ""}, you agree to Artsy's{" "}
               <Text
                 onPress={() => navigation.navigate("OnboardingWebView", { url: "/terms" })}

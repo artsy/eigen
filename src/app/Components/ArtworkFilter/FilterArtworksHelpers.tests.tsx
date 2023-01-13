@@ -17,7 +17,7 @@ describe("changedFiltersParams helper", () => {
   it("when a medium selection changed and sort selection unchanged", () => {
     const appliedFilters = filterArtworksParams([
       {
-        displayText: "Default",
+        displayText: "Recommended",
         paramValue: "-decayed_merch",
         paramName: FilterParamName.sort,
       },
@@ -30,7 +30,7 @@ describe("changedFiltersParams helper", () => {
     expect(
       changedFiltersParams(appliedFilters, [
         {
-          displayText: "Default",
+          displayText: "Recommended",
           paramValue: "-decayed_merch",
           paramName: FilterParamName.sort,
         },
@@ -64,7 +64,7 @@ describe("changedFiltersParams helper", () => {
   it("when medium selection and sort selection changed", () => {
     const appliedFilters = filterArtworksParams([
       {
-        displayText: "Default",
+        displayText: "Recommended",
         paramValue: "-decayed_merch",
         paramName: FilterParamName.sort,
       },
@@ -132,7 +132,7 @@ describe("changedFiltersParams helper", () => {
     expect(
       changedFiltersParams(appliedFilters, [
         {
-          displayText: "Default",
+          displayText: "Recommended",
           paramValue: "-decayed_merch",
           paramName: FilterParamName.sort,
         },
@@ -158,7 +158,7 @@ describe("changedFiltersParams helper", () => {
     expect(
       changedFiltersParams(appliedFilters, [
         {
-          displayText: "Default",
+          displayText: "Recommended",
           paramValue: "-decayed_merch",
           paramName: FilterParamName.sort,
         },
@@ -178,7 +178,7 @@ describe("filterArtworksParams helper", () => {
   it("maps applied filters to relay params when default filters", () => {
     appliedFilters = [
       {
-        displayText: "Default",
+        displayText: "Recommended",
         paramValue: "-decayed_merch",
         paramName: FilterParamName.sort,
       },

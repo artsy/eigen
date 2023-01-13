@@ -66,9 +66,9 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
           <Text numberOfLines={3} ellipsizeMode="tail" variant="lg-display">
             {article.thumbnailTitle}
           </Text>
-          {!!article.author && (
+          {!!article.byline && (
             <Text color="black60" variant="xs">
-              {article.author.name}
+              {article.byline}
             </Text>
           )}
         </Flex>
@@ -82,15 +82,13 @@ export const ArticleCardContainer = createFragmentContainer(ArticleCard, {
     fragment ArticleCard_article on Article {
       internalID
       slug
-      author {
-        name
-      }
       href
       thumbnailImage {
         url(version: "large")
       }
       thumbnailTitle
       vertical
+      byline
     }
   `,
 })

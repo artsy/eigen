@@ -76,22 +76,40 @@ export const MyCollectionArtworkFormMain: React.FC<
       }
     })
     return backListener
-  }, [navigation, artworkState.sessionState.dirtyFormCheckValues])
+  }, [
+    navigation,
+    artworkState.sessionState.formValues,
+    artworkState.sessionState.dirtyFormCheckValues,
+  ])
 
   const isFormDirty = () => {
-    // if you fill an empty field then delete it again, it changes from null to ""
-    const isEqual = (aVal: any, bVal: any) =>
-      (aVal === "" || aVal === null) && (bVal === "" || bVal === null) ? true : aVal === bVal
     const { formValues, dirtyFormCheckValues } = artworkState.sessionState
-    return Object.getOwnPropertyNames(dirtyFormCheckValues).reduce(
-      (accum: boolean, key: string) =>
-        accum ||
-        !isEqual(
-          (formValues as { [key: string]: any })[key],
-          (dirtyFormCheckValues as { [key: string]: any })[key]
-        ),
-      false
-    )
+
+    // Check if any fields are filled out when adding a new artwork
+    if (modalType === "add") {
+      return Object.getOwnPropertyNames(formValues).find(
+        (key) =>
+          !["pricePaidCurrency", "metric", "photos"].includes(key) &&
+          !key.startsWith("artist") &&
+          (formValues as { [key: string]: any })[key]
+      )
+
+      // Check if any fields are different from the original values when editing an artwork
+    } else {
+      // if you fill an empty field then delete it again, it changes from null to ""
+      const isEqual = (aVal: any, bVal: any) =>
+        (aVal === "" || aVal === null) && (bVal === "" || bVal === null) ? true : aVal === bVal
+
+      return Object.getOwnPropertyNames(dirtyFormCheckValues).reduce(
+        (accum: boolean, key: string) =>
+          accum ||
+          !isEqual(
+            (formValues as { [key: string]: any })[key],
+            (dirtyFormCheckValues as { [key: string]: any })[key]
+          ),
+        false
+      )
+    }
   }
 
   const handleCategory = (category: string) => {
