@@ -39,7 +39,7 @@ import {
   TouchableOpacity,
 } from "react-native"
 import Config from "react-native-config"
-import { getBuildNumber, getUniqueIdSync, getVersion } from "react-native-device-info"
+
 import Keychain from "react-native-keychain"
 import { useUnleashEnvironment } from "./experiments/hooks"
 
@@ -61,6 +61,8 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
   )
   const userEmail = GlobalStore.useAppState((s) => s.auth.userEmail)
   const toast = useToast()
+
+  const { getBuildNumber, getUniqueIdSync, getVersion } = getInfo()
 
   useEffect(
     useCallback(() => {
@@ -552,4 +554,25 @@ export const FeatureFlagMenuItem: React.FC<{
       </Flex>
     </Touchable>
   )
+}
+
+const getInfo = () => {
+  // Stub out these values if debugging remotely since `react-native-device-info` leads to a crash
+  // when launching app in chrome.
+  // @see https://github.com/react-native-device-info/react-native-device-info/issues/776
+  // @ts-ignore
+  const isDebuggingRemotely = typeof atob !== "undefined"
+  if (isDebuggingRemotely) {
+    return {
+      getBuildNumber: () => "",
+      getUniqueIdSync: () => "",
+      getVersion: () => "",
+    }
+  }
+  const { getBuildNumber, getUniqueIdSync, getVersion } = require("react-native-device-info")
+  return {
+    getBuildNumber,
+    getUniqueIdSync,
+    getVersion,
+  }
 }
