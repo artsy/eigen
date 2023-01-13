@@ -65,7 +65,7 @@ yarn install:all
 
 ## Troubleshooting
 
-If there are issues setting up the app, see the [troubleshooting doc](docs/troubleshooting.md).
+If there are issues setting up the app, see the [troubleshooting doc](troubleshooting.md).
 
 ## Contribute
 

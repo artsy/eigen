@@ -7,7 +7,7 @@ const { spawnSync } = require("child_process")
 const exec = (command) => {
   const task = spawnSync(command, { shell: true })
   if (task.status != 0) {
-    console.log(task.stderr.toString())
+    throw new Error(task.stderr.toString())
   }
   return task.stdout.toString()
 }

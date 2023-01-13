@@ -6,7 +6,6 @@ import {
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import HighDemandIcon from "app/Icons/HighDemandIcon"
 import { navigate } from "app/navigation/navigate"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { LocalImage, retrieveLocalImages } from "app/utils/LocalImageStore"
 import { getImageSquareDimensions } from "app/utils/resizeImage"
 import { Flex, NoArtworkIcon, Text, Touchable } from "palette"
@@ -104,9 +103,6 @@ export const MyCollectionArtworkListItem: React.FC<{
 
   const isP1Artist = artwork.artist?.targetSupply?.isP1
   const isHighDemand = Number((artwork.marketPriceInsights?.demandRank || 0) * 10) >= 9
-
-  const showDemandIndexHints = useFeatureFlag("ARShowMyCollectionDemandIndexHints")
-
   const showHighDemandIcon = isP1Artist && isHighDemand
 
   return (
@@ -145,7 +141,7 @@ export const MyCollectionArtworkListItem: React.FC<{
           )}
         </Flex>
 
-        {!!showHighDemandIcon && !!showDemandIndexHints && (
+        {!!showHighDemandIcon && (
           <Flex
             testID="test-high-demand-icon"
             alignSelf="flex-start"

@@ -19,7 +19,6 @@ import {
   GlobalStore,
   setVisualClueAsSeen,
   useDevToggle,
-  useFeatureFlag,
   useVisualClue,
 } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
@@ -64,7 +63,6 @@ const MyCollection: React.FC<{
   const { showVisualClue } = useVisualClue()
 
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
-  const enableMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
 
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
 
@@ -159,12 +157,10 @@ const MyCollection: React.FC<{
             onClose={() => setVisualClueAsSeen("ArtworkSubmissionMessage")}
           />
         )}
-        {!!enableMyCollectionInsights && (
-          <MyCollectionArtworkUploadMessages
-            sourceTab={Tab.collection}
-            hasMarketSignals={hasMarketSignals}
-          />
-        )}
+        <MyCollectionArtworkUploadMessages
+          sourceTab={Tab.collection}
+          hasMarketSignals={hasMarketSignals}
+        />
       </Flex>
     )
   }
@@ -335,7 +331,6 @@ export const MyCollectionQueryRenderer: React.FC = () => {
 
 export const MyCollectionPlaceholder: React.FC = () => {
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
-  const enableMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
 
   return (
     <Flex>
@@ -359,18 +354,9 @@ export const MyCollectionPlaceholder: React.FC = () => {
       <Spacer mb={2} mt={1} />
       {/* tabs */}
       <Flex justifyContent="space-around" flexDirection="row" px={2}>
-        {!!enableMyCollectionInsights ? (
-          <>
-            <PlaceholderText width="25%" height={22} />
-            <PlaceholderText width="25%" height={22} />
-            <PlaceholderText width="25%" height={22} />
-          </>
-        ) : (
-          <>
-            <PlaceholderText width="40%" height={22} />
-            <PlaceholderText width="40%" height={22} />
-          </>
-        )}
+        <PlaceholderText width="25%" height={22} />
+        <PlaceholderText width="25%" height={22} />
+        <PlaceholderText width="25%" height={22} />
       </Flex>
       <Spacer mb={1} />
       <Separator />

@@ -5,7 +5,6 @@ import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { useAppleLink } from "app/utils/LinkedAccounts/apple"
 import { useFacebookLink } from "app/utils/LinkedAccounts/facebook"
 import { useGoogleLink } from "app/utils/LinkedAccounts/google"
@@ -25,7 +24,6 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
     )
   }
 
-  const showLinkGoogle = useFeatureFlag("ARGoogleAuth")
   const showLinkApple = Platform.OS === "ios"
 
   const showLinkedAccounts = !me.secondFactors?.length
@@ -127,34 +125,32 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
               }
             />
 
-            {!!showLinkGoogle && (
-              <MenuItem
-                title="Google"
-                disabled={loading || onlyExistingAuthFor("GOOGLE")}
-                allowDisabledVisualClue
-                rightView={
-                  googleLoading ? (
-                    <ActivityIndicator size="small" color="black" />
-                  ) : (
-                    <Flex flexDirection="row" alignItems="center">
-                      <Image
-                        source={require(`images/google.png`)}
-                        resizeMode="contain"
-                        style={{ marginRight: 10 }}
-                      />
-                      <Text variant="sm-display" color="black60" lineHeight={18}>
-                        {googleLinked ? "Unlink" : "Link"}
-                      </Text>
-                    </Flex>
-                  )
-                }
-                onPress={
-                  googleLoading || onlyExistingAuthFor("GOOGLE")
-                    ? () => null
-                    : () => linkOrUnlink("google")
-                }
-              />
-            )}
+            <MenuItem
+              title="Google"
+              disabled={loading || onlyExistingAuthFor("GOOGLE")}
+              allowDisabledVisualClue
+              rightView={
+                googleLoading ? (
+                  <ActivityIndicator size="small" color="black" />
+                ) : (
+                  <Flex flexDirection="row" alignItems="center">
+                    <Image
+                      source={require(`images/google.png`)}
+                      resizeMode="contain"
+                      style={{ marginRight: 10 }}
+                    />
+                    <Text variant="sm-display" color="black60" lineHeight={18}>
+                      {googleLinked ? "Unlink" : "Link"}
+                    </Text>
+                  </Flex>
+                )
+              }
+              onPress={
+                googleLoading || onlyExistingAuthFor("GOOGLE")
+                  ? () => null
+                  : () => linkOrUnlink("google")
+              }
+            />
             {!!showLinkApple && (
               <MenuItem
                 title="Apple"

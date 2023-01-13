@@ -644,9 +644,19 @@ lane :check_flags do
 end
 
 error do |lane, exception|
-  silence_beta_failures = ENV['FASTLANE_SILENCE_BETA_FAILURES']
   if lane == :ship_beta or lane == :ship_beta_ios or lane == :ship_beta_android
-    if silence_beta_failures.to_s.downcase != "true"
+    # Set this var if you want to silence beta failure alerts for a while
+    # E.g. you are working on a ci change
+    # Takes a date of format 2023-01-01, recommend only setting for 1 day in future
+    silence_beta_failures_until = ENV['FASTLANE_SILENCE_BETA_FAILURES_UNTIL']
+    if silence_beta_failures_until != nil
+      silence_until_date = Date.parse(silence_beta_failures_until)
+      if silence_until_date <= Date.today
+        notify_beta_failed(exception: exception)
+      else
+        puts("Ignoring beta failure, make sure to unset FASTLANE_SILENCE_BETA_FAILURES_UNTIL to receive alerts")
+      end
+    else
       notify_beta_failed(exception: exception)
     end
   end

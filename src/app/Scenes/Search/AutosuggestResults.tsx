@@ -236,6 +236,9 @@ const AutosuggestResultsContainer = createPaginationContainer(
                 slug
               }
               ... on Artist {
+                counts {
+                  artworks
+                }
                 formattedNationalityAndBirthday
                 internalID
                 initials

@@ -25,6 +25,7 @@ import {
   Flex,
   Input,
   Join,
+  Message,
   Spacer,
   Text,
   Touchable,
@@ -200,6 +201,8 @@ export const MyProfileEditForm: React.FC = () => {
     navigation.goBack()
   }
 
+  const showCompleteYourProfileBanner = !me?.collectorProfile?.isProfileComplete
+
   return (
     <>
       <FancyModalHeader
@@ -209,6 +212,16 @@ export const MyProfileEditForm: React.FC = () => {
       >
         Edit Profile
       </FancyModalHeader>
+
+      {showCompleteYourProfileBanner && (
+        <Message
+          variant="info"
+          title="Complete your profile and make a great impression"
+          text="Galleries are more likely to respond to collectors with complete profiles and a brief bio."
+          showCloseButton
+        />
+      )}
+
       <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
         <Join separator={<Spacer py={1} />}>
           <Flex flexDirection="row" alignItems="center" px={2} mt={2}>
@@ -358,6 +371,9 @@ const meFragment = graphql`
     emailConfirmed
     identityVerified
     canRequestEmailConfirmation
+    collectorProfile {
+      isProfileComplete
+    }
   }
 `
 

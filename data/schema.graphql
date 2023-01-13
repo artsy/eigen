@@ -2500,6 +2500,9 @@ type ArtworkVersion implements Node {
   # The artists related to this Artwork Version
   artists: [Artist]
 
+  # The Artwork Version attribution class
+  attributionClass: String
+
   # The Image id
   defaultImageID: String
 
@@ -2511,6 +2514,9 @@ type ArtworkVersion implements Node {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+
+  # The Artwork Version medium
+  medium: String
 
   # Artwork title
   title: String
@@ -3535,6 +3541,7 @@ type CollectorProfileType {
   isActiveInquirer: Boolean
   isEmailConfirmed: Boolean
   isIdentityVerified: Boolean
+  isProfileComplete: Boolean
   location: MyLocation
   loyaltyApplicantAt(
     format: String
@@ -9794,6 +9801,7 @@ type InquirerCollectorProfile {
   isActiveInquirer: Boolean
   isEmailConfirmed: Boolean
   isIdentityVerified: Boolean
+  isProfileComplete: Boolean
   location: MyLocation
   loyaltyApplicantAt(
     format: String
@@ -10556,6 +10564,7 @@ type Me implements Node {
 
   # User has confirmed their email address
   emailConfirmed: Boolean!
+    @deprecated(reason: "emailConfirmed is going to be removed, use isEmailConfirmed instead")
 
   # Frequency of marketing emails.
   emailFrequency: String
@@ -10575,6 +10584,7 @@ type Me implements Node {
     id: String!
   ): IdentityVerification
   identityVerified: Boolean
+    @deprecated(reason: "identityVerified is going to be removed, use isIdentityVerified instead")
   initials(length: Int = 3): String
   inquiryIntroduction: String
 
@@ -10593,6 +10603,10 @@ type Me implements Node {
       reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
     )
   isCollector: Boolean!
+
+  # User has confirmed their email address
+  isEmailConfirmed: Boolean!
+  isIdentityVerified: Boolean
 
   # List of lab features for this user
   labFeatures: [String!]!
@@ -11358,6 +11372,9 @@ type Mutation {
     input: CommerceSubmitOrderWithOfferInput!
   ): CommerceSubmitOrderWithOfferPayload
   transferMyCollection(input: TransferMyCollectionInput!): TransferMyCollectionPayload
+
+  # Triggers a campaign send.
+  triggerCampaign(input: TriggerCampaignInput!): TriggerCampaignPayload
 
   # Unlinks a 3rd party account
   unlinkAuthentication(
@@ -15995,6 +16012,36 @@ type TrendingArtists {
   artists: [Artist]
 }
 
+enum TriggerCampaignID {
+  ART_QUIZ
+}
+
+input TriggerCampaignInput {
+  campaignID: TriggerCampaignID!
+  clientMutationId: String
+}
+
+type TriggerCampaignMutationFailure {
+  message: String!
+  mutationError: GravityMutationError
+  statusCode: Int
+}
+
+type TriggerCampaignMutationSuccess {
+  message: String!
+  statusCode: Int
+  success: Boolean
+}
+
+union TriggerCampaignMutationSuccessOrError =
+    TriggerCampaignMutationFailure
+  | TriggerCampaignMutationSuccess
+
+type TriggerCampaignPayload {
+  clientMutationId: String
+  successOrError: TriggerCampaignMutationSuccessOrError
+}
+
 union UnderlyingCurrentEvent = Sale | Show
 
 input UnlinkAuthenticationMutationInput {
@@ -16152,6 +16199,7 @@ type UpdateCollectorProfilePayload {
   isActiveInquirer: Boolean
   isEmailConfirmed: Boolean
   isIdentityVerified: Boolean
+  isProfileComplete: Boolean
   location: MyLocation
   loyaltyApplicantAt(
     format: String

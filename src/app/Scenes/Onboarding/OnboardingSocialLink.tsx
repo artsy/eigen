@@ -1,7 +1,7 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { OAuthProvider } from "app/auth/types"
 import { BackButton } from "app/navigation/BackButton"
-import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { useAppleLink } from "app/utils/LinkedAccounts/apple"
 import { useFacebookLink } from "app/utils/LinkedAccounts/facebook"
 import { useGoogleLink } from "app/utils/LinkedAccounts/google"
@@ -36,7 +36,7 @@ export const OnboardingSocialLink: React.FC<
 
   const permittedProvidersTable: { [key: string]: boolean } = {
     email: true,
-    google: useFeatureFlag("ARGoogleAuth"),
+    google: true,
     facebook: true,
     apple: Platform.OS === "ios" && osMajorVersion() >= 13,
   }

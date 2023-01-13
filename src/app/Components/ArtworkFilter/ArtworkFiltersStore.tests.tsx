@@ -543,7 +543,7 @@ describe("Select Filters", () => {
 
     const filterArtworksStore = getFilterArtworksStore(filterState)
     filterArtworksStore.getActions().selectFiltersAction({
-      displayText: "Default",
+      displayText: "Recommended",
       paramValue: "-decayed_merch",
       paramName: FilterParamName.sort,
     })
@@ -586,7 +586,7 @@ describe("Select Filters", () => {
 
     const filterArtworksStore = getFilterArtworksStore(filterState)
     filterArtworksStore.getActions().selectFiltersAction({
-      displayText: "Default",
+      displayText: "Recommended",
       paramValue: "-decayed_merch",
       paramName: FilterParamName.sort,
     })
@@ -1282,7 +1282,7 @@ describe("selectedOptionsUnion", () => {
           displayText: "Artist 1",
         },
         {
-          displayText: "Default",
+          displayText: "Recommended",
           paramName: "sort",
           paramValue: "-decayed_merch",
         },
@@ -1400,7 +1400,7 @@ describe("selectedOptionsUnion", () => {
           displayText: "Artist 1, Artist 2",
         },
         {
-          displayText: "Default",
+          displayText: "Recommended",
           paramName: "sort",
           paramValue: "-decayed_merch",
         },
@@ -1524,7 +1524,7 @@ describe("selectedOptionsUnion", () => {
           displayText: "Artist 1, Artist 2",
         },
         {
-          displayText: "Default",
+          displayText: "Recommended",
           paramName: "sort",
           paramValue: "-decayed_merch",
         },
@@ -1648,7 +1648,7 @@ describe("selectedOptionsUnion", () => {
           displayText: "Artist 1, Artist 2",
         },
         {
-          displayText: "Default",
+          displayText: "Recommended",
           paramName: "sort",
           paramValue: "-decayed_merch",
         },
@@ -1787,7 +1787,7 @@ describe("selectedOptionsUnion", () => {
           displayText: "Artist 1",
         },
         {
-          displayText: "Default",
+          displayText: "Recommended",
           paramName: "sort",
           paramValue: "-decayed_merch",
         },

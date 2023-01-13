@@ -3,7 +3,7 @@ import { Box, Flex, Spacer, Text } from "palette"
 
 export const WhySellWithArtsy: React.FC = () => {
   const handleOurSpecialistsPress = () => {
-    navigate("https://www.artsy.net/meet-the-specialists")
+    navigate("/meet-the-specialists")
   }
 
   return (
