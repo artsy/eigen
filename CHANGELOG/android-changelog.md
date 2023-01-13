@@ -7,6 +7,7 @@
 
   - User facing changes:
 
+    - Fix dirty form check when uploading a new artwork - ole
     - Clean up ARGoogleAuth feature flag - ole
     - Add complete your profile banner in Edit Profile screen - mrsltun
     - added confirmation modal to the edit artwork screen -daria
