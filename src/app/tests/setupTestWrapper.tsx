@@ -5,7 +5,7 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "./renderWithWrappers"
 
-interface SetupTestWrapperTL<T extends OperationType> {
+interface SetupTestWrapper<T extends OperationType> {
   Component: React.ComponentType<T["response"]>
   preloaded?: boolean
   query?: GraphQLTaggedNode
@@ -76,12 +76,12 @@ type RenderWithRelay = RenderResult & {
  *   expect(screen.getByText('name')).toEqual('Mock Name')
  * })
  */
-export const setupTestWrapperTL = <T extends OperationType>({
+export const setupTestWrapper = <T extends OperationType>({
   Component,
   preloaded = false,
   query,
   variables = {},
-}: SetupTestWrapperTL<T>) => {
+}: SetupTestWrapper<T>) => {
   const renderWithRelay = (mockResolvers: MockResolvers = {}, props: any = {}): RenderWithRelay => {
     const env = createMockEnvironment()
 
