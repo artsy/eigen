@@ -66,7 +66,7 @@ const MyAccountEditPriceRangePlaceholder: React.FC<{}> = ({}) => {
   )
 }
 
-const MyAccountEditPriceRangeContainer = createFragmentContainer(MyAccountEditPriceRange, {
+export const MyAccountEditPriceRangeContainer = createFragmentContainer(MyAccountEditPriceRange, {
   me: graphql`
     fragment MyAccountEditPriceRange_me on Me {
       priceRange
