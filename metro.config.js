@@ -1,8 +1,6 @@
 const { FileStore } = require("metro-cache")
 
 module.exports = {
-  // If running into issues debugging js remotely, comment out this line and
-  // run `yarn start:reset-cache`
   cacheStores: [new FileStore({ root: "./.metro" })],
 
   // this is to avoid OOM errors in CI.
