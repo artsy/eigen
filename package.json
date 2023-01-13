@@ -140,7 +140,7 @@
     "jsc-android": "250230.2.1",
     "limiter": "^2.1.0",
     "lodash": "4.17.21",
-    "luxon": "2.2.0",
+    "luxon": "2.5.2",
     "metro-cache": "0.66.2",
     "moment": "2.29.4",
     "moment-timezone": "0.5.40",
