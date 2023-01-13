@@ -1,14 +1,14 @@
 import { fireEvent } from "@testing-library/react-native"
 import { PurchaseModalTestQuery } from "__generated__/PurchaseModalTestQuery.graphql"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
+import { setupTestWrapper } from "app/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { PurchaseModalFragmentContainer } from "./PurchaseModal"
 
 jest.unmock("react-relay")
 
 describe("PurchaseModal", () => {
-  const { renderWithRelay } = setupTestWrapperTL<PurchaseModalTestQuery>({
+  const { renderWithRelay } = setupTestWrapper<PurchaseModalTestQuery>({
     Component: ({ artwork }) => (
       <PurchaseModalFragmentContainer artwork={artwork!} conversationID="1234" />
     ),

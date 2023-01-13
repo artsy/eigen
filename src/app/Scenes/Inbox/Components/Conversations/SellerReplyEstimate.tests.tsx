@@ -1,12 +1,12 @@
 import { SellerReplyEstimate_Test_Query } from "__generated__/SellerReplyEstimate_Test_Query.graphql"
-import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
+import { setupTestWrapper } from "app/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { SellerReplyEstimateFragmentContainer } from "./SellerReplyEstimate"
 
 jest.unmock("react-relay")
 
 describe("SellerReplyEstimateFragmentContainer", () => {
-  const { renderWithRelay } = setupTestWrapperTL<SellerReplyEstimate_Test_Query>({
+  const { renderWithRelay } = setupTestWrapper<SellerReplyEstimate_Test_Query>({
     Component: ({ me }) => {
       return (
         <SellerReplyEstimateFragmentContainer

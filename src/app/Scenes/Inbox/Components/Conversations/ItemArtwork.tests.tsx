@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import * as navigation from "app/navigation/navigate"
-import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
+import { setupTestWrapper } from "app/tests/setupTestWrapper"
 import { Theme } from "palette"
 import { graphql } from "react-relay"
 import { ItemArtworkFragmentContainer } from "./ItemArtwork"
@@ -8,7 +8,7 @@ import { ItemArtworkFragmentContainer } from "./ItemArtwork"
 jest.unmock("react-relay")
 
 describe("ItemArtworkFragmentContainer", () => {
-  const { renderWithRelay } = setupTestWrapperTL({
+  const { renderWithRelay } = setupTestWrapper({
     Component: (props: any) => (
       <Theme>
         <ItemArtworkFragmentContainer {...props} />

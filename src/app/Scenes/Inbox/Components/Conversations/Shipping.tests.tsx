@@ -1,12 +1,12 @@
 import { Shipping_Test_Query } from "__generated__/Shipping_Test_Query.graphql"
-import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
+import { setupTestWrapper } from "app/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { ShippingFragmentContainer } from "./Shipping"
 
 jest.unmock("react-relay")
 
 describe("ShippingFragmentContainer", () => {
-  const { renderWithRelay } = setupTestWrapperTL<Shipping_Test_Query>({
+  const { renderWithRelay } = setupTestWrapper<Shipping_Test_Query>({
     Component: ({ me }) => {
       return (
         <ShippingFragmentContainer order={me!.conversation!.orderConnection!.edges![0]!.node!} />

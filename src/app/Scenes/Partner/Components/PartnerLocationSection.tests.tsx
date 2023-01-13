@@ -1,12 +1,12 @@
 import { PartnerLocationSectionTestQuery } from "__generated__/PartnerLocationSectionTestQuery.graphql"
-import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
+import { setupTestWrapper } from "app/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { PartnerLocationSectionContainer } from "./PartnerLocationSection"
 
 jest.unmock("react-relay")
 
 describe("PartnerLoationSection", () => {
-  const { renderWithRelay } = setupTestWrapperTL<PartnerLocationSectionTestQuery>({
+  const { renderWithRelay } = setupTestWrapper<PartnerLocationSectionTestQuery>({
     Component: ({ partner }) => <PartnerLocationSectionContainer partner={partner!} />,
     query: graphql`
       query PartnerLocationSectionTestQuery($id: String!) @relay_test_operation {

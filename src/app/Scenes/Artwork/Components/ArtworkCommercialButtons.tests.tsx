@@ -5,7 +5,7 @@ import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/navigation/navigate"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
+import { setupTestWrapper } from "app/tests/setupTestWrapper"
 import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { ArtworkInquiryContextState } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { graphql } from "react-relay"
@@ -15,7 +15,7 @@ import { ArtworkCommercialButtons } from "./ArtworkCommercialButtons"
 jest.unmock("react-relay")
 
 describe("ArtworkCommercialButtons", () => {
-  const { renderWithRelay } = setupTestWrapperTL<ArtworkCommercialButtons_Test_Query>({
+  const { renderWithRelay } = setupTestWrapper<ArtworkCommercialButtons_Test_Query>({
     Component: (props) => (
       <ArtworkInquiryContext.Provider
         value={{

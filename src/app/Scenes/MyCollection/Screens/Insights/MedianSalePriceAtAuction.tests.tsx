@@ -1,12 +1,12 @@
 import { screen } from "@testing-library/react-native"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
+import { setupTestWrapper } from "app/tests/setupTestWrapper"
 import { MedianSalePriceAtAuction } from "./MedianSalePriceAtAuction"
 
 jest.unmock("react-relay")
 
 describe("MedianSalePriceAtAuction", () => {
-  const { renderWithRelay } = setupTestWrapperTL({
+  const { renderWithRelay } = setupTestWrapper({
     Component: (props) => (
       <MedianSalePriceAtAuction artistID="artist-id" initialCategory="Painting" {...props} />
     ),

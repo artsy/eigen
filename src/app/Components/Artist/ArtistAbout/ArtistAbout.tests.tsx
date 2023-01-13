@@ -3,7 +3,7 @@ import { ArtistAboutTestsQuery } from "__generated__/ArtistAboutTestsQuery.graph
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { ModalStack } from "app/navigation/ModalStack"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
+import { setupTestWrapper } from "app/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import Biography from "../Biography"
 import { ArtistAboutContainer } from "./ArtistAbout"
@@ -12,7 +12,7 @@ import { ArtistAboutShowsFragmentContainer } from "./ArtistAboutShows"
 jest.unmock("react-relay")
 
 describe("ArtistAbout", () => {
-  const { renderWithRelay } = setupTestWrapperTL<ArtistAboutTestsQuery>({
+  const { renderWithRelay } = setupTestWrapper<ArtistAboutTestsQuery>({
     Component: ({ artist }) => (
       <ModalStack>
         <StickyTabPage

@@ -143,7 +143,7 @@ interface setupTestWrapper_LEGACY<T extends OperationType> {
 }
 
 /**
- * @deprecated avoid using this, use setupTestWrapperTL instead.
+ * @deprecated avoid using this, use setupTestWrapper instead.
  */
 // tslint:disable-next-line:variable-name
 export const setupTestWrapper_LEGACY = <T extends OperationType>({

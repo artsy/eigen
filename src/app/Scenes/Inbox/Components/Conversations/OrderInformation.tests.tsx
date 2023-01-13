@@ -1,12 +1,12 @@
 import { OrderInformation_Test_Query } from "__generated__/OrderInformation_Test_Query.graphql"
-import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
+import { setupTestWrapper } from "app/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { OrderInformationFragmentContainer } from "./OrderInformation"
 
 jest.unmock("react-relay")
 
 describe("PaymentMethodFragmentContainer", () => {
-  const { renderWithRelay } = setupTestWrapperTL<OrderInformation_Test_Query>({
+  const { renderWithRelay } = setupTestWrapper<OrderInformation_Test_Query>({
     Component: ({ me, artwork }) => {
       return (
         <OrderInformationFragmentContainer

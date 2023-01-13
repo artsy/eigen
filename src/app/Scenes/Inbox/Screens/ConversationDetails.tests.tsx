@@ -1,4 +1,4 @@
-import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
+import { setupTestWrapper } from "app/tests/setupTestWrapper"
 import { Theme } from "palette"
 import "react-native"
 import { graphql } from "react-relay"
@@ -7,7 +7,7 @@ import { ConversationDetailsFragmentContainer } from "./ConversationDetails"
 jest.unmock("react-relay")
 
 describe("ConversationDetailsFragmentContainer", () => {
-  const { renderWithRelay } = setupTestWrapperTL({
+  const { renderWithRelay } = setupTestWrapper({
     Component: ({ me }: any) => (
       <Theme>
         <ConversationDetailsFragmentContainer me={me} />

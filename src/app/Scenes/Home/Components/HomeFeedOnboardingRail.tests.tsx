@@ -1,7 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
 import { HomeFeedOnboardingRailTestsQuery } from "__generated__/HomeFeedOnboardingRailTestsQuery.graphql"
 import { switchTab } from "app/navigation/navigate"
-import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
+import { setupTestWrapper } from "app/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { HomeFeedOnboardingRailFragmentContainer } from "./HomeFeedOnboardingRail"
@@ -11,7 +11,7 @@ jest.unmock("react-relay")
 describe("HomeFeedOnboardingRail", () => {
   const trackEvent = useTracking().trackEvent
 
-  const { renderWithRelay } = setupTestWrapperTL<HomeFeedOnboardingRailTestsQuery>({
+  const { renderWithRelay } = setupTestWrapper<HomeFeedOnboardingRailTestsQuery>({
     Component: ({ homePage }) => {
       return (
         <HomeFeedOnboardingRailFragmentContainer

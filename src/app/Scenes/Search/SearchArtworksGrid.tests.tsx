@@ -3,14 +3,14 @@ import { SearchArtworksGridTestsQuery } from "__generated__/SearchArtworksGridTe
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
+import { setupTestWrapper } from "app/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { SearchArtworksGridPaginationContainer } from "./SearchArtworksGrid"
 
 jest.unmock("react-relay")
 
 describe("SearchArtworksGrid", () => {
-  const { renderWithRelay } = setupTestWrapperTL<SearchArtworksGridTestsQuery>({
+  const { renderWithRelay } = setupTestWrapper<SearchArtworksGridTestsQuery>({
     Component: ({ viewer }) => (
       <ArtworkFiltersStoreProvider>
         <SearchArtworksGridPaginationContainer viewer={viewer!} keyword="Art" />

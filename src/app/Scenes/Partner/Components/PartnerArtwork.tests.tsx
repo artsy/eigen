@@ -2,14 +2,14 @@ import { screen } from "@testing-library/react-native"
 import { PartnerArtworkTestsQuery } from "__generated__/PartnerArtworkTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
-import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
+import { setupTestWrapper } from "app/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { PartnerArtworkFragmentContainer as PartnerArtwork } from "./PartnerArtwork"
 
 jest.unmock("react-relay")
 
 describe("PartnerArtwork", () => {
-  const { renderWithRelay } = setupTestWrapperTL<PartnerArtworkTestsQuery>({
+  const { renderWithRelay } = setupTestWrapper<PartnerArtworkTestsQuery>({
     Component: (props) => (
       <StickyTabPage
         tabs={[
