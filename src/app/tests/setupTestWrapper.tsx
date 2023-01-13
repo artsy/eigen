@@ -135,7 +135,8 @@ export const setupTestWrapperTL = <T extends OperationType>({
   return { renderWithRelay }
 }
 
-interface SetupTestWrapper<T extends OperationType> {
+// tslint:disable-next-line:class-name
+interface setupTestWrapper_LEGACY<T extends OperationType> {
   Component: React.ComponentType<any>
   query: GraphQLTaggedNode
   variables?: T["variables"]
@@ -149,7 +150,7 @@ export const setupTestWrapper_LEGACY = <T extends OperationType>({
   Component,
   query,
   variables = {},
-}: SetupTestWrapper<T>) => {
+}: setupTestWrapper_LEGACY<T>) => {
   const getWrapper = (mockResolvers: MockResolvers = {}) => {
     const env = createMockEnvironment()
 
