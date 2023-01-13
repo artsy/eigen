@@ -1,4 +1,4 @@
-import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { mockNavigate } from "app/tests/navigationMocks"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Platform } from "react-native"
@@ -32,7 +32,6 @@ describe("OnboardingSocialPick", () => {
     })
 
     it("logs in using google when the user presses on continue with google", async () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ ARGoogleAuth: true })
       GlobalStore.actions.auth.authGoogle = jest.fn(() => Promise.resolve({ success: true })) as any
       const tree = renderWithWrappersLEGACY(<OnboardingSocialPick mode="login" />)
       tree.root.findByProps({ testID: "continueWithGoogle" }).props.onPress()
@@ -72,7 +71,6 @@ describe("OnboardingSocialPick", () => {
     })
 
     it("signs up using google when the user presses on continue with google", async () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ ARGoogleAuth: true })
       GlobalStore.actions.auth.authGoogle = jest.fn(() => Promise.resolve({ success: true })) as any
 
       const tree = renderWithWrappersLEGACY(<OnboardingSocialPick mode="signup" />)

@@ -1,6 +1,5 @@
 import { MyAccountTestsQuery } from "__generated__/MyAccountTestsQuery.graphql"
 import { MenuItem } from "app/Components/MenuItem"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Text } from "palette"
@@ -109,7 +108,6 @@ describe(MyAccountQueryRenderer, () => {
       })
 
       it("links when **not** previously linked and unlinks when previously linked", () => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ ARGoogleAuth: true })
         Platform.OS = "ios"
         const tree = renderWithWrappersLEGACY(<TestRenderer />)
         mockEnvironment.mock.resolveMostRecentOperation((operation) => {
