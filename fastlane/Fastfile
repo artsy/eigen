@@ -221,23 +221,26 @@ end
 lane :promote_beta_android do
   selected_version_code = select_android_build()
 
+  vname, vcode = set_build_version_android
+
   supply(
     track: "production",
-    rollout: '0.1',
+    rollout: "0.1",
+    aab: "./android/app/build/outputs/bundle/release/app-release.aab",
+    skip_upload_apk: true,
     skip_upload_metadata: true,
     skip_upload_changelogs: true,
     skip_upload_images: true,
     skip_upload_screenshots: true
   )
 
-  vname, vcode = set_build_version_android(version_code: selected_version_code)
   tag_and_push(tag: "android-#{vname}-#{vcode}-submission")
 end
 
 lane :s3_upload_android_build do |options|
   app_version = options[:app_version]
   app_path = options[:app_path]
-  sh("aws s3 cp " + app_path + " s3://artsy-citadel/dev/eigen/builds/android/" + app_version + ".aab")
+  sh("aws s3 cp " + app_path + " s3://artsy-citadel/dev/eigen/builds/android/" + app_version.to_s + ".aab")
 end
 
 lane :select_android_build do
