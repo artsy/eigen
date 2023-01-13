@@ -163,12 +163,6 @@ lane :ship_beta_android_play_store do
   sh("yarn jetifier")
   sh("yarn relay")
 
-  # upload will overwrite past versions unless we explicitly tell it to retain some
-  # cap at 20 for now, if we need more feel free to update!
-  past_version_codes = google_play_track_version_codes(
-    track: "alpha",
-  ).first(20)
-
   vname, vcode = set_build_version_android
   tag_and_push(tag: "android-#{vname}-#{vcode}")
 
