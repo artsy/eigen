@@ -67,11 +67,6 @@ export const features = defineFeatures({
     readyForRelease: false,
     description: "Enable Saved Addresses",
   },
-  ARGoogleAuth: {
-    readyForRelease: true,
-    description: "Enable Google authentication",
-    echoFlagKey: "ARGoogleAuth",
-  },
   AREnableExampleExperiments: {
     // we can remove this as soon as we have a real experiment on Unleash
     readyForRelease: false,
