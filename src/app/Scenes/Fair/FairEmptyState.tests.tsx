@@ -1,12 +1,12 @@
 import { FairEmptyStateFragmentContainer } from "app/Scenes/Fair/Components/FairEmptyState"
 import { extractText } from "app/tests/extractText"
-import { setupTestWrapper } from "app/tests/setupTestWrapper"
+import { setupTestWrapper_LEGACY } from "app/tests/setupTestWrapper"
 import { DateTime } from "luxon"
 import { graphql } from "react-relay"
 
 jest.unmock("react-relay")
 
-const { getWrapper } = setupTestWrapper({
+const { getWrapper } = setupTestWrapper_LEGACY({
   Component: FairEmptyStateFragmentContainer,
   query: graphql`
     query FairEmptyStateTestsQuery {

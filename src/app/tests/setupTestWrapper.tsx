@@ -144,7 +144,8 @@ interface SetupTestWrapper<T extends OperationType> {
 /**
  * @deprecated avoid using this, use setupTestWrapperTL instead.
  */
-export const setupTestWrapper = <T extends OperationType>({
+// tslint:disable-next-line:variable-name
+export const setupTestWrapper_LEGACY = <T extends OperationType>({
   Component,
   query,
   variables = {},
