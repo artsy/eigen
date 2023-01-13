@@ -327,12 +327,16 @@ Maybe we don't? We can try to remove it at any point, and see if it works. Try w
 This is needed because xcode 14 says that React-Core-AccessibilityResources and some other pods require a development team.
 We don't really need a dev team for these. Probably some future version of cocoapods will fix this.
 
-## react-native-reanimated patch-package
-
-#### When can we remove this:
-
-Once we can remove it and have `yarn type-check` pass. They have some broken types and they are messing with our typechecking, so we will ignore until they are fixed, maybe in a future version.
-
 #### Explanation/Context:
 
 Types failing because of broken types in the package.
+
+## isDebuggingRemotely check in DevMenu.tsx
+
+#### When can we remove this:
+
+We can't, not until react-native-device-info supports remote debugging. See https://github.com/react-native-device-info/react-native-device-info/issues/776
+
+#### Explanation/Context:
+
+When attempting to fix remote debugging in Chrome, discovered that this library was throwing an error due to Sync apis being used at runtime. By stubbing out this libraries values we were able to fix it, and remote debugging was now available again.

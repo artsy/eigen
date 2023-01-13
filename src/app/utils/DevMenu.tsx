@@ -52,6 +52,9 @@ const configurableDevToggleKeys = sortBy(
   ([k, { description }]) => description ?? k
 ).map(([k]) => k as DevToggleName)
 
+// @ts-ignore
+const isDebuggingRemotely = typeof atob !== "undefined"
+
 export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void }) => {
   const [featureFlagQuery, setFeatureFlagQuery] = useState("")
   const [devToolQuery, setDevToolQuery] = useState("")
@@ -139,7 +142,10 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
 
         <CollapseMenu title="Feature Flags">
           <Flex px={2} mb={1}>
-            <SearchInput onChangeText={setFeatureFlagQuery} placeholder="Search feature flags" />
+            {/* Skip search if debugging remotely. This throws an error in react-native-reanimated */}
+            {!isDebuggingRemotely && (
+              <SearchInput onChangeText={setFeatureFlagQuery} placeholder="Search feature flags" />
+            )}
           </Flex>
           {configurableFeatureFlagKeys
             .filter((flagKey) =>
@@ -162,7 +168,10 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
         </Flex>
         <CollapseMenu title="Dev tools">
           <Flex px={2} mb={1}>
-            <SearchInput onChangeText={setDevToolQuery} placeholder="Search dev tools" />
+            {/* Skip search if debugging remotely. This throws an error in react-native-reanimated */}
+            {!isDebuggingRemotely && (
+              <SearchInput onChangeText={setDevToolQuery} placeholder="Search dev tools" />
+            )}
           </Flex>
 
           {configurableDevToggleKeys
@@ -439,7 +448,7 @@ const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   // show custom url options if there are already local overrides in effect, or if the user has tapped the option
   // to set custom overrides during the lifetime of this component
   const [showCustomURLOptions, setShowCustomURLOptions] = useState(
-    Object.keys(localOverrides).length > 0
+    Object.keys(localOverrides)?.length > 0
   )
 
   return (
@@ -560,8 +569,6 @@ const getInfo = () => {
   // Stub out these values if debugging remotely since `react-native-device-info` leads to a crash
   // when launching app in chrome.
   // @see https://github.com/react-native-device-info/react-native-device-info/issues/776
-  // @ts-ignore
-  const isDebuggingRemotely = typeof atob !== "undefined"
   if (isDebuggingRemotely) {
     return {
       getBuildNumber: () => "",
