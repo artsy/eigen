@@ -14,6 +14,7 @@
     - App ConsignmentInquiry Improvements - kizito
 
   - Dev changes:
+    - prompt for confirmation before updating env vars in s3 - mounir
     - bump minor deps versions - gkartalis
     - Rename Consignment Inquiry Feature Flag - kizito
     - remove unused `CityGuideNewCTA` code - dimatretyak
