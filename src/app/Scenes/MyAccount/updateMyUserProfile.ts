@@ -41,6 +41,9 @@ export const updateMyUserProfile = async (
               receivePromotionNotification
               receivePurchaseNotification
               receiveSaleOpeningClosingNotification
+              priceRangeMin
+              priceRangeMax
+              priceRange
             }
           }
         }

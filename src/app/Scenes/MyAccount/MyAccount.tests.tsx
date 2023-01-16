@@ -66,10 +66,10 @@ describe(MyAccountQueryRenderer, () => {
     mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         Me: () => ({
-          name: "pavlos",
           email:
             "myverylongemailmyverylongemailmyverylongemail@averylongdomainaverylongdomainaverylongdomain.com",
           phone: "123",
+          priceRange: "-1:2500",
           paddleNumber: "321",
           hasPassword: true,
         }),
@@ -77,7 +77,7 @@ describe(MyAccountQueryRenderer, () => {
       return result
     })
 
-    expect(tree.findAllByType(Text)[4].props.children).toBe(
+    expect(tree.findAllByType(Text)[2].props.children).toBe(
       "myverylongemailmyverylongemailmyverylongemail@averylongdomainaverylongdomainaverylongdomain.com"
     )
   })
@@ -88,9 +88,9 @@ describe(MyAccountQueryRenderer, () => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) => {
         const result = MockPayloadGenerator.generate(operation, {
           Me: () => ({
-            name: "my name",
             email: "email@gmail.com",
             phone: "123",
+            priceRange: "-1:2500",
             paddleNumber: "321",
             hasPassword: true,
             secondFactors: [],
@@ -113,9 +113,9 @@ describe(MyAccountQueryRenderer, () => {
         mockEnvironment.mock.resolveMostRecentOperation((operation) => {
           const result = MockPayloadGenerator.generate(operation, {
             Me: () => ({
-              name: "my name",
               email: "email@gmail.com",
               phone: "123",
+              priceRange: "-1:2500",
               paddleNumber: "321",
               secondFactors: [],
               hasPassword: true,
@@ -144,9 +144,9 @@ describe(MyAccountQueryRenderer, () => {
         mockEnvironment.mock.resolveMostRecentOperation((operation) => {
           const result = MockPayloadGenerator.generate(operation, {
             Me: () => ({
-              name: "my name",
               email: "email@gmail.com",
               phone: "123",
+              priceRange: "-1:2500",
               paddleNumber: "321",
               secondFactors: [],
               // user does not have email/password, but has only FB as auth method
