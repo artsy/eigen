@@ -16,6 +16,7 @@ export const ArtQuiz = () => {
       </Text>
       <Spacer mt={4} />
       <Button block>Start the Quiz</Button>
+      <Spacer mt={1} />
       <Button block variant="text" onPress={onDone}>
         Skip
       </Button>
