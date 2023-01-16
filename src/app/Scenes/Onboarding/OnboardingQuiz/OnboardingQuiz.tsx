@@ -5,6 +5,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { OnboardingProvider } from "./Hooks/useOnboardingContext"
 import { useUpdateUserProfile } from "./Hooks/useUpdateUserProfile"
 import { OnboardingArtistsOnTheRise } from "./OnboardingArtistsOnTheRise"
+import { OnboardingArtTasteQuiz } from "./OnboardingArtTasteQuiz"
 import { OnboardingCuratedArtworks } from "./OnboardingCuratedArtworks"
 import { OnboardingFollowArtists } from "./OnboardingFollowArtists"
 import { OnboardingFollowGalleries } from "./OnboardingFollowGalleries"
@@ -24,6 +25,7 @@ export type OnboardingNavigationStack = {
   OnboardingArtistsOnTheRise: undefined
   OnboardingCuratedArtworks: undefined
   OnboardingTopAuctionLots: undefined
+  OnboardingArtTasteQuiz: undefined
   OnboardingFollowArtists: undefined
   OnboardingFollowGalleries: undefined
   OnboardingPostFollowLoadingScreen: undefined
@@ -94,6 +96,7 @@ export const OnboardingQuiz = () => {
             name="OnboardingPostFollowLoadingScreen"
             component={OnboardingPostFollowLoadingScreen}
           />
+          <StackNavigator.Screen name="OnboardingArtTasteQuiz" component={OnboardingArtTasteQuiz} />
         </StackNavigator.Navigator>
       </NavigationContainer>
     </OnboardingProvider>
