@@ -64,6 +64,10 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
 
   const loading = fbLoading || googleLoading || appleLoading
 
+  const priceRangeValue = me.priceRange
+    ? PRICE_BUCKETS.find((i) => me.priceRange === i.value)?.label ?? "Select a price range"
+    : "Select a price range"
+
   return (
     <PageWithSimpleHeader title="Account">
       <ScrollView contentContainerStyle={{ paddingTop: 10 }}>
@@ -82,11 +86,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
         />
         <MenuItem
           title="Price Range"
-          value={
-            me.priceRange
-              ? PRICE_BUCKETS.filter((i) => me.priceRange === i.value)[0].label
-              : "Select a price range"
-          }
+          value={priceRangeValue}
           onPress={() => navigate("my-account/edit-price-range")}
         />
         {!!me.hasPassword && (
