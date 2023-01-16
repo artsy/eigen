@@ -1,10 +1,11 @@
+import { waitFor } from "@testing-library/react-native"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { ReactElement } from "react"
 import { Image, TouchableOpacity } from "react-native"
-import { MyCollectionAddPhotos, tests } from "./MyCollectionArtworkFormAddPhotos"
+import { DELAY_TIME_MS, MyCollectionAddPhotos, tests } from "./MyCollectionArtworkFormAddPhotos"
 
 jest.mock("app/utils/requestPhotos", () => ({
   showPhotoActionSheet: jest.fn(() => Promise.resolve({ photos: [] })),
@@ -40,10 +41,17 @@ describe("MyCollectionAddPhotos", () => {
     ])
   })
 
-  it("displays the correct number of photos", () => {
+  it("displays the correct number of photos", async () => {
     const wrapper = renderWithWrappersLEGACY(mockAddPhotos)
-    expect(wrapper.root.findAllByType(Image).length).toBe(2)
-    expect(wrapper.root.findAllByType(tests.DeletePhotoButton).length).toBe(2)
+    await waitFor(
+      () => {
+        expect(wrapper.root.findAllByType(Image).length).toBe(2)
+        expect(wrapper.root.findAllByType(tests.DeletePhotoButton).length).toBe(2)
+      },
+      // In MyCollectionAddPhotos We delay by DELAY_TIME_MS while showing a lighter placeholder before
+      // loading the heavier images.
+      { timeout: DELAY_TIME_MS + 1000 }
+    )
   })
 
   it("renders add photo button", () => {
@@ -66,17 +74,24 @@ describe("MyCollectionAddPhotos", () => {
     expect(showPhotoActionSheet).toHaveBeenCalled()
   })
 
-  it("triggers action on delete photo button click", () => {
+  it("triggers action on delete photo button click", async () => {
     const spy = jest.fn()
     GlobalStore.actions.myCollection.artwork.removePhoto = spy as any
     const mockNav = jest.fn()
     const wrapper = renderWithWrappersLEGACY(
       <MyCollectionAddPhotos navigation={mockNav as any} route={{} as any} />
     )
-    wrapper.root
-      .findAllByType(tests.DeletePhotoButton)[0]
-      .findByType(TouchableOpacity)
-      .props.onPress()
-    expect(spy).toHaveBeenCalledWith({ path: "photo/1" })
+    await waitFor(
+      () => {
+        wrapper.root
+          .findAllByType(tests.DeletePhotoButton)[0]
+          .findByType(TouchableOpacity)
+          .props.onPress()
+        expect(spy).toHaveBeenCalledWith({ path: "photo/1" })
+      },
+      // In MyCollectionAddPhotos We delay by DELAY_TIME_MS while showing a lighter placeholder before
+      // loading the heavier images.
+      { timeout: DELAY_TIME_MS + 1000 }
+    )
   })
 })
