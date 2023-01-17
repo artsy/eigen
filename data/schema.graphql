@@ -2501,7 +2501,7 @@ type ArtworkVersion implements Node {
   artists: [Artist]
 
   # The Artwork Version attribution class
-  attributionClass: String
+  attributionClass: AttributionClass
 
   # The Image id
   defaultImageID: String
@@ -2629,6 +2629,7 @@ type AuctionResult implements Node {
   internalID: ID!
   isUpcoming: Boolean
   location: String
+  lotNumber: String
   mediumText: String
   organization: String
   performance: AuctionLotPerformance
@@ -2701,6 +2702,7 @@ type AuctionResultsByArtists {
   highEstimateCentsUsd: BigInt
   id: ID!
   location: String
+  lotNumber: String
   lowEstimateCents: BigInt
   lowEstimateCentsUsd: BigInt
   mediumText: String
@@ -11756,6 +11758,7 @@ input NotificationPreferenceInput {
 }
 
 enum NotificationTypesEnum {
+  ARTICLE_FEATURED_ARTIST
   ARTWORK_ALERT
   ARTWORK_PUBLISHED
   PARTNER_SHOW_OPENED
