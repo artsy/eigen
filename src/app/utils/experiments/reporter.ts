@@ -53,8 +53,8 @@ const tracks = {
     ...rest,
     experiment_id: name,
     experiment_name: name,
-    variation_id: enabled,
-    variation_name: enabled,
+    variation_id: String(enabled),
+    variation_name: String(enabled),
   }),
   experimentVariant: ({
     name,
@@ -79,8 +79,8 @@ const tracks = {
     ...rest,
     experiment_id: name,
     experiment_name: name,
-    variation_id: enabled ? variant : false,
-    variation_name: enabled ? variant : false,
+    variation_id: enabled ? variant : "null",
+    variation_name: enabled ? variant : "null",
     payload,
   }),
 }
