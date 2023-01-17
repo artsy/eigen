@@ -140,11 +140,11 @@ const trackExperimentVariant = (
   payload?: string
 ) =>
   maybeReportExperimentVariant({
-    name,
+    experimentName: name,
     enabled,
-    variant,
+    variantName: variant,
     payload,
     context_module: ContextModule.newWorksForYouRail,
-    context_screen_owner_type: OwnerType.home,
-    context_screen: Schema.PageNames.Home,
+    context_owner_type: OwnerType.home,
+    context_owner_screen: OwnerType.home,
   })

@@ -2,10 +2,7 @@ import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { useExperimentFlag, useExperimentVariant } from "app/utils/experiments/hooks"
-import {
-  maybeReportExperimentFlag,
-  maybeReportExperimentVariant,
-} from "app/utils/experiments/reporter"
+import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
 import { isPad } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
 import { useAlgoliaClient } from "app/utils/useAlgoliaClient"
@@ -118,7 +115,6 @@ export const Search: React.FC = () => {
     smudgeValue.payload
   )
   const smudge2Value = useExperimentFlag("test-eigen-smudge2")
-  nonCohesionTracks.experimentFlag("test-eigen-smudge2", smudge2Value)
 
   const pillsArray = useMemo<PillType[]>(() => {
     const allowedIndices = indices.filter((indice) =>
@@ -333,21 +329,14 @@ const tracks = {
 }
 
 const nonCohesionTracks = {
-  experimentFlag: (name: string, enabled: boolean) =>
-    maybeReportExperimentFlag({
-      name,
-      enabled,
-      context_screen_owner_type: OwnerType.search,
-      context_screen: Schema.PageNames.Search,
-    }),
   experimentVariant: (name: string, enabled: boolean, variant: string, payload?: string) =>
     maybeReportExperimentVariant({
-      name,
-      enabled,
-      variant,
+      experimentName: name,
+      variantName: variant,
       payload,
-      context_screen_owner_type: OwnerType.search,
-      context_screen: Schema.PageNames.Search,
+      enabled,
+      context_owner_type: OwnerType.search,
+      context_owner_screen: OwnerType.search,
     }),
 }
 
