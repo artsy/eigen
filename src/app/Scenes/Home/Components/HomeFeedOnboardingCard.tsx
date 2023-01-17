@@ -26,7 +26,7 @@ export const HomeFeedOnboardingCard: React.FC<HomeFeedOnboardingCardProps> = ({
     <Touchable haptic="impactMedium" onPress={onPress}>
       <Flex width={CARD_WIDTH} testID={testID}>
         <Image
-          width={CARD_WIDTH}
+          style={{ width: CARD_WIDTH }}
           source={image}
           borderTopLeftRadius={CARD_BORDER_RADIUS}
           borderTopRightRadius={CARD_BORDER_RADIUS}
