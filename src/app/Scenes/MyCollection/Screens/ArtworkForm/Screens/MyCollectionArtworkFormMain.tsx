@@ -261,7 +261,9 @@ export const MyCollectionArtworkFormMain: React.FC<
                   artworkActions.addPhotos(photos)
                 })
               } else {
-                navigation.navigate("AddPhotos")
+                requestAnimationFrame(() => {
+                  navigation.navigate("AddPhotos")
+                })
               }
             }}
           />
