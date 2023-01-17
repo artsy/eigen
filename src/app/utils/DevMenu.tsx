@@ -39,7 +39,7 @@ import {
   TouchableOpacity,
 } from "react-native"
 import Config from "react-native-config"
-import { getBuildNumber, getUniqueIdSync, getVersion } from "react-native-device-info"
+// import { getBuildNumber, getUniqueIdSync, getVersion } from "react-native-device-info"
 import Keychain from "react-native-keychain"
 import { useUnleashEnvironment } from "./experiments/hooks"
 
@@ -89,7 +89,7 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
         contentContainerStyle={{ paddingVertical: 10 }}
       >
         <Text variant="xs" color="grey" mx="2">
-          eigen v{getVersion()}, build {getBuildNumber()} ({ArtsyNativeModule.gitCommitShortHash})
+          {/* eigen v{getVersion()}, build {getBuildNumber()} ({ArtsyNativeModule.gitCommitShortHash}) */}
         </Text>
         <Text variant="xs" color="grey" mx="2">
           {userEmail}
@@ -245,9 +245,9 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
           />
           <FeatureFlagMenuItem title={`Sentry release name: "${eigenSentryReleaseName()}"`} />
           <FeatureFlagMenuItem
-            title={`Device ID: ${getUniqueIdSync()}`}
+            // title={`Device ID: ${getUniqueIdSync()}`}
             onPress={() => {
-              Clipboard.setString(getUniqueIdSync())
+              // Clipboard.setString(getUniqueIdSync())
               toast.show("Copied to clipboard", "middle")
             }}
           />

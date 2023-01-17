@@ -13,8 +13,8 @@ import {
 import { forwardRef, useImperativeHandle, useRef, useState } from "react"
 import { TouchableOpacity, useWindowDimensions } from "react-native"
 import Animated, {
-  FadeInRight,
-  FadeOutRight,
+  // FadeInRight,
+  // FadeOutRight,
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated"
@@ -75,8 +75,8 @@ export const SearchInput = forwardRef<InputRef, SearchInputProps>(
         <Flex alignItems="center" justifyContent="center" maxHeight={INPUT_HEIGHT + 3}>
           {!!enableCancelButton && !!cancelButtonShown && (
             <Animated.View
-              entering={FadeInRight.duration(CANCEL_BUTTON_DURATION)}
-              exiting={FadeOutRight.duration(CANCEL_BUTTON_DURATION)}
+            // entering={FadeInRight.duration(CANCEL_BUTTON_DURATION)}
+            // exiting={FadeOutRight.duration(CANCEL_BUTTON_DURATION)}
             >
               <TouchableOpacity
                 onPress={() => {
