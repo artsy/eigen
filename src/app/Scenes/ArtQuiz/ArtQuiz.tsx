@@ -6,17 +6,17 @@ export const ArtQuiz = () => {
   return (
     <Flex flex={1} p={2} justifyContent="flex-end">
       <ArtsyLogoIcon scale={0.75} />
-      <Spacer mt={2} />
+      <Spacer m={1} />
       <Text variant="xl">Art Taste Quiz</Text>
-      <Spacer mt={2} />
+      <Spacer m={1} />
       <Text variant="md">See more of what you love.</Text>
-      <Spacer mt={2} />
+      <Spacer m={1} />
       <Text variant="md">
         Rate artworks to discover your taste profile and get recommendations tailored to you.
       </Text>
-      <Spacer mt={4} />
+      <Spacer m={2} />
       <Button block>Start the Quiz</Button>
-      <Spacer mt={1} />
+      <Spacer m={0.5} />
       <Button block variant="text" onPress={onDone}>
         Skip
       </Button>
