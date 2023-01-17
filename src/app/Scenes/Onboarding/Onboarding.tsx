@@ -115,9 +115,7 @@ export const Onboarding = () => {
       <ArtsyKeyboardAvoidingViewContext.Provider
         value={{ isVisible: true, isPresentedModally: false, bottomOffset: 0 }}
       >
-        {/* TODO: Uncomment the below line(and remove the line after it) once the design is ready*/}
-        {/* {onboardingState === "incomplete" ? <OnboardingQuiz /> : <OnboardingWelcomeScreens />} */}
-        <OnboardingQuiz />
+        {onboardingState === "incomplete" ? <OnboardingQuiz /> : <OnboardingWelcomeScreens />}
         <NetworkAwareProvider />
       </ArtsyKeyboardAvoidingViewContext.Provider>
       {!!fpsCounter && <FPSCounter style={{ bottom: Platform.OS === "ios" ? 40 : undefined }} />}

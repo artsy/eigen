@@ -8,7 +8,6 @@ import {
   OPTION_FOLLOW_ARTISTS_I_WANT_TO_COLLECT,
   OPTION_FOLLOW_GALLERIES_IM_INTERESTED_IN,
   OPTION_KEEP_TRACK_OF_ART,
-  OPTION_THE_ART_TASTE_QUIZ,
   OPTION_TOP_AUCTION_LOTS,
 } from "app/Scenes/Onboarding/OnboardingQuiz/config"
 import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingTracking"
@@ -45,8 +44,6 @@ export const OnboardingQuestionThree = () => {
 
       case questionTwo[0] === OPTION_DEVELOPING_MY_ART_TASTES:
         return [
-          // TODO: Design flow confirmation required
-          // OPTION_THE_ART_TASTE_QUIZ,
           OPTION_TOP_AUCTION_LOTS,
           OPTION_A_CURATED_SELECTION_OF_ARTWORKS,
           OPTION_ARTISTS_ON_THE_RISE,
@@ -58,8 +55,6 @@ export const OnboardingQuestionThree = () => {
       case questionTwo[0] === OPTION_FINDING_GREAT_INVESTMENTS:
       case questionTwo[0] === OPTION_COLLECTING_ART_THAT_MOVES_ME:
         return [
-          // TODO: Design flow confirmation required
-          // OPTION_THE_ART_TASTE_QUIZ,
           OPTION_FOLLOW_ARTISTS_I_WANT_TO_COLLECT,
           OPTION_TOP_AUCTION_LOTS,
           OPTION_ARTISTS_ON_THE_RISE,
