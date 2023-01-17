@@ -4,7 +4,7 @@ import DeviceInfo from "react-native-device-info"
 
 export const DynamicIslandStagingIndicator = () => {
   const isStaging = useIsStaging()
-  const hasDynamicIsland = DeviceInfo.hasDynamicIsland()
+  const hasDynamicIsland = true
 
   if (!isStaging || !hasDynamicIsland) {
     return null
@@ -12,16 +12,16 @@ export const DynamicIslandStagingIndicator = () => {
 
   let rect: { top: number; left: number } | undefined
 
-  switch (DeviceInfo.getDeviceNameSync()) {
-    case "iPhone 14 Pro":
-      rect = { top: 9.5, left: 132 }
-      break
-    case "iPhone 14 Pro Max":
-      rect = { top: 9.5, left: 150.5 }
-      break
-    default:
-      console.warn("No rect for this device")
-  }
+  // switch (DeviceInfo.getDeviceNameSync()) {
+  //   case "iPhone 14 Pro":
+  rect = { top: 9.5, left: 132 }
+  //     break
+  //   case "iPhone 14 Pro Max":
+  //     rect = { top: 9.5, left: 150.5 }
+  //     break
+  //   default:
+  //     console.warn("No rect for this device")
+  // }
 
   if (rect === undefined) {
     return null
