@@ -7,6 +7,7 @@
 
   - User facing changes:
 
+    - Fix MyCollection Add Photos freeze - kizito
     - Fix dirty form check when uploading a new artwork - ole
     - Clean up ARGoogleAuth feature flag - ole
     - Add complete your profile banner in Edit Profile screen - mrsltun
