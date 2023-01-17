@@ -410,5 +410,5 @@ const state: ArtworkInquiryContextState = {
 
 const meFixture: CommercialButtonsTestsRenderQuery$rawResponse["me"] = {
   id: "id",
-  identityVerified: true,
+  isIdentityVerified: true,
 }

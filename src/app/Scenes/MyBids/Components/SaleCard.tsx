@@ -53,7 +53,7 @@ export const SaleCard: React.FC<SaleCardProps> = ({
   const shouldPromptIdVerification =
     !registrationStatus?.qualifiedForBidding &&
     sale.requireIdentityVerification &&
-    !me.identityVerified &&
+    !me.isIdentityVerified &&
     !!pendingIdentityVerification
   let RegistrationCTA: React.FC
 
@@ -150,7 +150,7 @@ export const SaleCardFragmentContainer = createFragmentContainer(SaleCard, {
   `,
   me: graphql`
     fragment SaleCard_me on Me {
-      identityVerified
+      isIdentityVerified
       pendingIdentityVerification {
         internalID
       }

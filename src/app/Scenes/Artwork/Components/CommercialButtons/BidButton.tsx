@@ -328,7 +328,7 @@ export const BidButtonFragmentContainer = createFragmentContainer(BidButtonConta
   `,
   me: graphql`
     fragment BidButton_me on Me {
-      identityVerified
+      isIdentityVerified
     }
   `,
 })

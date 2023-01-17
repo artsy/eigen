@@ -362,5 +362,5 @@ const state: ArtworkInquiryContextState = {
 
 const meFixture = {
   id: "id",
-  identityVerified: true,
+  isIdentityVerified: true,
 }
