@@ -50,16 +50,6 @@ When we upgrade to react-native 0.67 or later.
 
 This is an old restriction for an old hermes version. It's messing with our xcodeproj file for non-M1 macs, so we patch it out for now. That restriction is fixed and removed on RN 0.67.
 
-## react-native patch-package (stacktrace-parser part only).
-
-#### When can we remove this:
-
-When this is merged: https://github.com/facebook/react-native/pull/30345.
-
-#### Explanation/Context:
-
-For some reason CircleCI kept giving an error when running tests `TypeError: stacktraceParser.parse is not a function`. Once I moved the require higher up, things started working again.
-
 ## react-native-mapbox-gl/maps - postinstall script
 
 #### When can we remove this:
