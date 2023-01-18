@@ -44,13 +44,13 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress, onInquiryPress }
     >
       <Flex px={2} pb={2} justifyContent="flex-end" height="100%">
         <Flex>
-          <Text variant="xl" color="white100">
+          <Text variant="lg-display" color="white100">
             Sell Artworks from Your Collection
           </Text>
 
           <Spacer mb={2} />
 
-          <Text variant="sm" color="white100">
+          <Text variant="sm-display" color="white100">
             Our experts will find the best sales option for you, at auction, private sale, or
             listing on Artsy.
           </Text>

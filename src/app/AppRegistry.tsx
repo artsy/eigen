@@ -1,3 +1,4 @@
+import { NativeStackNavigationOptions } from "@react-navigation/native-stack"
 import React from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
@@ -297,6 +298,7 @@ export interface ViewOptions {
   isRootViewForTabName?: BottomTabType
   // If this module should only be shown in one particular tab, name it here
   onlyShowInTabName?: BottomTabType
+  screenOptions?: NativeStackNavigationOptions
 }
 
 // tslint:disable-next-line: interface-over-type-literal
@@ -487,7 +489,11 @@ export const modules = defineModules({
     alwaysPresentModally: true,
     hasOwnModalCloseButton: false,
   }),
-  ConsignmentInquiry: reactModule(ConsignmentInquiryScreen),
+  ConsignmentInquiry: reactModule(ConsignmentInquiryScreen, {
+    screenOptions: {
+      gestureEnabled: false,
+    },
+  }),
   UnlistedArtworksFAQScreen: reactModule(UnlistedArtworksFAQScreen),
 
   VanityURLEntity: reactModule(VanityURLEntityRenderer, { fullBleed: true }),
