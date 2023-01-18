@@ -7,6 +7,7 @@
 
   - User facing changes:
 
+    - show works using new recs model for the new works for you - mounir
     - Fix MyCollection Add Photos freeze - kizito
 
   - Dev changes:
