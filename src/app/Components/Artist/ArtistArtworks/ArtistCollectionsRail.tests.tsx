@@ -28,8 +28,8 @@ describe("Artist Series Rail", () => {
     fireEvent.press(getByText("Cindy Sherman: Untitled Film Stills"))
 
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "action_type": "tappedCollectionGroup",
           "context_module": "artistSeriesRail",
           "context_screen_owner_id": "artist0",

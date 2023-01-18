@@ -6,8 +6,10 @@ module.exports = {
   rootDir: "./",
   moduleNameMapper: moduleNameMap,
   testMatch: ["<rootDir>/**/*.tests.(ts|tsx|js)"],
-  testEnvironment: "jsdom",
-  testURL: "http://localhost/",
+  testEnvironment: "jest-environment-jsdom",
+  testEnvironmentOptions: {
+    url: "http://localhost/",
+  },
   setupFilesAfterEnv: [
     "jest-extended",
     "@testing-library/jest-native/extend-expect",

@@ -219,8 +219,8 @@ describe("PriceRangeOptions", () => {
       fireEvent.press(getByText("$0–100"))
 
       expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "action": "selectedRecentPriceRange",
             "collector_profile_sourced": false,
             "context_module": "recentPriceRanges",
@@ -245,8 +245,8 @@ describe("PriceRangeOptions", () => {
       fireEvent.press(getByText("$0–5,000"))
 
       expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "action": "selectedRecentPriceRange",
             "collector_profile_sourced": true,
             "context_module": "recentPriceRanges",
