@@ -17,14 +17,21 @@ export function maybeReportExperimentVariant({
   enabled,
   variantName,
   payload,
+  // include context when storing the experiment variants
+  storeContext = false,
   ...rest
-}: TrackVariantArgs & { enabled: boolean }) {
-  const combinedValue = `${enabled}-${variantName}-${payload}`
+}: TrackVariantArgs & { enabled: boolean; storeContext?: boolean }) {
+  let combinedValue = ""
+  if (!storeContext) {
+    combinedValue = `${enabled}-${variantName}-${payload}`
+  } else {
+    combinedValue = `${enabled}-${variantName}-${payload}-${rest.context_owner_screen}`
+  }
   if (reportedExperimentVariants[experimentName] === combinedValue) {
     return
   }
+  reportedExperimentVariants[experimentName] = `${combinedValue}`
 
-  reportedExperimentVariants[experimentName] = combinedValue
   postEventToProviders(tracks.experimentVariant({ experimentName, variantName, payload, ...rest }))
 }
 

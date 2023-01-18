@@ -102,7 +102,12 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
 
 const artworksFragment = graphql`
   fragment NewWorksForYouRail_artworkConnection on Viewer {
-    smallArtworksForUser: artworksForUser(maxWorksPerArtist: 3, includeBackfill: true, first: 40) {
+    smallArtworksForUser: artworksForUser(
+      maxWorksPerArtist: 3
+      includeBackfill: true
+      first: 40
+      version: $worksForYouRecommendationsModelVariant
+    ) {
       edges {
         node {
           title
@@ -111,7 +116,12 @@ const artworksFragment = graphql`
         }
       }
     }
-    artworksForUser(maxWorksPerArtist: 3, includeBackfill: true, first: 40) {
+    artworksForUser(
+      maxWorksPerArtist: 3
+      includeBackfill: true
+      first: 40
+      version: $worksForYouRecommendationsModelVariant
+    ) {
       edges {
         node {
           title

@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Home_articlesConnection$data } from "__generated__/Home_articlesConnection.graphql"
 import { Home_featured$data } from "__generated__/Home_featured.graphql"
 import { Home_homePageAbove$data } from "__generated__/Home_homePageAbove.graphql"
@@ -24,6 +25,7 @@ import { SalesRailFragmentContainer } from "app/Scenes/Home/Components/SalesRail
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
+import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
 import { isPad } from "app/utils/hardware"
 import {
   PlaceholderBox,
@@ -41,6 +43,10 @@ import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { articlesQueryVariables } from "../Articles/Articles"
 import { lotsByArtistsYouFollowDefaultVariables } from "../LotsByArtistsYouFollow/LotsByArtistsYouFollow"
+import {
+  DEFAULT_RECS_MODEL_VERSION,
+  RECOMMENDATION_MODEL_EXPERIMENT_NAME,
+} from "../NewWorksForYou/NewWorksForYou"
 import { ViewingRoomsHomeMainRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { ActivityIndicator } from "./Components/ActivityIndicator"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
@@ -495,7 +501,7 @@ export const HomeFragmentContainer = createRefetchContainer(
     `,
   },
   graphql`
-    query HomeRefetchQuery {
+    query HomeRefetchQuery($worksForYouRecommendationsModelVariant: String) {
       homePage @optionalField {
         ...Home_homePageAbove
       }
@@ -654,6 +660,21 @@ export const HomeQueryRenderer: React.FC = () => {
     flash_message?: string
   }
 
+  const worksForYouRecommendationsModel = useExperimentVariant(RECOMMENDATION_MODEL_EXPERIMENT_NAME)
+
+  useEffect(() => {
+    maybeReportExperimentVariant({
+      experimentName: RECOMMENDATION_MODEL_EXPERIMENT_NAME,
+      enabled: worksForYouRecommendationsModel.enabled,
+      variantName: worksForYouRecommendationsModel.variant,
+      payload: worksForYouRecommendationsModel.payload,
+      context_module: ContextModule.newWorksForYouRail,
+      context_owner_type: OwnerType.home,
+      context_owner_screen: OwnerType.home,
+      storeContext: true,
+    })
+  }, [])
+
   useEffect(() => {
     if (flash_message) {
       const message = messages[flash_message as keyof typeof messages]
@@ -675,7 +696,7 @@ export const HomeQueryRenderer: React.FC = () => {
       environment={defaultEnvironment}
       above={{
         query: graphql`
-          query HomeAboveTheFoldQuery {
+          query HomeAboveTheFoldQuery($worksForYouRecommendationsModelVariant: String!) {
             homePage @optionalField {
               ...Home_homePageAbove
             }
@@ -691,11 +712,14 @@ export const HomeQueryRenderer: React.FC = () => {
             }
           }
         `,
-        variables: {},
+        variables: {
+          worksForYouRecommendationsModelVariant:
+            worksForYouRecommendationsModel.payload || DEFAULT_RECS_MODEL_VERSION,
+        },
       }}
       below={{
         query: graphql`
-          query HomeBelowTheFoldQuery {
+          query HomeBelowTheFoldQuery($worksForYouRecommendationsModelVariant: String!) {
             newWorksForYou: viewer @optionalField {
               ...Home_newWorksForYou
             }
@@ -715,7 +739,9 @@ export const HomeQueryRenderer: React.FC = () => {
             }
           }
         `,
-        variables: { heroImageVersion: isPad() ? "WIDE" : "NARROW" },
+        variables: {
+          worksForYouRecommendationsModelVariant: worksForYouRecommendationsModel.payload || "B",
+        },
       }}
       render={{
         renderComponent: ({ above, below }) => {
