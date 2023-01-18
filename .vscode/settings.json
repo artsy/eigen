@@ -1,4 +1,10 @@
 {
+  "cSpell.diagnosticLevel": "Hint",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.rulers": [100],
+  "editor.tabSize": 2,
+  "eslint.enable": false,
   "files.associations": {
     "*.podspec": "ruby",
     "Podfile": "ruby",
@@ -7,15 +13,6 @@
     "yarn.lock": "text",
     "tslint.json": "jsonc"
   },
-  "eslint.enable": false,
-  "editor.formatOnSave": true,
-  "files.trimTrailingWhitespace": true,
-  "prettier.singleQuote": false,
-  "prettier.trailingComma": "es5",
-  "prettier.semi": false,
-  "prettier.printWidth": 100,
-  "editor.rulers": [100],
-  "editor.tabSize": 2,
   "files.exclude": {
     "**/.git": true,
     ".jest/": true,
@@ -23,12 +20,26 @@
     ".awcache": true,
     ".happypack": true
   },
+  "files.trimTrailingWhitespace": true,
+  "javascript.validate.enable": true,
+  "[json]": {
+    "editor.formatOnSave": false
+  },
+  "prettier.printWidth": 100,
+  "prettier.semi": false,
+  "prettier.singleQuote": false,
+  "prettier.trailingComma": "es5",
   "search.exclude": {
     "**/node_modules": true,
     "externals/**": true,
     "Pod/Assets/Emission.*": true,
     ".vscode/.react/*": true
   },
+  "todohighlight.exclude": ["node_modules/**", ".vscode/**", "externals/**"],
+  "tslint.autoFixOnSave": true,
+  "typescript.format.enable": false,
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "typescript.tsdk": "./node_modules/typescript/lib",
   "cSpell.ignoreWords": [
     "orta",
     "sarah",
@@ -49,14 +60,5 @@
     "ARTemporaryAPIModule",
     "Inbox",
     "matt"
-  ],
-  "cSpell.diagnosticLevel": "Hint",
-  "typescript.tsdk": "./node_modules/typescript/lib",
-  "todohighlight.exclude": ["node_modules/**", ".vscode/**", "externals/**"],
-  "tslint.autoFixOnSave": true,
-  "typescript.format.enable": false,
-  "[json]": {
-    "editor.formatOnSave": false
-  },
-  "javascript.validate.enable": true
+  ]
 }

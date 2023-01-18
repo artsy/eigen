@@ -23,7 +23,10 @@ module.exports = (api) => {
         "module:metro-react-native-babel-preset",
         { useTransformReactJSXExperimental: true }, // this is so `import React from "react"` is not needed.
       ],
-      ["@babel/preset-env", { loose: true }],
+      // TODO: Remove this once we determine if its actually needed. Added during reanimated upgrade.
+      // but then we determined that it was leading to errors with loading reanimated while remotely
+      // debugging JS in chrome.
+      // ["@babel/preset-env", { loose: true }],
       "@babel/preset-typescript",
       ["@babel/preset-react", { runtime: "automatic" }], // this is so `import React from "react"` is not needed.
     ],

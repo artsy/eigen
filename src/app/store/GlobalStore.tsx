@@ -4,10 +4,10 @@ import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { switchTab } from "app/navigation/navigate"
 import { loadDevNavigationStateCache } from "app/navigation/useReloadedDevNavigationState"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
+import { SystemDeviceInfo } from "app/system/SystemDeviceInfo"
 import { logAction } from "app/utils/loggers"
 import { createStore, createTypedHooks, StoreProvider } from "easy-peasy"
 import { Platform } from "react-native"
-import { getBuildNumber, getUserAgentSync } from "react-native-device-info"
 import { Action, Middleware } from "redux"
 import { version } from "./../../../app.json"
 import { DevToggleName, FeatureName, features } from "./config/features"
@@ -226,8 +226,8 @@ export function getCurrentEmissionState() {
 
   // `getUserAgentSync` breaks the Chrome Debugger, so we use a string instead.
   const userAgent = `${
-    __DEV__ ? "Artsy-Mobile " + Platform.OS : getUserAgentSync()
-  } Artsy-Mobile/${version} Eigen/${getBuildNumber()}/${version}`
+    __DEV__ ? "Artsy-Mobile " + Platform.OS : SystemDeviceInfo.getUserAgentSync()
+  } Artsy-Mobile/${version} Eigen/${SystemDeviceInfo.getBuildNumber()}/${version}`
 
   const data: GlobalStoreModel["native"]["sessionState"] = {
     authenticationToken: state?.auth.userAccessToken || "",

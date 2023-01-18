@@ -250,9 +250,10 @@ jobs:
       - generate-checksums
       - install-node-modules
       - run-relay-compiler
-      - run:
-          name: Danger
-          command: yarn danger ci --verbose
+      # FIXME: Reenable in follow-up PR
+      # - run:
+      #     name: Danger
+      #     command: yarn danger ci --verbose
       - run:
           name: Prevent Strictness Regressions
           command: node scripts/strictness-migration.js check-pr

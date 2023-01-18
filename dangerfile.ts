@@ -55,6 +55,17 @@ See [\`Pill.tests.tsx\`](https://github.com/artsy/eigen/blob/2f32d462bb3b4ce358c
   }
 }
 
+function preventUsingDefaultDeviceInfoImport() {
+  const invalidImports = getCreatedFileNames(danger.git.created_files).filter((filename) => {
+    const content = fs.readFileSync(filename).toString()
+    return content.includes("react-native-device-info")
+  })
+  if (invalidImports.length > 0) {
+    fail(`Please use \`SystemDeviceInfo\` instead of \`react-native-device-info\`. This guards against native sync methods breaking remote JS debugging. See:
+> ${invalidImports.map((filename) => `\`${filename}\``).join("\n")}`)
+  }
+}
+
 // Validates that we've not accidentally let in a testing
 // shortcut to simplify dev work
 const verifyRemainingDevWork = () => {
@@ -112,6 +123,7 @@ export const useWebPs = (fileNames: string[]) => {
 
   preventUsingMoment()
   preventUsingTestRenderer()
+  preventUsingDefaultDeviceInfoImport()
   verifyRemainingDevWork()
   // useWebPs(newCreatedFileNames)
 })()
