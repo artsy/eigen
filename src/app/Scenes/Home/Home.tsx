@@ -668,6 +668,7 @@ export const HomeQueryRenderer: React.FC = () => {
       context_module: ContextModule.newWorksForYouRail,
       context_owner_type: OwnerType.home,
       context_owner_screen: OwnerType.home,
+      storeContext: true,
     })
   }, [])
 

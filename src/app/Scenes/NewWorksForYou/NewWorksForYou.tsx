@@ -124,6 +124,7 @@ export const NewWorksForYouQueryRenderer: React.FC = () => {
       payload: worksForYouRecommendationsModel.payload,
       context_owner_type: OwnerType.newWorksForYou,
       context_owner_screen: OwnerType.newWorksForYou,
+      storeContext: true,
     })
   }, [])
 
