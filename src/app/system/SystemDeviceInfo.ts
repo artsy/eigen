@@ -2,7 +2,7 @@ import { DeviceInfoModule } from "react-native-device-info/lib/typescript/intern
 
 export const SystemDeviceInfo: DeviceInfoModule = (() => {
   // @ts-ignore
-  const isRemotelyDebugging = typeof atob !== "undefined"
+  const isRemotelyDebugging = !__TEST__ && typeof atob !== "undefined"
 
   if (!isRemotelyDebugging) {
     const deviceInfo = require("react-native-device-info")
