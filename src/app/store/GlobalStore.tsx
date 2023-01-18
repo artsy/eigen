@@ -7,7 +7,7 @@ import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { logAction } from "app/utils/loggers"
 import { createStore, createTypedHooks, StoreProvider } from "easy-peasy"
 import { Platform } from "react-native"
-import { getBuildNumber, getUserAgentSync } from "react-native-device-info"
+import DeviceInfo from "react-native-device-info"
 import { Action, Middleware } from "redux"
 import { version } from "./../../../app.json"
 import { DevToggleName, FeatureName, features } from "./config/features"
@@ -226,8 +226,8 @@ export function getCurrentEmissionState() {
 
   // `getUserAgentSync` breaks the Chrome Debugger, so we use a string instead.
   const userAgent = `${
-    __DEV__ ? "Artsy-Mobile " + Platform.OS : getUserAgentSync()
-  } Artsy-Mobile/${version} Eigen/${getBuildNumber()}/${version}`
+    __DEV__ ? "Artsy-Mobile " + Platform.OS : DeviceInfo.getUserAgentSync()
+  } Artsy-Mobile/${version} Eigen/${DeviceInfo.getBuildNumber()}/${version}`
 
   const data: GlobalStoreModel["native"]["sessionState"] = {
     authenticationToken: state?.auth.userAccessToken || "",

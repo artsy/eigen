@@ -6,12 +6,12 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { useTheme } from "palette"
 import React, { useEffect, useState } from "react"
 import { ScrollView } from "react-native"
-import { getVersion } from "react-native-device-info"
+import DeviceInfo from "react-native-device-info"
 import useDebounce from "react-use/lib/useDebounce"
 
 export const About: React.FC = () => {
   const { color } = useTheme()
-  const appVersion = getVersion()
+  const appVersion = DeviceInfo.getVersion()
   const toast = useToast()
   const [tapCount, updateTapCount] = useState(0)
   const { value: userIsDev, flipValue: userIsDevFlipValue } = GlobalStore.useAppState(

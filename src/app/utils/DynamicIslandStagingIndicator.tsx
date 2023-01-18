@@ -4,9 +4,8 @@ import DeviceInfo from "react-native-device-info"
 
 export const DynamicIslandStagingIndicator = () => {
   const isStaging = useIsStaging()
-  const hasDynamicIsland = DeviceInfo.hasDynamicIsland()
 
-  if (!isStaging || !hasDynamicIsland) {
+  if (!isStaging || !DeviceInfo.hasDynamicIsland()) {
     return null
   }
 

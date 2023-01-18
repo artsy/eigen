@@ -7,6 +7,13 @@ let metaflags = {
 }
 
 if (__DEV__) {
+  const {
+    mockSyncFunctionsWhenDebugging,
+  } = require("./src/app/system/devTools/mockSyncFunctionsWhenDebugging")
+
+  // Ensure we don't break the debugger
+  mockSyncFunctionsWhenDebugging()
+
   try {
     const fileContents = require("./metaflags.json")
     metaflags = { ...metaflags, ...fileContents }
