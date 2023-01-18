@@ -1,0 +1,92 @@
+diff --git a/node_modules/react-native-reanimated/lib/reanimated2/globals.d.ts b/node_modules/react-native-reanimated/lib/reanimated2/globals.d.ts
+index bacd75e..dcbd584 100644
+--- a/node_modules/react-native-reanimated/lib/reanimated2/globals.d.ts
++++ b/node_modules/react-native-reanimated/lib/reanimated2/globals.d.ts
+@@ -1,3 +1,4 @@
++// @ts-nocheck
+ import type {
+   AnimatedStyle,
+   StyleProps,
+diff --git a/node_modules/react-native-reanimated/lib/reanimated2/jestUtils.js b/node_modules/react-native-reanimated/lib/reanimated2/jestUtils.js
+index 4f6187c..c4957c1 100644
+--- a/node_modules/react-native-reanimated/lib/reanimated2/jestUtils.js
++++ b/node_modules/react-native-reanimated/lib/reanimated2/jestUtils.js
+@@ -109,7 +109,7 @@ let currentTimestamp = 0;
+ const requestAnimationFrame = (callback) => {
+     setTimeout(callback, frameTime);
+ };
+-const beforeTest = () => {
++export const beforeTest = () => {
+     jestResetJsReanimatedModule();
+     requestAnimationFrameCopy = global.requestAnimationFrame;
+     global.requestAnimationFrame = requestAnimationFrame;
+@@ -119,7 +119,7 @@ const beforeTest = () => {
+     currentTimestamp = 0;
+     jest.useFakeTimers();
+ };
+-const afterTest = () => {
++export const afterTest = () => {
+     jest.useRealTimers();
+     global.requestAnimationFrame = requestAnimationFrameCopy;
+ };
+diff --git a/node_modules/react-native-reanimated/lib/reanimated2/js-reanimated/JSReanimated.js b/node_modules/react-native-reanimated/lib/reanimated2/js-reanimated/JSReanimated.js
+index 5a67415..bb21362 100644
+--- a/node_modules/react-native-reanimated/lib/reanimated2/js-reanimated/JSReanimated.js
++++ b/node_modules/react-native-reanimated/lib/reanimated2/js-reanimated/JSReanimated.js
+@@ -11,9 +11,11 @@ export default class JSReanimated extends NativeReanimated {
+         this._mapperRegistry = new MapperRegistry(this);
+         this._frames = [];
+         if (isJest()) {
++            // @ts-ignore
+             this.timeProvider = { now: () => global.ReanimatedDataMock.now() };
+         }
+         else {
++            // @ts-ignore
+             this.timeProvider = { now: () => window.performance.now() };
+         }
+     }
+diff --git a/node_modules/react-native-reanimated/mock.js b/node_modules/react-native-reanimated/mock.js
+index 0f09122..6beef6b 100644
+--- a/node_modules/react-native-reanimated/mock.js
++++ b/node_modules/react-native-reanimated/mock.js
+@@ -23,6 +23,18 @@ function NOOP() {
+   // noop
+ }
+ 
++const animationMock = {
++  overshootClamping: () => {
++    return Reanimated.Layout
++  },
++  duration: () => {
++    return Reanimated.Layout
++  },
++  springify: () => {
++    return Reanimated.Layout
++  },
++};
++
+ function simulateCallbackFactory(...params) {
+   return (callback) => {
+     callback &&
+@@ -249,6 +261,11 @@ module.exports = {
+     ...Reanimated,
+   },
+ 
++  FadeInRight: animationMock,
++  FadeOutRight: animationMock,
++  FadeIn: animationMock,
++  FadeOut: animationMock,
++
+   Transitioning: {
+     View: createTransitioningComponent(View),
+   },
+diff --git a/node_modules/react-native-reanimated/react-native-reanimated.d.ts b/node_modules/react-native-reanimated/react-native-reanimated.d.ts
+index c33d830..d951ee4 100644
+--- a/node_modules/react-native-reanimated/react-native-reanimated.d.ts
++++ b/node_modules/react-native-reanimated/react-native-reanimated.d.ts
+@@ -1,3 +1,5 @@
++// @ts-nocheck
++
+ // Project: https://github.com/software-mansion/react-native-reanimated
+ // TypeScript Version: 2.8
+ 
