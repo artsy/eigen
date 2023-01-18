@@ -3500,6 +3500,28 @@ type CitySponsoredContent {
   ): ShowConnection
 }
 
+# A collection of artworks
+type Collection {
+  # Number of artworks associated with this collection.
+  artworksCount: Int!
+
+  # True if this is the default collection for this user, i.e. the default Saved Artwork collection.
+  default: Boolean!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # Name of the collection. Has a predictable value for 'standard' collections
+  # such as Saved Artwork, My Collection, etc. Can be provided by user otherwise.
+  name: String!
+
+  # True if this collection represents artworks explicitly saved by the user, false otherwise.
+  saves: Boolean!
+}
+
 enum CollectionSorts {
   POSITION_ASC
   POSITION_DESC
@@ -10633,6 +10655,9 @@ type Me implements Node {
 
   # Whether user is allowed to request email confirmation
   canRequestEmailConfirmation: Boolean!
+
+  # A collection belonging to the current user
+  collection(id: String!): Collection
   collectorLevel: Int
 
   # A collector profile.
