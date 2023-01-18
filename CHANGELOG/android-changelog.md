@@ -11,6 +11,7 @@
     - Fix MyCollection Add Photos freeze - kizito
 
   - Dev changes:
+    - Support screen options inside react module - mounir
     - update setupTestWrapper and add testing docs - gkartalis
     - Update tracking event - mounir
     - Replace emailConfirmed and identityVerified with isEmailConfirmed and isIdentityVerified - mrsltun
