@@ -193,6 +193,11 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "ARShowUpcomingAuctionResultsRails",
   },
+  ARShowArtQuizApp: {
+    description: "Show Art Quiz App",
+    showInDevMenu: true,
+    readyForRelease: false,
+  },
 })
 
 export interface DevToggleDescriptor {

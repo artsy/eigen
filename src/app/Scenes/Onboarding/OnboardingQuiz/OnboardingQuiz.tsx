@@ -60,8 +60,6 @@ export const OnboardingQuiz = () => {
             gestureEnabled: false,
           }}
         >
-          <StackNavigator.Screen name="OnboardingArtTasteQuiz" component={OnboardingArtTasteQuiz} />
-
           <StackNavigator.Screen
             name="OnboardingWelcomeScreen"
             component={OnboardingWelcomeScreen}
@@ -98,6 +96,8 @@ export const OnboardingQuiz = () => {
             name="OnboardingPostFollowLoadingScreen"
             component={OnboardingPostFollowLoadingScreen}
           />
+
+          <StackNavigator.Screen name="OnboardingArtTasteQuiz" component={OnboardingArtTasteQuiz} />
         </StackNavigator.Navigator>
       </NavigationContainer>
     </OnboardingProvider>
