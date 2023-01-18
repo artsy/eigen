@@ -109,7 +109,18 @@ export const NavStack: React.FC<{
         return options
       }}
     >
-      <Stack.Screen name={"screen:" + id} component={ScreenWrapper} initialParams={initialParams} />
+      <Stack.Screen
+        name={"screen:" + id}
+        component={ScreenWrapper}
+        initialParams={initialParams}
+        options={(props) => {
+          const focusedRoute = findFocusedRoute(props.navigation.getState())
+          const params = focusedRoute?.params as any
+          const screenOptions = modules[params.moduleName as AppModule]?.options?.screenOptions
+
+          return { ...screenOptions }
+        }}
+      />
     </Stack.Navigator>
   )
 }

@@ -79,7 +79,7 @@ export const ConsignmentInquiryForm: React.FC<{
       keyboardShouldPersistTaps="handled"
     >
       <Box pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px={2}>
-        <Box my={3}>
+        <Box>
           <Text variant="lg-display" mb={2}>
             Contact a specialist
           </Text>
