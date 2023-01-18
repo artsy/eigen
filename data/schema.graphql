@@ -6949,6 +6949,31 @@ union CreateConsignmentInquiryMutationType =
     ConsignmentInquiryMutationFailure
   | ConsignmentInquiryMutationSuccess
 
+type CreateFeatureFailure {
+  mutationError: GravityMutationError
+}
+
+input CreateFeatureMutationInput {
+  active: Boolean!
+  callout: String
+  clientMutationId: String
+  description: String
+  layout: FeatureLayouts
+  name: String!
+  subheadline: String
+}
+
+type CreateFeatureMutationPayload {
+  clientMutationId: String
+  featureOrError: createFeatureResponseOrError
+}
+
+union createFeatureResponseOrError = CreateFeatureFailure | CreateFeatureSuccess
+
+type CreateFeatureSuccess {
+  feature: Feature
+}
+
 input CreateGeminiEntryForAssetInput {
   clientMutationId: String
 
@@ -7541,6 +7566,26 @@ type DeleteCreditCardPayload {
   clientMutationId: String
   creditCardOrError: CreditCardMutationType
   me: Me
+}
+
+type DeleteFeatureFailure {
+  mutationError: GravityMutationError
+}
+
+input DeleteFeatureMutationInput {
+  clientMutationId: String
+  id: String!
+}
+
+type DeleteFeatureMutationPayload {
+  clientMutationId: String
+  featureOrError: DeleteFeatureResponseOrError
+}
+
+union DeleteFeatureResponseOrError = DeleteFeatureFailure | DeleteFeatureSuccess
+
+type DeleteFeatureSuccess {
+  feature: Feature
 }
 
 type deleteOrderedSetFailure {
@@ -8486,6 +8531,17 @@ type Feature {
   subheadline(format: Format): String
 }
 
+# A connection to a list of items.
+type FeatureConnection {
+  # A list of edges.
+  edges: [FeatureEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
 # An illustrated link chosen to highlight a Gene from a given GeneFamily
 type FeaturedGeneLink {
   href: String!
@@ -8513,6 +8569,15 @@ type FeaturedLink {
 }
 
 union FeaturedLinkEntity = Artist | Gene | Partner
+
+# An edge in a connection.
+type FeatureEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Feature
+}
 
 type FeatureFlag {
   createdAt(
@@ -8601,6 +8666,13 @@ type FeatureMeta {
   description: String!
   image: String
   name: String!
+}
+
+enum FeatureSorts {
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  NAME_ASC
+  NAME_DESC
 }
 
 type Feedback {
@@ -11231,6 +11303,9 @@ type Mutation {
   # Create a credit card
   createCreditCard(input: CreditCardInput!): CreditCardPayload
 
+  # Creates a feature.
+  createFeature(input: CreateFeatureMutationInput!): CreateFeatureMutationPayload
+
   # Attach an gemini asset to a consignment submission
   createGeminiEntryForAsset(
     input: CreateGeminiEntryForAssetInput!
@@ -11279,6 +11354,9 @@ type Mutation {
 
   # Remove a credit card
   deleteCreditCard(input: DeleteCreditCardInput!): DeleteCreditCardPayload
+
+  # deletes a feature.
+  deleteFeature(input: DeleteFeatureMutationInput!): DeleteFeatureMutationPayload
 
   # Delete User Artsy Account
   deleteMyAccountMutation(input: DeleteAccountInput!): DeleteAccountPayload
@@ -11446,6 +11524,9 @@ type Mutation {
 
   # Update a conversation.
   updateConversation(input: UpdateConversationMutationInput!): UpdateConversationMutationPayload
+
+  # updates a feature.
+  updateFeature(input: UpdateFeatureMutationInput!): UpdateFeatureMutationPayload
 
   # Update a message.
   updateMessage(input: UpdateMessageMutationInput!): UpdateMessageMutationPayload
@@ -13612,6 +13693,16 @@ type Query {
     # The slug or ID of the Feature
     id: ID
   ): Feature
+  featuresConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    sort: FeatureSorts
+
+    # If present, will search by term
+    term: String
+  ): FeatureConnection
 
   # Partners Elastic Search results
   filterPartners(
@@ -16348,6 +16439,34 @@ type UpdateConversationMutationPayload {
   conversation: Conversation
 }
 
+type UpdateFeatureFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateFeatureMutationInput {
+  active: Boolean!
+  callout: String
+  clientMutationId: String
+  description: String
+  id: String!
+  layout: FeatureLayouts
+  name: String!
+  subheadline: String
+}
+
+type UpdateFeatureMutationPayload {
+  clientMutationId: String
+
+  # On success: the ordered set updated.
+  featureOrError: UpdateFeatureResponseOrError
+}
+
+union UpdateFeatureResponseOrError = UpdateFeatureFailure | UpdateFeatureSuccess
+
+type UpdateFeatureSuccess {
+  feature: Feature
+}
+
 type UpdateMessageFailure {
   mutationError: GravityMutationError
 }
@@ -17673,6 +17792,16 @@ type Viewer {
     # The slug or ID of the Feature
     id: ID
   ): Feature
+  featuresConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    sort: FeatureSorts
+
+    # If present, will search by term
+    term: String
+  ): FeatureConnection
 
   # Partners Elastic Search results
   filterPartners(
