@@ -1,6 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native"
+import { ViewingRoomViewWorksButtonTestsQuery } from "__generated__/ViewingRoomViewWorksButtonTestsQuery.graphql"
 import { navigate } from "app/navigation/navigate"
-import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
+import { setupTestWrapper } from "app/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { tracks, ViewingRoomViewWorksButtonContainer } from "./ViewingRoomViewWorksButton"
@@ -8,8 +9,10 @@ import { tracks, ViewingRoomViewWorksButtonContainer } from "./ViewingRoomViewWo
 jest.unmock("react-relay")
 
 describe("ViewingRoomViewWorksButton", () => {
-  const { renderWithRelay } = setupTestWrapperTL({
-    Component: (props) => <ViewingRoomViewWorksButtonContainer {...props} />,
+  const { renderWithRelay } = setupTestWrapper<ViewingRoomViewWorksButtonTestsQuery>({
+    Component: ({ viewingRoom }) => (
+      <ViewingRoomViewWorksButtonContainer viewingRoom={viewingRoom!} isVisible />
+    ),
     query: graphql`
       query ViewingRoomViewWorksButtonTestsQuery {
         viewingRoom(id: "unused") {

@@ -1,10 +1,9 @@
 import { screen } from "@testing-library/react-native"
 import { ArtworkTombstone_artwork$data } from "__generated__/ArtworkTombstone_artwork.graphql"
+import { ArtworkTombstone_Test_Query } from "__generated__/ArtworkTombstone_Test_Query.graphql"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
-import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
-import { Theme } from "palette"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { setupTestWrapper } from "app/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { ArtworkStoreProvider } from "../ArtworkStore"
 import { ArtworkTombstoneFragmentContainer } from "./ArtworkTombstone"
@@ -12,15 +11,11 @@ import { ArtworkTombstoneFragmentContainer } from "./ArtworkTombstone"
 jest.unmock("react-relay")
 
 describe("ArtworkTombstone", () => {
-  const { renderWithRelay } = setupTestWrapperTL({
-    Component: (props) => (
-      <Theme>
-        <GlobalStoreProvider>
-          <ArtworkStoreProvider>
-            <ArtworkTombstoneFragmentContainer {...props} />
-          </ArtworkStoreProvider>
-        </GlobalStoreProvider>
-      </Theme>
+  const { renderWithRelay } = setupTestWrapper<ArtworkTombstone_Test_Query>({
+    Component: ({ artwork }) => (
+      <ArtworkStoreProvider>
+        <ArtworkTombstoneFragmentContainer artwork={artwork!} refetchArtwork={jest.fn()} />
+      </ArtworkStoreProvider>
     ),
     query: graphql`
       query ArtworkTombstone_Test_Query {
@@ -44,8 +39,6 @@ describe("ArtworkTombstone", () => {
       }),
     })
 
-    await flushPromiseQueue()
-
     expect(screen.queryByText("Hello im a title, 1992")).toBeTruthy()
 
     expect(screen.queryByText("Lot 8")).toBeNull()
@@ -59,8 +52,6 @@ describe("ArtworkTombstone", () => {
         ...artworkTombstoneAuctionArtwork,
       }),
     })
-
-    await flushPromiseQueue()
 
     expect(screen.queryByText("Lot 8")).toBeTruthy()
     expect(screen.queryByText("Cool Auction")).toBeTruthy()

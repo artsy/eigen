@@ -1,19 +1,15 @@
 import { fireEvent } from "@testing-library/react-native"
+import { ItemShow_Test_Query } from "__generated__/ItemShow_Test_Query.graphql"
 import * as navigation from "app/navigation/navigate"
-import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
-import { Theme } from "palette"
+import { setupTestWrapper } from "app/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { ItemShowFragmentContainer } from "./ItemShow"
 
 jest.unmock("react-relay")
 
 describe("ItemShowFragmentContainer", () => {
-  const { renderWithRelay } = setupTestWrapperTL({
-    Component: (props) => (
-      <Theme>
-        <ItemShowFragmentContainer {...props} />
-      </Theme>
-    ),
+  const { renderWithRelay } = setupTestWrapper<ItemShow_Test_Query>({
+    Component: ({ show }) => <ItemShowFragmentContainer show={show!} />,
     query: graphql`
       query ItemShow_Test_Query {
         show(id: "test-show") {

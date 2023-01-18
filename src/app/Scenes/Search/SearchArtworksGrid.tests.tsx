@@ -1,18 +1,19 @@
 import { fireEvent, screen } from "@testing-library/react-native"
+import { SearchArtworksGridTestsQuery } from "__generated__/SearchArtworksGridTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
+import { setupTestWrapper } from "app/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { SearchArtworksGridPaginationContainer } from "./SearchArtworksGrid"
 
 jest.unmock("react-relay")
 
 describe("SearchArtworksGrid", () => {
-  const { renderWithRelay } = setupTestWrapperTL({
-    Component: (props) => (
+  const { renderWithRelay } = setupTestWrapper<SearchArtworksGridTestsQuery>({
+    Component: ({ viewer }) => (
       <ArtworkFiltersStoreProvider>
-        <SearchArtworksGridPaginationContainer viewer={props.viewer} keyword="Art" />
+        <SearchArtworksGridPaginationContainer viewer={viewer!} keyword="Art" />
       </ArtworkFiltersStoreProvider>
     ),
     query: graphql`

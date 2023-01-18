@@ -2,12 +2,14 @@
 
 So you want to write tests!
 
-- We use `@testing-library/react-native` and our helper `renderWithWrappers`. In the past we used ReactTestRenderer which we try to now move away from.
+- We primarily use `@testing-library/react-native` and our helper `setupTestWrapperTL`
+
+- We also use `renderWithWrappers`. In the past we used ReactTestRenderer which we try to now move away from.
 
 - Get started https://callstack.github.io/react-native-testing-library/docs/getting-started/
 - API Queries https://callstack.github.io/react-native-testing-library/docs/api-queries/
 
-- We refer to this guide 👉 [How should I query?](https://callstack.github.io/react-native-testing-library/docs/how-should-i-query/) from `@testing-library/react-native` for querying components
+- When we want to select an element we refer to this guide 👉 [How should I query?](https://callstack.github.io/react-native-testing-library/docs/how-should-i-query/) from `@testing-library/react-native` for querying components
 
 Based on the [Guiding Principles](https://testing-library.com/docs/guiding-principles/), your test should resemble how users interact with your code (component, page, etc.) as much as possible.
 
@@ -34,11 +36,11 @@ New fashion Example: [ArtworkConsignments.tests.tsx](https://github.com/artsy/ei
 Old fashioned: You can use a TestRenderer to wrap your component with a QueryRenderer and pass the test query data.
 Old fashion Example: [Inbox.tests.tsx](https://github.com/artsy/eigen/blob/c96dd0807555d69ca2e8655dc68085276d249080/src/app/Containers/Inbox.tests.tsx)
 
-- ⭐️ [`renderWithWrappers`](https://github.com/artsy/eigen/blob/main/src/app/tests/renderWithWrappers.tsx#L88-L103) Our default method for using a component. Can be used on all components. Wraps the component with a number of wrappers such as TrackingProvider, GlobalStoreProvider, SafeAreaProvider, etc. Using `testing library`. See the list of wrappers [here](https://github.com/artsy/eigen/blob/main/src/app/tests/renderWithWrappers.tsx#L19-L25).
+- ⭐️ [`setupTestWrapperTL`](https://github.com/artsy/eigen/blob/main/src/app/tests/setupTestWrapper_LEGACY.tsx) Uses react-native testing library. **Our default method for testing a component**. Can be used on all components.
+
+- ⭐️ [`renderWithWrappers`](https://github.com/artsy/eigen/blob/main/src/app/tests/renderWithWrappers.tsx#L88-L103) Wraps the component with a number of wrappers such as TrackingProvider, GlobalStoreProvider, SafeAreaProvider, etc. Using `testing library`. See the list of wrappers [here](https://github.com/artsy/eigen/blob/main/src/app/tests/renderWithWrappers.tsx#L19-L25).
 
 - ⭐️ `renderWithHookWrappersTL` Wraps the component with a relay hook environment, and a Suspense fallback. Example: [Activity.tests.tsx](https://github.com/artsy/eigen/blob/1a611488042f6eccfc62862fddf7d06a17087f0e/src/app/Scenes/Activity/Activity.tests.tsx)
-
-- ⭐️ `setupTestWrapperTL` ❗️ This function does not work with hooks ❗️ Uses react-native testing library.
 
 For components that use relay requests.
 
@@ -58,7 +60,7 @@ It gives you access to all the [queries](https://callstack.github.io/react-nativ
 
 ❗️ It won't work if there is already a component using a query renderer. [eg?]
 
-// TODO: rename setupTestWrapperTL to setupTestWrapper and setupTestWrapper to setupTestWrapperLegacy
+// TODO: rename setupTestWrapperTL to setupTestWrapper_LEGACY and setupTestWrapper_LEGACY to setupTestWrapperLegacy
 // Decide if we want to use this pattern or not.
 
 Suggestion: Would it make sense to either remove this abstraction alltogether, or suggest it as the main course of action?
@@ -100,7 +102,7 @@ We ideally want to remove the functions below at some point.
 
 - `renderWithWrappersLEGACY` ❗️depracated❗️ uses ReactTestRenderer. We want to remove this. Use renderWithWrappers instead.
 
-- `setupTestWrapper` ❗️depracated❗️ uses ReactTestRenderer . Renders a test component and resolves the most recent operation. An abstraction that sometimes is convenient.
+- `setupTestWrapper_LEGACY` ❗️depracated❗️ uses ReactTestRenderer . Renders a test component and resolves the most recent operation. An abstraction that sometimes is convenient.
 
 - `waitUntil` ❗️depracated❗️ Waits until something happens. RN Testing library has a similar component [waitFor](https://testing-library.com/docs/dom-testing-library/api-async/), that we could potentially replace this with.
 
@@ -137,7 +139,7 @@ https://github.com/artsy/relay-workshop/tree/main/src/exercises/03-Testing-Queri
 renderWithWrappers : renderWithWrappersLEGACY(TestingLibrary)
 All our wrappeprs
 
-setupTestWrapper : abstract some of the boilerplate of Relay
+setupTestWrapper_LEGACY : abstract some of the boilerplate of Relay
 Component,
 Query
 Variables

@@ -1,28 +1,90 @@
 import { act, RenderResult } from "@testing-library/react-native"
 import { QueryRenderer, RelayEnvironmentProvider } from "react-relay"
 import { GraphQLTaggedNode, OperationType } from "relay-runtime"
-import { createMockEnvironment, MockPayloadGenerator, RelayMockEnvironment } from "relay-test-utils"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "./renderWithWrappers"
 
 interface SetupTestWrapper<T extends OperationType> {
-  // TODO: Component: React.ComponentType<T['response']> type errors here
-  Component: React.ComponentType<any>
+  Component: React.ComponentType<T["response"]>
   preloaded?: boolean
   query?: GraphQLTaggedNode
   variables?: T["variables"]
 }
 
-type RenderWithRelay = RenderResult & { env: RelayMockEnvironment }
+type RenderWithRelay = RenderResult & {
+  env: ReturnType<typeof createMockEnvironment>
+}
 
-export const setupTestWrapperTL = <T extends OperationType>({
+/**
+ * Creates a test renderer which can be used to render a variety of relay
+ * query configurations.
+ *
+ * @example - Full Queries
+ *
+ * const Foo = () => {
+ *   const data = useLazyLoadQuery(graphql`
+ *     query FooQuery {
+ *       me {
+ *         name
+ *       }
+ *     }
+ *  `)
+ *
+ *  return <Text>{data.me.name}</Text>
+ * }
+ *
+ * const { renderWithRelay } = setupTestWrapper({
+ *   Component: Foo
+ * })
+ *
+ * it('works', () => {
+ *   renderWithRelay({
+ *     Me: () => ({ name: "name" })
+ *   })
+ *   expect(screen.getByText('name')).toBeTruthy()
+ * })
+ *
+ * @example - Using fragments
+ *
+ * const Bar = () => {
+ *   const data = useFragment(graphql`
+ *     fragment Bar_me on Me {
+ *       name
+ *     }
+ *  `)
+ *
+ *  return <Text>{data.name}</Text>
+ * }
+ *
+ * const { renderWithRelay } = setupTestWrapper({
+ *   Component: Bar,
+ *   query: graphql`
+ *     query BarTestQuery @relay_test_operation {
+ *       me {
+ *         ...Bar_me
+ *       }
+ *     }
+ *   `
+ * })
+ *
+ * it('works', () => {
+ *   renderWithRelay({
+ *     Me: () => ({ name: 'Mock Name' })
+ *   })
+ *
+ *   expect(screen.getByText('name')).toEqual('Mock Name')
+ * })
+ */
+export const setupTestWrapper = <T extends OperationType>({
   Component,
   preloaded = false,
   query,
   variables = {},
 }: SetupTestWrapper<T>) => {
-  const renderWithRelay = (mockResolvers: MockResolvers = {}): RenderWithRelay => {
+  const renderWithRelay = (mockResolvers: MockResolvers = {}, props: any = {}): RenderWithRelay => {
     const env = createMockEnvironment()
+
     const TestRenderer = () => {
       return (
         <>
@@ -31,10 +93,9 @@ export const setupTestWrapperTL = <T extends OperationType>({
               environment={env}
               variables={variables}
               query={query}
-              render={({ props, error }) => {
-                if (props) {
-                  // @ts-ignore
-                  return <Component {...props} />
+              render={({ props: relayProps, error }) => {
+                if (relayProps) {
+                  return <Component {...relayProps} {...props} />
                 } else if (error) {
                   console.error(error)
                 }
@@ -42,7 +103,7 @@ export const setupTestWrapperTL = <T extends OperationType>({
             />
           ) : (
             <RelayEnvironmentProvider environment={env}>
-              <Component />
+              <Component {...props} />
             </RelayEnvironmentProvider>
           )}
         </>
@@ -74,14 +135,22 @@ export const setupTestWrapperTL = <T extends OperationType>({
   return { renderWithRelay }
 }
 
+// tslint:disable-next-line:class-name
+interface setupTestWrapper_LEGACY<T extends OperationType> {
+  Component: React.ComponentType<any>
+  query: GraphQLTaggedNode
+  variables?: T["variables"]
+}
+
 /**
- * @deprecated avoid using this, use setupTestWrapperTL instead.
+ * @deprecated avoid using this, use setupTestWrapper instead.
  */
-export const setupTestWrapper = <T extends OperationType>({
+// tslint:disable-next-line:variable-name
+export const setupTestWrapper_LEGACY = <T extends OperationType>({
   Component,
   query,
   variables = {},
-}: SetupTestWrapper<T>) => {
+}: setupTestWrapper_LEGACY<T>) => {
   const getWrapper = (mockResolvers: MockResolvers = {}) => {
     const env = createMockEnvironment()
 

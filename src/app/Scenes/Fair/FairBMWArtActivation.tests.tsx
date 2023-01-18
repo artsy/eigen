@@ -1,5 +1,5 @@
 import { extractText } from "app/tests/extractText"
-import { setupTestWrapper } from "app/tests/setupTestWrapper"
+import { setupTestWrapper_LEGACY } from "app/tests/setupTestWrapper"
 import {
   FAIR_BMW_ART_ACTIVATION_QUERY,
   FairBMWArtActivationFragmentContainer,
@@ -7,7 +7,7 @@ import {
 
 jest.unmock("react-relay")
 
-const { getWrapper } = setupTestWrapper({
+const { getWrapper } = setupTestWrapper_LEGACY({
   Component: FairBMWArtActivationFragmentContainer,
   query: FAIR_BMW_ART_ACTIVATION_QUERY,
 })

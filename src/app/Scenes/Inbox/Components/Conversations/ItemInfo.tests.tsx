@@ -1,4 +1,4 @@
-import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
+import { setupTestWrapper } from "app/tests/setupTestWrapper"
 import { Theme } from "palette"
 import { graphql } from "react-relay"
 import { ItemInfoFragmentContainer } from "./ItemInfo"
@@ -6,7 +6,7 @@ import { ItemInfoFragmentContainer } from "./ItemInfo"
 jest.unmock("react-relay")
 
 describe("ItemInfoFragmentContainer", () => {
-  const { renderWithRelay } = setupTestWrapperTL({
+  const { renderWithRelay } = setupTestWrapper({
     Component: ({ me }: any) => (
       <Theme>
         <ItemInfoFragmentContainer item={me.conversation.items[0].item} />

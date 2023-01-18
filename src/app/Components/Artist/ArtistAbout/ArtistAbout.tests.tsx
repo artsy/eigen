@@ -1,8 +1,9 @@
 import { screen } from "@testing-library/react-native"
+import { ArtistAboutTestsQuery } from "__generated__/ArtistAboutTestsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { ModalStack } from "app/navigation/ModalStack"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
+import { setupTestWrapper } from "app/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import Biography from "../Biography"
 import { ArtistAboutContainer } from "./ArtistAbout"
@@ -11,14 +12,14 @@ import { ArtistAboutShowsFragmentContainer } from "./ArtistAboutShows"
 jest.unmock("react-relay")
 
 describe("ArtistAbout", () => {
-  const { renderWithRelay } = setupTestWrapperTL({
-    Component: (props) => (
+  const { renderWithRelay } = setupTestWrapper<ArtistAboutTestsQuery>({
+    Component: ({ artist }) => (
       <ModalStack>
         <StickyTabPage
           tabs={[
             {
               title: "test",
-              content: <ArtistAboutContainer artist={props.artist} />,
+              content: <ArtistAboutContainer artist={artist!} />,
             },
           ]}
         />
