@@ -13,7 +13,7 @@ describe("NewWorksForYou", () => {
   const TestRenderer = () => (
     <QueryRenderer<NewWorksForYouTestsQuery>
       query={graphql`
-        query NewWorksForYouTestsQuery {
+        query NewWorksForYouTestsQuery($worksForYouRecommendationsModelVariant: String!) {
           viewer {
             ...NewWorksForYou_viewer
           }
@@ -22,7 +22,9 @@ describe("NewWorksForYou", () => {
       render={({ props }) => {
         return props?.viewer && <NewWorksForYouFragmentContainer viewer={props.viewer} />
       }}
-      variables={{}}
+      variables={{
+        worksForYouRecommendationsModelVariant: "B",
+      }}
       environment={mockEnvironment}
     />
   )
