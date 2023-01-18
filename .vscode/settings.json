@@ -25,10 +25,6 @@
   "[json]": {
     "editor.formatOnSave": false
   },
-  "prettier.printWidth": 100,
-  "prettier.semi": false,
-  "prettier.singleQuote": false,
-  "prettier.trailingComma": "es5",
   "search.exclude": {
     "**/node_modules": true,
     "externals/**": true,

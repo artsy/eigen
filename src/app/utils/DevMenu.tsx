@@ -12,7 +12,6 @@ import { environment, EnvironmentKey } from "app/store/config/EnvironmentModel"
 import { DevToggleName, devToggles, FeatureName, features } from "app/store/config/features"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Versions } from "app/store/migration"
-import { SystemDeviceInfo } from "app/system/SystemDeviceInfo"
 import { capitalize, compact, sortBy } from "lodash"
 import {
   ChevronIcon,
@@ -40,6 +39,7 @@ import {
   TouchableOpacity,
 } from "react-native"
 import Config from "react-native-config"
+import DeviceInfo from "react-native-device-info"
 import Keychain from "react-native-keychain"
 import { useUnleashEnvironment } from "./experiments/hooks"
 
@@ -89,7 +89,7 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
         contentContainerStyle={{ paddingVertical: 10 }}
       >
         <Text variant="xs" color="grey" mx="2">
-          eigen v{SystemDeviceInfo.getVersion()}, build {SystemDeviceInfo.getBuildNumber()} (
+          eigen v{DeviceInfo.getVersion()}, build {DeviceInfo.getBuildNumber()} (
           {ArtsyNativeModule.gitCommitShortHash})
         </Text>
         <Text variant="xs" color="grey" mx="2">
@@ -246,9 +246,9 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
           />
           <FeatureFlagMenuItem title={`Sentry release name: "${eigenSentryReleaseName()}"`} />
           <FeatureFlagMenuItem
-            title={`Device ID: ${SystemDeviceInfo.getUniqueIdSync()}`}
+            title={`Device ID: ${DeviceInfo.getUniqueIdSync()}`}
             onPress={() => {
-              Clipboard.setString(SystemDeviceInfo.getUniqueIdSync())
+              Clipboard.setString(DeviceInfo.getUniqueIdSync())
               toast.show("Copied to clipboard", "middle")
             }}
           />

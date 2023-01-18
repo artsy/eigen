@@ -1,14 +1,14 @@
 import * as Sentry from "@sentry/react-native"
-import { SystemDeviceInfo } from "app/system/SystemDeviceInfo"
 import { Platform } from "react-native"
 import Config from "react-native-config"
+import DeviceInfo from "react-native-device-info"
 
 // important! this must match the release version specified
 // in fastfile in order for sourcemaps/sentry stacktraces to work
 export const eigenSentryReleaseName = () => {
   const prefix = Platform.OS === "ios" ? "ios" : "android"
-  const buildNumber = SystemDeviceInfo.getBuildNumber()
-  const version = SystemDeviceInfo.getVersion()
+  const buildNumber = DeviceInfo.getBuildNumber()
+  const version = DeviceInfo.getVersion()
   return prefix + "-" + version + "-" + buildNumber
 }
 
@@ -21,7 +21,7 @@ export function setupSentry(props: Partial<Sentry.ReactNativeOptions> = {}) {
   Sentry.init({
     dsn: Config.SENTRY_DSN,
     release: eigenSentryReleaseName(),
-    dist: SystemDeviceInfo.getBuildNumber(),
+    dist: DeviceInfo.getBuildNumber(),
     enableAutoSessionTracking: true,
     autoSessionTracking: true,
     enableOutOfMemoryTracking: false,
