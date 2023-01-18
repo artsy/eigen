@@ -23,7 +23,9 @@ const mockNavigator: Partial<NavigatorIOS> = {
   },
   pop: () => null,
 }
-jest.useFakeTimers()
+jest.useFakeTimers({
+  legacyFakeTimers: true,
+})
 
 it("renders without throwing an error", () => {
   renderWithWrappersLEGACY(<PaymentInfo {...initialProps} />)

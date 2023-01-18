@@ -21,7 +21,9 @@ jest.mock("app/Scenes/Artwork/Components/CommercialButtons/InquiryModal", () => 
 })
 
 beforeEach(() => {
-  jest.useFakeTimers()
+  jest.useFakeTimers({
+    legacyFakeTimers: true,
+  })
   env = createMockEnvironment()
 })
 

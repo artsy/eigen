@@ -37,7 +37,9 @@ describe("the cache", () => {
   const properNow = Date.now
   beforeAll(() => {
     Date.now = nowMock
-    jest.useFakeTimers()
+    jest.useFakeTimers({
+      legacyFakeTimers: true,
+    })
   })
   afterAll(() => {
     Date.now = properNow
@@ -49,15 +51,15 @@ describe("the cache", () => {
   it("saves queries in async storage", async () => {
     set("myQueryID", { foo: "bar" }, "response!")
     expect(await AsyncStorage.getAllKeys()).toMatchInlineSnapshot(`
-      Array [
-        "RelayCache:{\\"myQueryID\\":{\\"foo\\":\\"bar\\"}}",
+      [
+        "RelayCache:{"myQueryID":{"foo":"bar"}}",
       ]
     `)
     set("mySecondQueryID", { lol: "rofl" }, "another response!")
     expect(await AsyncStorage.getAllKeys()).toMatchInlineSnapshot(`
-      Array [
-        "RelayCache:{\\"myQueryID\\":{\\"foo\\":\\"bar\\"}}",
-        "RelayCache:{\\"mySecondQueryID\\":{\\"lol\\":\\"rofl\\"}}",
+      [
+        "RelayCache:{"myQueryID":{"foo":"bar"}}",
+        "RelayCache:{"mySecondQueryID":{"lol":"rofl"}}",
       ]
     `)
 

@@ -158,8 +158,8 @@ describe("MyCollectionArtworkForm", () => {
 
         const updatePreferencesOperation = mockOperations[0]
         expect(updatePreferencesOperation.request.variables).toMatchInlineSnapshot(`
-          Object {
-            "input": Object {
+          {
+            "input": {
               "currencyPreference": "USD",
               "lengthUnitPreference": "IN",
             },
@@ -168,16 +168,16 @@ describe("MyCollectionArtworkForm", () => {
 
         const createArtworkOperation = mockOperations[1]
         expect(createArtworkOperation.request.variables).toMatchInlineSnapshot(`
-          Object {
-            "input": Object {
-              "artistIds": Array [
+          {
+            "input": {
+              "artistIds": [
                 "internal-id",
               ],
               "artists": undefined,
               "category": "Print",
               "date": "2007",
               "depth": 40,
-              "externalImageUrls": Array [
+              "externalImageUrls": [
                 "https://some-bucket.s3.amazonaws.com/undefined",
               ],
               "height": 20,
