@@ -36,10 +36,10 @@ describe(VanityURLPossibleRedirect, () => {
     await flushPromiseQueue()
     expect(fetchMock).toHaveBeenCalledTimes(1)
     expect(fetchMock.mock.calls[0]).toMatchInlineSnapshot(`
-      Array [
+      [
         "https://www.artsy.net/test",
-        Object {
-          "headers": Object {
+        {
+          "headers": {
             "X-Access-Token": "authenticationToken",
           },
           "method": "HEAD",

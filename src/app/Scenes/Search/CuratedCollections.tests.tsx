@@ -75,8 +75,8 @@ describe("CuratedCollections", () => {
     fireEvent.press(getByText("Blue-Chip Artists"))
 
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "action": "tappedCollectionGroup",
           "context_module": "curatedCollections",
           "context_screen_owner_type": "search",

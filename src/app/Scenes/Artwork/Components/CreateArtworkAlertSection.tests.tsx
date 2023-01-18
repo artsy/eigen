@@ -109,8 +109,8 @@ describe("CreateArtworkAlertSection", () => {
     fireEvent.press(getByText("Create Alert"))
 
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "action": "tappedCreateAlert",
           "context_module": "ArtworkTombstone",
           "context_screen_owner_id": "artwork-id",

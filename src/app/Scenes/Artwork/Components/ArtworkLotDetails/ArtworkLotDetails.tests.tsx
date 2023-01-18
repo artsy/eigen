@@ -379,8 +379,8 @@ describe("ArtworkLotDetails", () => {
 
       expect(mockTrackEvent).toHaveBeenCalledTimes(1)
       expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "action_name": "askASpecialist",
             "action_type": "tap",
             "context_module": "ArtworkExtraLinks",
@@ -401,8 +401,8 @@ describe("ArtworkLotDetails", () => {
 
       expect(mockTrackEvent).toHaveBeenCalledTimes(1)
       expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "action_name": "auctionsFAQ",
             "action_type": "tap",
             "context_module": "ArtworkExtraLinks",
@@ -423,8 +423,8 @@ describe("ArtworkLotDetails", () => {
 
       expect(mockTrackEvent).toHaveBeenCalledTimes(1)
       expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "action_name": "conditionsOfSale",
             "action_type": "tap",
             "context_module": "ArtworkExtraLinks",

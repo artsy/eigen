@@ -43,8 +43,8 @@ describe("SearchInput", () => {
     fireEvent.changeText(getByPlaceholderText("Placeholder"), "text")
 
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "action_type": "Searched",
           "query": "text",
         },
@@ -59,8 +59,8 @@ describe("SearchInput", () => {
     fireEvent.press(getByLabelText("Clear input button"))
 
     expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "action_type": "Cleared input in search screen",
         },
       ]

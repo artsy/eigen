@@ -41,8 +41,8 @@ describe("SearchImageHeaderButton", () => {
       fireEvent.press(getByLabelText("Search by image"))
 
       expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "action": "tappedReverseImageSearch",
             "context_screen_owner_type": "reverseImageSearch",
             "owner_id": "owner-id",

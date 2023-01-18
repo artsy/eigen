@@ -16,8 +16,8 @@ describe("ActivityIndicator", () => {
     fireEvent.press(getByLabelText("Activity"))
 
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "action": "clickedNotificationsBell",
         },
       ]

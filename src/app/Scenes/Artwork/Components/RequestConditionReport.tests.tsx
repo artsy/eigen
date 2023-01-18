@@ -90,8 +90,8 @@ describe("RequestConditionReport", () => {
       // successfully tracks the press of the button
       expect(mockPostEventToProviders).toHaveBeenCalledTimes(1)
       expect(mockPostEventToProviders.mock.calls[0]).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "action_name": "requestConditionReport",
             "action_type": "tap",
             "context_module": "ArtworkDetails",
@@ -114,8 +114,8 @@ describe("RequestConditionReport", () => {
       // tracks the fail event successfully
       expect(mockPostEventToProviders).toHaveBeenCalledTimes(2)
       expect(mockPostEventToProviders.mock.calls[1]).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "action_name": "requestConditionReport",
             "action_type": "fail",
             "context_module": "ArtworkDetails",
@@ -152,8 +152,8 @@ describe("RequestConditionReport", () => {
       // successfully tracks the press of the button
       expect(mockPostEventToProviders).toHaveBeenCalledTimes(1)
       expect(mockPostEventToProviders.mock.calls[0]).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "action_name": "requestConditionReport",
             "action_type": "tap",
             "context_module": "ArtworkDetails",
@@ -179,8 +179,8 @@ describe("RequestConditionReport", () => {
       // tracks the success event successfully
       expect(mockPostEventToProviders).toHaveBeenCalledTimes(2)
       expect(mockPostEventToProviders.mock.calls[1]).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "action_name": "requestConditionReport",
             "action_type": "success",
             "context_module": "ArtworkDetails",
