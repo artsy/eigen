@@ -1,10 +1,10 @@
-import { OnboardingGeneScreen } from "./OnboardingGene"
+import { OnboardingMarketingCollectionScreen } from "./OnboardingMarketingCollection"
 
 export const OnboardingCuratedArtworks: React.FC = () => {
   return (
-    <OnboardingGeneScreen
-      id="trove"
-      description=" Want to see the best new works handpicked by our editors each week? Hit Follow."
+    <OnboardingMarketingCollectionScreen
+      slug="curators-picks-emerging"
+      description="The best works on Artsy each week, all available now."
     />
   )
 }

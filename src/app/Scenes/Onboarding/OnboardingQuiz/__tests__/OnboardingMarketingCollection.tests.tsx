@@ -31,7 +31,10 @@ describe("OnboardingMarketingCollection", () => {
 
   it("renders properly", async () => {
     renderWithHookWrappersTL(
-      <OnboardingMarketingCollectionScreen slug="trove-editors-picks" description={description} />,
+      <OnboardingMarketingCollectionScreen
+        slug="curators-picks-emerging"
+        description={description}
+      />,
       env
     )
 
