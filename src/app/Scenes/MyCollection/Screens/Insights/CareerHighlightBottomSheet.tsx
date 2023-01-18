@@ -203,7 +203,10 @@ export const makeCareerHighlightMap = (
       const [title, body] = titleAndBody?.split("@") ?? []
       const kind = CareerHighlightKind[title.trim()]
       const currentYear = result[year] ?? {}
-      const updatedYear = { ...currentYear, [kind]: compact([...currentYear[kind], body.trim()]) }
+      const updatedYear = {
+        ...currentYear,
+        [kind]: compact([...(currentYear[kind] ?? []), body.trim()]),
+      }
       result[year] = updatedYear
     }
   }
