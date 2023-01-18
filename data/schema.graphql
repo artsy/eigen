@@ -10396,6 +10396,28 @@ type MarketPriceInsightsEdge {
   node: MarketPriceInsights
 }
 
+type MarkNotificationAsReadFailure {
+  mutationError: GravityMutationError
+}
+
+input MarkNotificationAsReadInput {
+  clientMutationId: String
+  id: String!
+}
+
+type MarkNotificationAsReadPayload {
+  clientMutationId: String
+  responseOrError: MarkNotificationAsReadResponseOrError
+}
+
+union MarkNotificationAsReadResponseOrError =
+    MarkNotificationAsReadFailure
+  | MarkNotificationAsReadSuccess
+
+type MarkNotificationAsReadSuccess {
+  success: Boolean
+}
+
 union Match =
     Article
   | Artist
@@ -11318,6 +11340,9 @@ type Mutation {
   markAllNotificationsAsRead(
     input: MarkAllNotificationsAsReadInput!
   ): MarkAllNotificationsAsReadPayload
+
+  # Mark an unread notifications as read
+  markNotificationAsRead(input: MarkNotificationAsReadInput!): MarkNotificationAsReadPayload
 
   # Merge multiple artist records in order to deduplicate artists
   mergeArtists(input: MergeArtistsMutationInput!): MergeArtistsMutationPayload
