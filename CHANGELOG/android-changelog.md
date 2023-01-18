@@ -10,6 +10,7 @@
     - Fix MyCollection Add Photos freeze - kizito
 
   - Dev changes:
+    - update setupTestWrapper and add testing docs - gkartalis
     - Update tracking event - mounir
     - Replace emailConfirmed and identityVerified with isEmailConfirmed and isIdentityVerified - mrsltun
     - Allow releasing specific builds on Android - Brian
