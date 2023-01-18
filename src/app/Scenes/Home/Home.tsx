@@ -43,7 +43,10 @@ import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { articlesQueryVariables } from "../Articles/Articles"
 import { lotsByArtistsYouFollowDefaultVariables } from "../LotsByArtistsYouFollow/LotsByArtistsYouFollow"
-import { RECOMMENDATION_MODEL_EXPERIMENT_NAME } from "../NewWorksForYou/NewWorksForYou"
+import {
+  DEFAULT_RECS_MODEL_VERSION,
+  RECOMMENDATION_MODEL_EXPERIMENT_NAME,
+} from "../NewWorksForYou/NewWorksForYou"
 import { ViewingRoomsHomeMainRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { ActivityIndicator } from "./Components/ActivityIndicator"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
@@ -710,7 +713,8 @@ export const HomeQueryRenderer: React.FC = () => {
           }
         `,
         variables: {
-          worksForYouRecommendationsModelVariant: worksForYouRecommendationsModel.payload || "B",
+          worksForYouRecommendationsModelVariant:
+            worksForYouRecommendationsModel.payload || DEFAULT_RECS_MODEL_VERSION,
         },
       }}
       below={{

@@ -17,6 +17,7 @@ import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp 
 const SCREEN_TITLE = "New Works for You"
 const PAGE_SIZE = 100
 export const RECOMMENDATION_MODEL_EXPERIMENT_NAME = "eigen-new-works-for-you-recommendations-model"
+export const DEFAULT_RECS_MODEL_VERSION = "B"
 
 interface NewWorksForYouProps {
   relay: RelayPaginationProp
@@ -133,7 +134,8 @@ export const NewWorksForYouQueryRenderer: React.FC = () => {
       environment={defaultEnvironment}
       query={NewWorksForYouScreenQuery}
       variables={{
-        worksForYouRecommendationsModelVariant: worksForYouRecommendationsModel.payload || "B",
+        worksForYouRecommendationsModelVariant:
+          worksForYouRecommendationsModel.payload || DEFAULT_RECS_MODEL_VERSION,
       }}
       render={renderWithPlaceholder({
         Container: NewWorksForYouFragmentContainer,

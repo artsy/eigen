@@ -3,7 +3,7 @@ import { Artwork } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { NewWorksForYouFragmentContainer } from "./NewWorksForYou"
+import { DEFAULT_RECS_MODEL_VERSION, NewWorksForYouFragmentContainer } from "./NewWorksForYou"
 
 jest.unmock("react-relay")
 
@@ -23,7 +23,7 @@ describe("NewWorksForYou", () => {
         return props?.viewer && <NewWorksForYouFragmentContainer viewer={props.viewer} />
       }}
       variables={{
-        worksForYouRecommendationsModelVariant: "B",
+        worksForYouRecommendationsModelVariant: DEFAULT_RECS_MODEL_VERSION,
       }}
       environment={mockEnvironment}
     />
