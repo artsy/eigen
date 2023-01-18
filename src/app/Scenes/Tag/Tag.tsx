@@ -5,14 +5,14 @@ import { TagArtworksPaginationContainer } from "app/Components/Tag/TagArtworks"
 import { TagPlaceholder } from "app/Components/Tag/TagPlaceholder"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import Header from "app/Scenes/Tag/TagHeader"
+import { SystemDeviceInfo } from "app/system/SystemDeviceInfo"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { Flex, useTheme } from "palette"
 import { View } from "react-native"
-import DeviceInfo from "react-native-device-info"
 import { graphql, QueryRenderer } from "react-relay"
 
-const isHandset = DeviceInfo.getDeviceType() === "Handset"
+const isHandset = SystemDeviceInfo.getDeviceType() === "Handset"
 const commonPadding = isHandset ? 20 : 40
 
 const TABS = {
