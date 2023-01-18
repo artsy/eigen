@@ -13,9 +13,6 @@ const screenNames = {
   OnboardingCuratedArtworks: "OnboardingCuratedArtworks",
   OnboardingTopAuctionLots: "OnboardingTopAuctionLots",
   OnboardingArtTasteQuiz: "OnboardingArtTasteQuiz",
-  OnboardingArtistsOnTheRiseCollection: "OnboardingArtistsOnTheRiseCollection",
-  OnboardingCuratedArtworksCollection: "OnboardingCuratedArtworksCollection",
-  OnboardingTopAuctionLotsCollection: "OnboardingTopAuctionLotsCollection",
   OnboardingFollowArtists: "OnboardingFollowArtists",
   OnboardingFollowGalleries: "OnboardingFollowGalleries",
 }
