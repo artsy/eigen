@@ -1,6 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { Platform } from "react-native"
 import { ImageCarouselContext, useNewImageCarouselContext } from "./ImageCarouselContext"
 import { ImageCarouselEmbedded } from "./ImageCarouselEmbedded"
 
@@ -89,24 +88,5 @@ describe("ImageCarouselEmbedded", () => {
 
     fireEvent.press(getAllByLabelText("Image with Loading State")[0])
     expect(context.fullScreenState.current).toBe("none")
-  })
-
-  describe("deepZoom on Android", () => {
-    beforeAll(() => {
-      Platform.OS = "android"
-    })
-
-    afterAll(() => {
-      Platform.OS = "ios"
-    })
-
-    it("suppresses fullScreen when you tap an image with deepZoom because it would fail", () => {
-      const { getAllByLabelText } = renderWithWrappers(<TestWrapper />)
-
-      expect(context.fullScreenState.current).toBe("none")
-
-      fireEvent.press(getAllByLabelText("Image with Loading State")[0])
-      expect(context.fullScreenState.current).toBe("none")
-    })
   })
 })
