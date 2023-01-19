@@ -34,6 +34,7 @@ jest.mock("tipsi-stripe", () => ({
 
 let nextStep: any
 const mockNavigator = { push: (route: any) => (nextStep = route), pop: () => null }
+// FIME: JEST_UPGRADE_29
 // jest.useFakeTimers()
 const mockPostNotificationName = LegacyNativeModules.ARNotificationsManager.postNotificationName
 

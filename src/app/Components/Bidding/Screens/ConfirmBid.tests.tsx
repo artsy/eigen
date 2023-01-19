@@ -53,6 +53,8 @@ jest.mock("tipsi-stripe", () => ({
 
 let nextStep: NavigatorIOSPushArgs | null
 const mockNavigator: Partial<NavigatorIOS> = { push: (route) => (nextStep = route) }
+
+// FIME: JEST_UPGRADE_29
 // jest.useFakeTimers({
 //   legacyFakeTimers: true,
 // })
@@ -652,6 +654,7 @@ describe("ConfirmBid for unqualified user", () => {
       throw new Error("Error tokenizing card")
     })
 
+    // FIME: JEST_UPGRADE_29
     // jest.useFakeTimers({
     //   legacyFakeTimers: true,
     // })

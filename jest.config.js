@@ -16,10 +16,6 @@ module.exports = {
   testEnvironmentOptions: {
     url: "http://localhost/",
   },
-  fakeTimers: {
-    enableGlobally: false,
-    // legacyFakeTimers: true,
-  },
   transform: {
     "^[./a-zA-Z0-9$_-]+\\.(bmp|gif|jpg|jpeg|mp4|png|psd|svg|webp)$":
       "<rootDir>/node_modules/react-native/jest/assetFileTransformer.js",
