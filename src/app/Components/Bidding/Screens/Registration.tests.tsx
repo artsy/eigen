@@ -34,8 +34,9 @@ jest.mock("tipsi-stripe", () => ({
 
 let nextStep: any
 const mockNavigator = { push: (route: any) => (nextStep = route), pop: () => null }
-// FIME: JEST_UPGRADE_29
-// jest.useFakeTimers()
+jest.useFakeTimers({
+  legacyFakeTimers: true,
+})
 const mockPostNotificationName = LegacyNativeModules.ARNotificationsManager.postNotificationName
 
 beforeEach(() => {
@@ -400,11 +401,7 @@ describe("when pressing register button", () => {
     expect(component.root.findByType(Modal).props.visible).toEqual(false)
   })
 
-  // FIXME: JEST_UPGRADE_29 - new timer api
-  xit("displays an error message on a creditCardMutation failure", () => {
-    jest.useFakeTimers({
-      legacyFakeTimers: true,
-    })
+  it("displays an error message on a creditCardMutation failure", () => {
     console.error = jest.fn() // Silences component logging.
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
     relay.commitMutation = commitMutationMock()
@@ -438,8 +435,7 @@ describe("when pressing register button", () => {
     expect(component.root.findByType(Modal).props.visible).toEqual(false)
   })
 
-  // FIXME: JEST_UPGRADE_29 - new timer api
-  xit("displays the default error message if there are unhandled errors from the createCreditCard mutation", () => {
+  it("displays the default error message if there are unhandled errors from the createCreditCard mutation", () => {
     const errors = [{ message: "malformed error" }]
 
     console.error = jest.fn() // Silences component logging.
@@ -479,8 +475,7 @@ describe("when pressing register button", () => {
     expect(component.root.findByType(Modal).props.visible).toEqual(false)
   })
 
-  // FIXME: JEST_UPGRADE_29 - new timer api
-  xit("displays an error message on a createCreditCard mutation network failure", () => {
+  it("displays an error message on a createCreditCard mutation network failure", () => {
     console.error = jest.fn() // Silences component logging.
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
     relay.commitMutation = commitMutationMock()

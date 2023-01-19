@@ -21,10 +21,9 @@ const TestRenderer: React.FC<{ toastOptions?: ToastOptions }> = ({ toastOptions 
 describe("Toast", () => {
   beforeEach(() => {
     jest.clearAllMocks()
-    // FIME: JEST_UPGRADE_29
-    // jest.useFakeTimers({
-    //   legacyFakeTimers: true,
-    // })
+    jest.useFakeTimers({
+      legacyFakeTimers: true,
+    })
   })
 
   afterEach(() => {
@@ -55,12 +54,8 @@ describe("Toast", () => {
     expect(tree.root.findAllByType(ToastComponent)).not.toHaveLength(0)
   })
 
-  // FIXME: JEST_UPGRADE_29
+  // FIXME: JEST_UPGRADE_29 - timer issue
   xit("Clears Toast when the duration is reached", () => {
-    // jest.useFakeTimers({
-    //   legacyFakeTimers: true,
-    // })
-
     const duration = "short"
     const tree = renderWithWrappersLEGACY(<TestRenderer toastOptions={{ duration }} />)
 

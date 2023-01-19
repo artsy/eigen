@@ -342,3 +342,13 @@ Once we can remove it and have `yarn type-check` pass. They have some broken typ
 #### Explanation/Context:
 
 Types failing because of broken types in the package.
+
+## @jest/fake-timers
+
+#### When can we remove this:
+
+Once we can figure out how to mock `global.setImmediate` with `global.setTimeout`, preferrably in jest setup file
+
+#### Explanation/Context:
+
+After upgrading to Jest 29, our use of jest.useFakeTimers() became somewhat funky. In most cases passing `legacyFakeTimers: true` to the function fixes it, but in other cases it breaks @jest/fake-timers at this line. Not sure why.

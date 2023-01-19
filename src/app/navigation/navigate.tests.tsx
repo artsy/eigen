@@ -124,7 +124,7 @@ describe(navigate, () => {
       `)
   })
 
-  describe("marketing links", async () => {
+  describe("marketing links", () => {
     const fetch = jest.fn((_url, _init) =>
       Promise.resolve({ url: "https://artsy.net/artist/kaws" })
     )

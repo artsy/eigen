@@ -137,9 +137,10 @@ describe("PopoverMessage", () => {
     expect(tree.root.findAllByType(PopoverMessage)).toHaveLength(1)
   })
 
-  // FIXME: JEST_UPGRADE_29
-  xit("should hide after `hideTimeout` time", async () => {
-    jest.useFakeTimers()
+  it("should hide after `hideTimeout` time", async () => {
+    jest.useFakeTimers({
+      legacyFakeTimers: true,
+    })
     const tree = renderWithWrappersLEGACY(
       <TestRenderer
         options={{
@@ -164,8 +165,7 @@ describe("PopoverMessage", () => {
     expect(tree.root.findAllByType(PopoverMessage)).toHaveLength(0)
   })
 
-  // FIXME: JEST_UPGRADE_29
-  xit("hides when `undo` button is pressed", async () => {
+  it("hides when `undo` button is pressed", async () => {
     const tree = renderWithWrappersLEGACY(
       <TestRenderer
         options={{

@@ -91,17 +91,16 @@ it("is enabled while the form is valid", () => {
   expect(component.findByType(Button).props.disabled).toEqual(false)
 })
 
-// FIXME: JEST_UPGRADE_29 timer api change
-xit("shows an error when stripe's API returns an error", () => {
+it("shows an error when stripe's API returns an error", () => {
   console.error = jest.fn()
 
   stripe.createTokenWithCard = jest.fn()
   stripe.createTokenWithCard.mockImplementationOnce(() => {
     throw new Error("Error tokenizing card")
   })
-  // jest.useFakeTimers({
-  //   legacyFakeTimers: true,
-  // })
+  jest.useFakeTimers({
+    legacyFakeTimers: true,
+  })
   const wrappedComponent = renderWithWrappersLEGACY(
     <CreditCardForm
       onSubmit={onSubmitMock}

@@ -56,7 +56,6 @@ describe("ConfirmBid", () => {
   let nextStep: NavigatorIOSPushArgs | null
   const mockNavigator: Partial<NavigatorIOS> = { push: (route) => (nextStep = route) }
 
-  // FIME: JEST_UPGRADE_29
   jest.useFakeTimers({
     legacyFakeTimers: true,
   })
@@ -664,10 +663,6 @@ describe("ConfirmBid", () => {
         throw new Error("Error tokenizing card")
       })
 
-      // FIME: JEST_UPGRADE_29
-      // jest.useFakeTimers({
-      //   legacyFakeTimers: true,
-      // })
       const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
       fillOutFormAndSubmit(component)
 
