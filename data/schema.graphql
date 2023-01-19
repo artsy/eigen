@@ -11050,6 +11050,9 @@ type Message implements Node {
 
   # Unaltered text if possible, otherwise `body`: a parsed/sanitized version from Sendgrid.
   body: String
+
+  # Masked emails w/ display name of the recipients in copy.
+  cc: [String]
   createdAt(
     format: String
 
@@ -11085,6 +11088,9 @@ type Message implements Node {
     @deprecated(
       reason: "Payment Request was deprecated. The field was kept for legacy client support. [Will be removed in v2]"
     )
+
+  # Masked emails w/ display name of the recipients.
+  to: [String]
 }
 
 # A connection to a list of items.
