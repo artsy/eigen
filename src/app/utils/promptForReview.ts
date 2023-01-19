@@ -17,7 +17,9 @@ export const promptForReview = ({
 }) =>
   InAppReview.RequestInAppReview()
     .then((flowWasShown) => {
-      if (!flowWasShown) return
+      if (!flowWasShown) {
+        return
+      }
 
       postEventToProviders(
         tracks.promptForReview({

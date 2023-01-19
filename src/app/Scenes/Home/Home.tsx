@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Home_articlesConnection$data } from "__generated__/Home_articlesConnection.graphql"
 import { Home_featured$data } from "__generated__/Home_featured.graphql"
 import { Home_homePageAbove$data } from "__generated__/Home_homePageAbove.graphql"
@@ -32,6 +33,7 @@ import {
 } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
+import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { compact, times } from "lodash"
 import { ArtsyLogoIcon, Box, Flex, Join, Spacer } from "palette"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
@@ -48,8 +50,6 @@ import { NewWorksForYouRail } from "./Components/NewWorksForYouRail"
 import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
 import { TroveFragmentContainer } from "./Components/Trove"
 import { RailScrollRef } from "./Components/types"
-import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
-import { ContextModule, OwnerType } from "@artsy/cohesion"
 
 const MODULE_SEPARATOR_HEIGHT = 6
 
