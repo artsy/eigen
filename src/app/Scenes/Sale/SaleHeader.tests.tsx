@@ -192,10 +192,10 @@ describe("SaleHeader", () => {
       })
 
       describe("relative date label", () => {
-        // FIXME: JEST_UPGRADE_29 - investigate fake timer
-        xit("shows minutes and seconds left until bidding starts", () => {
+        it("shows minutes and seconds left until bidding starts", () => {
+          jest.useFakeTimers({ legacyFakeTimers: true })
+
           const { getByText } = renderWithWrappers(<TestRenderer />)
-          jest.useFakeTimers()
           mockEnvironment.mock.resolveMostRecentOperation((operation) =>
             MockPayloadGenerator.generate(operation, {
               Sale: () => ({
