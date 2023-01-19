@@ -14,13 +14,13 @@ import {
   Input,
   Join,
   Message,
+  MoneyInput,
   Separator,
   Spacer,
   Text,
   useColor,
   useSpace,
 } from "palette"
-import { Select } from "palette/elements/Select"
 import React, { useEffect, useState } from "react"
 import { Alert, Image, ScrollView, TouchableOpacity } from "react-native"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
@@ -49,6 +49,10 @@ export const MyCollectionArtworkFormMain: React.FC<
   const modalType = route.params.mode
   const addOrEditLabel = modalType === "edit" ? "Edit" : "Add"
   const formikValues = formik?.values
+  const preferredCurrency = GlobalStore.useAppState((state) => state.userPrefs.currency)
+  const initialCurrency = formikValues.pricePaidCurrency?.length
+    ? formikValues.pricePaidCurrency
+    : preferredCurrency
 
   useEffect(() => {
     const isDirty = isFormDirty()
@@ -207,7 +211,7 @@ export const MyCollectionArtworkFormMain: React.FC<
               />
               <Rarity />
               <Dimensions />
-              <Input
+              {/* <Input
                 title="Price Paid"
                 placeholder="Price paid"
                 keyboardType="decimal-pad"
@@ -229,6 +233,22 @@ export const MyCollectionArtworkFormMain: React.FC<
                   GlobalStore.actions.userPrefs.setCurrency(value as Currency)
                 }}
                 testID="CurrencyPicker"
+              /> */}
+              <MoneyInput
+                title="Price Paid"
+                placeholder="Price paid"
+                keyboardType="decimal-pad"
+                accessibilityLabel="Price paid"
+                initialValues={{
+                  currency: initialCurrency as Currency,
+                  amount: formikValues.pricePaidDollars,
+                }}
+                onChange={(values) => {
+                  formik.handleChange("pricePaidDollars")(values.amount ?? "")
+                  formik.handleChange("pricePaidCurrency")(values.currency ?? "")
+                  GlobalStore.actions.userPrefs.setCurrency(values.currency as Currency)
+                }}
+                shouldDisplayLocalError={false}
               />
               <Input
                 title="Location"
@@ -325,15 +345,6 @@ export const MyCollectionArtworkFormMain: React.FC<
     </>
   )
 }
-
-const pricePaidCurrencySelectOptions: Array<{
-  label: string
-  value: Currency
-}> = [
-  { label: "$ USD", value: "USD" },
-  { label: "€ EUR", value: "EUR" },
-  { label: "£ GBP", value: "GBP" },
-]
 
 const PhotosButton: React.FC<{ onPress: () => void; testID?: string }> = ({ onPress, testID }) => {
   const artworkState = GlobalStore.useAppState((state) => state.myCollection.artwork)
