@@ -56,6 +56,10 @@ This is an old restriction for an old hermes version. It's messing with our xcod
 
 When this is merged: https://github.com/facebook/react-native/pull/30345.
 
+#### Explanation/Context:
+
+For some reason CircleCI kept giving an error when running tests `TypeError: stacktraceParser.parse is not a function`. Once I moved the require higher up, things started working again.
+
 ## react-native patch-package (b/node_modules/react-native/jest/assetFileTransformer.js)
 
 #### When can we remove this:
