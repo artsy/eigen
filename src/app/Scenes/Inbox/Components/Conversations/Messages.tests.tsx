@@ -153,7 +153,7 @@ describe("messages with order updates", () => {
     const toast = tree.root.findAllByType(Flex)[0]
     jest.advanceTimersByTime(150)
     expect(toast.props.opacity).toBe(1)
-    jest.advanceTimersByTime(90000) // this number is weird, but i guess once Toast is moved to reanimated, this should be easier to use a much smaller number?
+    jest.advanceTimersByTime(900000) // this number is weird, but i guess once Toast is moved to reanimated, this should be easier to use a much smaller number?
     expect(toast.props.opacity).toBe(0)
   })
 
