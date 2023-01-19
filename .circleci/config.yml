@@ -206,7 +206,7 @@ jobs:
           name: Deploy beta
           command: ./scripts/deploy-beta-both
 
-  jest:
+  test-js:
     parallelism: 8
     executor:
       name: node/default
@@ -535,7 +535,7 @@ workflows:
                 - release
                 - staging
 
-      - jest:
+      - test-js:
           filters:
             branches:
               ignore:

@@ -35,6 +35,7 @@
     "lint": "tslint 'src/**/*.{ts,tsx}'",
     "open-sim": "open -a Simulator",
     "open-url": "npx uri-scheme open",
+    "open-xcode": "open ios/Artsy.xcworkspace",
     "postinstall": "yarn init-metaflags; prettier --write package.json; ./scripts/update-echo",
     "prepare": "patch-package && husky install",
     "prettier-project": "yarn run prettier-write 'src/**/*.{ts,tsx}'",
