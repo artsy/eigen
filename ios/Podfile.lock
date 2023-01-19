@@ -626,7 +626,7 @@ PODS:
     - React-Core
   - RNReactNativeHapticFeedback (1.13.0):
     - React-Core
-  - RNReanimated (2.14.2):
+  - RNReanimated (2.13.0):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -1247,7 +1247,7 @@ SPEC CHECKSUMS:
   RNKeychain: 4f63aada75ebafd26f4bc2c670199461eab85d94
   RNLocalize: 41026b7c14878f1a1b381bc79f668f1fbf841adb
   RNReactNativeHapticFeedback: b83bfb4b537bdd78eb4f6ffe63c6884f7b049ead
-  RNReanimated: a7c3695910b8735905fca8dac8ca7143024e1740
+  RNReanimated: 81ae02204392903240908ab05385e178b4f88690
   RNScreens: 4a1af06327774490d97342c00aee0c2bafb497b7
   RNSentry: 0aa1567f66c20390f3834637fc4f73380dcd0774
   RNShare: b955e66f1af2849711f13c193debda72b94f8aa0

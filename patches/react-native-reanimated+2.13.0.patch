@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-reanimated/lib/reanimated2/globals.d.ts b/node_modules/react-native-reanimated/lib/reanimated2/globals.d.ts
-index bacd75e..dcbd584 100644
+index 1feb7f1..a561beb 100644
 --- a/node_modules/react-native-reanimated/lib/reanimated2/globals.d.ts
 +++ b/node_modules/react-native-reanimated/lib/reanimated2/globals.d.ts
 @@ -1,3 +1,4 @@
@@ -81,7 +81,7 @@ index 0f09122..6beef6b 100644
      View: createTransitioningComponent(View),
    },
 diff --git a/node_modules/react-native-reanimated/react-native-reanimated.d.ts b/node_modules/react-native-reanimated/react-native-reanimated.d.ts
-index c33d830..d951ee4 100644
+index 1cf0d86..cb67077 100644
 --- a/node_modules/react-native-reanimated/react-native-reanimated.d.ts
 +++ b/node_modules/react-native-reanimated/react-native-reanimated.d.ts
 @@ -1,3 +1,5 @@
