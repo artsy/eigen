@@ -9,7 +9,7 @@ export const useMaybePromptForReview = (context: Parameters<typeof promptForRevi
   const launchCount = getCurrentEmissionState().launchCount
 
   useEffect(() => {
-    if (launchCount >= 5) {
+    if (launchCount === 5) {
       promptForReview(context)
     }
   }, [])
