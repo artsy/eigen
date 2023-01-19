@@ -17,6 +17,7 @@ export const useConfig = ({ basis, onDone }: UseConfig) => {
         VIEW_QUESTION_THREE,
         {
           [DECISION_WHERE_WOULD_YOU_LIKE_TO_DIVE_IN]: {
+            [OPTION_THE_ART_TASTE_QUIZ]: [VIEW_THE_ART_TASTE_QUIZ],
             [OPTION_TOP_AUCTION_LOTS]: [VIEW_TOP_AUCTION_LOTS],
             [OPTION_A_CURATED_SELECTION_OF_ARTWORKS]: [VIEW_CURATED_ARTWORKS],
             [OPTION_ARTISTS_ON_THE_RISE]: [VIEW_ARTISTS_ON_THE_RISE],
@@ -73,6 +74,7 @@ export const OPTION_KEEP_TRACK_OF_ART = "Keeping track of art I’m interested i
 export const OPTION_FINDING_GREAT_INVESTMENTS = "Finding my next great investment"
 export const OPTION_COLLECTING_ART_THAT_MOVES_ME = "Collecting art that moves me"
 
+export const OPTION_THE_ART_TASTE_QUIZ = "The Art Taste Quiz"
 export const OPTION_TOP_AUCTION_LOTS = "Top auction lots"
 export const OPTION_A_CURATED_SELECTION_OF_ARTWORKS = "A curated selection of artworks"
 export const OPTION_ARTISTS_ON_THE_RISE = "Artists on the rise"
@@ -85,6 +87,7 @@ export const VIEW_QUESTION_TWO = "VIEW_QUESTION_TWO"
 export const VIEW_QUESTION_THREE = "VIEW_QUESTION_THREE"
 
 export const VIEW_FOLLOW_ARTISTS = "VIEW_FOLLOW_ARTISTS"
+export const VIEW_THE_ART_TASTE_QUIZ = "VIEW_THE_ART_TASTE_QUIZ"
 export const VIEW_TOP_AUCTION_LOTS = "VIEW_TOP_AUCTION_LOTS"
 export const VIEW_CURATED_ARTWORKS = "VIEW_CURATED_ARTWORKS"
 export const VIEW_ARTISTS_ON_THE_RISE = "VIEW_ARTISTS_ON_THE_RISE"
