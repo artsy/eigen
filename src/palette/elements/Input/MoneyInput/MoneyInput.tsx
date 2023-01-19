@@ -8,7 +8,7 @@ import {
   TriangleDown,
   useColor,
 } from "palette"
-import { forwardRef } from "react"
+import { forwardRef, useEffect, useRef } from "react"
 import { useState } from "react"
 import { SelectOption } from "../../Select"
 import { computeBorderColor } from "../Input"
@@ -25,13 +25,12 @@ export const MoneyInput = forwardRef<
     onChange?: (value: { currency?: string; amount?: string }) => void
     onModalFinishedClosing?: () => void
     shouldDisplayLocalError?: boolean
-  } & Omit<InputProps, "onChange">
+  } & Omit<InputProps, "onChange" | "onChangeText">
 >(
   (
     {
       value,
       onChange,
-      onChangeText,
       onModalFinishedClosing,
       maxModalHeight,
       shouldDisplayLocalError = true,
@@ -41,7 +40,9 @@ export const MoneyInput = forwardRef<
     ref
   ) => {
     const color = useColor()
-    const [currency, setCurrency] = useState<string | null>(initialValues?.currency ?? null)
+    const [currency, setCurrency] = useState<SupportedCurrencies>(
+      initialValues?.currency ?? currencyOptions[0].value
+    )
     const [amount, setAmount] = useState<string | undefined>(initialValues?.amount ?? undefined)
     const [validationErrorMessage, setValidationErrorMessage] = useState("")
 
@@ -63,8 +64,16 @@ export const MoneyInput = forwardRef<
       } = selectAndInputValue
       setCurrency(currencyValue)
       setAmount(amountValue)
-      onChange?.({ currency: currencyValue, amount: amountValue })
     }
+
+    const isFirstRun = useRef(true)
+    useEffect(() => {
+      if (isFirstRun.current) {
+        isFirstRun.current = false
+        return
+      }
+      onChange?.({ currency, amount })
+    }, [amount, currency])
 
     const error =
       shouldDisplayLocalError && validationErrorMessage ? validationErrorMessage : rest.error
@@ -87,7 +96,7 @@ export const MoneyInput = forwardRef<
         maxModalHeightForSelect={maxModalHeight}
         onModalFinishedClosingForSelect={onModalFinishedClosing}
         onSelectValueForSelect={(selectedCurrency) => {
-          setCurrency(selectedCurrency)
+          setCurrency(selectedCurrency as SupportedCurrencies)
         }}
         titleForSelect="Currency"
         renderButtonForSelect={({ selectedValue, onPress }) => {
