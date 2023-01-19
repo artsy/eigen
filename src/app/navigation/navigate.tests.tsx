@@ -39,13 +39,13 @@ describe(navigate, () => {
       expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalled()
       expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any))
         .toMatchInlineSnapshot(`
-        Array [
+        [
           "home",
-          Object {
+          {
             "hidesBackButton": true,
             "hidesBottomTabs": true,
             "moduleName": "Artwork",
-            "props": Object {
+            "props": {
               "artworkID": "josef-albers-homage-to-the-square",
             },
             "replace": false,
@@ -59,12 +59,12 @@ describe(navigate, () => {
       expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalled()
       expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any))
         .toMatchInlineSnapshot(`
-        Array [
+        [
           "home",
-          Object {
+          {
             "hidesBackButton": true,
             "moduleName": "Artist",
-            "props": Object {
+            "props": {
               "artistID": "banksy",
             },
             "replace": false,
@@ -78,12 +78,12 @@ describe(navigate, () => {
       expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalled()
       expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any))
         .toMatchInlineSnapshot(`
-        Array [
+        [
           "home",
-          Object {
+          {
             "fullBleed": true,
             "moduleName": "VanityURLEntity",
-            "props": Object {
+            "props": {
               "slug": "artsy-vanguard-2019",
             },
             "replace": false,
@@ -108,23 +108,23 @@ describe(navigate, () => {
     expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalled()
     expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any))
       .toMatchInlineSnapshot(`
-        Array [
-          "home",
-          Object {
-            "hidesBackButton": true,
-            "moduleName": "Artist",
-            "props": Object {
-              "artistID": "banksy",
-              "someAdditionalKey": "value",
-            },
-            "replace": false,
-            "type": "react",
+      [
+        "home",
+        {
+          "hidesBackButton": true,
+          "moduleName": "Artist",
+          "props": {
+            "artistID": "banksy",
+            "someAdditionalKey": "value",
           },
-        ]
-      `)
+          "replace": false,
+          "type": "react",
+        },
+      ]
+    `)
   })
 
-  describe("marketing links", async () => {
+  describe("marketing links", () => {
     const fetch = jest.fn((_url, _init) =>
       Promise.resolve({ url: "https://artsy.net/artist/kaws" })
     )
@@ -140,19 +140,19 @@ describe(navigate, () => {
       expect(LegacyNativeModules.ARScreenPresenterModule.pushView).toHaveBeenCalled()
       expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any))
         .toMatchInlineSnapshot(`
-          Array [
-            "home",
-            Object {
-              "hidesBackButton": true,
-              "moduleName": "Artist",
-              "props": Object {
-                "artistID": "kaws",
-              },
-              "replace": false,
-              "type": "react",
+        [
+          "home",
+          {
+            "hidesBackButton": true,
+            "moduleName": "Artist",
+            "props": {
+              "artistID": "kaws",
             },
-          ]
-        `)
+            "replace": false,
+            "type": "react",
+          },
+        ]
+      `)
     })
   })
 
@@ -161,13 +161,13 @@ describe(navigate, () => {
       navigate("https://live.artsy.net/blah")
       expect(args(LegacyNativeModules.ARScreenPresenterModule.presentModal as any))
         .toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "alwaysPresentModally": true,
             "hasOwnModalCloseButton": true,
             "modalPresentationStyle": "fullScreen",
             "moduleName": "LiveAuction",
-            "props": Object {
+            "props": {
               "slug": "blah",
             },
             "replace": false,
@@ -209,12 +209,12 @@ describe(navigate, () => {
     await flushPromiseQueue()
     expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any))
       .toMatchInlineSnapshot(`
-      Array [
+      [
         "inbox",
-        Object {
+        {
           "moduleName": "Conversation",
           "onlyShowInTabName": "inbox",
-          "props": Object {
+          "props": {
             "conversationID": "234",
           },
           "replace": false,
@@ -236,11 +236,11 @@ describe(navigate, () => {
     expect(LegacyNativeModules.ARScreenPresenterModule.switchTab).toHaveBeenCalledWith("profile")
     expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any))
       .toMatchInlineSnapshot(`
-      Array [
+      [
         "profile",
-        Object {
+        {
           "moduleName": "SavedSearchAlertsList",
-          "props": Object {},
+          "props": {},
           "replace": false,
           "type": "react",
         },

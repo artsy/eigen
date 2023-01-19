@@ -35,17 +35,17 @@ describe("SearchArtworksGrid", () => {
 
     fireEvent.press(screen.getByText("Sort & Filter"))
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-        Array [
-          Object {
-            "action_name": "filter",
-            "action_type": "tap",
-            "context_screen": "Search",
-            "context_screen_owner_id": null,
-            "context_screen_owner_slug": null,
-            "context_screen_owner_type": "Search",
-          },
-        ]
-      `)
+      [
+        {
+          "action_name": "filter",
+          "action_type": "tap",
+          "context_screen": "Search",
+          "context_screen_owner_id": null,
+          "context_screen_owner_slug": null,
+          "context_screen_owner_type": "Search",
+        },
+      ]
+    `)
   })
 
   it("tracks filter modal closing", () => {
@@ -54,17 +54,17 @@ describe("SearchArtworksGrid", () => {
     screen.UNSAFE_getByType(FancyModal).props.onBackgroundPressed()
 
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-        Array [
-          Object {
-            "action_name": "closeFilterWindow",
-            "action_type": "tap",
-            "context_screen": "Search",
-            "context_screen_owner_id": null,
-            "context_screen_owner_slug": null,
-            "context_screen_owner_type": "Search",
-          },
-        ]
-      `)
+      [
+        {
+          "action_name": "closeFilterWindow",
+          "action_type": "tap",
+          "context_screen": "Search",
+          "context_screen_owner_id": null,
+          "context_screen_owner_slug": null,
+          "context_screen_owner_type": "Search",
+        },
+      ]
+    `)
   })
 
   it('should display "Sort & Filter" label by default', () => {

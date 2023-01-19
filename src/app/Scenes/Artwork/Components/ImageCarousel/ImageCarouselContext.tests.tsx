@@ -149,23 +149,23 @@ describe("image carousel context", () => {
     context!.dispatch({ type: "IMAGE_INDEX_CHANGED", nextImageIndex: 2 })
 
     expect(mockTrackEvent.mock.calls).toMatchInlineSnapshot(`
-      Array [
-        Array [
-          Object {
+      [
+        [
+          {
             "action_name": "artworkImageSwipe",
             "action_type": "swipe",
             "context_module": "ArtworkImage",
           },
         ],
-        Array [
-          Object {
+        [
+          {
             "action_name": "artworkImageSwipe",
             "action_type": "swipe",
             "context_module": "ArtworkImage",
           },
         ],
-        Array [
-          Object {
+        [
+          {
             "action_name": "artworkImageSwipe",
             "action_type": "swipe",
             "context_module": "ArtworkImage",

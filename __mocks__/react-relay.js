@@ -4,9 +4,9 @@
 var Relay = jest.requireActual("react-relay")
 
 module.exports = {
-  createFragmentContainer: component => component,
-  createPaginationContainer: component => component,
-  createRefetchContainer: component => component,
+  createFragmentContainer: (component) => component,
+  createPaginationContainer: (component) => component,
+  createRefetchContainer: (component) => component,
   graphql: Relay.graphql,
   commitMutation: (environment, { onCompleted, onError }) => {
     onCompleted && onCompleted()

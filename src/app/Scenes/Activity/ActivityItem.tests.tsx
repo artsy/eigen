@@ -88,8 +88,8 @@ describe("ActivityItem", () => {
     fireEvent.press(getByText("Notification Title"))
 
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "action": "clickedActivityPanelNotificationItem",
           "notification_type": "ARTWORK_PUBLISHED",
         },

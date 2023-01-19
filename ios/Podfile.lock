@@ -626,7 +626,7 @@ PODS:
     - React-Core
   - RNReactNativeHapticFeedback (1.13.0):
     - React-Core
-  - RNReanimated (2.9.1):
+  - RNReanimated (2.13.0):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -692,7 +692,7 @@ PODS:
   - TOCropViewController (2.6.1)
   - UICKeyChainStore (2.2.1)
   - "UIView+BooleanAnimations (1.0.2)"
-  - VisionCamera (2.14.1):
+  - VisionCamera (2.15.2):
     - React
     - React-callinvoker
     - React-Core
@@ -1117,7 +1117,7 @@ SPEC CHECKSUMS:
   Adjust: 91a06a01e4bb35b432e26b5d5bb8995b95fc381c
   Aerodramus: a22de7451c8fc85ae5d974f5d6a656f59046fffc
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
-  AFNetworking: 8dd5f9b9691e09186393069a12cc3b5ed7c8b511
+  AFNetworking: 9d57de7506959955d82fb5274ee4bec86b930e52
   AFOAuth1Client: 155a6237e57987cac18dac2ccd17cea5d324ad1a
   Analytics: eefe524436f904b8bb3f8c8c3425280e43b34efc
   AppAuth: 8fca6b5563a5baef2c04bee27538025e4ceb2add
@@ -1247,7 +1247,7 @@ SPEC CHECKSUMS:
   RNKeychain: 4f63aada75ebafd26f4bc2c670199461eab85d94
   RNLocalize: 41026b7c14878f1a1b381bc79f668f1fbf841adb
   RNReactNativeHapticFeedback: b83bfb4b537bdd78eb4f6ffe63c6884f7b049ead
-  RNReanimated: 11e6e30bbc49079b7f0c321ac5830e6d113d0224
+  RNReanimated: 81ae02204392903240908ab05385e178b4f88690
   RNScreens: 4a1af06327774490d97342c00aee0c2bafb497b7
   RNSentry: 0aa1567f66c20390f3834637fc4f73380dcd0774
   RNShare: b955e66f1af2849711f13c193debda72b94f8aa0
@@ -1266,7 +1266,7 @@ SPEC CHECKSUMS:
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   UICKeyChainStore: ba3bff2c762b12db1e516f395c837dd25298b05e
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
-  VisionCamera: 7f99b99ff38e14f42bb61c8e1d501ef04cd67017
+  VisionCamera: dd5fbdd9d38f12b485c3d84b7540ccd747cfeab8
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: b316a990bb6d115afa1b436b5626ac7c61717d17
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a

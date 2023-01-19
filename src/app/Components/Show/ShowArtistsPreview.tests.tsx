@@ -92,8 +92,8 @@ describe("ArtistsContainer", () => {
       "ArtistListItemFollowArtistMutation"
     )
     expect(env.mock.getMostRecentOperation().request.variables).toMatchInlineSnapshot(`
-      Object {
-        "input": Object {
+      {
+        "input": {
           "artistID": "hans-hofmann",
           "unfollow": false,
         },

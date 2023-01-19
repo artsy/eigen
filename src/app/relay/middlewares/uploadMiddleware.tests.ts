@@ -142,7 +142,7 @@ describe("uploadMiddleware", () => {
     const call = mockNext.mock.calls[0][0]
 
     expect(call.fetchOpts.headers).toMatchInlineSnapshot(`
-      Object {
+      {
         "User-Agent": "user-agent-value",
         "X-TIMEZONE": "Europe/Berlin",
         "X-USER-ID": "user-id",

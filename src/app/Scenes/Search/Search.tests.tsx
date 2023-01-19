@@ -320,17 +320,17 @@ describe("Search Screen", () => {
 
     fireEvent(screen.getByText("Artist"), "press")
     expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
-        Array [
-          Object {
-            "action": "tappedNavigationTab",
-            "context_module": "topTab",
-            "context_screen": "Search",
-            "context_screen_owner_type": "search",
-            "query": "text",
-            "subject": "Artist",
-          },
-        ]
-      `)
+      [
+        {
+          "action": "tappedNavigationTab",
+          "context_module": "topTab",
+          "context_screen": "Search",
+          "context_screen_owner_type": "search",
+          "query": "text",
+          "subject": "Artist",
+        },
+      ]
+    `)
   })
 
   it("should correctly track the previously applied pill context module", async () => {
@@ -355,31 +355,31 @@ describe("Search Screen", () => {
 
     fireEvent(screen.getByText("Artist"), "press")
     expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
-        Array [
-          Object {
-            "action": "tappedNavigationTab",
-            "context_module": "topTab",
-            "context_screen": "Search",
-            "context_screen_owner_type": "search",
-            "query": "text",
-            "subject": "Artist",
-          },
-        ]
-      `)
+      [
+        {
+          "action": "tappedNavigationTab",
+          "context_module": "topTab",
+          "context_screen": "Search",
+          "context_screen_owner_type": "search",
+          "query": "text",
+          "subject": "Artist",
+        },
+      ]
+    `)
 
     fireEvent(screen.getByText("Artworks"), "press")
     expect(mockTrackEvent.mock.calls[2]).toMatchInlineSnapshot(`
-        Array [
-          Object {
-            "action": "tappedNavigationTab",
-            "context_module": "artistsTab",
-            "context_screen": "Search",
-            "context_screen_owner_type": "search",
-            "query": "text",
-            "subject": "Artworks",
-          },
-        ]
-      `)
+      [
+        {
+          "action": "tappedNavigationTab",
+          "context_module": "artistsTab",
+          "context_screen": "Search",
+          "context_screen_owner_type": "search",
+          "query": "text",
+          "subject": "Artworks",
+        },
+      ]
+    `)
   })
 
   it("should render all allowed algolia indices", async () => {
@@ -602,16 +602,16 @@ describe("Search Screen", () => {
     act(() => fireEvent.press(screen.getByText("Banksy")))
 
     expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "action": "selectedResultFromSearchScreen",
           "context_module": "topTab",
           "context_screen": "Search",
           "context_screen_owner_type": "Search",
           "position": 0,
           "query": "text",
-          "selected_object_slug": "<mock-value-for-field-\\"slug\\">",
-          "selected_object_type": "<mock-value-for-field-\\"displayType\\">",
+          "selected_object_slug": "<mock-value-for-field-"slug">",
+          "selected_object_type": "<mock-value-for-field-"displayType">",
         },
       ]
     `)

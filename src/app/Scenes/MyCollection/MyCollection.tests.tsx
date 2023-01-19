@@ -110,15 +110,15 @@ describe("MyCollection", () => {
 
       expect(mockTrackEvent).toHaveBeenCalledTimes(1)
       expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-      Array [
-        Object {
-          "action": "addCollectedArtwork",
-          "context_module": "myCollectionHome",
-          "context_owner_type": "myCollection",
-          "platform": "mobile",
-        },
-      ]
-    `)
+        [
+          {
+            "action": "addCollectedArtwork",
+            "context_module": "myCollectionHome",
+            "context_owner_type": "myCollection",
+            "platform": "mobile",
+          },
+        ]
+      `)
     })
   })
 

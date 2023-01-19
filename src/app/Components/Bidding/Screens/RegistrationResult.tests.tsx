@@ -90,7 +90,9 @@ describe("Registration result component", () => {
   })
 
   it("dismisses the controller when the continue button is pressed", () => {
-    jest.useFakeTimers()
+    jest.useFakeTimers({
+      legacyFakeTimers: true,
+    })
     const component = renderWithWrappersLEGACY(
       <RegistrationResult status={RegistrationStatus.RegistrationStatusComplete} />
     )

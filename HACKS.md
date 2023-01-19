@@ -60,6 +60,16 @@ When this is merged: https://github.com/facebook/react-native/pull/30345.
 
 For some reason CircleCI kept giving an error when running tests `TypeError: stacktraceParser.parse is not a function`. Once I moved the require higher up, things started working again.
 
+## react-native patch-package (b/node_modules/react-native/jest/assetFileTransformer.js)
+
+#### When can we remove this:
+
+When we upgrade to RN 0.69. See: https://github.com/facebook/react-native/pull/33756
+
+#### Explanation/Context:
+
+Jest 28 changed the way it handles transformed file input.
+
 ## react-native-mapbox-gl/maps - postinstall script
 
 #### When can we remove this:
@@ -336,3 +346,13 @@ Once we can remove it and have `yarn type-check` pass. They have some broken typ
 #### Explanation/Context:
 
 Types failing because of broken types in the package.
+
+## @jest/fake-timers
+
+#### When can we remove this:
+
+Once we can figure out how to mock `global.setImmediate` with `global.setTimeout`, preferrably in jest setup file
+
+#### Explanation/Context:
+
+After upgrading to Jest 29, our use of jest.useFakeTimers() became somewhat funky. In most cases passing `legacyFakeTimers: true` to the function fixes it, but in other cases it breaks @jest/fake-timers at this line. Not sure why. To elaborate more, when jest runs tests it errors out saying that `setImmediate` isn't a function (this was removed from Jest 28); however, when trying to mock it with `global.setImmediate = global.setTimeout` it doesn't work. So ran a patch and replaced it manually in the code, which appears harmless since `setImmediate` is the same as `setTimeout(..., 0)`.

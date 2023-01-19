@@ -93,8 +93,8 @@ describe("Activity", () => {
     fireEvent.press(getByText("Alerts"))
 
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "action": "clickedActivityPanelTab",
           "tab_name": "Alerts",
         },

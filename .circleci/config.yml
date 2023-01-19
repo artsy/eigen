@@ -69,26 +69,6 @@ commands:
       - run:
           name: Compile query map
           command: yarn relay
-  test-js:
-    steps:
-      - restore_cache:
-          keys:
-            - v6-jest-{{ .Branch }}
-      - run:
-          name: Run TypeScript check
-          command: yarn type-check
-      - run:
-          name: Run TSLint check
-          command: yarn lint
-      - run:
-          name: Run jest tests
-          command: yarn jest --ci --forceExit --runInBand --reporters=default --reporters=jest-junit
-          environment:
-            JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
-      - save_cache:
-          key: v6-jest-{{ .Branch }}
-          paths:
-            - .jest
   bundle-js:
     steps:
       - restore_cache:
@@ -202,7 +182,6 @@ commands:
             - android/build
             - android/app/build
             - node_modules/react-native-config
-
 jobs:
   detect-secrets:
     docker:
@@ -226,6 +205,26 @@ jobs:
       - run:
           name: Deploy beta
           command: ./scripts/deploy-beta-both
+
+  test-js:
+    parallelism: 8
+    executor:
+      name: node/default
+      tag: "16.18.0"
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: yarn
+      - run-relay-compiler
+      - run:
+          command: yarn jest --ci --forceExit --logHeapUsage --runInBand --reporters=default --reporters=jest-junit --shard=$(expr $CIRCLE_NODE_INDEX + 1)/$CIRCLE_NODE_TOTAL
+          name: Run Jest tests
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
+      - store_artifacts:
+          path: ./reports/junit/
+      - store_test_results:
+          path: ./reports/junit/
 
   update-metaphysics:
     executor:
@@ -339,15 +338,12 @@ jobs:
               echo 'You forgot to run `yarn relay` before comitting'
               exit 1
             fi
-      - test-js
       - bundle-js
       - run:
           name: Generate app_build manifest
           command: ./scripts/generate-manifest.js .manifests/app_build '^\./manifests/native_code' '^dist/'
       - store_artifacts:
           path: .manifests
-      - store_test_results:
-          path: ./reports/junit/
       - persist_to_workspace:
           root: .
           paths:
@@ -520,6 +516,7 @@ workflows:
             branches:
               only:
                 - main
+
   release-ios-app-workflow:
     jobs:
       - release-ios-app:
@@ -537,6 +534,15 @@ workflows:
                 - main
                 - release
                 - staging
+
+      - test-js:
+          filters:
+            branches:
+              ignore:
+                - app_store_submission
+                - play_store_submission
+                - update-changelog
+
       - check-pr:
           filters:
             branches:
@@ -562,6 +568,7 @@ workflows:
               only:
                 - beta-ios
                 - beta-android
+
       - build-test-app-ios:
           filters:
             branches:
@@ -573,6 +580,7 @@ workflows:
           requires:
             - build-test-js
             - horizon/block
+
       - build-test-app-android:
           filters:
             branches:
@@ -584,6 +592,7 @@ workflows:
           requires:
             - build-test-js
             - horizon/block
+
       - update-metaphysics:
           filters:
             branches:

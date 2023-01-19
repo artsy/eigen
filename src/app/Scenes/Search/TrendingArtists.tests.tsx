@@ -74,8 +74,8 @@ describe("TrendingArtists", () => {
     fireEvent.press(getByText("Artist Two"))
 
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "action": "tappedArtistGroup",
           "context_module": "trendingArtistsRail",
           "context_screen_owner_type": "search",

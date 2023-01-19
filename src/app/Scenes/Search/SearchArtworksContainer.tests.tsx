@@ -65,8 +65,8 @@ describe("SearchArtworks", () => {
     fireEvent.press(getByText("Artist Name"))
 
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "action": "tappedMainArtworkGrid",
           "context_module": "artworkGrid",
           "context_screen": "Search",

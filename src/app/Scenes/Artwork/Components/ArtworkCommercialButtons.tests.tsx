@@ -271,8 +271,8 @@ describe("ArtworkCommercialButtons", () => {
       fireEvent.press(screen.getByText("Contact Gallery"))
 
       expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "action": "tappedContactGallery",
             "context_owner_id": "5b2b745e9c18db204fc32e11",
             "context_owner_slug": "andreas-rod-prinzknecht",
@@ -302,8 +302,8 @@ describe("ArtworkCommercialButtons", () => {
       fireEvent.press(screen.getByText("Contact Gallery"))
 
       expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "action": "tappedContactGallery",
             "context_owner_id": "5b2b745e9c18db204fc32e11",
             "context_owner_slug": "andreas-rod-prinzknecht",

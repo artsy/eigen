@@ -70,7 +70,9 @@ beforeEach(() => {
     refetch: jest.fn(),
   } as any
   // We need to mock timers because we push onto our nav stack and instantiate a ConfirmBid component that has a timer.
-  jest.useFakeTimers()
+  jest.useFakeTimers({
+    legacyFakeTimers: true,
+  })
 })
 
 it("renders without throwing an error", () => {

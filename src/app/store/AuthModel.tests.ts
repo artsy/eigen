@@ -104,7 +104,7 @@ describe("AuthModel", () => {
         `"https://stagingapi.artsy.net/oauth2/access_token"`
       )
       expect(JSON.parse(mockFetch.mock.calls[0][1].body)).toMatchInlineSnapshot(`
-        Object {
+        {
           "client_id": "artsy_api_client_key",
           "client_secret": "artsy_api_client_secret",
           "email": "user@example.com",
@@ -154,8 +154,8 @@ describe("AuthModel", () => {
 
       expect(mockPostEventToProviders).toHaveBeenCalledTimes(1)
       expect(mockPostEventToProviders.mock.calls[0]).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "action": "successfullyLoggedIn",
             "service": "email",
           },
@@ -454,8 +454,8 @@ describe("AuthModel", () => {
 
       expect(mockPostEventToProviders).toHaveBeenCalledTimes(1)
       expect(mockPostEventToProviders.mock.calls[0]).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "action": "successfullyLoggedIn",
             "service": "facebook",
           },
@@ -553,8 +553,8 @@ describe("AuthModel", () => {
 
       expect(mockPostEventToProviders).toHaveBeenCalledTimes(1)
       expect(mockPostEventToProviders.mock.calls[0]).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "action": "successfullyLoggedIn",
             "service": "google",
           },
@@ -646,8 +646,8 @@ describe("AuthModel", () => {
 
       expect(mockPostEventToProviders).toHaveBeenCalledTimes(1)
       expect(mockPostEventToProviders.mock.calls[0]).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "action": "successfullyLoggedIn",
             "service": "apple",
           },

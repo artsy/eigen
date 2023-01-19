@@ -35,6 +35,9 @@ describe("SaleHeader", () => {
   )
 
   beforeEach(() => {
+    jest.useFakeTimers({
+      legacyFakeTimers: true,
+    })
     mockEnvironment = createMockEnvironment()
     mockTimezone("America/New_York")
   })
@@ -124,7 +127,9 @@ describe("SaleHeader", () => {
 
     describe("when the cascade end time flag is turned on", () => {
       beforeEach(() => {
-        jest.useFakeTimers()
+        jest.useFakeTimers({
+          legacyFakeTimers: true,
+        })
       })
 
       it("shows the cascading end time label", () => {
@@ -188,8 +193,9 @@ describe("SaleHeader", () => {
 
       describe("relative date label", () => {
         it("shows minutes and seconds left until bidding starts", () => {
+          jest.useFakeTimers({ legacyFakeTimers: true })
+
           const { getByText } = renderWithWrappers(<TestRenderer />)
-          jest.useFakeTimers()
           mockEnvironment.mock.resolveMostRecentOperation((operation) =>
             MockPayloadGenerator.generate(operation, {
               Sale: () => ({

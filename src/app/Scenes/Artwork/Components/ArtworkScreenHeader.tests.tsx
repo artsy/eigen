@@ -106,16 +106,16 @@ describe("ArtworkScreenHeader", () => {
       fireEvent.press(getByText("Create Alert"))
 
       expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-      Array [
-        Object {
-          "action": "tappedCreateAlert",
-          "context_module": "ArtworkScreenHeader",
-          "context_screen_owner_id": "internalID-1",
-          "context_screen_owner_slug": "slug-1",
-          "context_screen_owner_type": "artwork",
-        },
-      ]
-    `)
+        [
+          {
+            "action": "tappedCreateAlert",
+            "context_module": "ArtworkScreenHeader",
+            "context_screen_owner_id": "internalID-1",
+            "context_screen_owner_slug": "slug-1",
+            "context_screen_owner_type": "artwork",
+          },
+        ]
+      `)
     })
   })
 
@@ -158,8 +158,8 @@ describe("ArtworkScreenHeader", () => {
       await flushPromiseQueue()
 
       expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-        Array [
-          Object {
+        [
+          {
             "action_name": "artworkSave",
             "action_type": "success",
             "context_module": "ArtworkActions",
