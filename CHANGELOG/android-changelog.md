@@ -9,6 +9,7 @@
 
     - show works using new recs model for the new works for you - mounir
     - Fix MyCollection Add Photos freeze - kizito
+    - Release deep zoom - mounir
 
   - Dev changes:
     - Support screen options inside react module - mounir
