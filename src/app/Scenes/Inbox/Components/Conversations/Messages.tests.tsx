@@ -1,7 +1,7 @@
 import { MessagesTestsQuery } from "__generated__/MessagesTestsQuery.graphql"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
-import { Text } from "palette"
+import { Flex, Text } from "palette"
 import "react-native"
 import { RefreshControl } from "react-native"
 import { QueryRenderer } from "react-relay"
@@ -133,6 +133,7 @@ describe("messages with order updates", () => {
   })
 
   it("shows the toast message and fades out after 5 seconds", () => {
+    jest.useFakeTimers({ legacyFakeTimers: true })
     const tree = withConversationItems(getWrapper, {
       events: [
         {
@@ -149,12 +150,11 @@ describe("messages with order updates", () => {
       "To be covered by the Artsy Guarantee, always communicate and pay through the Artsy platform."
     )
 
-    // FIXME: JEST_UPGRADE_29 - timers are being weird
-    // const toast = tree.root.findAllByType(Flex)[0]
-    // jest.advanceTimersByTime(150)
-    // expect(toast.props.opacity).toBe(1)
-    // jest.advanceTimersByTime(5000)
-    // expect(toast.props.opacity).toBe(0)
+    const toast = tree.root.findAllByType(Flex)[0]
+    jest.advanceTimersByTime(150)
+    expect(toast.props.opacity).toBe(1)
+    jest.advanceTimersByTime(90000) // this number is weird, but i guess once Toast is moved to reanimated, this should be easier to use a much smaller number?
+    expect(toast.props.opacity).toBe(0)
   })
 
   it("sorts interleaved items by date", () => {
