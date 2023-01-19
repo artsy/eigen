@@ -64,7 +64,7 @@ When we upgrade to RN 0.69. See: https://github.com/facebook/react-native/pull/3
 
 #### Explanation/Context:
 
-For some reason CircleCI kept giving an error when running tests `TypeError: stacktraceParser.parse is not a function`. Once I moved the require higher up, things started working again.
+Jest 28 changed the way it handles transformed file input.
 
 ## react-native-mapbox-gl/maps - postinstall script
 
