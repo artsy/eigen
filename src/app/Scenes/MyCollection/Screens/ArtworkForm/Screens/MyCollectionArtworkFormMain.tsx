@@ -211,29 +211,6 @@ export const MyCollectionArtworkFormMain: React.FC<
               />
               <Rarity />
               <Dimensions />
-              {/* <Input
-                title="Price Paid"
-                placeholder="Price paid"
-                keyboardType="decimal-pad"
-                accessibilityLabel="Price paid"
-                onChangeText={formik.handleChange("pricePaidDollars")}
-                onBlur={formik.handleBlur("pricePaidDollars")}
-                testID="PricePaidInput"
-                value={formikValues.pricePaidDollars}
-              />
-              <Select
-                title="Currency"
-                placeholder="Currency"
-                options={pricePaidCurrencySelectOptions}
-                value={formikValues.pricePaidCurrency}
-                enableSearch={false}
-                showTitleLabel={false}
-                onSelectValue={(value) => {
-                  formik.handleChange("pricePaidCurrency")(value)
-                  GlobalStore.actions.userPrefs.setCurrency(value as Currency)
-                }}
-                testID="CurrencyPicker"
-              /> */}
               <MoneyInput
                 title="Price Paid"
                 placeholder="Price paid"

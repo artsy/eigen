@@ -5,6 +5,7 @@ import { Platform } from "react-native"
 import { Select } from "../Select"
 import { SelectProps } from "../Select/SelectV2"
 
+// Mark the props that should pass to Select Component with ForSelect suffix
 type TypeForSelect = {
   [K in keyof SelectProps<string> as `${K}ForSelect`]: SelectProps<string>[K]
 }
