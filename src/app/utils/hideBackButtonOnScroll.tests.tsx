@@ -15,7 +15,7 @@ function event(
   return { target: 1, ...ev } as any
 }
 
-describe("hiodeBackButtonOnScroll", () => {
+describe("hideBackButtonOnScroll", () => {
   beforeEach(() => {
     hideBackButtonOnScroll(
       event({ target: Math.random(), nativeEvent: { contentOffset: { y: 0 } } })
