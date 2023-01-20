@@ -170,9 +170,8 @@ describe("MyCollectionArtworkForm", () => {
         expect(createArtworkOperation.request.variables).toMatchInlineSnapshot(`
           {
             "input": {
-              "artistIds": [
-                "internal-id",
-              ],
+              "artist": "banksy",
+              "artistIds": [],
               "artists": undefined,
               "category": "Print",
               "date": "2007",
