@@ -33,11 +33,6 @@ const updater = (
 const UNREAD_INDICATOR_SIZE = 8
 const ARTWORK_IMAGE_SIZE = 55
 
-interface NavigateToActivityItemProps {
-  predefinedFilters: FilterArray
-  searchCriteriaID: string
-}
-
 export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
   const [markAsRead] = useMutation<ActivityItemMarkAsReadMutation>(markNotificationAsRead)
   const tracking = useTracking()
@@ -54,9 +49,6 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
   }
   const notificationTypeLabel = getNotificationType()
 
-  const navigateToActivityItem = (passProps: NavigateToActivityItemProps) =>
-    navigate(item.targetHref, { passProps })
-
   const handlePress = () => {
     const splittedQueryParams = item.targetHref.split("?")
     const queryParams = last(splittedQueryParams) ?? ""
@@ -66,12 +58,20 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
       (sortEntity) => sortEntity.paramValue === "-published_at"
     )!
 
+    const navigateToActivityItem = () =>
+      navigate(item.targetHref, {
+        passProps: {
+          predefinedFilters: [sortFilterItem] as FilterArray,
+          searchCriteriaID: parsed.search_criteria_id,
+        },
+      })
+
     tracking.trackEvent(tracks.tappedNotification(item.notificationType))
 
     markAsRead({
       variables: {
         input: {
-          id: item.internalID,
+          id: "item.internalID",
         },
       },
       optimisticUpdater: (store) => {
@@ -81,16 +81,10 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
         updater(item.id, store)
       },
       onCompleted: () => {
-        navigateToActivityItem({
-          predefinedFilters: [sortFilterItem] as FilterArray,
-          searchCriteriaID: parsed.search_criteria_id,
-        })
+        navigateToActivityItem()
       },
       onError: () => {
-        navigateToActivityItem({
-          predefinedFilters: [sortFilterItem] as FilterArray,
-          searchCriteriaID: parsed.search_criteria_id,
-        })
+        navigateToActivityItem()
       },
     })
   }
