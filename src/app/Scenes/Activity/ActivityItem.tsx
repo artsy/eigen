@@ -1,5 +1,6 @@
 import { ActionType } from "@artsy/cohesion"
 import { ClickedActivityPanelNotificationItem } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
+import { captureMessage } from "@sentry/react-native"
 import { ActivityItem_item$key } from "__generated__/ActivityItem_item.graphql"
 import {
   ActivityItemMarkAsReadMutation,
@@ -68,10 +69,12 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
 
     tracking.trackEvent(tracks.tappedNotification(item.notificationType))
 
+    navigateToActivityItem()
+
     markAsRead({
       variables: {
         input: {
-          id: "item.internalID",
+          id: item.internalID,
         },
       },
       optimisticUpdater: (store) => {
@@ -80,11 +83,8 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
       updater: (store) => {
         updater(item.id, store)
       },
-      onCompleted: () => {
-        navigateToActivityItem()
-      },
-      onError: () => {
-        navigateToActivityItem()
+      onError: (error) => {
+        captureMessage(error?.stack!)
       },
     })
   }
