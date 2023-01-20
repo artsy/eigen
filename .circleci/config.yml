@@ -227,6 +227,18 @@ jobs:
       - store_test_results:
           path: ./reports/junit/
 
+  type-check:
+    executor:
+      name: node/default
+      tag: "16.18.0"
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: yarn
+      - run-relay-compiler
+      - run:
+          command: yarn type-check
+
   update-metaphysics:
     executor:
       name: node/default
@@ -544,6 +556,14 @@ workflows:
                 - play_store_submission
                 - update-changelog
 
+      - type-check:
+          filters:
+            branches:
+              ignore:
+                - app_store_submission
+                - play_store_submission
+                - update-changelog
+
       - check-pr:
           filters:
             branches:
@@ -580,6 +600,7 @@ workflows:
                 - update-changelog
           requires:
             - test-js
+            - type-check
             - build-test-js
             - horizon/block
 
@@ -593,6 +614,7 @@ workflows:
                 - update-changelog
           requires:
             - test-js
+            - type-check
             - build-test-js
             - horizon/block
 
