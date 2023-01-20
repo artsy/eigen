@@ -48,9 +48,6 @@ export const ArtQuizArtworks = () => {
   const handleNext = (action: "Like" | "Dislike") => {
     popoverMessage.hide()
     pagerViewRef.current?.setPage(activeCardIndex + 1)
-    if (activeCardIndex + 1 !== artworks.length) {
-      setActiveCardIndex(activeCardIndex + 1)
-    }
     if (action === "Like") {
       GlobalStore.actions.artQuiz.saveLikedArtwork(artworks[activeCardIndex].id)
     } else {
@@ -63,7 +60,6 @@ export const ArtQuizArtworks = () => {
       goBack()
     } else {
       pagerViewRef.current?.setPage(activeCardIndex - 1)
-      setActiveCardIndex(activeCardIndex - 1)
     }
   }
 
