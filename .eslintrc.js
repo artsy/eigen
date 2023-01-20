@@ -40,14 +40,6 @@ module.exports = {
      * Errors
      */
 
-    "@typescript-eslint/no-unused-vars": [
-      WARN,
-      {
-        argsIgnorePattern: "^_",
-        varsIgnorePattern: "^_",
-        caughtErrorsIgnorePattern: "^_",
-      },
-    ],
     "import/order": [
       ERR,
       {
@@ -64,8 +56,17 @@ module.exports = {
      * Warnings
      */
 
+    "@typescript-eslint/no-unused-vars": [
+      WARN,
+      {
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_",
+        caughtErrorsIgnorePattern: "^_",
+      },
+    ],
+    "@typescript-eslint/interface-over-type-literal": WARN,
     "no-relative-import-paths/no-relative-import-paths": [
-      "warn",
+      WARN,
       { allowSameFolder: true, rootDir: "src" },
     ],
 

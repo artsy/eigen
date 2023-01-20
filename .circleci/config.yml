@@ -221,6 +221,7 @@ jobs:
           name: Run Jest tests
           environment:
             JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
+            JEST_JUNIT_OUTPUT_NAME: junit-results-$(expr $CIRCLE_NODE_INDEX + 1).xml
       - store_artifacts:
           path: ./reports/junit/
       - store_test_results:
