@@ -49,10 +49,19 @@ export const ArtQuizArtworks = () => {
   const handleNext = (action: "Like" | "Dislike") => {
     console.log("Action : ", action)
     console.log("activeCardIndex ", activeCardIndex)
-
+    popoverMessage.hide()
     pagerViewRef.current?.setPage(activeCardIndex + 1)
     if (activeCardIndex + 1 !== artworks.length) {
       setActiveCardIndex(activeCardIndex + 1)
+    }
+  }
+
+  const handleOnBack = () => {
+    if (activeCardIndex === 0) {
+      goBack()
+    } else {
+      pagerViewRef.current?.setPage(activeCardIndex - 1)
+      setActiveCardIndex(activeCardIndex - 1)
     }
   }
 
@@ -69,7 +78,7 @@ export const ArtQuizArtworks = () => {
   return (
     <Screen>
       <Screen.Header
-        onBack={() => goBack()}
+        onBack={handleOnBack}
         title={`${activeCardIndex + 1}/${artworks.length}`}
         onSkip={handleOnSkip}
       />
