@@ -19,7 +19,7 @@ import {
   explicitlyClearedFields,
 } from "app/Scenes/MyCollection/utils/cleanArtworkPayload"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { addClue, GlobalStore, setVisualClueAsSeen, useFeatureFlag } from "app/store/GlobalStore"
+import { addClue, GlobalStore, setVisualClueAsSeen } from "app/store/GlobalStore"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { isEqual } from "lodash"
@@ -35,7 +35,7 @@ import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
 import { deletedPhotos } from "../../utils/deletedPhotos"
 import { SavingArtworkModal } from "./Components/SavingArtworkModal"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
-import { removeLocalPhotos, storeLocalPhotos, uploadPhotos } from "./MyCollectionImageUtil"
+import { storeLocalPhotos, uploadPhotos } from "./MyCollectionImageUtil"
 import { MyCollectionAddPhotos } from "./Screens/MyCollectionArtworkFormAddPhotos"
 import { MyCollectionArtworkFormArtist } from "./Screens/MyCollectionArtworkFormArtist"
 import { MyCollectionArtworkFormArtwork } from "./Screens/MyCollectionArtworkFormArtwork"
@@ -106,56 +106,58 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
 
   const { showActionSheetWithOptions } = useActionSheet()
 
-  const showMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
-
   const handleSubmit = async (values: ArtworkFormValues) => {
+    if (loading) {
+      return
+    }
+
     setLoading(true)
+
+    updateMyUserProfile({
+      currencyPreference: preferredCurrency,
+      lengthUnitPreference: preferredMetric.toUpperCase() as LengthUnitPreference,
+    })
 
     try {
       await Promise.all([
         // This is to satisfy showing the insights modal for 2500 ms
-        __TEST__ || !showMyCollectionInsights
-          ? undefined
-          : new Promise((resolve) => setTimeout(resolve, 2500)),
-        updateMyUserProfile({
-          currencyPreference: preferredCurrency,
-          lengthUnitPreference: preferredMetric.toUpperCase() as LengthUnitPreference,
-        }),
+        __TEST__ ? undefined : new Promise((resolve) => setTimeout(resolve, 2500)),
+        ,
         updateArtwork(values, dirtyFormCheckValues, props).then((hasMarketPriceInsights) => {
           setSavingArtworkModalDisplayText(
             hasMarketPriceInsights ? "Generating market data" : "Saving artwork"
           )
         }),
       ])
+    } catch (e) {
+      __DEV__ ? console.error(e) : captureException(e)
 
+      Alert.alert("Artwork could not be saved.", typeof e === "string" ? e : undefined)
+
+      setLoading(false)
+
+      return
+    }
+
+    try {
       // Adding tracking after a successfully adding an artwork
       if (props.mode === "add") {
         trackEvent(tracks.saveCollectedArtwork())
       }
 
-      if (showMyCollectionInsights) {
-        setIsArtworkSaved(true)
-        // simulate requesting market data
-        await new Promise((resolve) => setTimeout(resolve, 2000))
-      }
+      setIsArtworkSaved(true)
+      // simulate requesting market data
+      await new Promise((resolve) => setTimeout(resolve, 2000))
+
       refreshMyCollection()
       refreshMyCollectionInsights({})
-      setLoading(false)
-      // Go back to my collection screen after the loading modal is hidden
-      InteractionManager.runAfterInteractions(() => {
-        props.onSuccess?.()
-      })
     } catch (e) {
-      if (__DEV__) {
-        console.error(e)
-      } else {
-        captureException(e)
-      }
-      Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
-      setLoading(false)
-    } finally {
-      setIsArtworkSaved(false)
+      __DEV__ ? console.error(e) : captureException(e)
     }
+
+    InteractionManager.runAfterInteractions(() => {
+      props.onSuccess?.()
+    })
   }
 
   useEffect(() => {
@@ -290,7 +292,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
           />
           <Stack.Screen name="AddPhotos" component={MyCollectionAddPhotos} />
         </Stack.Navigator>
-        {showMyCollectionInsights && props.mode === "add" ? (
+        {props.mode === "add" ? (
           <SavingArtworkModal
             testID="saving-artwork-modal"
             isVisible={loading}
@@ -363,13 +365,14 @@ export const updateArtwork = async (
       ...explicitlyClearedFields(others, dirtyFormCheckValues),
     })
 
+    const slug = response.myCollectionUpdateArtwork?.artworkOrError?.artwork?.slug
+    // if the user has updated images, save to local store
+    if (slug) {
+      storeLocalPhotos(slug, photos)
+    }
     const deletedImages = deletedPhotos(dirtyFormCheckValues.photos, photos)
     for (const photo of deletedImages) {
       await deleteArtworkImage(props.artwork.internalID, photo.id)
-    }
-    const slug = response.myCollectionUpdateArtwork?.artworkOrError?.artwork?.slug
-    if (slug) {
-      removeLocalPhotos(slug)
     }
   }
 }

@@ -168,7 +168,9 @@ export const ArtworkFilterOptionsScreen: React.FC<
                 item={item}
                 count={selectedFiltersCount}
                 onPress={() => {
-                  navigateToNextFilterScreen(item.ScreenComponent)
+                  navigateToNextFilterScreen(
+                    item.ScreenComponent as keyof ArtworkFilterNavigationStack
+                  )
                 }}
               />
             )
@@ -186,18 +188,19 @@ export const getStaticFilterOptionsByMode = (
   switch (mode) {
     case FilterModalMode.SaleArtworks:
       return [
+        filterOptionToDisplayConfigMap.estimateRange,
         filterOptionToDisplayConfigMap.sort,
         filterOptionToDisplayConfigMap.viewAs,
-        filterOptionToDisplayConfigMap.estimateRange,
       ]
 
     case FilterModalMode.AuctionResults:
       return [
-        filterOptionToDisplayConfigMap.sort,
         filterOptionToDisplayConfigMap.categories,
-        filterOptionToDisplayConfigMap.sizes,
-        filterOptionToDisplayConfigMap.year,
         filterOptionToDisplayConfigMap.organizations,
+        filterOptionToDisplayConfigMap.sizes,
+        filterOptionToDisplayConfigMap.sort,
+        filterOptionToDisplayConfigMap.state,
+        filterOptionToDisplayConfigMap.year,
       ]
 
     case FilterModalMode.Custom:
@@ -205,9 +208,9 @@ export const getStaticFilterOptionsByMode = (
 
     default:
       return [
+        filterOptionToDisplayConfigMap.attributionClass,
         filterOptionToDisplayConfigMap.sort,
         filterOptionToDisplayConfigMap.waysToBuy,
-        filterOptionToDisplayConfigMap.attributionClass,
       ]
   }
 }
@@ -306,6 +309,14 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
       )
 
       if (hasEarliestCreatedYearFilterEnabled || hasLatestCreatedYearFilterEnabled) {
+        --selectedFiltersSum
+      }
+
+      const hasFilteredUpcomingAuctionResults =
+        appliedFiltersState.find((filter) => filter.paramName === FilterParamName.state)
+          ?.paramValue === "ALL"
+
+      if (hasFilteredUpcomingAuctionResults) {
         --selectedFiltersSum
       }
     }
@@ -425,6 +436,12 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     displayText: FilterDisplayName.sizes,
     filterType: "sizes",
     ScreenComponent: "SizesOptionsScreen",
+  },
+  state: {
+    displayText: FilterDisplayName.state,
+    filterType: "state",
+    ScreenComponent: "none",
+    configType: FilterConfigTypes.FilterScreenCheckboxItem,
   },
   viewAs: {
     displayText: FilterDisplayName.viewAs,

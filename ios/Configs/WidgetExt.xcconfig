@@ -1,0 +1,5 @@
+#include "Shared.xcconfig"
+
+
+PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.ArtsyWidget
+IPHONEOS_DEPLOYMENT_TARGET = 14.0

@@ -16,7 +16,9 @@ jest.mock("@sentry/react-native", () => ({
   captureMessage: jest.fn(),
 }))
 
-jest.useFakeTimers()
+jest.useFakeTimers({
+  legacyFakeTimers: true,
+})
 
 describe("volleyClient", () => {
   const fetch = jest.fn((_url, _init) => Promise.resolve({ status: 200 }))
@@ -32,9 +34,9 @@ describe("volleyClient", () => {
     expect(fetch).toHaveBeenCalledTimes(1)
     expect(fetch.mock.calls[0][0]).toBe("https://volley-staging.artsy.net/report")
     expect(fetch.mock.calls[0][1]).toMatchInlineSnapshot(`
-      Object {
-        "body": "{\\"serviceName\\":\\"eigen-staging\\",\\"metrics\\":[{\\"type\\":\\"increment\\",\\"name\\":\\"counter\\",\\"tags\\":[\\"device:ios testDevice\\",\\"network:cellular\\",\\"effective_network:3g\\"]}]}",
-        "headers": Object {
+      {
+        "body": "{"serviceName":"eigen","metrics":[{"type":"increment","name":"counter","tags":["device:ios testDevice","network:cellular","effective_network:3g"]}]}",
+        "headers": {
           "Content-Type": "application/json",
         },
         "method": "POST",
@@ -49,9 +51,9 @@ describe("volleyClient", () => {
     jest.advanceTimersByTime(3000)
     expect(fetch).toHaveBeenCalledTimes(1)
     expect(fetch.mock.calls[0][1]).toMatchInlineSnapshot(`
-      Object {
-        "body": "{\\"serviceName\\":\\"eigen-staging\\",\\"metrics\\":[{\\"type\\":\\"increment\\",\\"name\\":\\"counter one\\",\\"tags\\":[\\"device:ios testDevice\\",\\"network:cellular\\",\\"effective_network:3g\\"]},{\\"type\\":\\"increment\\",\\"name\\":\\"counter two\\",\\"tags\\":[\\"device:ios testDevice\\",\\"network:cellular\\",\\"effective_network:3g\\"]},{\\"type\\":\\"decrement\\",\\"name\\":\\"counter one\\",\\"tags\\":[\\"device:ios testDevice\\",\\"network:cellular\\",\\"effective_network:3g\\"]}]}",
-        "headers": Object {
+      {
+        "body": "{"serviceName":"eigen","metrics":[{"type":"increment","name":"counter one","tags":["device:ios testDevice","network:cellular","effective_network:3g"]},{"type":"increment","name":"counter two","tags":["device:ios testDevice","network:cellular","effective_network:3g"]},{"type":"decrement","name":"counter one","tags":["device:ios testDevice","network:cellular","effective_network:3g"]}]}",
+        "headers": {
           "Content-Type": "application/json",
         },
         "method": "POST",

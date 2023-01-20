@@ -75,7 +75,10 @@ export const MyCollectionArtworkFormArtwork: React.FC<
     }
   }
 
-  const onSkip = () => {
+  const onSkip = (artworkTitle?: string) => {
+    GlobalStore.actions.myCollection.artwork.updateFormValues({
+      title: artworkTitle,
+    })
     trackEvent(
       tracks.tappedOnSkip(
         formik.values.artistSearchResult?.internalID!,
@@ -100,7 +103,6 @@ export const MyCollectionArtworkFormArtwork: React.FC<
       <FancyModalHeader
         onLeftButtonPress={route.params.onHeaderBackButtonPress}
         rightButtonText="Skip"
-        rightButtonTestId="my-collection-artwork-form-artwork-skip-button"
         onRightButtonPress={onSkip}
         hideBottomDivider
       >

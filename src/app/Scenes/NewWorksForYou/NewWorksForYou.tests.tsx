@@ -3,7 +3,7 @@ import { Artwork } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { NewWorksForYouFragmentContainer } from "./NewWorksForYou"
+import { DEFAULT_RECS_MODEL_VERSION, NewWorksForYouFragmentContainer } from "./NewWorksForYou"
 
 jest.unmock("react-relay")
 
@@ -13,7 +13,7 @@ describe("NewWorksForYou", () => {
   const TestRenderer = () => (
     <QueryRenderer<NewWorksForYouTestsQuery>
       query={graphql`
-        query NewWorksForYouTestsQuery {
+        query NewWorksForYouTestsQuery($worksForYouRecommendationsModelVariant: String!) {
           viewer {
             ...NewWorksForYou_viewer
           }
@@ -22,7 +22,9 @@ describe("NewWorksForYou", () => {
       render={({ props }) => {
         return props?.viewer && <NewWorksForYouFragmentContainer viewer={props.viewer} />
       }}
-      variables={{}}
+      variables={{
+        worksForYouRecommendationsModelVariant: DEFAULT_RECS_MODEL_VERSION,
+      }}
       environment={mockEnvironment}
     />
   )

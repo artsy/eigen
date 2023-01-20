@@ -20,14 +20,16 @@ export const AboutWork: React.FC<AboutWorkProps> = ({ artwork }) => {
 
   return (
     <Join separator={<Spacer mb={2} />}>
-      <Text variant="sm-display">About the work</Text>
+      <Text variant="md">About the work</Text>
       {!!additionalInformation && (
         <ReadMore
           content={additionalInformation}
           maxChars={textLimit}
           trackingFlow={Schema.Flow.AboutTheWork}
           contextModule={Schema.ContextModules.AboutTheWork}
-          textStyle="sans"
+          textStyle="new"
+          textVariant="sm"
+          linkTextVariant="sm-display"
         />
       )}
       {!!description && (
@@ -42,6 +44,8 @@ export const AboutWork: React.FC<AboutWorkProps> = ({ artwork }) => {
             maxChars={textLimit}
             trackingFlow={Schema.Flow.AboutTheWork}
             contextModule={Schema.ContextModules.AboutTheWorkFromSpecialist}
+            textVariant="sm"
+            linkTextVariant="sm-display"
           />
         </Flex>
       )}

@@ -4,7 +4,6 @@ import { MyCollectionArtworkGridItem_artwork$data } from "__generated__/MyCollec
 import { DEFAULT_SECTION_MARGIN } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import HighDemandIcon from "app/Icons/HighDemandIcon"
 import { navigate } from "app/navigation/navigate"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { isPad } from "app/utils/hardware"
 import { Box, Flex, Text } from "palette"
 import { View } from "react-native"
@@ -16,16 +15,31 @@ import { MyCollectionImageView } from "../../Components/MyCollectionImageView"
 
 interface MyCollectionArtworkGridItemProps {
   artwork: MyCollectionArtworkGridItem_artwork$data
+  myCollectionIsRefreshing?: boolean
 }
 
-const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = ({ artwork }) => {
+const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = ({
+  artwork,
+  myCollectionIsRefreshing,
+}) => {
   const { trackEvent } = useTracking()
   const imageURL =
     artwork.images?.find((i: any) => i?.isDefault)?.url ||
     (artwork.images && artwork.images[0]?.url)
   const { width } = useScreenDimensions()
 
-  const { artist, artistNames, internalID, medium, mediumType, slug, title, image, date } = artwork
+  const {
+    artist,
+    artistNames,
+    internalID,
+    medium,
+    mediumType,
+    slug,
+    title,
+    image,
+    date,
+    submissionId,
+  } = artwork
 
   // consistent with how sections are derived in InfiniteScrollArtworksGrid
   const screen = useScreenDimensions()
@@ -34,8 +48,6 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
 
   const isP1Artist = artwork.artist?.targetSupply?.isP1
   const isHighDemand = Number((artwork.marketPriceInsights?.demandRank || 0) * 10) >= 9
-
-  const showDemandIndexHints = useFeatureFlag("ARShowMyCollectionDemandIndexHints")
 
   const showHighDemandIcon = isP1Artist && isHighDemand
 
@@ -62,11 +74,13 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
           imageURL={imageURL ?? undefined}
           aspectRatio={image?.aspectRatio}
           artworkSlug={slug}
+          artworkSubmissionId={submissionId}
+          myCollectionIsRefreshing={myCollectionIsRefreshing}
         />
         <Box maxWidth={width} mt={1} style={{ flex: 1 }}>
           <Text lineHeight="18" weight="regular" variant="xs" numberOfLines={2}>
             {artistNames}
-            {!!showHighDemandIcon && !!showDemandIndexHints && (
+            {!!showHighDemandIcon && (
               <Flex testID="test-high-demand-icon">
                 <HighDemandIcon style={{ marginLeft: 2, marginBottom: -2 }} />
               </Flex>
@@ -111,6 +125,7 @@ export const MyCollectionArtworkGridItemFragmentContainer = createFragmentContai
         artistNames
         medium
         slug
+        submissionId
         title
         date
         marketPriceInsights {

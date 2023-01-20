@@ -1,61 +1,29 @@
+import { screen } from "@testing-library/react-native"
 import { ShowTestsQuery } from "__generated__/ShowTestsQuery.graphql"
-import { HeaderArtworksFilterWithTotalArtworks } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
-import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ShowContextCard } from "./Components/ShowContextCard"
+import { setupTestWrapper } from "app/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { Show, ShowFragmentContainer } from "./Show"
 
 jest.unmock("react-relay")
 
 describe("Show", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
-
-  const TestRenderer = () => (
-    <QueryRenderer<ShowTestsQuery>
-      environment={env}
-      query={graphql`
-        query ShowTestsQuery($showID: String!) @relay_test_operation {
-          show(id: $showID) {
-            ...Show_show
-          }
+  const { renderWithRelay } = setupTestWrapper<ShowTestsQuery>({
+    Component: ({ show }) => <ShowFragmentContainer show={show!} />,
+    query: graphql`
+      query ShowTestsQuery($showID: String!) @relay_test_operation {
+        show(id: $showID) {
+          ...Show_show
         }
-      `}
-      variables={{ showID: "the-big-show" }}
-      render={({ props, error }) => {
-        if (props?.show) {
-          return <ShowFragmentContainer show={props.show} />
-        } else if (error) {
-          console.log(error)
-        }
-      }}
-    />
-  )
-
-  const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, mockResolvers)
-      )
-    })
-    return tree
-  }
-
-  it("renders without throwing an error", () => {
-    const wrapper = getWrapper()
-    expect(wrapper.root.findAllByType(Show)).toHaveLength(1)
+      }
+    `,
+    variables: {
+      showID: "the-big-show",
+    },
   })
 
   it("renders the show", () => {
-    const wrapper = getWrapper({
+    renderWithRelay({
       Show: () => ({
         name: "The big show",
         formattedStartAt: "October 23",
@@ -68,37 +36,35 @@ describe("Show", () => {
       }),
     })
 
-    expect(wrapper.root.findAllByType(Show)).toHaveLength(1)
+    expect(screen.UNSAFE_queryAllByType(Show)).toHaveLength(1)
 
-    const text = extractText(wrapper.root)
-
-    expect(text).toContain("The big show")
-    expect(text).toContain("October 23 – October 27, 2000")
-    expect(text).toContain("Closed")
-    expect(text).toContain("Example Partner")
+    expect(screen.queryByText("The big show")).toBeTruthy()
+    expect(screen.queryByText("October 23 – October 27, 2000")).toBeTruthy()
+    expect(screen.queryByText("Closed")).toBeTruthy()
+    expect(screen.queryByText("Presented by Example Partner")).toBeTruthy()
   })
 
   it("renders the installation shots", () => {
-    const wrapper = getWrapper({
+    renderWithRelay({
       Show: () => ({
         images: [{ caption: "First install shot" }, { caption: "Second install shot" }],
       }),
     })
 
-    const text = extractText(wrapper.root)
-
-    expect(text).toContain("First install shot")
-    expect(text).toContain("Second install shot")
+    expect(screen.queryByText("First install shot")).toBeTruthy()
+    expect(screen.queryByText("Second install shot")).toBeTruthy()
   })
 
   it("renders the context card", () => {
-    const wrapper = getWrapper()
-    expect(wrapper.root.findAllByType(ShowContextCard)).toHaveLength(1)
+    renderWithRelay()
+
+    expect(screen.queryByTestId("ShowContextCard")).toBeTruthy()
   })
 
   it("renders artworks filter header", () => {
-    const wrapper = getWrapper()
-    expect(wrapper.root.findAllByType(HeaderArtworksFilterWithTotalArtworks)).toHaveLength(1)
+    renderWithRelay()
+
+    expect(screen.queryByTestId("HeaderArtworksFilter")).toBeTruthy()
   })
 
   describe("search image button", () => {
@@ -108,8 +74,9 @@ describe("Show", () => {
       })
 
       it("should not be rendered", () => {
-        const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
-        expect(queryByLabelText("Search by image")).toBeNull()
+        renderWithRelay()
+
+        expect(screen.queryByLabelText("Search by image")).toBeNull()
       })
     })
 
@@ -119,57 +86,39 @@ describe("Show", () => {
       })
 
       it("should not be rendered when show is NOT active", () => {
-        const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
-
-        act(() => {
-          env.mock.resolveMostRecentOperation((operation) =>
-            MockPayloadGenerator.generate(operation, {
-              Show: () => ({
-                isActive: false,
-                slug: "a-non-active-show",
-                isReverseImageSearchEnabled: true,
-              }),
-            })
-          )
+        renderWithRelay({
+          Show: () => ({
+            isActive: false,
+            slug: "a-non-active-show",
+            isReverseImageSearchEnabled: true,
+          }),
         })
 
-        expect(queryByLabelText("Search by image")).toBeNull()
+        expect(screen.queryByLabelText("Search by image")).toBeNull()
       })
 
       it("should not be rendered when show doesn't have any indexed artworks", () => {
-        const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
-
-        act(() => {
-          env.mock.resolveMostRecentOperation((operation) =>
-            MockPayloadGenerator.generate(operation, {
-              Show: () => ({
-                isActive: true,
-                slug: "an-active-show-without-indexed-artworks",
-                isReverseImageSearchEnabled: false,
-              }),
-            })
-          )
+        renderWithRelay({
+          Show: () => ({
+            isActive: true,
+            slug: "an-active-show-without-indexed-artworks",
+            isReverseImageSearchEnabled: false,
+          }),
         })
 
-        expect(queryByLabelText("Search by image")).toBeNull()
+        expect(screen.queryByLabelText("Search by image")).toBeNull()
       })
 
       it("should be rendered when show has indexed artworks, is active and feature flag is enabled", () => {
-        const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
-
-        act(() => {
-          env.mock.resolveMostRecentOperation((operation) =>
-            MockPayloadGenerator.generate(operation, {
-              Show: () => ({
-                isActive: true,
-                slug: "an-active-show-with-indexed-artworks",
-                isReverseImageSearchEnabled: true,
-              }),
-            })
-          )
+        renderWithRelay({
+          Show: () => ({
+            isActive: true,
+            slug: "an-active-show-with-indexed-artworks",
+            isReverseImageSearchEnabled: true,
+          }),
         })
 
-        expect(queryByLabelText("Search by image")).toBeTruthy()
+        expect(screen.queryByLabelText("Search by image")).toBeTruthy()
       })
     })
   })

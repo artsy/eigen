@@ -11,10 +11,10 @@ import { defaultRules, renderMarkdown } from "./renderMarkdown"
 describe("renderMarkdown", () => {
   it("returns markdown for a simple string", () => {
     expect(renderMarkdown("")).toMatchInlineSnapshot(`
-                        Array [
-                          <Text />,
-                        ]
-                `)
+      [
+        <Text />,
+      ]
+    `)
   })
 
   it("returns markdown for multiple paragraphs", () => {

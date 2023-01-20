@@ -34,7 +34,9 @@ jest.mock("tipsi-stripe", () => ({
 
 let nextStep: any
 const mockNavigator = { push: (route: any) => (nextStep = route), pop: () => null }
-jest.useFakeTimers()
+jest.useFakeTimers({
+  legacyFakeTimers: true,
+})
 const mockPostNotificationName = LegacyNativeModules.ARNotificationsManager.postNotificationName
 
 beforeEach(() => {
@@ -81,7 +83,7 @@ it("renders properly for a verified user with a credit card and phone", () => {
       sale={{ ...sale, requireIdentityVerification: true }}
       me={{
         hasCreditCards: true,
-        identityVerified: true,
+        isIdentityVerified: true,
         phoneNumber: { isValid: true },
       }}
     />
@@ -147,7 +149,7 @@ describe("when the sale requires identity verification", () => {
 
   it("displays information about IDV if the user is not verified", () => {
     const component = renderWithWrappersLEGACY(
-      <Registration {...propsWithIDVSale} me={{ ...me, identityVerified: false } as any} />
+      <Registration {...propsWithIDVSale} me={{ ...me, isIdentityVerified: false } as any} />
     )
 
     expect(component.root.findAllByType(Text)[6].props.children).toEqual(
@@ -157,7 +159,7 @@ describe("when the sale requires identity verification", () => {
 
   it("does not display information about IDV if the user is verified", () => {
     const component = renderWithWrappersLEGACY(
-      <Registration {...propsWithIDVSale} me={{ ...me, identityVerified: true } as any} />
+      <Registration {...propsWithIDVSale} me={{ ...me, isIdentityVerified: true } as any} />
     )
 
     expect(component.root.findAllByType(Text).map(({ props }) => props.children)).not.toContain(
@@ -752,7 +754,7 @@ const initialProps = {
 
 const me: Partial<Registration_me$data> = {
   hasCreditCards: false,
-  identityVerified: false,
+  isIdentityVerified: false,
   phoneNumber: {
     isValid: false,
     display: null,

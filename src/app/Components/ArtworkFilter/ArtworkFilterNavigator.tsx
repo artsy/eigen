@@ -5,8 +5,10 @@ import {
   changedFiltersParams,
   FilterArray,
   filterArtworksParams,
+  FilterParamName,
   FilterParams,
   getUnitedSelectedAndAppliedFilters,
+  ParamDefaultValues,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { AdditionalGeneIDsOptionsScreen } from "app/Components/ArtworkFilter/Filters/AdditionalGeneIDsOptions"
@@ -26,6 +28,7 @@ import { TimePeriodOptionsScreen } from "app/Components/ArtworkFilter/Filters/Ti
 import { ViewAsOptionsScreen } from "app/Components/ArtworkFilter/Filters/ViewAsOptions"
 import { WaysToBuyOptionsScreen } from "app/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { YearOptionsScreen } from "app/Components/ArtworkFilter/Filters/YearOptions"
+import { GlobalStore } from "app/store/GlobalStore"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import _ from "lodash"
@@ -137,7 +140,25 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
     closeModal?.()
   }
 
+  const saveRecentPriceRange = () => {
+    const priceRange = selectedFiltersState.find(
+      (filter) => filter.paramName === FilterParamName.priceRange
+    )
+
+    if (priceRange?.paramValue && priceRange.paramValue !== ParamDefaultValues.priceRange) {
+      /**
+       * We wait until the filter modal is closed, then save the recent price range
+       * Otherwise the recent price range will be displayed immediately after clicking on the "Show Results" button,
+       * Which can negatively affect the UI
+       */
+      setTimeout(() => {
+        GlobalStore.actions.recentPriceRanges.addNewPriceRange(priceRange.paramValue as string)
+      }, 500)
+    }
+  }
+
   const applyFilters = () => {
+    saveRecentPriceRange()
     applyFiltersAction()
     exitModal?.()
   }

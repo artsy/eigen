@@ -63,7 +63,9 @@ describe("LotProgressBar", () => {
         duration: moment.duration(DateTime.fromISO(biddingEndAt).toMillis()),
       }
 
-      jest.useFakeTimers()
+      jest.useFakeTimers({
+        legacyFakeTimers: true,
+      })
 
       const wrapper = getWrapper(props)
 

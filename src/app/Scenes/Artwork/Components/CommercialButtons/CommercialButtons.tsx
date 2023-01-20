@@ -41,7 +41,12 @@ export const CommercialButtons: React.FC<CommercialButtonProps> = ({
           <>
             <BidButtonFragmentContainer artwork={artwork} me={me} auctionState={auctionState} />
             <Spacer mb={1} />
-            <BuyNowButton variant="outline" artwork={artwork} editionSetID={editionSetID ?? null} />
+            <BuyNowButton
+              variant="outline"
+              artwork={artwork}
+              editionSetID={editionSetID ?? null}
+              renderSaleMessage
+            />
           </>
         ) : (
           <BidButtonFragmentContainer artwork={artwork} me={me} auctionState={auctionState} />

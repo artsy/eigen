@@ -35,7 +35,7 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({ artist, onDismiss, onFol
     }
   }
 
-  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewImageComponent")
+  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageComponent")
 
   return (
     <ArtistCardWrapper onPress={handlePress}>
@@ -60,9 +60,11 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({ artist, onDismiss, onFol
               </Text>
             )}
           </Flex>
-          <Flex>
-            <FollowButton isFollowed={!!artist.isFollowed} onPress={onFollow} />
-          </Flex>
+          {!!onFollow && (
+            <Flex>
+              <FollowButton isFollowed={!!artist.isFollowed} onPress={onFollow} />
+            </Flex>
+          )}
         </Flex>
         {!!onDismiss && (
           <Flex

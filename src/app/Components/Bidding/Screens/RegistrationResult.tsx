@@ -27,10 +27,10 @@ export enum RegistrationStatus {
 }
 
 const Icons = {
-  RegistrationStatusComplete: require("images/circle-check-green.webp"),
-  RegistrationStatusPending: require("images/circle-exclamation.webp"),
-  RegistrationStatusNetworkError: require("images/circle-x-red.webp"),
-  RegistrationStatusError: require("images/circle-x-red.webp"),
+  RegistrationStatusComplete: require("images/circle-check-green.png"),
+  RegistrationStatusPending: require("images/circle-exclamation.png"),
+  RegistrationStatusNetworkError: require("images/circle-x-red.png"),
+  RegistrationStatusError: require("images/circle-x-red.png"),
 }
 
 const registrationCompleteMessage = {
@@ -163,7 +163,7 @@ export class RegistrationResult extends React.Component<RegistrationResultProps>
     return (
       <View style={{ flex: 1 }}>
         <Theme>
-          <FancyModalHeader useXButton onLeftButtonPress={dismissModal} />
+          <FancyModalHeader useXButton onLeftButtonPress={() => dismissModal()} />
         </Theme>
         <View style={{ padding: 20 }}>
           <Flex alignItems="center">
@@ -177,7 +177,7 @@ export class RegistrationResult extends React.Component<RegistrationResultProps>
               {msg}
             </Markdown>
           </Flex>
-          <Button variant="outline" onPress={dismissModal} block width={100}>
+          <Button variant="outline" onPress={() => dismissModal()} block width={100}>
             {status === RegistrationStatus.RegistrationStatusPending
               ? "View works in this sale"
               : "Continue"}

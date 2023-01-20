@@ -1,5 +1,5 @@
 import { ContextModule, CustomService, OwnerType, share } from "@artsy/cohesion"
-import Clipboard from "@react-native-community/clipboard"
+import Clipboard from "@react-native-clipboard/clipboard"
 import { ArtworkHeader_artwork$data } from "__generated__/ArtworkHeader_artwork.graphql"
 import { CustomShareSheet, CustomShareSheetItem } from "app/Components/CustomShareSheet"
 import { useToast } from "app/Components/Toast/toastHook"
@@ -27,13 +27,21 @@ import { ArtworkActionsFragmentContainer as ArtworkActions, shareContent } from 
 import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./ArtworkTombstone"
 import { ImageCarouselFragmentContainer } from "./ImageCarousel/ImageCarousel"
 import { InstagramStoryViewShot } from "./InstagramStoryViewShot"
+import { UnlistedArtworksBanner } from "./UnlistedArtworksBanner"
 
 interface ArtworkHeaderProps {
   artwork: ArtworkHeader_artwork$data
+  refetchArtwork: () => void
+}
+
+export enum VisibilityLevels {
+  DRAFT = "DRAFT",
+  LISTED = "LISTED",
+  UNLISTED = "UNLISTED",
 }
 
 export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
-  const { artwork } = props
+  const { artwork, refetchArtwork } = props
   const screenDimensions = useScreenDimensions()
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const { trackEvent } = useTracking()
@@ -113,6 +121,11 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
   return (
     <>
       <Box>
+        {artwork.visibilityLevel === VisibilityLevels.UNLISTED && (
+          <Flex my={2} mx={-2}>
+            <UnlistedArtworksBanner partnerName={artwork.partner?.name} />
+          </Flex>
+        )}
         <Spacer mb={2} />
         <ImageCarouselFragmentContainer
           images={artwork.images as any /* STRICTNESS_MIGRATION */}
@@ -134,7 +147,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
         </Flex>
         <Spacer mb={4} />
         <Box px={2}>
-          <ArtworkTombstone artwork={artwork} />
+          <ArtworkTombstone artwork={artwork} refetchArtwork={refetchArtwork} />
         </Box>
       </Box>
       <CustomShareSheet visible={shareSheetVisible} setVisible={setShareSheetVisible}>
@@ -201,7 +214,11 @@ export const ArtworkHeaderFragmentContainer = createFragmentContainer(ArtworkHea
       href
       internalID
       slug
+      visibilityLevel
       artists {
+        name
+      }
+      partner {
         name
       }
     }

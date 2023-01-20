@@ -12,6 +12,7 @@ import {
   RegisteredBidder,
 } from "app/__fixtures__/ArtworkBidAction"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { merge as _merge } from "lodash"
@@ -29,7 +30,7 @@ const realDefaultZone = Settings.defaultZone
 
 const meFixture: BidButtonTestsQuery["rawResponse"]["me"] = {
   id: "id",
-  identityVerified: false,
+  isIdentityVerified: false,
 }
 
 interface WrapperProps {
@@ -44,6 +45,12 @@ describe("BidButton", () => {
     Settings.now = () => new Date("2019-08-15T12:00:00+00:00").valueOf()
 
     mockEnvironment = createMockEnvironment()
+  })
+
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      ARArtworkRedesingPhase2: false,
+    })
   })
 
   afterAll(() => {
@@ -116,10 +123,10 @@ describe("BidButton", () => {
         sale: { requireIdentityVerification: true },
       })
       const me = {
-        identityVerified: false,
+        isIdentityVerified: false,
       }
 
-      const { getByText } = renderWithWrappers(
+      const { queryByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.PREVIEW} />
       )
 
@@ -128,15 +135,15 @@ describe("BidButton", () => {
         Me: () => me,
       })
 
-      expect(getByText("Register to bid")).toBeTruthy()
-      expect(getByText("Identity verification required to bid.")).toBeTruthy()
+      expect(queryByText("Register to bid")).toBeTruthy()
+      expect(queryByText(/Identity verification required to bid./)).toBeTruthy()
     })
 
     it("does not display 'Identity verification is required' if the sale requires identity verification and the user is verified", () => {
       const artworkWithIDVRequired = merge({}, ArtworkFromAuctionPreview, {
         sale: { requireIdentityVerification: true },
       })
-      const me = { identityVerified: true }
+      const me = { isIdentityVerified: true }
 
       const { getByText, queryByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.PREVIEW} />
@@ -163,14 +170,14 @@ describe("BidButton", () => {
         Me: () => meFixture,
       })
 
-      expect(getByText("Registration pending")).toBeTruthy()
+      expect(getByText("Registration Pending")).toBeTruthy()
     })
 
     it("displays 'Identity verification is required' if the sale requires identity verification and the user is registered but not verified", () => {
       const artworkWithIDVRequired = merge({}, ArtworkFromAuctionPreview, BidderPendingApproval, {
         sale: { requireIdentityVerification: true },
       })
-      const me = { identityVerified: false }
+      const me = { isIdentityVerified: false }
 
       const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.PREVIEW} />
@@ -181,15 +188,15 @@ describe("BidButton", () => {
         Me: () => me,
       })
 
-      expect(getByText("Registration pending")).toBeTruthy()
-      expect(getByText("Identity verification required to bid.")).toBeTruthy()
+      expect(getByText("Registration Pending")).toBeTruthy()
+      expect(getByText(/Identity verification required to bid./)).toBeTruthy()
     })
 
     it("does not display 'Identity verification is required' if the sale requires identity verification and the user is registered and verified", () => {
       const artworkWithIDVRequired = merge({}, ArtworkFromAuctionPreview, BidderPendingApproval, {
         sale: { requireIdentityVerification: true },
       })
-      const me = { identityVerified: true }
+      const me = { isIdentityVerified: true }
 
       const { getByText, queryByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.PREVIEW} />
@@ -200,8 +207,8 @@ describe("BidButton", () => {
         Me: () => me,
       })
 
-      expect(getByText("Registration pending")).toBeTruthy()
-      expect(queryByText("Identity verification required to bid.")).toBeFalsy()
+      expect(getByText("Registration Pending")).toBeTruthy()
+      expect(queryByText(/Identity verification required to bid./)).toBeFalsy()
     })
 
     it("with registered bidder", () => {
@@ -263,7 +270,7 @@ describe("BidButton", () => {
         Me: () => meFixture,
       })
 
-      expect(getByText("Registration pending")).toBeTruthy()
+      expect(getByText("Registration Pending")).toBeTruthy()
     })
 
     it("with registered bidder", () => {
@@ -302,7 +309,7 @@ describe("BidButton", () => {
       })
 
       it("displays 'Register to bid' if the user is not verified", () => {
-        const me = { identityVerified: false }
+        const me = { isIdentityVerified: false }
 
         const { getByText } = renderWithWrappers(
           <TestWrapper auctionState={AuctionTimerState.CLOSING} />
@@ -314,11 +321,11 @@ describe("BidButton", () => {
         })
 
         expect(getByText("Register to bid")).toBeTruthy()
-        expect(getByText("Identity verification required to bid.")).toBeTruthy()
+        expect(getByText(/Identity verification required to bid./)).toBeTruthy()
       })
 
       it("displays 'Bid' if the user is verified", () => {
-        const me = { identityVerified: true }
+        const me = { isIdentityVerified: true }
 
         const { getByText, queryByText } = renderWithWrappers(
           <TestWrapper auctionState={AuctionTimerState.CLOSING} />
@@ -341,7 +348,7 @@ describe("BidButton", () => {
             },
           },
         })
-        const me = { identityVerified: false }
+        const me = { isIdentityVerified: false }
 
         const { getByText, queryByText } = renderWithWrappers(
           <TestWrapper auctionState={AuctionTimerState.CLOSING} />
@@ -401,7 +408,7 @@ describe("BidButton", () => {
         Me: () => meFixture,
       })
 
-      expect(getByText("Registration pending")).toBeTruthy()
+      expect(getByText("Registration Pending")).toBeTruthy()
     })
 
     it("with registered bidder", () => {
@@ -440,7 +447,7 @@ describe("BidButton", () => {
       })
 
       it("displays 'Register to bid' if the user is not verified", () => {
-        const me = { identityVerified: false }
+        const me = { isIdentityVerified: false }
 
         const { getByText } = renderWithWrappers(
           <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
@@ -452,11 +459,11 @@ describe("BidButton", () => {
         })
 
         expect(getByText("Register to bid")).toBeTruthy()
-        expect(getByText("Identity verification required to bid.")).toBeTruthy()
+        expect(getByText(/Identity verification required to bid./)).toBeTruthy()
       })
 
       it("displays 'Bid' if the user is verified", () => {
-        const me = { identityVerified: true }
+        const me = { isIdentityVerified: true }
 
         const { getByText, queryByText } = renderWithWrappers(
           <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
@@ -479,7 +486,7 @@ describe("BidButton", () => {
             },
           },
         })
-        const me = { identityVerified: false }
+        const me = { isIdentityVerified: false }
 
         const { getByText, queryByText } = renderWithWrappers(
           <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />

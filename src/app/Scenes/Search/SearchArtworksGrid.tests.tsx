@@ -1,96 +1,75 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { SearchArtworksGridTestsQuery } from "__generated__/SearchArtworksGridTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { SearchArtworksGridPaginationContainer } from "./SearchArtworksGrid"
 
 jest.unmock("react-relay")
 
 describe("SearchArtworksGrid", () => {
-  let environment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    environment = createMockEnvironment()
+  const { renderWithRelay } = setupTestWrapper<SearchArtworksGridTestsQuery>({
+    Component: ({ viewer }) => (
+      <ArtworkFiltersStoreProvider>
+        <SearchArtworksGridPaginationContainer viewer={viewer!} keyword="Art" />
+      </ArtworkFiltersStoreProvider>
+    ),
+    query: graphql`
+      query SearchArtworksGridTestsQuery($input: FilterArtworksInput, $count: Int, $keyword: String)
+      @relay_test_operation {
+        viewer {
+          ...SearchArtworksGrid_viewer @arguments(input: $input, keyword: $keyword, count: $count)
+        }
+      }
+    `,
+    variables: {
+      count: 20,
+      keyword: "Art",
+    },
   })
 
-  const TestRenderer = () => {
-    return (
-      <ArtworkFiltersStoreProvider>
-        <QueryRenderer<SearchArtworksGridTestsQuery>
-          environment={environment}
-          query={graphql`
-            query SearchArtworksGridTestsQuery(
-              $input: FilterArtworksInput
-              $count: Int
-              $keyword: String
-            ) @relay_test_operation {
-              viewer {
-                ...SearchArtworksGrid_viewer
-                  @arguments(input: $input, keyword: $keyword, count: $count)
-              }
-            }
-          `}
-          render={({ props }) => {
-            if (props?.viewer) {
-              return <SearchArtworksGridPaginationContainer viewer={props.viewer} keyword="Art" />
-            }
-            return null
-          }}
-          variables={{
-            count: 20,
-            keyword: "Art",
-          }}
-        />
-      </ArtworkFiltersStoreProvider>
-    )
-  }
-
   it("tracks filter modal opening", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment)
-    fireEvent.press(getByText("Sort & Filter"))
+    renderWithRelay()
+
+    fireEvent.press(screen.getByText("Sort & Filter"))
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-        Array [
-          Object {
-            "action_name": "filter",
-            "action_type": "tap",
-            "context_screen": "Search",
-            "context_screen_owner_id": null,
-            "context_screen_owner_slug": null,
-            "context_screen_owner_type": "Search",
-          },
-        ]
-      `)
+      [
+        {
+          "action_name": "filter",
+          "action_type": "tap",
+          "context_screen": "Search",
+          "context_screen_owner_id": null,
+          "context_screen_owner_slug": null,
+          "context_screen_owner_type": "Search",
+        },
+      ]
+    `)
   })
 
   it("tracks filter modal closing", () => {
-    const { container } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment)
-    container.findByType(FancyModal).props.onBackgroundPressed()
+    renderWithRelay()
+
+    screen.UNSAFE_getByType(FancyModal).props.onBackgroundPressed()
+
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-        Array [
-          Object {
-            "action_name": "closeFilterWindow",
-            "action_type": "tap",
-            "context_screen": "Search",
-            "context_screen_owner_id": null,
-            "context_screen_owner_slug": null,
-            "context_screen_owner_type": "Search",
-          },
-        ]
-      `)
+      [
+        {
+          "action_name": "closeFilterWindow",
+          "action_type": "tap",
+          "context_screen": "Search",
+          "context_screen_owner_id": null,
+          "context_screen_owner_slug": null,
+          "context_screen_owner_type": "Search",
+        },
+      ]
+    `)
   })
 
   it('should display "Sort & Filter" label by default', () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
+    renderWithRelay()
 
-    resolveMostRecentRelayOperation(environment)
-
-    expect(getByText("Sort & Filter")).toBeTruthy()
+    expect(screen.queryByText("Sort & Filter")).toBeTruthy()
   })
 })

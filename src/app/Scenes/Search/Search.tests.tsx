@@ -5,10 +5,8 @@ import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import { useExperimentFlag } from "app/utils/experiments/hooks"
 import { isPad } from "app/utils/hardware"
 import { Pill } from "palette"
-import { Keyboard } from "react-native"
 import { RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { SearchScreen } from "./Search"
@@ -51,16 +49,12 @@ jest.mock("lodash", () => ({
   },
 }))
 
-jest.mock("app/utils/experiments/hooks", () => ({
-  ...jest.requireActual("app/utils/experiments/hooks"),
-  useExperimentFlag: jest.fn(),
-}))
-
 describe("Search Screen", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
     require("app/relay/createEnvironment").reset()
+    ;(isPad as jest.Mock).mockReset()
     mockEnvironment = require("app/relay/createEnvironment").defaultEnvironment
   })
 
@@ -77,13 +71,7 @@ describe("Search Screen", () => {
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
-        system: {
-          algolia: {
-            appID: "",
-            apiKey: "",
-            indices: [{ name: "Artist_staging", displayName: "Artists", key: "artist" }],
-          },
-        },
+        system,
       }),
     })
 
@@ -109,18 +97,12 @@ describe("Search Screen", () => {
 
   it("does not show city guide entrance when on iPad", async () => {
     const isPadMock = isPad as jest.Mock
-    isPadMock.mockImplementationOnce(() => true)
+    isPadMock.mockImplementation(() => true)
     renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
-        system: {
-          algolia: {
-            appID: "",
-            apiKey: "",
-            indices: [{ name: "Artist_staging", displayName: "Artists", key: "artist" }],
-          },
-        },
+        system,
       }),
     })
 
@@ -135,17 +117,11 @@ describe("Search Screen", () => {
       },
     })
     const isPadMock = isPad as jest.Mock
-    isPadMock.mockImplementationOnce(() => false)
+    isPadMock.mockImplementation(() => false)
     renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
-        system: {
-          algolia: {
-            appID: "",
-            apiKey: "",
-            indices: [{ name: "Artist_staging", displayName: "Artists", key: "artist" }],
-          },
-        },
+        system,
       }),
     })
 
@@ -157,13 +133,7 @@ describe("Search Screen", () => {
     renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
-        system: {
-          algolia: {
-            appID: "",
-            apiKey: "",
-            indices: [{ name: "Artist_staging", displayName: "Artists", key: "artist" }],
-          },
-        },
+        system,
       }),
     })
 
@@ -211,99 +181,42 @@ describe("Search Screen", () => {
   })
 
   describe("search pills", () => {
-    describe("when improved search pills are enabled", () => {
-      const mockUseExperimentFlag = useExperimentFlag as jest.Mock
-
-      beforeEach(() => {
-        mockUseExperimentFlag.mockImplementation(() => true)
-      })
-
-      it("are displayed when the user has typed the minimum allowed number of characters", async () => {
-        renderWithWrappers(<TestRenderer />)
-
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          Query: () => ({
-            system: {
-              algolia: {
-                appID: "",
-                apiKey: "",
-                indices: INDICES,
-              },
-            },
-          }),
-        })
-
-        await flushPromiseQueue()
-
-        expect(screen.queryByText("Top")).toBeFalsy()
-        expect(screen.queryByText("Artist")).toBeFalsy()
-        expect(screen.queryByText("Auction")).toBeFalsy()
-        expect(screen.queryByText("Gallery")).toBeFalsy()
-        expect(screen.queryByText("Fair")).toBeFalsy()
-
-        const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
-        fireEvent(searchInput, "changeText", "Ba")
-
-        expect(screen.queryByText("Top")).toBeTruthy()
-        expect(screen.queryByText("Artist")).toBeTruthy()
-        expect(screen.queryByText("Auction")).toBeTruthy()
-        expect(screen.queryByText("Gallery")).toBeTruthy()
-        expect(screen.queryByText("Fair")).toBeTruthy()
-      })
-
-      it("have top pill selected and disabled at the same time", async () => {
-        renderWithWrappers(<TestRenderer />)
-
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          Query: () => ({
-            system: {
-              algolia: {
-                appID: "",
-                apiKey: "",
-                indices: INDICES,
-              },
-            },
-          }),
-        })
-
-        await flushPromiseQueue()
-
-        const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
-        fireEvent(searchInput, "changeText", "Ba")
-        const topPill = screen.getByA11yState({ selected: true, disabled: true })
-        expect(topPill).toHaveTextContent("Top")
-      })
-
-      it("are enabled when they have results", async () => {
-        renderWithWrappers(<TestRenderer />)
-
-        resolveMostRecentRelayOperation(mockEnvironment, {
-          Query: () => ({
-            system: {
-              algolia: {
-                appID: "",
-                apiKey: "",
-                indices: INDICES,
-              },
-            },
-          }),
-        })
-        await flushPromiseQueue()
-
-        const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
-        fireEvent(searchInput, "changeText", "Ba")
-        const enabledPills = screen
-          .UNSAFE_getAllByType(Pill)
-          .filter((pill) => pill.props.disabled === false)
-        expect(enabledPills).toHaveLength(3)
-        expect(enabledPills[0]).toHaveTextContent("Artworks")
-        expect(enabledPills[1]).toHaveTextContent("Artist")
-        expect(enabledPills[2]).toHaveTextContent("Gallery")
-      })
-    })
-
     it("are displayed when the user has typed the minimum allowed number of characters", async () => {
       renderWithWrappers(<TestRenderer />)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Query: () => ({
+          system: {
+            algolia: {
+              appID: "",
+              apiKey: "",
+              indices: INDICES,
+            },
+          },
+        }),
+      })
+
+      await flushPromiseQueue()
+
+      expect(screen.queryByText("Top")).toBeFalsy()
+      expect(screen.queryByText("Artist")).toBeFalsy()
+      expect(screen.queryByText("Auction")).toBeFalsy()
+      expect(screen.queryByText("Gallery")).toBeFalsy()
+      expect(screen.queryByText("Fair")).toBeFalsy()
+
+      const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
+      fireEvent(searchInput, "changeText", "Ba")
+
+      expect(screen.queryByText("Top")).toBeTruthy()
+      expect(screen.queryByText("Artist")).toBeTruthy()
+      expect(screen.queryByText("Auction")).toBeTruthy()
+      expect(screen.queryByText("Gallery")).toBeTruthy()
+      expect(screen.queryByText("Fair")).toBeTruthy()
+    })
+
+    it("have top pill selected and disabled at the same time", async () => {
+      renderWithWrappers(<TestRenderer />)
+
       resolveMostRecentRelayOperation(mockEnvironment, {
         Query: () => ({
           system: {
@@ -319,23 +232,12 @@ describe("Search Screen", () => {
       await flushPromiseQueue()
 
       const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
-
-      expect(screen.queryByText("Top")).toBeFalsy()
-      expect(screen.queryByText("Artist")).toBeFalsy()
-      expect(screen.queryByText("Auction")).toBeFalsy()
-      expect(screen.queryByText("Gallery")).toBeFalsy()
-      expect(screen.queryByText("Fair")).toBeFalsy()
-
       fireEvent(searchInput, "changeText", "Ba")
-
-      expect(screen.queryByText("Top")).toBeTruthy()
-      expect(screen.queryByText("Artist")).toBeTruthy()
-      expect(screen.queryByText("Auction")).toBeTruthy()
-      expect(screen.queryByText("Gallery")).toBeTruthy()
-      expect(screen.queryByText("Fair")).toBeTruthy()
+      const topPill = screen.getByA11yState({ selected: true, disabled: true })
+      expect(topPill).toHaveTextContent("Top")
     })
 
-    it("hide keyboard when selecting other pill", async () => {
+    it("are enabled when they have results", async () => {
       renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
@@ -344,216 +246,252 @@ describe("Search Screen", () => {
             algolia: {
               appID: "",
               apiKey: "",
-              indices: [{ name: "Artist_staging", displayName: "Artist", key: "artist" }],
+              indices: INDICES,
             },
           },
         }),
       })
-
       await flushPromiseQueue()
 
       const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
-      const keyboardDismissSpy = jest.spyOn(Keyboard, "dismiss")
       fireEvent(searchInput, "changeText", "Ba")
-      fireEvent(screen.getByText("Artist"), "press")
-      expect(keyboardDismissSpy).toHaveBeenCalled()
+      const enabledPills = screen
+        .UNSAFE_getAllByType(Pill)
+        .filter((pill) => pill.props.disabled === false)
+      expect(enabledPills).toHaveLength(3)
+      expect(enabledPills[0]).toHaveTextContent("Artworks")
+      expect(enabledPills[1]).toHaveTextContent("Artist")
+      expect(enabledPills[2]).toHaveTextContent("Gallery")
+    })
+  })
+
+  it("are displayed when the user has typed the minimum allowed number of characters", async () => {
+    renderWithWrappers(<TestRenderer />)
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Query: () => ({
+        system: {
+          algolia: {
+            appID: "",
+            apiKey: "",
+            indices: INDICES,
+          },
+        },
+      }),
     })
 
-    it("should track event when a pill is tapped", async () => {
-      renderWithWrappers(<TestRenderer />)
+    await flushPromiseQueue()
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Query: () => ({
-          system: {
-            algolia: {
-              appID: "",
-              apiKey: "",
-              indices: [{ name: "Artist_staging", displayName: "Artist", key: "artist" }],
-            },
+    const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
+
+    expect(screen.queryByText("Top")).toBeFalsy()
+    expect(screen.queryByText("Artist")).toBeFalsy()
+    expect(screen.queryByText("Auction")).toBeFalsy()
+    expect(screen.queryByText("Gallery")).toBeFalsy()
+    expect(screen.queryByText("Fair")).toBeFalsy()
+
+    fireEvent(searchInput, "changeText", "Ba")
+
+    expect(screen.queryByText("Top")).toBeTruthy()
+    expect(screen.queryByText("Artist")).toBeTruthy()
+    expect(screen.queryByText("Auction")).toBeTruthy()
+    expect(screen.queryByText("Gallery")).toBeTruthy()
+    expect(screen.queryByText("Fair")).toBeTruthy()
+  })
+
+  it("should track event when a pill is tapped", async () => {
+    renderWithWrappers(<TestRenderer />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Query: () => ({
+        system: {
+          algolia: {
+            appID: "",
+            apiKey: "",
+            indices: [{ name: "Artist_staging", displayName: "Artist", key: "artist" }],
           },
-        }),
-      })
-
-      await flushPromiseQueue()
-
-      const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
-      fireEvent(searchInput, "changeText", "text")
-
-      fireEvent(screen.getByText("Artist"), "press")
-      expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
-        Array [
-          Object {
-            "action": "tappedNavigationTab",
-            "context_module": "topTab",
-            "context_screen": "Search",
-            "context_screen_owner_type": "search",
-            "query": "text",
-            "subject": "Artist",
-          },
-        ]
-      `)
+        },
+      }),
     })
 
-    it("should correctly track the previously applied pill context module", async () => {
-      renderWithWrappers(<TestRenderer />)
+    await flushPromiseQueue()
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Query: () => ({
-          system: {
-            algolia: {
-              appID: "",
-              apiKey: "",
-              indices: [{ name: "Artist_staging", displayName: "Artist", key: "artist" }],
-            },
+    const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
+    fireEvent(searchInput, "changeText", "text")
+
+    fireEvent(screen.getByText("Artist"), "press")
+    expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
+      [
+        {
+          "action": "tappedNavigationTab",
+          "context_module": "topTab",
+          "context_screen": "Search",
+          "context_screen_owner_type": "search",
+          "query": "text",
+          "subject": "Artist",
+        },
+      ]
+    `)
+  })
+
+  it("should correctly track the previously applied pill context module", async () => {
+    renderWithWrappers(<TestRenderer />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Query: () => ({
+        system: {
+          algolia: {
+            appID: "",
+            apiKey: "",
+            indices: [{ name: "Artist_staging", displayName: "Artist", key: "artist" }],
           },
-        }),
-      })
-
-      await flushPromiseQueue()
-
-      const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
-      fireEvent(searchInput, "changeText", "text")
-
-      fireEvent(screen.getByText("Artist"), "press")
-      expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
-        Array [
-          Object {
-            "action": "tappedNavigationTab",
-            "context_module": "topTab",
-            "context_screen": "Search",
-            "context_screen_owner_type": "search",
-            "query": "text",
-            "subject": "Artist",
-          },
-        ]
-      `)
-
-      fireEvent(screen.getByText("Artworks"), "press")
-      expect(mockTrackEvent.mock.calls[2]).toMatchInlineSnapshot(`
-        Array [
-          Object {
-            "action": "tappedNavigationTab",
-            "context_module": "artistsTab",
-            "context_screen": "Search",
-            "context_screen_owner_type": "search",
-            "query": "text",
-            "subject": "Artworks",
-          },
-        ]
-      `)
+        },
+      }),
     })
 
-    it("should render all allowed algolia indices", async () => {
-      renderWithWrappers(<TestRenderer />)
+    await flushPromiseQueue()
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Query: () => ({
-          system: {
-            algolia: {
-              appID: "",
-              apiKey: "",
-              indices: [
-                {
-                  displayName: "Artist",
-                  key: "artist",
-                  name: "Artist_staging",
-                },
-                {
-                  displayName: "Article",
-                  key: "article",
-                  name: "Article_staging",
-                },
-                {
-                  displayName: "Auction",
-                  key: "sale",
-                  name: "Sale_staging",
-                },
-                {
-                  displayName: "Artist Series",
-                  key: "artist_series",
-                  name: "ArtistSeries_staging",
-                },
-                {
-                  displayName: "Collection",
-                  key: "marketing_collection",
-                  name: "MarketingCollection_staging",
-                },
-                {
-                  displayName: "Fair",
-                  key: "fair",
-                  name: "Fair_staging",
-                },
-                {
-                  displayName: "Show",
-                  key: "partner_show",
-                  name: "PartnerShow_staging",
-                },
-                {
-                  displayName: "Gallery",
-                  key: "partner_gallery",
-                  name: "PartnerGallery_staging",
-                },
-              ],
-            },
+    const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
+    fireEvent(searchInput, "changeText", "text")
+
+    fireEvent(screen.getByText("Artist"), "press")
+    expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
+      [
+        {
+          "action": "tappedNavigationTab",
+          "context_module": "topTab",
+          "context_screen": "Search",
+          "context_screen_owner_type": "search",
+          "query": "text",
+          "subject": "Artist",
+        },
+      ]
+    `)
+
+    fireEvent(screen.getByText("Artworks"), "press")
+    expect(mockTrackEvent.mock.calls[2]).toMatchInlineSnapshot(`
+      [
+        {
+          "action": "tappedNavigationTab",
+          "context_module": "artistsTab",
+          "context_screen": "Search",
+          "context_screen_owner_type": "search",
+          "query": "text",
+          "subject": "Artworks",
+        },
+      ]
+    `)
+  })
+
+  it("should render all allowed algolia indices", async () => {
+    renderWithWrappers(<TestRenderer />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Query: () => ({
+        system: {
+          algolia: {
+            appID: "",
+            apiKey: "",
+            indices: [
+              {
+                displayName: "Artist",
+                key: "artist",
+                name: "Artist_staging",
+              },
+              {
+                displayName: "Article",
+                key: "article",
+                name: "Article_staging",
+              },
+              {
+                displayName: "Auction",
+                key: "sale",
+                name: "Sale_staging",
+              },
+              {
+                displayName: "Artist Series",
+                key: "artist_series",
+                name: "ArtistSeries_staging",
+              },
+              {
+                displayName: "Collection",
+                key: "marketing_collection",
+                name: "MarketingCollection_staging",
+              },
+              {
+                displayName: "Fair",
+                key: "fair",
+                name: "Fair_staging",
+              },
+              {
+                displayName: "Show",
+                key: "partner_show",
+                name: "PartnerShow_staging",
+              },
+              {
+                displayName: "Gallery",
+                key: "partner_gallery",
+                name: "PartnerGallery_staging",
+              },
+            ],
           },
-        }),
-      })
-
-      await flushPromiseQueue()
-
-      const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
-      act(() => fireEvent(searchInput, "changeText", "value"))
-
-      expect(screen.getByText("Artist")).toBeTruthy()
-      expect(screen.getByText("Article")).toBeTruthy()
-      expect(screen.getByText("Auction")).toBeTruthy()
-      expect(screen.getByText("Artist Series")).toBeTruthy()
-      expect(screen.getByText("Collection")).toBeTruthy()
-      expect(screen.getByText("Fair")).toBeTruthy()
-      expect(screen.getByText("Show")).toBeTruthy()
-      expect(screen.getByText("Gallery")).toBeTruthy()
+        },
+      }),
     })
 
-    it("should render only allowed algolia indices", async () => {
-      renderWithWrappers(<TestRenderer />)
+    await flushPromiseQueue()
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Query: () => ({
-          system: {
-            algolia: {
-              appID: "",
-              apiKey: "",
-              indices: [
-                {
-                  name: "Artist_staging",
-                  displayName: "Artist",
-                  key: "artist",
-                },
-                {
-                  name: "Gallery_staging",
-                  displayName: "Gallery",
-                  key: "partner_gallery",
-                },
-                {
-                  name: "Denied_staging",
-                  displayName: "Denied",
-                  key: "denied",
-                },
-              ],
-            },
+    const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
+    act(() => fireEvent(searchInput, "changeText", "value"))
+
+    expect(screen.getByText("Artist")).toBeTruthy()
+    expect(screen.getByText("Article")).toBeTruthy()
+    expect(screen.getByText("Auction")).toBeTruthy()
+    expect(screen.getByText("Artist Series")).toBeTruthy()
+    expect(screen.getByText("Collection")).toBeTruthy()
+    expect(screen.getByText("Fair")).toBeTruthy()
+    expect(screen.getByText("Show")).toBeTruthy()
+    expect(screen.getByText("Gallery")).toBeTruthy()
+  })
+
+  it("should render only allowed algolia indices", async () => {
+    renderWithWrappers(<TestRenderer />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Query: () => ({
+        system: {
+          algolia: {
+            appID: "",
+            apiKey: "",
+            indices: [
+              {
+                name: "Artist_staging",
+                displayName: "Artist",
+                key: "artist",
+              },
+              {
+                name: "Gallery_staging",
+                displayName: "Gallery",
+                key: "partner_gallery",
+              },
+              {
+                name: "Denied_staging",
+                displayName: "Denied",
+                key: "denied",
+              },
+            ],
           },
-        }),
-      })
-
-      await flushPromiseQueue()
-
-      const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
-      fireEvent(searchInput, "changeText", "value")
-
-      expect(screen.getByText("Artist")).toBeTruthy()
-      expect(screen.getByText("Gallery")).toBeTruthy()
-      expect(screen.queryByText("Denied")).toBeFalsy()
+        },
+      }),
     })
+
+    await flushPromiseQueue()
+
+    const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
+    fireEvent(searchInput, "changeText", "value")
+
+    expect(screen.getByText("Artist")).toBeTruthy()
+    expect(screen.getByText("Gallery")).toBeTruthy()
+    expect(screen.queryByText("Denied")).toBeFalsy()
   })
 
   describe("the top pill is selected by default", () => {
@@ -588,14 +526,14 @@ describe("Search Screen", () => {
       expect(screen.queryByA11yState({ selected: true })).toHaveTextContent("Top")
     })
 
-    it("when the query is changed", () => {
+    it("when search query is changed", () => {
       const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
 
       fireEvent(searchInput, "changeText", "12")
       fireEvent(screen.getByText("Artists"), "press")
       fireEvent(searchInput, "changeText", "123")
 
-      expect(screen.queryByA11yState({ selected: true })).toHaveTextContent("Top")
+      expect(screen.queryByA11yState({ selected: true })).toHaveTextContent("Artists")
     })
 
     it("when clear button is pressed", () => {
@@ -664,19 +602,97 @@ describe("Search Screen", () => {
     act(() => fireEvent.press(screen.getByText("Banksy")))
 
     expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "action": "selectedResultFromSearchScreen",
           "context_module": "topTab",
           "context_screen": "Search",
           "context_screen_owner_type": "Search",
           "position": 0,
           "query": "text",
-          "selected_object_slug": "<mock-value-for-field-\\"slug\\">",
-          "selected_object_type": "<mock-value-for-field-\\"displayType\\">",
+          "selected_object_slug": "<mock-value-for-field-"slug">",
+          "selected_object_type": "<mock-value-for-field-"displayType">",
         },
       ]
     `)
+  })
+
+  describe("Search discovery content", () => {
+    describe("Treding artists section", () => {
+      it("should NOT be rendered when feature flag is disabled", async () => {
+        __globalStoreTestUtils__?.injectFeatureFlags({
+          AREnableSearchDiscoveryContentIOS: false,
+          AREnableSearchDiscoveryContentAndroid: false,
+        })
+
+        renderWithWrappers(<TestRenderer />)
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Query: () => ({
+            system,
+          }),
+        })
+
+        await flushPromiseQueue()
+
+        expect(screen.queryByText("Trending Artists")).toBeNull()
+      })
+
+      it("should be rendered when feature flag is enabled", async () => {
+        __globalStoreTestUtils__?.injectFeatureFlags({
+          AREnableSearchDiscoveryContentIOS: true,
+          AREnableSearchDiscoveryContentAndroid: true,
+        })
+
+        renderWithWrappers(<TestRenderer />)
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Query: () => ({
+            system,
+          }),
+        })
+
+        await flushPromiseQueue()
+
+        expect(screen.getByText("Trending Artists")).toBeTruthy()
+      })
+    })
+
+    describe("Artsy Collections section", () => {
+      it("should NOT be rendered when feature flag is disabled", async () => {
+        __globalStoreTestUtils__?.injectFeatureFlags({
+          AREnableSearchDiscoveryContentIOS: false,
+          AREnableSearchDiscoveryContentAndroid: false,
+        })
+
+        renderWithWrappers(<TestRenderer />)
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Query: () => ({
+            system,
+          }),
+        })
+
+        await flushPromiseQueue()
+
+        expect(screen.queryByText("Artsy Collections")).toBeNull()
+      })
+
+      it("should be rendered when feature flag is enabled", async () => {
+        __globalStoreTestUtils__?.injectFeatureFlags({
+          AREnableSearchDiscoveryContentIOS: true,
+          AREnableSearchDiscoveryContentAndroid: true,
+        })
+
+        renderWithWrappers(<TestRenderer />)
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Query: () => ({
+            system,
+          }),
+        })
+
+        await flushPromiseQueue()
+
+        expect(screen.getByText("Artsy Collections")).toBeTruthy()
+      })
+    })
   })
 })
 
@@ -686,3 +702,11 @@ const INDICES = [
   { name: "Gallery_staging", displayName: "Gallery", key: "partner_gallery" },
   { name: "Fair_staging", displayName: "Fair", key: "fair" },
 ]
+
+const system = {
+  algolia: {
+    appID: "",
+    apiKey: "",
+    indices: [{ name: "Artist_staging", displayName: "Artists", key: "artist" }],
+  },
+}

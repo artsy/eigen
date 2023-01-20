@@ -1,4 +1,4 @@
-import { fireEvent, within } from "@testing-library/react-native"
+import { fireEvent } from "@testing-library/react-native"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Checkbox } from "palette"
 import { ArtworkFilterOptionItem, ArtworkFilterOptionItemProps } from "./ArtworkFilterOptionItem"
@@ -27,7 +27,7 @@ describe("ArtworkFilterOptionItem", () => {
   it("should render count label if it is passed", () => {
     const { getByText } = renderWithWrappers(<TestWrapper count={3} />)
 
-    expect(within(getByText("Rarity")).getByText("• 3")).toBeTruthy()
+    expect(getByText("Rarity • 3")).toBeTruthy()
   })
 
   it('should call "onPress" handler when item is pressed', () => {

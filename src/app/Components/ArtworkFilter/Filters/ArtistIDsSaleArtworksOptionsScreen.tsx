@@ -10,6 +10,7 @@ import {
   ArtworksFiltersStore,
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { sortBy } from "lodash"
 import { MultiSelectCheckOptionScreen } from "./MultiSelectCheckOption"
 import { useMultiSelect } from "./useMultiSelect"
 
@@ -34,15 +35,16 @@ export const ArtistIDsSaleArtworksOptionsScreen: React.FC<
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const aggregation = aggregationForFilter(paramName, aggregations)
 
-  const options: FilterData[] | undefined =
-    aggregation?.counts.map((aggCount) => {
-      return {
-        displayText: aggCount.name,
-        paramName,
-        paramValue: aggCount.value,
-        count: aggCount.count,
-      }
-    }) ?? []
+  const aggregationCounts = aggregation?.counts ?? []
+  const rawOptions: FilterData[] = aggregationCounts.map((aggCount) => {
+    return {
+      displayText: aggCount.name,
+      paramName,
+      paramValue: aggCount.value,
+      count: aggCount.count,
+    }
+  })
+  const options = sortBy(rawOptions, ["displayText"])
 
   const selectedOptions = useSelectedOptionsDisplay()
   const { handleSelect, handleClear, isActive, isSelected } = useMultiSelect({

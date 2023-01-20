@@ -62,7 +62,7 @@ export const getEchoModel = (): EchoModel => ({
     }
   ),
   stripePublishableKey: computed(
-    [(_, store) => store.artsyPrefs.environment.env, (state) => state],
+    [(_, store) => store.devicePrefs.environment.env, (state) => state],
     (env, state) => {
       const key =
         env === "production" ? "StripeProductionPublishableKey" : "StripeStagingPublishableKey"

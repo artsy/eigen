@@ -190,13 +190,18 @@ export const DEFAULT_FILTERS: FilterArray = [
   { paramName: FilterParamName.organizations, paramValue: [], displayText: "All" },
   { paramName: FilterParamName.priceRange, paramValue: "*-*", displayText: "All" },
   { paramName: FilterParamName.sizes, paramValue: [], displayText: "All" },
+  { paramName: FilterParamName.state, paramValue: "ALL", displayText: "All" },
   { paramName: FilterParamName.partnerIDs, paramValue: [], displayText: "All" },
   { paramName: FilterParamName.keyword, paramValue: "", displayText: "All" },
   { paramName: FilterParamName.locationCities, paramValue: [], displayText: "All" },
   { paramName: FilterParamName.colors, displayText: "All" },
   { paramName: FilterParamName.timePeriod, paramValue: [], displayText: "All" },
-  { paramName: FilterParamName.waysToBuyBuy, paramValue: false, displayText: "Buy Now" },
-  { paramName: FilterParamName.waysToBuyInquire, paramValue: false, displayText: "Inquire" },
+  { paramName: FilterParamName.waysToBuyPurchase, paramValue: false, displayText: "Purchase" },
+  {
+    paramName: FilterParamName.waysToBuyContactGallery,
+    paramValue: false,
+    displayText: "Contact Gallery",
+  },
   { paramName: FilterParamName.waysToBuyMakeOffer, paramValue: false, displayText: "Make Offer" },
   { paramName: FilterParamName.waysToBuyBid, paramValue: false, displayText: "Bid" },
   {
@@ -222,7 +227,7 @@ export const selectedOptionsUnion = ({
     artwork: {
       paramName: FilterParamName.sort,
       paramValue: "-decayed_merch",
-      displayText: "Default",
+      displayText: "Recommended",
     },
     saleArtwork: {
       paramName: FilterParamName.sort,
@@ -248,17 +253,17 @@ export const selectedOptionsUnion = ({
     geneArtwork: {
       paramName: FilterParamName.sort,
       paramValue: "-partner_updated_at",
-      displayText: "Default",
+      displayText: "Recommended",
     },
     tagArtwork: {
       paramName: FilterParamName.sort,
       paramValue: "-partner_updated_at",
-      displayText: "Default",
+      displayText: "Recommended",
     },
     local: {
       paramName: FilterParamName.sort,
       paramValue: "",
-      displayText: "Default",
+      displayText: "Recommended",
     },
   }[filterType]
 

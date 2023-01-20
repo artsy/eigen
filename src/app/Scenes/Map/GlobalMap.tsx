@@ -565,7 +565,7 @@ export class GlobalMap extends React.Component<Props, State> {
         {({ color }) => (
           <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: color("black5") }}>
             <LoadingScreen
-              source={require("images/map-bg.webp")}
+              source={require("images/map-bg.png")}
               resizeMode="cover"
               style={{ ...this.backgroundImageSize }}
             />

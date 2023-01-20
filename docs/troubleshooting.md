@@ -1,5 +1,35 @@
 # Troubleshooting
 
+If things are not going right some of the things you can try are
+
+- Pulling from main branch
+- `yarn setup:artsy`
+- `yarn install:all`
+- `yarn relay`
+- `yarn pod-install-repo-update`
+- `open ios/Artsy.xcworkspace` -> Product -> Clean Build Folder (shift + command + K) **then** build the app again
+- `yarn doctor`
+
+Still nothing?
+
+- reinstall eigen
+
+  ![...Have you tried turning it off and on again?](https://y.yarn.co/1ab70c93-fce1-460d-8575-3bac5a666e96_text.gif)
+
+- No, seriously. Try turning the computer off and on again
+
+## asdf
+
+if your problems come from asdf package manager try
+
+- `asdf install node x.y.z`
+- `asdf local node x.y.z`
+
+- `asdf install`
+- `asdf reshim`
+
+- remove `.nvm` if it exists also on your home environment
+
 ## Installation Issues
 
 - Commit failed with: "ERROR: Potential secrets about to be committed to git repo!"

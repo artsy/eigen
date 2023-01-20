@@ -2,8 +2,7 @@ import { MyCollectionArtworkInsights_artwork$key } from "__generated__/MyCollect
 import { MyCollectionArtworkInsights_marketPriceInsights$key } from "__generated__/MyCollectionArtworkInsights_marketPriceInsights.graphql"
 import { MyCollectionArtworkInsights_me$key } from "__generated__/MyCollectionArtworkInsights_me.graphql"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
-import { useFeatureFlag } from "app/store/GlobalStore"
-import { Flex, Spacer } from "palette"
+import { Flex } from "palette"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { MyCollectionArtworkArtistAuctionResults } from "./Components/ArtworkInsights/MyCollectionArtworkArtistAuctionResults"
@@ -32,10 +31,6 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
   const me = useFragment(meFragment, restProps.me)
 
   const isP1Artist = artwork.artist?.targetSupply?.isP1
-  const isAlreadySubmitted = artwork.consignmentSubmission?.displayText
-
-  const showPriceEstimateBanner =
-    useFeatureFlag("ARShowRequestPriceEstimateBanner") && isP1Artist && !isAlreadySubmitted
 
   return (
     <StickyTabPageScrollView>
@@ -46,20 +41,14 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
               artwork={artwork}
               marketPriceInsights={artwork.marketPriceInsights}
             />
-            {!showPriceEstimateBanner && <Spacer p={1} />}
           </>
         )}
 
-        {!!showPriceEstimateBanner && (
-          <>
-            <RequestForPriceEstimateBanner
-              me={me}
-              artwork={artwork}
-              marketPriceInsights={marketPriceInsights}
-            />
-            <Spacer p={2} />
-          </>
-        )}
+        <RequestForPriceEstimateBanner
+          me={me}
+          artwork={artwork}
+          marketPriceInsights={marketPriceInsights}
+        />
 
         {!!artwork.marketPriceInsights && (
           <MyCollectionArtworkArtistMarket
@@ -87,9 +76,6 @@ const artworkFragment = graphql`
       targetSupply {
         isP1
       }
-    }
-    consignmentSubmission {
-      displayText
     }
     ...RequestForPriceEstimateBanner_artwork
     ...MyCollectionArtworkDemandIndex_artwork

@@ -97,6 +97,8 @@ export const AutosuggestSearchResult: React.FC<{
 
   const resultType = getResultType(result)
 
+  const initials = result.__typename === "Artist" ? result.initials : undefined
+
   return (
     <>
       <Touchable
@@ -104,7 +106,11 @@ export const AutosuggestSearchResult: React.FC<{
         testID={`autosuggest-search-result-${result.displayLabel}`}
       >
         <Flex height={IMAGE_SIZE} flexDirection="row" alignItems="center">
-          <SearchResultImage imageURL={result.imageUrl} resultType={resultType} />
+          <SearchResultImage
+            imageURL={result.imageUrl}
+            initials={initials}
+            resultType={resultType}
+          />
 
           <Spacer ml={1} />
 

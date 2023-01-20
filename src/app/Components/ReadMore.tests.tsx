@@ -1,4 +1,4 @@
-import { act, fireEvent, getDefaultNormalizer, within } from "@testing-library/react-native"
+import { act, fireEvent, getDefaultNormalizer, screen, within } from "@testing-library/react-native"
 import { navigate } from "app/navigation/navigate"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
@@ -79,7 +79,7 @@ describe("ReadMore", () => {
       />
     )
 
-    expect(within(getByText(/This/)).getByText(/te/)).toBeTruthy()
+    expect(getByText(/This te/)).toBeTruthy()
     expect(
       getByText(`Read${nbsp}more`, {
         normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
@@ -119,5 +119,21 @@ describe("ReadMore", () => {
     act(() => fireEvent.press(UNSAFE_getAllByType(LinkText)[0]))
 
     expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol")
+  })
+
+  it("doesn't break when it gets a text with dashes and special characters", () => {
+    const text = "- first \n- second \n- third \n * star \n & another one \n ' whatarethose"
+
+    renderWithWrappers(<ReadMore maxChars={7} content={text} />)
+
+    // should display - first... Read more in the beginning
+    expect(screen.queryByText(text)).toBeFalsy()
+    expect(screen.queryByText("- first... Read more")).toBeTruthy()
+
+    fireEvent.press(screen.getByText(/Read more/))
+
+    // after pressing read more, read more goes away and the full text is displayed
+    expect(screen.queryByText(text)).toBeTruthy()
+    expect(screen.queryByText(/Read more/)).toBeFalsy()
   })
 })

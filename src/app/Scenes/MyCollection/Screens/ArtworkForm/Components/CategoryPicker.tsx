@@ -1,25 +1,28 @@
-import { ConsignmentSubmissionCategoryAggregation } from "__generated__/createConsignSubmissionMutation.graphql"
-import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
-import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
-import { Select } from "palette/elements/Select"
+import { Select, SelectOption } from "palette/elements/Select"
 
-export const CategoryPicker: React.FC = () => {
-  const { formik } = useArtworkForm()
+interface ArtworkCategoryPickerProps<T> {
+  handleChange: (v: T) => void
+  options: Array<SelectOption<T>>
+  required?: boolean
+  value: T
+}
 
-  const handleValueChange = (value: ConsignmentSubmissionCategoryAggregation) => {
-    formik.handleChange("category")(value)
-  }
-
+export const CategoryPicker = <ValueType,>({
+  handleChange,
+  options,
+  required = true,
+  value,
+}: ArtworkCategoryPickerProps<ValueType>) => {
   return (
-    <Select
-      onSelectValue={handleValueChange}
-      value={formik.values.category}
+    <Select<ValueType>
+      onSelectValue={handleChange}
+      value={value}
       enableSearch={false}
       title="Medium"
       placeholder="Select"
       testID="CategorySelect"
-      required
-      options={artworkMediumCategories}
+      required={required}
+      options={options}
     />
   )
 }

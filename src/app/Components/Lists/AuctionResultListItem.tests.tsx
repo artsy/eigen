@@ -1,5 +1,6 @@
 import { AuctionResultListItemTestsQuery } from "__generated__/AuctionResultListItemTestsQuery.graphql"
 import { AuctionResultsMidEstimate } from "app/Components/AuctionResult/AuctionResultMidEstimate"
+import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { extractNodes } from "app/utils/extractNodes"
@@ -61,6 +62,9 @@ describe("AuctionResults", () => {
                   display: "$one gazillion",
                   displayUSD: "$one gazillion",
                 },
+                performance: {
+                  mid: "10",
+                },
                 artist: {
                   name: "artist-name",
                   slug: "artist-slug",
@@ -72,7 +76,7 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(tree.findByProps({ testID: "price" }).props.children).toBe("$one gazillion")
+    expect(extractText(tree.findByProps({ testID: "price" }))).toBe("$one gazillion (+10% est)")
     expect(tree.findAllByProps({ testID: "priceUSD" }).length).toBe(0)
   })
 
@@ -90,6 +94,9 @@ describe("AuctionResults", () => {
                   display: "€one gazillion",
                   displayUSD: "$one gazillion",
                 },
+                performance: {
+                  mid: "10",
+                },
                 artist: {
                   name: "artist-name",
                   slug: "artist-slug",
@@ -101,8 +108,10 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(tree.findByProps({ testID: "price" }).props.children).toBe("€one gazillion")
-    expect(tree.findByProps({ testID: "priceUSD" }).props.children).toBe("$one gazillion")
+    expect(extractText(tree.findByProps({ testID: "price" }))).toBe(
+      "€one gazillion • $one gazillion (+10% est)"
+    )
+    expect(extractText(tree.findByProps({ testID: "priceUSD" }))).toBe("$one gazillion")
   })
 
   it("renders auction result when auction results are not available yet", () => {
@@ -117,6 +126,9 @@ describe("AuctionResults", () => {
                 priceRealized: {
                   display: null,
                   displayUSD: null,
+                },
+                performance: {
+                  mid: "10",
                 },
                 saleDate: moment().subtract(1, "day").toISOString(),
               },
@@ -142,6 +154,9 @@ describe("AuctionResults", () => {
                 priceRealized: {
                   display: null,
                   displayUSD: null,
+                },
+                performance: {
+                  mid: "10",
                 },
                 saleDate: moment().subtract(2, "months").toISOString(),
                 boughtIn: true,

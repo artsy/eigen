@@ -1,63 +1,33 @@
+import { screen } from "@testing-library/react-native"
 import { PartnerEntityHeaderTestsQuery } from "__generated__/PartnerEntityHeaderTestsQuery.graphql"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
-import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { setupTestWrapper } from "app/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { PartnerEntityHeaderFragmentContainer } from "./PartnerEntityHeader"
 
 jest.unmock("react-relay")
 
 describe("PartnerEntityHeader", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    env = createMockEnvironment()
+  const { renderWithRelay } = setupTestWrapper<PartnerEntityHeaderTestsQuery>({
+    Component: (props) => <PartnerEntityHeaderFragmentContainer partner={props.partner!} />,
+    query: graphql`
+      query PartnerEntityHeaderTestsQuery($id: String!) @relay_test_operation {
+        partner(id: $id) {
+          ...PartnerEntityHeader_partner
+        }
+      }
+    `,
   })
 
-  const TestRenderer = () => (
-    <QueryRenderer<PartnerEntityHeaderTestsQuery>
-      environment={env}
-      query={graphql`
-        query PartnerEntityHeaderTestsQuery($id: String!) @relay_test_operation {
-          partner(id: $id) {
-            ...PartnerEntityHeader_partner
-          }
-        }
-      `}
-      variables={{ id: "example-partner" }}
-      render={({ props, error }) => {
-        if (props?.partner) {
-          return <PartnerEntityHeaderFragmentContainer partner={props.partner} />
-        } else if (error) {
-          console.log(error)
-        }
-      }}
-    />
-  )
-
-  const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, mockResolvers)
-      )
-    })
-    return tree
-  }
-
   it("renders correctly", () => {
-    const wrapper = getWrapper({
+    renderWithRelay({
       Partner: () => ({
         name: "Example Partner Name",
         cities: ["New York", "Berlin", "Tokyo", "Milan"],
       }),
     })
 
-    const text = extractText(wrapper.root)
-
-    expect(text).toContain("Example Partner Name")
-    expect(text).toContain("New York, Berlin, +2 more")
-    expect(text).toContain("Follow")
+    expect(screen.queryByText("Example Partner Name")).toBeTruthy()
+    expect(screen.queryByText("New York, Berlin, +2 more")).toBeTruthy()
+    expect(screen.queryByText("Follow")).toBeTruthy()
   })
 })

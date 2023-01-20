@@ -86,7 +86,7 @@ describe(RouteMatcher, () => {
         string: `the id is ${id} and the slug is ${slug}`,
       })).match(["home", "stephen", "thing", "blah"])
     ).toMatchInlineSnapshot(`
-      Object {
+      {
         "string": "the id is stephen and the slug is blah",
       }
     `)

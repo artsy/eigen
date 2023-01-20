@@ -67,8 +67,8 @@ describe("Full Artist Series List", () => {
     const seriesButton = wrapper.root.findAllByType(ArtistSeriesListItem)[0].findByType(Touchable)
     seriesButton.props.onPress()
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "action": "tappedArtistSeriesGroup",
           "context_module": "artistSeriesRail",
           "context_screen_owner_id": undefined,

@@ -181,8 +181,9 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
             (m) => m.paramValue
           ),
           // tslint:disable-next-line: no-shadowed-variable
-          localSortAndFilter: (artworks, mediums: string[]) =>
-            filter(artworks, (a) => mediums.includes(a.medium)),
+          localSortAndFilter: (artworks, mediums: string[]) => {
+            return filter(artworks, (a) => mediums.includes(a.mediumType?.name))
+          },
         },
         {
           displayText: FilterDisplayName.priceRange,

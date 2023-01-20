@@ -1,4 +1,3 @@
-import { within } from "@testing-library/react-native"
 import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "../ArtworkFilterStore"
@@ -81,7 +80,7 @@ describe("Galleries and Institutions Options Screen", () => {
     it("displays the number of the selected filters on the filter modal screen", () => {
       const { getByText } = renderWithWrappers(<MockFilterScreen initialState={state} />)
 
-      expect(within(getByText("Galleries & Institutions")).getByText("• 1")).toBeTruthy()
+      expect(getByText("Galleries & Institutions • 1")).toBeTruthy()
     })
 
     it("toggles selected filters 'ON' and unselected filters 'OFF", async () => {

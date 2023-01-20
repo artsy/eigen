@@ -10,6 +10,7 @@ import { Home_showsByFollowedArtists$data } from "__generated__/Home_showsByFoll
 import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
+import { LargeArtworkRailPlaceholder } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { SmallArtworkRailPlaceholder } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { ArtistRailFragmentContainer } from "app/Components/Home/ArtistRails/ArtistRail"
 import { RecommendedArtistsRailFragmentContainer } from "app/Components/Home/ArtistRails/RecommendedArtistsRail"
@@ -23,6 +24,8 @@ import { FairsRailFragmentContainer } from "app/Scenes/Home/Components/FairsRail
 import { SalesRailFragmentContainer } from "app/Scenes/Home/Components/SalesRail"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
+import { useExperimentVariant } from "app/utils/experiments/hooks"
+import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
 import { isPad } from "app/utils/hardware"
 import {
   PlaceholderBox,
@@ -41,16 +44,23 @@ import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { articlesQueryVariables } from "../Articles/Articles"
 import { lotsByArtistsYouFollowDefaultVariables } from "../LotsByArtistsYouFollow/LotsByArtistsYouFollow"
+import {
+  DEFAULT_RECS_MODEL_VERSION,
+  RECOMMENDATION_MODEL_EXPERIMENT_NAME,
+} from "../NewWorksForYou/NewWorksForYou"
 import { ViewingRoomsHomeMainRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { ActivityIndicator } from "./Components/ActivityIndicator"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { ArtworkRecommendationsRail } from "./Components/ArtworkRecommendationsRail"
+import { ContentCards } from "./Components/ContentCards"
+import { HomeFeedOnboardingRailFragmentContainer } from "./Components/HomeFeedOnboardingRail"
 import { HomeHeader } from "./Components/HomeHeader"
+import { HomeUpcomingAuctionsRail } from "./Components/HomeUpcomingAuctionsRail"
 import { NewWorksForYouRail } from "./Components/NewWorksForYouRail"
 import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
-import { TroveFragmentContainer } from "./Components/Trove"
 import { RailScrollRef } from "./Components/types"
 
+const LARGE_MODULE_SEPARATOR_HEIGHT = 4
 const MODULE_SEPARATOR_HEIGHT = 6
 
 interface HomeModule {
@@ -101,7 +111,9 @@ const Home = (props: Props) => {
     relay,
   } = props
 
-  const enableArtworkRecommendations = useFeatureFlag("AREnableHomeScreenArtworkRecommendations")
+  const enableMyCollectionHFOnboarding = useFeatureFlag("AREnableMyCollectionHFOnboarding")
+  const showUpcomingAuctionResultsRail = useFeatureFlag("ARShowUpcomingAuctionResultsRails")
+  const enableLargeNewWorksForYouRail = useLargeNewWorksForYouRail()
 
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
   let modules: HomeModule[] = compact([
@@ -110,7 +122,13 @@ const Home = (props: Props) => {
       title: "New Works for You",
       type: "newWorksForYou",
       data: newWorksForYou,
-      prefetchUrl: "/new-works-for-you",
+      prefetchUrl: "/new-for-you",
+    },
+    {
+      title: "",
+      type: "contentCards",
+      data: {},
+      prefetchUrl: "",
     },
     { title: "Your Active Bids", type: "artwork", data: homePageAbove?.activeBidsArtworkModule },
     {
@@ -129,18 +147,30 @@ const Home = (props: Props) => {
     },
     // Below-The-Fold Modules
     {
+      title: "Upcoming Auctions",
+      type: "upcoming-auctions",
+      data: meBelow,
+      hidden: !showUpcomingAuctionResultsRail,
+    },
+    {
       title: "Latest Auction Results",
       type: "auction-results",
       data: meBelow,
       prefetchUrl: "/auction-results-for-artists-you-follow",
     },
     {
-      title: "Market News",
+      title: "Artsy Editorial",
       type: "articles",
       data: articlesConnection,
       hidden: !articlesConnection,
       prefetchUrl: "/articles",
       prefetchVariables: articlesQueryVariables,
+    },
+    {
+      title: "Do More on Artsy",
+      type: "homeFeedOnboarding",
+      data: homePageBelow?.onboardingModule,
+      hidden: !enableMyCollectionHFOnboarding || !homePageBelow?.onboardingModule,
     },
     {
       title: "Recommended Artists",
@@ -152,7 +182,6 @@ const Home = (props: Props) => {
       type: "shows",
       data: showsByFollowedArtists,
     },
-    { title: "Trove", type: "trove", data: homePageBelow },
     {
       title: "Viewing Rooms",
       type: "viewing-rooms",
@@ -169,7 +198,6 @@ const Home = (props: Props) => {
       title: "Artwork Recommendations",
       type: "artworkRecommendations",
       data: meBelow,
-      hidden: !enableArtworkRecommendations,
     },
     {
       title: "Featured Fairs",
@@ -177,7 +205,7 @@ const Home = (props: Props) => {
       type: "fairs",
       data: homePageBelow?.fairsModule,
     },
-    { title: "Popular Artists", type: "artist", data: homePageBelow?.popularArtistsArtistModule },
+    { title: "Trending Artists", type: "artist", data: homePageBelow?.popularArtistsArtistModule },
     {
       title: "Recently Viewed",
       type: "artwork",
@@ -215,6 +243,16 @@ const Home = (props: Props) => {
             }
 
             switch (item.type) {
+              case "homeFeedOnboarding":
+                return (
+                  <HomeFeedOnboardingRailFragmentContainer
+                    title={item.title}
+                    onboardingModule={item.data}
+                    mb={MODULE_SEPARATOR_HEIGHT}
+                  />
+                )
+              case "contentCards":
+                return <ContentCards mb={MODULE_SEPARATOR_HEIGHT} />
               case "articles":
                 return (
                   <ArticlesRailFragmentContainer
@@ -291,7 +329,11 @@ const Home = (props: Props) => {
                     title={item.title}
                     artworkConnection={item.data}
                     scrollRef={scrollRefs.current[index]}
-                    mb={MODULE_SEPARATOR_HEIGHT}
+                    mb={
+                      enableLargeNewWorksForYouRail
+                        ? LARGE_MODULE_SEPARATOR_HEIGHT
+                        : MODULE_SEPARATOR_HEIGHT
+                    }
                   />
                 )
               case "recommended-artists":
@@ -320,9 +362,14 @@ const Home = (props: Props) => {
                     mb={MODULE_SEPARATOR_HEIGHT}
                   />
                 )
-
-              case "trove":
-                return <TroveFragmentContainer trove={item.data} mb={MODULE_SEPARATOR_HEIGHT} />
+              case "upcoming-auctions":
+                return (
+                  <HomeUpcomingAuctionsRail
+                    title={item.title}
+                    me={item.data}
+                    mb={MODULE_SEPARATOR_HEIGHT}
+                  />
+                )
               case "viewing-rooms":
                 return (
                   <ViewingRoomsHomeMainRail
@@ -335,7 +382,7 @@ const Home = (props: Props) => {
                 return null
             }
           }}
-          ListHeaderComponent={<HomeHeader me={meAbove} />}
+          ListHeaderComponent={<HomeHeader />}
           ListFooterComponent={() => <Flex mb={3}>{!!loading && <BelowTheFoldPlaceholder />}</Flex>}
           keyExtractor={(_item, index) => String(index)}
         />
@@ -343,6 +390,12 @@ const Home = (props: Props) => {
       </View>
     </ProvideScreenTracking>
   )
+}
+
+const useLargeNewWorksForYouRail = () => {
+  const railVariant = useExperimentVariant("eigen-new-works-for-you-rail-size")
+  const enforceLargeRail = useFeatureFlag("AREnforceLargeNewWorksRail")
+  return railVariant.variant === "experiment" || enforceLargeRail
 }
 
 const useHandleRefresh = (relay: RelayRefetchProp, modules: any[]) => {
@@ -391,8 +444,7 @@ export const HomeFragmentContainer = createRefetchContainer(
     `,
     // Make sure to exclude all modules that are part of "homePageAbove"
     homePageBelow: graphql`
-      fragment Home_homePageBelow on HomePage
-      @argumentDefinitions(heroImageVersion: { type: "HomePageHeroUnitImageVersion" }) {
+      fragment Home_homePageBelow on HomePage @argumentDefinitions {
         recentlyViewedWorksArtworkModule: artworkModule(key: RECENTLY_VIEWED_WORKS) {
           id
           ...ArtworkModuleRail_rail
@@ -401,7 +453,7 @@ export const HomeFragmentContainer = createRefetchContainer(
           id
           ...ArtworkModuleRail_rail
         }
-        popularArtistsArtistModule: artistModule(key: POPULAR) {
+        popularArtistsArtistModule: artistModule(key: CURATED_TRENDING) {
           id
           ...ArtistRail_rail
         }
@@ -411,12 +463,13 @@ export const HomeFragmentContainer = createRefetchContainer(
         marketingCollectionsModule {
           ...CollectionsRail_collectionsModule
         }
-        ...Trove_trove @arguments(heroImageVersion: $heroImageVersion)
+        onboardingModule @optionalField {
+          ...HomeFeedOnboardingRail_onboardingModule
+        }
       }
     `,
     meAbove: graphql`
       fragment Home_meAbove on Me {
-        ...HomeHeader_me
         ...EmailConfirmationBanner_me
         ...LotsByFollowedArtistsRail_me
       }
@@ -426,6 +479,7 @@ export const HomeFragmentContainer = createRefetchContainer(
         ...AuctionResultsRail_me
         ...RecommendedArtistsRail_me
         ...ArtworkRecommendationsRail_me
+        ...HomeUpcomingAuctionsRail_me
       }
     `,
     articlesConnection: graphql`
@@ -450,12 +504,12 @@ export const HomeFragmentContainer = createRefetchContainer(
     `,
   },
   graphql`
-    query HomeRefetchQuery($heroImageVersion: HomePageHeroUnitImageVersion!) {
+    query HomeRefetchQuery($worksForYouRecommendationsModelVariant: String) {
       homePage @optionalField {
         ...Home_homePageAbove
       }
       homePageBelow: homePage @optionalField {
-        ...Home_homePageBelow @arguments(heroImageVersion: $heroImageVersion)
+        ...Home_homePageBelow
       }
       me @optionalField {
         ...Home_meAbove
@@ -518,6 +572,9 @@ const BelowTheFoldPlaceholder: React.FC = () => {
 }
 
 const HomePlaceholder: React.FC = () => {
+  const enableLargeNewWorksForYouRail = useLargeNewWorksForYouRail()
+  const randomValue = useMemoizedRandom()
+
   return (
     <Flex>
       <Box mb={1} mt={2}>
@@ -533,8 +590,12 @@ const HomePlaceholder: React.FC = () => {
         <Box ml={2} mr={2}>
           <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
           <Spacer mb={0.3} />
-          <Flex flexDirection="row" mt={1}>
-            <SmallArtworkRailPlaceholder />
+          <Flex flexDirection="row">
+            {enableLargeNewWorksForYouRail ? (
+              <LargeArtworkRailPlaceholder />
+            ) : (
+              <SmallArtworkRailPlaceholder />
+            )}
           </Flex>
         </Box>
       }
@@ -547,7 +608,7 @@ const HomePlaceholder: React.FC = () => {
         <Spacer mb={0.3} />
         <Flex flexDirection="row" mt={0.5}>
           <Join separator={<Spacer width={15} />}>
-            {times(3 + useMemoizedRandom() * 10).map((index) => (
+            {times(3 + randomValue * 10).map((index) => (
               <Flex key={index}>
                 <PlaceholderBox key={index} height={180} width={295} />
                 <Spacer mb={1} mt={0.3} />
@@ -602,6 +663,21 @@ export const HomeQueryRenderer: React.FC = () => {
     flash_message?: string
   }
 
+  const worksForYouRecommendationsModel = useExperimentVariant(RECOMMENDATION_MODEL_EXPERIMENT_NAME)
+
+  useEffect(() => {
+    maybeReportExperimentVariant({
+      experimentName: RECOMMENDATION_MODEL_EXPERIMENT_NAME,
+      enabled: worksForYouRecommendationsModel.enabled,
+      variantName: worksForYouRecommendationsModel.variant,
+      payload: worksForYouRecommendationsModel.payload,
+      context_module: ContextModule.newWorksForYouRail,
+      context_owner_type: OwnerType.home,
+      context_owner_screen: OwnerType.home,
+      storeContext: true,
+    })
+  }, [])
+
   useEffect(() => {
     if (flash_message) {
       const message = messages[flash_message as keyof typeof messages]
@@ -623,7 +699,7 @@ export const HomeQueryRenderer: React.FC = () => {
       environment={defaultEnvironment}
       above={{
         query: graphql`
-          query HomeAboveTheFoldQuery {
+          query HomeAboveTheFoldQuery($worksForYouRecommendationsModelVariant: String!) {
             homePage @optionalField {
               ...Home_homePageAbove
             }
@@ -639,16 +715,19 @@ export const HomeQueryRenderer: React.FC = () => {
             }
           }
         `,
-        variables: {},
+        variables: {
+          worksForYouRecommendationsModelVariant:
+            worksForYouRecommendationsModel.payload || DEFAULT_RECS_MODEL_VERSION,
+        },
       }}
       below={{
         query: graphql`
-          query HomeBelowTheFoldQuery($heroImageVersion: HomePageHeroUnitImageVersion) {
+          query HomeBelowTheFoldQuery($worksForYouRecommendationsModelVariant: String!) {
             newWorksForYou: viewer @optionalField {
               ...Home_newWorksForYou
             }
             homePage @optionalField {
-              ...Home_homePageBelow @arguments(heroImageVersion: $heroImageVersion)
+              ...Home_homePageBelow
             }
             featured: viewingRooms(featured: true) @optionalField {
               ...Home_featured
@@ -663,7 +742,9 @@ export const HomeQueryRenderer: React.FC = () => {
             }
           }
         `,
-        variables: { heroImageVersion: isPad() ? "WIDE" : "NARROW" },
+        variables: {
+          worksForYouRecommendationsModelVariant: worksForYouRecommendationsModel.payload || "B",
+        },
       }}
       render={{
         renderComponent: ({ above, below }) => {

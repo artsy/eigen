@@ -81,12 +81,12 @@ const SavedWorks: React.FC<Props> = ({ me, relay, onDataFetching }) => {
       >
         <ZeroState
           bigTitle="Keep track of artworks you love"
-          subtitle="Tap the heart on an artwork to save it for later."
+          subtitle="Tap the heart on an artwork to find it again easily here."
           image={
             <>
               <Spacer mt={1} />
               <Image
-                source={require("images/SavesEmptyStateImage.webp")}
+                source={require("images/SavesEmptyStateImage.jpg")}
                 resizeMode="contain"
                 style={{
                   alignSelf: "center",
@@ -97,7 +97,7 @@ const SavedWorks: React.FC<Props> = ({ me, relay, onDataFetching }) => {
           }
           callToAction={
             <Button block onPress={() => navigate("/")}>
-              Browse works
+              Browse Works
             </Button>
           }
         />

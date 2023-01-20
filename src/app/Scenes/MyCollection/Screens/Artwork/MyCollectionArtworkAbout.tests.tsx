@@ -52,75 +52,65 @@ describe("MyCollectionArtworkAbout", () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  it("renders about the work section", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({
-      AREnablePriceEstimateRange: true,
+  describe("about the work section", () => {
+    it("renders the lables and the data when the data is available", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        AREnablePriceEstimateRange: true,
+      })
+
+      const { getByText } = renderWithWrappers(<TestRenderer />)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Query: () => artworkDataAvailable,
+      })
+
+      expect(getByText("Estimate Range")).toBeTruthy()
+      expect(getByText("$17,800 - $42,000")).toBeTruthy()
+      expect(getByText("Medium")).toBeTruthy()
+      expect(getByText("Oil on canvas")).toBeTruthy()
+      expect(getByText("Materials")).toBeTruthy()
+      expect(getByText("Painting")).toBeTruthy()
+      expect(getByText("Rarity")).toBeTruthy()
+      expect(getByText("Unique")).toBeTruthy()
+      expect(getByText("Dimensions")).toBeTruthy()
+      expect(getByText("Location")).toBeTruthy()
+      expect(getByText("Berlin")).toBeTruthy()
+      expect(getByText("39 2/5 × 40 9/10 in")).toBeTruthy()
+      expect(getByText("Year created")).toBeTruthy()
+      expect(getByText("2007")).toBeTruthy()
+      expect(getByText("Provenance")).toBeTruthy()
+      expect(getByText("Signed, Sealed, Delivered!")).toBeTruthy()
+      expect(getByText("Price Paid")).toBeTruthy()
+      expect(getByText("$12,000")).toBeTruthy()
     })
 
-    const { getByText } = renderWithWrappers(<TestRenderer />)
+    it("renders the lables and the empty value when the data is not available", () => {
+      const { getAllByText } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Query: () => ({
-        artwork: {
-          category: "Oil on Canvas",
-          medium: "Painting",
-          date: "2007",
-          provenance: "Signed, Sealed, Delivered!",
-          metric: "in",
-          dimensions: {
-            in: "39 2/5 × 40 9/10 in",
-            cm: "100 × 104 cm",
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Query: () => artworkDataNotAvailable,
+      })
+
+      expect(getAllByText("----")).toHaveLength(8)
+    })
+
+    it("renders size in cm", () => {
+      const { getByText } = renderWithWrappers(<TestRenderer />)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Query: () => ({
+          artwork: {
+            metric: "cm",
+            dimensions: {
+              in: "39 2/5 × 40 9/10 in",
+              cm: "100 × 104 cm",
+            },
           },
-        },
-        marketPriceInsights: {
-          lowRangeCents: 1780000,
-          highRangeCents: 4200000,
-        },
-      }),
+        }),
+      })
+
+      expect(getByText("100 × 104 cm")).toBeTruthy()
     })
-
-    expect(getByText("Estimate Range")).toBeTruthy()
-    expect(getByText("$17,800 - $42,000")).toBeTruthy()
-    expect(getByText("Medium")).toBeTruthy()
-    expect(getByText("Oil on canvas")).toBeTruthy()
-    expect(getByText("Materials")).toBeTruthy()
-    expect(getByText("Painting")).toBeTruthy()
-    expect(getByText("Dimensions")).toBeTruthy()
-    expect(getByText("39 2/5 × 40 9/10 in")).toBeTruthy()
-    expect(getByText("Year created")).toBeTruthy()
-    expect(getByText("2007")).toBeTruthy()
-    expect(getByText("Provenance")).toBeTruthy()
-    expect(getByText("Signed, Sealed, Delivered!")).toBeTruthy()
-  })
-
-  it("renders size in cm", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({
-      AREnablePriceEstimateRange: true,
-    })
-
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Query: () => ({
-        artwork: {
-          category: "Oil on Canvas",
-          medium: "Painting",
-          date: "2007",
-          provenance: "Signed, Sealed, Delivered!",
-          metric: "cm",
-          dimensions: {
-            in: "39 2/5 × 40 9/10 in",
-            cm: "100 × 104 cm",
-          },
-        },
-        marketPriceInsights: {
-          lowRangeCents: 1780000,
-          highRangeCents: 4200000,
-        },
-      }),
-    })
-
-    expect(getByText("100 × 104 cm")).toBeTruthy()
   })
 
   it("renders no estimate range when feature flag is disabled", async () => {
@@ -132,16 +122,6 @@ describe("MyCollectionArtworkAbout", () => {
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
-        artwork: {
-          category: "Oil on Canvas",
-          medium: "Painting",
-          date: "2007",
-          provenance: "Signed, Sealed, Delivered!",
-          dimensions: {
-            in: "39 2/5 × 40 9/10 in",
-            cm: "100 × 104 cm",
-          },
-        },
         marketPriceInsights: {
           lowRangeCents: 1780000,
           highRangeCents: 4200000,
@@ -153,50 +133,11 @@ describe("MyCollectionArtworkAbout", () => {
     expect(await queryByText("$17,800 - $42,000")).toBeFalsy()
   })
 
-  it("renders purchase details section", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Query: () => ({
-        artwork: {
-          pricePaid: { display: "€224,000" },
-        },
-        marketPriceInsights: {},
-      }),
-    })
-
-    expect(getByText("Purchase Details")).toBeTruthy()
-
-    expect(getByText("Price Paid")).toBeTruthy()
-    expect(getByText("€224,000")).toBeTruthy()
-  })
-
   it("renders articles section", () => {
     const { getByText, getByTestId } = renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
-      Query: () => ({
-        artwork: {
-          artistNames: "Banksy",
-          articles: {
-            edges: [
-              {
-                node: {
-                  id: "id1",
-                  internalID: "internalId1",
-                  slug: "article1",
-                  author: { name: "Artsy" },
-                  href: "/article/id1",
-                  thumbnailImage: { url: "https://article1/image" },
-                  thumbnailTitle: "article 1",
-                  vertical: "Art Market",
-                },
-              },
-            ],
-          },
-        },
-        marketPriceInsights: {},
-      }),
+      Query: () => articles,
     })
 
     expect(getByText("Articles featuring Banksy")).toBeTruthy()
@@ -207,15 +148,7 @@ describe("MyCollectionArtworkAbout", () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
-      Query: () => ({
-        artwork: {
-          artist: {
-            targetSupply: {
-              isP1: true,
-            },
-          },
-        },
-      }),
+      Query: () => artworkDataAvailable,
     })
     expect(getByText("Interested in Selling This Work?")).toBeTruthy()
   })
@@ -239,4 +172,95 @@ describe("MyCollectionArtworkAbout", () => {
       "Unable to find an element with text: Interested in Selling This Work?"
     )
   })
+  it("does not render Submit for Sale section if P1 artist and artwork was submited to sale", () => {
+    const { getByText } = renderWithWrappers(<TestRenderer />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Query: () => ({
+        artwork: {
+          artist: {
+            targetSupply: {
+              isP1: false,
+            },
+          },
+          submissionId: "someId",
+        },
+      }),
+    })
+
+    expect(() => getByText("Interested in Selling This Work?")).toThrow(
+      "Unable to find an element with text: Interested in Selling This Work?"
+    )
+  })
 })
+
+// submissionId: "someId",
+const artworkDataAvailable = {
+  artwork: {
+    category: "Oil on Canvas",
+    medium: "Painting",
+    date: "2007",
+    provenance: "Signed, Sealed, Delivered!",
+    metric: "in",
+    dimensions: {
+      in: "39 2/5 × 40 9/10 in",
+      cm: "100 × 104 cm",
+    },
+    attributionClass: {
+      name: "Unique",
+    },
+    artworkLocation: "Berlin",
+    pricePaid: {
+      display: "$12,000",
+    },
+    artist: {
+      targetSupply: {
+        isP1: true,
+      },
+    },
+    submissionId: null,
+  },
+  marketPriceInsights: {
+    lowRangeCents: 1780000,
+    highRangeCents: 4200000,
+  },
+}
+
+const artworkDataNotAvailable = {
+  artwork: {
+    category: "",
+    medium: "",
+    date: "",
+    provenance: null,
+    dimensions: {
+      in: null,
+      cm: null,
+    },
+    attributionClass: null,
+    artworkLocation: "",
+    pricePaid: null,
+  },
+}
+
+const articles = {
+  artwork: {
+    artistNames: "Banksy",
+    articles: {
+      edges: [
+        {
+          node: {
+            id: "id1",
+            internalID: "internalId1",
+            slug: "article1",
+            author: { name: "Artsy" },
+            href: "/article/id1",
+            thumbnailImage: { url: "https://article1/image" },
+            thumbnailTitle: "article 1",
+            vertical: "Art Market",
+          },
+        },
+      ],
+    },
+  },
+  marketPriceInsights: {},
+}

@@ -2,6 +2,7 @@ import { ActionType, AuthService, CreatedAccount } from "@artsy/cohesion"
 import { appleAuth } from "@invertase/react-native-apple-authentication"
 import CookieManager from "@react-native-cookies/cookies"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
+import { captureMessage } from "@sentry/react-native"
 import { OAuthProvider } from "app/auth/types"
 import * as RelayCache from "app/relay/RelayCache"
 import { isArtsyEmail } from "app/utils/general"
@@ -9,7 +10,7 @@ import { postEventToProviders } from "app/utils/track/providers"
 import { action, Action, Computed, computed, StateMapper, thunk, Thunk } from "easy-peasy"
 import { capitalize } from "lodash"
 import { stringify } from "qs"
-import { Platform } from "react-native"
+import { Alert, Platform } from "react-native"
 import Config from "react-native-config"
 import {
   AccessToken,
@@ -32,22 +33,34 @@ const showError = (
   provider: "facebook" | "apple" | "google"
 ) => {
   const providerName = capitalize(provider)
+
   if (res.error_description) {
     if (res.error_description.includes("no account linked to oauth token")) {
-      reject(
-        new AuthError(
-          `Your ${providerName} account is not linked to any Artsy account. ` +
-            "Please log in using your email and password if you have an Artsy account, " +
-            `or sign up on Artsy using ${providerName}. `
-        )
-      )
+      const message =
+        `Your ${providerName} account is not linked to any Artsy account. ` +
+        `If you already have an Artsy account and you want to log in to it via ${providerName}, ` +
+        `you will first need to sign up with ${providerName}. ` +
+        `You will then have the option to link the two accounts.
+        `
+      captureMessage("AUTH_FAILURE: " + message)
+      reject(new AuthError(message))
+      return
     } else {
-      reject(new AuthError("Login attempt failed"))
+      const message = "Login attempt failed"
+      captureMessage("AUTH_FAILURE: " + message)
+      reject(new AuthError(message))
+      return
     }
   }
 }
 
-type SignInStatus = "failure" | "success" | "otp_missing" | "on_demand_otp_missing" | "invalid_otp"
+type SignInStatus =
+  | "failure"
+  | "success"
+  | "otp_missing"
+  | "on_demand_otp_missing"
+  | "invalid_otp"
+  | "auth_blocked"
 
 const handleSignUpError = ({
   errorObject,
@@ -62,8 +75,8 @@ const handleSignUpError = ({
 
   if (errorObject?.error === "User Already Exists") {
     message = `Your ${
-      providerName === "Email" ? "" : providerName
-    } email account is linked to an Artsy user account please Log in using your email and password instead.`
+      oauthProvider === "email" ? "" : providerName + " "
+    }email account is linked to an Artsy user account. Please log in using your email and password instead.`
     const authentications = (errorObject?.providers ?? []) as string[]
     if (errorObject?.has_password && oauthProvider !== "email") {
       existingProviders = ["email"]
@@ -82,11 +95,33 @@ const handleSignUpError = ({
     message = "Failed to sign up"
   }
 
+  captureMessage("AUTH_SIGN_UP_FAILURE: " + message)
+
   return {
     message,
     existingProviders,
   }
 }
+
+export const showBlockedAuthError = (mode: "sign in" | "sign up") => {
+  const messagePrefix = mode === "sign in" ? "Sign in" : "Sign up"
+  const innerMessage = mode === "sign in" ? "signing in" : "signing up"
+  Alert.alert(
+    messagePrefix + " attempt blocked",
+    "Please try " +
+      innerMessage +
+      " from a different internet connection or contact support@artsy.net for help.",
+    [
+      {
+        text: "OK",
+        onPress: () => {
+          captureMessage("AUTH_BLOCKED: " + messagePrefix + " unauthorized reported")
+        },
+      },
+    ]
+  )
+}
+
 interface EmailOAuthParams {
   oauthProvider: "email"
   email: string
@@ -117,7 +152,7 @@ type OAuthParams = EmailOAuthParams | FacebookOAuthParams | GoogleOAuthParams | 
 
 type OnboardingState = "none" | "incomplete" | "complete"
 
-interface AuthPromiseResolveType {
+export interface AuthPromiseResolveType {
   success: boolean
 }
 export interface AuthPromiseRejectType {
@@ -136,6 +171,9 @@ export interface AuthPromiseRejectType {
 
 export interface AuthModel {
   // State
+  sessionState: {
+    isLoading: boolean
+  }
   userID: string | null
   userAccessToken: string | null
   userAccessTokenExpiresIn: string | null
@@ -151,7 +189,6 @@ export interface AuthModel {
   setState: Action<this, Partial<StateMapper<this, "1">>>
   getXAppToken: Thunk<this, void, {}, GlobalStoreModel, Promise<string>>
   getUser: Thunk<this, { accessToken: string }, {}, GlobalStoreModel>
-  userExists: Thunk<this, { email: string }, {}, GlobalStoreModel>
   signIn: Thunk<
     this,
     { email: string; onboardingState?: OnboardingState; onSignIn?: () => void } & OAuthParams,
@@ -211,6 +248,9 @@ const clientSecret = __DEV__
   : Config.ARTSY_PROD_API_CLIENT_SECRET
 
 export const getAuthModel = (): AuthModel => ({
+  sessionState: {
+    isLoading: false,
+  },
   userID: null,
   userAccessToken: null,
   userAccessTokenExpiresIn: null,
@@ -228,7 +268,7 @@ export const getAuthModel = (): AuthModel => ({
       // TODO: handle expiry
       return xAppToken
     }
-    const gravityBaseURL = context.getStoreState().artsyPrefs.environment.strings.gravityURL
+    const gravityBaseURL = context.getStoreState().devicePrefs.environment.strings.gravityURL
     const tokenURL = `${gravityBaseURL}/api/v1/xapp_token?${stringify({
       client_id: clientKey,
       client_secret: clientSecret,
@@ -253,7 +293,7 @@ export const getAuthModel = (): AuthModel => ({
     throw new Error("Unable to get x-app-token from " + tokenURL)
   }),
   gravityUnauthenticatedRequest: thunk(async (actions, payload, context) => {
-    const gravityBaseURL = context.getStoreState().artsyPrefs.environment.strings.gravityURL
+    const gravityBaseURL = context.getStoreState().devicePrefs.environment.strings.gravityURL
     const xAppToken = await actions.getXAppToken()
 
     return await fetch(`${gravityBaseURL}${payload.path}`, {
@@ -266,18 +306,6 @@ export const getAuthModel = (): AuthModel => ({
       },
       body: payload.body ? JSON.stringify(payload.body) : undefined,
     })
-  }),
-  userExists: thunk(async (actions, { email }) => {
-    const result = await actions.gravityUnauthenticatedRequest({
-      path: `/api/v1/user?${stringify({ email })}`,
-    })
-    if (result.status === 200) {
-      return true
-    } else if (result.status === 404) {
-      return false
-    } else {
-      throw new Error(JSON.stringify(await result.json()))
-    }
   }),
   forgotPassword: thunk(async (actions, { email }) => {
     const result = await actions.gravityUnauthenticatedRequest({
@@ -342,6 +370,10 @@ export const getAuthModel = (): AuthModel => ({
       },
     })
 
+    if (result.status === 403) {
+      return "auth_blocked"
+    }
+
     if (result.status === 201) {
       const { expires_in, access_token: userAccessToken } = await result.json()
       const user = await actions.getUser({ accessToken: userAccessToken })
@@ -356,14 +388,17 @@ export const getAuthModel = (): AuthModel => ({
 
       if (oauthProvider === "email") {
         Keychain.setInternetCredentials(
-          store.getStoreState().artsyPrefs.environment.strings.webURL.slice("https://".length),
+          store.getStoreState().devicePrefs.environment.strings.webURL.slice("https://".length),
           email,
           args.password
         )
       }
 
       if (user.id !== store.getState().previousSessionUserID) {
-        store.getStoreActions().search.clearRecentSearches()
+        const storeActions = store.getStoreActions()
+
+        storeActions.search.clearRecentSearches()
+        storeActions.recentPriceRanges.clearAllPriceRanges()
       }
 
       postEventToProviders(tracks.loggedIn(oauthProvider))
@@ -459,6 +494,14 @@ export const getAuthModel = (): AuthModel => ({
       return { success: true, message: "" }
     }
 
+    if (result.status === 403) {
+      return {
+        success: false,
+        error: "blocked_attempt",
+        message: "Sign up attempt blocked",
+      }
+    }
+
     const resultJson = await result.json()
 
     const { message, existingProviders } = handleSignUpError({
@@ -484,53 +527,180 @@ export const getAuthModel = (): AuthModel => ({
   }),
   authFacebook: thunk(async (actions, options) => {
     return await new Promise<AuthPromiseResolveType>(async (resolve, reject) => {
-      const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions([
-        "public_profile",
-        "email",
-      ])
-      if (declinedPermissions?.includes("email")) {
-        reject(
-          new AuthError("Please allow the use of email to continue.", "Email Permission Declined")
-        )
-      }
-      const accessToken = !isCancelled && (await AccessToken.getCurrentAccessToken())
-      if (!accessToken) {
-        return
-      }
+      try {
+        const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions([
+          "public_profile",
+          "email",
+        ])
 
-      const responseFacebookInfoCallback = async (error: any | null, result: any | null) => {
-        if (error) {
-          reject(new AuthError("Error fetching facebook data", error))
-          return
-        }
-
-        if (!result || !result.email) {
+        if (declinedPermissions?.includes("email")) {
           reject(
-            new AuthError(
-              "There is no email associated with your Facebook account. Please log in using your email and password instead."
-            )
+            new AuthError("Please allow the use of email to continue.", "Email Permission Declined")
           )
           return
         }
+        const accessToken = !isCancelled && (await AccessToken.getCurrentAccessToken())
+        if (!accessToken) {
+          reject(new AuthError("Could not log in"))
+          return
+        }
 
-        if (options.signInOrUp === "signUp") {
-          const resultGravitySignUp = await actions.signUp({
-            email: result.email as string,
-            name: result.name as string,
-            accessToken: accessToken.accessToken,
-            oauthProvider: "facebook",
-            agreedToReceiveEmails: options.agreedToReceiveEmails,
-          })
+        const responseFacebookInfoCallback = async (error: any | null, result: any | null) => {
+          if (error) {
+            reject(new AuthError("Error fetching facebook data", error))
+            return
+          }
 
-          resultGravitySignUp.success
-            ? resolve({ success: true })
-            : reject(
+          if (!result || !result.email) {
+            reject(
+              new AuthError(
+                "There is no email associated with your Facebook account. Please log in using your email and password instead."
+              )
+            )
+            return
+          }
+
+          if (options.signInOrUp === "signUp") {
+            const resultGravitySignUp = await actions.signUp({
+              email: result.email as string,
+              name: result.name as string,
+              accessToken: accessToken.accessToken,
+              oauthProvider: "facebook",
+              agreedToReceiveEmails: options.agreedToReceiveEmails,
+            })
+
+            if (resultGravitySignUp.success) {
+              resolve({ success: true })
+              return
+            } else if (resultGravitySignUp.error === "blocked_attempt") {
+              reject(new AuthError("Attempt blocked"))
+            } else {
+              reject(
                 new AuthError(
                   resultGravitySignUp.message,
                   resultGravitySignUp.error,
                   resultGravitySignUp.meta
                 )
               )
+              return
+            }
+          }
+
+          if (options.signInOrUp === "signIn") {
+            // we need to get X-ACCESS-TOKEN before actual sign in
+            const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
+              path: `/oauth2/access_token`,
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: {
+                oauth_provider: "facebook",
+                oauth_token: accessToken.accessToken,
+                client_id: clientKey,
+                client_secret: clientSecret,
+                grant_type: "oauth_token",
+                scope: "offline_access",
+              },
+            })
+
+            if (resultGravityAccessToken.status === 201) {
+              const { access_token: userAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
+              const { email } = await actions.getUser({ accessToken: userAccessToken })
+              const resultGravitySignIn = await actions.signIn({
+                oauthProvider: "facebook",
+                email,
+                accessToken: accessToken.accessToken,
+                onSignIn: options.onSignIn,
+              })
+
+              if (resultGravitySignIn) {
+                resolve({ success: true })
+                return
+              } else {
+                reject(new AuthError("Could not log in"))
+                return
+              }
+            } else {
+              if (resultGravityAccessToken.status === 403) {
+                reject(new AuthError("Attempt blocked"))
+              } else {
+                const res = await resultGravityAccessToken.json()
+                showError(res, reject, "facebook")
+              }
+            }
+          }
+        }
+
+        // get info from facebook
+        const infoRequest = new GraphRequest(
+          "/me",
+          {
+            accessToken: accessToken.accessToken,
+            parameters: {
+              fields: {
+                string: "email,name",
+              },
+            },
+          },
+          responseFacebookInfoCallback
+        )
+        new GraphRequestManager().addRequest(infoRequest).start()
+      } catch (e) {
+        if (e instanceof Error) {
+          if (e.message === "User logged in as different Facebook user.") {
+            // odd and hopefully shouldn't happen often
+            // if the user has a valid session with another account
+            // and tries to log in with a new account they will hit this error
+            // log them out and try again
+            LoginManager.logOut()
+            GlobalStore.actions.auth.authFacebook(options)
+          }
+
+          reject(new AuthError("Error logging in with facebook", e.message))
+          return
+        }
+        reject(new AuthError("Error logging in with facebook"))
+        return
+      }
+    })
+  }),
+  authGoogle: thunk(async (actions, options) => {
+    return await new Promise<AuthPromiseResolveType>(async (resolve, reject) => {
+      try {
+        if (!(await GoogleSignin.hasPlayServices())) {
+          reject(new AuthError("Play services are not available."))
+          return
+        }
+        const userInfo = await GoogleSignin.signIn()
+        const accessToken = (await GoogleSignin.getTokens()).accessToken
+
+        if (options.signInOrUp === "signUp") {
+          const resultGravitySignUp = userInfo.user.name
+            ? await actions.signUp({
+                email: userInfo.user.email,
+                name: userInfo.user.name,
+                accessToken,
+                oauthProvider: "google",
+                agreedToReceiveEmails: options.agreedToReceiveEmails,
+              })
+            : { success: false, message: "missing name in google's userInfo" }
+
+          if (resultGravitySignUp.success) {
+            resolve({ success: true })
+            return
+          } else if (resultGravitySignUp.error === "blocked_attempt") {
+            reject(new AuthError("Attempt blocked"))
+          } else {
+            reject(
+              new AuthError(
+                resultGravitySignUp.message,
+                resultGravitySignUp.error,
+                resultGravitySignUp.meta
+              )
+            )
+            return
+          }
         }
 
         if (options.signInOrUp === "signIn") {
@@ -542,8 +712,8 @@ export const getAuthModel = (): AuthModel => ({
               "Content-Type": "application/json",
             },
             body: {
-              oauth_provider: "facebook",
-              oauth_token: accessToken.accessToken,
+              oauth_provider: "google",
+              oauth_token: accessToken,
               client_id: clientKey,
               client_secret: clientSecret,
               grant_type: "oauth_token",
@@ -554,104 +724,46 @@ export const getAuthModel = (): AuthModel => ({
           if (resultGravityAccessToken.status === 201) {
             const { access_token: userAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
             const { email } = await actions.getUser({ accessToken: userAccessToken })
+
             const resultGravitySignIn = await actions.signIn({
-              oauthProvider: "facebook",
+              oauthProvider: "google",
               email,
-              accessToken: accessToken.accessToken,
+              accessToken,
               onSignIn: options.onSignIn,
             })
 
-            resultGravitySignIn
-              ? resolve({ success: true })
-              : reject(new AuthError("Could not log in"))
+            if (resultGravitySignIn) {
+              resolve({ success: true })
+              return
+            } else {
+              reject(new AuthError("Could not log in"))
+              return
+            }
           } else {
-            const res = await resultGravityAccessToken.json()
-            showError(res, reject, "facebook")
+            if (resultGravityAccessToken.status === 403) {
+              reject(new AuthError("Attempt blocked"))
+            } else {
+              const res = await resultGravityAccessToken.json()
+              showError(res, reject, "google")
+            }
           }
         }
-      }
-
-      // get info from facebook
-      const infoRequest = new GraphRequest(
-        "/me",
-        {
-          accessToken: accessToken.accessToken,
-          parameters: {
-            fields: {
-              string: "email,name",
-            },
-          },
-        },
-        responseFacebookInfoCallback
-      )
-      new GraphRequestManager().addRequest(infoRequest).start()
-    })
-  }),
-  authGoogle: thunk(async (actions, options) => {
-    return await new Promise<AuthPromiseResolveType>(async (resolve, reject) => {
-      if (!(await GoogleSignin.hasPlayServices())) {
-        reject(new AuthError("Play services are not available."))
-      }
-      const userInfo = await GoogleSignin.signIn()
-      const accessToken = (await GoogleSignin.getTokens()).accessToken
-
-      if (options.signInOrUp === "signUp") {
-        const resultGravitySignUp = userInfo.user.name
-          ? await actions.signUp({
-              email: userInfo.user.email,
-              name: userInfo.user.name,
-              accessToken,
-              oauthProvider: "google",
-              agreedToReceiveEmails: options.agreedToReceiveEmails,
-            })
-          : { success: false, message: "missing name in google's userInfo" }
-        resultGravitySignUp.success
-          ? resolve({ success: true })
-          : reject(
+      } catch (e) {
+        if (e instanceof Error) {
+          if (e.message === "DEVELOPER_ERROR") {
+            reject(
               new AuthError(
-                resultGravitySignUp.message,
-                resultGravitySignUp.error,
-                resultGravitySignUp.meta
+                "Google auth does not work in firebase beta, try again in a playstore beta",
+                e.message
               )
             )
-      }
-
-      if (options.signInOrUp === "signIn") {
-        // we need to get X-ACCESS-TOKEN before actual sign in
-        const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
-          path: `/oauth2/access_token`,
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: {
-            oauth_provider: "google",
-            oauth_token: accessToken,
-            client_id: clientKey,
-            client_secret: clientSecret,
-            grant_type: "oauth_token",
-            scope: "offline_access",
-          },
-        })
-
-        if (resultGravityAccessToken.status === 201) {
-          const { access_token: userAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
-          const { email } = await actions.getUser({ accessToken: userAccessToken })
-
-          const resultGravitySignIn = await actions.signIn({
-            oauthProvider: "google",
-            email,
-            accessToken,
-            onSignIn: options.onSignIn,
-          })
-
-          resultGravitySignIn
-            ? resolve({ success: true })
-            : reject(new AuthError("Could not log in"))
-        } else {
-          const res = await resultGravityAccessToken.json()
-          showError(res, reject, "google")
+            return
+          }
+          reject(new AuthError("Error logging in with google", e.message))
+          return
         }
+        reject(new AuthError("Error logging in with google"))
+        return
       }
     })
   }),
@@ -661,11 +773,19 @@ export const getAuthModel = (): AuthModel => ({
       // because apple returns email only on the FIRST auth attempt, so we run sign up and sign in one by one
       let signInOrUp: "signIn" | "signUp" = "signUp"
 
-      const userInfo = await appleAuth.performRequest({
-        requestedOperation: appleAuth.Operation.LOGIN,
-        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-      })
+      const userInfo = await appleAuth
+        .performRequest({
+          requestedOperation: appleAuth.Operation.LOGIN,
+          requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+        })
+        .catch(() => {
+          // Use canceled apple auth
+          actions.setState({ sessionState: { isLoading: false } })
+        })
 
+      if (!userInfo) {
+        return
+      }
       const idToken = userInfo.identityToken
       if (!idToken) {
         reject(new AuthError("Failed to authenticate using apple sign in"))
@@ -691,13 +811,16 @@ export const getAuthModel = (): AuthModel => ({
               error: "Apple UserInfo Email Is Null",
               message: "missing email in apple's userInfo",
             }
+
         if (resultGravitySignUp.success) {
           resolve(resultGravitySignUp)
+          return
         }
         const shouldSignIn =
           resultGravitySignUp.error === "Another Account Already Linked" ||
           // because userinfo.email is returned only the first time
           resultGravitySignUp.error === "Apple UserInfo Email Is Null"
+
         if (shouldSignIn) {
           signInOrUp = "signIn"
         } else {
@@ -730,6 +853,7 @@ export const getAuthModel = (): AuthModel => ({
             scope: "offline_access",
           },
         })
+
         if (resultGravityAccessToken.status === 201) {
           const { access_token: userAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
           const { email } = await actions.getUser({ accessToken: userAccessToken })
@@ -742,12 +866,20 @@ export const getAuthModel = (): AuthModel => ({
             onSignIn,
           })
 
-          resultGravitySignIn
-            ? resolve({ success: true })
-            : reject(new AuthError("Could not log in"))
+          if (resultGravitySignIn) {
+            resolve({ success: true })
+            return
+          } else {
+            reject(new AuthError("Could not log in"))
+            return
+          }
         } else {
-          const res = await resultGravityAccessToken.json()
-          showError(res, reject, "apple")
+          if (resultGravityAccessToken.status === 403) {
+            reject(new AuthError("Attempt blocked"))
+          } else {
+            const res = await resultGravityAccessToken.json()
+            showError(res, reject, "apple")
+          }
         }
       }
     })
@@ -755,8 +887,11 @@ export const getAuthModel = (): AuthModel => ({
   signOut: thunk(async () => {
     const signOutGoogle = async () => {
       try {
-        await GoogleSignin.revokeAccess()
-        await GoogleSignin.signOut()
+        const isSignedIn = await GoogleSignin.isSignedIn()
+        if (isSignedIn) {
+          await GoogleSignin.revokeAccess()
+          await GoogleSignin.signOut()
+        }
       } catch (error) {
         console.log("Failed to signout from Google")
         console.error(error)
@@ -768,6 +903,7 @@ export const getAuthModel = (): AuthModel => ({
         ? await LegacyNativeModules.ArtsyNativeModule.clearUserData()
         : Promise.resolve(),
       await signOutGoogle(),
+      LoginManager.logOut(),
       CookieManager.clearAll(),
       RelayCache.clearAll(),
     ])

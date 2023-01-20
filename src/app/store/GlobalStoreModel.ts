@@ -22,6 +22,7 @@ import {
   PendingPushNotificationModel,
 } from "./PendingPushNotificationModel"
 import { assignDeep, sanitize } from "./persistence"
+import { getRecentPriceRangesModel, RecentPriceRangesModel } from "./RecentPriceRangesModel"
 import {
   getRequestedPriceEstimatesModel,
   RequestedPriceEstimatesModel,
@@ -48,6 +49,7 @@ interface GlobalStoreStateModel {
   visualClue: VisualClueModel
   artworkSubmission: SubmissionModel
   requestedPriceEstimates: RequestedPriceEstimatesModel
+  recentPriceRanges: RecentPriceRangesModel
 }
 export interface GlobalStoreModel extends GlobalStoreStateModel {
   rehydrate: Action<this, DeepPartial<State<GlobalStoreStateModel>>>
@@ -84,14 +86,23 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
     (a) => a.auth.signOut,
     (actions, _, store) => {
       const {
-        artsyPrefs: existingConfig,
+        artsyPrefs: existingArtsyConfig,
+        devicePrefs: existingDeviceConfig,
         search,
         auth: { userID },
+        recentPriceRanges,
       } = store.getState()
 
       // keep existing config state
-      const config = sanitize(existingConfig) as typeof existingConfig
-      actions.reset({ artsyPrefs: config, search, auth: { previousSessionUserID: userID } })
+      const artsyConfig = sanitize(existingArtsyConfig) as typeof existingArtsyConfig
+      const deviceConfig = sanitize(existingDeviceConfig) as typeof existingDeviceConfig
+      actions.reset({
+        artsyPrefs: artsyConfig,
+        devicePrefs: deviceConfig,
+        search,
+        recentPriceRanges,
+        auth: { previousSessionUserID: userID },
+      })
     }
   ),
   didRehydrate: thunkOn(
@@ -122,6 +133,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   visualClue: getVisualClueModel(),
   artworkSubmission: getSubmissionModel(),
   requestedPriceEstimates: getRequestedPriceEstimatesModel(),
+  recentPriceRanges: getRecentPriceRangesModel(),
 
   // for dev only.
   _setVersion: action((state, newVersion) => {

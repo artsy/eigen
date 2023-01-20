@@ -1,3 +1,6 @@
+import { osMajorVersion } from "app/utils/platformUtil"
+import { Platform } from "react-native"
+
 export function createGeminiUrl({
   imageURL,
   width,
@@ -15,15 +18,20 @@ export function createGeminiUrl({
 }) {
   const src = encodeURIComponent(imageURL)
 
+  const roundedHeight = Math.round(height)
+  const roundedWidth = Math.round(width)
+
   const params = [
-    `height=${height}`,
+    `height=${roundedHeight}`,
     `quality=${imageQuality}`,
     `resize_to=${resizeMode}`,
     `src=${src}`,
-    `width=${width}`,
+    `width=${roundedWidth}`,
   ]
 
-  params.push("convert_to=webp")
+  if (Platform.OS === "android" || (Platform.OS === "ios" && osMajorVersion() >= 14)) {
+    params.push("convert_to=webp")
+  }
 
   return `https://${geminiHost}/?${params.join("&")}`
 }

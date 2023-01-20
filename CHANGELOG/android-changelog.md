@@ -1,14 +1,23 @@
 ## Undeployed Changes
 
-### v7.0.0
+### v8.6.0
 
 - Status: **Beta**
 - Changelog:
 
+  - User facing changes:
+
+    - show works using new recs model for the new works for you - mounir
+    - Fix MyCollection Add Photos freeze - kizito
+    - Release deep zoom - mounir
+
   - Dev changes:
-    - Do not save the changelog update date - mounir
-    - Track link tap and AuctionResultsForYou Screen - kizito
-    - Add black owned banner to partner page - lily
+    - Support screen options inside react module - mounir
+    - update setupTestWrapper and add testing docs - gkartalis
+    - Update tracking event - mounir
+    - Replace emailConfirmed and identityVerified with isEmailConfirmed and isIdentityVerified - mrsltun
+    - Allow releasing specific builds on Android - Brian
+    - prompt for confirmation before updating env vars in s3 - mounir
 
 <!-- DO NOT CHANGE -->
 

@@ -29,8 +29,10 @@ jest.mock("@react-native-community/netinfo", () => {
 let env: ReturnType<typeof createMockEnvironment>
 
 beforeEach(() => {
+  jest.useFakeTimers({
+    legacyFakeTimers: true,
+  })
   env = createMockEnvironment()
-  jest.useFakeTimers()
 })
 
 const onRefresh = jest.fn()
@@ -131,6 +133,7 @@ describe("messages with order updates", () => {
   })
 
   it("shows the toast message and fades out after 5 seconds", () => {
+    jest.useFakeTimers({ legacyFakeTimers: true })
     const tree = withConversationItems(getWrapper, {
       events: [
         {
@@ -146,10 +149,11 @@ describe("messages with order updates", () => {
     expect(extractText(tree.root)).toMatch(
       "To be covered by the Artsy Guarantee, always communicate and pay through the Artsy platform."
     )
+
     const toast = tree.root.findAllByType(Flex)[0]
-    jest.advanceTimersByTime(150)
-    expect(toast.props.opacity).toBe(1)
     jest.advanceTimersByTime(5000)
+    expect(toast.props.opacity).toBe(1)
+    jest.advanceTimersByTime(900000) // this number is weird, but i guess once Toast is moved to reanimated, this should be easier to use a much smaller number?
     expect(toast.props.opacity).toBe(0)
   })
 

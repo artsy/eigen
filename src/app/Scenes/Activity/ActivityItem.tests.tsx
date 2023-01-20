@@ -1,12 +1,18 @@
+import { fireEvent } from "@testing-library/react-native"
 import { ActivityItem_Test_Query } from "__generated__/ActivityItem_Test_Query.graphql"
+import { navigate } from "app/navigation/navigate"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { extractNodes } from "app/utils/extractNodes"
-import { DateTime } from "luxon"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ActivityItem } from "./ActivityItem"
+
+const targetUrl = "/artist/banksy/works-for-sale?sort=-published_at"
+const alertTargetUrl =
+  "/artist/banksy/works-for-sale?search_criteria_id=searchCriteriaId&sort=-published_at"
 
 jest.unmock("react-relay")
 
@@ -49,7 +55,7 @@ describe("ActivityItem", () => {
     expect(getByText("Notification Message")).toBeTruthy()
   })
 
-  it("should render 'x days ago' label", async () => {
+  it("should render the formatted publication date", async () => {
     const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
@@ -58,20 +64,6 @@ describe("ActivityItem", () => {
     await flushPromiseQueue()
 
     expect(getByText("2 days ago")).toBeTruthy()
-  })
-
-  it("should render 'Today' label", async () => {
-    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      Notification: () => ({
-        ...notification,
-        createdAt: DateTime.utc().minus({ hours: 1 }),
-      }),
-    })
-    await flushPromiseQueue()
-
-    expect(getByText("Today")).toBeTruthy()
   })
 
   it("should render artwork images", async () => {
@@ -85,37 +77,73 @@ describe("ActivityItem", () => {
     expect(getAllByLabelText("Activity Artwork Image")).toHaveLength(4)
   })
 
-  describe("the remaining artworks count", () => {
-    it("should NOT be rendered if there are less or equal to 4", async () => {
-      const { queryByLabelText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+  it("should track event when an item is tapped", async () => {
+    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Notification: () => ({
-          ...notification,
-          createdAt: DateTime.utc().minus({ hours: 1 }),
-        }),
-      })
-      await flushPromiseQueue()
-
-      const label = queryByLabelText("Remaining artworks count")
-      expect(label).toBeNull()
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Notification: () => notification,
     })
+    await flushPromiseQueue()
 
-    it("should be rendered if there are more than 4", async () => {
-      const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    fireEvent.press(getByText("Notification Title"))
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Notification: () => ({
-          ...notification,
-          artworksConnection: {
-            ...notification.artworksConnection,
-            totalCount: 10,
+    expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+      [
+        {
+          "action": "clickedActivityPanelNotificationItem",
+          "notification_type": "ARTWORK_PUBLISHED",
+        },
+      ]
+    `)
+  })
+
+  it("should pass predefined props when", async () => {
+    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Notification: () => notification,
+    })
+    await flushPromiseQueue()
+
+    fireEvent.press(getByText("Notification Title"))
+
+    expect(navigate).toHaveBeenCalledWith(targetUrl, {
+      passProps: {
+        predefinedFilters: [
+          {
+            displayText: "Recently Added",
+            paramName: "sort",
+            paramValue: "-published_at",
           },
-        }),
-      })
-      await flushPromiseQueue()
+        ],
+      },
+    })
+  })
 
-      expect(getByText("+ 6")).toBeTruthy()
+  it("should pass search criteria id prop", async () => {
+    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Notification: () => ({
+        ...notification,
+        targetHref: alertTargetUrl,
+      }),
+    })
+    await flushPromiseQueue()
+
+    fireEvent.press(getByText("Notification Title"))
+
+    expect(navigate).toHaveBeenCalledWith(alertTargetUrl, {
+      passProps: {
+        searchCriteriaID: "searchCriteriaId",
+        predefinedFilters: [
+          {
+            displayText: "Recently Added",
+            paramName: "sort",
+            paramValue: "-published_at",
+          },
+        ],
+      },
     })
   })
 
@@ -176,6 +204,40 @@ describe("ActivityItem", () => {
       expect(label).toBeTruthy()
     })
   })
+
+  describe("remaining artworks count", () => {
+    it("should NOT be rendered if there are less or equal to 4", async () => {
+      const { queryByLabelText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Notification: () => ({
+          ...notification,
+          objectsCount: 4,
+        }),
+      })
+      await flushPromiseQueue()
+
+      expect(queryByLabelText("Remaining artworks count")).toBeFalsy()
+    })
+
+    it("should be rendered if there are more than 4", async () => {
+      const { getByText, getByLabelText } = renderWithHookWrappersTL(
+        <TestRenderer />,
+        mockEnvironment
+      )
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Notification: () => ({
+          ...notification,
+          objectsCount: 5,
+        }),
+      })
+      await flushPromiseQueue()
+
+      expect(getByLabelText("Remaining artworks count")).toBeTruthy()
+      expect(getByText("+ 1")).toBeTruthy()
+    })
+  })
 })
 
 const artworks = [
@@ -232,11 +294,12 @@ const artworks = [
 const notification = {
   title: "Notification Title",
   message: "Notification Message",
-  createdAt: DateTime.utc().minus({ days: 2 }),
+  publishedAt: "2 days ago",
   isUnread: false,
   notificationType: "ARTWORK_PUBLISHED",
+  targetHref: targetUrl,
+  objectsCount: 4,
   artworksConnection: {
-    totalCount: 4,
     edges: artworks,
   },
 }

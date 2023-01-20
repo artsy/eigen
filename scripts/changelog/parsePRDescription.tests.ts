@@ -84,20 +84,20 @@ Updated splash screen color
 blah
       `)
     ).toMatchInlineSnapshot(`
-      Object {
-        "androidUserFacingChanges": Array [
+      {
+        "androidUserFacingChanges": [
           "Updated splash screen color",
         ],
-        "crossPlatformUserFacingChanges": Array [
+        "crossPlatformUserFacingChanges": [
           "Added a new button
       for the checkout flow",
           "Fixed modal close button",
         ],
-        "devChanges": Array [
+        "devChanges": [
           "Improved changelog tooling",
           "Upgraded lodash",
         ],
-        "iOSUserFacingChanges": Array [
+        "iOSUserFacingChanges": [
           "Fixed input focus styles",
         ],
         "type": "changes",
@@ -121,11 +121,11 @@ blah blah
 blah
       `)
     ).toMatchInlineSnapshot(`
-      Object {
-        "androidUserFacingChanges": Array [],
-        "crossPlatformUserFacingChanges": Array [],
-        "devChanges": Array [],
-        "iOSUserFacingChanges": Array [
+      {
+        "androidUserFacingChanges": [],
+        "crossPlatformUserFacingChanges": [],
+        "devChanges": [],
+        "iOSUserFacingChanges": [
           "Fixed input focus styles",
         ],
         "type": "changes",
@@ -145,11 +145,11 @@ blah
 - Updated things
     `)
     ).toMatchInlineSnapshot(`
-      Object {
-        "androidUserFacingChanges": Array [],
-        "crossPlatformUserFacingChanges": Array [],
-        "devChanges": Array [],
-        "iOSUserFacingChanges": Array [
+      {
+        "androidUserFacingChanges": [],
+        "crossPlatformUserFacingChanges": [],
+        "devChanges": [],
+        "iOSUserFacingChanges": [
           "Fixed input focus styles",
           "Added things",
           "Removed things",
@@ -173,11 +173,11 @@ uses a trampoline to avoid the problem
 where the click didn't work
     `)
     ).toMatchInlineSnapshot(`
-      Object {
-        "androidUserFacingChanges": Array [],
-        "crossPlatformUserFacingChanges": Array [],
-        "devChanges": Array [],
-        "iOSUserFacingChanges": Array [
+      {
+        "androidUserFacingChanges": [],
+        "crossPlatformUserFacingChanges": [],
+        "devChanges": [],
+        "iOSUserFacingChanges": [
           "made the modals close a bit faster
       by updating the transition gradient",
           "uses a trampoline to avoid the problem

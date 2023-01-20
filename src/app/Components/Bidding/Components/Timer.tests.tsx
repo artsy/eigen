@@ -14,7 +14,9 @@ describe("Timer", () => {
   let futureTime: string
 
   beforeEach(() => {
-    jest.useFakeTimers()
+    jest.useFakeTimers({
+      legacyFakeTimers: true,
+    })
 
     // Thursday, May 10, 2018 8:22:32.000 PM UTC
     Date.now = jest.fn(() => DATE_NOW)
@@ -196,13 +198,16 @@ describe("Countdown", () => {
 
   describe("when the enable cascade feature flag is turned on", () => {
     beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerLotPage: true })
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        ARArtworkRedesingPhase2: false,
+      })
     })
 
     afterEach(() => {
       jest.clearAllMocks()
     })
 
+    // TODO: Remove this test case when ARArtworkRedesingPhase2 will be released
     it("shows extended bidding info when extendedBiddingPeriodMinutes is present", () => {
       const { getByText } = renderWithWrappers(
         <Countdown
@@ -234,30 +239,6 @@ describe("Countdown", () => {
     it("does not shows the new ticker if the sale does not have cascading end times", () => {
       const { queryByLabelText } = renderWithWrappers(
         <Countdown duration={duration} label="This is the label" />
-      )
-
-      expect(queryByLabelText("Simple Ticker")).toBeTruthy()
-      expect(queryByLabelText("Modern Ticker")).toBeFalsy()
-    })
-  })
-
-  describe("when the enable cascade feature flag is turned off", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerLotPage: false })
-    })
-
-    afterEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("does not shows the new ticker even if the sale has cascading end times", () => {
-      const { queryByLabelText } = renderWithWrappers(
-        <Countdown
-          duration={duration}
-          label="This is the label"
-          hasStarted
-          cascadingEndTimeIntervalMinutes={1}
-        />
       )
 
       expect(queryByLabelText("Simple Ticker")).toBeTruthy()

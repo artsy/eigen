@@ -7,8 +7,7 @@ import {
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact } from "lodash"
-import { Flex, Text } from "palette"
-import { FlatList } from "react-native"
+import { Flex, Join, Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -24,32 +23,30 @@ const ComparableWorks: React.FC<ComparableWorks> = ({ auctionResult }) => {
 
   return (
     <Flex testID="comparableWorks">
-      <FlatList
-        data={auctionResults}
-        listKey="comparable-works"
-        keyExtractor={(item, index) => String(item?.internalID || index)}
-        initialNumToRender={3}
-        ListHeaderComponent={
-          <Text variant="sm-display" my={2}>
-            Comparable Works
-          </Text>
-        }
-        ItemSeparatorComponent={AuctionResultListSeparator}
-        renderItem={({ item, index }) => {
-          return (
+      <Text variant="sm-display" my={2}>
+        Comparable Works
+      </Text>
+
+      {auctionResults.length > 0 ? (
+        <Join separator={<AuctionResultListSeparator />}>
+          {auctionResults.map((auctionResultRow, index) => (
             <AuctionResultListItemFragmentContainer
+              key={auctionResultRow.internalID}
               showArtistName
               withHorizontalPadding={false}
-              auctionResult={item}
+              auctionResult={auctionResultRow}
               onPress={() => {
-                trackEvent(tracks.tapAuctionResult(item.internalID, index))
-                navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
+                trackEvent(tracks.tapAuctionResult(auctionResultRow.internalID, index))
+                navigate(
+                  `/artist/${auctionResultRow.artistID}/auction-result/${auctionResultRow.internalID}`
+                )
               }}
             />
-          )
-        }}
-        ListEmptyComponent={<Text color="black60">No comparable works</Text>}
-      />
+          ))}
+        </Join>
+      ) : (
+        <Text color="black60">No comparable works</Text>
+      )}
     </Flex>
   )
 }

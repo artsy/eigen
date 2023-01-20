@@ -1,29 +1,71 @@
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { ArtworkActions } from "./ArtworkActions"
-import { ArtworkHeader } from "./ArtworkHeader"
+import { ArtworkHeader, VisibilityLevels } from "./ArtworkHeader"
 import { ArtworkTombstone } from "./ArtworkTombstone"
 import { ImageCarousel } from "./ImageCarousel/ImageCarousel"
+import { UnlistedArtworksBanner } from "./UnlistedArtworksBanner"
 
 jest.mock("react-native-view-shot", () => ({}))
 
+const mockRefetch = jest.fn()
+
 const TestRenderer: React.FC = () => {
-  return <ArtworkHeader artwork={ArtworkFixture} />
+  return <ArtworkHeader artwork={ArtworkFixture} refetchArtwork={mockRefetch} />
 }
 
 describe("ArtworkHeader", () => {
   it("renders tombstone component", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    expect(tree.root.findAllByType(ArtworkTombstone)).toHaveLength(1)
+    const { container } = renderWithWrappers(<TestRenderer />)
+    expect(container.findAllByType(ArtworkTombstone).length).toEqual(1)
   })
 
   it("renders artwork actions component", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    expect(tree.root.findAllByType(ArtworkActions)).toHaveLength(1)
+    const { container } = renderWithWrappers(<TestRenderer />)
+    expect(container.findAllByType(ArtworkActions).length).toEqual(1)
   })
 
   it("renders image carousel component", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    expect(tree.root.findAllByType(ImageCarousel)).toHaveLength(1)
+    const { container } = renderWithWrappers(<TestRenderer />)
+    expect(container.findAllByType(ImageCarousel).length).toEqual(1)
+  })
+
+  describe("when artwork is unlisted", () => {
+    it("renders private listing banner component", () => {
+      const artwork = {
+        ...ArtworkFixture,
+        visibilityLevel: VisibilityLevels.UNLISTED,
+      }
+      const { container } = renderWithWrappers(
+        <ArtworkHeader artwork={artwork} refetchArtwork={mockRefetch} />
+      )
+      expect(container.findAllByType(UnlistedArtworksBanner).length).toEqual(1)
+    })
+
+    describe("when artwork is listed", () => {
+      it("does not render private listing banner component", () => {
+        const artwork = {
+          ...ArtworkFixture,
+          visibilityLevel: VisibilityLevels.LISTED,
+        }
+        const { container } = renderWithWrappers(
+          <ArtworkHeader artwork={artwork} refetchArtwork={mockRefetch} />
+        )
+        expect(container.findAllByType(UnlistedArtworksBanner)).toHaveLength(0)
+      })
+    })
+
+    describe("when artwork visibility is null", () => {
+      it("does not render private listing banner component", () => {
+        const artwork = {
+          ...ArtworkFixture,
+          visibilityLevel: null,
+        }
+        const { container } = renderWithWrappers(
+          <ArtworkHeader artwork={artwork} refetchArtwork={mockRefetch} />
+        )
+        expect(container.findAllByType(UnlistedArtworksBanner)).toHaveLength(0)
+      })
+    })
   })
 })

@@ -1,6 +1,6 @@
 import { goBack } from "app/navigation/navigate"
 import { extractText } from "app/tests/extractText"
-import { setupTestWrapper } from "app/tests/setupTestWrapper"
+import { setupTestWrapper_LEGACY } from "app/tests/setupTestWrapper"
 import { Button, Text } from "palette"
 import {
   ARTWORK_ATTRIBUTION_CLASS_FAQ_QUERY,
@@ -9,7 +9,7 @@ import {
 
 jest.unmock("react-relay")
 
-const { getWrapper } = setupTestWrapper({
+const { getWrapper } = setupTestWrapper_LEGACY({
   Component: ArtworkAttributionClassFAQ,
   query: ARTWORK_ATTRIBUTION_CLASS_FAQ_QUERY,
 })

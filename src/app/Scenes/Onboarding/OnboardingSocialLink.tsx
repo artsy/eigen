@@ -1,7 +1,7 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { OAuthProvider } from "app/auth/types"
 import { BackButton } from "app/navigation/BackButton"
-import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { useAppleLink } from "app/utils/LinkedAccounts/apple"
 import { useFacebookLink } from "app/utils/LinkedAccounts/facebook"
 import { useGoogleLink } from "app/utils/LinkedAccounts/google"
@@ -36,7 +36,7 @@ export const OnboardingSocialLink: React.FC<
 
   const permittedProvidersTable: { [key: string]: boolean } = {
     email: true,
-    google: useFeatureFlag("ARGoogleAuth"),
+    google: true,
     facebook: true,
     apple: Platform.OS === "ios" && osMajorVersion() >= 13,
   }
@@ -278,10 +278,10 @@ interface LinkAccountButtonProps {
 export function LinkAccountButton({ onPress, provider, loading }: LinkAccountButtonProps) {
   const titleizedProvider = capitalize(provider)
   const imageSources: Record<OAuthProvider, ImageSourcePropType> = {
-    facebook: require(`images/facebook.webp`),
-    google: require(`images/google.webp`),
-    email: require(`images/email.webp`),
-    apple: require(`images/apple.webp`),
+    facebook: require(`images/facebook.png`),
+    google: require(`images/google.png`),
+    email: require(`images/email.png`),
+    apple: require(`images/apple.png`),
   }
   return (
     <Button

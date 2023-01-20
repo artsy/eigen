@@ -2,7 +2,7 @@ import NetInfo from "@react-native-community/netinfo"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { throttle } from "lodash"
 import { Platform } from "react-native"
-import { getModel } from "react-native-device-info"
+import DeviceInfo from "react-native-device-info"
 import { logDatadog } from "./loggers"
 
 const URLS = {
@@ -68,9 +68,6 @@ export type VolleyMetric =
 
 class VolleyClient {
   queue: VolleyMetric[] = []
-  get serviceName() {
-    return unsafe__getEnvironment().env === "staging" ? "eigen-staging" : "eigen"
-  }
   private _dispatch = throttle(
     () => {
       const metrics = this.queue
@@ -90,7 +87,7 @@ class VolleyClient {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          serviceName: this.serviceName,
+          serviceName: "eigen",
           metrics,
         }),
       }).catch(() => {
@@ -113,7 +110,7 @@ class VolleyClient {
 }
 
 function getDeviceTag() {
-  const deviceId = `${Platform.OS} ${getModel()}`
+  const deviceId = `${Platform.OS} ${DeviceInfo.getModel()}`
   return `device:${deviceId}`
 }
 

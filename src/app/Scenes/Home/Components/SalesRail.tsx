@@ -1,20 +1,16 @@
 import { SalesRail_salesModule$data } from "__generated__/SalesRail_salesModule.graphql"
 import {
-  CARD_RAIL_ARTWORKS_HEIGHT as ARTWORKS_HEIGHT,
-  CardRailArtworkImageContainer as ArtworkImageContainer,
   CardRailCard,
-  CardRailDivision as Division,
   CardRailMetadataContainer as MetadataContainer,
 } from "app/Components/Home/CardRailCard"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
-import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
 import { navigate } from "app/navigation/navigate"
-import { formatDisplayTimelyAt } from "app/Scenes/Sale/helpers"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact } from "lodash"
-import { bullet, Flex, Text } from "palette"
+import { Flex, Text } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -40,21 +36,7 @@ const SalesRail: React.FC<Props & RailScrollProps> = ({
 }) => {
   const listRef = useRef<FlatList<any>>()
   const tracking = useTracking()
-  const isCascadingEnabled = useFeatureFlag("AREnableCascadingEndTimerHomeSalesRail")
   const isArtworksConnectionEnabled = useFeatureFlag("AREnableArtworksConnectionForAuction")
-
-  const getSaleSubtitle = (
-    liveStartAt: string | undefined | null,
-    displayTimelyAt: string | undefined | null
-  ) => {
-    const saleSubtitle = !!liveStartAt ? "Live Auction" : "Timed Auction"
-    const dateAt = formatDisplayTimelyAt(displayTimelyAt !== undefined ? displayTimelyAt : null)
-    if (dateAt) {
-      return `${saleSubtitle} ${bullet} ${dateAt}`
-    } else {
-      return `${saleSubtitle}`
-    }
-  }
 
   useImperativeHandle(scrollRef, () => ({
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
@@ -68,7 +50,7 @@ const SalesRail: React.FC<Props & RailScrollProps> = ({
 
   return (
     <Flex mb={mb}>
-      <Flex pl="2" pr="2">
+      <Flex px={2}>
         <SectionTitle
           title={title}
           subtitle={subtitle}
@@ -99,11 +81,6 @@ const SalesRail: React.FC<Props & RailScrollProps> = ({
           // still be cautious to avoid crashes if this assumption is broken.
           const availableArtworkImageURLs = compact(imageURLs)
 
-          // Ensure we have an array of exactly 3 URLs, copying over the last image if we have less than 3
-          const artworkImageURLs = [null, null, null].reduce((acc: string[], _, i) => {
-            return [...acc, availableArtworkImageURLs[i] || acc[i - 1]]
-          }, [])
-
           return (
             <CardRailCard
               key={result?.href!}
@@ -118,27 +95,7 @@ const SalesRail: React.FC<Props & RailScrollProps> = ({
               }}
             >
               <View>
-                <ArtworkImageContainer>
-                  <ImageView
-                    width={ARTWORKS_HEIGHT}
-                    height={ARTWORKS_HEIGHT}
-                    imageURL={artworkImageURLs[0]}
-                  />
-                  <Division />
-                  <View>
-                    <ImageView
-                      width={ARTWORKS_HEIGHT / 2}
-                      height={ARTWORKS_HEIGHT / 2}
-                      imageURL={artworkImageURLs[1]}
-                    />
-                    <Division horizontal />
-                    <ImageView
-                      width={ARTWORKS_HEIGHT / 2}
-                      height={ARTWORKS_HEIGHT / 2}
-                      imageURL={artworkImageURLs[2]}
-                    />
-                  </View>
-                </ArtworkImageContainer>
+                <ThreeUpImageLayout imageURLs={availableArtworkImageURLs} />
                 <MetadataContainer>
                   <Text numberOfLines={2} lineHeight="20" variant="sm">
                     {result?.name}
@@ -151,9 +108,7 @@ const SalesRail: React.FC<Props & RailScrollProps> = ({
                     testID="sale-subtitle"
                     ellipsizeMode="middle"
                   >
-                    {isCascadingEnabled
-                      ? result?.formattedStartDateTime
-                      : getSaleSubtitle(result?.liveStartAt, result?.displayTimelyAt).trim()}
+                    {result?.formattedStartDateTime}
                   </Text>
                 </MetadataContainer>
               </View>
@@ -175,8 +130,6 @@ export const SalesRailFragmentContainer = createFragmentContainer(SalesRail, {
         href
         name
         liveURLIfOpen
-        liveStartAt
-        displayTimelyAt
         formattedStartDateTime
         saleArtworksConnection(first: 3) {
           edges {

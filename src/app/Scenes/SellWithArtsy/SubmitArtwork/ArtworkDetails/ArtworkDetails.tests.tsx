@@ -8,9 +8,12 @@ import { RelayEnvironmentProvider } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { createConsignSubmission, updateConsignSubmission } from "../../mutations"
+import { ContactInformationFormModel } from "../ContactInformation/validation"
+import { STEPS, SubmitSWAArtworkFlow } from "../SubmitArtwork"
 import { ArtworkDetails } from "./ArtworkDetails"
 import { createOrUpdateSubmission } from "./utils/createOrUpdateSubmission"
 import { mockFormValues } from "./utils/testUtils"
+import { ArtworkDetailsFormModel } from "./validation"
 
 jest.mock("../../mutations/createConsignSubmissionMutation", () => ({
   createConsignSubmission: jest.fn().mockResolvedValue("12345"),
@@ -26,9 +29,9 @@ const updateConsignSubmissionMock = updateConsignSubmission as jest.Mock
 const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
 describe("ArtworkDetails", () => {
-  const TestRenderer = () => (
+  const TestRenderer = ({ isLastStep = false }: { isLastStep?: boolean }) => (
     <RelayEnvironmentProvider environment={mockEnvironment}>
-      <ArtworkDetails handlePress={jest.fn()} />
+      <ArtworkDetails handlePress={jest.fn()} isLastStep={isLastStep} />
     </RelayEnvironmentProvider>
   )
 
@@ -36,7 +39,7 @@ describe("ArtworkDetails", () => {
 
   it("renders correct explanation for form fields", () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
-    expect(getByText("Currently, artists can not sell their own work on Artsy.")).toBeTruthy()
+    expect(getByText(/Currently, artists can not sell their own work on Artsy./)).toBeTruthy()
     expect(getByText("Learn more.")).toBeTruthy()
     expect(getByText("All fields are required to submit an artwork.")).toBeTruthy()
   })
@@ -61,12 +64,18 @@ describe("ArtworkDetails", () => {
 
   describe("createOrUpdateSubmission", () => {
     it("creates new submission when no submission ID passed", async () => {
-      await createOrUpdateSubmission(mockFormValues, "")
+      await createOrUpdateSubmission(
+        mockFormValues as ArtworkDetailsFormModel & ContactInformationFormModel,
+        ""
+      )
       expect(createConsignSubmissionMock).toHaveBeenCalled()
     })
 
     it("updates existing submission when submission ID passed", async () => {
-      await createOrUpdateSubmission(mockFormValues, "12345")
+      await createOrUpdateSubmission(
+        mockFormValues as ArtworkDetailsFormModel & ContactInformationFormModel,
+        "12345"
+      )
       expect(updateConsignSubmissionMock).toHaveBeenCalled()
     })
   })
@@ -162,7 +171,9 @@ describe("ArtworkDetails", () => {
     })
 
     it("tracks artworkDetailsCompleted event on submission create", async () => {
-      const { UNSAFE_getByProps } = renderWithWrappers(<TestRenderer />)
+      const { UNSAFE_getByProps } = renderWithWrappers(
+        <SubmitSWAArtworkFlow navigation={jest.fn() as any} stepsInOrder={[STEPS.ArtworkDetails]} />
+      )
       const SaveButton = UNSAFE_getByProps({
         testID: "Submission_ArtworkDetails_Button",
       })
@@ -183,7 +194,9 @@ describe("ArtworkDetails", () => {
 
     it("tracks artworkDetailsCompleted event on submission update", async () => {
       GlobalStore.actions.artworkSubmission.submission.setSubmissionId("54321")
-      const { UNSAFE_getByProps } = renderWithWrappers(<TestRenderer />)
+      const { UNSAFE_getByProps } = renderWithWrappers(
+        <SubmitSWAArtworkFlow navigation={jest.fn() as any} stepsInOrder={[STEPS.ArtworkDetails]} />
+      )
       const SaveButton = UNSAFE_getByProps({
         testID: "Submission_ArtworkDetails_Button",
       })

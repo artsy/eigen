@@ -5,10 +5,6 @@ import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { MyCollectionSearchBar, MyCollectionSearchBarProps } from "./MyCollectionSearchBar"
 
 describe("MyCollectionSearchBar", () => {
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionSearchBar: true })
-  })
-
   const defaultProps: MyCollectionSearchBarProps = {
     onChangeText: jest.fn(),
     searchString: "",

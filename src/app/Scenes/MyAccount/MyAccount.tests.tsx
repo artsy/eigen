@@ -1,6 +1,5 @@
 import { MyAccountTestsQuery } from "__generated__/MyAccountTestsQuery.graphql"
 import { MenuItem } from "app/Components/MenuItem"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Text } from "palette"
@@ -67,10 +66,10 @@ describe(MyAccountQueryRenderer, () => {
     mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         Me: () => ({
-          name: "pavlos",
           email:
             "myverylongemailmyverylongemailmyverylongemail@averylongdomainaverylongdomainaverylongdomain.com",
           phone: "123",
+          priceRange: "-1:2500",
           paddleNumber: "321",
           hasPassword: true,
         }),
@@ -78,7 +77,7 @@ describe(MyAccountQueryRenderer, () => {
       return result
     })
 
-    expect(tree.findAllByType(Text)[4].props.children).toBe(
+    expect(tree.findAllByType(Text)[2].props.children).toBe(
       "myverylongemailmyverylongemailmyverylongemail@averylongdomainaverylongdomainaverylongdomain.com"
     )
   })
@@ -89,9 +88,9 @@ describe(MyAccountQueryRenderer, () => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) => {
         const result = MockPayloadGenerator.generate(operation, {
           Me: () => ({
-            name: "my name",
             email: "email@gmail.com",
             phone: "123",
+            priceRange: "-1:2500",
             paddleNumber: "321",
             hasPassword: true,
             secondFactors: [],
@@ -109,15 +108,14 @@ describe(MyAccountQueryRenderer, () => {
       })
 
       it("links when **not** previously linked and unlinks when previously linked", () => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ ARGoogleAuth: true })
         Platform.OS = "ios"
         const tree = renderWithWrappersLEGACY(<TestRenderer />)
         mockEnvironment.mock.resolveMostRecentOperation((operation) => {
           const result = MockPayloadGenerator.generate(operation, {
             Me: () => ({
-              name: "my name",
               email: "email@gmail.com",
               phone: "123",
+              priceRange: "-1:2500",
               paddleNumber: "321",
               secondFactors: [],
               hasPassword: true,
@@ -146,9 +144,9 @@ describe(MyAccountQueryRenderer, () => {
         mockEnvironment.mock.resolveMostRecentOperation((operation) => {
           const result = MockPayloadGenerator.generate(operation, {
             Me: () => ({
-              name: "my name",
               email: "email@gmail.com",
               phone: "123",
+              priceRange: "-1:2500",
               paddleNumber: "321",
               secondFactors: [],
               // user does not have email/password, but has only FB as auth method

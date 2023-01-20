@@ -331,7 +331,8 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
     if (bidder_position!.status === "PENDING" && this.pollCount < MAX_POLL_ATTEMPTS) {
       // initiating new request here (vs setInterval) to make sure we wait for the previous call to return before making a new one
-      setTimeout(() => {
+      const wait = __TEST__ ? (cb: any) => cb() : setTimeout
+      wait(() => {
         bidderPositionQuery(bidder_position!.position!.internalID)
           .then(this.checkBidderPosition.bind(this))
           .catch((error) => this.presentErrorResult(error))
@@ -348,7 +349,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   onConditionsOfSaleLinkPressed() {
-    navigate("/conditions-of-sale", { modal: true })
+    navigate("/conditions-of-sale")
   }
 
   refreshBidderInfo = () => {
@@ -452,10 +453,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     // GOTCHA: Don't copy this kind of feature flag code if you're working in a functional component. use `useFeatureFlag` instead
     const enablePriceTransparency = unsafe_getFeatureFlag("AROptionsPriceTransparency")
 
-    const cascadingEndTimeFeatureEnabled = unsafe_getFeatureFlag("AREnableCascadingEndTimerLotPage")
-
-    const websocketEnabled =
-      !!cascadingEndTimeFeatureEnabled && !!sale?.cascadingEndTimeIntervalMinutes
+    const websocketEnabled = !!sale?.cascadingEndTimeIntervalMinutes
 
     return (
       <AuctionWebsocketContextProvider

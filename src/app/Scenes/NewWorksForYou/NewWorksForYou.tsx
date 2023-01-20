@@ -4,15 +4,20 @@ import { NewWorksForYouQuery } from "__generated__/NewWorksForYouQuery.graphql"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "app/relay/createEnvironment"
+import { useExperimentVariant } from "app/utils/experiments/hooks"
+import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
 import { PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { Box, SimpleMessage, Spacer } from "palette"
+import { useEffect } from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 const SCREEN_TITLE = "New Works for You"
 const PAGE_SIZE = 100
+export const RECOMMENDATION_MODEL_EXPERIMENT_NAME = "eigen-new-works-for-you-recommendations-model"
+export const DEFAULT_RECS_MODEL_VERSION = "B"
 
 interface NewWorksForYouProps {
   relay: RelayPaginationProp
@@ -58,6 +63,7 @@ export const NewWorksForYouFragmentContainer = createPaginationContainer(
           first: $count
           includeBackfill: true
           maxWorksPerArtist: 3
+          version: $worksForYouRecommendationsModelVariant
         ) @connection(key: "NewWorksForYou_artworks") {
           edges {
             node {
@@ -87,7 +93,11 @@ export const NewWorksForYouFragmentContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query NewWorksForYouRefetchQuery($cursor: String, $count: Int!) {
+      query NewWorksForYouRefetchQuery(
+        $cursor: String
+        $count: Int!
+        $worksForYouRecommendationsModelVariant: String!
+      ) {
         viewer {
           ...NewWorksForYou_viewer @arguments(cursor: $cursor, count: $count)
         }
@@ -97,7 +107,7 @@ export const NewWorksForYouFragmentContainer = createPaginationContainer(
 )
 
 export const NewWorksForYouScreenQuery = graphql`
-  query NewWorksForYouQuery {
+  query NewWorksForYouQuery($worksForYouRecommendationsModelVariant: String!) {
     viewer {
       ...NewWorksForYou_viewer
     }
@@ -105,11 +115,28 @@ export const NewWorksForYouScreenQuery = graphql`
 `
 
 export const NewWorksForYouQueryRenderer: React.FC = () => {
+  const worksForYouRecommendationsModel = useExperimentVariant(RECOMMENDATION_MODEL_EXPERIMENT_NAME)
+
+  useEffect(() => {
+    maybeReportExperimentVariant({
+      experimentName: RECOMMENDATION_MODEL_EXPERIMENT_NAME,
+      enabled: worksForYouRecommendationsModel.enabled,
+      variantName: worksForYouRecommendationsModel.variant,
+      payload: worksForYouRecommendationsModel.payload,
+      context_owner_type: OwnerType.newWorksForYou,
+      context_owner_screen: OwnerType.newWorksForYou,
+      storeContext: true,
+    })
+  }, [])
+
   return (
     <QueryRenderer<NewWorksForYouQuery>
       environment={defaultEnvironment}
       query={NewWorksForYouScreenQuery}
-      variables={{}}
+      variables={{
+        worksForYouRecommendationsModelVariant:
+          worksForYouRecommendationsModel.payload || DEFAULT_RECS_MODEL_VERSION,
+      }}
       render={renderWithPlaceholder({
         Container: NewWorksForYouFragmentContainer,
         renderPlaceholder: Placeholder,

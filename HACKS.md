@@ -40,6 +40,16 @@ https://github.com/ivpusic/react-native-image-crop-picker/pull/1354
 
 We do some swizzling in our AppDelegate that causes [[UIApplication sharedApplication] delegate] window] to return nil, this is used by image-crop-picker to find the currently presented viewController to present the picker onto. This patch looks for our custom window subclass (ARWindow) instead and uses that to find the presented viewController. Note we cannot reliably use the lastWindow rather than checking for our custom subclass because in some circumstances this is not our window but an apple window for example UIInputWindow used for managing the keyboard.
 
+## react-native patch-package (EXCLUDED_ARCHS part only).
+
+#### When can we remove this:
+
+When we upgrade to react-native 0.67 or later.
+
+#### Explanation/Context:
+
+This is an old restriction for an old hermes version. It's messing with our xcodeproj file for non-M1 macs, so we patch it out for now. That restriction is fixed and removed on RN 0.67.
+
 ## react-native patch-package (stacktrace-parser part only).
 
 #### When can we remove this:
@@ -50,23 +60,15 @@ When this is merged: https://github.com/facebook/react-native/pull/30345.
 
 For some reason CircleCI kept giving an error when running tests `TypeError: stacktraceParser.parse is not a function`. Once I moved the require higher up, things started working again.
 
-# Mapbox patches:
-
-We have a few mapbox related hacks + patches. Grouping here for convenience.
-
-## hardcode mapbox version to at least 6.3.0 using $ReactNativeMapboxGLIOSVersion
+## react-native patch-package (b/node_modules/react-native/jest/assetFileTransformer.js)
 
 #### When can we remove this:
 
-When @react-native-mapbox-gl/maps uses mapbox-ios at least 6.3.0
+When we upgrade to RN 0.69. See: https://github.com/facebook/react-native/pull/33756
 
 #### Explanation/Context:
 
-Version 6.3 added support for Xcode 12 and iOS 14. Without this hardcoding we get version 5.7. Let's keep the hardcode, at least until they give us at least that version with the npm package.
-
-To check which version comes with, either remove `$ReactNativeMapboxGLIOSVersion` and after `pod install` check the `Podfile.lock` for version, or look on github https://github.com/react-native-mapbox-gl/maps/blob/main/CHANGELOG.md for versions bundle with an npm version.
-
-Update tried again with mapbox 8.4.0 and getting 5.9 and still need the hard coded requirement, try again next time we update mapbox.
+Jest 28 changed the way it handles transformed file input.
 
 ## react-native-mapbox-gl/maps - postinstall script
 
@@ -120,18 +122,6 @@ Doesn't really need to be removed but can be if view hierarchy issue is fixed in
 #### Explanation/Context:
 
 We have a modal for showing a loading state and a onDismiss call that optionally displays an alert message, on iOS 14 we came across an issue where the alert was not displaying because when onDismiss was called the LoadingModal was still in the view heirarchy. The delay is a workaround.
-
-## react-native-config patch-package
-
-#### When can we remove this:
-
-Now.
-
-#### Explanation/Context:
-
-react-native-config loads the `.env` file by default. We wanted to use `.env.shared` and `.env.ci` instead. We did that by using a patch-package patch, to add our customization.
-
-We can do this better using https://github.com/luggit/react-native-config#ios-1. Take a look at https://artsyproduct.atlassian.net/browse/CX-949.
 
 ## @react-navigation/core patch-package
 
@@ -356,3 +346,13 @@ Once we can remove it and have `yarn type-check` pass. They have some broken typ
 #### Explanation/Context:
 
 Types failing because of broken types in the package.
+
+## @jest/fake-timers
+
+#### When can we remove this:
+
+Once we can figure out how to mock `global.setImmediate` with `global.setTimeout`, preferrably in jest setup file
+
+#### Explanation/Context:
+
+After upgrading to Jest 29, our use of jest.useFakeTimers() became somewhat funky. In most cases passing `legacyFakeTimers: true` to the function fixes it, but in other cases it breaks @jest/fake-timers at this line. Not sure why. To elaborate more, when jest runs tests it errors out saying that `setImmediate` isn't a function (this was removed from Jest 28); however, when trying to mock it with `global.setImmediate = global.setTimeout` it doesn't work. So ran a patch and replaced it manually in the code, which appears harmless since `setImmediate` is the same as `setTimeout(..., 0)`.

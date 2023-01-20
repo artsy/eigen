@@ -4,15 +4,23 @@ import {
   ArtworkRailCard_artwork$key,
 } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
+import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
+import { Schema } from "app/utils/track"
 import { compact } from "lodash"
-import { Flex, Spacer, Text, useColor } from "palette"
+import { Flex, HeartFillIcon, HeartIcon, Spacer, Text, Touchable, useColor } from "palette"
+import { useMemo } from "react"
 import { GestureResponderEvent, PixelRatio } from "react-native"
-import { graphql, useFragment } from "react-relay"
+import { graphql, useFragment, useMutation } from "react-relay"
+import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "../ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
+import { LARGE_RAIL_IMAGE_WIDTH } from "./LargeArtworkRail"
+import { SMALL_RAIL_IMAGE_WIDTH } from "./SmallArtworkRail"
 
-export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = 90
+export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = 60
+const SAVE_ICON_SIZE = 26
+
 export const ARTWORK_RAIL_CARD_IMAGE_HEIGHT = {
   small: 230,
   large: 320,
@@ -30,8 +38,10 @@ export interface ArtworkRailCardProps {
   highEstimateDisplay?: string
   onPress?: (event: GestureResponderEvent) => void
   priceRealizedDisplay?: string
+  showSaveIcon?: boolean
   size: ArtworkCardSize
   testID?: string
+  trackingContextScreenOwnerType?: Schema.OwnerEntityTypes
 }
 
 export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
@@ -43,15 +53,18 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   highEstimateDisplay,
   onPress,
   priceRealizedDisplay,
+  showSaveIcon = false,
   size,
   testID,
+  trackingContextScreenOwnerType,
   ...restProps
 }) => {
+  const { trackEvent } = useTracking()
   const fontScale = PixelRatio.getFontScale()
-
+  const [saveArtwork] = useMutation(SaveArtworkMutation)
   const artwork = useFragment(artworkFragment, restProps.artwork)
 
-  const { artistNames, date, partner, title, image } = artwork
+  const { artistNames, date, id, image, internalID, isSaved, partner, slug, title } = artwork
 
   const saleMessage = defaultSaleMessageOrBidInfo({ artwork, isSmallTile: true })
 
@@ -60,71 +73,182 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
       ? getUrgencyTag(artwork?.sale?.endAt)
       : null
 
+  const getTextHeightByArtworkSize = (cardSize: ArtworkCardSize) => {
+    if (cardSize === "small") {
+      return ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + 30
+    }
+    return ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + (isRecentlySoldArtwork ? 30 : 0)
+  }
+
+  const containerWidth = useMemo(() => {
+    const imageDimensions = getImageDimensions({
+      width: image?.resized?.width ?? 0,
+      height: image?.resized?.height ?? 0,
+      maxHeight: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
+    })
+
+    switch (size) {
+      case "small":
+        return artwork.image?.resized?.width
+      case "large":
+        if (imageDimensions.width <= SMALL_RAIL_IMAGE_WIDTH) {
+          return SMALL_RAIL_IMAGE_WIDTH
+        } else if (imageDimensions.width >= LARGE_RAIL_IMAGE_WIDTH) {
+          return LARGE_RAIL_IMAGE_WIDTH
+        } else {
+          return imageDimensions.width
+        }
+
+      default:
+        assertNever(size)
+        break
+    }
+  }, [image?.resized?.height, image?.resized?.width])
+
+  const handleArtworkSave = () => {
+    saveArtwork({
+      variables: {
+        input: {
+          artworkID: internalID,
+          remove: isSaved,
+        },
+      },
+      optimisticResponse: {
+        saveArtwork: {
+          artwork: {
+            id,
+            isSaved: !isSaved,
+          },
+        },
+      },
+      onCompleted: () => {
+        refreshFavoriteArtworks()
+      },
+      onError: () => {
+        refreshFavoriteArtworks()
+      },
+    })
+
+    trackEvent(tracks.saveOrUnsave(isSaved, internalID, slug, trackingContextScreenOwnerType))
+  }
+
   return (
     <ArtworkCard onPress={onPress || undefined} testID={testID}>
-      <Flex alignItems="flex-end">
+      <Flex>
         <ArtworkRailCardImage
-          containerWidth={artwork.image?.resized?.width}
+          containerWidth={containerWidth}
           image={image}
           size={size}
           urgencyTag={urgencyTag}
         />
         <Flex
           my={1}
-          width={artwork.image?.resized?.width}
+          width={containerWidth}
           // Recently sold artworks require more space for the text container
           // to accommodate the estimate and realized price
           style={{
-            height:
-              fontScale * (ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + (isRecentlySoldArtwork ? 10 : 0)),
+            height: fontScale * getTextHeightByArtworkSize(size),
           }}
+          flexDirection="row"
+          justifyContent="space-between"
         >
-          {!!lotLabel && (
-            <Text lineHeight="20" color="black60" numberOfLines={1}>
-              Lot {lotLabel}
-            </Text>
-          )}
-          {!hideArtistName && !!artistNames && (
-            <Text numberOfLines={size === "small" ? 2 : 1} lineHeight="20" variant="sm">
-              {artistNames}
-            </Text>
-          )}
-          {!!(title || date) && (
-            <Text lineHeight="20" color="black60" numberOfLines={size === "small" ? 2 : 1}>
-              {[title, date].filter(Boolean).join(", ")}
-            </Text>
-          )}
-          {!hidePartnerName && !!partner?.name && (
-            <Text lineHeight="20" color="black60" numberOfLines={1}>
-              {partner?.name}
-            </Text>
-          )}
-          {!!isRecentlySoldArtwork && size === "large" && (
-            <>
-              <Spacer mt={2} />
-              <Flex flexDirection="row" justifyContent="space-between">
-                <Text variant="xs" color="black60" numberOfLines={1} fontWeight="500">
-                  Estimate
-                </Text>
-                <Text variant="xs" color="black60" numberOfLines={1} fontWeight="500">
-                  {compact([lowEstimateDisplay, highEstimateDisplay]).join("—")}
-                </Text>
-              </Flex>
-              <Flex flexDirection="row" justifyContent="space-between">
-                <Text variant="xs" color="blue100" numberOfLines={1} fontWeight="500">
-                  Sold For (incl. premium)
-                </Text>
-                <Text variant="xs" color="blue100" numberOfLines={1} fontWeight="500">
-                  {priceRealizedDisplay}
-                </Text>
-              </Flex>
-            </>
-          )}
+          <Flex flex={1}>
+            {!!lotLabel && (
+              <Text lineHeight="20" color="black60" numberOfLines={1}>
+                Lot {lotLabel}
+              </Text>
+            )}
+            {!hideArtistName && !!artistNames && (
+              <Text numberOfLines={size === "small" ? 2 : 1} lineHeight="20" variant="xs">
+                {artistNames}
+              </Text>
+            )}
+            {!!title && (
+              <Text
+                lineHeight="20"
+                color="black60"
+                numberOfLines={size === "small" ? 2 : 1}
+                variant="xs"
+                fontStyle="italic"
+              >
+                {title}
+                {!!date && (
+                  <Text
+                    lineHeight="20"
+                    color="black60"
+                    numberOfLines={size === "small" ? 2 : 1}
+                    variant="xs"
+                  >
+                    {title && date ? ", " : ""}
+                    {date}
+                  </Text>
+                )}
+              </Text>
+            )}
 
-          {!!saleMessage && !isRecentlySoldArtwork && (
-            <Text lineHeight="20" variant="xs" color="black60" numberOfLines={1}>
-              {saleMessage}
-            </Text>
+            {!hidePartnerName && !!partner?.name && (
+              <Text lineHeight="20" color="black60" numberOfLines={1}>
+                {partner?.name}
+              </Text>
+            )}
+            {!!isRecentlySoldArtwork && size === "large" && (
+              <>
+                <Spacer mt={2} />
+                <Flex flexDirection="row" justifyContent="space-between">
+                  <Text variant="xs" color="black60" numberOfLines={1} fontWeight="500">
+                    Estimate
+                  </Text>
+                  <Text variant="xs" color="black60" numberOfLines={1} fontWeight="500">
+                    {compact([lowEstimateDisplay, highEstimateDisplay]).join("—")}
+                  </Text>
+                </Flex>
+                <Flex flexDirection="row" justifyContent="space-between">
+                  <Text variant="xs" color="blue100" numberOfLines={1} fontWeight="500">
+                    Sold For (incl. premium)
+                  </Text>
+                  <Text variant="xs" color="blue100" numberOfLines={1} fontWeight="500">
+                    {priceRealizedDisplay}
+                  </Text>
+                </Flex>
+              </>
+            )}
+
+            {!!saleMessage && !isRecentlySoldArtwork && (
+              <Text
+                lineHeight="20"
+                variant="xs"
+                color="black100"
+                numberOfLines={1}
+                fontWeight={500}
+              >
+                {saleMessage}
+              </Text>
+            )}
+          </Flex>
+          {!!showSaveIcon && (
+            <Flex ml={0.2}>
+              <Touchable
+                haptic
+                hitSlop={{ bottom: 5, right: 5, left: 5, top: 5 }}
+                onPress={handleArtworkSave}
+                testID="save-artwork-icon"
+              >
+                {isSaved ? (
+                  <HeartFillIcon
+                    testID="filled-heart-icon"
+                    height={SAVE_ICON_SIZE}
+                    width={SAVE_ICON_SIZE}
+                    fill="blue100"
+                  />
+                ) : (
+                  <HeartIcon
+                    testID="empty-heart-icon"
+                    height={SAVE_ICON_SIZE}
+                    width={SAVE_ICON_SIZE}
+                  />
+                )}
+              </Touchable>
+            </Flex>
           )}
         </Flex>
       </Flex>
@@ -168,12 +292,12 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
 
   return (
     <Flex>
-      <Flex alignItems="center" width={containerWidth}>
+      <Flex width={containerWidth}>
         <OpaqueImageView
           style={{ maxHeight: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size] }}
           imageURL={src}
           height={imageDimensions.height}
-          width={imageDimensions.width}
+          width={containerWidth!}
         />
       </Flex>
       {!!urgencyTag && (
@@ -213,6 +337,17 @@ const getImageDimensions = ({
   return { width, height }
 }
 
+const SaveArtworkMutation = graphql`
+  mutation ArtworkRailCardSaveArtworkMutation($input: SaveArtworkInput!) {
+    saveArtwork(input: $input) {
+      artwork {
+        id
+        isSaved
+      }
+    }
+  }
+`
+
 const artworkFragment = graphql`
   fragment ArtworkRailCard_artwork on Artwork @argumentDefinitions(width: { type: "Int" }) {
     id
@@ -230,6 +365,7 @@ const artworkFragment = graphql`
       }
       aspectRatio
     }
+    isSaved
     sale {
       isAuction
       isClosed
@@ -256,3 +392,18 @@ const ArtworkCard = styled.TouchableHighlight.attrs(() => ({
   underlayColor: themeGet("colors.white100"),
   activeOpacity: 0.8,
 }))``
+
+const tracks = {
+  saveOrUnsave: (
+    isSaved?: boolean | null,
+    internalID?: string,
+    slug?: string,
+    contextScreenOwnerType: Schema.OwnerEntityTypes | undefined = Schema.OwnerEntityTypes.Artwork
+  ) => ({
+    action_name: isSaved ? Schema.ActionNames.ArtworkUnsave : Schema.ActionNames.ArtworkSave,
+    context_screen_owner_type: contextScreenOwnerType,
+    context_module: Schema.ContextModules.ArtworkActions,
+    context_screen_owner_id: internalID,
+    context_screen_owner_slug: slug,
+  }),
+}

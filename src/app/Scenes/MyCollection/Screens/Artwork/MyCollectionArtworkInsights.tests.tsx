@@ -1,6 +1,5 @@
 import { MyCollectionArtworkInsightsTestsQuery } from "__generated__/MyCollectionArtworkInsightsTestsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
@@ -87,10 +86,6 @@ describe("MyCollectionArtworkInsights", () => {
   })
 
   describe("Conditional Display of RequestForPriceEstimateBanner", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ ARShowRequestPriceEstimateBanner: true })
-    })
-
     it("does not display RequestForPriceEstimateBanner when Artist is not P1", () => {
       const { queryByTestId } = renderWithWrappers(<TestRenderer />)
       resolveMostRecentRelayOperation(mockEnvironment, {
@@ -100,7 +95,6 @@ describe("MyCollectionArtworkInsights", () => {
         }),
       })
       expect(queryByTestId("request-price-estimate-button")).toBeNull()
-      expect(queryByTestId("request-price-estimate-banner-text")).toBeNull()
     })
 
     it("does not display when artwork is submitted", () => {
@@ -116,12 +110,11 @@ describe("MyCollectionArtworkInsights", () => {
       })
 
       expect(queryByTestId("request-price-estimate-button")).toBeNull()
-      expect(queryByTestId("request-price-estimate-banner-text")).toBeNull()
     })
   })
 
   describe("display of Submit for Sale section", () => {
-    it("renders Submit for Sale section if P1 artist", () => {
+    it("renders Submit for Sale section if P1 artist and artwork was not submitted to sale", () => {
       const { getByText } = renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
@@ -132,6 +125,7 @@ describe("MyCollectionArtworkInsights", () => {
                 isP1: true,
               },
             },
+            submissionId: null,
           },
         }),
       })
@@ -149,6 +143,26 @@ describe("MyCollectionArtworkInsights", () => {
                 isP1: false,
               },
             },
+          },
+        }),
+      })
+
+      expect(() => getByText("Interested in Selling This Work?")).toThrow(
+        "Unable to find an element with text: Interested in Selling This Work?"
+      )
+    })
+    it("does not render Submit for Sale section if P1 artist and artwork was submited to sale", () => {
+      const { getByText } = renderWithWrappers(<TestRenderer />)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Query: () => ({
+          artwork: {
+            artist: {
+              targetSupply: {
+                isP1: true,
+              },
+            },
+            submissionId: "someId",
           },
         }),
       })

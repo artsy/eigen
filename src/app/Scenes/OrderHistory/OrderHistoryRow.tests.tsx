@@ -1,4 +1,6 @@
+import { fireEvent } from "@testing-library/react-native"
 import { OrderHistoryRowTestsQuery } from "__generated__/OrderHistoryRowTestsQuery.graphql"
+import { navigate } from "app/navigation/navigate"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
@@ -210,6 +212,81 @@ describe("Order history row", () => {
 
         expect(extractText(tree.findByProps({ testID: "order-status" }))).toBe("refunded")
         expect(tree.findByProps({ testID: "view-order-button-box" })).not.toContain(Button)
+      })
+    })
+  })
+
+  describe("Offers with shipments", () => {
+    describe("when offer is still in negotiation with draft shipment status", () => {
+      const order = {
+        ...mockOrder,
+        mode: "OFFER",
+        state: "SUBMITTED",
+        lineItems: {
+          edges: [
+            {
+              node: {
+                ...mockOrder.lineItems.edges[0].node,
+                shipment: { status: "draft" },
+              },
+            },
+          ],
+        },
+      }
+
+      it("displays the correct order status", () => {
+        const tree = renderWithWrappersLEGACY(<TestRenderer />).root
+        resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => order })
+
+        expect(extractText(tree.findByProps({ testID: "order-status" }))).toBe("pending")
+      })
+
+      it("directs user to the orders counter offer modal on button press", () => {
+        const tree = renderWithWrappersLEGACY(<TestRenderer />).root
+        resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => order })
+        const button = tree.findByProps({ testID: "view-order-button" })
+
+        fireEvent.press(button)
+
+        expect(navigate).toHaveBeenCalledWith(`/orders/${mockOrder.internalID}`, {
+          modal: true,
+          passProps: { orderID: `${mockOrder.internalID}`, title: "Make Offer" },
+        })
+      })
+    })
+
+    describe("Approved Offers with shipment status", () => {
+      const order = {
+        ...mockOrder,
+        mode: "OFFER",
+        state: "APPROVED",
+        lineItems: {
+          edges: [
+            {
+              node: {
+                ...mockOrder.lineItems.edges[0].node,
+                shipment: { status: "pending" },
+              },
+            },
+          ],
+        },
+      }
+
+      it("directs user to the purchase summary screen on button press", () => {
+        const tree = renderWithWrappersLEGACY(<TestRenderer />).root
+        resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => order })
+        const button = tree.findByProps({ testID: "view-order-button" })
+
+        fireEvent.press(button)
+
+        expect(navigate).toHaveBeenCalledWith(`/user/purchases/${order.internalID}`)
+      })
+
+      it("displays the correct order status", () => {
+        const tree = renderWithWrappersLEGACY(<TestRenderer />).root
+        resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => order })
+
+        expect(extractText(tree.findByProps({ testID: "order-status" }))).toBe("processing")
       })
     })
   })

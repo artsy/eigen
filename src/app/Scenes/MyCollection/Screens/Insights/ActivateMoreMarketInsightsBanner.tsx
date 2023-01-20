@@ -52,7 +52,7 @@ export const ActivateMoreMarketInsightsBanner = () => {
 
       <BackgroundImage
         style={{ minWidth: screenDimensions.width / 2 }}
-        source={require("images/MCInsights_banner_backgound_image.webp")}
+        source={require("images/MCInsights_banner_backgound_image.jpg")}
       />
     </Flex>
   )

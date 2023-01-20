@@ -1,14 +1,8 @@
 import { ArtistAbout_artist$data } from "__generated__/ArtistAbout_artist.graphql"
 import { ArtistCollectionsRail_collections$data } from "__generated__/ArtistCollectionsRail_collections.graphql"
 import { CollectionArtistSeriesRail_collectionGroup$data } from "__generated__/CollectionArtistSeriesRail_collectionGroup.graphql"
-import {
-  CARD_RAIL_ARTWORKS_HEIGHT as ARTWORKS_HEIGHT,
-  CardRailArtworkImageContainer as ArtworkImageContainer,
-  CardRailCard,
-  CardRailDivision as Division,
-} from "app/Components/Home/CardRailCard"
+import { CardRailCard } from "app/Components/Home/CardRailCard"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
-import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
@@ -17,6 +11,7 @@ import { View } from "react-native"
 import { useTracking } from "react-tracking"
 // @ts-ignore
 import styled from "styled-components/native"
+import { ThreeUpImageLayout } from "./ThreeUpImageLayout"
 
 interface GenericArtistSeriesRailProps {
   collections:
@@ -40,14 +35,6 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
 
   const handleNavigation = (slug: string) => {
     return navigate(`/collection/${slug}`)
-  }
-
-  const validateArtworkImageURL = (
-    url: string | null | undefined,
-    firstFallbackUrl: string | null | undefined,
-    secondFallbackUrl: string | null | undefined = null
-  ) => {
-    return url ? url : firstFallbackUrl ? firstFallbackUrl : secondFallbackUrl
   }
 
   return (
@@ -86,31 +73,7 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
               }}
             >
               <View>
-                <ArtworkImageContainer>
-                  <ImageView
-                    width={ARTWORKS_HEIGHT}
-                    height={ARTWORKS_HEIGHT}
-                    imageURL={artworkImageURLs[0]}
-                  />
-                  <Division />
-                  <View>
-                    <ImageView
-                      width={ARTWORKS_HEIGHT / 2}
-                      height={ARTWORKS_HEIGHT / 2}
-                      imageURL={validateArtworkImageURL(artworkImageURLs[1], artworkImageURLs[0])}
-                    />
-                    <Division horizontal />
-                    <ImageView
-                      width={ARTWORKS_HEIGHT / 2}
-                      height={ARTWORKS_HEIGHT / 2 - 2}
-                      imageURL={validateArtworkImageURL(
-                        artworkImageURLs[2],
-                        artworkImageURLs[1],
-                        artworkImageURLs[0]
-                      )}
-                    />
-                  </View>
-                </ArtworkImageContainer>
+                <ThreeUpImageLayout imageURLs={artworkImageURLs} />
 
                 <MetadataContainer>
                   <GenericArtistSeriesTitle weight="medium" variant="sm">

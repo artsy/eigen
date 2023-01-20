@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, EditedUserProfile, OwnerType } from "@artsy/cohesion"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { useNavigation } from "@react-navigation/native"
 import { EditableLocation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
@@ -24,6 +25,7 @@ import {
   Flex,
   Input,
   Join,
+  Message,
   Spacer,
   Text,
   Touchable,
@@ -32,6 +34,7 @@ import {
 import React, { Suspense, useContext, useEffect, useRef, useState } from "react"
 import { ScrollView, TextInput } from "react-native"
 import { useLazyLoadQuery, useRefetchableFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 import { graphql } from "relay-runtime"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import * as Yup from "yup"
@@ -61,6 +64,7 @@ const editMyProfileSchema = Yup.object().shape({
 })
 
 export const MyProfileEditForm: React.FC = () => {
+  const { trackEvent } = useTracking()
   const data = useLazyLoadQuery<MyProfileEditFormQuery>(MyProfileEditFormScreenQuery, {})
 
   const [me, refetch] = useRefetchableFragment<MyProfileEditFormQuery, MyProfileEditForm_me$key>(
@@ -152,6 +156,8 @@ export const MyProfileEditForm: React.FC = () => {
               didUpdatePhoto && (await uploadProfilePhoto(photo)),
             ])
           )
+
+          trackEvent(tracks.editedUserProfile)
         } catch (error) {
           console.error("Failed to update user profile ", error)
         } finally {
@@ -195,6 +201,8 @@ export const MyProfileEditForm: React.FC = () => {
     navigation.goBack()
   }
 
+  const showCompleteYourProfileBanner = !me?.collectorProfile?.isProfileComplete
+
   return (
     <>
       <FancyModalHeader
@@ -204,6 +212,16 @@ export const MyProfileEditForm: React.FC = () => {
       >
         Edit Profile
       </FancyModalHeader>
+
+      {showCompleteYourProfileBanner && (
+        <Message
+          variant="info"
+          title="Complete your profile and make a great impression"
+          text="Galleries are more likely to respond to collectors with complete profiles and a brief bio."
+          showCloseButton
+        />
+      )}
+
       <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
         <Join separator={<Spacer py={1} />}>
           <Flex flexDirection="row" alignItems="center" px={2} mt={2}>
@@ -220,7 +238,7 @@ export const MyProfileEditForm: React.FC = () => {
                 {!!values.photo ? (
                   <Avatar src={values.photo} size="md" />
                 ) : (
-                  <Image source={require("images/profile_placeholder_avatar.webp")} />
+                  <Image source={require("images/profile_placeholder_avatar.png")} />
                 )}
               </Box>
             </Touchable>
@@ -253,13 +271,14 @@ export const MyProfileEditForm: React.FC = () => {
                   professionInputRef.current?.focus()
                 }}
                 displayLocation={buildLocationDisplay(values.location)}
-                onChange={({ city, country, postalCode, state, stateCode }) => {
+                onChange={({ city, country, postalCode, state, stateCode, coordinates }) => {
                   setFieldValue("location", {
                     city: city ?? "",
                     country: country ?? "",
                     postalCode: postalCode ?? "",
                     state: state ?? "",
                     stateCode: stateCode ?? "",
+                    coordinates,
                   })
                 }}
               />
@@ -308,9 +327,9 @@ export const MyProfileEditForm: React.FC = () => {
               />
 
               <ProfileVerifications
-                isIDVerified={!!me?.identityVerified}
+                isIDVerified={!!me?.isIdentityVerified}
                 canRequestEmailConfirmation={!!me?.canRequestEmailConfirmation}
-                emailConfirmed={!!me?.emailConfirmed}
+                isEmailConfirmed={!!me?.isEmailConfirmed}
                 handleEmailVerification={handleEmailVerification}
                 handleIDVerification={handleIDVerification}
               />
@@ -349,9 +368,12 @@ const meFragment = graphql`
       url(version: "thumbnail")
     }
     email
-    emailConfirmed
-    identityVerified
+    isEmailConfirmed
+    isIdentityVerified
     canRequestEmailConfirmation
+    collectorProfile {
+      isProfileComplete
+    }
   }
 `
 
@@ -406,7 +428,7 @@ const LoadingSkeleton = () => {
   )
 }
 
-const renderVerifiedRow = ({ title, subtitle }: { title: string; subtitle: string }) => {
+const VerifiedRow: React.FC<{ title: string; subtitle: string }> = ({ title, subtitle }) => {
   const color = useColor()
 
   return (
@@ -424,13 +446,13 @@ const renderVerifiedRow = ({ title, subtitle }: { title: string; subtitle: strin
 
 const ProfileVerifications = ({
   canRequestEmailConfirmation,
-  emailConfirmed,
+  isEmailConfirmed,
   handleEmailVerification,
   handleIDVerification,
   isIDVerified,
 }: {
   canRequestEmailConfirmation: boolean
-  emailConfirmed: boolean
+  isEmailConfirmed: boolean
   handleEmailVerification: () => void
   handleIDVerification: () => void
   isIDVerified: boolean
@@ -441,10 +463,10 @@ const ProfileVerifications = ({
     <Flex testID="profile-verifications" pr={2}>
       {/* ID Verification */}
       {isIDVerified ? (
-        renderVerifiedRow({
-          title: "ID Verified",
-          subtitle: "For details, see FAQs or contact verification@artsy.net",
-        })
+        <VerifiedRow
+          title="ID Verified"
+          subtitle="For details, see FAQs or contact verification@artsy.net"
+        />
       ) : (
         <Flex flexDirection="row">
           <Flex mt="3px">
@@ -478,11 +500,11 @@ const ProfileVerifications = ({
       <Spacer height={30} />
 
       {/* Email Verification */}
-      {emailConfirmed ? (
-        renderVerifiedRow({
-          title: "Email Address Verified",
-          subtitle: "Secure your account and receive updates about your transactions on Artsy.",
-        })
+      {isEmailConfirmed ? (
+        <VerifiedRow
+          title="Email Address Verified"
+          subtitle="Secure your account and receive updates about your transactions on Artsy."
+        />
       ) : (
         <Flex flexDirection="row">
           <Flex mt="3px">
@@ -538,4 +560,13 @@ const VerificationBanner = ({ resultText }: { resultText: string }) => {
       </Flex>
     </Flex>
   )
+}
+
+const tracks = {
+  editedUserProfile: (): EditedUserProfile => ({
+    action: ActionType.editedUserProfile,
+    context_screen: ContextModule.collectorProfile,
+    context_screen_owner_type: OwnerType.editProfile,
+    platform: "mobile",
+  }),
 }

@@ -228,7 +228,7 @@
     ARActionLog(@"Got device notification token: %@", deviceToken);
     NSString *previousToken = [[NSUserDefaults standardUserDefaults] stringForKey:ARAPNSDeviceTokenKey];
 
-    // Save device token purely for the admin settings view.
+    // Save device token purely for the dev settings view.
     [[NSUserDefaults standardUserDefaults] setValue:deviceToken forKey:ARAPNSDeviceTokenKey];
 
     [[AREmission sharedInstance] sendIdentifyEvent:@{ARAnalyticsEnabledNotificationsProperty: @1}];

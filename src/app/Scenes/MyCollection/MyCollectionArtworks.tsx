@@ -5,7 +5,7 @@ import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/Filter
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ZeroState } from "app/Components/States/ZeroState"
 import { navigate, popToRoot } from "app/navigation/navigate"
-import { GlobalStore, useDevToggle, useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { Button, Flex, LockIcon, Spacer, Text, useSpace } from "palette"
 import { useState } from "react"
@@ -34,6 +34,7 @@ interface MyCollectionArtworksProps {
   relay: RelayPaginationProp
   showSearchBar: boolean
   setShowSearchBar: (show: boolean) => void
+  myCollectionIsRefreshing?: boolean
 }
 
 export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
@@ -41,9 +42,9 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
   relay,
   showSearchBar,
   setShowSearchBar,
+  myCollectionIsRefreshing,
 }) => {
   const { height: screenHeight } = useScreenDimensions()
-  const enabledSearchBar = useFeatureFlag("AREnableMyCollectionSearchBar")
 
   const [minHeight, setMinHeight] = useState<number | undefined>(undefined)
   const [initialScrollPosition, setInitialScrollPosition] = useState(-1)
@@ -149,6 +150,7 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
       {filteredArtworks.length > 0 ? (
         viewOption === "grid" ? (
           <InfiniteScrollMyCollectionArtworksGridContainer
+            myCollectionIsRefreshing={myCollectionIsRefreshing}
             myCollectionConnection={me.myCollectionConnection!}
             hasMore={relay.hasMore}
             loadMore={relay.loadMore}
@@ -162,10 +164,11 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
               )
             }
             scrollEventThrottle={100}
-            onScroll={enabledSearchBar ? handleScroll : undefined}
+            onScroll={handleScroll}
           />
         ) : (
           <MyCollectionArtworkList
+            myCollectionIsRefreshing={myCollectionIsRefreshing}
             myCollectionConnection={me.myCollectionConnection}
             hasMore={relay.hasMore}
             loadMore={relay.loadMore}
@@ -180,7 +183,7 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
               )
             }
             scrollEventThrottle={100}
-            onScroll={enabledSearchBar ? handleScroll : undefined}
+            onScroll={handleScroll}
           />
         )
       ) : (
@@ -198,7 +201,7 @@ const MyCollectionZeroState: React.FC = () => {
   const { trackEvent } = useTracking()
   const space = useSpace()
 
-  const image = require("images/my-collection-empty-state.webp")
+  const image = require("images/my-collection-empty-state.jpg")
 
   return (
     <ZeroState

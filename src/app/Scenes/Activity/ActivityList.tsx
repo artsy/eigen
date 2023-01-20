@@ -1,43 +1,52 @@
+import { ActivityList_me$key } from "__generated__/ActivityList_me.graphql"
 import { ActivityList_viewer$key } from "__generated__/ActivityList_viewer.graphql"
 import { ActivityQuery } from "__generated__/ActivityQuery.graphql"
+import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
 import {
   StickyTabPageFlatList,
+  StickyTabPageFlatListContext,
   StickyTabSection,
 } from "app/Components/StickyTabPage/StickyTabPageFlatList"
+import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractNodes } from "app/utils/extractNodes"
 import { Flex, Separator, Spinner } from "palette"
-import { useState } from "react"
-import { graphql, usePaginationFragment } from "react-relay"
+import { useContext, useEffect, useState } from "react"
+import { graphql, useFragment, usePaginationFragment } from "react-relay"
 import { ActivityEmptyView } from "./ActivityEmptyView"
 import { ActivityItem } from "./ActivityItem"
-import { ActivityTabSubheader } from "./ActivityTabSubheader"
+import { ActivityMarkAllAsReadSection } from "./ActivityMarkAllAsReadSection"
 import { NotificationType } from "./types"
+import { isArtworksBasedNotification } from "./utils/isArtworksBasedNotification"
 
 interface ActivityListProps {
   viewer: ActivityList_viewer$key | null
+  me: ActivityList_me$key | null
   type: NotificationType
 }
 
-const SUBHEADER_SECTION_KEY = "tab-subheader"
-
-export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type }) => {
+export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) => {
   const [refreshing, setRefreshing] = useState(false)
+  const setJSX = useContext(StickyTabPageFlatListContext).setJSX
   const { data, hasNext, isLoadingNext, loadNext, refetch } = usePaginationFragment<
     ActivityQuery,
     ActivityList_viewer$key
   >(notificationsConnectionFragment, viewer)
-  const notifications = extractNodes(data?.notificationsConnection)
-  const notificationSections: StickyTabSection[] = notifications.map((notification) => ({
+  const meData = useFragment(meFragment, me)
+  const hasUnreadNotifications = (meData?.unreadNotificationsCount ?? 0) > 0
+  const notificationsNodes = extractNodes(data?.notificationsConnection)
+  const notifications = notificationsNodes.filter((notification) => {
+    if (isArtworksBasedNotification(notification.notificationType)) {
+      const artworksCount = notification.artworks?.totalCount ?? 0
+      return artworksCount > 0
+    }
+
+    return true
+  })
+
+  const sections: StickyTabSection[] = notifications.map((notification) => ({
     key: notification.internalID,
     content: <ActivityItem item={notification} />,
   }))
-  const sections: StickyTabSection[] = [
-    {
-      key: SUBHEADER_SECTION_KEY,
-      content: <ActivityTabSubheader type={type} />,
-    },
-    ...notificationSections,
-  ]
 
   const handleLoadMore = () => {
     if (!hasNext || isLoadingNext) {
@@ -52,6 +61,7 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type }) => {
     refetch(
       {},
       {
+        fetchPolicy: "store-and-network",
         onComplete: () => {
           setRefreshing(false)
         },
@@ -59,26 +69,42 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type }) => {
     )
   }
 
+  useEffect(() => {
+    setJSX(
+      <>
+        <ActivityMarkAllAsReadSection hasUnreadNotifications={hasUnreadNotifications} />
+        <Separator />
+      </>
+    )
+  }, [hasUnreadNotifications])
+
   if (notifications.length === 0) {
-    return <ActivityEmptyView type={type} />
+    return (
+      <StickyTabPageScrollView
+        contentContainerStyle={{
+          // Extend the container flex when there are no artworks for accurate vertical centering
+          flexGrow: 1,
+          justifyContent: "center",
+          height: "100%",
+        }}
+        refreshControl={
+          <StickTabPageRefreshControl onRefresh={handleRefresh} refreshing={refreshing} />
+        }
+      >
+        <ActivityEmptyView type={type} />
+      </StickyTabPageScrollView>
+    )
   }
 
   return (
     <StickyTabPageFlatList
       data={sections}
-      refreshing={refreshing}
-      keyExtractor={(item) => item.internalID}
-      ItemSeparatorComponent={({ leadingItem }) => {
-        const { key } = leadingItem
-
-        if (key === SUBHEADER_SECTION_KEY) {
-          return null
-        }
-
-        return <Separator />
-      }}
+      keyExtractor={(item) => `${type}-${item.key}`}
+      ItemSeparatorComponent={() => <Separator />}
       onEndReached={handleLoadMore}
-      onRefresh={handleRefresh}
+      refreshControl={
+        <StickTabPageRefreshControl onRefresh={handleRefresh} refreshing={refreshing} />
+      }
       ListFooterComponent={
         isLoadingNext ? (
           <Flex my={2} alignItems="center" justifyContent="center">
@@ -99,13 +125,23 @@ const notificationsConnectionFragment = graphql`
     types: { type: "[NotificationTypesEnum]" }
   ) {
     notificationsConnection(first: $count, after: $after, notificationTypes: $types)
-      @connection(key: "ActivityList_notificationsConnection") {
+      @connection(key: "ActivityList_notificationsConnection", filters: ["notificationTypes"]) {
       edges {
         node {
           internalID
+          notificationType
+          artworks: artworksConnection {
+            totalCount
+          }
           ...ActivityItem_item
         }
       }
     }
+  }
+`
+
+const meFragment = graphql`
+  fragment ActivityList_me on Me {
+    unreadNotificationsCount
   }
 `

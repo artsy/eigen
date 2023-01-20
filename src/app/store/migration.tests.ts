@@ -112,7 +112,7 @@ describe(migrate, () => {
           },
         },
       })
-    }).toThrowErrorMatchingInlineSnapshot(`"Bad state.version {\\"version\\":\\"0\\"}"`)
+    }).toThrowErrorMatchingInlineSnapshot(`"Bad state.version {"version":"0"}"`)
   })
 
   it("throws an error if there is no valid migration", () => {
@@ -168,6 +168,7 @@ describe("artsy app store migrations", () => {
     }
 
     __globalStoreTestUtils__?.reset()
+
     expect(migrate({ state: { version: 0 } })).toEqual(
       sanitize(__globalStoreTestUtils__?.getCurrentState())
     )
@@ -710,5 +711,105 @@ describe("App version Versions.RemoveDeviceId", () => {
     // this test is kinda unnecessary, since `native` is not really possible to test without actually testing the native code.
     // but i guess good to just make sure of the undefined, in case we ever break this somehow.
     expect(migratedState.native.deviceId).toBe(undefined)
+  })
+})
+
+describe("App version Versions.AddSubmissionIdForMyCollection", () => {
+  const migrationToTest = Versions.AddSubmissionIdForMyCollection
+
+  it("removes deviceId", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.artworkSubmission.submission.submissionIdForMyCollection).toEqual("")
+  })
+})
+describe("App version Versions.AddRecentPriceRangesModel", () => {
+  const migrationToTest = Versions.AddRecentPriceRangesModel
+
+  it("adds recentPriceRanges to the store", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.recentPriceRanges.ranges).toEqual([])
+  })
+})
+
+describe("App version Versions.AddUserPreferredPriceRange", () => {
+  const migrationToTest = Versions.AddUserPreferredPriceRange
+
+  it("adds priceRange details to state", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.userPrefs.priceRange).toEqual("*-*")
+  })
+})
+
+describe("App version Versions.RenameAdminToLocalOverridesForFeatures", () => {
+  const migrationToTest = Versions.RenameAdminToLocalOverridesForFeatures
+
+  it("adds renames things correctly", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    expect(previousState.artsyPrefs.features.adminOverrides).toEqual({})
+    previousState.artsyPrefs.features.adminOverrides = { testKey: true }
+    expect(previousState.artsyPrefs.features.adminOverrides).toEqual({ testKey: true })
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.artsyPrefs.features.localOverrides).toEqual({ testKey: true })
+    expect(migratedState.artsyPrefs.features.adminOverrides).toEqual(undefined)
+  })
+})
+
+describe("App version Versions.MoveEnvironmentToDevicePrefsAndRenameAdminToLocal", () => {
+  const migrationToTest = Versions.MoveEnvironmentToDevicePrefsAndRenameAdminToLocal
+
+  it("moves and renames things correctly", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    expect(previousState.artsyPrefs.environment.adminOverrides).toEqual({})
+    previousState.artsyPrefs.environment.adminOverrides = { testKey: true }
+    expect(previousState.artsyPrefs.environment.adminOverrides).toEqual({ testKey: true })
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.devicePrefs.environment.localOverrides).toEqual({ testKey: true })
+    expect(migratedState.devicePrefs.environment.adminOverrides).toEqual(undefined)
+    expect(migratedState.artsyPrefs.environment).toEqual(undefined)
   })
 })

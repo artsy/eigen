@@ -6,7 +6,6 @@ import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabP
 
 import { fireEvent, screen } from "@testing-library/react-native"
 import { navigate } from "app/navigation/navigate"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
@@ -56,10 +55,6 @@ describe("MyCollection", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
-
-    __globalStoreTestUtils__?.injectFeatureFlags({
-      AREnableMyCollectionInsights: true,
-    })
   })
 
   afterEach(() => {
@@ -115,15 +110,15 @@ describe("MyCollection", () => {
 
       expect(mockTrackEvent).toHaveBeenCalledTimes(1)
       expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-      Array [
-        Object {
-          "action": "addCollectedArtwork",
-          "context_module": "myCollectionHome",
-          "context_owner_type": "myCollection",
-          "platform": "mobile",
-        },
-      ]
-    `)
+        [
+          {
+            "action": "addCollectedArtwork",
+            "context_module": "myCollectionHome",
+            "context_owner_type": "myCollection",
+            "platform": "mobile",
+          },
+        ]
+      `)
     })
   })
 

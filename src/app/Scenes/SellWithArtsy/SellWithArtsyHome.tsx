@@ -1,6 +1,6 @@
 import { ContextModule, OwnerType, tappedConsign, TappedConsignArgs } from "@artsy/cohesion"
+import { SellWithArtsyHome_me$data } from "__generated__/SellWithArtsyHome_me.graphql"
 import { SellWithArtsyHome_recentlySoldArtworksTypeConnection$data } from "__generated__/SellWithArtsyHome_recentlySoldArtworksTypeConnection.graphql"
-import { SellWithArtsyHome_targetSupply$data } from "__generated__/SellWithArtsyHome_targetSupply.graphql"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -14,13 +14,10 @@ import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { useScreenDimensions } from "shared/hooks"
-import { useFeatureFlag } from "../../store/GlobalStore"
 import { Footer } from "./Components/Footer"
 import { Header } from "./Components/Header"
 import { HowItWorks } from "./Components/HowItWorks"
-import { OldSellWithArtsyHomeQueryRenderer } from "./Components/OldSellWithArtsyHome"
-import { RecentlySoldFragmentContainer as RecentlySold } from "./Components/RecentlySold"
-import { SellWithArtsyCustomRecentlySold } from "./Components/SellWithArtsyCustomRecentlySold"
+import { SellWithArtsyRecentlySold } from "./Components/SellWithArtsyRecentlySold"
 import { WhySellWithArtsy } from "./Components/WhySellWithArtsy"
 
 const consignArgs: TappedConsignArgs = {
@@ -30,33 +27,25 @@ const consignArgs: TappedConsignArgs = {
 }
 
 interface SellWithArtsyHomeProps {
-  isLoading?: boolean
-  recentlySoldArtworks: SellWithArtsyHome_recentlySoldArtworksTypeConnection$data
-  targetSupply: SellWithArtsyHome_targetSupply$data
+  recentlySoldArtworks?: SellWithArtsyHome_recentlySoldArtworksTypeConnection$data
+  me?: SellWithArtsyHome_me$data
 }
 
 export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
-  isLoading,
   recentlySoldArtworks,
-  targetSupply,
+  me,
 }) => {
-  const enableNewSellWithArtsyScreen = useFeatureFlag("ARNewSellWithArtsyScreen")
-
   useLightStatusBarStyle()
-
-  if (!enableNewSellWithArtsyScreen) {
-    return <OldSellWithArtsyHomeQueryRenderer />
-  }
 
   const { height: screenHeight } = useScreenDimensions()
   const tracking = useTracking()
-  const enableCustomRecentlySold = useFeatureFlag("ARCustomRecentlySoldOnArtsy")
 
   const handleConsignPress = (tappedConsignArgs: TappedConsignArgs) => {
     tracking.trackEvent(tappedConsign(tappedConsignArgs))
     GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
       photos: [],
     })
+    GlobalStore.actions.artworkSubmission.submission.setSubmissionIdForMyCollection("")
     const route = "/collections/my-collection/artworks/new/submissions/new"
     navigate(route)
   }
@@ -67,6 +56,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
       GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
         photos: [],
       })
+      GlobalStore.actions.artworkSubmission.submission.setSubmissionIdForMyCollection("")
     }
   }, [])
 
@@ -75,7 +65,19 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
       <Flex flex={1} justifyContent="center" alignItems="center" minHeight={screenHeight}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Flex pb={5}>
-            <Header onConsignPress={handleConsignPress} />
+            <Header
+              onConsignPress={handleConsignPress}
+              onInquiryPress={() =>
+                navigate("/sell/inquiry", {
+                  passProps: {
+                    email: me?.email ?? "",
+                    name: me?.name ?? "",
+                    phone: me?.phone ?? "",
+                    userId: me?.internalID ?? undefined,
+                  },
+                })
+              }
+            />
 
             <Spacer mb={4} />
 
@@ -83,11 +85,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
 
             <Spacer mb={4} />
 
-            {enableCustomRecentlySold ? (
-              <SellWithArtsyCustomRecentlySold recentlySoldArtworks={recentlySoldArtworks} />
-            ) : (
-              <RecentlySold targetSupply={targetSupply} isLoading={isLoading} />
-            )}
+            <SellWithArtsyRecentlySold recentlySoldArtworks={recentlySoldArtworks!} />
 
             <Spacer mb={4} />
 
@@ -118,14 +116,17 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
 }
 
 const SellWithArtsyHomeContainer = createFragmentContainer(SellWithArtsyHome, {
-  targetSupply: graphql`
-    fragment SellWithArtsyHome_targetSupply on TargetSupply {
-      ...RecentlySold_targetSupply
-    }
-  `,
   recentlySoldArtworks: graphql`
     fragment SellWithArtsyHome_recentlySoldArtworksTypeConnection on RecentlySoldArtworkTypeConnection {
-      ...SellWithArtsyCustomRecentlySold_recentlySoldArtworkTypeConnection
+      ...SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection
+    }
+  `,
+  me: graphql`
+    fragment SellWithArtsyHome_me on Me {
+      internalID
+      name
+      email
+      phone
     }
   `,
 })
@@ -136,11 +137,11 @@ interface SellWithArtsyHomeQueryRendererProps {
 
 export const SellWithArtsyHomeScreenQuery = graphql`
   query SellWithArtsyHomeQuery {
-    targetSupply {
-      ...SellWithArtsyHome_targetSupply
-    }
     recentlySoldArtworks {
       ...SellWithArtsyHome_recentlySoldArtworksTypeConnection
+    }
+    me {
+      ...SellWithArtsyHome_me
     }
   }
 `
@@ -155,13 +156,7 @@ export const SellWithArtsyHomeQueryRenderer: React.FC<SellWithArtsyHomeQueryRend
       query={SellWithArtsyHomeScreenQuery}
       render={renderWithPlaceholder({
         Container: SellWithArtsyHomeContainer,
-        renderPlaceholder: () => (
-          <SellWithArtsyHome
-            isLoading
-            targetSupply={null as any}
-            recentlySoldArtworks={null as any}
-          />
-        ),
+        renderPlaceholder: () => <SellWithArtsyHome recentlySoldArtworks={undefined} />,
       })}
     />
   )

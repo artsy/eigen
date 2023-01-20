@@ -1,7 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
-import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { Aggregations, FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersStoreProvider,
   ArtworksFiltersStore,
@@ -32,6 +32,7 @@ interface ArtworksGridProps extends InfiniteScrollGridProps {
   artist: ArtistArtworks_artist$data
   searchCriteria: SearchCriteriaAttributes | null
   relay: RelayPaginationProp
+  predefinedFilters?: FilterArray
 }
 
 type FilterModalOpenedFrom = "sortAndFilter" | "createAlert"
@@ -104,6 +105,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   artist,
   relay,
   searchCriteria,
+  predefinedFilters,
   openFilterModal,
   ...props
 }) => {
@@ -125,6 +127,12 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   })
 
   useEffect(() => {
+    let filters: FilterArray = []
+
+    if (Array.isArray(predefinedFilters)) {
+      filters = predefinedFilters
+    }
+
     if (searchCriteria && artist.aggregations?.aggregations) {
       const params = convertSavedSearchCriteriaToFilterParams(
         searchCriteria,
@@ -132,10 +140,12 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
       )
       const sortFilterItem = ORDERED_ARTWORK_SORTS.find(
         (sortEntity) => sortEntity.paramValue === "-published_at"
-      )
+      )!
 
-      setInitialFilterStateAction([...params, sortFilterItem!])
+      filters = [...params, sortFilterItem]
     }
+
+    setInitialFilterStateAction(filters)
   }, [])
 
   // TODO: Convert to use cohesion

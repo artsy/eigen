@@ -12,11 +12,13 @@ import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { PAGE_SIZE } from "app/Components/constants"
 import Spinner from "app/Components/Spinner"
 import { navigate } from "app/navigation/navigate"
+import { AuctionResultsState } from "app/Scenes/AuctionResults/AuctionResultsScreenWrapper"
 import { extractNodes } from "app/utils/extractNodes"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { debounce } from "lodash"
 import { Box, bullet, Flex, Separator, Spacer, Text } from "palette"
 import React, { useCallback, useEffect, useMemo, useState } from "react"
-import { FlatList, View } from "react-native"
+import { SectionList, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
@@ -135,6 +137,50 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
   const resultsString =
     Number(artist.auctionResultsConnection?.totalCount) === 1 ? "result" : "results"
 
+  const auctionResultsByState = useMemo(() => {
+    const appliedAuctionResultsStateFilter = appliedFilters?.find(
+      (filter) => filter.paramName === FilterParamName.state
+    )?.paramValue
+
+    const hideUpcomingAuctions = appliedAuctionResultsStateFilter === AuctionResultsState.PAST
+
+    const res: Array<{
+      id: "upcoming" | "past"
+      title: string
+      data: Array<
+        ExtractNodeType<ArtistInsightsAuctionResults_artist$data["auctionResultsConnection"]>
+      >
+      count: number
+    }> = []
+
+    // We don't want to show the upcoming auctions section if the user has already filtered them out
+    if (!hideUpcomingAuctions) {
+      res.push({
+        id: "upcoming",
+        title: "Upcoming Auctions",
+        data: [],
+        count: artist.upcomingAuctionResults?.totalCount || 0,
+      })
+    }
+
+    res.push({
+      id: "past",
+      title: "Past Auctions",
+      data: [],
+      count: artist.pastAuctionResults?.totalCount || 0,
+    })
+
+    auctionResults.forEach((auctionResult) => {
+      if (auctionResult.isUpcoming) {
+        res.find((item) => item.id === "upcoming")?.data.push(auctionResult)
+      } else {
+        res.find((item) => item.id === "past")?.data.push(auctionResult)
+      }
+    })
+
+    return res.filter((section) => section.count > 0 && (__TEST__ || section.data.length > 0))
+  }, [auctionResults, appliedFilters])
+
   return (
     <View
       // Setting min height to keep scroll position when user searches with the keyword filter.
@@ -171,32 +217,38 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
         />
       </Flex>
       {auctionResults.length ? (
-        <Flex py={2}>
-          <FlatList
-            data={auctionResults}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <AuctionResultListItemFragmentContainer
-                auctionResult={item}
-                onPress={() => {
-                  tracking.trackEvent(tracks.tapAuctionGroup(item.internalID, artist.internalID))
-                  navigate(`/artist/${artist?.slug!}/auction-result/${item.internalID}`)
-                }}
-              />
-            )}
-            ItemSeparatorComponent={AuctionResultListSeparator}
-            style={{ width: useScreenDimensions().width, left: -20 }}
-            onEndReached={loadMoreAuctionResults}
-            ListFooterComponent={
-              loadingMoreData ? (
-                <Flex my={4}>
-                  <Spinner />
-                </Flex>
-              ) : null
-            }
-            contentContainerStyle={{ paddingBottom: 20 }}
-          />
-        </Flex>
+        <SectionList
+          sections={auctionResultsByState}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <AuctionResultListItemFragmentContainer
+              auctionResult={item}
+              onPress={() => {
+                tracking.trackEvent(tracks.tapAuctionGroup(item.internalID, artist.internalID))
+                navigate(`/artist/${artist?.slug!}/auction-result/${item.internalID}`)
+              }}
+            />
+          )}
+          renderSectionHeader={({ section: { title, count } }) => (
+            <Flex px={2} my={2}>
+              <Text variant="sm-display">{title}</Text>
+              <Text variant="xs" color="black60">
+                {count} result{count > 1 ? "s" : ""}
+              </Text>
+            </Flex>
+          )}
+          ItemSeparatorComponent={AuctionResultListSeparator}
+          style={{ width: useScreenDimensions().width, left: -20 }}
+          onEndReached={loadMoreAuctionResults}
+          ListFooterComponent={
+            loadingMoreData ? (
+              <Flex my={4}>
+                <Spinner />
+              </Flex>
+            ) : null
+          }
+          contentContainerStyle={{ paddingBottom: 20 }}
+        />
       ) : (
         <Box my="80px">
           <FilteredArtworkGridZeroState
@@ -228,11 +280,36 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
         organizations: { type: "[String]" }
         sizes: { type: "[ArtworkSizes]" }
         sort: { type: "AuctionResultSorts", defaultValue: DATE_DESC }
+        state: { type: "AuctionResultsState", defaultValue: ALL }
       ) {
         birthday
         slug
         id
         internalID
+        pastAuctionResults: auctionResultsConnection(
+          state: PAST
+          allowEmptyCreatedDates: $allowEmptyCreatedDates
+          categories: $categories
+          earliestCreatedYear: $earliestCreatedYear
+          keyword: $keyword
+          latestCreatedYear: $latestCreatedYear
+          organizations: $organizations
+          sizes: $sizes
+        ) {
+          totalCount
+        }
+        upcomingAuctionResults: auctionResultsConnection(
+          state: UPCOMING
+          allowEmptyCreatedDates: $allowEmptyCreatedDates
+          categories: $categories
+          earliestCreatedYear: $earliestCreatedYear
+          keyword: $keyword
+          latestCreatedYear: $latestCreatedYear
+          organizations: $organizations
+          sizes: $sizes
+        ) {
+          totalCount
+        }
         auctionResultsConnection(
           after: $cursor
           allowEmptyCreatedDates: $allowEmptyCreatedDates
@@ -244,6 +321,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
           organizations: $organizations
           sizes: $sizes
           sort: $sort
+          state: $state
         ) @connection(key: "artist_auctionResultsConnection") {
           createdYearRange {
             startAt
@@ -254,6 +332,8 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
             node {
               id
               internalID
+              saleDate
+              isUpcoming
               ...AuctionResultListItem_auctionResult
             }
           }
@@ -285,6 +365,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
         $organizations: [String]
         $sizes: [ArtworkSizes]
         $sort: AuctionResultSorts
+        $state: AuctionResultsState
       ) {
         artist(id: $artistID) {
           ...ArtistInsightsAuctionResults_artist
@@ -299,6 +380,7 @@ export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationC
               organizations: $organizations
               sizes: $sizes
               sort: $sort
+              state: $state
             )
         }
       }

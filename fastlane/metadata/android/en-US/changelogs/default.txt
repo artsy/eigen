@@ -1,6 +1,7 @@
 This update includes a number of improvements and bug fixes including:
 
-- My Collection layout updates and more information for new users
-- New ways to submit high-demand art for sale from My Collection
+- Upcoming Auctions listed on the homepage and in My Collection Insights
+- New look for Auction Results
+- Easy filtering for Auction Results
 
 Have feedback? Email us at support@artsy.net

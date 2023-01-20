@@ -11,6 +11,8 @@ import { getEssentialProps } from "./helper"
 import { Range } from "./helpers"
 import { PriceRangeOptionsScreen } from "./PriceRangeOptions"
 
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { debounce } from "lodash"
 import { Input } from "palette"
 
@@ -199,5 +201,59 @@ describe("PriceRangeOptions", () => {
 
     fireEvent.changeText(minInput, "1242135")
     queryByDisplayValue("1242135")
+  })
+
+  describe("Recent price ranges analytics", () => {
+    it("should correctly track analytics", () => {
+      __globalStoreTestUtils__?.injectState({
+        userPrefs: {
+          priceRange: "0-5000",
+        },
+        recentPriceRanges: {
+          ranges: ["0-100"],
+        },
+      })
+
+      const { getByText } = getTree()
+
+      fireEvent.press(getByText("$0–100"))
+
+      expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+        [
+          {
+            "action": "selectedRecentPriceRange",
+            "collector_profile_sourced": false,
+            "context_module": "recentPriceRanges",
+            "context_screen_owner_type": "artworkPriceFilter",
+          },
+        ]
+      `)
+    })
+
+    it("should correctly track analytics when the collector profile-sourced price range is selected", () => {
+      __globalStoreTestUtils__?.injectState({
+        userPrefs: {
+          priceRange: "0-5000",
+        },
+        recentPriceRanges: {
+          ranges: ["0-100"],
+        },
+      })
+
+      const { getByText } = getTree()
+
+      fireEvent.press(getByText("$0–5,000"))
+
+      expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+        [
+          {
+            "action": "selectedRecentPriceRange",
+            "collector_profile_sourced": true,
+            "context_module": "recentPriceRanges",
+            "context_screen_owner_type": "artworkPriceFilter",
+          },
+        ]
+      `)
+    })
   })
 })

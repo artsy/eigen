@@ -19,7 +19,6 @@ import {
   GlobalStore,
   setVisualClueAsSeen,
   useDevToggle,
-  useFeatureFlag,
   useVisualClue,
 } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
@@ -64,7 +63,6 @@ const MyCollection: React.FC<{
   const { showVisualClue } = useVisualClue()
 
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
-  const enableMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
 
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
 
@@ -159,12 +157,10 @@ const MyCollection: React.FC<{
             onClose={() => setVisualClueAsSeen("ArtworkSubmissionMessage")}
           />
         )}
-        {!!enableMyCollectionInsights && (
-          <MyCollectionArtworkUploadMessages
-            sourceTab={Tab.collection}
-            hasMarketSignals={hasMarketSignals}
-          />
-        )}
+        <MyCollectionArtworkUploadMessages
+          sourceTab={Tab.collection}
+          hasMarketSignals={hasMarketSignals}
+        />
       </Flex>
     )
   }
@@ -216,6 +212,7 @@ const MyCollection: React.FC<{
           relay={relay}
           showSearchBar={showSearchBar}
           setShowSearchBar={setShowSearchBar}
+          myCollectionIsRefreshing={isRefreshing}
         />
         {!!showDevAddButton && (
           <Button
@@ -254,6 +251,9 @@ export const MyCollectionContainer = createPaginationContainer(
               id
               internalID
               medium
+              mediumType {
+                name
+              }
               title
               pricePaid {
                 minor
@@ -331,15 +331,9 @@ export const MyCollectionQueryRenderer: React.FC = () => {
 
 export const MyCollectionPlaceholder: React.FC = () => {
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
-  const enableMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
 
   return (
     <Flex>
-      <Flex flexDirection="row" justifyContent="space-between">
-        <Spacer />
-        <Spacer />
-        <PlaceholderText width={70} margin={20} />
-      </Flex>
       {/* collector's info */}
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
         <Flex flex={1}>
@@ -351,9 +345,8 @@ export const MyCollectionPlaceholder: React.FC = () => {
               <PlaceholderText width={80} height={25} />
               <PlaceholderText width={100} height={15} />
             </Flex>
-            <Flex justifyContent="center">
-              <PlaceholderBox width={20} height={20} />
-            </Flex>
+            {/* settings icon */}
+            <PlaceholderBox width={20} height={20} />
           </Flex>
           <Spacer my={1} />
         </Flex>
@@ -361,18 +354,9 @@ export const MyCollectionPlaceholder: React.FC = () => {
       <Spacer mb={2} mt={1} />
       {/* tabs */}
       <Flex justifyContent="space-around" flexDirection="row" px={2}>
-        {!!enableMyCollectionInsights ? (
-          <>
-            <PlaceholderText width="25%" height={22} />
-            <PlaceholderText width="25%" height={22} />
-            <PlaceholderText width="25%" height={22} />
-          </>
-        ) : (
-          <>
-            <PlaceholderText width="40%" height={22} />
-            <PlaceholderText width="40%" height={22} />
-          </>
-        )}
+        <PlaceholderText width="25%" height={22} />
+        <PlaceholderText width="25%" height={22} />
+        <PlaceholderText width="25%" height={22} />
       </Flex>
       <Spacer mb={1} />
       <Separator />

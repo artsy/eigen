@@ -1,5 +1,5 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
-import Clipboard from "@react-native-community/clipboard"
+import Clipboard from "@react-native-clipboard/clipboard"
 import MapboxGL from "@react-native-mapbox-gl/maps"
 import { themeGet } from "@styled-system/theme-get"
 import { LocationMap_location$data } from "__generated__/LocationMap_location.graphql"

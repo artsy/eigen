@@ -7,11 +7,7 @@ require 'json'
 
 require 'dotenv'
 
-if is_ci
-  Dotenv.load('../.env.ci')
-else
-  Dotenv.load('../.env.shared')
-end
+Dotenv.load('../.env.shared')
 
 skip_docs
 
@@ -167,12 +163,6 @@ lane :ship_beta_android_play_store do
   sh("yarn jetifier")
   sh("yarn relay")
 
-  # upload will overwrite past versions unless we explicitly tell it to retain some
-  # cap at 20 for now, if we need more feel free to update!
-  past_version_codes = google_play_track_version_codes(
-    track: "alpha",
-  ).first(20)
-
   vname, vcode = set_build_version_android
   tag_and_push(tag: "android-#{vname}-#{vcode}")
 
@@ -190,6 +180,8 @@ lane :ship_beta_android_play_store do
   )
 
   upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: "#{vcode}", platform: "android")
+
+  s3_upload_android_build(app_version: vcode, app_path: "../android/app/build/outputs/bundle/release/app-release.aab")
 
   supply(
     track: "alpha",
@@ -227,34 +219,58 @@ lane :ship_beta_android_firebase do
 end
 
 lane :promote_beta_android do
-  # android versions are listed most recent first, limit to 20
-  version_codes = google_play_track_version_codes(
-    track: "alpha",
-  ).first(20)
+  selected_version_code = select_android_build()
+
+  vname, vcode = set_build_version_android
+
+  supply(
+    track: "production",
+    rollout: "0.1",
+    aab: "./android/app/build/outputs/bundle/release/app-release.aab",
+    skip_upload_apk: true,
+    skip_upload_metadata: true,
+    skip_upload_changelogs: true,
+    skip_upload_images: true,
+    skip_upload_screenshots: true
+  )
+
+  tag_and_push(tag: "android-#{vname}-#{vcode}-submission")
+end
+
+lane :s3_upload_android_build do |options|
+  app_version = options[:app_version]
+  app_path = options[:app_path]
+  sh("aws s3 cp " + app_path + " s3://artsy-citadel/dev/eigen/builds/android/" + app_version.to_s + ".aab")
+end
+
+lane :select_android_build do
+  s3_files_output = sh("aws s3 ls s3://artsy-citadel/dev/eigen/builds/android/")
+
+  aab_filename_regex = /\d+\.aab/
+  matches = s3_files_output.scan(aab_filename_regex)
+
+  # sort in descending order
+  sorted_matches = matches.sort_by { |s| s.scan(/\d+/).first.to_i }.reverse
+
+  # android builds are listed most recent first, limit to 20
+  builds = sorted_matches.first(20)
 
   UI.header "Last 20 Android builds"
 
-  selected_version_code = UI.select("Which build would you like to release?: ", version_codes)
+  selected_build = UI.select("Which build would you like to release?: ", builds)
 
-  if UI.confirm("Are you sure you would like to release '#{selected_version_code}'?")
+  if UI.confirm("Are you sure you would like to release '#{selected_build}'?")
     UI.success "Continuing the release!"
   else
     UI.user_error!("Stopping the train!")
   end
 
-  supply(
-    track: 'alpha',
-    version_code: selected_version_code,
-    track_promote_to: 'production',
-    rollout: '0.1',
-    skip_upload_metadata: true,
-    skip_upload_changelogs: true,
-    skip_upload_images: true,
-    skip_upload_screenshots: true,
-  )
+  # download the selected build to the typical build output directory
+  output_app_path = "../android/app/build/outputs/bundle/release/app-release.aab"
+  sh("aws s3 cp s3://artsy-citadel/dev/eigen/builds/android/" + selected_build + " " + output_app_path)
 
-  vname, vcode = set_build_version_android(version_code: selected_version_code)
-  tag_and_push(tag: "android-#{vname}-#{vcode}-submission")
+  # return the selected version num
+  selected_build.scan(/\d+/).first
 end
 
 lane :promote_beta_ios do
@@ -625,9 +641,19 @@ lane :check_flags do
 end
 
 error do |lane, exception|
-  silence_beta_failures = ENV['FASTLANE_SILENCE_BETA_FAILURES']
   if lane == :ship_beta or lane == :ship_beta_ios or lane == :ship_beta_android
-    if silence_beta_failures.to_s.downcase != "true"
+    # Set this var if you want to silence beta failure alerts for a while
+    # E.g. you are working on a ci change
+    # Takes a date of format 2023-01-01, recommend only setting for 1 day in future
+    silence_beta_failures_until = ENV['FASTLANE_SILENCE_BETA_FAILURES_UNTIL']
+    if silence_beta_failures_until != nil
+      silence_until_date = Date.parse(silence_beta_failures_until)
+      if silence_until_date <= Date.today
+        notify_beta_failed(exception: exception)
+      else
+        puts("Ignoring beta failure, make sure to unset FASTLANE_SILENCE_BETA_FAILURES_UNTIL to receive alerts")
+      end
+    else
       notify_beta_failed(exception: exception)
     end
   end

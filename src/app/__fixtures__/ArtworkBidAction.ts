@@ -80,6 +80,7 @@ export const ArtworkFromTimedAuctionRegistrationClosed = {
 export const ArtworkFromLiveAuctionRegistrationOpen = {
   ...InAuctionForSale,
   internalID: "artwork_from_open_live_auction_open_registration",
+  isSold: false,
   sale: {
     isAuction: true,
     registrationStatus: null,
@@ -108,6 +109,7 @@ export const ArtworkFromLiveAuctionRegistrationOpen = {
 export const ArtworkFromLiveAuctionRegistrationClosed = {
   ...InAuctionForSale,
   internalID: "artwork_from_open_live_auction_closed_registration",
+  isSold: false,
   sale: {
     isAuction: true,
     registrationStatus: null,

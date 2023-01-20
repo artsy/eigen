@@ -76,6 +76,7 @@
                 <data android:pathPrefix="/artist" />
                 <data android:pathPrefix="/artists" />
                 <data android:pathPrefix="/artwork-classifications" />
+                <data android:pathPrefix="/artwork-certificate-of-authenticity" />
                 <data android:pathPrefix="/artwork" />
                 <data android:pathPrefix="/artworks" />
                 <data android:pathPrefix="/auction-faq" />
@@ -107,16 +108,16 @@
                 <data android:pathPrefix="/my-collection" />
                 <data android:pathPrefix="/my-profile" />
                 <data android:pathPrefix="/my-profile/saved-addresses" />
+                <data android:pathPrefix="/new-for-you" />
                 <data android:pathPrefix="/orders" />
                 <data android:pathPrefix="/partner" />
                 <data android:pathPrefix="/privacy-request" />
-                <data android:pathPrefix="/privacy" />
                 <data android:pathPrefix="/sales" />
                 <data android:pathPrefix="/search" />
                 <data android:pathPrefix="/show" />
-                <data android:pathPrefix="/terms" />
                 <data android:pathPrefix="/user/conversations" />
                 <data android:pathPrefix="/user/purchases" />
+                <data android:pathPrefix="/upcoming-auction-results" />
                 <data android:pathPrefix="/viewing-room" />
                 <data android:pathPrefix="/viewing-rooms" />
                 <data android:pathPrefix="/works-for-you" />

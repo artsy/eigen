@@ -1,4 +1,5 @@
 import { buildLocationDisplay, LocationAutocomplete } from "app/Components/LocationAutocomplete"
+import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/CategoryPicker"
 import { GlobalStore } from "app/store/GlobalStore"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
 import { LocationWithDetails } from "app/utils/googleMaps"
@@ -14,27 +15,33 @@ import {
   Spacer,
   Text,
 } from "palette"
-import { Select } from "palette/elements/Select"
-import React, { useEffect, useState } from "react"
+import { Select, SelectOption } from "palette/elements/Select"
+import React, { useEffect, useRef, useState } from "react"
 import { ArtistAutosuggest } from "../../../../Components/ArtistAutosuggest/ArtistAutosuggest"
 import { InfoModal } from "./InfoModal/InfoModal"
+import {
+  acceptableCategoriesForSubmission,
+  AcceptableCategoryValue,
+} from "./utils/acceptableCategoriesForSubmission"
 import { limitedEditionValue, rarityOptions } from "./utils/rarityOptions"
-import { ArtworkDetailsFormModel, countriesRequirePostalCode } from "./validation"
+import { ArtworkDetailsFormModel } from "./validation"
 
 const StandardSpace = () => <Spacer mt={4} />
 
 export const ArtworkDetailsForm: React.FC = () => {
-  const { values, errors, setFieldValue, touched, handleBlur, setFieldTouched } =
-    useFormikContext<ArtworkDetailsFormModel>()
+  const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
   const [isRarityInfoModalVisible, setIsRarityInfoModalVisible] = useState(false)
   const [isProvenanceInfoModalVisible, setIsProvenanceInfoModalVisible] = useState(false)
-  const [isZipInputFocused, setIsZipInputFocused] = useState(false)
 
   useEffect(() => {
     if (values) {
       GlobalStore.actions.artworkSubmission.submission.setDirtyArtworkDetailsValues(values)
     }
   }, [values])
+
+  const categories = useRef<Array<SelectOption<AcceptableCategoryValue>>>(
+    acceptableCategoriesForSubmission()
+  ).current
 
   return (
     <>
@@ -57,6 +64,13 @@ export const ArtworkDetailsForm: React.FC = () => {
         value={values.year}
         onChangeText={(e) => setFieldValue("year", e)}
         accessibilityLabel="Year"
+      />
+      <StandardSpace />
+      <CategoryPicker<AcceptableCategoryValue | null>
+        handleChange={(category) => setFieldValue("category", category)}
+        options={categories}
+        required={false}
+        value={values.category}
       />
       <StandardSpace />
       <Input
@@ -165,6 +179,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         <Box width="31%">
           <Input
             title="Depth"
+            optional
             keyboardType="decimal-pad"
             testID="Submission_DepthInput"
             value={values.depth}
@@ -222,35 +237,8 @@ export const ArtworkDetailsForm: React.FC = () => {
             country: country ?? "",
             countryCode: countryCode ?? "",
           })
-
-          if (!countryCode) {
-            setFieldValue("location.zipCode", "")
-            setFieldTouched("location.zipCode", false)
-          }
         }}
       />
-      {countriesRequirePostalCode.includes(values.location.countryCode.toUpperCase()) && (
-        <>
-          <Spacer m={2} />
-          <Input
-            title="Zip/Postal code"
-            placeholder="Zip/postal code where artwork is located"
-            testID="Submission_ZipInput"
-            value={values.location.zipCode}
-            onBlur={(e) => {
-              setIsZipInputFocused(false)
-              handleBlur("location.zipCode")(e)
-            }}
-            onFocus={() => setIsZipInputFocused(true)}
-            error={
-              !isZipInputFocused && touched.location?.zipCode && errors.location?.zipCode
-                ? errors.location.zipCode
-                : ""
-            }
-            onChangeText={(e) => setFieldValue("location.zipCode", e)}
-          />
-        </>
-      )}
       <StandardSpace />
     </>
   )

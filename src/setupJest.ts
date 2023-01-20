@@ -110,6 +110,7 @@ jest.mock("@react-navigation/native", () => {
     useNavigation: () => ({
       navigate: mockNavigate,
       dispatch: jest.fn(),
+      addListener: jest.fn(),
     }),
   }
 })
@@ -119,7 +120,7 @@ jest.mock("react-native-share", () => ({
 }))
 
 jest.mock("react-native-device-info", () => ({
-  getBuildNumber: jest.fn(),
+  getBuildNumber: () => "some-build-number",
   getVersion: jest.fn(),
   getModel: () => "testDevice",
   getUserAgentSync: jest.fn(),
@@ -168,6 +169,7 @@ jest.mock("@react-native-google-signin/google-signin", () => ({
     configure: jest.fn(),
     getTokens: jest.fn(),
     hasPlayServices: jest.fn(),
+    isSignedIn: jest.fn(),
     revokeAccess: jest.fn(),
     signIn: jest.fn(),
     signOut: jest.fn(),
@@ -275,6 +277,13 @@ jest.mock("react-native-gesture-handler", () => {
     TouchableWithoutFeedback,
   }
 })
+
+jest.mock("react-native-image-crop-picker", () => ({
+  openPicker: jest.fn(),
+  openCamera: jest.fn(),
+  cleanSingle: jest.fn(),
+  clean: jest.fn(),
+}))
 
 jest.mock("react-native-config", () => {
   const mockConfig = {

@@ -124,7 +124,8 @@ describe("OrderUpdate with order updates", () => {
       __typename: "CommerceOfferSubmittedEvent",
       offer: { respondsTo: null, amount: "$100" },
     })
-    expect(getByText("You sent an offer for $100.")).toBeTruthy()
+
+    expect(getByText("You sent an offer for $100. See details.")).toBeTruthy()
     fireEvent.press(getByText("See details."))
     expect(navigate).toHaveBeenCalledWith("/conversation/12345/details")
   })
@@ -183,7 +184,8 @@ describe("OrderUpdate with order updates", () => {
       __typename: "CommerceOrderStateChangedEvent",
       orderUpdateState: "buy_submitted",
     })
-    expect(getByText("You purchased this artwork.")).toBeTruthy()
+
+    expect(getByText("You purchased this artwork. See details.")).toBeTruthy()
   })
 
   it("shows an expired buy order", () => {

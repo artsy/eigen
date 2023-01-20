@@ -31,8 +31,8 @@ describe("SortByModal", () => {
     fireEvent.press(getByText("Option Two"))
 
     expect(mockOnSelectOption.mock.calls[0]).toMatchInlineSnapshot(`
-      Array [
-        Object {
+      [
+        {
           "text": "Option Two",
           "value": "OPTION_TWO",
         },

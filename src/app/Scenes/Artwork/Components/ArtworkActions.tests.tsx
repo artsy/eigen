@@ -16,6 +16,9 @@ jest.unmock("app/NativeModules/LegacyNativeModules")
 describe("ArtworkActions", () => {
   beforeEach(() => {
     __globalStoreTestUtils__?.setProductionMode()
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      ARArtworkRedesingPhase2: false,
+    })
   })
 
   describe("share button message", () => {
@@ -105,6 +108,40 @@ describe("ArtworkActions", () => {
 
     expect(queryByText("Save")).toBeFalsy()
     expect(queryByText("Saved")).toBeFalsy()
+  })
+
+  describe("when ARArtworkRedesingPhase2 is enabled", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        ARArtworkRedesingPhase2: true,
+      })
+    })
+
+    it("should NOT display 'Save' button if work is in an open auction ", () => {
+      const { queryByText } = renderWithWrappers(
+        <ArtworkActions shareOnPress={jest.fn()} artwork={artworkActionsArtwork} />
+      )
+
+      expect(queryByText("Save")).toBeFalsy()
+      expect(queryByText("Saved")).toBeFalsy()
+    })
+
+    it("should NOT display 'Watch lot' button if work is in an open auction ", () => {
+      const artworkActionsArtworkInAuction = {
+        ...artworkActionsArtwork,
+        sale: {
+          isAuction: true,
+          isClosed: false,
+        },
+      }
+
+      const { queryByText, queryByLabelText } = renderWithWrappers(
+        <ArtworkActions shareOnPress={jest.fn()} artwork={artworkActionsArtworkInAuction} />
+      )
+
+      expect(queryByText("Watch lot")).toBeFalsy()
+      expect(queryByLabelText("watch lot icon")).toBeFalsy()
+    })
   })
 
   describe("without AR enabled", () => {

@@ -16,9 +16,15 @@ export interface BuyNowButtonProps {
   variant?: ButtonProps["variant"]
   // EditionSetID is passed down from the edition selected by the user
   editionSetID: string | null
+  renderSaleMessage?: boolean
 }
 
-export const BuyNowButton = ({ artwork, variant, editionSetID }: BuyNowButtonProps) => {
+export const BuyNowButton = ({
+  artwork,
+  variant,
+  editionSetID,
+  renderSaleMessage,
+}: BuyNowButtonProps) => {
   const [isCommittingCreateOrderMutation, setIsCommittingCreateOrderMutation] = useState(false)
 
   const { saleMessage, internalID, slug } = useFragment(artworkFragment, artwork)
@@ -122,7 +128,7 @@ export const BuyNowButton = ({ artwork, variant, editionSetID }: BuyNowButtonPro
       width={100}
       haptic
     >
-      {variant && variant === "outline" && saleMessage ? `Purchase ${saleMessage}` : "Purchase"}
+      {renderSaleMessage && saleMessage ? `Purchase ${saleMessage}` : "Purchase"}
     </Button>
   )
 }

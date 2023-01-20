@@ -1,5 +1,6 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { BackButton } from "app/navigation/BackButton"
+import { showBlockedAuthError } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { Box, Button, Flex, Input, Spacer, Text, useColor } from "palette"
@@ -197,6 +198,11 @@ export const OnboardingLoginWithEmail: React.FC<OnboardingLoginProps> = ({ navig
         navigation.navigate("OnboardingLoginWithOTP", { email, password, otpMode: "standard" })
       } else if (res === "on_demand_otp_missing") {
         navigation.navigate("OnboardingLoginWithOTP", { email, password, otpMode: "on_demand" })
+      }
+
+      if (res === "auth_blocked") {
+        showBlockedAuthError("sign in")
+        return
       }
 
       if (res !== "success" && res !== "otp_missing" && res !== "on_demand_otp_missing") {

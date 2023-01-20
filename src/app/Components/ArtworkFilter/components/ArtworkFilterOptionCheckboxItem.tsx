@@ -1,6 +1,7 @@
 import { Checkbox } from "palette"
-import { FilterParamName, getUnitedSelectedAndAppliedFilters } from "../ArtworkFilterHelpers"
-import { ArtworksFiltersStore } from "../ArtworkFilterStore"
+import { useMemo } from "react"
+import { FilterParamName } from "../ArtworkFilterHelpers"
+import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "../ArtworkFilterStore"
 import { ArtworkFilterOptionItem, ArtworkFilterOptionItemProps } from "./ArtworkFilterOptionItem"
 
 export interface ArtworkFilterOptionCheckboxItemProps
@@ -13,32 +14,36 @@ export const ArtworkFilterOptionCheckboxItem: React.FC<ArtworkFilterOptionCheckb
     (state) => state.selectFiltersAction
   )
 
-  const selectedFilters = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
+  const selectedOptions = useSelectedOptionsDisplay()
 
-  const previouslyAppliedFilters = ArtworksFiltersStore.useStoreState(
-    (state) => state.previouslyAppliedFilters
-  )
+  const selectedOption = selectedOptions.find(
+    (option) => option.paramName === item.filterType
+  )?.paramValue
 
-  const storeFilterType = ArtworksFiltersStore.useStoreState((state) => state.filterType)
-
-  const checked = !!getUnitedSelectedAndAppliedFilters({
-    filterType: storeFilterType,
-    selectedFilters,
-    previouslyAppliedFilters,
-  }).find((f) => f.paramName === item.filterType)?.paramValue
-
-  const setValueOnFilters = (value: boolean) => {
+  const setValueOnFilters = (value: boolean | string) => {
     selectFiltersAction({
-      paramName: FilterParamName.showOnlySubmittedArtworks,
+      paramName: item.filterType as FilterParamName,
       paramValue: value,
       displayText: item.displayText,
     })
   }
 
   const onPress = () => {
-    const nextValue = !checked
+    if (item.filterType === "state") {
+      setValueOnFilters(selectedOption === "ALL" ? "PAST" : "ALL")
+      return
+    }
+
+    const nextValue = !selectedOption
     setValueOnFilters(nextValue)
   }
+
+  const isChecked = useMemo(() => {
+    if (item.filterType === "state") {
+      return selectedOption === "PAST"
+    }
+    return !!selectedOption
+  }, [selectedOption])
 
   return (
     <ArtworkFilterOptionItem
@@ -46,7 +51,7 @@ export const ArtworkFilterOptionCheckboxItem: React.FC<ArtworkFilterOptionCheckb
       onPress={onPress}
       RightAccessoryItem={
         <Checkbox
-          checked={checked}
+          checked={isChecked}
           onPress={onPress}
           testID="ArtworkFilterOptionCheckboxItemCheckbox"
         />

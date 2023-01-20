@@ -4,8 +4,8 @@ import { RequestForPriceEstimateBanner_marketPriceInsights$key } from "__generat
 import { RequestForPriceEstimateBanner_me$key } from "__generated__/RequestForPriceEstimateBanner_me.graphql"
 import { Toast } from "app/Components/Toast/Toast"
 import { navigate } from "app/navigation/navigate"
-import { GlobalStore } from "app/store/GlobalStore"
-import { Box, Button, CheckIcon, Text } from "palette"
+import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { Box, Button, Flex, Separator, Text, WinningBidIcon } from "palette"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 interface RequestForPriceEstimateProps {
@@ -26,14 +26,48 @@ export const RequestForPriceEstimateBanner: React.FC<RequestForPriceEstimateProp
 
   const me = useFragment(meFragment, otherProps.me)
 
-  const requestedPriceEstimates = GlobalStore.useAppState(
+  const enableRemotePriceEstimateRequestedLogic = useFeatureFlag(
+    "AREnableNewRequestPriceEstimateLogic"
+  )
+
+  const localRequestedPriceEstimates = GlobalStore.useAppState(
     (state) => state.requestedPriceEstimates.requestedPriceEstimates
   )
 
-  const priceEstimateRequested = !!requestedPriceEstimates[artwork.internalID]
+  const priceEstimateRequested =
+    (enableRemotePriceEstimateRequestedLogic && artwork.hasPriceEstimateRequest) ||
+    !!localRequestedPriceEstimates[artwork.internalID]
+
+  const isP1Artist = artwork.artist?.targetSupply?.isP1
+  const isAlreadySubmitted = artwork.submissionId
+
+  if (priceEstimateRequested) {
+    return (
+      <Box>
+        <Flex alignItems="center" flexDirection="row">
+          <WinningBidIcon />
+          <Text variant="sm" ml={0.5} textAlign="center">
+            Price Estimate Request Sent
+          </Text>
+        </Flex>
+
+        <Separator mt={2} mb={3} borderColor="black10" />
+      </Box>
+    )
+  }
+
+  if (!isP1Artist || isAlreadySubmitted) {
+    return null
+  }
 
   return (
     <Box>
+      <Text variant="sm" testID="request-price-estimate-banner-title">
+        Get a Free Price Estimate
+      </Text>
+      <Text color="black60" mb={2} variant="xs" testID="request-price-estimate-banner-description">
+        This artwork is eligible for a free evaluation from an Artsy specialist.
+      </Text>
       <Button
         testID="request-price-estimate-button"
         onPress={() => {
@@ -65,31 +99,27 @@ export const RequestForPriceEstimateBanner: React.FC<RequestForPriceEstimateProp
           })
         }}
         block
-        disabled={priceEstimateRequested}
-        variant={priceEstimateRequested ? "fillSuccess" : "fillDark"}
-        icon={
-          priceEstimateRequested ? <CheckIcon fill="white100" width={25} height={25} /> : undefined
-        }
+        variant="fillDark"
       >
-        {priceEstimateRequested ? "Price Estimate Request Sent" : "Request a Price Estimate"}
+        Request a Price Estimate
       </Button>
-      <Text
-        color="black60"
-        textAlign="center"
-        my={2}
-        variant="xs"
-        testID="request-price-estimate-banner-text"
-      >
-        An Artsy specialist will evaluate your artwork and contact you with a free price estimate.
-      </Text>
+
+      <Separator mt={2} mb={3} borderColor="black10" />
     </Box>
   )
 }
 
 const artworkFragment = graphql`
   fragment RequestForPriceEstimateBanner_artwork on Artwork {
+    artist {
+      targetSupply {
+        isP1
+      }
+    }
     internalID
     slug
+    submissionId
+    hasPriceEstimateRequest
   }
 `
 

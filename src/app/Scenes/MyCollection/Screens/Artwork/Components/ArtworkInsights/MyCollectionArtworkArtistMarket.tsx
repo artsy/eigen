@@ -86,7 +86,10 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
   if (sellThroughRate) {
     marketData.push({
       component: (
-        <InsightColumn name="Sell-through Rate" value={formatSellThroughRate(sellThroughRate)} />
+        <InsightColumn
+          name="Sell-through Rate"
+          value={`${formatSellThroughRate(sellThroughRate)}%`}
+        />
       ),
     })
   }

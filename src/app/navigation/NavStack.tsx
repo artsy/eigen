@@ -1,6 +1,8 @@
-import { Route, useIsFocused, useNavigationState } from "@react-navigation/native"
+import { findFocusedRoute, Route, useIsFocused, useNavigationState } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { AppModule, modules } from "app/AppRegistry"
+import { useBottomTabBarHeight } from "app/Scenes/BottomTabs/useBottomTabBarHeight"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { isPad } from "app/utils/hardware"
 import { createContext, useState } from "react"
 import { View } from "react-native"
@@ -76,6 +78,8 @@ export const NavStack: React.FC<{
   rootModuleName: AppModule
   rootModuleProps?: any
 }> = ({ id, rootModuleName, rootModuleProps }) => {
+  const bottomTabBarHeight = useBottomTabBarHeight()
+  const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
   const initialParams: ScreenProps = {
     moduleName: rootModuleName,
     props: rootModuleProps,
@@ -84,13 +88,39 @@ export const NavStack: React.FC<{
 
   return (
     <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-        contentStyle: { backgroundColor: "white" },
-        orientation: isPad() ? "default" : "portrait",
+      screenOptions={(props) => {
+        const focusedRoute = findFocusedRoute(props.navigation.getState())
+        const params = focusedRoute?.params as any
+        const isPresentedModally = params?.props?.isPresentedModally
+        const module = modules[params.moduleName as AppModule]
+        const options: any = {
+          headerShown: false,
+          contentStyle: {
+            backgroundColor: "white",
+            marginBottom: bottomTabBarHeight,
+          },
+          orientation: isPad() ? "default" : "portrait",
+        }
+
+        if (isPresentedModally || (enableArtworkRedesign && module?.options?.hidesBottomTabs)) {
+          options.contentStyle.marginBottom = 0
+        }
+
+        return options
       }}
     >
-      <Stack.Screen name={"screen:" + id} component={ScreenWrapper} initialParams={initialParams} />
+      <Stack.Screen
+        name={"screen:" + id}
+        component={ScreenWrapper}
+        initialParams={initialParams}
+        options={(props) => {
+          const focusedRoute = findFocusedRoute(props.navigation.getState())
+          const params = focusedRoute?.params as any
+          const screenOptions = modules[params.moduleName as AppModule]?.options?.screenOptions
+
+          return { ...screenOptions }
+        }}
+      />
     </Stack.Navigator>
   )
 }

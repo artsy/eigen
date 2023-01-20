@@ -48,6 +48,7 @@ describe("Notable Works Rail", () => {
     })
 
     expect(getByText("My Second Greatest Art, 2020")).toBeTruthy()
+    expect(getByText("My Second Greatest Art, 2020")).toHaveProp("fontStyle", "italic")
     expect(getByText("My Greatest Art, 2020")).toBeTruthy()
     expect(getByText("My Third Greatest Art, 2020")).toBeTruthy()
   })
@@ -97,6 +98,7 @@ const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] 
           id: "another-another-id-2",
           href: "/artwork/another-another-id-3",
           artistNames: "Artist Name",
+          isSaved: false,
           date: "2020",
           partner: null,
           image: {
@@ -121,6 +123,7 @@ const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] 
       {
         node: {
           id: "another-another-id",
+          isSaved: false,
           href: "/artwork/another-another-id-3",
           artistNames: "Artist Name",
           date: "2020",
@@ -152,6 +155,7 @@ const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] 
       {
         node: {
           id: "another-another-id-3",
+          isSaved: false,
           href: "/artwork/another-another-id-3",
           artistNames: "Artist Name",
           date: "2020",

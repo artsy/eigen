@@ -1,9 +1,14 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { NewWorksForYouRail_artworkConnection$key } from "__generated__/NewWorksForYouRail_artworkConnection.graphql"
+import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
+import { useFeatureFlag } from "app/store/GlobalStore"
+import { useExperimentVariant } from "app/utils/experiments/hooks"
+import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
 import { extractNodes } from "app/utils/extractNodes"
+import { Schema } from "app/utils/track"
 import { Flex } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
@@ -25,8 +30,18 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
   mb,
 }) => {
   const { trackEvent } = useTracking()
+  const enforceLargeRail = useFeatureFlag("AREnforceLargeNewWorksRail")
+  const railVariant = useExperimentVariant("eigen-new-works-for-you-rail-size")
+  const enableSaveIcon = useFeatureFlag("AREnableLargeArtworkRailSaveIcon")
 
-  const { artworksForUser } = useFragment(artworksFragment, artworkConnection)
+  trackExperimentVariant(
+    "eigen-new-works-for-you-rail-size",
+    railVariant.enabled,
+    railVariant.variant,
+    railVariant.payload
+  )
+
+  const { artworksForUser, smallArtworksForUser } = useFragment(artworksFragment, artworkConnection)
 
   const railRef = useRef<View>(null)
   const listRef = useRef<FlatList<any>>(null)
@@ -36,9 +51,22 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
   }))
 
   const artworks = extractNodes(artworksForUser)
+  const smallArtworks = extractNodes(smallArtworksForUser)
 
   if (!artworks.length) {
     return null
+  }
+
+  const handleOnArtworkPress = (artwork: any, position: any) => {
+    trackEvent(
+      HomeAnalytics.artworkThumbnailTapEvent(
+        ContextModule.newWorksForYouRail,
+        artwork.slug,
+        position,
+        "single"
+      )
+    )
+    navigate(artwork.href!)
   }
 
   return (
@@ -49,24 +77,24 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
             title={title}
             onPress={() => {
               trackEvent(tracks.tappedHeader())
-              navigate(`/new-works-for-you`)
+              navigate(`/new-for-you`)
             }}
           />
         </Flex>
-        <SmallArtworkRail
-          artworks={artworks}
-          onPress={(artwork, position) => {
-            trackEvent(
-              HomeAnalytics.artworkThumbnailTapEvent(
-                ContextModule.newWorksForYouRail,
-                artwork.slug,
-                position,
-                "single"
-              )
-            )
-            navigate(artwork.href!)
-          }}
-        />
+        {railVariant.variant === "experiment" || enforceLargeRail ? (
+          <LargeArtworkRail
+            artworks={artworks}
+            onPress={handleOnArtworkPress}
+            showSaveIcon={enableSaveIcon}
+            trackingContextScreenOwnerType={Schema.OwnerEntityTypes.Home}
+          />
+        ) : (
+          <SmallArtworkRail
+            artworks={smallArtworks}
+            onPress={handleOnArtworkPress}
+            trackingContextScreenOwnerType={Schema.OwnerEntityTypes.Home}
+          />
+        )}
       </View>
     </Flex>
   )
@@ -74,12 +102,31 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
 
 const artworksFragment = graphql`
   fragment NewWorksForYouRail_artworkConnection on Viewer {
-    artworksForUser(maxWorksPerArtist: 3, includeBackfill: true, first: 20) {
+    smallArtworksForUser: artworksForUser(
+      maxWorksPerArtist: 3
+      includeBackfill: true
+      first: 40
+      version: $worksForYouRecommendationsModelVariant
+    ) {
       edges {
         node {
           title
           internalID
           ...SmallArtworkRail_artworks
+        }
+      }
+    }
+    artworksForUser(
+      maxWorksPerArtist: 3
+      includeBackfill: true
+      first: 40
+      version: $worksForYouRecommendationsModelVariant
+    ) {
+      edges {
+        node {
+          title
+          internalID
+          ...LargeArtworkRail_artworks
         }
       }
     }
@@ -95,3 +142,19 @@ const tracks = {
     type: "header",
   }),
 }
+
+const trackExperimentVariant = (
+  name: string,
+  enabled: boolean,
+  variant: string,
+  payload?: string
+) =>
+  maybeReportExperimentVariant({
+    experimentName: name,
+    enabled,
+    variantName: variant,
+    payload,
+    context_module: ContextModule.newWorksForYouRail,
+    context_owner_type: OwnerType.home,
+    context_owner_screen: OwnerType.home,
+  })

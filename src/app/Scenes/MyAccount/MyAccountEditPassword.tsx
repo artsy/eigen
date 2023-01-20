@@ -2,6 +2,7 @@ import { Stack } from "app/Components/Stack"
 import { getCurrentEmissionState, GlobalStore, unsafe__getEnvironment } from "app/store/GlobalStore"
 import { Flex, Input, Separator } from "palette"
 import React, { useEffect, useState } from "react"
+import { Alert } from "react-native"
 import {
   MyAccountFieldEditScreen,
   MyAccountFieldEditScreenProps,
@@ -26,7 +27,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
     setReceivedErrorConfirm(undefined)
   }, [passwordConfirmation])
 
-  const onSave: MyAccountFieldEditScreenProps["onSave"] = async (_, alert) => {
+  const onSave: MyAccountFieldEditScreenProps["onSave"] = async () => {
     const { authenticationToken, userAgent } = getCurrentEmissionState()
     const { gravityURL } = unsafe__getEnvironment()
     if (newPassword !== passwordConfirmation) {
@@ -68,7 +69,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
       }
 
       // The user successfully updated their password
-      alert(
+      Alert.alert(
         "Password Changed",
         "Your password has been changed successfully. Use your new password to log in.",
         [
@@ -81,7 +82,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
       )
     } catch (error) {
       console.log(error)
-      alert(typeof error === "string" ? error : "Something went wrong.")
+      Alert.alert(typeof error === "string" ? error : "Something went wrong.")
     }
   }
 

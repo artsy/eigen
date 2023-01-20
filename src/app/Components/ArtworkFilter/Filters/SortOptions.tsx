@@ -17,7 +17,7 @@ interface SortOptionsScreenProps
 // Sorting types
 enum ArtworkSorts {
   "Gallery Curated" = "partner_show_position",
-  "Default" = "-decayed_merch",
+  "Recommended" = "-decayed_merch",
   "Price (High to Low)" = "sold,-has_price,-prices",
   "Price (Low to High)" = "sold,-has_price,prices",
   "Recently Updated" = "-partner_updated_at",
@@ -29,7 +29,7 @@ enum ArtworkSorts {
 export type SortOption = keyof typeof ArtworkSorts
 
 export const DEFAULT_ARTWORK_SORT = {
-  displayText: "Default",
+  displayText: "Recommended",
   paramName: FilterParamName.sort,
   paramValue: "-decayed_merch",
 }
@@ -41,13 +41,13 @@ const GALLERY_CURATED_ARTWORK_SORT = {
 }
 
 const DEFAULT_GENE_SORT = {
-  displayText: "Default",
+  displayText: "Recommended",
   paramName: FilterParamName.sort,
   paramValue: "-partner_updated_at",
 }
 
 const DEFAULT_TAG_SORT = {
-  displayText: "Default",
+  displayText: "Recommended",
   paramName: FilterParamName.sort,
   paramValue: "-partner_updated_at",
 }

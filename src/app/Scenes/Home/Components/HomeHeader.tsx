@@ -1,15 +1,11 @@
-import { HomeHeader_me$key } from "__generated__/HomeHeader_me.graphql"
+import { GlobalStore } from "app/store/GlobalStore"
 import { ArtsyLogoIcon, Box, Flex, Spacer } from "palette"
-import { graphql, useFragment } from "react-relay"
 import { ActivityIndicator } from "./ActivityIndicator"
 
-interface HomeHeaderProps {
-  me: HomeHeader_me$key | null
-}
-
-export const HomeHeader: React.FC<HomeHeaderProps> = ({ me }) => {
-  const data = useFragment(homeHeaderFragment, me)
-  const hasNotifications = (data?.unreadNotificationsCount ?? 0) > 0
+export const HomeHeader: React.FC = () => {
+  const hasNotifications = GlobalStore.useAppState(
+    (state) => state.bottomTabs.sessionState.unreadCounts.unreadActivityPanelNotifications > 0
+  )
 
   return (
     <Box mb={1} mt={2}>
@@ -17,14 +13,7 @@ export const HomeHeader: React.FC<HomeHeaderProps> = ({ me }) => {
         <ArtsyLogoIcon scale={0.75} />
         <ActivityIndicator hasNotifications={hasNotifications} />
       </Flex>
-      <Spacer mb="15px" />
-      <Spacer mb="2" />
+      <Spacer mb="1" />
     </Box>
   )
 }
-
-const homeHeaderFragment = graphql`
-  fragment HomeHeader_me on Me {
-    unreadNotificationsCount
-  }
-`

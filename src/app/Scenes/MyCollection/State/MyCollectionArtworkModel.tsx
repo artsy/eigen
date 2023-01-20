@@ -88,7 +88,7 @@ export interface MyCollectionArtworkModel {
     Partial<MyCollectionArtwork_sharedProps$data> & {
       internalID: string
       id: string
-      artist: { internalID: string }
+      artist: { internalID: string; initials: string }
       artistNames: string
       images: Image[]
     },
@@ -186,6 +186,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
         displayLabel: artwork?.artistNames,
         imageUrl: artwork?.images?.[0]?.imageURL?.replace(":version", "square"),
         formattedNationalityAndBirthday: artwork?.artist?.formattedNationalityAndBirthday,
+        initials: artwork?.artist?.initials,
       },
       attributionClass,
       category: artwork.category,

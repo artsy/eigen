@@ -5,7 +5,7 @@ import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/Globa
 import { GlobalStore, unsafe_getUserAccessToken } from "app/store/GlobalStore"
 import { PendingPushNotification } from "app/store/PendingPushNotificationModel"
 import { Alert, Linking, Platform } from "react-native"
-import { getDeviceId } from "react-native-device-info"
+import DeviceInfo from "react-native-device-info"
 import PushNotification, { ReceivedNotification } from "react-native-push-notification"
 import { logAction, logNotification } from "./loggers"
 import { AnalyticsConstants } from "./track/constants"
@@ -59,7 +59,7 @@ export const saveToken = (token: string, ignoreSameTokenCheck: boolean = false) 
       } else {
         const environment = unsafe__getEnvironment()
         const url = environment.gravityURL + "/api/v1/device"
-        const name = __TEST__ ? "my-device-name" : getDeviceId()
+        const name = __TEST__ ? "my-device-name" : DeviceInfo.getDeviceId()
         const production = environment.env === "production"
         const body = JSON.stringify({
           name,

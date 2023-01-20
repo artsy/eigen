@@ -135,7 +135,7 @@ export const SelectMaxBidQueryRenderer: React.FC<{
   // TODO: artworkID can be nil, so omit that part of the query if it is.
   return (
     <Flex flex={1}>
-      <FancyModalHeader useXButton onLeftButtonPress={dismissModal}>
+      <FancyModalHeader useXButton onLeftButtonPress={() => dismissModal()}>
         Place a max bid
       </FancyModalHeader>
       <QueryRenderer<SelectMaxBidQuery>

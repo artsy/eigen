@@ -360,9 +360,9 @@ describe("Select Filters", () => {
       previouslyAppliedFilters: [],
       selectedFilters: [
         {
-          paramName: FilterParamName.waysToBuyBuy,
+          paramName: FilterParamName.waysToBuyPurchase,
           paramValue: true,
-          displayText: "Buy Now",
+          displayText: "Purchase",
         },
       ],
       aggregations: [],
@@ -392,9 +392,9 @@ describe("Select Filters", () => {
           displayText: "Bid",
         },
         {
-          paramName: FilterParamName.waysToBuyBuy,
+          paramName: FilterParamName.waysToBuyPurchase,
           paramValue: true,
-          displayText: "Buy Now",
+          displayText: "Purchase",
         },
       ],
       aggregations: [],
@@ -543,7 +543,7 @@ describe("Select Filters", () => {
 
     const filterArtworksStore = getFilterArtworksStore(filterState)
     filterArtworksStore.getActions().selectFiltersAction({
-      displayText: "Default",
+      displayText: "Recommended",
       paramValue: "-decayed_merch",
       paramName: FilterParamName.sort,
     })
@@ -586,7 +586,7 @@ describe("Select Filters", () => {
 
     const filterArtworksStore = getFilterArtworksStore(filterState)
     filterArtworksStore.getActions().selectFiltersAction({
-      displayText: "Default",
+      displayText: "Recommended",
       paramValue: "-decayed_merch",
       paramName: FilterParamName.sort,
     })
@@ -665,9 +665,9 @@ describe("Apply Filters", () => {
           displayText: "Bid",
         },
         {
-          paramName: FilterParamName.waysToBuyBuy,
+          paramName: FilterParamName.waysToBuyPurchase,
           paramValue: true,
-          displayText: "Buy Now",
+          displayText: "Purchase",
         },
       ],
       aggregations: [],
@@ -691,9 +691,9 @@ describe("Apply Filters", () => {
           displayText: "Bid",
         },
         {
-          paramName: FilterParamName.waysToBuyBuy,
+          paramName: FilterParamName.waysToBuyPurchase,
           paramValue: true,
-          displayText: "Buy Now",
+          displayText: "Purchase",
         },
       ],
       appliedFilters: [
@@ -703,9 +703,9 @@ describe("Apply Filters", () => {
           displayText: "Bid",
         },
         {
-          paramName: FilterParamName.waysToBuyBuy,
+          paramName: FilterParamName.waysToBuyPurchase,
           paramValue: true,
-          displayText: "Buy Now",
+          displayText: "Purchase",
         },
       ],
       selectedFilters: [],
@@ -799,13 +799,17 @@ describe("Apply Filters", () => {
     filterState = {
       applyFilters: false,
       appliedFilters: [
-        { paramName: FilterParamName.waysToBuyBuy, paramValue: true, displayText: "Buy Now" },
+        { paramName: FilterParamName.waysToBuyPurchase, paramValue: true, displayText: "Purchase" },
       ],
       previouslyAppliedFilters: [
-        { paramName: FilterParamName.waysToBuyBuy, paramValue: true, displayText: "Buy Now" },
+        { paramName: FilterParamName.waysToBuyPurchase, paramValue: true, displayText: "Purchase" },
       ],
       selectedFilters: [
-        { paramName: FilterParamName.waysToBuyBuy, paramValue: false, displayText: "Buy Now" },
+        {
+          paramName: FilterParamName.waysToBuyPurchase,
+          paramValue: false,
+          displayText: "Purchase",
+        },
       ],
       aggregations: [],
       filterType: "artwork",
@@ -1191,6 +1195,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "state",
+          paramValue: "ALL",
+        },
+        {
+          displayText: "All",
           paramName: "partnerIDs",
           paramValue: [],
         },
@@ -1214,12 +1223,12 @@ describe("selectedOptionsUnion", () => {
           paramValue: [],
         },
         {
-          displayText: "Buy Now",
+          displayText: "Purchase",
           paramName: "acquireable",
           paramValue: false,
         },
         {
-          displayText: "Inquire",
+          displayText: "Contact Gallery",
           paramName: "inquireableOnly",
           paramValue: false,
         },
@@ -1273,7 +1282,7 @@ describe("selectedOptionsUnion", () => {
           displayText: "Artist 1",
         },
         {
-          displayText: "Default",
+          displayText: "Recommended",
           paramName: "sort",
           paramValue: "-decayed_merch",
         },
@@ -1309,6 +1318,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "state",
+          paramValue: "ALL",
+        },
+        {
+          displayText: "All",
           paramName: "partnerIDs",
           paramValue: [],
         },
@@ -1332,12 +1346,12 @@ describe("selectedOptionsUnion", () => {
           paramValue: [],
         },
         {
-          displayText: "Buy Now",
+          displayText: "Purchase",
           paramName: "acquireable",
           paramValue: false,
         },
         {
-          displayText: "Inquire",
+          displayText: "Contact Gallery",
           paramName: "inquireableOnly",
           paramValue: false,
         },
@@ -1386,7 +1400,7 @@ describe("selectedOptionsUnion", () => {
           displayText: "Artist 1, Artist 2",
         },
         {
-          displayText: "Default",
+          displayText: "Recommended",
           paramName: "sort",
           paramValue: "-decayed_merch",
         },
@@ -1422,6 +1436,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "state",
+          paramValue: "ALL",
+        },
+        {
+          displayText: "All",
           paramName: "partnerIDs",
           paramValue: [],
         },
@@ -1445,12 +1464,12 @@ describe("selectedOptionsUnion", () => {
           paramValue: [],
         },
         {
-          displayText: "Buy Now",
+          displayText: "Purchase",
           paramName: "acquireable",
           paramValue: false,
         },
         {
-          displayText: "Inquire",
+          displayText: "Contact Gallery",
           paramName: "inquireableOnly",
           paramValue: false,
         },
@@ -1505,7 +1524,7 @@ describe("selectedOptionsUnion", () => {
           displayText: "Artist 1, Artist 2",
         },
         {
-          displayText: "Default",
+          displayText: "Recommended",
           paramName: "sort",
           paramValue: "-decayed_merch",
         },
@@ -1541,6 +1560,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "state",
+          paramValue: "ALL",
+        },
+        {
+          displayText: "All",
           paramName: "partnerIDs",
           paramValue: [],
         },
@@ -1564,12 +1588,12 @@ describe("selectedOptionsUnion", () => {
           paramValue: [],
         },
         {
-          displayText: "Buy Now",
+          displayText: "Purchase",
           paramName: "acquireable",
           paramValue: false,
         },
         {
-          displayText: "Inquire",
+          displayText: "Contact Gallery",
           paramName: "inquireableOnly",
           paramValue: false,
         },
@@ -1624,7 +1648,7 @@ describe("selectedOptionsUnion", () => {
           displayText: "Artist 1, Artist 2",
         },
         {
-          displayText: "Default",
+          displayText: "Recommended",
           paramName: "sort",
           paramValue: "-decayed_merch",
         },
@@ -1660,6 +1684,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "state",
+          paramValue: "ALL",
+        },
+        {
+          displayText: "All",
           paramName: "partnerIDs",
           paramValue: [],
         },
@@ -1683,12 +1712,12 @@ describe("selectedOptionsUnion", () => {
           paramValue: [],
         },
         {
-          displayText: "Buy Now",
+          displayText: "Purchase",
           paramName: "acquireable",
           paramValue: false,
         },
         {
-          displayText: "Inquire",
+          displayText: "Contact Gallery",
           paramName: "inquireableOnly",
           paramValue: false,
         },
@@ -1735,8 +1764,8 @@ describe("selectedOptionsUnion", () => {
           paramValue: ["2010-2020"],
         },
         {
-          displayText: "Buy Now",
-          paramName: FilterParamName.waysToBuyBuy,
+          displayText: "Purchase",
+          paramName: FilterParamName.waysToBuyPurchase,
           paramValue: true,
         },
       ]
@@ -1748,7 +1777,7 @@ describe("selectedOptionsUnion", () => {
           paramValue: ["2010-2020"],
         },
         {
-          displayText: "Buy Now",
+          displayText: "Purchase",
           paramName: "acquireable",
           paramValue: true,
         },
@@ -1758,7 +1787,7 @@ describe("selectedOptionsUnion", () => {
           displayText: "Artist 1",
         },
         {
-          displayText: "Default",
+          displayText: "Recommended",
           paramName: "sort",
           paramValue: "-decayed_merch",
         },
@@ -1794,6 +1823,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "state",
+          paramValue: "ALL",
+        },
+        {
+          displayText: "All",
           paramName: "partnerIDs",
           paramValue: [],
         },
@@ -1812,7 +1846,7 @@ describe("selectedOptionsUnion", () => {
           paramName: "colors",
         },
         {
-          displayText: "Inquire",
+          displayText: "Contact Gallery",
           paramName: "inquireableOnly",
           paramValue: false,
         },
@@ -1894,6 +1928,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "state",
+          paramValue: "ALL",
+        },
+        {
+          displayText: "All",
           paramName: "partnerIDs",
           paramValue: [],
         },
@@ -1917,12 +1956,12 @@ describe("selectedOptionsUnion", () => {
           paramValue: [],
         },
         {
-          displayText: "Buy Now",
+          displayText: "Purchase",
           paramName: "acquireable",
           paramValue: false,
         },
         {
-          displayText: "Inquire",
+          displayText: "Contact Gallery",
           paramName: "inquireableOnly",
           paramValue: false,
         },
@@ -2018,6 +2057,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "state",
+          paramValue: "ALL",
+        },
+        {
+          displayText: "All",
           paramName: "partnerIDs",
           paramValue: [],
         },
@@ -2041,12 +2085,12 @@ describe("selectedOptionsUnion", () => {
           paramValue: [],
         },
         {
-          displayText: "Buy Now",
+          displayText: "Purchase",
           paramName: "acquireable",
           paramValue: false,
         },
         {
-          displayText: "Inquire",
+          displayText: "Contact Gallery",
           paramName: "inquireableOnly",
           paramValue: false,
         },
@@ -2143,6 +2187,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "state",
+          paramValue: "ALL",
+        },
+        {
+          displayText: "All",
           paramName: "partnerIDs",
           paramValue: [],
         },
@@ -2166,12 +2215,12 @@ describe("selectedOptionsUnion", () => {
           paramValue: [],
         },
         {
-          displayText: "Buy Now",
+          displayText: "Purchase",
           paramName: "acquireable",
           paramValue: false,
         },
         {
-          displayText: "Inquire",
+          displayText: "Contact Gallery",
           paramName: "inquireableOnly",
           paramValue: false,
         },
@@ -2253,6 +2302,11 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
+          paramName: "state",
+          paramValue: "ALL",
+        },
+        {
+          displayText: "All",
           paramName: "partnerIDs",
           paramValue: [],
         },
@@ -2276,12 +2330,12 @@ describe("selectedOptionsUnion", () => {
           paramValue: [],
         },
         {
-          displayText: "Buy Now",
+          displayText: "Purchase",
           paramName: "acquireable",
           paramValue: false,
         },
         {
-          displayText: "Inquire",
+          displayText: "Contact Gallery",
           paramName: "inquireableOnly",
           paramValue: false,
         },

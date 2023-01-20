@@ -1,66 +1,36 @@
-import { HomeHeaderTestsQuery } from "__generated__/HomeHeaderTestsQuery.graphql"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import { graphql, useLazyLoadQuery } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { HomeHeader } from "./HomeHeader"
 
 jest.unmock("react-relay")
 
 describe("HomeHeader", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   const TestRenderer: React.FC = () => {
-    const queryData = useLazyLoadQuery<HomeHeaderTestsQuery>(
-      graphql`
-        query HomeHeaderTestsQuery @raw_response_type {
-          me {
-            ...HomeHeader_me
-          }
-        }
-      `,
-      {}
-    )
-
-    return <HomeHeader me={queryData.me} />
+    return <HomeHeader />
   }
 
   describe("Activity", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({
-        AREnableActivity: true,
-      })
-    })
-
     it("should NOT render unread indicator when there are no unread notifications", async () => {
-      const { queryByLabelText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Me: () => ({
-          unreadNotificationsCount: 0,
-        }),
+      __globalStoreTestUtils__?.injectState({
+        bottomTabs: {
+          sessionState: { unreadCounts: { unreadActivityPanelNotifications: 0 } },
+        },
       })
-      await flushPromiseQueue()
+
+      const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
 
       const indicator = queryByLabelText("Unread Activities Indicator")
       expect(indicator).toBeNull()
     })
 
     it("should render unread indicator when there are unread notifications", async () => {
-      const { getByLabelText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Me: () => ({
-          unreadNotificationsCount: 5,
-        }),
+      __globalStoreTestUtils__?.injectState({
+        bottomTabs: {
+          sessionState: { unreadCounts: { unreadActivityPanelNotifications: 1 } },
+        },
       })
-      await flushPromiseQueue()
+
+      const { getByLabelText } = renderWithWrappers(<TestRenderer />)
 
       const indicator = getByLabelText("Unread Activities Indicator")
       expect(indicator).toBeTruthy()

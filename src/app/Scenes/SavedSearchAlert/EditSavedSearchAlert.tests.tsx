@@ -1,4 +1,4 @@
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { goBack } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { extractText } from "app/tests/extractText"
@@ -141,7 +141,7 @@ describe("EditSavedSearchAlert", () => {
 
   describe("Notificaton toggles", () => {
     it("email and push toggles are enabled", async () => {
-      const { getAllByA11yState } = renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         SearchCriteria: () => searchCriteria,
@@ -159,11 +159,11 @@ describe("EditSavedSearchAlert", () => {
         }),
       })
 
-      expect(getAllByA11yState({ selected: true })).toHaveLength(2)
+      expect(screen.queryAllByA11yState({ selected: true })).toHaveLength(2)
     })
 
     it("email and push toggles are disabled", async () => {
-      const { getAllByA11yState } = renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         SearchCriteria: () => ({
@@ -180,11 +180,16 @@ describe("EditSavedSearchAlert", () => {
         Viewer: () => viewerMocked,
       })
 
-      expect(getAllByA11yState({ selected: false })).toHaveLength(2)
+      expect(screen.queryByLabelText("Email Alerts Toggler")).toHaveProp("accessibilityState", {
+        selected: false,
+      })
+      expect(screen.queryByLabelText("Mobile Alerts Toggler")).toHaveProp("accessibilityState", {
+        selected: false,
+      })
     })
 
-    it("push toggle is enabled, email toggle is disabled", async () => {
-      const { getAllByA11yState } = renderWithWrappers(<TestRenderer />)
+    it("email toggle is enabled, push toggle is disabled", async () => {
+      renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         SearchCriteria: () => ({
@@ -200,11 +205,16 @@ describe("EditSavedSearchAlert", () => {
         Viewer: () => viewerMocked,
       })
 
-      expect(getAllByA11yState({ selected: false })).toHaveLength(1)
+      expect(screen.queryByLabelText("Email Alerts Toggler")).toHaveProp("accessibilityState", {
+        selected: true,
+      })
+      expect(screen.queryByLabelText("Mobile Alerts Toggler")).toHaveProp("accessibilityState", {
+        selected: false,
+      })
     })
 
-    it("email toggle is enabled, push toggle is disabled", async () => {
-      const { getAllByA11yState } = renderWithWrappers(<TestRenderer />)
+    it("push toggle is enabled, email toggle is disabled", async () => {
+      renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         SearchCriteria: () => ({
@@ -228,7 +238,12 @@ describe("EditSavedSearchAlert", () => {
         }),
       })
 
-      expect(getAllByA11yState({ selected: false })).toHaveLength(1)
+      expect(screen.queryByLabelText("Email Alerts Toggler")).toHaveProp("accessibilityState", {
+        selected: false,
+      })
+      expect(screen.queryByLabelText("Mobile Alerts Toggler")).toHaveProp("accessibilityState", {
+        selected: true,
+      })
     })
   })
 })

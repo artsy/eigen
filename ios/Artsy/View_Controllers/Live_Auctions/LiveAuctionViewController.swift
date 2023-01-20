@@ -189,6 +189,9 @@ class LiveAuctionViewController: UIViewController {
     @objc func dismissLiveAuctionsModal() {
         overlaySubscription?.unsubscribe()
         saleOnHoldSubscription?.unsubscribe()
+
+        AREmission.sharedInstance().notificationsManagerModule.requestModalDismiss()
+        // TODO: AppShell, don't need the below code once app shell is done
         self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
 

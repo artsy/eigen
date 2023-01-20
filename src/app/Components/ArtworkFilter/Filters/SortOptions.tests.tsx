@@ -51,7 +51,7 @@ describe("Sort Options Screen", () => {
     it("returns the default option if there are no selected or applied filters", () => {
       const tree = renderWithWrappersLEGACY(<MockSortScreen initialData={initialState} />)
       const selectedOption = selectedSortOption(tree)
-      expect(extractText(selectedOption)).toContain("Default")
+      expect(extractText(selectedOption)).toContain("Recommended")
     })
 
     it("prefers an applied filter over the default filter", () => {

@@ -7,6 +7,13 @@ let metaflags = {
 }
 
 if (__DEV__) {
+  const {
+    mockSyncFunctionsWhenDebugging,
+  } = require("./src/app/system/devTools/mockSyncFunctionsWhenDebugging")
+
+  // Ensure we don't break the debugger
+  mockSyncFunctionsWhenDebugging()
+
   try {
     const fileContents = require("./metaflags.json")
     metaflags = { ...metaflags, ...fileContents }
@@ -14,6 +21,7 @@ if (__DEV__) {
 }
 
 require("./src/app/errorReporting/sentrySetup").setupSentry({ environment: "bootstrap" })
+import "react-native-url-polyfill/auto"
 
 if (metaflags.startStorybook) {
   global.__STORYBOOK__ = true

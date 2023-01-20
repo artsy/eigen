@@ -7,9 +7,7 @@ it("renders without throwing an error", () => {
   const article = {
     thumbnailTitle: "Something Happened",
     href: "artsy.net/something-happened",
-    author: {
-      name: "John Berger",
-    },
+    byline: "John Berger",
     thumbnailImage: {
       url: "artsy.net/image-url",
     },

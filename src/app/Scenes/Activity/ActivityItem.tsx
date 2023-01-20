@@ -1,21 +1,29 @@
+import { ActionType } from "@artsy/cohesion"
+import { ClickedActivityPanelNotificationItem } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
 import { ActivityItem_item$key } from "__generated__/ActivityItem_item.graphql"
+import { FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ORDERED_ARTWORK_SORTS } from "app/Components/ArtworkFilter/Filters/SortOptions"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { last } from "lodash"
 import { Flex, OpaqueImageView, Spacer, Text } from "palette"
+import { parse as parseQueryString } from "query-string"
 import { TouchableOpacity } from "react-native"
 import { graphql, useFragment } from "react-relay"
-import { getDateLabel } from "./util/getDateLabel"
+import { useTracking } from "react-tracking"
 
 interface ActivityItemProps {
   item: ActivityItem_item$key
 }
 
 const UNREAD_INDICATOR_SIZE = 8
+const ARTWORK_IMAGE_SIZE = 55
 
 export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
+  const tracking = useTracking()
   const item = useFragment(activityItemFragment, props.item)
   const artworks = extractNodes(item.artworksConnection)
-  const remainingArtworksCount = (item.artworksConnection?.totalCount ?? 0) - 4
+  const remainingArtworksCount = item.objectsCount - 4
 
   const getNotificationType = () => {
     if (item.notificationType === "ARTWORK_ALERT") {
@@ -27,7 +35,21 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
   const notificationTypeLabel = getNotificationType()
 
   const handlePress = () => {
-    navigate(item.targetHref)
+    const splittedQueryParams = item.targetHref.split("?")
+    const queryParams = last(splittedQueryParams) ?? ""
+    const parsed = parseQueryString(queryParams)
+
+    const sortFilterItem = ORDERED_ARTWORK_SORTS.find(
+      (sortEntity) => sortEntity.paramValue === "-published_at"
+    )!
+
+    tracking.trackEvent(tracks.tappedNotification(item.notificationType))
+    navigate(item.targetHref, {
+      passProps: {
+        predefinedFilters: [sortFilterItem] as FilterArray,
+        searchCriteriaID: parsed.search_criteria_id,
+      },
+    })
   }
 
   return (
@@ -46,7 +68,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
             )}
 
             <Text variant="xs" color="black60">
-              {getDateLabel(item.createdAt!)}
+              {item.publishedAt}
             </Text>
           </Flex>
 
@@ -61,8 +83,16 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
           <Flex flexDirection="row" alignItems="center">
             {artworks.map((artwork) => {
               return (
-                <Flex key={artwork.internalID} mr={1} accessibilityLabel="Activity Artwork Image">
-                  <OpaqueImageView imageURL={artwork.image?.preview?.src} width={58} height={58} />
+                <Flex
+                  key={`${item.internalID}-${artwork.internalID}`}
+                  mr={1}
+                  accessibilityLabel="Activity Artwork Image"
+                >
+                  <OpaqueImageView
+                    imageURL={artwork.image?.preview?.src}
+                    width={ARTWORK_IMAGE_SIZE}
+                    height={ARTWORK_IMAGE_SIZE}
+                  />
                 </Flex>
               )
             })}
@@ -80,7 +110,6 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
             width={UNREAD_INDICATOR_SIZE}
             height={UNREAD_INDICATOR_SIZE}
             borderRadius={UNREAD_INDICATOR_SIZE / 2}
-            ml={1}
             bg="blue100"
             accessibilityLabel="Unread notification indicator"
           />
@@ -92,14 +121,15 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
 
 const activityItemFragment = graphql`
   fragment ActivityItem_item on Notification {
+    internalID
     title
     message
-    createdAt
+    publishedAt(format: "RELATIVE")
     targetHref
     isUnread
     notificationType
+    objectsCount
     artworksConnection(first: 4) {
-      totalCount
       edges {
         node {
           internalID
@@ -115,3 +145,10 @@ const activityItemFragment = graphql`
     }
   }
 `
+
+const tracks = {
+  tappedNotification: (notificationType: string): ClickedActivityPanelNotificationItem => ({
+    action: ActionType.clickedActivityPanelNotificationItem,
+    notification_type: notificationType,
+  }),
+}

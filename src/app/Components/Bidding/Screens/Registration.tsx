@@ -498,7 +498,7 @@ const RegistrationContainer = createFragmentContainer(Registration, {
   me: graphql`
     fragment Registration_me on Me {
       hasCreditCards
-      identityVerified
+      isIdentityVerified
       phoneNumber {
         isValid
         display(format: E164)
@@ -513,7 +513,7 @@ export const RegistrationQueryRenderer: React.FC<{ saleID: string; navigator: Na
 }) => {
   return (
     <View style={{ flex: 1 }}>
-      <FancyModalHeader onLeftButtonPress={dismissModal} useXButton>
+      <FancyModalHeader onLeftButtonPress={() => dismissModal()} useXButton>
         Register to bid
       </FancyModalHeader>
       <QueryRenderer<RegistrationQuery>

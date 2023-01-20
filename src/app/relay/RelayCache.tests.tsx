@@ -5,9 +5,7 @@ describe(requestFingerprint, () => {
   it("makes a fingerprint of a graphql request with a stable key ordering", () => {
     const fingerprintA = requestFingerprint("myQueryID", { a: "A", b: "B", c: "C" })
     const fingerprintB = requestFingerprint("myQueryID", { b: "B", c: "C", a: "A" })
-    expect(fingerprintA).toMatchInlineSnapshot(
-      `"{\\"myQueryID\\":{\\"a\\":\\"A\\",\\"b\\":\\"B\\",\\"c\\":\\"C\\"}}"`
-    )
+    expect(fingerprintA).toMatchInlineSnapshot(`"{"myQueryID":{"a":"A","b":"B","c":"C"}}"`)
     expect(fingerprintA).toEqual(fingerprintB)
   })
   it("works with nested objects and arrays", () => {
@@ -18,7 +16,7 @@ describe(requestFingerprint, () => {
         c: "C",
       })
     ).toMatchInlineSnapshot(
-      `"{\\"myQueryID\\":{\\"a\\":\\"A\\",\\"b\\":[\\"banana\\",\\"bingo\\",{\\"bratislava\\":true,\\"brightonBeach\\":345,\\"bristol\\":null}],\\"c\\":\\"C\\"}}"`
+      `"{"myQueryID":{"a":"A","b":["banana","bingo",{"bratislava":true,"brightonBeach":345,"bristol":null}],"c":"C"}}"`
     )
   })
   it("should produce valid json (implementation detail)", () => {
@@ -39,7 +37,9 @@ describe("the cache", () => {
   const properNow = Date.now
   beforeAll(() => {
     Date.now = nowMock
-    jest.useFakeTimers()
+    jest.useFakeTimers({
+      legacyFakeTimers: true,
+    })
   })
   afterAll(() => {
     Date.now = properNow
@@ -51,15 +51,15 @@ describe("the cache", () => {
   it("saves queries in async storage", async () => {
     set("myQueryID", { foo: "bar" }, "response!")
     expect(await AsyncStorage.getAllKeys()).toMatchInlineSnapshot(`
-      Array [
-        "RelayCache:{\\"myQueryID\\":{\\"foo\\":\\"bar\\"}}",
+      [
+        "RelayCache:{"myQueryID":{"foo":"bar"}}",
       ]
     `)
     set("mySecondQueryID", { lol: "rofl" }, "another response!")
     expect(await AsyncStorage.getAllKeys()).toMatchInlineSnapshot(`
-      Array [
-        "RelayCache:{\\"myQueryID\\":{\\"foo\\":\\"bar\\"}}",
-        "RelayCache:{\\"mySecondQueryID\\":{\\"lol\\":\\"rofl\\"}}",
+      [
+        "RelayCache:{"myQueryID":{"foo":"bar"}}",
+        "RelayCache:{"mySecondQueryID":{"lol":"rofl"}}",
       ]
     `)
 

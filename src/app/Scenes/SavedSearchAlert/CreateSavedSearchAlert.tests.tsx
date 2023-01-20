@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { FilterData, FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
@@ -159,7 +159,7 @@ describe("CreateSavedSearchAlert", () => {
   describe("Notification toggles", () => {
     it("email toggle is enabled by default if the user has allowed email notifications", async () => {
       setStatusForPushNotifications(PushAuthorizationStatus.Authorized)
-      const { findAllByA11yState } = renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Viewer: () => ({
@@ -171,13 +171,14 @@ describe("CreateSavedSearchAlert", () => {
 
       await flushPromiseQueue()
 
-      const toggles = await findAllByA11yState({ selected: true })
-      expect(toggles).toHaveLength(2)
+      expect(screen.queryByLabelText("Email Alerts Toggler")).toHaveProp("accessibilityState", {
+        selected: true,
+      })
     })
 
     it("email toggle is disabled by default if the user has not allowed email notifications", async () => {
       setStatusForPushNotifications(PushAuthorizationStatus.Authorized)
-      const { findAllByA11yState } = renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Viewer: () => ({
@@ -189,37 +190,40 @@ describe("CreateSavedSearchAlert", () => {
 
       await flushPromiseQueue()
 
-      const toggles = await findAllByA11yState({ selected: false })
-      expect(toggles).toHaveLength(1)
+      expect(screen.queryByLabelText("Email Alerts Toggler")).toHaveProp("accessibilityState", {
+        selected: false,
+      })
     })
 
-    it("push toggle is enabled by default when push permissions are enabled", async () => {
+    it("push toggle is enabled by default when push permissions are enabled", () => {
       setStatusForPushNotifications(PushAuthorizationStatus.Authorized)
-      const { findAllByA11yState } = renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
-      const toggles = await findAllByA11yState({ selected: true })
-      expect(toggles).toHaveLength(1)
+      expect(screen.queryByLabelText("Mobile Alerts Toggler")).toHaveProp("accessibilityState", {
+        selected: true,
+      })
     })
 
     it("push toggle is disabled by default when push permissions are denied", async () => {
       setStatusForPushNotifications(PushAuthorizationStatus.Denied)
-      const { findAllByA11yState } = renderWithWrappers(<TestRenderer />)
-      const toggles = await findAllByA11yState({ selected: false })
+      renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Viewer: () => ({
           notificationPreferences: [{ status: "SUBSCRIBED" }],
         }),
       })
+
       await flushPromiseQueue()
 
-      expect(toggles).toHaveLength(1)
+      expect(screen.queryByLabelText("Mobile Alerts Toggler")).toHaveProp("accessibilityState", {
+        selected: false,
+      })
     })
 
     it("push toggle is disabled by default when push permissions are not determined", async () => {
       setStatusForPushNotifications(PushAuthorizationStatus.NotDetermined)
-      const { findAllByA11yState } = renderWithWrappers(<TestRenderer />)
-      const toggles = await findAllByA11yState({ selected: false })
+      renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Viewer: () => ({
@@ -228,7 +232,9 @@ describe("CreateSavedSearchAlert", () => {
       })
       await flushPromiseQueue()
 
-      expect(toggles).toHaveLength(1)
+      expect(screen.queryByLabelText("Mobile Alerts Toggler")).toHaveProp("accessibilityState", {
+        selected: false,
+      })
     })
   })
 })
