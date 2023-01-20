@@ -110,7 +110,7 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
   }),
   fetchAllNotificationsCounts: thunk(async () => {
     try {
-      const result = await fetchQuery<BottomTabsModelFetchAllNotificationsCountsQuery>(
+      const query = fetchQuery<BottomTabsModelFetchAllNotificationsCountsQuery>(
         createEnvironment([
           [persistedQueryMiddleware(), metaphysicsURLMiddleware(), simpleLoggerMiddleware()],
         ]),
@@ -126,15 +126,14 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
         {
           fetchPolicy: "network-only",
         }
-      ).toPromise()
-
-      const conversationsCount = result?.me?.unreadConversationCount
-      const notificationsCount = result?.me?.unreadNotificationsCount
-
-      GlobalStore.actions.bottomTabs.unreadConversationCountChanged(conversationsCount ?? 0)
-      GlobalStore.actions.bottomTabs.unreadActivityPanelNotificationsCountChanged(
-        notificationsCount ?? 0
       )
+      const result = await query.toPromise()
+
+      const conversations = result?.me?.unreadConversationCount ?? 0
+      const notifications = result?.me?.unreadNotificationsCount ?? 0
+
+      GlobalStore.actions.bottomTabs.unreadConversationCountChanged(conversations)
+      GlobalStore.actions.bottomTabs.unreadActivityPanelNotificationsCountChanged(notifications)
     } catch (e) {
       if (__DEV__) {
         console.warn(
