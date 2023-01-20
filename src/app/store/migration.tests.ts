@@ -112,7 +112,7 @@ describe(migrate, () => {
           },
         },
       })
-    }).toThrowErrorMatchingInlineSnapshot(`"Bad state.version {"version":"0"}"`)
+    }).toThrowErrorMatchingInlineSnapshot(`"Bad state.version {\\"version\\":\\"0\\"}"`)
   })
 
   it("throws an error if there is no valid migration", () => {
@@ -811,5 +811,25 @@ describe("App version Versions.MoveEnvironmentToDevicePrefsAndRenameAdminToLocal
     expect(migratedState.devicePrefs.environment.localOverrides).toEqual({ testKey: true })
     expect(migratedState.devicePrefs.environment.adminOverrides).toEqual(undefined)
     expect(migratedState.artsyPrefs.environment).toEqual(undefined)
+  })
+})
+
+describe("App version Versions.AddLastNotificationPublishedAtByUserId", () => {
+  const migrationToTest = Versions.AddLastNotificationPublishedAtByUserId
+
+  it("add lastNotificationPublishedAtByUserId", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    expect(previousState.bottomTabs.lastNotificationPublishedAtByUserId).toEqual(undefined)
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.bottomTabs.lastNotificationPublishedAtByUserId).toEqual({})
   })
 })

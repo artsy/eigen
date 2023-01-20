@@ -24,6 +24,7 @@ export interface BottomTabsModel {
     tabProps: Partial<{ [k in BottomTabType]: object }>
     selectedTab: BottomTabType
   }
+  lastNotificationPublishedAtByUserId: Record<string, string>
   syncApplicationIconBadgeNumber: ThunkOn<BottomTabsModel>
   unreadConversationCountChanged: Action<BottomTabsModel, number>
   fetchCurrentUnreadConversationCount: Thunk<BottomTabsModel>
@@ -43,6 +44,7 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
     tabProps: {},
     selectedTab: "home",
   },
+  lastNotificationPublishedAtByUserId: {},
   syncApplicationIconBadgeNumber: thunkOn(
     (actions) => [
       actions.unreadConversationCountChanged,
