@@ -1,6 +1,6 @@
-import * as navigation from "app/navigation/navigate"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import * as navigation from "app/system/navigation/navigate"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import * as useSearchInsightsConfig from "app/utils/useSearchInsightsConfig"
 import { Touchable } from "palette"
 import { SearchHighlight } from "./SearchHighlight"

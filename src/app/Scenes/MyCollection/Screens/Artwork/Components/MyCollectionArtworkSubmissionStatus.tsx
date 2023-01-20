@@ -1,5 +1,5 @@
 import { toTitleCase } from "@artsy/to-title-case"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { Box, Flex, Text, Touchable } from "palette"
 
 // TODO:- We are using displayText for Statuses for now. Consider changing the logic when proper statuses are made available on Metaphysics.

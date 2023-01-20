@@ -1,8 +1,8 @@
 import { fireEvent } from "@testing-library/react-native"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { createMockEnvironment } from "relay-test-utils"
 import { Activity } from "./Activity"
 

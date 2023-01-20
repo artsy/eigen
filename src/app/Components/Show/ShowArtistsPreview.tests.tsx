@@ -4,9 +4,9 @@ import { createMockEnvironment } from "relay-test-utils"
 
 import { ShowArtistsPreviewTestsQuery } from "__generated__/ShowArtistsPreviewTestsQuery.graphql"
 import { ArtistListItem } from "app/Components/ArtistListItem"
-import { extractText } from "app/tests/extractText"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { extractText } from "app/utils/tests/extractText"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Button } from "palette"
 import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "./ShowArtistsPreview"
 

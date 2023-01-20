@@ -1,5 +1,5 @@
 import { ShippingAndTaxes_artwork$data } from "__generated__/ShippingAndTaxes_artwork.graphql"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { Box, LinkText, Spacer, Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 

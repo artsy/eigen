@@ -1,4 +1,4 @@
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { track as _track } from "app/utils/track"
 import { Flex, QuestionCircleIcon, Text, Touchable } from "palette"
 

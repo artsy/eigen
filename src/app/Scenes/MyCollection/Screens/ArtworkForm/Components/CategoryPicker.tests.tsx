@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
-import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
+import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { useFormikContext } from "formik"
 import { Touchable } from "palette"
 import { Modal, TouchableOpacity } from "react-native"

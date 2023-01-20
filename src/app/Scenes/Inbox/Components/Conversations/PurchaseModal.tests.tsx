@@ -1,7 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
 import { PurchaseModalTestQuery } from "__generated__/PurchaseModalTestQuery.graphql"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { setupTestWrapper } from "app/tests/setupTestWrapper"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { PurchaseModalFragmentContainer } from "./PurchaseModal"
 

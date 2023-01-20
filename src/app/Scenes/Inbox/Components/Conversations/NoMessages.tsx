@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { Button, Flex, Text } from "palette"
 import { useTracking } from "react-tracking"
 

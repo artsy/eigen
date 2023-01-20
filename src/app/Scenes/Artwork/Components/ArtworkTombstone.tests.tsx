@@ -3,7 +3,7 @@ import { ArtworkTombstone_artwork$data } from "__generated__/ArtworkTombstone_ar
 import { ArtworkTombstone_Test_Query } from "__generated__/ArtworkTombstone_Test_Query.graphql"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { setupTestWrapper } from "app/tests/setupTestWrapper"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { ArtworkStoreProvider } from "../ArtworkStore"
 import { ArtworkTombstoneFragmentContainer } from "./ArtworkTombstone"

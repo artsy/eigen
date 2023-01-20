@@ -3,7 +3,7 @@ import { FeaturedCollectionsRail_collection$data } from "__generated__/FeaturedC
 import { FeaturedCollectionsRail_collectionGroup$data } from "__generated__/FeaturedCollectionsRail_collectionGroup.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { defaultRules } from "app/utils/renderMarkdown"
 import { renderMarkdown } from "app/utils/renderMarkdown"
 import { Schema } from "app/utils/track"

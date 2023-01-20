@@ -1,6 +1,6 @@
-import type { ViewDescriptor } from "app/navigation/navigate"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import type { NativeState } from "app/store/NativeModel"
+import type { ViewDescriptor } from "app/system/navigation/navigate"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import { NativeModules as AllNativeModules, Platform } from "react-native"
 import type { Image as RNCImage } from "react-native-image-crop-picker"

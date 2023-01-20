@@ -1,6 +1,6 @@
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { GlobalStore } from "app/store/GlobalStore"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { Linking } from "react-native"
 import { navigate } from "./navigate"
 

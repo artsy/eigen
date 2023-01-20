@@ -1,6 +1,6 @@
 import { PartnerLocations_partner$data } from "__generated__/PartnerLocations_partner.graphql"
 import { PartnerLocationsQuery } from "__generated__/PartnerLocationsQuery.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"

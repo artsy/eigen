@@ -1,7 +1,7 @@
 import { themeGet } from "@styled-system/theme-get"
 import { ViewingRoomViewWorksButton_viewingRoom$data } from "__generated__/ViewingRoomViewWorksButton_viewingRoom.graphql"
 import { AnimatedBottomButton } from "app/Components/AnimatedBottomButton"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
 import { Flex, Text } from "palette"
 import { View } from "react-native"

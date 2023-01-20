@@ -1,5 +1,5 @@
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { useFormikContext } from "formik"
 import {
   Box,

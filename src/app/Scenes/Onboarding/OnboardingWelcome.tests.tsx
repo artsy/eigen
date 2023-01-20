@@ -1,7 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { mockNavigate } from "app/tests/navigationMocks"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { mockNavigate } from "app/utils/tests/navigationMocks"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { OnboardingWelcome } from "./OnboardingWelcome"
 
 const navigationPropsMock = {

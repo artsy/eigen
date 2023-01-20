@@ -1,5 +1,5 @@
 import { myCollectionCreateArtworkMutation } from "__generated__/myCollectionCreateArtworkMutation.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { commitMutation, graphql } from "react-relay"
 
 export function myCollectionCreateArtwork(

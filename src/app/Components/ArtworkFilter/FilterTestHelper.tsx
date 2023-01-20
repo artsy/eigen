@@ -6,7 +6,7 @@ import {
 } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtworkFiltersState } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { mockNavigate } from "app/tests/navigationMocks"
+import { mockNavigate } from "app/utils/tests/navigationMocks"
 
 export const closeModalMock = jest.fn()
 

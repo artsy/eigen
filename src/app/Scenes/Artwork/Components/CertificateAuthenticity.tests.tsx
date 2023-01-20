@@ -1,9 +1,9 @@
 import { fireEvent } from "@testing-library/react-native"
-import { navigate } from "app/navigation/navigate"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { navigate } from "app/system/navigation/navigate"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { CertificateOfAuthenticity } from "./CertificateAuthenticity"
 
-jest.mock("app/navigation/navigate", () => ({
+jest.mock("app/system/navigation/navigate", () => ({
   navigate: jest.fn(),
 }))
 

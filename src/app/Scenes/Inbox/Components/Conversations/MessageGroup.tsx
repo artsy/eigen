@@ -8,7 +8,7 @@ import { Flex, Spacer } from "palette"
 import React from "react"
 
 import { OrderUpdate_event$data } from "__generated__/OrderUpdate_event.graphql"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { Message } from "./Message"
 import { OrderUpdateFragmentContainer } from "./OrderUpdate"
 import ArtworkPreview from "./Preview/ArtworkPreview"

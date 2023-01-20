@@ -1,12 +1,12 @@
 import { ViewingRoomArtworksTestsQuery } from "__generated__/ViewingRoomArtworksTestsQuery.graphql"
-import { navigate } from "app/navigation/navigate"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { navigate } from "app/system/navigation/navigate"
+import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import {
   mockEdges,
   resolveMostRecentRelayOperation,
-} from "app/tests/resolveMostRecentRelayOperation"
-import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
+} from "app/utils/tests/resolveMostRecentRelayOperation"
 import { Touchable } from "palette"
 import { FlatList, TouchableHighlight } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"

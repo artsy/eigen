@@ -1,6 +1,6 @@
 import { CaretButton } from "app/Components/Buttons/CaretButton"
-import { navigate } from "app/navigation/navigate"
 import { Event } from "app/Scenes/City/Components/Event"
+import { navigate } from "app/system/navigation/navigate"
 import { Box, Text } from "palette"
 import React from "react"
 import { RelayProp } from "react-relay"

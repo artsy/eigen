@@ -4,8 +4,8 @@ import {
   createStackNavigator,
   TransitionPresets,
 } from "@react-navigation/stack"
-import { OAuthProvider } from "app/auth/types"
 import { FPSCounter } from "app/Components/FPSCounter"
+import { OAuthProvider } from "app/store/AuthModel"
 import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
 import { NetworkAwareProvider } from "app/utils/NetworkAwareProvider"
 import { Platform, View } from "react-native"

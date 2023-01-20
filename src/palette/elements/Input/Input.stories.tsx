@@ -1,5 +1,5 @@
 import { storiesOf } from "@storybook/react-native"
-import SearchIcon from "app/Icons/SearchIcon"
+import SearchIcon from "app/Components/Icons/SearchIcon"
 import { Box, Input, Spacer } from "palette"
 import { PhoneInput } from "palette/elements/Input/PhoneInput/PhoneInput"
 import { DataList, List } from "storybook/helpers"

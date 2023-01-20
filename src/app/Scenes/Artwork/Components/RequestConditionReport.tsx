@@ -3,7 +3,7 @@ import { RequestConditionReport_me$data } from "__generated__/RequestConditionRe
 import { RequestConditionReportMutation } from "__generated__/RequestConditionReportMutation.graphql"
 import { RequestConditionReportQuery } from "__generated__/RequestConditionReportQuery.graphql"
 import { Modal } from "app/Components/Modal"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { Schema, track } from "app/utils/track"
 import { Button, Flex } from "palette"
 import { Component } from "react"

@@ -1,5 +1,5 @@
 import { OrderHistoryRow_order$data } from "__generated__/OrderHistoryRow_order.graphql"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { getOrderStatus, OrderState } from "app/utils/getOrderStatus"
 import { getTrackingUrl } from "app/utils/getTrackingUrl"

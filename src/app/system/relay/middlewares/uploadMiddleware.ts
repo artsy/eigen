@@ -30,7 +30,7 @@ export const uploadMiddleware = (): Middleware => {
 
     if (files.size) {
       if (!queryMap) {
-        queryMap = require("../../../../data/complete.queryMap.json")
+        queryMap = require("../../../../../data/complete.queryMap.json")
       }
 
       const query = queryMap[id]

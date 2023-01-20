@@ -1,4 +1,4 @@
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { Schema, track } from "app/utils/track"
 import { ArrowRightIcon, Flex, Text } from "palette"
 import React from "react"

@@ -7,7 +7,7 @@ import {
 import { useIsFocused } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { captureException, withScope } from "@sentry/react-native"
-import { goBack } from "app/navigation/navigate"
+import { goBack } from "app/system/navigation/navigate"
 import { requestPhotos } from "app/utils/requestPhotos"
 import { useIsForeground } from "app/utils/useIsForeground"
 import { Flex, Spinner, useColor } from "palette"

@@ -1,5 +1,5 @@
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { ArtistAutosuggestRow } from "./ArtistAutosuggestRow"
 
 const onResultPress = jest.fn()

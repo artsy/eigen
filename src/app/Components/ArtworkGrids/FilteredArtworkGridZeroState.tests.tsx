@@ -1,6 +1,6 @@
 import { fireEvent, getDefaultNormalizer } from "@testing-library/react-native"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { FilteredArtworkGridZeroState, ZeroStateProps } from "./FilteredArtworkGridZeroState"
 
 describe("FilteredArtworkGridZeroState", () => {

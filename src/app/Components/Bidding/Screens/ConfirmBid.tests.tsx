@@ -9,12 +9,12 @@ import { bidderPositionQuery } from "app/Components/Bidding/Screens/ConfirmBid/B
 import { Modal } from "app/Components/Modal"
 import Spinner from "app/Components/Spinner"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { defaultEnvironment } from "app/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import NavigatorIOS, {
   NavigatorIOSPushArgs,
 } from "app/utils/__legacy_do_not_use__navigator-ios-shim"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { merge } from "lodash"
 import { Button, LinkText, Text } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"

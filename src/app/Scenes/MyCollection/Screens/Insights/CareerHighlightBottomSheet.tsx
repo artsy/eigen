@@ -1,6 +1,6 @@
 import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet"
 import { CareerHighlightBottomSheet_query$key } from "__generated__/CareerHighlightBottomSheet_query.graphql"
-import { LegacyBackButtonContext } from "app/navigation/NavStack"
+import { LegacyBackButtonContext } from "app/system/navigation/NavStack"
 import { delay } from "app/utils/delay"
 import { isPad } from "app/utils/hardware"
 import { compact } from "lodash"

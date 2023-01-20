@@ -1,8 +1,8 @@
 import "react-native"
 
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import DarkNavigationButton from "./DarkNavigationButton"
 
 it("renders without throwing an error", () => {

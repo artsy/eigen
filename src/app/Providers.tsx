@@ -9,14 +9,14 @@ import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContex
 import { PopoverMessageProvider } from "./Components/PopoverMessage/PopoverMessageProvider"
 import { RetryErrorBoundary } from "./Components/RetryErrorBoundary"
 import { ToastProvider } from "./Components/Toast/toastHook"
-import { defaultEnvironment } from "./relay/createEnvironment"
 import { GlobalStore, GlobalStoreProvider, useFeatureFlag } from "./store/GlobalStore"
+import { defaultEnvironment } from "./system/relay/createEnvironment"
 import { combineProviders } from "./utils/combineProviders"
 import { UnleashProvider } from "./utils/experiments/UnleashProvider"
 import { track } from "./utils/track"
-import { GravityWebsocketContextProvider } from "./Websockets/GravityWebsocketContext"
+import { GravityWebsocketContextProvider } from "./utils/Websockets/GravityWebsocketContext"
 
-export const AppProviders = ({ children }: { children?: React.ReactNode }) =>
+export const Providers = ({ children }: { children?: React.ReactNode }) =>
   combineProviders(
     [
       // order matters here, be careful!

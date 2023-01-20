@@ -1,5 +1,5 @@
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { ArtworkActions } from "./ArtworkActions"
 import { ArtworkHeader, VisibilityLevels } from "./ArtworkHeader"
 import { ArtworkTombstone } from "./ArtworkTombstone"

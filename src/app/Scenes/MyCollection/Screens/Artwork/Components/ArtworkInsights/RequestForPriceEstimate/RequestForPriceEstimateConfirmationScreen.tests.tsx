@@ -1,6 +1,6 @@
 import { act, fireEvent } from "@testing-library/react-native"
-import { goBack } from "app/navigation/navigate"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { goBack } from "app/system/navigation/navigate"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { RequestForPriceEstimateConfirmationScreen } from "./RequestForPriceEstimateConfirmationScreen"
 
 describe("RequestForPriceEstimateConfirmationScreen", () => {

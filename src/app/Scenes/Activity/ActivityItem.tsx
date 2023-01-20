@@ -3,7 +3,7 @@ import { ClickedActivityPanelNotificationItem } from "@artsy/cohesion/dist/Schem
 import { ActivityItem_item$key } from "__generated__/ActivityItem_item.graphql"
 import { FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ORDERED_ARTWORK_SORTS } from "app/Components/ArtworkFilter/Filters/SortOptions"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { last } from "lodash"
 import { Flex, OpaqueImageView, Spacer, Text } from "palette"

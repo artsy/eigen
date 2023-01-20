@@ -1,6 +1,6 @@
 import { ArtworkDetails_artwork$key } from "__generated__/ArtworkDetails_artwork.graphql"
-import { navigate } from "app/navigation/navigate"
 import { GlobalStore } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
 import { Box, Flex, Join, Spacer, Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"

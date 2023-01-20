@@ -1,4 +1,4 @@
-import { RelayCache as cache } from "app/relay/RelayCache"
+import { RelayCache as cache } from "app/system/relay/RelayCache"
 import { MiddlewareNextFn } from "react-relay-network-modern/node8"
 import { GraphQLRequest } from "./types"
 

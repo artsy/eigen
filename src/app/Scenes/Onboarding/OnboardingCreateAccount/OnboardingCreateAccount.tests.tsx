@@ -1,7 +1,7 @@
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { fetchMockResponseOnce } from "app/tests/fetchMockHelpers"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { fetchMockResponseOnce } from "app/utils/tests/fetchMockHelpers"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Checkbox } from "palette/elements/Checkbox"
 import { OnboardingCreateAccountWithEmail } from "./OnboardingCreateAccount"
 

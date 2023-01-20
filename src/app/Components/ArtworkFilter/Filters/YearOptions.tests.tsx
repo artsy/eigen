@@ -5,8 +5,8 @@ import {
   ArtworkFiltersStoreProvider,
   ArtworksFiltersStore,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { act } from "react-test-renderer"
 import { getEssentialProps } from "./helper"
 import {

@@ -40,7 +40,7 @@ const preventUsingTestRenderer = () => {
     .filter((filename) => {
       const content = fs.readFileSync(filename).toString()
       return (
-        content.includes('from "app/tests/renderWithWrappers"') &&
+        content.includes('from "app/utils/tests/renderWithWrappers"') &&
         (content.includes("renderWithWrappersLEGACY ") ||
           content.includes("renderWithWrappersLEGACY,"))
       )

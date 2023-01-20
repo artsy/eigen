@@ -1,5 +1,5 @@
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { CollectionFixture } from "../Components/__fixtures__/CollectionFixture"
 import { CollectionHeader } from "./CollectionHeader"
 

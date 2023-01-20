@@ -1,6 +1,6 @@
 import { createSavedSearchAlertMutation } from "__generated__/createSavedSearchAlertMutation.graphql"
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { commitMutation, graphql } from "relay-runtime"
 import { SavedSearchAlertFormValues } from "../SavedSearchAlertModel"
 

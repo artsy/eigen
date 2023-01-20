@@ -1,5 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { PillType } from "../types"
 import { SearchPills, SearchPillsProps } from "./SearchPills"
 

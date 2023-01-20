@@ -1,5 +1,5 @@
 import { ArtistAutosuggestQuery } from "__generated__/ArtistAutosuggestQuery.graphql"
-import SearchIcon from "app/Icons/SearchIcon"
+import SearchIcon from "app/Components/Icons/SearchIcon"
 import { AutosuggestResult, AutosuggestResults } from "app/Scenes/Search/AutosuggestResults"
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
 import { useFeatureFlag } from "app/store/GlobalStore"

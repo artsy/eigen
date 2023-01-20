@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { PriceRange } from "./Filters/helpers"
 import { RecentPriceRanges } from "./RecentPriceRanges"
 

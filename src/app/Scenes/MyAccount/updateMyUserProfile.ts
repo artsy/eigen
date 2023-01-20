@@ -2,7 +2,7 @@ import {
   UpdateMyProfileInput,
   updateMyUserProfileMutation,
 } from "__generated__/updateMyUserProfileMutation.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { commitMutation, Environment, graphql } from "react-relay"
 
 export const updateMyUserProfile = async (

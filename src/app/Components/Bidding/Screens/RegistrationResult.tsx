@@ -10,7 +10,7 @@ import { Markdown } from "../../Markdown"
 import { Title } from "../Components/Title"
 
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { dismissModal } from "app/navigation/navigate"
+import { dismissModal } from "app/system/navigation/navigate"
 import { defaultRules } from "app/utils/renderMarkdown"
 import { Schema, screenTrack } from "app/utils/track"
 

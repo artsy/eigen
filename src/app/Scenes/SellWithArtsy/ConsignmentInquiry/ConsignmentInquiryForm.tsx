@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { useFormikContext } from "formik"
 import { Box, Button, Input, LinkText, PhoneInput, Spacer, Text } from "palette"
 import { useEffect, useRef } from "react"

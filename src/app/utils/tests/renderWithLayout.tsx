@@ -1,4 +1,4 @@
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 
 /** Renders a React Component with specified layout using onLayout callback */
 export const renderWithLayout = (component: any, layout: { width?: number; height?: number }) => {

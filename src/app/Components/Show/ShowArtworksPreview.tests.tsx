@@ -3,7 +3,7 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 import { ShowArtworksPreviewTestsQuery } from "__generated__/ShowArtworksPreviewTestsQuery.graphql"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { ShowArtworksPreviewContainer as ShowArtworksPreview } from "./ShowArtworksPreview"
 
 jest.unmock("react-relay")

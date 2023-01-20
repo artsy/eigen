@@ -1,5 +1,5 @@
 import { PartnerLocationSectionTestQuery } from "__generated__/PartnerLocationSectionTestQuery.graphql"
-import { setupTestWrapper } from "app/tests/setupTestWrapper"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { PartnerLocationSectionContainer } from "./PartnerLocationSection"
 

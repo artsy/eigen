@@ -7,7 +7,7 @@ import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { ColorsOptionsScreen } from "./ColorsOptions"
 import { ColorsSwatch } from "./ColorsSwatch"

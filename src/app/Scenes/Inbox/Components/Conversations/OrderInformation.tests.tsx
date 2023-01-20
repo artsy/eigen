@@ -1,5 +1,5 @@
 import { OrderInformation_Test_Query } from "__generated__/OrderInformation_Test_Query.graphql"
-import { setupTestWrapper } from "app/tests/setupTestWrapper"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { OrderInformationFragmentContainer } from "./OrderInformation"
 

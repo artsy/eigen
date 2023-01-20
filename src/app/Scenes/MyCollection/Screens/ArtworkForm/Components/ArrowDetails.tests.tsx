@@ -1,4 +1,4 @@
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { ArrowRightIcon } from "palette"
 import { View } from "react-native"
 import { ArrowDetails } from "./ArrowDetails"

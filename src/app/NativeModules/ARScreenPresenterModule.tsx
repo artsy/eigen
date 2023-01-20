@@ -5,8 +5,8 @@ import {
   StackActions,
   TabActions,
 } from "@react-navigation/native"
-import { ViewDescriptor } from "app/navigation/navigate"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
+import { ViewDescriptor } from "app/system/navigation/navigate"
 import immer from "immer-peasy"
 import { last } from "lodash"
 import { InteractionManager, NativeModules, StatusBar } from "react-native"

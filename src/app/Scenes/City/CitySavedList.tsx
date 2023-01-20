@@ -2,7 +2,7 @@ import { CitySavedList_city$data } from "__generated__/CitySavedList_city.graphq
 import { CitySavedList_me$data } from "__generated__/CitySavedList_me.graphql"
 import { CitySavedListQuery } from "__generated__/CitySavedListQuery.graphql"
 import { PAGE_SIZE } from "app/Components/constants"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"

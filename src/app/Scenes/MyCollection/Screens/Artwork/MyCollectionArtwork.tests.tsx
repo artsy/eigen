@@ -1,7 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
-import { defaultEnvironment } from "app/relay/createEnvironment"
-import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { createMockEnvironment } from "relay-test-utils"
 import { MyCollectionArtworkScreen } from "./MyCollectionArtwork"
 

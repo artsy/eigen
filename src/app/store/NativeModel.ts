@@ -1,6 +1,6 @@
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { NotificationsManager } from "app/NativeModules/NotificationsManager"
-import { navigate, navigationEvents } from "app/navigation/navigate"
+import { navigate, navigationEvents } from "app/system/navigation/navigate"
 import { InfoType } from "app/utils/track/providers"
 import { SegmentTrackingProvider } from "app/utils/track/SegmentTrackingProvider"
 import { Action, action, Thunk, thunk } from "easy-peasy"

@@ -5,7 +5,7 @@ import { ArtistSeriesArtworks } from "app/Scenes/ArtistSeries/ArtistSeriesArtwor
 import { ArtistSeriesHeader } from "app/Scenes/ArtistSeries/ArtistSeriesHeader"
 import { ArtistSeriesMeta } from "app/Scenes/ArtistSeries/ArtistSeriesMeta"
 import { ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"

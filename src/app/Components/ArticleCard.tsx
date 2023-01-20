@@ -1,7 +1,7 @@
 import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
 import { Flex, OpaqueImageView, Spacer, Text, useTheme } from "palette"
 import {
   GestureResponderEvent,

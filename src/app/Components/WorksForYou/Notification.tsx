@@ -11,7 +11,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import GenericGrid from "../ArtworkGrids/GenericGrid"
 
 import { Notification_notification$data } from "__generated__/Notification_notification.graphql"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ClassTheme, Text } from "palette"
 import React from "react"

@@ -1,7 +1,7 @@
 import { captureMessage } from "@sentry/react-native"
 import { ArtistAutosuggestResults_results$data } from "__generated__/ArtistAutosuggestResults_results.graphql"
 import { ArtistAutosuggestResultsQuery } from "__generated__/ArtistAutosuggestResultsQuery.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { PlaceholderBox, RandomWidthPlaceholderText } from "app/utils/placeholders"
 import { times } from "lodash"

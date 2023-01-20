@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react-hooks"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Text } from "react-native"
 import { useGlobalState } from "./useGlobalState"
 

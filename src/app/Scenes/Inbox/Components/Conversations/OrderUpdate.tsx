@@ -1,6 +1,6 @@
 import { OrderUpdate_event$data } from "__generated__/OrderUpdate_event.graphql"
 
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import {
   AlertCircleFillIcon,
   Color,

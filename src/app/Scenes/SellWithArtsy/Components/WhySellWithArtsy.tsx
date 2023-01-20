@@ -1,4 +1,4 @@
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { Box, Flex, Spacer, Text } from "palette"
 
 export const WhySellWithArtsy: React.FC = () => {

@@ -1,7 +1,7 @@
 import { VanityURLEntity_fairOrPartner$data } from "__generated__/VanityURLEntity_fairOrPartner.graphql"
 import { VanityURLEntityQuery } from "__generated__/VanityURLEntityQuery.graphql"
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { Flex, Spinner } from "palette"
 import { View } from "react-native"

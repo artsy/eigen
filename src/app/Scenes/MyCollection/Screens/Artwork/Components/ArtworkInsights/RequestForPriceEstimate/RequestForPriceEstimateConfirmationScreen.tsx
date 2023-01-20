@@ -1,4 +1,4 @@
-import { goBack } from "app/navigation/navigate"
+import { goBack } from "app/system/navigation/navigate"
 import { ArtsyLogoIcon, Box, Button, Flex, Text } from "palette"
 
 export const RequestForPriceEstimateConfirmationScreen: React.FC<{}> = () => {

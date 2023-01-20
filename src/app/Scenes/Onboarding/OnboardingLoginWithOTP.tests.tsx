@@ -1,5 +1,5 @@
-import { mockNavigate } from "app/tests/navigationMocks"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { mockNavigate } from "app/utils/tests/navigationMocks"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { OnboardingLoginWithOTPForm, OTPMode } from "./OnboardingLoginWithOTP"
 
 const navigationPropsMock = {

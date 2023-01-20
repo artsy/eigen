@@ -165,7 +165,7 @@ setupJest:
 We have initialisations of mocks such as
 
 ```
- jest.mock("app/relay/createEnvironment", () => {
+ jest.mock("app/system/relay/createEnvironment", () => {
    return {
      defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
    }

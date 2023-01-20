@@ -6,7 +6,7 @@ import {
   ShowSorts,
 } from "__generated__/CitySectionListQuery.graphql"
 import { PAGE_SIZE } from "app/Components/constants"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"

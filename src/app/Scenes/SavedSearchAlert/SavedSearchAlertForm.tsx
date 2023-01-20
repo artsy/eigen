@@ -1,6 +1,6 @@
 import { ActionType, DeletedSavedSearch, EditedSavedSearch, OwnerType } from "@artsy/cohesion"
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { goBack, navigate } from "app/navigation/navigate"
+import { goBack, navigate } from "app/system/navigation/navigate"
 import { FormikProvider, useFormik } from "formik"
 import { Dialog, quoteLeft, quoteRight, useTheme } from "palette"
 import React, { useEffect, useState } from "react"

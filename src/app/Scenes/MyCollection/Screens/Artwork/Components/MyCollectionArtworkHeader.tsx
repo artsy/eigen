@@ -1,12 +1,12 @@
 import { tappedCollectedArtworkImages } from "@artsy/cohesion"
 import { useNavigation } from "@react-navigation/native"
 import { MyCollectionArtworkHeader_artwork$key } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
-import { navigate } from "app/navigation/navigate"
 import {
   CarouselImageDescriptor,
   ImageCarousel,
   ImageCarouselFragmentContainer,
 } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
+import { navigate } from "app/system/navigation/navigate"
 import { LocalImage, retrieveLocalImages } from "app/utils/LocalImageStore"
 import { Flex, Join, NoImageIcon, Spacer, Text, useColor } from "palette"
 import React, { useEffect, useState } from "react"

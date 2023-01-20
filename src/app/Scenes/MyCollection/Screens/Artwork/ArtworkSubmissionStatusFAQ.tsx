@@ -1,4 +1,4 @@
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { sendEmailWithMailTo } from "app/utils/sendEmail"
 import { Box, BulletedItem, Flex, Join, Spacer, Text } from "palette"
 import { ScrollView } from "react-native"

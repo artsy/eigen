@@ -1,5 +1,5 @@
 import "@testing-library/jest-native/extend-expect"
-import { mockNavigate } from "app/tests/navigationMocks"
+import { mockNavigate } from "app/utils/tests/navigationMocks"
 import chalk from "chalk"
 import expect from "expect"
 import "jest-extended"
@@ -87,7 +87,7 @@ jest.mock("react-native-safe-area-context", () => mockSafeAreaContext)
 // tslint:disable-next-line:no-var-requires
 require("jest-fetch-mock").enableMocks()
 
-import { mockPostEventToProviders, mockTrackEvent } from "app/tests/globallyMockedStuff"
+import { mockPostEventToProviders, mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 
 jest.mock("react-tracking")
 import track, { useTracking } from "react-tracking"
@@ -521,7 +521,7 @@ beforeEach(() => {
     })
   }
   reset(NativeModules, getNativeModules())
-  reset(require("app/navigation/navigate"), {})
+  reset(require("app/system/navigation/navigate"), {})
 })
 
 const mockedModule = (path: string, mockModuleName: string) => jest.mock(path, () => mockModuleName)
@@ -533,7 +533,7 @@ jest.mock("app/utils/track/providers", () => ({
   postEventToProviders: jest.fn(),
 }))
 
-jest.mock("app/relay/createEnvironment", () => ({
+jest.mock("app/system/relay/createEnvironment", () => ({
   defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
   createEnvironment: require("relay-test-utils").createMockEnvironment,
   reset(this: { defaultEnvironment: any }) {
@@ -577,7 +577,7 @@ jest.mock("app/utils/userHadMeaningfulInteraction.tsx", () => ({
   userHadMeaningfulInteraction: jest.fn(),
 }))
 
-jest.mock("app/navigation/navigate", () => ({
+jest.mock("app/system/navigation/navigate", () => ({
   navigate: jest.fn(),
   goBack: jest.fn(),
   dismissModal: jest.fn(),

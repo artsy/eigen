@@ -1,7 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
 import { InquiryPurchaseButtonTestsQuery } from "__generated__/InquiryPurchaseButtonTestsQuery.graphql"
-import { navigate } from "app/navigation/navigate"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { navigate } from "app/system/navigation/navigate"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Alert } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -56,8 +56,8 @@ const getWrapper = (mockResolvers = {}) => {
 
 describe("InquiryPurchaseButton", () => {
   beforeEach(() => {
-    require("app/relay/createEnvironment").reset()
-    environment = require("app/relay/createEnvironment").defaultEnvironment
+    require("app/system/relay/createEnvironment").reset()
+    environment = require("app/system/relay/createEnvironment").defaultEnvironment
   })
 
   it("navigates to the order webview when button is tapped", () => {

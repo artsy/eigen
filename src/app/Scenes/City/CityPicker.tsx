@@ -1,5 +1,5 @@
 import { themeGet } from "@styled-system/theme-get"
-import { CircleWhiteCheckIcon } from "app/Icons/CircleWhiteCheckIcon"
+import { CircleWhiteCheckIcon } from "app/Components/Icons/CircleWhiteCheckIcon"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { Box, Flex, Separator, Text, TextProps } from "palette"

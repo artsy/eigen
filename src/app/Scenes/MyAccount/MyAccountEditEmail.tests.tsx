@@ -1,10 +1,10 @@
 import { fireEvent } from "@testing-library/react-native"
 import { MyAccountEditEmailTestsQuery } from "__generated__/MyAccountEditEmailTestsQuery.graphql"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { flushPromiseQueue } from "../../tests/flushPromiseQueue"
 import { MyAccountEditEmailContainer, MyAccountEditEmailQueryRenderer } from "./MyAccountEditEmail"
 
 jest.unmock("react-relay")

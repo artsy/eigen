@@ -1,8 +1,8 @@
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 
 import ActiveBid from "./ActiveBid"
 
-import { extractText } from "app/tests/extractText"
+import { extractText } from "app/utils/tests/extractText"
 
 it("renders without throwing a error", () => {
   renderWithWrappersLEGACY(<ActiveBid bid={bid()} />)

@@ -1,7 +1,7 @@
 import { withStickyTabPage } from "app/Components/StickyTabPage/testHelpers"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { createMockEnvironment } from "relay-test-utils"
 import { MyCollectionInsights } from "./MyCollectionInsights"
 

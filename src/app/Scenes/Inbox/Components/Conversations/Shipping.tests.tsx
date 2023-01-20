@@ -1,5 +1,5 @@
 import { Shipping_Test_Query } from "__generated__/Shipping_Test_Query.graphql"
-import { setupTestWrapper } from "app/tests/setupTestWrapper"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { ShippingFragmentContainer } from "./Shipping"
 

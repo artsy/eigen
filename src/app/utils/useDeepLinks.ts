@@ -1,5 +1,5 @@
-import { navigate } from "app/navigation/navigate"
 import { GlobalStore } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
 import { useEffect, useRef } from "react"
 import { Linking } from "react-native"
 import { useTracking } from "react-tracking"

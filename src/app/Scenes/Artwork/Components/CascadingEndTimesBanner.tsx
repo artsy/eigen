@@ -1,4 +1,4 @@
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { Flex, Text } from "palette"
 
 interface CascadingEndTimesBannerProps {

@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { getUnitedSelectedAndAppliedFilters } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { act } from "react-test-renderer"
 import {
   ArtworkFiltersState,

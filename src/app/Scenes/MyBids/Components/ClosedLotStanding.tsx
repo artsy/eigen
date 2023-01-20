@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import moment from "moment-timezone"
 import { Flex, Text } from "palette"
 import { StarCircleFill } from "palette/svgs/sf"

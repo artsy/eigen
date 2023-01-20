@@ -4,7 +4,7 @@ import { TrendingArtists_query$key } from "__generated__/TrendingArtists_query.g
 import { ArtistCardContainer as ArtistCard } from "app/Components/Home/ArtistRails/ArtistCard"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
 import { Box, BoxProps, Flex, Spacer, Spinner } from "palette"

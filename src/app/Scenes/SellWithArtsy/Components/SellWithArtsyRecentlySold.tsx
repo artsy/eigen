@@ -1,7 +1,7 @@
 import { ContextModule, OwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
 import { SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$key } from "__generated__/SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection.graphql"
 import { RecentlySoldArtworksRail } from "app/Components/ArtworkRail/ArtworkRail"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { Flex, Spacer, Text } from "palette"
 import { useFragment } from "react-relay"
 import { useTracking } from "react-tracking"

@@ -1,5 +1,5 @@
 import { MyProfileHeader_me$key } from "__generated__/MyProfileHeader_me.graphql"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import {
   Avatar,
   Box,

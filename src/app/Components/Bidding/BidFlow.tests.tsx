@@ -2,7 +2,7 @@ jest.mock("app/Components/Bidding/Screens/ConfirmBid/PriceSummary", () => ({
   PriceSummary: () => null,
 }))
 
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import "react-native"
 
 import { Button } from "palette"
@@ -25,8 +25,8 @@ jest.mock("tipsi-stripe", () => ({
 import stripe from "tipsi-stripe"
 
 import { BidderPositionQuery$data } from "__generated__/BidderPositionQuery.graphql"
-import { extractText } from "app/tests/extractText"
-import { waitUntil } from "app/tests/waitUntil"
+import { extractText } from "app/utils/tests/extractText"
+import { waitUntil } from "app/utils/tests/waitUntil"
 import { Select } from "palette/elements/Select"
 
 const commitMutationMock = (fn?: typeof relay.commitMutation) =>

@@ -115,7 +115,7 @@ export class MyClassComp extends React.Component<Props> {
 To test these, the best way is something like the following:
 
 ```ts
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 
 it("tracks analytics event when button is tapped", () => {
   const { getByText } = renderWithWrappers(<TestScreen />)

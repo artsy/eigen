@@ -1,5 +1,5 @@
 import { UpdateConversationMutation } from "__generated__/UpdateConversationMutation.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { commitMutation, graphql } from "react-relay"
 import { MutationConfig } from "relay-runtime"
 

@@ -1,5 +1,5 @@
 import { act } from "@testing-library/react-native"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ConsignmentInquiryScreen, createConsignmentInquiry } from "./ConsignmentInquiryScreen"
 

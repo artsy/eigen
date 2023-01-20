@@ -2,7 +2,7 @@ import { ViewingRoomHeader_viewingRoom$data } from "__generated__/ViewingRoomHea
 import { durationSections } from "app/Components/Countdown"
 import { CountdownTimer, CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { Box, Flex, Text } from "palette"
 import { Dimensions, TouchableWithoutFeedback, View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"

@@ -1,7 +1,7 @@
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
-import { navigate } from "app/navigation/navigate"
 import { RailScrollProps } from "app/Scenes/Home/Components/types"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
 import _ from "lodash"

@@ -8,8 +8,8 @@ import {
   ArtworkFiltersStoreProvider,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { TouchableRow } from "app/Components/TouchableRow"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { RadioDot } from "palette"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { ReactElement } from "simple-markdown"

@@ -4,8 +4,8 @@ import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilter
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 
-import { navigate } from "app/navigation/navigate"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import {
   PlaceholderBox,
@@ -13,7 +13,7 @@ import {
   RandomNumberGenerator,
 } from "app/utils/placeholders"
 import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
-import { useArtworkBidding } from "app/Websockets/auctions/useArtworkBidding"
+import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
 import {
   Box,
   Flex,

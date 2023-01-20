@@ -1,4 +1,4 @@
-import Crosshair from "app/Icons/Crosshair"
+import Crosshair from "app/Components/Icons/Crosshair"
 import { Box, Flex } from "palette"
 import { Component } from "react"
 import { TouchableOpacity } from "react-native"

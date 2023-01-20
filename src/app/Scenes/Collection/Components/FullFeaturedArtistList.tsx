@@ -2,7 +2,7 @@ import { FullFeaturedArtistList_collection$data } from "__generated__/FullFeatur
 import { FullFeaturedArtistListQuery } from "__generated__/FullFeaturedArtistListQuery.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Box } from "palette"
 import React from "react"

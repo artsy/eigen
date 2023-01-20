@@ -1,6 +1,6 @@
 import { Trove_trove$data } from "__generated__/Trove_trove.graphql"
 import { HeroUnit } from "app/Components/Home/HeroUnit"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { Flex } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 

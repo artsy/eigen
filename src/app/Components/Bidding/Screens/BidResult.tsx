@@ -2,7 +2,7 @@ import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { BackHandler, ImageRequireSource, NativeEventSubscription, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { dismissModal, navigate } from "app/navigation/navigate"
+import { dismissModal, navigate } from "app/system/navigation/navigate"
 
 import { Button, Theme } from "palette"
 import React from "react"

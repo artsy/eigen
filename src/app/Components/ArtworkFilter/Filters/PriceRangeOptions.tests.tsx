@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Text } from "react-native"
 import {
   ArtworkFiltersState,
@@ -12,7 +12,7 @@ import { Range } from "./helpers"
 import { PriceRangeOptionsScreen } from "./PriceRangeOptions"
 
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { debounce } from "lodash"
 import { Input } from "palette"
 

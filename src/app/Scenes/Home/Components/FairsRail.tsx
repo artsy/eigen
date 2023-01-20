@@ -6,7 +6,7 @@ import {
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { concat, take } from "lodash"
 import { bullet, Flex, Text } from "palette"

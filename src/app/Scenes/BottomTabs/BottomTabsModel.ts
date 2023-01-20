@@ -1,13 +1,13 @@
 import { captureException } from "@sentry/react-native"
 import { BottomTabsModelFetchAllNotificationsCountsQuery } from "__generated__/BottomTabsModelFetchAllNotificationsCountsQuery.graphql"
 import { BottomTabsModelFetchCurrentUnreadConversationCountQuery } from "__generated__/BottomTabsModelFetchCurrentUnreadConversationCountQuery.graphql"
-import { createEnvironment } from "app/relay/createEnvironment"
+import { GlobalStore } from "app/store/GlobalStore"
+import { createEnvironment } from "app/system/relay/createEnvironment"
 import {
   metaphysicsURLMiddleware,
   persistedQueryMiddleware,
-} from "app/relay/middlewares/metaphysicsMiddleware"
-import { simpleLoggerMiddleware } from "app/relay/middlewares/simpleLoggerMiddleware"
-import { GlobalStore } from "app/store/GlobalStore"
+} from "app/system/relay/middlewares/metaphysicsMiddleware"
+import { simpleLoggerMiddleware } from "app/system/relay/middlewares/simpleLoggerMiddleware"
 import { Action, action, Thunk, thunk, ThunkOn, thunkOn } from "easy-peasy"
 import { fetchQuery, graphql } from "react-relay"
 import { BottomTabType } from "./BottomTabType"

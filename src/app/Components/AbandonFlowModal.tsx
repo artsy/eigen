@@ -1,4 +1,4 @@
-import { popToRoot } from "app/navigation/navigate"
+import { popToRoot } from "app/system/navigation/navigate"
 import { Box, Button, CloseIcon, Spacer, Text } from "palette"
 import { FancyModal } from "./FancyModal/FancyModal"
 import { FancyModalHeader } from "./FancyModal/FancyModalHeader"

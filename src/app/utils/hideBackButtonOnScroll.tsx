@@ -1,6 +1,6 @@
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { LegacyBackButtonContext } from "app/navigation/NavStack"
 import { unsafe__getSelectedTab } from "app/store/GlobalStore"
+import { LegacyBackButtonContext } from "app/system/navigation/NavStack"
 import { useContext, useMemo } from "react"
 import { FlatListProps, Platform } from "react-native"
 

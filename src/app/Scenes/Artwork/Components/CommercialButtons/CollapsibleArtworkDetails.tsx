@@ -1,6 +1,6 @@
 import { CollapsibleArtworkDetails_artwork$data } from "__generated__/CollapsibleArtworkDetails_artwork.graphql"
+import ChevronIcon from "app/Components/Icons/ChevronIcon"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import ChevronIcon from "app/Icons/ChevronIcon"
 import { ArtworkDetailsRow } from "app/Scenes/Artwork/Components/ArtworkDetailsRow"
 import { Box, Collapse, Flex, Join, Separator, Spacer, Text } from "palette"
 import React, { useState } from "react"

@@ -1,4 +1,4 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { UnlistedArtworksBanner } from "./UnlistedArtworksBanner"
 
 describe("UnlistedArtworksBanner Screen", () => {

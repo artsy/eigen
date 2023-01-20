@@ -6,8 +6,8 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
 import { ArtistConsignButton_artist$data } from "__generated__/ArtistConsignButton_artist.graphql"
-import { navigate } from "app/navigation/navigate"
 import { useSelectedTab } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
 
 export interface ArtistConsignButtonProps {

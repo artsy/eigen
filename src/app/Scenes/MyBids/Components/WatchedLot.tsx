@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { WatchedLot_saleArtwork$data } from "__generated__/WatchedLot_saleArtwork.graphql"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { Flex, Text } from "palette"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"

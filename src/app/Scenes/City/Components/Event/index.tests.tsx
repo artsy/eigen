@@ -1,5 +1,5 @@
 import { Show } from "app/Scenes/Map/types"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { RelayProp } from "react-relay"
 import { Event } from "./index"
 

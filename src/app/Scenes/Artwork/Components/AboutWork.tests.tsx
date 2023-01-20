@@ -1,5 +1,5 @@
 import { AboutWork_artwork$data } from "__generated__/AboutWork_artwork.graphql"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { AboutWork } from "./AboutWork"
 
 jest.mock("app/utils/hardware", () => ({

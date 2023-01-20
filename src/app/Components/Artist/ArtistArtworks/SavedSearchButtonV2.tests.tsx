@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { SavedSearchButtonV2, SavedSearchButtonV2Props } from "./SavedSearchButtonV2"
 
 describe("SavedSearchButtonV2", () => {

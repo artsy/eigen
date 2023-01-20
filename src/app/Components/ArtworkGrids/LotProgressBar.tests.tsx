@@ -1,4 +1,4 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { DateTime } from "luxon"
 import moment from "moment"
 import { ProgressBar } from "palette"

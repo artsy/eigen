@@ -4,7 +4,7 @@ import {
   ArtworkFiltersStoreProvider,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { MockFilterScreen } from "app/Components/ArtworkFilter/FilterTestHelper"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { AttributionClassOptionsScreen } from "./AttributionClassOptions"
 import { getEssentialProps } from "./helper"
 

@@ -6,10 +6,10 @@ import { createMockEnvironment } from "relay-test-utils"
 
 import { EmailConfirmationBanner_me$data } from "__generated__/EmailConfirmationBanner_me.graphql"
 import { EmailConfirmationBannerTestsQuery } from "__generated__/EmailConfirmationBannerTestsQuery.graphql"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { EmailConfirmationBannerFragmentContainer } from "./EmailConfirmationBanner"
 
 jest.unmock("react-relay")

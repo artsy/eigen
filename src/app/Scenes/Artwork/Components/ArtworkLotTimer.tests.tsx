@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react-native"
 import { ArtworkLotTimer_artwork$data } from "__generated__/ArtworkLotTimer_artwork.graphql"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { ArtworkStoreProvider } from "../ArtworkStore"
 import { ArtworkLotTimerWrapper } from "./ArtworkLotTimer"
 
