@@ -7,6 +7,7 @@
 
   - User facing changes:
 
+    - mark single activity item notification as read when pressed - gkartalis
     - show works using new recs model for the new works for you - mounir
     - Fix MyCollection Add Photos freeze - kizito
     - Fix dirty form check when uploading a new artwork - ole
