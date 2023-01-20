@@ -83,7 +83,7 @@ commands:
       - save_cache:
           key: v7-metro-{{ checksum ".manifests/js_transform" }}
           paths:
-            - .metro
+            - .cache/metro
       - save_cache:
           key: v8-js_bundle-{{ checksum ".manifests/js_bundle" }}
           paths:

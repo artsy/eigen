@@ -1,7 +1,7 @@
 const moduleNameMap = require("./alias").jestModuleNameMap
 
 module.exports = {
-  cacheDirectory: ".jest/cache",
+  cacheDirectory: ".cache/jest",
   moduleFileExtensions: ["ts", "tsx", "js"],
   moduleNameMapper: moduleNameMap,
   preset: "react-native",

@@ -11,8 +11,8 @@ if [ -d node_modules ]; then
 	cd -
 fi
 
-echo 'Clear metro cache (┛ಠ_ಠ)┛彡┻━┻'
-rm -rf .metro
+echo 'Clear JS caches (┛ಠ_ಠ)┛彡┻━┻'
+rm -rf .cache
 
 echo 'Clear gems (┛ಠ_ಠ)┛彡┻━┻'
 rm -rf .vendor
@@ -32,8 +32,8 @@ fi
 
 echo 'Clear relay, jest, and metro caches (┛◉Д◉)┛彡┻━┻'
 rm -rf "$TMPDIR"/RelayFindGraphQLTags-*
-rm -rf .jest
-rm -rf "$TMPDIR"/metro* .metro
+rm -rf .cache
+rm -rf "$TMPDIR"/metro*
 
 echo 'Clear build artefacts (╯ರ ~ ರ）╯︵ ┻━┻'
 rm -rf dist
