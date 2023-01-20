@@ -1,6 +1,10 @@
 import { ActionType } from "@artsy/cohesion"
 import { ClickedActivityPanelNotificationItem } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
 import { ActivityItem_item$key } from "__generated__/ActivityItem_item.graphql"
+import {
+  ActivityItemMarkAsReadMutation,
+  ActivityItemMarkAsReadMutation$data,
+} from "__generated__/ActivityItemMarkAsReadMutation.graphql"
 import { FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ORDERED_ARTWORK_SORTS } from "app/Components/ArtworkFilter/Filters/SortOptions"
 import { navigate } from "app/system/navigation/navigate"
@@ -9,17 +13,33 @@ import { last } from "lodash"
 import { Flex, OpaqueImageView, Spacer, Text } from "palette"
 import { parse as parseQueryString } from "query-string"
 import { TouchableOpacity } from "react-native"
-import { graphql, useFragment } from "react-relay"
+import { graphql, useFragment, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
+import { RecordSourceSelectorProxy } from "relay-runtime"
 
 interface ActivityItemProps {
   item: ActivityItem_item$key
 }
 
+const updater = (
+  id: string,
+  store: RecordSourceSelectorProxy<ActivityItemMarkAsReadMutation$data>
+) => {
+  const notification = store.get(id)
+
+  notification?.setValue(false, "isUnread")
+}
+
 const UNREAD_INDICATOR_SIZE = 8
 const ARTWORK_IMAGE_SIZE = 55
 
+interface NavigateToActivityItemProps {
+  predefinedFilters: FilterArray
+  searchCriteriaID: string
+}
+
 export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
+  const [markAsRead] = useMutation<ActivityItemMarkAsReadMutation>(markNotificationAsRead)
   const tracking = useTracking()
   const item = useFragment(activityItemFragment, props.item)
   const artworks = extractNodes(item.artworksConnection)
@@ -34,6 +54,9 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
   }
   const notificationTypeLabel = getNotificationType()
 
+  const navigateToActivityItem = (passProps: NavigateToActivityItemProps) =>
+    navigate(item.targetHref, { passProps })
+
   const handlePress = () => {
     const splittedQueryParams = item.targetHref.split("?")
     const queryParams = last(splittedQueryParams) ?? ""
@@ -44,10 +67,30 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
     )!
 
     tracking.trackEvent(tracks.tappedNotification(item.notificationType))
-    navigate(item.targetHref, {
-      passProps: {
-        predefinedFilters: [sortFilterItem] as FilterArray,
-        searchCriteriaID: parsed.search_criteria_id,
+
+    markAsRead({
+      variables: {
+        input: {
+          id: item.internalID,
+        },
+      },
+      optimisticUpdater: (store) => {
+        updater(item.id, store)
+      },
+      updater: (store) => {
+        updater(item.id, store)
+      },
+      onCompleted: () => {
+        navigateToActivityItem({
+          predefinedFilters: [sortFilterItem] as FilterArray,
+          searchCriteriaID: parsed.search_criteria_id,
+        })
+      },
+      onError: () => {
+        navigateToActivityItem({
+          predefinedFilters: [sortFilterItem] as FilterArray,
+          searchCriteriaID: parsed.search_criteria_id,
+        })
       },
     })
   }
@@ -122,6 +165,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
 const activityItemFragment = graphql`
   fragment ActivityItem_item on Notification {
     internalID
+    id
     title
     message
     publishedAt(format: "RELATIVE")
@@ -152,3 +196,20 @@ const tracks = {
     notification_type: notificationType,
   }),
 }
+
+const markNotificationAsRead = graphql`
+  mutation ActivityItemMarkAsReadMutation($input: MarkNotificationAsReadInput!) {
+    markNotificationAsRead(input: $input) {
+      responseOrError {
+        ... on MarkNotificationAsReadSuccess {
+          success
+        }
+        ... on MarkNotificationAsReadFailure {
+          mutationError {
+            message
+          }
+        }
+      }
+    }
+  }
+`

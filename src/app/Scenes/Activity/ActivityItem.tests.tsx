@@ -107,6 +107,10 @@ describe("ActivityItem", () => {
 
     fireEvent.press(getByText("Notification Title"))
 
+    // resolving the mark as read mutation
+    resolveMostRecentRelayOperation(mockEnvironment)
+    await flushPromiseQueue()
+
     expect(navigate).toHaveBeenCalledWith(targetUrl, {
       passProps: {
         predefinedFilters: [
@@ -132,6 +136,10 @@ describe("ActivityItem", () => {
     await flushPromiseQueue()
 
     fireEvent.press(getByText("Notification Title"))
+
+    // resolving the mark as read mutation
+    resolveMostRecentRelayOperation(mockEnvironment)
+    await flushPromiseQueue()
 
     expect(navigate).toHaveBeenCalledWith(alertTargetUrl, {
       passProps: {
