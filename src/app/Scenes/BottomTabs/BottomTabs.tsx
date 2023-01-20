@@ -24,11 +24,11 @@ export const BottomTabs: React.FC<BottomTabBarProps> = (props) => {
   )
 
   useEffect(() => {
-    GlobalStore.actions.bottomTabs.fetchAllNotificationsCounts()
+    GlobalStore.actions.bottomTabs.fetchNotificationsInfo()
   }, [])
 
   useInterval(() => {
-    GlobalStore.actions.bottomTabs.fetchAllNotificationsCounts()
+    GlobalStore.actions.bottomTabs.fetchNotificationsInfo()
     // run this every 60 seconds
   }, 1000 * 60)
 

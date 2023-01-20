@@ -1,6 +1,6 @@
 import { captureException } from "@sentry/react-native"
-import { BottomTabsModelFetchAllNotificationsCountsQuery } from "__generated__/BottomTabsModelFetchAllNotificationsCountsQuery.graphql"
 import { BottomTabsModelFetchCurrentUnreadConversationCountQuery } from "__generated__/BottomTabsModelFetchCurrentUnreadConversationCountQuery.graphql"
+import { BottomTabsModelFetchNotificationsInfoQuery } from "__generated__/BottomTabsModelFetchNotificationsInfoQuery.graphql"
 import { GlobalStore } from "app/store/GlobalStore"
 import { createEnvironment } from "app/system/relay/createEnvironment"
 import {
@@ -29,7 +29,7 @@ export interface BottomTabsModel {
   unreadConversationCountChanged: Action<BottomTabsModel, number>
   fetchCurrentUnreadConversationCount: Thunk<BottomTabsModel>
   unreadActivityPanelNotificationsCountChanged: Action<BottomTabsModel, number>
-  fetchAllNotificationsCounts: Thunk<BottomTabsModel>
+  fetchNotificationsInfo: Thunk<BottomTabsModel>
   displayUnreadActivityPanelIndicatorChanged: Action<BottomTabsModel, boolean>
   setTabProps: Action<BottomTabsModel, { tab: BottomTabType; props: object | undefined }>
 }
@@ -108,14 +108,14 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
 
     state.sessionState.unreadCounts.unreadActivityPanelNotifications = unreadCount
   }),
-  fetchAllNotificationsCounts: thunk(async () => {
+  fetchNotificationsInfo: thunk(async () => {
     try {
-      const query = fetchQuery<BottomTabsModelFetchAllNotificationsCountsQuery>(
+      const query = fetchQuery<BottomTabsModelFetchNotificationsInfoQuery>(
         createEnvironment([
           [persistedQueryMiddleware(), metaphysicsURLMiddleware(), simpleLoggerMiddleware()],
         ]),
         graphql`
-          query BottomTabsModelFetchAllNotificationsCountsQuery {
+          query BottomTabsModelFetchNotificationsInfoQuery {
             me @principalField {
               unreadConversationCount
               unreadNotificationsCount
