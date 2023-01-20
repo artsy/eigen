@@ -496,7 +496,7 @@ PODS:
     - React-Core
   - react-native-netinfo (9.3.7):
     - React-Core
-  - react-native-pager-view (6.1.2):
+  - react-native-pager-view (6.0.0):
     - React-Core
   - react-native-safe-area-context (3.4.0):
     - React-Core
@@ -1117,7 +1117,7 @@ SPEC CHECKSUMS:
   Adjust: 91a06a01e4bb35b432e26b5d5bb8995b95fc381c
   Aerodramus: a22de7451c8fc85ae5d974f5d6a656f59046fffc
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
-  AFNetworking: 9d57de7506959955d82fb5274ee4bec86b930e52
+  AFNetworking: 8dd5f9b9691e09186393069a12cc3b5ed7c8b511
   AFOAuth1Client: 155a6237e57987cac18dac2ccd17cea5d324ad1a
   Analytics: eefe524436f904b8bb3f8c8c3425280e43b34efc
   AppAuth: 8fca6b5563a5baef2c04bee27538025e4ceb2add
@@ -1211,7 +1211,7 @@ SPEC CHECKSUMS:
   react-native-in-app-review: c5ba75cc2c91238f42bd2de44fa0e65e93b7c9ea
   react-native-mapbox-gl: 0308cba1da4edbc1aa0e82a7584ba50e52725996
   react-native-netinfo: 2517ad504b3d303e90d7a431b0fcaef76d207983
-  react-native-pager-view: 54bed894cecebe28cede54c01038d9d1e122de43
+  react-native-pager-view: e76d64a5114a152e942caa09136e4e250709378c
   react-native-safe-area-context: f4f7cc09d81ae2d39dfd13e764d718969af07080
   react-native-shake: 67d43d6af4abfc299400b17fea7d2ec0754c72ac
   react-native-slider: 241935e3ea8e47599c317f512f96ee8de607d4cb
