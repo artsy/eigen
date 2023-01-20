@@ -6,7 +6,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { CloseIcon, Flex, HeartIcon, Screen, Spacer, Touchable } from "palette"
 import { useEffect, useRef, useState } from "react"
 import { Image } from "react-native"
-import PagerView from "react-native-pager-view"
+import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useOnboardingContext } from "../Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
 import { ArtQuizNavigationStack } from "./ArtQuiz"
@@ -23,15 +23,16 @@ export const ArtQuizArtworks = () => {
   const pagerViewRef = useRef<PagerView>(null)
   const popoverMessage = usePopoverMessage()
 
-  // const handleIndexChange = (e: PagerViewOnPageScrollEvent) => {
-  //   if (e.nativeEvent.position !== undefined) {
-  //     // We need to avoid updating the index when the position is -1. This happens when the user
-  //     // scrolls left on the first page in iOS when the overdrag is enabled,
-  //     if (e.nativeEvent.position !== -1) {
-  //       setActiveCardIndex(e.nativeEvent.position)
-  //     }
-  //   }
-  // }
+  const handleIndexChange = (e: PagerViewOnPageScrollEvent) => {
+    if (e.nativeEvent.position !== undefined) {
+      // We need to avoid updating the index when the position is -1. This happens when the user
+      // scrolls left on the first page in iOS when the overdrag is enabled,
+      if (e.nativeEvent.position !== -1) {
+        console.log("e.nativeEvent.position ", e.nativeEvent.position)
+        setActiveCardIndex(e.nativeEvent.position)
+      }
+    }
+  }
 
   useEffect(() => {
     popoverMessage.show({
@@ -43,10 +44,12 @@ export const ArtQuizArtworks = () => {
     if (activeCardIndex !== 0) {
       popoverMessage.hide()
     }
-  }, [activeCardIndex])
+  }, [])
 
   const handleNext = (action: "Like" | "Dislike") => {
     console.log("Action : ", action)
+    console.log("activeCardIndex ", activeCardIndex)
+
     pagerViewRef.current?.setPage(activeCardIndex + 1)
     if (activeCardIndex + 1 !== artworks.length) {
       setActiveCardIndex(activeCardIndex + 1)
@@ -76,7 +79,8 @@ export const ArtQuizArtworks = () => {
             ref={pagerViewRef}
             style={{ flex: 1 }}
             initialPage={activeCardIndex}
-            scrollEnabled={false}
+            onPageScroll={handleIndexChange}
+            overdrag
           >
             {artworks.map((artwork) => {
               return (
