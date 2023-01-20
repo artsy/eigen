@@ -11,6 +11,7 @@ import {
   getSubmissionModel,
   SubmissionModel,
 } from "app/Scenes/SellWithArtsy/utils/submissionModelState"
+import { ArtQuizModel, getArtQuizModel } from "app/store/ArtQuizModel"
 import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy"
 import { ArtsyPrefsModel, getArtsyPrefsModel } from "./ArtsyPrefsModel"
 import { AuthModel, getAuthModel } from "./AuthModel"
@@ -50,6 +51,7 @@ interface GlobalStoreStateModel {
   artworkSubmission: SubmissionModel
   requestedPriceEstimates: RequestedPriceEstimatesModel
   recentPriceRanges: RecentPriceRangesModel
+  artQuiz: ArtQuizModel
 }
 export interface GlobalStoreModel extends GlobalStoreStateModel {
   rehydrate: Action<this, DeepPartial<State<GlobalStoreStateModel>>>
@@ -134,6 +136,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   artworkSubmission: getSubmissionModel(),
   requestedPriceEstimates: getRequestedPriceEstimatesModel(),
   recentPriceRanges: getRecentPriceRangesModel(),
+  artQuiz: getArtQuizModel(),
 
   // for dev only.
   _setVersion: action((state, newVersion) => {

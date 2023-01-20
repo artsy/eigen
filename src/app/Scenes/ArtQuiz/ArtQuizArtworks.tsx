@@ -28,7 +28,6 @@ export const ArtQuizArtworks = () => {
       // We need to avoid updating the index when the position is -1. This happens when the user
       // scrolls left on the first page in iOS when the overdrag is enabled,
       if (e.nativeEvent.position !== -1) {
-        console.log("e.nativeEvent.position ", e.nativeEvent.position)
         setActiveCardIndex(e.nativeEvent.position)
       }
     }
@@ -47,12 +46,15 @@ export const ArtQuizArtworks = () => {
   }, [])
 
   const handleNext = (action: "Like" | "Dislike") => {
-    console.log("Action : ", action)
-    console.log("activeCardIndex ", activeCardIndex)
     popoverMessage.hide()
     pagerViewRef.current?.setPage(activeCardIndex + 1)
     if (activeCardIndex + 1 !== artworks.length) {
       setActiveCardIndex(activeCardIndex + 1)
+    }
+    if (action === "Like") {
+      GlobalStore.actions.artQuiz.saveLikedArtwork(artworks[activeCardIndex].id)
+    } else {
+      GlobalStore.actions.artQuiz.saveDislikedArtwork(artworks[activeCardIndex].id)
     }
   }
 
