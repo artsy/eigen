@@ -1,16 +1,15 @@
-import { Flex, Join, Separator, Spacer, Text } from "palette"
-import { RefreshControl, ScrollView } from "react-native"
-import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
-
-import { MyBids_me$data } from "__generated__/MyBids_me.graphql"
-import { MyBidsQuery } from "__generated__/MyBidsQuery.graphql"
-
 import { OwnerType } from "@artsy/cohesion"
+import { MyBidsQuery } from "__generated__/MyBidsQuery.graphql"
+import { MyBids_me$data } from "__generated__/MyBids_me.graphql"
+
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
+import { Flex, Join, Separator, Spacer, Text } from "palette"
 import { useEffect, useState } from "react"
+import { RefreshControl, ScrollView } from "react-native"
+import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 import { MyBidsPlaceholder, SaleCardFragmentContainer } from "./Components"
 import { LotStatusListItemContainer } from "./Components/LotStatusListItem"
@@ -27,7 +26,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
   const { relay, isActiveTab, me } = props
   const { isSmallScreen } = useScreenDimensions()
 
-  const refreshMyBids = (withSpinner: boolean = false) => {
+  const refreshMyBids = (withSpinner = false) => {
     if (withSpinner) {
       setIsFetching(true)
     }

@@ -36,6 +36,7 @@ export const retrieveLocalImages = async (
   key: string,
   currentTime: number = Date.now()
 ): Promise<LocalImage[] | null> => {
+  // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve) => {
     const imagesJSON = await AsyncStorage.getItem(key)
 

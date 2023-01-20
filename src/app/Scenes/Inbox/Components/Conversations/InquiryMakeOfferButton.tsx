@@ -1,5 +1,5 @@
-import { InquiryMakeOfferButton_artwork$data } from "__generated__/InquiryMakeOfferButton_artwork.graphql"
 import { InquiryMakeOfferButtonOrderMutation } from "__generated__/InquiryMakeOfferButtonOrderMutation.graphql"
+import { InquiryMakeOfferButton_artwork$data } from "__generated__/InquiryMakeOfferButton_artwork.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { Button, ButtonProps } from "palette"
 import React from "react"

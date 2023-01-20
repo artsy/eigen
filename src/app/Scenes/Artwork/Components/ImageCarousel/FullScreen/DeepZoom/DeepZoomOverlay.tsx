@@ -1,16 +1,16 @@
+import { EventStream } from "app/Scenes/Artwork/Components/ImageCarousel/FullScreen/useEventStream"
+import { ImageDescriptor } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
+import { fitInside, Rect } from "app/Scenes/Artwork/Components/ImageCarousel/geometry"
 import React, { useEffect, useMemo } from "react"
 import { Animated, View } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
-import { fitInside, Rect } from "../../geometry"
-import { ImageDescriptor } from "../../ImageCarouselContext"
-import { EventStream } from "../useEventStream"
+import { DeepZoomLevel } from "./DeepZoomLevel"
+import { DeepZoomPyramid } from "./DeepZoomPyramid"
 import {
   calculateDeepZoomLevels,
   calculateMinMaxDeepZoomLevels,
   getZoomScaleBoundaries,
 } from "./deepZoomGeometry"
-import { DeepZoomLevel } from "./DeepZoomLevel"
-import { DeepZoomPyramid } from "./DeepZoomPyramid"
 
 export interface DeepZoomOverlayProps {
   image: ImageDescriptor

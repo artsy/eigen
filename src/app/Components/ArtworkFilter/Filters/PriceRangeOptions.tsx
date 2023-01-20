@@ -11,17 +11,19 @@ import {
   ArtworksFiltersStore,
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { RecentPriceRanges } from "app/Components/ArtworkFilter/RecentPriceRanges"
+import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
 import { debounce, sortBy } from "lodash"
 import { Flex, Histogram, HistogramBarEntity, Input, Spacer, Text, useColor } from "palette"
 import React, { useMemo, useRef, useState } from "react"
 import { ScrollView, useWindowDimensions } from "react-native"
 import { useTracking } from "react-tracking"
-import { ArtworkFilterBackHeader } from "../components/ArtworkFilterBackHeader"
-import { RecentPriceRanges } from "../RecentPriceRanges"
 import { parsePriceRange, parsePriceRangeLabel, PriceRange } from "./helpers"
 
-interface PriceRangeOptionsScreenProps
-  extends StackScreenProps<ArtworkFilterNavigationStack, "PriceRangeOptionsScreen"> {}
+type PriceRangeOptionsScreenProps = StackScreenProps<
+  ArtworkFilterNavigationStack,
+  "PriceRangeOptionsScreen"
+>
 
 interface RecentPriceRangeEntity {
   value: string

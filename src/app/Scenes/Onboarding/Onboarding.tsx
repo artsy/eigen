@@ -22,7 +22,6 @@ import { AppleToken, GoogleOrFacebookToken, OnboardingSocialLink } from "./Onboa
 import { OnboardingWebView, OnboardingWebViewRoute } from "./OnboardingWebView"
 import { OnboardingWelcome } from "./OnboardingWelcome"
 
-// tslint:disable-next-line:interface-over-type-literal
 export type OnboardingNavigationStack = {
   OnboardingWelcome: undefined
   OnboardingLogin: { withFadeAnimation: boolean } | undefined
@@ -47,9 +46,10 @@ export type OnboardingNavigationStack = {
 }
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace ReactNavigation {
-    // tslint:disable-next-line: no-empty-interface
-    interface RootParamList extends OnboardingNavigationStack {}
+    // @ts-ignore
+    type RootParamList = OnboardingNavigationStack
   }
 }
 

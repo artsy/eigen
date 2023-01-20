@@ -1,3 +1,8 @@
+import {
+  ImageCarouselContext,
+  ImageDescriptor,
+} from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
+import { useAnimatedValue } from "app/Scenes/Artwork/Components/ImageCarousel/useAnimatedValue"
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react"
 import {
   Animated,
@@ -8,14 +13,12 @@ import {
   NativeSyntheticEvent,
 } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
-import { ImageCarouselContext, ImageDescriptor } from "../ImageCarouselContext"
-import { useAnimatedValue } from "../useAnimatedValue"
 import { ImageCarouselCloseButton } from "./ImageCarouselCloseButton"
 import { ImageZoomView } from "./ImageZoomView"
 import { IndexIndicator } from "./IndexIndicator"
 import { StatusBarOverlay } from "./StatusBarOverlay"
-import { useSpringFade } from "./useSpringFade"
 import { VerticalSwipeToDismiss } from "./VerticalSwipeToDismiss"
+import { useSpringFade } from "./useSpringFade"
 
 export const ImageCarouselFullScreen = () => {
   const screenDimensions = useScreenDimensions()

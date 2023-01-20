@@ -1,3 +1,5 @@
+import * as Sentry from "@sentry/react-native"
+import { volleyClient } from "app/utils/volleyClient"
 import {
   createRequestError,
   formatGraphQLErrors,
@@ -5,9 +7,6 @@ import {
   MiddlewareNextFn,
   RelayNetworkLayerResponse,
 } from "react-relay-network-modern/node8"
-
-import * as Sentry from "@sentry/react-native"
-import { volleyClient } from "app/utils/volleyClient"
 import { GraphQLResponse } from "relay-runtime/lib/network/RelayNetworkTypes"
 import { GraphQLRequest } from "./types"
 
@@ -79,7 +78,7 @@ export const errorMiddleware = () => {
     const resJson = res?.json as GraphQLResponse
 
     // @ts-ignore RELAY 12 MIGRATION
-    const hasErrors: boolean = Boolean(resJson.errors?.length)
+    const hasErrors = Boolean(resJson.errors?.length)
 
     if (!hasErrors) {
       return res

@@ -1,12 +1,12 @@
 import { Route } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/CategoryPicker"
+import { Dimensions } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/Dimensions"
+import { ArtworkFormMode } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { useFormikContext } from "formik"
-import { CategoryPicker } from "../Components/CategoryPicker"
-import { Dimensions } from "../Components/Dimensions"
-import { ArtworkFormMode } from "../MyCollectionArtworkForm"
 import { MyCollectionArtworkFormMain } from "./MyCollectionArtworkFormMain"
 
 jest.mock("formik")

@@ -1,4 +1,4 @@
-import { MapTab } from "../Map/types"
+import { MapTab } from "app/Scenes/Map/types"
 
 export const cityTabs: MapTab[] = [
   {

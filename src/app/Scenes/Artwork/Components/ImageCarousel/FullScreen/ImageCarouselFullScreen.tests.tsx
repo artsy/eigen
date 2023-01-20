@@ -1,7 +1,10 @@
 import { render } from "@testing-library/react-native"
+import {
+  ImageCarouselContext,
+  useNewImageCarouselContext,
+} from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
 import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { Theme } from "palette"
-import { ImageCarouselContext, useNewImageCarouselContext } from "../ImageCarouselContext"
 import { ImageCarouselFullScreen } from "./ImageCarouselFullScreen"
 
 describe("ImageCarouselFullScreen", () => {

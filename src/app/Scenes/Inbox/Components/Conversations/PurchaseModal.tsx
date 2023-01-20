@@ -1,6 +1,6 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
-import { PurchaseModal_artwork$data } from "__generated__/PurchaseModal_artwork.graphql"
 import { PurchaseModalQuery } from "__generated__/PurchaseModalQuery.graphql"
+import { PurchaseModal_artwork$data } from "__generated__/PurchaseModal_artwork.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { CollapsibleArtworkDetailsFragmentContainer as CollapsibleArtworkDetails } from "app/Scenes/Artwork/Components/CommercialButtons/CollapsibleArtworkDetails"
 import { dismissModal } from "app/system/navigation/navigate"

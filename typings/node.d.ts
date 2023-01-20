@@ -1,5 +1,3 @@
-/* tslint:disable */
-
 /**
  * FIXME: This fix came from https://github.com/styled-components/styled-components/issues/1642#issuecomment-394816116.
  * The other options in this thread led to cascading errors, though this worked.
@@ -9,5 +7,6 @@
  * exported member 'ReadableStream'. 116   interleaveWithNodeStream(readableStream: NodeJS.ReadableStream): NodeJS.ReadableStream;
  */
 declare namespace NodeJS {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
   export interface ReadableStream {}
 }

@@ -1,7 +1,8 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
 import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
-import { RecommendedArtistsRail_me$data } from "__generated__/RecommendedArtistsRail_me.graphql"
 import { RecommendedArtistsRailFollowMutation } from "__generated__/RecommendedArtistsRailFollowMutation.graphql"
+import { RecommendedArtistsRail_me$data } from "__generated__/RecommendedArtistsRail_me.graphql"
+import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { defaultArtistVariables } from "app/Scenes/Artist/Artist"
 import { RailScrollProps } from "app/Scenes/Home/Components/types"
@@ -18,7 +19,6 @@ import {
   RelayPaginationProp,
 } from "react-relay"
 import { useTracking } from "react-tracking"
-import { CardRailFlatList } from "../CardRailFlatList"
 import { ArtistCard } from "./ArtistCard"
 
 const MAX_ARTISTS = 20

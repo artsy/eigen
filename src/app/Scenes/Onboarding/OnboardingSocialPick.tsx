@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { captureMessage } from "@sentry/react-native"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import {
@@ -10,9 +10,9 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { osMajorVersion } from "app/utils/platformUtil"
 import { capitalize } from "lodash"
 import { Button, Flex, Join, Screen, Spacer, Text } from "palette"
+import { EnvelopeIcon } from "palette/svgs/EnvelopeIcon"
 import { useEffect } from "react"
 import { Alert, Image, InteractionManager, Platform } from "react-native"
-import { EnvelopeIcon } from "../../../palette/svgs/EnvelopeIcon"
 import { OnboardingNavigationStack } from "./Onboarding"
 import { AppleToken, GoogleOrFacebookToken } from "./OnboardingSocialLink"
 
@@ -21,7 +21,7 @@ interface OnboardingSocialPickProps {
 }
 
 export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode }) => {
-  const navigation = useNavigation()
+  const navigation = useNavigation<NavigationProp<OnboardingNavigationStack>>()
   const isLoading = GlobalStore.useAppState((state) => state.auth.sessionState.isLoading)
 
   const isIOS = Platform.OS === "ios"

@@ -1,6 +1,5 @@
-import { StyleSheet, Text, TextProps, TextStyle } from "react-native"
-
 import { useTheme } from "palette"
+import { StyleSheet, Text, TextProps, TextStyle } from "react-native"
 
 const LargeHeadline: React.FC<TextProps> = (props) => {
   const { theme } = useTheme()

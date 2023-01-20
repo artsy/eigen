@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { AuctionResultsScreenWrapper_me$data } from "__generated__/AuctionResultsScreenWrapper_me.graphql"
 import { AuctionResultsScreenWrapperContainerQuery } from "__generated__/AuctionResultsScreenWrapperContainerQuery.graphql"
+import { AuctionResultsScreenWrapper_me$data } from "__generated__/AuctionResultsScreenWrapper_me.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { AuctionResultsList, LoadingSkeleton } from "app/Components/AuctionResultsList"
 import { navigate } from "app/system/navigation/navigate"

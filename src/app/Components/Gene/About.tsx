@@ -1,11 +1,10 @@
+import { About_gene$data } from "__generated__/About_gene.graphql"
+import RelatedArtists from "app/Components/RelatedArtists/RelatedArtists"
+import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+import { Separator } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import RelatedArtists from "../RelatedArtists/RelatedArtists"
 import Biography from "./Biography"
-
-import { About_gene$data } from "__generated__/About_gene.graphql"
-import { Separator } from "palette"
-import { StickyTabPageScrollView } from "../StickyTabPage/StickyTabPageScrollView"
 
 interface Props {
   gene: About_gene$data

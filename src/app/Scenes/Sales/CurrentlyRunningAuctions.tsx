@@ -1,5 +1,5 @@
-import { CurrentlyRunningAuctions_viewer$key } from "__generated__/CurrentlyRunningAuctions_viewer.graphql"
 import { CurrentlyRunningAuctionsRefetchQuery } from "__generated__/CurrentlyRunningAuctionsRefetchQuery.graphql"
+import { CurrentlyRunningAuctions_viewer$key } from "__generated__/CurrentlyRunningAuctions_viewer.graphql"
 
 import { extractNodes } from "app/utils/extractNodes"
 import { Box } from "palette"

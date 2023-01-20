@@ -1,9 +1,8 @@
 import { FileDownload_attachment$data } from "__generated__/FileDownload_attachment.graphql"
+import { CleanRelayFragment } from "app/utils/relayHelpers"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import "react-native"
 import { Linking } from "react-native"
 
-import { CleanRelayFragment } from "app/utils/relayHelpers"
 import AttachmentPreview from "./AttachmentPreview"
 import { FileDownloadFragmentContainer as FileDownload } from "./FileDownload"
 

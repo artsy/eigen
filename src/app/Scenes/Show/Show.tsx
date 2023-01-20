@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Show_show$data } from "__generated__/Show_show.graphql"
 import { ShowQuery } from "__generated__/ShowQuery.graphql"
+import { Show_show$data } from "__generated__/Show_show.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
 import { SearchImageHeaderButton } from "app/Components/SearchImageHeaderButton"

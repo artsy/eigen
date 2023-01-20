@@ -1,8 +1,8 @@
+import { useSpringValue } from "app/Scenes/Artwork/Components/ImageCarousel/useSpringValue"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { Animated, Image, View } from "react-native"
-import { useSpringValue } from "../../useSpringValue"
-import { VISUAL_DEBUG_MODE } from "./__deepZoomDebug"
 import { DeepZoomPyramid } from "./DeepZoomPyramid"
+import { VISUAL_DEBUG_MODE } from "./__deepZoomDebug"
 import { useIsMounted } from "./useIsMounted"
 
 export class DeepZoomTileID {

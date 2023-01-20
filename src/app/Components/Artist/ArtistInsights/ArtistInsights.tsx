@@ -1,5 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtistInsights_artist$data } from "__generated__/ArtistInsights_artist.graphql"
+import { ARTIST_HEADER_HEIGHT } from "app/Components/Artist/ArtistHeader"
 import {
   AnimatedArtworkFilterButton,
   ArtworkFilterNavigator,
@@ -16,7 +17,6 @@ import { FlatList, NativeScrollEvent, NativeSyntheticEvent, View } from "react-n
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ReactElement } from "simple-markdown"
-import { ARTIST_HEADER_HEIGHT } from "../ArtistHeader"
 import { ArtistInsightsAuctionResultsPaginationContainer } from "./ArtistInsightsAuctionResults"
 import { MarketStatsQueryRenderer } from "./MarketStats"
 

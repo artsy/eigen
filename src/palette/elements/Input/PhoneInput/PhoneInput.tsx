@@ -10,13 +10,12 @@ import {
   TriangleDown,
   useColor,
 } from "palette"
-import { forwardRef } from "react"
-import { useEffect, useRef, useState } from "react"
-import { SelectOption } from "../../Select"
 import {
   INTERNALSelectAndInputCombinationBase,
   ValuePayload,
-} from "../INTERNALSelectAndInputCombinationBase"
+} from "palette/elements/Input/INTERNALSelectAndInputCombinationBase"
+import { SelectOption } from "palette/elements/Select"
+import { forwardRef, useEffect, useRef, useState } from "react"
 import { cleanUserPhoneNumber } from "./cleanUserPhoneNumber"
 import { countries, countryIndex } from "./countries"
 import { formatPhoneNumber } from "./formatPhoneNumber"
@@ -160,7 +159,6 @@ export const PhoneInput = forwardRef<
               </Touchable>
             )
           }}
-          // tslint:disable-next-line:no-shadowed-variable
           renderItemLabelForSelect={({ label, value }) => {
             return (
               <Flex flexDirection="row" alignItems="center" flexShrink={1}>

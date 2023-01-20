@@ -11,7 +11,6 @@ const ANIMATION_DEFAULTS = {
   useNativeDriver: true,
 }
 
-// tslint:disable-next-line:no-empty
 const NOOP = () => {}
 
 export interface TouchableWithScaleProps extends TouchableWithoutFeedbackProps {

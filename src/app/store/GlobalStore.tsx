@@ -10,10 +10,10 @@ import { Platform } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import { Action, Middleware } from "redux"
 import { version } from "./../../../app.json"
-import { DevToggleName, FeatureName, features } from "./config/features"
-import { FeatureMap } from "./config/FeaturesModel"
-import { VisualClueName, visualClueNames } from "./config/visualClues"
 import { getGlobalStoreModel, GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
+import { FeatureMap } from "./config/FeaturesModel"
+import { DevToggleName, FeatureName, features } from "./config/features"
+import { VisualClueName, visualClueNames } from "./config/visualClues"
 import { persistenceMiddleware, unpersist } from "./persistence"
 
 function createGlobalStore() {
@@ -62,7 +62,6 @@ function createGlobalStore() {
   return store
 }
 
-// tslint:disable-next-line:variable-name
 export const __globalStoreTestUtils__ = __TEST__
   ? {
       // this can be used to mock the initial state before mounting a test renderer

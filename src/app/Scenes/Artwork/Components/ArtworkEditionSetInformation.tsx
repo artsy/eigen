@@ -1,9 +1,9 @@
 import { ArtworkEditionSetInformation_artwork$data } from "__generated__/ArtworkEditionSetInformation_artwork.graphql"
+import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Box, Separator, Spacer, Text } from "palette"
 import { createFragmentContainer } from "react-relay"
 import { graphql } from "relay-runtime"
-import { ArtworkStore } from "../ArtworkStore"
 import { ArtworkEditionSetsFragmentContainer as ArtworkEditionSets } from "./ArtworkEditionSets"
 
 interface ArtworkEditionSetInformationProps {

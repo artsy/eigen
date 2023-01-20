@@ -1,6 +1,9 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { StackScreenProps } from "@react-navigation/stack"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
+import { ArtistAutosuggest } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistAutosuggest"
+import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
 import { AutosuggestResultsPlaceholder } from "app/Scenes/Search/components/placeholders/AutosuggestResultsPlaceholder"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -8,9 +11,6 @@ import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/
 import { Spacer } from "palette"
 import { Suspense } from "react"
 import { useTracking } from "react-tracking"
-import { ScreenMargin } from "../../../Components/ScreenMargin"
-import { ArtistAutosuggest } from "../Components/ArtistAutosuggest"
-import { ArtworkFormScreen } from "../MyCollectionArtworkForm"
 
 export const MyCollectionArtworkFormArtist: React.FC<
   StackScreenProps<ArtworkFormScreen, "ArtworkFormArtist">

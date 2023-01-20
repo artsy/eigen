@@ -1,14 +1,13 @@
+import { ArtistConsignButton_artist$data } from "__generated__/ArtistConsignButton_artist.graphql"
+import { useSelectedTab } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
+import { Schema } from "app/utils/track"
 import { ArrowRightIcon, BorderBox, Box, Flex, Text } from "palette"
 import React, { useRef } from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-
-import { ArtistConsignButton_artist$data } from "__generated__/ArtistConsignButton_artist.graphql"
-import { useSelectedTab } from "app/store/GlobalStore"
-import { navigate } from "app/system/navigation/navigate"
-import { Schema } from "app/utils/track"
 
 export interface ArtistConsignButtonProps {
   artist: ArtistConsignButton_artist$data

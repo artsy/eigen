@@ -1,12 +1,10 @@
-import { Component } from "react"
-import { createFragmentContainer, graphql } from "react-relay"
-
-import { LayoutChangeEvent, StyleSheet, View } from "react-native"
-
 import { VariableSizeShowsList_shows$data } from "__generated__/VariableSizeShowsList_shows.graphql"
 import { Stack } from "app/Components/Stack"
 import { isPad } from "app/utils/hardware"
 import { chunk } from "lodash"
+import { Component } from "react"
+import { LayoutChangeEvent, StyleSheet, View } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 import { ArtistShowFragmentContainer } from "./ArtistShow"
 
 interface Props {

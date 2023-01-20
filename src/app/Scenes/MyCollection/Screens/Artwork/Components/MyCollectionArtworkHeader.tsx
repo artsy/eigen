@@ -6,6 +6,11 @@ import {
   ImageCarousel,
   ImageCarouselFragmentContainer,
 } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
+import {
+  imageIsProcessing,
+  isImage,
+  removeLocalPhotos,
+} from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionImageUtil"
 import { navigate } from "app/system/navigation/navigate"
 import { LocalImage, retrieveLocalImages } from "app/utils/LocalImageStore"
 import { Flex, Join, NoImageIcon, Spacer, Text, useColor } from "palette"
@@ -14,11 +19,6 @@ import { TouchableOpacity } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
-import {
-  imageIsProcessing,
-  isImage,
-  removeLocalPhotos,
-} from "../../ArtworkForm/MyCollectionImageUtil"
 import { MyCollectionArtworkSubmissionStatus } from "./MyCollectionArtworkSubmissionStatus"
 
 const NO_ARTIST_NAMES_TEXT = "-"

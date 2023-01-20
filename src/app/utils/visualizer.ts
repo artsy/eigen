@@ -1,7 +1,7 @@
 import Clipboard from "@react-native-clipboard/clipboard"
 import { Toast } from "app/Components/Toast/Toast"
-import { DevToggleName } from "app/store/config/features"
 import { unsafe_getDevToggle } from "app/store/GlobalStore"
+import { DevToggleName } from "app/store/config/features"
 
 export const visualize = (
   type: string,

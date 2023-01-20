@@ -3,6 +3,7 @@ import { NewWorksForYouRail_artworkConnection$key } from "__generated__/NewWorks
 import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
+import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
@@ -14,7 +15,6 @@ import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
-import HomeAnalytics from "../homeAnalytics"
 import { RailScrollProps } from "./types"
 
 interface NewWorksForYouRailProps {

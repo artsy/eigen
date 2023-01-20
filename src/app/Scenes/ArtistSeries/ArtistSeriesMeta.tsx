@@ -5,8 +5,8 @@ import {
   OwnerType,
   unfollowedArtist,
 } from "@artsy/cohesion"
-import { ArtistSeriesMeta_artistSeries$data } from "__generated__/ArtistSeriesMeta_artistSeries.graphql"
 import { ArtistSeriesMetaFollowMutation } from "__generated__/ArtistSeriesMetaFollowMutation.graphql"
+import { ArtistSeriesMeta_artistSeries$data } from "__generated__/ArtistSeriesMeta_artistSeries.graphql"
 import { ReadMore } from "app/Components/ReadMore"
 import { navigate } from "app/system/navigation/navigate"
 import { truncatedTextLimit } from "app/utils/hardware"

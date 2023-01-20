@@ -5,8 +5,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact } from "lodash"
 import { Flex } from "palette"
-import { createFragmentContainer } from "react-relay"
-import { graphql } from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 
 interface BuyNowArtworksRailProps {
   sale: BuyNowArtworksRail_sale$data

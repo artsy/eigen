@@ -1,6 +1,6 @@
 import { FairExhibitors_fair$data } from "__generated__/FairExhibitors_fair.graphql"
-import { FAIR2_EXHIBITORS_PAGE_SIZE } from "app/Components/constants"
 import Spinner from "app/Components/Spinner"
+import { FAIR2_EXHIBITORS_PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
 import { Box, Flex } from "palette"
 import React, { useState } from "react"

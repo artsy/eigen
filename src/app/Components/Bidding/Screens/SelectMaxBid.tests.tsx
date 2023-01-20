@@ -2,15 +2,12 @@ jest.mock("app/Components/Bidding/Screens/ConfirmBid/PriceSummary", () => ({
   PriceSummary: () => null,
 }))
 
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import "react-native"
-import { FakeNavigator } from "../Helpers/FakeNavigator"
-
-import Spinner from "app/Components/Spinner"
-import { Button } from "palette"
-
 import { SelectMaxBid_me$data } from "__generated__/SelectMaxBid_me.graphql"
 import { SelectMaxBid_sale_artwork$data } from "__generated__/SelectMaxBid_sale_artwork.graphql"
+import { FakeNavigator } from "app/Components/Bidding/Helpers/FakeNavigator"
+import Spinner from "app/Components/Spinner"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { Button } from "palette"
 import { ActivityIndicator } from "react-native"
 import { SelectMaxBid } from "./SelectMaxBid"
 

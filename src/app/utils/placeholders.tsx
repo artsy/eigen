@@ -4,7 +4,6 @@ import { createContext, useContext, useMemo } from "react"
 import { View, ViewStyle } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 
-// tslint:disable-next-line:interface-over-type-literal
 type PlaceholderContextValue = {}
 
 const PlaceholderContext = createContext<PlaceholderContextValue>(null as any)

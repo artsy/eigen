@@ -1,18 +1,17 @@
 import { Spacer, TextVariantV3 } from "palette"
+import { Box, BoxProps } from "palette/elements/Box"
+import { Flex } from "palette/elements/Flex"
+import { Spinner } from "palette/elements/Spinner"
+import { Text, useTextStyleForPalette } from "palette/elements/Text"
 import { useColor } from "palette/hooks"
 import { useState } from "react"
-import { PressableProps, TextStyle } from "react-native"
-import { GestureResponderEvent, Pressable } from "react-native"
+import { PressableProps, TextStyle, GestureResponderEvent, Pressable } from "react-native"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 import { config } from "react-spring"
 // @ts-ignore
 import { animated, Spring } from "react-spring/renderprops-native"
 import { MeasuredView, ViewMeasurements } from "shared/utils"
 import styled from "styled-components/native"
-import { Box, BoxProps } from "../Box"
-import { Flex } from "../Flex"
-import { Spinner } from "../Spinner"
-import { Text, useTextStyleForPalette } from "../Text"
 
 export interface ButtonProps extends BoxProps {
   children: React.ReactNode
@@ -76,7 +75,6 @@ export const Button: React.FC<ButtonProps> = ({
   longestText,
   onPress,
   size = "large",
-  style,
   variant = "fillDark",
   testOnly_state,
   testID,

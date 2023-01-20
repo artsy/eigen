@@ -3,8 +3,8 @@ import {
   CommercialButtonsTestsRenderQuery,
   CommercialButtonsTestsRenderQuery$rawResponse,
 } from "__generated__/CommercialButtonsTestsRenderQuery.graphql"
-import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
+import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { navigate } from "app/system/navigation/navigate"
 import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { ArtworkInquiryContextState } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"

@@ -1,11 +1,11 @@
 import { ActionType, OwnerType, TappedBuyNow, TappedMakeOffer } from "@artsy/cohesion"
 import { OpenInquiryModalButton_artwork$data } from "__generated__/OpenInquiryModalButton_artwork.graphql"
+import { ShadowSeparator } from "app/Scenes/Inbox/Components/ShadowSeparator"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { Button, Flex, ShieldIcon, Spacer, Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { ShadowSeparator } from "../ShadowSeparator"
 import { InquiryMakeOfferButtonFragmentContainer } from "./InquiryMakeOfferButton"
 import { InquiryPurchaseButtonFragmentContainer } from "./InquiryPurchaseButton"
 

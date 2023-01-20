@@ -1,4 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
+import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { GlobalStore, GlobalStoreProvider } from "app/store/GlobalStore"
 import { EntityType, navigate, navigateToEntity, SlugType } from "app/system/navigation/navigate"
 import { CatchErrors } from "app/utils/CatchErrors"
@@ -7,7 +8,6 @@ import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/re
 import { Touchable } from "palette"
 import { Pressable } from "react-native"
 import { act } from "react-test-renderer"
-import { SearchContext } from "../SearchContext"
 import { AutosuggestSearchResult } from "./AutosuggestSearchResult"
 
 const inputBlurMock = jest.fn()

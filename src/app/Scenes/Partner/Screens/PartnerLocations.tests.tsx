@@ -4,8 +4,8 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { PartnerLocationsFixture } from "./__fixtures__/PartnerLocations-fixture"
 import { PartnerLocationsContainer as PartnerLocations } from "./PartnerLocations"
+import { PartnerLocationsFixture } from "./__fixtures__/PartnerLocations-fixture"
 
 jest.unmock("react-relay")
 

@@ -1,7 +1,7 @@
+import { PillType } from "app/Scenes/Search/types"
 import { Pill, useSpace } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
-import { PillType } from "../types"
 
 export interface SearchPillsProps {
   loading?: boolean

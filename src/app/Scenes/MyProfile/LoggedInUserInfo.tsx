@@ -1,5 +1,5 @@
-import { LoggedInUserInfo_me$data } from "__generated__/LoggedInUserInfo_me.graphql"
 import { LoggedInUserInfoQuery } from "__generated__/LoggedInUserInfoQuery.graphql"
+import { LoggedInUserInfo_me$data } from "__generated__/LoggedInUserInfo_me.graphql"
 import Spinner from "app/Components/Spinner"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { Box, Text } from "palette"

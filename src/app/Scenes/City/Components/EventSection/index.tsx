@@ -21,12 +21,11 @@ export class EventSection extends React.Component<Props> {
 
   renderEvents = () => {
     const { data } = this.props
-    let finalShowsForPreviewBricks
     const eligibleForBrick = data.filter(
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       (s) => !s.isStubShow && !!s.cover_image && !!s.cover_image.url
     )
-    finalShowsForPreviewBricks = eligibleForBrick.slice(0, 2)
+    const finalShowsForPreviewBricks = eligibleForBrick.slice(0, 2)
 
     if (!!finalShowsForPreviewBricks) {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

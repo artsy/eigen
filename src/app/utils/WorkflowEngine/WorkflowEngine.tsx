@@ -5,7 +5,6 @@ export type Workflow = Array<string | { [event: string]: Branch }>
 export type Conditions = Record<string, () => boolean | string>
 
 export class WorkflowEngine {
-  // tslint:disable-next-line
   __workflow__: Workflow
   workflow: Workflow
   conditions: Conditions

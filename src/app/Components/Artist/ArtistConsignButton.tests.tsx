@@ -1,7 +1,7 @@
 import { ArtistConsignButtonTestsQuery } from "__generated__/ArtistConsignButtonTestsQuery.graphql"
+import { GlobalStoreProvider, useSelectedTab } from "app/store/GlobalStore"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { navigate } from "app/system/navigation/navigate"
-
 import { extractText } from "app/utils/tests/extractText"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
@@ -13,8 +13,6 @@ import { createMockEnvironment } from "relay-test-utils"
 import { ArtistConsignButtonFragmentContainer, tests } from "./ArtistConsignButton"
 
 jest.unmock("react-relay")
-
-import { GlobalStoreProvider, useSelectedTab } from "app/store/GlobalStore"
 
 jest.mock("app/store/GlobalStore", () => ({
   GlobalStoreProvider: jest.requireActual("app/store/GlobalStore").GlobalStoreProvider,

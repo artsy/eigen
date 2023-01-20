@@ -4,12 +4,12 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { BackButton } from "app/system/navigation/BackButton"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { Box, Button, Flex, Input, Spacer, Text, useColor } from "palette"
+import { Touchable } from "palette/elements/Touchable/Touchable"
 import React, { useEffect, useRef } from "react"
 import { ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import * as Yup from "yup"
-import { Touchable } from "../../../palette/elements/Touchable/Touchable"
 import { OnboardingNavigationStack } from "./Onboarding"
 import { OnboardingSocialPick } from "./OnboardingSocialPick"
 
@@ -17,8 +17,10 @@ export const OnboardingLogin: React.FC = () => {
   return <OnboardingSocialPick mode="login" />
 }
 
-export interface OnboardingLoginProps
-  extends StackScreenProps<OnboardingNavigationStack, "OnboardingLoginWithEmail"> {}
+export type OnboardingLoginProps = StackScreenProps<
+  OnboardingNavigationStack,
+  "OnboardingLoginWithEmail"
+>
 
 export interface OnboardingLoginValuesSchema {
   email: string

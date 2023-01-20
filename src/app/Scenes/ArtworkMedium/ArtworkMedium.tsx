@@ -1,5 +1,5 @@
-import { ArtworkMedium_artwork$data } from "__generated__/ArtworkMedium_artwork.graphql"
 import { ArtworkMediumQuery } from "__generated__/ArtworkMediumQuery.graphql"
+import { ArtworkMedium_artwork$data } from "__generated__/ArtworkMedium_artwork.graphql"
 import { goBack } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"

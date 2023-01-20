@@ -1,5 +1,5 @@
-import { AuctionBuyersPremium_sale$data } from "__generated__/AuctionBuyersPremium_sale.graphql"
 import { AuctionBuyersPremiumQuery } from "__generated__/AuctionBuyersPremiumQuery.graphql"
+import { AuctionBuyersPremium_sale$data } from "__generated__/AuctionBuyersPremium_sale.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { goBack } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"

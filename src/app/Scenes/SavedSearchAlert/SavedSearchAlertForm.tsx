@@ -9,6 +9,12 @@ import { useTracking } from "react-tracking"
 import { useFirstMountState } from "react-use/lib/useFirstMountState"
 import { Form } from "./Components/Form"
 import {
+  SavedSearchAlertFormValues,
+  SavedSearchAlertMutationResult,
+  SavedSearchPill,
+} from "./SavedSearchAlertModel"
+import { SavedSearchStore } from "./SavedSearchStore"
+import {
   checkOrRequestPushPermissions,
   clearDefaultAttributes,
   showWarningMessageForDuplicateAlert,
@@ -18,12 +24,6 @@ import { deleteSavedSearchMutation } from "./mutations/deleteSavedSearchAlert"
 import { updateNotificationPreferences } from "./mutations/updateNotificationPreferences"
 import { updateSavedSearchAlert } from "./mutations/updateSavedSearchAlert"
 import { getSavedSearchIdByCriteria } from "./queries/getSavedSearchIdByCriteria"
-import {
-  SavedSearchAlertFormValues,
-  SavedSearchAlertMutationResult,
-  SavedSearchPill,
-} from "./SavedSearchAlertModel"
-import { SavedSearchStore } from "./SavedSearchStore"
 import { useSavedSearchPills } from "./useSavedSearchPills"
 
 export interface SavedSearchAlertFormProps {

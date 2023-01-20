@@ -1,6 +1,6 @@
+import { FairAllFollowedArtistsQuery } from "__generated__/FairAllFollowedArtistsQuery.graphql"
 import { FairAllFollowedArtists_fair$data } from "__generated__/FairAllFollowedArtists_fair.graphql"
 import { FairAllFollowedArtists_fairForFilters$data } from "__generated__/FairAllFollowedArtists_fairForFilters.graphql"
-import { FairAllFollowedArtistsQuery } from "__generated__/FairAllFollowedArtistsQuery.graphql"
 import {
   AnimatedArtworkFilterButton,
   ArtworkFilterNavigator,

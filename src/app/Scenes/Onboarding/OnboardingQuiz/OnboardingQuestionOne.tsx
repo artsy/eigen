@@ -1,9 +1,9 @@
 import { useNavigation } from "@react-navigation/native"
+import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingTracking"
 import {
   OPTION_NO_IM_JUST_STARTING_OUT,
   OPTION_YES_I_LOVE_COLLECTING_ART,
 } from "app/Scenes/Onboarding/OnboardingQuiz/config"
-import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingTracking"
 import { useCallback } from "react"
 import { OnboardingQuestionTemplate } from "./Components/OnboardingQuestionTemplate"
 import { useOnboardingContext } from "./Hooks/useOnboardingContext"

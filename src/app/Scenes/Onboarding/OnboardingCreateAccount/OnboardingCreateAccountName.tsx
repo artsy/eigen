@@ -12,8 +12,10 @@ import {
 } from "./OnboardingCreateAccount"
 import { TermsOfServiceCheckbox } from "./TermsOfServiceCheckbox"
 
-export interface OnboardingCreateAccountNameProps
-  extends StackScreenProps<OnboardingCreateAccountNavigationStack, "OnboardingCreateAccountName"> {}
+export type OnboardingCreateAccountNameProps = StackScreenProps<
+  OnboardingCreateAccountNavigationStack,
+  "OnboardingCreateAccountName"
+>
 
 export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNameProps> = ({
   navigation,

@@ -17,7 +17,7 @@ it("renders with a show without throwing an error", () => {
 })
 
 const artwork = {
-  __typename: "Artwork" as "Artwork",
+  __typename: "Artwork" as const,
   title: "Karl and Anna Face Off (Diptych)",
   date: "2016",
   artistNames: "Bradley Theodore",
@@ -27,7 +27,7 @@ const artwork = {
 }
 
 const show = {
-  __typename: "Show" as "Show",
+  __typename: "Show" as const,
   fair: {
     name: "Catty Fair",
   },

@@ -1,13 +1,12 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { ReverseImageMultipleResultsQuery } from "__generated__/ReverseImageMultipleResultsQuery.graphql"
+import { HeaderBackButton } from "app/Scenes/ReverseImage/Components/HeaderBackButton"
+import { HeaderContainer } from "app/Scenes/ReverseImage/Components/HeaderContainer"
+import { ReverseImageNavigationStack } from "app/Scenes/ReverseImage/types"
 import { ArtsyLogoIcon, Flex } from "palette"
 import { Suspense } from "react"
 import { Image, StyleSheet } from "react-native"
-import { graphql } from "react-relay"
-import { useLazyLoadQuery } from "react-relay"
-import { HeaderBackButton } from "../../Components/HeaderBackButton"
-import { HeaderContainer } from "../../Components/HeaderContainer"
-import { ReverseImageNavigationStack } from "../../types"
+import { graphql, useLazyLoadQuery } from "react-relay"
 import { ReverseImageArtworksRail } from "./ReverseImageArtworksRail"
 
 type Props = StackScreenProps<ReverseImageNavigationStack, "MultipleResults">

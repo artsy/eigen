@@ -1,5 +1,5 @@
 import { NotificationTypesEnum } from "__generated__/ActivityItem_item.graphql"
-import { NotificationType } from "../types"
+import { NotificationType } from "app/Scenes/Activity/types"
 
 export const getNotificationTypes = (
   type: NotificationType

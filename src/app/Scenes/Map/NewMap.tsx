@@ -4,9 +4,9 @@ import { FC, useRef, useState } from "react"
 import { Dimensions, StyleSheet, View } from "react-native"
 import Config from "react-native-config"
 import styled from "styled-components/native"
-import cityData from "../../../../data/cityDataSortedByDisplayPreference.json"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { ArtsyMapStyleURL } from "./GlobalMap"
+import cityData from "../../../../data/cityDataSortedByDisplayPreference.json"
 
 MapboxGL.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
 

@@ -1,16 +1,14 @@
+import { FlexProps } from "app/Components/Bidding/Elements/Flex"
+import { BillingAddress } from "app/Components/Bidding/Screens/BillingAddress"
+import { CreditCardForm } from "app/Components/Bidding/Screens/CreditCardForm"
+import { Address, PaymentCardTextFieldParams, StripeToken } from "app/Components/Bidding/types"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
+import { bullet } from "palette"
+import React from "react"
 import { View } from "react-native"
-
-import { BillingAddress } from "../Screens/BillingAddress"
-import { CreditCardForm } from "../Screens/CreditCardForm"
 
 import { BidInfoRow } from "./BidInfoRow"
 import { Divider } from "./Divider"
-
-import { bullet } from "palette"
-import React from "react"
-import { FlexProps } from "../Elements/Flex"
-import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
 
 interface PaymentInfoProps extends FlexProps {
   navigator?: NavigatorIOS

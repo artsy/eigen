@@ -11,8 +11,8 @@ import { FlatList } from "react-native"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { AutosuggestResults } from "./AutosuggestResults"
-import { AutosuggestSearchResult } from "./components/AutosuggestSearchResult"
 import { SearchContext } from "./SearchContext"
+import { AutosuggestSearchResult } from "./components/AutosuggestSearchResult"
 
 const FixturePage1: AutosuggestResultsQuery$rawResponse = {
   results: {
@@ -117,7 +117,6 @@ jest.mock("lodash", () => ({
 
 jest.unmock("react-relay")
 
-// tslint:disable-next-line:no-empty
 jest.mock("@sentry/react-native", () => ({ init() {}, captureMessage() {} }))
 
 jest.mock("./RecentSearches", () => {
@@ -129,7 +128,6 @@ jest.mock("./RecentSearches", () => {
   }
 })
 
-// tslint:disable-next-line:no-var-requires
 const notifyRecentSearchMock = require("./RecentSearches").useRecentSearches().notifyRecentSearch
 
 const env = defaultEnvironment as any as ReturnType<typeof createMockEnvironment>

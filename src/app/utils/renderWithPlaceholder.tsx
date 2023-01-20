@@ -1,8 +1,7 @@
-import { QueryRenderer } from "react-relay"
-
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { NotFoundFailureView } from "app/Components/NotFoundFailureView"
 import { getErrorHttpStatusCodes } from "app/Components/RetryErrorBoundary"
+import { QueryRenderer } from "react-relay"
 import { ProvidePlaceholderContext } from "./placeholders"
 
 type ReadyState = Parameters<React.ComponentProps<typeof QueryRenderer>["render"]>[0]
@@ -50,9 +49,10 @@ export function renderWithPlaceholder<Props>({
         let data = networkError.response._bodyInit || "{}"
         try {
           data = JSON.parse(data)
-          // tslint:disable-next-line:no-empty
-        } catch (e) {}
-        console.error("Error data", data)
+        } catch (error) {
+          console.log("[renderWithPlaceholder] Error parsing response JSON", error)
+        }
+        console.error("[renderWithPlaceholder] Error data", data)
       }
 
       const isNotFoundError = getErrorHttpStatusCodes(error).includes(404)
@@ -93,7 +93,6 @@ export function renderWithPlaceholder<Props>({
   }
 }
 
-// tslint:disable-next-line:variable-name
 export const __renderWithPlaceholderTestUtils__ = __TEST__
   ? { allowFallbacksAtTestTime: false }
   : undefined

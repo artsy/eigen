@@ -1,5 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { ArtworkLotDetails_TestQuery } from "__generated__/ArtworkLotDetails_TestQuery.graphql"
+import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import {
   AuctionPreview,
   AuctionPreviewNoStartingBid,
@@ -12,7 +13,6 @@ import {
   OpenAuctionReserveNotMetIncreasingOwnBid,
   OpenAuctionReserveNotMetWithBids,
 } from "app/__fixtures__/ArtworkBidInfo"
-import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"

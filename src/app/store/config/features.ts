@@ -1,6 +1,6 @@
 import { useToast } from "app/Components/Toast/toastHook"
+import { GlobalStore } from "app/store/GlobalStore"
 import { echoLaunchJson } from "app/utils/jsonFiles"
-import { GlobalStore } from "../GlobalStore"
 
 interface FeatureDescriptorCommonTypes {
   /** Provide a short description for the Dev Menu. */

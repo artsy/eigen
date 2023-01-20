@@ -1,10 +1,10 @@
 import { scaleLinear } from "d3-scale"
 import * as shape from "d3-shape"
+import { Flex } from "palette/elements/Flex"
+import { Text } from "palette/elements/Text"
 import { useColor } from "palette/hooks"
 import { ViewProps, ViewStyle } from "react-native"
 import { G, Path } from "react-native-svg"
-import { Flex } from "../Flex"
-import { Text } from "../Text"
 import { AxisDisplayType, randomSVGId, tickFormat as labelFormat } from "./helpers"
 
 const d3 = { shape }

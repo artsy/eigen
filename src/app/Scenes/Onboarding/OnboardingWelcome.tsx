@@ -18,8 +18,7 @@ import Animated, {
 import { useScreenDimensions } from "shared/hooks"
 import { OnboardingNavigationStack } from "./Onboarding"
 
-interface OnboardingWelcomeProps
-  extends StackScreenProps<OnboardingNavigationStack, "OnboardingWelcome"> {}
+type OnboardingWelcomeProps = StackScreenProps<OnboardingNavigationStack, "OnboardingWelcome">
 
 const imgProps = Image.resolveAssetSource(backgroundImage)
 

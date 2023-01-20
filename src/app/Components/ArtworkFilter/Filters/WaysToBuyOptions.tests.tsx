@@ -4,10 +4,10 @@ import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { MockFilterScreen } from "app/Components/ArtworkFilter/FilterTestHelper"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { MockFilterScreen } from "../FilterTestHelper"
-import { getEssentialProps } from "./helper"
 import { WaysToBuyOptionsScreen } from "./WaysToBuyOptions"
+import { getEssentialProps } from "./helper"
 
 describe("Ways to Buy Options Screen", () => {
   const initialState: ArtworkFiltersState = {

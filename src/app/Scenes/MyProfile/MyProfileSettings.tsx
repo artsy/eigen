@@ -1,10 +1,10 @@
 import { MenuItem } from "app/Components/MenuItem"
 import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
+import { Tab } from "app/Scenes/Favorites/Favorites"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { Button, Flex, Separator, Spacer, Text, useColor } from "palette"
 import { Alert, ScrollView } from "react-native"
-import { Tab } from "../Favorites/Favorites"
 
 export const MyProfileSettings: React.FC<{}> = () => {
   const showOrderHistory = useFeatureFlag("AREnableOrderHistoryOption")
@@ -17,7 +17,7 @@ export const MyProfileSettings: React.FC<{}> = () => {
   return (
     <ScrollView>
       <Text variant="lg-display" mx="2" mt="6">
-        {"Settings"}
+        Settings
       </Text>
       <Spacer my={1} />
       <MenuItem title="Edit Profile" onPress={() => navigate("my-profile/edit")} />

@@ -3,7 +3,7 @@ import React from "react"
 import { Icon, IconProps, Path } from "./Icon"
 
 /** SecureLockIcon */
-export const SecureLockIcon: React.FC<IconProps> = ({ title = "Secure lock", ...props }) => {
+export const SecureLockIcon: React.FC<IconProps> = ({ ...props }) => {
   const color = useColor()
 
   return (

@@ -259,7 +259,7 @@ export const getAbsoluteTimeOfSale = (sale: SaleTimeFeature): string | null => {
 export const useRelativeTimeOfSale = (
   sale: SaleTimeFeature,
   /** in millisecs */
-  updateDelay: number = 1000
+  updateDelay = 1000
 ) => {
   const [relativeTime, setRelativeTime] = useState<TimerInfo | null>(null)
 

@@ -21,7 +21,7 @@ const extractTime = (time: number) => {
   return padWithZero(Math.max(0, Math.floor(time)))
 }
 
-export const useTimer = (endDate: string, startAt: string = ""): Timer => {
+export const useTimer = (endDate: string, startAt = ""): Timer => {
   const currentTime = DateTime.now().toISO()
 
   const timeBeforeEnd = Duration.fromISO(

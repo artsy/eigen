@@ -1,7 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
 import { ArtworkExtraLinks_artwork$data } from "__generated__/ArtworkExtraLinks_artwork.graphql"
-import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
+import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { useSelectedTab } from "app/store/GlobalStore"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { navigate } from "app/system/navigation/navigate"

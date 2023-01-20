@@ -1,4 +1,4 @@
-export function formatLargeNumber(number: number, decimalPlaces: number = 0) {
+export function formatLargeNumber(number: number, decimalPlaces = 0) {
   if (number < 1000) {
     return number.toString()
   } else if (number < 1000000) {

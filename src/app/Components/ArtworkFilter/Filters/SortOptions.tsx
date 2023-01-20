@@ -11,8 +11,7 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
-interface SortOptionsScreenProps
-  extends StackScreenProps<ArtworkFilterNavigationStack, "SortOptionsScreen"> {}
+type SortOptionsScreenProps = StackScreenProps<ArtworkFilterNavigationStack, "SortOptionsScreen">
 
 // Sorting types
 enum ArtworkSorts {

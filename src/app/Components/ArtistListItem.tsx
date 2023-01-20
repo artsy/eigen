@@ -1,5 +1,5 @@
-import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
 import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
+import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { Schema, track } from "app/utils/track"

@@ -1,8 +1,8 @@
 import { screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { OnboardingMarketingCollectionScreen } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingMarketingCollection"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { createMockEnvironment } from "relay-test-utils"
-import { OnboardingMarketingCollectionScreen } from "../OnboardingMarketingCollection"
 
 jest.unmock("react-relay")
 

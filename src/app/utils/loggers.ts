@@ -11,11 +11,11 @@ let metaflags = {
 }
 if (__DEV__ || __TEST__) {
   try {
-    // tslint:disable-next-line:no-var-requires
     const fileContents = require("../../../metaflags.json")
     metaflags = { ...metaflags, ...fileContents }
-    // tslint:disable-next-line:no-empty
-  } catch {}
+  } catch (error) {
+    console.log("[loggers] Error loading metaflags.json", error)
+  }
 }
 
 export const logAction = metaflags.logAction

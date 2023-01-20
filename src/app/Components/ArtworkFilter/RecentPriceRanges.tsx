@@ -20,7 +20,7 @@ interface RecentPriceRangesListProps {
   onSelected: (priceRange: RecentPriceRangeEntity) => void
 }
 
-interface RecentPriceRangesProps extends Omit<RecentPriceRangesListProps, "ranges"> {}
+type RecentPriceRangesProps = Omit<RecentPriceRangesListProps, "ranges">
 
 export const RecentPriceRanges: React.FC<RecentPriceRangesProps> = ({
   selectedRange,

@@ -5,9 +5,9 @@ import React, { useCallback, useContext } from "react"
 import { Animated, FlatList, NativeScrollEvent, NativeSyntheticEvent, Platform } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 
-import { findClosestIndex, getMeasurements } from "./geometry"
 import { ImageCarouselContext, ImageDescriptor } from "./ImageCarouselContext"
 import { ImageWithLoadingState } from "./ImageWithLoadingState"
+import { findClosestIndex, getMeasurements } from "./geometry"
 
 interface ImageCarouselEmbeddedProps {
   cardHeight: number
@@ -150,7 +150,7 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
       accessibilityLabel="Image Carousel"
       initialNumToRender={Math.min(images.length, 20)}
       renderItem={({ item, index }) => {
-        const { cumulativeScrollOffset, ...styles } = measurements[index]
+        const { ...styles } = measurements[index]
         return (
           <ImageWithLoadingState
             // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

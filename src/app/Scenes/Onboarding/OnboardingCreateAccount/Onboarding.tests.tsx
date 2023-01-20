@@ -1,8 +1,8 @@
+import { Onboarding, OnboardingWelcomeScreens } from "app/Scenes/Onboarding/Onboarding"
+import { OnboardingQuiz } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingQuiz"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { NetworkAwareProvider } from "app/utils/NetworkAwareProvider"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Onboarding, OnboardingWelcomeScreens } from "../Onboarding"
-import { OnboardingQuiz } from "../OnboardingQuiz/OnboardingQuiz"
 
 jest.mock("../OnboardingQuiz/OnboardingQuiz.tsx", () => ({
   OnboardingQuiz: () => "OnboardingQuiz",

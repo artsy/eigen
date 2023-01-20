@@ -1,9 +1,9 @@
 import { useDevToggle } from "app/store/GlobalStore"
 import { debounce } from "lodash"
 import { BoxProps, Flex, Text, Touchable, useColor } from "palette"
+import { ReloadIcon } from "palette/svgs/ReloadIcon"
 import React, { useRef, useState } from "react"
 import { Animated, Easing } from "react-native"
-import { ReloadIcon } from "../../palette/svgs/ReloadIcon"
 import { JustifyContentValue } from "./Bidding/Elements/types"
 
 interface LoadFailureViewProps {

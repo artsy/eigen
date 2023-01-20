@@ -5,7 +5,7 @@ import {
   OPTION_FOLLOW_GALLERIES_IM_INTERESTED_IN,
   OPTION_THE_ART_TASTE_QUIZ,
   OPTION_TOP_AUCTION_LOTS,
-} from "../config"
+} from "app/Scenes/Onboarding/OnboardingQuiz/config"
 import { useOnboardingContext } from "./useOnboardingContext"
 
 const screenNames = {

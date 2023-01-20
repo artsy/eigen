@@ -103,6 +103,7 @@ describe("EditSavedSearchAlert", () => {
         searchCriteriaID: "savedSearchAlertId",
         attributes: {
           artistIDs: ["artistID"],
+          internalID: "internalID-1",
           materialsTerms: ["paper"],
         },
         userAlertSettings: {

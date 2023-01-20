@@ -1,6 +1,6 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { ArtistSeriesFullArtistSeriesList_artist$data } from "__generated__/ArtistSeriesFullArtistSeriesList_artist.graphql"
 import { ArtistSeriesFullArtistSeriesListQuery } from "__generated__/ArtistSeriesFullArtistSeriesListQuery.graphql"
+import { ArtistSeriesFullArtistSeriesList_artist$data } from "__generated__/ArtistSeriesFullArtistSeriesList_artist.graphql"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"

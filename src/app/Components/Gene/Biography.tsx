@@ -1,9 +1,8 @@
+import { Biography_gene$data } from "__generated__/Biography_gene.graphql"
+import { Text } from "palette"
 import { Dimensions, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import removeMarkdown from "remove-markdown"
-
-import { Biography_gene$data } from "__generated__/Biography_gene.graphql"
-import { Text } from "palette"
 
 const sideMargin = Dimensions.get("window").width > 700 ? 50 : 0
 

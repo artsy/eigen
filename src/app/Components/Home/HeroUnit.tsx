@@ -1,11 +1,11 @@
 import { Trove_trove$data } from "__generated__/Trove_trove.graphql"
+import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { isPad } from "app/utils/hardware"
 import { Flex, Text, Touchable, useColor } from "palette"
 import React, { useState } from "react"
 import { View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { useScreenDimensions } from "shared/hooks"
-import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 
 type UnitType = NonNullable<NonNullable<Trove_trove$data["heroUnits"]>[0]>
 

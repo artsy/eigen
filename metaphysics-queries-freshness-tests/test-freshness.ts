@@ -1,11 +1,10 @@
 #!/usr/bin/env yarn ts-node
 
-// tslint:disable-next-line
 require("dotenv").config()
 
+import { exit, stdout } from "process"
 import { GraphQLClient } from "graphql-request"
 import { values } from "lodash"
-import { exit, stdout } from "process"
 import puppeteer from "puppeteer"
 import { logRunningRequest } from "../src/app/utils/loggers"
 

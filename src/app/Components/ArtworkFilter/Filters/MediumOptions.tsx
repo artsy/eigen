@@ -15,8 +15,10 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
-interface MediumOptionsScreenProps
-  extends StackScreenProps<ArtworkFilterNavigationStack, "MediumOptionsScreen"> {}
+type MediumOptionsScreenProps = StackScreenProps<
+  ArtworkFilterNavigationStack,
+  "MediumOptionsScreen"
+>
 
 export const MediumOptionsScreen: React.FC<MediumOptionsScreenProps> = ({ navigation }) => {
   const paramName = FilterParamName.medium

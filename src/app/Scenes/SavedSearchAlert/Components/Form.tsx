@@ -1,4 +1,9 @@
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
+import {
+  SavedSearchAlertFormValues,
+  SavedSearchPill,
+} from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
+import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useFormikContext } from "formik"
 import {
@@ -12,8 +17,6 @@ import {
   Spacer,
   Text,
 } from "palette"
-import { SavedSearchAlertFormValues, SavedSearchPill } from "../SavedSearchAlertModel"
-import { SavedSearchStore } from "../SavedSearchStore"
 import { SavedSearchAlertSwitch } from "./SavedSearchAlertSwitch"
 
 interface FormProps {

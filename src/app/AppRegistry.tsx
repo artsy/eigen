@@ -42,8 +42,8 @@ import {
   AuctionResultsUpcomingPrefetchQuery,
   AuctionResultsUpcomingQueryRenderer,
 } from "./Scenes/AuctionResults/AuctionResultsUpcoming"
-import { BottomTabs } from "./Scenes/BottomTabs/BottomTabs"
 import { BottomTabOption, BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
+import { BottomTabs } from "./Scenes/BottomTabs/BottomTabs"
 import { CityView } from "./Scenes/City/City"
 import { CityBMWListQueryRenderer } from "./Scenes/City/CityBMWList"
 import { CityFairListQueryRenderer } from "./Scenes/City/CityFairList"
@@ -304,7 +304,6 @@ export interface ViewOptions {
   screenOptions?: NativeStackNavigationOptions
 }
 
-// tslint:disable-next-line: interface-over-type-literal
 type ModuleDescriptor = {
   type: "react"
   Component: React.ComponentType<any>

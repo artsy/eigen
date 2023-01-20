@@ -1,8 +1,8 @@
 import {
   ArtworkAuctionProgressBar,
   ArtworkAuctionProgressBarProps,
-} from "../Bidding/Components/ArtworkAuctionProgressBar"
-import { CountdownTimerProps } from "../Countdown/CountdownTimer"
+} from "app/Components/Bidding/Components/ArtworkAuctionProgressBar"
+import { CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
 
 export interface LotProgressBarProps extends ArtworkAuctionProgressBarProps {
   duration: CountdownTimerProps["duration"]

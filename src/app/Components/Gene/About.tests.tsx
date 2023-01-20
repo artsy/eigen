@@ -1,9 +1,8 @@
+// Note: test renderer must be required after react-native.
+import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import "react-native"
 
-// Note: test renderer must be required after react-native.
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-
-import { StickyTabPage } from "../StickyTabPage/StickyTabPage"
 import About from "./About"
 
 it("renders without throwing a error", () => {

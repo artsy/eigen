@@ -5,12 +5,17 @@ import {
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { DEBOUNCE_DELAY, KeywordFilter } from "app/Components/ArtworkFilter/Filters/KeywordFilter"
 import { ORDERED_AUCTION_RESULTS_SORTS } from "app/Components/ArtworkFilter/Filters/SortOptions"
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
-import { PAGE_SIZE } from "app/Components/constants"
+import {
+  AuctionResultListItemFragmentContainer,
+  AuctionResultListSeparator,
+} from "app/Components/Lists/AuctionResultListItem"
 import Spinner from "app/Components/Spinner"
+import { PAGE_SIZE } from "app/Components/constants"
 import { AuctionResultsState } from "app/Scenes/AuctionResults/AuctionResultsScreenWrapper"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -23,11 +28,6 @@ import { createPaginationContainer, graphql, RelayPaginationProp } from "react-r
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
 import styled from "styled-components/native"
-import { DEBOUNCE_DELAY, KeywordFilter } from "../../ArtworkFilter/Filters/KeywordFilter"
-import {
-  AuctionResultListItemFragmentContainer,
-  AuctionResultListSeparator,
-} from "../../Lists/AuctionResultListItem"
 
 interface Props {
   artist: ArtistInsightsAuctionResults_artist$data

@@ -1,6 +1,6 @@
 import { captureMessage } from "@sentry/react-native"
-import { AutosuggestResults_results$data } from "__generated__/AutosuggestResults_results.graphql"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
+import { AutosuggestResults_results$data } from "__generated__/AutosuggestResults_results.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import Spinner from "app/Components/Spinner"

@@ -1,13 +1,11 @@
-import { createFragmentContainer, graphql } from "react-relay"
-import styled from "styled-components/native"
-
+import { themeGet } from "@styled-system/theme-get"
 import { ArtworkPreview_artwork$data } from "__generated__/ArtworkPreview_artwork.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { Schema, Track, track as _track } from "app/utils/track"
 import { ClassTheme, Flex, Text, Touchable } from "palette"
 import React from "react"
-
-import { themeGet } from "@styled-system/theme-get"
-import { Schema, Track, track as _track } from "app/utils/track"
+import { createFragmentContainer, graphql } from "react-relay"
+import styled from "styled-components/native"
 
 const Container = styled.View`
   background-color: ${themeGet("colors.black100")};

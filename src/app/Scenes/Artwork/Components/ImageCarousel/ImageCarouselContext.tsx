@@ -1,9 +1,9 @@
 import { ImageCarousel_images$data } from "__generated__/ImageCarousel_images.graphql"
 import { Schema } from "app/utils/track"
+import { GlobalState, useGlobalState } from "app/utils/useGlobalState"
 import React, { useMemo, useRef } from "react"
 import { Animated, FlatList, View } from "react-native"
 import { useTracking } from "react-tracking"
-import { GlobalState, useGlobalState } from "../../../../utils/useGlobalState"
 
 export type ImageDescriptor = Pick<
   ImageCarousel_images$data[number],
@@ -100,7 +100,7 @@ export function useNewImageCarouselContext({
                   animated: false,
                 })
               }
-              // tslint:disable-next-line: no-unused-expression
+
               onImageIndexChange && onImageIndexChange(imageIndex.current)
             }
             break

@@ -1,6 +1,8 @@
 import { fireEvent } from "@testing-library/react-native"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { myCollectionCreateArtworkMutation } from "__generated__/myCollectionCreateArtworkMutation.graphql"
+import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
+import * as artworkMutations from "app/Scenes/MyCollection/mutations/myCollectionCreateArtwork"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import {
   getConvectionGeminiKey,
@@ -14,8 +16,6 @@ import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { Image } from "react-native-image-crop-picker"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-import * as artworkMutations from "../../mutations/myCollectionCreateArtwork"
-import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
 import {
   MyCollectionArtworkForm,
   MyCollectionArtworkFormProps,
@@ -170,9 +170,8 @@ describe("MyCollectionArtworkForm", () => {
         expect(createArtworkOperation.request.variables).toMatchInlineSnapshot(`
           {
             "input": {
-              "artistIds": [
-                "internal-id",
-              ],
+              "artist": "banksy",
+              "artistIds": [],
               "artists": undefined,
               "category": "Print",
               "date": "2007",

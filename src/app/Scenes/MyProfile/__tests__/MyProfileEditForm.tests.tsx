@@ -1,5 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { MyProfileEditFormTestsQuery } from "__generated__/MyProfileEditFormTestsQuery.graphql"
+import { MyProfileEditForm } from "app/Scenes/MyProfile/MyProfileEditForm"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
@@ -7,7 +8,6 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { MyProfileEditForm } from "../MyProfileEditForm"
 
 jest.unmock("react-relay")
 

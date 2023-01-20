@@ -2,15 +2,14 @@ import { SalesRail_salesModule$data } from "__generated__/SalesRail_salesModule.
 import { CardRailCard } from "app/Components/Home/CardRailCard"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "app/Components/SectionTitle"
+import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { cloneDeep } from "lodash"
-import { first, last } from "lodash"
+import { cloneDeep, first, last } from "lodash"
 import "react-native"
-import HomeAnalytics from "../homeAnalytics"
 import { SalesRailFragmentContainer } from "./SalesRail"
 
 const mockScrollRef = jest.fn()

@@ -1,6 +1,4 @@
 import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
-import { createFragmentContainer, graphql } from "react-relay"
-import styled from "styled-components/native"
 
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useFeatureFlag } from "app/store/GlobalStore"
@@ -14,6 +12,8 @@ import {
   Touchable,
   useColor,
 } from "palette"
+import { createFragmentContainer, graphql } from "react-relay"
+import styled from "styled-components/native"
 
 const ARTIST_CARD_WIDTH = 295
 

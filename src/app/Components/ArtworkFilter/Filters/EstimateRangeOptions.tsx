@@ -9,8 +9,10 @@ import { useFeatureFlag } from "app/store/GlobalStore"
 import { Separator, Text } from "palette"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
-interface PriceRangeOptionsScreenProps
-  extends StackScreenProps<ArtworkFilterNavigationStack, "EstimateRangeOptionsScreen"> {}
+type PriceRangeOptionsScreenProps = StackScreenProps<
+  ArtworkFilterNavigationStack,
+  "EstimateRangeOptionsScreen"
+>
 
 const EstimateRanges = [
   { paramValue: "", paramDisplay: "All" },

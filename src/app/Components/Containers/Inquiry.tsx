@@ -1,6 +1,6 @@
 import { themeGet } from "@styled-system/theme-get"
-import { Inquiry_artwork$data } from "__generated__/Inquiry_artwork.graphql"
 import { InquiryQuery } from "__generated__/InquiryQuery.graphql"
+import { Inquiry_artwork$data } from "__generated__/Inquiry_artwork.graphql"
 import ArtworkPreview from "app/Scenes/Inbox/Components/Conversations/Preview/ArtworkPreview"
 import { MetadataText, SmallHeadline } from "app/Scenes/Inbox/Components/Typography"
 import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"

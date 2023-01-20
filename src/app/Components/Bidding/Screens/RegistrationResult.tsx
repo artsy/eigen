@@ -1,18 +1,15 @@
+import { Icon20 } from "app/Components/Bidding/Components/Icon"
+import { Title } from "app/Components/Bidding/Components/Title"
+import { Flex } from "app/Components/Bidding/Elements/Flex"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { Markdown } from "app/Components/Markdown"
+import { dismissModal } from "app/system/navigation/navigate"
+import { defaultRules } from "app/utils/renderMarkdown"
+import { Schema, screenTrack } from "app/utils/track"
 import { Button, Text, Theme } from "palette"
 import React from "react"
 import { BackHandler, NativeEventSubscription, View } from "react-native"
 import { blockRegex } from "simple-markdown"
-
-import { Icon20 } from "../Components/Icon"
-import { Flex } from "../Elements/Flex"
-
-import { Markdown } from "../../Markdown"
-import { Title } from "../Components/Title"
-
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { dismissModal } from "app/system/navigation/navigate"
-import { defaultRules } from "app/utils/renderMarkdown"
-import { Schema, screenTrack } from "app/utils/track"
 
 interface RegistrationResultProps {
   status: RegistrationStatus

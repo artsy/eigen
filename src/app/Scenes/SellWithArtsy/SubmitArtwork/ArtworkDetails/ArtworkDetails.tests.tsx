@@ -1,5 +1,11 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { fireEvent } from "@testing-library/react-native"
+import { ContactInformationFormModel } from "app/Scenes/SellWithArtsy/SubmitArtwork/ContactInformation/validation"
+import { STEPS, SubmitSWAArtworkFlow } from "app/Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
+import {
+  createConsignSubmission,
+  updateConsignSubmission,
+} from "app/Scenes/SellWithArtsy/mutations"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
@@ -7,9 +13,6 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
-import { createConsignSubmission, updateConsignSubmission } from "../../mutations"
-import { ContactInformationFormModel } from "../ContactInformation/validation"
-import { STEPS, SubmitSWAArtworkFlow } from "../SubmitArtwork"
 import { ArtworkDetails } from "./ArtworkDetails"
 import { createOrUpdateSubmission } from "./utils/createOrUpdateSubmission"
 import { mockFormValues } from "./utils/testUtils"

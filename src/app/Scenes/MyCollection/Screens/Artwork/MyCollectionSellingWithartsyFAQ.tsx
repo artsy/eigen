@@ -66,7 +66,7 @@ export const MyCollectionSellingWithArtsyFAQ: React.FC = () => {
                 <Text underline onPress={() => sendEmailWithMailTo("mailto:sell@artsy.net")}>
                   sell@artsy.net
                 </Text>
-                {"."}
+                .
               </Text>
             </Flex>
           </Join>

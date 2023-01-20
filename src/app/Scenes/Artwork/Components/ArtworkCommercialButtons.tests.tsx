@@ -1,7 +1,8 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkCommercialButtons_Test_Query } from "__generated__/ArtworkCommercialButtons_Test_Query.graphql"
-import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
+import { ArtworkStoreProvider } from "app/Scenes/Artwork/ArtworkStore"
+import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { navigate } from "app/system/navigation/navigate"
 import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { ArtworkInquiryContextState } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
@@ -9,7 +10,6 @@ import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
-import { ArtworkStoreProvider } from "../ArtworkStore"
 import { ArtworkCommercialButtons } from "./ArtworkCommercialButtons"
 
 jest.unmock("react-relay")

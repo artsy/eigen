@@ -18,8 +18,7 @@ import Haptic from "react-native-haptic-feedback"
 import { useScreenDimensions } from "shared/hooks"
 import styled from "styled-components/native"
 
-interface YearOptionsScreenProps
-  extends StackScreenProps<ArtworkFilterNavigationStack, "YearOptionsScreen"> {}
+type YearOptionsScreenProps = StackScreenProps<ArtworkFilterNavigationStack, "YearOptionsScreen">
 
 export const ALLOW_EMPTY_CREATED_DATES_FILTER: FilterData = {
   displayText: "Include Lots without Artwork Date Listed",

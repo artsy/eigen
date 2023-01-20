@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Fair_fair$data } from "__generated__/Fair_fair.graphql"
 import { FairQuery } from "__generated__/FairQuery.graphql"
+import { Fair_fair$data } from "__generated__/Fair_fair.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"

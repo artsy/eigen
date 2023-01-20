@@ -5,11 +5,7 @@ interface ArtsyLogoBlackIconProps extends Omit<IconProps, "width" | "height"> {
   scale?: number
 }
 
-export const ArtsyLogoBlackIcon: React.FC<ArtsyLogoBlackIconProps> = ({
-  scale = 1,
-  title = "Artsy",
-  ...props
-}) => {
+export const ArtsyLogoBlackIcon: React.FC<ArtsyLogoBlackIconProps> = ({ scale = 1, ...props }) => {
   const color = useColor()
   return (
     <Icon {...props} viewBox="0 0 94 32" width={`${scale * 94}px`} height={`${scale * 32}px`}>

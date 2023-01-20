@@ -1,9 +1,8 @@
+import { SmallList_shows$data } from "__generated__/SmallList_shows.graphql"
 import { FlatList, StyleSheet, View, ViewProps } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { ArtistShowFragmentContainer } from "./ArtistShow"
-
-import { SmallList_shows$data } from "__generated__/SmallList_shows.graphql"
 
 interface Props extends ViewProps {
   shows: SmallList_shows$data

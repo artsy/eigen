@@ -1,5 +1,5 @@
-import { FairMoreInfo_fair$data } from "__generated__/FairMoreInfo_fair.graphql"
 import { FairMoreInfoQuery } from "__generated__/FairMoreInfoQuery.graphql"
+import { FairMoreInfo_fair$data } from "__generated__/FairMoreInfo_fair.graphql"
 import { LocationMapContainer } from "app/Components/LocationMap/LocationMap"
 import { Markdown } from "app/Components/Markdown"
 import { navigate } from "app/system/navigation/navigate"

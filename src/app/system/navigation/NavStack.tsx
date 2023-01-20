@@ -25,7 +25,6 @@ interface ScreenProps {
 const ScreenWrapper: React.FC<{ route: Route<"", ScreenProps> }> = ({ route }) => {
   const module = modules[route.params.moduleName]
 
-  // tslint:disable-next-line:variable-name
   const [legacy_shouldHideBackButton, updateShouldHideBackButton] = useState(false)
 
   const isRootScreen = useNavigationState((state) => state.routes[0].key === route.key)

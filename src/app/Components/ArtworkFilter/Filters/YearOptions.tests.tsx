@@ -8,13 +8,13 @@ import {
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { act } from "react-test-renderer"
-import { getEssentialProps } from "./helper"
 import {
   ALLOW_EMPTY_CREATED_DATES_FILTER,
   OptionItem,
   YearOptionsScreen,
   YearText,
 } from "./YearOptions"
+import { getEssentialProps } from "./helper"
 
 describe("Year Options Screen", () => {
   let storeInstance: ReturnType<typeof ArtworksFiltersStore.useStore>

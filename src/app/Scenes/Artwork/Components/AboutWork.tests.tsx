@@ -1,12 +1,11 @@
 import { AboutWork_artwork$data } from "__generated__/AboutWork_artwork.graphql"
+import { truncatedTextLimit } from "app/utils/hardware"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { AboutWork } from "./AboutWork"
 
 jest.mock("app/utils/hardware", () => ({
   truncatedTextLimit: jest.fn(),
 }))
-
-import { truncatedTextLimit } from "app/utils/hardware"
 
 describe("AboutWork", () => {
   beforeEach(() => {

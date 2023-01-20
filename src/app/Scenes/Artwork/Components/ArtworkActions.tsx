@@ -1,6 +1,6 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkActionsSaveMutation } from "__generated__/ArtworkActionsSaveMutation.graphql"
+import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { unsafe__getEnvironment, unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import { cm2in } from "app/utils/conversions"

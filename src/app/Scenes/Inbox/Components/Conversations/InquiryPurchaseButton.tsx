@@ -1,5 +1,5 @@
-import { InquiryPurchaseButton_artwork$data } from "__generated__/InquiryPurchaseButton_artwork.graphql"
 import { InquiryPurchaseButtonOrderMutation } from "__generated__/InquiryPurchaseButtonOrderMutation.graphql"
+import { InquiryPurchaseButton_artwork$data } from "__generated__/InquiryPurchaseButton_artwork.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { Button, ButtonProps } from "palette"

@@ -10,17 +10,17 @@ import { TimeOffsetProvider } from "app/Components/Bidding/Context/TimeOffsetPro
 import { StateManager as CountdownStateManager } from "app/Components/Countdown"
 import { CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
 import { ModernTicker, SimpleTicker } from "app/Components/Countdown/Ticker"
-import { getTimerInfo } from "app/utils/saleTime"
-import { Time } from "app/utils/useTimer"
+import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
 import { AuctionWebsocketContextProvider } from "app/utils/Websockets/auctions/AuctionSocketContext"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
+import { getTimerInfo } from "app/utils/saleTime"
+import { Time } from "app/utils/useTimer"
 import moment from "moment"
 import { Flex, Spacer, Text, TimerIcon } from "palette"
 import { Color } from "palette/Theme"
 import { useEffect } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp } from "react-tracking"
-import { ArtworkStore } from "../ArtworkStore"
 
 interface AuctionWebsocketWrapperProps extends CountdownTimerProps {
   artwork: ArtworkLotTimer_artwork$data

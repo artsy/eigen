@@ -1,8 +1,7 @@
 import { renderHook } from "@testing-library/react-hooks"
+import { waitFor } from "@testing-library/react-native"
 import { SegmentTrackingProvider } from "./track/SegmentTrackingProvider"
 import { useScreenReaderTracking } from "./useScreenReaderTracking"
-
-import { waitFor } from "@testing-library/react-native"
 
 jest.mock("react-native", () => ({
   AccessibilityInfo: { isScreenReaderEnabled: jest.fn().mockResolvedValue(true) },

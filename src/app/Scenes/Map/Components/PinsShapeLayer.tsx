@@ -3,11 +3,11 @@ import MapboxGL, {
   ShapeSourceProps,
   SymbolLayerStyle,
 } from "@react-native-mapbox-gl/maps"
+import { BucketKey } from "app/Scenes/Map/bucketCityResults"
+import { FilterData } from "app/Scenes/Map/types"
 import { isEqual } from "lodash"
 import { Component } from "react"
 import { Animated, StyleProp } from "react-native"
-import { BucketKey } from "../bucketCityResults"
-import { FilterData } from "../types"
 
 interface Props {
   featureCollections: { [key in BucketKey]: FilterData } | {}

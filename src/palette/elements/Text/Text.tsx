@@ -1,8 +1,7 @@
 import { useTheme } from "palette"
 import { isThemeV3, TextVariantV3 } from "palette/Theme"
 import { forwardRef, Ref } from "react"
-import { StyleProp, TextStyle } from "react-native"
-import { Text as RNText, TextProps as RNTextProps } from "react-native"
+import { StyleProp, TextStyle, Text as RNText, TextProps as RNTextProps } from "react-native"
 import styled from "styled-components/native"
 import {
   color,

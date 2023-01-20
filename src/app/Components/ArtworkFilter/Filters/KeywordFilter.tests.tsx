@@ -1,8 +1,11 @@
+import {
+  ArtworkFiltersState,
+  ArtworkFiltersStoreProvider,
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { debounce } from "lodash"
 import { Input } from "palette"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "../ArtworkFilterStore"
 import { KeywordFilter } from "./KeywordFilter"
 
 jest.mock("lodash", () => ({

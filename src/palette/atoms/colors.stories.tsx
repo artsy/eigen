@@ -1,9 +1,9 @@
 import { storiesOf } from "@storybook/react-native"
+import { Color } from "palette/Theme"
+import { Text } from "palette/elements/Text"
+import { useColor } from "palette/hooks"
 import { View } from "react-native"
 import { List, Row } from "storybook/helpers"
-import { Text } from "../elements/Text"
-import { useColor } from "../hooks"
-import { Color } from "../Theme"
 
 const ColorSquare = ({ color: theColor, bright }: { color: Color; bright?: boolean }) => {
   const color = useColor()

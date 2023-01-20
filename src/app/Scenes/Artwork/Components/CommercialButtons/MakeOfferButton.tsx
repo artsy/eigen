@@ -1,6 +1,6 @@
 import { ActionType, OwnerType, TappedMakeOffer } from "@artsy/cohesion"
-import { MakeOfferButton_artwork$data } from "__generated__/MakeOfferButton_artwork.graphql"
 import { MakeOfferButtonOrderMutation } from "__generated__/MakeOfferButtonOrderMutation.graphql"
+import { MakeOfferButton_artwork$data } from "__generated__/MakeOfferButton_artwork.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { Track, track as _track } from "app/utils/track"
 

@@ -1,5 +1,5 @@
-import { FullFeaturedArtistList_collection$data } from "__generated__/FullFeaturedArtistList_collection.graphql"
 import { FullFeaturedArtistListQuery } from "__generated__/FullFeaturedArtistListQuery.graphql"
+import { FullFeaturedArtistList_collection$data } from "__generated__/FullFeaturedArtistList_collection.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"

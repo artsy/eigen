@@ -4,13 +4,13 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { getMeasurements } from "./geometry"
 import {
   CarouselImageDescriptor,
   ImageCarousel,
   ImageCarouselFragmentContainer,
   ImageCarouselProps,
 } from "./ImageCarousel"
+import { getMeasurements } from "./geometry"
 
 jest.unmock("react-relay")
 

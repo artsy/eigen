@@ -1,10 +1,10 @@
 import { ArtistItem_artist$key } from "__generated__/ArtistItem_artist.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import Spinner from "app/Components/Spinner"
+import { ArtistItem } from "app/Scenes/MyCollection/Screens/Insights/ArtistItem"
 import { isPad } from "app/utils/hardware"
 import { Flex } from "palette"
 import { useScreenDimensions } from "shared/hooks"
-import { ArtistItem } from "../ArtistItem"
 
 interface SelectArtistListProps {
   artistsList: ArtistItem_artist$key[]

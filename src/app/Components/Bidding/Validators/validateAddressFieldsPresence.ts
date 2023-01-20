@@ -1,4 +1,4 @@
-import { Address } from "../types"
+import { Address } from "app/Components/Bidding/types"
 
 // finds out the empty address fields in passed Address type and returns missing values' keys
 export const validateAddressFieldsPresence = (address: Address): string[] => {

@@ -1,5 +1,6 @@
 import { ArtistAutosuggestQuery } from "__generated__/ArtistAutosuggestQuery.graphql"
 import SearchIcon from "app/Components/Icons/SearchIcon"
+import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { AutosuggestResult, AutosuggestResults } from "app/Scenes/Search/AutosuggestResults"
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
 import { useFeatureFlag } from "app/store/GlobalStore"
@@ -9,7 +10,6 @@ import { Box, Button, Flex, Input, Spacer, Text, Touchable } from "palette"
 import { useLazyLoadQuery } from "react-relay"
 import { graphql } from "relay-runtime"
 import { normalizeText } from "shared/utils"
-import { useArtworkForm } from "../Form/useArtworkForm"
 
 interface ArtistAutosuggestProps {
   onResultPress: (result: AutosuggestResult) => void

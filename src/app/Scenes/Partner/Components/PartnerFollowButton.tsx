@@ -1,5 +1,5 @@
-import { PartnerFollowButton_partner$data } from "__generated__/PartnerFollowButton_partner.graphql"
 import { PartnerFollowButtonFollowMutation } from "__generated__/PartnerFollowButtonFollowMutation.graphql"
+import { PartnerFollowButton_partner$data } from "__generated__/PartnerFollowButton_partner.graphql"
 import { Schema, Track, track as _track } from "app/utils/track"
 import { ButtonProps, FollowButton } from "palette"
 import React from "react"

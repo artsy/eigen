@@ -1,7 +1,13 @@
 import { OwnerType } from "@artsy/cohesion"
-import { MyProfileHeaderMyCollectionAndSavedWorks_me$data } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorks_me.graphql"
 import { MyProfileHeaderMyCollectionAndSavedWorksQuery } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorksQuery.graphql"
+import { MyProfileHeaderMyCollectionAndSavedWorks_me$data } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorks_me.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
+import { FavoriteArtworksQueryRenderer } from "app/Scenes/Favorites/FavoriteArtworks"
+import {
+  MyCollectionPlaceholder,
+  MyCollectionQueryRenderer,
+} from "app/Scenes/MyCollection/MyCollection"
+import { MyCollectionInsightsQR } from "app/Scenes/MyCollection/Screens/Insights/MyCollectionInsights"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
@@ -11,9 +17,6 @@ import { VisualClueDot, VisualClueText } from "palette/elements/VisualClue"
 import React from "react"
 import { createRefetchContainer, QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
-import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
-import { MyCollectionPlaceholder, MyCollectionQueryRenderer } from "../MyCollection/MyCollection"
-import { MyCollectionInsightsQR } from "../MyCollection/Screens/Insights/MyCollectionInsights"
 import { MyProfileHeader } from "./MyProfileHeader"
 
 export enum Tab {

@@ -1,4 +1,7 @@
 import { CARD_WIDTH } from "app/Components/Home/CardRailCard"
+import { MAX_SHOWN_RECENT_SEARCHES, useRecentSearches } from "app/Scenes/Search/SearchModel"
+import { IMAGE_SIZE } from "app/Scenes/Search/components/SearchResultImage"
+import { useSearchDiscoveryContentEnabled } from "app/Scenes/Search/useSearchDiscoveryContentEnabled"
 import { isPad } from "app/utils/hardware"
 import {
   PlaceholderBox,
@@ -9,9 +12,6 @@ import {
 } from "app/utils/placeholders"
 import { times } from "lodash"
 import { Box, Flex, Join, Spacer } from "palette"
-import { MAX_SHOWN_RECENT_SEARCHES, useRecentSearches } from "../../SearchModel"
-import { useSearchDiscoveryContentEnabled } from "../../useSearchDiscoveryContentEnabled"
-import { IMAGE_SIZE } from "../SearchResultImage"
 
 const RecentSearchesPlaceholder = () => {
   const recentSearches = useRecentSearches(MAX_SHOWN_RECENT_SEARCHES)

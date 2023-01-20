@@ -1,13 +1,16 @@
+import {
+  EventStream,
+  useEvents,
+} from "app/Scenes/Artwork/Components/ImageCarousel/FullScreen/useEventStream"
+import { Rect, Size } from "app/Scenes/Artwork/Components/ImageCarousel/geometry"
 import { throttle } from "lodash"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Animated } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
-import { Rect, Size } from "../../geometry"
-import { EventStream, useEvents } from "../useEventStream"
-import { VISUAL_DEBUG_MODE } from "./__deepZoomDebug"
-import { getVisibleRowsAndColumns, ZoomScaleBoundaries } from "./deepZoomGeometry"
 import { DeepZoomPyramid } from "./DeepZoomPyramid"
 import { DeepZoomTile, DeepZoomTileID } from "./DeepZoomTile"
+import { VISUAL_DEBUG_MODE } from "./__deepZoomDebug"
+import { getVisibleRowsAndColumns, ZoomScaleBoundaries } from "./deepZoomGeometry"
 
 /**
  * DeepZoomLevel is responsible for showing one layer of tile images at a particular resolution.
