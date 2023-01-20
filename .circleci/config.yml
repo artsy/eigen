@@ -578,6 +578,7 @@ workflows:
                 - beta-android
                 - update-changelog
           requires:
+            - test-js
             - build-test-js
             - horizon/block
 
@@ -590,6 +591,7 @@ workflows:
                 - beta-ios
                 - update-changelog
           requires:
+            - test-js
             - build-test-js
             - horizon/block
 
