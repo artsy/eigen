@@ -8,7 +8,7 @@ module.exports = {
     "@typescript-eslint",
     "jest",
     "no-relative-import-paths",
-    // "react-hooks",
+    "react-hooks",
     "testing-library",
   ],
   extends: [
@@ -19,8 +19,8 @@ module.exports = {
     "plugin:import/typescript",
     "plugin:react/jsx-runtime",
     "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
     "prettier", // "prettier" needs to be last!
-    // "plugin:react-hooks/recommended",
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
@@ -48,7 +48,6 @@ module.exports = {
         caughtErrorsIgnorePattern: "^_",
       },
     ],
-    // "@typescript-eslint/strict-boolean-expressions": ERR, // this helps with bugs like in jsx `{foo && <Text>wow</Text>}` when foo is not a strict boolean
     "import/order": [
       ERR,
       {
@@ -59,7 +58,7 @@ module.exports = {
     ],
     "import/no-duplicates": ERR,
     "react/jsx-curly-brace-presence": ERR,
-    // "react-hooks/rules-of-hooks": ERR,
+    "react-hooks/rules-of-hooks": ERR,
 
     /**
      * Warnings
@@ -73,6 +72,7 @@ module.exports = {
     /**
      * Disabled
      */
+
     "@typescript-eslint/await-thenable": OFF,
     "@typescript-eslint/ban-ts-comment": OFF,
     "@typescript-eslint/ban-types": OFF,
