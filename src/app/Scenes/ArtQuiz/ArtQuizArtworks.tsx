@@ -1,6 +1,7 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { ArtQuizArtworksQuery } from "__generated__/ArtQuizArtworksQuery.graphql"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
+import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { CloseIcon, Flex, HeartIcon, Screen, Spacer, Touchable } from "palette"
 import { useEffect, useRef, useState } from "react"
@@ -52,12 +53,22 @@ export const ArtQuizArtworks = () => {
     }
   }
 
+  const handleOnSkip = () => {
+    onDone()
+    // Turn off Art quiz feature flag
+    GlobalStore.actions.artsyPrefs.features.setLocalOverride({
+      key: "ARShowArtQuizApp",
+      value: false,
+    })
+    popoverMessage.hide()
+  }
+
   return (
     <Screen>
       <Screen.Header
         onBack={() => goBack()}
         title={`${activeCardIndex + 1}/${artworks.length}`}
-        onSkip={onDone}
+        onSkip={handleOnSkip}
       />
       <Screen.Body>
         <Flex flex={1} py={2}>
