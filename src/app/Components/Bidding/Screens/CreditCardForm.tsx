@@ -6,8 +6,8 @@ import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Box, Button, Text, Theme } from "palette"
 import React, { Component } from "react"
 import { ScrollView, View } from "react-native"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { LiteCreditCardInput } from "react-native-credit-card-input"
+// @ts-expect-error
 import stripe, { StripeToken } from "tipsi-stripe"
 
 interface CreditCardFormProps {

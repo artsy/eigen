@@ -48,7 +48,7 @@ export type OnboardingNavigationStack = {
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace ReactNavigation {
-    // @ts-expect-error
+    // @ts-ignore
     type RootParamList = OnboardingNavigationStack
   }
 }

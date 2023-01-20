@@ -8,6 +8,7 @@ import { Checkbox } from "palette/elements/Checkbox"
 import { Select } from "palette/elements/Select"
 import "react-native"
 import relay from "react-relay"
+// @ts-expect-error
 import stripe from "tipsi-stripe"
 import { FakeNavigator } from "./Helpers/FakeNavigator"
 import { SelectMaxBid } from "./Screens/SelectMaxBid"

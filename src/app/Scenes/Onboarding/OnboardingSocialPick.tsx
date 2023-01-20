@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { captureMessage } from "@sentry/react-native"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import {
@@ -21,7 +21,7 @@ interface OnboardingSocialPickProps {
 }
 
 export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode }) => {
-  const navigation = useNavigation()
+  const navigation = useNavigation<NavigationProp<OnboardingNavigationStack>>()
   const isLoading = GlobalStore.useAppState((state) => state.auth.sessionState.isLoading)
 
   const isIOS = Platform.OS === "ios"

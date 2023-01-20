@@ -70,7 +70,7 @@ yarn-error.log
 
 
 # Danger artifacts
-tslint-errors.json
+eslint-errors.json
 
 # typescript
 tsc_raw.log

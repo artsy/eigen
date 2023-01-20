@@ -1,6 +1,7 @@
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Button, Text } from "palette"
+// @ts-expect-error
 import stripe from "tipsi-stripe"
 import { CreditCardForm } from "./CreditCardForm"
 

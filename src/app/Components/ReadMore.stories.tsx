@@ -16,7 +16,6 @@ storiesOf("ReadMore", module)
 
 Which should render an emdash`}
       />
-      {/* tslint:disable-next-line: jsx-curly-brace-presence */}
       <ReadMore maxChars={30} content={`Line break\n\nWhich should render an emdash`} />
     </List>
   ))
