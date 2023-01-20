@@ -8,7 +8,7 @@ import { useSetWebViewCallback } from "app/utils/useWebViewEvent"
 import { Button, ButtonProps } from "palette"
 import { useState } from "react"
 import { Alert } from "react-native"
-import { commitMutation, graphql, useFragment } from "react-relay"
+import { commitMutation, graphql, useFragment, useRelayEnvironment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 export interface BuyNowButtonProps {
@@ -25,6 +25,7 @@ export const BuyNowButton = ({
   editionSetID,
   renderSaleMessage,
 }: BuyNowButtonProps) => {
+  const env = useRelayEnvironment()
   const [isCommittingCreateOrderMutation, setIsCommittingCreateOrderMutation] = useState(false)
 
   const { saleMessage, internalID, slug } = useFragment(artworkFragment, artwork)
@@ -49,7 +50,7 @@ export const BuyNowButton = ({
     }
 
     setIsCommittingCreateOrderMutation(true)
-    commitMutation<BuyNowButtonOrderMutation>(defaultEnvironment, {
+    commitMutation<BuyNowButtonOrderMutation>(env, {
       mutation: graphql`
         mutation BuyNowButtonOrderMutation($input: CommerceCreateOrderWithArtworkInput!) {
           commerceCreateOrderWithArtwork(input: $input) {
