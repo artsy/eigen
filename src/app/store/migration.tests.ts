@@ -813,3 +813,22 @@ describe("App version Versions.MoveEnvironmentToDevicePrefsAndRenameAdminToLocal
     expect(migratedState.artsyPrefs.environment).toEqual(undefined)
   })
 })
+
+describe("App version Versions.AddArtQuizModel", () => {
+  const migrationToTest = Versions.AddArtQuizModel
+
+  it("adds artQuiz to the store", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.artQuiz.likedArtworks).toEqual([])
+    expect(migratedState.artQuiz.dislikedArtworks).toEqual([])
+  })
+})
