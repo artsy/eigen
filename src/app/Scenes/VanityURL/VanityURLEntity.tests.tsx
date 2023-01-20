@@ -1,12 +1,12 @@
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
 import { Fair, FairFragmentContainer, FairPlaceholder } from "app/Scenes/Fair/Fair"
+import { PartnerContainer } from "app/Scenes/Partner/Partner"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { __renderWithPlaceholderTestUtils__ } from "app/utils/renderWithPlaceholder"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Spinner } from "palette"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { PartnerContainer } from "../Partner/Partner"
 import { VanityURLEntityRenderer } from "./VanityURLEntity"
 import { VanityURLPossibleRedirect } from "./VanityURLPossibleRedirect"
 

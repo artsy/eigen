@@ -49,7 +49,7 @@ export const Conversations: React.FC<Props> = (props) => {
     }
   }
 
-  const refreshConversations = (withSpinner: boolean = false) => {
+  const refreshConversations = (withSpinner = false) => {
     if (!relay.isLoading()) {
       if (withSpinner) {
         setIsFetching(true)

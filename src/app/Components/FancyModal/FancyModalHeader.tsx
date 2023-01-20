@@ -1,4 +1,5 @@
 import { themeGet } from "@styled-system/theme-get"
+import { ResponsiveAlignItemsValue } from "app/Components/Bidding/Elements/types"
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -11,7 +12,6 @@ import {
 } from "palette"
 import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
-import { ResponsiveAlignItemsValue } from "../Bidding/Elements/types"
 
 export interface FancyModalHeaderProps {
   hideBottomDivider?: boolean

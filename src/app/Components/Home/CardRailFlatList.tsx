@@ -1,7 +1,10 @@
+import {
+  AboveTheFoldFlatList,
+  AboveTheFoldFlatListProps,
+} from "app/Components/AboveTheFoldFlatList"
+import Spinner from "app/Components/Spinner"
 import { Spacer } from "palette"
 import { View } from "react-native"
-import { AboveTheFoldFlatList, AboveTheFoldFlatListProps } from "../AboveTheFoldFlatList"
-import Spinner from "../Spinner"
 
 export const INTER_CARD_PADDING = 15
 

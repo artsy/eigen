@@ -1,5 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkScreenHeaderTestQuery } from "__generated__/ArtworkScreenHeaderTestQuery.graphql"
+import { ArtworkStoreProvider } from "app/Scenes/Artwork/ArtworkStore"
 import { goBack } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -7,7 +8,6 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { ArtworkStoreProvider } from "../ArtworkStore"
 import { ArtworkScreenHeaderFragmentContainer } from "./ArtworkScreenHeader"
 
 jest.unmock("react-relay")

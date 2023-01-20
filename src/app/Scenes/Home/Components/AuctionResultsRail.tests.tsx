@@ -1,13 +1,11 @@
+import { AuctionResultsRailTestsQuery } from "__generated__/AuctionResultsRailTestsQuery.graphql"
+import { SectionTitle } from "app/Components/SectionTitle"
+import { navigate } from "app/system/navigation/navigate"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { cloneDeep, first } from "lodash"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-
-import { navigate } from "app/system/navigation/navigate"
-
-import { AuctionResultsRailTestsQuery } from "__generated__/AuctionResultsRailTestsQuery.graphql"
-import { SectionTitle } from "app/Components/SectionTitle"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { AuctionResultsRailFragmentContainer } from "./AuctionResultsRail"
 
 jest.unmock("react-relay")

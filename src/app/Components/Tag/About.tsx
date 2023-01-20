@@ -1,10 +1,10 @@
 import { About_tag$data } from "__generated__/About_tag.graphql"
+import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { Text } from "palette"
 import { View } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import { createFragmentContainer, graphql } from "react-relay"
 import removeMarkdown from "remove-markdown"
-import { StickyTabPageScrollView } from "../StickyTabPage/StickyTabPageScrollView"
 
 interface AboutProps {
   tag: About_tag$data

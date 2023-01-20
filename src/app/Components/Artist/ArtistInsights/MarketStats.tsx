@@ -1,7 +1,10 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
 import { MarketStatsQuery } from "__generated__/MarketStatsQuery.graphql"
+import { MarketStats_priceInsightsConnection$data } from "__generated__/MarketStats_priceInsightsConnection.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
+import { extractNodes } from "app/utils/extractNodes"
 import { formatLargeNumber } from "app/utils/formatLargeNumber"
+import { formatSellThroughRate } from "app/utils/marketPriceInsightHelpers"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { DecreaseIcon, Flex, IncreaseIcon, Join, Separator, Spacer, Text } from "palette"
@@ -12,10 +15,6 @@ import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { useScreenDimensions } from "shared/hooks"
-import { extractNodes } from "../../../utils/extractNodes"
-
-import { MarketStats_priceInsightsConnection$data } from "__generated__/MarketStats_priceInsightsConnection.graphql"
-import { formatSellThroughRate } from "app/utils/marketPriceInsightHelpers"
 
 interface MarketStatsProps {
   priceInsightsConnection: MarketStats_priceInsightsConnection$data

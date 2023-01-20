@@ -1,5 +1,5 @@
-import { UpcomingAuctions_viewer$key } from "__generated__/UpcomingAuctions_viewer.graphql"
 import { UpcomingAuctionsRefetchQuery } from "__generated__/UpcomingAuctionsRefetchQuery.graphql"
+import { UpcomingAuctions_viewer$key } from "__generated__/UpcomingAuctions_viewer.graphql"
 import { Stack } from "app/Components/Stack"
 import { extractNodes } from "app/utils/extractNodes"
 import React, { useEffect } from "react"

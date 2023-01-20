@@ -14,9 +14,9 @@ import {
   TriangleDown,
   useColor,
 } from "palette"
+import { INPUT_HEIGHT } from "palette/elements/Input"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, TextInput, TouchableOpacity } from "react-native"
-import { INPUT_HEIGHT } from "../Input"
 
 export interface SelectOption<ValueType> {
   value: ValueType

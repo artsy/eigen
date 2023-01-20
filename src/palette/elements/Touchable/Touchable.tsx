@@ -1,3 +1,5 @@
+import { Flex } from "palette/elements/Flex"
+import { useColor } from "palette/hooks"
 import React from "react"
 import {
   GestureResponderEvent,
@@ -6,9 +8,6 @@ import {
   TouchableWithoutFeedback,
 } from "react-native"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
-
-import { useColor } from "../../hooks"
-import { Flex } from "../Flex"
 
 interface ExtraTouchableProps {
   flex?: number

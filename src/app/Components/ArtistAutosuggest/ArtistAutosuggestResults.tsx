@@ -1,16 +1,19 @@
 import { captureMessage } from "@sentry/react-native"
-import { ArtistAutosuggestResults_results$data } from "__generated__/ArtistAutosuggestResults_results.graphql"
 import { ArtistAutosuggestResultsQuery } from "__generated__/ArtistAutosuggestResultsQuery.graphql"
+import { ArtistAutosuggestResults_results$data } from "__generated__/ArtistAutosuggestResults_results.graphql"
+import { ErrorView } from "app/Components/ErrorView/ErrorView"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
-import { ProvidePlaceholderContext } from "app/utils/placeholders"
-import { PlaceholderBox, RandomWidthPlaceholderText } from "app/utils/placeholders"
+import {
+  ProvidePlaceholderContext,
+  PlaceholderBox,
+  RandomWidthPlaceholderText,
+} from "app/utils/placeholders"
 import { times } from "lodash"
 import { Flex, quoteLeft, quoteRight, Separator, Spacer, Text, useSpace } from "palette"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
-import { ErrorView } from "../ErrorView/ErrorView"
 import { ArtistAutosuggestRow } from "./ArtistAutosuggestRow"
 
 export type ArtistAutosuggestResult = NonNullable<

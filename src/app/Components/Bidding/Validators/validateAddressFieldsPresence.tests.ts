@@ -1,4 +1,7 @@
-import { mockFullAddress, mockPartiallyEmptyAddress } from "../__mocks__/billingAddress"
+import {
+  mockFullAddress,
+  mockPartiallyEmptyAddress,
+} from "app/Components/Bidding/__mocks__/billingAddress"
 import { validateAddressFieldsPresence } from "./validateAddressFieldsPresence"
 
 describe("Presence validator", () => {

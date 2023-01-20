@@ -1,4 +1,5 @@
 import { AuctionResultListItem_auctionResult$data } from "__generated__/AuctionResultListItem_auctionResult.graphql"
+import { AuctionResultsMidEstimate } from "app/Components/AuctionResult/AuctionResultMidEstimate"
 import { auctionResultHasPrice, auctionResultText } from "app/Scenes/AuctionResult/helpers"
 import { navigate } from "app/system/navigation/navigate"
 import { QAInfoManualPanel, QAInfoRow } from "app/utils/QAInfo"
@@ -8,7 +9,6 @@ import { bullet, Flex, NoArtworkIcon, Spacer, Text, Touchable, useColor } from "
 import { Stopwatch } from "palette/svgs/sf"
 import FastImage from "react-native-fast-image"
 import { createFragmentContainer, graphql } from "react-relay"
-import { AuctionResultsMidEstimate } from "../AuctionResult/AuctionResultMidEstimate"
 
 interface Props {
   auctionResult: AuctionResultListItem_auctionResult$data

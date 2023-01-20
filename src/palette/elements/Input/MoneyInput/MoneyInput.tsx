@@ -8,14 +8,13 @@ import {
   TriangleDown,
   useColor,
 } from "palette"
-import { forwardRef, useEffect, useRef } from "react"
-import { useState } from "react"
-import { SelectOption } from "../../Select"
-import { computeBorderColor } from "../Input"
 import {
   INTERNALSelectAndInputCombinationBase,
   ValuePayload,
-} from "../INTERNALSelectAndInputCombinationBase"
+} from "palette/elements/Input/INTERNALSelectAndInputCombinationBase"
+import { computeBorderColor } from "palette/elements/Input/Input"
+import { SelectOption } from "palette/elements/Select"
+import { forwardRef, useEffect, useRef, useState } from "react"
 
 export const MoneyInput = forwardRef<
   InputRef,
@@ -29,7 +28,6 @@ export const MoneyInput = forwardRef<
 >(
   (
     {
-      value,
       onChange,
       onModalFinishedClosing,
       maxModalHeight,
@@ -124,7 +122,6 @@ export const MoneyInput = forwardRef<
             </Touchable>
           )
         }}
-        // tslint:disable-next-line:no-shadowed-variable
         renderItemLabelForSelect={({ label, value }) => {
           return (
             <Flex flexDirection="row" alignItems="center" flexShrink={1}>

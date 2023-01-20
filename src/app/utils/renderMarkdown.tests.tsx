@@ -1,10 +1,10 @@
+import { readFileSync } from "fs"
+import { join } from "path"
 import { act, fireEvent, within } from "@testing-library/react-native"
 import { navigate } from "app/system/navigation/navigate"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { readFileSync } from "fs"
 import { Flex, Text } from "palette"
-import { join } from "path"
 import React from "react"
 import { defaultRules, renderMarkdown } from "./renderMarkdown"
 

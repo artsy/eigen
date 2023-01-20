@@ -1,13 +1,11 @@
-import { View, ViewStyle } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
-
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import Metadata from "./Metadata"
-
 import { ArtistShow_show$data } from "__generated__/ArtistShow_show.graphql"
+import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
 import { hrefForPartialShow } from "app/utils/router"
 import { Touchable } from "palette"
+import { View, ViewStyle } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
+import Metadata from "./Metadata"
 
 interface Props {
   show: ArtistShow_show$data

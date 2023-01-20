@@ -1,9 +1,9 @@
 import { compact } from "lodash"
+import { Box } from "palette/elements/Box"
 import { useColor } from "palette/hooks"
 import React, { useEffect, useRef } from "react"
 import { Animated, LayoutRectangle, ScrollView, View } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
-import { Box } from "../Box"
 
 export interface TabBarContainerProps {
   activeTabIndex: number

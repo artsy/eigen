@@ -37,6 +37,7 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
   describe(params.name + " filter option", () => {
     let initialState: ArtworkFiltersState
 
+    // eslint-disable-next-line prefer-const
     initialState = {
       selectedFilters: [],
       appliedFilters: [],

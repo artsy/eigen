@@ -170,7 +170,7 @@ export default class OpaqueImageView extends React.Component<Props, State> {
       const anyProps = props as any
       anyProps.placeholderBackgroundColor = processColor(props.placeholderBackgroundColor)
     } else {
-      const { placeholderBackgroundColor, ...remainder } = props
+      const { ...remainder } = props
       remainderProps = remainder
       backgroundColorStyle = { backgroundColor: props.placeholderBackgroundColor }
     }

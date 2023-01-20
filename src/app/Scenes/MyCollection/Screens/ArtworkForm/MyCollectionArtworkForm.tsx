@@ -13,26 +13,25 @@ import { MyCollectionArtwork_sharedProps$data } from "__generated__/MyCollection
 import { LengthUnitPreference } from "__generated__/UserPrefsModelQuery.graphql"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
+import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
+import { deleteArtworkImage } from "app/Scenes/MyCollection/mutations/deleteArtworkImage"
+import { myCollectionCreateArtwork } from "app/Scenes/MyCollection/mutations/myCollectionCreateArtwork"
+import { myCollectionDeleteArtwork } from "app/Scenes/MyCollection/mutations/myCollectionDeleteArtwork"
+import { myCollectionUpdateArtwork } from "app/Scenes/MyCollection/mutations/myCollectionUpdateArtwork"
 import {
   cleanArtworkPayload,
   explicitlyClearedFields,
 } from "app/Scenes/MyCollection/utils/cleanArtworkPayload"
+import { deletedPhotos } from "app/Scenes/MyCollection/utils/deletedPhotos"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { addClue, GlobalStore, setVisualClueAsSeen } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
-import { refreshMyCollection } from "app/utils/refreshHelpers"
+import { refreshMyCollection, refreshMyCollectionInsights } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { isEqual } from "lodash"
 import { useEffect, useRef, useState } from "react"
 import { Alert, InteractionManager } from "react-native"
 import { useTracking } from "react-tracking"
-import { refreshMyCollectionInsights } from "../../../../utils/refreshHelpers"
-import { deleteArtworkImage } from "../../mutations/deleteArtworkImage"
-import { myCollectionCreateArtwork } from "../../mutations/myCollectionCreateArtwork"
-import { myCollectionDeleteArtwork } from "../../mutations/myCollectionDeleteArtwork"
-import { myCollectionUpdateArtwork } from "../../mutations/myCollectionUpdateArtwork"
-import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
-import { deletedPhotos } from "../../utils/deletedPhotos"
 import { SavingArtworkModal } from "./Components/SavingArtworkModal"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
 import { storeLocalPhotos, uploadPhotos } from "./MyCollectionImageUtil"
@@ -48,7 +47,7 @@ export type ArtworkFormMode = "add" | "edit"
 // than the equivalent `type` in some situations.
 // https://github.com/microsoft/TypeScript/issues/15300
 // The react-navigation folks have written code that relies on the more permissive `type` behaviour.
-// tslint:disable-next-line:interface-over-type-literal
+
 export type ArtworkFormScreen = {
   ArtworkFormArtist: {
     mode: ArtworkFormMode
@@ -122,7 +121,6 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       await Promise.all([
         // This is to satisfy showing the insights modal for 2500 ms
         __TEST__ ? undefined : new Promise((resolve) => setTimeout(resolve, 2500)),
-        ,
         updateArtwork(values, dirtyFormCheckValues, props).then((hasMarketPriceInsights) => {
           setSavingArtworkModalDisplayText(
             hasMarketPriceInsights ? "Generating market data" : "Saving artwork"
@@ -318,8 +316,6 @@ export const updateArtwork = async (
     artistSearchResult,
     pricePaidDollars,
     pricePaidCurrency,
-    artist,
-    artistIds,
     artistDisplayName,
     ...others
   } = values

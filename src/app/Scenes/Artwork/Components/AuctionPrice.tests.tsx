@@ -1,4 +1,5 @@
 import { AuctionPriceTestsQuery } from "__generated__/AuctionPriceTestsQuery.graphql"
+import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import {
   AuctionPreview,
   AuctionPreviewNoStartingBid,
@@ -13,7 +14,6 @@ import {
   OpenAuctionReserveNotMetIncreasingOwnBid,
   OpenAuctionReserveNotMetWithBids,
 } from "app/__fixtures__/ArtworkBidInfo"
-import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"

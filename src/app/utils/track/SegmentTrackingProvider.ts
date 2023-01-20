@@ -1,8 +1,8 @@
 import { Analytics } from "@segment/analytics-react-native"
 import { addBreadcrumb } from "@sentry/react-native"
+import { visualize } from "app/utils/visualizer"
 import { Platform } from "react-native"
 import Config from "react-native-config"
-import { visualize } from "../visualizer"
 import { isCohesionScreen, TrackingProvider } from "./providers"
 
 export const SEGMENT_TRACKING_PROVIDER = "SEGMENT_TRACKING_PROVIDER"

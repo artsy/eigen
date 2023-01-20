@@ -1,8 +1,8 @@
+import { ImageCarouselContext } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
+import { useSpringValue } from "app/Scenes/Artwork/Components/ImageCarousel/useSpringValue"
 import { Text } from "palette"
 import { useContext, useMemo } from "react"
 import { Animated, View } from "react-native"
-import { ImageCarouselContext } from "../ImageCarouselContext"
-import { useSpringValue } from "../useSpringValue"
 import { boxShadow } from "./boxShadow"
 import { useSpringFade } from "./useSpringFade"
 

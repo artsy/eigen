@@ -7,7 +7,6 @@ import {
   VirtualizedList,
 } from "react-native"
 
-// tslint:disable-next-line:interface-over-type-literal
 type ScrollContext = {
   horizontal: boolean
 }
@@ -115,7 +114,7 @@ class ParentAwareScrollView extends React.PureComponent<ScrollViewProps, State> 
     this.props.onMomentumScrollEnd?.(e)
 
   render(): React.ReactNode {
-    const { children, onScroll, ...otherProps } = this.props
+    const { children, ...otherProps } = this.props
     return (
       <ScrollViewContext.Consumer>
         {(scrollContext: ScrollContext) => {

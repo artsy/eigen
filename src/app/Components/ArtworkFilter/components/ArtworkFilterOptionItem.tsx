@@ -1,6 +1,6 @@
+import { FilterDisplayConfig } from "app/Components/ArtworkFilter/types"
 import { TouchableRow } from "app/Components/TouchableRow"
 import { ArrowRightIcon, bullet, Flex, Text } from "palette"
-import { FilterDisplayConfig } from "../types"
 
 export interface ArtworkFilterOptionItemProps {
   item: FilterDisplayConfig

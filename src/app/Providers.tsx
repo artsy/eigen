@@ -11,10 +11,10 @@ import { RetryErrorBoundary } from "./Components/RetryErrorBoundary"
 import { ToastProvider } from "./Components/Toast/toastHook"
 import { GlobalStore, GlobalStoreProvider, useFeatureFlag } from "./store/GlobalStore"
 import { defaultEnvironment } from "./system/relay/createEnvironment"
+import { GravityWebsocketContextProvider } from "./utils/Websockets/GravityWebsocketContext"
 import { combineProviders } from "./utils/combineProviders"
 import { UnleashProvider } from "./utils/experiments/UnleashProvider"
 import { track } from "./utils/track"
-import { GravityWebsocketContextProvider } from "./utils/Websockets/GravityWebsocketContext"
 
 export const Providers = ({ children }: { children?: React.ReactNode }) =>
   combineProviders(

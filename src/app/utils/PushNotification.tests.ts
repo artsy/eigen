@@ -13,7 +13,7 @@ const mockFetch = jest.fn()
 
 ;(global as any).fetch = mockFetch
 
-function mockFetchJsonOnce(json: object, status: number = 200) {
+function mockFetchJsonOnce(json: object, status = 200) {
   mockFetch.mockResolvedValueOnce({
     status,
     json: () => Promise.resolve(json),
@@ -180,7 +180,7 @@ describe("Push Notification Tests", () => {
         alert: {},
         id: "22",
         sound: "default",
-        // tslint:disable-next-line:no-empty
+
         finish: () => {},
       }
 

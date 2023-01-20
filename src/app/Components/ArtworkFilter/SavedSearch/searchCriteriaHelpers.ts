@@ -1,5 +1,9 @@
+import {
+  defaultCommonFilterOptions,
+  FilterArray,
+  FilterData,
+} from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { isEqual, isNull } from "lodash"
-import { defaultCommonFilterOptions, FilterArray, FilterData } from "../ArtworkFilterHelpers"
 import { allowedSearchCriteriaKeys } from "./constants"
 import { SavedSearchEntity, SearchCriteria, SearchCriteriaAttributes } from "./types"
 

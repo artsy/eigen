@@ -1,6 +1,6 @@
 // NOTE: Component copied from original fair directory
-import { FairBMWArtActivation_fair$data } from "__generated__/FairBMWArtActivation_fair.graphql"
 import { FairBMWArtActivationQuery } from "__generated__/FairBMWArtActivationQuery.graphql"
+import { FairBMWArtActivation_fair$data } from "__generated__/FairBMWArtActivation_fair.graphql"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { BMWSponsorship } from "app/Scenes/City/CityBMWSponsorship"
 import { navigate } from "app/system/navigation/navigate"

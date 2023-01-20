@@ -1,7 +1,5 @@
-import "react-native"
-
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-
+import "react-native"
 import SmallList from "./SmallList"
 
 it("renders without throwing an error", () => {

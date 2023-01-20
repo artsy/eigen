@@ -1,6 +1,6 @@
-import { MyProfilePayment_me$data } from "__generated__/MyProfilePayment_me.graphql"
 import { MyProfilePaymentDeleteCardMutation } from "__generated__/MyProfilePaymentDeleteCardMutation.graphql"
 import { MyProfilePaymentQuery } from "__generated__/MyProfilePaymentQuery.graphql"
+import { MyProfilePayment_me$data } from "__generated__/MyProfilePayment_me.graphql"
 import { CreditCardDetailsContainer } from "app/Components/CreditCardDetails"
 import { MenuItem } from "app/Components/MenuItem"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
@@ -34,7 +34,7 @@ const NUM_CARDS_TO_FETCH = 100 // stupidly high because most people will have 1 
 // When creating a new card we need to wait for a refresh of this screen before navigating back.
 // At the moment the only way for these screens to communicate is via global state, since we can't
 // transmit react contexts accross screens.
-// tslint:disable-next-line:variable-name
+
 export let __triggerRefresh: null | (() => Promise<void>) = null
 
 const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPaginationProp }> = ({

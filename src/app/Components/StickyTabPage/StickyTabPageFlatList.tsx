@@ -2,8 +2,8 @@ import { useSpace } from "palette"
 import React, { createContext, useContext, useRef, useState } from "react"
 import { FlatList, FlatListProps } from "react-native"
 import Animated from "react-native-reanimated"
-import { useAnimatedValue } from "./reanimatedHelpers"
 import { StickyTabPageContext, useStickyTabPageContext } from "./StickyTabPageContext"
+import { useAnimatedValue } from "./reanimatedHelpers"
 
 interface FlatListRequiredContext {
   /** This is the position/index of the Flatlist in the SnappyHorizontalRail.

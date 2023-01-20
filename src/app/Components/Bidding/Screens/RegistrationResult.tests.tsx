@@ -1,14 +1,11 @@
+import { Icon20 } from "app/Components/Bidding/Components/Icon"
+import { dismissModal, navigate } from "app/system/navigation/navigate"
+import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 
 import { Button, LinkText } from "palette"
-import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
-
-import { dismissModal, navigate } from "app/system/navigation/navigate"
-
 import { Linking } from "react-native"
-
-import { extractText } from "app/utils/tests/extractText"
-import { Icon20 } from "../Components/Icon"
+import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
 
 describe("Registration result component", () => {
   it("renders registration pending properly", () => {

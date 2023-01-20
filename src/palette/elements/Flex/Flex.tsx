@@ -1,5 +1,5 @@
+import { Box, BoxProps } from "palette/elements/Box"
 import styled from "styled-components/native"
-import { Box, BoxProps } from "../Box"
 
 /**
  * Flex is Box with display: flex

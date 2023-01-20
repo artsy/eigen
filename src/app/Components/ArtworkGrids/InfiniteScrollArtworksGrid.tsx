@@ -9,6 +9,7 @@
 import { ScreenOwnerType } from "@artsy/cohesion"
 import { InfiniteScrollArtworksGrid_connection$data } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
 import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
+import ParentAwareScrollView from "app/Components/ParentAwareScrollView"
 import { PAGE_SIZE } from "app/Components/constants"
 import { MyCollectionArtworkGridItemFragmentContainer } from "app/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkGridItem"
 import { extractNodes } from "app/utils/extractNodes"
@@ -29,7 +30,6 @@ import {
 } from "react-native"
 import { createFragmentContainer, RelayPaginationProp } from "react-relay"
 import { graphql } from "relay-runtime"
-import ParentAwareScrollView from "../ParentAwareScrollView"
 import Artwork, { ArtworkProps } from "./ArtworkGridItem"
 
 /**

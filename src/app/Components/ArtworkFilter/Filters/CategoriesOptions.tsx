@@ -8,8 +8,10 @@ import {
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { useMultiSelect } from "./useMultiSelect"
 
-interface ArtistIDsArtworksOptionsScreenProps
-  extends StackScreenProps<ArtworkFilterNavigationStack, "CategoriesOptionsScreen"> {}
+type ArtistIDsArtworksOptionsScreenProps = StackScreenProps<
+  ArtworkFilterNavigationStack,
+  "CategoriesOptionsScreen"
+>
 
 export const CATEGORIES_OPTIONS: FilterData[] = [
   {

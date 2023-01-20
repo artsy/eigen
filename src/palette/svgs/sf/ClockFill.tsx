@@ -1,5 +1,5 @@
 import { useColor } from "palette/hooks"
-import { Icon, IconProps, Path } from "../Icon"
+import { Icon, IconProps, Path } from "palette/svgs/Icon"
 
 /** ClockFill */
 export const ClockFill: React.FC<IconProps> = (props) => {

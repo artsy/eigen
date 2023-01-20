@@ -1,13 +1,13 @@
 import { ScreenOwnerType } from "@artsy/cohesion"
 import { SaleArtworkList_connection$data } from "__generated__/SaleArtworkList_connection.graphql"
-import { PAGE_SIZE } from "app/Components/constants"
 import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
+import { PAGE_SIZE } from "app/Components/constants"
+import { extractNodes } from "app/utils/extractNodes"
 import { Spacer } from "palette"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
-import { extractNodes } from "../../../utils/extractNodes"
 import { SaleArtworkListItemContainer as SaleArtworkListItem } from "./SaleArtworkListItem"
 
 interface Props {

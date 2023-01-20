@@ -1,5 +1,5 @@
-import { PartnerCard_artwork$data } from "__generated__/PartnerCard_artwork.graphql"
 import { PartnerCardTestsQuery } from "__generated__/PartnerCardTestsQuery.graphql"
+import { PartnerCard_artwork$data } from "__generated__/PartnerCard_artwork.graphql"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"

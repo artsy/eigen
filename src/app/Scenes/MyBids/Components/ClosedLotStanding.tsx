@@ -1,4 +1,6 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { ClosedLotStanding_saleArtwork$data } from "__generated__/ClosedLotStanding_saleArtwork.graphql"
+import { TimelySale } from "app/Scenes/MyBids/helpers/timely"
 import { navigate } from "app/system/navigation/navigate"
 import moment from "moment-timezone"
 import { Flex, Text } from "palette"
@@ -6,11 +8,8 @@ import { StarCircleFill } from "palette/svgs/sf"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { TimelySale } from "../helpers/timely"
 import { Lost, Passed, Won } from "./BiddingStatuses"
 import { LotFragmentContainer as Lot } from "./Lot"
-
-import { ClosedLotStanding_saleArtwork$data } from "../../../../__generated__/ClosedLotStanding_saleArtwork.graphql"
 
 type BidderResult = "won" | "lost" | "passed"
 

@@ -1,13 +1,13 @@
 import { FairHeader_fair$data } from "__generated__/FairHeader_fair.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "app/Components/ReadMore"
+import { shouldShowFairBMWArtActivationLink } from "app/Scenes/Fair/FairBMWArtActivation"
 import { shouldShowLocationMap } from "app/Scenes/Fair/FairMoreInfo"
 import { navigate } from "app/system/navigation/navigate"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { Box, ChevronIcon, Flex, Spacer, Text } from "palette"
 import { Dimensions, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import { shouldShowFairBMWArtActivationLink } from "../FairBMWArtActivation"
 import { FairTimingFragmentContainer as FairTiming } from "./FairTiming"
 
 interface FairHeaderProps {

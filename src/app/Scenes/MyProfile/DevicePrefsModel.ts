@@ -1,5 +1,5 @@
-import { EnvironmentModel, getEnvironmentModel } from "app/store/config/EnvironmentModel"
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
+import { EnvironmentModel, getEnvironmentModel } from "app/store/config/EnvironmentModel"
 import { action, Action, computed, Computed } from "easy-peasy"
 import { Appearance } from "react-native"
 

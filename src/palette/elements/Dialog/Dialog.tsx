@@ -1,10 +1,10 @@
 import { useTheme } from "palette/Theme"
+import { Button } from "palette/elements/Button"
+import { Flex } from "palette/elements/Flex"
+import { Text } from "palette/elements/Text"
 import { useEffect, useRef, useState } from "react"
 import { Animated, Modal, ScrollView, StyleSheet, TouchableWithoutFeedback } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
-import { Button } from "../Button"
-import { Flex } from "../Flex"
-import { Text } from "../Text"
 
 interface DialogAction {
   text: string

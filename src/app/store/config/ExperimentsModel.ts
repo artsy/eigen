@@ -1,5 +1,5 @@
+import { assignDeep } from "app/store/persistence"
 import { action, Action } from "easy-peasy"
-import { assignDeep } from "../persistence"
 
 export interface ExperimentsModel {
   sessionState: {

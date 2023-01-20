@@ -1,11 +1,10 @@
+import { PDFPreview_attachment$data } from "__generated__/PDFPreview_attachment.graphql"
 import { Flex, Text } from "palette"
 import { Image } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 import AttachmentPreview, { AttachmentProps } from "./AttachmentPreview"
-
-import { PDFPreview_attachment$data } from "__generated__/PDFPreview_attachment.graphql"
 
 export const AttachmentContainer = styled(Flex)`
   flex: 1;

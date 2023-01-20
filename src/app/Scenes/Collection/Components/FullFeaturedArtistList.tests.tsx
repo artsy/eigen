@@ -3,8 +3,8 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { FullFeaturedArtistListCollectionFixture } from "./__fixtures__/CollectionFixture"
 import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from "./FullFeaturedArtistList"
+import { FullFeaturedArtistListCollectionFixture } from "./__fixtures__/CollectionFixture"
 
 jest.unmock("react-relay")
 

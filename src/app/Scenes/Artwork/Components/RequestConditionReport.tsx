@@ -1,7 +1,7 @@
-import { RequestConditionReport_artwork$data } from "__generated__/RequestConditionReport_artwork.graphql"
-import { RequestConditionReport_me$data } from "__generated__/RequestConditionReport_me.graphql"
 import { RequestConditionReportMutation } from "__generated__/RequestConditionReportMutation.graphql"
 import { RequestConditionReportQuery } from "__generated__/RequestConditionReportQuery.graphql"
+import { RequestConditionReport_artwork$data } from "__generated__/RequestConditionReport_artwork.graphql"
+import { RequestConditionReport_me$data } from "__generated__/RequestConditionReport_me.graphql"
 import { Modal } from "app/Components/Modal"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { Schema, track } from "app/utils/track"
@@ -44,6 +44,7 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
 
   requestConditionReport = () => {
     const { artwork, relay } = this.props
+    // eslint-disable-next-line no-async-promise-executor
     return new Promise<RequestConditionReportMutation["response"]>(async (resolve, reject) => {
       commitMutation<RequestConditionReportMutation>(relay.environment, {
         onCompleted: resolve,
@@ -123,7 +124,7 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
           loading={requestingConditionReport}
           onPress={this.handleRequestConditionReportTap.bind(this)}
         >
-          {"Request a Report"}
+          Request a Report
         </Button>
         <Flex height={0}>
           <Modal

@@ -1,11 +1,10 @@
+import { FlexProps } from "app/Components/Bidding/Elements/Flex"
+import { PhoneNumberForm } from "app/Components/Bidding/Screens/PhoneNumberForm"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { View } from "react-native"
 
 import { BidInfoRow } from "./BidInfoRow"
 import { Divider } from "./Divider"
-
-import { FlexProps } from "../Elements/Flex"
-import { PhoneNumberForm } from "../Screens/PhoneNumberForm"
 
 interface PhoneInfoProps extends FlexProps {
   navigator: NavigatorIOS

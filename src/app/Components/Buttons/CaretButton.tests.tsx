@@ -1,9 +1,8 @@
+import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 
-import { CaretButton } from "./CaretButton"
-
-import { extractText } from "app/utils/tests/extractText"
 import { TouchableOpacity } from "react-native"
+import { CaretButton } from "./CaretButton"
 
 describe("CaretButton", () => {
   it("renders properly", () => {

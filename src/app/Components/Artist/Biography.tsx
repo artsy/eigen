@@ -1,13 +1,12 @@
+import { Biography_artist$data } from "__generated__/Biography_artist.graphql"
+import { SectionTitle } from "app/Components/SectionTitle"
+import { Stack } from "app/Components/Stack"
 import { Text } from "palette"
 import React from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import removeMarkdown from "remove-markdown"
-
-import { Biography_artist$data } from "__generated__/Biography_artist.graphql"
-import { SectionTitle } from "../SectionTitle"
-import { Stack } from "../Stack"
 
 interface Props {
   artist: Biography_artist$data

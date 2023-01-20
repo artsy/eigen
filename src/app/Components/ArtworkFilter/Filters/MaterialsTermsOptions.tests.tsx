@@ -1,9 +1,12 @@
 import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  ArtworkFiltersState,
+  ArtworkFiltersStoreProvider,
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { MockFilterScreen } from "app/Components/ArtworkFilter/FilterTestHelper"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "../ArtworkFilterStore"
-import { MockFilterScreen } from "../FilterTestHelper"
-import { getEssentialProps } from "./helper"
 import { MaterialsTermsOptionsScreen } from "./MaterialsTermsOptions"
+import { getEssentialProps } from "./helper"
 
 describe("Materials Options Screen", () => {
   const initialState: ArtworkFiltersState = {

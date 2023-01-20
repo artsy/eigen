@@ -1,7 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { addBreadcrumb } from "@sentry/react-native"
-import { matchRoute } from "app/routes"
 import { BottomTabRoutes } from "app/Scenes/BottomTabs/bottomTabsConfig"
+import { matchRoute } from "app/routes"
 import {
   getCurrentEmissionState,
   GlobalStore,
@@ -315,5 +315,4 @@ const tracks = {
   }),
 }
 
-// tslint:disable-next-line:variable-name
 export const _test_expandGoogleAdLink = expandGoogleAdLink

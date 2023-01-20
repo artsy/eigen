@@ -1,13 +1,13 @@
 import { fireEvent } from "@testing-library/react-native"
-import { BidResult_sale_artwork$data } from "__generated__/BidResult_sale_artwork.graphql"
 import { BidResultTestsQuery } from "__generated__/BidResultTestsQuery.graphql"
+import { BidResult_sale_artwork$data } from "__generated__/BidResult_sale_artwork.graphql"
+import { BidderPositionResult } from "app/Components/Bidding/types"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
 import { createMockEnvironment } from "relay-test-utils"
-import { BidderPositionResult } from "../types"
 import { BidResultScreen } from "./BidResult"
 
 jest.unmock("react-relay")

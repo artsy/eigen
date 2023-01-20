@@ -1,4 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack"
+import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
 import {
   aggregationForFilter,
   AggregationName,
@@ -11,14 +12,15 @@ import {
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 
-import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
 import { sortBy } from "lodash"
 import { useCallback, useMemo } from "react"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { useMultiSelect } from "./useMultiSelect"
 
-interface ArtistIDsArtworksOptionsScreenProps
-  extends StackScreenProps<ArtworkFilterNavigationStack, "ArtistIDsOptionsScreen"> {}
+type ArtistIDsArtworksOptionsScreenProps = StackScreenProps<
+  ArtworkFilterNavigationStack,
+  "ArtistIDsOptionsScreen"
+>
 
 export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsScreenProps> = ({
   navigation,

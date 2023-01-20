@@ -1,44 +1,56 @@
+import { format } from "util"
+import mockAsyncStorage from "@react-native-async-storage/async-storage/jest/async-storage-mock"
+import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js"
 import "@testing-library/jest-native/extend-expect"
+import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { mockPostEventToProviders, mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { mockNavigate } from "app/utils/tests/navigationMocks"
 import chalk from "chalk"
 import expect from "expect"
 import "jest-extended"
-import { format } from "util"
+import { NativeModules } from "react-native"
+import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
+import track, { useTracking } from "react-tracking"
+import { ScreenDimensionsWithSafeAreas } from "shared/hooks"
+import diff from "snapshot-diff"
 
-// MARK: - General preparation
+/**
+ * General Preparation
+ */
 
 // @ts-expect-error
 global.__TEST__ = true
 declare const process: any
 
+function logToError(type: keyof typeof console, args: unknown[], constructorOpt: () => void) {
+  const explanation =
+    chalk.white(`Test failed due to \`console.${type}(…)\` call.\n`) +
+    chalk.gray("(Disable with ALLOW_CONSOLE_LOGS=true env variable.)\n\n")
+  if (args[0] instanceof Error) {
+    const msg = explanation + chalk.red(args[0].message)
+    const err = new Error(msg)
+    err.stack = args[0].stack!.replace(`Error: ${args[0].message}`, msg)
+    return err
+  } else if (
+    // Because we use react-dom in tests to render react-native components, a few warnings are being logged that we do
+    // not care for, so ignore these.
+    typeof args[0] === "string" &&
+    !args[0].includes("is using incorrect casing") &&
+    !args[0].includes("is unrecognized in this browser") &&
+    ![args[0].includes("React does not recognize the `testID` prop on a DOM element.")]
+  ) {
+    const err = new Error(explanation + chalk.red(format(args[0], ...args.slice(1))))
+    ;(Error as any).captureStackTrace(err, constructorOpt)
+    return err
+  }
+  return null
+}
+
 if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
   const originalLoggers = {
     error: console.error,
     warn: console.warn,
-  }
-
-  function logToError(type: keyof typeof console, args: unknown[], constructorOpt: () => void) {
-    const explanation =
-      chalk.white(`Test failed due to \`console.${type}(…)\` call.\n`) +
-      chalk.gray("(Disable with ALLOW_CONSOLE_LOGS=true env variable.)\n\n")
-    if (args[0] instanceof Error) {
-      const msg = explanation + chalk.red(args[0].message)
-      const err = new Error(msg)
-      err.stack = args[0].stack!.replace(`Error: ${args[0].message}`, msg)
-      return err
-    } else if (
-      // Because we use react-dom in tests to render react-native components, a few warnings are being logged that we do
-      // not care for, so ignore these.
-      typeof args[0] === "string" &&
-      !args[0].includes("is using incorrect casing") &&
-      !args[0].includes("is unrecognized in this browser") &&
-      ![args[0].includes("React does not recognize the `testID` prop on a DOM element.")]
-    ) {
-      const err = new Error(explanation + chalk.red(format(args[0], ...args.slice(1))))
-      ;(Error as any).captureStackTrace(err, constructorOpt)
-      return err
-    }
-    return null
   }
 
   beforeEach((done) => {
@@ -62,35 +74,26 @@ if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
 }
 
 // Waiting on https://github.com/thymikee/snapshot-diff/pull/17
-import diff from "snapshot-diff"
 expect.extend({ toMatchDiffSnapshot: (diff as any).toMatchDiffSnapshot })
 
-// MARK: - External deps mocks
+/**
+ * External deps mocks
+ */
 
 jest.mock("react-native-screens", () => ({
   ...jest.requireActual("react-native-screens"),
   enableScreens: jest.fn(),
 }))
 
-// @ts-expect-error typescript doesn't see this for some reason
-import mockAsyncStorage from "@react-native-async-storage/async-storage/jest/async-storage-mock"
 jest.mock("@react-native-async-storage/async-storage", () => mockAsyncStorage)
 
-// @ts-expect-error
-import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js"
 jest.mock("@react-native-community/netinfo", () => mockRNCNetInfo)
 
-// @ts-expect-error
-import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
 jest.mock("react-native-safe-area-context", () => mockSafeAreaContext)
 
-// tslint:disable-next-line:no-var-requires
 require("jest-fetch-mock").enableMocks()
 
-import { mockPostEventToProviders, mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
-
 jest.mock("react-tracking")
-import track, { useTracking } from "react-tracking"
 ;(track as jest.Mock).mockImplementation(() => (x: any) => x)
 ;(useTracking as jest.Mock).mockImplementation(() => ({ trackEvent: mockTrackEvent }))
 
@@ -189,9 +192,13 @@ jest.mock("@invertase/react-native-apple-authentication", () => ({
   },
 }))
 
-// prettier-ignore
-// tslint:disable-next-line:no-empty
-jest.mock("@sentry/react-native", () => ({ captureMessage() {},  init() {},  setUser() {},  addBreadcrumb() {},  withScope() {} }))
+jest.mock("@sentry/react-native", () => ({
+  captureMessage() {},
+  init() {},
+  setUser() {},
+  addBreadcrumb() {},
+  withScope() {},
+}))
 
 // Needing to mock react-native-scrollable-tab-view due to Flow issue
 jest.mock("react-native-scrollable-tab-view", () => jest.fn(() => null))
@@ -225,10 +232,9 @@ jest.mock("react-native-localize", () => ({
   },
 }))
 
-// tslint:disable-next-line: no-var-requires
 require("react-native-reanimated/src/reanimated2/jestUtils").setUpTests()
+
 // @ts-expect-error
-// tslint:disable-next-line:no-empty
 global.__reanimatedWorkletInit = () => {}
 jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))
 
@@ -337,13 +343,11 @@ jest.mock("react-native-keychain", () => ({
   setInternetCredentials: jest.fn().mockResolvedValue(true),
 }))
 
-// MARK: - Our mocks
+/**
+ * Mocks for our code
+ */
 
 // Native modules
-import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
-import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { NativeModules } from "react-native"
-import { ScreenDimensionsWithSafeAreas } from "shared/hooks"
 
 type OurNativeModules = typeof LegacyNativeModules & { ArtsyNativeModule: typeof ArtsyNativeModule }
 

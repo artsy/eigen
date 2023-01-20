@@ -1,5 +1,4 @@
-import { OwnerType } from "@artsy/cohesion"
-import { ContextModule } from "@artsy/cohesion"
+import { OwnerType, ContextModule } from "@artsy/cohesion"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
@@ -7,6 +6,13 @@ import { captureMessage } from "@sentry/react-native"
 import { ErrorView } from "app/Components/ErrorView/ErrorView"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import {
+  artworkDetailsCompletedEvent,
+  consignmentSubmittedEvent,
+  contactInformationCompletedEvent,
+  toggledAccordionEvent,
+  uploadPhotosCompletedEvent,
+} from "app/Scenes/SellWithArtsy/utils/TrackingEvent"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { BackButton } from "app/system/navigation/BackButton"
 import { goBack } from "app/system/navigation/navigate"
@@ -19,13 +25,6 @@ import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
-import {
-  artworkDetailsCompletedEvent,
-  consignmentSubmittedEvent,
-  contactInformationCompletedEvent,
-  toggledAccordionEvent,
-  uploadPhotosCompletedEvent,
-} from "../utils/TrackingEvent"
 import { ArtworkDetails } from "./ArtworkDetails/ArtworkDetails"
 import { createOrUpdateSubmission } from "./ArtworkDetails/utils/createOrUpdateSubmission"
 import { ArtworkDetailsFormModel } from "./ArtworkDetails/validation"
@@ -46,8 +45,10 @@ const DEFAULT_STEPS_IN_ORDER: STEPS[] = [
   STEPS.ContactInformation,
 ]
 
-interface SubmitArtworkScreenNavigationProps
-  extends StackScreenProps<SubmitArtworkOverviewNavigationStack, "SubmitArtworkScreen"> {}
+type SubmitArtworkScreenNavigationProps = StackScreenProps<
+  SubmitArtworkOverviewNavigationStack,
+  "SubmitArtworkScreen"
+>
 
 export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> = ({
   navigation,
@@ -305,7 +306,6 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
   )
 }
 
-// tslint:disable-next-line:interface-over-type-literal
 export type SubmitArtworkOverviewNavigationStack = {
   SubmitArtworkScreen: undefined
   ArtworkSubmittedScreen: { submissionId: string }

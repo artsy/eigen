@@ -1,14 +1,14 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { ArtistHeader_artist$data } from "__generated__/ArtistHeader_artist.graphql"
 import { ArtistHeaderFollowArtistMutation } from "__generated__/ArtistHeaderFollowArtistMutation.graphql"
+import { ArtistHeader_artist$data } from "__generated__/ArtistHeader_artist.graphql"
 import { formatLargeNumberOfItems } from "app/utils/formatLargeNumberOfItems"
+import { Schema } from "app/utils/track"
 import { userHadMeaningfulInteraction } from "app/utils/userHadMeaningfulInteraction"
 import { Box, bullet, Flex, FollowButton, Spacer, Text } from "palette"
 import { useState } from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { Schema } from "../../utils/track"
 
 export const ARTIST_HEADER_HEIGHT = 156
 

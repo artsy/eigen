@@ -11,8 +11,8 @@ export interface S3UploadResponse {
 // These are in RN, but not declared in the RN types:
 // https://github.com/facebook/react-native/blob/master/Libraries/Network/FormData.js
 // https://github.com/facebook/react-native/blob/master/Libraries/Network/XMLHttpRequest.js
-declare var FormData: any
-declare var XMLHttpRequest: any
+declare let FormData: any
+declare let XMLHttpRequest: any
 
 interface Props {
   filePath: string
@@ -45,6 +45,7 @@ export const uploadFileToS3 = ({
     }
 
     for (const key in data) {
+      // eslint-disable-next-line no-prototype-builtins
       if (data.hasOwnProperty(key)) {
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         formData.append(key, data[key])

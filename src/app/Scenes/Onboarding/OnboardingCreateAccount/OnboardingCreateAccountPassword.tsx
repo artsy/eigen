@@ -8,11 +8,10 @@ import {
   UserSchema,
 } from "./OnboardingCreateAccount"
 
-interface OnboardingCreateAccountPasswordProps
-  extends StackScreenProps<
-    OnboardingCreateAccountNavigationStack,
-    "OnboardingCreateAccountPassword"
-  > {}
+type OnboardingCreateAccountPasswordProps = StackScreenProps<
+  OnboardingCreateAccountNavigationStack,
+  "OnboardingCreateAccountPassword"
+>
 
 export const OnboardingCreateAccountPassword: React.FC<OnboardingCreateAccountPasswordProps> = ({
   navigation,

@@ -1,5 +1,11 @@
-import { ImageCarouselContext, ImageDescriptor } from "../ImageCarouselContext"
-
+import { captureMessage } from "@sentry/react-native"
+import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import {
+  ImageCarouselContext,
+  ImageDescriptor,
+} from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
+import { fitInside, Position, Rect } from "app/Scenes/Artwork/Components/ImageCarousel/geometry"
+import { useAnimatedValue } from "app/Scenes/Artwork/Components/ImageCarousel/useAnimatedValue"
 import React, {
   useCallback,
   useContext,
@@ -9,7 +15,6 @@ import React, {
   useRef,
   useState,
 } from "react"
-
 import {
   Animated,
   findNodeHandle,
@@ -21,21 +26,13 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native"
-
-const { ARScrollViewHelpers } = NativeModules
-
-import { useAnimatedValue } from "../useAnimatedValue"
-
-import { fitInside, Position, Rect } from "../geometry"
-
-import { captureMessage } from "@sentry/react-native"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useScreenDimensions } from "shared/hooks"
-import { calculateMaxZoomViewScale } from "./DeepZoom/deepZoomGeometry"
 import { DeepZoomOverlay } from "./DeepZoom/DeepZoomOverlay"
+import { calculateMaxZoomViewScale } from "./DeepZoom/deepZoomGeometry"
 import { useDoublePressCallback } from "./useDoublePressCallback"
 import { useNewEventStream } from "./useEventStream"
 
+const { ARScrollViewHelpers } = NativeModules
 export interface ImageZoomView {
   resetZoom(): void
 }

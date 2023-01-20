@@ -1,4 +1,4 @@
-import { endash, range } from "../../helpers"
+import { endash, range } from "palette/helpers"
 
 describe("Text", () => {
   it("uses endash in ranges", () => {

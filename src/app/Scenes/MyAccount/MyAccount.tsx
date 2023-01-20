@@ -1,5 +1,5 @@
-import { MyAccount_me$data } from "__generated__/MyAccount_me.graphql"
 import { MyAccountQuery } from "__generated__/MyAccountQuery.graphql"
+import { MyAccount_me$data } from "__generated__/MyAccount_me.graphql"
 import { MenuItem } from "app/Components/MenuItem"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { SectionTitle } from "app/Components/SectionTitle"

@@ -6,9 +6,9 @@ import {
   TappedMyCollectionInsightsMedianAuctionPriceChartCategory,
   TappedMyCollectionInsightsMedianAuctionPriceChartTimeframe,
 } from "@artsy/cohesion"
+import { useMedianSalePriceChartDataContext } from "app/Scenes/MyCollection/Screens/Insights/providers/MedianSalePriceChartDataContext"
 import { useEffect } from "react"
 import { useTracking } from "react-tracking"
-import { useMedianSalePriceChartDataContext } from "../providers/MedianSalePriceChartDataContext"
 
 interface MedianSalePriceChartTrackingProps {
   artistID: string

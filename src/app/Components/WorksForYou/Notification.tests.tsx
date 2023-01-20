@@ -1,6 +1,5 @@
-import "react-native"
-
 import { renderWithLayout } from "app/utils/tests/renderWithLayout"
+import "react-native"
 import { Notification } from "./Notification"
 
 it("renders without throwing an error for unread notification", () => {

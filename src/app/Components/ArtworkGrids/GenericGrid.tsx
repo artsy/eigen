@@ -1,11 +1,11 @@
 import { GenericGrid_artworks$data } from "__generated__/GenericGrid_artworks.graphql"
 import Spinner from "app/Components/Spinner"
+import { Stack } from "app/Components/Stack"
 import { RandomNumberGenerator } from "app/utils/placeholders"
 import { times } from "lodash"
 import React from "react"
 import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import { Stack } from "../Stack"
 import Artwork, { ArtworkGridItemPlaceholder, ArtworkProps } from "./ArtworkGridItem"
 
 interface Props {
@@ -34,7 +34,7 @@ type GenericArtworkType = GenericGrid_artworks$data extends ReadonlyArray<infer 
 
 export class GenericArtworksGrid extends React.Component<Props & PropsForArtwork, State> {
   static defaultProps = {
-    sectionDirection: "column" as "column",
+    sectionDirection: "column" as const,
     sectionMargin: 20,
     itemMargin: 20,
   }

@@ -1,10 +1,10 @@
 import { themeGet } from "@styled-system/theme-get"
+import { Flex } from "palette/elements/Flex"
+import { Text } from "palette/elements/Text"
 import { ImgHTMLAttributes } from "react"
 import { Image } from "react-native"
 import styled from "styled-components/native"
 import { borderRadius } from "styled-system"
-import { Flex } from "../Flex"
-import { Text } from "../Text"
 
 const DEFAULT_SIZE = "md"
 

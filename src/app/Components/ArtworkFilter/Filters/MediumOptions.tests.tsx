@@ -3,8 +3,8 @@ import {
   sharedAggregateFilterValidation,
   ValidationParams,
 } from "./AggregationOptionCommonValidation"
-import { getEssentialProps } from "./helper"
 import { MediumOptionsScreen } from "./MediumOptions"
+import { getEssentialProps } from "./helper"
 
 describe("Medium Options Screen", () => {
   const mockAggregations: Aggregations = [

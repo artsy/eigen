@@ -1,19 +1,19 @@
 import { FavoriteShowsQuery } from "__generated__/FavoriteShowsQuery.graphql"
-import { PAGE_SIZE } from "app/Components/constants"
+import { FavoriteShows_me$data } from "__generated__/FavoriteShows_me.graphql"
 import { ShowItemRowContainer as ShowItemRow } from "app/Components/Lists/ShowItemRow"
 import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
-import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { Component } from "react"
-import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
-import { FavoriteShows_me$data } from "__generated__/FavoriteShows_me.graphql"
 import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
 import { StickyTabPageFlatList } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+import { PAGE_SIZE } from "app/Components/constants"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
+import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Spacer } from "palette"
+import { Component } from "react"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 interface Props {
   me: FavoriteShows_me$data

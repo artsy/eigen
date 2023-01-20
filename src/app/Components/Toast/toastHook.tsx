@@ -7,11 +7,10 @@ import { ToastDetails, ToastPlacement } from "./types"
 type ToastContextValue = typeof Toast
 
 const ToastContext = createContext<ToastContextValue>({
-  // tslint:disable-next-line:no-empty
   show: () => {},
-  // tslint:disable-next-line:no-empty
+
   hide: () => {},
-  // tslint:disable-next-line:no-empty
+
   hideOldest: () => {},
 })
 const useToastContext = () => useContext(ToastContext)

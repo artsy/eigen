@@ -1,5 +1,5 @@
 export class ExecutionQueue {
-  isExecuting: boolean = false
+  isExecuting = false
   queue: Array<() => Promise<void>> = []
 
   executeInQueue: <T>(f: () => Promise<T>) => Promise<T> = async (f) => {

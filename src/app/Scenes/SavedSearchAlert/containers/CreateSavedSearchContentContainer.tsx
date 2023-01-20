@@ -1,9 +1,14 @@
 import { useFocusEffect } from "@react-navigation/core"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
-import { CreateSavedSearchContentContainer_viewer$data } from "__generated__/CreateSavedSearchContentContainer_viewer.graphql"
 import { CreateSavedSearchContentContainerQuery } from "__generated__/CreateSavedSearchContentContainerQuery.graphql"
+import { CreateSavedSearchContentContainer_viewer$data } from "__generated__/CreateSavedSearchContentContainer_viewer.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { SavedSearchAlertForm } from "app/Scenes/SavedSearchAlert/SavedSearchAlertForm"
+import {
+  CreateSavedSearchAlertNavigationStack,
+  SavedSearchAlertMutationResult,
+} from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import {
   getNotificationPermissionsStatus,
@@ -13,11 +18,6 @@ import useAppState from "app/utils/useAppState"
 import { Box } from "palette"
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
-import { SavedSearchAlertForm } from "../SavedSearchAlertForm"
-import {
-  CreateSavedSearchAlertNavigationStack,
-  SavedSearchAlertMutationResult,
-} from "../SavedSearchAlertModel"
 
 interface CreateSavedSearchAlertContentQueryRendererProps {
   navigation: StackNavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">

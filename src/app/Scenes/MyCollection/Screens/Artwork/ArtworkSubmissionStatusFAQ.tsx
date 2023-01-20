@@ -43,25 +43,21 @@ export const ArtworkSubmissionStatusFAQ: React.FC = () => {
               <Flex flexDirection="column">
                 <Text mb={1}>
                   For more information, see our Collector Help Center article{" "}
-                  {
-                    <Text
-                      style={{ textDecorationLine: "underline" }}
-                      onPress={() => navigate(article)}
-                    >
-                      What items do you accept?
-                    </Text>
-                  }
+                  <Text
+                    style={{ textDecorationLine: "underline" }}
+                    onPress={() => navigate(article)}
+                  >
+                    What items do you accept?
+                  </Text>
                 </Text>
                 <Text>
                   Or get in touch with one of our specialists at{" "}
-                  {
-                    <Text
-                      style={{ textDecorationLine: "underline" }}
-                      onPress={() => sendEmailWithMailTo("mailto:consign@artsymail.com")}
-                    >
-                      consign@artsymail.com.
-                    </Text>
-                  }
+                  <Text
+                    style={{ textDecorationLine: "underline" }}
+                    onPress={() => sendEmailWithMailTo("mailto:consign@artsymail.com")}
+                  >
+                    consign@artsymail.com.
+                  </Text>
                 </Text>
               </Flex>
             </Join>

@@ -4,6 +4,7 @@ import { useAnimatableHeaderContext } from "./AnimatableHeaderContext"
 import { AnimatableHeaderLargeTitle } from "./AnimatableHeaderLargeTitle"
 import { AnimatableHeaderShadow } from "./AnimatableHeaderShadow"
 
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-constraint
 export const AnimatableHeaderFlatList = <T extends any>(props: FlatListProps<T>) => {
   const { ListHeaderComponent, ...rest } = props
   const { onScrollForAnimation } = useAnimatableHeaderContext()

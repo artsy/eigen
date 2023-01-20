@@ -1,5 +1,5 @@
-import { OrderDetails_order$data } from "__generated__/OrderDetails_order.graphql"
 import { OrderDetailsQuery } from "__generated__/OrderDetailsQuery.graphql"
+import { OrderDetails_order$data } from "__generated__/OrderDetails_order.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"

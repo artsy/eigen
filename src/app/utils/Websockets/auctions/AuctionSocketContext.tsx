@@ -1,6 +1,6 @@
 import { GlobalStore } from "app/store/GlobalStore"
+import { useCable } from "app/utils/Websockets/GravityWebsocketContext"
 import React, { createContext, useContext, useEffect, useState } from "react"
-import { useCable } from "../GravityWebsocketContext"
 
 interface ReceivedData {
   [key: string]: string

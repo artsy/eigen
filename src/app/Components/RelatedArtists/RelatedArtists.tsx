@@ -1,14 +1,12 @@
+import { RelatedArtists_artists$data } from "__generated__/RelatedArtists_artists.graphql"
+import { SectionTitle } from "app/Components/SectionTitle"
+import { Stack } from "app/Components/Stack"
+import { chunk } from "lodash"
 import React from "react"
+import { LayoutChangeEvent, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { LayoutChangeEvent, View } from "react-native"
-
 import RelatedArtist from "./RelatedArtist"
-
-import { RelatedArtists_artists$data } from "__generated__/RelatedArtists_artists.graphql"
-import { chunk } from "lodash"
-import { SectionTitle } from "../SectionTitle"
-import { Stack } from "../Stack"
 
 interface Props {
   artists: RelatedArtists_artists$data

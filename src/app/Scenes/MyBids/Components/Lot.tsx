@@ -28,7 +28,7 @@ class Lot extends React.Component<Props> {
           />
           {!!ArtworkBadge && (
             <Box position="absolute" top={-2} left={-5}>
-              {<ArtworkBadge />}
+              <ArtworkBadge />
             </Box>
           )}
         </Flex>

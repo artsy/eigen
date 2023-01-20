@@ -1,8 +1,8 @@
 import { MarketingCollectionHeaderFragment_marketingCollection$key } from "__generated__/MarketingCollectionHeaderFragment_marketingCollection.graphql"
+import { OnboardingMarketingCollectionSlug } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingMarketingCollection"
 import { Flex, Spacer, Text } from "palette"
 import { ImageBackground, ImageSourcePropType } from "react-native"
 import { graphql, useFragment } from "react-relay"
-import { OnboardingMarketingCollectionSlug } from "../OnboardingMarketingCollection"
 
 interface MarketingCollectionHeaderProps {
   collectionSlug: OnboardingMarketingCollectionSlug

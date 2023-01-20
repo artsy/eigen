@@ -1,18 +1,21 @@
 import { TagArtworks_tag$data } from "__generated__/TagArtworks_tag.graphql"
+import { ArtworkFilterNavigator } from "app/Components/ArtworkFilter"
+import { FilterModalMode } from "app/Components/ArtworkFilter/ArtworkFilterOptionsScreen"
+import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  useArtworkFilters,
+  useSelectedFiltersCount,
+} from "app/Components/ArtworkFilter/useArtworkFilters"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
+import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { Schema } from "app/utils/track"
 import { Box, Separator, SimpleMessage, Spacer, Text } from "palette"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { ArtworkFilterNavigator } from "../ArtworkFilter"
-import { FilterModalMode } from "../ArtworkFilter/ArtworkFilterOptionsScreen"
-import { ArtworkFiltersStoreProvider } from "../ArtworkFilter/ArtworkFilterStore"
-import { useArtworkFilters, useSelectedFiltersCount } from "../ArtworkFilter/useArtworkFilters"
-import { StickyTabPageFlatListContext } from "../StickyTabPage/StickyTabPageFlatList"
-import { StickyTabPageScrollView } from "../StickyTabPage/StickyTabPageScrollView"
 
 interface TagArtworksContainerProps {
   tag: TagArtworks_tag$data

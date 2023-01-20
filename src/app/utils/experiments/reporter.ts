@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, ExperimentViewed, OwnerType } from "@artsy/cohesion"
-import { postEventToProviders } from "../track/providers"
+import { postEventToProviders } from "app/utils/track/providers"
 
 interface TrackVariantArgs {
   experimentName: string

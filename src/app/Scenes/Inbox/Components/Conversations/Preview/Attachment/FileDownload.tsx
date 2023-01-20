@@ -1,11 +1,10 @@
-import { IconProps, Text } from "palette"
+import { FileDownload_attachment$data } from "__generated__/FileDownload_attachment.graphql"
+import { IconProps, Text, DownloadIcon } from "palette"
 import { Linking } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import styled from "styled-components/native"
 import AttachmentPreview, { AttachmentProps } from "./AttachmentPreview"
 
-import { FileDownload_attachment$data } from "__generated__/FileDownload_attachment.graphql"
-import { DownloadIcon } from "palette"
-import styled from "styled-components/native"
 import { AttachmentContainer, AttachmentTextContainer } from "./PDFPreview"
 
 export const NoBorderContainer = styled.View`

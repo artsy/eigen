@@ -11,7 +11,6 @@ storiesOf("ReadMore", module)
       <ReadMore maxChars={11} content="Small [text](/artist/andy-warhol)." />
       <ReadMore
         maxChars={30}
-        // tslint:disable-next-line: jsx-curly-brace-presence
         content={`Line break
 
 

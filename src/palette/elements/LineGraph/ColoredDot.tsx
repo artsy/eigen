@@ -1,5 +1,5 @@
+import { Flex } from "palette/elements/Flex"
 import React from "react"
-import { Flex } from "../Flex"
 
 const DOT_DIAMETER = 8
 

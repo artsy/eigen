@@ -1,7 +1,6 @@
-import "react-native"
-
+import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { StickyTabPage } from "../StickyTabPage/StickyTabPage"
+import "react-native"
 import About from "./About"
 
 it("renders without throwing a error", () => {

@@ -13,11 +13,10 @@ export interface OnboardingCreateAccountEmailParams {
   navigateToWelcomeScreen: () => void
 }
 
-interface OnboardingCreateAccountEmailProps
-  extends StackScreenProps<
-    OnboardingCreateAccountNavigationStack,
-    "OnboardingCreateAccountEmail"
-  > {}
+type OnboardingCreateAccountEmailProps = StackScreenProps<
+  OnboardingCreateAccountNavigationStack,
+  "OnboardingCreateAccountEmail"
+>
 
 export const OnboardingCreateAccountEmail: React.FC<OnboardingCreateAccountEmailProps> = ({
   route,

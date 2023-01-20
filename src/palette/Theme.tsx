@@ -1,14 +1,4 @@
 import { THEME_V2, THEME_V3 } from "@artsy/palette-tokens"
-import _ from "lodash"
-import React, { useContext } from "react"
-import { ThemeContext, ThemeProvider } from "styled-components/native"
-
-/**
- * All of the config for the Artsy theming system, based on the
- * design system from our design team:
- * https://www.notion.so/artsy/Master-Library-810612339f474d0997fe359af4285c56
- */
-
 import { SpacingUnit as SpacingUnitV2 } from "@artsy/palette-tokens/dist/themes/v2"
 import {
   Color as ColorV3BeforeDevPurple,
@@ -18,6 +8,15 @@ import {
   TextTreatment as TextTreatmentWithUnits,
   TextVariant as TextVariantV3,
 } from "@artsy/palette-tokens/dist/typography/v3"
+import _ from "lodash"
+import React, { useContext } from "react"
+import { ThemeContext, ThemeProvider } from "styled-components/native"
+
+/**
+ * All of the config for the Artsy theming system, based on the
+ * design system from our design team:
+ * https://www.notion.so/artsy/Master-Library-810612339f474d0997fe359af4285c56
+ */
 
 type SpacingUnitV3 = `${SpacingUnitV3Numbers}`
 export type SpacingUnit = SpacingUnitV2 | SpacingUnitV3
@@ -315,15 +314,15 @@ export const isThemeV3 = (theme: ThemeType): theme is ThemeV3Type => theme.id ==
 type SpacingUnitAnyNumber = number & {} // for things like `12` (which RN handles as number of pixels)
 type SpacingUnitAnyString = string & {} // for things like `12px`
 type SpacingUnits = SpacingUnitV2 | SpacingUnitV3 | SpacingUnitAnyNumber | SpacingUnitAnyString
-// tslint:disable-next-line:interface-over-type-literal
+
 export type SpacingUnitTheme = { space: Record<SpacingUnits, any> }
 type ColorAnyString = string & {}
 type Colors = Color | ColorAnyString
-// tslint:disable-next-line:interface-over-type-literal
+
 export type ColorsTheme = { colors: Record<Colors, any> }
 
 /**
  * Only use this if it's are absolutely neccessary, and only in tests.
  */
-// tslint:disable-next-line:variable-name
+
 export const _test_THEMES = THEMES

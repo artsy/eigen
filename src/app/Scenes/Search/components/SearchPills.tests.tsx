@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
+import { PillType } from "app/Scenes/Search/types"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { PillType } from "../types"
 import { SearchPills, SearchPillsProps } from "./SearchPills"
 
 const pills: PillType[] = [

@@ -1,5 +1,5 @@
-import { CityBMWList_city$data } from "__generated__/CityBMWList_city.graphql"
 import { CityBMWListQuery } from "__generated__/CityBMWListQuery.graphql"
+import { CityBMWList_city$data } from "__generated__/CityBMWList_city.graphql"
 import { PAGE_SIZE } from "app/Components/constants"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
@@ -49,11 +49,7 @@ class CityBMWList extends React.Component<Props, State> {
   // @TODO: Implement test for this component https://artsyproduct.atlassian.net/browse/LD-562
   render() {
     const {
-      city: {
-        name,
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        sponsoredContent: { shows },
-      },
+      city: { name },
       relay,
     } = this.props
     const { fetchingNextPage } = this.state

@@ -1,8 +1,8 @@
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
+import { CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
 import { getTimerInfo } from "app/utils/saleTime"
 import { Time, useTimer } from "app/utils/useTimer"
 import { Text } from "palette"
-import { CountdownTimerProps } from "../Countdown/CountdownTimer"
 
 interface LotCloseInfoProps {
   saleArtwork: NonNullable<ArtworkGridItem_artwork$data["saleArtwork"]>

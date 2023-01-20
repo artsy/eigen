@@ -1,13 +1,13 @@
 import {
+  artworkDetailsEmptyInitialValues,
+  ArtworkDetailsFormModel,
+} from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
+import {
   Photo,
   photosEmptyInitialValues,
   PhotosFormModel,
 } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
 import { Action, action } from "easy-peasy"
-import {
-  artworkDetailsEmptyInitialValues,
-  ArtworkDetailsFormModel,
-} from "../SubmitArtwork/ArtworkDetails/validation"
 
 interface ConsignmentsSubmissionUtmParams {
   utm_term?: string

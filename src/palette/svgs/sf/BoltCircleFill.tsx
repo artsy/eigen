@@ -1,6 +1,6 @@
 import { useColor } from "palette/hooks"
+import { Icon, IconProps, Mask, Path, Rect } from "palette/svgs/Icon"
 import { EMaskUnits } from "react-native-svg"
-import { Icon, IconProps, Mask, Path, Rect } from "../Icon"
 
 /** BoltCircleFill */
 export const BoltCircleFill: React.FC<IconProps> = (props) => {

@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType, TappedCreateAlert } from "@artsy/cohesion"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
+import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import {
   changedFiltersParams,
   FilterArray,
@@ -28,6 +29,7 @@ import { TimePeriodOptionsScreen } from "app/Components/ArtworkFilter/Filters/Ti
 import { ViewAsOptionsScreen } from "app/Components/ArtworkFilter/Filters/ViewAsOptions"
 import { WaysToBuyOptionsScreen } from "app/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { YearOptionsScreen } from "app/Components/ArtworkFilter/Filters/YearOptions"
+import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { GlobalStore } from "app/store/GlobalStore"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
@@ -36,17 +38,15 @@ import { Flex } from "palette"
 import { useEffect, useState } from "react"
 import { ViewProps } from "react-native"
 import { useTracking } from "react-tracking"
-import { CreateSavedSearchModal } from "../Artist/ArtistArtworks/CreateSavedSearchModal"
-import { FancyModal } from "../FancyModal/FancyModal"
 import {
   ArtworkFilterOptionsScreen,
   FilterModalMode as ArtworkFilterMode,
 } from "./ArtworkFilterOptionsScreen"
-import { ArtworkFilterApplyButton } from "./components/ArtworkFilterApplyButton"
 import { AuctionHouseOptionsScreen } from "./Filters/AuctionHouseOptions"
 import { LocationCitiesOptionsScreen } from "./Filters/LocationCitiesOptions"
 import { getSearchCriteriaFromFilters } from "./SavedSearch/searchCriteriaHelpers"
 import { SavedSearchEntity } from "./SavedSearch/types"
+import { ArtworkFilterApplyButton } from "./components/ArtworkFilterApplyButton"
 
 interface ArtworkFilterProps extends ViewProps {
   closeModal?: () => void
@@ -75,7 +75,7 @@ interface ArtworkFilterOptionsScreenParams {
 
 // This needs to be a `type` rather than an `interface`
 // see src/app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm.tsx#L35
-// tslint:disable-next-line:interface-over-type-literal
+
 export type ArtworkFilterNavigationStack = {
   AdditionalGeneIDsOptionsScreen: undefined
   ArtistIDsOptionsScreen: undefined

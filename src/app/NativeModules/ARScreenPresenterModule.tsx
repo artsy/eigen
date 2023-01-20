@@ -21,7 +21,6 @@ import { InteractionManager, NativeModules, StatusBar } from "react-native"
  *   These are unique in that they are created and destroyed, while all the others are only created once
  */
 
-// tslint:disable-next-line:variable-name
 export const __unsafe_mainModalStackRef = { current: null as NavigationContainerRef<any> | null }
 
 type Mutable<T> = T extends object

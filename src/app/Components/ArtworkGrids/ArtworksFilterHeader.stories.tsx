@@ -1,9 +1,9 @@
 import { DecoratorFunction } from "@storybook/addons"
 import { storiesOf } from "@storybook/react-native"
+import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { Flex } from "palette"
 import { withHooks } from "storybook/decorators"
-import { ArtworkFiltersStoreProvider } from "../ArtworkFilter/ArtworkFilterStore"
-import { useSelectedFiltersCount } from "../ArtworkFilter/useArtworkFilters"
 import { ArtworksFilterHeader } from "./ArtworksFilterHeader"
 
 export const withFilterProvider: DecoratorFunction<React.ReactNode> = (story) => (
@@ -19,7 +19,6 @@ storiesOf("ArtworkFilterHeader", module)
       <Flex mt={100}>
         <ArtworksFilterHeader
           selectedFiltersCount={selectedFiltersCount}
-          // tslint:disable-next-line:no-empty
           onFilterPress={() => {}}
         />
       </Flex>

@@ -16,7 +16,7 @@ const mockFetch = jest.fn()
 function mockFetchResponseOnce(response: Partial<Response>) {
   mockFetch.mockResolvedValueOnce(response)
 }
-function mockFetchJsonOnce(json: object, status: number = 200) {
+function mockFetchJsonOnce(json: object, status = 200) {
   mockFetch.mockResolvedValueOnce({
     status,
     json: () => Promise.resolve(json),

@@ -6,9 +6,11 @@ import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { OrderHistoryContainer } from "./OrderHistory"
-import { OrderHistoryQueryRender } from "./OrderHistory"
-import { OrderHistoryPlaceholder } from "./OrderHistory"
+import {
+  OrderHistoryContainer,
+  OrderHistoryQueryRender,
+  OrderHistoryPlaceholder,
+} from "./OrderHistory"
 import { OrderHistoryRowContainer } from "./OrderHistoryRow"
 jest.unmock("react-relay")
 

@@ -31,7 +31,7 @@
     "install:all": "./scripts/install",
     "pod-install": "cd ios; bundle exec pod install; cd ..; ./scripts/post-pod-install.rb",
     "pod-install-repo-update": "cd ios; bundle exec pod install --repo-update; cd ..; ./scripts/post-pod-install.rb",
-    "lint": "eslint --fix --cache --cache-location '.cache/eslint/' --ext .ts,.tsx",
+    "lint": "eslint --cache --cache-location '.cache/eslint/' --ext .ts,.tsx --fix",
     "open-sim": "open -a Simulator",
     "open-url": "npx uri-scheme open",
     "open-xcode": "open ios/Artsy.xcworkspace",
@@ -328,8 +328,8 @@
   },
   "lint-staged": {
     "*.@(ts|tsx)": [
-      "lint",
-      "prettier-write",
+      "yarn lint",
+      "yarn prettier-write",
       "node scripts/strictness-migration.js check-staged"
     ],
     "*.@(json|md)": [

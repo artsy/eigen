@@ -1,23 +1,19 @@
-import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
-import { BackHandler, ImageRequireSource, NativeEventSubscription, View } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
-
+import { BidResult_sale_artwork$data } from "__generated__/BidResult_sale_artwork.graphql"
+import { Container } from "app/Components/Bidding/Components/Containers"
+import { Icon20 } from "app/Components/Bidding/Components/Icon"
+import { Timer } from "app/Components/Bidding/Components/Timer"
+import { Title } from "app/Components/Bidding/Components/Title"
+import { Flex } from "app/Components/Bidding/Elements/Flex"
+import { BidderPositionResult } from "app/Components/Bidding/types"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { Markdown } from "app/Components/Markdown"
+import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
-
+import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Button, Theme } from "palette"
 import React from "react"
-import { Icon20 } from "../Components/Icon"
-import { Flex } from "../Elements/Flex"
-
-import { Markdown } from "../../Markdown"
-import { Container } from "../Components/Containers"
-import { Timer } from "../Components/Timer"
-import { Title } from "../Components/Title"
-
-import { BidResult_sale_artwork$data } from "__generated__/BidResult_sale_artwork.graphql"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { unsafe__getEnvironment } from "app/store/GlobalStore"
-import { BidderPositionResult } from "../types"
+import { BackHandler, ImageRequireSource, NativeEventSubscription, View } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 
 const SHOW_TIMER_STATUSES = ["WINNING", "OUTBID", "RESERVE_NOT_MET"]
 

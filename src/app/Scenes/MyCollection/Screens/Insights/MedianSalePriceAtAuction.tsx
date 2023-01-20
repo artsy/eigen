@@ -16,8 +16,8 @@ import { useScreenDimensions } from "shared/hooks"
 import { CareerHighlightBottomSheet } from "./CareerHighlightBottomSheet"
 import { MedianSalePriceChartTracking } from "./Components/MedianSalePriceChartTracking"
 import { MedianSalePriceChart } from "./MedianSalePriceChart"
-import { MedianSalePriceChartDataContextProvider } from "./providers/MedianSalePriceChartDataContext"
 import { SelectArtistModal } from "./SelectArtistModal"
+import { MedianSalePriceChartDataContextProvider } from "./providers/MedianSalePriceChartDataContext"
 
 const PAGE_SIZE = 50
 

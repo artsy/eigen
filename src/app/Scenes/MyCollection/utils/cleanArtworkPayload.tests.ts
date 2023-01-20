@@ -1,4 +1,4 @@
-import { ArtworkFormValues } from "../State/MyCollectionArtworkModel"
+import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { cleanArtworkPayload, explicitlyClearedFields } from "./cleanArtworkPayload"
 
 describe("cleanArtworkPayload", () => {

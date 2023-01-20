@@ -26,7 +26,6 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   disabled,
   error,
   onPress,
-  style,
   text,
   subtitle,
   children,

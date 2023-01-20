@@ -1,7 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
+import { FakeNavigator } from "app/Components/Bidding/Helpers/FakeNavigator"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { FakeNavigator } from "../Helpers/FakeNavigator"
-
 import { PhoneNumberForm } from "./PhoneNumberForm"
 
 describe("PhoneNumberForm component", () => {

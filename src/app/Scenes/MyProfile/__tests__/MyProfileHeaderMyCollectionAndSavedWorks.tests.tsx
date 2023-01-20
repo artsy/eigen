@@ -2,6 +2,10 @@ import { MyProfileHeaderMyCollectionAndSavedWorksTestsQuery } from "__generated_
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { FavoriteArtworksQueryRenderer } from "app/Scenes/Favorites/FavoriteArtworks"
 import { MyCollectionQueryRenderer } from "app/Scenes/MyCollection/MyCollection"
+import {
+  LOCAL_PROFILE_ICON_PATH_KEY,
+  MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer,
+} from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { navigate } from "app/system/navigation/navigate"
 import { LocalImage, storeLocalImages } from "app/utils/LocalImageStore"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
@@ -11,10 +15,6 @@ import { Avatar } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-import {
-  LOCAL_PROFILE_ICON_PATH_KEY,
-  MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer,
-} from "../MyProfileHeaderMyCollectionAndSavedWorks"
 
 jest.mock("../LoggedInUserInfo")
 jest.unmock("react-relay")

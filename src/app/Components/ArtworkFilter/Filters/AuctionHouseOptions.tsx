@@ -31,8 +31,10 @@ export const AUCTION_HOUSE_OPTIONS: FilterData[] = [
   },
 ]
 
-interface AuctionHouseOptionsScreenProps
-  extends StackScreenProps<ArtworkFilterNavigationStack, "AuctionHouseOptionsScreen"> {}
+type AuctionHouseOptionsScreenProps = StackScreenProps<
+  ArtworkFilterNavigationStack,
+  "AuctionHouseOptionsScreen"
+>
 
 export const AuctionHouseOptionsScreen: React.FC<AuctionHouseOptionsScreenProps> = ({
   navigation,

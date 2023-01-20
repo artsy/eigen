@@ -1,7 +1,5 @@
-import "react-native"
-
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-
+import "react-native"
 import { ArtistShowFragmentContainer } from "./ArtistShow"
 
 const showProps = {

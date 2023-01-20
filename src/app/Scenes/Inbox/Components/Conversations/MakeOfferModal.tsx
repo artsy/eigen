@@ -1,6 +1,6 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
-import { MakeOfferModal_artwork$data } from "__generated__/MakeOfferModal_artwork.graphql"
 import { MakeOfferModalQuery } from "__generated__/MakeOfferModalQuery.graphql"
+import { MakeOfferModal_artwork$data } from "__generated__/MakeOfferModal_artwork.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { CollapsibleArtworkDetailsFragmentContainer as CollapsibleArtworkDetails } from "app/Scenes/Artwork/Components/CommercialButtons/CollapsibleArtworkDetails"
 import { dismissModal } from "app/system/navigation/navigate"
@@ -11,9 +11,8 @@ import { BorderBox, Button, Flex, Text } from "palette"
 import React, { useState } from "react"
 import { ScrollView, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { InquiryMakeOfferButtonFragmentContainer as InquiryMakeOfferButton } from "./InquiryMakeOfferButton"
-
 import { EditionSelectBoxFragmentContainer } from "./EditionSelectBox"
+import { InquiryMakeOfferButtonFragmentContainer as InquiryMakeOfferButton } from "./InquiryMakeOfferButton"
 
 interface MakeOfferModalProps {
   artwork: MakeOfferModal_artwork$data

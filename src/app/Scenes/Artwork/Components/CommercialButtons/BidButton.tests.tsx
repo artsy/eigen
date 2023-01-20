@@ -1,4 +1,5 @@
 import { BidButtonTestsQuery } from "__generated__/BidButtonTestsQuery.graphql"
+import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import {
   ArtworkFromAuctionPreview,
   ArtworkFromClosedAuction,
@@ -11,7 +12,6 @@ import {
   RegistedBidderWithBids,
   RegisteredBidder,
 } from "app/__fixtures__/ArtworkBidAction"
-import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"

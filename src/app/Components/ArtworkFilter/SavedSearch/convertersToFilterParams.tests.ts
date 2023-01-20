@@ -1,4 +1,8 @@
-import { Aggregation, Aggregations, FilterParamName } from "../ArtworkFilterHelpers"
+import {
+  Aggregation,
+  Aggregations,
+  FilterParamName,
+} from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   AggregationByFilterParamName,
   convertAggregationValueNamesToFilterParam,

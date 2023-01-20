@@ -1,15 +1,19 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
-import { GlobalStore, unsafe_getUserAccessToken } from "app/store/GlobalStore"
+import {
+  getCurrentEmissionState,
+  unsafe__getEnvironment,
+  GlobalStore,
+  unsafe_getUserAccessToken,
+} from "app/store/GlobalStore"
 import { PendingPushNotification } from "app/store/PendingPushNotificationModel"
 import { navigate } from "app/system/navigation/navigate"
 import { Alert, Linking, Platform } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import PushNotification, { ReceivedNotification } from "react-native-push-notification"
 import { logAction, logNotification } from "./loggers"
-import { AnalyticsConstants } from "./track/constants"
 import { SegmentTrackingProvider } from "./track/SegmentTrackingProvider"
+import { AnalyticsConstants } from "./track/constants"
 
 export const PUSH_NOTIFICATION_TOKEN = "PUSH_NOTIFICATION_TOKEN"
 export const HAS_PENDING_NOTIFICATION = "HAS_PENDING_NOTIFICATION"
@@ -43,7 +47,8 @@ export const savePendingToken = async () => {
   }
 }
 
-export const saveToken = (token: string, ignoreSameTokenCheck: boolean = false) => {
+export const saveToken = (token: string, ignoreSameTokenCheck = false) => {
+  // eslint-disable-next-line no-async-promise-executor
   return new Promise<boolean>(async (resolve, reject) => {
     const previousToken = await AsyncStorage.getItem(PUSH_NOTIFICATION_TOKEN)
     if (token !== previousToken || ignoreSameTokenCheck) {

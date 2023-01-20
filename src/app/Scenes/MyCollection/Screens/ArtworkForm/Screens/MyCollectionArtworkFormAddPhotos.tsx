@@ -1,6 +1,7 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { FancyModalHeader as NavHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { Image as ImageProps } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { isPad } from "app/utils/hardware"
@@ -10,7 +11,6 @@ import { AddIcon, BorderBox, Box, Flex, useColor, XCircleIcon } from "palette"
 import { useEffect, useState } from "react"
 import { ActivityIndicator, FlatList, Image, TouchableOpacity } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
-import { ArtworkFormScreen } from "../MyCollectionArtworkForm"
 
 const MARGIN = 20
 export const DELAY_TIME_MS = 500

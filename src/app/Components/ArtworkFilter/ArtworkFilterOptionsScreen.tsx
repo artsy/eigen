@@ -1,5 +1,9 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { themeGet } from "@styled-system/theme-get"
+import { AnimatableHeader } from "app/Components/AnimatableHeader/AnimatableHeader"
+import { AnimatableHeaderFlatList } from "app/Components/AnimatableHeader/AnimatableHeaderFlatList"
+import { AnimatableHeaderProvider } from "app/Components/AnimatableHeader/AnimatableHeaderProvider"
+import { AnimatedBottomButton } from "app/Components/AnimatedBottomButton"
 import {
   FilterDisplayName,
   filterKeyFromAggregation,
@@ -18,10 +22,6 @@ import { FilterIcon, Flex, Text } from "palette"
 import React, { useMemo } from "react"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { AnimatableHeader } from "../AnimatableHeader/AnimatableHeader"
-import { AnimatableHeaderFlatList } from "../AnimatableHeader/AnimatableHeaderFlatList"
-import { AnimatableHeaderProvider } from "../AnimatableHeader/AnimatableHeaderProvider"
-import { AnimatedBottomButton } from "../AnimatedBottomButton"
 import { ArtworkFilterNavigationStack } from "./ArtworkFilterNavigator"
 import { ArtworkFilterOptionCheckboxItem } from "./components/ArtworkFilterOptionCheckboxItem"
 import { ArtworkFilterOptionItem } from "./components/ArtworkFilterOptionItem"

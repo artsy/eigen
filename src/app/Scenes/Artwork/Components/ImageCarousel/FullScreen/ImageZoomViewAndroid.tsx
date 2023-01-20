@@ -1,7 +1,9 @@
-import { useContext, useEffect, useState } from "react"
-import { ImageCarouselContext, ImageDescriptor } from "../ImageCarouselContext"
-
+import {
+  ImageCarouselContext,
+  ImageDescriptor,
+} from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
 import { Flex, Spinner, useColor } from "palette"
+import { useContext, useEffect, useState } from "react"
 import { LayoutAnimation } from "react-native"
 import FastImage from "react-native-fast-image"
 import { Zoom } from "react-native-reanimated-zoom"

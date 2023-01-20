@@ -1,6 +1,6 @@
 import { storiesOf } from "@storybook/react-native"
+import { Text } from "palette/elements/Text"
 import { List } from "storybook/helpers"
-import { Text } from "../Text"
 import { VisualClueDot, VisualClueText } from "./"
 
 storiesOf("Theme/Text", module).add("Visual Clue", () => (

@@ -1,13 +1,12 @@
 import { themeGet } from "@styled-system/theme-get"
+import { ActiveBid_bid$data } from "__generated__/ActiveBid_bid.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { BodyText, MetadataText } from "app/Scenes/Inbox/Components/Typography"
 import { navigate } from "app/system/navigation/navigate"
+import React from "react"
 import { Dimensions, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
-import { BodyText, MetadataText } from "../Typography"
-
-import { ActiveBid_bid$data } from "__generated__/ActiveBid_bid.graphql"
-import React from "react"
 
 const isPad = Dimensions.get("window").width > 700
 

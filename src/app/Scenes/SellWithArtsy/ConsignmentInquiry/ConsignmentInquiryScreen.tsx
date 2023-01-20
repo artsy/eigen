@@ -88,7 +88,7 @@ export const ConsignmentInquiryScreen: React.FC<InquiryScreenProps> = ({
       phoneNumber: phone,
       message: "",
     },
-    // tslint:disable-next-line:no-shadowed-variable
+
     onSubmit: async ({ email, name, phoneNumber, message }) => {
       const input = { email, name, phoneNumber, message, userId }
       const onCompleted = (response: ConsignmentInquiryScreenMutation["response"]) => {

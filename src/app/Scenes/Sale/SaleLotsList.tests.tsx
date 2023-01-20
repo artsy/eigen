@@ -1,6 +1,9 @@
 import { SaleLotsListTestsQuery } from "__generated__/SaleLotsListTestsQuery.graphql"
-import { FilterParamName, ViewAsValues } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { FilterParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  FilterParamName,
+  ViewAsValues,
+  FilterParams,
+} from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,

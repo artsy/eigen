@@ -27,10 +27,8 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
   disabled,
   error,
   onPress,
-  style,
   text,
   subtitle,
-  children,
   accessibilityState,
   ...restProps
 }) => {

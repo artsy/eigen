@@ -5,8 +5,8 @@ import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useCanOpenURL } from "app/utils/useCanOpenURL"
 import Share from "react-native-share"
-import * as helpers from "./helpers"
 import { ShareSheet, ShareSheetProps } from "./ShareSheet"
+import * as helpers from "./helpers"
 
 const setVisibleMock = jest.fn()
 

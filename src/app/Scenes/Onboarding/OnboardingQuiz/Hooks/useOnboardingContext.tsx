@@ -1,6 +1,6 @@
+import { useConfig } from "app/Scenes/Onboarding/OnboardingQuiz/config"
 import { WorkflowEngine } from "app/utils/WorkflowEngine/WorkflowEngine"
 import { createContext, FC, useContext, useEffect, useReducer, useRef } from "react"
-import { useConfig } from "../config"
 
 export interface State {
   questionOne: string | null
@@ -73,13 +73,13 @@ const OnboardingContext = createContext<{
   onDone(): void
 }>({
   current: "",
-  // tslint:disable-next-line:no-empty
+
   dispatch: () => {},
-  // tslint:disable-next-line:no-empty
+
   next: () => {},
-  // tslint:disable-next-line:no-empty
+
   back: () => {},
-  // tslint:disable-next-line:no-empty
+
   onDone: () => {},
   progress: 0,
   state: DEFAULT_STATE,
@@ -98,7 +98,7 @@ export const OnboardingProvider: FC<OnboardingProviderProps> = ({ children, onDo
     back,
     current,
     next,
-    // tslint:disable-next-line:variable-name
+
     reset: __reset__,
   } = useConfig({
     basis,

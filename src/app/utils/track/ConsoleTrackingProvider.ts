@@ -1,4 +1,4 @@
-import { logEventTracked } from "../loggers"
+import { logEventTracked } from "app/utils/loggers"
 import { TrackingProvider } from "./providers"
 
 export const ConsoleTrackingProvider: TrackingProvider = {

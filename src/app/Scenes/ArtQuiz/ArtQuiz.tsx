@@ -1,5 +1,5 @@
+import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
 import { ArtsyLogoIcon, Button, Flex, Screen, Spacer, Text } from "palette"
-import { useOnboardingContext } from "../Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
 
 export const ArtQuiz = () => {
   const { onDone } = useOnboardingContext()

@@ -2,13 +2,13 @@ import { ViewingRoomHeader_viewingRoom$data } from "__generated__/ViewingRoomHea
 import { durationSections } from "app/Components/Countdown"
 import { CountdownTimer, CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { ViewingRoomStatus } from "app/Scenes/ViewingRoom/ViewingRoom"
 import { navigate } from "app/system/navigation/navigate"
 import { Box, Flex, Text } from "palette"
 import { Dimensions, TouchableWithoutFeedback, View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
-import { ViewingRoomStatus } from "../ViewingRoom"
 
 interface ViewingRoomHeaderProps {
   viewingRoom: ViewingRoomHeader_viewingRoom$data

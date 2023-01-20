@@ -7,6 +7,7 @@ import {
   Photo,
   PhotosFormModel,
 } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
+import { removeAssetFromSubmission } from "app/Scenes/SellWithArtsy/mutations/removeAssetFromConsignmentSubmissionMutation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { useFormikContext } from "formik"
@@ -14,7 +15,6 @@ import { Button, Flex, Spacer, Text } from "palette"
 import { PhotoRow } from "palette/elements/PhotoRow/PhotoRow"
 import React, { useEffect, useState } from "react"
 import { useTracking } from "react-tracking"
-import { removeAssetFromSubmission } from "../../mutations/removeAssetFromConsignmentSubmissionMutation"
 import { addPhotoToConsignment } from "./utils/addPhotoToConsignment"
 import {
   calculateSinglePhotoSize,

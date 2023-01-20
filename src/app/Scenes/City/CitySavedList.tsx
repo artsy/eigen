@@ -1,6 +1,6 @@
+import { CitySavedListQuery } from "__generated__/CitySavedListQuery.graphql"
 import { CitySavedList_city$data } from "__generated__/CitySavedList_city.graphql"
 import { CitySavedList_me$data } from "__generated__/CitySavedList_me.graphql"
-import { CitySavedListQuery } from "__generated__/CitySavedListQuery.graphql"
 import { PAGE_SIZE } from "app/Components/constants"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"

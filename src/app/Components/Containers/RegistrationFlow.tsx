@@ -1,9 +1,8 @@
+import { TimeOffsetProvider } from "app/Components/Bidding/Context/TimeOffsetProvider"
+import { RegistrationQueryRenderer } from "app/Components/Bidding/Screens/Registration"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { View } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
-
-import { TimeOffsetProvider } from "app/Components/Bidding/Context/TimeOffsetProvider"
-import { RegistrationQueryRenderer } from "app/Components/Bidding/Screens/Registration"
 
 export const RegistrationFlow: React.FC<{ saleID: string }> = (props) => {
   return (

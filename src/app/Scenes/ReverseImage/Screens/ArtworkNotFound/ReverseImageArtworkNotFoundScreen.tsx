@@ -1,10 +1,10 @@
 import { StackScreenProps } from "@react-navigation/stack"
+import { HeaderBackButton } from "app/Scenes/ReverseImage/Components/HeaderBackButton"
+import { HeaderContainer } from "app/Scenes/ReverseImage/Components/HeaderContainer"
+import { HeaderTitle } from "app/Scenes/ReverseImage/Components/HeaderTitle"
+import { ReverseImageNavigationStack } from "app/Scenes/ReverseImage/types"
 import { Button, Flex, Text } from "palette"
 import { Image } from "react-native"
-import { HeaderBackButton } from "../../Components/HeaderBackButton"
-import { HeaderContainer } from "../../Components/HeaderContainer"
-import { HeaderTitle } from "../../Components/HeaderTitle"
-import { ReverseImageNavigationStack } from "../../types"
 
 type Props = StackScreenProps<ReverseImageNavigationStack, "ArtworkNotFound">
 

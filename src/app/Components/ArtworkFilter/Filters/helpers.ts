@@ -35,7 +35,7 @@ export const cmToIn = (centimeters: Numeric) => {
   return centimeters / ONE_IN_TO_CM
 }
 
-export const inToCm = (inches: Numeric, shouldRound: boolean = true) => {
+export const inToCm = (inches: Numeric, shouldRound = true) => {
   if (inches === "*") {
     return inches
   }
@@ -114,7 +114,7 @@ export const parsePriceRangeLabel = (min: Numeric, max: Numeric) => {
 }
 
 // TODO: Refactor and combine it with parseRange
-export const parsePriceRange = (range: string = "*-*"): PriceRange => {
+export const parsePriceRange = (range = "*-*"): PriceRange => {
   return range.split("-").map((s) => {
     if (s === "*") {
       return s

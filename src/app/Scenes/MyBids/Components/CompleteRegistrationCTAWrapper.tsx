@@ -38,15 +38,13 @@ export const CompleteRegistrationCTAWrapper: React.FunctionComponent<
         bg="black5"
         mt={1}
       >
-        {
-          <>
-            <ExclamationMarkCircleFill fill="black100" />
-            <Text mx={0.5} variant="sm">
-              Complete registration
-            </Text>
-            <ArrowRightIcon />
-          </>
-        }
+        <>
+          <ExclamationMarkCircleFill fill="black100" />
+          <Text mx={0.5} variant="sm">
+            Complete registration
+          </Text>
+          <ArrowRightIcon />
+        </>
       </Flex>
     </Touchable>
   )

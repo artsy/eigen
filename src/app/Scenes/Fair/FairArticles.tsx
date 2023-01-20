@@ -1,5 +1,5 @@
-import { FairArticles_fair$data } from "__generated__/FairArticles_fair.graphql"
 import { FairArticlesQuery } from "__generated__/FairArticlesQuery.graphql"
+import { FairArticles_fair$data } from "__generated__/FairArticles_fair.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useEnvironment } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"

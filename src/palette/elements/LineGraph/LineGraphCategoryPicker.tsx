@@ -1,12 +1,12 @@
 import { useColor, useSpace } from "palette"
 import { Spacer } from "palette/atoms"
+import { Flex } from "palette/elements/Flex"
+import { Pill } from "palette/elements/Pill"
+import { Text } from "palette/elements/Text"
 import { memo, useEffect, useRef, useState } from "react"
 import { Dimensions, LayoutRectangle, ViewProps } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
 
-import { Flex } from "../Flex"
-import { Pill } from "../Pill"
-import { Text } from "../Text"
 import { ColoredDot, DEFAULT_DOT_COLOR } from "./ColoredDot"
 
 interface LineGraphCategoryPickerProps {

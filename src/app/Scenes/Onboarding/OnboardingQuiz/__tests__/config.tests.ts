@@ -6,7 +6,7 @@ import {
   OPTION_TOP_AUCTION_LOTS,
   OPTION_YES_I_LOVE_COLLECTING_ART,
   useConfig,
-} from "../config"
+} from "app/Scenes/Onboarding/OnboardingQuiz/config"
 
 describe("config", () => {
   it("should move forward through workflow", () => {

@@ -1,24 +1,20 @@
-import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
-import React, { memo } from "react"
-import { ActivityIndicator, View, ViewProps } from "react-native"
-import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
-
-import { Schema, screenTrack } from "../../../utils/track"
-
-import { Button, Flex } from "palette"
-
-import { ConfirmBidScreen } from "./ConfirmBid"
-
+import { SelectMaxBidQuery } from "__generated__/SelectMaxBidQuery.graphql"
 import { SelectMaxBid_me$data } from "__generated__/SelectMaxBid_me.graphql"
 import { SelectMaxBid_sale_artwork$data } from "__generated__/SelectMaxBid_sale_artwork.graphql"
-import { SelectMaxBidQuery } from "__generated__/SelectMaxBidQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { dismissModal } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
+import { Schema, screenTrack } from "app/utils/track"
 import { compact } from "lodash"
+import { Button, Flex } from "palette"
 import { Select } from "palette/elements/Select"
+import React, { memo } from "react"
+import { ActivityIndicator, View, ViewProps } from "react-native"
+import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { ScreenDimensionsContext } from "shared/hooks"
+import { ConfirmBidScreen } from "./ConfirmBid"
 
 interface SelectMaxBidProps extends ViewProps {
   sale_artwork: SelectMaxBid_sale_artwork$data

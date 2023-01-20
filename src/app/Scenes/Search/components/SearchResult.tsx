@@ -1,8 +1,8 @@
+import { AlgoliaSearchResult, PillType } from "app/Scenes/Search/types"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { searchInsights } from "app/utils/useSearchInsightsConfig"
 import { Flex, Spacer, Touchable } from "palette"
-import { AlgoliaSearchResult, PillType } from "../types"
 import { SearchHighlight } from "./SearchHighlight"
 import { IMAGE_SIZE, SearchResultImage } from "./SearchResultImage"
 

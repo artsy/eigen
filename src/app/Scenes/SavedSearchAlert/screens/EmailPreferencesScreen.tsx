@@ -1,8 +1,8 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtsyWebView } from "app/Components/ArtsyWebView"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { CreateSavedSearchAlertNavigationStack } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { Box } from "palette"
-import { CreateSavedSearchAlertNavigationStack } from "../SavedSearchAlertModel"
 
 type Props = StackScreenProps<CreateSavedSearchAlertNavigationStack, "EmailPreferences">
 

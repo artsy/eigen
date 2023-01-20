@@ -1,6 +1,6 @@
 import { MyCollectionArtworkList_myCollectionConnection$key } from "__generated__/MyCollectionArtworkList_myCollectionConnection.graphql"
-import { PAGE_SIZE } from "app/Components/constants"
 import { PrefetchFlatList, PrefetchFlatListProps } from "app/Components/PrefetchFlatList"
+import { PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
 import { Flex, Spinner } from "palette"
 import React, { useState } from "react"
