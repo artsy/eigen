@@ -1,5 +1,5 @@
-import { extractText } from "app/tests/extractText"
-import { setupTestWrapper_LEGACY } from "app/tests/setupTestWrapper"
+import { extractText } from "app/utils/tests/extractText"
+import { setupTestWrapper_LEGACY } from "app/utils/tests/setupTestWrapper"
 import {
   FAIR_BMW_ART_ACTIVATION_QUERY,
   FairBMWArtActivationFragmentContainer,

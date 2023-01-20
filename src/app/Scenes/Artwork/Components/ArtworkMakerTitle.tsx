@@ -1,5 +1,5 @@
 import { ArtworkMakerTitle_artwork$data } from "__generated__/ArtworkMakerTitle_artwork.graphql"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
 import { Flex, Text } from "palette"
 import { useState } from "react"

@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { AppModule } from "app/AppRegistry"
-import { NavStack } from "app/navigation/NavStack"
 import { useFeatureFlag } from "app/store/GlobalStore"
+import { NavStack } from "app/system/navigation/NavStack"
 import { ArtQuiz } from "../ArtQuiz/ArtQuiz"
 import { BottomTabs } from "./BottomTabs"
 import { BottomTabType } from "./BottomTabType"

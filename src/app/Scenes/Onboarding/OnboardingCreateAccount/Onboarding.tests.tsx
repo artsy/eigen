@@ -1,6 +1,6 @@
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { NetworkAwareProvider } from "app/utils/NetworkAwareProvider"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Onboarding, OnboardingWelcomeScreens } from "../Onboarding"
 import { OnboardingQuiz } from "../OnboardingQuiz/OnboardingQuiz"
 

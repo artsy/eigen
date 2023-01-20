@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
-import * as navigate from "app/navigation/navigate"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import * as navigate from "app/system/navigation/navigate"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { PartnerSubscriberBanner } from "./PartnerSubscriberBanner"
 
 const partner = { name: "Cool Gallery", hasFairPartnership: false }

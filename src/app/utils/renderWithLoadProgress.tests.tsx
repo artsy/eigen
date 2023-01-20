@@ -1,4 +1,4 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Text } from "react-native"
 import renderWithLoadProgress from "./renderWithLoadProgress"
 

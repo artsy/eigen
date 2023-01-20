@@ -1,6 +1,6 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
-import { navigate, popToRoot } from "app/navigation/navigate"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { navigate, popToRoot } from "app/system/navigation/navigate"
 import { Button, Flex, Text } from "palette"
 import { ImageBackground } from "react-native"
 import { useTracking } from "react-tracking"

@@ -1,7 +1,7 @@
 import { ShowArtistsPreview_show$data } from "__generated__/ShowArtistsPreview_show.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { Schema, Track, track as _track } from "app/utils/track"
 import { compact, take } from "lodash"
 import { Spacer, Text } from "palette"

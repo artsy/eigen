@@ -1,5 +1,5 @@
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { debounce } from "lodash"
 import { Input } from "palette"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "../ArtworkFilterStore"

@@ -4,13 +4,13 @@ import {
   SavedSearchEntity,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { navigate } from "app/navigation/navigate"
 import { CreateSavedSearchAlert } from "app/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
 import { SavedSearchAlertMutationResult } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { navigate } from "app/system/navigation/navigate"
 import { delay } from "app/utils/delay"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import {
   CreateSavedSearchModal,
   CreateSavedSearchModalProps,

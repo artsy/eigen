@@ -2,9 +2,9 @@ import { MyCollectionInsightsQuery } from "__generated__/MyCollectionInsightsQue
 import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
-import { defaultEnvironment } from "app/relay/createEnvironment"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { setVisualClueAsSeen, useVisualClue } from "app/store/GlobalStore"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   MY_COLLECTION_INSIGHTS_REFRESH_KEY,

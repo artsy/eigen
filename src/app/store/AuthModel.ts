@@ -3,8 +3,7 @@ import { appleAuth } from "@invertase/react-native-apple-authentication"
 import CookieManager from "@react-native-cookies/cookies"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { captureMessage } from "@sentry/react-native"
-import { OAuthProvider } from "app/auth/types"
-import * as RelayCache from "app/relay/RelayCache"
+import * as RelayCache from "app/system/relay/RelayCache"
 import { isArtsyEmail } from "app/utils/general"
 import { postEventToProviders } from "app/utils/track/providers"
 import { action, Action, Computed, computed, StateMapper, thunk, Thunk } from "easy-peasy"
@@ -24,6 +23,8 @@ import { requestPushNotificationsPermission } from "../utils/PushNotification"
 import { AuthError } from "./AuthError"
 import { getCurrentEmissionState, GlobalStore } from "./GlobalStore"
 import type { GlobalStoreModel } from "./GlobalStoreModel"
+
+export type OAuthProvider = "email" | "facebook" | "apple" | "google"
 
 type BasicHttpMethod = "GET" | "PUT" | "POST" | "DELETE"
 

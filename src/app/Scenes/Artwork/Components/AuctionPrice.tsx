@@ -1,6 +1,6 @@
 import { AuctionPrice_artwork$data } from "__generated__/AuctionPrice_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { get } from "app/utils/get"
 import { CheckCircleIcon, CloseCircleIcon, Flex, Spacer, Text } from "palette"
 import React from "react"

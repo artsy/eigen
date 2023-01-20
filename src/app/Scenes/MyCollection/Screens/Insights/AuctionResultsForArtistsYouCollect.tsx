@@ -1,7 +1,7 @@
 import { AuctionResultsForArtistsYouCollect_me$key } from "__generated__/AuctionResultsForArtistsYouCollect_me.graphql"
 import { AuctionResultsForArtistsYouCollectQuery } from "__generated__/AuctionResultsForArtistsYouCollectQuery.graphql"
 import { AuctionResultsList, LoadingSkeleton } from "app/Components/AuctionResultsList"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Flex, Text } from "palette"
 import React, { Suspense, useState } from "react"

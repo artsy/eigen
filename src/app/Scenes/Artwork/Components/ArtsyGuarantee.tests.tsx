@@ -1,6 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { navigate } from "app/navigation/navigate"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { navigate } from "app/system/navigation/navigate"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { ArtsyGuarantee } from "./ArtsyGuarantee"
 
 describe("ArtsyGuarantee", () => {

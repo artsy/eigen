@@ -1,6 +1,6 @@
 import { AuctionResultListItem_auctionResult$data } from "__generated__/AuctionResultListItem_auctionResult.graphql"
-import { navigate } from "app/navigation/navigate"
 import { auctionResultHasPrice, auctionResultText } from "app/Scenes/AuctionResult/helpers"
+import { navigate } from "app/system/navigation/navigate"
 import { QAInfoManualPanel, QAInfoRow } from "app/utils/QAInfo"
 import { capitalize } from "lodash"
 import moment from "moment"

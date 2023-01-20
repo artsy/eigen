@@ -1,6 +1,6 @@
 import { MyAccountEditEmailQuery } from "__generated__/MyAccountEditEmailQuery.graphql"
 import { useToast } from "app/Components/Toast/toastHook"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { Input } from "palette"

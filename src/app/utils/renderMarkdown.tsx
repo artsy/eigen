@@ -1,4 +1,4 @@
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { decode } from "html-entities"
 import _ from "lodash"
 import { ClassTheme, LinkText, Separator, Text, TextProps } from "palette"

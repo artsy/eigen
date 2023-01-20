@@ -8,11 +8,11 @@ import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRec
 import { AuctionTimerState, currentTimerState } from "app/Components/Bidding/Components/Timer"
 import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
 import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
-import { BackButton } from "app/navigation/BackButton"
-import { navigationEvents } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { BackButton } from "app/system/navigation/BackButton"
+import { navigationEvents } from "app/system/navigation/navigate"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { QAInfoPanel } from "app/utils/QAInfo"
@@ -20,7 +20,7 @@ import { ProvideScreenTracking, Schema } from "app/utils/track"
 import {
   AuctionWebsocketChannelInfo,
   AuctionWebsocketContextProvider,
-} from "app/Websockets/auctions/AuctionSocketContext"
+} from "app/utils/Websockets/auctions/AuctionSocketContext"
 import { isEmpty } from "lodash"
 import { Box, Separator, useSpace } from "palette"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"

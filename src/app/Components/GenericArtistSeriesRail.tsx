@@ -3,7 +3,7 @@ import { ArtistCollectionsRail_collections$data } from "__generated__/ArtistColl
 import { CollectionArtistSeriesRail_collectionGroup$data } from "__generated__/CollectionArtistSeriesRail_collectionGroup.graphql"
 import { CardRailCard } from "app/Components/Home/CardRailCard"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
 import { Spacer, Text, useColor } from "palette"

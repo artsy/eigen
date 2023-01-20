@@ -1,4 +1,4 @@
-import { goBack } from "app/navigation/navigate"
+import { goBack } from "app/system/navigation/navigate"
 import { Box, Button, Join, Spacer, Text } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"

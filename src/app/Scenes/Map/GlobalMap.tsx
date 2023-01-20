@@ -1,9 +1,9 @@
 import MapboxGL, { MapViewProps, OnPressEvent } from "@react-native-mapbox-gl/maps"
 import { themeGet } from "@styled-system/theme-get"
 import { GlobalMap_viewer$data } from "__generated__/GlobalMap_viewer.graphql"
-import { Pin } from "app/Icons/Pin"
-import PinFairSelected from "app/Icons/PinFairSelected"
-import PinSavedSelected from "app/Icons/PinSavedSelected"
+import { Pin } from "app/Components/Icons/Pin"
+import PinFairSelected from "app/Components/Icons/PinFairSelected"
+import PinSavedSelected from "app/Components/Icons/PinSavedSelected"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import {
   convertCityToGeoJSON,

@@ -1,5 +1,5 @@
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Input, Text, Touchable } from "palette"
 import { Modal, TouchableOpacity } from "react-native"
 import { act } from "react-test-renderer"

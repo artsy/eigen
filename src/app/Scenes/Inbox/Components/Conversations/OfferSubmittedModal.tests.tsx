@@ -1,9 +1,9 @@
 import { act, fireEvent } from "@testing-library/react-native"
-import { goBack, navigate } from "app/navigation/navigate"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { goBack, navigate } from "app/system/navigation/navigate"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { OfferSubmittedModal } from "./OfferSubmittedModal"
 
-jest.mock("app/navigation/navigate", () => ({
+jest.mock("app/system/navigation/navigate", () => ({
   navigate: jest.fn(),
   goBack: jest.fn(),
 }))

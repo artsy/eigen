@@ -1,7 +1,7 @@
 import { InquiryModal_artwork$data } from "__generated__/InquiryModal_artwork.graphql"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import ChevronIcon from "app/Icons/ChevronIcon"
+import ChevronIcon from "app/Components/Icons/ChevronIcon"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryQuestionIDs } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"

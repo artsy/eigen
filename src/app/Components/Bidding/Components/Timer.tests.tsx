@@ -1,6 +1,6 @@
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { mockTimezone } from "app/tests/mockTimezone"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { mockTimezone } from "app/utils/tests/mockTimezone"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import moment from "moment"
 import { Countdown, Timer } from "./Timer"
 

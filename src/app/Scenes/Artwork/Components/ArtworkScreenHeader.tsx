@@ -1,7 +1,7 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArtworkScreenHeader_artwork$data } from "__generated__/ArtworkScreenHeader_artwork.graphql"
-import { goBack } from "app/navigation/navigate"
 import { useIsStaging } from "app/store/GlobalStore"
+import { goBack } from "app/system/navigation/navigate"
 import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { Schema } from "app/utils/track"
 import { userHadMeaningfulInteraction } from "app/utils/userHadMeaningfulInteraction"

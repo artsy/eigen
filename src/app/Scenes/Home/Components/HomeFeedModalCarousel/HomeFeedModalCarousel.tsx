@@ -1,6 +1,6 @@
+import { PhoneIcon } from "app/Components/Icons/HomeFeedOnboarding/PhoneIcon"
+import { SellWithEaseIcon } from "app/Components/Icons/HomeFeedOnboarding/SellWithEaseIcon"
 import { StepWithImage } from "app/Components/StepWithImage/StepWithImage"
-import { PhoneIcon } from "app/Icons/HomeFeedOnboarding/PhoneIcon"
-import { SellWithEaseIcon } from "app/Icons/HomeFeedOnboarding/SellWithEaseIcon"
 import { ArtworkIcon, Flex, GraphIcon, Join, Spacer } from "palette"
 import { HomeFeedModalCarouselContainer } from "./HomeFeedModalCarouselContainer"
 import { HomeFeedModalCarouselScreenWrapper } from "./HomeFeedModalCarouselScreenWrapper"

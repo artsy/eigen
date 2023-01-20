@@ -1,4 +1,4 @@
-import { dismissModal, navigationEvents } from "app/navigation/navigate"
+import { dismissModal, navigationEvents } from "app/system/navigation/navigate"
 import { useEffect } from "react"
 import { requireNativeComponent } from "react-native"
 

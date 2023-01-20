@@ -7,7 +7,7 @@ import {
   StickyTabSection,
 } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { TabEmptyState } from "app/Components/TabEmptyState"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Box, ClassTheme, Flex, Spacer, Text } from "palette"
 import React, { useContext, useState } from "react"

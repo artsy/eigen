@@ -1,12 +1,12 @@
 import { FeaturedCollectionsRailTestsQuery } from "__generated__/FeaturedCollectionsRailTestsQuery.graphql"
-import { navigate } from "app/navigation/navigate"
 import {
   FeaturedCollectionsRail,
   FeaturedCollectionsRailContainer,
   ImageWrapper,
 } from "app/Scenes/Collection/Components/CollectionHubsRails/FeaturedCollections/FeaturedCollectionsRail"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { navigate } from "app/system/navigation/navigate"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { TouchableHighlight } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"

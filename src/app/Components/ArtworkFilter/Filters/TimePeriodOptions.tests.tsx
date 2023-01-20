@@ -3,7 +3,7 @@ import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/Artwor
 import { ArtworkFiltersState } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { MockFilterScreen } from "app/Components/ArtworkFilter/FilterTestHelper"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { getEssentialProps } from "./helper"
 import { TimePeriodOptionsScreen } from "./TimePeriodOptions"
 

@@ -2,7 +2,7 @@ jest.mock("app/Components/Bidding/Screens/ConfirmBid/PriceSummary", () => ({
   PriceSummary: () => null,
 }))
 
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import "react-native"
 import { FakeNavigator } from "../Helpers/FakeNavigator"
 

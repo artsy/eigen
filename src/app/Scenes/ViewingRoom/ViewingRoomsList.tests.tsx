@@ -1,6 +1,6 @@
 import { screen, waitForElementToBeRemoved } from "@testing-library/react-native"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ViewingRoomsListItem } from "./Components/ViewingRoomsListItem"

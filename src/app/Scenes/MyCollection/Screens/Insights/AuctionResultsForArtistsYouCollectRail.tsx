@@ -5,7 +5,7 @@ import {
   AuctionResultListSeparator,
 } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
 import { Flex } from "palette"

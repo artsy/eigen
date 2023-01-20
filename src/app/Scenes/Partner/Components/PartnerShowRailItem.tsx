@@ -1,7 +1,7 @@
 import { PartnerShowRailItem_show$data } from "__generated__/PartnerShowRailItem_show.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "app/navigation/navigate"
 import { exhibitionDates } from "app/Scenes/Map/exhibitionPeriodParser"
+import { navigate } from "app/system/navigation/navigate"
 import { Schema, track } from "app/utils/track"
 import { first } from "lodash"
 import { Flex, Spacer, Text } from "palette"

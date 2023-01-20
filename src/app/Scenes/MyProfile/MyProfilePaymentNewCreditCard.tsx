@@ -1,7 +1,7 @@
 import { MyProfilePaymentNewCreditCardSaveCardMutation } from "__generated__/MyProfilePaymentNewCreditCardSaveCardMutation.graphql"
 import { CountrySelect } from "app/Components/CountrySelect"
 import { Stack } from "app/Components/Stack"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { Action, action, computed, Computed, createComponentStore } from "easy-peasy"
 import { Input, InputTitle } from "palette"
 import { Select } from "palette/elements/Select/SelectV2"

@@ -1,5 +1,5 @@
 import { RelatedArtist_artist$data } from "__generated__/RelatedArtist_artist.graphql"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { ClassTheme, Spacer, Text } from "palette"
 import { Component } from "react"
 import { TouchableWithoutFeedback, View } from "react-native"

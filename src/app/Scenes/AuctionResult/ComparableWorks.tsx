@@ -4,7 +4,7 @@ import {
   AuctionResultListItemFragmentContainer,
   AuctionResultListSeparator,
 } from "app/Components/Lists/AuctionResultListItem"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact } from "lodash"
 import { Flex, Join, Text } from "palette"

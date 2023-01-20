@@ -1,6 +1,6 @@
 import { CollectionQuery } from "__generated__/CollectionQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Box, Spacer } from "palette"
 import React, { Component, createRef } from "react"

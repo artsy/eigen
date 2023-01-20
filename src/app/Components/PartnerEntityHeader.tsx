@@ -1,6 +1,6 @@
 import { PartnerEntityHeader_partner$data } from "__generated__/PartnerEntityHeader_partner.graphql"
-import { navigate } from "app/navigation/navigate"
 import { PartnerFollowButtonFragmentContainer as PartnerFollowButton } from "app/Scenes/Partner/Components/PartnerFollowButton"
+import { navigate } from "app/system/navigation/navigate"
 import { limitWithCount } from "app/utils/limitWithCount"
 import { compact } from "lodash"
 import { Box, BoxProps, EntityHeader } from "palette"

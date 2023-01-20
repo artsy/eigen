@@ -1,4 +1,4 @@
-import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import "react-native"
 
 import RelayGenericArtworksGrid, { GenericArtworksGrid } from "./GenericGrid"

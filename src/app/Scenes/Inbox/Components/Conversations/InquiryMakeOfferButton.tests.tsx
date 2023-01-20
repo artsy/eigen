@@ -1,6 +1,6 @@
 import { InquiryMakeOfferButtonTestsQuery } from "__generated__/InquiryMakeOfferButtonTestsQuery.graphql"
-import { navigate } from "app/navigation/navigate"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { navigate } from "app/system/navigation/navigate"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Button } from "palette"
 import { Alert } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"

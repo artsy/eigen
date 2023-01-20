@@ -4,12 +4,12 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 
 import { CollectionsRailTestsQuery } from "__generated__/CollectionsRailTestsQuery.graphql"
 import { CardRailCard } from "app/Components/Home/CardRailCard"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import HomeAnalytics from "../homeAnalytics"
 import { CollectionsRailFragmentContainer } from "./CollectionsRail"
 

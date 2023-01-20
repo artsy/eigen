@@ -1,7 +1,7 @@
 import { CareerHighlightsRail_me$key } from "__generated__/CareerHighlightsRail_me.graphql"
 import { EmbeddedCarousel } from "app/Components/EmbeddedCarousel"
-import { navigate, popToRoot } from "app/navigation/navigate"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { navigate, popToRoot } from "app/system/navigation/navigate"
 import { Flex, useColor } from "palette"
 import React from "react"
 import { useFragment } from "react-relay"

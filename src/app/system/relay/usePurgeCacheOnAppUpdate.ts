@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { RelayCache } from "app/relay/RelayCache"
+import { RelayCache } from "app/system/relay/RelayCache"
 import { useEffect } from "react"
 import DeviceInfo from "react-native-device-info"
 

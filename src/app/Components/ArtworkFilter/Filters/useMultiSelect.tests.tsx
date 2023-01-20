@@ -4,9 +4,9 @@ import {
   ArtworkFiltersStoreProvider,
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { extractText } from "app/tests/extractText"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { extractText } from "app/utils/tests/extractText"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Text, TouchableHighlight, TouchableWithoutFeedback, View } from "react-native"
 import { getEssentialProps } from "./helper"
 import { useMultiSelect } from "./useMultiSelect"

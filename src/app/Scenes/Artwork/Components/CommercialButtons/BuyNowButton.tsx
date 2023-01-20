@@ -1,7 +1,7 @@
 import { ActionType, OwnerType, TappedBuyNow } from "@artsy/cohesion"
 import { BuyNowButton_artwork$data } from "__generated__/BuyNowButton_artwork.graphql"
 import { BuyNowButtonOrderMutation } from "__generated__/BuyNowButtonOrderMutation.graphql"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { Track, track as _track } from "app/utils/track"
 import { Button, ButtonProps } from "palette"
 import React from "react"

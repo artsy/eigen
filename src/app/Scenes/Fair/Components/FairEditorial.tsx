@@ -1,7 +1,7 @@
 import { ActionType, ContextModule, OwnerType, TappedArticleGroup } from "@artsy/cohesion"
 import { FairEditorial_fair$data } from "__generated__/FairEditorial_fair.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { Box, BoxProps, Text, Touchable, useColor } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"

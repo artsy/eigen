@@ -2,7 +2,7 @@ import {
   DeleteAccountInput,
   deleteUserAccountMutation,
 } from "__generated__/deleteUserAccountMutation.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { Environment } from "react-relay"
 import { commitMutation, graphql } from "relay-runtime"
 

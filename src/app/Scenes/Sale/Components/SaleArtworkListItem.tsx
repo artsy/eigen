@@ -8,7 +8,7 @@ import {
 import { SaleArtworkListItem_artwork$data } from "__generated__/SaleArtworkListItem_artwork.graphql"
 import { saleMessageOrBidInfo } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { getImageSquareDimensions } from "app/utils/resizeImage"
 import { Flex, Text } from "palette"
 import { Touchable } from "palette"

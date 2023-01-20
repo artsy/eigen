@@ -1,19 +1,19 @@
 import { themeGet } from "@styled-system/theme-get"
 import { Inquiry_artwork$data } from "__generated__/Inquiry_artwork.graphql"
 import { InquiryQuery } from "__generated__/InquiryQuery.graphql"
-import { dismissModal } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
 import ArtworkPreview from "app/Scenes/Inbox/Components/Conversations/Preview/ArtworkPreview"
 import { MetadataText, SmallHeadline } from "app/Scenes/Inbox/Components/Typography"
 import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
+import { dismissModal } from "app/system/navigation/navigate"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
+import { Schema, Track, track as _track } from "app/utils/track"
 import { Box, Button, Separator, Spacer } from "palette"
 import React from "react"
 import { Dimensions, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import styled from "styled-components/native"
-import { Schema, Track, track as _track } from "../utils/track"
 
 const isPad = Dimensions.get("window").width > 700
 

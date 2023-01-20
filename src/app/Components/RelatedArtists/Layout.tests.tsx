@@ -1,4 +1,4 @@
-import { renderWithLayout } from "app/tests/renderWithLayout"
+import { renderWithLayout } from "app/utils/tests/renderWithLayout"
 import "react-native"
 
 import RelatedArtists from "./RelatedArtists"

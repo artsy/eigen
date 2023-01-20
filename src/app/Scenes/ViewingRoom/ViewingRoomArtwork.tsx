@@ -1,5 +1,5 @@
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { cm2in } from "app/utils/conversions"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"

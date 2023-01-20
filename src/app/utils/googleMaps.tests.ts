@@ -1,4 +1,4 @@
-import { fetchMockResponseOnce } from "app/tests/fetchMockHelpers"
+import { fetchMockResponseOnce } from "app/utils/tests/fetchMockHelpers"
 import { getLocationPredictions } from "./googleMaps"
 
 describe("queryLocation()", () => {

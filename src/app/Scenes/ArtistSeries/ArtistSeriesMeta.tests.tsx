@@ -1,11 +1,11 @@
 import { ArtistSeriesMetaTestsQuery } from "__generated__/ArtistSeriesMetaTestsQuery.graphql"
-import { navigate } from "app/navigation/navigate"
 import {
   ArtistSeriesMeta,
   ArtistSeriesMetaFragmentContainer,
 } from "app/Scenes/ArtistSeries/ArtistSeriesMeta"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { navigate } from "app/system/navigation/navigate"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { EntityHeader } from "palette"
 import { TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"

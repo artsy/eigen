@@ -1,5 +1,5 @@
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import "react-native"
 import { EventTiming } from "./EventTiming"
 

@@ -3,7 +3,7 @@ import { MyProfilePushNotificationsQuery } from "__generated__/MyProfilePushNoti
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { SwitchMenu } from "app/Components/SwitchMenu"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import {
   getNotificationPermissionsStatus,
   PushAuthorizationStatus,

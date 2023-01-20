@@ -1,6 +1,6 @@
 import { ArtistArticles_artist$data } from "__generated__/ArtistArticles_artist.graphql"
 import { ArtistArticlesResultQuery } from "__generated__/ArtistArticlesResultQuery.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import _ from "lodash"

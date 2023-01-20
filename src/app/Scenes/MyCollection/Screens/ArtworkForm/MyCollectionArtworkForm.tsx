@@ -12,7 +12,6 @@ import { captureException } from "@sentry/react-native"
 import { MyCollectionArtwork_sharedProps$data } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
 import { LengthUnitPreference } from "__generated__/UserPrefsModelQuery.graphql"
 import LoadingModal from "app/Components/Modals/LoadingModal"
-import { goBack } from "app/navigation/navigate"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
 import {
   cleanArtworkPayload,
@@ -20,6 +19,7 @@ import {
 } from "app/Scenes/MyCollection/utils/cleanArtworkPayload"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { addClue, GlobalStore, setVisualClueAsSeen } from "app/store/GlobalStore"
+import { goBack } from "app/system/navigation/navigate"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { isEqual } from "lodash"

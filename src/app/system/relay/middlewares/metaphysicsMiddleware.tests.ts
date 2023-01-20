@@ -1,7 +1,7 @@
 import { persistedQueryMiddleware } from "./metaphysicsMiddleware"
 import { GraphQLRequest } from "./types"
 
-jest.mock("../../../../data/complete.queryMap.json", () => ({
+jest.mock("../../../../../data/complete.queryMap.json", () => ({
   "query-id": "persisted-query-text",
 }))
 

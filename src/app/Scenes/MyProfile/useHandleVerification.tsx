@@ -1,5 +1,5 @@
 import { captureException } from "@sentry/react-native"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { verifyEmail } from "app/utils/verifyEmail"
 import { verifyID } from "app/utils/verifyID"
 import { useCallback, useState } from "react"

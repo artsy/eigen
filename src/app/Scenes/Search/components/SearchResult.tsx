@@ -1,5 +1,5 @@
-import { navigate } from "app/navigation/navigate"
 import { GlobalStore } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
 import { searchInsights } from "app/utils/useSearchInsightsConfig"
 import { Flex, Spacer, Touchable } from "palette"
 import { AlgoliaSearchResult, PillType } from "../types"

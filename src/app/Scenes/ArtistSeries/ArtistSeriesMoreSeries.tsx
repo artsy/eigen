@@ -1,7 +1,7 @@
 import { ActionType, ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import { ArtistSeriesMoreSeries_artist$data } from "__generated__/ArtistSeriesMoreSeries_artist.graphql"
-import { navigate } from "app/navigation/navigate"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
+import { navigate } from "app/system/navigation/navigate"
 import { Flex, FlexProps, Text, TextProps } from "palette"
 import React, { useEffect, useState } from "react"
 import { TouchableOpacity } from "react-native"

@@ -1,6 +1,6 @@
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import React from "react"
 import { Environment } from "relay-runtime"
-import { defaultEnvironment } from "../relay/createEnvironment"
 
 interface BaseContextProps {
   relayEnvironment?: Environment

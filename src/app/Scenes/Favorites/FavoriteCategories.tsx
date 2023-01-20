@@ -13,7 +13,7 @@ import { Spacer } from "palette"
 
 import { FavoriteCategoriesQuery } from "__generated__/FavoriteCategoriesQuery.graphql"
 import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import React from "react"
 

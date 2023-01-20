@@ -1,5 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import { Text } from "react-native"
 import { TOAST_DURATION_MAP, ToastComponent } from "./ToastComponent"

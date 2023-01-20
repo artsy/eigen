@@ -1,6 +1,6 @@
 import { FeaturedArtists_collection$data } from "__generated__/FeaturedArtists_collection.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { Schema, Track, track as _track } from "app/utils/track"
 import { ContextModules } from "app/utils/track/schema"
 import { Box, Flex, Text } from "palette"

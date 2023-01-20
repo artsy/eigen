@@ -1,7 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { HomeFeedOnboardingRail_onboardingModule$data } from "__generated__/HomeFeedOnboardingRail_onboardingModule.graphql"
 import { EmbeddedCarousel } from "app/Components/EmbeddedCarousel"
-import { switchTab } from "app/navigation/navigate"
+import { switchTab } from "app/system/navigation/navigate"
 import { Flex } from "palette"
 import React, { useState } from "react"
 import { ImageSourcePropType } from "react-native"

@@ -1,7 +1,7 @@
 import { ActionType, ContextModule, OwnerType, TappedViewingRoomCard } from "@artsy/cohesion"
 import { ShowViewingRoom_show$data } from "__generated__/ShowViewingRoom_show.graphql"
-import { navigate } from "app/navigation/navigate"
 import { tagForStatus } from "app/Scenes/ViewingRoom/Components/ViewingRoomsListItem"
+import { navigate } from "app/system/navigation/navigate"
 import { Box, BoxProps, MediumCard } from "palette"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"

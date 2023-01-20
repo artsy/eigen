@@ -190,8 +190,8 @@ export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, nu
  *
  *       ```ts
  *      import { fireEvent } from "@testing-library/react-native"
- *      import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
- *      import { mockTrackEvent } from "app/tests/globallyMockedStuff"
+ *      import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+ *      import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
  *       *
  *      // Unmock react-tracking so that it will wrap our code
  *      jest.unmock("react-tracking")

@@ -4,7 +4,7 @@ import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/Artwor
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
 import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { Schema, screenTrack } from "app/utils/track"
 import { Separator } from "palette"

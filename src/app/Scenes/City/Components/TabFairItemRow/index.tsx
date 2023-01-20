@@ -1,6 +1,6 @@
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "app/navigation/navigate"
 import { Fair } from "app/Scenes/Map/types"
+import { navigate } from "app/system/navigation/navigate"
 import { Box, ClassTheme, Flex, Text } from "palette"
 import React from "react"
 import { Dimensions, TouchableWithoutFeedback } from "react-native"

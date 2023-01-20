@@ -3,9 +3,9 @@ import {
   MyCollectionArtworkListItem_artwork$data,
   MyCollectionArtworkListItem_artwork$key,
 } from "__generated__/MyCollectionArtworkListItem_artwork.graphql"
+import HighDemandIcon from "app/Components/Icons/HighDemandIcon"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import HighDemandIcon from "app/Icons/HighDemandIcon"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { LocalImage, retrieveLocalImages } from "app/utils/LocalImageStore"
 import { getImageSquareDimensions } from "app/utils/resizeImage"
 import { Flex, NoArtworkIcon, Text, Touchable } from "palette"

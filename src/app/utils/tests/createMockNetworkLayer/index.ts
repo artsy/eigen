@@ -27,7 +27,7 @@ export const createMockNetworkLayer = (mockResolvers: IMocks) => {
       mocks: { FormattedNumber: () => FormattedNumber, ...mockResolvers },
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       resolveQueryFromOperation: ({ id }) => {
-        return require("../../../../data/complete.queryMap.json")[id]
+        return require("../../../../../data/complete.queryMap.json")[id]
       },
     })
   )
@@ -130,7 +130,7 @@ export const createMockFetchQuery = ({
     schema,
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     resolveQueryFromOperation: ({ id }) => {
-      return require("../../../../data/complete.queryMap.json")[id]
+      return require("../../../../../data/complete.queryMap.json")[id]
     },
     resolvers: {
       FormattedNumber: () => FormattedNumber,

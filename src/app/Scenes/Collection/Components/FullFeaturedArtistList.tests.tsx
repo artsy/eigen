@@ -1,6 +1,6 @@
 import { FullFeaturedArtistListTestsQuery } from "__generated__/FullFeaturedArtistListTestsQuery.graphql"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { FullFeaturedArtistListCollectionFixture } from "./__fixtures__/CollectionFixture"

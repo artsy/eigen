@@ -1,6 +1,6 @@
 import "react-native"
 
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { StickyTabPage } from "../StickyTabPage/StickyTabPage"
 import About from "./About"
 

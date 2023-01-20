@@ -1,5 +1,5 @@
 import { AttachmentList_Test_Query } from "__generated__/AttachmentList_Test_Query.graphql"
-import { setupTestWrapper } from "app/tests/setupTestWrapper"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { AttachmentListFragmentContainer } from "./AttachmentList"
 

@@ -3,8 +3,8 @@ import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
 import {
   CloseIcon,
   Flex,

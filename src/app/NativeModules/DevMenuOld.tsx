@@ -1,4 +1,4 @@
-import { dismissModal } from "app/navigation/navigate"
+import { dismissModal } from "app/system/navigation/navigate"
 import { Button } from "palette"
 import { requireNativeComponent, View } from "react-native"
 

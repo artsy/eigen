@@ -1,6 +1,6 @@
 import { ArtworkConsignments_artwork$key } from "__generated__/ArtworkConsignments_artwork.graphql"
-import { navigate } from "app/navigation/navigate"
 import { useSelectedTab } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
 import { LinkText, Text } from "palette"
 import { graphql, useFragment } from "react-relay"

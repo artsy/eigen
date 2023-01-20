@@ -1,4 +1,4 @@
-import { addRoute, addWebViewRoute, matchRoute, replaceParams } from "app/navigation/routes"
+import { addRoute, addWebViewRoute, matchRoute, replaceParams } from "app/routes"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 
 describe("artsy.net routes", () => {

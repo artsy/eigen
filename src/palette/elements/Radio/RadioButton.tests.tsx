@@ -1,4 +1,4 @@
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Text } from "palette"
 import { TouchableWithoutFeedback } from "react-native"
 import { RadioButton } from "./RadioButton"

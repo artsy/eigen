@@ -1,6 +1,6 @@
 import { ArtworkLotDetails_artwork$key } from "__generated__/ArtworkLotDetails_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { sendEmail } from "app/utils/sendEmail"
 import { Schema } from "app/utils/track"
 import { Box, Join, LinkText, Spacer, Text } from "palette"

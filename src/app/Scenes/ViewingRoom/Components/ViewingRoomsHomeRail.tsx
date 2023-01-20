@@ -1,7 +1,7 @@
 import { ViewingRoomsHomeRailQuery } from "__generated__/ViewingRoomsHomeRailQuery.graphql"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { Schema } from "app/utils/track"

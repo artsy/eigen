@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { goBack, navigate } from "app/navigation/navigate"
+import { goBack, navigate } from "app/system/navigation/navigate"
 import { useSetWebViewCallback } from "app/utils/useWebViewEvent"
 import { Box, Button, Text } from "palette"
 import React, { useState } from "react"

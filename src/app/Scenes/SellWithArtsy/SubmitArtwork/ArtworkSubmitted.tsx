@@ -1,7 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { StackScreenProps } from "@react-navigation/stack"
-import { navigate } from "app/navigation/navigate"
 import { GlobalStore } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { Box, Button, Flex, Spacer, Text } from "palette"

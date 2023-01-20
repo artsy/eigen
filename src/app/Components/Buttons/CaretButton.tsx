@@ -1,4 +1,4 @@
-import ChevronIcon from "app/Icons/ChevronIcon"
+import ChevronIcon from "app/Components/Icons/ChevronIcon"
 import { Box, Flex, Text } from "palette"
 import { GestureResponderEvent, TouchableOpacity } from "react-native"
 

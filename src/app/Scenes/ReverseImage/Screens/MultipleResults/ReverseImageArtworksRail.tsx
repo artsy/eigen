@@ -1,7 +1,7 @@
 import { ActionType, OwnerType, SelectedArtworkFromReverseImageSearch } from "@artsy/cohesion"
 import { ReverseImageArtworksRail$key } from "__generated__/ReverseImageArtworksRail.graphql"
 import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Flex, Text } from "palette"
 import { graphql, useFragment } from "react-relay"

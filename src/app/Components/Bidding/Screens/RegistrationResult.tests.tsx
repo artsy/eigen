@@ -1,13 +1,13 @@
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 
 import { Button, LinkText } from "palette"
 import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
 
-import { dismissModal, navigate } from "app/navigation/navigate"
+import { dismissModal, navigate } from "app/system/navigation/navigate"
 
 import { Linking } from "react-native"
 
-import { extractText } from "app/tests/extractText"
+import { extractText } from "app/utils/tests/extractText"
 import { Icon20 } from "../Components/Icon"
 
 describe("Registration result component", () => {

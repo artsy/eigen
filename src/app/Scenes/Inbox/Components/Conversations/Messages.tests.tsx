@@ -1,6 +1,6 @@
 import { MessagesTestsQuery } from "__generated__/MessagesTestsQuery.graphql"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Flex, Text } from "palette"
 import "react-native"
 import { RefreshControl } from "react-native"

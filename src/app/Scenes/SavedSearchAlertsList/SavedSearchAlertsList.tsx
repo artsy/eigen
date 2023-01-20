@@ -1,6 +1,6 @@
 import { SavedSearchAlertsListQuery } from "__generated__/SavedSearchAlertsListQuery.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { graphql, QueryRenderer } from "react-relay"
 import { SavedSearchAlertsListPlaceholder } from "./Components/SavedSearchAlertsListPlaceholder"

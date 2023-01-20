@@ -1,8 +1,11 @@
 import Clipboard from "@react-native-clipboard/clipboard"
 import { SaleHeader_sale$data } from "__generated__/SaleHeader_sale.graphql"
+import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { CustomShareSheet, CustomShareSheetItem } from "app/Components/CustomShareSheet"
+import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
 import { useToast } from "app/Components/Toast/toastHook"
+import { navigate } from "app/system/navigation/navigate"
 import { getAbsoluteTimeOfSale, saleTime, useRelativeTimeOfSale } from "app/utils/saleTime"
 import moment from "moment"
 import { Flex, LinkIcon, MoreIcon, ShareIcon, Text, Touchable } from "palette"
@@ -11,9 +14,6 @@ import { Animated, Dimensions, View } from "react-native"
 import RNShare, { ShareOptions } from "react-native-share"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
-import { CaretButton } from "../../../Components/Buttons/CaretButton"
-import OpaqueImageView from "../../../Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "../../../navigation/navigate"
 
 export const COVER_IMAGE_HEIGHT = 260
 const SHARE_ICON_SIZE = 23

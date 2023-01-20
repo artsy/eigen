@@ -1,6 +1,6 @@
 import { ArticlesRail_articlesConnection$data } from "__generated__/ArticlesRail_articlesConnection.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Flex, Spacer } from "palette"
 import { FlatList } from "react-native"

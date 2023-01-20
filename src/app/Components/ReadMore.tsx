@@ -1,4 +1,4 @@
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { plainTextFromTree } from "app/utils/plainTextFromTree"
 import { defaultRules, renderMarkdown } from "app/utils/renderMarkdown"
 import { sendEmailWithMailTo } from "app/utils/sendEmail"

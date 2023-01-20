@@ -6,7 +6,7 @@ import { MyBids_me$data } from "__generated__/MyBids_me.graphql"
 import { MyBidsQuery } from "__generated__/MyBidsQuery.graphql"
 
 import { OwnerType } from "@artsy/cohesion"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"

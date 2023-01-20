@@ -1,5 +1,5 @@
 import { ActionType, OwnerType, TappedViewOffer } from "@artsy/cohesion"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { useEventTiming } from "app/utils/useEventTiming"
 import { DateTime } from "luxon"
 import {

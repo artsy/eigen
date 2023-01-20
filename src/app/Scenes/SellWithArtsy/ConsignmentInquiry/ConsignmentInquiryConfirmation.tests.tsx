@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
-import { popToRoot } from "app/navigation/navigate"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { popToRoot } from "app/system/navigation/navigate"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { ConsignmentInquiryConfirmation } from "./ConsignmentInquiryConfirmation"
 
 describe("ConsignmentInquiryConfirmation", () => {

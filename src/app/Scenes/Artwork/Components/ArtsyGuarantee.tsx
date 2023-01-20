@@ -1,4 +1,4 @@
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { Box, Flex, IconProps, Join, LinkText, Spacer, Text, VerifiedIcon } from "palette"
 import { GuaranteeIcon } from "palette/svgs/GuaranteeIcon"
 import { SecureLockIcon } from "palette/svgs/SecureLockIcon"

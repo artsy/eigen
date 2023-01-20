@@ -13,14 +13,14 @@ import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTa
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { useToast } from "app/Components/Toast/toastHook"
-import { navigate, popToRoot } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
 import {
   GlobalStore,
   setVisualClueAsSeen,
   useDevToggle,
   useVisualClue,
 } from "app/store/GlobalStore"
+import { navigate, popToRoot } from "app/system/navigation/navigate"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   PlaceholderBox,

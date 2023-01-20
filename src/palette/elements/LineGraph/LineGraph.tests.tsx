@@ -1,4 +1,4 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { LineGraph } from "./LineGraph"
 import { LineGraphBands } from "./LineGraphBands"
 import { LineGraphCategoryPicker } from "./LineGraphCategoryPicker"

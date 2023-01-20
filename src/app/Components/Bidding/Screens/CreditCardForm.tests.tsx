@@ -1,7 +1,7 @@
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Button, Text } from "palette"
 
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { CreditCardForm } from "./CreditCardForm"
 
 jest.mock("tipsi-stripe", () => ({

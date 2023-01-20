@@ -1,6 +1,6 @@
-import { navigate } from "app/navigation/navigate"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { navigate } from "app/system/navigation/navigate"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Image, TouchableOpacity } from "react-native"
 import { CityGuideCTA } from "./CityGuideCTA"
 

@@ -3,13 +3,13 @@ import { CollectionArtistSeriesRailTestsQuery } from "__generated__/CollectionAr
 import { GenericArtistSeriesRail } from "app/Components/GenericArtistSeriesRail"
 import { CardRailCard } from "app/Components/Home/CardRailCard"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "app/navigation/navigate"
 import {
   CollectionArtistSeriesRail,
   CollectionArtistSeriesRailContainer,
 } from "app/Scenes/Collection/Components/CollectionHubsRails/ArtistSeries/CollectionArtistSeriesRail"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { navigate } from "app/system/navigation/navigate"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 

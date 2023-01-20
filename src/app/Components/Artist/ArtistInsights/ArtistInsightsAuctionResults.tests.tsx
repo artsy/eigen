@@ -4,12 +4,12 @@ import {
   ArtworkFiltersStoreProvider,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import {
   mockEdges,
   resolveMostRecentRelayOperation,
-} from "app/tests/resolveMostRecentRelayOperation"
+} from "app/utils/tests/resolveMostRecentRelayOperation"
 import { SectionList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"

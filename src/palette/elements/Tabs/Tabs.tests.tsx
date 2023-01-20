@@ -1,4 +1,4 @@
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { LayoutRectangle } from "react-native"
 import { TouchableOpacity } from "react-native"
 import { Pressable } from "react-native"

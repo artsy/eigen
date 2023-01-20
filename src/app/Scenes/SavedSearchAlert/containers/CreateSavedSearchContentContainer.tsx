@@ -4,7 +4,7 @@ import { captureMessage } from "@sentry/react-native"
 import { CreateSavedSearchContentContainer_viewer$data } from "__generated__/CreateSavedSearchContentContainer_viewer.graphql"
 import { CreateSavedSearchContentContainerQuery } from "__generated__/CreateSavedSearchContentContainerQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import {
   getNotificationPermissionsStatus,
   PushAuthorizationStatus,

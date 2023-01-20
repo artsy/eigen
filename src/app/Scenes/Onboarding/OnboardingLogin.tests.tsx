@@ -1,4 +1,4 @@
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Input, Touchable } from "palette"
 import { OnboardingLoginWithEmailForm } from "./OnboardingLogin"
 

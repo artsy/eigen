@@ -10,8 +10,8 @@ import {
   SavedSearchEntityArtist,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
-import { goBack, GoBackProps, navigationEvents } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { goBack, GoBackProps, navigationEvents } from "app/system/navigation/navigate"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useCallback, useEffect } from "react"

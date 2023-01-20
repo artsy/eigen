@@ -5,7 +5,7 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import Metadata from "./Metadata"
 
 import { ArtistShow_show$data } from "__generated__/ArtistShow_show.graphql"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { hrefForPartialShow } from "app/utils/router"
 import { Touchable } from "palette"
 
