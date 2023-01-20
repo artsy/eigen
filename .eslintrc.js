@@ -64,7 +64,6 @@ module.exports = {
         caughtErrorsIgnorePattern: "^_",
       },
     ],
-    "@typescript-eslint/interface-over-type-literal": WARN,
     "no-relative-import-paths/no-relative-import-paths": [
       WARN,
       { allowSameFolder: true, rootDir: "src" },

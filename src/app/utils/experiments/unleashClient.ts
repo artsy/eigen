@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { EXPERIMENT_NAME, experiments } from "app/utils/experiments"
+import { EXPERIMENT_NAME, experiments } from "app/utils/experiments/experiments"
 import { Config } from "react-native-config"
 import { UnleashClient } from "unleash-proxy-client"
 
