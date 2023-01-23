@@ -25,7 +25,8 @@ export const createOrUpdateSubmission = async (
   const attributionClass =
     (values?.attributionClass?.replace(" ", "_").toUpperCase() as NewType) || null
 
-  const { artistId, location, myCollectionArtworkID, source, ...restValues } = values
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { artist, artistId, location, myCollectionArtworkID, source, ...restValues } = values
 
   const submissionValues: SubmissionInput = {
     ...restValues,
