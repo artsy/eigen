@@ -39,7 +39,10 @@ export interface BottomTabsModel {
   lastNotificationPublishedAt: string | null
   syncApplicationIconBadgeNumber: ThunkOn<BottomTabsModel>
   unreadConversationCountChanged: Action<BottomTabsModel, number>
-  actionChanged: Action<BottomTabsModel, { notifications: NotificationNode[]; unreadCount: number }>
+  syncActivityPanelState: Action<
+    BottomTabsModel,
+    { notifications: NotificationNode[]; unreadCount: number }
+  >
   fetchCurrentUnreadConversationCount: Thunk<BottomTabsModel>
   unreadActivityPanelNotificationsCountChanged: Action<BottomTabsModel, number>
   fetchNotificationsInfo: Thunk<BottomTabsModel>
@@ -158,7 +161,7 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
 
       GlobalStore.actions.bottomTabs.unreadConversationCountChanged(conversations)
       GlobalStore.actions.bottomTabs.unreadActivityPanelNotificationsCountChanged(notifications)
-      GlobalStore.actions.bottomTabs.actionChanged({
+      GlobalStore.actions.bottomTabs.syncActivityPanelState({
         notifications: formattedNotificationNodes,
         unreadCount: notifications,
       })
@@ -181,7 +184,7 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
   setTabProps: action((state, { tab, props }) => {
     state.sessionState.tabProps[tab] = props
   }),
-  actionChanged: action((state, payload) => {
+  syncActivityPanelState: action((state, payload) => {
     const notifications = payload.notifications.filter((node) => {
       if (isArtworksBasedNotification(node.notificationType)) {
         return node.artworksCount > 0
