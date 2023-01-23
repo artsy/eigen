@@ -6,6 +6,7 @@ let metaflags = {
   logOperation: false,
   logPrefetching: false,
   logRelay: false,
+  logRelayVerbose: false,
   logRoute: false,
   logRunningRequest: false,
 }
@@ -25,5 +26,6 @@ export const logNotification = metaflags.logNotification
 export const logOperation = metaflags.logOperation
 export const logPrefetching = metaflags.logPrefetching
 export const logRelay = metaflags.logRelay
+export const logRelayVerbose = metaflags.logRelayVerbose
 export const logRoute = metaflags.logRoute
 export const logRunningRequest = metaflags.logRunningRequest
