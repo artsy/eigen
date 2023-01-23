@@ -74,81 +74,248 @@ describe(BottomTabs, () => {
     await flushPromiseQueue()
   })
 
-  it(`displays a blue dot on home icon if there are unread notifications`, async () => {
-    const currentDate = DateTime.local()
+  describe("a blue dot on home icon", () => {
+    describe("should be displayed if there are unread notifications", () => {
+      it("`lastNotificationPublishedAt` has default value", async () => {
+        const currentDate = DateTime.local()
 
-    __globalStoreTestUtils__?.injectState({
-      bottomTabs: {
-        lastNotificationPublishedAt: currentDate.minus({ hour: 1 }).toISO(),
-      },
-    })
-    const tree = renderWithWrappersLEGACY(<TestWrapper />)
+        __globalStoreTestUtils__?.injectState({
+          bottomTabs: {
+            lastNotificationPublishedAt: null,
+          },
+        })
+        const tree = renderWithWrappersLEGACY(<TestWrapper />)
 
-    const prevHomeButton = findButtonByTab(tree, "home")
-    expect((prevHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
+        const prevHomeButton = findButtonByTab(tree, "home")
+        expect((prevHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
 
-    resolveNotificationsInfoQuery({
-      Me: () => ({
-        unreadConversationCount: 5,
-        unreadNotificationsCount: 1,
-      }),
-      Viewer: () => ({
-        notificationsConnection: {
-          edges: [
-            {
-              node: {
-                publishedAt: currentDate.toISO(),
-              },
+        resolveNotificationsInfoQuery({
+          Me: () => ({
+            unreadConversationCount: 5,
+            unreadNotificationsCount: 1,
+          }),
+          Viewer: () => ({
+            notificationsConnection: {
+              edges: [
+                {
+                  node: {
+                    publishedAt: currentDate.toISO(),
+                  },
+                },
+              ],
             },
-          ],
-        },
-      }),
-    })
+          }),
+        })
 
-    await flushPromiseQueue()
+        await flushPromiseQueue()
 
-    const currentHomeButton = findButtonByTab(tree, "home")
-    expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
+        const currentHomeButton = findButtonByTab(tree, "home")
+        expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
 
-    // need to prevent this test's requests from leaking into the next test
-    await flushPromiseQueue()
-  })
+        // need to prevent this test's requests from leaking into the next test
+        await flushPromiseQueue()
+      })
 
-  it(`doesn't display a blue dot on home icon if there are no unread notifications`, async () => {
-    const publishedAt = DateTime.local().toISO()
+      // TODO: Fix this test case
+      it("the latest notification `publishedAt` is equal to the locally persisted `publishedAt`", async () => {
+        const publishedAt = DateTime.local().toISO()
 
-    __globalStoreTestUtils__?.injectState({
-      bottomTabs: {
-        lastNotificationPublishedAt: publishedAt,
-      },
-    })
-    const tree = renderWithWrappersLEGACY(<TestWrapper />)
+        __globalStoreTestUtils__?.injectState({
+          bottomTabs: {
+            lastNotificationPublishedAt: publishedAt,
+          },
+        })
+        const tree = renderWithWrappersLEGACY(<TestWrapper />)
 
-    resolveNotificationsInfoQuery({
-      Me: () => ({
-        unreadConversationCount: 5,
-        unreadNotificationsCount: 0,
-      }),
-      Viewer: () => ({
-        notificationsConnection: {
-          edges: [
-            {
-              node: {
-                publishedAt: publishedAt,
-              },
+        const prevHomeButton = findButtonByTab(tree, "home")
+        expect((prevHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
+
+        resolveNotificationsInfoQuery({
+          Me: () => ({
+            unreadConversationCount: 5,
+            unreadNotificationsCount: 1,
+          }),
+          Viewer: () => ({
+            notificationsConnection: {
+              edges: [
+                {
+                  node: {
+                    publishedAt: publishedAt,
+                  },
+                },
+              ],
             },
-          ],
-        },
-      }),
+          }),
+        })
+
+        await flushPromiseQueue()
+
+        const currentHomeButton = findButtonByTab(tree, "home")
+        expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
+
+        // need to prevent this test's requests from leaking into the next test
+        await flushPromiseQueue()
+      })
+
+      it("the latest notification `publishedAt` is more recent than the locally persisted `publishedAt`", async () => {
+        const currentDate = DateTime.local()
+        const prevNotificationPublishedAt = currentDate.minus({ hour: 1 }).toISO()
+
+        __globalStoreTestUtils__?.injectState({
+          bottomTabs: {
+            lastNotificationPublishedAt: prevNotificationPublishedAt,
+          },
+        })
+        const tree = renderWithWrappersLEGACY(<TestWrapper />)
+
+        const prevHomeButton = findButtonByTab(tree, "home")
+        expect((prevHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
+
+        resolveNotificationsInfoQuery({
+          Me: () => ({
+            unreadConversationCount: 5,
+            unreadNotificationsCount: 1,
+          }),
+          Viewer: () => ({
+            notificationsConnection: {
+              edges: [
+                {
+                  node: {
+                    publishedAt: currentDate.toISO(),
+                  },
+                },
+                {
+                  node: {
+                    publishedAt: prevNotificationPublishedAt,
+                  },
+                },
+              ],
+            },
+          }),
+        })
+
+        await flushPromiseQueue()
+
+        const currentHomeButton = findButtonByTab(tree, "home")
+        expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
+
+        // need to prevent this test's requests from leaking into the next test
+        await flushPromiseQueue()
+      })
     })
 
-    await flushPromiseQueue()
+    describe("should NOT be displayed if there are NO unread notifications", () => {
+      it("`lastNotificationPublishedAt` has default value", async () => {
+        const publishedAt = DateTime.local().toISO()
 
-    const currentHomeButton = findButtonByTab(tree, "home")
-    expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
+        __globalStoreTestUtils__?.injectState({
+          bottomTabs: {
+            lastNotificationPublishedAt: null,
+          },
+        })
+        const tree = renderWithWrappersLEGACY(<TestWrapper />)
 
-    // need to prevent this test's requests from leaking into the next test
-    await flushPromiseQueue()
+        resolveNotificationsInfoQuery({
+          Me: () => ({
+            unreadConversationCount: 5,
+            unreadNotificationsCount: 0,
+          }),
+          Viewer: () => ({
+            notificationsConnection: {
+              edges: [
+                {
+                  node: {
+                    publishedAt: publishedAt,
+                  },
+                },
+              ],
+            },
+          }),
+        })
+
+        await flushPromiseQueue()
+
+        const currentHomeButton = findButtonByTab(tree, "home")
+        expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
+
+        // need to prevent this test's requests from leaking into the next test
+        await flushPromiseQueue()
+      })
+
+      it("the latest notification `publishedAt` is equal to the locally persisted `publishedAt`", async () => {
+        const publishedAt = DateTime.local().toISO()
+
+        __globalStoreTestUtils__?.injectState({
+          bottomTabs: {
+            lastNotificationPublishedAt: publishedAt,
+          },
+        })
+        const tree = renderWithWrappersLEGACY(<TestWrapper />)
+
+        resolveNotificationsInfoQuery({
+          Me: () => ({
+            unreadConversationCount: 5,
+            unreadNotificationsCount: 0,
+          }),
+          Viewer: () => ({
+            notificationsConnection: {
+              edges: [
+                {
+                  node: {
+                    publishedAt: publishedAt,
+                  },
+                },
+              ],
+            },
+          }),
+        })
+
+        await flushPromiseQueue()
+
+        const currentHomeButton = findButtonByTab(tree, "home")
+        expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
+
+        // need to prevent this test's requests from leaking into the next test
+        await flushPromiseQueue()
+      })
+
+      it("the latest notification `publishedAt` is more recent than the locally persisted `publishedAt`", async () => {
+        const currentDate = DateTime.local()
+
+        __globalStoreTestUtils__?.injectState({
+          bottomTabs: {
+            lastNotificationPublishedAt: currentDate.minus({ hour: 1 }).toISO(),
+          },
+        })
+        const tree = renderWithWrappersLEGACY(<TestWrapper />)
+
+        resolveNotificationsInfoQuery({
+          Me: () => ({
+            unreadConversationCount: 5,
+            unreadNotificationsCount: 0,
+          }),
+          Viewer: () => ({
+            notificationsConnection: {
+              edges: [
+                {
+                  node: {
+                    publishedAt: currentDate.toISO(),
+                  },
+                },
+              ],
+            },
+          }),
+        })
+
+        await flushPromiseQueue()
+
+        const currentHomeButton = findButtonByTab(tree, "home")
+        expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
+
+        // need to prevent this test's requests from leaking into the next test
+        await flushPromiseQueue()
+      })
+    })
   })
 
   it(`fetches the notifications info on mount`, async () => {
