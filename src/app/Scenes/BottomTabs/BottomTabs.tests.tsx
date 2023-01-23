@@ -8,6 +8,7 @@ import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import useInterval from "react-use/lib/useInterval"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { BottomTabs } from "./BottomTabs"
 import { BottomTabsButton } from "./BottomTabsButton"
 
@@ -29,22 +30,12 @@ beforeEach(() => {
   mockRelayEnvironment = createEnvironment() as any
 })
 
-function resolveUnreadConversationCountQuery(
-  unreadConversationCount: number,
-  unreadNotificationsCount: number
-) {
+function resolveNotificationsInfoQuery(resolvers: MockResolvers) {
   expect(mockRelayEnvironment.mock.getMostRecentOperation().request.node.operation.name).toBe(
-    "BottomTabsModelFetchAllNotificationsCountsQuery"
+    "BottomTabsModelFetchNotificationsInfoQuery"
   )
   mockRelayEnvironment.mock.resolveMostRecentOperation((op) =>
-    MockPayloadGenerator.generate(op, {
-      Me() {
-        return {
-          unreadConversationCount,
-          unreadNotificationsCount,
-        }
-      },
-    })
+    MockPayloadGenerator.generate(op, resolvers)
   )
 }
 
@@ -94,7 +85,7 @@ describe(BottomTabs, () => {
 
   it(`doesn't display a blue dot on home icon if there are no unread notifications`, async () => {
     __globalStoreTestUtils__?.injectState({
-      bottomTabs: { sessionState: { unreadCounts: { unreadActivityPanelNotifications: 0 } } },
+      bottomTabs: { sessionState: { displayUnreadActivityPanelIndicator: false } },
     })
     const tree = renderWithWrappersLEGACY(<TestWrapper />)
 
@@ -107,14 +98,19 @@ describe(BottomTabs, () => {
     await flushPromiseQueue()
   })
 
-  it(`fetches the current unread conversation / notifications count on mount`, async () => {
+  it(`fetches the notifications info on mount`, async () => {
     const tree = renderWithWrappersLEGACY(<TestWrapper />)
 
     await flushPromiseQueue()
 
     expect(mockRelayEnvironment.mock.getAllOperations()).toHaveLength(1)
 
-    resolveUnreadConversationCountQuery(5, 1)
+    resolveNotificationsInfoQuery({
+      Me: () => ({
+        unreadConversationCount: 5,
+        unreadNotificationsCount: 1,
+      }),
+    })
 
     await flushPromiseQueue()
 
@@ -137,7 +133,12 @@ describe(BottomTabs, () => {
     await flushPromiseQueue()
 
     expect(mockRelayEnvironment.mock.getAllOperations()).toHaveLength(1)
-    resolveUnreadConversationCountQuery(9, 1)
+    resolveNotificationsInfoQuery({
+      Me: () => ({
+        unreadConversationCount: 9,
+        unreadNotificationsCount: 1,
+      }),
+    })
 
     await flushPromiseQueue()
 
@@ -146,7 +147,7 @@ describe(BottomTabs, () => {
     ).toHaveBeenCalledWith(10)
   })
 
-  it(`fetches the current unread conversation / notifications count once in a while`, async () => {
+  it(`fetches the notifications info once in a while`, async () => {
     let tree: ReactTestRenderer | null = null
     act(() => {
       tree = renderWithWrappersLEGACY(<TestWrapper />)
@@ -156,7 +157,12 @@ describe(BottomTabs, () => {
 
     await flushPromiseQueue()
 
-    resolveUnreadConversationCountQuery(1, 1)
+    resolveNotificationsInfoQuery({
+      Me: () => ({
+        unreadConversationCount: 1,
+        unreadNotificationsCount: 1,
+      }),
+    })
 
     const intervalCallback = (useInterval as jest.Mock).mock.calls[0][0]
 
@@ -169,7 +175,12 @@ describe(BottomTabs, () => {
 
     expect(mockRelayEnvironment.mock.getAllOperations()).toHaveLength(1)
 
-    resolveUnreadConversationCountQuery(3, 1)
+    resolveNotificationsInfoQuery({
+      Me: () => ({
+        unreadConversationCount: 3,
+        unreadNotificationsCount: 1,
+      }),
+    })
 
     await flushPromiseQueue()
 
