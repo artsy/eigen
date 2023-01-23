@@ -1,5 +1,8 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { ArtQuizArtworksDislikeMutation } from "__generated__/ArtQuizArtworksDislikeMutation.graphql"
 import { ArtQuizArtworksQuery } from "__generated__/ArtQuizArtworksQuery.graphql"
+import { ArtQuizArtworksSaveMutation } from "__generated__/ArtQuizArtworksSaveMutation.graphql"
+import { ArtQuizArtworksUpdateQuizMutation } from "__generated__/ArtQuizArtworksUpdateQuizMutation.graphql"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
@@ -7,7 +10,7 @@ import { CloseIcon, Flex, HeartIcon, Screen, Spacer, Touchable } from "palette"
 import { useEffect, useRef, useState } from "react"
 import { Image } from "react-native"
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { graphql, useLazyLoadQuery, useMutation } from "react-relay"
 import { useOnboardingContext } from "../Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
 import { ArtQuizNavigationStack } from "./ArtQuiz"
 
@@ -19,19 +22,17 @@ export const ArtQuizArtworks = () => {
     artQuizArtworksQuery,
     {}
   )
+  const { userID } = GlobalStore.useAppState((store) => store.auth)
   const artworks = extractNodes(artQuizArtworksQueryResult.me?.quiz.quizArtworkConnection)
   const pagerViewRef = useRef<PagerView>(null)
   const popoverMessage = usePopoverMessage()
 
-  const handleIndexChange = (e: PagerViewOnPageScrollEvent) => {
-    if (e.nativeEvent.position !== undefined) {
-      // We need to avoid updating the index when the position is -1. This happens when the user
-      // scrolls left on the first page in iOS when the overdrag is enabled,
-      if (e.nativeEvent.position !== -1) {
-        setActiveCardIndex(e.nativeEvent.position)
-      }
-    }
-  }
+  const currentArtwork = artworks[activeCardIndex]
+  const previousArtwork = artworks[activeCardIndex - 1]
+
+  const [submitDislike] = useMutation<ArtQuizArtworksDislikeMutation>(DislikeArtworkMutation)
+  const [submitSave] = useMutation<ArtQuizArtworksSaveMutation>(SaveArtworkMutation)
+  const [submitUpdate] = useMutation<ArtQuizArtworksUpdateQuizMutation>(UpdateQuizMutation)
 
   useEffect(() => {
     popoverMessage.show({
@@ -45,14 +46,49 @@ export const ArtQuizArtworks = () => {
     }
   }, [])
 
+  const handleIndexChange = (e: PagerViewOnPageScrollEvent) => {
+    if (e.nativeEvent.position !== undefined) {
+      // We need to avoid updating the index when the position is -1. This happens when the user
+      // scrolls left on the first page in iOS when the overdrag is enabled,
+      if (e.nativeEvent.position !== -1) {
+        setActiveCardIndex(e.nativeEvent.position)
+      }
+    }
+  }
+
   const handleNext = (action: "Like" | "Dislike") => {
     popoverMessage.hide()
     pagerViewRef.current?.setPage(activeCardIndex + 1)
+
     if (action === "Like") {
-      GlobalStore.actions.artQuiz.saveLikedArtwork(artworks[activeCardIndex].id)
-    } else {
-      GlobalStore.actions.artQuiz.saveDislikedArtwork(artworks[activeCardIndex].id)
+      submitSave({
+        variables: {
+          input: {
+            artworkID: currentArtwork.internalID,
+          },
+        },
+      })
     }
+
+    if (action === "Dislike") {
+      submitDislike({
+        variables: {
+          input: {
+            artworkID: currentArtwork.internalID,
+            remove: false,
+          },
+        },
+      })
+    }
+
+    submitUpdate({
+      variables: {
+        input: {
+          artworkId: currentArtwork.internalID,
+          userId: userID!,
+        },
+      },
+    })
   }
 
   const handleOnBack = () => {
@@ -60,6 +96,39 @@ export const ArtQuizArtworks = () => {
       goBack()
     } else {
       pagerViewRef.current?.setPage(activeCardIndex - 1)
+      const { isSaved, isDisliked } = previousArtwork
+
+      if (isSaved) {
+        submitSave({
+          variables: {
+            input: {
+              artworkID: previousArtwork.internalID,
+              remove: true,
+            },
+          },
+        })
+      }
+
+      if (isDisliked) {
+        submitDislike({
+          variables: {
+            input: {
+              artworkID: previousArtwork.internalID,
+              remove: true,
+            },
+          },
+        })
+      }
+
+      submitUpdate({
+        variables: {
+          input: {
+            artworkId: previousArtwork.internalID,
+            userId: userID!,
+            clearInteraction: true,
+          },
+        },
+      })
     }
   }
 
@@ -91,7 +160,7 @@ export const ArtQuizArtworks = () => {
           >
             {artworks.map((artwork) => {
               return (
-                <Flex key={artwork.id}>
+                <Flex key={artwork.internalID}>
                   <Image
                     source={{ uri: artwork.imageUrl! }}
                     style={{ flex: 1 }}
@@ -126,11 +195,43 @@ const artQuizArtworksQuery = graphql`
         quizArtworkConnection(first: 16) {
           edges {
             node {
-              id
+              internalID
               imageUrl
+              isDisliked
+              isSaved
             }
           }
         }
+      }
+    }
+  }
+`
+
+const DislikeArtworkMutation = graphql`
+  mutation ArtQuizArtworksDislikeMutation($input: DislikeArtworkInput!) {
+    dislikeArtwork(input: $input) {
+      artwork {
+        isDisliked
+      }
+    }
+  }
+`
+
+const SaveArtworkMutation = graphql`
+  mutation ArtQuizArtworksSaveMutation($input: SaveArtworkInput!) {
+    saveArtwork(input: $input) {
+      artwork {
+        isSaved
+      }
+    }
+  }
+`
+
+const UpdateQuizMutation = graphql`
+  mutation ArtQuizArtworksUpdateQuizMutation($input: updateQuizMutationInput!) {
+    updateQuiz(input: $input) {
+      quiz {
+        completedAt
       }
     }
   }
