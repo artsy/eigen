@@ -215,7 +215,7 @@ jobs:
       - checkout
       - node/install-packages:
           pkg-manager: yarn
-      - run-relay-compiler
+      # - run-relay-compiler
       - run:
           command: yarn jest --ci --forceExit --logHeapUsage --runInBand --reporters=default --reporters=jest-junit --shard=$(expr $CIRCLE_NODE_INDEX + 1)/$CIRCLE_NODE_TOTAL
           name: Run Jest tests
@@ -235,7 +235,7 @@ jobs:
       - checkout
       - node/install-packages:
           pkg-manager: yarn
-      - run-relay-compiler
+      # - run-relay-compiler
       - run:
           command: yarn type-check
 
@@ -340,7 +340,7 @@ jobs:
       - setup-awscli
       - setup-env-file
       - install-node-modules
-      - run-relay-compiler
+      # - run-relay-compiler
       - update-echo
       - generate-query-map
       - run:
