@@ -171,7 +171,6 @@ export const ArtQuizArtworks = () => {
             })}
           </PagerView>
         </Flex>
-        {/* TODO: Replace the below code with Popover component https://github.com/artsy/palette/pull/1242*/}
         <Flex justifyContent="flex-end">
           <Flex flexDirection="row" justifyContent="center" px={4}>
             <Touchable onPress={() => handleNext("Dislike")}>
