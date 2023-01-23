@@ -1,6 +1,10 @@
 import { captureException } from "@sentry/react-native"
 import { BottomTabsModelFetchCurrentUnreadConversationCountQuery } from "__generated__/BottomTabsModelFetchCurrentUnreadConversationCountQuery.graphql"
-import { BottomTabsModelFetchNotificationsInfoQuery } from "__generated__/BottomTabsModelFetchNotificationsInfoQuery.graphql"
+import {
+  BottomTabsModelFetchNotificationsInfoQuery,
+  NotificationTypesEnum,
+} from "__generated__/BottomTabsModelFetchNotificationsInfoQuery.graphql"
+import { isArtworksBasedNotification } from "app/Scenes/Activity/utils/isArtworksBasedNotification"
 import { GlobalStore } from "app/store/GlobalStore"
 import { createEnvironment } from "app/system/relay/createEnvironment"
 import {
@@ -8,13 +12,21 @@ import {
   persistedQueryMiddleware,
 } from "app/system/relay/middlewares/metaphysicsMiddleware"
 import { simpleLoggerMiddleware } from "app/system/relay/middlewares/simpleLoggerMiddleware"
+import { extractNodes } from "app/utils/extractNodes"
 import { Action, action, Thunk, thunk, ThunkOn, thunkOn } from "easy-peasy"
+import { DateTime } from "luxon"
 import { fetchQuery, graphql } from "react-relay"
 import { BottomTabType } from "./BottomTabType"
 
 export interface UnreadCounts {
   unreadConversation: number
   unreadActivityPanelNotifications: number
+}
+
+interface NotificationNode {
+  notificationType: NotificationTypesEnum
+  publishedAt: string
+  artworksCount: number
 }
 
 export interface BottomTabsModel {
@@ -27,6 +39,7 @@ export interface BottomTabsModel {
   lastNotificationPublishedAt: string | null
   syncApplicationIconBadgeNumber: ThunkOn<BottomTabsModel>
   unreadConversationCountChanged: Action<BottomTabsModel, number>
+  actionChanged: Action<BottomTabsModel, { notifications: NotificationNode[]; unreadCount: number }>
   fetchCurrentUnreadConversationCount: Thunk<BottomTabsModel>
   unreadActivityPanelNotificationsCountChanged: Action<BottomTabsModel, number>
   fetchNotificationsInfo: Thunk<BottomTabsModel>
@@ -96,16 +109,6 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
     }
   }),
   unreadActivityPanelNotificationsCountChanged: action((state, unreadCount) => {
-    // we want to display the indicator only when there is a new notification
-    if (unreadCount > state.sessionState.unreadCounts.unreadActivityPanelNotifications) {
-      state.sessionState.displayUnreadActivityPanelIndicator = true
-    }
-
-    // when the user marked all notifications as read
-    if (unreadCount === 0) {
-      state.sessionState.displayUnreadActivityPanelIndicator = false
-    }
-
     state.sessionState.unreadCounts.unreadActivityPanelNotifications = unreadCount
   }),
   fetchNotificationsInfo: thunk(async () => {
@@ -120,6 +123,21 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
               unreadConversationCount
               unreadNotificationsCount
             }
+
+            viewer {
+              notificationsConnection(first: 5) {
+                edges {
+                  node {
+                    notificationType
+                    publishedAt
+
+                    artworks: artworksConnection {
+                      totalCount
+                    }
+                  }
+                }
+              }
+            }
           }
         `,
         {},
@@ -131,9 +149,19 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
 
       const conversations = result?.me?.unreadConversationCount ?? 0
       const notifications = result?.me?.unreadNotificationsCount ?? 0
+      const nodes = extractNodes(result?.viewer?.notificationsConnection)
+      const formattedNotificationNodes: NotificationNode[] = nodes.map((node) => ({
+        publishedAt: node.publishedAt,
+        notificationType: node.notificationType,
+        artworksCount: node.artworks?.totalCount ?? 0,
+      }))
 
       GlobalStore.actions.bottomTabs.unreadConversationCountChanged(conversations)
       GlobalStore.actions.bottomTabs.unreadActivityPanelNotificationsCountChanged(notifications)
+      GlobalStore.actions.bottomTabs.actionChanged({
+        notifications: formattedNotificationNodes,
+        unreadCount: notifications,
+      })
     } catch (e) {
       if (__DEV__) {
         console.warn(
@@ -152,5 +180,37 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
   ),
   setTabProps: action((state, { tab, props }) => {
     state.sessionState.tabProps[tab] = props
+  }),
+  actionChanged: action((state, payload) => {
+    const notifications = payload.notifications.filter((node) => {
+      if (isArtworksBasedNotification(node.notificationType)) {
+        return node.artworksCount > 0
+      }
+
+      return true
+    })
+    const notification = notifications[0]
+    const lastPublishedAt = state.lastNotificationPublishedAt
+
+    console.log("[debug] lastPublishedAt", lastPublishedAt)
+    console.log("[debug] notification.publishedAt", notification.publishedAt)
+
+    if (lastPublishedAt === null && notification.publishedAt) {
+      console.log("[debug] step 1")
+      state.lastNotificationPublishedAt = notification.publishedAt
+      state.sessionState.displayUnreadActivityPanelIndicator = payload.unreadCount > 0
+    }
+
+    if (lastPublishedAt && notification.publishedAt) {
+      console.log("[debug] compare dates")
+      const prevPublishedDate = DateTime.fromISO(lastPublishedAt)
+      const currentPublishedDate = DateTime.fromISO(notification.publishedAt)
+
+      if (currentPublishedDate > prevPublishedDate) {
+        console.log("[debug] step 2")
+        state.lastNotificationPublishedAt = notification.publishedAt
+        state.sessionState.displayUnreadActivityPanelIndicator = payload.unreadCount > 0
+      }
+    }
   }),
 })
