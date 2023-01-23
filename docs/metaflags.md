@@ -34,6 +34,7 @@ You can turn off various loggers by setting the according values to false on `me
   "logOperation": false,
   "logPrefetching": false,
   "logRelay": false,
+  "logRelayVerbose": false,
   "logRoute": false,
   "logRunningRequest": false
 }
