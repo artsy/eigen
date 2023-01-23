@@ -116,7 +116,6 @@ describe(BottomTabs, () => {
         await flushPromiseQueue()
       })
 
-      // TODO: Fix this test case
       it("the latest notification `publishedAt` is equal to the locally persisted `publishedAt`", async () => {
         const publishedAt = DateTime.local().toISO()
 

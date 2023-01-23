@@ -196,19 +196,19 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
     const lastNotificationPublishedAt = lastNotification?.publishedAt ?? null
     const isLastPublishedAtEmpty =
       state.lastNotificationPublishedAt === null && lastNotificationPublishedAt
-    const isNewPublishedAtAvaiable = checkNewPublishedAtAvaiable(
+    const isSameOrAfterPublishedAt = checkSameOrAfterPublishedAt(
       state.lastNotificationPublishedAt,
       lastNotificationPublishedAt
     )
 
-    if (isLastPublishedAtEmpty || isNewPublishedAtAvaiable) {
+    if (isLastPublishedAtEmpty || isSameOrAfterPublishedAt) {
       state.lastNotificationPublishedAt = lastNotificationPublishedAt
       state.sessionState.displayUnreadActivityPanelIndicator = payload.unreadCount > 0
     }
   }),
 })
 
-const checkNewPublishedAtAvaiable = (
+const checkSameOrAfterPublishedAt = (
   prevPublishedAt: string | null,
   newPublishedAt: string | null
 ) => {
@@ -219,5 +219,5 @@ const checkNewPublishedAtAvaiable = (
   const prevPublishedDate = DateTime.fromISO(prevPublishedAt)
   const newPublishedDate = DateTime.fromISO(newPublishedAt)
 
-  return newPublishedDate > prevPublishedDate
+  return newPublishedDate >= prevPublishedDate
 }
