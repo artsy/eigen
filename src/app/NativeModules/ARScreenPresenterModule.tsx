@@ -1,5 +1,4 @@
 import {
-  NavigationAction,
   NavigationContainerRef,
   NavigationState,
   StackActions,
@@ -9,7 +8,7 @@ import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { ViewDescriptor } from "app/system/navigation/navigate"
 import immer from "immer-peasy"
 import { last } from "lodash"
-import { InteractionManager, NativeModules, StatusBar } from "react-native"
+import { NativeModules, StatusBar } from "react-native"
 /**
  * Here we maintain references to all the navigators in the main app navigation hierarchy, which are:
  * - tab nav stacks
@@ -43,9 +42,6 @@ function updateTabStackState(
   updater: (draft: Mutable<NavigationState>) => void
 ) {
   updateNavigationState((state) => {
-    if (!state) {
-      return
-    }
     const tabs = state.routes[0].state?.routes
     const tabState = (
       tabs as Array<{ name: BottomTabType; state: Mutable<NavigationState> }>
@@ -75,33 +71,20 @@ function getCurrentlyPresentedModalNavStackKey() {
   return key
 }
 
-// When coming from a killed state our nav stack may not be
-// set up yet, we check and wait for animations to finish
-// to more reliably navigate
-function dispatchNavAction(action: NavigationAction) {
-  if (!__unsafe_mainModalStackRef.current) {
-    InteractionManager.runAfterInteractions(() => {
-      __unsafe_mainModalStackRef.current?.dispatch(action)
-    })
-  } else {
-    __unsafe_mainModalStackRef.current?.dispatch(action)
-  }
-}
-
 export const ARScreenPresenterModule: typeof NativeModules["ARScreenPresenterModule"] = {
   switchTab(tab: BottomTabType) {
-    dispatchNavAction(TabActions.jumpTo(tab))
+    __unsafe_mainModalStackRef.current?.dispatch(TabActions.jumpTo(tab))
   },
   presentModal(viewDescriptor: ViewDescriptor) {
     if (viewDescriptor.replace) {
-      dispatchNavAction(
+      __unsafe_mainModalStackRef.current?.dispatch(
         StackActions.replace("modal", {
           rootModuleName: viewDescriptor.moduleName,
           rootModuleProps: viewDescriptor.props,
         })
       )
     } else {
-      dispatchNavAction(
+      __unsafe_mainModalStackRef.current?.dispatch(
         StackActions.push("modal", {
           rootModuleName: viewDescriptor.moduleName,
           rootModuleProps: viewDescriptor.props,
@@ -134,12 +117,26 @@ export const ARScreenPresenterModule: typeof NativeModules["ARScreenPresenterMod
   },
   pushView(selectedTab: BottomTabType, viewDescriptor: ViewDescriptor) {
     const stackKey = getCurrentlyPresentedModalNavStackKey() ?? selectedTab
-    dispatchNavAction(
-      StackActions.push("screen:" + stackKey, {
-        moduleName: viewDescriptor.moduleName,
-        props: viewDescriptor.props,
+
+    if (!__unsafe_mainModalStackRef.current) {
+      // modal stack has not yet been instantiated
+      // try to delay nav to after animations
+      requestAnimationFrame(() => {
+        __unsafe_mainModalStackRef.current?.dispatch(
+          StackActions.push("screen:" + stackKey, {
+            moduleName: viewDescriptor.moduleName,
+            props: viewDescriptor.props,
+          })
+        )
       })
-    )
+    } else {
+      __unsafe_mainModalStackRef.current?.dispatch(
+        StackActions.push("screen:" + stackKey, {
+          moduleName: viewDescriptor.moduleName,
+          props: viewDescriptor.props,
+        })
+      )
+    }
   },
   popStack(selectedTab: BottomTabType) {
     updateTabStackState(selectedTab, (state) => {
