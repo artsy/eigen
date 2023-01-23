@@ -112,7 +112,7 @@ describe(migrate, () => {
           },
         },
       })
-    }).toThrowErrorMatchingInlineSnapshot(`"Bad state.version {\\"version\\":\\"0\\"}"`)
+    }).toThrowErrorMatchingInlineSnapshot(`"Bad state.version {"version":"0"}"`)
   })
 
   it("throws an error if there is no valid migration", () => {
@@ -830,6 +830,6 @@ describe("App version Versions.AddLastNotificationPublishedAt", () => {
       toVersion: migrationToTest,
     }) as any
 
-    expect(migratedState.bottomTabs.lastNotificationPublishedAt).toEqual({})
+    expect(migratedState.bottomTabs.lastNotificationPublishedAt).toEqual(null)
   })
 })
