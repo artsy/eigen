@@ -1117,7 +1117,7 @@ SPEC CHECKSUMS:
   Adjust: 91a06a01e4bb35b432e26b5d5bb8995b95fc381c
   Aerodramus: a22de7451c8fc85ae5d974f5d6a656f59046fffc
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
-  AFNetworking: 8dd5f9b9691e09186393069a12cc3b5ed7c8b511
+  AFNetworking: 9d57de7506959955d82fb5274ee4bec86b930e52
   AFOAuth1Client: 155a6237e57987cac18dac2ccd17cea5d324ad1a
   Analytics: eefe524436f904b8bb3f8c8c3425280e43b34efc
   AppAuth: 8fca6b5563a5baef2c04bee27538025e4ceb2add
