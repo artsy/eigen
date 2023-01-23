@@ -1,6 +1,6 @@
-import { ContactInformation_me$data } from "__generated__/ContactInformation_me.graphql"
 import { ContactInformationQueryRendererQuery } from "__generated__/ContactInformationQueryRendererQuery.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { ContactInformation_me$data } from "__generated__/ContactInformation_me.graphql"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { Formik } from "formik"
 import { noop } from "lodash"
 import { CTAButton, Flex, Input, Spacer, Text } from "palette"

@@ -1,25 +1,25 @@
 import { RenderAPI } from "@testing-library/react-native"
+import { Registration_me$data } from "__generated__/Registration_me.graphql"
+import { Registration_sale$data } from "__generated__/Registration_sale.graphql"
+import { BidInfoRow } from "app/Components/Bidding/Components/BidInfoRow"
 import {
   RegistrationResult,
   RegistrationStatus,
 } from "app/Components/Bidding/Screens/RegistrationResult"
+import { Address } from "app/Components/Bidding/types"
 import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { mockTimezone } from "app/tests/mockTimezone"
-import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { mockTimezone } from "app/utils/tests/mockTimezone"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Button, Checkbox, LinkText, Text } from "palette"
 import { TouchableWithoutFeedback } from "react-native"
 import relay from "react-relay"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe from "tipsi-stripe"
-import { BidInfoRow } from "../Components/BidInfoRow"
-import { Address } from "../types"
 import { BillingAddress } from "./BillingAddress"
 import { CreditCardForm } from "./CreditCardForm"
 import { Registration } from "./Registration"
 
-import { Registration_me$data } from "__generated__/Registration_me.graphql"
-import { Registration_sale$data } from "__generated__/Registration_sale.graphql"
 // This lets us import the actual react-relay module, and replace specific functions within it with mocks.
 jest.unmock("react-relay")
 

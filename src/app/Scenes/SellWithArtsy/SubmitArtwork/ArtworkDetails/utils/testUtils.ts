@@ -1,4 +1,4 @@
-import { ArtworkDetailsFormModel } from "../validation"
+import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
 import { limitedEditionValue } from "./rarityOptions"
 
 export const mockFormValues: ArtworkDetailsFormModel = {

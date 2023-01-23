@@ -4,8 +4,8 @@ import {
   createStackNavigator,
   TransitionPresets,
 } from "@react-navigation/stack"
-import { OAuthProvider } from "app/auth/types"
 import { FPSCounter } from "app/Components/FPSCounter"
+import { OAuthProvider } from "app/store/AuthModel"
 import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
 import { NetworkAwareProvider } from "app/utils/NetworkAwareProvider"
 import { Platform, View } from "react-native"
@@ -22,7 +22,6 @@ import { AppleToken, GoogleOrFacebookToken, OnboardingSocialLink } from "./Onboa
 import { OnboardingWebView, OnboardingWebViewRoute } from "./OnboardingWebView"
 import { OnboardingWelcome } from "./OnboardingWelcome"
 
-// tslint:disable-next-line:interface-over-type-literal
 export type OnboardingNavigationStack = {
   OnboardingWelcome: undefined
   OnboardingLogin: { withFadeAnimation: boolean } | undefined
@@ -47,9 +46,10 @@ export type OnboardingNavigationStack = {
 }
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace ReactNavigation {
-    // tslint:disable-next-line: no-empty-interface
-    interface RootParamList extends OnboardingNavigationStack {}
+    // @ts-ignore
+    type RootParamList = OnboardingNavigationStack
   }
 }
 

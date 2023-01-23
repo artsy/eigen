@@ -1,5 +1,5 @@
 import { deleteSavedAddressDeleteUserAddressMutation } from "__generated__/deleteSavedAddressDeleteUserAddressMutation.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { commitMutation, graphql } from "relay-runtime"
 
 export const deleteSavedAddress = (

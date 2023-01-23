@@ -1,8 +1,8 @@
 import { storiesOf } from "@storybook/react-native"
 import { Box, bullet, Text } from "palette"
+import { SpacingUnitV3 } from "palette/Theme"
+import { useSpace } from "palette/hooks"
 import { List } from "storybook/helpers"
-import { useSpace } from "../hooks"
-import { SpacingUnitV3 } from "../Theme"
 
 const SpaceLine = ({ space: theSpace }: { space: SpacingUnitV3 }) => {
   const space = useSpace()

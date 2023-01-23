@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react-native"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { setupTestWrapper } from "app/tests/setupTestWrapper"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { MedianSalePriceAtAuction } from "./MedianSalePriceAtAuction"
 
 jest.unmock("react-relay")

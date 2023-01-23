@@ -20,7 +20,7 @@ if (__DEV__) {
   } catch {}
 }
 
-require("./src/app/errorReporting/sentrySetup").setupSentry({ environment: "bootstrap" })
+require("./src/app/system/errorReporting/sentrySetup").setupSentry({ environment: "bootstrap" })
 import "react-native-url-polyfill/auto"
 
 if (metaflags.startStorybook) {

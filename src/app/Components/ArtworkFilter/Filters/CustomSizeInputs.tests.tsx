@@ -1,5 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { CustomSizeInputs, CustomSizeInputsProps } from "./CustomSizeInputs"
 
 describe("CustomSizeInputs", () => {

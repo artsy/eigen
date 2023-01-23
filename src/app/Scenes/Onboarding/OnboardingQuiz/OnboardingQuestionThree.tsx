@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native"
+import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingTracking"
 import {
   OPTION_A_CURATED_SELECTION_OF_ARTWORKS,
   OPTION_ARTISTS_ON_THE_RISE,
@@ -10,7 +11,6 @@ import {
   OPTION_KEEP_TRACK_OF_ART,
   OPTION_TOP_AUCTION_LOTS,
 } from "app/Scenes/Onboarding/OnboardingQuiz/config"
-import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingTracking"
 import { useCallback, useMemo } from "react"
 import { OnboardingQuestionTemplate } from "./Components/OnboardingQuestionTemplate"
 import { useNextOnboardingScreen } from "./Hooks/useNextOnboardingScreen"

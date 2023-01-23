@@ -1,6 +1,6 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { BackButton } from "app/navigation/BackButton"
 import { GlobalStore } from "app/store/GlobalStore"
+import { BackButton } from "app/system/navigation/BackButton"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { Box, Button, Flex, Input, LinkText, SimpleMessage, Spacer, Text, useColor } from "palette"
 import React, { useRef, useState } from "react"

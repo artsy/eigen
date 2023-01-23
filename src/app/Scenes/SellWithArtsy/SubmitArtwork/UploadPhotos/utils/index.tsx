@@ -1,7 +1,7 @@
-import { goBack, switchTab } from "app/navigation/navigate"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { SellWithArtsyHomeQueryRenderer } from "app/Scenes/SellWithArtsy/SellWithArtsyHome"
 import { GlobalStore } from "app/store/GlobalStore"
+import { goBack, switchTab } from "app/system/navigation/navigate"
 import { SimpleLocation } from "app/utils/googleMaps"
 import React, { useCallback, useEffect, useRef } from "react"
 import { BackHandler } from "react-native"

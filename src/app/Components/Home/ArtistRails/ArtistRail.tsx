@@ -2,6 +2,22 @@
 //       version. In reality it should be updated to never render the React component but instead update the store and
 //       let Relay re-render the cards.
 
+import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
+import { ArtistRailFollowMutation } from "__generated__/ArtistRailFollowMutation.graphql"
+import { ArtistRailNewSuggestionQuery } from "__generated__/ArtistRailNewSuggestionQuery.graphql"
+import { ArtistRail_rail$data } from "__generated__/ArtistRail_rail.graphql"
+import { Disappearable } from "app/Components/Disappearable"
+import { CARD_WIDTH } from "app/Components/Home/CardRailCard"
+import { CardRailFlatList, INTER_CARD_PADDING } from "app/Components/Home/CardRailFlatList"
+import { SectionTitle } from "app/Components/SectionTitle"
+import { defaultArtistVariables } from "app/Scenes/Artist/Artist"
+import { RailScrollProps } from "app/Scenes/Home/Components/types"
+import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { nextTick } from "app/utils/nextTick"
+import { Schema } from "app/utils/track"
+import { sample, uniq } from "lodash"
+import { Flex } from "palette"
 import React, { useImperativeHandle, useRef, useState } from "react"
 import { FlatList, View, ViewProps } from "react-native"
 import {
@@ -11,25 +27,7 @@ import {
   graphql,
   RelayProp,
 } from "react-relay"
-
-import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { useTracking } from "react-tracking"
-
-import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
-import { ArtistRail_rail$data } from "__generated__/ArtistRail_rail.graphql"
-import { ArtistRailFollowMutation } from "__generated__/ArtistRailFollowMutation.graphql"
-import { ArtistRailNewSuggestionQuery } from "__generated__/ArtistRailNewSuggestionQuery.graphql"
-import { Disappearable } from "app/Components/Disappearable"
-import { SectionTitle } from "app/Components/SectionTitle"
-import { defaultEnvironment } from "app/relay/createEnvironment"
-import { defaultArtistVariables } from "app/Scenes/Artist/Artist"
-import { RailScrollProps } from "app/Scenes/Home/Components/types"
-import { nextTick } from "app/utils/nextTick"
-import { Schema } from "app/utils/track"
-import { sample, uniq } from "lodash"
-import { Flex } from "palette"
-import { CARD_WIDTH } from "../CardRailCard"
-import { CardRailFlatList, INTER_CARD_PADDING } from "../CardRailFlatList"
 import { ArtistCard } from "./ArtistCard"
 
 interface SuggestedArtist

@@ -1,7 +1,7 @@
+import { IMAGE_SIZE } from "app/Scenes/Search/components/SearchResultImage"
 import { PlaceholderBox, RandomWidthPlaceholderText } from "app/utils/placeholders"
 import { times } from "lodash"
 import { Box, Flex } from "palette"
-import { IMAGE_SIZE } from "../SearchResultImage"
 
 const TEXT_SIZE = 12
 

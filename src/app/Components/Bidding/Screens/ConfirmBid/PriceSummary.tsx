@@ -1,12 +1,10 @@
+import { PriceSummaryQuery } from "__generated__/PriceSummaryQuery.graphql"
+import { PriceSummary_calculatedCost$data } from "__generated__/PriceSummary_calculatedCost.graphql"
+import { Bid } from "app/Components/Bidding/types"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Box, Flex, Text } from "palette"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-
-import { Bid } from "app/Components/Bidding/types"
-import { defaultEnvironment } from "app/relay/createEnvironment"
-import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-
-import { PriceSummary_calculatedCost$data } from "__generated__/PriceSummary_calculatedCost.graphql"
-import { PriceSummaryQuery } from "__generated__/PriceSummaryQuery.graphql"
 
 interface PriceSummaryViewProps {
   calculatedCost: PriceSummary_calculatedCost$data

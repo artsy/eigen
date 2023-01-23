@@ -11,9 +11,9 @@ import {
   useColor,
   useTextStyleForPalette,
 } from "palette"
+import { INPUT_HEIGHT, InputTitle } from "palette/elements/Input"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, TextInput, TouchableOpacity } from "react-native"
-import { INPUT_HEIGHT, InputTitle } from "../Input"
 
 export interface SelectOption<ValueType> {
   value: ValueType

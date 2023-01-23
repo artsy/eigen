@@ -1,7 +1,5 @@
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import "react-native"
-
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
-
 import Biography from "./Biography"
 
 it("renders without throwing a error", () => {

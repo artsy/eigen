@@ -6,7 +6,7 @@ import {
   AuctionResultListSeparator,
 } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Flex } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"

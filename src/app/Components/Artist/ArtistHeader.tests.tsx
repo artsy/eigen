@@ -1,7 +1,7 @@
 import { screen } from "@testing-library/react-native"
 import { ArtistHeaderTestsQuery } from "__generated__/ArtistHeaderTestsQuery.graphql"
 import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeader"
-import { setupTestWrapper } from "app/tests/setupTestWrapper"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
 jest.unmock("react-relay")

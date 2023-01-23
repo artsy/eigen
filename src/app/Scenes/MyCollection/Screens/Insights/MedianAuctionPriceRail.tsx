@@ -6,7 +6,7 @@ import {
 } from "@artsy/cohesion"
 import { MedianAuctionPriceRail_me$key } from "__generated__/MedianAuctionPriceRail_me.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { getVortexMedium } from "app/utils/marketPriceInsightHelpers"
 import { groupBy } from "lodash"

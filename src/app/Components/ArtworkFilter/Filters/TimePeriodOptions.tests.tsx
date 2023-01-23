@@ -1,11 +1,13 @@
 import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { ArtworkFiltersState } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  ArtworkFiltersStoreProvider,
+  ArtworkFiltersState,
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { MockFilterScreen } from "app/Components/ArtworkFilter/FilterTestHelper"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { getEssentialProps } from "./helper"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { TimePeriodOptionsScreen } from "./TimePeriodOptions"
+import { getEssentialProps } from "./helper"
 
 describe("TimePeriodOptions Screen", () => {
   const initialState: ArtworkFiltersState = {

@@ -1,6 +1,6 @@
 import { Message_message$data } from "__generated__/Message_message.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { Schema, Track, track as _track } from "app/utils/track"
 import { compact } from "lodash"
 import { BoxProps, ClassTheme, Flex, Spacer, Text } from "palette"

@@ -1,10 +1,13 @@
+import {
+  ImageCarouselContext,
+  ImageDescriptor,
+} from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useCallback, useContext, useEffect, useMemo } from "react"
 import { FlatList, Modal, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { createZoomListComponent } from "react-native-reanimated-zoom"
 import { useScreenDimensions } from "shared/hooks/useScreenDimensions"
-import { ImageCarouselContext, ImageDescriptor } from "../ImageCarouselContext"
 import { ImageCarouselCloseButton } from "./ImageCarouselCloseButton"
 import { ImageZoomViewAndroid } from "./ImageZoomViewAndroid"
 import { IndexIndicator } from "./IndexIndicator"

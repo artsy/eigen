@@ -1,9 +1,7 @@
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
-import "react-native"
-
-import ArtworkPreview from "./ArtworkPreview"
-
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Touchable } from "palette"
+import "react-native"
+import ArtworkPreview from "./ArtworkPreview"
 
 describe("concerning selection handling", () => {
   it("passes a onPress handler to the touchable component if an onSelected handler is given", () => {

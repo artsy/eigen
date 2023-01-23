@@ -2,8 +2,7 @@ import { createGeminiUrl } from "app/Components/OpaqueImageView/createGeminiUrl"
 import { useDevToggle } from "app/store/GlobalStore"
 import _ from "lodash"
 import { Text, useColor } from "palette"
-import React, { useCallback, useRef, useState } from "react"
-import { useEffect } from "react"
+import React, { useCallback, useRef, useState, useEffect } from "react"
 import { Animated, ColorValue, PixelRatio, StyleSheet, View } from "react-native"
 import FastImage, { ImageStyle } from "react-native-fast-image"
 
@@ -77,11 +76,7 @@ const useComponentSize = () => {
   return { layoutHeight, layoutWidth, onLayout }
 }
 
-export const OpaqueImageView: React.FC<Props> = ({
-  aspectRatio,
-  placeholderBackgroundColor = "#E7E7E7", // this is black10. Change it to that when this component becomes a function component.
-  ...props
-}) => {
+export const OpaqueImageView: React.FC<Props> = ({ aspectRatio, ...props }) => {
   const color = useColor()
   const { layoutHeight, layoutWidth, onLayout } = useComponentSize()
   const imageScaleValue = useRef(new Animated.Value(0)).current

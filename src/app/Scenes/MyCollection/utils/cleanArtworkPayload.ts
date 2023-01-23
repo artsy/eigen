@@ -1,5 +1,5 @@
+import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { isNil } from "lodash"
-import { ArtworkFormValues } from "../State/MyCollectionArtworkModel"
 
 export function cleanArtworkPayload(payload = {}): any {
   const cleanPayload = Object.entries(payload).reduce((acc, [key, value]) => {
@@ -20,6 +20,7 @@ export function explicitlyClearedFields(
 
   const diffPayload: { [k: string]: any } = {}
   for (const key in cleanPreviousPayload) {
+    // eslint-disable-next-line no-prototype-builtins
     if (!cleanPayload.hasOwnProperty(key)) {
       diffPayload[key] = null
     }

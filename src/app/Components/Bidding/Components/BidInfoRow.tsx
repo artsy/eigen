@@ -1,9 +1,8 @@
+import { FlexProps } from "app/Components/Bidding/Elements/Flex"
+import { Col, Row } from "app/Components/Bidding/Elements/Grid"
 import { Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
-
-import { FlexProps } from "../Elements/Flex"
-import { Col, Row } from "../Elements/Grid"
 
 interface BidInfoRowProps extends FlexProps {
   label: string

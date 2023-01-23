@@ -1,5 +1,5 @@
 import { useColor } from "palette/hooks"
-import { Icon, IconProps, Path } from "../Icon"
+import { Icon, IconProps, Path } from "palette/svgs/Icon"
 
 export const ExclamationMarkCircleFill: React.FC<IconProps> = (props) => {
   const color = useColor()

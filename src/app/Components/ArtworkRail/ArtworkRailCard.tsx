@@ -3,6 +3,8 @@ import {
   ArtworkRailCard_artwork$data,
   ArtworkRailCard_artwork$key,
 } from "__generated__/ArtworkRailCard_artwork.graphql"
+import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "app/Components/ArtworkGrids/ArtworkGridItem"
+import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { Schema } from "app/utils/track"
@@ -13,8 +15,6 @@ import { GestureResponderEvent, PixelRatio } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "../ArtworkGrids/ArtworkGridItem"
-import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 import { LARGE_RAIL_IMAGE_WIDTH } from "./LargeArtworkRail"
 import { SMALL_RAIL_IMAGE_WIDTH } from "./SmallArtworkRail"
 

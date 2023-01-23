@@ -1,6 +1,6 @@
 import { FairEmptyStateFragmentContainer } from "app/Scenes/Fair/Components/FairEmptyState"
-import { extractText } from "app/tests/extractText"
-import { setupTestWrapper_LEGACY } from "app/tests/setupTestWrapper"
+import { extractText } from "app/utils/tests/extractText"
+import { setupTestWrapper_LEGACY } from "app/utils/tests/setupTestWrapper"
 import { DateTime } from "luxon"
 import { graphql } from "react-relay"
 

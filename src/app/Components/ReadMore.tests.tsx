@@ -1,7 +1,7 @@
 import { act, fireEvent, getDefaultNormalizer, screen, within } from "@testing-library/react-native"
-import { navigate } from "app/navigation/navigate"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { navigate } from "app/system/navigation/navigate"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { emdash, LinkText, nbsp } from "palette"
 import { Text as RNText } from "react-native"
 import { ReadMore } from "./ReadMore"
@@ -39,7 +39,6 @@ describe("ReadMore", () => {
 
   it("Renders an em dash if the text has line breaks when not expanded", () => {
     const { UNSAFE_queryAllByType } = renderWithWrappers(
-      // tslint:disable-next-line: jsx-curly-brace-presence
       <ReadMore maxChars={30} content={`Line break\n\nWhich should render an emdash`} />
     )
 

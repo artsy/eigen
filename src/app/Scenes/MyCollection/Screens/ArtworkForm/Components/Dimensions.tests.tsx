@@ -1,4 +1,4 @@
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { useFormikContext } from "formik"
 import { Input } from "palette"
 import { Dimensions } from "./Dimensions"

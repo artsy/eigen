@@ -47,7 +47,7 @@ export class CssTransition extends React.Component<CssTransitionProps, CssTransi
   }
 
   render() {
-    const { style, duration, ...props } = this.props
+    const { style, ...props } = this.props
     const { previousStyle } = this.state
 
     const prevStyle = this.mergeStyles(previousStyle)

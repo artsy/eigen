@@ -1,4 +1,4 @@
-import { setupTestWrapper } from "app/tests/setupTestWrapper"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Theme } from "palette"
 import { graphql } from "react-relay"
 import { ItemInfoFragmentContainer } from "./ItemInfo"

@@ -1,5 +1,5 @@
+import { Flex } from "app/Components/Bidding/Elements/Flex"
 import { IconProps, Spacer, Text } from "palette"
-import { Flex } from "../Bidding/Elements/Flex"
 
 interface StepWithImageProps {
   icon: React.FC<IconProps>

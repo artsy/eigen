@@ -1,15 +1,15 @@
-import { ShowMoreInfo_show$data } from "__generated__/ShowMoreInfo_show.graphql"
 import { ShowMoreInfoQuery } from "__generated__/ShowMoreInfoQuery.graphql"
+import { ShowMoreInfo_show$data } from "__generated__/ShowMoreInfo_show.graphql"
 import { PartnerEntityHeaderFragmentContainer as PartnerEntityHeader } from "app/Components/PartnerEntityHeader"
 import { ReadMore } from "app/Components/ReadMore"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { ShowHoursFragmentContainer as ShowHours } from "app/Scenes/Show/Components/ShowHours"
+import { ShowLocationFragmentContainer as ShowLocation } from "app/Scenes/Show/Components/ShowLocation"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { Box, Spacer, Text } from "palette"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { ShowHoursFragmentContainer as ShowHours } from "../Components/ShowHours"
-import { ShowLocationFragmentContainer as ShowLocation } from "../Components/ShowLocation"
 
 const DISPLAYABLE_PARTNER_TYPES = {
   "Institutional Seller": "Institution",

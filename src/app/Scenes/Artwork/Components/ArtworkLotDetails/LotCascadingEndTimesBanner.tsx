@@ -1,5 +1,5 @@
 import { LotCascadingEndTimesBanner_sale$key } from "__generated__/LotCascadingEndTimesBanner_sale.graphql"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { Flex, Text } from "palette"
 import { graphql, useFragment } from "react-relay"
 

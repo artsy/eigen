@@ -38,7 +38,7 @@ export const reducer = (
         shippingLocation: action.payload,
       }
 
-    case "selectInquiryQuestion":
+    case "selectInquiryQuestion": {
       const { isChecked, ...payloadQuestion } = action.payload
       const { inquiryQuestions = [] } = inquiryState
       const newSelection: InquiryQuestionInput[] = isChecked
@@ -49,6 +49,7 @@ export const reducer = (
         ...inquiryState,
         inquiryQuestions: newSelection,
       }
+    }
     case "setMessage":
       return {
         ...inquiryState,

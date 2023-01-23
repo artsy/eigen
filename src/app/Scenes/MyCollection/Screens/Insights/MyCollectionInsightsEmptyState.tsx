@@ -1,6 +1,6 @@
 import { ZeroState } from "app/Components/States/ZeroState"
-import { navigate, popToRoot } from "app/navigation/navigate"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { navigate, popToRoot } from "app/system/navigation/navigate"
 import { Button, useSpace } from "palette"
 import { Image } from "react-native"
 

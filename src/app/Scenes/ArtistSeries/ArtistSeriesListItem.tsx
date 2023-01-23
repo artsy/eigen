@@ -6,8 +6,8 @@ import {
   TappedArtistSeriesGroup,
 } from "@artsy/cohesion"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "app/navigation/navigate"
 import { ArtistSeriesConnectionEdge } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
+import { navigate } from "app/system/navigation/navigate"
 import { ArrowRightIcon, Flex, Text, Touchable, useColor } from "palette"
 import { useTracking } from "react-tracking"
 

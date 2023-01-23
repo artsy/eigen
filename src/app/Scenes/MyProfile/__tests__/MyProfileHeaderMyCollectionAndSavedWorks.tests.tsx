@@ -1,20 +1,20 @@
 import { MyProfileHeaderMyCollectionAndSavedWorksTestsQuery } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorksTestsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
-import { navigate } from "app/navigation/navigate"
 import { FavoriteArtworksQueryRenderer } from "app/Scenes/Favorites/FavoriteArtworks"
 import { MyCollectionQueryRenderer } from "app/Scenes/MyCollection/MyCollection"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import {
+  LOCAL_PROFILE_ICON_PATH_KEY,
+  MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer,
+} from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { navigate } from "app/system/navigation/navigate"
 import { LocalImage, storeLocalImages } from "app/utils/LocalImageStore"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { Avatar } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-import {
-  LOCAL_PROFILE_ICON_PATH_KEY,
-  MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer,
-} from "../MyProfileHeaderMyCollectionAndSavedWorks"
 
 jest.mock("../LoggedInUserInfo")
 jest.unmock("react-relay")

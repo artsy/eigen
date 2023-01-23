@@ -7,7 +7,7 @@ interface MyProfileInterface {
 
 export const MyProfileContext = React.createContext<MyProfileInterface>({
   localImage: "",
-  // tslint:disable-next-line:no-empty
+
   setLocalImage: () => {},
 })
 

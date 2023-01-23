@@ -41,11 +41,11 @@ const shadeHexColor = (color: string, percent: number) => {
   const parsedColor = parseInt(color.slice(1), 16)
   const t = percent < 0 ? 0 : 255
   const p = percent < 0 ? percent * -1 : percent
-  // tslint:disable-next-line:no-bitwise
+
   const R = parsedColor >> 16
-  // tslint:disable-next-line:no-bitwise
+
   const G = (parsedColor >> 8) & 0x00ff
-  // tslint:disable-next-line:no-bitwise
+
   const B = parsedColor & 0x0000ff
   return (
     "#" +
@@ -64,11 +64,11 @@ const shadeRGBColor = (color: string, percent: number) => {
   const parsedColor = color.split(",")
   const t = percent < 0 ? 0 : 255
   const p = percent < 0 ? percent * -1 : percent
-  // tslint:disable-next-line:radix
+
   const R = parseInt(parsedColor[0].slice(4))
-  // tslint:disable-next-line:radix
+
   const G = parseInt(parsedColor[1])
-  // tslint:disable-next-line:radix
+
   const B = parseInt(parsedColor[2])
   return (
     "rgb(" +

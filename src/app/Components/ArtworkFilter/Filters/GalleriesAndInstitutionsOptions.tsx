@@ -5,12 +5,14 @@ import {
   FilterDisplayName,
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { useArtworkFiltersAggregation } from "../useArtworkFilters"
+import { useArtworkFiltersAggregation } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { useMultiSelect } from "./useMultiSelect"
 
-interface GalleriesAndInstitutionsOptionsScreenProps
-  extends StackScreenProps<ArtworkFilterNavigationStack, "GalleriesAndInstitutionsOptionsScreen"> {}
+type GalleriesAndInstitutionsOptionsScreenProps = StackScreenProps<
+  ArtworkFilterNavigationStack,
+  "GalleriesAndInstitutionsOptionsScreen"
+>
 
 export const GalleriesAndInstitutionsOptionsScreen: React.FC<
   GalleriesAndInstitutionsOptionsScreenProps

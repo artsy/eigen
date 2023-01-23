@@ -1,5 +1,5 @@
-import { ModalStack } from "app/navigation/ModalStack"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { ModalStack } from "app/system/navigation/ModalStack"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { postEventToProviders } from "app/utils/track/providers"
 import { isEqual } from "lodash"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"

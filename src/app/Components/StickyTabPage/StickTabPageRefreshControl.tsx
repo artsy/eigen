@@ -1,7 +1,7 @@
 import { RefreshControl, RefreshControlProps } from "react-native"
 import Animated from "react-native-reanimated"
-import { useNativeValue } from "./reanimatedHelpers"
 import { useStickyTabPageContext } from "./StickyTabPageContext"
+import { useNativeValue } from "./reanimatedHelpers"
 
 /**
  * RefreshControl for StickyTabPage. Allows for the refreshControl to be visible

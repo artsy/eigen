@@ -1,18 +1,17 @@
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
-import { cloneDeep } from "lodash"
-import "react-native"
-
 import { FairsRail_fairsModule$data } from "__generated__/FairsRail_fairsModule.graphql"
-import { extractText } from "app/tests/extractText"
-import { FairsRailFragmentContainer } from "./FairsRail"
 
 import { CardRailCard } from "app/Components/Home/CardRailCard"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { navigate } from "app/navigation/navigate"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
+import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
+import { navigate } from "app/system/navigation/navigate"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
+import { extractText } from "app/utils/tests/extractText"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { cloneDeep } from "lodash"
 import { Text } from "palette"
-import HomeAnalytics from "../homeAnalytics"
+import "react-native"
+import { FairsRailFragmentContainer } from "./FairsRail"
 
 const mockScrollRef = jest.fn()
 const artworkNode = {

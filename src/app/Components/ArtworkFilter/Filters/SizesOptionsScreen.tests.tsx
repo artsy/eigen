@@ -1,22 +1,26 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { Text } from "react-native"
-import { ReactTestInstance } from "react-test-renderer"
-import { FilterArray, FilterData, FilterParamName } from "../ArtworkFilterHelpers"
+import {
+  FilterArray,
+  FilterData,
+  FilterParamName,
+} from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
   useSelectedOptionsDisplay,
-} from "../ArtworkFilterStore"
-import { getEssentialProps } from "./helper"
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { Text } from "react-native"
+import { ReactTestInstance } from "react-test-renderer"
 import {
   checkIsEmptyCustomValues,
   CustomSize,
   getCustomValues,
   SizesOptionsScreen,
 } from "./SizesOptionsScreen"
+import { getEssentialProps } from "./helper"
 
 // Helpers
 const getFilters = (element: ReactTestInstance) => {

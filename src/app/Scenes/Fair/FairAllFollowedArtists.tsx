@@ -1,6 +1,6 @@
+import { FairAllFollowedArtistsQuery } from "__generated__/FairAllFollowedArtistsQuery.graphql"
 import { FairAllFollowedArtists_fair$data } from "__generated__/FairAllFollowedArtists_fair.graphql"
 import { FairAllFollowedArtists_fairForFilters$data } from "__generated__/FairAllFollowedArtists_fairForFilters.graphql"
-import { FairAllFollowedArtistsQuery } from "__generated__/FairAllFollowedArtistsQuery.graphql"
 import {
   AnimatedArtworkFilterButton,
   ArtworkFilterNavigator,
@@ -12,7 +12,7 @@ import {
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { Box, Flex, Separator, Spacer, Text } from "palette"

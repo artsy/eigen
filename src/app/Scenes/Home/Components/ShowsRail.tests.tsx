@@ -1,5 +1,5 @@
 import { ShowsRailTestsQuery } from "__generated__/ShowsRailTestsQuery.graphql"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { cloneDeep } from "lodash"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"

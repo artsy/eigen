@@ -1,5 +1,5 @@
 import { SavedSearchAlertQuery } from "__generated__/SavedSearchAlertQuery.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { graphql, QueryRenderer } from "react-relay"
 
 interface SearchCriteriaAlertBaseProps {

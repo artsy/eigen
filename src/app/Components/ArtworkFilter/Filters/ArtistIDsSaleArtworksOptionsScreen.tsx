@@ -14,8 +14,10 @@ import { sortBy } from "lodash"
 import { MultiSelectCheckOptionScreen } from "./MultiSelectCheckOption"
 import { useMultiSelect } from "./useMultiSelect"
 
-interface ArtistIDsSaleArtworksOptionsScreenProps
-  extends StackScreenProps<ArtworkFilterNavigationStack, "ArtistIDsOptionsScreen"> {}
+type ArtistIDsSaleArtworksOptionsScreenProps = StackScreenProps<
+  ArtworkFilterNavigationStack,
+  "ArtistIDsOptionsScreen"
+>
 
 const isArtistsIFollowFilter = (option: FilterData) => {
   return option.paramName === FilterParamName.artistsIFollow

@@ -1,17 +1,17 @@
 import { tappedTabBar } from "@artsy/cohesion"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { switchTab } from "app/navigation/navigate"
-import { VisualClueName } from "app/store/config/visualClues"
 import { unsafe__getSelectedTab, useSelectedTab, useVisualClue } from "app/store/GlobalStore"
+import { VisualClueName } from "app/store/config/visualClues"
+import { switchTab } from "app/system/navigation/navigate"
 import { PopIn, Text, useColor } from "palette"
 import { VisualClueDot } from "palette/elements/VisualClue"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, Easing, TouchableWithoutFeedback, View } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { bottomTabsConfig } from "./bottomTabsConfig"
-import { BottomTabsIcon, ICON_HEIGHT, ICON_WIDTH } from "./BottomTabsIcon"
 import { BottomTabOption, BottomTabType } from "./BottomTabType"
+import { BottomTabsIcon, ICON_HEIGHT, ICON_WIDTH } from "./BottomTabsIcon"
+import { bottomTabsConfig } from "./bottomTabsConfig"
 
 export const BottomTabsButton: React.FC<{
   tab: BottomTabType

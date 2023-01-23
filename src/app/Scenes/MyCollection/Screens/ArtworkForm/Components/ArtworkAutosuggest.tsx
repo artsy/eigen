@@ -1,7 +1,7 @@
-import SearchIcon from "app/Icons/SearchIcon"
+import SearchIcon from "app/Components/Icons/SearchIcon"
+import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { Flex, Input, Text, Touchable } from "palette"
 import React, { useState } from "react"
-import { useArtworkForm } from "../Form/useArtworkForm"
 import { ArtworkAutosuggestResultsQueryRenderer } from "./ArtworkAutosuggestResults"
 
 interface ArtworkAutosuggestProps {

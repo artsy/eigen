@@ -1,5 +1,5 @@
 import { PartnerCard_artwork$data } from "__generated__/PartnerCard_artwork.graphql"
-import { navigateToPartner } from "app/navigation/navigate"
+import { navigateToPartner } from "app/system/navigation/navigate"
 import { limitWithCount } from "app/utils/limitWithCount"
 import { compact } from "lodash"
 import { EntityHeader, Flex, Spacer, Text } from "palette"

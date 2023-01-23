@@ -1,21 +1,20 @@
-import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-
-import { PAGE_SIZE } from "app/Components/constants"
+import { FavoriteCategoriesQuery } from "__generated__/FavoriteCategoriesQuery.graphql"
+import { FavoriteCategories_me$data } from "__generated__/FavoriteCategories_me.graphql"
 import { SavedItemRow } from "app/Components/Lists/SavedItemRow"
 import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
 
-import { FavoriteCategories_me$data } from "__generated__/FavoriteCategories_me.graphql"
+import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
 import { StickyTabPageFlatList } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+import { PAGE_SIZE } from "app/Components/constants"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
+import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Spacer } from "palette"
 
-import { FavoriteCategoriesQuery } from "__generated__/FavoriteCategoriesQuery.graphql"
-import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
-import { defaultEnvironment } from "app/relay/createEnvironment"
-import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import React from "react"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 interface Props {
   me: FavoriteCategories_me$data

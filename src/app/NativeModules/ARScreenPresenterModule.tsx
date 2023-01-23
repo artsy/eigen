@@ -5,8 +5,8 @@ import {
   StackActions,
   TabActions,
 } from "@react-navigation/native"
-import { ViewDescriptor } from "app/navigation/navigate"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
+import { ViewDescriptor } from "app/system/navigation/navigate"
 import immer from "immer-peasy"
 import { last } from "lodash"
 import { InteractionManager, NativeModules, StatusBar } from "react-native"
@@ -21,7 +21,6 @@ import { InteractionManager, NativeModules, StatusBar } from "react-native"
  *   These are unique in that they are created and destroyed, while all the others are only created once
  */
 
-// tslint:disable-next-line:variable-name
 export const __unsafe_mainModalStackRef = { current: null as NavigationContainerRef<any> | null }
 
 type Mutable<T> = T extends object

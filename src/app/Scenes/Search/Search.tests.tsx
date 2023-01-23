@@ -1,11 +1,11 @@
 import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { RecentSearch } from "app/Scenes/Search/SearchModel"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { isPad } from "app/utils/hardware"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { Pill } from "palette"
 import { RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -53,9 +53,9 @@ describe("Search Screen", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
-    require("app/relay/createEnvironment").reset()
+    require("app/system/relay/createEnvironment").reset()
     ;(isPad as jest.Mock).mockReset()
-    mockEnvironment = require("app/relay/createEnvironment").defaultEnvironment
+    mockEnvironment = require("app/system/relay/createEnvironment").defaultEnvironment
   })
 
   const TestRenderer = () => {

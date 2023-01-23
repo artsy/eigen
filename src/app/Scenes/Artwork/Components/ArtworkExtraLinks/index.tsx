@@ -1,7 +1,7 @@
 import { ArtworkExtraLinks_artwork$data } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
-import { navigate } from "app/navigation/navigate"
 import { useSelectedTab } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
 import { Text } from "palette"
 import { View } from "react-native"

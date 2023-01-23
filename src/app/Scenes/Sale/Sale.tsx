@@ -1,9 +1,10 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { captureMessage } from "@sentry/react-native"
-import { Sale_me$data } from "__generated__/Sale_me.graphql"
-import { Sale_sale$data } from "__generated__/Sale_sale.graphql"
 import { SaleAboveTheFoldQuery } from "__generated__/SaleAboveTheFoldQuery.graphql"
 import { SaleBelowTheFoldNewQuery$data } from "__generated__/SaleBelowTheFoldNewQuery.graphql"
+import { SaleBelowTheFoldQuery } from "__generated__/SaleBelowTheFoldQuery.graphql"
+import { Sale_me$data } from "__generated__/Sale_me.graphql"
+import { Sale_sale$data } from "__generated__/Sale_sale.graphql"
 import {
   AnimatedArtworkFilterButton,
   ArtworkFilterNavigator,
@@ -14,13 +15,14 @@ import { DEFAULT_NEW_SALE_ARTWORK_SORT } from "app/Components/ArtworkFilter/Filt
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
 import Spinner from "app/Components/Spinner"
-import { navigate, popParentViewController } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { CascadingEndTimesBanner } from "app/Scenes/Artwork/Components/CascadingEndTimesBanner"
 import { unsafe__getEnvironment, useFeatureFlag } from "app/store/GlobalStore"
+import { navigate, popParentViewController } from "app/system/navigation/navigate"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
+import { AuctionWebsocketContextProvider } from "app/utils/Websockets/auctions/AuctionSocketContext"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
 import _, { times } from "lodash"
 import { DateTime } from "luxon"
 import { Box, Flex, Join, Spacer } from "palette"
@@ -31,8 +33,6 @@ import { useTracking } from "react-tracking"
 import useInterval from "react-use/lib/useInterval"
 import usePrevious from "react-use/lib/usePrevious"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { SaleBelowTheFoldQuery } from "../../../__generated__/SaleBelowTheFoldQuery.graphql"
-import { CascadingEndTimesBanner } from "../Artwork/Components/CascadingEndTimesBanner"
 import { BuyNowArtworksRailContainer } from "./Components/BuyNowArtworksRail"
 import { NewBuyNowArtworksRailContainer } from "./Components/NewBuyNowArtworksRail"
 import { NewSaleLotsListContainer } from "./Components/NewSaleLotsList"
@@ -76,7 +76,6 @@ interface ViewToken {
   section?: any
 }
 
-// tslint:disable-next-line:no-empty
 const NOOP = () => {}
 
 export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {

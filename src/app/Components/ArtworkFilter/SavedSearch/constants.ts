@@ -1,4 +1,4 @@
-import { IS_USA } from "../Filters/helpers"
+import { IS_USA } from "app/Components/ArtworkFilter/Filters/helpers"
 import { SearchCriteria } from "./types"
 
 export const shouldExtractValueNamesFromAggregation = [

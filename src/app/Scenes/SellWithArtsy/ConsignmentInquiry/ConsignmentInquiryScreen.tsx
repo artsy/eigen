@@ -4,7 +4,7 @@ import { ConsignmentInquiryScreenMutation } from "__generated__/ConsignmentInqui
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { useToast } from "app/Components/Toast/toastHook"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { FormikProvider, useFormik } from "formik"
 import { useState } from "react"
 import { useTracking } from "react-tracking"
@@ -88,7 +88,7 @@ export const ConsignmentInquiryScreen: React.FC<InquiryScreenProps> = ({
       phoneNumber: phone,
       message: "",
     },
-    // tslint:disable-next-line:no-shadowed-variable
+
     onSubmit: async ({ email, name, phoneNumber, message }) => {
       const input = { email, name, phoneNumber, message, userId }
       const onCompleted = (response: ConsignmentInquiryScreenMutation["response"]) => {

@@ -1,7 +1,7 @@
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { SpacingUnit } from "palette/Theme"
+import { useSpace } from "palette/hooks"
 import { View } from "react-native"
-import { useSpace } from "../hooks"
-import { SpacingUnit } from "../Theme"
 
 describe("space", () => {
   const SpaceView = ({ name }: { name: SpacingUnit }) => {

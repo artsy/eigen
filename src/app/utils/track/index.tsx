@@ -56,8 +56,7 @@ export { Schema }
  *
  *      ```
  */
-export interface Track<P = any, S = null, T extends Schema.Global = Schema.Entity>
-  extends _Track<T, P, S> {} // tslint:disable-line:no-empty-interface
+export type Track<P = any, S = null, T extends Schema.Global = Schema.Entity> = _Track<T, P, S>
 
 /**
  * A typed tracking-info alias of the default react-tracking `track` function.
@@ -190,8 +189,8 @@ export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, nu
  *
  *       ```ts
  *      import { fireEvent } from "@testing-library/react-native"
- *      import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
- *      import { mockTrackEvent } from "app/tests/globallyMockedStuff"
+ *      import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+ *      import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
  *       *
  *      // Unmock react-tracking so that it will wrap our code
  *      jest.unmock("react-tracking")

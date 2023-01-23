@@ -1,13 +1,13 @@
 import { fireEvent } from "@testing-library/react-native"
-import { EntityType, navigate, navigateToEntity, SlugType } from "app/navigation/navigate"
+import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { GlobalStore, GlobalStoreProvider } from "app/store/GlobalStore"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { EntityType, navigate, navigateToEntity, SlugType } from "app/system/navigation/navigate"
 import { CatchErrors } from "app/utils/CatchErrors"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import { Pressable } from "react-native"
 import { act } from "react-test-renderer"
-import { SearchContext } from "../SearchContext"
 import { AutosuggestSearchResult } from "./AutosuggestSearchResult"
 
 const inputBlurMock = jest.fn()

@@ -1,5 +1,5 @@
+import useAppState from "app/utils/useAppState"
 import { createContext, useCallback, useEffect, useState } from "react"
-import useAppState from "../useAppState"
 import { forceFetchToggles } from "./helpers"
 import { useUnleashEnvironment } from "./hooks"
 import { getUnleashClient } from "./unleashClient"
@@ -17,10 +17,8 @@ export function UnleashProvider({ children }: { children?: React.ReactNode }) {
   useEffect(() => {
     const client = getUnleashClient(unleashEnv)
 
-    // tslint:disable-next-line: no-empty
     client.on("initialized", () => {})
 
-    // tslint:disable-next-line: no-empty
     client.on("ready", () => {})
 
     client.on("update", () => {
@@ -31,7 +29,6 @@ export function UnleashProvider({ children }: { children?: React.ReactNode }) {
       console.error("Unleash error")
     })
 
-    // tslint:disable-next-line: no-empty
     client.on("impression", () => {})
 
     return () => {

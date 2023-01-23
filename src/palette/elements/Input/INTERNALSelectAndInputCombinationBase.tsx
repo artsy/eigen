@@ -1,9 +1,8 @@
 import { Input, InputProps, InputRef } from "palette"
-import { forwardRef, useImperativeHandle } from "react"
-import { useEffect, useRef } from "react"
+import { Select } from "palette/elements/Select"
+import { SelectProps } from "palette/elements/Select/SelectV2"
+import { forwardRef, useImperativeHandle, useEffect, useRef } from "react"
 import { Platform } from "react-native"
-import { Select } from "../Select"
-import { SelectProps } from "../Select/SelectV2"
 
 // Mark the props that should pass to Select Component with ForSelect suffix
 type TypeForSelect = {
@@ -38,7 +37,6 @@ export const INTERNALSelectAndInputCombinationBase = forwardRef<
         default: {},
       }),
       onValueChange,
-      shouldDisplayLocalError = true,
       value,
       validate,
       // props for Select

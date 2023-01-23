@@ -1,4 +1,4 @@
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { sendEmailWithMailTo } from "app/utils/sendEmail"
 import { Box, Flex, Join, Spacer, Text } from "palette"
 import { ScrollView } from "react-native"
@@ -66,7 +66,7 @@ export const MyCollectionSellingWithArtsyFAQ: React.FC = () => {
                 <Text underline onPress={() => sendEmailWithMailTo("mailto:sell@artsy.net")}>
                   sell@artsy.net
                 </Text>
-                {"."}
+                .
               </Text>
             </Flex>
           </Join>

@@ -1,14 +1,13 @@
-import { View } from "react-native"
-import styled from "styled-components/native"
-
 import { Message_message$data } from "__generated__/Message_message.graphql"
 import { Messages_conversation$data } from "__generated__/Messages_conversation.graphql"
+import { OrderUpdate_event$data } from "__generated__/OrderUpdate_event.graphql"
+import { navigate } from "app/system/navigation/navigate"
 import moment from "moment"
 import { Flex, Spacer } from "palette"
 import React from "react"
 
-import { OrderUpdate_event$data } from "__generated__/OrderUpdate_event.graphql"
-import { navigate } from "app/navigation/navigate"
+import { View } from "react-native"
+import styled from "styled-components/native"
 import { Message } from "./Message"
 import { OrderUpdateFragmentContainer } from "./OrderUpdate"
 import ArtworkPreview from "./Preview/ArtworkPreview"

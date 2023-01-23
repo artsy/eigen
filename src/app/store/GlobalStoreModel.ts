@@ -15,13 +15,11 @@ import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy
 import { ArtsyPrefsModel, getArtsyPrefsModel } from "./ArtsyPrefsModel"
 import { AuthModel, getAuthModel } from "./AuthModel"
 import { unsafe__getEnvironment } from "./GlobalStore"
-import { CURRENT_APP_VERSION } from "./migration"
 import { getNativeModel, NativeModel } from "./NativeModel"
 import {
   getPendingPushNotificationModel,
   PendingPushNotificationModel,
 } from "./PendingPushNotificationModel"
-import { assignDeep, sanitize } from "./persistence"
 import { getRecentPriceRangesModel, RecentPriceRangesModel } from "./RecentPriceRangesModel"
 import {
   getRequestedPriceEstimatesModel,
@@ -29,6 +27,8 @@ import {
 } from "./RequestedPriceEstimatesModel"
 import { getToastModel, ToastModel } from "./ToastModel"
 import { getVisualClueModel, VisualClueModel } from "./VisualClueModel"
+import { CURRENT_APP_VERSION } from "./migration"
+import { assignDeep, sanitize } from "./persistence"
 
 interface GlobalStoreStateModel {
   version: number

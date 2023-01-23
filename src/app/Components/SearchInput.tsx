@@ -1,4 +1,4 @@
-import SearchIcon from "app/Icons/SearchIcon"
+import SearchIcon from "app/Components/Icons/SearchIcon"
 import {
   Flex,
   Input,

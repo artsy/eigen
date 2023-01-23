@@ -1,57 +1,22 @@
 {
   "version": "2.0.0",
   "command": "sh",
-  "args": [
-    "-c"
-  ],
+  "args": ["-c"],
   "tasks": [
     {
       "label": "Start Typescript Compiler",
       "type": "shell",
-      "args": [
-        "-c",
-        "node_modules/.bin/tsc --noEmit"
-      ],
-      "problemMatcher": [
-        "$tsc"
-      ],
+      "args": ["-c", "node_modules/.bin/tsc --noEmit"],
+      "problemMatcher": ["$tsc"],
       "group": "build"
     },
     {
       "label": "Start Typescript Compiler (in watch mode)",
       "type": "shell",
-      "args": [
-        "-c",
-        "node_modules/.bin/tsc --watch --noEmit"
-      ],
+      "args": ["-c", "node_modules/.bin/tsc --watch --noEmit"],
       "isBackground": true,
-      "problemMatcher": [
-        "$tsc-watch"
-      ],
+      "problemMatcher": ["$tsc-watch"],
       "group": "build"
-    },
-    {
-      "label": "TSLint: Lint all files",
-      "type": "shell",
-      "command": "yarn",
-      "args": [
-        "lint"
-      ],
-      "problemMatcher": {
-        "owner": "tslint",
-        "fileLocation": [
-          "relative",
-          "${workspaceRoot}"
-        ],
-        "severity": "warning",
-        "pattern": {
-          "regexp": "^(\\S.*)\\[(\\d+), (\\d+)\\]:\\s+(.*)$",
-          "file": 1,
-          "line": 2,
-          "column": 3,
-          "message": 4
-        }
-      }
     }
   ]
 }

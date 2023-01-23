@@ -1,4 +1,4 @@
-import { Image } from "../State/MyCollectionArtworkModel"
+import { Image } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { deletedPhotos } from "./deletedPhotos"
 
 describe("deletedPhotos", () => {

@@ -1,20 +1,19 @@
 import { fireEvent } from "@testing-library/react-native"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { Text } from "react-native"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
   useSelectedOptionsDisplay,
-} from "../ArtworkFilterStore"
-import { getEssentialProps } from "./helper"
-import { Range } from "./helpers"
-import { PriceRangeOptionsScreen } from "./PriceRangeOptions"
-
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
+import { extractText } from "app/utils/tests/extractText"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { debounce } from "lodash"
 import { Input } from "palette"
+import { Text } from "react-native"
+import { PriceRangeOptionsScreen } from "./PriceRangeOptions"
+import { getEssentialProps } from "./helper"
+import { Range } from "./helpers"
 
 const DEFAULT_RANGE: Range = {
   min: "*",

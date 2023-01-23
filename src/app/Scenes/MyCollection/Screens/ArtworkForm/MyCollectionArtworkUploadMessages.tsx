@@ -1,11 +1,11 @@
-import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { setVisualClueAsSeen, useVisualClue } from "app/store/GlobalStore"
-import { Flex } from "palette"
 import {
   AddedArtworkWithInsightsMessage,
   AddedArtworkWithoutAnyCollectionInsightsMessage,
   AddedArtworkWithoutInsightsMessage,
-} from "../Insights/MyCollectionMessages"
+} from "app/Scenes/MyCollection/Screens/Insights/MyCollectionMessages"
+import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { setVisualClueAsSeen, useVisualClue } from "app/store/GlobalStore"
+import { Flex } from "palette"
 
 interface MyCollectionArtworkUploadMessagesProps {
   sourceTab: Tab

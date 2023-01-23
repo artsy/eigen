@@ -4,7 +4,7 @@ import { ClipPath, Defs, G } from "react-native-svg"
 import { Icon, IconProps, Path } from "./Icon"
 
 /** GuaranteeIcon */
-export const GuaranteeIcon: React.FC<IconProps> = ({ title = "Guarantee", ...props }) => {
+export const GuaranteeIcon: React.FC<IconProps> = ({ ...props }) => {
   const color = useColor()
 
   return (

@@ -1,11 +1,11 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
-import { goBack } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
-import { extractText } from "app/tests/extractText"
-import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificationPermissions"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { goBack } from "app/system/navigation/navigate"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
+import { extractText } from "app/utils/tests/extractText"
+import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotificationPermissions"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { createMockEnvironment } from "relay-test-utils"
 import { EditSavedSearchAlertQueryRenderer } from "./EditSavedSearchAlert"
 
@@ -103,6 +103,7 @@ describe("EditSavedSearchAlert", () => {
         searchCriteriaID: "savedSearchAlertId",
         attributes: {
           artistIDs: ["artistID"],
+          internalID: "internalID-1",
           materialsTerms: ["paper"],
         },
         userAlertSettings: {

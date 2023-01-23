@@ -1,16 +1,14 @@
+import { Container } from "app/Components/Bidding/Components/Containers"
+import { PaymentCardTextFieldParams } from "app/Components/Bidding/types"
+import { BottomAlignedButtonWrapper } from "app/Components/Buttons/BottomAlignedButtonWrapper"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Box, Button, Text, Theme } from "palette"
 import React, { Component } from "react"
 import { ScrollView, View } from "react-native"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import stripe, { StripeToken } from "tipsi-stripe"
-
-import { BottomAlignedButtonWrapper } from "app/Components/Buttons/BottomAlignedButtonWrapper"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { Container } from "../Components/Containers"
-import { PaymentCardTextFieldParams } from "../types"
-
 import { LiteCreditCardInput } from "react-native-credit-card-input"
+// @ts-expect-error
+import stripe, { StripeToken } from "tipsi-stripe"
 
 interface CreditCardFormProps {
   navigator: NavigatorIOS

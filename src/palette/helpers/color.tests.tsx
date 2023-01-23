@@ -1,6 +1,6 @@
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { _test_THEMES, Color, useTheme } from "palette/Theme"
 import { View } from "react-native"
-import { _test_THEMES, Color, useTheme } from "../Theme"
 
 describe("color", () => {
   const ColorView = ({ name }: { name: Color }) => {

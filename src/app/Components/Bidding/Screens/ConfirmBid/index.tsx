@@ -1,9 +1,9 @@
 import { BidderPositionQuery } from "__generated__/BidderPositionQuery.graphql"
-import { ConfirmBid_me$data } from "__generated__/ConfirmBid_me.graphql"
-import { ConfirmBid_sale_artwork$data } from "__generated__/ConfirmBid_sale_artwork.graphql"
 import { ConfirmBidCreateBidderPositionMutation } from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
 import { ConfirmBidCreateCreditCardMutation } from "__generated__/ConfirmBidCreateCreditCardMutation.graphql"
 import { ConfirmBidUpdateUserMutation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
+import { ConfirmBid_me$data } from "__generated__/ConfirmBid_me.graphql"
+import { ConfirmBid_sale_artwork$data } from "__generated__/ConfirmBid_sale_artwork.graphql"
 import { BidInfoRow } from "app/Components/Bidding/Components/BidInfoRow"
 import { Divider } from "app/Components/Bidding/Components/Divider"
 import { PaymentInfo } from "app/Components/Bidding/Components/PaymentInfo"
@@ -16,12 +16,12 @@ import { Address, Bid, PaymentCardTextFieldParams, StripeToken } from "app/Compo
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { navigate } from "app/navigation/navigate"
 import { partnerName } from "app/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName"
 import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
+import { AuctionWebsocketContextProvider } from "app/utils/Websockets/auctions/AuctionSocketContext"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Schema, screenTrack, track } from "app/utils/track"
-import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
 import { get, isEmpty } from "lodash"
 import { Box, Button, Checkbox, LinkText, Text, Theme } from "palette"
 import React from "react"
@@ -327,6 +327,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   checkBidderPosition(data: BidderPositionQuery["response"] | undefined) {
+    // eslint-disable-next-line no-unsafe-optional-chaining
     const { bidder_position } = data?.me!
 
     if (bidder_position!.status === "PENDING" && this.pollCount < MAX_POLL_ATTEMPTS) {

@@ -1,5 +1,5 @@
 import { __globalStoreTestUtils__, GlobalStore, GlobalStoreProvider } from "app/store/GlobalStore"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { times } from "lodash"
 import {
   MAX_SAVED_RECENT_SEARCHES,

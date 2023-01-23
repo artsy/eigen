@@ -1,4 +1,4 @@
-import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { createMockEnvironment } from "relay-test-utils"
 import { ActivityMarkAllAsReadSection } from "./ActivityMarkAllAsReadSection"
 

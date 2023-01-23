@@ -1,6 +1,6 @@
-import { navigate } from "app/navigation/navigate"
+import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { navigate } from "app/system/navigation/navigate"
 import { Flex, Spacer, Text, Touchable, useColor } from "palette"
-import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 
 interface SavedItemRowProps {
   href: string

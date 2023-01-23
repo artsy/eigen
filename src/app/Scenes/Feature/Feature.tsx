@@ -1,9 +1,9 @@
-import { Feature_feature$data } from "__generated__/Feature_feature.graphql"
 import { FeatureQuery } from "__generated__/FeatureQuery.graphql"
+import { Feature_feature$data } from "__generated__/Feature_feature.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
 import { Stack } from "app/Components/Stack"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
 import { PlaceholderRaggedText } from "app/utils/placeholders"
@@ -112,7 +112,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
 
     if (count > 0) {
       switch (set.itemType) {
-        case "FeaturedLink":
+        case "FeaturedLink": {
           const numColumns = isPad() ? (orientation === "landscape" ? 3 : 2) : 1
           const columnWidth = (width - 20) / numColumns - 20
 
@@ -147,6 +147,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
           )
 
           break
+        }
         case "Artwork":
           renderedSet.push({
             key: "artworks:" + set.id,

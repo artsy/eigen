@@ -1,8 +1,8 @@
+import { SpacerProps } from "palette/atoms/Spacer"
+import { Avatar } from "palette/elements/Avatar"
+import { Flex, FlexProps } from "palette/elements/Flex"
+import { Text } from "palette/elements/Text"
 import { bullet } from "palette/helpers"
-import { SpacerProps } from "../../atoms/Spacer"
-import { Avatar } from "../Avatar"
-import { Flex, FlexProps } from "../Flex"
-import { Text } from "../Text"
 
 interface EntityHeaderProps extends SpacerProps, FlexProps {
   smallVariant?: boolean
@@ -16,7 +16,6 @@ interface EntityHeaderProps extends SpacerProps, FlexProps {
 
 export const EntityHeader: React.FC<EntityHeaderProps> = ({
   smallVariant,
-  href,
   imageUrl,
   initials,
   name,

@@ -1,5 +1,5 @@
 import { DecoratorFunction } from "@storybook/addons"
-import { TrackingProvider } from "app/tests/renderWithWrappers"
+import { TrackingProvider } from "app/utils/tests/renderWithWrappers"
 import { Theme } from "palette"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { ProvideScreenDimensions } from "shared/hooks"

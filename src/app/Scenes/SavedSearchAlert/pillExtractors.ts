@@ -6,16 +6,16 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ATTRIBUTION_CLASS_OPTIONS } from "app/Components/ArtworkFilter/Filters/AttributionClassOptions"
 import { COLORS_INDEXED_BY_VALUE } from "app/Components/ArtworkFilter/Filters/ColorsOptions"
-import {
-  localizeDimension,
-  parsePriceRangeLabel,
-  parseRange,
-} from "app/Components/ArtworkFilter/Filters/helpers"
 import { getSizeOptions } from "app/Components/ArtworkFilter/Filters/SizesOptionsScreen"
 import {
   WAYS_TO_BUY_OPTIONS,
   WAYS_TO_BUY_PARAM_NAMES,
 } from "app/Components/ArtworkFilter/Filters/WaysToBuyOptions"
+import {
+  localizeDimension,
+  parsePriceRangeLabel,
+  parseRange,
+} from "app/Components/ArtworkFilter/Filters/helpers"
 import { shouldExtractValueNamesFromAggregation } from "app/Components/ArtworkFilter/SavedSearch/constants"
 import {
   SavedSearchEntity,
@@ -23,8 +23,8 @@ import {
   SearchCriteria,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import { compact, flatten, isNil, isUndefined, keyBy } from "lodash"
-import { Metric } from "../Search/UserPrefsModel"
 import { SavedSearchPill } from "./SavedSearchAlertModel"
 
 interface ExtractFromCriteriaOptions {

@@ -1,14 +1,14 @@
 import { OwnerType } from "@artsy/cohesion"
 import { addBreadcrumb } from "@sentry/react-native"
-import { dismissModal, goBack, GoBackProps, navigate } from "app/navigation/navigate"
-import { matchRoute } from "app/navigation/routes"
 import { BottomTabRoutes } from "app/Scenes/BottomTabs/bottomTabsConfig"
+import { matchRoute } from "app/routes"
 import {
   getCurrentEmissionState,
   GlobalStore,
   useDevToggle,
   useEnvironment,
 } from "app/store/GlobalStore"
+import { dismissModal, goBack, GoBackProps, navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
 import { useWebViewCallback } from "app/utils/useWebViewEvent"
 import { Flex, Text } from "palette"
@@ -315,5 +315,4 @@ const tracks = {
   }),
 }
 
-// tslint:disable-next-line:variable-name
 export const _test_expandGoogleAdLink = expandGoogleAdLink

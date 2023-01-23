@@ -1,6 +1,7 @@
 import { themeGet } from "@styled-system/theme-get"
 import _ from "lodash"
 import { Color, EyeOpenedIcon, Flex, Spinner, Text, useTheme, XCircleIcon } from "palette"
+import { EyeClosedIcon } from "palette/svgs/EyeClosedIcon"
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import {
   LayoutAnimation,
@@ -14,7 +15,6 @@ import {
 } from "react-native"
 import { MeasuredView } from "shared/utils"
 import styled from "styled-components/native"
-import { EyeClosedIcon } from "../../svgs/EyeClosedIcon"
 import { InputTitle } from "./InputTitle"
 
 const DEFAULT_FONT_SIZE = 16
@@ -91,8 +91,6 @@ export const Input = forwardRef<InputRef, InputProps>(
       title,
       renderLeftHandSection,
       secureTextEntry = false,
-      textContentType,
-      canHidePassword,
       inputTextStyle,
       fixedRightPlaceholder,
       placeholder,

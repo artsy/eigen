@@ -1,6 +1,6 @@
+import { env } from "process"
 import { echoLaunchJson } from "app/utils/jsonFiles"
 import { intersection } from "lodash"
-import { env } from "process"
 import { devToggles, features } from "./features"
 
 Object.entries(features).forEach(([key, val]) => {
@@ -47,7 +47,6 @@ describe("feature conventions", () => {
   })
   it("should contain a key named readyForRelease", () => {
     Object.entries(features).forEach(([_, val]) => {
-      // tslint:disable-next-line:no-string-literal
       expect(val["readyForRelease"]).toBeDefined()
     })
   })

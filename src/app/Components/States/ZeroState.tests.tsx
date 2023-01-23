@@ -1,6 +1,5 @@
-import "react-native"
-
 import { getTestWrapper } from "app/utils/getTestWrapper"
+import "react-native"
 import { ZeroState } from "./ZeroState"
 
 it("presents the title and subtitle", () => {

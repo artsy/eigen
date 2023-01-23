@@ -1,3 +1,9 @@
+import { Notification_notification$data } from "__generated__/Notification_notification.graphql"
+import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
+import { navigate } from "app/system/navigation/navigate"
+import { extractNodes } from "app/utils/extractNodes"
+import { ClassTheme, Text } from "palette"
+import React from "react"
 import {
   Image,
   ImageStyle,
@@ -7,14 +13,6 @@ import {
   ViewStyle,
 } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-
-import GenericGrid from "../ArtworkGrids/GenericGrid"
-
-import { Notification_notification$data } from "__generated__/Notification_notification.graphql"
-import { navigate } from "app/navigation/navigate"
-import { extractNodes } from "app/utils/extractNodes"
-import { ClassTheme, Text } from "palette"
-import React from "react"
 
 interface Props {
   // Special notifications will pass down an artistHref. Otherwise, grab it from the artworks.

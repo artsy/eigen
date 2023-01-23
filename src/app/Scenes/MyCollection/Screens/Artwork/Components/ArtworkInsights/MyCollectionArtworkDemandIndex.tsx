@@ -2,7 +2,7 @@ import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/c
 import { MyCollectionArtworkDemandIndex_artwork$key } from "__generated__/MyCollectionArtworkDemandIndex_artwork.graphql"
 import { MyCollectionArtworkDemandIndex_artworkPriceInsights$key } from "__generated__/MyCollectionArtworkDemandIndex_artworkPriceInsights.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
-import HighDemandIcon from "app/Icons/HighDemandIcon"
+import HighDemandIcon from "app/Components/Icons/HighDemandIcon"
 import { Flex, Separator, Spacer, Text, TriangleDown } from "palette"
 import LinearGradient from "react-native-linear-gradient"
 import { graphql, useFragment } from "react-relay"

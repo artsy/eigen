@@ -1,5 +1,5 @@
 import { ViewingRoomsListItem_item$key } from "__generated__/ViewingRoomsListItem_item.graphql"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
 import { CardTagProps, SmallCard, Touchable } from "palette"

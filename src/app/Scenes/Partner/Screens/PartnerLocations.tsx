@@ -1,6 +1,7 @@
-import { PartnerLocations_partner$data } from "__generated__/PartnerLocations_partner.graphql"
 import { PartnerLocationsQuery } from "__generated__/PartnerLocationsQuery.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { PartnerLocations_partner$data } from "__generated__/PartnerLocations_partner.graphql"
+import { PartnerMapContainer as PartnerMap } from "app/Scenes/Partner/Components/PartnerMap"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
@@ -8,7 +9,6 @@ import { Box, Spacer, Text } from "palette"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-import { PartnerMapContainer as PartnerMap } from "../Components/PartnerMap"
 
 const PAGE_SIZE = 4
 

@@ -1,5 +1,5 @@
 import { getDefaultNormalizer, render } from "@testing-library/react-native"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import moment from "moment"
 import { Theme } from "palette"
 import { Text } from "react-native"

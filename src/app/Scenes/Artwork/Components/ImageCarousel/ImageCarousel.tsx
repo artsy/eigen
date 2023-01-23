@@ -10,7 +10,6 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 import { ImageCarouselFullScreen } from "./FullScreen/ImageCarouselFullScreen"
 import { ImageCarouselFullScreenAndroid } from "./FullScreen/ImageCarouselFullScreenAndroid"
-import { fitInside } from "./geometry"
 import {
   ImageCarouselContext,
   ImageDescriptor,
@@ -18,6 +17,7 @@ import {
 } from "./ImageCarouselContext"
 import { ImageCarouselEmbedded } from "./ImageCarouselEmbedded"
 import { IndicatorType, PaginationIndicator } from "./ImageCarouselPaginationIndicator"
+import { fitInside } from "./geometry"
 
 export interface CarouselImageDescriptor extends ImageDescriptor {
   imageVersions?: string[]

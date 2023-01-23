@@ -1,6 +1,6 @@
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
-import { goBack } from "app/navigation/navigate"
+import { goBack } from "app/system/navigation/navigate"
 import { Text } from "palette"
 import React, { useImperativeHandle, useRef, useState } from "react"
 import {

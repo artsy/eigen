@@ -1,5 +1,5 @@
-import { navigate } from "app/navigation/navigate"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { navigate } from "app/system/navigation/navigate"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { About } from "./About"
 
 describe("About", () => {

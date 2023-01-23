@@ -1,26 +1,27 @@
 import { ActionType, AddCollectedArtwork, ContextModule, OwnerType } from "@artsy/cohesion"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
-import { MyCollection_me$data } from "__generated__/MyCollection_me.graphql"
 import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"
+import { MyCollection_me$data } from "__generated__/MyCollection_me.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
-import { PAGE_SIZE } from "app/Components/constants"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { useToast } from "app/Components/Toast/toastHook"
-import { navigate, popToRoot } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { PAGE_SIZE } from "app/Components/constants"
+import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import {
   GlobalStore,
   setVisualClueAsSeen,
   useDevToggle,
   useVisualClue,
 } from "app/store/GlobalStore"
+import { navigate, popToRoot } from "app/system/navigation/navigate"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   PlaceholderBox,
@@ -41,7 +42,6 @@ import { Button, Flex, Separator, Spacer } from "palette"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
 import { MyCollectionArtworkUploadMessages } from "./Screens/ArtworkForm/MyCollectionArtworkUploadMessages"

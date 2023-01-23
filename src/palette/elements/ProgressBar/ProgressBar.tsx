@@ -1,6 +1,6 @@
 import { Flex } from "palette"
-import { useColor } from "palette/hooks"
 import { Color } from "palette/Theme"
+import { useColor } from "palette/hooks"
 import { useEffect, useState } from "react"
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
 

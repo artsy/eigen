@@ -5,22 +5,22 @@ jest.mock("app/utils/googleMaps", () => ({
 
 import { InquiryModalTestsQuery } from "__generated__/InquiryModalTestsQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { extractText } from "app/tests/extractText"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import {
   ArtworkInquiryContext,
   ArtworkInquiryStateProvider,
 } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
+import { extractText } from "app/utils/tests/extractText"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import React from "react"
 import { TextInput } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { press } from "./helpers"
 import { InquiryModalFragmentContainer } from "./InquiryModal"
 import { ShippingModal } from "./ShippingModal"
+import { press } from "./helpers"
 
 jest.unmock("react-relay")
 

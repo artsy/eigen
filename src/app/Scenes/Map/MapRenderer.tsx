@@ -1,5 +1,5 @@
 import { MapRendererQuery } from "__generated__/MapRendererQuery.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { useTheme } from "palette"
 import { View } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"

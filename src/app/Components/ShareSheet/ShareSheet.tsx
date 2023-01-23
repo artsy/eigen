@@ -1,5 +1,7 @@
 import { ActionType, ContextModule, CustomService, OwnerType, Share, share } from "@artsy/cohesion"
 import Clipboard from "@react-native-clipboard/clipboard"
+import { CustomShareSheet, CustomShareSheetItem } from "app/Components/CustomShareSheet"
+import { useToast } from "app/Components/Toast/toastHook"
 import { InstagramStoryViewShot } from "app/Scenes/Artwork/Components/InstagramStoryViewShot"
 import { Schema } from "app/utils/track"
 import { useCanOpenURL } from "app/utils/useCanOpenURL"
@@ -9,8 +11,6 @@ import { ScrollView } from "react-native"
 import RNShare, { ShareOptions } from "react-native-share"
 import ViewShot from "react-native-view-shot"
 import { useTracking } from "react-tracking"
-import { CustomShareSheet, CustomShareSheetItem } from "../CustomShareSheet"
-import { useToast } from "../Toast/toastHook"
 import { getBase64Data, getShareMessage, getShareURL } from "./helpers"
 
 interface ShareEntry {

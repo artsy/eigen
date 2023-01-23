@@ -1,4 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native"
+import { ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import {
   ArtworkFromLiveAuctionRegistrationClosed,
   ArtworkFromLiveAuctionRegistrationOpen,
@@ -6,16 +7,14 @@ import {
   RegisteredBidder,
 } from "app/__fixtures__/ArtworkBidAction"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
-import { ModalStack } from "app/navigation/ModalStack"
-import { navigationEvents } from "app/navigation/navigate"
-import { ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import { merge } from "lodash"
-import _ from "lodash"
+import { ModalStack } from "app/system/navigation/ModalStack"
+import { navigationEvents } from "app/system/navigation/navigate"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
+import _, { merge } from "lodash"
 import { Suspense } from "react"
 import { ActivityIndicator } from "react-native"
 import { createMockEnvironment } from "relay-test-utils"
@@ -66,8 +65,8 @@ describe("Artwork", () => {
   )
 
   beforeEach(() => {
-    require("app/relay/createEnvironment").reset()
-    environment = require("app/relay/createEnvironment").defaultEnvironment
+    require("app/system/relay/createEnvironment").reset()
+    environment = require("app/system/relay/createEnvironment").defaultEnvironment
 
     __globalStoreTestUtils__?.injectFeatureFlags({
       ARArtworkRedesingPhase2: false,

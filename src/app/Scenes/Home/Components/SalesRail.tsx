@@ -6,8 +6,9 @@ import {
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
-import { navigate } from "app/navigation/navigate"
+import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { useFeatureFlag } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact } from "lodash"
 import { Flex, Text } from "palette"
@@ -15,7 +16,6 @@ import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import HomeAnalytics from "../homeAnalytics"
 import { RailScrollProps } from "./types"
 
 interface Props {

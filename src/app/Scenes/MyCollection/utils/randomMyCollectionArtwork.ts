@@ -1,7 +1,10 @@
 import { MyCollectionCreateArtworkInput } from "__generated__/myCollectionCreateArtworkMutation.graphql"
+import {
+  storeLocalPhotos,
+  uploadPhotos,
+} from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionImageUtil"
+import { myCollectionCreateArtwork } from "app/Scenes/MyCollection/mutations/myCollectionCreateArtwork"
 import { requestPhotos } from "app/utils/requestPhotos"
-import { myCollectionCreateArtwork } from "../mutations/myCollectionCreateArtwork"
-import { storeLocalPhotos, uploadPhotos } from "../Screens/ArtworkForm/MyCollectionImageUtil"
 
 const randomValue = (array: any[]) => {
   const randIndex = Math.floor(Math.random() * array.length)

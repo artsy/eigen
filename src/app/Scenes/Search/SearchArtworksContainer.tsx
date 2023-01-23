@@ -1,11 +1,11 @@
 import { SearchArtworksContainerQuery } from "__generated__/SearchArtworksContainerQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { LoadFailureView } from "app/Components/LoadFailureView"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { graphql, QueryRenderer } from "react-relay"
-import { SearchArtworksGridPlaceholder } from "./components/placeholders/SearchArtworksGridPlaceholder"
 import { SearchArtworksGridPaginationContainer } from "./SearchArtworksGrid"
+import { SearchArtworksGridPlaceholder } from "./components/placeholders/SearchArtworksGridPlaceholder"
 
 export const SearchArtworksQueryRenderer: React.FC<{ keyword: string }> = ({ keyword }) => {
   return (

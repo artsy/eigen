@@ -1,5 +1,9 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
+import { useErrorReporting } from "app/system/errorReporting/hooks"
+import { ModalStack } from "app/system/navigation/ModalStack"
+import { navigate } from "app/system/navigation/navigate"
+import { usePurgeCacheOnAppUpdate } from "app/system/relay/usePurgeCacheOnAppUpdate"
 import { DevMenuWrapper } from "app/utils/DevMenuWrapper"
 import { addTrackingProvider } from "app/utils/track"
 import {
@@ -13,14 +17,10 @@ import { NativeModules, Platform, UIManager, View } from "react-native"
 import RNBootSplash from "react-native-bootsplash"
 import { Settings } from "react-native-fbsdk-next"
 import RNShake from "react-native-shake"
-import { AppProviders } from "./AppProviders"
 import { useWebViewCookies } from "./Components/ArtsyWebView"
 import { FPSCounter } from "./Components/FPSCounter"
-import { useErrorReporting } from "./errorReporting/hooks"
 import { ArtsyNativeModule, DEFAULT_NAVIGATION_BAR_COLOR } from "./NativeModules/ArtsyNativeModule"
-import { ModalStack } from "./navigation/ModalStack"
-import { navigate } from "./navigation/navigate"
-import { usePurgeCacheOnAppUpdate } from "./relay/usePurgeCacheOnAppUpdate"
+import { Providers } from "./Providers"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
@@ -150,11 +150,11 @@ const Main = () => {
 }
 
 export const App = () => (
-  <AppProviders>
+  <Providers>
     <DevMenuWrapper>
       <Main />
     </DevMenuWrapper>
 
     <DynamicIslandStagingIndicator />
-  </AppProviders>
+  </Providers>
 )

@@ -2,7 +2,7 @@ import { appleAuth } from "@invertase/react-native-apple-authentication"
 import Cookies from "@react-native-cookies/cookies"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { mockPostEventToProviders } from "app/tests/globallyMockedStuff"
+import { mockPostEventToProviders } from "app/utils/tests/globallyMockedStuff"
 import { AccessToken, GraphRequest, LoginManager } from "react-native-fbsdk-next"
 import Keychain from "react-native-keychain"
 import { AuthError } from "./AuthError"
@@ -16,7 +16,7 @@ const mockFetch = jest.fn()
 function mockFetchResponseOnce(response: Partial<Response>) {
   mockFetch.mockResolvedValueOnce(response)
 }
-function mockFetchJsonOnce(json: object, status: number = 200) {
+function mockFetchJsonOnce(json: object, status = 200) {
   mockFetch.mockResolvedValueOnce({
     status,
     json: () => Promise.resolve(json),

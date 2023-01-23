@@ -1,19 +1,19 @@
-import { CitySectionList_city$data } from "__generated__/CitySectionList_city.graphql"
 import {
   CitySectionListQuery,
   EventStatus,
   PartnerShowPartnerType,
   ShowSorts,
 } from "__generated__/CitySectionListQuery.graphql"
+import { CitySectionList_city$data } from "__generated__/CitySectionList_city.graphql"
 import { PAGE_SIZE } from "app/Components/constants"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { BucketKey } from "app/Scenes/Map/bucketCityResults"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Schema, screenTrack } from "app/utils/track"
 import React from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-import { BucketKey } from "../Map/bucketCityResults"
 import { EventList } from "./Components/EventList"
 
 interface Props extends Pick<CitySectionListQuery["variables"], "dayThreshold" | "status"> {

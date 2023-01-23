@@ -1,15 +1,14 @@
-import { Flex } from "palette"
-import React, { useImperativeHandle, useRef } from "react"
-import { createFragmentContainer, graphql } from "react-relay"
-
 import { ArtworkModuleRail_rail$data } from "__generated__/ArtworkModuleRail_rail.graphql"
 import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { navigate } from "app/navigation/navigate"
+import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
+import { navigate } from "app/system/navigation/navigate"
 import { compact } from "lodash"
+import { Flex } from "palette"
+import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import HomeAnalytics from "../homeAnalytics"
 import { RailScrollProps } from "./types"
 
 export function getViewAllUrl(rail: ArtworkModuleRail_rail$data) {

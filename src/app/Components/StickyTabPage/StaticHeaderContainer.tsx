@@ -7,9 +7,9 @@ import {
   State,
 } from "react-native-gesture-handler"
 import Animated from "react-native-reanimated"
-import { useAnimatedValue } from "./reanimatedHelpers"
 import { RegisteredListRefs } from "./StickyTabPage"
 import { useStickyTabPageContext } from "./StickyTabPageContext"
+import { useAnimatedValue } from "./reanimatedHelpers"
 
 export const StaticHeaderContainer: React.FC<{
   registeredListRefs: RegisteredListRefs

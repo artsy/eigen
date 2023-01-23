@@ -1,4 +1,4 @@
-import { Flex } from "../Elements/Flex"
+import { Flex } from "app/Components/Bidding/Elements/Flex"
 
 export const Row = (props: any /* STRICTNESS_MIGRATION */) => (
   <Flex flexDirection="row" justifyContent="space-between" alignItems="center" {...props} />

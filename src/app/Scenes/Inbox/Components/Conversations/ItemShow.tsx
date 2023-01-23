@@ -1,6 +1,6 @@
 import { ItemShow_show$data } from "__generated__/ItemShow_show.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { Box, Flex, Separator, Text, Touchable } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 

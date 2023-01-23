@@ -5,12 +5,12 @@ import {
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
-import { navigate, NavigateOptions } from "app/navigation/navigate"
 import { CreateSavedSearchAlert } from "app/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
 import {
   CreateSavedSearchAlertParams,
   SavedSearchAlertMutationResult,
 } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
+import { navigate, NavigateOptions } from "app/system/navigation/navigate"
 import { useTracking } from "react-tracking"
 
 export interface CreateSavedSearchModalProps {

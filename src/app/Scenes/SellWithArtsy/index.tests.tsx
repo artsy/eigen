@@ -1,6 +1,6 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { SellWithArtsyRecentlySold } from "./Components/SellWithArtsyRecentlySold"
 import { SellWithArtsyHomeQueryRenderer } from "./SellWithArtsyHome"

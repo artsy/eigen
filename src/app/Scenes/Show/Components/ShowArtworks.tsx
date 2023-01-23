@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Show_show$data } from "__generated__/Show_show.graphql"
 import { ShowArtworks_show$data } from "__generated__/ShowArtworks_show.graphql"
+import { Show_show$data } from "__generated__/Show_show.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { aggregationsType, FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"

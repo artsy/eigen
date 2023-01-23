@@ -1,5 +1,5 @@
 import { FaqAndSpecialistSection_artwork$data } from "__generated__/FaqAndSpecialistSection_artwork.graphql"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { sendEmail } from "app/utils/sendEmail"
 import { Schema } from "app/utils/track"
 import { Text } from "palette"

@@ -1,5 +1,5 @@
-import { extractText } from "app/tests/extractText"
-import { setupTestWrapper_LEGACY } from "app/tests/setupTestWrapper"
+import { extractText } from "app/utils/tests/extractText"
+import { setupTestWrapper_LEGACY } from "app/utils/tests/setupTestWrapper"
 import { ARTWORK_MEDIUM_QUERY, ArtworkMediumFragmentContainer } from "./ArtworkMedium"
 
 jest.unmock("react-relay")

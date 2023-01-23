@@ -1,6 +1,6 @@
 import { themeGet } from "@styled-system/theme-get"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { Box, ClassTheme, Text } from "palette"
 import { Component } from "react"
 import { FlatList } from "react-native"

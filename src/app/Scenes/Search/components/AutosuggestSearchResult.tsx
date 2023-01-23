@@ -1,17 +1,17 @@
+import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
+import { SearchContext } from "app/Scenes/Search/SearchContext"
+import { GlobalStore } from "app/store/GlobalStore"
 import {
   EntityType,
   navigate,
   navigateToEntity,
   navigateToPartner,
   SlugType,
-} from "app/navigation/navigate"
-import { GlobalStore } from "app/store/GlobalStore"
+} from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
 import { ArtworkIcon, AuctionIcon, CloseIcon, Flex, Pill, Spacer, Text, Touchable } from "palette"
 import React, { useContext } from "react"
 import { useTracking } from "react-tracking"
-import { AutosuggestResult } from "../AutosuggestResults"
-import { SearchContext } from "../SearchContext"
 import { ResultWithHighlight } from "./ResultWithHighlight"
 import { IMAGE_SIZE, SearchResultImage } from "./SearchResultImage"
 

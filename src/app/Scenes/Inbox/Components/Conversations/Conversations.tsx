@@ -1,8 +1,8 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Conversations_me$data } from "__generated__/Conversations_me.graphql"
 import { PAGE_SIZE } from "app/Components/constants"
-import { navigate } from "app/navigation/navigate"
 import { ICON_HEIGHT } from "app/Scenes/BottomTabs/BottomTabsIcon"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -49,7 +49,7 @@ export const Conversations: React.FC<Props> = (props) => {
     }
   }
 
-  const refreshConversations = (withSpinner: boolean = false) => {
+  const refreshConversations = (withSpinner = false) => {
     if (!relay.isLoading()) {
       if (withSpinner) {
         setIsFetching(true)

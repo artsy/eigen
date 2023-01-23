@@ -1,13 +1,13 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { fireEvent } from "@testing-library/react-native"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { STEPS, SubmitSWAArtworkFlow } from "app/Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
+import { updateConsignSubmission } from "app/Scenes/SellWithArtsy/mutations"
 import { GlobalStore } from "app/store/GlobalStore"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils/"
-import { updateConsignSubmission } from "../../mutations"
-import { STEPS, SubmitSWAArtworkFlow } from "../SubmitArtwork"
 import { ContactInformationQueryRenderer } from "./ContactInformation"
 
 jest.mock("../../mutations/updateConsignSubmissionMutation", () => ({

@@ -1,11 +1,11 @@
+import ChevronIcon from "app/Components/Icons/ChevronIcon"
 import Spinner from "app/Components/Spinner"
-import ChevronIcon from "app/Icons/ChevronIcon"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { City } from "app/Scenes/Map/types"
 import { Box, ClassTheme, Flex, Text } from "palette"
 import { Component } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
-import { City } from "../types"
 
 // Because it will raise errors in VS Code
 const shadowProps = `

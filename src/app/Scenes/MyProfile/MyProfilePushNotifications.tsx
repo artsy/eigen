@@ -1,9 +1,10 @@
-import { MyProfilePushNotifications_me$data } from "__generated__/MyProfilePushNotifications_me.graphql"
 import { MyProfilePushNotificationsQuery } from "__generated__/MyProfilePushNotificationsQuery.graphql"
+import { MyProfilePushNotifications_me$data } from "__generated__/MyProfilePushNotifications_me.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { SwitchMenu } from "app/Components/SwitchMenu"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import {
   getNotificationPermissionsStatus,
   PushAuthorizationStatus,
@@ -23,7 +24,6 @@ import {
   View,
 } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
-import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
 
 const INSTRUCTIONS = Platform.select({
   ios: `To receive push notifications from Artsy, you will need to enable them in your iOS Settings. Tap 'Artsy' and

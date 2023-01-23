@@ -5,10 +5,10 @@ import { FC } from "react"
 import { connectInfiniteHits, connectStateResults } from "react-instantsearch-core"
 import { useTracking } from "react-tracking"
 import { AutosuggestResult, AutosuggestResults } from "./AutosuggestResults"
+import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
 import { AlgoliaSearchResults } from "./components/AlgoliaSearchResults"
 import { TOP_PILL } from "./constants"
 import { getContextModuleByPillName } from "./helpers"
-import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
 import { AlgoliaSearchResult, PillType } from "./types"
 
 interface SearchResultsProps {

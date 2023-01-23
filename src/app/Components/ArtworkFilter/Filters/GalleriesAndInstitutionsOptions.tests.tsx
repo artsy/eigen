@@ -1,7 +1,10 @@
 import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "../ArtworkFilterStore"
-import { MockFilterScreen } from "../FilterTestHelper"
+import {
+  ArtworkFiltersState,
+  ArtworkFiltersStoreProvider,
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { MockFilterScreen } from "app/Components/ArtworkFilter/FilterTestHelper"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { GalleriesAndInstitutionsOptionsScreen } from "./GalleriesAndInstitutionsOptions"
 import { getEssentialProps } from "./helper"
 

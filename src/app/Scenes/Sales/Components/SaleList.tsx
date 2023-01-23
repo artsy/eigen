@@ -1,8 +1,8 @@
+import { SaleListItem_sale$data } from "__generated__/SaleListItem_sale.graphql"
+import { SectionTitle } from "app/Components/SectionTitle"
 import { isEmpty } from "lodash"
 import { View } from "react-native"
 
-import { SaleListItem_sale$data } from "__generated__/SaleListItem_sale.graphql"
-import { SectionTitle } from "app/Components/SectionTitle"
 import { FragmentRef } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 import SaleListItem from "./SaleListItem"

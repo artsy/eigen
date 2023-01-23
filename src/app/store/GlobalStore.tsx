@@ -1,19 +1,19 @@
 import { useNavigationState } from "@react-navigation/native"
 import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
-import { switchTab } from "app/navigation/navigate"
-import { loadDevNavigationStateCache } from "app/navigation/useReloadedDevNavigationState"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
+import { switchTab } from "app/system/navigation/navigate"
+import { loadDevNavigationStateCache } from "app/system/navigation/useReloadedDevNavigationState"
 import { logAction } from "app/utils/loggers"
 import { createStore, createTypedHooks, StoreProvider } from "easy-peasy"
 import { Platform } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import { Action, Middleware } from "redux"
 import { version } from "./../../../app.json"
-import { DevToggleName, FeatureName, features } from "./config/features"
-import { FeatureMap } from "./config/FeaturesModel"
-import { VisualClueName, visualClueNames } from "./config/visualClues"
 import { getGlobalStoreModel, GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
+import { FeatureMap } from "./config/FeaturesModel"
+import { DevToggleName, FeatureName, features } from "./config/features"
+import { VisualClueName, visualClueNames } from "./config/visualClues"
 import { persistenceMiddleware, unpersist } from "./persistence"
 
 function createGlobalStore() {
@@ -62,7 +62,6 @@ function createGlobalStore() {
   return store
 }
 
-// tslint:disable-next-line:variable-name
 export const __globalStoreTestUtils__ = __TEST__
   ? {
       // this can be used to mock the initial state before mounting a test renderer

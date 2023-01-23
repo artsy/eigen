@@ -1,11 +1,11 @@
 import { useNavigation } from "@react-navigation/native"
 import { GeneHeaderFragment_Gene$key } from "__generated__/GeneHeaderFragment_Gene.graphql"
 import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingTracking"
+import { OnboardingGeneId } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingGene"
 import { Flex, FollowButton, Spacer, Text } from "palette"
 import { useCallback, useEffect, useState } from "react"
 import { ImageBackground, ImageSourcePropType } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"
-import { OnboardingGeneId } from "../OnboardingGene"
 import { AnimatedTooltip } from "./AnimatedTooltip"
 
 interface GeneHeaderProps {

@@ -1,8 +1,8 @@
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { Spacer } from "palette/atoms/Spacer"
+import { Box, BoxProps } from "palette/elements/Box"
+import { Text } from "palette/elements/Text"
 import { useSpace } from "palette/hooks"
-import { Spacer } from "../../atoms/Spacer"
-import { Box, BoxProps } from "../Box"
-import { Text } from "../Text"
 import { CardTag, CardTagProps } from "./CardTag"
 
 export interface SmallCardProps extends BoxProps {

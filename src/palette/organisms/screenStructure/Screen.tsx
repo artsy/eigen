@@ -10,8 +10,7 @@ import {
 import { EmitterSubscription, Keyboard, ScrollView } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { Wrap } from "shared/utils"
-import { ArtsyKeyboardAvoidingView } from "shared/utils"
+import { Wrap, ArtsyKeyboardAvoidingView } from "shared/utils"
 
 interface ScreenContextState {
   handleTopSafeArea: boolean

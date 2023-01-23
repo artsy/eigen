@@ -1,7 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { getLocationDetails, getLocationPredictions } from "app/utils/googleMaps"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { buildLocationDisplay, LocationAutocomplete } from "./LocationAutocomplete"
 
 jest.mock("app/utils/googleMaps", () => ({

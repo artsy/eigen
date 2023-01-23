@@ -103,7 +103,7 @@ export const CareerHighlightPromotionalCard: React.FC<CareerHighlightPromotional
 }
 
 export const getCareerHiglight = (type: CareerHighlightKind, count: number) => {
-  let label: string = ""
+  let label = ""
   let Icon: FunctionComponent<IconProps> = Fragment
 
   // plural

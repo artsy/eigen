@@ -3,7 +3,7 @@ import { LotsByFollowedArtistsRail_me$data } from "__generated__/LotsByFollowedA
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SaleArtworkTileRailCardContainer } from "app/Components/SaleArtworkTileRailCard"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToEdge } from "app/utils/isCloseToEdge"
 import { Flex } from "palette"

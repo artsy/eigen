@@ -11,8 +11,10 @@ import { useArtworkFiltersAggregation } from "app/Components/ArtworkFilter/useAr
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { useMultiSelect } from "./useMultiSelect"
 
-interface TimePeriodOptionsScreenProps
-  extends StackScreenProps<ArtworkFilterNavigationStack, "TimePeriodOptionsScreen"> {}
+type TimePeriodOptionsScreenProps = StackScreenProps<
+  ArtworkFilterNavigationStack,
+  "TimePeriodOptionsScreen"
+>
 
 export const TimePeriodOptionsScreen: React.FC<TimePeriodOptionsScreenProps> = ({ navigation }) => {
   const { aggregation } = useArtworkFiltersAggregation({ paramName: FilterParamName.timePeriod })

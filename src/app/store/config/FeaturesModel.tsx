@@ -1,5 +1,5 @@
+import { GlobalStoreModel } from "app/store/GlobalStoreModel"
 import { Action, action, Computed, computed } from "easy-peasy"
-import { GlobalStoreModel } from "../GlobalStoreModel"
 import { DevToggleName, devToggles, FeatureName, features } from "./features"
 
 export type FeatureMap = { [k in FeatureName]: boolean }

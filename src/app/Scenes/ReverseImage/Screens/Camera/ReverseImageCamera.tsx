@@ -7,7 +7,18 @@ import {
 import { useIsFocused } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { captureException, withScope } from "@sentry/react-native"
-import { goBack } from "app/navigation/navigate"
+import { Background, BACKGROUND_COLOR } from "app/Scenes/ReverseImage/Components/Background"
+import { CameraFramesContainer } from "app/Scenes/ReverseImage/Components/CameraFramesContainer"
+import { HeaderBackButton } from "app/Scenes/ReverseImage/Components/HeaderBackButton"
+import { HeaderContainer } from "app/Scenes/ReverseImage/Components/HeaderContainer"
+import { HeaderTitle } from "app/Scenes/ReverseImage/Components/HeaderTitle"
+import { useReverseImageContext } from "app/Scenes/ReverseImage/ReverseImageContext"
+import {
+  FocusCoords,
+  ReverseImageNavigationStack,
+  ReverseImageOwner,
+} from "app/Scenes/ReverseImage/types"
+import { goBack } from "app/system/navigation/navigate"
 import { requestPhotos } from "app/utils/requestPhotos"
 import { useIsForeground } from "app/utils/useIsForeground"
 import { Flex, Spinner, useColor } from "palette"
@@ -20,13 +31,6 @@ import {
   useCameraDevices,
 } from "react-native-vision-camera"
 import { useTracking } from "react-tracking"
-import { Background, BACKGROUND_COLOR } from "../../Components/Background"
-import { CameraFramesContainer } from "../../Components/CameraFramesContainer"
-import { HeaderBackButton } from "../../Components/HeaderBackButton"
-import { HeaderContainer } from "../../Components/HeaderContainer"
-import { HeaderTitle } from "../../Components/HeaderTitle"
-import { useReverseImageContext } from "../../ReverseImageContext"
-import { FocusCoords, ReverseImageNavigationStack, ReverseImageOwner } from "../../types"
 import { CameraButtons } from "./Components/CameraButtons"
 import { CameraErrorState } from "./Components/CameraErrorState"
 import { CameraGrantPermissions } from "./Components/CameraGrantPermissions"

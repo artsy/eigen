@@ -4,9 +4,11 @@ import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilter
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ZeroState } from "app/Components/States/ZeroState"
-import { navigate, popToRoot } from "app/navigation/navigate"
+import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
+import { navigate, popToRoot } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { Button, Flex, LockIcon, Spacer, Text, useSpace } from "palette"
 import { useState } from "react"
 import {
@@ -21,12 +23,10 @@ import {
 import { graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
-import { refreshMyCollection } from "../../utils/refreshHelpers"
-import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { MyCollectionArtworkList } from "./Components/MyCollectionArtworkList"
 import { MyCollectionSearchBar } from "./Components/MyCollectionSearchBar"
-import { myCollectionDeleteArtwork } from "./mutations/myCollectionDeleteArtwork"
 import { MyCollectionArtworkEdge } from "./MyCollection"
+import { myCollectionDeleteArtwork } from "./mutations/myCollectionDeleteArtwork"
 import { localSortAndFilterArtworks } from "./utils/localArtworkSortAndFilter"
 
 interface MyCollectionArtworksProps {
@@ -154,7 +154,6 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
             myCollectionConnection={me.myCollectionConnection!}
             hasMore={relay.hasMore}
             loadMore={relay.loadMore}
-            // tslint:disable-next-line: no-shadowed-variable
             localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
               localSortAndFilterArtworks(
                 artworks,
@@ -173,7 +172,6 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
             hasMore={relay.hasMore}
             loadMore={relay.loadMore}
             isLoading={relay.isLoading}
-            // tslint:disable-next-line: no-shadowed-variable
             localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
               localSortAndFilterArtworks(
                 artworks,

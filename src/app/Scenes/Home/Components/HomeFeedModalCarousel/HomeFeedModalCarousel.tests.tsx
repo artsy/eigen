@@ -1,9 +1,9 @@
 import { fireEvent } from "@testing-library/react-native"
-import { navigate, popToRoot, switchTab } from "app/navigation/navigate"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { navigate, popToRoot, switchTab } from "app/system/navigation/navigate"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useTracking } from "react-tracking"
-import { flushPromiseQueue } from "../../../../tests/flushPromiseQueue"
 import { FooterButtons } from "./HomeFeedModalCarouselContainer"
 
 const mockDismissModal = jest.fn()

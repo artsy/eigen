@@ -1,9 +1,9 @@
 import { MyCollectionArtworkHeader_artwork$data } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
 import { getMeasurements, Size } from "app/Scenes/Artwork/Components/ImageCarousel/geometry"
-import { getConvertedImageUrlFromS3 } from "app/utils/getConvertedImageUrlFromS3"
+import { ArtworkFormValues, Image } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { deleteLocalImages, LocalImage, storeLocalImages } from "app/utils/LocalImageStore"
+import { getConvertedImageUrlFromS3 } from "app/utils/getConvertedImageUrlFromS3"
 import { ScreenDimensionsWithSafeAreas } from "shared/hooks"
-import { ArtworkFormValues, Image } from "../../State/MyCollectionArtworkModel"
 
 export const storeLocalPhotos = (slug: string, photos: Image[]) => {
   const localImages: LocalImage[] = []

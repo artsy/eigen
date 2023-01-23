@@ -4,16 +4,18 @@ import {
   FilterDisplayName,
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter/ArtworkFilterNavigator"
 import {
   ArtworksFiltersStore,
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import React, { useState } from "react"
-import { ArtworkFilterNavigationStack } from "../ArtworkFilterNavigator"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 
-interface WaysToBuyOptionsScreenProps
-  extends StackScreenProps<ArtworkFilterNavigationStack, "WaysToBuyOptionsScreen"> {}
+type WaysToBuyOptionsScreenProps = StackScreenProps<
+  ArtworkFilterNavigationStack,
+  "WaysToBuyOptionsScreen"
+>
 
 export const WAYS_TO_BUY_OPTIONS: FilterData[] = [
   {

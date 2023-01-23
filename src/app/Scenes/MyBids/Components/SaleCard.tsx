@@ -2,13 +2,13 @@ import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { SaleCard_me$data } from "__generated__/SaleCard_me.graphql"
 import { SaleCard_sale$data } from "__generated__/SaleCard_sale.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "app/navigation/navigate"
+import { CompleteRegistrationCTAWrapper } from "app/Scenes/MyBids/Components/CompleteRegistrationCTAWrapper"
 import { SaleInfo } from "app/Scenes/MyBids/Components/SaleInfo"
+import { navigate } from "app/system/navigation/navigate"
 import { ArrowRightIcon, Flex, Separator, Text, Touchable } from "palette"
 import { ClockFill, ExclamationMarkCircleFill } from "palette/svgs/sf"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { CompleteRegistrationCTAWrapper } from "../Components/CompleteRegistrationCTAWrapper"
 
 export const COVER_IMAGE_HEIGHT = 100
 

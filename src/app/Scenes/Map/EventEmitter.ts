@@ -2,7 +2,6 @@ type Callback = (data: any) => void
 
 type Event = "map:change" | "map:error" | "filters:change"
 
-// tslint:disable-next-line:class-name
 class _EventEmitter {
   private _events = new Map<Event, Callback[]>()
 

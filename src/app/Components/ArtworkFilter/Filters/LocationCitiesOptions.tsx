@@ -5,12 +5,14 @@ import {
   FilterDisplayName,
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { useArtworkFiltersAggregation } from "../useArtworkFilters"
+import { useArtworkFiltersAggregation } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { useMultiSelect } from "./useMultiSelect"
 
-interface LocationCitiesOptionsScreenProps
-  extends StackScreenProps<ArtworkFilterNavigationStack, "LocationCitiesOptionsScreen"> {}
+type LocationCitiesOptionsScreenProps = StackScreenProps<
+  ArtworkFilterNavigationStack,
+  "LocationCitiesOptionsScreen"
+>
 
 export const LocationCitiesOptionsScreen: React.FC<LocationCitiesOptionsScreenProps> = ({
   navigation,

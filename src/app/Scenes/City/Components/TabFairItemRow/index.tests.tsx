@@ -1,5 +1,5 @@
 import { Fair } from "app/Scenes/Map/types"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { TabFairItemRow } from "./index"
 
 // @TODO: We are already stubbing Fair data for tests in src/app/Scenes/Fair/__fixtures__/index.ts; can we modularize this test by importing that fixture?

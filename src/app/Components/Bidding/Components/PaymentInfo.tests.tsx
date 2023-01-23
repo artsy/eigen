@@ -1,14 +1,13 @@
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
-import { Text } from "palette"
-
-import { BillingAddress } from "../Screens/BillingAddress"
-import { CreditCardForm } from "../Screens/CreditCardForm"
-import { PaymentInfo } from "./PaymentInfo"
-
+import { BidInfoRow } from "app/Components/Bidding/Components/BidInfoRow"
+import { BillingAddress } from "app/Components/Bidding/Screens/BillingAddress"
+import { CreditCardForm } from "app/Components/Bidding/Screens/CreditCardForm"
 import NavigatorIOS, {
   NavigatorIOSPushArgs,
 } from "app/utils/__legacy_do_not_use__navigator-ios-shim"
-import { BidInfoRow } from "../Components/BidInfoRow"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { Text } from "palette"
+
+import { PaymentInfo } from "./PaymentInfo"
 
 jest.mock("tipsi-stripe", () => ({
   setOptions: jest.fn(),

@@ -1,12 +1,12 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { STEPS, SubmitSWAArtworkFlow } from "app/Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
 import { GlobalStore } from "app/store/GlobalStore"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { STEPS, SubmitSWAArtworkFlow } from "../SubmitArtwork"
 import { UploadPhotos } from "./UploadPhotos"
 
 jest.unmock("react-relay")

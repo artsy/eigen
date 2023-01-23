@@ -1,6 +1,6 @@
-import { BackButton } from "app/navigation/BackButton"
-import { goBack } from "app/navigation/navigate"
 import { useDevToggle } from "app/store/GlobalStore"
+import { BackButton } from "app/system/navigation/BackButton"
+import { goBack } from "app/system/navigation/navigate"
 import { Button, Flex, Text } from "palette"
 
 interface NotFoundFailureViewProps {

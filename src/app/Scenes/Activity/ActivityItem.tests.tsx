@@ -1,11 +1,11 @@
 import { fireEvent } from "@testing-library/react-native"
 import { ActivityItem_Test_Query } from "__generated__/ActivityItem_Test_Query.graphql"
-import { navigate } from "app/navigation/navigate"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ActivityItem } from "./ActivityItem"
@@ -107,6 +107,10 @@ describe("ActivityItem", () => {
 
     fireEvent.press(getByText("Notification Title"))
 
+    // resolving the mark as read mutation
+    resolveMostRecentRelayOperation(mockEnvironment)
+    await flushPromiseQueue()
+
     expect(navigate).toHaveBeenCalledWith(targetUrl, {
       passProps: {
         predefinedFilters: [
@@ -132,6 +136,10 @@ describe("ActivityItem", () => {
     await flushPromiseQueue()
 
     fireEvent.press(getByText("Notification Title"))
+
+    // resolving the mark as read mutation
+    resolveMostRecentRelayOperation(mockEnvironment)
+    await flushPromiseQueue()
 
     expect(navigate).toHaveBeenCalledWith(alertTargetUrl, {
       passProps: {
@@ -173,6 +181,30 @@ describe("ActivityItem", () => {
 
       const indicator = getByLabelText("Unread notification indicator")
       expect(indicator).toBeTruthy()
+    })
+
+    it("should be removed after the activity item is pressed", async () => {
+      const { getByText, queryByLabelText } = renderWithHookWrappersTL(
+        <TestRenderer />,
+        mockEnvironment
+      )
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Notification: () => ({
+          ...notification,
+          isUnread: true,
+        }),
+      })
+      await flushPromiseQueue()
+
+      expect(queryByLabelText("Unread notification indicator")).toBeTruthy()
+      fireEvent.press(getByText("Notification Title"))
+
+      // resolving the mark as read mutation
+      resolveMostRecentRelayOperation(mockEnvironment)
+      await flushPromiseQueue()
+
+      expect(queryByLabelText("Unread notification indicator")).toBeFalsy()
     })
   })
 

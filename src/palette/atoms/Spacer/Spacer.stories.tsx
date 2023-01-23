@@ -1,9 +1,9 @@
 import { storiesOf } from "@storybook/react-native"
 import { Text } from "palette"
+import { Box } from "palette/elements"
 import { bullet } from "palette/helpers"
 import { useSpace } from "palette/hooks"
 import { List } from "storybook/helpers"
-import { Box } from "../../elements"
 import { Spacer, SpacerProps } from "./Spacer"
 
 function SpacerRow(props: { x: SpacerProps["x"] }) {

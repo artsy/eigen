@@ -4,7 +4,7 @@ import {
   MyCollectionArtworkArticles_article$key,
 } from "__generated__/MyCollectionArtworkArticles_article.graphql"
 import { ArticleCardContainer } from "app/Components/ArticleCard"
-import { navigate } from "app/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
 import { ArrowRightIcon, Flex, Spacer, Text } from "palette"
 import { FlatList, TouchableOpacity } from "react-native"

@@ -4,8 +4,8 @@ import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { MockFilterScreen } from "../FilterTestHelper"
+import { MockFilterScreen } from "app/Components/ArtworkFilter/FilterTestHelper"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { AdditionalGeneIDsOptionsScreen } from "./AdditionalGeneIDsOptions"
 import { getEssentialProps } from "./helper"
 

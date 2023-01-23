@@ -1,8 +1,9 @@
 import { compact, noop } from "lodash"
 import { Flex } from "palette"
+import { Color } from "palette/Theme"
+import { Text } from "palette/elements/Text"
 import { useColor } from "palette/hooks"
 import { StarCircleIcon } from "palette/svgs/StarCircleIcon"
-import { Color } from "palette/Theme"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { Dimensions } from "react-native"
 import { Defs, G, LinearGradient, Stop } from "react-native-svg"
@@ -17,9 +18,8 @@ import {
   VictoryScatter,
   VictoryTheme,
 } from "victory-native"
-import { Text } from "../Text"
-import { AxisDisplayType, shadeColor, tickFormat } from "./helpers"
 import { HighlightIconContainer, ScatterDataPointContainer } from "./ScatterPointsContainers"
+import { AxisDisplayType, shadeColor, tickFormat } from "./helpers"
 import { LineChartData } from "./types"
 
 export type ChartGestureEventType = { x: number; y: number } | null

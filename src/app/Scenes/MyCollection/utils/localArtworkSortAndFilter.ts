@@ -6,11 +6,11 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilterConfigTypes, FilterDisplayConfig } from "app/Components/ArtworkFilter/types"
+import { MyCollectionArtworkEdge } from "app/Scenes/MyCollection/MyCollection"
 import { compact, filter, orderBy, uniqBy } from "lodash"
 import { DateTime } from "luxon"
 import { useEffect } from "react"
 import { normalizeText } from "shared/utils"
-import { MyCollectionArtworkEdge } from "../MyCollection"
 
 export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
   const setFilterType = ArtworksFiltersStore.useStoreActions((s) => s.setFilterTypeAction)
@@ -24,7 +24,7 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
         paramName: FilterParamName.sort,
         displayText: "Price Paid (High to Low)",
         paramValue: "local-price-paid-high-low",
-        // tslint:disable-next-line: no-shadowed-variable
+
         localSortAndFilter: (artworks) =>
           orderBy(
             artworks,
@@ -38,7 +38,7 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
         paramName: FilterParamName.sort,
         displayText: "Price Paid (Low to High)",
         paramValue: "local-price-paid-low-high",
-        // tslint:disable-next-line: no-shadowed-variable
+
         localSortAndFilter: (artworks) =>
           orderBy(
             artworks,
@@ -52,7 +52,7 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
         paramName: FilterParamName.sort,
         displayText: "Artwork Year (Ascending)",
         paramValue: "local-year-old-new",
-        // tslint:disable-next-line: no-shadowed-variable
+
         localSortAndFilter: (artworks) =>
           orderBy(
             artworks,
@@ -67,7 +67,7 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
         paramName: FilterParamName.sort,
         displayText: "Artwork Year (Descending)",
         paramValue: "local-year-new-old",
-        // tslint:disable-next-line: no-shadowed-variable
+
         localSortAndFilter: (artworks) =>
           orderBy(
             artworks,
@@ -82,21 +82,21 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
         paramName: FilterParamName.sort,
         displayText: "Alphabetical by Artist (A to Z)",
         paramValue: "local-alpha-a-z",
-        // tslint:disable-next-line: no-shadowed-variable
+
         localSortAndFilter: (artworks) => orderBy(artworks, (a) => a.artistNames, "asc"),
       },
       {
         paramName: FilterParamName.sort,
         displayText: "Alphabetical by Artist (Z to A)",
         paramValue: "local-alpha-z-a",
-        // tslint:disable-next-line: no-shadowed-variable
+
         localSortAndFilter: (artworks) => orderBy(artworks, (a) => a.artistNames, "desc"),
       },
       {
         paramName: FilterParamName.sort,
         displayText: "Demand Index (High to Low)",
         paramValue: "demand-index-high-to-low",
-        // tslint:disable-next-line: no-shadowed-variable
+
         localSortAndFilter: (artworks) =>
           orderBy(artworks, (a) => a.marketPriceInsights?.demandRank ?? 0, "desc"),
       },
@@ -104,7 +104,7 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
         paramName: FilterParamName.sort,
         displayText: "Demand Index (Low to High)",
         paramValue: "demand-index-low-to-high",
-        // tslint:disable-next-line: no-shadowed-variable
+
         localSortAndFilter: (artworks) =>
           orderBy(artworks, (a) => a.marketPriceInsights?.demandRank ?? 0, "asc"),
       },
@@ -116,7 +116,7 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
           displayText: "Show Only Submitted Artworks",
           filterType: "showOnlySubmittedArtworks",
           ScreenComponent: "FilterOptionsScreen", // using FilterOptionsScreen so users remain on FilterOptionsScreen if they tap on it
-          // tslint:disable-next-line: no-shadowed-variable
+
           localSortAndFilter: (artworks, showOnlySubmittedArtworks: boolean) => {
             if (!showOnlySubmittedArtworks) {
               return artworks
@@ -143,7 +143,7 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
             ),
             (m) => m.paramValue
           ),
-          // tslint:disable-next-line: no-shadowed-variable
+
           localSortAndFilter: (artworks, artistIDs: string[]) =>
             filter(artworks, (a) => artistIDs.includes(a.artist?.internalID)),
         },
@@ -151,7 +151,7 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
           displayText: FilterDisplayName.attributionClass,
           filterType: "attributionClass",
           ScreenComponent: "AttributionClassOptionsScreen",
-          // tslint:disable-next-line: no-shadowed-variable
+
           localSortAndFilter: (artworks, attributionClasses: string[]) => {
             return filter(artworks, (a) => {
               const formattedAttributionClasses = attributionClasses.map((value) =>
@@ -180,7 +180,7 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
             ),
             (m) => m.paramValue
           ),
-          // tslint:disable-next-line: no-shadowed-variable
+
           localSortAndFilter: (artworks, mediums: string[]) => {
             return filter(artworks, (a) => mediums.includes(a.mediumType?.name))
           },
@@ -189,7 +189,7 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
           displayText: FilterDisplayName.priceRange,
           filterType: "priceRange",
           ScreenComponent: "PriceRangeOptionsScreen",
-          // tslint:disable-next-line: no-shadowed-variable
+
           localSortAndFilter: (artworks, priceRange: string) => {
             const splitRange = priceRange.split("-")
             const lowerBoundStr = splitRange[0]
@@ -224,7 +224,6 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
           ScreenComponent: "SizesOptionsScreen",
 
           localSortAndFilter: (
-            // tslint:disable-next-line: no-shadowed-variable
             artworks,
             sizeParams: {
               paramName: FilterParamName.width | FilterParamName.height | FilterParamName.sizes
@@ -293,7 +292,6 @@ export const localSortAndFilterArtworks = (
   // custom size filters come back with a different type, consolidate to one
   const sizeFilterTypes = [FilterParamName.width, FilterParamName.height, FilterParamName.sizes]
 
-  // tslint:disable-next-line: no-shadowed-variable
   filtering.forEach((filter) => {
     if (sizeFilterTypes.includes(filter.paramName)) {
       /*

@@ -1,3 +1,4 @@
+import { ArtistAutosuggest } from "app/Components/ArtistAutosuggest/ArtistAutosuggest"
 import { buildLocationDisplay, LocationAutocomplete } from "app/Components/LocationAutocomplete"
 import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/CategoryPicker"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -17,7 +18,6 @@ import {
 } from "palette"
 import { Select, SelectOption } from "palette/elements/Select"
 import React, { useEffect, useRef, useState } from "react"
-import { ArtistAutosuggest } from "../../../../Components/ArtistAutosuggest/ArtistAutosuggest"
 import { InfoModal } from "./InfoModal/InfoModal"
 import {
   acceptableCategoriesForSubmission,

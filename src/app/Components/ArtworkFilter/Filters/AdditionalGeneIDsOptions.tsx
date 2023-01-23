@@ -6,13 +6,15 @@ import {
   FilterDisplayName,
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useArtworkFiltersAggregation } from "app/Components/ArtworkFilter/useArtworkFilters"
-import { ArtworksFiltersStore } from "../ArtworkFilterStore"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { useMultiSelect } from "./useMultiSelect"
 
-interface AdditionalGeneIDsOptionsScreenProps
-  extends StackScreenProps<ArtworkFilterNavigationStack, "AdditionalGeneIDsOptionsScreen"> {}
+type AdditionalGeneIDsOptionsScreenProps = StackScreenProps<
+  ArtworkFilterNavigationStack,
+  "AdditionalGeneIDsOptionsScreen"
+>
 
 export const AdditionalGeneIDsOptionsScreen: React.FC<AdditionalGeneIDsOptionsScreenProps> = ({
   navigation,

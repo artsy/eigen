@@ -1,9 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { navigate } from "app/navigation/navigate"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { PendingPushNotification } from "app/store/PendingPushNotificationModel"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificationPermissions"
+import { navigate } from "app/system/navigation/navigate"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotificationPermissions"
 import { Platform } from "react-native"
 import PushNotification from "react-native-push-notification"
 import * as Push from "./PushNotification"
@@ -13,7 +13,7 @@ const mockFetch = jest.fn()
 
 ;(global as any).fetch = mockFetch
 
-function mockFetchJsonOnce(json: object, status: number = 200) {
+function mockFetchJsonOnce(json: object, status = 200) {
   mockFetch.mockResolvedValueOnce({
     status,
     json: () => Promise.resolve(json),
@@ -180,7 +180,7 @@ describe("Push Notification Tests", () => {
         alert: {},
         id: "22",
         sound: "default",
-        // tslint:disable-next-line:no-empty
+
         finish: () => {},
       }
 

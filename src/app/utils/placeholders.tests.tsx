@@ -1,5 +1,5 @@
 import { screen } from "@testing-library/react-native"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { PlaceholderBox, PlaceholderRaggedText, ProvidePlaceholderContext } from "./placeholders"
 
 jest.unmock("react-relay")

@@ -1,7 +1,7 @@
 import { themeGet } from "@styled-system/theme-get"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "app/navigation/navigate"
 import { Fair } from "app/Scenes/Map/types"
+import { navigate } from "app/system/navigation/navigate"
 import { Box, Flex, Text } from "palette"
 import { Component } from "react"
 import { Dimensions, Image, TouchableWithoutFeedback } from "react-native"

@@ -1,12 +1,9 @@
 import { CollectionArtistSeriesRail_collection$data } from "__generated__/CollectionArtistSeriesRail_collection.graphql"
+import { CollectionArtistSeriesRail_collectionGroup$data } from "__generated__/CollectionArtistSeriesRail_collectionGroup.graphql"
 import { GenericArtistSeriesRail } from "app/Components/GenericArtistSeriesRail"
 import { Schema } from "app/utils/track"
 import { Flex, Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
-// @ts-ignore
-import styled from "styled-components/native"
-
-import { CollectionArtistSeriesRail_collectionGroup$data } from "__generated__/CollectionArtistSeriesRail_collectionGroup.graphql"
 
 interface CollectionArtistSeriesRailProps {
   collectionGroup: CollectionArtistSeriesRail_collectionGroup$data

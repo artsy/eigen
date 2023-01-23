@@ -1,6 +1,7 @@
 import { themeGet } from "@styled-system/theme-get"
-import { CircleWhiteCheckIcon } from "app/Icons/CircleWhiteCheckIcon"
+import { CircleWhiteCheckIcon } from "app/Components/Icons/CircleWhiteCheckIcon"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { BMWSponsorship } from "app/Scenes/City/CityBMWSponsorship"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { Box, Flex, Separator, Text, TextProps } from "palette"
 import React, { useEffect, useState } from "react"
@@ -8,7 +9,6 @@ import { TouchableOpacity } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 import styled from "styled-components/native"
 import cities from "../../../../data/cityDataSortedByDisplayPreference.json"
-import { BMWSponsorship } from "../City/CityBMWSponsorship"
 
 interface Props {
   selectedCity: string

@@ -1,9 +1,8 @@
-import { View } from "react-native"
-import { StyleProp, ViewStyle } from "react-native"
+import { Color } from "palette/Theme"
+import { Text } from "palette/elements/Text"
+import { useColor } from "palette/hooks"
+import { View, StyleProp, ViewStyle } from "react-native"
 import { PositionProps } from "styled-system"
-import { useColor } from "../../hooks"
-import { Color } from "../../Theme"
-import { Text } from "../Text"
 
 export interface CardTagProps extends PositionProps {
   text: string

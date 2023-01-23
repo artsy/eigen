@@ -1,17 +1,17 @@
 import { waitFor } from "@testing-library/react-native"
-import { navigate, popParentViewController } from "app/navigation/navigate"
+import { CascadingEndTimesBanner } from "app/Scenes/Artwork/Components/CascadingEndTimesBanner"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { navigate, popParentViewController } from "app/system/navigation/navigate"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { DateTime } from "luxon"
 import { Suspense } from "react"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { CascadingEndTimesBanner } from "../Artwork/Components/CascadingEndTimesBanner"
 import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
 import { SaleQueryRenderer } from "./Sale"
 
 jest.unmock("react-relay")
 
-jest.mock("app/navigation/navigate", () => ({
+jest.mock("app/system/navigation/navigate", () => ({
   popParentViewController: jest.fn(),
   navigate: jest.fn(),
 }))

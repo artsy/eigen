@@ -83,7 +83,7 @@ commands:
       - save_cache:
           key: v7-metro-{{ checksum ".manifests/js_transform" }}
           paths:
-            - .metro
+            - .cache/metro
       - save_cache:
           key: v8-js_bundle-{{ checksum ".manifests/js_bundle" }}
           paths:
@@ -221,10 +221,23 @@ jobs:
           name: Run Jest tests
           environment:
             JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
+            JEST_JUNIT_UNIQUE_OUTPUT_NAME: true
       - store_artifacts:
           path: ./reports/junit/
       - store_test_results:
           path: ./reports/junit/
+
+  type-check:
+    executor:
+      name: node/default
+      tag: "16.18.0"
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: yarn
+      - run-relay-compiler
+      - run:
+          command: yarn type-check
 
   update-metaphysics:
     executor:
@@ -543,6 +556,14 @@ workflows:
                 - play_store_submission
                 - update-changelog
 
+      - type-check:
+          filters:
+            branches:
+              ignore:
+                - app_store_submission
+                - play_store_submission
+                - update-changelog
+
       - check-pr:
           filters:
             branches:
@@ -579,6 +600,7 @@ workflows:
                 - update-changelog
           requires:
             - test-js
+            - type-check
             - build-test-js
             - horizon/block
 
@@ -592,6 +614,7 @@ workflows:
                 - update-changelog
           requires:
             - test-js
+            - type-check
             - build-test-js
             - horizon/block
 

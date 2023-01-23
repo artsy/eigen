@@ -1,11 +1,11 @@
 import { BottomAlignedButtonWrapper } from "app/Components/Buttons/BottomAlignedButtonWrapper"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
+import { ProvideScreenTracking, Schema, track } from "app/utils/track"
 import { PageNames } from "app/utils/track/schema"
 import { Box, Button, Input, PhoneInput } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { ScrollView } from "react-native"
-import { ProvideScreenTracking, Schema, track } from "../../../utils/track"
 interface PhoneNumberFormProps {
   onSubmit: (phone: string) => void
   navigator: NavigatorIOS

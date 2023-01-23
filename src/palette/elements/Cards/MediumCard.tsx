@@ -1,12 +1,12 @@
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { useTheme } from "palette/Theme"
+import { Spacer } from "palette/atoms"
+import { Box, BoxProps } from "palette/elements/Box"
+import { Flex } from "palette/elements/Flex"
+import { OpaqueImageView as NewOpaqueImageView } from "palette/elements/OpaqueImageView"
+import { Text } from "palette/elements/Text"
 import LinearGradient from "react-native-linear-gradient"
-import { Spacer } from "../../atoms"
-import { Box, BoxProps } from "../Box"
-import { Flex } from "../Flex"
-import { OpaqueImageView as NewOpaqueImageView } from "../OpaqueImageView"
-import { Text } from "../Text"
 import { CardTag, CardTagProps } from "./CardTag"
 
 export interface MediumCardProps extends BoxProps {

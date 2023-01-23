@@ -1,14 +1,14 @@
-import { VanityURLEntity_fairOrPartner$data } from "__generated__/VanityURLEntity_fairOrPartner.graphql"
 import { VanityURLEntityQuery } from "__generated__/VanityURLEntityQuery.graphql"
+import { VanityURLEntity_fairOrPartner$data } from "__generated__/VanityURLEntity_fairOrPartner.graphql"
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { FairFragmentContainer, FairPlaceholder, FairQueryRenderer } from "app/Scenes/Fair/Fair"
+import { PartnerContainer } from "app/Scenes/Partner/Partner"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { Flex, Spinner } from "palette"
 import { View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
-import { FairFragmentContainer, FairPlaceholder, FairQueryRenderer } from "../Fair/Fair"
-import { PartnerContainer } from "../Partner/Partner"
 import { VanityURLPossibleRedirect } from "./VanityURLPossibleRedirect"
 
 interface EntityProps {

@@ -1,8 +1,8 @@
 import { useColor } from "palette"
+import { Color } from "palette/Theme"
 import React, { useEffect, useMemo } from "react"
 import { Animated, Easing, ViewProps } from "react-native"
 import styled from "styled-components/native"
-import { Color } from "../../Theme"
 
 export interface SpinnerProps extends ViewProps {
   /** Delay before spinner appears */

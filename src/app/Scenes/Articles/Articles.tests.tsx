@@ -1,5 +1,5 @@
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ArticlesScreen } from "./Articles"

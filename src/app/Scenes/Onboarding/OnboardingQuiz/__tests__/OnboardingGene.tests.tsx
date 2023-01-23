@@ -1,8 +1,8 @@
 import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
-import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { OnboardingGeneScreen } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingGene"
+import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { createMockEnvironment } from "relay-test-utils"
-import { OnboardingGeneScreen } from "../OnboardingGene"
 
 jest.mock("app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingTracking")
 

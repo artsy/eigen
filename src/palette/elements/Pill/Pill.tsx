@@ -1,9 +1,9 @@
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { Color } from "palette/Theme"
-import { Flex, FlexProps } from "../Flex"
-import { Text, useTextStyleForPalette } from "../Text"
 
 import { IconProps, Spacer, useColor } from "palette"
+import { Color } from "palette/Theme"
+import { Flex, FlexProps } from "palette/elements/Flex"
+import { Text, useTextStyleForPalette } from "palette/elements/Text"
 import { useState } from "react"
 import { GestureResponderEvent, Pressable, PressableProps } from "react-native"
 import { config } from "react-spring"
@@ -136,7 +136,7 @@ export const Pill: React.FC<PillProps> = ({
           >
             {iconPosition === "left" && !!Icon && (
               <>
-                {<Icon fill={iconColor} />}
+                <Icon fill={iconColor} />
                 <Spacer mr={iconSpacerMargin} />
               </>
             )}
@@ -164,34 +164,40 @@ const useStyleForState = (
   const color = useColor()
 
   const retval = {} as ReturnType<typeof useStyleForState>
+  let desiredStyleForState
 
   switch (state) {
-    case DisplayState.Pressed:
-      let desiredStyleForState = stateStyle?.pressed
+    case DisplayState.Pressed: {
+      desiredStyleForState = stateStyle?.pressed
       retval.textColor = desiredStyleForState?.textColor ?? color("blue100")
       retval.borderColor = desiredStyleForState?.borderColor ?? color("blue100")
       retval.backgroundColor = desiredStyleForState?.backgroundColor ?? color("white100")
       break
-    case DisplayState.Selected:
+    }
+    case DisplayState.Selected: {
       desiredStyleForState = stateStyle?.selected
       retval.textColor = desiredStyleForState?.textColor ?? color("white100")
       retval.borderColor = desiredStyleForState?.borderColor ?? color("blue100")
       retval.backgroundColor = desiredStyleForState?.backgroundColor ?? color("blue100")
       break
-    case DisplayState.Enabled:
+    }
+    case DisplayState.Enabled: {
       desiredStyleForState = stateStyle?.enabled
       retval.textColor = desiredStyleForState?.textColor ?? color("black100")
       retval.borderColor = desiredStyleForState?.borderColor ?? color("black60")
       retval.backgroundColor = desiredStyleForState?.backgroundColor ?? color("white100")
       break
-    case DisplayState.Disabled:
+    }
+    case DisplayState.Disabled: {
       desiredStyleForState = stateStyle?.disabled
       retval.textColor = desiredStyleForState?.textColor ?? color("black30")
       retval.borderColor = desiredStyleForState?.borderColor ?? color("black30")
       retval.backgroundColor = desiredStyleForState?.backgroundColor ?? color("white100")
       break
-    default:
+    }
+    default: {
       assertNever(state)
+    }
   }
 
   return retval

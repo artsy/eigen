@@ -1,8 +1,11 @@
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
-import { BackButton } from "app/navigation/BackButton"
+import { OnboardingNavigationStack } from "app/Scenes/Onboarding/Onboarding"
+import { OnboardingSocialPick } from "app/Scenes/Onboarding/OnboardingSocialPick"
+import { OnboardingWebView, OnboardingWebViewRoute } from "app/Scenes/Onboarding/OnboardingWebView"
 import { showBlockedAuthError } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
+import { BackButton } from "app/system/navigation/BackButton"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { Box, Button, Flex, Spacer, Text, useColor } from "palette"
 import React, { useEffect, useRef, useState } from "react"
@@ -10,9 +13,6 @@ import { Alert, Animated, ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import * as Yup from "yup"
-import { OnboardingNavigationStack } from "../Onboarding"
-import { OnboardingSocialPick } from "../OnboardingSocialPick"
-import { OnboardingWebView, OnboardingWebViewRoute } from "../OnboardingWebView"
 import {
   OnboardingCreateAccountEmail,
   OnboardingCreateAccountEmailParams,
@@ -22,10 +22,11 @@ import { OnboardingCreateAccountPassword } from "./OnboardingCreateAccountPasswo
 
 export const OnboardingCreateAccount: React.FC = () => <OnboardingSocialPick mode="signup" />
 
-export interface OnboardingCreateAccountProps
-  extends StackScreenProps<OnboardingNavigationStack, "OnboardingCreateAccount"> {}
+export type OnboardingCreateAccountProps = StackScreenProps<
+  OnboardingNavigationStack,
+  "OnboardingCreateAccount"
+>
 
-// tslint:disable-next-line:interface-over-type-literal
 export type OnboardingCreateAccountNavigationStack = {
   OnboardingCreateAccountEmail: OnboardingCreateAccountEmailParams
   OnboardingCreateAccountPassword: undefined
@@ -35,7 +36,6 @@ export type OnboardingCreateAccountNavigationStack = {
 
 const StackNavigator = createStackNavigator<OnboardingCreateAccountNavigationStack>()
 
-// tslint:disable-next-line:variable-name
 export const __unsafe__createAccountNavigationRef: React.MutableRefObject<NavigationContainerRef<any> | null> =
   {
     current: null,

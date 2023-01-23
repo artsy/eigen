@@ -1,7 +1,7 @@
 import { CareerHighlightsBigCardsSwiperQuery } from "__generated__/CareerHighlightsBigCardsSwiperQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { goBack } from "app/navigation/navigate"
 import { useSpringValue } from "app/Scenes/Artwork/Components/ImageCarousel/useSpringValue"
+import { goBack } from "app/system/navigation/navigate"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { compact } from "lodash"
 import { Flex, useColor, useSpace } from "palette"

@@ -1,6 +1,4 @@
 import { captureException } from "@sentry/react-native"
-import { Registration_me$data } from "__generated__/Registration_me.graphql"
-import { Registration_sale$data } from "__generated__/Registration_sale.graphql"
 import {
   RegistrationCreateBidderMutation,
   RegistrationCreateBidderMutation$data,
@@ -8,11 +6,16 @@ import {
 import { RegistrationCreateCreditCardMutation } from "__generated__/RegistrationCreateCreditCardMutation.graphql"
 import { RegistrationQuery } from "__generated__/RegistrationQuery.graphql"
 import { RegistrationUpdateUserMutation } from "__generated__/RegistrationUpdateUserMutation.graphql"
+import { Registration_me$data } from "__generated__/Registration_me.graphql"
+import { Registration_sale$data } from "__generated__/Registration_sale.graphql"
+import { PaymentInfo } from "app/Components/Bidding/Components/PaymentInfo"
+import { PhoneInfo } from "app/Components/Bidding/Components/PhoneInfo"
+import { Address, PaymentCardTextFieldParams, StripeToken } from "app/Components/Bidding/types"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { dismissModal, navigate } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { dismissModal, navigate } from "app/system/navigation/navigate"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { bidderNeedsIdentityVerification } from "app/utils/auction/bidderNeedsIdentityVerification"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
@@ -33,9 +36,6 @@ import {
 import { PayloadError } from "relay-runtime"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe from "tipsi-stripe"
-import { PaymentInfo } from "../Components/PaymentInfo"
-import { PhoneInfo } from "../Components/PhoneInfo"
-import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
 import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
 
 export interface RegistrationProps extends ViewProps {

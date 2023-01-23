@@ -1,7 +1,8 @@
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Button, Text } from "palette"
-
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+// @ts-expect-error
+import stripe from "tipsi-stripe"
 import { CreditCardForm } from "./CreditCardForm"
 
 jest.mock("tipsi-stripe", () => ({
@@ -9,9 +10,6 @@ jest.mock("tipsi-stripe", () => ({
   PaymentCardTextField: () => "PaymentCardTextField",
   createTokenWithCard: jest.fn(),
 }))
-
-// @ts-ignore
-import stripe from "tipsi-stripe"
 
 const onSubmitMock = jest.fn()
 

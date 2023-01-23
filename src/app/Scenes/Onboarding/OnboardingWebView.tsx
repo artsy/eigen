@@ -2,8 +2,10 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { ArtsyWebViewPage } from "app/Components/ArtsyWebView"
 import { OnboardingNavigationStack } from "./Onboarding"
 
-export interface OnboardingWebViewProps
-  extends StackScreenProps<OnboardingNavigationStack, "OnboardingWebView"> {}
+export type OnboardingWebViewProps = StackScreenProps<
+  OnboardingNavigationStack,
+  "OnboardingWebView"
+>
 
 export type OnboardingWebViewRoute = "/privacy" | "/terms" | "/conditions-of-sale"
 

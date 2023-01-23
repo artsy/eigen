@@ -3,9 +3,12 @@ import {
   CreateSubmissionMutationInput,
 } from "__generated__/createConsignSubmissionMutation.graphql"
 import { UpdateSubmissionMutationInput } from "__generated__/updateConsignSubmissionMutation.graphql"
-import { createConsignSubmission, updateConsignSubmission } from "../../../mutations"
-import { ContactInformationFormModel as SWASubmissionContactInformationFormModel } from "../../ContactInformation/validation"
-import { ArtworkDetailsFormModel } from "../validation"
+import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
+import { ContactInformationFormModel as SWASubmissionContactInformationFormModel } from "app/Scenes/SellWithArtsy/SubmitArtwork/ContactInformation/validation"
+import {
+  createConsignSubmission,
+  updateConsignSubmission,
+} from "app/Scenes/SellWithArtsy/mutations"
 import { limitedEditionValue } from "./rarityOptions"
 
 export type SubmissionInput = CreateSubmissionMutationInput | UpdateSubmissionMutationInput
@@ -22,7 +25,7 @@ export const createOrUpdateSubmission = async (
   const attributionClass =
     (values?.attributionClass?.replace(" ", "_").toUpperCase() as NewType) || null
 
-  const { artist, artistId, location, myCollectionArtworkID, source, ...restValues } = values
+  const { artistId, location, myCollectionArtworkID, source, ...restValues } = values
 
   const submissionValues: SubmissionInput = {
     ...restValues,

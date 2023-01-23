@@ -1,10 +1,11 @@
 import MapboxGL, { MapViewProps, OnPressEvent } from "@react-native-mapbox-gl/maps"
 import { themeGet } from "@styled-system/theme-get"
 import { GlobalMap_viewer$data } from "__generated__/GlobalMap_viewer.graphql"
-import { Pin } from "app/Icons/Pin"
-import PinFairSelected from "app/Icons/PinFairSelected"
-import PinSavedSelected from "app/Icons/PinSavedSelected"
+import { Pin } from "app/Components/Icons/Pin"
+import PinFairSelected from "app/Components/Icons/PinFairSelected"
+import PinSavedSelected from "app/Components/Icons/PinSavedSelected"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { cityTabs } from "app/Scenes/City/cityTabs"
 import {
   convertCityToGeoJSON,
   fairToGeoCityFairs,
@@ -23,18 +24,17 @@ import { animated, config, Spring } from "react-spring/renderprops-native.cjs"
 import { SafeAreaInsets } from "shared/hooks"
 import styled from "styled-components/native"
 import Supercluster, { AnyProps, ClusterProperties, PointFeature } from "supercluster"
-import { cityTabs } from "../City/cityTabs"
+import { CitySwitcherButton } from "./Components/CitySwitcherButton"
+import { PinsShapeLayer } from "./Components/PinsShapeLayer"
+import { ShowCard } from "./Components/ShowCard"
+import { UserPositionButton } from "./Components/UserPositionButton"
+import { EventEmitter } from "./EventEmitter"
 import {
   bucketCityResults,
   BucketKey,
   BucketResults,
   emptyBucketResults,
 } from "./bucketCityResults"
-import { CitySwitcherButton } from "./Components/CitySwitcherButton"
-import { PinsShapeLayer } from "./Components/PinsShapeLayer"
-import { ShowCard } from "./Components/ShowCard"
-import { UserPositionButton } from "./Components/UserPositionButton"
-import { EventEmitter } from "./EventEmitter"
 import { Fair, FilterData, RelayErrorState, Show } from "./types"
 
 MapboxGL.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)

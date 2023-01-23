@@ -1,11 +1,16 @@
+import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  ArtworksFiltersStore,
+  useSelectedOptionsDisplay,
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { Checkbox } from "palette"
 import { useMemo } from "react"
-import { FilterParamName } from "../ArtworkFilterHelpers"
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "../ArtworkFilterStore"
 import { ArtworkFilterOptionItem, ArtworkFilterOptionItemProps } from "./ArtworkFilterOptionItem"
 
-export interface ArtworkFilterOptionCheckboxItemProps
-  extends Omit<ArtworkFilterOptionItemProps, "onPress" | "count"> {}
+export type ArtworkFilterOptionCheckboxItemProps = Omit<
+  ArtworkFilterOptionItemProps,
+  "onPress" | "count"
+>
 
 export const ArtworkFilterOptionCheckboxItem: React.FC<ArtworkFilterOptionCheckboxItemProps> = ({
   item,

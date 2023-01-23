@@ -8,7 +8,7 @@ type ProviderList = Array<
  * It's used to provide a cleaner way to combine multiple Providers.
  *
  * Usage:
- * const AppProviders = ({children}) => combineProviders(
+ * const Providers = ({children}) => combineProviders(
  *   [
  *     ProviderA,
  *     ProviderB,
@@ -18,7 +18,7 @@ type ProviderList = Array<
  * )
  *
  * This will be the same as writing the following:
- * const AppProviders = ({children}) => (
+ * const Providers = ({children}) => (
  *   <ProviderA>
  *     <ProviderB>
  *       <ProviderC>

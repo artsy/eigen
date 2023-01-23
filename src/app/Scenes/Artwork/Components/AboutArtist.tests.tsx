@@ -1,5 +1,5 @@
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
-import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { createMockEnvironment } from "relay-test-utils"
 import { AboutArtist } from "./AboutArtist"
 

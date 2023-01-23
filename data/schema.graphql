@@ -6971,6 +6971,31 @@ union CreateConsignmentInquiryMutationType =
     ConsignmentInquiryMutationFailure
   | ConsignmentInquiryMutationSuccess
 
+type CreateFeaturedLinkFailure {
+  mutationError: GravityMutationError
+}
+
+input CreateFeaturedLinkMutationInput {
+  clientMutationId: String
+  description: String!
+  href: String!
+  sourceBucket: String
+  sourceKey: String
+  subtitle: String
+  title: String!
+}
+
+type CreateFeaturedLinkMutationPayload {
+  clientMutationId: String
+  featuredLinkOrError: CreateFeaturedLinkResponseOrError
+}
+
+union CreateFeaturedLinkResponseOrError = CreateFeaturedLinkFailure | CreateFeaturedLinkSuccess
+
+type CreateFeaturedLinkSuccess {
+  featuredLink: FeaturedLink
+}
+
 type CreateFeatureFailure {
   mutationError: GravityMutationError
 }
@@ -7588,6 +7613,26 @@ type DeleteCreditCardPayload {
   clientMutationId: String
   creditCardOrError: CreditCardMutationType
   me: Me
+}
+
+type DeleteFeaturedLinkFailure {
+  mutationError: GravityMutationError
+}
+
+input DeleteFeaturedLinkMutationInput {
+  clientMutationId: String
+  id: String!
+}
+
+type DeleteFeaturedLinkMutationPayload {
+  clientMutationId: String
+  featuredLinkOrError: DeleteFeaturedLinkResponseOrError
+}
+
+union DeleteFeaturedLinkResponseOrError = DeleteFeaturedLinkFailure | DeleteFeaturedLinkSuccess
+
+type DeleteFeaturedLinkSuccess {
+  featuredLink: FeaturedLink
 }
 
 type DeleteFeatureFailure {
@@ -8588,6 +8633,26 @@ type FeaturedLink {
   internalID: ID!
   subtitle(format: Format): String
   title: String
+}
+
+# A connection to a list of items.
+type FeaturedLinkConnection {
+  # A list of edges.
+  edges: [FeaturedLinkEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type FeaturedLinkEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: FeaturedLink
 }
 
 union FeaturedLinkEntity = Artist | Gene | Partner
@@ -11052,7 +11117,7 @@ type Message implements Node {
   body: String
 
   # Masked emails w/ display name of the recipients in copy.
-  cc: [String]
+  cc: [String!]!
   createdAt(
     format: String
 
@@ -11090,7 +11155,7 @@ type Message implements Node {
     )
 
   # Masked emails w/ display name of the recipients.
-  to: [String]
+  to: [String!]!
 }
 
 # A connection to a list of items.
@@ -11141,7 +11206,7 @@ type Money {
   ): Float!
 
   # An amount of money expressed in minor units (like cents).
-  minor: Int!
+  minor: Long!
 }
 
 # A money object with amount in minor currency and a currency code, or an error object
@@ -11337,6 +11402,9 @@ type Mutation {
   # Creates a feature.
   createFeature(input: CreateFeatureMutationInput!): CreateFeatureMutationPayload
 
+  # Creates a featured link.
+  createFeaturedLink(input: CreateFeaturedLinkMutationInput!): CreateFeaturedLinkMutationPayload
+
   # Attach an gemini asset to a consignment submission
   createGeminiEntryForAsset(
     input: CreateGeminiEntryForAssetInput!
@@ -11388,6 +11456,9 @@ type Mutation {
 
   # deletes a feature.
   deleteFeature(input: DeleteFeatureMutationInput!): DeleteFeatureMutationPayload
+
+  # deletes a featured link.
+  deleteFeaturedLink(input: DeleteFeaturedLinkMutationInput!): DeleteFeaturedLinkMutationPayload
 
   # Delete User Artsy Account
   deleteMyAccountMutation(input: DeleteAccountInput!): DeleteAccountPayload
@@ -11559,6 +11630,9 @@ type Mutation {
   # updates a feature.
   updateFeature(input: UpdateFeatureMutationInput!): UpdateFeatureMutationPayload
 
+  # updates a featured link.
+  updateFeaturedLink(input: UpdateFeaturedLinkMutationInput!): UpdateFeaturedLinkMutationPayload
+
   # Update a message.
   updateMessage(input: UpdateMessageMutationInput!): UpdateMessageMutationPayload
 
@@ -11702,8 +11776,8 @@ input MyCollectionCreateArtworkInput {
   medium: String
   metric: String
 
-  # @deprecated use the cost major and cost minor fields instead
-  pricePaidCents: Int
+  # The price paid for the MyCollection artwork in cents for any given currency
+  pricePaidCents: Long
   pricePaidCurrency: String
   provenance: String
   submissionId: String
@@ -13724,6 +13798,15 @@ type Query {
     # The slug or ID of the Feature
     id: ID
   ): Feature
+  featuredLinksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+
+    # If present, will search by term
+    term: String
+  ): FeaturedLinkConnection
   featuresConnection(
     after: String
     before: String
@@ -16470,6 +16553,34 @@ type UpdateConversationMutationPayload {
   conversation: Conversation
 }
 
+type UpdateFeaturedLinkFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateFeaturedLinkMutationInput {
+  clientMutationId: String
+  description: String
+  href: String
+  id: String!
+  sourceBucket: String
+  sourceKey: String
+  subtitle: String
+  title: String
+}
+
+type UpdateFeaturedLinkMutationPayload {
+  clientMutationId: String
+
+  # On success: featured link updated.
+  featuredLinkOrError: UpdateFeaturedLinkResponseOrError
+}
+
+union UpdateFeaturedLinkResponseOrError = UpdateFeaturedLinkFailure | UpdateFeaturedLinkSuccess
+
+type UpdateFeaturedLinkSuccess {
+  featuredLink: FeaturedLink
+}
+
 type UpdateFeatureFailure {
   mutationError: GravityMutationError
 }
@@ -17823,6 +17934,15 @@ type Viewer {
     # The slug or ID of the Feature
     id: ID
   ): Feature
+  featuredLinksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+
+    # If present, will search by term
+    term: String
+  ): FeaturedLinkConnection
   featuresConnection(
     after: String
     before: String

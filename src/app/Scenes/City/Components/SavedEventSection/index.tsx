@@ -1,14 +1,14 @@
 import { themeGet } from "@styled-system/theme-get"
-import ChevronIcon from "app/Icons/ChevronIcon"
-import PinSavedOff from "app/Icons/PinSavedOff"
-import PinSavedOn from "app/Icons/PinSavedOn"
-import { navigate } from "app/navigation/navigate"
+import ChevronIcon from "app/Components/Icons/ChevronIcon"
+import PinSavedOff from "app/Components/Icons/PinSavedOff"
+import PinSavedOn from "app/Components/Icons/PinSavedOn"
+import { BMWSponsorship } from "app/Scenes/City/CityBMWSponsorship"
+import { navigate } from "app/system/navigation/navigate"
 import { Track, track as _track } from "app/utils/track"
 import { Box, Flex, Text } from "palette"
 import { Component } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
-import { BMWSponsorship } from "../../CityBMWSponsorship"
 
 export interface Props {
   data: any

@@ -4,8 +4,8 @@ import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingQuiz/Hook
 import { GlobalStore } from "app/store/GlobalStore"
 import { OnboardingProvider } from "./Hooks/useOnboardingContext"
 import { useUpdateUserProfile } from "./Hooks/useUpdateUserProfile"
-import { OnboardingArtistsOnTheRise } from "./OnboardingArtistsOnTheRise"
 import { OnboardingArtTasteQuiz } from "./OnboardingArtTasteQuiz"
+import { OnboardingArtistsOnTheRise } from "./OnboardingArtistsOnTheRise"
 import { OnboardingCuratedArtworks } from "./OnboardingCuratedArtworks"
 import { OnboardingFollowArtists } from "./OnboardingFollowArtists"
 import { OnboardingFollowGalleries } from "./OnboardingFollowGalleries"
@@ -16,7 +16,6 @@ import { OnboardingQuestionTwo } from "./OnboardingQuestionTwo"
 import { OnboardingTopAuctionLots } from "./OnboardingTopAuctionLots"
 import { OnboardingWelcomeScreen } from "./OnboardingWelcome"
 
-// tslint:disable-next-line:interface-over-type-literal
 export type OnboardingNavigationStack = {
   OnboardingWelcomeScreen: undefined
   OnboardingQuestionOne: undefined

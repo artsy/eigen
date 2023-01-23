@@ -1,4 +1,4 @@
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { FlatList } from "react-native"
 import ParentAwareScrollView from "./ParentAwareScrollView"
 

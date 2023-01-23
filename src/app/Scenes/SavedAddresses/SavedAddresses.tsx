@@ -1,11 +1,11 @@
 import { captureMessage } from "@sentry/react-native"
 import { themeGet } from "@styled-system/theme-get"
-import { SavedAddresses_me$data } from "__generated__/SavedAddresses_me.graphql"
 import { SavedAddressesQuery } from "__generated__/SavedAddressesQuery.graphql"
+import { SavedAddresses_me$data } from "__generated__/SavedAddresses_me.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { useToast } from "app/Components/Toast/toastHook"
-import { navigate, navigationEvents } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { navigate, navigationEvents } from "app/system/navigation/navigate"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -30,10 +30,8 @@ const Card = styled(Flex)`
   border-radius: 4;
 `
 
-// tslint:disable-next-line:variable-name
 const NUM_ADDRESSES_TO_FETCH = 10
 
-// tslint:disable-next-line:no-empty
 export const util = { onRefresh: () => {} }
 
 const SavedAddresses: React.FC<{ me: SavedAddresses_me$data; relay: RelayRefetchProp }> = ({

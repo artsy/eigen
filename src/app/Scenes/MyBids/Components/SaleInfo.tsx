@@ -1,8 +1,8 @@
+import { TimelySale } from "app/Scenes/MyBids/helpers/timely"
 import { DateTime } from "luxon"
 import ordinal from "ordinal"
 import { Box, Flex, IconProps, Text } from "palette"
 import { BoltFill, Stopwatch } from "palette/svgs/sf"
-import { TimelySale } from "../helpers/timely"
 
 export const SaleInfo = ({
   sale,

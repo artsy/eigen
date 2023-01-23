@@ -1,18 +1,23 @@
 import { OwnerType } from "@artsy/cohesion"
 import { StackScreenProps } from "@react-navigation/stack"
-import { navigate } from "app/navigation/navigate"
+import {
+  submitAnotherArtworkEvent,
+  viewArtworkMyCollectionEvent,
+} from "app/Scenes/SellWithArtsy/utils/TrackingEvent"
 import { GlobalStore } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { Box, Button, Flex, Spacer, Text } from "palette"
 import { ArtsyLogoHeader } from "palette/elements/Header/ArtsyLogoHeader"
 import { ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
-import { submitAnotherArtworkEvent, viewArtworkMyCollectionEvent } from "../utils/TrackingEvent"
 import { SubmitArtworkOverviewNavigationStack } from "./SubmitArtwork"
 
-interface ArtworkSubmittedScreenNavigationProps
-  extends StackScreenProps<SubmitArtworkOverviewNavigationStack, "ArtworkSubmittedScreen"> {}
+type ArtworkSubmittedScreenNavigationProps = StackScreenProps<
+  SubmitArtworkOverviewNavigationStack,
+  "ArtworkSubmittedScreen"
+>
 
 export const ArtworkSubmittedScreen: React.FC<ArtworkSubmittedScreenNavigationProps> = ({
   navigation,

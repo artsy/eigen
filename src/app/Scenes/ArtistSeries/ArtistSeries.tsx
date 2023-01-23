@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
-import { ArtistSeries_artistSeries$data } from "__generated__/ArtistSeries_artistSeries.graphql"
 import { ArtistSeriesQuery } from "__generated__/ArtistSeriesQuery.graphql"
+import { ArtistSeries_artistSeries$data } from "__generated__/ArtistSeries_artistSeries.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import {
   ArtworkFiltersStoreProvider,
@@ -9,11 +9,11 @@ import {
 import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { StickyHeaderPage } from "app/Components/StickyHeaderPage"
-import { defaultEnvironment } from "app/relay/createEnvironment"
 import { ArtistSeriesArtworksFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesArtworks"
 import { ArtistSeriesHeaderFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesHeader"
 import { ArtistSeriesMetaFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMeta"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"

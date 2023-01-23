@@ -1,5 +1,5 @@
 import { useImageSearchQuery } from "__generated__/useImageSearchQuery.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { ReactNativeFile } from "extract-files"
 import { useState } from "react"
 import { Platform } from "react-native"

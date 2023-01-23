@@ -1,7 +1,7 @@
 import { themeGet } from "@styled-system/theme-get"
+import { Box } from "palette/elements/Box"
+import { CheckIcon } from "palette/svgs/CheckIcon"
 import styled, { css } from "styled-components/native"
-import { CheckIcon } from "../../svgs/CheckIcon"
-import { Box } from "../Box"
 
 export const CHECK_SIZE = 22
 

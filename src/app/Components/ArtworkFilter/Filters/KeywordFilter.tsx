@@ -4,7 +4,7 @@ import {
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import SearchIcon from "app/Icons/SearchIcon"
+import SearchIcon from "app/Components/Icons/SearchIcon"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { debounce, throttle } from "lodash"
 import { Input } from "palette"

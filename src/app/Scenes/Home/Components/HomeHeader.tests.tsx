@@ -1,5 +1,5 @@
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { HomeHeader } from "./HomeHeader"
 
 jest.unmock("react-relay")

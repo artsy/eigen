@@ -6,7 +6,7 @@ A Metaflag is our way to have local (as in "not pushed" and "not same for all de
 
 They are called "meta" flags because they are not the usual app feature flags, these are flags that change things about the development of the app. They do that by sometimes altering how the app works, and that's an extra reason why we don't want these flags in the repo, but ignored.
 
-Other uses that might come or will come in the future could be things like switching between app shells, using tslint or eslint etc. Basically any dev-related flag.
+Other uses that might come or will come in the future could be things like switching between app shells, etc. Basically any dev-related flag.
 
 ### Reset metaflags
 

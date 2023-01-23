@@ -37,7 +37,6 @@ module.exports.updateChangelogSectionTemplate = (filePath) => {
 
   const regex = /### Changelog updates[\S\s]+end_changelog_updates.*/g
   if (!fileContents.match(regex)) {
-    // tslint:disable-next-line
     console.error("Can't find 'Changelog updates' section in pull request template", filePath)
     process.exit(1)
   }

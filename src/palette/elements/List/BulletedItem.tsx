@@ -1,5 +1,4 @@
-import { bullet, Flex, FlexProps, Spacer } from "palette"
-import { Text } from "palette"
+import { bullet, Flex, FlexProps, Spacer, Text } from "palette"
 
 interface BulletedItemProps extends FlexProps {
   children: string | Array<string | Element>

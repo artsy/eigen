@@ -1,5 +1,9 @@
+import { ViewingRoomArtworkQuery } from "__generated__/ViewingRoomArtworkQuery.graphql"
+import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
+import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoomArtwork_viewingRoomInfo.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { navigate } from "app/navigation/navigate"
+import { ImageCarousel } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
+import { navigate } from "app/system/navigation/navigate"
 import { cm2in } from "app/utils/conversions"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -17,12 +21,6 @@ import {
 } from "palette"
 import React, { Suspense, useEffect } from "react"
 import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
-import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "shared/hooks"
-
-import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
-import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoomArtwork_viewingRoomInfo.graphql"
-import { ViewingRoomArtworkQuery } from "__generated__/ViewingRoomArtworkQuery.graphql"
 import {
   graphql,
   PreloadedQuery,
@@ -30,7 +28,9 @@ import {
   usePreloadedQuery,
   useQueryLoader,
 } from "react-relay"
-import { ImageCarousel } from "../Artwork/Components/ImageCarousel/ImageCarousel"
+import { useTracking } from "react-tracking"
+import { useScreenDimensions } from "shared/hooks"
+
 import { tagForStatus } from "./Components/ViewingRoomsListItem"
 
 interface ViewingRoomArtworkProps {

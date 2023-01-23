@@ -62,7 +62,7 @@ class KeyboardAvoidingView extends React.Component<
 > {
   _frame: LayoutRectangle | null = null
   _subscriptions: Array<{ remove(): void }> = []
-  _initialFrameHeight: number = 0
+  _initialFrameHeight = 0
 
   viewRef = React.createRef<View>()
 
@@ -162,7 +162,7 @@ class KeyboardAvoidingView extends React.Component<
   }
 
   render() {
-    const { children, mode, enabled, style, ...props } = this.props
+    const { children, enabled, style, ...props } = this.props
     const bottomHeight = enabled ? this.state.bottom : 0
     return (
       <View

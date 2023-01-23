@@ -1,7 +1,8 @@
 import { fireEvent } from "@testing-library/react-native"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { myCollectionCreateArtworkMutation } from "__generated__/myCollectionCreateArtworkMutation.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
+import * as artworkMutations from "app/Scenes/MyCollection/mutations/myCollectionCreateArtwork"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import {
   getConvectionGeminiKey,
@@ -9,13 +10,12 @@ import {
   uploadFileToS3,
 } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/uploadFileToS3"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { Image } from "react-native-image-crop-picker"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-import * as artworkMutations from "../../mutations/myCollectionCreateArtwork"
-import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
 import {
   MyCollectionArtworkForm,
   MyCollectionArtworkFormProps,
@@ -170,9 +170,8 @@ describe("MyCollectionArtworkForm", () => {
         expect(createArtworkOperation.request.variables).toMatchInlineSnapshot(`
           {
             "input": {
-              "artistIds": [
-                "internal-id",
-              ],
+              "artist": "banksy",
+              "artistIds": [],
               "artists": undefined,
               "category": "Print",
               "date": "2007",

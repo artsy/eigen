@@ -1,33 +1,31 @@
+import { BidderPositionQuery$data } from "__generated__/BidderPositionQuery.graphql"
+import { bidderPositionQuery } from "app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery"
+import { extractText } from "app/utils/tests/extractText"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { waitUntil } from "app/utils/tests/waitUntil"
+import { Button } from "palette"
+import { Checkbox } from "palette/elements/Checkbox"
+import { Select } from "palette/elements/Select"
+import "react-native"
+import relay from "react-relay"
+// @ts-expect-error
+import stripe from "tipsi-stripe"
+import { FakeNavigator } from "./Helpers/FakeNavigator"
+import { SelectMaxBid } from "./Screens/SelectMaxBid"
+
 jest.mock("app/Components/Bidding/Screens/ConfirmBid/PriceSummary", () => ({
   PriceSummary: () => null,
 }))
 
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
-import "react-native"
-
-import { Button } from "palette"
-import { Checkbox } from "palette/elements/Checkbox"
-import relay from "react-relay"
-import { FakeNavigator } from "./Helpers/FakeNavigator"
-import { SelectMaxBid } from "./Screens/SelectMaxBid"
-
 jest.mock("app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery", () => ({
   bidderPositionQuery: jest.fn(),
 }))
-import { bidderPositionQuery } from "app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery"
 
 jest.mock("tipsi-stripe", () => ({
   setOptions: jest.fn(),
   paymentRequestWithCardForm: jest.fn(),
   createTokenWithCard: jest.fn(),
 }))
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import stripe from "tipsi-stripe"
-
-import { BidderPositionQuery$data } from "__generated__/BidderPositionQuery.graphql"
-import { extractText } from "app/tests/extractText"
-import { waitUntil } from "app/tests/waitUntil"
-import { Select } from "palette/elements/Select"
 
 const commitMutationMock = (fn?: typeof relay.commitMutation) =>
   jest.fn<typeof relay.commitMutation, Parameters<typeof relay.commitMutation>>(fn as any)

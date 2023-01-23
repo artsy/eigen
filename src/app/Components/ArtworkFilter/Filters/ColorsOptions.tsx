@@ -40,8 +40,10 @@ export const COLORS_INDEXED_BY_VALUE = COLORS.reduce(
 
 const SWATCHES_PER_ROW = 4
 
-interface ColorsOptionsScreenProps
-  extends StackScreenProps<ArtworkFilterNavigationStack, "ColorsOptionsScreen"> {}
+type ColorsOptionsScreenProps = StackScreenProps<
+  ArtworkFilterNavigationStack,
+  "ColorsOptionsScreen"
+>
 
 export const ColorsOptionsScreen: React.FC<ColorsOptionsScreenProps> = ({ navigation }) => {
   const space = useSpace()

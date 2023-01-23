@@ -1,8 +1,8 @@
+import { OnboardingSocialPick } from "app/Scenes/Onboarding/OnboardingSocialPick"
 import { GlobalStore } from "app/store/GlobalStore"
-import { mockNavigate } from "app/tests/navigationMocks"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { mockNavigate } from "app/utils/tests/navigationMocks"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Platform } from "react-native"
-import { OnboardingSocialPick } from "../OnboardingSocialPick"
 
 jest.mock("@react-navigation/native")
 

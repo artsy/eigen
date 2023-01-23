@@ -2,9 +2,9 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { GlobalStore } from "app/store/GlobalStore"
 import { SimpleMessage } from "palette"
 import { LayoutAnimation } from "react-native"
+import { MAX_SHOWN_RECENT_SEARCHES, useRecentSearches } from "./SearchModel"
 import { AutosuggestSearchResult } from "./components/AutosuggestSearchResult"
 import { SearchResultList } from "./components/SearchResultList"
-import { MAX_SHOWN_RECENT_SEARCHES, useRecentSearches } from "./SearchModel"
 
 export const RecentSearches: React.FC = () => {
   const recentSearches = useRecentSearches(MAX_SHOWN_RECENT_SEARCHES)

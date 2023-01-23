@@ -1,6 +1,6 @@
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { CollectionFixture } from "../Components/__fixtures__/CollectionFixture"
+import { CollectionFixture } from "app/Scenes/Collection/Components/__fixtures__/CollectionFixture"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { CollectionHeader } from "./CollectionHeader"
 
 jest.unmock("react-relay")

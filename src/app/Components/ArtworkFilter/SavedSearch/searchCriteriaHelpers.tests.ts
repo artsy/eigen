@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { FilterParamName } from "../ArtworkFilterHelpers"
+import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   getAllowedFiltersForSavedSearchInput,
   getOnlyFilledSearchCriteriaValues,

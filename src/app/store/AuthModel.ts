@@ -3,8 +3,9 @@ import { appleAuth } from "@invertase/react-native-apple-authentication"
 import CookieManager from "@react-native-cookies/cookies"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { captureMessage } from "@sentry/react-native"
-import { OAuthProvider } from "app/auth/types"
-import * as RelayCache from "app/relay/RelayCache"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import * as RelayCache from "app/system/relay/RelayCache"
+import { requestPushNotificationsPermission } from "app/utils/PushNotification"
 import { isArtsyEmail } from "app/utils/general"
 import { postEventToProviders } from "app/utils/track/providers"
 import { action, Action, Computed, computed, StateMapper, thunk, Thunk } from "easy-peasy"
@@ -19,11 +20,11 @@ import {
   LoginManager,
 } from "react-native-fbsdk-next"
 import Keychain from "react-native-keychain"
-import { LegacyNativeModules } from "../NativeModules/LegacyNativeModules"
-import { requestPushNotificationsPermission } from "../utils/PushNotification"
 import { AuthError } from "./AuthError"
 import { getCurrentEmissionState, GlobalStore } from "./GlobalStore"
 import type { GlobalStoreModel } from "./GlobalStoreModel"
+
+export type OAuthProvider = "email" | "facebook" | "apple" | "google"
 
 type BasicHttpMethod = "GET" | "PUT" | "POST" | "DELETE"
 
@@ -526,6 +527,7 @@ export const getAuthModel = (): AuthModel => ({
     }
   }),
   authFacebook: thunk(async (actions, options) => {
+    // eslint-disable-next-line no-async-promise-executor
     return await new Promise<AuthPromiseResolveType>(async (resolve, reject) => {
       try {
         const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions([
@@ -666,6 +668,7 @@ export const getAuthModel = (): AuthModel => ({
     })
   }),
   authGoogle: thunk(async (actions, options) => {
+    // eslint-disable-next-line no-async-promise-executor
     return await new Promise<AuthPromiseResolveType>(async (resolve, reject) => {
       try {
         if (!(await GoogleSignin.hasPlayServices())) {
@@ -768,6 +771,7 @@ export const getAuthModel = (): AuthModel => ({
     })
   }),
   authApple: thunk(async (actions, { agreedToReceiveEmails, onSignIn }) => {
+    // eslint-disable-next-line no-async-promise-executor
     return await new Promise<AuthPromiseResolveType>(async (resolve, reject) => {
       // we cannot have separated logic for sign in and sign up with apple, as with google or facebook,
       // because apple returns email only on the FIRST auth attempt, so we run sign up and sign in one by one

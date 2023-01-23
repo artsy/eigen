@@ -591,7 +591,7 @@ const computeRequiredYears = (durationBand: MedianSalePriceChartDuration) => {
   return Array.from({ length }).map((_a, i) => start + i)
 }
 
-const formatMedianPrice = (priceCents: number, unit: number = 100): string => {
+const formatMedianPrice = (priceCents: number, unit = 100): string => {
   const amount = Math.round(priceCents / unit)
   if (isNaN(amount)) {
     return "Median Unavailable (Limited Data)"

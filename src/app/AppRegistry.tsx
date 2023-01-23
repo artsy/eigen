@@ -1,21 +1,24 @@
 import { NativeStackNavigationOptions } from "@react-navigation/native-stack"
+import { BidFlow } from "app/Components/Containers/BidFlow"
+import { InboxQueryRenderer, InboxScreenQuery } from "app/Components/Containers/Inbox"
+import { InquiryQueryRenderer } from "app/Components/Containers/Inquiry"
+import { RegistrationFlow } from "app/Components/Containers/RegistrationFlow"
+import {
+  WorksForYouQueryRenderer,
+  WorksForYouScreenQuery,
+} from "app/Components/Containers/WorksForYou"
+import { FadeIn } from "app/Components/FadeIn"
 import React from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
 import { SafeAreaInsets, useScreenDimensions } from "shared/hooks"
 import { ArtsyKeyboardAvoidingViewContext } from "shared/utils"
 import { StorybookUIRoot } from "storybook/StorybookUI"
-import { AppProviders } from "./AppProviders"
 import { ArtsyWebViewPage } from "./Components/ArtsyWebView"
-import { FadeIn } from "./Components/FadeIn"
-import { BidFlow } from "./Containers/BidFlow"
-import { InboxQueryRenderer, InboxScreenQuery } from "./Containers/Inbox"
-import { InquiryQueryRenderer } from "./Containers/Inquiry"
-import { RegistrationFlow } from "./Containers/RegistrationFlow"
-import { WorksForYouQueryRenderer, WorksForYouScreenQuery } from "./Containers/WorksForYou"
 import { CityGuideView } from "./NativeModules/CityGuideView"
 import { DevMenuOld } from "./NativeModules/DevMenuOld"
 import { LiveAuctionView } from "./NativeModules/LiveAuctionView"
+import { Providers } from "./Providers"
 import { About } from "./Scenes/About/About"
 import { Activity } from "./Scenes/Activity/Activity"
 import { ArticlesScreen, ArticlesScreenQuery } from "./Scenes/Articles/Articles"
@@ -39,8 +42,8 @@ import {
   AuctionResultsUpcomingPrefetchQuery,
   AuctionResultsUpcomingQueryRenderer,
 } from "./Scenes/AuctionResults/AuctionResultsUpcoming"
-import { BottomTabs } from "./Scenes/BottomTabs/BottomTabs"
 import { BottomTabOption, BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
+import { BottomTabs } from "./Scenes/BottomTabs/BottomTabs"
 import { CityView } from "./Scenes/City/City"
 import { CityBMWListQueryRenderer } from "./Scenes/City/CityBMWList"
 import { CityFairListQueryRenderer } from "./Scenes/City/CityFairList"
@@ -268,9 +271,9 @@ class PageWrapper extends React.Component<PageWrapperProps> {
 
   render() {
     return (
-      <AppProviders>
+      <Providers>
         <InnerPageWrapper {...this.pageProps} />
-      </AppProviders>
+      </Providers>
     )
   }
 }
@@ -301,7 +304,6 @@ export interface ViewOptions {
   screenOptions?: NativeStackNavigationOptions
 }
 
-// tslint:disable-next-line: interface-over-type-literal
 type ModuleDescriptor = {
   type: "react"
   Component: React.ComponentType<any>

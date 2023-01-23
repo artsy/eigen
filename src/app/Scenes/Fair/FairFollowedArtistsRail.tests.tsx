@@ -1,6 +1,6 @@
 import { FairFollowedArtistsRailTestsQuery } from "__generated__/FairFollowedArtistsRailTestsQuery.graphql"
 import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"

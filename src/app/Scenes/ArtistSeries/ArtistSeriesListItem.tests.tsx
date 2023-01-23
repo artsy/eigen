@@ -1,9 +1,9 @@
 import { OwnerType } from "@artsy/cohesion"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "app/navigation/navigate"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
 import { ArtistSeriesConnectionEdge } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { navigate } from "app/system/navigation/navigate"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import { act } from "react-test-renderer"
 

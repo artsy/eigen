@@ -1,6 +1,6 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { BackButton } from "app/navigation/BackButton"
 import { GlobalStore } from "app/store/GlobalStore"
+import { BackButton } from "app/system/navigation/BackButton"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { Button, Flex, Input, Spacer, Text, useColor } from "palette"
 import React, { useRef, useState } from "react"
@@ -17,8 +17,7 @@ export interface ForgotPasswordValuesSchema {
   email: string
 }
 
-export interface ForgotPasswordProps
-  extends StackScreenProps<OnboardingNavigationStack, "OnboardingLogin"> {}
+export type ForgotPasswordProps = StackScreenProps<OnboardingNavigationStack, "OnboardingLogin">
 export interface ForgotPasswordFormProps extends ForgotPasswordProps {
   requestedPasswordReset: boolean
   inputRef?: React.Ref<Input>

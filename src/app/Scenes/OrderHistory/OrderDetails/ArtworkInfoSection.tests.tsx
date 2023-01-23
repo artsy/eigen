@@ -1,6 +1,6 @@
 import { ArtworkInfoSectionTestsQuery } from "__generated__/ArtworkInfoSectionTestsQuery.graphql"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtworkInfoSectionFragmentContainer } from "./Components/ArtworkInfoSection"

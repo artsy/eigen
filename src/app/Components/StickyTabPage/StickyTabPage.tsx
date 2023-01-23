@@ -1,5 +1,5 @@
-import { VisualClueName } from "app/store/config/visualClues"
 import { useFeatureFlag } from "app/store/GlobalStore"
+import { VisualClueName } from "app/store/config/visualClues"
 import { useUpdateShouldHideBackButton } from "app/utils/hideBackButtonOnScroll"
 import { Schema } from "app/utils/track"
 import { useAutoCollapsingMeasuredView } from "app/utils/useAutoCollapsingMeasuredView"
@@ -10,12 +10,12 @@ import { FlatList, View } from "react-native"
 import Animated from "react-native-reanimated"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
-import { useAnimatedValue } from "./reanimatedHelpers"
 import { SnappyHorizontalRail } from "./SnappyHorizontalRail"
 import { StaticHeaderContainer } from "./StaticHeaderContainer"
 import { StickyTabPageContext, useStickyTabPageContext } from "./StickyTabPageContext"
 import { StickyTabPageFlatListContext } from "./StickyTabPageFlatList"
 import { StickyTabPageTabBar } from "./StickyTabPageTabBar"
+import { useAnimatedValue } from "./reanimatedHelpers"
 
 export type RegisteredListRefs = Record<number, FlatList<any>>
 export interface TabProps {

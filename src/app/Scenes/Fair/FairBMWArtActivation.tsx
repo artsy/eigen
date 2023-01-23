@@ -1,16 +1,16 @@
 // NOTE: Component copied from original fair directory
-import { FairBMWArtActivation_fair$data } from "__generated__/FairBMWArtActivation_fair.graphql"
 import { FairBMWArtActivationQuery } from "__generated__/FairBMWArtActivationQuery.graphql"
+import { FairBMWArtActivation_fair$data } from "__generated__/FairBMWArtActivation_fair.graphql"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
-import { navigate } from "app/navigation/navigate"
 import { BMWSponsorship } from "app/Scenes/City/CityBMWSponsorship"
+import { navigate } from "app/system/navigation/navigate"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Schema, screenTrack, track } from "app/utils/track"
 import { Box, Text } from "palette"
 import React from "react"
 import { FlatList, ViewProps } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { defaultEnvironment } from "../../relay/createEnvironment"
-import renderWithLoadProgress from "../../utils/renderWithLoadProgress"
 
 interface Props extends ViewProps {
   fair: FairBMWArtActivation_fair$data

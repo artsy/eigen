@@ -1,5 +1,5 @@
-import { navigate } from "app/navigation/navigate"
 import { GlobalStore } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
 import { Formik } from "formik"
 import { BulletedItem, CTAButton, Flex, LinkText, Spacer } from "palette"
 import React from "react"

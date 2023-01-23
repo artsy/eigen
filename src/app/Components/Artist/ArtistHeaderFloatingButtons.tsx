@@ -3,7 +3,7 @@ import { ArtistHeaderFloatingButtons_artist$data } from "__generated__/ArtistHea
 import { HeaderButton } from "app/Components/HeaderButton"
 import { ShareSheet } from "app/Components/ShareSheet/ShareSheet"
 import { useStickyTabPageContext } from "app/Components/StickyTabPage/StickyTabPageContext"
-import { goBack } from "app/navigation/navigate"
+import { goBack } from "app/system/navigation/navigate"
 import { ChevronIcon, ShareIcon } from "palette"
 import React, { Fragment, useRef, useState } from "react"
 import Animated, { block, call, cond, onChange, set, useCode } from "react-native-reanimated"

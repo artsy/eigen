@@ -1,5 +1,5 @@
+import { Rect, Size } from "app/Scenes/Artwork/Components/ImageCarousel/geometry"
 import { PixelRatio } from "react-native"
-import { Rect, Size } from "../../geometry"
 
 interface DeepZoomImageSize {
   width: number
