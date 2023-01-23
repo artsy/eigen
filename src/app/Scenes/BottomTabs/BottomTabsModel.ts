@@ -189,28 +189,32 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
 
       return true
     })
-    const notification = notifications[0]
-    const lastPublishedAt = state.lastNotificationPublishedAt
+    const lastNotification = notifications[0] as NotificationNode | undefined
+    const lastNotificationPublishedAt = lastNotification?.publishedAt ?? null
+    const isLastPublishedAtEmpty =
+      state.lastNotificationPublishedAt === null && lastNotificationPublishedAt
+    const isNewPublishedAtAvaiable = checkNewPublishedAtAvaiable(
+      state.lastNotificationPublishedAt,
+      lastNotificationPublishedAt
+    )
 
-    console.log("[debug] lastPublishedAt", lastPublishedAt)
-    console.log("[debug] notification.publishedAt", notification.publishedAt)
-
-    if (lastPublishedAt === null && notification.publishedAt) {
-      console.log("[debug] step 1")
-      state.lastNotificationPublishedAt = notification.publishedAt
+    if (isLastPublishedAtEmpty || isNewPublishedAtAvaiable) {
+      state.lastNotificationPublishedAt = lastNotificationPublishedAt
       state.sessionState.displayUnreadActivityPanelIndicator = payload.unreadCount > 0
-    }
-
-    if (lastPublishedAt && notification.publishedAt) {
-      console.log("[debug] compare dates")
-      const prevPublishedDate = DateTime.fromISO(lastPublishedAt)
-      const currentPublishedDate = DateTime.fromISO(notification.publishedAt)
-
-      if (currentPublishedDate > prevPublishedDate) {
-        console.log("[debug] step 2")
-        state.lastNotificationPublishedAt = notification.publishedAt
-        state.sessionState.displayUnreadActivityPanelIndicator = payload.unreadCount > 0
-      }
     }
   }),
 })
+
+const checkNewPublishedAtAvaiable = (
+  prevPublishedAt: string | null,
+  newPublishedAt: string | null
+) => {
+  if (prevPublishedAt === null || newPublishedAt === null) {
+    return false
+  }
+
+  const prevPublishedDate = DateTime.fromISO(prevPublishedAt)
+  const newPublishedDate = DateTime.fromISO(newPublishedAt)
+
+  return newPublishedDate > prevPublishedDate
+}
