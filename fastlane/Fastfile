@@ -4,6 +4,8 @@ require 'yaml'
 require 'spaceship'
 require 'fileutils'
 require 'json'
+require 'date'
+
 
 require 'dotenv'
 
@@ -180,6 +182,46 @@ lane :ship_beta_android_play_store do
   )
 
   upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: "#{vcode}", platform: "android")
+
+  s3_upload_android_build(app_version: vcode, app_path: "../android/app/build/outputs/bundle/release/app-release.aab")
+
+  supply(
+    track: "alpha",
+    skip_upload_apk: true,
+    skip_upload_metadata: true,
+    skip_upload_changelogs: true,
+    skip_upload_images: true,
+    skip_upload_screenshots: true
+  )
+end
+
+lane :test_date_version do
+  test_version = DateTime.now.strftime('%s')
+  vname, vcode = set_build_version_android(version: test_version.to_s)
+end
+
+lane :test_aab_upload do
+  sh("yarn jetifier")
+  sh("yarn relay")
+
+  test_version = DateTime.now.strftime('%s')
+  vname, vcode = set_build_version_android(version: test_version.to_s)
+  # tag_and_push(tag: "android-#{vname}-#{vcode}")
+
+  # sentry_release_name = "android-#{vname}-#{vcode}"
+
+  # build again with flag set to false for release candidates
+  flag_android_beta(is_android_beta: false)
+
+  sh("mkdir -p android/app/src/main/assets && touch android/app/src/main/assets/index.android.bundle && yarn bundle:android")
+  gradle(
+    task: "bundle",
+    build_type: "Release",
+    project_dir: "android/",
+    flags: "--no-daemon -x bundleReleaseJsAndAssets",
+  )
+
+  # upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: "#{vcode}", platform: "android")
 
   s3_upload_android_build(app_version: vcode, app_path: "../android/app/build/outputs/bundle/release/app-release.aab")
 
