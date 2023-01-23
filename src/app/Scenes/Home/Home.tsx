@@ -43,6 +43,7 @@ import {
 } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
+import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { compact, times } from "lodash"
 import { ArtsyLogoIcon, Box, Flex, Join, Spacer } from "palette"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
@@ -86,6 +87,8 @@ interface Props extends ViewProps {
 }
 
 const Home = (props: Props) => {
+  useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
+
   const prefetchUrl = usePrefetch()
 
   useEffect(() => {

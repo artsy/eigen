@@ -213,6 +213,7 @@ describe("ArtworkCommercialButtons", () => {
       })
 
       expect(navigate).toHaveBeenCalledWith("/orders/buyNowID", {
+        modal: true,
         passProps: {
           title: "Purchase",
         },

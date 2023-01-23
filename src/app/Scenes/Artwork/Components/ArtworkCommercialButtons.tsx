@@ -7,7 +7,7 @@ import { Children } from "react"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { BidButtonFragmentContainer } from "./CommercialButtons/BidButton"
-import { BuyNowButtonFragmentContainer } from "./CommercialButtons/BuyNowButton"
+import { BuyNowButton } from "./CommercialButtons/BuyNowButton"
 import { InquiryButtonsFragmentContainer } from "./CommercialButtons/InquiryButtons"
 import { MakeOfferButtonFragmentContainer } from "./CommercialButtons/MakeOfferButton"
 
@@ -58,11 +58,7 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
             auctionState={auctionState as AuctionTimerState}
             variant="outline"
           />
-          <BuyNowButtonFragmentContainer
-            artwork={artworkData}
-            editionSetID={selectedEditionId}
-            renderSaleMessage
-          />
+          <BuyNowButton artwork={artworkData} editionSetID={selectedEditionId} renderSaleMessage />
         </RowContainer>
       )
     }
@@ -84,13 +80,13 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
           editionSetID={selectedEditionId}
           variant="outline"
         />
-        <BuyNowButtonFragmentContainer artwork={artworkData} editionSetID={selectedEditionId} />
+        <BuyNowButton artwork={artworkData} editionSetID={selectedEditionId} />
       </RowContainer>
     )
   }
 
   if (artworkData.isAcquireable) {
-    return <BuyNowButtonFragmentContainer artwork={artworkData} editionSetID={selectedEditionId} />
+    return <BuyNowButton artwork={artworkData} editionSetID={selectedEditionId} />
   }
 
   if (artworkData.isInquireable && artworkData.isOfferable) {

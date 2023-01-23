@@ -1,10 +1,8 @@
-import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArtworkScreenHeader_artwork$data } from "__generated__/ArtworkScreenHeader_artwork.graphql"
 import { useIsStaging } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { Schema } from "app/utils/track"
-import { userHadMeaningfulInteraction } from "app/utils/userHadMeaningfulInteraction"
 import { BackButton, Flex, HeartFillIcon, HeartIcon, Spacer, Touchable, useSpace } from "palette"
 import { createFragmentContainer, graphql, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -63,14 +61,6 @@ const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) =>
       },
       onCompleted: () => {
         refreshFavoriteArtworks()
-
-        userHadMeaningfulInteraction({
-          contextModule: ContextModule.artworkMetadata,
-          contextOwnerType: OwnerType.artwork,
-          contextOwnerId: artwork.internalID,
-          contextOwnerSlug: artwork.slug,
-        })
-
         trackEvent({
           action_name: isSaved ? Schema.ActionNames.ArtworkUnsave : Schema.ActionNames.ArtworkSave,
           action_type: Schema.ActionTypes.Success,

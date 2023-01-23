@@ -4798,10 +4798,15 @@
     "@types/node" "*"
     form-data "^3.0.0"
 
-"@types/node@*", "@types/node@14.17.34", "@types/node@>= 8":
+"@types/node@*", "@types/node@>= 8":
   version "14.17.34"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.17.34.tgz#fe4b38b3f07617c0fa31ae923fca9249641038f0"
   integrity sha512-USUftMYpmuMzeWobskoPfzDi+vkpe0dvcOBRNOscFrGxVp4jomnRxWuVohgqBow2xyIPC0S3gjxV/5079jhmDg==
+
+"@types/node@14.18.32":
+  version "14.18.32"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.18.32.tgz#8074f7106731f1a12ba993fe8bad86ee73905014"
+  integrity sha512-Y6S38pFr04yb13qqHf8uk1nHE3lXgQ30WZbv1mLliV9pt0NjvqdWttLcrOYLnXbOafknVYRHZGoMSpR9UwfYow==
 
 "@types/npmlog@^4.1.2":
   version "4.1.4"
@@ -13748,10 +13753,10 @@ react-native-image-resizer@1.4.5:
   resolved "https://registry.yarnpkg.com/react-native-image-resizer/-/react-native-image-resizer-1.4.5.tgz#5a520aa8baa07638b1894a1d87d4d9a0945c8d58"
   integrity sha512-33EgL3C9pyvjKpullAB6fWyD5QhoYEpNNB9rxNvUsrpAnL2mHBW7PTrUCCZudJeB6Weg7nbweKrSw1nnto5aqg==
 
-react-native-in-app-review@3.2.3:
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/react-native-in-app-review/-/react-native-in-app-review-3.2.3.tgz#d61bfa14d33fc2a7f1ff85cea64e2a042ebdf299"
-  integrity sha512-BTYTSp7Cf9rkcb210F76sxrEZSq5V+qx3auJ60XJ0FWrJiDLVH9QxRbDaS/c4OcAyjA45oKR6Rh1n2kmylWU7A==
+react-native-in-app-review@4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-in-app-review/-/react-native-in-app-review-4.1.1.tgz#d7ad1b82be6e3cfebf5fa43dbcd79f5a4b5bc367"
+  integrity sha512-kuZNKvawD9rICR8SEKSMRB1Ws5RjjyQScxVg/57dK8Yrx/CeVqSL5jJUJ1Nhl/MMxwP5XJ/keFcjTb2YRMglQw==
 
 react-native-keychain@8.0.0:
   version "8.0.0"
