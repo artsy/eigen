@@ -5,6 +5,7 @@ import { ModalStack } from "app/system/navigation/ModalStack"
 import { createEnvironment } from "app/system/relay/createEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { DateTime } from "luxon"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import useInterval from "react-use/lib/useInterval"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -74,26 +75,77 @@ describe(BottomTabs, () => {
   })
 
   it(`displays a blue dot on home icon if there are unread notifications`, async () => {
+    const currentDate = DateTime.local()
+
     __globalStoreTestUtils__?.injectState({
-      bottomTabs: { sessionState: { displayUnreadActivityPanelIndicator: true } },
+      bottomTabs: {
+        lastNotificationPublishedAt: currentDate.minus({ hour: 1 }).toISO(),
+      },
     })
     const tree = renderWithWrappersLEGACY(<TestWrapper />)
 
-    const homeButton = findButtonByTab(tree, "home")
-    expect((homeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
+    const prevHomeButton = findButtonByTab(tree, "home")
+    expect((prevHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
+
+    resolveNotificationsInfoQuery({
+      Me: () => ({
+        unreadConversationCount: 5,
+        unreadNotificationsCount: 1,
+      }),
+      Viewer: () => ({
+        notificationsConnection: {
+          edges: [
+            {
+              node: {
+                publishedAt: currentDate.toISO(),
+              },
+            },
+          ],
+        },
+      }),
+    })
+
+    await flushPromiseQueue()
+
+    const currentHomeButton = findButtonByTab(tree, "home")
+    expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
 
     // need to prevent this test's requests from leaking into the next test
     await flushPromiseQueue()
   })
 
   it(`doesn't display a blue dot on home icon if there are no unread notifications`, async () => {
+    const publishedAt = DateTime.local().toISO()
+
     __globalStoreTestUtils__?.injectState({
-      bottomTabs: { sessionState: { displayUnreadActivityPanelIndicator: false } },
+      bottomTabs: {
+        lastNotificationPublishedAt: publishedAt,
+      },
     })
     const tree = renderWithWrappersLEGACY(<TestWrapper />)
 
-    const homeButton = findButtonByTab(tree, "home")
-    expect((homeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
+    resolveNotificationsInfoQuery({
+      Me: () => ({
+        unreadConversationCount: 5,
+        unreadNotificationsCount: 0,
+      }),
+      Viewer: () => ({
+        notificationsConnection: {
+          edges: [
+            {
+              node: {
+                publishedAt: publishedAt,
+              },
+            },
+          ],
+        },
+      }),
+    })
+
+    await flushPromiseQueue()
+
+    const currentHomeButton = findButtonByTab(tree, "home")
+    expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
 
     // need to prevent this test's requests from leaking into the next test
     await flushPromiseQueue()
