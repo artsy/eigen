@@ -39,6 +39,13 @@ function resolveNotificationsInfoQuery(resolvers: MockResolvers) {
   )
 }
 
+const findButtonByTab = (tree: ReactTestRenderer, tab: ButtonProps["tab"]) => {
+  const buttons = tree.root.findAllByType(BottomTabsButton)
+  const buttonByTab = buttons.find((button) => (button.props as ButtonProps).tab === tab)
+
+  return buttonByTab
+}
+
 const TestWrapper: React.FC<Partial<BottomTabBarProps>> = (props) => {
   return (
     <GlobalStoreProvider>
@@ -59,9 +66,7 @@ describe(BottomTabs, () => {
     })
     const tree = renderWithWrappersLEGACY(<TestWrapper />)
 
-    const inboxButton = tree.root
-      .findAllByType(BottomTabsButton)
-      .find((button) => (button.props as ButtonProps).tab === "inbox")
+    const inboxButton = findButtonByTab(tree, "inbox")
     expect((inboxButton!.props as ButtonProps).badgeCount).toBe(4)
 
     // need to prevent this test's requests from leaking into the next test
@@ -74,9 +79,7 @@ describe(BottomTabs, () => {
     })
     const tree = renderWithWrappersLEGACY(<TestWrapper />)
 
-    const homeButton = tree.root
-      .findAllByType(BottomTabsButton)
-      .find((button) => (button.props as ButtonProps).tab === "home")
+    const homeButton = findButtonByTab(tree, "home")
     expect((homeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
 
     // need to prevent this test's requests from leaking into the next test
@@ -89,9 +92,7 @@ describe(BottomTabs, () => {
     })
     const tree = renderWithWrappersLEGACY(<TestWrapper />)
 
-    const homeButton = tree.root
-      .findAllByType(BottomTabsButton)
-      .find((button) => (button.props as ButtonProps).tab === "home")
+    const homeButton = findButtonByTab(tree, "home")
     expect((homeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
 
     // need to prevent this test's requests from leaking into the next test
@@ -114,16 +115,10 @@ describe(BottomTabs, () => {
 
     await flushPromiseQueue()
 
-    const inboxButton = tree.root
-      .findAllByType(BottomTabsButton)
-      .find((button) => (button.props as ButtonProps).tab === "inbox")
-
+    const inboxButton = findButtonByTab(tree, "inbox")
     expect((inboxButton!.props as ButtonProps).badgeCount).toBe(5)
 
-    const homeButton = tree.root
-      .findAllByType(BottomTabsButton)
-      .find((button) => (button.props as ButtonProps).tab === "home")
-
+    const homeButton = findButtonByTab(tree, "home")
     expect((homeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
   })
 
@@ -185,19 +180,11 @@ describe(BottomTabs, () => {
     await flushPromiseQueue()
 
     // @ts-ignore
-    const inboxButton = tree.root
-      .findAllByType(BottomTabsButton)
-      // @ts-ignore
-      .find((button) => (button.props as ButtonProps).tab === "inbox")
-
+    const inboxButton = findButtonByTab(tree, "inbox")
     expect((inboxButton!.props as ButtonProps).badgeCount).toBe(3)
 
     // @ts-ignore
-    const homeButton = tree.root
-      .findAllByType(BottomTabsButton)
-      // @ts-ignore
-      .find((button) => (button.props as ButtonProps).tab === "home")
-
+    const homeButton = findButtonByTab(tree, "home")
     expect((homeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
   })
 
