@@ -1,30 +1,29 @@
-import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
-import { ArtsyLogoIcon, Button, Flex, Screen, Spacer, Text } from "palette"
+import { NavigationContainer } from "@react-navigation/native"
+import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
+import { ArtQuizArtworks } from "./ArtQuizArtworks"
+import { ArtQuizWelcome } from "./ArtQuizWelcome"
 
-export const ArtQuiz = () => {
-  const { onDone } = useOnboardingContext()
+// tslint:disable-next-line:interface-over-type-literal
+export type ArtQuizNavigationStack = {
+  ArtQuizWelcome: undefined
+  ArtQuizArtworks: undefined
+}
+const StackNavigator = createStackNavigator<ArtQuizNavigationStack>()
+
+export const ArtQuiz: React.FC = () => {
   return (
-    <Screen>
-      <Screen.Body>
-        <Flex flex={1} justifyContent="center">
-          <ArtsyLogoIcon scale={0.75} />
-          <Spacer m={2} />
-          <Text variant="xl">Art Taste Quiz</Text>
-          <Spacer m={2} />
-          <Text variant="md">See more of what you love.</Text>
-          <Spacer m={1} />
-          <Text variant="md">
-            Rate artworks to discover your taste profile and get recommendations tailored to you.
-          </Text>
-        </Flex>
-        <Flex justifyContent="flex-end">
-          <Button block>Start the Quiz</Button>
-          <Spacer m={0.5} />
-          <Button block variant="text" onPress={onDone}>
-            Skip
-          </Button>
-        </Flex>
-      </Screen.Body>
-    </Screen>
+    <NavigationContainer independent>
+      <StackNavigator.Navigator
+        screenOptions={{
+          ...TransitionPresets.DefaultTransition,
+          headerShown: false,
+          headerMode: "screen",
+          gestureEnabled: false,
+        }}
+      >
+        <StackNavigator.Screen name="ArtQuizWelcome" component={ArtQuizWelcome} />
+        <StackNavigator.Screen name="ArtQuizArtworks" component={ArtQuizArtworks} />
+      </StackNavigator.Navigator>
+    </NavigationContainer>
   )
 }

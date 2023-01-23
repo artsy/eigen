@@ -1,8 +1,8 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { ArtQuizNavigationStack } from "app/Scenes/ArtQuiz/ArtQuiz"
+import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
 import { GlobalStore } from "app/store/GlobalStore"
 import { ArtsyLogoIcon, Button, Flex, Screen, Spacer, Text } from "palette"
-import { useOnboardingContext } from "../Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
 
 export const ArtQuizWelcome = () => {
   const { onDone } = useOnboardingContext()
