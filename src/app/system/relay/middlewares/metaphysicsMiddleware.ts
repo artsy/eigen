@@ -108,6 +108,7 @@ export function persistedQueryMiddleware(): Middleware {
     // send queryID to metaphysics
     let body: { variables?: object; query?: string; documentID?: string } = {}
     const queryID = req.getID()
+    console.log(queryID)
     const variables = req.getVariables()
     if (__DEV__) {
       body = { query: require("../../../../../data/complete.queryMap.json")[queryID], variables }

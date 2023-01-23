@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if [ "${NODE_ENV}" == "development" ]; then
+  yarn relay-compiler "$@"
+else
+  [ -f data/complete.queryMap.json ] || echo '{}' > data/complete.queryMap.json && yarn relay-compiler "$@"
+fi

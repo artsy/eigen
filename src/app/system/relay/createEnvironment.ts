@@ -1,4 +1,6 @@
+import { logRelayVerbose } from "app/utils/loggers"
 import {
+  loggerMiddleware,
   errorMiddleware as relayErrorMiddleware,
   RelayNetworkLayer,
 } from "react-relay-network-modern/node8"
@@ -36,6 +38,7 @@ export function createEnvironment(
       checkAuthenticationMiddleware(),
       metaphysicsExtensionsLoggerMiddleware(),
       simpleLoggerMiddleware(),
+      __DEV__ && logRelayVerbose ? loggerMiddleware() : null,
       __DEV__ ? relayErrorMiddleware() : null,
       timingMiddleware(),
     ],
