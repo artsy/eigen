@@ -9,7 +9,7 @@ import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { ViewDescriptor } from "app/system/navigation/navigate"
 import immer from "immer-peasy"
 import { last } from "lodash"
-import { InteractionManager, NativeModules, StatusBar } from "react-native"
+import { NativeModules, StatusBar } from "react-native"
 /**
  * Here we maintain references to all the navigators in the main app navigation hierarchy, which are:
  * - tab nav stacks
@@ -80,7 +80,7 @@ function getCurrentlyPresentedModalNavStackKey() {
 // to more reliably navigate
 function dispatchNavAction(action: NavigationAction) {
   if (!__unsafe_mainModalStackRef.current) {
-    InteractionManager.runAfterInteractions(() => {
+    requestAnimationFrame(() => {
       __unsafe_mainModalStackRef.current?.dispatch(action)
     })
   } else {
