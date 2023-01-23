@@ -9,15 +9,13 @@ import { useActionSheet } from "@expo/react-native-action-sheet"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { captureException } from "@sentry/react-native"
-import { MyCollectionArtwork_sharedProps$data } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
-import { LengthUnitPreference } from "__generated__/UserPrefsModelQuery.graphql"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
-import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { deleteArtworkImage } from "app/Scenes/MyCollection/mutations/deleteArtworkImage"
 import { myCollectionCreateArtwork } from "app/Scenes/MyCollection/mutations/myCollectionCreateArtwork"
 import { myCollectionDeleteArtwork } from "app/Scenes/MyCollection/mutations/myCollectionDeleteArtwork"
 import { myCollectionUpdateArtwork } from "app/Scenes/MyCollection/mutations/myCollectionUpdateArtwork"
+import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import {
   cleanArtworkPayload,
   explicitlyClearedFields,
@@ -32,6 +30,8 @@ import { isEqual } from "lodash"
 import { useEffect, useRef, useState } from "react"
 import { Alert, InteractionManager } from "react-native"
 import { useTracking } from "react-tracking"
+import { MyCollectionArtwork_sharedProps$data } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
+import { LengthUnitPreference } from "__generated__/UserPrefsModelQuery.graphql"
 import { SavingArtworkModal } from "./Components/SavingArtworkModal"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
 import { storeLocalPhotos, uploadPhotos } from "./MyCollectionImageUtil"
@@ -333,12 +333,12 @@ export const updateArtwork = async (
 
   if (props.mode === "add") {
     const response = await myCollectionCreateArtwork({
+      ...cleanArtworkPayload(others),
       artistIds: artistSearchResult?.internalID ? [artistSearchResult?.internalID] : undefined,
       artists: artistDisplayName ? [{ displayName: artistDisplayName }] : undefined,
       externalImageUrls,
       pricePaidCents,
       pricePaidCurrency,
-      ...cleanArtworkPayload(others),
     })
 
     const slug = response.myCollectionCreateArtwork?.artworkOrError?.artworkEdge?.node?.slug
