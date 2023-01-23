@@ -13,7 +13,7 @@ describe("HomeHeader", () => {
     it("should NOT render unread indicator when there are no unread notifications", async () => {
       __globalStoreTestUtils__?.injectState({
         bottomTabs: {
-          sessionState: { unreadCounts: { unreadActivityPanelNotifications: 0 } },
+          sessionState: { displayUnreadActivityPanelIndicator: false },
         },
       })
 
@@ -26,7 +26,7 @@ describe("HomeHeader", () => {
     it("should render unread indicator when there are unread notifications", async () => {
       __globalStoreTestUtils__?.injectState({
         bottomTabs: {
-          sessionState: { unreadCounts: { unreadActivityPanelNotifications: 1 } },
+          sessionState: { displayUnreadActivityPanelIndicator: true },
         },
       })
 
