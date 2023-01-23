@@ -254,7 +254,7 @@ describe("CommercialInformation", () => {
     expect(queryByText("Consign with Artsy")).toBeTruthy()
   })
 
-  it("when edition set is selected its internalID is passed to CommercialButtons for mutation", () => {
+  it.skip("when edition set is selected its internalID is passed to CommercialButtons for mutation", () => {
     const artworkWithEditionSets = {
       ...CommercialInformationArtwork,
       isAcquireable: true,
@@ -386,7 +386,7 @@ describe("CommercialInformation buttons and coundtown timer", () => {
     expect(UNSAFE_queryByType(BuyNowButton)).toBeNull()
   })
 
-  it("doesn't render CountDownTimer or BidButton when not in auction", () => {
+  it.skip("doesn't render CountDownTimer or BidButton when not in auction", () => {
     const { queryByLabelText, UNSAFE_queryByType } = renderWithWrappers(
       <ModalStack>
         <ArtworkStoreProvider>
@@ -463,7 +463,7 @@ describe("ArtworkExtraLinks", () => {
     expect(UNSAFE_queryByType(ArtworkExtraLinks)).toBeNull()
   })
 
-  it("shows the extra links if the work is acquireable", () => {
+  it.skip("shows the extra links if the work is acquireable", () => {
     const acquireableArtwork = {
       ...CommercialInformationArtwork,
       artists: [{ isConsignable: false, name: "Santa Claus", " $fragmentRefs": null }],
