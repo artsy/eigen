@@ -69,9 +69,6 @@ describe(BottomTabs, () => {
 
     const inboxButton = findButtonByTab(tree, "inbox")
     expect((inboxButton!.props as ButtonProps).badgeCount).toBe(4)
-
-    // need to prevent this test's requests from leaking into the next test
-    await flushPromiseQueue()
   })
 
   describe("a blue dot on home icon", () => {
@@ -111,9 +108,6 @@ describe(BottomTabs, () => {
 
         const currentHomeButton = findButtonByTab(tree, "home")
         expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
-
-        // need to prevent this test's requests from leaking into the next test
-        await flushPromiseQueue()
       })
 
       it("the latest notification `publishedAt` is equal to the locally persisted `publishedAt`", async () => {
@@ -151,9 +145,6 @@ describe(BottomTabs, () => {
 
         const currentHomeButton = findButtonByTab(tree, "home")
         expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
-
-        // need to prevent this test's requests from leaking into the next test
-        await flushPromiseQueue()
       })
 
       it("the latest notification `publishedAt` is more recent than the locally persisted `publishedAt`", async () => {
@@ -197,9 +188,6 @@ describe(BottomTabs, () => {
 
         const currentHomeButton = findButtonByTab(tree, "home")
         expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
-
-        // need to prevent this test's requests from leaking into the next test
-        await flushPromiseQueue()
       })
     })
 
@@ -236,9 +224,6 @@ describe(BottomTabs, () => {
 
         const currentHomeButton = findButtonByTab(tree, "home")
         expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
-
-        // need to prevent this test's requests from leaking into the next test
-        await flushPromiseQueue()
       })
 
       it("the latest notification `publishedAt` is equal to the locally persisted `publishedAt`", async () => {
@@ -273,9 +258,6 @@ describe(BottomTabs, () => {
 
         const currentHomeButton = findButtonByTab(tree, "home")
         expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
-
-        // need to prevent this test's requests from leaking into the next test
-        await flushPromiseQueue()
       })
 
       it("the latest notification `publishedAt` is more recent than the locally persisted `publishedAt`", async () => {
@@ -310,9 +292,6 @@ describe(BottomTabs, () => {
 
         const currentHomeButton = findButtonByTab(tree, "home")
         expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
-
-        // need to prevent this test's requests from leaking into the next test
-        await flushPromiseQueue()
       })
     })
   })
