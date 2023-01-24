@@ -20,6 +20,7 @@
     - Prevent swiping back gesture - mounir
 
   - Dev changes:
+    - fix default local metaphysics url on dev menu - gkartalis
     - Support screen options inside react module - mounir
     - update setupTestWrapper and add testing docs - gkartalis
     - Update tracking event - mounir
