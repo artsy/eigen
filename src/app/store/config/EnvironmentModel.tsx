@@ -24,7 +24,7 @@ export const environment = defineEnvironmentOptions({
   gravityURL: {
     description: "Gravity URL",
     presets: {
-      local: "http://localhost:3000",
+      local: "https://stagingapi.artsy.net",
       staging: "https://stagingapi.artsy.net",
       production: "https://api.artsy.net",
     },
