@@ -1,4 +1,5 @@
 import { ImageCarousel_images$data } from "__generated__/ImageCarousel_images.graphql"
+import { ImageCarousel_videos$data } from "__generated__/ImageCarousel_videos.graphql"
 import { Schema } from "app/utils/track"
 import { GlobalState, useGlobalState } from "app/utils/useGlobalState"
 import React, { useMemo, useRef } from "react"
@@ -43,22 +44,26 @@ export type FullScreenState =
   | "exiting"
 
 export interface ImageCarouselContext {
-  imageIndex: GlobalState<number>
-  lastImageIndex: GlobalState<number>
-  fullScreenState: GlobalState<FullScreenState>
-  isZoomedCompletelyOut: GlobalState<boolean>
-  images: ImageDescriptor[]
-  embeddedImageRefs: View[]
-  embeddedFlatListRef: React.RefObject<FlatList<any>>
-  xScrollOffsetAnimatedValue: React.RefObject<Animated.Value>
   dispatch(action: ImageCarouselAction): void
+  embeddedFlatListRef: React.RefObject<FlatList<any>>
+  embeddedImageRefs: View[]
+  fullScreenState: GlobalState<FullScreenState>
+  imageIndex: GlobalState<number>
+  images: ImageDescriptor[]
+  isZoomedCompletelyOut: GlobalState<boolean>
+  lastImageIndex: GlobalState<number>
+  media?: ImageCarousel_images$data & ImageCarousel_videos$data
+  setVideoAsCover?: boolean
+  videos?: ImageCarousel_videos$data
+  xScrollOffsetAnimatedValue: React.RefObject<Animated.Value>
 }
 
 export function useNewImageCarouselContext({
   images,
   onImageIndexChange,
-}: {
-  images: ImageDescriptor[]
+  setVideoAsCover = false,
+  videos = [],
+}: Pick<ImageCarouselContext, "images" | "setVideoAsCover" | "videos"> & {
   onImageIndexChange?: (imageIndex: number) => void
 }): ImageCarouselContext {
   const embeddedImageRefs = useMemo(() => [], [])
@@ -70,14 +75,16 @@ export function useNewImageCarouselContext({
   const [isZoomedCompletelyOut, setIsZoomedCompletelyOut] = useGlobalState(true)
   const tracking = useTracking()
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  return useMemo(
+  const media = setVideoAsCover ? [...videos, ...images] : [...images, ...videos]
+
+  const imageCarouselContext = useMemo(
     () => ({
       imageIndex,
       lastImageIndex,
       fullScreenState,
       isZoomedCompletelyOut,
       images,
+      media,
       embeddedImageRefs,
       embeddedFlatListRef,
       xScrollOffsetAnimatedValue,
@@ -135,6 +142,9 @@ export function useNewImageCarouselContext({
     }),
     []
   )
+
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+  return imageCarouselContext
 }
 
 export const ImageCarouselContext = React.createContext<ImageCarouselContext>(

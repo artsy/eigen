@@ -101,7 +101,7 @@ export const getBoundingBox = (
 
 export const getImageMeasurements = (imageSize: Size, boundingBox: Size) => {
   const measurements = getMeasurements({
-    images: [
+    media: [
       {
         height: imageSize.height,
         width: imageSize.width,

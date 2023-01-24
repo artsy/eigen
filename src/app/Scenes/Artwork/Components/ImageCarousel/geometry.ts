@@ -53,16 +53,16 @@ const MIN_MARGIN = 20
 // given an input array of image sources, calculates the dimensions and positions of all the images on the carousel
 // rail. boundingBox is the maximum possible size that an image can occupy on the rail
 export function getMeasurements({
-  images,
+  media,
   boundingBox,
 }: {
-  images: ReadonlyArray<Size>
+  media: ReadonlyArray<Size>
   boundingBox: Size
 }) {
   const result: ImageMeasurements[] = []
 
-  for (let i = 0; i < images.length; i++) {
-    const { width, height, marginHorizontal, marginVertical } = fitInside(boundingBox, images[i])
+  for (let i = 0; i < media.length; i++) {
+    const { width, height, marginHorizontal, marginVertical } = fitInside(boundingBox, media[i])
 
     // collapse adjacent margins to avoid excess white space between images
     const marginLeft =

@@ -1,5 +1,7 @@
+import querystring from "querystring"
 import { captureMessage } from "@sentry/react-native"
 import { ImageCarousel_images$data } from "__generated__/ImageCarousel_images.graphql"
+import { ImageCarousel_videos$data } from "__generated__/ImageCarousel_videos.graphql"
 import { createGeminiUrl } from "app/Components/OpaqueImageView/createGeminiUrl"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { isPad } from "app/utils/hardware"
@@ -32,6 +34,8 @@ interface MappedImageDescriptor extends Pick<ImageDescriptor, "deepZoom"> {
 export interface ImageCarouselProps {
   /** CarouselImageDescriptor for when you want to display local images */
   images: ImageCarousel_images$data | CarouselImageDescriptor[]
+  videos?: ImageCarousel_videos$data
+  setVideoAsCover?: boolean
   cardHeight: number
   onImageIndexChange?: (imageIndex: number) => void
   paginationIndicatorType?: IndicatorType
@@ -46,7 +50,7 @@ export interface ImageCarouselProps {
  */
 export const ImageCarousel = (props: ImageCarouselProps) => {
   const screenDimensions = useScreenDimensions()
-  const { cardHeight, onImageIndexChange } = props
+  const { cardHeight, onImageIndexChange, setVideoAsCover, videos = [] } = props
 
   const embeddedCardBoundingBox = {
     width: screenDimensions.width,
@@ -99,7 +103,20 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
     return result
   }, [props.images])
 
-  const context = useNewImageCarouselContext({ images, onImageIndexChange })
+  // Map video props to the same format thats used for images
+  const _videos = videos.map((video) => ({
+    ...video,
+    width: video.videoWidth,
+    height: video.videoHeight,
+    url: video.playerUrl,
+  }))
+
+  const context = useNewImageCarouselContext({
+    images,
+    videos: _videos,
+    setVideoAsCover,
+    onImageIndexChange,
+  })
 
   context.fullScreenState.useUpdates()
 
@@ -135,6 +152,7 @@ export const ImagesCarousel = () => {
 export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarousel, {
   images: graphql`
     fragment ImageCarousel_images on Image @relay(plural: true) {
+      __typename
       url: imageURL
       largeImageURL: url(version: "larger")
       width
@@ -151,6 +169,14 @@ export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarou
           }
         }
       }
+    }
+  `,
+  videos: graphql`
+    fragment ImageCarousel_videos on Video @relay(plural: true) {
+      __typename
+      videoWidth: width
+      videoHeight: height
+      playerUrl
     }
   `,
 })
@@ -190,4 +216,17 @@ function getBestImageVersionForThumbnail(imageVersions: readonly string[]) {
 
 const imageHasVersions = (image: CarouselImageDescriptor | ImageCarousel_images$data[number]) => {
   return image.imageVersions && image.imageVersions.length
+}
+
+export const extractVimeoVideoDataFromUrl = (playerUrl: string) => {
+  const [url, queryParams] = playerUrl.split("?")
+  const videoId = url.replace("https://player.vimeo.com/video/", "")
+  const params = querystring.parse("?" + queryParams)
+
+  return {
+    videoId,
+    token: params["?h"],
+    width: params.width,
+    height: params.height,
+  }
 }

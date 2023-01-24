@@ -17,12 +17,12 @@ export const PaginationIndicator: React.FC<{ indicatorType: IndicatorType }> = (
 }
 
 const PaginationDots: React.FC = () => {
-  const { images } = useContext(ImageCarouselContext)
+  const { media = [] } = useContext(ImageCarouselContext)
   return (
     <>
       <Spacer mb={2} />
       <Flex flexDirection="row" justifyContent="center">
-        {images.map((_, index) => (
+        {media.map((_, index) => (
           <PaginationDot key={index} diameter={5} index={index} />
         ))}
       </Flex>

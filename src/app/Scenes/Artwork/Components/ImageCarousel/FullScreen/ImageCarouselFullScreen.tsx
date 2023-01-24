@@ -22,7 +22,7 @@ import { useSpringFade } from "./useSpringFade"
 
 export const ImageCarouselFullScreen = () => {
   const screenDimensions = useScreenDimensions()
-  const { images, dispatch, fullScreenState, imageIndex } = useContext(ImageCarouselContext)
+  const { images, media, dispatch, fullScreenState, imageIndex } = useContext(ImageCarouselContext)
   fullScreenState.useUpdates()
   const initialScrollIndex = useMemo(() => imageIndex.current, [])
 

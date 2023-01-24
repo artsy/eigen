@@ -1,11 +1,13 @@
 import * as Sentry from "@sentry/react-native"
+import { extractVimeoVideoDataFromUrl } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { isPad } from "app/utils/hardware"
+import { Flex } from "palette"
 import React, { useCallback, useContext } from "react"
 import { Animated, FlatList, NativeScrollEvent, NativeSyntheticEvent, Platform } from "react-native"
+import { Vimeo } from "react-native-vimeo-iframe"
 import { useScreenDimensions } from "shared/hooks"
-
-import { ImageCarouselContext, ImageDescriptor } from "./ImageCarouselContext"
+import { ImageCarouselContext } from "./ImageCarouselContext"
 import { ImageWithLoadingState } from "./ImageWithLoadingState"
 import { findClosestIndex, getMeasurements } from "./geometry"
 
@@ -31,6 +33,7 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
   }
 
   const {
+    media = [],
     images,
     embeddedFlatListRef: embeddedFlatListRef,
     embeddedImageRefs: embeddedImageRefs,
@@ -40,10 +43,10 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
   } = useContext(ImageCarouselContext)
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  const measurements = getMeasurements({ images, boundingBox: embeddedCardBoundingBox })
+  const measurements = getMeasurements({ media, boundingBox: embeddedCardBoundingBox })
   const offsets = measurements.map((m) => m.cumulativeScrollOffset)
 
-  const scrollEnabled = images.length > 1
+  const scrollEnabled = media.length > 1
 
   // update the imageIndex on scroll
   const onScroll = useCallback(
@@ -126,11 +129,14 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
     goFullScreen()
   }, [])
 
+  const renderVideo = media[imageIndex.current]?.__typename === "Video"
+  console.log(renderVideo)
+
   return (
-    <FlatList<ImageDescriptor>
+    <FlatList
       // force full re-render on orientation change
       key={screenDimensions.orientation}
-      data={images}
+      data={media}
       horizontal
       ref={embeddedFlatListRef}
       showsHorizontalScrollIndicator={false}
@@ -141,19 +147,37 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
         length: embeddedCardBoundingBox.width,
       })}
       snapToOffsets={offsets}
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       keyExtractor={(item) => item.url}
       decelerationRate="fast"
       onScroll={onScroll}
       scrollEventThrottle={50}
       onResponderRelease={onResponderRelease}
       accessibilityLabel="Image Carousel"
-      initialNumToRender={Math.min(images.length, 20)}
+      initialNumToRender={Math.min(media.length, 20)}
       renderItem={({ item, index }) => {
         const { ...styles } = measurements[index]
+        const shouldRender = index === imageIndex.current ? 1 : 0
+
+        if (item.__typename === "Video") {
+          const { videoId, token } = extractVimeoVideoDataFromUrl(item.url!)
+
+          return (
+            <Flex background="transparent" width={styles.width} height={styles.height}>
+              {!!shouldRender && (
+                <Vimeo
+                  videoId={videoId}
+                  // &autoplay=${shouldRender}
+                  params={`h=${token}&loop=true`}
+                  allowsInlineMediaPlayback={true}
+                  allowsFullscreenVideo={false}
+                />
+              )}
+            </Flex>
+          )
+        }
+
         return (
           <ImageWithLoadingState
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             imageURL={item.url}
             width={styles.width}
             height={styles.height}

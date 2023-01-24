@@ -30,7 +30,7 @@ export const getImageDimensionsByImage = (
     height: (image.height as number) || 1000,
   }
 
-  const measurements = getMeasurements({ images: [imageSize], boundingBox })
+  const measurements = getMeasurements({ media: [imageSize], boundingBox })
 
   return {
     width: measurements[0].width,

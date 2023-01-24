@@ -5,6 +5,7 @@ import { CustomShareSheet, CustomShareSheetItem } from "app/Components/CustomSha
 import { useToast } from "app/Components/Toast/toastHook"
 import { unsafe__getEnvironment, useDevToggle } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
+import { guardFactory } from "app/utils/types/guardFactory"
 import { useCanOpenURL } from "app/utils/useCanOpenURL"
 import {
   Box,
@@ -54,7 +55,10 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
   const showWhatsAppItem = useCanOpenURL("whatsapp://send?phone=+491898")
   const showInstagramStoriesItem = useCanOpenURL("instagram://user?username=instagram")
 
-  const currentImage = (artwork.images ?? [])[currentImageIndex]
+  const imageFigures = artwork.figures.filter(guardFactory("__typename", "Image"))
+  const videoFigures = artwork.figures.filter(guardFactory("__typename", "Video"))
+
+  const currentImage = (imageFigures ?? [])[currentImageIndex]
   const currentImageUrl = (currentImage?.url ?? "").replace(":version", "large")
 
   const shareArtwork = async () => {
@@ -128,7 +132,9 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
         )}
         <Spacer mb={2} />
         <ImageCarouselFragmentContainer
-          images={artwork.images as any /* STRICTNESS_MIGRATION */}
+          images={imageFigures}
+          videos={videoFigures}
+          setVideoAsCover={artwork.isSetVideoAsCover ?? false}
           cardHeight={screenDimensions.width >= 375 ? 340 : 290}
           onImageIndexChange={(imageIndex) => setCurrentImageIndex(imageIndex)}
         />
@@ -205,11 +211,17 @@ export const ArtworkHeaderFragmentContainer = createFragmentContainer(ArtworkHea
     fragment ArtworkHeader_artwork on Artwork {
       ...ArtworkActions_artwork
       ...ArtworkTombstone_artwork
-      images {
-        ...ImageCarousel_images
-        url: imageURL
-        imageVersions
+      figures {
+        __typename
+        ... on Image {
+          ...ImageCarousel_images
+          url: imageURL
+        }
+        ... on Video {
+          ...ImageCarousel_videos
+        }
       }
+      isSetVideoAsCover
       title
       href
       internalID

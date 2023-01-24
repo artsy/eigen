@@ -33,6 +33,7 @@ const artworkFixture: ImageCarouselTestsQuery["rawResponse"]["artwork"] = {
   id: "artwork-id",
   images: [
     {
+      __typename: "Image",
       url: "https://d32dm0rphc51dk.cloudfront.net/hA1DxfZHgx23SzeK0yv8Qw/medium.jpg",
       largeImageURL: "https://d32dm0rphc51dk.cloudfront.net/hA1DxfZHgx23SzeK0yv8Qw/medium.jpg",
       width: 1024,
@@ -41,6 +42,7 @@ const artworkFixture: ImageCarouselTestsQuery["rawResponse"]["artwork"] = {
       imageVersions: ["normalized"],
     },
     {
+      __typename: "Image",
       url: "https://d32dm0rphc51dk.cloudfront.net/6rLY-WTbFTF1UwpqFnq3AA/medium.jpg",
       largeImageURL: "https://d32dm0rphc51dk.cloudfront.net/6rLY-WTbFTF1UwpqFnq3AA/medium.jpg",
       width: 1024,
@@ -49,6 +51,7 @@ const artworkFixture: ImageCarouselTestsQuery["rawResponse"]["artwork"] = {
       imageVersions: ["normalized"],
     },
     {
+      __typename: "Image",
       url: "https://d32dm0rphc51dk.cloudfront.net/1FIiskS9THHPAkqYzmiH9Q/larger.jpg",
       largeImageURL: "https://d32dm0rphc51dk.cloudfront.net/1FIiskS9THHPAkqYzmiH9Q/larger.jpg",
       width: 1024,
@@ -57,6 +60,7 @@ const artworkFixture: ImageCarouselTestsQuery["rawResponse"]["artwork"] = {
       imageVersions: ["normalized"],
     },
     {
+      __typename: "Image",
       url: "https://d32dm0rphc51dk.cloudfront.net/yjHx8ZW_wy5qybMiVtanmw/medium.jpg",
       largeImageURL: "https://d32dm0rphc51dk.cloudfront.net/yjHx8ZW_wy5qybMiVtanmw/medium.jpg",
       width: 1024,
@@ -65,6 +69,7 @@ const artworkFixture: ImageCarouselTestsQuery["rawResponse"]["artwork"] = {
       imageVersions: ["normalized"],
     },
     {
+      __typename: "Image",
       url: "https://d32dm0rphc51dk.cloudfront.net/qPiYUxD-v8b5QnDaYS8OlQ/larger.jpg",
       largeImageURL: "https://d32dm0rphc51dk.cloudfront.net/qPiYUxD-v8b5QnDaYS8OlQ/larger.jpg",
       width: 2800,
@@ -190,7 +195,7 @@ describe("ImageCarouselFragmentContainer", () => {
 
       const container = getByLabelText("Image Carousel")
       const measurements = getMeasurements({
-        images: artworkFixture.images as any,
+        media: artworkFixture?.images as any,
         boundingBox: {
           width: 375,
           height: 275,
