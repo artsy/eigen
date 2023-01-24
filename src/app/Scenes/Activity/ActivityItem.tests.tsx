@@ -14,8 +14,6 @@ const targetUrl = "/artist/banksy/works-for-sale?sort=-published_at"
 const alertTargetUrl =
   "/artist/banksy/works-for-sale?search_criteria_id=searchCriteriaId&sort=-published_at"
 
-jest.unmock("react-relay")
-
 describe("ActivityItem", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 

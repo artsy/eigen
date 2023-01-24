@@ -31,9 +31,6 @@ import { ConfirmBid, ConfirmBidProps } from "./ConfirmBid"
 import { CreditCardForm } from "./CreditCardForm"
 import { SelectMaxBid } from "./SelectMaxBid"
 
-// This lets us import the actual react-relay module, and replace specific functions within it with mocks.
-jest.unmock("react-relay")
-
 jest.mock("tipsi-stripe", () => ({
   setOptions: jest.fn(),
   paymentRequestWithCardForm: jest.fn(),

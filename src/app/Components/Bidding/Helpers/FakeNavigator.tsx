@@ -2,6 +2,9 @@ import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import React from "react"
 import { Route } from "react-native"
 
+/**
+ * @deprecated Stop using this. This is for mocking NavigationIOS, which has been deprecated for years.
+ */
 export class FakeNavigator {
   private stack: Route[] = []
 

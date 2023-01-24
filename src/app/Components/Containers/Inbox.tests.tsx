@@ -10,8 +10,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { InboxContainer, InboxPlaceholder } from "./Inbox"
 
-jest.unmock("react-relay")
-
 // impossible to test react-native-scrollable-tab-view without a mock
 jest.mock("react-native-scrollable-tab-view", () => {
   return {

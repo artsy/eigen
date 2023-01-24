@@ -4,8 +4,6 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { PartnerEntityHeaderFragmentContainer } from "./PartnerEntityHeader"
 
-jest.unmock("react-relay")
-
 describe("PartnerEntityHeader", () => {
   const { renderWithRelay } = setupTestWrapper<PartnerEntityHeaderTestsQuery>({
     Component: (props) => <PartnerEntityHeaderFragmentContainer partner={props.partner!} />,

@@ -5,8 +5,6 @@ import {
   FairBMWArtActivationFragmentContainer,
 } from "./FairBMWArtActivation"
 
-jest.unmock("react-relay")
-
 const { getWrapper } = setupTestWrapper_LEGACY({
   Component: FairBMWArtActivationFragmentContainer,
   query: FAIR_BMW_ART_ACTIVATION_QUERY,
