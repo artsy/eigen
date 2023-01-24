@@ -21,7 +21,7 @@ const Wrappers = ({ children }: { children: React.ReactNode }) =>
       GlobalStoreProvider,
       SafeAreaProvider,
       ProvideScreenDimensions, // uses: SafeAreaProvider
-      RelayDefaultEnvProvider,
+      RelayMockEnvProvider,
       Theme, // uses: GlobalStoreProvider
       PopoverMessageProvider,
       ToastProvider, // uses: GlobalStoreProvider
@@ -29,8 +29,10 @@ const Wrappers = ({ children }: { children: React.ReactNode }) =>
     children
   )
 
-const RelayDefaultEnvProvider = (props: { children?: React.ReactNode }) => (
-  <RelayEnvironmentProvider environment={getMockRelayEnvironment()} {...props} />
+const RelayMockEnvProvider = ({ children }: { children?: React.ReactNode }) => (
+  <RelayEnvironmentProvider environment={getMockRelayEnvironment()}>
+    {children}
+  </RelayEnvironmentProvider>
 )
 
 /**

@@ -1,4 +1,5 @@
 import { act, RenderResult } from "@testing-library/react-native"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { QueryRenderer } from "react-relay"
 import { GraphQLTaggedNode, OperationType } from "relay-runtime"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -83,7 +84,7 @@ export const setupTestWrapper = <T extends OperationType, ComponentProps = {}>({
   variables = {},
 }: SetupTestWrapper<T, ComponentProps>) => {
   const renderWithRelay = (mockResolvers: MockResolvers = {}, props: any = {}): RenderWithRelay => {
-    const env = createMockEnvironment()
+    const env = getMockRelayEnvironment()
 
     const TestRenderer = () => {
       return query ? (
