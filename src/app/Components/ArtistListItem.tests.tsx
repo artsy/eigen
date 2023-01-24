@@ -6,8 +6,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtistListItemContainer, formatTombstoneText } from "./ArtistListItem"
 
-jest.unmock("react-relay")
-
 describe("ArtistListItem", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 

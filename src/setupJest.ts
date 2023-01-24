@@ -540,6 +540,7 @@ jest.mock("app/utils/track/providers", () => ({
   postEventToProviders: jest.fn(),
 }))
 
+// TODO: DELETE THIS MOCK when that file is deleted.
 jest.mock("app/system/relay/createEnvironment", () => ({
   defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
   createEnvironment: require("relay-test-utils").createMockEnvironment,
@@ -547,6 +548,23 @@ jest.mock("app/system/relay/createEnvironment", () => ({
     this.defaultEnvironment = require("relay-test-utils").createMockEnvironment()
   },
 }))
+
+const { createMockEnvironment } = require("relay-test-utils")
+let mockEnvironment = createMockEnvironment()
+jest.mock("app/system/relay/defaultEnvironment", () => {
+  const mockedFunction = () => mockEnvironment
+  return {
+    getRelayEnvironment: mockedFunction,
+    getMockRelayEnvironment: mockedFunction,
+  }
+})
+const resetMockEnvironment = () => {
+  mockEnvironment = createMockEnvironment()
+}
+// resetting relay mock env before each test is needed, for a clean env to resolve on.
+beforeEach(() => {
+  resetMockEnvironment()
+})
 
 jest.mock("shared/hooks", () => {
   const React = require("react")

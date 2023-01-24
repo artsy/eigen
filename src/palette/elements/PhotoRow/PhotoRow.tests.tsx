@@ -7,8 +7,6 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { PhotoRow } from "./PhotoRow"
 
-jest.unmock("react-relay")
-
 const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 const mockHandlePhotoDelete = jest.fn()
 

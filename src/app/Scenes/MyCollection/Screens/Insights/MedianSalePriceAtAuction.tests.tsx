@@ -3,8 +3,6 @@ import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { MedianSalePriceAtAuction } from "./MedianSalePriceAtAuction"
 
-jest.unmock("react-relay")
-
 describe("MedianSalePriceAtAuction", () => {
   const { renderWithRelay } = setupTestWrapper({
     Component: (props) => (
@@ -13,18 +11,7 @@ describe("MedianSalePriceAtAuction", () => {
   })
 
   it("renders title", async () => {
-    renderWithRelay({
-      Artist: () => ({
-        internalID: "artist-id",
-        name: "Artist Name",
-        imageUrl: "image-url",
-      }),
-      Me: () => ({
-        myCollectionInfo: {
-          artistsCount: 3,
-        },
-      }),
-    })
+    renderWithRelay()
 
     await flushPromiseQueue()
 

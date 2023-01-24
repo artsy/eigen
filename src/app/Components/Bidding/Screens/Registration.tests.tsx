@@ -20,9 +20,6 @@ import { BillingAddress } from "./BillingAddress"
 import { CreditCardForm } from "./CreditCardForm"
 import { Registration } from "./Registration"
 
-// This lets us import the actual react-relay module, and replace specific functions within it with mocks.
-jest.unmock("react-relay")
-
 const commitMutationMock = (fn?: typeof relay.commitMutation) =>
   jest.fn<typeof relay.commitMutation, Parameters<typeof relay.commitMutation>>(fn as any)
 

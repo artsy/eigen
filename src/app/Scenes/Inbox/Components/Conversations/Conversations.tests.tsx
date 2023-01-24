@@ -6,8 +6,6 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ConversationsContainer } from "./Conversations"
 
-jest.unmock("react-relay")
-
 describe("messaging inbox", () => {
   let env: ReturnType<typeof createMockEnvironment>
 

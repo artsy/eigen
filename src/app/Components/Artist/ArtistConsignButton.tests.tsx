@@ -12,8 +12,6 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtistConsignButtonFragmentContainer, tests } from "./ArtistConsignButton"
 
-jest.unmock("react-relay")
-
 jest.mock("app/store/GlobalStore", () => ({
   GlobalStoreProvider: jest.requireActual("app/store/GlobalStore").GlobalStoreProvider,
   GlobalStore: jest.requireActual("app/store/GlobalStore").GlobalStore,

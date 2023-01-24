@@ -1,12 +1,13 @@
 import { act, RenderResult } from "@testing-library/react-native"
-import { QueryRenderer, RelayEnvironmentProvider } from "react-relay"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { QueryRenderer } from "react-relay"
 import { GraphQLTaggedNode, OperationType } from "relay-runtime"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "./renderWithWrappers"
 
-interface SetupTestWrapper<T extends OperationType> {
-  Component: React.ComponentType<T["response"]>
+interface SetupTestWrapper<T extends OperationType, ComponentProps> {
+  Component: React.ComponentType<T["response"] & ComponentProps>
   preloaded?: boolean
   query?: GraphQLTaggedNode
   variables?: T["variables"]
@@ -76,37 +77,31 @@ type RenderWithRelay = RenderResult & {
  *   expect(screen.getByText('name')).toEqual('Mock Name')
  * })
  */
-export const setupTestWrapper = <T extends OperationType>({
+export const setupTestWrapper = <T extends OperationType, ComponentProps = {}>({
   Component,
   preloaded = false,
   query,
   variables = {},
-}: SetupTestWrapper<T>) => {
+}: SetupTestWrapper<T, ComponentProps>) => {
   const renderWithRelay = (mockResolvers: MockResolvers = {}, props: any = {}): RenderWithRelay => {
-    const env = createMockEnvironment()
+    const env = getMockRelayEnvironment()
 
     const TestRenderer = () => {
-      return (
-        <>
-          {query ? (
-            <QueryRenderer<T>
-              environment={env}
-              variables={variables}
-              query={query}
-              render={({ props: relayProps, error }) => {
-                if (relayProps) {
-                  return <Component {...relayProps} {...props} />
-                } else if (error) {
-                  console.error(error)
-                }
-              }}
-            />
-          ) : (
-            <RelayEnvironmentProvider environment={env}>
-              <Component {...props} />
-            </RelayEnvironmentProvider>
-          )}
-        </>
+      return query ? (
+        <QueryRenderer<T>
+          environment={env}
+          variables={variables}
+          query={query}
+          render={({ props: relayProps, error }) => {
+            if (relayProps) {
+              return <Component {...relayProps} {...props} />
+            } else if (error) {
+              console.error(error)
+            }
+          }}
+        />
+      ) : (
+        <Component {...props} />
       )
     }
 

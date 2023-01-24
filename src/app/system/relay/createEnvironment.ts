@@ -1,3 +1,5 @@
+// TODO: DELETE THIS FILE PLEASE
+
 import { logRelayVerbose } from "app/utils/loggers"
 import {
   loggerMiddleware,
@@ -19,8 +21,10 @@ import { simpleLoggerMiddleware } from "./middlewares/simpleLoggerMiddleware"
 import { timingMiddleware } from "./middlewares/timingMiddleware"
 import { uploadMiddleware } from "./middlewares/uploadMiddleware"
 
-/// WARNING: Creates a whole new, separate Relay environment. Useful for testing.
-/// Use `defaultEnvironment` for production code.
+/**
+ * @deprecated Use `getRelayEnvironment()` instead.
+ * DO NOT USE THIS FUNCTION. It is only exported for legacy reasons.
+ */
 export function createEnvironment(
   networkConfig: ConstructorParameters<typeof RelayNetworkLayer> = [
     [
@@ -56,4 +60,8 @@ export function createEnvironment(
   })
 }
 
+/**
+ * @deprecated Use `getRelayEnvironment()` instead.
+ * DO NOT USE THIS FUNCTION. It is only exported for legacy reasons.
+ */
 export const defaultEnvironment = createEnvironment()

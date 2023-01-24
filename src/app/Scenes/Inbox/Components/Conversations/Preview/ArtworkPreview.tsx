@@ -36,15 +36,15 @@ const TitleAndDate = styled.View`
   flex-direction: row;
   justify-content: flex-start;
 `
-interface Props {
+export interface ArtworkPreviewProps {
   artwork: ArtworkPreview_artwork$data
   onSelected?: () => void
 }
 
-const track: Track<Props> = _track
+const track: Track<ArtworkPreviewProps> = _track
 
 @track()
-export class ArtworkPreview extends React.Component<Props> {
+export class ArtworkPreview extends React.Component<ArtworkPreviewProps> {
   @track((props) => ({
     action_type: Schema.ActionTypes.Tap,
     action_name: Schema.ActionNames.ConversationAttachmentArtwork,

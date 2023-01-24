@@ -1,14 +1,12 @@
 import { ArtistNotableWorksRailTestsQuery } from "__generated__/ArtistNotableWorksRailTestsQuery.graphql"
 import { ArtistNotableWorksRailFragmentContainer } from "app/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
-
-jest.unmock("react-relay")
 
 describe("Notable Works Rail", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+  const mockEnvironment = getMockRelayEnvironment()
 
   const TestWrapper = () => {
     return (
@@ -31,10 +29,6 @@ describe("Notable Works Rail", () => {
       />
     )
   }
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
 
   afterEach(() => {
     jest.clearAllMocks()

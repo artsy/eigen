@@ -7,8 +7,6 @@ import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
-jest.unmock("react-relay")
-
 describe("FairEditorial", () => {
   const trackEvent = useTracking().trackEvent
   const getWrapper = (mockResolvers = {}) => {

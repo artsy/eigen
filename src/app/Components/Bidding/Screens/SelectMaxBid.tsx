@@ -50,6 +50,10 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
     )
   }
 
+  _test_refreshSaleArtwork = (value: boolean) => {
+    this.setState({ isRefreshingSaleArtwork: value })
+  }
+
   onPressNext = () => {
     this.props.navigator.push({
       component: ConfirmBidScreen,
@@ -70,7 +74,7 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
       <Flex flex={1} m="2">
         <View style={{ flexGrow: 1, justifyContent: "center" }}>
           {this.state.isRefreshingSaleArtwork ? (
-            <ActivityIndicator />
+            <ActivityIndicator testID="spinner" />
           ) : (
             <ScreenDimensionsContext.Consumer>
               {({ height }) => (
@@ -95,7 +99,7 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
   }
 }
 
-const SelectMaxBidContainer = createRefetchContainer(
+export const SelectMaxBidContainer = createRefetchContainer(
   SelectMaxBid,
   {
     sale_artwork: graphql`
