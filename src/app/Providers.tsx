@@ -1,4 +1,5 @@
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { Spinner, Theme } from "palette"
 import { Component, Suspense } from "react"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
@@ -10,21 +11,30 @@ import { PopoverMessageProvider } from "./Components/PopoverMessage/PopoverMessa
 import { RetryErrorBoundary } from "./Components/RetryErrorBoundary"
 import { ToastProvider } from "./Components/Toast/toastHook"
 import { GlobalStore, GlobalStoreProvider, useFeatureFlag } from "./store/GlobalStore"
-import { defaultEnvironment } from "./system/relay/createEnvironment"
 import { GravityWebsocketContextProvider } from "./utils/Websockets/GravityWebsocketContext"
 import { combineProviders } from "./utils/combineProviders"
 import { UnleashProvider } from "./utils/experiments/UnleashProvider"
 import { track } from "./utils/track"
 
-export const Providers = ({ children }: { children?: React.ReactNode }) =>
+export const Providers = ({
+  children,
+  skipGestureHandler = false,
+  skipUnleash = false,
+  skipFancyModal = false,
+}: {
+  children?: React.ReactNode
+  skipGestureHandler?: boolean
+  skipUnleash?: boolean
+  skipFancyModal?: boolean
+}) =>
   combineProviders(
     [
       // order matters here, be careful!
       // if Provider A is using another Provider B, then A needs to appear below B.
-      GestureHandlerProvider,
+      !skipGestureHandler && GestureHandlerProvider,
       TrackingProvider,
       GlobalStoreProvider,
-      UnleashProvider, // uses: GlobalStoreProvider
+      !skipUnleash && UnleashProvider, // uses: GlobalStoreProvider
       SafeAreaProvider,
       ProvideScreenDimensions, // uses: SafeAreaProvider
       RelayDefaultEnvProvider,
@@ -33,7 +43,7 @@ export const Providers = ({ children }: { children?: React.ReactNode }) =>
       SuspenseProvider,
       ActionSheetProvider,
       PopoverMessageProvider,
-      _FancyModalPageWrapper,
+      !skipFancyModal && _FancyModalPageWrapper,
       ToastProvider, // uses: GlobalStoreProvider
       GravityWebsocketContextProvider, // uses GlobalStoreProvider
     ],
@@ -47,7 +57,7 @@ const GestureHandlerProvider = (props: { children?: React.ReactNode }) => (
 )
 
 const RelayDefaultEnvProvider = (props: { children?: React.ReactNode }) => (
-  <RelayEnvironmentProvider environment={defaultEnvironment} {...props} />
+  <RelayEnvironmentProvider environment={getRelayEnvironment()} {...props} />
 )
 
 const SuspenseProvider = (props: { children?: React.ReactNode }) => (

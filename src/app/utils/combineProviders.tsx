@@ -1,6 +1,10 @@
-type ProviderList = Array<
-  React.FC | React.ComponentClass<{ children: React.ReactNode }> | React.ComponentType
->
+type AllowedProvider =
+  | React.FC
+  | React.ComponentClass<{ children: React.ReactNode }>
+  | React.ComponentType
+type FilteredOutProvider = false | undefined
+
+type ProviderList = Array<AllowedProvider | FilteredOutProvider>
 
 /**
  * This function can takes a list of Providers and returns
@@ -33,4 +37,8 @@ type ProviderList = Array<
  * @returns A Provider that includes all the Providers from `list`.
  */
 export const combineProviders = (list: ProviderList, children: React.ReactNode) =>
-  list.reduceRight((acc, Provider) => <Provider>{acc}</Provider>, <>{children}</>)
+  (
+    list
+      // filter out falsy items
+      .filter(Boolean) as Array<AllowedProvider>
+  ).reduceRight((acc, Provider) => <Provider>{acc}</Provider>, <>{children}</>)

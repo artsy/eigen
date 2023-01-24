@@ -1,38 +1,16 @@
 import { render } from "@testing-library/react-native"
-import { PopoverMessageProvider } from "app/Components/PopoverMessage/PopoverMessageProvider"
-import { ToastProvider } from "app/Components/Toast/toastHook"
-import { GlobalStoreProvider } from "app/store/GlobalStore"
+import { Providers } from "app/Providers"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
-import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { combineProviders } from "app/utils/combineProviders"
 import { track } from "app/utils/track"
-import { Theme } from "palette"
 import { Component, Suspense } from "react"
-import { SafeAreaProvider } from "react-native-safe-area-context"
 import { Environment, RelayEnvironmentProvider } from "react-relay"
 import ReactTestRenderer from "react-test-renderer"
-import { ProvideScreenDimensions } from "shared/hooks"
 import { ReactElement } from "simple-markdown"
 
-const Wrappers = ({ children }: { children: React.ReactNode }) =>
-  combineProviders(
-    [
-      TrackingProvider,
-      GlobalStoreProvider,
-      SafeAreaProvider,
-      ProvideScreenDimensions, // uses: SafeAreaProvider
-      RelayMockEnvProvider,
-      Theme, // uses: GlobalStoreProvider
-      PopoverMessageProvider,
-      ToastProvider, // uses: GlobalStoreProvider
-    ],
-    children
-  )
-
-const RelayMockEnvProvider = ({ children }: { children?: React.ReactNode }) => (
-  <RelayEnvironmentProvider environment={getMockRelayEnvironment()}>
+const Wrappers = ({ children }: { children: React.ReactNode }) => (
+  <Providers skipGestureHandler skipUnleash skipFancyModal>
     {children}
-  </RelayEnvironmentProvider>
+  </Providers>
 )
 
 /**

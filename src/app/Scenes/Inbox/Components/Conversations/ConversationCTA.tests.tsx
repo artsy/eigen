@@ -11,7 +11,6 @@ import { CTAPopUp } from "./CTAPopUp"
 import { ConversationCTA, ConversationCTAFragmentContainer } from "./ConversationCTA"
 import { OpenInquiryModalButton } from "./OpenInquiryModalButton"
 import { ReviewOfferButton } from "./ReviewOfferButton"
-jest.unmock("react-relay")
 
 describe("ConversationCTA", () => {
   let env: ReturnType<typeof createMockEnvironment>
