@@ -36,7 +36,7 @@ export interface BottomTabsModel {
     tabProps: Partial<{ [k in BottomTabType]: object }>
     selectedTab: BottomTabType
   }
-  lastNotificationPublishedAt: string | null
+  lastSeendNotificationPublishedAt: string | null
   syncApplicationIconBadgeNumber: ThunkOn<BottomTabsModel>
   unreadConversationCountChanged: Action<BottomTabsModel, number>
   syncActivityPanelState: Action<
@@ -60,7 +60,7 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
     tabProps: {},
     selectedTab: "home",
   },
-  lastNotificationPublishedAt: null,
+  lastSeendNotificationPublishedAt: null,
   syncApplicationIconBadgeNumber: thunkOn(
     (actions) => [
       actions.unreadConversationCountChanged,
@@ -194,14 +194,14 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
     })
     const lastNotification = notifications[0] as NotificationNode | undefined
     const lastNotificationPublishedAt = lastNotification?.publishedAt ?? null
-    const isLastPublishedAtEmpty =
-      state.lastNotificationPublishedAt === null && lastNotificationPublishedAt
+    const isLastSeenPublishedAtEmpty =
+      state.lastSeendNotificationPublishedAt === null && lastNotificationPublishedAt
     const isNewPublishedAtAvailable = checkIsNewPublishedAt(
-      state.lastNotificationPublishedAt,
+      state.lastSeendNotificationPublishedAt,
       lastNotificationPublishedAt
     )
 
-    if (isLastPublishedAtEmpty || isNewPublishedAtAvailable) {
+    if (isLastSeenPublishedAtEmpty || isNewPublishedAtAvailable) {
       state.sessionState.displayUnreadActivityPanelIndicator = payload.unreadCount > 0
     }
   }),
