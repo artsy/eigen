@@ -11216,7 +11216,7 @@ type Money {
   ): Float!
 
   # An amount of money expressed in minor units (like cents).
-  minor: Int!
+  minor: Long!
 }
 
 # A money object with amount in minor currency and a currency code, or an error object
@@ -11786,8 +11786,8 @@ input MyCollectionCreateArtworkInput {
   medium: String
   metric: String
 
-  # @deprecated use the cost major and cost minor fields instead
-  pricePaidCents: Int
+  # The price paid for the MyCollection artwork in cents for any given currency
+  pricePaidCents: Long
   pricePaidCurrency: String
   provenance: String
   submissionId: String
@@ -11871,7 +11871,7 @@ input MyCollectionUpdateArtworkInput {
   isEdition: Boolean
   medium: String
   metric: String
-  pricePaidCents: Int
+  pricePaidCents: Long
   pricePaidCurrency: String
   provenance: String
   submissionId: String
