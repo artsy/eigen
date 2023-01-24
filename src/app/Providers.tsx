@@ -21,11 +21,13 @@ export const Providers = ({
   skipGestureHandler = false,
   skipUnleash = false,
   skipFancyModal = false,
+  skipActionSheet = false,
 }: {
   children?: React.ReactNode
   skipGestureHandler?: boolean
   skipUnleash?: boolean
   skipFancyModal?: boolean
+  skipActionSheet?: boolean
 }) =>
   combineProviders(
     [
@@ -41,7 +43,7 @@ export const Providers = ({
       ThemeProvider, // uses: GlobalStoreProvider
       RetryErrorBoundary,
       SuspenseProvider,
-      ActionSheetProvider,
+      !skipActionSheet && ActionSheetProvider,
       PopoverMessageProvider,
       !skipFancyModal && _FancyModalPageWrapper,
       ToastProvider, // uses: GlobalStoreProvider
