@@ -416,7 +416,7 @@ describe("MyCollectionArtworkForm", () => {
           title: "some-art-piece",
           photos: fakePhotos,
           artworkLocation: "some-location",
-          attributionClass: "some-attribution-class",
+          attributionClass: "LIMITED_EDITION",
         }
         const formCheckValues = formValues
         const props: MyCollectionArtworkFormProps = {

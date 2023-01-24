@@ -333,7 +333,6 @@ export const updateArtwork = async (
       artistIds: artistSearchResult?.internalID ? [artistSearchResult?.internalID] : undefined,
       artists: artistDisplayName ? [{ displayName: artistDisplayName }] : undefined,
       artworkLocation: others.artworkLocation,
-      // @ts-expect-error
       attributionClass: others.attributionClass || undefined,
       category: others.category,
       date: others.date,
@@ -367,7 +366,6 @@ export const updateArtwork = async (
       artistIds: artistSearchResult?.internalID ? [artistSearchResult?.internalID] : [],
       artworkId: props.artwork.internalID,
       artworkLocation: others.artworkLocation,
-      // @ts-expect-error
       attributionClass: others.attributionClass || undefined,
       category: others.category,
       date: others.date,
