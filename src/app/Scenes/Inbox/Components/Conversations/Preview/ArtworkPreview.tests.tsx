@@ -11,7 +11,7 @@ describe("concerning selection handling", () => {
       <ArtworkPreview artwork={artwork!} onSelected={onSelected} />
     ),
     query: graphql`
-      query ArtworkPreviewTestsQuery {
+      query ArtworkPreviewTestsQuery @relay_test_operation {
         artwork(id: "bradley-theodore-karl-and-anna-face-off-diptych") {
           ...ArtworkPreview_artwork
         }

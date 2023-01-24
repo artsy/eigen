@@ -3,6 +3,7 @@ import { PopoverMessageProvider } from "app/Components/PopoverMessage/PopoverMes
 import { ToastProvider } from "app/Components/Toast/toastHook"
 import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { combineProviders } from "app/utils/combineProviders"
 import { track } from "app/utils/track"
 import { Theme } from "palette"
@@ -20,12 +21,17 @@ const Wrappers = ({ children }: { children: React.ReactNode }) =>
       GlobalStoreProvider,
       SafeAreaProvider,
       ProvideScreenDimensions, // uses: SafeAreaProvider
+      RelayDefaultEnvProvider,
       Theme, // uses: GlobalStoreProvider
       PopoverMessageProvider,
       ToastProvider, // uses: GlobalStoreProvider
     ],
     children
   )
+
+const RelayDefaultEnvProvider = (props: { children?: React.ReactNode }) => (
+  <RelayEnvironmentProvider environment={getMockRelayEnvironment()} {...props} />
+)
 
 /**
  * Returns given component wrapped with our page wrappers
