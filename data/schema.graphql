@@ -2055,7 +2055,10 @@ type Artwork implements Node & Searchable & Sellable {
   fair: Fair
 
   # A list of images and videos for the artwork
-  figures: [ArtworkFigures!]!
+  figures(
+    # Include all images, even if they are not ready or processing failed.
+    includeAll: Boolean
+  ): [ArtworkFigures!]!
 
   # Formatted artwork metadata, including artist, title, date and partner; e.g., 'Andy Warhol, Truck, 1980, Westward Gallery'.
   formattedMetadata: String
