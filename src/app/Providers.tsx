@@ -23,6 +23,7 @@ export const Providers = ({
   skipFancyModal = false,
   skipActionSheet = false,
   skipSuspense = false,
+  skipWebsocket = false,
   simpleTheme = false,
 }: {
   children?: React.ReactNode
@@ -31,6 +32,7 @@ export const Providers = ({
   skipFancyModal?: boolean
   skipActionSheet?: boolean
   skipSuspense?: boolean
+  skipWebsocket?: boolean
   simpleTheme?: boolean
 }) =>
   combineProviders(
@@ -51,7 +53,7 @@ export const Providers = ({
       PopoverMessageProvider,
       !skipFancyModal && _FancyModalPageWrapper,
       ToastProvider, // uses: GlobalStoreProvider
-      GravityWebsocketContextProvider, // uses GlobalStoreProvider
+      !skipWebsocket && GravityWebsocketContextProvider, // uses GlobalStoreProvider
     ],
     children
   )

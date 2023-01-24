@@ -8,7 +8,15 @@ import ReactTestRenderer from "react-test-renderer"
 import { ReactElement } from "simple-markdown"
 
 const Wrappers = ({ children }: { children: React.ReactNode }) => (
-  <Providers skipGestureHandler skipUnleash skipFancyModal skipActionSheet simpleTheme skipSuspense>
+  <Providers
+    skipGestureHandler
+    skipUnleash
+    skipFancyModal
+    skipActionSheet
+    simpleTheme
+    skipSuspense
+    skipWebsocket
+  >
     {children}
   </Providers>
 )
