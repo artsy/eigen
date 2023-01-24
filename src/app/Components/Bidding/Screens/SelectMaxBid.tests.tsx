@@ -6,12 +6,12 @@ import { SelectMaxBid, SelectMaxBidContainer } from "./SelectMaxBid"
 
 describe("SelectMaxBid", () => {
   const { renderWithRelay } = setupTestWrapper<SelectMaxBidTestsQuery>({
-    Component: ({ me, artwork }) => (
-      <SelectMaxBidContainer me={me!} sale_artwork={artwork!.sale_artwork!} navigator={null!} />
+    Component: ({ me, sale_artwork }) => (
+      <SelectMaxBidContainer me={me!} sale_artwork={sale_artwork!} navigator={null!} />
     ),
     query: graphql`
-      query SelectMaxBidTestsQuery {
-        sale_artwork: saleArtwork(saleID: "wow") {
+      query SelectMaxBidTestsQuery($saleID: String!) @relay_test_operation {
+        sale_artwork: saleArtwork(id: "wow") {
           ...SelectMaxBid_sale_artwork
         }
         me {
