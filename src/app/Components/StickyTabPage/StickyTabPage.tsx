@@ -165,7 +165,7 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
               {tabs.map(({ content }, index) => {
                 return (
                   <View style={{ flex: 1, width }} key={index}>
-                    <StickyTabPageFlatListContext.Provider
+                    {/* <StickyTabPageFlatListContext.Provider
                       value={{
                         tabIsActive: Animated.eq(index, activeTabIndexNative),
                         __INTERNAL__indexInRail: index,
@@ -180,7 +180,7 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
                       }}
                     >
                       {typeof content === "function" ? content(index) : content}
-                    </StickyTabPageFlatListContext.Provider>
+                    </StickyTabPageFlatListContext.Provider> */}
                   </View>
                 )
               })}
@@ -197,12 +197,12 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
           {enablePanOnStaticHeader ? (
             <StaticHeaderContainer registeredListRefs={registeredListRefs.current}>
               {staticHeader}
-              {stickyHeader}
+              {/* {stickyHeader} */}
             </StaticHeaderContainer>
           ) : (
             <Box backgroundColor="white100">
               {staticHeader}
-              {stickyHeader}
+              {/* {stickyHeader} */}
             </Box>
           )}
           <SnappyHorizontalRail
