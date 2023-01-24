@@ -184,11 +184,13 @@ const AuctionResultPriceSection = ({
     )
   }
 
+  const resultText = auctionResultText(auctionResult)
+
   return (
     <Flex flexDirection="row" alignItems="center">
-      <Stopwatch height={15} width={15} mr={0.5} />
+      {resultText === "Awaiting results" && <Stopwatch height={15} width={15} mr={0.5} />}
       <Text variant="xs" testID="price" italic>
-        {auctionResultText(auctionResult)}
+        {resultText}
       </Text>
     </Flex>
   )
