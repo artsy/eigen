@@ -92,6 +92,7 @@ export const ArtQuizArtworks = () => {
   }
 
   const handleOnBack = () => {
+    popoverMessage.hide()
     if (activeCardIndex === 0) {
       goBack()
     } else {
