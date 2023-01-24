@@ -84,7 +84,7 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
 
   useEffect(() => {
     if (type === "all" && recentNotificationPublishedAt) {
-      GlobalStore.actions.bottomTabs.setLastSeendNotificationPublishedAt(
+      GlobalStore.actions.bottomTabs.setLastSeenNotificationPublishedAt(
         recentNotificationPublishedAt
       )
     }

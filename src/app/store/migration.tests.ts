@@ -817,19 +817,19 @@ describe("App version Versions.MoveEnvironmentToDevicePrefsAndRenameAdminToLocal
 describe("App version Versions.AddLastSeenNotificationPublishedAt", () => {
   const migrationToTest = Versions.AddLastSeenNotificationPublishedAt
 
-  it("add lastSeendNotificationPublishedAt", () => {
+  it("add lastSeenNotificationPublishedAt", () => {
     const previousState = migrate({
       state: { version: 0 },
       toVersion: migrationToTest - 1,
     }) as any
 
-    expect(previousState.bottomTabs.lastSeendNotificationPublishedAt).toEqual(undefined)
+    expect(previousState.bottomTabs.lastSeenNotificationPublishedAt).toEqual(undefined)
 
     const migratedState = migrate({
       state: previousState,
       toVersion: migrationToTest,
     }) as any
 
-    expect(migratedState.bottomTabs.lastSeendNotificationPublishedAt).toEqual(null)
+    expect(migratedState.bottomTabs.lastSeenNotificationPublishedAt).toEqual(null)
   })
 })

@@ -269,7 +269,7 @@ export const artsyAppMigrations: Migrations = {
     state.artworkSubmission.submission.dirtyArtworkDetailsValues.category = null
   },
   [Versions.AddLastSeenNotificationPublishedAt]: (state) => {
-    state.bottomTabs.lastSeendNotificationPublishedAt = null
+    state.bottomTabs.lastSeenNotificationPublishedAt = null
   },
 }
 

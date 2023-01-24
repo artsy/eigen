@@ -36,8 +36,8 @@ export interface BottomTabsModel {
     tabProps: Partial<{ [k in BottomTabType]: object }>
     selectedTab: BottomTabType
   }
-  lastSeendNotificationPublishedAt: string | null
-  setLastSeendNotificationPublishedAt: Action<BottomTabsModel, string | null>
+  lastSeenNotificationPublishedAt: string | null
+  setLastSeenNotificationPublishedAt: Action<BottomTabsModel, string | null>
   syncApplicationIconBadgeNumber: ThunkOn<BottomTabsModel>
   unreadConversationCountChanged: Action<BottomTabsModel, number>
   syncActivityPanelState: Action<
@@ -61,9 +61,9 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
     tabProps: {},
     selectedTab: "home",
   },
-  lastSeendNotificationPublishedAt: null,
-  setLastSeendNotificationPublishedAt: action((state, payload) => {
-    state.lastSeendNotificationPublishedAt = payload
+  lastSeenNotificationPublishedAt: null,
+  setLastSeenNotificationPublishedAt: action((state, payload) => {
+    state.lastSeenNotificationPublishedAt = payload
   }),
   syncApplicationIconBadgeNumber: thunkOn(
     (actions) => [
@@ -199,9 +199,9 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
     const lastNotification = notifications[0] as NotificationNode | undefined
     const lastNotificationPublishedAt = lastNotification?.publishedAt ?? null
     const isLastSeenPublishedAtEmpty =
-      state.lastSeendNotificationPublishedAt === null && lastNotificationPublishedAt
+      state.lastSeenNotificationPublishedAt === null && lastNotificationPublishedAt
     const isNewPublishedAtAvailable = checkIsNewPublishedAt(
-      state.lastSeendNotificationPublishedAt,
+      state.lastSeenNotificationPublishedAt,
       lastNotificationPublishedAt
     )
 
