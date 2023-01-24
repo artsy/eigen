@@ -37,14 +37,16 @@ export const uploadPhotos = async (photos: ArtworkFormValues["photos"]) => {
     .filter((path): path is string => path !== undefined)
   const externalImageUrls: string[] = []
 
-  for (const path of imagePaths) {
-    const url = await getConvertedImageUrlFromS3(path)
-    if (!url) {
-      console.error(`Could not get converted image url for ${path}`)
-      continue
-    }
-    externalImageUrls.push(url)
-  }
+  await Promise.all(imagePaths.map((path) => getConvertedImageUrlFromS3(path))).then((urls) => {
+    urls.forEach((url) => {
+      if (!url) {
+        console.error(`Could not get converted image url for ${imagePaths[urls.indexOf(url)]}`)
+        return
+      }
+      externalImageUrls.push(url)
+    })
+  })
+
   return externalImageUrls
 }
 

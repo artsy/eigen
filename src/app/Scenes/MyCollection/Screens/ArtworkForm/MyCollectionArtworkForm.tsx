@@ -18,13 +18,9 @@ import { deleteArtworkImage } from "app/Scenes/MyCollection/mutations/deleteArtw
 import { myCollectionCreateArtwork } from "app/Scenes/MyCollection/mutations/myCollectionCreateArtwork"
 import { myCollectionDeleteArtwork } from "app/Scenes/MyCollection/mutations/myCollectionDeleteArtwork"
 import { myCollectionUpdateArtwork } from "app/Scenes/MyCollection/mutations/myCollectionUpdateArtwork"
-import {
-  cleanArtworkPayload,
-  explicitlyClearedFields,
-} from "app/Scenes/MyCollection/utils/cleanArtworkPayload"
 import { deletedPhotos } from "app/Scenes/MyCollection/utils/deletedPhotos"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { addClue, GlobalStore, setVisualClueAsSeen } from "app/store/GlobalStore"
+import { GlobalStore, addClue, setVisualClueAsSeen } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { refreshMyCollection, refreshMyCollectionInsights } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
@@ -319,6 +315,7 @@ export const updateArtwork = async (
     artistDisplayName,
     ...others
   } = values
+
   const externalImageUrls = await uploadPhotos(photos)
 
   let pricePaidCents
@@ -331,23 +328,35 @@ export const updateArtwork = async (
     others.editionSize = ""
   }
 
-  const { artist, ...restOfOthers } = others
-
   if (props.mode === "add") {
-    console.log("cleanArtworkPayload(others)", cleanArtworkPayload(others))
     const response = await myCollectionCreateArtwork({
-      ...cleanArtworkPayload(restOfOthers),
       artistIds: artistSearchResult?.internalID ? [artistSearchResult?.internalID] : undefined,
       artists: artistDisplayName ? [{ displayName: artistDisplayName }] : undefined,
+      artworkLocation: others.artworkLocation,
+      // @ts-expect-error
+      attributionClass: others.attributionClass || undefined,
+      category: others.category,
+      date: others.date,
+      depth: others.depth,
+      editionNumber: others.editionNumber,
+      editionSize: others.editionSize,
       externalImageUrls,
+      height: others.height,
+      isEdition: others.isEdition,
+      medium: others.medium,
+      metric: others.metric,
       pricePaidCents,
       pricePaidCurrency,
+      provenance: others.provenance,
+      title: others.title,
+      width: others.width,
     })
 
     const slug = response.myCollectionCreateArtwork?.artworkOrError?.artworkEdge?.node?.slug
     if (slug) {
       storeLocalPhotos(slug, photos)
     }
+
     const hasMarketPriceInsights =
       response.myCollectionCreateArtwork?.artworkOrError?.artworkEdge?.node?.hasMarketPriceInsights
 
@@ -357,11 +366,24 @@ export const updateArtwork = async (
     const response = await myCollectionUpdateArtwork({
       artistIds: artistSearchResult?.internalID ? [artistSearchResult?.internalID] : [],
       artworkId: props.artwork.internalID,
+      artworkLocation: others.artworkLocation,
+      // @ts-expect-error
+      attributionClass: others.attributionClass || undefined,
+      category: others.category,
+      date: others.date,
+      depth: others.depth,
+      editionNumber: others.editionNumber,
+      editionSize: others.editionSize,
       externalImageUrls,
+      height: others.height,
+      isEdition: others.isEdition,
+      medium: others.medium,
+      metric: others.metric,
       pricePaidCents: pricePaidCents ?? null,
       pricePaidCurrency,
-      ...cleanArtworkPayload(restOfOthers),
-      ...explicitlyClearedFields(restOfOthers, dirtyFormCheckValues),
+      provenance: others.provenance,
+      title: others.title,
+      width: others.width,
     })
 
     const slug = response.myCollectionUpdateArtwork?.artworkOrError?.artwork?.slug
