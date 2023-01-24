@@ -3502,6 +3502,14 @@ type CitySponsoredContent {
 
 # A collection of artworks
 type Collection {
+  artworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    sort: CollectionSorts
+  ): ArtworkConnection
+
   # Number of artworks associated with this collection.
   artworksCount: Int!
 
@@ -3525,6 +3533,8 @@ type Collection {
 enum CollectionSorts {
   POSITION_ASC
   POSITION_DESC
+  SAVED_AT_ASC
+  SAVED_AT_DESC
 }
 
 type CollectorProfileArtists {
