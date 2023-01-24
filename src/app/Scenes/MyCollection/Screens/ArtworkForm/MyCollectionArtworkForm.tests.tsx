@@ -174,9 +174,13 @@ describe("MyCollectionArtworkForm", () => {
                 "internal-id",
               ],
               "artists": undefined,
+              "artworkLocation": "",
+              "attributionClass": undefined,
               "category": "Print",
               "date": "2007",
               "depth": 40,
+              "editionNumber": "",
+              "editionSize": "",
               "externalImageUrls": [
                 "https://some-bucket.s3.amazonaws.com/undefined",
               ],
@@ -187,6 +191,7 @@ describe("MyCollectionArtworkForm", () => {
               "metric": "in",
               "pricePaidCents": undefined,
               "pricePaidCurrency": "USD",
+              "provenance": "",
               "title": "Morons",
               "width": 30,
             },
@@ -411,7 +416,7 @@ describe("MyCollectionArtworkForm", () => {
           title: "some-art-piece",
           photos: fakePhotos,
           artworkLocation: "some-location",
-          attributionClass: "some-attribution-class",
+          attributionClass: "LIMITED_EDITION",
         }
         const formCheckValues = formValues
         const props: MyCollectionArtworkFormProps = {
