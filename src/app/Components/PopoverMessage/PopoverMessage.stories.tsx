@@ -53,6 +53,13 @@ storiesOf("Popover message", module)
       />
     </List>
   ))
+  .add("With Pointer", () => (
+    <List>
+      <PopoverMessage label="With bottom pointer" title="Some title" withPointer="bottom" />
+      <PopoverMessage label="With top pointer" title="Some title" withPointer="top" />
+      <PopoverMessage label="With out pointer" title="Some title" />
+    </List>
+  ))
   .add("Miscellaneous", () => (
     <List>
       <PopoverMessage label="Auto close in 5 seconds" title="Some title" hideTimeout={5000} />

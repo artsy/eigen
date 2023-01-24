@@ -79,10 +79,11 @@ const NAVBAR_HEIGHT = 44
 
 interface HeaderProps {
   onBack?: () => void
+  title?: string
   onSkip?: () => void
 }
 
-export const Header: React.FC<HeaderProps> = ({ onBack, onSkip }) => {
+export const Header: React.FC<HeaderProps> = ({ onBack, title, onSkip }) => {
   useUpdateScreenContext({ header: "regular" })
   const insets = useSafeAreaInsets()
 
@@ -104,6 +105,7 @@ export const Header: React.FC<HeaderProps> = ({ onBack, onSkip }) => {
           />
         )}
       </Flex>
+      {!!title && <Text>{title}</Text>}
       {!!onSkip && (
         <Touchable haptic="impactLight" onPress={onSkip}>
           <Flex height="100%" justifyContent="center">
