@@ -195,17 +195,12 @@ lane :ship_beta_android_play_store do
   )
 end
 
-lane :test_date_version do
-  test_version = DateTime.now.strftime('%s')
-  vname, vcode = set_build_version_android(version: test_version.to_s)
-end
-
 lane :test_aab_upload do
   sh("yarn jetifier")
   sh("yarn relay")
 
   test_version = DateTime.now.strftime('%s')
-  vname, vcode = set_build_version_android(version: test_version.to_s)
+  vname, vcode = set_build_version_android(version_code: test_version.to_s)
   # tag_and_push(tag: "android-#{vname}-#{vcode}")
 
   # sentry_release_name = "android-#{vname}-#{vcode}"

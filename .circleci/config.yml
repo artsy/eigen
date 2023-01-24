@@ -435,6 +435,20 @@ jobs:
           no_output_timeout: 20m
           command: ./scripts/deploy-if-beta-branch-ios
 
+  test-aab-upload:
+    environment:
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
+    docker:
+      - image: circleci/android:api-29-node
+    resource_class: large
+    steps:
+      - prep-android-env
+      - await-previous-builds:
+          branch: beta-android
+      - run:
+          name: Test aab upload
+          command: bundle exec fastlane test_aab_upload
+
   build-test-app-android:
     environment:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
@@ -589,6 +603,20 @@ workflows:
               only:
                 - beta-ios
                 - beta-android
+
+      - test-aab-upload:
+          filters:
+            branches:
+              ignore:
+                - app_store_submission
+                - play_store_submission
+                - beta-android
+                - update-changelog
+          requires:
+            - test-js
+            - type-check
+            - build-test-js
+            - horizon/block
 
       - build-test-app-ios:
           filters:
