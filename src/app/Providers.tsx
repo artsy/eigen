@@ -22,12 +22,16 @@ export const Providers = ({
   skipUnleash = false,
   skipFancyModal = false,
   skipActionSheet = false,
+  skipSuspense = false,
+  simpleTheme = false,
 }: {
   children?: React.ReactNode
   skipGestureHandler?: boolean
   skipUnleash?: boolean
   skipFancyModal?: boolean
   skipActionSheet?: boolean
+  skipSuspense?: boolean
+  simpleTheme?: boolean
 }) =>
   combineProviders(
     [
@@ -40,9 +44,9 @@ export const Providers = ({
       SafeAreaProvider,
       ProvideScreenDimensions, // uses: SafeAreaProvider
       RelayDefaultEnvProvider,
-      ThemeProvider, // uses: GlobalStoreProvider
+      simpleTheme ? Theme : ThemeProvider, // uses: GlobalStoreProvider
       RetryErrorBoundary,
-      SuspenseProvider,
+      !skipSuspense && SuspenseProvider,
       !skipActionSheet && ActionSheetProvider,
       PopoverMessageProvider,
       !skipFancyModal && _FancyModalPageWrapper,
