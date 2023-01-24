@@ -15,7 +15,7 @@ import { graphql, useLazyLoadQuery, useMutation } from "react-relay"
 import { ArtQuizNavigationStack } from "./ArtQuiz"
 
 export const ArtQuizArtworks = () => {
-  const { goBack } = useNavigation<NavigationProp<ArtQuizNavigationStack>>()
+  const { goBack, navigate } = useNavigation<NavigationProp<ArtQuizNavigationStack>>()
   const { onDone } = useOnboardingContext()
   const [activeCardIndex, setActiveCardIndex] = useState(0)
   const artQuizArtworksQueryResult = useLazyLoadQuery<ArtQuizArtworksQuery>(
@@ -58,37 +58,43 @@ export const ArtQuizArtworks = () => {
 
   const handleNext = (action: "Like" | "Dislike") => {
     popoverMessage.hide()
+
+    if (activeCardIndex + 1 === mockArtworks.length) {
+      navigate("ArtQuizResults")
+      return
+    }
+
     pagerViewRef.current?.setPage(activeCardIndex + 1)
 
-    if (action === "Like") {
-      submitSave({
-        variables: {
-          input: {
-            artworkID: currentArtwork.internalID,
-          },
-        },
-      })
-    }
+    // if (action === "Like") {
+    //   submitSave({
+    //     variables: {
+    //       input: {
+    //         artworkID: currentArtwork.internalID,
+    //       },
+    //     },
+    //   })
+    // }
 
-    if (action === "Dislike") {
-      submitDislike({
-        variables: {
-          input: {
-            artworkID: currentArtwork.internalID,
-            remove: false,
-          },
-        },
-      })
-    }
+    // if (action === "Dislike") {
+    //   submitDislike({
+    //     variables: {
+    //       input: {
+    //         artworkID: currentArtwork.internalID,
+    //         remove: false,
+    //       },
+    //     },
+    //   })
+    // }
 
-    submitUpdate({
-      variables: {
-        input: {
-          artworkId: currentArtwork.internalID,
-          userId: userID!,
-        },
-      },
-    })
+    // submitUpdate({
+    //   variables: {
+    //     input: {
+    //       artworkId: currentArtwork.internalID,
+    //       userId: userID!,
+    //     },
+    //   },
+    // })
   }
 
   const handleOnBack = () => {
@@ -99,37 +105,37 @@ export const ArtQuizArtworks = () => {
       pagerViewRef.current?.setPage(activeCardIndex - 1)
       const { isSaved, isDisliked } = previousArtwork
 
-      if (isSaved) {
-        submitSave({
-          variables: {
-            input: {
-              artworkID: previousArtwork.internalID,
-              remove: true,
-            },
-          },
-        })
-      }
+      // if (isSaved) {
+      //   submitSave({
+      //     variables: {
+      //       input: {
+      //         artworkID: previousArtwork.internalID,
+      //         remove: true,
+      //       },
+      //     },
+      //   })
+      // }
 
-      if (isDisliked) {
-        submitDislike({
-          variables: {
-            input: {
-              artworkID: previousArtwork.internalID,
-              remove: true,
-            },
-          },
-        })
-      }
+      // if (isDisliked) {
+      //   submitDislike({
+      //     variables: {
+      //       input: {
+      //         artworkID: previousArtwork.internalID,
+      //         remove: true,
+      //       },
+      //     },
+      //   })
+      // }
 
-      submitUpdate({
-        variables: {
-          input: {
-            artworkId: previousArtwork.internalID,
-            userId: userID!,
-            clearInteraction: true,
-          },
-        },
-      })
+      // submitUpdate({
+      //   variables: {
+      //     input: {
+      //       artworkId: previousArtwork.internalID,
+      //       userId: userID!,
+      //       clearInteraction: true,
+      //     },
+      //   },
+      // })
     }
   }
 
@@ -143,11 +149,49 @@ export const ArtQuizArtworks = () => {
     popoverMessage.hide()
   }
 
+  const mockArtworks = [
+    {
+      internalID: 1,
+      imageUrl:
+        "https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    },
+    {
+      internalID: 2,
+      imageUrl:
+        "https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Ym9va3xlbnwwfHwwfHw%3D&w=1000&q=80",
+    },
+    {
+      internalID: 3,
+      imageUrl:
+        "https://images.unsplash.com/photo-1581456495146-65a71b2c8e52?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8aHVtYW58ZW58MHx8MHx8&w=1000&q=80",
+    },
+    {
+      internalID: 4,
+      imageUrl:
+        "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8&w=1000&q=80",
+    },
+    {
+      internalID: 5,
+      imageUrl:
+        "https://www.istockphoto.com/resources/images/PhotoFTLP/P4-JAN-iStock-1432854572.jpg",
+    },
+    {
+      internalID: 6,
+      imageUrl:
+        "https://media.istockphoto.com/id/157692655/photo/i-crush-you.jpg?s=612x612&w=0&k=20&c=NULhua4fjqhI6_NouyOqIpT7VXUBn3LXiOD5isVDGqY=",
+    },
+    {
+      internalID: 7,
+      imageUrl:
+        "https://media.istockphoto.com/id/471774763/photo/business-men-hiding-head-in-sand.jpg?s=170x170&k=20&c=X2upa11XjVExOfhD1z-TCX3lYVPssvDtbGc6pKslGHE=",
+    },
+  ]
+
   return (
     <Screen>
       <Screen.Header
         onBack={handleOnBack}
-        title={`${activeCardIndex + 1}/${artworks.length}`}
+        title={`${activeCardIndex + 1}/${mockArtworks.length}`}
         onSkip={handleOnSkip}
       />
       <Screen.Body>
@@ -159,7 +203,7 @@ export const ArtQuizArtworks = () => {
             onPageScroll={handleIndexChange}
             overdrag
           >
-            {artworks.map((artwork) => {
+            {mockArtworks.map((artwork) => {
               return (
                 <Flex key={artwork.internalID}>
                   <Image
