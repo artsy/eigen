@@ -54,6 +54,7 @@ describe("MyCollectionArtworkModel", () => {
     const artworkState = __globalStoreTestUtils__?.getCurrentState().myCollection.artwork
     const expectedInitialFormValues = {
       artist: "",
+      artistDisplayName: undefined,
       artistIds: [],
       artworkLocation: "",
       artistSearchResult: null,
@@ -72,7 +73,7 @@ describe("MyCollectionArtworkModel", () => {
       provenance: "",
       title: "",
       width: "",
-      attributionClass: "",
+      attributionClass: undefined,
     }
     expect(artworkState?.sessionState.formValues).toEqual(expectedInitialFormValues)
   })
