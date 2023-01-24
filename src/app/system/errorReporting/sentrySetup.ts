@@ -13,6 +13,12 @@ export const eigenSentryReleaseName = () => {
 }
 
 export function setupSentry(props: Partial<Sentry.ReactNativeOptions> = {}) {
+  // In DEV, enabling this will clober stack traces in errors and logs, obscuring
+  // the source of the error. So we disable it in dev mode.
+  if (__DEV__) {
+    console.log("[dev] Sentry disabled in dev mode.")
+    return
+  }
   if (!Config.SENTRY_DSN) {
     console.error("Sentry DSN not set!!")
     return
