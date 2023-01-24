@@ -8,6 +8,7 @@ import {
   StickyTabSection,
 } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { Flex, Separator, Spinner } from "palette"
 import { useContext, useEffect, useState } from "react"
@@ -43,6 +44,9 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
     return true
   })
 
+  const recentNotification = notifications[0]
+  const recentNotificationPublishedAt = recentNotification?.rawPublishedAt
+
   const sections: StickyTabSection[] = notifications.map((notification) => ({
     key: notification.internalID,
     content: <ActivityItem item={notification} />,
@@ -77,6 +81,14 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type, me }) 
       </>
     )
   }, [hasUnreadNotifications])
+
+  useEffect(() => {
+    if (type === "all" && recentNotificationPublishedAt) {
+      GlobalStore.actions.bottomTabs.setLastSeendNotificationPublishedAt(
+        recentNotificationPublishedAt
+      )
+    }
+  }, [type, recentNotificationPublishedAt])
 
   if (notifications.length === 0) {
     return (
@@ -130,6 +142,7 @@ const notificationsConnectionFragment = graphql`
         node {
           internalID
           notificationType
+          rawPublishedAt: publishedAt
           artworks: artworksConnection {
             totalCount
           }
