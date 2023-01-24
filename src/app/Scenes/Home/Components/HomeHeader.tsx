@@ -3,7 +3,7 @@ import { ArtsyLogoIcon, Box, Flex, Spacer } from "palette"
 import { ActivityIndicator } from "./ActivityIndicator"
 
 export const HomeHeader: React.FC = () => {
-  const shouldUnreadActivityPanelIndicator = GlobalStore.useAppState(
+  const shouldDisplayActivityPanelIndicator = GlobalStore.useAppState(
     (state) => state.bottomTabs.sessionState.displayUnreadActivityPanelIndicator
   )
 
@@ -11,7 +11,7 @@ export const HomeHeader: React.FC = () => {
     <Box mb={1} mt={2}>
       <Flex alignItems="center">
         <ArtsyLogoIcon scale={0.75} />
-        <ActivityIndicator hasNotifications={shouldUnreadActivityPanelIndicator} />
+        <ActivityIndicator hasNotifications={shouldDisplayActivityPanelIndicator} />
       </Flex>
       <Spacer mb="1" />
     </Box>
