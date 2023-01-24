@@ -16,6 +16,7 @@ const Wrappers = ({ children }: { children: React.ReactNode }) => (
     simpleTheme
     skipSuspense
     skipWebsocket
+    skipRetryErrorBoundary
   >
     {children}
   </Providers>

@@ -24,6 +24,7 @@ export const Providers = ({
   skipActionSheet = false,
   skipSuspense = false,
   skipWebsocket = false,
+  skipRetryErrorBoundary = false,
   simpleTheme = false,
 }: {
   children?: React.ReactNode
@@ -33,6 +34,7 @@ export const Providers = ({
   skipActionSheet?: boolean
   skipSuspense?: boolean
   skipWebsocket?: boolean
+  skipRetryErrorBoundary?: boolean
   simpleTheme?: boolean
 }) =>
   combineProviders(
@@ -47,7 +49,7 @@ export const Providers = ({
       ProvideScreenDimensions, // uses: SafeAreaProvider
       RelayDefaultEnvProvider,
       simpleTheme ? Theme : ThemeProvider, // uses: GlobalStoreProvider
-      RetryErrorBoundary,
+      !skipRetryErrorBoundary && RetryErrorBoundary,
       !skipSuspense && SuspenseProvider,
       !skipActionSheet && ActionSheetProvider,
       PopoverMessageProvider,
