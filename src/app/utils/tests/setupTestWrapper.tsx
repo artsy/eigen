@@ -86,25 +86,21 @@ export const setupTestWrapper = <T extends OperationType, ComponentProps = {}>({
     const env = createMockEnvironment()
 
     const TestRenderer = () => {
-      return (
-        <>
-          {query ? (
-            <QueryRenderer<T>
-              environment={env}
-              variables={variables}
-              query={query}
-              render={({ props: relayProps, error }) => {
-                if (relayProps) {
-                  return <Component {...relayProps} {...props} />
-                } else if (error) {
-                  console.error(error)
-                }
-              }}
-            />
-          ) : (
-            <Component {...props} />
-          )}
-        </>
+      return query ? (
+        <QueryRenderer<T>
+          environment={env}
+          variables={variables}
+          query={query}
+          render={({ props: relayProps, error }) => {
+            if (relayProps) {
+              return <Component {...relayProps} {...props} />
+            } else if (error) {
+              console.error(error)
+            }
+          }}
+        />
+      ) : (
+        <Component {...props} />
       )
     }
 
