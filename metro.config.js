@@ -14,6 +14,16 @@ module.exports = {
         inlineRequires: true,
       },
     }),
+    // When bundling for production, React Native will minify class names and function names.
+    // This makes it not possible to use the class names and function names in error messages.
+    minifierConfig: {
+      keep_classnames: true,
+      keep_fnames: true,
+      mangle: {
+        keep_classnames: true,
+        keep_fnames: true,
+      },
+    },
   },
 
   resolver: {
