@@ -814,8 +814,8 @@ describe("App version Versions.MoveEnvironmentToDevicePrefsAndRenameAdminToLocal
   })
 })
 
-describe("App version Versions.AddLastSeendNotificationPublishedAt", () => {
-  const migrationToTest = Versions.AddLastSeendNotificationPublishedAt
+describe("App version Versions.AddLastSeenNotificationPublishedAt", () => {
+  const migrationToTest = Versions.AddLastSeenNotificationPublishedAt
 
   it("add lastSeendNotificationPublishedAt", () => {
     const previousState = migrate({
