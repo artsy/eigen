@@ -37,6 +37,7 @@ export interface BottomTabsModel {
     selectedTab: BottomTabType
   }
   lastSeendNotificationPublishedAt: string | null
+  setLastSeendNotificationPublishedAt: Action<BottomTabsModel, string | null>
   syncApplicationIconBadgeNumber: ThunkOn<BottomTabsModel>
   unreadConversationCountChanged: Action<BottomTabsModel, number>
   syncActivityPanelState: Action<
@@ -61,6 +62,9 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
     selectedTab: "home",
   },
   lastSeendNotificationPublishedAt: null,
+  setLastSeendNotificationPublishedAt: action((state, payload) => {
+    state.lastSeendNotificationPublishedAt = payload
+  }),
   syncApplicationIconBadgeNumber: thunkOn(
     (actions) => [
       actions.unreadConversationCountChanged,
