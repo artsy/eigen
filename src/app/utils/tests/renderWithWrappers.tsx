@@ -63,16 +63,7 @@ export const renderWithWrappersLEGACY = (component: ReactElement) => {
 
     return renderedComponent
   } catch (error: any) {
-    if (error.message.includes("Element type is invalid")) {
-      throw new Error(
-        'Error: Relay test component failed to render. This may happen if you forget to add `jest.unmock("react-relay")` at the top ' +
-          "of your test? or if the module you are testing is getting mocked in setupJest.ts" +
-          "\n\n" +
-          error
-      )
-    } else {
-      throw new Error(error.stack)
-    }
+    throw new Error(error.stack)
   }
 }
 
@@ -97,16 +88,7 @@ export const renderWithWrappers = (component: ReactElement) => {
   try {
     return render(component, { wrapper: Wrappers })
   } catch (error: any) {
-    if (error.message.includes("Element type is invalid")) {
-      throw new Error(
-        'Error: Relay test component failed to render. This may happen if you forget to add `jest.unmock("react-relay")` at the top ' +
-          "of your test? or if the module you are testing is getting mocked in setupJest.ts" +
-          "\n\n" +
-          error
-      )
-    } else {
-      throw new Error(error.stack)
-    }
+    throw new Error(error.stack)
   }
 }
 

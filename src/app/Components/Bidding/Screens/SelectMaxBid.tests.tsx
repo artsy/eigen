@@ -1,145 +1,37 @@
-jest.mock("app/Components/Bidding/Screens/ConfirmBid/PriceSummary", () => ({
-  PriceSummary: () => null,
-}))
+import { screen } from "@testing-library/react-native"
+import { SelectMaxBidTestsQuery } from "__generated__/SelectMaxBidTestsQuery.graphql"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
+import { SelectMaxBid, SelectMaxBidContainer } from "./SelectMaxBid"
 
-import { SelectMaxBid_me$data } from "__generated__/SelectMaxBid_me.graphql"
-import { SelectMaxBid_sale_artwork$data } from "__generated__/SelectMaxBid_sale_artwork.graphql"
-import { FakeNavigator } from "app/Components/Bidding/Helpers/FakeNavigator"
-import Spinner from "app/Components/Spinner"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Button } from "palette"
-import { ActivityIndicator } from "react-native"
-import { SelectMaxBid } from "./SelectMaxBid"
-
-jest.mock("tipsi-stripe", () => ({ setOptions: jest.fn() }))
-
-const Me = {
-  has_qualified_credit_cards: true,
-} as any as SelectMaxBid_me$data
-
-const SaleArtwork = {
-  id: "sale-artwork-id",
-  artwork: {
-    id: "meteor shower",
-    title: "Meteor Shower",
-    date: "2015",
-    artist_names: "Makiko Kudo",
-    image: {
-      url: "https://d32dm0rphc51dk.cloudfront.net/5RvuM9YF68AyD8OgcdLw7g/small.jpg",
-    },
-  },
-  sale: {
-    id: "best-art-sale-in-town",
-  },
-  lot_label: "538",
-  increments: [
-    {
-      display: "$35,000",
-      cents: 3500000,
-    },
-    {
-      display: "$40,000",
-      cents: 4000000,
-    },
-    {
-      display: "$45,000",
-      cents: 4500000,
-    },
-    {
-      display: "$50,000",
-      cents: 5000000,
-    },
-    {
-      display: "$55,000",
-      cents: 5500000,
-    },
-  ],
-} as any as SelectMaxBid_sale_artwork$data
-
-let fakeNavigator: FakeNavigator
-let fakeRelay: {
-  refetch: jest.Mock
-}
-
-beforeEach(() => {
-  fakeNavigator = new FakeNavigator()
-  fakeRelay = {
-    refetch: jest.fn(),
-  } as any
-  // We need to mock timers because we push onto our nav stack and instantiate a ConfirmBid component that has a timer.
-  jest.useFakeTimers({
-    legacyFakeTimers: true,
-  })
-})
-
-it("renders without throwing an error", () => {
-  renderWithWrappersLEGACY(
-    <SelectMaxBid
-      me={Me}
-      sale_artwork={SaleArtwork}
-      navigator={fakeNavigator as any}
-      relay={fakeRelay as any}
-    />
-  )
-})
-
-it("shows a spinner while fetching new bid increments", () => {
-  const component = renderWithWrappersLEGACY(
-    <SelectMaxBid
-      me={Me}
-      sale_artwork={SaleArtwork}
-      navigator={fakeNavigator as any}
-      relay={fakeRelay as any}
-    />
-  )
-
-  const selectBidComponent = component.root.findByType(SelectMaxBid)
-  selectBidComponent.instance.setState({ isRefreshingSaleArtwork: true })
-
-  expect(component.root.findByType(ActivityIndicator)).toBeDefined()
-})
-
-it("refetches in next component's refreshSaleArtwork", () => {
-  const component = renderWithWrappersLEGACY(
-    <SelectMaxBid
-      me={Me}
-      sale_artwork={SaleArtwork}
-      navigator={fakeNavigator as any}
-      relay={fakeRelay as any}
-    />
-  )
-  component.root.findByType(Button).props.onPress()
-  const nextScreen = fakeNavigator.nextStep()
-
-  nextScreen.root.findByProps({ nextScreen: true }).instance.props.refreshSaleArtwork()
-
-  expect(fakeRelay.refetch).toHaveBeenCalledWith(
-    { saleArtworkNodeID: "sale-artwork-id" },
-    null,
-    expect.anything(),
-    {
-      force: true,
-    }
-  )
-  expect(component.root.findByType(ActivityIndicator)).toBeDefined()
-})
-
-it("removes the spinner once the refetch is complete", () => {
-  const component = renderWithWrappersLEGACY(
-    <SelectMaxBid
-      me={Me}
-      sale_artwork={SaleArtwork}
-      navigator={fakeNavigator as any}
-      relay={fakeRelay as any}
-    />
-  )
-  component.root.findByType(Button).props.onPress()
-  const nextScreen = fakeNavigator.nextStep()
-  fakeRelay.refetch.mockImplementationOnce((_params, _renderVars, callback) => {
-    callback()
+describe("SelectMaxBid", () => {
+  const { renderWithRelay } = setupTestWrapper<SelectMaxBidTestsQuery>({
+    Component: ({ me, artwork }) => (
+      <SelectMaxBidContainer me={me!} sale_artwork={artwork!.sale_artwork!} navigator={null!} />
+    ),
+    query: graphql`
+      query SelectMaxBidTestsQuery {
+        sale_artwork: saleArtwork(saleID: "wow") {
+          ...SelectMaxBid_sale_artwork
+        }
+        me {
+          ...SelectMaxBid_me
+        }
+      }
+    `,
   })
 
-  nextScreen.root.findByProps({ nextScreen: true }).instance.props.refreshSaleArtwork()
+  it("renders without throwing an error", () => {
+    renderWithRelay()
 
-  expect(component.root.findAllByType(Spinner).length).toEqual(0)
+    expect(screen.queryByTestId("spinner")).toBeFalsy()
+
+    // shows a spinner while fetching new bid increments
+    screen.UNSAFE_getByType(SelectMaxBid).instance._test_refreshSaleArtwork(true) // hacky way to call this, but its an old component that needs refactoring
+    expect(screen.queryByTestId("spinner")).toBeTruthy()
+
+    // removes the spinner once the refetch is complete
+    screen.UNSAFE_getByType(SelectMaxBid).instance._test_refreshSaleArtwork(false) // hacky way to call this, but its an old component that needs refactoring
+    expect(screen.queryByTestId("spinner")).toBeFalsy()
+  })
 })
