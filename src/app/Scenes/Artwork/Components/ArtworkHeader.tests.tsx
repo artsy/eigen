@@ -1,7 +1,8 @@
-import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { ArtworkActions } from "./ArtworkActions"
-import { ArtworkHeader, VisibilityLevels } from "./ArtworkHeader"
+import { screen } from "@testing-library/react-native"
+import { ArtworkHeaderTestsQuery } from "__generated__/ArtworkHeaderTestsQuery.graphql"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
+import { ArtworkHeaderFragmentContainer, VisibilityLevels } from "./ArtworkHeader"
 import { ArtworkTombstone } from "./ArtworkTombstone"
 import { ImageCarousel } from "./ImageCarousel/ImageCarousel"
 import { UnlistedArtworksBanner } from "./UnlistedArtworksBanner"
@@ -10,62 +11,63 @@ jest.mock("react-native-view-shot", () => ({}))
 
 const mockRefetch = jest.fn()
 
-const TestRenderer: React.FC = () => {
-  return <ArtworkHeader artwork={ArtworkFixture} refetchArtwork={mockRefetch} />
-}
-
 describe("ArtworkHeader", () => {
-  it("renders tombstone component", () => {
-    const { container } = renderWithWrappers(<TestRenderer />)
-    expect(container.findAllByType(ArtworkTombstone).length).toEqual(1)
+  const { renderWithRelay } = setupTestWrapper<ArtworkHeaderTestsQuery>({
+    Component: ({ artwork }) => (
+      <ArtworkHeaderFragmentContainer artwork={artwork!} refetchArtwork={mockRefetch} />
+    ),
+    query: graphql`
+      query ArtworkHeaderTestsQuery @relay_test_operation {
+        artwork(id: "abbas-kiarostami-untitled-7") {
+          ...ArtworkHeader_artwork
+        }
+      }
+    `,
   })
 
-  it("renders artwork actions component", () => {
-    const { container } = renderWithWrappers(<TestRenderer />)
-    expect(container.findAllByType(ArtworkActions).length).toEqual(1)
-  })
+  it("renders correctly", () => {
+    renderWithRelay()
 
-  it("renders image carousel component", () => {
-    const { container } = renderWithWrappers(<TestRenderer />)
-    expect(container.findAllByType(ImageCarousel).length).toEqual(1)
+    // tombstone
+    expect(screen.UNSAFE_queryAllByType(ArtworkTombstone)).toHaveLength(1)
+
+    // actions component
+    expect(screen.UNSAFE_queryAllByType(ArtworkTombstone)).toHaveLength(1)
+
+    // image carousel component
+    expect(screen.UNSAFE_queryAllByType(ImageCarousel)).toHaveLength(1)
   })
 
   describe("when artwork is unlisted", () => {
     it("renders private listing banner component", () => {
-      const artwork = {
-        ...ArtworkFixture,
-        visibilityLevel: VisibilityLevels.UNLISTED,
-      }
-      const { container } = renderWithWrappers(
-        <ArtworkHeader artwork={artwork} refetchArtwork={mockRefetch} />
-      )
-      expect(container.findAllByType(UnlistedArtworksBanner).length).toEqual(1)
+      renderWithRelay({
+        Artwork: () => ({
+          visibilityLevel: VisibilityLevels.UNLISTED,
+        }),
+      })
+      expect(screen.UNSAFE_queryAllByType(UnlistedArtworksBanner).length).toEqual(1)
     })
+  })
 
-    describe("when artwork is listed", () => {
-      it("does not render private listing banner component", () => {
-        const artwork = {
-          ...ArtworkFixture,
+  describe("when artwork is listed", () => {
+    it("does not render private listing banner component", () => {
+      renderWithRelay({
+        Artwork: () => ({
           visibilityLevel: VisibilityLevels.LISTED,
-        }
-        const { container } = renderWithWrappers(
-          <ArtworkHeader artwork={artwork} refetchArtwork={mockRefetch} />
-        )
-        expect(container.findAllByType(UnlistedArtworksBanner)).toHaveLength(0)
+        }),
       })
+      expect(screen.UNSAFE_queryAllByType(UnlistedArtworksBanner).length).toEqual(0)
     })
+  })
 
-    describe("when artwork visibility is null", () => {
-      it("does not render private listing banner component", () => {
-        const artwork = {
-          ...ArtworkFixture,
+  describe("when artwork visibility is null", () => {
+    it("does not render private listing banner component", () => {
+      renderWithRelay({
+        Artwork: () => ({
           visibilityLevel: null,
-        }
-        const { container } = renderWithWrappers(
-          <ArtworkHeader artwork={artwork} refetchArtwork={mockRefetch} />
-        )
-        expect(container.findAllByType(UnlistedArtworksBanner)).toHaveLength(0)
+        }),
       })
+      expect(screen.UNSAFE_queryAllByType(UnlistedArtworksBanner).length).toEqual(0)
     })
   })
 })
