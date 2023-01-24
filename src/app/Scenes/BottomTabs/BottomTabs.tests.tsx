@@ -73,7 +73,7 @@ describe(BottomTabs, () => {
 
   describe("a blue dot on home icon", () => {
     describe("should be displayed if there are unread notifications", () => {
-      it("`lastSeendNotificationPublishedAt` has default value", async () => {
+      it("`lastSeendNotificationPublishedAt` is empty", async () => {
         const currentDate = DateTime.local()
 
         __globalStoreTestUtils__?.injectState({
@@ -97,43 +97,6 @@ describe(BottomTabs, () => {
                 {
                   node: {
                     publishedAt: currentDate.toISO(),
-                  },
-                },
-              ],
-            },
-          }),
-        })
-
-        await flushPromiseQueue()
-
-        const currentHomeButton = findButtonByTab(tree, "home")
-        expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
-      })
-
-      it("the latest notification `publishedAt` is equal to the locally persisted `publishedAt`", async () => {
-        const publishedAt = DateTime.local().toISO()
-
-        __globalStoreTestUtils__?.injectState({
-          bottomTabs: {
-            lastSeendNotificationPublishedAt: publishedAt,
-          },
-        })
-        const tree = renderWithWrappersLEGACY(<TestWrapper />)
-
-        const prevHomeButton = findButtonByTab(tree, "home")
-        expect((prevHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
-
-        resolveNotificationsInfoQuery({
-          Me: () => ({
-            unreadConversationCount: 5,
-            unreadNotificationsCount: 1,
-          }),
-          Viewer: () => ({
-            notificationsConnection: {
-              edges: [
-                {
-                  node: {
-                    publishedAt: publishedAt,
                   },
                 },
               ],
@@ -192,7 +155,7 @@ describe(BottomTabs, () => {
     })
 
     describe("should NOT be displayed if there are NO unread notifications", () => {
-      it("`lastSeendNotificationPublishedAt` has default value", async () => {
+      it("`lastSeendNotificationPublishedAt` is empty", async () => {
         const publishedAt = DateTime.local().toISO()
 
         __globalStoreTestUtils__?.injectState({
