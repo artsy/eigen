@@ -1,14 +1,11 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
-import { useFeatureFlag } from "app/store/GlobalStore"
-import { useExperimentFlag, useExperimentVariant } from "app/utils/experiments/hooks"
-import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
 import { isPad } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
 import { useAlgoliaClient } from "app/utils/useAlgoliaClient"
 import { useAlgoliaIndices } from "app/utils/useAlgoliaIndices"
 import { useSearchInsightsConfig } from "app/utils/useSearchInsightsConfig"
-import { Box, Flex, Spacer, Text } from "palette"
+import { Box, Flex, Spacer } from "palette"
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Configure, connectSearchBox, InstantSearch } from "react-instantsearch-native"
 import { Platform, ScrollView } from "react-native"
@@ -104,16 +101,6 @@ export const Search: React.FC = () => {
     },
   })
   const { trackEvent } = useTracking()
-
-  const exampleExperiments = useFeatureFlag("AREnableExampleExperiments")
-  const smudgeValue = useExperimentVariant("test-search-smudge")
-  nonCohesionTracks.experimentVariant(
-    "test-search-smudge",
-    smudgeValue.enabled,
-    smudgeValue.variant,
-    smudgeValue.payload
-  )
-  const smudge2Value = useExperimentFlag("test-eigen-smudge2")
 
   const pillsArray = useMemo<PillType[]>(() => {
     const allowedIndices = indices.filter((indice) =>
@@ -247,32 +234,6 @@ export const Search: React.FC = () => {
               </Scrollable>
             )}
           </Flex>
-          {!!exampleExperiments && !!smudge2Value && (
-            <Flex
-              position="absolute"
-              width={51}
-              height={51}
-              backgroundColor="black"
-              top={0}
-              left={0}
-              alignItems="center"
-              justifyContent="center"
-              borderWidth={4}
-              borderColor="red100"
-            >
-              <Text color="white100">wow</Text>
-            </Flex>
-          )}
-          {!!exampleExperiments && !!smudgeValue.enabled && (
-            <Flex
-              position="absolute"
-              width={51}
-              height={51}
-              backgroundColor={smudgeValue.payload ?? "orange"}
-              top={0}
-              right={0}
-            />
-          )}
         </InstantSearch>
       </ArtsyKeyboardAvoidingView>
     </SearchContext.Provider>
@@ -325,18 +286,6 @@ const tracks = {
     query,
     action: ActionType.tappedNavigationTab,
   }),
-}
-
-const nonCohesionTracks = {
-  experimentVariant: (name: string, enabled: boolean, variant: string, payload?: string) =>
-    maybeReportExperimentVariant({
-      experimentName: name,
-      variantName: variant,
-      payload,
-      enabled,
-      context_owner_type: OwnerType.search,
-      context_owner_screen: OwnerType.search,
-    }),
 }
 
 const shouldStartSearching = (value: string) => {
