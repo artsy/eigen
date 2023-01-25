@@ -10,29 +10,29 @@ describe("HomeHeader", () => {
   }
 
   describe("Activity", () => {
-    it("should NOT render unread indicator when there are no unread notifications", async () => {
+    it("should NOT render unseen indicator when there are no unseen notifications", async () => {
       __globalStoreTestUtils__?.injectState({
         bottomTabs: {
-          sessionState: { displayUnreadActivityPanelIndicator: false },
+          sessionState: { displayUnseenNotificationsIndicator: false },
         },
       })
 
       const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
 
-      const indicator = queryByLabelText("Unread Activities Indicator")
+      const indicator = queryByLabelText("Unseen Notifications Indicator")
       expect(indicator).toBeNull()
     })
 
-    it("should render unread indicator when there are unread notifications", async () => {
+    it("should render unseen indicator when there are unseen notifications", async () => {
       __globalStoreTestUtils__?.injectState({
         bottomTabs: {
-          sessionState: { displayUnreadActivityPanelIndicator: true },
+          sessionState: { displayUnseenNotificationsIndicator: true },
         },
       })
 
       const { getByLabelText } = renderWithWrappers(<TestRenderer />)
 
-      const indicator = getByLabelText("Unread Activities Indicator")
+      const indicator = getByLabelText("Unseen Notifications Indicator")
       expect(indicator).toBeTruthy()
     })
   })

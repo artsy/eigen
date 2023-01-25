@@ -577,7 +577,7 @@ const HomePlaceholder: React.FC = () => {
       <Box mb={1} mt={2}>
         <Flex alignItems="center">
           <ArtsyLogoIcon scale={0.75} />
-          <ActivityIndicator hasNotifications={false} />
+          <ActivityIndicator hasUnseenNotifications={false} />
         </Flex>
       </Box>
       <Spacer mb={4} />

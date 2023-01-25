@@ -5,13 +5,17 @@ import { ActivityIndicator } from "./ActivityIndicator"
 
 describe("ActivityIndicator", () => {
   it("should be displayed", () => {
-    const { queryByLabelText } = renderWithWrappers(<ActivityIndicator hasNotifications={false} />)
+    const { queryByLabelText } = renderWithWrappers(
+      <ActivityIndicator hasUnseenNotifications={false} />
+    )
 
     expect(queryByLabelText("Activity")).toBeDefined()
   })
 
   it("should track event when the bell icon is tapped", () => {
-    const { getByLabelText } = renderWithWrappers(<ActivityIndicator hasNotifications={false} />)
+    const { getByLabelText } = renderWithWrappers(
+      <ActivityIndicator hasUnseenNotifications={false} />
+    )
 
     fireEvent.press(getByLabelText("Activity"))
 

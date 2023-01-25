@@ -72,7 +72,7 @@ describe(BottomTabs, () => {
   })
 
   describe("a blue dot on home icon", () => {
-    describe("should be displayed if there are unread notifications", () => {
+    describe("should be displayed if there are unseen notifications", () => {
       it("`lastSeenNotificationPublishedAt` is empty", async () => {
         const currentDate = DateTime.local()
 
@@ -154,7 +154,7 @@ describe(BottomTabs, () => {
       })
     })
 
-    describe("should NOT be displayed if there are NO unread notifications", () => {
+    describe("should NOT be displayed if there are NO unseen notifications", () => {
       it("`lastSeenNotificationPublishedAt` is empty", async () => {
         const publishedAt = DateTime.local().toISO()
 

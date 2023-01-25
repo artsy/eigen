@@ -32,7 +32,7 @@ interface NotificationNode {
 export interface BottomTabsModel {
   sessionState: {
     unreadCounts: UnreadCounts
-    displayUnreadActivityPanelIndicator: boolean
+    displayUnseenNotificationsIndicator: boolean
     tabProps: Partial<{ [k in BottomTabType]: object }>
     selectedTab: BottomTabType
   }
@@ -47,7 +47,7 @@ export interface BottomTabsModel {
   fetchCurrentUnreadConversationCount: Thunk<BottomTabsModel>
   unreadActivityPanelNotificationsCountChanged: Action<BottomTabsModel, number>
   fetchNotificationsInfo: Thunk<BottomTabsModel>
-  displayUnreadActivityPanelIndicatorChanged: Action<BottomTabsModel, boolean>
+  setDisplayUnseenNotificationsIndicator: Action<BottomTabsModel, boolean>
   setTabProps: Action<BottomTabsModel, { tab: BottomTabType; props: object | undefined }>
 }
 
@@ -57,7 +57,7 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
       unreadConversation: 0,
       unreadActivityPanelNotifications: 0,
     },
-    displayUnreadActivityPanelIndicator: false,
+    displayUnseenNotificationsIndicator: false,
     tabProps: {},
     selectedTab: "home",
   },
@@ -180,11 +180,9 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
       }
     }
   }),
-  displayUnreadActivityPanelIndicatorChanged: action(
-    (state, displayUnreadActivityPanelIndicator) => {
-      state.sessionState.displayUnreadActivityPanelIndicator = displayUnreadActivityPanelIndicator
-    }
-  ),
+  setDisplayUnseenNotificationsIndicator: action((state, payload) => {
+    state.sessionState.displayUnseenNotificationsIndicator = payload
+  }),
   setTabProps: action((state, { tab, props }) => {
     state.sessionState.tabProps[tab] = props
   }),
@@ -206,7 +204,7 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
     )
 
     if (isLastSeenPublishedAtEmpty || isNewPublishedAtAvailable) {
-      state.sessionState.displayUnreadActivityPanelIndicator = payload.unreadCount > 0
+      state.sessionState.displayUnseenNotificationsIndicator = payload.unreadCount > 0
     }
   }),
 })
