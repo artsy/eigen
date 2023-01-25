@@ -1,6 +1,6 @@
-import { useDevToggle } from "app/store/GlobalStore"
+import { useDevToggle, useIsStaging } from "app/store/GlobalStore"
 import { debounce } from "lodash"
-import { BoxProps, Flex, Text, Touchable, useColor } from "palette"
+import { Box, BoxProps, Flex, Text, Touchable, useColor } from "palette"
 import { ReloadIcon } from "palette/svgs/ReloadIcon"
 import React, { useRef, useState } from "react"
 import { Animated, Easing } from "react-native"
@@ -34,6 +34,7 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
   }
 
   const showErrorMessage = __DEV__ || useDevToggle("DTShowErrorInLoadFailureView")
+  const isStaging = useIsStaging()
 
   return (
     <Flex flex={1} alignItems="center" justifyContent="center" {...restProps}>
@@ -41,6 +42,7 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
       <Text variant="sm-display" mb="1">
         Please try again
       </Text>
+      {isStaging && <Box mb={1} border={2} width={200} borderColor="devpurple" />}
       <Touchable
         onPress={debounce(() => {
           if (!isAnimating) {
