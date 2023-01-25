@@ -259,6 +259,7 @@ jobs:
       tag: "16.18.0"
     steps:
       - checkout
+      - generate-checksums
       - install-node-modules
       - run:
           name: Betterer
