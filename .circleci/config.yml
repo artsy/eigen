@@ -253,6 +253,17 @@ jobs:
           name: Update metaphysics
           command: yarn update-metaphysics
 
+  check-pr:
+    executor:
+      name: node/default
+      tag: "16.18.0"
+    steps:
+      - checkout
+      - install-node-modules
+      - run:
+          name: Betterer
+          command: yarn ci:betterer-check
+
   check-flags:
     environment:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
@@ -540,6 +551,17 @@ workflows:
           filters:
             branches:
               ignore:
+                - app_store_submission
+                - play_store_submission
+                - update-changelog
+
+      - check-pr:
+          filters:
+            branches:
+              ignore:
+                - main
+                - beta-ios
+                - beta-android
                 - app_store_submission
                 - play_store_submission
                 - update-changelog
