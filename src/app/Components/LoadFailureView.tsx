@@ -6,6 +6,8 @@ import React, { useRef, useState } from "react"
 import { Animated, Easing } from "react-native"
 import { JustifyContentValue } from "./Bidding/Elements/types"
 
+jest.unmock("react-relay")
+
 interface LoadFailureViewProps {
   error?: Error
   onRetry?: () => void
