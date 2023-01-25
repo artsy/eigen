@@ -325,27 +325,6 @@
     "typescript": "4.9.4",
     "vscode-apollo-relay": "1.5.2"
   },
-  "lint-staged": {
-    "*.@(ts|tsx)": [
-      "yarn lint",
-      "yarn prettier-write",
-      "node scripts/strictness-migration.js check-staged"
-    ],
-    "*.@(json|md)": [
-      "yarn prettier-write"
-    ],
-    "*": [
-      "yarn secrets:check:staged",
-      "yarn betterer:precommit"
-    ]
-  },
-  "prettier": {
-    "printWidth": 100,
-    "semi": false,
-    "singleQuote": false,
-    "trailingComma": "es5",
-    "bracketSpacing": true
-  },
   "pull-lock": {
     "ios/Podfile.lock": "echo \"🚨 New Podfile.lock detected!, you might need to run yarn install:all\" 🚨",
     "yarn.lock": "yarn install"
