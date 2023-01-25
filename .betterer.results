@@ -1703,3 +1703,335 @@ exports[`Avoid having skipped tests!`] = {
     ]
   }`
 };
+
+exports[`Avoid using class components!`] = {
+  value: `{
+    "src/ambient.d.ts:123000066": [
+      [28, 25, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/AppRegistry.tsx:3026200026": [
+      [243, 18, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/Artist/Articles/Articles.tsx:1150831805": [
+      [13, 15, 17, "RegExp match", "3548830911"]
+    ],
+    "src/app/Components/Artist/ArtistShows/Metadata.tsx:4024715854": [
+      [11, 15, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/Artist/ArtistShows/VariableSizeShowsList.tsx:2828536799": [
+      [19, 16, 17, "RegExp match", "3548830911"]
+    ],
+    "src/app/Components/Artist/Biography.tsx:2708841": [
+      [14, 16, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/ArtistListItem.tsx:2213645783": [
+      [47, 28, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/ArtworkGrids/GenericGrid.tsx:3262128148": [
+      [34, 33, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/Bidding/Components/BackButton.tsx:3086473716": [
+      [10, 24, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/Bidding/Components/BidInfoRow.tsx:3116920247": [
+      [12, 24, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/Bidding/Components/PaymentInfo.tsx:2256876826": [
+      [21, 25, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/Bidding/Components/Timer.tsx:3834085858": [
+      [197, 32, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/Bidding/Context/TimeOffsetProvider.tests.tsx:2534639299": [
+      [14, 19, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/Bidding/Context/TimeOffsetProvider.tsx:1656948563": [
+      [72, 32, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/Bidding/Screens/BidResult.tsx:1014910665": [
+      [42, 23, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/Bidding/Screens/ConfirmBid/index.tsx:1305485570": [
+      [73, 24, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/Bidding/Screens/CreditCardForm.tsx:3640868774": [
+      [25, 28, 17, "RegExp match", "3548830911"]
+    ],
+    "src/app/Components/Bidding/Screens/Registration.tsx:3779435198": [
+      [69, 26, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/Bidding/Screens/RegistrationResult.tsx:2382086564": [
+      [104, 32, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/Bidding/Screens/SelectMaxBid.tsx:3925989855": [
+      [34, 26, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/Buttons/DarkNavigationButton.tsx:3087321444": [
+      [11, 42, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/ConnectivityBanner.tsx:1023248594": [
+      [20, 40, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/Containers/Inbox.tsx:4027330260": [
+      [77, 19, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/Containers/Inquiry.tsx:2055903444": [
+      [134, 21, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/Containers/WorksForYou.tsx:1212404006": [
+      [30, 25, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/Countdown/DurationProvider.tsx:2862669178": [
+      [17, 30, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/Countdown/StateManager.tsx:4128746221": [
+      [25, 26, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/Gene/Header.tsx:1861570211": [
+      [20, 13, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/Icons/CircleWhiteCheckIcon.tsx:275250726": [
+      [9, 34, 17, "RegExp match", "3548830911"]
+    ],
+    "src/app/Components/Icons/GridViewIcon.tsx:2472851365": [
+      [3, 28, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/Icons/ListViewIcon.tsx:2599263532": [
+      [3, 28, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/Lists/ShowItemRow.tsx:903912325": [
+      [32, 25, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/Markdown.tsx:66980198": [
+      [15, 22, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/Modal.tsx:1394418038": [
+      [38, 19, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/OpaqueImageView/OpaqueImageView.tsx:1665090421": [
+      [79, 37, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/RelatedArtists/RelatedArtist.tsx:2207857089": [
+      [15, 20, 17, "RegExp match", "3548830911"]
+    ],
+    "src/app/Components/RelatedArtists/RelatedArtists.tsx:3385378039": [
+      [22, 21, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/RetryErrorBoundary.tsx:1976228410": [
+      [21, 38, 17, "RegExp match", "3548830911"],
+      [59, 32, 17, "RegExp match", "3548830911"]
+    ],
+    "src/app/Components/ScrollableTabBar.tsx:2232339801": [
+      [55, 38, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/Show/ShowArtistsPreview.tsx:1745706653": [
+      [19, 32, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/Show/ShowArtworksPreview.tsx:3223654651": [
+      [15, 33, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/TabBar.tsx:2724789569": [
+      [61, 28, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Components/WorksForYou/Notification.tsx:1182434299": [
+      [24, 26, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Providers.tsx:156964520": [
+      [80, 18, 17, "RegExp match", "3548830911"]
+    ],
+    "src/app/Scenes/Artwork/Components/ArtworkActions.tsx:3838496426": [
+      [54, 28, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Artwork/Components/AuctionPrice.tsx:2112730869": [
+      [13, 26, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Artwork/Components/CommercialButtons/BidButton.tsx:1104439896": [
+      [57, 23, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Artwork/Components/CommercialButtons/MakeOfferButton.tsx:3186730594": [
+      [30, 29, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Artwork/Components/FollowArtistLink.tsx:1983766123": [
+      [15, 30, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Artwork/Components/OtherWorks/ContextGridCTA.tsx:1888146634": [
+      [13, 28, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Artwork/Components/RequestConditionReport.tsx:670465672": [
+      [36, 36, 17, "RegExp match", "3548830911"]
+    ],
+    "src/app/Scenes/City/City.tsx:787509940": [
+      [44, 22, 17, "RegExp match", "3548830911"]
+    ],
+    "src/app/Scenes/City/CityBMWList.tsx:691561999": [
+      [27, 18, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/City/CityFairList.tsx:968007184": [
+      [29, 19, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/City/CitySavedList.tsx:1376267288": [
+      [30, 20, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/City/CitySectionList.tsx:3440590734": [
+      [53, 22, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/City/Components/AllEvents.tsx:746348506": [
+      [34, 23, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/City/Components/BMWEventSection/index.tsx:1351137815": [
+      [26, 29, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/City/Components/Event/index.tsx:1645685399": [
+      [29, 19, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/City/Components/EventList.tsx:1290486133": [
+      [37, 23, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/City/Components/EventSection/index.tsx:90262994": [
+      [15, 26, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/City/Components/FairEventSection/Components/FairEventSectionCard.tsx:1045316759": [
+      [13, 34, 17, "RegExp match", "3548830911"]
+    ],
+    "src/app/Scenes/City/Components/FairEventSection/index.tsx:2309552943": [
+      [20, 30, 17, "RegExp match", "3548830911"]
+    ],
+    "src/app/Scenes/City/Components/SavedEventSection/index.tsx:1631967792": [
+      [21, 31, 17, "RegExp match", "3548830911"]
+    ],
+    "src/app/Scenes/City/Components/TabFairItemRow/index.tsx:2374019651": [
+      [12, 28, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Collection/Collection.tsx:2699885016": [
+      [26, 24, 17, "RegExp match", "3548830911"]
+    ],
+    "src/app/Scenes/Collection/Components/FeaturedArtists.tsx:2095048176": [
+      [20, 29, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Collection/Components/FullFeaturedArtistList.tsx:1542306537": [
+      [15, 36, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Fair/FairBMWArtActivation.tsx:656522350": [
+      [42, 34, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Favorites/FavoriteArtists.tsx:448511496": [
+      [26, 14, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Favorites/FavoriteCategories.tsx:3870151595": [
+      [28, 24, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Favorites/FavoriteShows.tsx:1884451200": [
+      [28, 19, 17, "RegExp match", "3548830911"]
+    ],
+    "src/app/Scenes/Inbox/Components/ActiveBids/ActiveBid.tsx:2151902859": [
+      [70, 16, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/Avatar.tsx:2440587034": [
+      [28, 28, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/Composer.tsx:741316262": [
+      [40, 30, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/ConversationSnippet.tsx:4214254608": [
+      [45, 33, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/InquiryMakeOfferButton.tsx:3464026788": [
+      [23, 36, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/Message.tsx:3930604708": [
+      [31, 21, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/MessageGroup.tsx:3686261847": [
+      [82, 26, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/Preview/ArtworkPreview.tsx:1188461943": [
+      [46, 28, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/Preview/Attachment/AttachmentPreview.tsx:544114123": [
+      [23, 31, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/Preview/ShowPreview.tsx:4029890464": [
+      [42, 25, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/ZeroStateInbox.tsx:1904743887": [
+      [7, 36, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Inbox/Screens/Conversation.tsx:408662661": [
+      [61, 26, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Map/Components/CitySwitcherButton.tsx:4173826452": [
+      [30, 32, 17, "RegExp match", "3548830911"]
+    ],
+    "src/app/Scenes/Map/Components/PinsShapeLayer.tsx:2931968919": [
+      [24, 28, 17, "RegExp match", "3548830911"]
+    ],
+    "src/app/Scenes/Map/Components/ShowCard.tsx:3422165572": [
+      [52, 22, 17, "RegExp match", "3548830911"]
+    ],
+    "src/app/Scenes/Map/Components/UserPositionButton.tsx:3475064359": [
+      [32, 32, 17, "RegExp match", "3548830911"]
+    ],
+    "src/app/Scenes/Map/GlobalMap.tsx:1012628576": [
+      [135, 23, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/MyBids/Components/Lot.tsx:2797502869": [
+      [15, 10, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/MyProfile/LoggedInUserInfo.tsx:1793191809": [
+      [12, 18, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Partner/Components/PartnerFollowButton.tsx:2598324244": [
+      [20, 33, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Partner/Components/PartnerLocationSection.tsx:4275893460": [
+      [26, 29, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Partner/Components/PartnerShowRailItem.tsx:4111478110": [
+      [23, 33, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Partner/Components/PartnerShows.tsx:1526759929": [
+      [29, 19, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Partner/Partner.tsx:113092642": [
+      [30, 14, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/PrivacyRequest/PrivacyRequest.tsx:1054960588": [
+      [6, 28, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Sales/Components/ZeroState/index.tsx:1596969559": [
+      [4, 23, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/Scenes/Search/components/CityGuideCTA.tsx:2093676396": [
+      [7, 26, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/utils/CatchErrors.tsx:1166684242": [
+      [3, 25, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/utils/__legacy_do_not_use__navigator-ios-shim.tsx:3660525695": [
+      [29, 19, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/utils/tests/renderWithWrappers.tsx:609245547": [
+      [62, 18, 17, "RegExp match", "3548830911"]
+    ],
+    "src/app/utils/track/index.tsx:3978218114": [
+      [35, 21, 23, "RegExp match", "3210885008"],
+      [71, 21, 23, "RegExp match", "3210885008"],
+      [102, 35, 23, "RegExp match", "3210885008"],
+      [113, 53, 23, "RegExp match", "3210885008"],
+      [144, 38, 23, "RegExp match", "3210885008"],
+      [165, 37, 23, "RegExp match", "3210885008"]
+    ],
+    "src/app/utils/track/tracking.tests.tsx:1989312488": [
+      [46, 32, 23, "RegExp match", "3210885008"]
+    ],
+    "src/palette/animation/CssTransition.tsx:4154384660": [
+      [23, 27, 23, "RegExp match", "3210885008"]
+    ],
+    "src/palette/elements/Select/SelectV2.tsx:3968105260": [
+      [47, 31, 23, "RegExp match", "3210885008"]
+    ],
+    "src/shared/utils/ArtsyKeyboardAvoidingView.tsx:560168615": [
+      [58, 27, 23, "RegExp match", "3210885008"]
+    ]
+  }`
+};

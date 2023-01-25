@@ -27,6 +27,9 @@ export default {
     regexp(/(fdescribe\(|describe.only\(|fit\(|xit\(|it.only\(|it.skip\()/).include(
       typescriptTestFiles
     ),
+
+  "Avoid using class components!": () =>
+    regexp(/extends (React\.)?Component/).include(typescriptFiles),
 }
 
 const countNonWebpImages = () =>
