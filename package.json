@@ -35,6 +35,7 @@
     "install:all": "./scripts/install",
     "ios": "react-native run-ios --udid=\"$(xcrun simctl list | awk -F'[()]' '/(Booted)/ { print $2 }')\"",
     "lint": "eslint --cache --cache-location '.cache/eslint/' --ext .ts,.tsx --fix",
+    "lint:all": "yarn lint .",
     "open-sim": "open -a Simulator",
     "open-url": "npx uri-scheme open",
     "open-xcode": "open ios/Artsy.xcworkspace",

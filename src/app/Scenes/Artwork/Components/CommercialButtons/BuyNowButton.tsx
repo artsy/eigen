@@ -1,15 +1,15 @@
 import { ActionType, ContextModule, OwnerType, TappedBuyNow } from "@artsy/cohesion"
-import { BuyNowButton_artwork$key } from "__generated__/BuyNowButton_artwork.graphql"
-import { promptForReview } from "app/utils/promptForReview"
-import { useSetWebViewCallback } from "app/utils/useWebViewEvent"
 import { BuyNowButtonOrderMutation } from "__generated__/BuyNowButtonOrderMutation.graphql"
+import { BuyNowButton_artwork$key } from "__generated__/BuyNowButton_artwork.graphql"
+import { navigate } from "app/system/navigation/navigate"
+import { promptForReview } from "app/utils/promptForReview"
 import { track as _track } from "app/utils/track"
+import { useSetWebViewCallback } from "app/utils/useWebViewEvent"
 import { Button, ButtonProps } from "palette"
 import { useState } from "react"
 import { Alert } from "react-native"
 import { commitMutation, graphql, useFragment, useRelayEnvironment } from "react-relay"
 import { useTracking } from "react-tracking"
-import { navigate } from "app/system/navigation/navigate"
 
 export interface BuyNowButtonProps {
   artwork: BuyNowButton_artwork$key

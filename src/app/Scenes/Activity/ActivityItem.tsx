@@ -1,11 +1,11 @@
 import { ActionType } from "@artsy/cohesion"
 import { ClickedActivityPanelNotificationItem } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
 import { captureMessage } from "@sentry/react-native"
-import { ActivityItem_item$key } from "__generated__/ActivityItem_item.graphql"
 import {
   ActivityItemMarkAsReadMutation,
   ActivityItemMarkAsReadMutation$data,
 } from "__generated__/ActivityItemMarkAsReadMutation.graphql"
+import { ActivityItem_item$key } from "__generated__/ActivityItem_item.graphql"
 import { FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ORDERED_ARTWORK_SORTS } from "app/Components/ArtworkFilter/Filters/SortOptions"
 import { navigate } from "app/system/navigation/navigate"
