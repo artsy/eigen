@@ -7,7 +7,7 @@
     "node": "16.x",
     "yarn": "1.x"
   },
-  "main": "index.ios.js",
+  "main": "index-common.js",
   "scripts": {
     "bundle-for-native-ci:ios": "node --expose-gc --max_old_space_size=8192 ./node_modules/react-native/local-cli/cli.js bundle --platform=ios --dev=false --entry-file=index.tests.ios.js --bundle-output dist/jsbundle.js --sourcemap-output dist/jsbundle.js.map --assets-dest dist",
     "bundle:ios": "react-native bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output dist/jsbundle.js --sourcemap-output dist/jsbundle.js.map --assets-dest dist",
@@ -67,8 +67,7 @@
     "secrets:add-from:all": "scripts/secrets-add-all",
     "secrets:generate!": "scripts/secrets-generate-baseline",
     "update-metaphysics": "node scripts/update-metaphysics.js",
-    "betterer:staged": "betterer precommit",
-    "betterer:changed": "betterer --cache",
+    "betterer:precommit": "betterer precommit",
     "betterer:all": "betterer",
     "betterer:show": "betterer results"
   },
@@ -334,6 +333,10 @@
     ],
     "*.@(json|md)": [
       "yarn prettier-write"
+    ],
+    "*": [
+      "yarn secrets:check:staged",
+      "yarn betterer:precommit"
     ]
   },
   "prettier": {
