@@ -1,0 +1,1705 @@
+// BETTERER RESULTS V2.
+// 
+// If this file contains merge conflicts, use `betterer merge` to automatically resolve them:
+// https://phenomnomnominal.github.io/betterer/docs/results-file/#merge
+//
+exports[`Stop using useAnimatedValue, use useSharedValue instead!`] = {
+  value: `{
+    "src/app/Components/Disappearable.tsx:2829677151": [
+      [12, 18, 17, "RegExp match", "3761664346"]
+    ],
+    "src/app/Components/HeaderArtworksFilter/HeaderArtworksFilter.tests.tsx:983879919": [
+      [15, 27, 17, "RegExp match", "3761664346"]
+    ],
+    "src/app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks.tests.tsx:198730798": [
+      [31, 27, 17, "RegExp match", "3761664346"]
+    ],
+    "src/app/Components/StickyHeaderPage.tsx:3134858519": [
+      [25, 24, 17, "RegExp match", "3761664346"],
+      [26, 24, 17, "RegExp match", "3761664346"]
+    ],
+    "src/app/Components/StickyTabPage/SnappyHorizontalRail.tsx:3286959785": [
+      [12, 24, 17, "RegExp match", "3761664346"]
+    ],
+    "src/app/Components/StickyTabPage/StaticHeaderContainer.tsx:1563279584": [
+      [18, 20, 17, "RegExp match", "3761664346"],
+      [19, 31, 17, "RegExp match", "3761664346"],
+      [20, 31, 17, "RegExp match", "3761664346"]
+    ],
+    "src/app/Components/StickyTabPage/StickyTabPage.tsx:2693435499": [
+      [71, 31, 17, "RegExp match", "3761664346"],
+      [98, 24, 17, "RegExp match", "3761664346"]
+    ],
+    "src/app/Components/StickyTabPage/StickyTabPageFlatList.tsx:1730879644": [
+      [52, 24, 17, "RegExp match", "3761664346"],
+      [53, 23, 17, "RegExp match", "3761664346"],
+      [54, 24, 17, "RegExp match", "3761664346"],
+      [66, 23, 17, "RegExp match", "3761664346"],
+      [168, 29, 17, "RegExp match", "3761664346"]
+    ],
+    "src/app/Components/StickyTabPage/reanimatedHelpers.ts:805487622": [
+      [10, 16, 17, "RegExp match", "3761664346"],
+      [36, 16, 17, "RegExp match", "3761664346"],
+      [37, 20, 17, "RegExp match", "3761664346"]
+    ],
+    "src/app/Scenes/Artwork/Components/ImageCarousel/FullScreen/ImageCarouselFullScreen.tsx:2095063561": [
+      [47, 22, 17, "RegExp match", "3761664346"]
+    ],
+    "src/app/Scenes/Artwork/Components/ImageCarousel/FullScreen/ImageZoomView.tsx:923915216": [
+      [129, 23, 17, "RegExp match", "3761664346"],
+      [279, 28, 17, "RegExp match", "3761664346"],
+      [280, 28, 17, "RegExp match", "3761664346"],
+      [281, 23, 17, "RegExp match", "3761664346"]
+    ],
+    "src/app/Scenes/Artwork/Components/ImageCarousel/FullScreen/VerticalSwipeToDismiss.tsx:2065627195": [
+      [37, 18, 17, "RegExp match", "3761664346"]
+    ],
+    "src/app/Scenes/Artwork/Components/ImageCarousel/useAnimatedValue.tests.tsx:1868627260": [
+      [12, 10, 17, "RegExp match", "3761664346"]
+    ],
+    "src/app/Scenes/Artwork/Components/ImageCarousel/useSpringValue.ts:411637173": [
+      [18, 16, 17, "RegExp match", "3761664346"]
+    ],
+    "src/app/Scenes/MyCollection/Components/MyCollectionSearchBar.tsx:2275431120": [
+      [37, 33, 17, "RegExp match", "3761664346"]
+    ],
+    "src/palette/elements/Spinner/CircularSpinner.tsx:2364825164": [
+      [55, 19, 17, "RegExp match", "3761664346"]
+    ]
+  }`
+};
+
+exports[`Stop using moment, use luxon instead!`] = {
+  value: `{
+    "src/app/Components/ArtworkGrids/LotProgressBar.tests.tsx:1262375463": [
+      [3, 14, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/Components/AuctionResultsList.tsx:975237273": [
+      [7, 14, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/Components/Bidding/Components/Timer.tests.tsx:3331192964": [
+      [3, 14, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/Components/Bidding/Components/Timer.tsx:3834085858": [
+      [4, 14, 22, "RegExp match", "1513299653"]
+    ],
+    "src/app/Components/Countdown/CountdownTimer.tsx:2306400282": [
+      [1, 20, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/Components/Countdown/DurationProvider.tests.tsx:1740588802": [
+      [1, 14, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/Components/Countdown/DurationProvider.tsx:2862669178": [
+      [1, 14, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/Components/Countdown/StateManager.tests.tsx:3710059490": [
+      [2, 14, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/Components/Countdown/Ticker.tests.tsx:722819666": [
+      [2, 14, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/Components/Countdown/Ticker.tsx:1619936038": [
+      [2, 20, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/Components/Lists/AuctionResultListItem.tests.tsx:2529903808": [
+      [6, 14, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/Components/Lists/AuctionResultListItem.tsx:288945715": [
+      [6, 14, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/Scenes/Artwork/Components/ArtworkLotTimer.tsx:332617485": [
+      [17, 14, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/Scenes/AuctionResult/AuctionResult.tsx:1245404998": [
+      [17, 14, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/Scenes/AuctionResult/helpers.tests.ts:184195589": [
+      [0, 14, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/Scenes/AuctionResult/helpers.ts:4038206533": [
+      [1, 14, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/ConversationSnippet.tests.tsx:393925534": [
+      [1, 14, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/ConversationSnippet.tsx:4214254608": [
+      [4, 14, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/Message.tests.tsx:209688755": [
+      [1, 14, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/MessageGroup.tsx:3686261847": [
+      [4, 14, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/TimeSince.tsx:3169334214": [
+      [0, 14, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/utils/groupConversationItems.ts:42383392": [
+      [0, 14, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/Scenes/Map/bucketCityResults.ts:1806674318": [
+      [2, 14, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/Scenes/Map/exhibitionPeriodParser.ts:1779502468": [
+      [0, 14, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/Scenes/MyBids/Components/ClosedLotStanding.tsx:700231411": [
+      [4, 14, 22, "RegExp match", "1513299653"]
+    ],
+    "src/app/Scenes/OrderHistory/OrderHistoryRow.tsx:3257661711": [
+      [5, 14, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/Scenes/Sale/Components/SaleHeader.tsx:2655037911": [
+      [9, 14, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/Scenes/Sale/SaleHeader.tests.tsx:3098791436": [
+      [6, 14, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/Scenes/Sale/helpers.tests.ts:307568959": [
+      [0, 14, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/Scenes/Sale/helpers.ts:2844435259": [
+      [0, 14, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/Scenes/SaleInfo/SaleInfo.tsx:4139374294": [
+      [15, 14, 22, "RegExp match", "1513299653"]
+    ],
+    "src/app/Scenes/Sales/Components/SaleListItem.tests.tsx:298745113": [
+      [1, 14, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/store/config/EchoModel.tests.tsx:1952263738": [
+      [4, 14, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/store/config/EchoModel.tsx:2359176509": [
+      [4, 14, 22, "RegExp match", "1513299653"]
+    ],
+    "src/app/utils/getUrgencyTag.ts:1614692514": [
+      [0, 14, 13, "RegExp match", "3265611491"]
+    ],
+    "src/app/utils/saleTime.ts:2947507623": [
+      [0, 14, 22, "RegExp match", "1513299653"]
+    ]
+  }`
+};
+
+exports[`Finish our strictnes migration!`] = {
+  value: `{
+    "src/app/Components/Bidding/Screens/ConfirmBid.tests.tsx:2156616320": [
+      [25, 48, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Components/Bidding/Screens/ConfirmBid/index.tsx:1305485570": [
+      [30, 48, 40, "RegExp match", "1708246099"],
+      [81, 54, 40, "RegExp match", "1708246099"],
+      [87, 54, 40, "RegExp match", "1708246099"],
+      [89, 54, 40, "RegExp match", "1708246099"],
+      [91, 54, 40, "RegExp match", "1708246099"],
+      [187, 54, 40, "RegExp match", "1708246099"],
+      [189, 54, 40, "RegExp match", "1708246099"],
+      [191, 54, 40, "RegExp match", "1708246099"],
+      [193, 54, 40, "RegExp match", "1708246099"],
+      [195, 54, 40, "RegExp match", "1708246099"],
+      [197, 54, 40, "RegExp match", "1708246099"],
+      [199, 54, 40, "RegExp match", "1708246099"],
+      [366, 58, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Components/Bidding/Screens/Registration.tests.tsx:1752819429": [
+      [16, 48, 40, "RegExp match", "1708246099"],
+      [170, 54, 40, "RegExp match", "1708246099"],
+      [172, 56, 40, "RegExp match", "1708246099"],
+      [176, 54, 40, "RegExp match", "1708246099"],
+      [181, 54, 40, "RegExp match", "1708246099"],
+      [318, 52, 40, "RegExp match", "1708246099"],
+      [320, 54, 40, "RegExp match", "1708246099"],
+      [350, 52, 40, "RegExp match", "1708246099"],
+      [352, 54, 40, "RegExp match", "1708246099"],
+      [404, 54, 40, "RegExp match", "1708246099"],
+      [406, 56, 40, "RegExp match", "1708246099"],
+      [410, 54, 40, "RegExp match", "1708246099"],
+      [441, 54, 40, "RegExp match", "1708246099"],
+      [443, 56, 40, "RegExp match", "1708246099"],
+      [447, 54, 40, "RegExp match", "1708246099"],
+      [478, 54, 40, "RegExp match", "1708246099"],
+      [480, 56, 40, "RegExp match", "1708246099"],
+      [484, 54, 40, "RegExp match", "1708246099"],
+      [539, 52, 40, "RegExp match", "1708246099"],
+      [541, 54, 40, "RegExp match", "1708246099"],
+      [563, 52, 40, "RegExp match", "1708246099"],
+      [565, 54, 40, "RegExp match", "1708246099"],
+      [597, 52, 40, "RegExp match", "1708246099"],
+      [599, 54, 40, "RegExp match", "1708246099"],
+      [618, 52, 40, "RegExp match", "1708246099"],
+      [620, 54, 40, "RegExp match", "1708246099"],
+      [654, 52, 40, "RegExp match", "1708246099"],
+      [656, 54, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Components/Bidding/Screens/Registration.tsx:3779435198": [
+      [36, 48, 40, "RegExp match", "1708246099"],
+      [83, 54, 40, "RegExp match", "1708246099"],
+      [85, 54, 40, "RegExp match", "1708246099"],
+      [87, 54, 40, "RegExp match", "1708246099"],
+      [341, 56, 40, "RegExp match", "1708246099"],
+      [430, 60, 40, "RegExp match", "1708246099"],
+      [442, 60, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Components/Countdown/CountdownTimer.tsx:2306400282": [
+      [22, 48, 40, "RegExp match", "1708246099"],
+      [56, 52, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Components/RetryErrorBoundary.tsx:1976228410": [
+      [22, 50, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Components/ScrollableTabBar.tsx:2232339801": [
+      [59, 50, 40, "RegExp match", "1708246099"],
+      [71, 52, 40, "RegExp match", "1708246099"],
+      [75, 50, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Components/TabBar.tsx:2724789569": [
+      [62, 50, 40, "RegExp match", "1708246099"],
+      [95, 58, 40, "RegExp match", "1708246099"],
+      [99, 58, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName.tests.tsx:3283791376": [
+      [7, 52, 40, "RegExp match", "1708246099"],
+      [12, 52, 40, "RegExp match", "1708246099"],
+      [17, 52, 40, "RegExp match", "1708246099"],
+      [22, 52, 40, "RegExp match", "1708246099"],
+      [29, 52, 40, "RegExp match", "1708246099"],
+      [36, 52, 40, "RegExp match", "1708246099"],
+      [43, 52, 40, "RegExp match", "1708246099"],
+      [50, 52, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/Artwork/Components/AuctionPrice.tsx:2112730869": [
+      [22, 50, 40, "RegExp match", "1708246099"],
+      [26, 52, 40, "RegExp match", "1708246099"],
+      [61, 52, 40, "RegExp match", "1708246099"],
+      [64, 52, 40, "RegExp match", "1708246099"],
+      [66, 52, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/Artwork/Components/CommercialButtons/BidButton.tsx:1104439896": [
+      [24, 48, 40, "RegExp match", "1708246099"],
+      [27, 48, 40, "RegExp match", "1708246099"],
+      [30, 48, 40, "RegExp match", "1708246099"],
+      [72, 52, 40, "RegExp match", "1708246099"],
+      [86, 52, 40, "RegExp match", "1708246099"],
+      [111, 52, 40, "RegExp match", "1708246099"],
+      [116, 52, 40, "RegExp match", "1708246099"],
+      [199, 52, 40, "RegExp match", "1708246099"],
+      [209, 54, 40, "RegExp match", "1708246099"],
+      [211, 54, 40, "RegExp match", "1708246099"],
+      [241, 54, 40, "RegExp match", "1708246099"],
+      [268, 54, 40, "RegExp match", "1708246099"],
+      [270, 56, 40, "RegExp match", "1708246099"],
+      [282, 58, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/Artwork/Components/CommercialButtons/BuyNowButton.tsx:110779339": [
+      [85, 58, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/Artwork/Components/CommercialButtons/MakeOfferButton.tsx:3186730594": [
+      [26, 48, 40, "RegExp match", "1708246099"],
+      [37, 50, 40, "RegExp match", "1708246099"],
+      [110, 64, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/Artwork/Components/CommercialInformation.tsx:3131724196": [
+      [229, 60, 40, "RegExp match", "1708246099"],
+      [231, 60, 40, "RegExp match", "1708246099"],
+      [280, 60, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/Artwork/Components/ImageCarousel/FullScreen/DeepZoom/DeepZoomOverlay.tsx:1776784817": [
+      [36, 54, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/Artwork/Components/ImageCarousel/FullScreen/DeepZoom/DeepZoomTile.tsx:2736540225": [
+      [26, 52, 40, "RegExp match", "1708246099"],
+      [31, 52, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/Artwork/Components/ImageCarousel/FullScreen/ImageCarouselFullScreen.tsx:2095063561": [
+      [94, 60, 40, "RegExp match", "1708246099"],
+      [118, 68, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext.tsx:2009706848": [
+      [72, 50, 40, "RegExp match", "1708246099"],
+      [96, 64, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselEmbedded.tsx:2361132445": [
+      [41, 50, 40, "RegExp match", "1708246099"],
+      [143, 54, 40, "RegExp match", "1708246099"],
+      [155, 60, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/Artwork/Components/OtherWorks/ContextGridCTA.tsx:1888146634": [
+      [22, 52, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/City/City.tsx:787509940": [
+      [11, 48, 40, "RegExp match", "1708246099"],
+      [45, 50, 40, "RegExp match", "1708246099"],
+      [112, 50, 40, "RegExp match", "1708246099"],
+      [149, 50, 40, "RegExp match", "1708246099"],
+      [154, 50, 40, "RegExp match", "1708246099"],
+      [161, 50, 40, "RegExp match", "1708246099"],
+      [171, 50, 40, "RegExp match", "1708246099"],
+      [175, 50, 40, "RegExp match", "1708246099"],
+      [228, 70, 40, "RegExp match", "1708246099"],
+      [233, 70, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/City/CityFairList.tsx:968007184": [
+      [50, 50, 40, "RegExp match", "1708246099"],
+      [63, 56, 40, "RegExp match", "1708246099"],
+      [83, 58, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/City/CitySectionList.tsx:3440590734": [
+      [29, 48, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/City/Components/AllEvents.tsx:746348506": [
+      [43, 50, 40, "RegExp match", "1708246099"],
+      [67, 58, 40, "RegExp match", "1708246099"],
+      [69, 58, 40, "RegExp match", "1708246099"],
+      [78, 50, 40, "RegExp match", "1708246099"],
+      [139, 50, 40, "RegExp match", "1708246099"],
+      [232, 56, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/City/Components/BMWEventSection/index.tsx:1351137815": [
+      [52, 50, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/City/Components/Event/index.tsx:1645685399": [
+      [97, 62, 40, "RegExp match", "1708246099"],
+      [118, 50, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/City/Components/EventList.tsx:1290486133": [
+      [38, 50, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/City/Components/EventSection/index.tsx:90262994": [
+      [24, 54, 40, "RegExp match", "1708246099"],
+      [30, 54, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/City/Components/FairEventSection/index.tsx:2309552943": [
+      [26, 50, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/City/cityTabs.ts:4161091079": [
+      [7, 54, 40, "RegExp match", "1708246099"],
+      [9, 52, 40, "RegExp match", "1708246099"],
+      [15, 52, 40, "RegExp match", "1708246099"],
+      [23, 52, 40, "RegExp match", "1708246099"],
+      [29, 52, 40, "RegExp match", "1708246099"],
+      [36, 52, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/Collection/Collection.tests.tsx:3598877736": [
+      [24, 58, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/Collection/Components/FeaturedArtists.tsx:2095048176": [
+      [22, 52, 40, "RegExp match", "1708246099"],
+      [25, 52, 40, "RegExp match", "1708246099"],
+      [41, 54, 40, "RegExp match", "1708246099"],
+      [46, 54, 40, "RegExp match", "1708246099"],
+      [73, 64, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/Collection/Components/FullFeaturedArtistList.tsx:1542306537": [
+      [24, 54, 40, "RegExp match", "1708246099"],
+      [31, 54, 40, "RegExp match", "1708246099"],
+      [48, 62, 40, "RegExp match", "1708246099"],
+      [51, 66, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/Inbox/Components/ActiveBids/ActiveBid.tsx:2151902859": [
+      [88, 54, 40, "RegExp match", "1708246099"],
+      [116, 58, 40, "RegExp match", "1708246099"],
+      [118, 58, 40, "RegExp match", "1708246099"],
+      [120, 52, 40, "RegExp match", "1708246099"],
+      [127, 54, 40, "RegExp match", "1708246099"],
+      [129, 54, 40, "RegExp match", "1708246099"],
+      [131, 54, 40, "RegExp match", "1708246099"],
+      [133, 52, 40, "RegExp match", "1708246099"],
+      [135, 52, 40, "RegExp match", "1708246099"],
+      [141, 52, 40, "RegExp match", "1708246099"],
+      [148, 58, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/ConversationSnippet.tsx:4214254608": [
+      [46, 50, 40, "RegExp match", "1708246099"],
+      [54, 52, 40, "RegExp match", "1708246099"],
+      [63, 52, 40, "RegExp match", "1708246099"],
+      [69, 52, 40, "RegExp match", "1708246099"],
+      [73, 52, 40, "RegExp match", "1708246099"],
+      [75, 54, 40, "RegExp match", "1708246099"],
+      [77, 54, 40, "RegExp match", "1708246099"],
+      [79, 54, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/InquiryMakeOfferButton.tsx:3464026788": [
+      [30, 50, 40, "RegExp match", "1708246099"],
+      [97, 64, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/SendConversationMessage.ts:3426406869": [
+      [27, 52, 40, "RegExp match", "1708246099"],
+      [31, 54, 40, "RegExp match", "1708246099"],
+      [35, 52, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/Inbox/Screens/Conversation.tsx:408662661": [
+      [62, 50, 40, "RegExp match", "1708246099"],
+      [64, 50, 40, "RegExp match", "1708246099"],
+      [88, 50, 40, "RegExp match", "1708246099"],
+      [114, 56, 40, "RegExp match", "1708246099"],
+      [130, 50, 40, "RegExp match", "1708246099"],
+      [134, 52, 40, "RegExp match", "1708246099"],
+      [146, 50, 40, "RegExp match", "1708246099"],
+      [150, 52, 40, "RegExp match", "1708246099"],
+      [161, 52, 40, "RegExp match", "1708246099"],
+      [168, 56, 40, "RegExp match", "1708246099"],
+      [170, 56, 40, "RegExp match", "1708246099"],
+      [176, 60, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/Map/Components/PinsShapeLayer.tsx:2931968919": [
+      [70, 54, 40, "RegExp match", "1708246099"],
+      [107, 52, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/Map/Components/ShowCard.tsx:3422165572": [
+      [53, 50, 40, "RegExp match", "1708246099"],
+      [86, 50, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/Map/EventEmitter.ts:1252896156": [
+      [12, 52, 40, "RegExp match", "1708246099"],
+      [20, 52, 40, "RegExp match", "1708246099"],
+      [37, 52, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/Map/GlobalMap.tsx:1012628576": [
+      [143, 50, 40, "RegExp match", "1708246099"],
+      [146, 50, 40, "RegExp match", "1708246099"],
+      [152, 50, 40, "RegExp match", "1708246099"],
+      [166, 54, 40, "RegExp match", "1708246099"],
+      [178, 50, 40, "RegExp match", "1708246099"],
+      [191, 50, 40, "RegExp match", "1708246099"],
+      [196, 56, 40, "RegExp match", "1708246099"],
+      [198, 56, 40, "RegExp match", "1708246099"],
+      [240, 50, 40, "RegExp match", "1708246099"],
+      [267, 54, 40, "RegExp match", "1708246099"],
+      [287, 54, 40, "RegExp match", "1708246099"],
+      [345, 56, 40, "RegExp match", "1708246099"],
+      [463, 64, 40, "RegExp match", "1708246099"],
+      [531, 52, 40, "RegExp match", "1708246099"],
+      [542, 52, 40, "RegExp match", "1708246099"],
+      [586, 68, 40, "RegExp match", "1708246099"],
+      [588, 70, 40, "RegExp match", "1708246099"],
+      [675, 54, 40, "RegExp match", "1708246099"],
+      [677, 54, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/Map/bucketCityResults.ts:1806674318": [
+      [8, 50, 40, "RegExp match", "1708246099"],
+      [10, 50, 40, "RegExp match", "1708246099"],
+      [12, 52, 40, "RegExp match", "1708246099"],
+      [15, 50, 40, "RegExp match", "1708246099"],
+      [18, 52, 40, "RegExp match", "1708246099"],
+      [21, 50, 40, "RegExp match", "1708246099"],
+      [23, 50, 40, "RegExp match", "1708246099"],
+      [25, 52, 40, "RegExp match", "1708246099"],
+      [27, 52, 40, "RegExp match", "1708246099"],
+      [29, 50, 40, "RegExp match", "1708246099"],
+      [32, 54, 40, "RegExp match", "1708246099"],
+      [35, 52, 40, "RegExp match", "1708246099"],
+      [39, 50, 40, "RegExp match", "1708246099"],
+      [42, 50, 40, "RegExp match", "1708246099"],
+      [45, 54, 40, "RegExp match", "1708246099"],
+      [47, 56, 40, "RegExp match", "1708246099"],
+      [52, 52, 40, "RegExp match", "1708246099"],
+      [55, 52, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/MyProfile/LoggedInUserInfo.tsx:1793191809": [
+      [44, 56, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/gemini/createGeminiAssetWithS3Credentials.ts:2415186200": [
+      [32, 58, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/gemini/getGeminiCredentialsForEnvironment.ts:464420617": [
+      [8, 50, 40, "RegExp match", "1708246099"],
+      [49, 58, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/uploadFileToS3.ts:3382805377": [
+      [49, 56, 40, "RegExp match", "1708246099"],
+      [65, 52, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/system/relay/middlewares/metaphysicsMiddleware.ts:702430560": [
+      [13, 50, 40, "RegExp match", "1708246099"],
+      [15, 52, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/system/relay/middlewares/timingMiddleware.ts:831390156": [
+      [3, 50, 40, "RegExp match", "1708246099"],
+      [7, 52, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/utils/CatchErrors.tsx:1166684242": [
+      [4, 50, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/utils/convertCityToGeoJSON.ts:759853562": [
+      [50, 54, 40, "RegExp match", "1708246099"],
+      [52, 54, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/utils/renderMarkdown.tests.tsx:1271202079": [
+      [62, 56, 40, "RegExp match", "1708246099"],
+      [88, 56, 40, "RegExp match", "1708246099"],
+      [117, 56, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/utils/renderWithPlaceholder.tsx:3187757658": [
+      [75, 56, 40, "RegExp match", "1708246099"],
+      [82, 56, 40, "RegExp match", "1708246099"]
+    ],
+    "src/app/utils/tests/createMockNetworkLayer/index.ts:1655627387": [
+      [11, 48, 40, "RegExp match", "1708246099"],
+      [14, 48, 40, "RegExp match", "1708246099"],
+      [27, 54, 40, "RegExp match", "1708246099"],
+      [76, 56, 40, "RegExp match", "1708246099"],
+      [130, 52, 40, "RegExp match", "1708246099"],
+      [142, 58, 40, "RegExp match", "1708246099"],
+      [151, 58, 40, "RegExp match", "1708246099"],
+      [153, 64, 40, "RegExp match", "1708246099"],
+      [155, 64, 40, "RegExp match", "1708246099"],
+      [254, 54, 40, "RegExp match", "1708246099"]
+    ]
+  }`
+};
+
+exports[`Avoid non-webp images!`] = {
+  value: `{
+    "images/CohnMakeAMountain.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/CohnMakeAMountain@2x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/CohnMakeAMountain@3x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/HirstTheWonder.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/HirstTheWonder@2x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/HirstTheWonder@3x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/InsightsLoadingImage.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/InsightsLoadingImage@2x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/InsightsLoadingImage@3x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/MCInsights_banner_backgound_image.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/MCInsights_banner_backgound_image@2x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/MCInsights_banner_backgound_image@3x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/OnboardingImage0AdesinaPaintingOfRechel.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/OnboardingImage0AdesinaPaintingOfRechel@2x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/OnboardingImage0AdesinaPaintingOfRechel@3x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/OnboardingImage1KatzYellowFlags.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/OnboardingImage1KatzYellowFlags@2x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/OnboardingImage1KatzYellowFlags@3x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/OnboardingImage2SuperFutureKidHazyDaisy2022.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/OnboardingImage2SuperFutureKidHazyDaisy2022@2x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/OnboardingImage2SuperFutureKidHazyDaisy2022@3x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/OnboardingImage3WangTheSnowflakeThatComesAlive.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/OnboardingImage3WangTheSnowflakeThatComesAlive@2x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/OnboardingImage3WangTheSnowflakeThatComesAlive@3x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/OnboardingImage4AndyWarholCow.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/OnboardingImage4AndyWarholCow@2x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/OnboardingImage4AndyWarholCow@3x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/SavesEmptyStateImage.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/SavesEmptyStateImage@2x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/SavesEmptyStateImage@3x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/SearchButton.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/SearchButton@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/SearchButton@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/SearchButtonWhite@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/SellWithArtsyHeader.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/WelcomeImage.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/WelcomeImage@2x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/WelcomeImage@3x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/angle-left.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/angle-left@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/angle-left@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/apple.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/apple@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/apple@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/bmw-logo.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/cam.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/cam@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/cam@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/career-highlights-promo-background-image.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/career-highlights-promo-background-image@2x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/career-highlights-promo-background-image@3x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/careerHighlightsPromotionalCardImage.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/careerHighlightsPromotionalCardImage@2x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/careerHighlightsPromotionalCardImage@3x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/chevron.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/chevron@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/chevron@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/circle-check-green.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/circle-check-green@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/circle-check-green@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/circle-exclamation.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/circle-exclamation@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/circle-exclamation@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/circle-x-red.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/circle-x-red@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/circle-x-red@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/city-guide-bg.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/city-guide-bg@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/city-guide-bg@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/city-guide.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/close-x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/close-x@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/close-x@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/consignments/black-tick.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/consignments/black-tick@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/consignments/camera-black.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/consignments/camera-black@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/consignments/close-x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/consignments/close-x@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/consignments/email.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/consignments/email@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/consignments/failure.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/consignments/failure@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/consignments/failure@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/consignments/hammer.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/consignments/hammer@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/consignments/map-pin.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/consignments/map-pin@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/consignments/plus.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/consignments/plus@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/consignments/success.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/consignments/success@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/consignments/success@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/contact.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/contact@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/contact@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/email.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/email@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/email@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/facebook.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/facebook@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/facebook@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/find.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/find@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/find@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/google.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/google@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/google@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/homefeed-my-collection-inboarding-0.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/homefeed-my-collection-inboarding-0@2x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/homefeed-my-collection-inboarding-0@3x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/homefeed-my-collection-inboarding-1.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/homefeed-my-collection-inboarding-1@2x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/homefeed-my-collection-inboarding-1@3x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/horizontal_chevron.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/horizontal_chevron@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/horizontal_chevron@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/horizontal_chevron_white.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/horizontal_chevron_white@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/horizontal_chevron_white@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/info.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/info@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/info@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/map-bg.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/map.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/message.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/message@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/message@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/money.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/money@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/money@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/my-collection-empty-state.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/my-collection-empty-state@2x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/my-collection-empty-state@3x.jpg:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/my-collection-insights-empty-state-median.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/my-collection-insights-empty-state-median@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/my-collection-insights-empty-state-median@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/my-collection-insights-empty-state.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/my-collection-insights-empty-state@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/my-collection-insights-empty-state@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/my-collection-onboarding-image-1.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/my-collection-onboarding-image-1@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/my-collection-onboarding-image-1@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/my-collection-onboarding-image-2.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/my-collection-onboarding-image-2@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/my-collection-onboarding-image-2@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/my-collection-onboarding-image-3.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/my-collection-onboarding-image-3@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/my-collection-onboarding-image-3@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/offer.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/offer@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/offer@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/paddle.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/paddle@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/paddle@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/pay.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/pay@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/pay@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/payment_request.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/payment_request@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/payment_request@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/pdf.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/pdf@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/pdf@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/powered_by_google.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/profile_placeholder_avatar.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/profile_placeholder_avatar@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/profile_placeholder_avatar@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/sell.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/sell@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/sell@3x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/whitespinner.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ],
+    "images/whitespinner@2x.png:5381": [
+      [0, 0, 0, "don\'t use non-webp images. you can use the script to convert other formats to webp.", "5381"]
+    ]
+  }`
+};
+
+exports[`Avoid using test-renderer!`] = {
+  value: `{
+    "src/app/Components/ArticleCard.tests.tsx:466144141": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Artist/ArtistAbout/ArtistAboutShows.tests.tsx:3309315554": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Artist/ArtistConsignButton.tests.tsx:4132109638": [
+      [6, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Artist/ArtistInsights/ArtistInsights.tests.tsx:1698934285": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Artist/ArtistInsights/ArtistInsightsAuctionResults.tests.tsx:2926364419": [
+      [7, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Artist/ArtistInsights/MarketStats.tests.tsx:575870238": [
+      [3, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Artist/ArtistShows/ArtistShow.tests.tsx:2207575001": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Artist/ArtistShows/Metadata.tests.tsx:1603508536": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Artist/ArtistShows/SmallList.tests.tsx:2544230354": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Artist/ArtistShows/VariableSizeShowsList.tests.tsx:4233353579": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/ArtistListItem.tests.tsx:4282305779": [
+      [1, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/ArtworkFilter/Filters/ColorsOptions.tests.tsx:1507937937": [
+      [9, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/ArtworkFilter/Filters/ColorsSwatch.tests.tsx:1994947087": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/ArtworkFilter/Filters/KeywordFilter.tests.tsx:221317578": [
+      [5, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/ArtworkFilter/Filters/SortOptions.tests.tsx:2879152010": [
+      [6, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/ArtworkFilter/Filters/YearOptions.tests.tsx:2785120065": [
+      [8, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/ArtworkFilter/Filters/useMultiSelect.tests.tsx:1921891650": [
+      [8, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/ArtworkGrids/InfiniteScrollArtworksGrid.tests.tsx:3287953949": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/AuctionResult/AuctionResultMidEstimate.tests.tsx:2081090230": [
+      [1, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Bidding/BidFlow.tests.tsx:1557458694": [
+      [3, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Bidding/Components/PaymentInfo.tests.tsx:262392977": [
+      [6, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Bidding/Components/Title.tests.tsx:1111993186": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Bidding/Screens/BillingAddress.tests.tsx:2988426403": [
+      [3, 29, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Bidding/Screens/ConfirmBid.tests.tsx:2156616320": [
+      [18, 29, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Bidding/Screens/CreditCardForm.tests.tsx:381750724": [
+      [1, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Bidding/Screens/Registration.tests.tsx:1752819429": [
+      [12, 29, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Bidding/Screens/RegistrationResult.tests.tsx:3104671586": [
+      [3, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Buttons/CaretButton.tests.tsx:2337358519": [
+      [1, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Buttons/DarkNavigationButton.tests.tsx:3182770407": [
+      [1, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Buttons/InfoButton.tests.tsx:1519202434": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/ConnectivityBanner.tests.tsx:4106246929": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Containers/Inquiry.tests.tsx:3102826986": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Containers/RegistrationFlow.tests.tsx:257217601": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Containers/WorksForYou.tests.tsx:3077226651": [
+      [1, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Disappearable.tests.tsx:3657191875": [
+      [1, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/EventTiming.tests.tsx:4011597288": [
+      [1, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Gene/About.tests.tsx:2139060210": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Gene/Biography.tests.tsx:2422431588": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Gene/Header.tests.tsx:1944510665": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/HeaderArtworksFilter/HeaderArtworksFilter.tests.tsx:983879919": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks.tests.tsx:198730798": [
+      [6, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Home/ArtistRails/ArtistCard.tests.tsx:3488289762": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Lists/AuctionResultListItem.tests.tsx:2529903808": [
+      [4, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Lists/SavedItemRow.tests.tsx:3450992164": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/LocationMap/LocationMap.tests.tsx:3531896044": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail.tests.tsx:4016563264": [
+      [4, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Markdown.tests.tsx:2414563040": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Modals/LoadingModal.tests.tsx:3667664735": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/ParentAwareScrollView.tests.tsx:2686008818": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/PopoverMessage/PopoverMessage.tests.tsx:2449992165": [
+      [1, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/RetryErrorBoundary.tests.tsx:4262510661": [
+      [1, 29, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/SaleArtworkTileRailCard/SaleArtworkTileRailCard.tests.tsx:3436724218": [
+      [3, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/SectionTitle.tests.tsx:1208372871": [
+      [1, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Show/ShowArtistsPreview.tests.tsx:993568407": [
+      [4, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Show/ShowArtworksPreview.tests.tsx:2256486119": [
+      [1, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Components/Tag/About.tests.tsx:105439877": [
+      [1, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/About/About.tests.tsx:2371490773": [
+      [1, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/ArtistArticles/ArtistArticles.tests.tsx:3950553140": [
+      [1, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/ArtistSeries/ArtistSeries.tests.tsx:2514306369": [
+      [7, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/ArtistSeries/ArtistSeriesArtworks.tests.tsx:3042894959": [
+      [6, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList.tests.tsx:2549284725": [
+      [5, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/ArtistSeries/ArtistSeriesHeader.tests.tsx:214322383": [
+      [3, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/ArtistSeries/ArtistSeriesListItem.tests.tsx:3914997966": [
+      [5, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/ArtistSeries/ArtistSeriesMeta.tests.tsx:1752311638": [
+      [7, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/ArtistSeries/ArtistSeriesMoreSeries.tests.tsx:1032468955": [
+      [7, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/ArtistShows/ArtistShows2.tests.tsx:3304139143": [
+      [3, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Artwork/Artwork.tests.tsx:3066450746": [
+      [14, 29, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Artwork/Components/ArtworksInSeriesRail.tests.tsx:131923322": [
+      [4, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Artwork/Components/CommercialButtons/CollapsibleArtworkDetails.tests.tsx:1264336045": [
+      [5, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Artwork/Components/CommercialButtons/InquiryButtons.tests.tsx:458011032": [
+      [4, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Artwork/Components/CommercialButtons/InquiryModal.tests.tsx:4219892881": [
+      [14, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/AuctionResult/AuctionResult.tests.tsx:2135705264": [
+      [6, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/AuctionResults/AuctionResultsScreenWrapper.tests.tsx:3923928327": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/BottomTabs/BottomTabs.tests.tsx:1554635863": [
+      [6, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/BottomTabs/BottomTabsButton.tests.tsx:3870097687": [
+      [5, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/BottomTabs/BottomTabsNavigator.tests.tsx:3094321374": [
+      [4, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Collection/Components/CollectionHubsRails/ArtistSeries/CollectionArtistSeriesRail.tests.tsx:3372583293": [
+      [11, 29, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Collection/Components/CollectionHubsRails/FeaturedCollections/FeaturedCollectionsRail.tests.tsx:3801484197": [
+      [8, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Collection/Components/CollectionHubsRails/OtherCollections/OtherCollectionsRail.tests.tsx:1723977289": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Collection/Screens/CollectionArtworks.tests.tsx:3187813314": [
+      [11, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Fair/Fair.tests.tsx:811367283": [
+      [3, 29, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Fair/FairAllFollowedArtists.tests.tsx:1143376279": [
+      [1, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Fair/FairArtworks.tests.tsx:3731774820": [
+      [6, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Fair/FairCollections.tests.tsx:4277648253": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Fair/FairEditorial.tests.tsx:911228020": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Fair/FairExhibitorRail.tests.tsx:821315650": [
+      [4, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Fair/FairExhibitors.tests.tsx:575237441": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Fair/FairFollowedArtistsRail.tests.tsx:2899869064": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Fair/FairHeader.tests.tsx:2742344924": [
+      [5, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Fair/FairMoreInfo.tests.tsx:1927647134": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Feature/Feature.tests.tsx:3323945594": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Feature/components/FeatureMarkdown.tests.tsx:1858716428": [
+      [1, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Gene/Gene.tests.tsx:519558873": [
+      [6, 29, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Home/Components/AuctionResultsRail.tests.tsx:1901058": [
+      [3, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Home/Components/CollectionsRail.tests.tsx:3561190140": [
+      [5, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Home/Components/EmailConfirmationBanner.tests.tsx:1812536631": [
+      [5, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Home/Components/FairsRail.tests.tsx:3075823980": [
+      [9, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Home/Components/SalesRail.tests.tsx:115654347": [
+      [9, 29, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Home/Components/ShowsRail.tests.tsx:3981827527": [
+      [1, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Home/Components/Trove.tests.tsx:2768059575": [
+      [4, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Home/TabBar.tests.tsx:3871189541": [
+      [1, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Inbox/Components/ActiveBids/ActiveBid.tests.tsx:3104926529": [
+      [1, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/Composer.tests.tsx:3438807478": [
+      [4, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/ConversationCTA.tests.tsx:1761334241": [
+      [3, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/ConversationSnippet.tests.tsx:393925534": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/Conversations.tests.tsx:610466690": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/InquiryMakeOfferButton.tests.tsx:807583861": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/MakeOfferModal.tests.tsx:1446491262": [
+      [4, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/Message.tests.tsx:209688755": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/Messages.tests.tsx:4106419433": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/Preview/Attachment/FileDownload.tests.tsx:1713233665": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/Preview/Attachment/ImagePreview.tests.tsx:2815136459": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/Preview/Attachment/PDFPreview.tests.tsx:3395229656": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/Preview/ShowPreview.tests.tsx:3052387851": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Inbox/Components/Conversations/ReviewOfferButton.tests.tsx:2627958058": [
+      [3, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Inbox/Screens/Conversation.tests.tsx:395802088": [
+      [4, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/MyAccount/MyAccount.tests.tsx:678131067": [
+      [3, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/MyAccount/MyAccountEditPassword.tests.tsx:1283502643": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/MyBids/ActiveLotStanding.tests.tsx:2520887635": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/MyBids/ClosedLotStanding.tests.tsx:1065550547": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/MyBids/MyBids.tests.tsx:2944873400": [
+      [3, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/MyBids/SaleCard.tests.tsx:2891428778": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/MyBids/SaleInfo.tests.tsx:2358915528": [
+      [1, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/MyCollection/Components/ScreenMargin.tests.tsx:3292081617": [
+      [1, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/MyCollection/MyCollection.tests.tsx:267841220": [
+      [12, 29, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/MyCollection/Screens/Artwork/Components/ArtworkInsights/MyCollectionArtworkArtistArticles.tests.tsx:3970729125": [
+      [6, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArrowDetails.tests.tsx:3966170923": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/MyCollection/Screens/ArtworkForm/Components/Dimensions.tests.tsx:3476140855": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/MyCollection/Screens/ArtworkForm/Screens/MyCollectionArtworkFormAddPhotos.tests.tsx:4060882619": [
+      [4, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/MyCollection/Screens/ArtworkForm/Screens/MyCollectionArtworkFormMain.tests.tsx:3648025524": [
+      [7, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkGridItem.tests.tsx:1000586021": [
+      [7, 29, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/MyProfile/LoggedInUserInfo.tests.tsx:532502828": [
+      [4, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/MyProfile/MyProfilePushNotifications.tests.tsx:3441071537": [
+      [5, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/MyProfile/MyProfileSettings.tests.tsx:704033186": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/NewWorksForYou/NewWorksForYou.tests.tsx:1213493448": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Onboarding/ForgotPassword.tests.tsx:820122939": [
+      [1, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Onboarding/OnboardingCreateAccount/Onboarding.tests.tsx:2957783398": [
+      [4, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Onboarding/OnboardingCreateAccount/OnboardingCreateAccount.tests.tsx:1467292006": [
+      [3, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Onboarding/OnboardingCreateAccount/OnboardingCreateAccountEmail.tests.tsx:733277253": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Onboarding/OnboardingCreateAccount/OnboardingCreateAccountName.tests.tsx:4172726096": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Onboarding/OnboardingCreateAccount/OnboardingCreateAccountPassword.tests.tsx:2872370376": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Onboarding/OnboardingCreateAccount/OnboardingSocialPick.tests.tsx:2756810462": [
+      [3, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Onboarding/OnboardingLogin.tests.tsx:927225381": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/OrderHistory/OrderDetails/ArtworkInfoSection.tests.tsx:3896851143": [
+      [1, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/OrderHistory/OrderDetails/OrderDetails.tests.tsx:293517408": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/OrderHistory/OrderDetails/OrderDetailsHeader.tests.tsx:1835529137": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/OrderHistory/OrderDetails/ShipsToSection.tests.tsx:941906628": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/OrderHistory/OrderDetails/SoldBySection.tests.tsx:2911806161": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/OrderHistory/OrderDetails/TrackOrderSection.tests.tsx:1892404704": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/OrderHistory/OrderHistory.tests.tsx:45840538": [
+      [3, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/OrderHistory/OrderHistoryRow.tests.tsx:3624838089": [
+      [4, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/OrderHistory/SummarySection.tests.tsx:2447925476": [
+      [1, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Partner/Components/PartnerHeader.tests.tsx:2526992131": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Partner/Components/PartnerOverview.tests.tsx:4234804774": [
+      [4, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Sale/RegisterToBidButton.tests.tsx:3784200523": [
+      [3, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Sale/Sale.tests.tsx:1894788215": [
+      [4, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Sale/SaleActiveBidItem.tests.tsx:2998652586": [
+      [4, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Sale/SaleActiveBids.tests.tsx:3434344314": [
+      [1, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Sale/SaleArtworksRail.tests.tsx:64794606": [
+      [3, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Sale/SaleHeader.tests.tsx:3098791436": [
+      [5, 29, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Sale/SaleLotsList.tests.tsx:3966141970": [
+      [12, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/SaleInfo/SaleInfo.tests.tsx:1903910990": [
+      [3, 29, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Sales/Components/ZeroState/index.tests.tsx:223260152": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/SavedAddresses/SavedAddressesForm.tests.tsx:958051193": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Search/AutosuggestResults.tests.tsx:2977631242": [
+      [8, 29, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Search/SearchModel.tests.tsx:3223381879": [
+      [1, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Search/components/AutosuggestSearchResult.tests.tsx:54944730": [
+      [6, 29, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Search/components/CityGuideCTA.tests.tsx:4255009685": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/SellWithArtsy/index.tests.tsx:3022015560": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Show/ShowArtworks.tests.tsx:3792572975": [
+      [4, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Show/ShowArtworksEmptyState.tests.tsx:3805762469": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Show/ShowContextCard.tests.tsx:4097726068": [
+      [6, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Show/ShowHours.tests.tsx:2202483717": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Show/ShowLocation.tests.tsx:757581802": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Show/ShowMoreInfo.tests.tsx:2491133700": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Show/ShowViewingRoom.tests.tsx:668662873": [
+      [3, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Tag/Tag.tests.tsx:734101039": [
+      [5, 29, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/Tag/TagHeader.tests.tsx:2731095081": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/VanityURL/VanityURLEntity.tests.tsx:4146408596": [
+      [5, 29, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/VanityURL/VanityURLPossibleRedirect.tests.tsx:3098264313": [
+      [6, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/ViewingRoom/Components/ViewingRoomHeader.tests.tsx:3053438078": [
+      [4, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/ViewingRoom/Components/ViewingRoomSubsections.tests.tsx:2723316678": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/ViewingRoom/Components/ViewingRoomsListFeatured.tests.tsx:849945857": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/ViewingRoom/ViewingRoom.tests.tsx:1511922180": [
+      [4, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/ViewingRoom/ViewingRoomArtwork.tests.tsx:2621988273": [
+      [2, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/Scenes/ViewingRoom/ViewingRoomArtworks.tests.tsx:2093121391": [
+      [4, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/app/utils/track/tracking.tests.tsx:1989312488": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/palette/elements/Checkbox/Checkbox.tests.tsx:1968346050": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/palette/elements/Input/PhoneInput/PhoneInput.tests.tsx:1189441016": [
+      [1, 29, 68, "RegExp match", "2624109799"]
+    ],
+    "src/palette/elements/Radio/RadioButton.tests.tsx:1291308694": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/palette/elements/Select/Select.tests.tsx:3971756089": [
+      [1, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/palette/elements/Tabs/Tabs.tests.tsx:1896779089": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/palette/helpers/color.tests.tsx:638714589": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ],
+    "src/palette/helpers/space.tests.tsx:991836669": [
+      [0, 9, 68, "RegExp match", "2624109799"]
+    ]
+  }`
+};
+
+exports[`Avoid having skipped tests!`] = {
+  value: `{
+    "src/app/Components/ArtworkFilter/FilterModal.tests.tsx:2453688545": [
+      [438, 2, 8, "RegExp match", "593069535"],
+      [487, 2, 8, "RegExp match", "593069535"]
+    ],
+    "src/app/Components/ArtworkFilter/Filters/AdditionalGeneIDsOptions.tests.tsx:478067550": [
+      [69, 2, 8, "RegExp match", "593069535"]
+    ],
+    "src/app/Components/ArtworkFilter/Filters/KeywordFilter.tests.tsx:221317578": [
+      [27, 2, 8, "RegExp match", "593069535"]
+    ],
+    "src/app/Components/ArtworkFilter/Filters/WaysToBuyOptions.tests.tsx:4052829274": [
+      [45, 2, 8, "RegExp match", "593069535"],
+      [65, 2, 8, "RegExp match", "593069535"]
+    ],
+    "src/app/Components/Toast/Toast.tests.tsx:1750732162": [
+      [56, 2, 4, "RegExp match", "2087597974"]
+    ],
+    "src/app/Scenes/Artwork/Components/CommercialInformation.tests.tsx:2636479891": [
+      [256, 2, 8, "RegExp match", "593069535"],
+      [388, 2, 8, "RegExp match", "593069535"],
+      [465, 2, 8, "RegExp match", "593069535"]
+    ],
+    "src/app/Scenes/ArtworkAttributionClassFAQ/ArtworkAttributionClassFAQ.tests.tsx:1458710560": [
+      [28, 2, 8, "RegExp match", "593069535"]
+    ],
+    "src/app/Scenes/MyCollection/MyCollection.tests.tsx:267841220": [
+      [137, 4, 8, "RegExp match", "593069535"]
+    ],
+    "src/app/Scenes/Sale/SaleLotsList.tests.tsx:3966141970": [
+      [98, 2, 8, "RegExp match", "593069535"]
+    ],
+    "src/app/utils/track/tracking.tests.tsx:1989312488": [
+      [28, 2, 8, "RegExp match", "593069535"],
+      [61, 2, 8, "RegExp match", "593069535"]
+    ],
+    "src/palette/elements/ProgressBar/ProgressBar.tests.tsx:1880343921": [
+      [9, 2, 8, "RegExp match", "593069535"],
+      [19, 2, 8, "RegExp match", "593069535"]
+    ]
+  }`
+};
