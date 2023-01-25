@@ -1668,9 +1668,6 @@ exports[`Remove all relay unmocks!`] = {
     "src/app/Components/Artist/ArtistAbout/ArtistAboutShows.tests.tsx:3309315554": [
       [10, 5, 21, "RegExp match", "364504250"]
     ],
-    "src/app/Components/Artist/ArtistArtworks/CreateSavedSearchModal.tests.tsx:1687750502": [
-      [19, 5, 21, "RegExp match", "364504250"]
-    ],
     "src/app/Components/Artist/ArtistHeader.tests.tsx:3405598738": [
       [6, 5, 21, "RegExp match", "364504250"]
     ],
