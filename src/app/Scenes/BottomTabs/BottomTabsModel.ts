@@ -20,7 +20,7 @@ import { BottomTabType } from "./BottomTabType"
 
 export interface UnreadCounts {
   conversation: number
-  unreadActivityPanelNotifications: number
+  notifications: number
 }
 
 interface NotificationNode {
@@ -55,7 +55,7 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
   sessionState: {
     unreadCounts: {
       conversation: 0,
-      unreadActivityPanelNotifications: 0,
+      notifications: 0,
     },
     displayUnseenNotificationsIndicator: false,
     tabProps: {},
@@ -71,9 +71,8 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
       actions.unreadActivityPanelNotificationsCountChanged,
     ],
     (_actions, _payload, { getState }) => {
-      const { unreadActivityPanelNotifications, conversation } =
-        getState().sessionState.unreadCounts
-      const totalCount = unreadActivityPanelNotifications + conversation
+      const { notifications, conversation } = getState().sessionState.unreadCounts
+      const totalCount = notifications + conversation
       GlobalStore.actions.native.setApplicationIconBadgeNumber(totalCount)
     }
   ),
@@ -116,7 +115,7 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
     }
   }),
   unreadActivityPanelNotificationsCountChanged: action((state, unreadCount) => {
-    state.sessionState.unreadCounts.unreadActivityPanelNotifications = unreadCount
+    state.sessionState.unreadCounts.notifications = unreadCount
   }),
   fetchNotificationsInfo: thunk(async () => {
     try {
