@@ -82,10 +82,10 @@ export const Search: React.FC = () => {
   const [selectedPill, setSelectedPill] = useState<PillType>(TOP_PILL)
   const searchQuery = searchState?.query ?? ""
   const searchProviderValues = useSearchProviderValues(searchQuery)
-  const { searchClient } = useAlgoliaClient("system?.algolia?.appID!", "system?.algolia?.apiKey!")
+  const { searchClient } = useAlgoliaClient(system?.algolia?.appID!, system?.algolia?.apiKey!)
   const searchInsightsConfigured = useSearchInsightsConfig(
-    "system?.algolia?.appID",
-    "system?.algolia?.apiKey"
+    system?.algolia?.appID,
+    system?.algolia?.apiKey
   )
   const {
     loading: indicesInfoLoading,
