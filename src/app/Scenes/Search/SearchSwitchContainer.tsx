@@ -1,4 +1,4 @@
-import { Search } from "app/Scenes/Search/Search"
+import { SearchScreen } from "app/Scenes/Search/Search"
 import { Search2 } from "app/Scenes/Search/Search2"
 import { useFeatureFlag } from "app/store/GlobalStore"
 
@@ -6,5 +6,5 @@ import { useFeatureFlag } from "app/store/GlobalStore"
 // depending on the value of AREnableESOnlySearch feature flag.
 export const SearchSwitchContainer: React.FC = () => {
   const renderESOnlySearch = useFeatureFlag("AREnableESOnlySearch")
-  return renderESOnlySearch ? <Search2 /> : <Search />
+  return renderESOnlySearch ? <Search2 /> : <SearchScreen />
 }
