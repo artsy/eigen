@@ -45,7 +45,7 @@ export interface BottomTabsModel {
     { notifications: NotificationNode[]; unreadCount: number }
   >
   fetchCurrentUnreadConversationCount: Thunk<BottomTabsModel>
-  unreadActivityPanelNotificationsCountChanged: Action<BottomTabsModel, number>
+  unreadNotificationsCountChanged: Action<BottomTabsModel, number>
   fetchNotificationsInfo: Thunk<BottomTabsModel>
   setDisplayUnseenNotificationsIndicator: Action<BottomTabsModel, boolean>
   setTabProps: Action<BottomTabsModel, { tab: BottomTabType; props: object | undefined }>
@@ -66,10 +66,7 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
     state.lastSeenNotificationPublishedAt = payload
   }),
   syncApplicationIconBadgeNumber: thunkOn(
-    (actions) => [
-      actions.unreadConversationCountChanged,
-      actions.unreadActivityPanelNotificationsCountChanged,
-    ],
+    (actions) => [actions.unreadConversationCountChanged, actions.unreadNotificationsCountChanged],
     (_actions, _payload, { getState }) => {
       const { notifications, conversation } = getState().sessionState.unreadCounts
       const totalCount = notifications + conversation
@@ -114,8 +111,8 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
       }
     }
   }),
-  unreadActivityPanelNotificationsCountChanged: action((state, unreadCount) => {
-    state.sessionState.unreadCounts.notifications = unreadCount
+  unreadNotificationsCountChanged: action((state, payload) => {
+    state.sessionState.unreadCounts.notifications = payload
   }),
   fetchNotificationsInfo: thunk(async () => {
     try {
@@ -163,7 +160,7 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
       }))
 
       GlobalStore.actions.bottomTabs.unreadConversationCountChanged(conversations)
-      GlobalStore.actions.bottomTabs.unreadActivityPanelNotificationsCountChanged(notifications)
+      GlobalStore.actions.bottomTabs.unreadNotificationsCountChanged(notifications)
       GlobalStore.actions.bottomTabs.syncActivityPanelState({
         notifications: formattedNotificationNodes,
         unreadCount: notifications,
