@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-
 if test ${CI:-false} = true
 then
   ./scripts/setup-distribute
