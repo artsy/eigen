@@ -23,6 +23,8 @@ export default {
   "Avoid using test-renderer!": () =>
     regexp(/renderWithWrappersLEGACY.* from ".*renderWithWrappers"/).include(typescriptTestFiles),
 
+  "Remove all relay unmocks!": () => regexp(/unmock\("react-relay"\)/).include(typescriptTestFiles),
+
   "Avoid having skipped tests!": () =>
     regexp(/(fdescribe\(|describe.only\(|fit\(|xit\(|it.only\(|it.skip\()/).include(
       typescriptTestFiles
