@@ -22,6 +22,7 @@
     - Prevent swiping back gesture - mounir
 
   - Dev changes:
+    - remove smudge unleash experiment from search - gkartalis
     - fix default local metaphysics url on dev menu - gkartalis
     - Support screen options inside react module - mounir
     - update setupTestWrapper and add testing docs - gkartalis
