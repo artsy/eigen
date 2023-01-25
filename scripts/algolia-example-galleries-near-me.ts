@@ -4,7 +4,7 @@
  * example location-based queries against Algolia
  */
 
-declare var process: {
+declare let process: {
   argv: string[]
   env: {
     ALGOLIA_API_KEY: string
