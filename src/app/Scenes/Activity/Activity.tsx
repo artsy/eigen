@@ -36,7 +36,7 @@ export const ActivityContent: React.FC<ActivityProps> = ({ type }) => {
 
 export const ActivityContainer: React.FC<ActivityProps> = (props) => {
   useEffect(() => {
-    GlobalStore.actions.bottomTabs.displayUnreadActivityPanelIndicatorChanged(false)
+    GlobalStore.actions.bottomTabs.setDisplayUnseenNotificationsIndicator(false)
   }, [])
 
   return (

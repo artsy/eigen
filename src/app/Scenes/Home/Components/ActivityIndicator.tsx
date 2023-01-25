@@ -7,10 +7,10 @@ import { TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
 
 interface ActivityIndicatorProps {
-  hasNotifications: boolean
+  hasUnseenNotifications: boolean
 }
 
-export const ActivityIndicator: React.FC<ActivityIndicatorProps> = ({ hasNotifications }) => {
+export const ActivityIndicator: React.FC<ActivityIndicatorProps> = ({ hasUnseenNotifications }) => {
   const tracking = useTracking()
   const { space } = useTheme()
 
@@ -33,12 +33,12 @@ export const ActivityIndicator: React.FC<ActivityIndicatorProps> = ({ hasNotific
       >
         <BellIcon height={24} width={24} />
 
-        {!!hasNotifications && (
+        {!!hasUnseenNotifications && (
           <Box
             position="absolute"
             top={0}
             right={0}
-            accessibilityLabel="Unread Activities Indicator"
+            accessibilityLabel="Unseen Notifications Indicator"
           >
             <VisualClueDot diameter={4} />
           </Box>

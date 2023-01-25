@@ -19,16 +19,16 @@ export const BottomTabs: React.FC<BottomTabBarProps> = (props) => {
     (state) => state.bottomTabs.sessionState.unreadCounts.unreadConversation
   )
 
-  const displayUnreadActivityPanelIndicator = GlobalStore.useAppState(
-    (state) => state.bottomTabs.sessionState.displayUnreadActivityPanelIndicator
+  const displayUnseenNotificationsIndicator = GlobalStore.useAppState(
+    (state) => state.bottomTabs.sessionState.displayUnseenNotificationsIndicator
   )
 
   useEffect(() => {
-    GlobalStore.actions.bottomTabs.fetchAllNotificationsCounts()
+    GlobalStore.actions.bottomTabs.fetchNotificationsInfo()
   }, [])
 
   useInterval(() => {
-    GlobalStore.actions.bottomTabs.fetchAllNotificationsCounts()
+    GlobalStore.actions.bottomTabs.fetchNotificationsInfo()
     // run this every 60 seconds
   }, 1000 * 60)
 
@@ -48,7 +48,7 @@ export const BottomTabs: React.FC<BottomTabBarProps> = (props) => {
         }}
       />
       <Flex flexDirection="row" height={ICON_HEIGHT} px={1}>
-        <BottomTabsButton tab="home" forceDisplayVisualClue={displayUnreadActivityPanelIndicator} />
+        <BottomTabsButton tab="home" forceDisplayVisualClue={displayUnseenNotificationsIndicator} />
         <BottomTabsButton tab="search" />
         <BottomTabsButton tab="inbox" badgeCount={unreadConversationCount} />
         <BottomTabsButton tab="sell" />

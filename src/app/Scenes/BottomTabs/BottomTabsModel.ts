@@ -1,6 +1,10 @@
 import { captureException } from "@sentry/react-native"
-import { BottomTabsModelFetchAllNotificationsCountsQuery } from "__generated__/BottomTabsModelFetchAllNotificationsCountsQuery.graphql"
 import { BottomTabsModelFetchCurrentUnreadConversationCountQuery } from "__generated__/BottomTabsModelFetchCurrentUnreadConversationCountQuery.graphql"
+import {
+  BottomTabsModelFetchNotificationsInfoQuery,
+  NotificationTypesEnum,
+} from "__generated__/BottomTabsModelFetchNotificationsInfoQuery.graphql"
+import { isArtworksBasedNotification } from "app/Scenes/Activity/utils/isArtworksBasedNotification"
 import { GlobalStore } from "app/store/GlobalStore"
 import { createEnvironment } from "app/system/relay/createEnvironment"
 import {
@@ -8,7 +12,9 @@ import {
   persistedQueryMiddleware,
 } from "app/system/relay/middlewares/metaphysicsMiddleware"
 import { simpleLoggerMiddleware } from "app/system/relay/middlewares/simpleLoggerMiddleware"
+import { extractNodes } from "app/utils/extractNodes"
 import { Action, action, Thunk, thunk, ThunkOn, thunkOn } from "easy-peasy"
+import { DateTime } from "luxon"
 import { fetchQuery, graphql } from "react-relay"
 import { BottomTabType } from "./BottomTabType"
 
@@ -17,19 +23,31 @@ export interface UnreadCounts {
   unreadActivityPanelNotifications: number
 }
 
+interface NotificationNode {
+  notificationType: NotificationTypesEnum
+  publishedAt: string
+  artworksCount: number
+}
+
 export interface BottomTabsModel {
   sessionState: {
     unreadCounts: UnreadCounts
-    displayUnreadActivityPanelIndicator: boolean
+    displayUnseenNotificationsIndicator: boolean
     tabProps: Partial<{ [k in BottomTabType]: object }>
     selectedTab: BottomTabType
   }
+  lastSeenNotificationPublishedAt: string | null
+  setLastSeenNotificationPublishedAt: Action<BottomTabsModel, string | null>
   syncApplicationIconBadgeNumber: ThunkOn<BottomTabsModel>
   unreadConversationCountChanged: Action<BottomTabsModel, number>
+  syncActivityPanelState: Action<
+    BottomTabsModel,
+    { notifications: NotificationNode[]; unreadCount: number }
+  >
   fetchCurrentUnreadConversationCount: Thunk<BottomTabsModel>
   unreadActivityPanelNotificationsCountChanged: Action<BottomTabsModel, number>
-  fetchAllNotificationsCounts: Thunk<BottomTabsModel>
-  displayUnreadActivityPanelIndicatorChanged: Action<BottomTabsModel, boolean>
+  fetchNotificationsInfo: Thunk<BottomTabsModel>
+  setDisplayUnseenNotificationsIndicator: Action<BottomTabsModel, boolean>
   setTabProps: Action<BottomTabsModel, { tab: BottomTabType; props: object | undefined }>
 }
 
@@ -39,10 +57,14 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
       unreadConversation: 0,
       unreadActivityPanelNotifications: 0,
     },
-    displayUnreadActivityPanelIndicator: false,
+    displayUnseenNotificationsIndicator: false,
     tabProps: {},
     selectedTab: "home",
   },
+  lastSeenNotificationPublishedAt: null,
+  setLastSeenNotificationPublishedAt: action((state, payload) => {
+    state.lastSeenNotificationPublishedAt = payload
+  }),
   syncApplicationIconBadgeNumber: thunkOn(
     (actions) => [
       actions.unreadConversationCountChanged,
@@ -94,29 +116,34 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
     }
   }),
   unreadActivityPanelNotificationsCountChanged: action((state, unreadCount) => {
-    // we want to display the indicator only when there is a new notification
-    if (unreadCount > state.sessionState.unreadCounts.unreadActivityPanelNotifications) {
-      state.sessionState.displayUnreadActivityPanelIndicator = true
-    }
-
-    // when the user marked all notifications as read
-    if (unreadCount === 0) {
-      state.sessionState.displayUnreadActivityPanelIndicator = false
-    }
-
     state.sessionState.unreadCounts.unreadActivityPanelNotifications = unreadCount
   }),
-  fetchAllNotificationsCounts: thunk(async () => {
+  fetchNotificationsInfo: thunk(async () => {
     try {
-      const result = await fetchQuery<BottomTabsModelFetchAllNotificationsCountsQuery>(
+      const query = fetchQuery<BottomTabsModelFetchNotificationsInfoQuery>(
         createEnvironment([
           [persistedQueryMiddleware(), metaphysicsURLMiddleware(), simpleLoggerMiddleware()],
         ]),
         graphql`
-          query BottomTabsModelFetchAllNotificationsCountsQuery {
+          query BottomTabsModelFetchNotificationsInfoQuery {
             me @principalField {
               unreadConversationCount
               unreadNotificationsCount
+            }
+
+            viewer {
+              notificationsConnection(first: 5) {
+                edges {
+                  node {
+                    notificationType
+                    publishedAt
+
+                    artworks: artworksConnection {
+                      totalCount
+                    }
+                  }
+                }
+              }
             }
           }
         `,
@@ -124,15 +151,24 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
         {
           fetchPolicy: "network-only",
         }
-      ).toPromise()
-
-      const conversationsCount = result?.me?.unreadConversationCount
-      const notificationsCount = result?.me?.unreadNotificationsCount
-
-      GlobalStore.actions.bottomTabs.unreadConversationCountChanged(conversationsCount ?? 0)
-      GlobalStore.actions.bottomTabs.unreadActivityPanelNotificationsCountChanged(
-        notificationsCount ?? 0
       )
+      const result = await query.toPromise()
+
+      const conversations = result?.me?.unreadConversationCount ?? 0
+      const notifications = result?.me?.unreadNotificationsCount ?? 0
+      const nodes = extractNodes(result?.viewer?.notificationsConnection)
+      const formattedNotificationNodes: NotificationNode[] = nodes.map((node) => ({
+        publishedAt: node.publishedAt,
+        notificationType: node.notificationType,
+        artworksCount: node.artworks?.totalCount ?? 0,
+      }))
+
+      GlobalStore.actions.bottomTabs.unreadConversationCountChanged(conversations)
+      GlobalStore.actions.bottomTabs.unreadActivityPanelNotificationsCountChanged(notifications)
+      GlobalStore.actions.bottomTabs.syncActivityPanelState({
+        notifications: formattedNotificationNodes,
+        unreadCount: notifications,
+      })
     } catch (e) {
       if (__DEV__) {
         console.warn(
@@ -144,12 +180,42 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
       }
     }
   }),
-  displayUnreadActivityPanelIndicatorChanged: action(
-    (state, displayUnreadActivityPanelIndicator) => {
-      state.sessionState.displayUnreadActivityPanelIndicator = displayUnreadActivityPanelIndicator
-    }
-  ),
+  setDisplayUnseenNotificationsIndicator: action((state, payload) => {
+    state.sessionState.displayUnseenNotificationsIndicator = payload
+  }),
   setTabProps: action((state, { tab, props }) => {
     state.sessionState.tabProps[tab] = props
   }),
+  syncActivityPanelState: action((state, payload) => {
+    const notifications = payload.notifications.filter((node) => {
+      if (isArtworksBasedNotification(node.notificationType)) {
+        return node.artworksCount > 0
+      }
+
+      return true
+    })
+    const lastNotification = notifications[0] as NotificationNode | undefined
+    const lastNotificationPublishedAt = lastNotification?.publishedAt ?? null
+    const isLastSeenPublishedAtEmpty =
+      state.lastSeenNotificationPublishedAt === null && lastNotificationPublishedAt
+    const isNewPublishedAtAvailable = checkIsNewPublishedAt(
+      state.lastSeenNotificationPublishedAt,
+      lastNotificationPublishedAt
+    )
+
+    if (isLastSeenPublishedAtEmpty || isNewPublishedAtAvailable) {
+      state.sessionState.displayUnseenNotificationsIndicator = payload.unreadCount > 0
+    }
+  }),
 })
+
+const checkIsNewPublishedAt = (prevPublishedAt: string | null, newPublishedAt: string | null) => {
+  if (prevPublishedAt === null || newPublishedAt === null) {
+    return false
+  }
+
+  const prevPublishedDate = DateTime.fromISO(prevPublishedAt)
+  const newPublishedDate = DateTime.fromISO(newPublishedAt)
+
+  return newPublishedDate > prevPublishedDate
+}

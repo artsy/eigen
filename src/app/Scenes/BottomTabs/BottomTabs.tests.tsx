@@ -5,9 +5,11 @@ import { ModalStack } from "app/system/navigation/ModalStack"
 import { createEnvironment } from "app/system/relay/createEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { DateTime } from "luxon"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import useInterval from "react-use/lib/useInterval"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { BottomTabs } from "./BottomTabs"
 import { BottomTabsButton } from "./BottomTabsButton"
 
@@ -28,23 +30,20 @@ beforeEach(() => {
   mockRelayEnvironment = createEnvironment() as any
 })
 
-function resolveUnreadConversationCountQuery(
-  unreadConversationCount: number,
-  unreadNotificationsCount: number
-) {
+function resolveNotificationsInfoQuery(resolvers: MockResolvers) {
   expect(mockRelayEnvironment.mock.getMostRecentOperation().request.node.operation.name).toBe(
-    "BottomTabsModelFetchAllNotificationsCountsQuery"
+    "BottomTabsModelFetchNotificationsInfoQuery"
   )
   mockRelayEnvironment.mock.resolveMostRecentOperation((op) =>
-    MockPayloadGenerator.generate(op, {
-      Me() {
-        return {
-          unreadConversationCount,
-          unreadNotificationsCount,
-        }
-      },
-    })
+    MockPayloadGenerator.generate(op, resolvers)
   )
+}
+
+const findButtonByTab = (tree: ReactTestRenderer, tab: ButtonProps["tab"]) => {
+  const buttons = tree.root.findAllByType(BottomTabsButton)
+  const buttonByTab = buttons.find((button) => (button.props as ButtonProps).tab === tab)
+
+  return buttonByTab
 }
 
 const TestWrapper: React.FC<Partial<BottomTabBarProps>> = (props) => {
@@ -67,66 +66,218 @@ describe(BottomTabs, () => {
     })
     const tree = renderWithWrappersLEGACY(<TestWrapper />)
 
-    const inboxButton = tree.root
-      .findAllByType(BottomTabsButton)
-      .find((button) => (button.props as ButtonProps).tab === "inbox")
+    const inboxButton = findButtonByTab(tree, "inbox")
     expect((inboxButton!.props as ButtonProps).badgeCount).toBe(4)
-
-    // need to prevent this test's requests from leaking into the next test
-    await flushPromiseQueue()
   })
 
-  it(`displays a blue dot on home icon if there are unread notifications`, async () => {
-    __globalStoreTestUtils__?.injectState({
-      bottomTabs: { sessionState: { displayUnreadActivityPanelIndicator: true } },
+  describe("a blue dot on home icon", () => {
+    describe("should be displayed if there are unseen notifications", () => {
+      it("`lastSeenNotificationPublishedAt` is empty", async () => {
+        const currentDate = DateTime.local()
+
+        __globalStoreTestUtils__?.injectState({
+          bottomTabs: {
+            lastSeenNotificationPublishedAt: null,
+          },
+        })
+        const tree = renderWithWrappersLEGACY(<TestWrapper />)
+
+        const prevHomeButton = findButtonByTab(tree, "home")
+        expect((prevHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
+
+        resolveNotificationsInfoQuery({
+          Me: () => ({
+            unreadConversationCount: 5,
+            unreadNotificationsCount: 1,
+          }),
+          Viewer: () => ({
+            notificationsConnection: {
+              edges: [
+                {
+                  node: {
+                    publishedAt: currentDate.toISO(),
+                  },
+                },
+              ],
+            },
+          }),
+        })
+
+        await flushPromiseQueue()
+
+        const currentHomeButton = findButtonByTab(tree, "home")
+        expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
+      })
+
+      it("the latest notification `publishedAt` is more recent than the locally persisted `publishedAt`", async () => {
+        const currentDate = DateTime.local()
+        const prevNotificationPublishedAt = currentDate.minus({ hour: 1 }).toISO()
+
+        __globalStoreTestUtils__?.injectState({
+          bottomTabs: {
+            lastSeenNotificationPublishedAt: prevNotificationPublishedAt,
+          },
+        })
+        const tree = renderWithWrappersLEGACY(<TestWrapper />)
+
+        const prevHomeButton = findButtonByTab(tree, "home")
+        expect((prevHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
+
+        resolveNotificationsInfoQuery({
+          Me: () => ({
+            unreadConversationCount: 5,
+            unreadNotificationsCount: 1,
+          }),
+          Viewer: () => ({
+            notificationsConnection: {
+              edges: [
+                {
+                  node: {
+                    publishedAt: currentDate.toISO(),
+                  },
+                },
+                {
+                  node: {
+                    publishedAt: prevNotificationPublishedAt,
+                  },
+                },
+              ],
+            },
+          }),
+        })
+
+        await flushPromiseQueue()
+
+        const currentHomeButton = findButtonByTab(tree, "home")
+        expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
+      })
     })
-    const tree = renderWithWrappersLEGACY(<TestWrapper />)
 
-    const homeButton = tree.root
-      .findAllByType(BottomTabsButton)
-      .find((button) => (button.props as ButtonProps).tab === "home")
-    expect((homeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
+    describe("should NOT be displayed if there are NO unseen notifications", () => {
+      it("`lastSeenNotificationPublishedAt` is empty", async () => {
+        const publishedAt = DateTime.local().toISO()
 
-    // need to prevent this test's requests from leaking into the next test
-    await flushPromiseQueue()
-  })
+        __globalStoreTestUtils__?.injectState({
+          bottomTabs: {
+            lastSeenNotificationPublishedAt: null,
+          },
+        })
+        const tree = renderWithWrappersLEGACY(<TestWrapper />)
 
-  it(`doesn't display a blue dot on home icon if there are no unread notifications`, async () => {
-    __globalStoreTestUtils__?.injectState({
-      bottomTabs: { sessionState: { unreadCounts: { unreadActivityPanelNotifications: 0 } } },
+        resolveNotificationsInfoQuery({
+          Me: () => ({
+            unreadConversationCount: 5,
+            unreadNotificationsCount: 0,
+          }),
+          Viewer: () => ({
+            notificationsConnection: {
+              edges: [
+                {
+                  node: {
+                    publishedAt: publishedAt,
+                  },
+                },
+              ],
+            },
+          }),
+        })
+
+        await flushPromiseQueue()
+
+        const currentHomeButton = findButtonByTab(tree, "home")
+        expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
+      })
+
+      it("the latest notification `publishedAt` is equal to the locally persisted `publishedAt`", async () => {
+        const publishedAt = DateTime.local().toISO()
+
+        __globalStoreTestUtils__?.injectState({
+          bottomTabs: {
+            lastSeenNotificationPublishedAt: publishedAt,
+          },
+        })
+        const tree = renderWithWrappersLEGACY(<TestWrapper />)
+
+        resolveNotificationsInfoQuery({
+          Me: () => ({
+            unreadConversationCount: 5,
+            unreadNotificationsCount: 0,
+          }),
+          Viewer: () => ({
+            notificationsConnection: {
+              edges: [
+                {
+                  node: {
+                    publishedAt: publishedAt,
+                  },
+                },
+              ],
+            },
+          }),
+        })
+
+        await flushPromiseQueue()
+
+        const currentHomeButton = findButtonByTab(tree, "home")
+        expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
+      })
+
+      it("the latest notification `publishedAt` is more recent than the locally persisted `publishedAt`", async () => {
+        const currentDate = DateTime.local()
+
+        __globalStoreTestUtils__?.injectState({
+          bottomTabs: {
+            lastSeenNotificationPublishedAt: currentDate.minus({ hour: 1 }).toISO(),
+          },
+        })
+        const tree = renderWithWrappersLEGACY(<TestWrapper />)
+
+        resolveNotificationsInfoQuery({
+          Me: () => ({
+            unreadConversationCount: 5,
+            unreadNotificationsCount: 0,
+          }),
+          Viewer: () => ({
+            notificationsConnection: {
+              edges: [
+                {
+                  node: {
+                    publishedAt: currentDate.toISO(),
+                  },
+                },
+              ],
+            },
+          }),
+        })
+
+        await flushPromiseQueue()
+
+        const currentHomeButton = findButtonByTab(tree, "home")
+        expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
+      })
     })
-    const tree = renderWithWrappersLEGACY(<TestWrapper />)
-
-    const homeButton = tree.root
-      .findAllByType(BottomTabsButton)
-      .find((button) => (button.props as ButtonProps).tab === "home")
-    expect((homeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
-
-    // need to prevent this test's requests from leaking into the next test
-    await flushPromiseQueue()
   })
 
-  it(`fetches the current unread conversation / notifications count on mount`, async () => {
+  it(`fetches the notifications info on mount`, async () => {
     const tree = renderWithWrappersLEGACY(<TestWrapper />)
 
     await flushPromiseQueue()
 
     expect(mockRelayEnvironment.mock.getAllOperations()).toHaveLength(1)
 
-    resolveUnreadConversationCountQuery(5, 1)
+    resolveNotificationsInfoQuery({
+      Me: () => ({
+        unreadConversationCount: 5,
+        unreadNotificationsCount: 1,
+      }),
+    })
 
     await flushPromiseQueue()
 
-    const inboxButton = tree.root
-      .findAllByType(BottomTabsButton)
-      .find((button) => (button.props as ButtonProps).tab === "inbox")
-
+    const inboxButton = findButtonByTab(tree, "inbox")
     expect((inboxButton!.props as ButtonProps).badgeCount).toBe(5)
 
-    const homeButton = tree.root
-      .findAllByType(BottomTabsButton)
-      .find((button) => (button.props as ButtonProps).tab === "home")
-
+    const homeButton = findButtonByTab(tree, "home")
     expect((homeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
   })
 
@@ -136,7 +287,12 @@ describe(BottomTabs, () => {
     await flushPromiseQueue()
 
     expect(mockRelayEnvironment.mock.getAllOperations()).toHaveLength(1)
-    resolveUnreadConversationCountQuery(9, 1)
+    resolveNotificationsInfoQuery({
+      Me: () => ({
+        unreadConversationCount: 9,
+        unreadNotificationsCount: 1,
+      }),
+    })
 
     await flushPromiseQueue()
 
@@ -145,7 +301,7 @@ describe(BottomTabs, () => {
     ).toHaveBeenCalledWith(10)
   })
 
-  it(`fetches the current unread conversation / notifications count once in a while`, async () => {
+  it(`fetches the notifications info once in a while`, async () => {
     let tree: ReactTestRenderer | null = null
     act(() => {
       tree = renderWithWrappersLEGACY(<TestWrapper />)
@@ -155,7 +311,12 @@ describe(BottomTabs, () => {
 
     await flushPromiseQueue()
 
-    resolveUnreadConversationCountQuery(1, 1)
+    resolveNotificationsInfoQuery({
+      Me: () => ({
+        unreadConversationCount: 1,
+        unreadNotificationsCount: 1,
+      }),
+    })
 
     const intervalCallback = (useInterval as jest.Mock).mock.calls[0][0]
 
@@ -168,24 +329,21 @@ describe(BottomTabs, () => {
 
     expect(mockRelayEnvironment.mock.getAllOperations()).toHaveLength(1)
 
-    resolveUnreadConversationCountQuery(3, 1)
+    resolveNotificationsInfoQuery({
+      Me: () => ({
+        unreadConversationCount: 3,
+        unreadNotificationsCount: 1,
+      }),
+    })
 
     await flushPromiseQueue()
 
     // @ts-ignore
-    const inboxButton = tree.root
-      .findAllByType(BottomTabsButton)
-      // @ts-ignore
-      .find((button) => (button.props as ButtonProps).tab === "inbox")
-
+    const inboxButton = findButtonByTab(tree, "inbox")
     expect((inboxButton!.props as ButtonProps).badgeCount).toBe(3)
 
     // @ts-ignore
-    const homeButton = tree.root
-      .findAllByType(BottomTabsButton)
-      // @ts-ignore
-      .find((button) => (button.props as ButtonProps).tab === "home")
-
+    const homeButton = findButtonByTab(tree, "home")
     expect((homeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
   })
 
