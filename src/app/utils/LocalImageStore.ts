@@ -12,6 +12,19 @@ interface Expirable {
 
 type StoredImage = LocalImage & Expirable
 
+export const storeLocalImage = (image: LocalImage, rootKey: string): Promise<void> => {
+  const expirationDate = DateTime.fromMillis(Date.now()).plus({ minutes: 5 }).toISO()
+  const imageToStore: StoredImage = {
+    expirationDate,
+    path: image.path,
+    height: image.height,
+    width: image.width,
+  }
+
+  const serializedImages = JSON.stringify(imageToStore)
+  return AsyncStorage.setItem(rootKey, serializedImages)
+}
+
 export const storeLocalImages = (images: LocalImage[], rootKey: string): Promise<void> => {
   const expirationDate = DateTime.fromMillis(Date.now()).plus({ minutes: 5 }).toISO()
   const imagesToStore: StoredImage[] = []
