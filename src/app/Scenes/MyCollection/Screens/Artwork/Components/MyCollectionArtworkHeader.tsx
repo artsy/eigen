@@ -1,11 +1,13 @@
 import { tappedCollectedArtworkImages } from "@artsy/cohesion"
 import { useNavigation } from "@react-navigation/native"
+import { ImageCarousel_figures$data } from "__generated__/ImageCarousel_figures.graphql"
 import { MyCollectionArtworkHeader_artwork$key } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
 import {
   CarouselImageDescriptor,
   ImageCarousel,
   ImageCarouselFragmentContainer,
 } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
+import { ImageCarouselImage } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
 import {
   imageIsProcessing,
   isImage,
@@ -32,16 +34,17 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
   const {
     artistNames,
     date,
-    images,
+    imageMeta,
+    figures,
     internalID,
     title,
     slug,
     consignmentSubmission,
     submissionId,
   } = artwork
-  const [imagesToDisplay, setImagesToDisplay] = useState<
-    typeof images | CarouselImageDescriptor[] | null
-  >(images)
+  const [imagesToDisplay, setImagesToDisplay] = useState<typeof artwork.figures | LocalImage[]>(
+    figures
+  )
   const [isDisplayingLocalImages, setIsDisplayingLocalImages] = useState(false)
 
   const dimensions = useScreenDimensions()
@@ -74,7 +77,7 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
   }
 
   const handleImages = async () => {
-    const defaultImage = images?.find((i) => i?.isDefault) || (images && images[0])
+    const defaultImage = imageMeta?.find((i) => i?.isDefault) || (figures && figures[0])
     const [localVanillaArtworkImages, localSubmissionArtworkImages] = await Promise.all([
       retrieveLocalImages(slug),
       submissionId ? retrieveLocalImages(submissionId) : undefined,
@@ -162,10 +165,14 @@ const myCollectionArtworkHeaderFragment = graphql`
     }
     artistNames
     date
-    images {
-      ...ImageCarousel_images
-      imageVersions
-      isDefault
+    figures {
+      ...ImageCarousel_figures
+    }
+    imageMeta: figures {
+      ... on Image {
+        imageVersions
+        isDefault
+      }
     }
     internalID
     slug

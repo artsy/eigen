@@ -2,6 +2,7 @@ import {
   ImageCarouselContext,
   ImageDescriptor,
 } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
+import { ImageCarouselVimeoVideo } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselVimeoVideo"
 import { useAnimatedValue } from "app/Scenes/Artwork/Components/ImageCarousel/useAnimatedValue"
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react"
 import {
@@ -22,7 +23,7 @@ import { useSpringFade } from "./useSpringFade"
 
 export const ImageCarouselFullScreen = () => {
   const screenDimensions = useScreenDimensions()
-  const { images, media, dispatch, fullScreenState, imageIndex } = useContext(ImageCarouselContext)
+  const { media, dispatch, fullScreenState, imageIndex } = useContext(ImageCarouselContext)
   fullScreenState.useUpdates()
   const initialScrollIndex = useMemo(() => imageIndex.current, [])
 
@@ -87,10 +88,10 @@ export const ImageCarouselFullScreen = () => {
         <VerticalSwipeToDismiss onClose={onClose}>
           <FlatList<ImageDescriptor>
             key={screenDimensions.orientation}
-            data={images}
+            data={media}
             horizontal
             showsHorizontalScrollIndicator={false}
-            scrollEnabled={images.length > 1 && fullScreenState.current === "entered"}
+            scrollEnabled={media.length > 1 && fullScreenState.current === "entered"}
             snapToInterval={screenDimensions.width}
             // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             keyExtractor={(item) => item.url}
@@ -104,13 +105,22 @@ export const ImageCarouselFullScreen = () => {
             onScroll={onScroll}
             onMomentumScrollEnd={() => {
               // reset the zooms of all non-visible zoom views when the horizontal carousel comes to a stop
-              for (let i = 0; i < images.length; i++) {
+              for (let i = 0; i < media.length; i++) {
                 if (i !== imageIndex.current && zoomViewRefs[i]) {
                   zoomViewRefs[i].resetZoom()
                 }
               }
             }}
             renderItem={({ item, index }) => {
+              if ((item as any).__typename === "Video") {
+                return (
+                  <ImageCarouselVimeoVideo
+                    width={screenDimensions.width}
+                    height={screenDimensions.height}
+                    vimeoUrl={item.url!}
+                  />
+                )
+              }
               return (
                 <ImageZoomView
                   image={item}

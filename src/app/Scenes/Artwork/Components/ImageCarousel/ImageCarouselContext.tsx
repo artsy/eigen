@@ -1,13 +1,22 @@
-import { ImageCarousel_images$data } from "__generated__/ImageCarousel_images.graphql"
-import { ImageCarousel_videos$data } from "__generated__/ImageCarousel_videos.graphql"
+import { ImageCarousel_figures$data } from "__generated__/ImageCarousel_figures.graphql"
 import { Schema } from "app/utils/track"
 import { GlobalState, useGlobalState } from "app/utils/useGlobalState"
 import React, { useMemo, useRef } from "react"
 import { Animated, FlatList, View } from "react-native"
 import { useTracking } from "react-tracking"
 
+export type ImageCarouselImage = Extract<
+  ImageCarousel_figures$data,
+  { __typename: "Image" }
+>[number]
+
+export type ImageCarouselVideo = Extract<
+  ImageCarousel_figures$data,
+  { __typename: "Video" }
+>[number]
+
 export type ImageDescriptor = Pick<
-  ImageCarousel_images$data[number],
+  ImageCarouselImage,
   "deepZoom" | "height" | "width" | "url" | "largeImageURL"
 >
 
@@ -52,9 +61,9 @@ export interface ImageCarouselContext {
   images: ImageDescriptor[]
   isZoomedCompletelyOut: GlobalState<boolean>
   lastImageIndex: GlobalState<number>
-  media?: ImageCarousel_images$data & ImageCarousel_videos$data
+  media: Array<ImageCarouselImage & ImageCarouselVideo>
   setVideoAsCover?: boolean
-  videos?: ImageCarousel_videos$data
+  videos?: Exclude<ImageCarousel_figures$data, { __typename: "Image" }>
   xScrollOffsetAnimatedValue: React.RefObject<Animated.Value>
 }
 
@@ -75,10 +84,11 @@ export function useNewImageCarouselContext({
   const [isZoomedCompletelyOut, setIsZoomedCompletelyOut] = useGlobalState(true)
   const tracking = useTracking()
 
-  // const media = setVideoAsCover ? [...videos, ...images] : [...images, ...videos]
-  const media = [...videos, ...images]
+  const media = setVideoAsCover ? [...videos, ...images] : [...images, ...videos] ?? []
+  // const media = [...videos, ...images]
 
-  const imageCarouselContext = useMemo(
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+  return useMemo(
     () => ({
       imageIndex,
       lastImageIndex,
@@ -143,9 +153,6 @@ export function useNewImageCarouselContext({
     }),
     []
   )
-
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  return imageCarouselContext
 }
 
 export const ImageCarouselContext = React.createContext<ImageCarouselContext>(

@@ -2,6 +2,7 @@ import {
   ImageCarouselContext,
   ImageDescriptor,
 } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
+import { ImageCarouselVimeoVideo } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselVimeoVideo"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useCallback, useContext, useEffect, useMemo } from "react"
 import { FlatList, Modal, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
@@ -16,7 +17,7 @@ const ZoomFlatList = createZoomListComponent(FlatList)
 
 export const ImageCarouselFullScreenAndroid = () => {
   const screenDimensions = useScreenDimensions()
-  const { images, dispatch, fullScreenState, imageIndex } = useContext(ImageCarouselContext)
+  const { media, dispatch, fullScreenState, imageIndex } = useContext(ImageCarouselContext)
   fullScreenState.useUpdates()
   const initialScrollIndex = useMemo(() => imageIndex.current, [])
   const { setIsDeepZoomModalVisible } = GlobalStore.actions.devicePrefs
@@ -37,8 +38,18 @@ export const ImageCarouselFullScreenAndroid = () => {
   }, [fullScreenState.current])
 
   const renderItem = useCallback(
-    ({ item: image, index }: { item: ImageDescriptor; index: number }) => {
-      return <ImageZoomViewAndroid image={image} index={index} />
+    ({ item, index }: { item: ImageDescriptor; index: number }) => {
+      if ((item as any).__typename === "Video") {
+        return (
+          <ImageCarouselVimeoVideo
+            width={screenDimensions.width}
+            height={screenDimensions.height}
+            vimeoUrl={item.url!}
+          />
+        )
+      }
+
+      return <ImageZoomViewAndroid image={item} index={index} />
     },
     [screenDimensions.orientation]
   )
@@ -66,7 +77,7 @@ export const ImageCarouselFullScreenAndroid = () => {
     >
       <GestureHandlerRootView style={{ flex: 1, backgroundColor: "white" }}>
         <ZoomFlatList
-          data={images}
+          data={media}
           pagingEnabled
           showsHorizontalScrollIndicator={false}
           horizontal

@@ -6,8 +6,8 @@ import { Config } from "react-native-config"
 import { Vimeo } from "react-native-vimeo-iframe"
 
 interface ImageCarouselVimeoVideoProps {
-  width: number
-  height: number
+  width: number | string
+  height: number | string
   vimeoUrl: string
 }
 
@@ -28,11 +28,11 @@ export const ImageCarouselVimeoVideo: React.FC<ImageCarouselVimeoVideoProps> = (
   vimeoUrl,
 }) => {
   const [isPlaying, setIsPlaying] = useState(false)
-  const [videoMeta, setVideoMeta] = useState<VimeoAPIResponse>(null)
+  const [videoMetadata, setVideoMetadata] = useState<VimeoAPIResponse>(null)
   const { videoId, token } = extractVimeoVideoDataFromUrl(vimeoUrl)
 
   useEffect(() => {
-    const fetchVideoData = async () => {
+    const fetchVideoMetadata = async () => {
       try {
         const response = await fetch(
           `https://api.vimeo.com/videos/${videoId}?access_token=${Config.VIMEO_PUBLIC_TOKEN}`,
@@ -44,30 +44,31 @@ export const ImageCarouselVimeoVideo: React.FC<ImageCarouselVimeoVideoProps> = (
           }
         )
         const data = await response.json()
-        setVideoMeta(data)
+        setVideoMetadata(data)
       } catch (error) {
         console.log("[ImageCarouselVimeoVideo] Error:", error)
       }
     }
 
-    fetchVideoData()
+    fetchVideoMetadata()
   }, [])
 
-  const coverImage = videoMeta?.pictures.sizes[4].link_with_play_button
+  // There's a handful of sizes to choose from; this one seems to be the best
+  const coverImage = videoMetadata?.pictures.sizes[4].link_with_play_button
 
   return (
-    <Flex background="transparent" width={width} height={height}>
+    <Flex width={width} height={height}>
       {coverImage && !isPlaying && (
         <Touchable onPress={() => setIsPlaying(true)}>
-          <Image source={{ uri: coverImage }} style={{ width, height }} />
+          <Image source={{ uri: coverImage }} style={{ width, height }} resizeMode="contain" />
         </Touchable>
       )}
       {isPlaying && (
         <Vimeo
           videoId={videoId}
-          params={`h=${token}&loop=true&autoplay=${isPlaying ? 1 : 0}`}
-          allowsInlineMediaPlayback={true}
-          contentMode="recommended"
+          params={`h=${token}&loop=true&autoplay=${
+            isPlaying ? 1 : 0
+          }&transparent=true&background=false`}
         />
       )}
     </Flex>

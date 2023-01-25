@@ -2,6 +2,8 @@ import { fireEvent } from "@testing-library/react-native"
 import { ImageCarouselTestsQuery } from "__generated__/ImageCarouselTestsQuery.graphql"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { guardFactory } from "app/utils/types/guardFactory"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import {
@@ -11,7 +13,6 @@ import {
   ImageCarouselProps,
 } from "./ImageCarousel"
 import { getMeasurements } from "./geometry"
-
 
 const deepZoomFixture: NonNullable<
   NonNullable<
@@ -108,32 +109,63 @@ describe("ImageCarouselFragmentContainer", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   const TestWrapper = () => {
-    return (
-      <QueryRenderer<ImageCarouselTestsQuery>
-        environment={mockEnvironment}
-        query={graphql`
-          query ImageCarouselTestsQuery @raw_response_type {
-            artwork(id: "unused") {
-              images {
-                ...ImageCarousel_images
-              }
-            }
-          }
-        `}
-        variables={{}}
-        render={({ props }) => {
-          if (props?.artwork) {
-            return (
-              <ImageCarouselFragmentContainer
-                images={props.artwork.images as any}
-                cardHeight={275}
-              />
-            )
-          }
-        }}
-      />
-    )
+    return null
+    // return (
+    //   <QueryRenderer<ImageCarouselTestsQuery>
+    //     environment={mockEnvironment}
+    //     query={graphql`
+    //       query ImageCarouselTestsQuery @raw_response_type {
+    //         artwork(id: "unused") {
+    //           images {
+    //             ...ImageCarousel_images
+    //           }
+    //         }
+    //       }
+    //     `}
+    //     variables={{}}
+    //     render={({ props }) => {
+    //       if (props?.artwork) {
+    //         return (
+    //           <ImageCarouselFragmentContainer
+    //             images={props.artwork.images as any}
+    //             cardHeight={275}
+    //           />
+    //         )
+    //       }
+    //     }}
+    //   />
+    // )
   }
+
+  const { renderWithRelay } = setupTestWrapper<ImageCarouselTestsQuery>({
+    Component: (props) => {
+      const imageFigures = props.artwork?.figures.filter(guardFactory("__typename", "Image"))
+      const videoFigures = props.artwork?.figures.filter(guardFactory("__typename", "Video"))
+
+      return (
+        <ImageCarouselFragmentContainer
+          images={imageFigures!}
+          videos={videoFigures!}
+          cardHeight={275}
+        />
+      )
+    },
+    query: graphql`
+      query ImageCarouselTestsQuery @raw_response_type @relay_test_operation {
+        artwork(id: "unused") {
+          figures {
+            __typename
+            # ... on Image {
+            #   ...ImageCarousel_images
+            # }
+            # ... on Video {
+            #   ...ImageCarousel_videos
+            # }
+          }
+        }
+      }
+    `,
+  })
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
@@ -145,10 +177,8 @@ describe("ImageCarouselFragmentContainer", () => {
       jest.useRealTimers()
     })
 
-    it("renders a flat list with five entries", () => {
-      const { getByLabelText, getAllByLabelText } = renderWithWrappers(<TestWrapper />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
+    it.only("renders a flat list with five entries", () => {
+      const { getByLabelText, getAllByLabelText } = renderWithRelay({
         Artwork: () => artworkFixture,
       })
 

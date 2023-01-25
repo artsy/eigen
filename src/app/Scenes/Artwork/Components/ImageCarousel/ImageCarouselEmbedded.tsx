@@ -154,7 +154,6 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
       initialNumToRender={Math.min(media.length, 20)}
       renderItem={({ item, index }) => {
         const { ...styles } = measurements[index]
-        const shouldRender = index === imageIndex.current
 
         if (item.__typename === "Video") {
           return (
