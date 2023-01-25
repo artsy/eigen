@@ -17,7 +17,6 @@ import {
   tracks,
 } from "./CreateSavedSearchModal"
 
-
 const savedSearchEntity: SavedSearchEntity = {
   placeholder: "Placeholder",
   artists: [{ id: "artistId", name: "artistName" }],

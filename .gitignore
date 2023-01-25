@@ -69,7 +69,6 @@ package-lock.json
 yarn-error.log
 
 
-# Danger artifacts
 eslint-errors.json
 
 # typescript
@@ -82,9 +81,6 @@ data/complete.queryMap.json
 native-code-checksum.hash
 
 .manifests
-
-# user-managed "state" files
-.i-am-helping-out-with-the-strictness-migration
 
 # auto-managed "state" files
 .i-had-a-netrc-file

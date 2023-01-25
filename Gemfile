@@ -16,7 +16,6 @@ group :development do
 end
 
 group :test do
-  gem 'danger' # Stop saying 'you forgot to...', used only on Circle CI
   gem 'xcode-install' # To ensure we have the right SDK installed for running tests
   gem 'xcpretty' # Makes CI readable
 end
