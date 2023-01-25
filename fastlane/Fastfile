@@ -220,14 +220,14 @@ lane :test_aab_upload do
 
   s3_upload_android_build(app_version: vcode, app_path: "../android/app/build/outputs/bundle/release/app-release.aab")
 
-  supply(
-    track: "alpha",
-    skip_upload_apk: true,
-    skip_upload_metadata: true,
-    skip_upload_changelogs: true,
-    skip_upload_images: true,
-    skip_upload_screenshots: true
-  )
+  # supply(
+  #   track: "alpha",
+  #   skip_upload_apk: true,
+  #   skip_upload_metadata: true,
+  #   skip_upload_changelogs: true,
+  #   skip_upload_images: true,
+  #   skip_upload_screenshots: true
+  # )
 end
 
 lane :ship_beta_android_firebase do
