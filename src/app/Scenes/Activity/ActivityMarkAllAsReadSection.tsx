@@ -32,7 +32,7 @@ export const ActivityMarkAllAsReadSection: React.FC<ActivityMarkAllAsReadSection
             throw new Error(errorMessage)
           }
 
-          GlobalStore.actions.bottomTabs.unreadNotificationsCountChanged(0)
+          GlobalStore.actions.bottomTabs.setUnreadNotificationsCount(0)
         },
       })
     } catch (e) {

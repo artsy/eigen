@@ -39,13 +39,13 @@ export interface BottomTabsModel {
   lastSeenNotificationPublishedAt: string | null
   setLastSeenNotificationPublishedAt: Action<BottomTabsModel, string | null>
   syncApplicationIconBadgeNumber: ThunkOn<BottomTabsModel>
-  unreadConversationCountChanged: Action<BottomTabsModel, number>
+  setUnreadConversationsCount: Action<BottomTabsModel, number>
   syncActivityPanelState: Action<
     BottomTabsModel,
     { notifications: NotificationNode[]; unreadCount: number }
   >
   fetchCurrentUnreadConversationCount: Thunk<BottomTabsModel>
-  unreadNotificationsCountChanged: Action<BottomTabsModel, number>
+  setUnreadNotificationsCount: Action<BottomTabsModel, number>
   fetchNotificationsInfo: Thunk<BottomTabsModel>
   setDisplayUnseenNotificationsIndicator: Action<BottomTabsModel, boolean>
   setTabProps: Action<BottomTabsModel, { tab: BottomTabType; props: object | undefined }>
@@ -66,14 +66,14 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
     state.lastSeenNotificationPublishedAt = payload
   }),
   syncApplicationIconBadgeNumber: thunkOn(
-    (actions) => [actions.unreadConversationCountChanged, actions.unreadNotificationsCountChanged],
+    (actions) => [actions.setUnreadConversationsCount, actions.setUnreadNotificationsCount],
     (_actions, _payload, { getState }) => {
       const { notifications, conversation } = getState().sessionState.unreadCounts
       const totalCount = notifications + conversation
       GlobalStore.actions.native.setApplicationIconBadgeNumber(totalCount)
     }
   ),
-  unreadConversationCountChanged: action((state, payload) => {
+  setUnreadConversationsCount: action((state, payload) => {
     state.sessionState.unreadCounts.conversation = payload
   }),
   fetchCurrentUnreadConversationCount: thunk(async () => {
@@ -98,7 +98,7 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
       const conversationsCount = result?.me?.unreadConversationCount
 
       if (conversationsCount !== null) {
-        GlobalStore.actions.bottomTabs.unreadConversationCountChanged(conversationsCount ?? 0)
+        GlobalStore.actions.bottomTabs.setUnreadConversationsCount(conversationsCount ?? 0)
       }
     } catch (e) {
       if (__DEV__) {
@@ -111,7 +111,7 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
       }
     }
   }),
-  unreadNotificationsCountChanged: action((state, payload) => {
+  setUnreadNotificationsCount: action((state, payload) => {
     state.sessionState.unreadCounts.notifications = payload
   }),
   fetchNotificationsInfo: thunk(async () => {
@@ -159,8 +159,8 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
         artworksCount: node.artworks?.totalCount ?? 0,
       }))
 
-      GlobalStore.actions.bottomTabs.unreadConversationCountChanged(conversations)
-      GlobalStore.actions.bottomTabs.unreadNotificationsCountChanged(notifications)
+      GlobalStore.actions.bottomTabs.setUnreadConversationsCount(conversations)
+      GlobalStore.actions.bottomTabs.setUnreadNotificationsCount(notifications)
       GlobalStore.actions.bottomTabs.syncActivityPanelState({
         notifications: formattedNotificationNodes,
         unreadCount: notifications,
