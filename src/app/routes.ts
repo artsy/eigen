@@ -117,9 +117,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/", "Home"),
     addRoute("/sales", "Sales"),
     addRoute("/map", "NewMap"),
-    // TODO: this should be replaced with the new route when ES only Search is ready
-    addRoute("/search", "SearchSwitchContainer"),
-    addRoute("/oldsearch", "Search"),
+    addRoute("/search", "Search"),
     addRoute("/inbox", "Inbox"),
     addRoute("/my-profile", "MyProfile"),
     addRoute("/my-profile/edit", "MyProfileEditForm"),

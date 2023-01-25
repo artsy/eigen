@@ -8,7 +8,7 @@ import {
   WorksForYouScreenQuery,
 } from "app/Components/Containers/WorksForYou"
 import { FadeIn } from "app/Components/FadeIn"
-import { Search2 } from "app/Scenes/Search/Search2"
+import { SearchScreenQuery } from "app/Scenes/Search/Search"
 import { SearchSwitchContainer } from "app/Scenes/Search/SearchSwitchContainer"
 import React from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
@@ -121,7 +121,6 @@ import { SavedAddressesQueryRenderer } from "./Scenes/SavedAddresses/SavedAddres
 import { SavedAddressesFormQueryRenderer } from "./Scenes/SavedAddresses/SavedAddressesForm"
 import { EditSavedSearchAlertQueryRenderer } from "./Scenes/SavedSearchAlert/EditSavedSearchAlert"
 import { SavedSearchAlertsListQueryRenderer } from "./Scenes/SavedSearchAlertsList/SavedSearchAlertsList"
-import { SearchScreen, SearchScreenQuery } from "./Scenes/Search/Search"
 import { ConsignmentInquiryScreen } from "./Scenes/SellWithArtsy/ConsignmentInquiry/ConsignmentInquiryScreen"
 import { SellWithArtsyHomeScreenQuery } from "./Scenes/SellWithArtsy/SellWithArtsyHome"
 import { SubmitArtwork } from "./Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
@@ -486,9 +485,9 @@ export const modules = defineModules({
     SellWithArtsyHomeScreenQuery,
   ]),
   SalesNotRootTabView: reactModule(SellWithArtsy),
-  Search: reactModule(SearchScreen, {}, [SearchScreenQuery]),
-  Search2: reactModule(Search2),
-  SearchSwitchContainer: reactModule(SearchSwitchContainer, { isRootViewForTabName: "search" }),
+  Search: reactModule(SearchSwitchContainer, { isRootViewForTabName: "search" }, [
+    SearchScreenQuery,
+  ]),
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
   ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),
   SavedAddresses: reactModule(SavedAddressesQueryRenderer),
