@@ -67,7 +67,11 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
     state.lastSeenNotificationPublishedAt = payload
   }),
   syncApplicationIconBadgeNumber: thunkOn(
-    (actions) => [actions.setUnreadConversationsCount, actions.setUnreadNotificationsCount],
+    (actions) => [
+      actions.setUnreadConversationsCount,
+      actions.setUnreadNotificationsCount,
+      actions.decreaseUnreadNotificationsCount,
+    ],
     (_actions, _payload, { getState }) => {
       const { notifications, conversations } = getState().sessionState.unreadCounts
       const totalCount = notifications + conversations
