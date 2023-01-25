@@ -15,7 +15,7 @@ import { graphql, useLazyLoadQuery, useMutation } from "react-relay"
 import { ArtQuizNavigationStack } from "./ArtQuiz"
 
 export const ArtQuizArtworks = () => {
-  const { goBack } = useNavigation<NavigationProp<ArtQuizNavigationStack>>()
+  const { goBack, navigate } = useNavigation<NavigationProp<ArtQuizNavigationStack>>()
   const { onDone } = useOnboardingContext()
   const [activeCardIndex, setActiveCardIndex] = useState(0)
   const artQuizArtworksQueryResult = useLazyLoadQuery<ArtQuizArtworksQuery>(
@@ -58,6 +58,12 @@ export const ArtQuizArtworks = () => {
 
   const handleNext = (action: "Like" | "Dislike") => {
     popoverMessage.hide()
+
+    if (activeCardIndex + 1 === artworks.length) {
+      navigate("ArtQuizResultLoader")
+      return
+    }
+
     pagerViewRef.current?.setPage(activeCardIndex + 1)
 
     if (action === "Like") {

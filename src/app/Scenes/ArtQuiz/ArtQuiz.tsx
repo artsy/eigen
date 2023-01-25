@@ -1,5 +1,9 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
+import {
+  ArtQuizResultsNavigation,
+  ArtQuizResultsNavigationScreens,
+} from "app/Scenes/ArtQuiz/ArtQuizResults/navigation"
 import { ArtQuizArtworks } from "./ArtQuizArtworks"
 import { ArtQuizWelcome } from "./ArtQuizWelcome"
 
@@ -7,8 +11,9 @@ import { ArtQuizWelcome } from "./ArtQuizWelcome"
 export type ArtQuizNavigationStack = {
   ArtQuizWelcome: undefined
   ArtQuizArtworks: undefined
-}
-const StackNavigator = createStackNavigator<ArtQuizNavigationStack>()
+} & ArtQuizResultsNavigationScreens
+
+export const StackNavigator = createStackNavigator<ArtQuizNavigationStack>()
 
 export const ArtQuiz: React.FC = () => {
   return (
@@ -23,6 +28,7 @@ export const ArtQuiz: React.FC = () => {
       >
         <StackNavigator.Screen name="ArtQuizWelcome" component={ArtQuizWelcome} />
         <StackNavigator.Screen name="ArtQuizArtworks" component={ArtQuizArtworks} />
+        {ArtQuizResultsNavigation()}
       </StackNavigator.Navigator>
     </NavigationContainer>
   )
