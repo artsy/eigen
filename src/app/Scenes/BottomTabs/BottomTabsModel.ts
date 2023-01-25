@@ -19,8 +19,8 @@ import { fetchQuery, graphql } from "react-relay"
 import { BottomTabType } from "./BottomTabType"
 
 export interface UnreadCounts {
-  unreadConversation: number
-  unreadActivityPanelNotifications: number
+  conversations: number
+  notifications: number
 }
 
 interface NotificationNode {
@@ -39,13 +39,13 @@ export interface BottomTabsModel {
   lastSeenNotificationPublishedAt: string | null
   setLastSeenNotificationPublishedAt: Action<BottomTabsModel, string | null>
   syncApplicationIconBadgeNumber: ThunkOn<BottomTabsModel>
-  unreadConversationCountChanged: Action<BottomTabsModel, number>
+  setUnreadConversationsCount: Action<BottomTabsModel, number>
   syncActivityPanelState: Action<
     BottomTabsModel,
     { notifications: NotificationNode[]; unreadCount: number }
   >
   fetchCurrentUnreadConversationCount: Thunk<BottomTabsModel>
-  unreadActivityPanelNotificationsCountChanged: Action<BottomTabsModel, number>
+  setUnreadNotificationsCount: Action<BottomTabsModel, number>
   fetchNotificationsInfo: Thunk<BottomTabsModel>
   setDisplayUnseenNotificationsIndicator: Action<BottomTabsModel, boolean>
   setTabProps: Action<BottomTabsModel, { tab: BottomTabType; props: object | undefined }>
@@ -54,8 +54,8 @@ export interface BottomTabsModel {
 export const getBottomTabsModel = (): BottomTabsModel => ({
   sessionState: {
     unreadCounts: {
-      unreadConversation: 0,
-      unreadActivityPanelNotifications: 0,
+      conversations: 0,
+      notifications: 0,
     },
     displayUnseenNotificationsIndicator: false,
     tabProps: {},
@@ -66,19 +66,15 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
     state.lastSeenNotificationPublishedAt = payload
   }),
   syncApplicationIconBadgeNumber: thunkOn(
-    (actions) => [
-      actions.unreadConversationCountChanged,
-      actions.unreadActivityPanelNotificationsCountChanged,
-    ],
+    (actions) => [actions.setUnreadConversationsCount, actions.setUnreadNotificationsCount],
     (_actions, _payload, { getState }) => {
-      const { unreadActivityPanelNotifications, unreadConversation } =
-        getState().sessionState.unreadCounts
-      const totalCount = unreadActivityPanelNotifications + unreadConversation
+      const { notifications, conversations } = getState().sessionState.unreadCounts
+      const totalCount = notifications + conversations
       GlobalStore.actions.native.setApplicationIconBadgeNumber(totalCount)
     }
   ),
-  unreadConversationCountChanged: action((state, unreadConversationCount) => {
-    state.sessionState.unreadCounts.unreadConversation = unreadConversationCount
+  setUnreadConversationsCount: action((state, payload) => {
+    state.sessionState.unreadCounts.conversations = payload
   }),
   fetchCurrentUnreadConversationCount: thunk(async () => {
     try {
@@ -102,7 +98,7 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
       const conversationsCount = result?.me?.unreadConversationCount
 
       if (conversationsCount !== null) {
-        GlobalStore.actions.bottomTabs.unreadConversationCountChanged(conversationsCount ?? 0)
+        GlobalStore.actions.bottomTabs.setUnreadConversationsCount(conversationsCount ?? 0)
       }
     } catch (e) {
       if (__DEV__) {
@@ -115,8 +111,8 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
       }
     }
   }),
-  unreadActivityPanelNotificationsCountChanged: action((state, unreadCount) => {
-    state.sessionState.unreadCounts.unreadActivityPanelNotifications = unreadCount
+  setUnreadNotificationsCount: action((state, payload) => {
+    state.sessionState.unreadCounts.notifications = payload
   }),
   fetchNotificationsInfo: thunk(async () => {
     try {
@@ -163,8 +159,8 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
         artworksCount: node.artworks?.totalCount ?? 0,
       }))
 
-      GlobalStore.actions.bottomTabs.unreadConversationCountChanged(conversations)
-      GlobalStore.actions.bottomTabs.unreadActivityPanelNotificationsCountChanged(notifications)
+      GlobalStore.actions.bottomTabs.setUnreadConversationsCount(conversations)
+      GlobalStore.actions.bottomTabs.setUnreadNotificationsCount(notifications)
       GlobalStore.actions.bottomTabs.syncActivityPanelState({
         notifications: formattedNotificationNodes,
         unreadCount: notifications,

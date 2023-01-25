@@ -15,8 +15,8 @@ export const BottomTabs: React.FC<BottomTabBarProps> = (props) => {
   const params = focusedRoute?.params as any
   const module = modules[params?.moduleName as AppModule]
   const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
-  const unreadConversationCount = GlobalStore.useAppState(
-    (state) => state.bottomTabs.sessionState.unreadCounts.unreadConversation
+  const unreadConversationsCount = GlobalStore.useAppState(
+    (state) => state.bottomTabs.sessionState.unreadCounts.conversations
   )
 
   const displayUnseenNotificationsIndicator = GlobalStore.useAppState(
@@ -50,7 +50,7 @@ export const BottomTabs: React.FC<BottomTabBarProps> = (props) => {
       <Flex flexDirection="row" height={ICON_HEIGHT} px={1}>
         <BottomTabsButton tab="home" forceDisplayVisualClue={displayUnseenNotificationsIndicator} />
         <BottomTabsButton tab="search" />
-        <BottomTabsButton tab="inbox" badgeCount={unreadConversationCount} />
+        <BottomTabsButton tab="inbox" badgeCount={unreadConversationsCount} />
         <BottomTabsButton tab="sell" />
         <BottomTabsButton tab="profile" visualClue="MyCollectionInsights" />
       </Flex>
