@@ -38,7 +38,7 @@ export const BottomTabsNavigator = () => {
       <Tab.Screen
         name="search"
         component={TabContent}
-        initialParams={{ tabName: "search", rootModuleName: "Search" }}
+        initialParams={{ tabName: "search", rootModuleName: "SearchSwitchContainer" }}
       />
       <Tab.Screen
         name="inbox"

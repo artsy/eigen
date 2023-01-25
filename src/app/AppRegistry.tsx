@@ -8,6 +8,8 @@ import {
   WorksForYouScreenQuery,
 } from "app/Components/Containers/WorksForYou"
 import { FadeIn } from "app/Components/FadeIn"
+import { Search2 } from "app/Scenes/Search/Search2"
+import { SearchSwitchContainer } from "app/Scenes/Search/SearchSwitchContainer"
 import React from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
@@ -217,8 +219,8 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({
   // if we're in a modal, just pass isVisible through
 
   let isVisible = viewProps.isVisible
+  const currentTab = useSelectedTab()
   if (!ignoreTabs) {
-    const currentTab = useSelectedTab()
     if (BottomTabOption[viewProps.navStackID as BottomTabType]) {
       // otherwise, make sure it respects the current tab
       isVisible = isVisible && currentTab === viewProps.navStackID
@@ -483,7 +485,9 @@ export const modules = defineModules({
     SellWithArtsyHomeScreenQuery,
   ]),
   SalesNotRootTabView: reactModule(SellWithArtsy),
-  Search: reactModule(SearchScreen, { isRootViewForTabName: "search" }, [SearchScreenQuery]),
+  Search: reactModule(SearchScreen, {}, [SearchScreenQuery]),
+  Search2: reactModule(Search2),
+  SearchSwitchContainer: reactModule(SearchSwitchContainer, { isRootViewForTabName: "search" }),
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
   ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),
   SavedAddresses: reactModule(SavedAddressesQueryRenderer),
