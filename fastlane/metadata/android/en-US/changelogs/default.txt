@@ -1,3 +1,5 @@
 This update includes a number of improvements and bug fixes.
 
+See artworks in more detail, with a new full-screen and zoom views.
+
 Have feedback? Email us at support@artsy.net
