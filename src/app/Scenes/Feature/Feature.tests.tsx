@@ -4,7 +4,6 @@ import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { FeatureQueryRenderer } from "./Feature"
 
-jest.unmock("react-relay")
 
 let mockRelayEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 beforeEach(() => {

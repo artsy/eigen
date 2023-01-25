@@ -6,7 +6,6 @@ import { createMockEnvironment } from "relay-test-utils"
 import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from "./FullFeaturedArtistList"
 import { FullFeaturedArtistListCollectionFixture } from "./__fixtures__/CollectionFixture"
 
-jest.unmock("react-relay")
 
 describe("FullFeaturedArtistList", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

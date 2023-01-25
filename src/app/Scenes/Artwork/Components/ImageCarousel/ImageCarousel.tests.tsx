@@ -12,7 +12,6 @@ import {
 } from "./ImageCarousel"
 import { getMeasurements } from "./geometry"
 
-jest.unmock("react-relay")
 
 const deepZoomFixture: NonNullable<
   NonNullable<

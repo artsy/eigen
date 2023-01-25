@@ -25,7 +25,6 @@ jest.mock("../../mutations/updateConsignSubmissionMutation", () => ({
   updateConsignSubmission: jest.fn().mockResolvedValue("54321"),
 }))
 
-jest.unmock("react-relay")
 
 const createConsignSubmissionMock = createConsignSubmission as jest.Mock
 const updateConsignSubmissionMock = updateConsignSubmission as jest.Mock

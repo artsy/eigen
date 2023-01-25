@@ -10,7 +10,6 @@ import {
   MyAccountEditPriceRangeQueryRenderer,
 } from "./MyAccountEditPriceRange"
 
-jest.unmock("react-relay")
 
 describe(MyAccountEditPriceRangeQueryRenderer, () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

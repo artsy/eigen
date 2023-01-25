@@ -7,7 +7,6 @@ import { graphql } from "relay-runtime"
 import { createMockEnvironment } from "relay-test-utils"
 import { OrderDetailsHeaderFragmentContainer } from "./Components/OrderDetailsHeader"
 
-jest.unmock("react-relay")
 
 const mockInfo = {
   createdAt: "2021-06-02T14:51:19+03:00",

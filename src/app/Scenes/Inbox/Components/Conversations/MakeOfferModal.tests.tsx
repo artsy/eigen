@@ -10,7 +10,6 @@ import { EditionSelectBox } from "./EditionSelectBox"
 import { InquiryMakeOfferButton } from "./InquiryMakeOfferButton"
 import { MakeOfferModalFragmentContainer } from "./MakeOfferModal"
 
-jest.unmock("react-relay")
 
 let env: ReturnType<typeof createMockEnvironment>
 

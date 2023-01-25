@@ -10,7 +10,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtworkEditionSetInformationFragmentContainer as ArtworkEditionSetInformation } from "./ArtworkEditionSetInformation"
 
-jest.unmock("react-relay")
 
 describe("ArtworkEditionSetInformation", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

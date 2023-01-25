@@ -3,7 +3,6 @@ import "react-native"
 
 import RelayGenericArtworksGrid, { GenericArtworksGrid } from "./GenericGrid"
 
-jest.unmock("react-relay")
 
 it("renders without throwing an error", () => {
   const artworks = [artwork(), artwork(), artwork()]

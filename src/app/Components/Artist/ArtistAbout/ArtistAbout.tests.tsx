@@ -9,7 +9,6 @@ import { graphql } from "react-relay"
 import { ArtistAboutContainer } from "./ArtistAbout"
 import { ArtistAboutShowsFragmentContainer } from "./ArtistAboutShows"
 
-jest.unmock("react-relay")
 
 describe("ArtistAbout", () => {
   const { renderWithRelay } = setupTestWrapper<ArtistAboutTestsQuery>({

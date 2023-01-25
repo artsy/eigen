@@ -4,7 +4,6 @@ import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeade
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-jest.unmock("react-relay")
 
 describe("ArtistHeader", () => {
   const { renderWithRelay } = setupTestWrapper<ArtistHeaderTestsQuery>({

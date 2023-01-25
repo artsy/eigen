@@ -22,7 +22,6 @@ import {
   SaleLotsListSortMode,
 } from "./Components/SaleLotsList"
 
-jest.unmock("react-relay")
 
 describe("SaleLotsListContainer", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

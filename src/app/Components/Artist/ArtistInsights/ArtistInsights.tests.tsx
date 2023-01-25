@@ -10,8 +10,6 @@ import { ArtistInsightsAuctionResultsPaginationContainer } from "./ArtistInsight
 
 const trackEvent = useTracking().trackEvent
 
-jest.unmock("react-relay")
-
 describe("ArtistInsights", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   beforeEach(() => (mockEnvironment = createMockEnvironment()))

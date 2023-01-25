@@ -6,7 +6,6 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { PartnerArtworkFragmentContainer as PartnerArtwork } from "./PartnerArtwork"
 
-jest.unmock("react-relay")
 
 describe("PartnerArtwork", () => {
   const { renderWithRelay } = setupTestWrapper<PartnerArtworkTestsQuery>({

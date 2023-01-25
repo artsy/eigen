@@ -8,7 +8,6 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { BottomTabsNavigator } from "./BottomTabsNavigator"
 
-jest.unmock("react-relay")
 
 jest.unmock("app/NativeModules/LegacyNativeModules")
 

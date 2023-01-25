@@ -30,7 +30,6 @@ const COMPLETE_PARTNER_LOCATION_FIXTURE = {
   },
 }
 
-jest.unmock("react-relay")
 
 describe("ShowLocation", () => {
   let env: ReturnType<typeof createMockEnvironment>

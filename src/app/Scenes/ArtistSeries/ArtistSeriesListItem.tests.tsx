@@ -7,7 +7,6 @@ import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import { act } from "react-test-renderer"
 
-jest.unmock("react-relay")
 
 describe("ArtistSeriesListItem", () => {
   it("navigates to the artist series when tapped", () => {

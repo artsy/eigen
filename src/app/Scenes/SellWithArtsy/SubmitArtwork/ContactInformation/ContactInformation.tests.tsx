@@ -16,7 +16,6 @@ jest.mock("../../mutations/updateConsignSubmissionMutation", () => ({
 
 const updateConsignSubmissionMock = updateConsignSubmission as jest.Mock
 
-jest.unmock("react-relay")
 
 describe("ContactInformationForm", () => {
   afterEach(() => {

@@ -7,7 +7,6 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { SearchArtworksGridPaginationContainer } from "./SearchArtworksGrid"
 
-jest.unmock("react-relay")
 
 describe("SearchArtworksGrid", () => {
   const { renderWithRelay } = setupTestWrapper<SearchArtworksGridTestsQuery>({

@@ -10,7 +10,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { CollapsibleArtworkDetailsFragmentContainer } from "./CollapsibleArtworkDetails"
 
-jest.unmock("react-relay")
 
 describe("CollapsibleArtworkDetails", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

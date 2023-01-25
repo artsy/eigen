@@ -12,7 +12,6 @@ import {
   OrderHistoryPlaceholder,
 } from "./OrderHistory"
 import { OrderHistoryRowContainer } from "./OrderHistoryRow"
-jest.unmock("react-relay")
 
 describe(OrderHistoryQueryRender, () => {
   it("Loads OrderHistoryQueryRender", () => {

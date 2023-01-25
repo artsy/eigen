@@ -8,7 +8,6 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtworkStickyBottomContent } from "./ArtworkStickyBottomContent"
 
-jest.unmock("react-relay")
 
 interface TestRendererProps {
   initialData?: Partial<ArtworkStoreModel>

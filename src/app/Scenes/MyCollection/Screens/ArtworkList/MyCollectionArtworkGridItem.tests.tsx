@@ -12,7 +12,6 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MyCollectionArtworkGridItemFragmentContainer, tests } from "./MyCollectionArtworkGridItem"
 
-jest.unmock("react-relay")
 
 describe("MyCollectionArtworkGridItem", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

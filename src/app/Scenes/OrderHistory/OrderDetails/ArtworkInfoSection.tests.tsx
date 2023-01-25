@@ -5,7 +5,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtworkInfoSectionFragmentContainer } from "./Components/ArtworkInfoSection"
 
-jest.unmock("react-relay")
 
 describe("ArtworkInfoSection", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

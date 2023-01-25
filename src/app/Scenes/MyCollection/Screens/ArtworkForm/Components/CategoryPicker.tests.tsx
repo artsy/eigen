@@ -8,7 +8,6 @@ import { act } from "react-test-renderer"
 import { CategoryPicker } from "./CategoryPicker"
 
 jest.mock("formik")
-jest.unmock("react-relay")
 
 describe("CategoryPicker", () => {
   const useFormikContextMock = useFormikContext as jest.Mock

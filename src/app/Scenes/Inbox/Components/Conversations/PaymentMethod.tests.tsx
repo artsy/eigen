@@ -3,7 +3,6 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { PaymentMethodFragmentContainer } from "./PaymentMethod"
 
-jest.unmock("react-relay")
 
 describe("PaymentMethodFragmentContainer", () => {
   const { renderWithRelay } = setupTestWrapper<PaymentMethod_Test_Query>({

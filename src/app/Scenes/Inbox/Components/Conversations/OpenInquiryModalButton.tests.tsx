@@ -12,8 +12,6 @@ import { OpenInquiryModalButtonFragmentContainer } from "./OpenInquiryModalButto
 
 const trackEvent = useTracking().trackEvent
 
-jest.unmock("react-relay")
-
 const tappedMakeOfferEvent = {
   action: "tappedMakeOffer",
   context_owner_type: "conversation",

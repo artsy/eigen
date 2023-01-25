@@ -25,7 +25,6 @@ import { CommercialInformation } from "./Components/CommercialInformation"
 import { ImageCarousel } from "./Components/ImageCarousel/ImageCarousel"
 import { OtherWorksFragmentContainer } from "./Components/OtherWorks/OtherWorks"
 
-jest.unmock("react-relay")
 
 jest.mock("app/Components/Bidding/Context/TimeOffsetProvider", () => {
   class TimeOffsetProvider extends require("react").Component {

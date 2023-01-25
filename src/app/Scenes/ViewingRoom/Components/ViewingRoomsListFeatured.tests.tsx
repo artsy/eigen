@@ -6,7 +6,6 @@ import { graphql, QueryRenderer, RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { FeaturedRail } from "./ViewingRoomsListFeatured"
 
-jest.unmock("react-relay")
 
 describe(FeaturedRail, () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

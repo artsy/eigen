@@ -23,7 +23,6 @@ jest.mock("../mutations/createConsignSubmissionMutation", () => ({
 const updateConsignSubmissionMock = updateConsignSubmission as jest.Mock
 const createConsignSubmissionMock = createConsignSubmission as jest.Mock
 
-jest.unmock("react-relay")
 describe(SubmitArtwork, () => {
   describe("Steps CTA Buttons", () => {
     it('Displays "Save & Continue" if Accordion Step is not the last and "Submit Artwork" if last', () => {

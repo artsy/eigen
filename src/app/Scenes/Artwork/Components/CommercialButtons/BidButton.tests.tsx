@@ -21,7 +21,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { BidButtonFragmentContainer as BidButton } from "./BidButton"
 
-jest.unmock("react-relay")
 
 const merge: (...args: object[]) => any = _merge
 

@@ -9,7 +9,6 @@ import { createMockEnvironment } from "relay-test-utils"
 import { OnboardingNavigationStack } from "./Onboarding"
 import { OnboardingSocialLink } from "./OnboardingSocialLink"
 
-jest.unmock("react-relay")
 
 describe("OnboardingSocialLink", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

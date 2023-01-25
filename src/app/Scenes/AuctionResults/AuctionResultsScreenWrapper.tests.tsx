@@ -9,7 +9,6 @@ import {
   AuctionResultsState,
 } from "./AuctionResultsScreenWrapper"
 
-jest.unmock("react-relay")
 
 describe("AuctionResultsForArtistsYouFollowContainer", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

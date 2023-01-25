@@ -11,7 +11,6 @@ import { act, ReactTestRenderer } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { AuctionResultFragmentContainer } from "./AuctionResult"
 
-jest.unmock("react-relay")
 
 describe("AuctionResult", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

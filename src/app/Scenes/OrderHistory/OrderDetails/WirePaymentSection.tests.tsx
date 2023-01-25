@@ -5,7 +5,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { WirePaymentSectionFragmentContainer } from "./Components/WirePaymentSection"
 
-jest.unmock("react-relay")
 
 const order = {
   code: "111111111",

@@ -3,7 +3,6 @@ import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { createMockEnvironment } from "relay-test-utils"
 import { AboutArtist } from "./AboutArtist"
 
-jest.unmock("react-relay")
 
 describe("AboutArtist", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

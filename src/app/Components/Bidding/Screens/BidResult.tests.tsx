@@ -10,7 +10,6 @@ import { graphql } from "relay-runtime"
 import { createMockEnvironment } from "relay-test-utils"
 import { BidResultScreen } from "./BidResult"
 
-jest.unmock("react-relay")
 
 const sale: BidResult_sale_artwork$data["sale"] = {
   cascadingEndTimeIntervalMinutes: null,

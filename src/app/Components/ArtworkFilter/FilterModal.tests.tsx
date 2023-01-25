@@ -25,7 +25,6 @@ import { closeModalMock, getEssentialProps, MockFilterScreen } from "./FilterTes
 const exitModalMock = jest.fn()
 const trackEvent = jest.fn()
 
-jest.unmock("react-relay")
 
 beforeEach(() => {
   ;(useTracking as jest.Mock).mockImplementation(() => ({ trackEvent }))

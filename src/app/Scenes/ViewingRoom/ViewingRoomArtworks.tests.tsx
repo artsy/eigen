@@ -14,7 +14,6 @@ import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { tracks, ViewingRoomArtworksContainer } from "./ViewingRoomArtworks"
 
-jest.unmock("react-relay")
 
 describe("ViewingRoom", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

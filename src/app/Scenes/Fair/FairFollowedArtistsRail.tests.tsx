@@ -8,7 +8,6 @@ import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { FairFollowedArtistsRailFragmentContainer } from "./Components/FairFollowedArtistsRail"
 
-jest.unmock("react-relay")
 
 describe("FairFollowedArtistsRail", () => {
   const trackEvent = useTracking().trackEvent

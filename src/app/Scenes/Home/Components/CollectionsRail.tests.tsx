@@ -11,7 +11,6 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { CollectionsRailFragmentContainer } from "./CollectionsRail"
 
-jest.unmock("react-relay")
 
 describe("CollectionsRailFragmentContainer", () => {
   let env: ReturnType<typeof createMockEnvironment>

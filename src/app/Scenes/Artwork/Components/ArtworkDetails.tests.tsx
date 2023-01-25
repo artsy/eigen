@@ -8,7 +8,6 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtworkDetails } from "./ArtworkDetails"
 
-jest.unmock("react-relay")
 
 describe("ArtworkDetails", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

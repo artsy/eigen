@@ -6,7 +6,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { TrackOrderSectionFragmentContainer } from "./Components/TrackOrderSection"
 
-jest.unmock("react-relay")
 
 const CommerceShipOrder = {
   state: "SUBMITTED",

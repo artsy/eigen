@@ -7,7 +7,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { FollowArtistLinkFragmentContainer } from "./FollowArtistLink"
 
-jest.unmock("react-relay")
 
 describe("FollowArtistLink", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

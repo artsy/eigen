@@ -11,7 +11,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { Gene } from "./Gene"
 
-jest.unmock("react-relay")
 
 describe("Gene", () => {
   const geneID = "gene-id"

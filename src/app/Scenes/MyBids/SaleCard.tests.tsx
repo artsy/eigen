@@ -7,7 +7,6 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { CompleteRegistrationCTAWrapper } from "./Components/CompleteRegistrationCTAWrapper"
 import { RegistrationCTAWrapper, SaleCard, SaleCardFragmentContainer } from "./Components/SaleCard"
 
-jest.unmock("react-relay")
 
 describe("SaleCard", () => {
   let env: ReturnType<typeof createMockEnvironment>

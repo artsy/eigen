@@ -5,7 +5,6 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { Show, ShowFragmentContainer } from "./Show"
 
-jest.unmock("react-relay")
 
 describe("Show", () => {
   const { renderWithRelay } = setupTestWrapper<ShowTestsQuery>({
