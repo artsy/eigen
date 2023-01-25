@@ -23,6 +23,8 @@ export default {
 
   "Remove all relay unmocks!": () => regexp(/unmock\("react-relay"\)/).include(typescriptTestFiles),
 
+  "Fix all STRICTNESS_MIGRATION!": () => regexp(/STRICTNESS_MIGRATION/).include(typescriptFiles),
+
   "Avoid having skipped tests!": () =>
     regexp(/(fdescribe\(|describe.only\(|fit\(|xit\(|it.only\(|it.skip\()/).include(
       typescriptTestFiles

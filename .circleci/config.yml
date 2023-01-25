@@ -253,19 +253,6 @@ jobs:
           name: Update metaphysics
           command: yarn update-metaphysics
 
-  check-pr:
-    executor:
-      name: node/default
-      tag: "16.18.0"
-    steps:
-      - checkout
-      - generate-checksums
-      - install-node-modules
-      - run-relay-compiler
-      - run:
-          name: Prevent Strictness Regressions
-          command: node scripts/strictness-migration.js check-pr
-
   check-flags:
     environment:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
@@ -557,16 +544,6 @@ workflows:
                 - play_store_submission
                 - update-changelog
 
-      - check-pr:
-          filters:
-            branches:
-              ignore:
-                - main
-                - beta-ios
-                - beta-android
-                - app_store_submission
-                - play_store_submission
-                - update-changelog
       - build-test-js:
           filters:
             branches:
