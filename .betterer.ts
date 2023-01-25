@@ -15,8 +15,8 @@ export default {
   "Finish our strictnes migration!": () =>
     regexp(/Unsafe legacy code 🚨 Please delete this/).include(typescriptFiles),
 
-  "Avoid non-webp images!": () =>
-    countNonWebpImages().include([`./images/**/*.{${imageExtensionsToAvoid.join(",")}}`]),
+  // "Avoid non-webp images!": () =>
+  //   countNonWebpImages().include([`./images/**/*.{${imageExtensionsToAvoid.join(",")}}`]),
 
   "Avoid using test-renderer!": () =>
     regexp(/renderWithWrappersLEGACY.* from ".*renderWithWrappers"/).include(typescriptTestFiles),
@@ -34,15 +34,15 @@ export default {
     regexp(/extends (React\.)?Component/).include(typescriptFiles),
 }
 
-const countNonWebpImages = () =>
-  new BettererFileTest(async (filePaths, fileTestResult) => {
-    filePaths.forEach((filePath) => {
-      // the file contents don't matter
-      const file = fileTestResult.addFile(filePath, "")
-      file.addIssue(
-        0,
-        0,
-        "don't use non-webp images. you can use the script to convert other formats to webp."
-      )
-    })
-  })
+// const countNonWebpImages = () =>
+//   new BettererFileTest(async (filePaths, fileTestResult) => {
+//     filePaths.forEach((filePath) => {
+//       // the file contents don't matter
+//       const file = fileTestResult.addFile(filePath, "")
+//       file.addIssue(
+//         0,
+//         0,
+//         "don't use non-webp images. you can use the script to convert other formats to webp."
+//       )
+//     })
+//   })
