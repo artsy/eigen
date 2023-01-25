@@ -91,9 +91,10 @@ const Home = (props: Props) => {
 
   const prefetchUrl = usePrefetch()
 
-  const what = useFeatureFlag("AREnableESOnlySearch")
+  const isESOnlySearchEnabled = useFeatureFlag("AREnableESOnlySearch")
+
   useEffect(() => {
-    !what && prefetchUrl("oldsearch")
+    !isESOnlySearchEnabled && prefetchUrl("oldsearch")
     prefetchUrl("my-profile")
     prefetchUrl("inbox")
     prefetchUrl("sales")

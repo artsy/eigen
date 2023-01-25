@@ -219,8 +219,9 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({
   // if we're in a modal, just pass isVisible through
 
   let isVisible = viewProps.isVisible
-  const currentTab = useSelectedTab()
   if (!ignoreTabs) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const currentTab = useSelectedTab()
     if (BottomTabOption[viewProps.navStackID as BottomTabType]) {
       // otherwise, make sure it respects the current tab
       isVisible = isVisible && currentTab === viewProps.navStackID
