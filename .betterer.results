@@ -1641,8 +1641,8 @@ exports[`Avoid using class components!`] = {
     "src/ambient.d.ts:123000066": [
       [28, 25, 23, "RegExp match", "3210885008"]
     ],
-    "src/app/AppRegistry.tsx:4170936656": [
-      [245, 18, 23, "RegExp match", "3210885008"]
+    "src/app/AppRegistry.tsx:444795924": [
+      [246, 18, 23, "RegExp match", "3210885008"]
     ],
     "src/app/Components/Artist/Articles/Articles.tsx:1150831805": [
       [13, 15, 17, "RegExp match", "3548830911"]
