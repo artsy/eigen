@@ -75,7 +75,8 @@ export function useNewImageCarouselContext({
   const [isZoomedCompletelyOut, setIsZoomedCompletelyOut] = useGlobalState(true)
   const tracking = useTracking()
 
-  const media = setVideoAsCover ? [...videos, ...images] : [...images, ...videos]
+  // const media = setVideoAsCover ? [...videos, ...images] : [...images, ...videos]
+  const media = [...videos, ...images]
 
   const imageCarouselContext = useMemo(
     () => ({

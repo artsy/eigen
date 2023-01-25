@@ -1,4 +1,3 @@
-import querystring from "querystring"
 import { captureMessage } from "@sentry/react-native"
 import { ImageCarousel_images$data } from "__generated__/ImageCarousel_images.graphql"
 import { ImageCarousel_videos$data } from "__generated__/ImageCarousel_videos.graphql"
@@ -216,17 +215,4 @@ function getBestImageVersionForThumbnail(imageVersions: readonly string[]) {
 
 const imageHasVersions = (image: CarouselImageDescriptor | ImageCarousel_images$data[number]) => {
   return image.imageVersions && image.imageVersions.length
-}
-
-export const extractVimeoVideoDataFromUrl = (playerUrl: string) => {
-  const [url, queryParams] = playerUrl.split("?")
-  const videoId = url.replace("https://player.vimeo.com/video/", "")
-  const params = querystring.parse("?" + queryParams)
-
-  return {
-    videoId,
-    token: params["?h"],
-    width: params.width,
-    height: params.height,
-  }
 }

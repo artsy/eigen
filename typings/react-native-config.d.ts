@@ -16,5 +16,6 @@ declare module "react-native-config" {
     UNLEASH_PROXY_CLIENT_KEY_STAGING: string
     UNLEASH_PROXY_URL_PRODUCTION: string
     UNLEASH_PROXY_URL_STAGING: string
+    VIMEO_PUBLIC_TOKEN: string
   }
 }

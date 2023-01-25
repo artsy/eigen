@@ -1,11 +1,9 @@
 import * as Sentry from "@sentry/react-native"
-import { extractVimeoVideoDataFromUrl } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
+import { ImageCarouselVimeoVideo } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselVimeoVideo"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { isPad } from "app/utils/hardware"
-import { Flex } from "palette"
 import React, { useCallback, useContext } from "react"
 import { Animated, FlatList, NativeScrollEvent, NativeSyntheticEvent, Platform } from "react-native"
-import { Vimeo } from "react-native-vimeo-iframe"
 import { useScreenDimensions } from "shared/hooks"
 import { ImageCarouselContext } from "./ImageCarouselContext"
 import { ImageWithLoadingState } from "./ImageWithLoadingState"
@@ -129,8 +127,8 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
     goFullScreen()
   }, [])
 
-  const renderVideo = media[imageIndex.current]?.__typename === "Video"
-  console.log(renderVideo)
+  // const renderVideo = guardFactory("__typename", "Video")(media[imageIndex.current])
+  // console.log(renderVideo)
 
   return (
     <FlatList
@@ -156,23 +154,15 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
       initialNumToRender={Math.min(media.length, 20)}
       renderItem={({ item, index }) => {
         const { ...styles } = measurements[index]
-        const shouldRender = index === imageIndex.current ? 1 : 0
+        const shouldRender = index === imageIndex.current
 
         if (item.__typename === "Video") {
-          const { videoId, token } = extractVimeoVideoDataFromUrl(item.url!)
-
           return (
-            <Flex background="transparent" width={styles.width} height={styles.height}>
-              {!!shouldRender && (
-                <Vimeo
-                  videoId={videoId}
-                  // &autoplay=${shouldRender}
-                  params={`h=${token}&loop=true`}
-                  allowsInlineMediaPlayback={true}
-                  allowsFullscreenVideo={false}
-                />
-              )}
-            </Flex>
+            <ImageCarouselVimeoVideo
+              width={styles.width}
+              height={styles.height}
+              vimeoUrl={item.url!}
+            />
           )
         }
 
