@@ -8,7 +8,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtistAboutShowsFragmentContainer } from "./ArtistAboutShows"
 
-jest.unmock("react-relay")
 
 describe("ArtistAboutShows", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

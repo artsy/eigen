@@ -17,7 +17,6 @@ import {
   tracks,
 } from "./CreateSavedSearchModal"
 
-jest.unmock("react-relay")
 
 const savedSearchEntity: SavedSearchEntity = {
   placeholder: "Placeholder",

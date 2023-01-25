@@ -6,7 +6,6 @@ import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { HomeFeedOnboardingRailFragmentContainer } from "./HomeFeedOnboardingRail"
 
-jest.unmock("react-relay")
 
 describe("HomeFeedOnboardingRail", () => {
   const trackEvent = useTracking().trackEvent

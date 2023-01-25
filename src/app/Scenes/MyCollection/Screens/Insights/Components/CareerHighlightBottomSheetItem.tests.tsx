@@ -2,7 +2,6 @@ import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { createMockEnvironment } from "relay-test-utils"
 import { CareerHighlightBottomSheetItem } from "./CareerHighlightBottomSheetItem"
 
-jest.unmock("react-relay")
 describe(CareerHighlightBottomSheetItem, () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 

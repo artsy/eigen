@@ -8,7 +8,6 @@ import { Touchable } from "palette"
 import "react-native"
 import Artwork from "./ArtworkGridItem"
 
-jest.unmock("react-relay")
 
 const ArtworkWithProviders = (props: any) => {
   return (

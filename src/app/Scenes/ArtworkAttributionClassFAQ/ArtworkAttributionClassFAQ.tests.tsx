@@ -7,7 +7,6 @@ import {
   ArtworkAttributionClassFAQ,
 } from "./ArtworkAttributionClassFAQ"
 
-jest.unmock("react-relay")
 
 const { getWrapper } = setupTestWrapper_LEGACY({
   Component: ArtworkAttributionClassFAQ,

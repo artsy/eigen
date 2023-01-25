@@ -6,7 +6,6 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { ArtworkMakerTitleFragmentContainer } from "./ArtworkMakerTitle"
 
-jest.unmock("react-relay")
 
 describe("ArtworkMakerTitle", () => {
   const { renderWithRelay } = setupTestWrapper<ArtworkMakerTitle_Test_Query>({

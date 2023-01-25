@@ -22,7 +22,6 @@ const banksy: RecentSearch = {
   },
 }
 
-jest.unmock("react-relay")
 jest.mock("app/utils/hardware", () => ({
   isPad: jest.fn(),
 }))

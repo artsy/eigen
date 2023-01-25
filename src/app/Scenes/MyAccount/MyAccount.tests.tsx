@@ -8,7 +8,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MyAccountContainer, MyAccountQueryRenderer } from "./MyAccount"
 
-jest.unmock("react-relay")
 const mockUnlinkFB = jest.fn()
 const mocklinkFB = jest.fn()
 

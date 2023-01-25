@@ -10,7 +10,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MyCollectionArtworkListItem } from "./MyCollectionArtworkListItem"
 
-jest.unmock("react-relay")
 
 describe("MyCollectionArtworkListItem", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

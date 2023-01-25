@@ -8,7 +8,6 @@ import {
   MedianSalePriceAtAuctionScreenQuery,
 } from "./MedianSalePriceAtAuction"
 
-jest.unmock("react-relay")
 
 describe("SelectArtist", () => {
   const TestRenderer = () => {

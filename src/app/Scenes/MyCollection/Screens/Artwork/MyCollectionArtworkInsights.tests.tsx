@@ -6,7 +6,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { MyCollectionArtworkInsights } from "./MyCollectionArtworkInsights"
 
-jest.unmock("react-relay")
 
 describe("MyCollectionArtworkInsights", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

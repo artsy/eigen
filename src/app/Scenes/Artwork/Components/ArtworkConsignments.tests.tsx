@@ -11,7 +11,6 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtworkConsignments } from "./ArtworkConsignments"
 
-jest.unmock("react-relay")
 jest.mock("app/store/GlobalStore", () => ({
   GlobalStoreProvider: jest.requireActual("app/store/GlobalStore").GlobalStoreProvider,
   useSelectedTab: jest.fn(() => "home"),

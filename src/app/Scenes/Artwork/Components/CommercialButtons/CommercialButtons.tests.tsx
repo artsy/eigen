@@ -15,7 +15,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { CommercialButtonsFragmentContainer } from "./CommercialButtons"
 
-jest.unmock("react-relay")
 
 interface WrapperProps {
   auctionState?: AuctionTimerState

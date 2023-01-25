@@ -18,7 +18,6 @@ import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { CreateSavedSearchAlert } from "./CreateSavedSearchAlert"
 import { CreateSavedSearchAlertParams } from "./SavedSearchAlertModel"
 
-jest.unmock("react-relay")
 
 const filters: FilterData[] = [
   {

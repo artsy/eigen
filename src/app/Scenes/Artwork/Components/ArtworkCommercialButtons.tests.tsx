@@ -12,7 +12,6 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { ArtworkCommercialButtons } from "./ArtworkCommercialButtons"
 
-jest.unmock("react-relay")
 
 describe("ArtworkCommercialButtons", () => {
   const { renderWithRelay } = setupTestWrapper<ArtworkCommercialButtons_Test_Query>({

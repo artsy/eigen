@@ -10,7 +10,6 @@ import { ClosedLotStanding } from "./Components/ClosedLotStanding"
 import { WatchedLot } from "./Components/WatchedLot"
 import { MyBidsContainer, MyBidsQueryRenderer } from "./MyBids"
 
-jest.unmock("react-relay")
 
 const closedSectionLots = (root: ReactTestInstance): ReactTestInstance[] => {
   const closedSection = root.findByProps({ testID: "closed-section" })

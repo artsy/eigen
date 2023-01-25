@@ -9,7 +9,6 @@ import { CurrentlyRunningAuctions } from "./CurrentlyRunningAuctions"
 import { Sales } from "./Sales"
 import { UpcomingAuctions } from "./UpcomingAuctions"
 
-jest.unmock("react-relay")
 
 describe("Sales", () => {
   let environment: RelayMockEnvironment = defaultEnvironment as RelayMockEnvironment

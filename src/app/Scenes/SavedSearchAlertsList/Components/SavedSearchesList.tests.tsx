@@ -6,7 +6,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { SavedSearchesListPaginationContainer as SavedSearchesList } from "./SavedSearchesList"
 
-jest.unmock("react-relay")
 
 describe("SavedSearches", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

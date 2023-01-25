@@ -4,7 +4,6 @@ import "react-native"
 import { graphql } from "react-relay"
 import { ConversationDetailsFragmentContainer } from "./ConversationDetails"
 
-jest.unmock("react-relay")
 
 describe("ConversationDetailsFragmentContainer", () => {
   const { renderWithRelay } = setupTestWrapper({

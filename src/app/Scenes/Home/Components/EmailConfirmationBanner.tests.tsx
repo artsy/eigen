@@ -12,7 +12,6 @@ import { createMockEnvironment } from "relay-test-utils"
 
 import { EmailConfirmationBannerFragmentContainer } from "./EmailConfirmationBanner"
 
-jest.unmock("react-relay")
 const originalError = console.error
 
 describe("EmailConfirmationBanner", () => {

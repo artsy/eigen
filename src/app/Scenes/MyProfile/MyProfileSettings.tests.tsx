@@ -5,7 +5,6 @@ import { Platform } from "react-native"
 import { MyProfileSettings } from "./MyProfileSettings"
 
 jest.mock("./LoggedInUserInfo")
-jest.unmock("react-relay")
 
 describe(MyProfileSettings, () => {
   const getWrapper = () => {

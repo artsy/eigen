@@ -9,7 +9,6 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtworksInSeriesRail } from "./ArtworksInSeriesRail"
 
-jest.unmock("react-relay")
 
 describe("ArtworksInSeriesRail", () => {
   let env: ReturnType<typeof createMockEnvironment>

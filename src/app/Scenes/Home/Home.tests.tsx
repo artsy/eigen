@@ -19,7 +19,6 @@ jest.mock("app/Scenes/Home/Components/SalesRail", () => ({
   SalesRailFragmentContainer: jest.fn(() => null),
 }))
 
-jest.unmock("react-relay")
 
 const mockEnvironment = defaultEnvironment as any as ReturnType<typeof createMockEnvironment>
 

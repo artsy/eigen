@@ -5,7 +5,6 @@ import { useFormikContext } from "formik"
 import { UploadPhotosForm } from "./UploadPhotosForm"
 
 jest.mock("formik")
-jest.unmock("react-relay")
 
 const mockShowActionSheetWithOptionsMock = jest.fn()
 jest.mock("@expo/react-native-action-sheet", () => ({

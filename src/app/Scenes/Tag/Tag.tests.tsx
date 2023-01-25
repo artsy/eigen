@@ -11,7 +11,6 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { Tag } from "./Tag"
 
-jest.unmock("react-relay")
 
 describe("Tag", () => {
   const tagID = "skull"

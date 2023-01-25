@@ -6,7 +6,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { FaqAndSpecialistSectionFragmentContainer as FaqAndSpecialistSection } from "./FaqAndSpecialistSection"
 
-jest.unmock("react-relay")
 
 describe("FAQ and specialist BNMO links", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

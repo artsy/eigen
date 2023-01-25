@@ -3,7 +3,6 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { ShippingFragmentContainer } from "./Shipping"
 
-jest.unmock("react-relay")
 
 describe("ShippingFragmentContainer", () => {
   const { renderWithRelay } = setupTestWrapper<Shipping_Test_Query>({

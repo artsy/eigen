@@ -8,7 +8,6 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { ArtworkTombstoneFragmentContainer } from "./ArtworkTombstone"
 
-jest.unmock("react-relay")
 
 describe("ArtworkTombstone", () => {
   const { renderWithRelay } = setupTestWrapper<ArtworkTombstone_Test_Query>({

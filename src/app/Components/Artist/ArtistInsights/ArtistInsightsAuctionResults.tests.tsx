@@ -18,7 +18,6 @@ import {
   SortMode,
 } from "./ArtistInsightsAuctionResults"
 
-jest.unmock("react-relay")
 
 describe("ArtistInsightsAuctionResults", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

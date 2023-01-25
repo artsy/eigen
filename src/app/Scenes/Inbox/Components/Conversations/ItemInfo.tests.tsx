@@ -3,7 +3,6 @@ import { Theme } from "palette"
 import { graphql } from "react-relay"
 import { ItemInfoFragmentContainer } from "./ItemInfo"
 
-jest.unmock("react-relay")
 
 describe("ItemInfoFragmentContainer", () => {
   const { renderWithRelay } = setupTestWrapper({

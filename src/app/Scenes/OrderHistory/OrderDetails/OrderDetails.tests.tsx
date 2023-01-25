@@ -21,7 +21,6 @@ import { SummarySectionFragmentContainer } from "./Components/SummarySection"
 import { TrackOrderSectionFragmentContainer } from "./Components/TrackOrderSection"
 import { WirePaymentSectionFragmentContainer } from "./Components/WirePaymentSection"
 
-jest.unmock("react-relay")
 
 const order = {
   requestedFulfillment: { __typename: "CommerceShip", name: "my name" },

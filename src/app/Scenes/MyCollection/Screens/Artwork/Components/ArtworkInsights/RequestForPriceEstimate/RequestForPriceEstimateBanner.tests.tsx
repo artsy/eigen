@@ -7,7 +7,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { RequestForPriceEstimateBanner } from "./RequestForPriceEstimateBanner"
 
-jest.unmock("react-relay")
 
 describe("RequestForPriceEstimateBanner", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

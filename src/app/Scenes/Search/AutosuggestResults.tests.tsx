@@ -115,7 +115,6 @@ jest.mock("lodash", () => ({
   throttle: (f: any) => f,
 }))
 
-jest.unmock("react-relay")
 
 jest.mock("@sentry/react-native", () => ({ init() {}, captureMessage() {} }))
 

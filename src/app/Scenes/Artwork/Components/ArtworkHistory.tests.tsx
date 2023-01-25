@@ -2,7 +2,6 @@ import { ArtworkHistory_artwork$data } from "__generated__/ArtworkHistory_artwor
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { ArtworkHistory } from "./ArtworkHistory"
 
-jest.unmock("react-relay")
 
 describe("Artwork History", () => {
   it("renders everything correctly", () => {

@@ -5,7 +5,6 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { PurchaseModalFragmentContainer } from "./PurchaseModal"
 
-jest.unmock("react-relay")
 
 describe("PurchaseModal", () => {
   const { renderWithRelay } = setupTestWrapper<PurchaseModalTestQuery>({

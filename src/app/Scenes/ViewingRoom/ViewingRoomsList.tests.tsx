@@ -6,7 +6,6 @@ import { createMockEnvironment } from "relay-test-utils"
 import { ViewingRoomsListItem } from "./Components/ViewingRoomsListItem"
 import { ViewingRoomsListScreen } from "./ViewingRoomsList"
 
-jest.unmock("react-relay")
 
 describe("ViewingRoomsList", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

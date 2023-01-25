@@ -15,7 +15,6 @@ import {
   OpenSettingsBanner,
 } from "./MyProfilePushNotifications"
 
-jest.unmock("react-relay")
 
 const env = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 

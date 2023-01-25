@@ -6,7 +6,6 @@ import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { tracks, ViewingRoomViewWorksButtonContainer } from "./ViewingRoomViewWorksButton"
 
-jest.unmock("react-relay")
 
 describe("ViewingRoomViewWorksButton", () => {
   const { renderWithRelay } = setupTestWrapper<ViewingRoomViewWorksButtonTestsQuery>({

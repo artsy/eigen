@@ -5,7 +5,6 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ArtistArticles, ArtistArticlesContainer } from "./ArtistArticles"
 
-jest.unmock("react-relay")
 
 describe("Artist Articles", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

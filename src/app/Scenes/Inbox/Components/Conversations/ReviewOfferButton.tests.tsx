@@ -8,7 +8,6 @@ import { MoneyFillIcon } from "palette/svgs/MoneyFillIcon"
 import { TouchableWithoutFeedback } from "react-native"
 
 import { ReviewOfferButton, ReviewOfferButtonProps, ReviewOfferCTAKind } from "./ReviewOfferButton"
-jest.unmock("react-relay")
 
 describe("ReviewOfferButton", () => {
   const getWrapper = (

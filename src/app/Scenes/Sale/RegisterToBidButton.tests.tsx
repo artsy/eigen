@@ -8,7 +8,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
 
-jest.unmock("react-relay")
 
 describe("RegisterToBidButton", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

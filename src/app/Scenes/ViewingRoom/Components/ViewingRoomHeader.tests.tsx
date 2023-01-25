@@ -7,7 +7,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { PartnerIconImage, ViewingRoomHeaderContainer } from "./ViewingRoomHeader"
 
-jest.unmock("react-relay")
 
 describe("ViewingRoomHeader", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

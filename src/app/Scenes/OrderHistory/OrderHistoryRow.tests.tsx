@@ -9,7 +9,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { OrderHistoryRowContainer } from "./OrderHistoryRow"
 
-jest.unmock("react-relay")
 
 const mockOrder = {
   internalID: "d1105415-4a55-4c3b-b71d-bfae06ec92df",

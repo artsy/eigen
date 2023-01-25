@@ -4,7 +4,6 @@ import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRece
 import { createMockEnvironment } from "relay-test-utils"
 import { AuctionBuyersPremiumQueryRenderer } from "./AuctionBuyersPremium"
 
-jest.unmock("react-relay")
 
 describe("AuctionBuyersPremium", () => {
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>

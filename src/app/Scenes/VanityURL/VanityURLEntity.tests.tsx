@@ -10,7 +10,6 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { VanityURLEntityRenderer } from "./VanityURLEntity"
 import { VanityURLPossibleRedirect } from "./VanityURLPossibleRedirect"
 
-jest.unmock("react-relay")
 
 jest.mock("./VanityURLPossibleRedirect", () => ({
   VanityURLPossibleRedirect: () => null,

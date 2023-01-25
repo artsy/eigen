@@ -6,7 +6,6 @@ import { postEventToProviders } from "app/utils/track/providers"
 import { graphql } from "react-relay"
 import { tracks, ViewingRoomArtworkRailContainer } from "./ViewingRoomArtworkRail"
 
-jest.unmock("react-relay")
 jest.unmock("react-tracking")
 
 describe("ViewingRoomArtworkRail", () => {

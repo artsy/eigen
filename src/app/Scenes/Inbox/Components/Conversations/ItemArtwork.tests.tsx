@@ -5,7 +5,6 @@ import { Theme } from "palette"
 import { graphql } from "react-relay"
 import { ItemArtworkFragmentContainer } from "./ItemArtwork"
 
-jest.unmock("react-relay")
 
 describe("ItemArtworkFragmentContainer", () => {
   const { renderWithRelay } = setupTestWrapper({

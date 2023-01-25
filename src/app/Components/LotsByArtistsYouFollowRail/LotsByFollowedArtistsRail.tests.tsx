@@ -8,7 +8,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { LotsByFollowedArtistsRailContainer, PAGE_SIZE } from "./LotsByFollowedArtistsRail"
 
-jest.unmock("react-relay")
 
 describe("LotsByFollowedArtistsRail", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

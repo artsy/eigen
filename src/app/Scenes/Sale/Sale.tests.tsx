@@ -9,7 +9,6 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
 import { SaleQueryRenderer } from "./Sale"
 
-jest.unmock("react-relay")
 
 jest.mock("app/system/navigation/navigate", () => ({
   popParentViewController: jest.fn(),

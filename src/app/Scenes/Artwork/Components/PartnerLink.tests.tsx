@@ -8,7 +8,6 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { PartnerLink } from "./PartnerLink"
 
-jest.unmock("react-relay")
 
 describe("PartnerLink", () => {
   const TestRenderer = () => {

@@ -8,7 +8,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { INITIAL_NUMBER_TO_RENDER, SaleArtworksRailContainer } from "./Components/SaleArtworksRail"
 
-jest.unmock("react-relay")
 
 describe("SaleArtworksRail", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

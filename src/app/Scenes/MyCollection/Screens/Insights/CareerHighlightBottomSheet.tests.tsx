@@ -11,7 +11,6 @@ import {
   MedianSalePriceChartDataContext,
 } from "./providers/MedianSalePriceChartDataContext"
 
-jest.unmock("react-relay")
 describe(CareerHighlightBottomSheet, () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 

@@ -7,7 +7,6 @@ import { RelayEnvironmentProvider } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
-jest.unmock("react-relay")
 const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
 describe("ArtworkDetailsForm", () => {

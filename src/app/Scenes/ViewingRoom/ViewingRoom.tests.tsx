@@ -12,7 +12,6 @@ import { ViewingRoomArtworkRailContainer } from "./Components/ViewingRoomArtwork
 import { ViewingRoomSubsections } from "./Components/ViewingRoomSubsections"
 import { ClosedNotice, tracks, ViewingRoomFragmentContainer } from "./ViewingRoom"
 
-jest.unmock("react-relay")
 
 describe("ViewingRoom", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

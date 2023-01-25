@@ -5,7 +5,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { PaymentMethodSummaryItemFragmentContainer } from "./Components/OrderDetailsPayment"
 
-jest.unmock("react-relay")
 
 describe("PaymentSection", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
