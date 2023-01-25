@@ -19,7 +19,7 @@ import { fetchQuery, graphql } from "react-relay"
 import { BottomTabType } from "./BottomTabType"
 
 export interface UnreadCounts {
-  unreadConversation: number
+  conversation: number
   unreadActivityPanelNotifications: number
 }
 
@@ -54,7 +54,7 @@ export interface BottomTabsModel {
 export const getBottomTabsModel = (): BottomTabsModel => ({
   sessionState: {
     unreadCounts: {
-      unreadConversation: 0,
+      conversation: 0,
       unreadActivityPanelNotifications: 0,
     },
     displayUnseenNotificationsIndicator: false,
@@ -71,14 +71,14 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
       actions.unreadActivityPanelNotificationsCountChanged,
     ],
     (_actions, _payload, { getState }) => {
-      const { unreadActivityPanelNotifications, unreadConversation } =
+      const { unreadActivityPanelNotifications, conversation } =
         getState().sessionState.unreadCounts
-      const totalCount = unreadActivityPanelNotifications + unreadConversation
+      const totalCount = unreadActivityPanelNotifications + conversation
       GlobalStore.actions.native.setApplicationIconBadgeNumber(totalCount)
     }
   ),
-  unreadConversationCountChanged: action((state, unreadConversationCount) => {
-    state.sessionState.unreadCounts.unreadConversation = unreadConversationCount
+  unreadConversationCountChanged: action((state, payload) => {
+    state.sessionState.unreadCounts.conversation = payload
   }),
   fetchCurrentUnreadConversationCount: thunk(async () => {
     try {

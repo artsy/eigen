@@ -16,7 +16,7 @@ export const BottomTabs: React.FC<BottomTabBarProps> = (props) => {
   const module = modules[params?.moduleName as AppModule]
   const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
   const unreadConversationCount = GlobalStore.useAppState(
-    (state) => state.bottomTabs.sessionState.unreadCounts.unreadConversation
+    (state) => state.bottomTabs.sessionState.unreadCounts.conversation
   )
 
   const displayUnseenNotificationsIndicator = GlobalStore.useAppState(

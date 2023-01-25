@@ -62,7 +62,7 @@ type ButtonProps = React.ComponentProps<typeof BottomTabsButton>
 describe(BottomTabs, () => {
   it(`displays the current unread notifications count`, async () => {
     __globalStoreTestUtils__?.injectState({
-      bottomTabs: { sessionState: { unreadCounts: { unreadConversation: 4 } } },
+      bottomTabs: { sessionState: { unreadCounts: { conversation: 4 } } },
     })
     const tree = renderWithWrappersLEGACY(<TestWrapper />)
 
