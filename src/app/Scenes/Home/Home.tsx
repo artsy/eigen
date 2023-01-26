@@ -216,6 +216,11 @@ const Home = (props: Props) => {
       type: "artwork",
       data: homePageBelow?.similarToRecentlyViewedArtworkModule,
     },
+    {
+      title: "Works from Galleries You Follow",
+      type: "artwork",
+      data: homePageBelow?.worksFromGalleriesYouFollowArtworkModule,
+    },
   ])
 
   modules = modules.filter((module) => !module.hidden && module.data)
@@ -271,6 +276,7 @@ const Home = (props: Props) => {
                   />
                 )
               case "artwork":
+              case "worksByArtistsYouFollow":
                 return (
                   <ArtworkModuleRailFragmentContainer
                     title={item.title}
@@ -450,6 +456,10 @@ export const HomeFragmentContainer = createRefetchContainer(
           ...ArtworkModuleRail_rail
         }
         similarToRecentlyViewedArtworkModule: artworkModule(key: SIMILAR_TO_RECENTLY_VIEWED) {
+          id
+          ...ArtworkModuleRail_rail
+        }
+        worksFromGalleriesYouFollowArtworkModule: artworkModule(key: FOLLOWED_GALLERIES) {
           id
           ...ArtworkModuleRail_rail
         }
