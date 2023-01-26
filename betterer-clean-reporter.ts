@@ -5,17 +5,14 @@ const createCleanReporter = (): BettererReporter => ({
   runEnd: (runSummary) => {
     if (runSummary.delta === null) return
 
-    if (runSummary.delta.diff === 0) {
-      console.log(chalk.gray("Nothing to see here."))
-      return
-    }
     if (runSummary.delta.diff < 0) {
-      console.log(chalk.green("Unwanted things have been removed. Nice!"))
+      console.log(chalk.green("Things look cleaner. Nice!"))
       console.log(`Test: "${chalk.bold(runSummary.name)}"`)
       return
     }
+
     if (runSummary.delta.diff > 0) {
-      console.log(chalk.red("Unwanted things have been added!"))
+      console.log(chalk.red("Betterer found some issues:"))
       console.log(`Test: "${chalk.bold(runSummary.name)}"`)
 
       if (runSummary.diff === null) return
