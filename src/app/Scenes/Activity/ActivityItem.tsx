@@ -8,6 +8,7 @@ import {
 import { ActivityItem_item$key } from "__generated__/ActivityItem_item.graphql"
 import { FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ORDERED_ARTWORK_SORTS } from "app/Components/ArtworkFilter/Filters/SortOptions"
+import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { last } from "lodash"
@@ -83,6 +84,9 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
         },
         updater: (store) => {
           updater(item.id, store)
+        },
+        onCompleted: () => {
+          GlobalStore.actions.bottomTabs.decreaseUnreadNotificationsCount()
         },
         onError: (error) => {
           captureMessage(error?.stack!)
