@@ -62,6 +62,10 @@ target 'Artsy' do
     :production => ENV['CIRCLE_BUILD_NUM'],
   )
 
+  # Viro / View in Room
+  pod 'ViroReact', :path => '../node_modules/@viro-community/react-viro/ios/'
+  pod 'ViroKit_static_lib', :path => '../node_modules/@viro-community/react-viro/ios/dist/ViroRenderer/static_lib'
+
   # Networking
   pod 'AFNetworking', '2.7.0', subspecs: %w[Reachability Serialization Security NSURLSession NSURLConnection]
   pod 'AFOAuth1Client', git: 'https://github.com/artsy/AFOAuth1Client.git', tag: '0.4.0-subspec-fix'

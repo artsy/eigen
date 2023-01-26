@@ -692,6 +692,9 @@ PODS:
   - TOCropViewController (2.6.1)
   - UICKeyChainStore (2.2.1)
   - "UIView+BooleanAnimations (1.0.2)"
+  - ViroKit_static_lib (1.0)
+  - ViroReact (1.0):
+    - React
   - VisionCamera (2.15.2):
     - React
     - React-callinvoker
@@ -844,6 +847,8 @@ DEPENDENCIES:
   - tipsi-stripe (from `../node_modules/tipsi-stripe`)
   - UICKeyChainStore
   - "UIView+BooleanAnimations"
+  - "ViroKit_static_lib (from `../node_modules/@viro-community/react-viro/ios/dist/ViroRenderer/static_lib`)"
+  - "ViroReact (from `../node_modules/@viro-community/react-viro/ios/`)"
   - VisionCamera (from `../node_modules/react-native-vision-camera`)
   - "XCTest+OHHTTPStubSuiteCleanUp"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -1088,6 +1093,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-svg"
   tipsi-stripe:
     :path: "../node_modules/tipsi-stripe"
+  ViroKit_static_lib:
+    :path: "../node_modules/@viro-community/react-viro/ios/dist/ViroRenderer/static_lib"
+  ViroReact:
+    :path: "../node_modules/@viro-community/react-viro/ios/"
   VisionCamera:
     :path: "../node_modules/react-native-vision-camera"
   Yoga:
@@ -1117,7 +1126,7 @@ SPEC CHECKSUMS:
   Adjust: 91a06a01e4bb35b432e26b5d5bb8995b95fc381c
   Aerodramus: a22de7451c8fc85ae5d974f5d6a656f59046fffc
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
-  AFNetworking: 9d57de7506959955d82fb5274ee4bec86b930e52
+  AFNetworking: 8dd5f9b9691e09186393069a12cc3b5ed7c8b511
   AFOAuth1Client: 155a6237e57987cac18dac2ccd17cea5d324ad1a
   Analytics: eefe524436f904b8bb3f8c8c3425280e43b34efc
   AppAuth: 8fca6b5563a5baef2c04bee27538025e4ceb2add
@@ -1266,11 +1275,13 @@ SPEC CHECKSUMS:
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   UICKeyChainStore: ba3bff2c762b12db1e516f395c837dd25298b05e
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
+  ViroKit_static_lib: 757b887d543c671838296e5ad32f75598067dcba
+  ViroReact: f4980e6b04918c4340637f9cbaae22a6bb7ea440
   VisionCamera: dd5fbdd9d38f12b485c3d84b7540ccd747cfeab8
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: b316a990bb6d115afa1b436b5626ac7c61717d17
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: ddf6cd1825e5f92917aa32eef4f57f5d667a4b5a
+PODFILE CHECKSUM: 723a5451d2554ac116e1ccfdb52a07462c3bb20c
 
 COCOAPODS: 1.11.3
