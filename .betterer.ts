@@ -32,6 +32,8 @@ export default {
 
   "Avoid using class components!": () =>
     regexp(/extends (React\.)?Component/).include(typescriptFiles),
+
+  "Extract palette": () => regexp(/from "palette"/).include(typescriptFiles),
 }
 
 // const countNonWebpImages = () =>
