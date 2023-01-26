@@ -134,6 +134,7 @@
     "@storybook/addon-ondevice-controls": "6.0.1-beta.5",
     "@storybook/react-native": "6.0.1-beta.5",
     "@styled-system/theme-get": "5.1.2",
+    "@viro-community/react-viro": "2.23.0",
     "algoliasearch": "4.10.3",
     "autosuggest-highlight": "3.1.1",
     "easy-peasy": "3.3.0",
