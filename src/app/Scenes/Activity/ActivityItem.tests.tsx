@@ -1,5 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { ActivityItem_Test_Query } from "__generated__/ActivityItem_Test_Query.graphql"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
@@ -118,6 +119,37 @@ describe("ActivityItem", () => {
         ],
       },
     })
+  })
+
+  it("should decrease the unread notifications counter by 1 when the notification is marked as read", async () => {
+    __globalStoreTestUtils__?.injectState({
+      bottomTabs: {
+        sessionState: {
+          unreadCounts: {
+            notifications: 2,
+          },
+        },
+      },
+    })
+
+    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Notification: () => ({
+        ...notification,
+        isUnread: true,
+      }),
+    })
+    await flushPromiseQueue()
+
+    fireEvent.press(getByText("Notification Title"))
+
+    // resolving the mark as read mutation
+    resolveMostRecentRelayOperation(mockEnvironment)
+    await flushPromiseQueue()
+
+    const globalStoreState = __globalStoreTestUtils__?.getCurrentState()
+    expect(globalStoreState?.bottomTabs.sessionState.unreadCounts.notifications).toBe(1)
   })
 
   it("should pass search criteria id prop", async () => {
