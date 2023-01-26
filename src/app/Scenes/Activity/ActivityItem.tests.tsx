@@ -161,8 +161,9 @@ describe("ActivityItem", () => {
 
     await flushPromiseQueue()
 
-    const recentOperations = mockEnvironment.mock.getAllOperations()
-    expect(recentOperations).toHaveLength(0)
+    expect(() => mockEnvironment.mock.getMostRecentOperation()).toThrowError(
+      "There are no pending operations in the list"
+    )
   })
 
   describe("Unread notification indicator", () => {
