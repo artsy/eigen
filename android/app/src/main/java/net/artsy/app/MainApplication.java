@@ -20,6 +20,7 @@ import io.sentry.react.RNSentryPackage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.viromedia.bridge.ReactViroPackage;
 
 public class MainApplication extends Application implements ReactApplication {
   private static final String TAG = MainApplication.class.getName();
@@ -37,6 +38,7 @@ public class MainApplication extends Application implements ReactApplication {
       // Packages that cannot be autolinked yet can be added manually here, for
       // example:
       packages.add(new ArtsyNativePackage());
+      packages.add(new ReactViroPackage(ReactViroPackage.ViroPlatform.valueOf("AR")));
       return packages;
     }
 

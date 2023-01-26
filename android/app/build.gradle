@@ -225,6 +225,14 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
+    // Required by viro: https://github.com/ViroCommunity/viro/blob/v2.21.1/readmes/INSTALL_ANDROID.md
+    implementation project(':gvr_common')
+    implementation project(':arcore_client')
+    implementation project(path: ':react_viro')
+    implementation project(path: ':viro_renderer')
+    implementation 'com.google.android.exoplayer:exoplayer:2.7.1'
+    implementation 'com.google.protobuf.nano:protobuf-javanano:3.0.0-alpha-7'
+
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
     implementation "com.google.firebase:firebase-analytics:19.0.0" // so we can see push notification reports on firebase

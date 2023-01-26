@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="net.artsy.app">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" package="net.artsy.app">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -17,6 +17,8 @@
             <action android:name="android.intent.action.SEND_MULTIPLE" />
             <data android:mimeType="*/*" />
         </intent>
+        <!-- Required by viro / View in Room: https://github.com/ViroCommunity/viro/blob/v2.21.1/readmes/INSTALL_ANDROID.md -->
+        <package android:name="com.google.ar.core" />
     </queries>
 
     <application android:name=".MainApplication" android:launchMode="singleTask" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="false" android:theme="@style/AppTheme">
@@ -25,7 +27,8 @@
         <meta-data android:name='com.facebook.sdk.AutoLogAppEventsEnabled'
            android:value='false'/>
 
-
+        <!-- Required by viro / View in Room: https://github.com/ViroCommunity/viro/blob/v2.21.1/readmes/INSTALL_ANDROID.md -->
+        <meta-data android:name="com.google.ar.core" android:value="optional" />
 
         <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@mipmap/ic_notification" />
 
