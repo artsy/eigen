@@ -214,7 +214,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addWebViewRoute("/conditions-of-sale"),
     addRoute("/artwork-classifications", "ArtworkAttributionClassFAQ"),
     addRoute("/artwork-certificate-of-authenticity", "ArtworkCertificateAuthenticity"),
-    addRoute("/artwork-submission-status", "ArtworkSubmissionStatusFAQ"),
     addRoute("/selling-with-artsy", "MyCollectionSellingWithartsyFAQ"),
     addWebViewRoute("/meet-the-specialists"),
 
