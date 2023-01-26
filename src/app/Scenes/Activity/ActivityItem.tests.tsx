@@ -149,6 +149,22 @@ describe("ActivityItem", () => {
     })
   })
 
+  it("should NOT call `mark as read` mutation if the notification has already been read", async () => {
+    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Notification: () => notification,
+    })
+    await flushPromiseQueue()
+
+    fireEvent.press(getByText("Notification Title"))
+
+    await flushPromiseQueue()
+
+    const recentOperations = mockEnvironment.mock.getAllOperations()
+    expect(recentOperations).toHaveLength(0)
+  })
+
   describe("Unread notification indicator", () => {
     it("should NOT be rendered by default", async () => {
       const { queryByLabelText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
