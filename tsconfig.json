@@ -21,7 +21,6 @@
     "data/*.json",
     "src/storybook/*.js",
     "scripts/**/*.ts",
-    "scripts/**/*.js",
-    "metaphysics-queries-freshness-tests/test-freshness.ts"
+    "scripts/**/*.js"
   ]
 }
