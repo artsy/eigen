@@ -5,6 +5,10 @@
 - Status: **Beta**
 - Changelog:
 
+  - User facing changes:
+
+    - add switchContainer and ff for new search screen - gkartalis
+
   - Dev changes:
     - small improvements for `BottomTabsModel` - dimatretyak
 
