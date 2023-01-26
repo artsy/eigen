@@ -3,7 +3,6 @@ import { ImageCarouselTestsQuery } from "__generated__/ImageCarouselTestsQuery.g
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { guardFactory } from "app/utils/types/guardFactory"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import {
@@ -14,11 +13,7 @@ import {
 } from "./ImageCarousel"
 import { getMeasurements } from "./geometry"
 
-const deepZoomFixture: NonNullable<
-  NonNullable<
-    NonNullable<NonNullable<ImageCarouselTestsQuery["rawResponse"]["artwork"]>["images"]>[0]
-  >["deepZoom"]
-> = {
+const deepZoomFixture: CarouselImageDescriptor["deepZoom"] = {
   image: {
     format: "jpg",
     size: {
@@ -32,7 +27,7 @@ const deepZoomFixture: NonNullable<
 
 const artworkFixture: ImageCarouselTestsQuery["rawResponse"]["artwork"] = {
   id: "artwork-id",
-  images: [
+  figures: [
     {
       __typename: "Image",
       url: "https://d32dm0rphc51dk.cloudfront.net/hA1DxfZHgx23SzeK0yv8Qw/medium.jpg",
@@ -78,7 +73,7 @@ const artworkFixture: ImageCarouselTestsQuery["rawResponse"]["artwork"] = {
       deepZoom: deepZoomFixture,
       imageVersions: ["normalized"],
     },
-  ],
+  ] as any,
 }
 
 const localImages: CarouselImageDescriptor[] = [
@@ -138,29 +133,14 @@ describe("ImageCarouselFragmentContainer", () => {
   }
 
   const { renderWithRelay } = setupTestWrapper<ImageCarouselTestsQuery>({
-    Component: (props) => {
-      const imageFigures = props.artwork?.figures.filter(guardFactory("__typename", "Image"))
-      const videoFigures = props.artwork?.figures.filter(guardFactory("__typename", "Video"))
-
-      return (
-        <ImageCarouselFragmentContainer
-          images={imageFigures!}
-          videos={videoFigures!}
-          cardHeight={275}
-        />
-      )
-    },
+    Component: (props) => (
+      <ImageCarouselFragmentContainer figures={props.artwork?.figures} cardHeight={275} />
+    ),
     query: graphql`
       query ImageCarouselTestsQuery @raw_response_type @relay_test_operation {
         artwork(id: "unused") {
           figures {
-            __typename
-            # ... on Image {
-            #   ...ImageCarousel_images
-            # }
-            # ... on Video {
-            #   ...ImageCarousel_videos
-            # }
+            ...ImageCarousel_figures
           }
         }
       }
@@ -225,7 +205,7 @@ describe("ImageCarouselFragmentContainer", () => {
 
       const container = getByLabelText("Image Carousel")
       const measurements = getMeasurements({
-        media: artworkFixture?.images as any,
+        media: artworkFixture?.figures as any,
         boundingBox: {
           width: 375,
           height: 275,
@@ -304,7 +284,7 @@ describe("ImageCarouselFragmentContainer", () => {
 
     it(`does not show images that have no deep zoom`, () => {
       const { getAllByLabelText } = renderWithWrappers(<TestWrapper />)
-      const images = artworkFixture.images!.map((image, index) => {
+      const images = artworkFixture.figures!.map((image, index) => {
         // delete two of the images' deepZoom
         if (index < 2) {
           return {
@@ -328,7 +308,7 @@ describe("ImageCarouselFragmentContainer", () => {
 
     it("only shows one image when none of the images have deep zoom", () => {
       const { getByLabelText, queryAllByLabelText } = renderWithWrappers(<TestWrapper />)
-      const images = artworkFixture.images!.map((image) => ({
+      const images = artworkFixture.figures!.map((image) => ({
         ...image,
         deepZoom: null,
       }))
@@ -348,7 +328,7 @@ describe("ImageCarouselFragmentContainer", () => {
   describe("with one image", () => {
     const artwork = {
       ...artworkFixture,
-      images: [artworkFixture.images![0]],
+      images: [artworkFixture.figures![0]],
     }
 
     it("shows no pagination dots", async () => {

@@ -72,7 +72,7 @@ export const isImage = (toCheck: any): toCheck is Image => !!toCheck
 
 export const hasImagesStillProcessing = (
   mainImage: any,
-  imagesToCheck: MyCollectionArtworkHeader_artwork$data["images"]
+  imagesToCheck: MyCollectionArtworkHeader_artwork$data["figures"]
 ) => {
   if (!isImage(mainImage) || imageIsProcessing(mainImage, "normalized")) {
     return true

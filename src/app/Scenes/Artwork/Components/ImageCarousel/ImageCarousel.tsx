@@ -104,6 +104,7 @@ export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarou
         width
         height
         imageVersions
+        isDefault
         deepZoom {
           image: Image {
             tileSize: TileSize
@@ -198,7 +199,7 @@ const useImageCarouselMedia = (
         const { width, height } = fitInside(embeddedCardBoundingBox, image as MappedImageDescriptor)
 
         const url = (() => {
-          if (isALocalImage(image.url) || !imageHasVersions(image as ImageCarouselImage)) {
+          if (isALocalImage(image.url) || !imageHasVersions(image as CarouselImageDescriptor)) {
             return image.url
           } else {
             return createGeminiUrl({

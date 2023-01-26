@@ -1,13 +1,10 @@
 import { tappedCollectedArtworkImages } from "@artsy/cohesion"
 import { useNavigation } from "@react-navigation/native"
-import { ImageCarousel_figures$data } from "__generated__/ImageCarousel_figures.graphql"
 import { MyCollectionArtworkHeader_artwork$key } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
 import {
-  CarouselImageDescriptor,
   ImageCarousel,
   ImageCarouselFragmentContainer,
 } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
-import { ImageCarouselImage } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
 import {
   imageIsProcessing,
   isImage,
@@ -42,9 +39,7 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
     consignmentSubmission,
     submissionId,
   } = artwork
-  const [imagesToDisplay, setImagesToDisplay] = useState<typeof artwork.figures | LocalImage[]>(
-    figures
-  )
+  const [imagesToDisplay, setImagesToDisplay] = useState<typeof artwork.figures>(figures)
   const [isDisplayingLocalImages, setIsDisplayingLocalImages] = useState(false)
 
   const dimensions = useScreenDimensions()
@@ -88,7 +83,7 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
         localVanillaArtworkImages ?? localSubmissionArtworkImages ?? []
       )
 
-      setImagesToDisplay(mappedLocalImages)
+      setImagesToDisplay(mappedLocalImages as any)
       setIsDisplayingLocalImages(
         !!localVanillaArtworkImages?.length || !!localSubmissionArtworkImages?.length
       )

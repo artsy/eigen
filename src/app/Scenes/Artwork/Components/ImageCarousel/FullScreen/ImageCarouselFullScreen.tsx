@@ -1,6 +1,6 @@
 import {
   ImageCarouselContext,
-  ImageDescriptor,
+  ImageCarouselMedia,
 } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
 import { ImageCarouselVimeoVideo } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselVimeoVideo"
 import { useAnimatedValue } from "app/Scenes/Artwork/Components/ImageCarousel/useAnimatedValue"
@@ -86,15 +86,14 @@ export const ImageCarouselFullScreen = () => {
       >
         <WhiteUnderlay />
         <VerticalSwipeToDismiss onClose={onClose}>
-          <FlatList<ImageDescriptor>
+          <FlatList<ImageCarouselMedia>
             key={screenDimensions.orientation}
             data={media}
             horizontal
             showsHorizontalScrollIndicator={false}
             scrollEnabled={media.length > 1 && fullScreenState.current === "entered"}
             snapToInterval={screenDimensions.width}
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            keyExtractor={(item) => item.url}
+            keyExtractor={(item) => item.url!}
             decelerationRate="fast"
             initialScrollIndex={initialScrollIndex}
             getItemLayout={(_, index) => ({
@@ -112,7 +111,7 @@ export const ImageCarouselFullScreen = () => {
               }
             }}
             renderItem={({ item, index }) => {
-              if ((item as any).__typename === "Video") {
+              if (item.__typename === "Video") {
                 return (
                   <ImageCarouselVimeoVideo
                     width={screenDimensions.width}

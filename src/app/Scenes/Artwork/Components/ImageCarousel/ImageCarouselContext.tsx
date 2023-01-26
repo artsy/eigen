@@ -5,15 +5,14 @@ import React, { useMemo, useRef } from "react"
 import { Animated, FlatList, View } from "react-native"
 import { useTracking } from "react-tracking"
 
-export type ImageCarouselImage = Extract<
-  ImageCarousel_figures$data,
-  { __typename: "Image" }
->[number]
+export type ImageCarouselImage = Extract<ImageCarousel_figures$data[0], { __typename: "Image" }>
+export type ImageCarouselVideo = Extract<ImageCarousel_figures$data[0], { __typename: "Video" }> & {
+  width: number
+  height: number
+  url: string
+}
 
-export type ImageCarouselVideo = Extract<
-  ImageCarousel_figures$data,
-  { __typename: "Video" }
->[number]
+export type ImageCarouselMedia = ImageCarouselImage | ImageCarouselVideo
 
 export type ImageDescriptor = Pick<
   ImageCarouselImage,
@@ -61,9 +60,9 @@ export interface ImageCarouselContext {
   images: ImageDescriptor[]
   isZoomedCompletelyOut: GlobalState<boolean>
   lastImageIndex: GlobalState<number>
-  media: Array<ImageCarouselImage & ImageCarouselVideo>
+  media: ImageCarouselImage[] & ImageCarouselVideo[]
   setVideoAsCover?: boolean
-  videos?: Exclude<ImageCarousel_figures$data, { __typename: "Image" }>
+  videos?: ImageCarouselVideo[]
   xScrollOffsetAnimatedValue: React.RefObject<Animated.Value>
 }
 

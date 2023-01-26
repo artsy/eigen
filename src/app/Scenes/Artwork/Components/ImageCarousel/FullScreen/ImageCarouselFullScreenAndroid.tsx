@@ -1,6 +1,6 @@
 import {
   ImageCarouselContext,
-  ImageDescriptor,
+  ImageCarouselMedia,
 } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
 import { ImageCarouselVimeoVideo } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselVimeoVideo"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -38,8 +38,8 @@ export const ImageCarouselFullScreenAndroid = () => {
   }, [fullScreenState.current])
 
   const renderItem = useCallback(
-    ({ item, index }: { item: ImageDescriptor; index: number }) => {
-      if ((item as any).__typename === "Video") {
+    ({ item, index }: { item: ImageCarouselMedia; index: number }) => {
+      if (item.__typename === "Video") {
         return (
           <ImageCarouselVimeoVideo
             width={screenDimensions.width}
@@ -54,7 +54,7 @@ export const ImageCarouselFullScreenAndroid = () => {
     [screenDimensions.orientation]
   )
 
-  // update the imageIndex on scroll
+  // Update the imageIndex on scroll
   const onScroll = useCallback(
     (e: NativeSyntheticEvent<NativeScrollEvent>) => {
       const nextImageIndex = Math.round(e.nativeEvent.contentOffset.x / screenDimensions.width)
@@ -66,7 +66,7 @@ export const ImageCarouselFullScreenAndroid = () => {
   )
 
   return (
-    // on mount we want the modal to be visible instantly and handle transitions elsewhere ourselves
+    // On mount we want the modal to be visible instantly and handle transitions elsewhere ourselves
     // on unmount we use it's built-in fade transition
     <Modal
       transparent
@@ -76,7 +76,7 @@ export const ImageCarouselFullScreenAndroid = () => {
       statusBarTranslucent
     >
       <GestureHandlerRootView style={{ flex: 1, backgroundColor: "white" }}>
-        <ZoomFlatList
+        <ZoomFlatList<ImageCarouselMedia>
           data={media}
           pagingEnabled
           showsHorizontalScrollIndicator={false}
