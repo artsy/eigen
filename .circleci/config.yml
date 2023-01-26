@@ -253,7 +253,7 @@ jobs:
           name: Update metaphysics
           command: yarn update-metaphysics
 
-  check-pr:
+  check-code-improvements:
     executor:
       name: node/default
       tag: "16.18.0"
@@ -262,7 +262,7 @@ jobs:
       - generate-checksums
       - install-node-modules
       - run:
-          name: Betterer
+          name: Check code improvements
           command: yarn ci:betterer-check
 
   check-flags:
@@ -527,7 +527,7 @@ workflows:
                 - play_store_submission
                 - update-changelog
 
-      - check-pr:
+      - check-code-improvements:
           filters:
             branches:
               ignore:
