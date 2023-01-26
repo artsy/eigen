@@ -365,4 +365,14 @@ When this is fixed and a new version is released: https://github.com/ViroCommuni
 
 #### Explanation/Context:
 
-The simulator crashes when installing the latest version of viro (2.23.0 at time of writing). More details in the issue linked above.
+The iOS simulator crashes when installing the latest version of viro (2.23.0 at time of writing). More details in the issue linked above.
+
+## conditionally include Viro android package
+
+#### When can we remove this:
+
+When this is fixed and a new version is released: https://github.com/viromedia/viro/issues/269
+
+#### Explanation/Context:
+
+The android emulator crashes when using the viro package. We add some code as suggested in the issue to conditional add the package. The maintainers stated they don't plan on supporting this, might be worth a PR.
