@@ -10,11 +10,12 @@ module.exports = {
     "no-relative-import-paths",
     "react-hooks",
     "testing-library",
+    "artsy",
   ],
   extends: [
     "eslint:recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:import/recommended",
     "plugin:import/typescript",
     "plugin:react/jsx-runtime",
@@ -29,6 +30,8 @@ module.exports = {
     },
     ecmaVersion: 6,
     sourceType: "module",
+    project: ["./tsconfig.json"],
+    tsconfigRootDir: __dirname,
   },
   settings: {
     react: {
@@ -36,10 +39,8 @@ module.exports = {
     },
   },
   rules: {
-    /**
-     * Errors
-     */
-
+    // Errors
+    "artsy/jsx-safe-conditionals": ERR,
     "import/order": [
       ERR,
       {
@@ -52,10 +53,7 @@ module.exports = {
     "react/jsx-curly-brace-presence": ERR,
     "react-hooks/rules-of-hooks": ERR,
 
-    /**
-     * Warnings
-     */
-
+    // Warnings
     "@typescript-eslint/no-unused-vars": [
       WARN,
       {
@@ -69,10 +67,7 @@ module.exports = {
       { allowSameFolder: true, rootDir: "src" },
     ],
 
-    /**
-     * Disabled
-     */
-
+    // Disabled for now
     "@typescript-eslint/await-thenable": OFF,
     "@typescript-eslint/ban-ts-comment": OFF,
     "@typescript-eslint/ban-types": OFF,
@@ -114,8 +109,10 @@ module.exports = {
     "react/no-children-prop": OFF,
     "react/no-unescaped-entities": OFF,
     "react/react-in-jsx-scope": OFF,
-    "react/prop-types": OFF,
     "react-native/no-inline-styles": OFF,
+
+    // Disabled
     "react-hooks/exhaustive-deps": OFF, // we don't care about this rule, since it's often wrong. it's helpful, but often wrong.
+    "react/prop-types": OFF,
   },
 }
