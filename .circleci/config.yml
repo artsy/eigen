@@ -296,35 +296,6 @@ jobs:
           name: Check flags
           command: ./scripts/check-if-app-has-been-approved-for-release.sh
 
-  check-metaphysics-freshness:
-    executor:
-      name: node/default
-      tag: "16.18.0"
-    steps:
-      - checkout
-      - run:
-          name: apt-get update
-          command: sudo apt-get update --fix-missing
-      - run:
-          name: Install Headless Chrome dependencies for puppeteer
-          # from https://github.com/threetreeslight/puppeteer-orb/blob/master/orb.yml
-          command: |
-            sudo apt-get install --fix-missing -yq \
-            gconf-service libasound2 libatk1.0-0 libatk-bridge2.0-0 libc6 libcairo2 libcups2 libdbus-1-3 \
-            libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 \
-            libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 \
-            libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates \
-            fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
-      - generate-checksums
-      - install-node-modules
-      - run-relay-compiler
-      - run:
-          name: Generate queries json
-          command: yarn relay
-      - run:
-          name: Check Metaphysics freshness
-          command: yarn ts-node ./metaphysics-queries-freshness-tests/test-freshness.ts
-
   build-test-js:
     executor:
       name: node/default
