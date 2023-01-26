@@ -2399,6 +2399,7 @@ type ArtworkInquiryEdge {
 type ArtworkLayer {
   # A connection of artworks from a Layer.
   artworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
+  cached: Int
   description: String
   href: String
 
@@ -14446,6 +14447,7 @@ type Quiz {
     page: Int
     size: Int
   ): QuizArtworkConnection
+  recommendedArtworks: [Artwork!]!
   savedArtworks: [Artwork!]!
 }
 

@@ -49,6 +49,8 @@ export default {
     regexp(/extends (React\.)?Component/, "Try using a functional component.").include(
       typescriptFiles
     ),
+
+  "Extract palette": () => regexp(/from "palette"/).include(typescriptFiles),
 }
 
 // const countNonWebpImages = () =>
