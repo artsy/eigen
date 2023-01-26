@@ -71,22 +71,24 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
 
     navigateToActivityItem()
 
-    markAsRead({
-      variables: {
-        input: {
-          id: item.internalID,
+    if (item.isUnread) {
+      markAsRead({
+        variables: {
+          input: {
+            id: item.internalID,
+          },
         },
-      },
-      optimisticUpdater: (store) => {
-        updater(item.id, store)
-      },
-      updater: (store) => {
-        updater(item.id, store)
-      },
-      onError: (error) => {
-        captureMessage(error?.stack!)
-      },
-    })
+        optimisticUpdater: (store) => {
+          updater(item.id, store)
+        },
+        updater: (store) => {
+          updater(item.id, store)
+        },
+        onError: (error) => {
+          captureMessage(error?.stack!)
+        },
+      })
+    }
   }
 
   return (

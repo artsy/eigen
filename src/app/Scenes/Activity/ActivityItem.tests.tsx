@@ -105,8 +105,6 @@ describe("ActivityItem", () => {
 
     fireEvent.press(getByText("Notification Title"))
 
-    // resolving the mark as read mutation
-    resolveMostRecentRelayOperation(mockEnvironment)
     await flushPromiseQueue()
 
     expect(navigate).toHaveBeenCalledWith(targetUrl, {
@@ -135,8 +133,6 @@ describe("ActivityItem", () => {
 
     fireEvent.press(getByText("Notification Title"))
 
-    // resolving the mark as read mutation
-    resolveMostRecentRelayOperation(mockEnvironment)
     await flushPromiseQueue()
 
     expect(navigate).toHaveBeenCalledWith(alertTargetUrl, {
@@ -151,6 +147,23 @@ describe("ActivityItem", () => {
         ],
       },
     })
+  })
+
+  it("should NOT call `mark as read` mutation if the notification has already been read", async () => {
+    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Notification: () => notification,
+    })
+    await flushPromiseQueue()
+
+    fireEvent.press(getByText("Notification Title"))
+
+    await flushPromiseQueue()
+
+    expect(() => mockEnvironment.mock.getMostRecentOperation()).toThrowError(
+      "There are no pending operations in the list"
+    )
   })
 
   describe("Unread notification indicator", () => {
