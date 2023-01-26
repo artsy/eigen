@@ -3533,6 +3533,26 @@ type Collection {
   saves: Boolean!
 }
 
+# A connection to a list of items.
+type CollectionsConnection {
+  # A list of edges.
+  edges: [CollectionsEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type CollectionsEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Collection
+}
+
 enum CollectionSorts {
   POSITION_ASC
   POSITION_DESC
@@ -10737,6 +10757,14 @@ type Me implements Node {
 
   # A collection belonging to the current user
   collection(id: String!): Collection
+  collectionsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+  ): CollectionsConnection
   collectorLevel: Int
 
   # A collector profile.
