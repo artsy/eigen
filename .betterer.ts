@@ -3,35 +3,52 @@ import { BettererFileTest } from "@betterer/betterer"
 
 const typescriptFiles = ["./src/**/*.ts", "./src/**/*.tsx"]
 const typescriptTestFiles = ["./src/**/*.tests.ts", "./src/**/*.tests.tsx"]
-const imageExtensionsToAvoid = ["png", "jpg", "jpeg"]
+// const imageExtensionsToAvoid = ["png", "jpg", "jpeg"]
 
 export default {
-  "Stop using useAnimatedValue, use useSharedValue instead!": () =>
-    regexp(/useAnimatedValue\(/).include(typescriptFiles),
+  "Stop using useAnimatedValue, use useSharedValue instead": () =>
+    regexp(
+      /useAnimatedValue\(/,
+      "`useAnimatedValue` is for reanimated v1. Use v2's `useSharedValue`."
+    ).include(typescriptFiles),
 
-  "Stop using moment, use luxon instead!": () =>
-    regexp(/from "(moment|moment-timezone)"/).include(typescriptFiles),
+  "Stop using moment, use luxon instead": () =>
+    regexp(
+      /from "(moment|moment-timezone)"/,
+      "We are migrating away from `moment`, towards `luxon`."
+    ).include(typescriptFiles),
 
-  "Finish our strictnes migration!": () =>
-    regexp(/Unsafe legacy code 🚨 Please delete this/).include(typescriptFiles),
+  "Finish our strictness migration": () =>
+    regexp(
+      /Unsafe legacy code 🚨 Please delete this/,
+      "These comments were added when we switched on TypeScript's strict mode, and their number should only ever go down."
+    ).include(typescriptFiles),
 
-  // "Avoid non-webp images!": () =>
+  // "Avoid non-webp images": () =>
   //   countNonWebpImages().include([`./images/**/*.{${imageExtensionsToAvoid.join(",")}}`]),
 
-  "Avoid using test-renderer!": () =>
-    regexp(/renderWithWrappersLEGACY.* from ".*renderWithWrappers"/).include(typescriptTestFiles),
+  "Avoid using test-renderer": () =>
+    regexp(
+      /renderWithWrappersLEGACY.* from ".*renderWithWrappers"/,
+      "We are migrating away from `react-test-renderer`, towards `@testing-library/react-native`."
+    ).include(typescriptTestFiles),
 
-  "Remove all relay unmocks!": () => regexp(/unmock\("react-relay"\)/).include(typescriptTestFiles),
+  "Fix all STRICTNESS_MIGRATION": () =>
+    regexp(
+      /STRICTNESS_MIGRATION/,
+      "These comments were added when we switched on TypeScript's strict mode, and their number should only ever go down."
+    ).include(typescriptFiles),
 
-  "Fix all STRICTNESS_MIGRATION!": () => regexp(/STRICTNESS_MIGRATION/).include(typescriptFiles),
+  "Avoid having skipped tests": () =>
+    regexp(
+      /(fdescribe\(|describe.only\(|fit\(|xit\(|it.only\(|it.skip\()/,
+      "Is this skipped on purpose, or accidentally?"
+    ).include(typescriptTestFiles),
 
-  "Avoid having skipped tests!": () =>
-    regexp(/(fdescribe\(|describe.only\(|fit\(|xit\(|it.only\(|it.skip\()/).include(
-      typescriptTestFiles
+  "Avoid using class components": () =>
+    regexp(/extends (React\.)?Component/, "Try using a functional component.").include(
+      typescriptFiles
     ),
-
-  "Avoid using class components!": () =>
-    regexp(/extends (React\.)?Component/).include(typescriptFiles),
 }
 
 // const countNonWebpImages = () =>

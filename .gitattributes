@@ -1,4 +1,6 @@
 CHANGELOG.yml merge=union
+.betterer.results merge=betterer
 
 src/__generated__/*.graphql.ts    linguist-generated=true
 src/__generated__/*.queryMap.json linguist-generated=true
+.betterer.results linguist-generated=true
