@@ -1,6 +1,6 @@
 ## Undeployed Changes
 
-### v8.6.0
+### v8.7.0
 
 - Status: **Beta**
 - Changelog:
