@@ -199,6 +199,11 @@ export const features = defineFeatures({
     showInDevMenu: true,
     readyForRelease: false,
   },
+  AREnableESOnlySearch: {
+    description: "Enable ES only search",
+    showInDevMenu: true,
+    readyForRelease: false,
+  },
 })
 
 export interface DevToggleDescriptor {

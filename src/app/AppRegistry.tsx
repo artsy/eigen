@@ -8,6 +8,8 @@ import {
   WorksForYouScreenQuery,
 } from "app/Components/Containers/WorksForYou"
 import { FadeIn } from "app/Components/FadeIn"
+import { SearchScreenQuery } from "app/Scenes/Search/Search"
+import { SearchSwitchContainer } from "app/Scenes/Search/SearchSwitchContainer"
 import React from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
@@ -118,7 +120,6 @@ import { SavedAddressesQueryRenderer } from "./Scenes/SavedAddresses/SavedAddres
 import { SavedAddressesFormQueryRenderer } from "./Scenes/SavedAddresses/SavedAddressesForm"
 import { EditSavedSearchAlertQueryRenderer } from "./Scenes/SavedSearchAlert/EditSavedSearchAlert"
 import { SavedSearchAlertsListQueryRenderer } from "./Scenes/SavedSearchAlertsList/SavedSearchAlertsList"
-import { SearchScreen, SearchScreenQuery } from "./Scenes/Search/Search"
 import { ConsignmentInquiryScreen } from "./Scenes/SellWithArtsy/ConsignmentInquiry/ConsignmentInquiryScreen"
 import { SellWithArtsyHomeScreenQuery } from "./Scenes/SellWithArtsy/SellWithArtsyHome"
 import { SubmitArtwork } from "./Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
@@ -217,6 +218,7 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({
 
   let isVisible = viewProps.isVisible
   if (!ignoreTabs) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const currentTab = useSelectedTab()
     if (BottomTabOption[viewProps.navStackID as BottomTabType]) {
       // otherwise, make sure it respects the current tab
@@ -481,7 +483,9 @@ export const modules = defineModules({
     SellWithArtsyHomeScreenQuery,
   ]),
   SalesNotRootTabView: reactModule(SellWithArtsy),
-  Search: reactModule(SearchScreen, { isRootViewForTabName: "search" }, [SearchScreenQuery]),
+  Search: reactModule(SearchSwitchContainer, { isRootViewForTabName: "search" }, [
+    SearchScreenQuery,
+  ]),
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
   ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),
   SavedAddresses: reactModule(SavedAddressesQueryRenderer),
