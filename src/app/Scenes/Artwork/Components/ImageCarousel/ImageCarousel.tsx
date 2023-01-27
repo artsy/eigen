@@ -34,7 +34,7 @@ interface MappedImageDescriptor extends Pick<ImageDescriptor, "deepZoom"> {
 
 export interface ImageCarouselProps {
   /** CarouselImageDescriptor for when you want to display local images */
-  images?: CarouselImageDescriptor[]
+  staticImages?: CarouselImageDescriptor[]
   figures?: ImageCarousel_figures$data
   setVideoAsCover?: boolean
   cardHeight: number
@@ -180,13 +180,16 @@ const useImageCarouselMedia = (
     height: isPad() ? 460 : props.cardHeight,
   }
 
-  const imageFigures = props.figures?.filter(guardFactory("__typename", "Image"))
+  const imageFigures = props.staticImages?.length
+    ? props.staticImages
+    : props.figures?.filter(guardFactory("__typename", "Image"))
+
   const videoFigures = props.figures?.filter(guardFactory("__typename", "Video"))
 
   const disableDeepZoom = imageFigures?.some((image) => isALocalImage(image.url))
 
   const images = useMemo(() => {
-    const mappedImages = imageFigures ?? props.images ?? []
+    const mappedImages = imageFigures ?? props.staticImages ?? []
 
     let result = mappedImages
       .map((image) => {
@@ -240,7 +243,7 @@ const useImageCarouselMedia = (
     }
 
     return result
-  }, [props.images, imageFigures]) as ImageCarouselImage[]
+  }, [props.staticImages, imageFigures]) as ImageCarouselImage[]
 
   // Map video props to the same format thats used for images
   const videos = useMemo(() => {

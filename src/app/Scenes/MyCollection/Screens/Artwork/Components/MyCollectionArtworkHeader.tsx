@@ -97,22 +97,33 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
     removeLocalPhotos(slug)
   }
 
-  const ImagesToDisplayCarousel = isDisplayingLocalImages
-    ? ImageCarousel
-    : ImageCarouselFragmentContainer
+  const hasImages = imagesToDisplay?.length > 0
 
   return (
     <Join separator={<Spacer my={1} />}>
-      {/* ImageCarousel */}
-      {!!imagesToDisplay && imagesToDisplay.length ? (
-        <ImagesToDisplayCarousel
-          images={imagesToDisplay as any}
-          cardHeight={dimensions.height / 3.5}
-          onImagePressed={() => trackEvent(tracks.tappedCollectedArtworkImages(internalID, slug))}
-        />
+      {hasImages ? (
+        <>
+          {!!isDisplayingLocalImages ? (
+            <ImageCarousel
+              staticImages={imagesToDisplay as any}
+              cardHeight={dimensions.height / 3.5}
+              onImagePressed={() =>
+                trackEvent(tracks.tappedCollectedArtworkImages(internalID, slug))
+              }
+            />
+          ) : (
+            <ImageCarouselFragmentContainer
+              figures={imagesToDisplay}
+              cardHeight={dimensions.height / 3.5}
+              onImagePressed={() =>
+                trackEvent(tracks.tappedCollectedArtworkImages(internalID, slug))
+              }
+            />
+          )}
+        </>
       ) : (
         <Flex
-          testID="Fallback-image-mycollection-header"
+          testID="MyCollectionArtworkHeaderFallback"
           bg={color("black5")}
           height={dimensions.height / 3.5}
           justifyContent="center"

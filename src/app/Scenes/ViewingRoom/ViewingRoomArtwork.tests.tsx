@@ -6,7 +6,6 @@ import { RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ViewingRoomArtworkScreen } from "./ViewingRoomArtwork"
 
-
 describe("ViewingRoomArtwork", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (

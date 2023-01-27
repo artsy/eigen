@@ -72,7 +72,10 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
     >
       <ScrollView>
         <Flex>
-          <ImageCarousel images={[selectedArtwork.figures![0]] as any} cardHeight={screenHeight} />
+          <ImageCarousel
+            staticImages={[selectedArtwork.figures![0]] as any}
+            cardHeight={screenHeight}
+          />
           {!!(
             LegacyNativeModules.ARCocoaConstantsModule.AREnabled && selectedArtwork.isHangable
           ) && (
@@ -140,7 +143,7 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
               data={moreImages}
               keyExtractor={(_item, index) => `${index}`}
               renderItem={({ item }) => (
-                <ImageCarousel images={[item] as any} cardHeight={screenHeight} />
+                <ImageCarousel staticImages={[item] as any} cardHeight={screenHeight} />
               )}
               ItemSeparatorComponent={() => <Spacer mt={0.5} />}
             />
