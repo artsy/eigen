@@ -1315,8 +1315,8 @@ exports[`Fix all STRICTNESS_MIGRATION`] = {
       [113, 36, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"],
       [157, 17, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"]
     ],
-    "src/app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselEmbedded.tsx:560039132": [
-      [175, 49, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"]
+    "src/app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselEmbedded.tsx:2908871083": [
+      [173, 49, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"]
     ],
     "src/app/Scenes/Artwork/Components/OtherWorks/ContextGridCTA.tsx:1888146634": [
       [22, 24, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"]

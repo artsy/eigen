@@ -8,6 +8,7 @@ import { Vimeo } from "react-native-vimeo-iframe"
 interface ImageCarouselVimeoVideoProps {
   width: number | string
   height: number | string
+  maxHeight?: number | string
   vimeoUrl: string
 }
 
@@ -25,11 +26,47 @@ type VimeoAPIResponse = {
 export const ImageCarouselVimeoVideo: React.FC<ImageCarouselVimeoVideoProps> = ({
   width,
   height,
+  maxHeight,
   vimeoUrl,
 }) => {
   const [isPlaying, setIsPlaying] = useState(false)
-  const [videoMetadata, setVideoMetadata] = useState<VimeoAPIResponse>(null)
   const { videoId, token } = extractVimeoVideoDataFromUrl(vimeoUrl)
+  const { coverImage } = useVimeoVideoMetadata(videoId)
+  const containerHeight = maxHeight ?? height
+
+  return (
+    <Flex
+      width={width}
+      height={containerHeight}
+      accessibilityLabel="Vimeo Video Player"
+      alignContent="center"
+    >
+      {coverImage && !isPlaying && (
+        <Touchable onPress={() => setIsPlaying(true)} accessibilityLabel="Vimeo Play Button">
+          <Image
+            source={{ uri: coverImage }}
+            style={{ width, height: containerHeight }}
+            resizeMode="contain"
+          />
+        </Touchable>
+      )}
+      {isPlaying && (
+        <Flex accessibilityLabel="Vimeo Video Player Controls" width="100%" height="100%">
+          <Vimeo
+            videoId={videoId}
+            params={`h=${token}&loop=true&autoplay=${
+              isPlaying ? 1 : 0
+            }&transparent=1&background=false`}
+          />
+        </Flex>
+      )}
+    </Flex>
+  )
+}
+
+const useVimeoVideoMetadata = (videoId: string) => {
+  const [videoMetadata, setVideoMetadata] = useState<VimeoAPIResponse>(null)
+  const coverImage = videoMetadata?.pictures.sizes?.[4]?.link_with_play_button
 
   useEffect(() => {
     const fetchVideoMetadata = async () => {
@@ -53,28 +90,10 @@ export const ImageCarouselVimeoVideo: React.FC<ImageCarouselVimeoVideoProps> = (
     fetchVideoMetadata()
   }, [])
 
-  // There's a handful of sizes to choose from; this one seems to be the best
-  const coverImage = videoMetadata?.pictures.sizes?.[4]?.link_with_play_button
-
-  return (
-    <Flex width={width} height={height} accessibilityLabel="Vimeo Video Player">
-      {coverImage && !isPlaying && (
-        <Touchable onPress={() => setIsPlaying(true)} accessibilityLabel="Vimeo Play Button">
-          <Image source={{ uri: coverImage }} style={{ width, height }} resizeMode="contain" />
-        </Touchable>
-      )}
-      {isPlaying && (
-        <Flex accessibilityLabel="Vimeo Video Player Controls">
-          <Vimeo
-            videoId={videoId}
-            params={`h=${token}&loop=true&autoplay=${
-              isPlaying ? 1 : 0
-            }&transparent=true&background=false`}
-          />
-        </Flex>
-      )}
-    </Flex>
-  )
+  return {
+    videoMetadata,
+    coverImage,
+  }
 }
 
 export const extractVimeoVideoDataFromUrl = (playerUrl: string) => {

@@ -83,7 +83,7 @@ export function useNewImageCarouselContext({
   const [isZoomedCompletelyOut, setIsZoomedCompletelyOut] = useGlobalState(true)
   const tracking = useTracking()
 
-  const media = setVideoAsCover ? [...videos, ...images] : [...images, ...videos] ?? []
+  const media = setVideoAsCover ? [...videos, ...images] : [...images, ...videos]
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   return useMemo(
@@ -128,7 +128,7 @@ export function useNewImageCarouselContext({
             break
           case "TAPPED_TO_GO_FULL_SCREEN":
             // some artwork images are corrupt (!?) and do not have deepZoom
-            if (images[imageIndex.current].deepZoom) {
+            if ((media[imageIndex.current] as ImageDescriptor).deepZoom) {
               tracking.trackEvent({
                 action_name: Schema.ActionNames.ArtworkImageZoom,
                 action_type: Schema.ActionTypes.Tap,

@@ -5,7 +5,7 @@ import { isPad } from "app/utils/hardware"
 import React, { useCallback, useContext } from "react"
 import { Animated, FlatList, NativeScrollEvent, NativeSyntheticEvent, Platform } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
-import { ImageCarouselContext } from "./ImageCarouselContext"
+import { ImageCarouselContext, ImageCarouselMedia } from "./ImageCarouselContext"
 import { ImageWithLoadingState } from "./ImageWithLoadingState"
 import { findClosestIndex, getMeasurements } from "./geometry"
 
@@ -31,7 +31,7 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
   }
 
   const {
-    media = [],
+    media,
     images,
     embeddedFlatListRef: embeddedFlatListRef,
     embeddedImageRefs: embeddedImageRefs,
@@ -127,7 +127,7 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
   }, [])
 
   return (
-    <FlatList
+    <FlatList<ImageCarouselMedia>
       // force full re-render on orientation change
       key={screenDimensions.orientation}
       data={media}
@@ -141,7 +141,7 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
         length: embeddedCardBoundingBox.width,
       })}
       snapToOffsets={offsets}
-      keyExtractor={(item) => item.url}
+      keyExtractor={(item) => item.url!}
       decelerationRate="fast"
       onScroll={onScroll}
       scrollEventThrottle={50}
@@ -156,6 +156,7 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
             <ImageCarouselVimeoVideo
               width={styles.width}
               height={styles.height}
+              maxHeight={embeddedCardBoundingBox.height}
               vimeoUrl={item.url!}
             />
           )
@@ -163,7 +164,7 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
 
         return (
           <ImageWithLoadingState
-            imageURL={item.url}
+            imageURL={item.url!}
             width={styles.width}
             height={styles.height}
             onPress={goFullScreen}
