@@ -1,12 +1,12 @@
 import { ArtQuizLikedArtworks_me$key } from "__generated__/ArtQuizLikedArtworks_me.graphql"
-import { ArtQuizResultLoaderQuery$data } from "__generated__/ArtQuizResultLoaderQuery.graphql"
+import { ArtQuizResultsQuery$data } from "__generated__/ArtQuizResultsQuery.graphql"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { useSpace } from "palette"
 import { graphql, useFragment } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 
-export const ArtQuizLikedArtworks = ({ me }: { me: ArtQuizResultLoaderQuery$data["me"] }) => {
+export const ArtQuizLikedArtworks = ({ me }: { me: ArtQuizResultsQuery$data["me"] }) => {
   const artworks = useFragment<ArtQuizLikedArtworks_me$key>(artQuizLikedArtworksFragment, me)?.quiz
     .savedArtworks
 
