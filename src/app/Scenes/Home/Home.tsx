@@ -207,6 +207,11 @@ const Home = (props: Props) => {
     },
     { title: "Trending Artists", type: "artist", data: homePageBelow?.popularArtistsArtistModule },
     {
+      title: "Works from Galleries You Follow",
+      type: "artwork",
+      data: homePageBelow?.worksFromGalleriesYouFollowArtworkModule,
+    },
+    {
       title: "Recently Viewed",
       type: "artwork",
       data: homePageBelow?.recentlyViewedWorksArtworkModule,
@@ -215,11 +220,6 @@ const Home = (props: Props) => {
       title: "Similar to Works You've Viewed",
       type: "artwork",
       data: homePageBelow?.similarToRecentlyViewedArtworkModule,
-    },
-    {
-      title: "Works from Galleries You Follow",
-      type: "artwork",
-      data: homePageBelow?.worksFromGalleriesYouFollowArtworkModule,
     },
   ])
 
