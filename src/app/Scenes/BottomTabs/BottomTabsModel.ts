@@ -46,6 +46,7 @@ export interface BottomTabsModel {
   >
   fetchCurrentUnreadConversationCount: Thunk<BottomTabsModel>
   setUnreadNotificationsCount: Action<BottomTabsModel, number>
+  decreaseUnreadNotificationsCount: Action<BottomTabsModel>
   fetchNotificationsInfo: Thunk<BottomTabsModel>
   setDisplayUnseenNotificationsIndicator: Action<BottomTabsModel, boolean>
   setTabProps: Action<BottomTabsModel, { tab: BottomTabType; props: object | undefined }>
@@ -66,7 +67,11 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
     state.lastSeenNotificationPublishedAt = payload
   }),
   syncApplicationIconBadgeNumber: thunkOn(
-    (actions) => [actions.setUnreadConversationsCount, actions.setUnreadNotificationsCount],
+    (actions) => [
+      actions.setUnreadConversationsCount,
+      actions.setUnreadNotificationsCount,
+      actions.decreaseUnreadNotificationsCount,
+    ],
     (_actions, _payload, { getState }) => {
       const { notifications, conversations } = getState().sessionState.unreadCounts
       const totalCount = notifications + conversations
@@ -113,6 +118,13 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
   }),
   setUnreadNotificationsCount: action((state, payload) => {
     state.sessionState.unreadCounts.notifications = payload
+  }),
+  decreaseUnreadNotificationsCount: action((state) => {
+    const nextValue = state.sessionState.unreadCounts.notifications - 1
+
+    if (nextValue >= 0) {
+      state.sessionState.unreadCounts.notifications = nextValue
+    }
   }),
   fetchNotificationsInfo: thunk(async () => {
     try {
