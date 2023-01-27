@@ -126,9 +126,6 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
     goFullScreen()
   }, [])
 
-  // const renderVideo = guardFactory("__typename", "Video")(media[imageIndex.current])
-  // console.log(renderVideo)
-
   return (
     <FlatList
       // force full re-render on orientation change

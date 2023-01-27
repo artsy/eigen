@@ -1,5 +1,6 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, waitFor } from "@testing-library/react-native"
 import { ImageCarouselTestsQuery } from "__generated__/ImageCarouselTestsQuery.graphql"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -10,6 +11,10 @@ import {
   ImageCarouselProps,
 } from "./ImageCarousel"
 import { getMeasurements } from "./geometry"
+
+jest.mock("react-native-vimeo-iframe", () => ({
+  Vimeo: () => <></>,
+}))
 
 describe("ImageCarouselFragmentContainer", () => {
   const { renderWithRelay } = setupTestWrapper<ImageCarouselTestsQuery>({
@@ -196,7 +201,7 @@ describe("ImageCarouselFragmentContainer", () => {
   describe("with one image", () => {
     const artwork = {
       ...artworkFixture,
-      images: [artworkFixture?.figures![0]],
+      figures: [artworkFixture?.figures![0]],
     }
 
     it("shows no pagination dots", async () => {
@@ -215,42 +220,134 @@ describe("ImageCarouselFragmentContainer", () => {
       expect(getByLabelText("Image Carousel")).toHaveProp("scrollEnabled", false)
     })
   })
-})
 
-describe("Local Images and PaginationIndicator", () => {
-  const TestWrapper = (props: ImageCarouselProps) => {
-    return <ImageCarousel {...props} />
-  }
+  describe("with video artworks", () => {
+    beforeEach(() => {
+      global.setImmediate = jest.fn() as any
+      global.fetch = jest.fn().mockResolvedValue({ json: jest.fn() }) as any
+    })
 
-  it("can display local images", () => {
-    const { getAllByLabelText } = renderWithWrappers(
-      <TestWrapper staticImages={localImages} cardHeight={275} />
-    )
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
 
-    expect(getAllByLabelText("Image with Loading State")).toHaveLength(localImages.length)
+    const artwork = {
+      figures: [
+        {
+          __typename: "Image",
+        },
+        {
+          __typename: "Video",
+        },
+      ],
+    }
+
+    it("renders a flat list with two entries", () => {
+      const { getByLabelText, getAllByLabelText } = renderWithRelay({
+        Artwork: () => artwork,
+      })
+
+      expect(getByLabelText("Image Carousel")).toBeTruthy()
+      expect(getAllByLabelText("Image with Loading State")).toHaveLength(1)
+      expect(getAllByLabelText("Vimeo Video Player")).toHaveLength(1)
+    })
+
+    it("shows pagination dots", async () => {
+      const { queryAllByLabelText } = renderWithRelay({
+        Artwork: () => artwork,
+      })
+
+      expect(queryAllByLabelText("Image Pagination Indicator")).toHaveLength(2)
+    })
+
+    it("makes a request out to fetch video cover data", async () => {
+      const fetchMock = jest.spyOn(global, "fetch").mockResolvedValue({
+        json: jest.fn().mockResolvedValue({
+          pictures: { sizes: [{ link_with_play_button: "https://vimeo.com/123" }] },
+        }),
+      } as any)
+
+      renderWithRelay({
+        Artwork: () => artwork,
+      })
+
+      await waitFor(() => {
+        expect(fetchMock).toHaveBeenCalledWith(
+          'https://api.vimeo.com/videos/<mock-value-for-field-"playerUrl">?access_token=undefined',
+          {
+            headers: {
+              Accept: "application/vnd.vimeo.*+json;version=3.4",
+              Authorization: "Bearer undefined",
+            },
+          }
+        )
+      })
+    })
+
+    it("fetches a video thumbnail placeholder with video button", async () => {
+      jest.spyOn(global, "fetch").mockResolvedValue({
+        json: jest.fn().mockResolvedValue({
+          pictures: {
+            sizes: [
+              { link_with_play_button: "https://vimeo.com/123" },
+              { link_with_play_button: "https://vimeo.com/123" },
+              { link_with_play_button: "https://vimeo.com/123" },
+              { link_with_play_button: "https://vimeo.com/123" },
+              { link_with_play_button: "https://vimeo.com/123" }, // we use the 5th size from vimeo
+            ],
+          },
+        }),
+      } as any)
+
+      const { getAllByLabelText } = renderWithRelay({
+        Artwork: () => artwork,
+      })
+
+      await flushPromiseQueue()
+      const button = getAllByLabelText("Vimeo Play Button")
+      expect(button).toHaveLength(1)
+
+      fireEvent.press(button[0])
+      await flushPromiseQueue()
+      expect(getAllByLabelText("Vimeo Video Player Controls")).toHaveLength(1)
+    })
   })
 
-  it("defaults to paginationDots", () => {
-    const { getAllByLabelText, queryByLabelText } = renderWithWrappers(
-      <TestWrapper staticImages={localImages} cardHeight={275} />
-    )
+  describe("Local Images and PaginationIndicator", () => {
+    const TestWrapper = (props: ImageCarouselProps) => {
+      return <ImageCarousel {...props} />
+    }
 
-    expect(getAllByLabelText("Image with Loading State")).toHaveLength(localImages.length)
-    expect(getAllByLabelText("Image Pagination Indicator")).toHaveLength(localImages.length)
-    expect(queryByLabelText("Image Pagination Scroll Bar")).toBeFalsy()
-  })
+    it("can display local images", () => {
+      const { getAllByLabelText } = renderWithWrappers(
+        <TestWrapper staticImages={localImages} cardHeight={275} />
+      )
 
-  it("Indicator can be a scrollbar", () => {
-    const { queryAllByLabelText, queryByLabelText } = renderWithWrappers(
-      <TestWrapper
-        staticImages={localImages}
-        cardHeight={275}
-        paginationIndicatorType="scrollBar"
-      />
-    )
+      expect(getAllByLabelText("Image with Loading State")).toHaveLength(localImages.length)
+    })
 
-    expect(queryByLabelText("Image Pagination Scroll Bar")).toBeTruthy()
-    expect(queryAllByLabelText("Image Pagination Indicator")).toHaveLength(0)
+    it("defaults to paginationDots", () => {
+      const { getAllByLabelText, queryByLabelText } = renderWithWrappers(
+        <TestWrapper staticImages={localImages} cardHeight={275} />
+      )
+
+      expect(getAllByLabelText("Image with Loading State")).toHaveLength(localImages.length)
+      expect(getAllByLabelText("Image Pagination Indicator")).toHaveLength(localImages.length)
+      expect(queryByLabelText("Image Pagination Scroll Bar")).toBeFalsy()
+    })
+
+    it("Indicator can be a scrollbar", () => {
+      const { queryAllByLabelText, queryByLabelText } = renderWithWrappers(
+        <TestWrapper
+          staticImages={localImages}
+          cardHeight={275}
+          paginationIndicatorType="scrollBar"
+        />
+      )
+
+      expect(queryByLabelText("Image Pagination Scroll Bar")).toBeTruthy()
+      expect(queryAllByLabelText("Image Pagination Indicator")).toHaveLength(0)
+    })
   })
 })
 

@@ -54,22 +54,24 @@ export const ImageCarouselVimeoVideo: React.FC<ImageCarouselVimeoVideoProps> = (
   }, [])
 
   // There's a handful of sizes to choose from; this one seems to be the best
-  const coverImage = videoMetadata?.pictures.sizes[4].link_with_play_button
+  const coverImage = videoMetadata?.pictures.sizes?.[4]?.link_with_play_button
 
   return (
-    <Flex width={width} height={height}>
+    <Flex width={width} height={height} accessibilityLabel="Vimeo Video Player">
       {coverImage && !isPlaying && (
-        <Touchable onPress={() => setIsPlaying(true)}>
+        <Touchable onPress={() => setIsPlaying(true)} accessibilityLabel="Vimeo Play Button">
           <Image source={{ uri: coverImage }} style={{ width, height }} resizeMode="contain" />
         </Touchable>
       )}
       {isPlaying && (
-        <Vimeo
-          videoId={videoId}
-          params={`h=${token}&loop=true&autoplay=${
-            isPlaying ? 1 : 0
-          }&transparent=true&background=false`}
-        />
+        <Flex accessibilityLabel="Vimeo Video Player Controls">
+          <Vimeo
+            videoId={videoId}
+            params={`h=${token}&loop=true&autoplay=${
+              isPlaying ? 1 : 0
+            }&transparent=true&background=false`}
+          />
+        </Flex>
       )}
     </Flex>
   )
