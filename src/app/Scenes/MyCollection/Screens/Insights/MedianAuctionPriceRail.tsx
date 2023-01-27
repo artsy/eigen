@@ -62,9 +62,10 @@ export const MedianAuctionPriceRail: React.FC<MedianAuctionPriceRailProps> = (pr
             />
           </Flex>
         )}
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <MedianAuctionPriceListItem
             artworks={item}
+            enableToolTip={index === 0}
             onPress={(medium) => {
               const artistID = item[0].artist?.internalID
               const category =
