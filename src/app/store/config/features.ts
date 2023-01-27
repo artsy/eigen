@@ -204,6 +204,11 @@ export const features = defineFeatures({
     showInDevMenu: true,
     readyForRelease: false,
   },
+  AREnableCrossPlatformVIR: {
+    description: "Enable cross platform view in room",
+    showInDevMenu: true,
+    readyForRelease: false,
+  },
 })
 
 export interface DevToggleDescriptor {
