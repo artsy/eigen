@@ -13,7 +13,7 @@ export type ArtQuizNavigationStack = {
 
 export const StackNavigator = createStackNavigator<ArtQuizNavigationStack>()
 
-export const ArtQuiz: React.FC = () => {
+export const ArtQuizNavigation: React.FC = () => {
   return (
     <NavigationContainer independent>
       <StackNavigator.Navigator
