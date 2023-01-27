@@ -60,7 +60,7 @@ export const ArtQuizArtworks = () => {
     popoverMessage.hide()
 
     if (activeCardIndex + 1 === artworks.length) {
-      navigate("ArtQuizResultLoader")
+      navigate("ArtQuizResults")
       return
     }
 

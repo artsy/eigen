@@ -1,20 +1,17 @@
-import { ArtQuizLikedArtworksQuery } from "__generated__/ArtQuizLikedArtworksQuery.graphql"
+import { ArtQuizLikedArtworks_me$key } from "__generated__/ArtQuizLikedArtworks_me.graphql"
+import { ArtQuizResultLoaderQuery$data } from "__generated__/ArtQuizResultLoaderQuery.graphql"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { useSpace } from "palette"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 
-export const ArtQuizLikedArtworks = () => {
-  const artworks = useLazyLoadQuery<ArtQuizLikedArtworksQuery>(artQuizLikedArtworksQuery, {}).me
-    ?.quiz.savedArtworks
+export const ArtQuizLikedArtworks = ({ me }: { me: ArtQuizResultLoaderQuery$data["me"] }) => {
+  const artworks = useFragment<ArtQuizLikedArtworks_me$key>(artQuizLikedArtworksFragment, me)?.quiz
+    .savedArtworks
 
   const space = useSpace()
   const dimensions = useScreenDimensions()
-
-  if (!artworks) {
-    return null
-  }
 
   return (
     <StickyTabPageScrollView
@@ -23,7 +20,7 @@ export const ArtQuizLikedArtworks = () => {
       }}
     >
       <GenericGrid
-        artworks={artworks}
+        artworks={artworks!}
         width={dimensions.width - space(2)}
         hidePartner
         artistNamesTextStyle={{ weight: "regular" }}
@@ -33,13 +30,11 @@ export const ArtQuizLikedArtworks = () => {
   )
 }
 
-const artQuizLikedArtworksQuery = graphql`
-  query ArtQuizLikedArtworksQuery {
-    me {
-      quiz {
-        savedArtworks {
-          ...GenericGrid_artworks
-        }
+const artQuizLikedArtworksFragment = graphql`
+  fragment ArtQuizLikedArtworks_me on Me {
+    quiz {
+      savedArtworks {
+        ...GenericGrid_artworks
       }
     }
   }
