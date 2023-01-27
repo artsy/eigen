@@ -4,6 +4,7 @@ import { ArtQuizArtworksQuery } from "__generated__/ArtQuizArtworksQuery.graphql
 import { ArtQuizArtworksSaveMutation } from "__generated__/ArtQuizArtworksSaveMutation.graphql"
 import { ArtQuizArtworksUpdateQuizMutation } from "__generated__/ArtQuizArtworksUpdateQuizMutation.graphql"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
+import { ArtQuizNavigationStack } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
 import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
 import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
@@ -12,7 +13,6 @@ import { useEffect, useRef, useState } from "react"
 import { Image } from "react-native"
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
 import { graphql, useLazyLoadQuery, useMutation } from "react-relay"
-import { ArtQuizNavigationStack } from "./ArtQuiz"
 
 export const ArtQuizArtworks = () => {
   const { goBack, navigate } = useNavigation<NavigationProp<ArtQuizNavigationStack>>()
@@ -60,7 +60,7 @@ export const ArtQuizArtworks = () => {
     popoverMessage.hide()
 
     if (activeCardIndex + 1 === artworks.length) {
-      navigate("ArtQuizResultLoader")
+      navigate("ArtQuizResults")
       return
     }
 
