@@ -3,58 +3,43 @@ import { ArtworkEditionSetInformation_Test_Query } from "__generated__/ArtworkEd
 import { ArtworkStore, ArtworkStoreProvider } from "app/Scenes/Artwork/ArtworkStore"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Text } from "palette"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { graphql } from "react-relay"
 import { ArtworkEditionSetInformationFragmentContainer as ArtworkEditionSetInformation } from "./ArtworkEditionSetInformation"
 
-
 describe("ArtworkEditionSetInformation", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   const ArtworkStoreDebug = () => {
     const artworkState = ArtworkStore.useStoreState((state) => state)
 
     return <Text testID="debug">{JSON.stringify(artworkState)}</Text>
   }
 
-  const TestRenderer = () => {
-    return (
-      <QueryRenderer<ArtworkEditionSetInformation_Test_Query>
-        environment={mockEnvironment}
-        query={graphql`
-          query ArtworkEditionSetInformation_Test_Query @relay_test_operation {
-            artwork(id: "artworkID") {
-              ...ArtworkEditionSetInformation_artwork
-            }
-          }
-        `}
-        variables={{}}
-        render={({ props }) => {
-          if (props?.artwork) {
-            return (
-              <ArtworkStoreProvider
-                initialData={{
-                  selectedEditionId: artwork.editionSets[0].internalID,
-                }}
-              >
-                <ArtworkEditionSetInformation artwork={props.artwork} />
-                <ArtworkStoreDebug />
-              </ArtworkStoreProvider>
-            )
-          }
+  const { renderWithRelay } = setupTestWrapper<ArtworkEditionSetInformation_Test_Query>({
+    Component: (props) => {
+      if (props?.artwork) {
+        return (
+          <ArtworkStoreProvider
+            initialData={{
+              selectedEditionId: artwork.editionSets[0].internalID,
+            }}
+          >
+            <ArtworkEditionSetInformation artwork={props.artwork} />
+            <ArtworkStoreDebug />
+          </ArtworkStoreProvider>
+        )
+      }
 
-          return null
-        }}
-      />
-    )
-  }
+      return null
+    },
+    query: graphql`
+      query ArtworkEditionSetInformation_Test_Query @relay_test_operation {
+        artwork(id: "artworkID") {
+          ...ArtworkEditionSetInformation_artwork
+        }
+      }
+    `,
+  })
 
   describe("when ARArtworkRedesingPhase2 feature flag is disabled", () => {
     it("the sale message for the selected edition set should be rendered", () => {
@@ -62,9 +47,7 @@ describe("ArtworkEditionSetInformation", () => {
         ARArtworkRedesingPhase2: false,
       })
 
-      const { getByLabelText } = renderWithWrappers(<TestRenderer />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      const { getByLabelText } = renderWithRelay({
         Artwork: () => artwork,
       })
 
@@ -79,9 +62,7 @@ describe("ArtworkEditionSetInformation", () => {
         ARArtworkRedesingPhase2: true,
       })
 
-      const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      const { queryByLabelText } = renderWithRelay({
         Artwork: () => artwork,
       })
 
@@ -90,9 +71,7 @@ describe("ArtworkEditionSetInformation", () => {
   })
 
   it("should keep the selected edtion set id in artwork store", () => {
-    const { getByText, getByTestId } = renderWithWrappers(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText, getByTestId } = renderWithRelay({
       Artwork: () => artwork,
     })
 

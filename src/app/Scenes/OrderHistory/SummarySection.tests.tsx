@@ -1,39 +1,28 @@
 import { SummarySectionTestsQuery } from "__generated__/SummarySectionTestsQuery.graphql"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { SummarySectionFragmentContainer } from "./OrderDetails/Components/SummarySection"
 
-
 describe("SummarySection", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  beforeEach(() => (mockEnvironment = createMockEnvironment()))
-
-  const TestRenderer = () => (
-    <QueryRenderer<SummarySectionTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query SummarySectionTestsQuery @relay_test_operation {
-          commerceOrder(id: "some-id") {
-            internalID
-            ...SummarySection_section
-          }
+  const { renderWithRelay } = setupTestWrapper<SummarySectionTestsQuery>({
+    Component: (props) => {
+      if (props?.commerceOrder) {
+        return <SummarySectionFragmentContainer section={props.commerceOrder} />
+      }
+      return null
+    },
+    query: graphql`
+      query SummarySectionTestsQuery @relay_test_operation {
+        commerceOrder(id: "some-id") {
+          internalID
+          ...SummarySection_section
         }
-      `}
-      variables={{}}
-      render={({ props }) => {
-        if (props?.commerceOrder) {
-          return <SummarySectionFragmentContainer section={props.commerceOrder} />
-        }
-        return null
-      }}
-    />
-  )
+      }
+    `,
+  })
 
   it("Render Order Summary Section ", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const tree = renderWithRelay({
       CommerceOrder: () => ({
         mode: "BUY",
         buyerTotal: "€11,200",
@@ -43,16 +32,15 @@ describe("SummarySection", () => {
       }),
     })
 
-    expect(tree.findByProps({ testID: "buyerTotal" }).props.children).toBe("€11,200")
-    expect(tree.findByProps({ testID: "taxTotal" }).props.children).toBe("€0")
-    expect(tree.findByProps({ testID: "shippingTotal" }).props.children).toBe("€200")
-    expect(tree.findByProps({ testID: "totalListPrice" }).props.children).toBe("€11,000")
-    expect(tree.findByProps({ testID: "totalListPriceLabel" }).props.children).toBe("Price")
+    expect(tree.UNSAFE_getByProps({ testID: "buyerTotal" }).props.children).toBe("€11,200")
+    expect(tree.UNSAFE_getByProps({ testID: "taxTotal" }).props.children).toBe("€0")
+    expect(tree.UNSAFE_getByProps({ testID: "shippingTotal" }).props.children).toBe("€200")
+    expect(tree.UNSAFE_getByProps({ testID: "totalListPrice" }).props.children).toBe("€11,000")
+    expect(tree.UNSAFE_getByProps({ testID: "totalListPriceLabel" }).props.children).toBe("Price")
   })
 
   it("Render correct shipping name if shipping quote selected", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const tree = renderWithRelay({
       CommerceOrder: () => ({
         lineItems: {
           edges: [
@@ -68,14 +56,13 @@ describe("SummarySection", () => {
       }),
     })
 
-    expect(tree.findByProps({ testID: "shippingTotalLabel" }).props.children).toBe(
+    expect(tree.UNSAFE_getByProps({ testID: "shippingTotalLabel" }).props.children).toBe(
       "Second Day Air delivery"
     )
   })
 
   it("Render correct shipping name if shipping quote not selected", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const tree = renderWithRelay({
       CommerceOrder: () => ({
         lineItems: {
           edges: [
@@ -91,13 +78,12 @@ describe("SummarySection", () => {
       }),
     })
 
-    expect(tree.findByProps({ testID: "shippingTotalLabel" }).props.children).toBe("Shipping")
+    expect(tree.UNSAFE_getByProps({ testID: "shippingTotalLabel" }).props.children).toBe("Shipping")
   })
 
   describe("if offer order", () => {
     it("Render correct price", () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      const tree = renderWithRelay({
         CommerceOrder: () => ({
           mode: "OFFER",
           buyerTotal: "€10,400",
@@ -111,13 +97,12 @@ describe("SummarySection", () => {
         }),
       })
 
-      expect(tree.findByProps({ testID: "offerLabel" }).props.children).toBe("Your offer")
-      expect(tree.findByProps({ testID: "lastOffer" }).props.children).toBe("€10,200")
+      expect(tree.UNSAFE_getByProps({ testID: "offerLabel" }).props.children).toBe("Your offer")
+      expect(tree.UNSAFE_getByProps({ testID: "lastOffer" }).props.children).toBe("€10,200")
     })
 
     it("Render counteroffer", () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      const tree = renderWithRelay({
         CommerceOrder: () => ({
           mode: "OFFER",
           buyerTotal: "€10,400",
@@ -131,8 +116,8 @@ describe("SummarySection", () => {
         }),
       })
 
-      expect(tree.findByProps({ testID: "offerLabel" }).props.children).toBe("Seller's offer")
-      expect(tree.findByProps({ testID: "lastOffer" }).props.children).toBe("€10,200")
+      expect(tree.UNSAFE_getByProps({ testID: "offerLabel" }).props.children).toBe("Seller's offer")
+      expect(tree.UNSAFE_getByProps({ testID: "lastOffer" }).props.children).toBe("€10,200")
     })
   })
 })

@@ -1,12 +1,10 @@
 import { fireEvent } from "@testing-library/react-native"
 import { MyAccountEditEmailTestsQuery } from "__generated__/MyAccountEditEmailTestsQuery.graphql"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { MyAccountEditEmailContainer, MyAccountEditEmailQueryRenderer } from "./MyAccountEditEmail"
-
 
 const mockShow = jest.fn()
 const mockHide = jest.fn()
@@ -22,35 +20,28 @@ jest.mock("app/Components/Toast/toastHook", () => ({
 }))
 
 describe(MyAccountEditEmailQueryRenderer, () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   beforeEach(() => {
     jest.clearAllMocks()
-    mockEnvironment = createMockEnvironment()
   })
 
-  const TestRenderer = () => (
-    <QueryRenderer<MyAccountEditEmailTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query MyAccountEditEmailTestsQuery @relay_test_operation {
-          me {
-            ...MyAccountEditEmail_me
-          }
+  const { renderWithRelay } = setupTestWrapper<MyAccountEditEmailTestsQuery>({
+    Component: (props) => {
+      if (props?.me) {
+        return <MyAccountEditEmailContainer me={props.me} />
+      }
+      return null
+    },
+    query: graphql`
+      query MyAccountEditEmailTestsQuery @relay_test_operation {
+        me {
+          ...MyAccountEditEmail_me
         }
-      `}
-      variables={{}}
-      render={({ props }) => {
-        if (props?.me) {
-          return <MyAccountEditEmailContainer me={props.me} />
-        }
-        return null
-      }}
-    />
-  )
-  it("shows confirm email toast when email is changed", async () => {
-    const { getByText, getByLabelText } = renderWithWrappers(<TestRenderer />)
+      }
+    `,
+  })
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+  it("shows confirm email toast when email is changed", async () => {
+    const { getByText, getByLabelText, env } = renderWithRelay({
       Me: () => ({
         email: "old-email@test.com",
       }),
@@ -69,7 +60,7 @@ describe(MyAccountEditEmailQueryRenderer, () => {
     const saveButton = getByLabelText("save-button")
     fireEvent.press(saveButton)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation(env, {
       Me: () => ({
         email: "new-email@test.com",
       }),
@@ -87,9 +78,7 @@ describe(MyAccountEditEmailQueryRenderer, () => {
   })
 
   it("does not show confirm email toast when email did not change", async () => {
-    const { getByText, getByLabelText } = renderWithWrappers(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText, getByLabelText, env } = renderWithRelay({
       Me: () => ({
         email: "old-email@test.com",
       }),
@@ -108,7 +97,7 @@ describe(MyAccountEditEmailQueryRenderer, () => {
     const saveButton = getByLabelText("save-button")
     fireEvent.press(saveButton)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation(env, {
       Me: () => ({
         email: "old-email@test.com",
       }),

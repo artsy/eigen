@@ -1,29 +1,17 @@
 import { fireEvent } from "@testing-library/react-native"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { __renderWithPlaceholderTestUtils__ } from "app/utils/renderWithPlaceholder"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
 
-
 describe("SearchArtworks", () => {
-  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
-
-  const TestRenderer = () => {
-    return <SearchArtworksQueryRenderer keyword="keyword" />
-  }
-
-  beforeEach(() => {
-    mockEnvironment.mockClear()
+  const { renderWithRelay } = setupTestWrapper({
+    Component: () => <SearchArtworksQueryRenderer keyword="keyword" />,
   })
 
   it("should render without throwing an error", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText } = renderWithRelay({
       Artwork: () => ({
         artistNames: "Artist Name",
       }),
@@ -33,7 +21,7 @@ describe("SearchArtworks", () => {
   })
 
   it("should render loading state", () => {
-    const { getByLabelText } = renderWithWrappers(<TestRenderer />)
+    const { getByLabelText } = renderWithRelay()
 
     expect(getByLabelText("Artwork results are loading")).toBeTruthy()
   })
@@ -43,17 +31,15 @@ describe("SearchArtworks", () => {
       __renderWithPlaceholderTestUtils__.allowFallbacksAtTestTime = true
     }
 
-    const { getByText } = renderWithWrappers(<TestRenderer />)
+    const { getByText, env } = renderWithRelay()
 
-    rejectMostRecentRelayOperation(mockEnvironment, new Error("Bad connection"))
+    rejectMostRecentRelayOperation(env, new Error("Bad connection"))
 
     expect(getByText("Unable to load")).toBeTruthy()
   })
 
   it("should track event when an artwork is tapped", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText } = renderWithRelay({
       Artwork: () => ({
         internalID: "internalID",
         slug: "artworkSlug",

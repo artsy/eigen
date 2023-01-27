@@ -101,8 +101,8 @@ exports[`Stop using moment, use luxon instead`] = {
     "src/app/Components/Countdown/Ticker.tsx:1619936038": [
       [2, 20, 13, "We are migrating away from \`moment\`, towards \`luxon\`.", "3265611491"]
     ],
-    "src/app/Components/Lists/AuctionResultListItem.tests.tsx:2328333107": [
-      [6, 14, 13, "We are migrating away from \`moment\`, towards \`luxon\`.", "3265611491"]
+    "src/app/Components/Lists/AuctionResultListItem.tests.tsx:1548682260": [
+      [5, 14, 13, "We are migrating away from \`moment\`, towards \`luxon\`.", "3265611491"]
     ],
     "src/app/Components/Lists/AuctionResultListItem.tsx:288945715": [
       [6, 14, 13, "We are migrating away from \`moment\`, towards \`luxon\`.", "3265611491"]
@@ -554,9 +554,6 @@ exports[`Avoid using test-renderer`] = {
     "src/app/Components/ArticleCard.tests.tsx:466144141": [
       [0, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
     ],
-    "src/app/Components/Artist/ArtistAbout/ArtistAboutShows.tests.tsx:2911668305": [
-      [2, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
-    ],
     "src/app/Components/Artist/ArtistConsignButton.tests.tsx:4132109638": [
       [6, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
     ],
@@ -677,9 +674,6 @@ exports[`Avoid using test-renderer`] = {
     "src/app/Components/Home/ArtistRails/ArtistCard.tests.tsx:3488289762": [
       [0, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
     ],
-    "src/app/Components/Lists/AuctionResultListItem.tests.tsx:2328333107": [
-      [4, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
-    ],
     "src/app/Components/Lists/SavedItemRow.tests.tsx:3450992164": [
       [0, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
     ],
@@ -746,9 +740,6 @@ exports[`Avoid using test-renderer`] = {
     "src/app/Scenes/ArtistSeries/ArtistSeriesMoreSeries.tests.tsx:1032468955": [
       [7, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
     ],
-    "src/app/Scenes/ArtistShows/ArtistShows2.tests.tsx:92859508": [
-      [3, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
-    ],
     "src/app/Scenes/Artwork/Artwork.tests.tsx:453138441": [
       [14, 29, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
     ],
@@ -766,9 +757,6 @@ exports[`Avoid using test-renderer`] = {
     ],
     "src/app/Scenes/AuctionResult/AuctionResult.tests.tsx:1026473635": [
       [6, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
-    ],
-    "src/app/Scenes/AuctionResults/AuctionResultsScreenWrapper.tests.tsx:3485254068": [
-      [2, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
     ],
     "src/app/Scenes/BottomTabs/BottomTabs.tests.tsx:1987650270": [
       [6, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
@@ -923,9 +911,6 @@ exports[`Avoid using test-renderer`] = {
     "src/app/Scenes/MyCollection/Components/ScreenMargin.tests.tsx:3292081617": [
       [1, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
     ],
-    "src/app/Scenes/MyCollection/MyCollection.tests.tsx:3217550711": [
-      [12, 29, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
-    ],
     "src/app/Scenes/MyCollection/Screens/Artwork/Components/ArtworkInsights/MyCollectionArtworkArtistArticles.tests.tsx:1717806070": [
       [6, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
     ],
@@ -980,41 +965,17 @@ exports[`Avoid using test-renderer`] = {
     "src/app/Scenes/Onboarding/OnboardingLogin.tests.tsx:927225381": [
       [0, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
     ],
-    "src/app/Scenes/OrderHistory/OrderDetails/ArtworkInfoSection.tests.tsx:165819220": [
+    "src/app/Scenes/OrderHistory/OrderDetails/OrderDetails.tests.tsx:826183475": [
       [1, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
-    ],
-    "src/app/Scenes/OrderHistory/OrderDetails/OrderDetails.tests.tsx:1323552499": [
-      [2, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
-    ],
-    "src/app/Scenes/OrderHistory/OrderDetails/OrderDetailsHeader.tests.tsx:1131893378": [
-      [2, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
-    ],
-    "src/app/Scenes/OrderHistory/OrderDetails/ShipsToSection.tests.tsx:2041629303": [
-      [2, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
-    ],
-    "src/app/Scenes/OrderHistory/OrderDetails/SoldBySection.tests.tsx:2836132866": [
-      [2, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
-    ],
-    "src/app/Scenes/OrderHistory/OrderDetails/TrackOrderSection.tests.tsx:1314268179": [
-      [2, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
     ],
     "src/app/Scenes/OrderHistory/OrderHistory.tests.tsx:2734769865": [
       [3, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
-    ],
-    "src/app/Scenes/OrderHistory/OrderHistoryRow.tests.tsx:2338708282": [
-      [4, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
-    ],
-    "src/app/Scenes/OrderHistory/SummarySection.tests.tsx:39295415": [
-      [1, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
     ],
     "src/app/Scenes/Partner/Components/PartnerHeader.tests.tsx:818340560": [
       [2, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
     ],
     "src/app/Scenes/Partner/Components/PartnerOverview.tests.tsx:3389787285": [
       [4, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
-    ],
-    "src/app/Scenes/Sale/RegisterToBidButton.tests.tsx:2396151864": [
-      [3, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
     ],
     "src/app/Scenes/Sale/Sale.tests.tsx:2006954756": [
       [4, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
@@ -1101,12 +1062,6 @@ exports[`Avoid using test-renderer`] = {
       [2, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
     ],
     "src/app/Scenes/ViewingRoom/ViewingRoom.tests.tsx:4189559255": [
-      [4, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
-    ],
-    "src/app/Scenes/ViewingRoom/ViewingRoomArtwork.tests.tsx:1082004866": [
-      [2, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
-    ],
-    "src/app/Scenes/ViewingRoom/ViewingRoomArtworks.tests.tsx:557785724": [
       [4, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
     ],
     "src/app/utils/track/tracking.tests.tsx:1989312488": [
@@ -1619,8 +1574,8 @@ exports[`Avoid having skipped tests`] = {
     "src/app/Scenes/ArtworkAttributionClassFAQ/ArtworkAttributionClassFAQ.tests.tsx:2878120211": [
       [27, 2, 8, "Is this skipped on purpose, or accidentally?", "593069535"]
     ],
-    "src/app/Scenes/MyCollection/MyCollection.tests.tsx:3217550711": [
-      [136, 4, 8, "Is this skipped on purpose, or accidentally?", "593069535"]
+    "src/app/Scenes/MyCollection/MyCollection.tests.tsx:4100351617": [
+      [104, 4, 8, "Is this skipped on purpose, or accidentally?", "593069535"]
     ],
     "src/app/Scenes/Sale/SaleLotsList.tests.tsx:29178689": [
       [97, 2, 8, "Is this skipped on purpose, or accidentally?", "593069535"]
@@ -1674,8 +1629,8 @@ exports[`Avoid using class components`] = {
     "src/app/Components/Bidding/Components/Timer.tsx:3834085858": [
       [197, 32, 23, "Try using a functional component.", "3210885008"]
     ],
-    "src/app/Components/Bidding/Context/TimeOffsetProvider.tests.tsx:2534639299": [
-      [14, 19, 23, "Try using a functional component.", "3210885008"]
+    "src/app/Components/Bidding/Context/TimeOffsetProvider.tests.tsx:2527127246": [
+      [12, 19, 23, "Try using a functional component.", "3210885008"]
     ],
     "src/app/Components/Bidding/Context/TimeOffsetProvider.tsx:1656948563": [
       [72, 32, 23, "Try using a functional component.", "3210885008"]

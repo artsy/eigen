@@ -1,41 +1,27 @@
 import { fireEvent } from "@testing-library/react-native"
 import { FollowArtistLinkTestsQuery } from "__generated__/FollowArtistLinkTestsQuery.graphql"
 import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { FollowArtistLinkFragmentContainer } from "./FollowArtistLink"
 
-
 describe("FollowArtistLink", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+  const { renderWithRelay } = setupTestWrapper<FollowArtistLinkTestsQuery>({
+    Component: (props) => {
+      if (props?.artist) {
+        return <FollowArtistLinkFragmentContainer artist={props.artist} />
+      }
 
-  const TestWrapper = () => {
-    return (
-      <QueryRenderer<FollowArtistLinkTestsQuery>
-        environment={mockEnvironment}
-        query={graphql`
-          query FollowArtistLinkTestsQuery @relay_test_operation {
-            artist(id: "artistID") {
-              ...FollowArtistLink_artist
-            }
-          }
-        `}
-        variables={{}}
-        render={({ props }) => {
-          if (props?.artist) {
-            return <FollowArtistLinkFragmentContainer artist={props.artist} />
-          }
-
-          return null
-        }}
-      />
-    )
-  }
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+      return null
+    },
+    query: graphql`
+      query FollowArtistLinkTestsQuery @relay_test_operation {
+        artist(id: "artistID") {
+          ...FollowArtistLink_artist
+        }
+      }
+    `,
   })
 
   afterEach(() => {
@@ -43,9 +29,7 @@ describe("FollowArtistLink", () => {
   })
 
   it("renders button text correctly", () => {
-    const { getByText } = renderWithWrappers(<TestWrapper />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText } = renderWithRelay({
       Artist: () => followArtistLinkArtist,
     })
 
@@ -59,9 +43,7 @@ describe("FollowArtistLink", () => {
         is_followed: true,
       }
 
-      const { getByText, queryByText } = renderWithWrappers(<TestWrapper />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      const { getByText, queryByText, env } = renderWithRelay({
         Artist: () => followArtistLinkArtistFollowed,
       })
 
@@ -70,7 +52,7 @@ describe("FollowArtistLink", () => {
 
       fireEvent.press(getByText("Following"))
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation(env, {
         Artist: () => ({
           id: followArtistLinkArtist.id,
           is_followed: false,
@@ -82,9 +64,7 @@ describe("FollowArtistLink", () => {
     })
 
     it("correctly displays when the artist is not followed, and allows following", () => {
-      const { getByText, queryByText } = renderWithWrappers(<TestWrapper />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      const { getByText, queryByText, env } = renderWithRelay({
         Artist: () => followArtistLinkArtist,
       })
 
@@ -93,7 +73,7 @@ describe("FollowArtistLink", () => {
 
       fireEvent.press(getByText("Follow"))
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation(env, {
         Artist: () => ({
           id: followArtistLinkArtist.id,
           is_followed: true,
@@ -105,15 +85,13 @@ describe("FollowArtistLink", () => {
     })
 
     it("handles errors in saving gracefully", async () => {
-      const { getByText } = renderWithWrappers(<TestWrapper />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      const { getByText, env } = renderWithRelay({
         Artist: () => followArtistLinkArtist,
       })
 
       fireEvent.press(getByText("Follow"))
 
-      rejectMostRecentRelayOperation(mockEnvironment, new Error())
+      rejectMostRecentRelayOperation(env, new Error())
 
       expect(getByText("Follow")).toBeTruthy()
     })

@@ -1,35 +1,23 @@
 import { OrderDetailsPaymentTestsQuery } from "__generated__/OrderDetailsPaymentTestsQuery.graphql"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { PaymentMethodSummaryItemFragmentContainer } from "./Components/OrderDetailsPayment"
 
-
 describe("PaymentSection", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  const TestRenderer = ({}) => (
-    <QueryRenderer<OrderDetailsPaymentTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query OrderDetailsPaymentTestsQuery($orderID: ID!) @relay_test_operation {
-          order: commerceOrder(id: $orderID) {
-            ...OrderDetailsPayment_order
-          }
+  const { renderWithRelay } = setupTestWrapper<OrderDetailsPaymentTestsQuery>({
+    Component: (props) => {
+      if (props?.order) {
+        return <PaymentMethodSummaryItemFragmentContainer order={props.order} />
+      }
+      return null
+    },
+    query: graphql`
+      query OrderDetailsPaymentTestsQuery($orderID: ID!) @relay_test_operation {
+        order: commerceOrder(id: $orderID) {
+          ...OrderDetailsPayment_order
         }
-      `}
-      variables={{ orderID: "uhi" }}
-      render={({ props }) => {
-        if (props?.order) {
-          return <PaymentMethodSummaryItemFragmentContainer order={props.order} />
-        }
-        return null
-      }}
-    />
-  )
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+      }
+    `,
   })
 
   afterEach(() => {
@@ -37,8 +25,7 @@ describe("PaymentSection", () => {
   })
 
   it("renders when payment method is credit card", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText } = renderWithRelay({
       CommerceOrder: () => ({
         paymentMethodDetails: {
           __typename: "CreditCard",
@@ -52,8 +39,7 @@ describe("PaymentSection", () => {
   })
 
   it("renders when payment method is wire transfer", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText } = renderWithRelay({
       CommerceOrder: () => ({
         paymentMethodDetails: {
           __typename: "WireTransfer",
@@ -65,8 +51,7 @@ describe("PaymentSection", () => {
   })
 
   it("renders when payment method is bank transfer", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText } = renderWithRelay({
       CommerceOrder: () => ({
         paymentMethodDetails: {
           __typename: "BankAccount",
@@ -79,8 +64,7 @@ describe("PaymentSection", () => {
   })
 
   it("renders when payment method doesn't exist", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText } = renderWithRelay({
       CommerceOrder: () => ({
         paymentMethodDetails: null,
       }),

@@ -2,54 +2,43 @@ import { AuctionResultListItemTestsQuery } from "__generated__/AuctionResultList
 import { AuctionResultsMidEstimate } from "app/Components/AuctionResult/AuctionResultMidEstimate"
 import { extractNodes } from "app/utils/extractNodes"
 import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import moment from "moment"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { graphql } from "react-relay"
 import { AuctionResultListItemFragmentContainer } from "./AuctionResultListItem"
 
-
 describe("AuctionResults", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  beforeEach(() => (mockEnvironment = createMockEnvironment()))
-
-  const TestRenderer = () => (
-    <QueryRenderer<AuctionResultListItemTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query AuctionResultListItemTestsQuery @relay_test_operation {
-          artist(id: "some-id") {
-            auctionResultsConnection(first: 1) {
-              edges {
-                node {
-                  id
-                  ...AuctionResultListItem_auctionResult
-                }
+  const { renderWithRelay } = setupTestWrapper<AuctionResultListItemTestsQuery>({
+    Component: (props: any) => {
+      if (props?.artist) {
+        const results = extractNodes(props.artist.auctionResultsConnection)
+        return (
+          <AuctionResultListItemFragmentContainer
+            auctionResult={results[0] as any}
+            onPress={() => null}
+          />
+        )
+      }
+      return null
+    },
+    query: graphql`
+      query AuctionResultListItemTestsQuery @relay_test_operation {
+        artist(id: "some-id") {
+          auctionResultsConnection(first: 1) {
+            edges {
+              node {
+                id
+                ...AuctionResultListItem_auctionResult
               }
             }
           }
         }
-      `}
-      variables={{}}
-      render={({ props }) => {
-        if (props?.artist) {
-          const results = extractNodes(props.artist.auctionResultsConnection)
-          return (
-            <AuctionResultListItemFragmentContainer
-              auctionResult={results[0]}
-              onPress={() => null}
-            />
-          )
-        }
-        return null
-      }}
-    />
-  )
+      }
+    `,
+  })
 
   it("renders auction result when auction results are available", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const tree = renderWithRelay({
       Artist: () => ({
         auctionResultsConnection: {
           edges: [
@@ -75,13 +64,14 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(extractText(tree.findByProps({ testID: "price" }))).toBe("$one gazillion (+10% est)")
-    expect(tree.findAllByProps({ testID: "priceUSD" }).length).toBe(0)
+    expect(extractText(tree.UNSAFE_getByProps({ testID: "price" }))).toBe(
+      "$one gazillion (+10% est)"
+    )
+    expect(tree.UNSAFE_getAllByProps({ testID: "priceUSD" }).length).toBe(0)
   })
 
   it("renders price in USD when currency is not USD", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const tree = renderWithRelay({
       Artist: () => ({
         auctionResultsConnection: {
           edges: [
@@ -107,15 +97,14 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(extractText(tree.findByProps({ testID: "price" }))).toBe(
+    expect(extractText(tree.UNSAFE_getByProps({ testID: "price" }))).toBe(
       "€one gazillion • $one gazillion (+10% est)"
     )
-    expect(extractText(tree.findByProps({ testID: "priceUSD" }))).toBe("$one gazillion")
+    expect(extractText(tree.UNSAFE_getByProps({ testID: "priceUSD" }))).toBe("$one gazillion")
   })
 
   it("renders auction result when auction results are not available yet", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const tree = renderWithRelay({
       Artist: () => ({
         auctionResultsConnection: {
           edges: [
@@ -137,13 +126,12 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(tree.findByProps({ testID: "price" }).props.children).toBe("Awaiting results")
-    expect(tree.findAllByProps({ testID: "priceUSD" }).length).toBe(0)
+    expect(tree.UNSAFE_getByProps({ testID: "price" }).props.children).toBe("Awaiting results")
+    expect(tree.UNSAFE_getAllByProps({ testID: "priceUSD" }).length).toBe(0)
   })
 
   it("renders auction result when auction result is `bought in`", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const tree = renderWithRelay({
       Artist: () => ({
         auctionResultsConnection: {
           edges: [
@@ -166,13 +154,12 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(tree.findByProps({ testID: "price" }).props.children).toBe("Bought in")
-    expect(tree.findAllByProps({ testID: "priceUSD" }).length).toBe(0)
+    expect(tree.UNSAFE_getByProps({ testID: "price" }).props.children).toBe("Bought in")
+    expect(tree.UNSAFE_getAllByProps({ testID: "priceUSD" }).length).toBe(0)
   })
 
   it("renders sale date correctly", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const tree = renderWithRelay({
       Artist: () => ({
         auctionResultsConnection: {
           edges: [
@@ -187,9 +174,9 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(tree.root.findByProps({ testID: "saleInfo" }).props.children).toContain("Jan 12, 2021")
-    expect(tree.root.findAllByType(AuctionResultsMidEstimate)[0].props.value).toEqual("mid-1")
-    expect(tree.root.findAllByType(AuctionResultsMidEstimate)[0].props.shortDescription).toEqual(
+    expect(tree.UNSAFE_getByProps({ testID: "saleInfo" }).props.children).toContain("Jan 12, 2021")
+    expect(tree.UNSAFE_getAllByType(AuctionResultsMidEstimate)[0].props.value).toEqual("mid-1")
+    expect(tree.UNSAFE_getAllByType(AuctionResultsMidEstimate)[0].props.shortDescription).toEqual(
       "est"
     )
   })

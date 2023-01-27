@@ -1,11 +1,9 @@
 import { waitFor } from "@testing-library/react-native"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Text } from "palette"
 import PropTypes from "prop-types"
 import React from "react"
-import { createMockEnvironment } from "relay-test-utils"
+import { graphql } from "react-relay"
 import { TimeOffsetProvider } from "./TimeOffsetProvider"
 
 const SECONDS = 1000
@@ -23,26 +21,29 @@ class TestConsumer extends React.Component {
 }
 
 describe("TimeOffsetProvider", () => {
-  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
-
-  const TestWrapper = () => {
-    return (
+  const { renderWithRelay } = setupTestWrapper<TimeOffsetProviderTestsQuery>({
+    Component: () => (
       <TimeOffsetProvider>
         <TestConsumer />
       </TimeOffsetProvider>
-    )
-  }
+    ),
+    query: graphql`
+      query TimeOffsetProviderTestsQuery @relay_test_operation {
+        system {
+          time {
+            unix
+          }
+        }
+      }
+    `,
+  })
 
   beforeEach(() => {
-    mockEnvironment.mockClear()
     Date.now = jest.fn(() => DATE_NOW)
   })
 
   it("injects timeOffsetInMilliSeconds as a context", async () => {
-    const { queryByText } = renderWithWrappers(<TestWrapper />)
-
-    // Set up a situation where the phone's clock is ahead of Gravity's clock by 10 minutes.
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { queryByText } = renderWithRelay({
       System: () => ({
         time: {
           unix: (DATE_NOW - 10 * MINUTES) * 1e-3,

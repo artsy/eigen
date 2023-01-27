@@ -1,38 +1,25 @@
 import { FaqAndSpecialistSectionTestsQuery } from "__generated__/FaqAndSpecialistSectionTestsQuery.graphql"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { FaqAndSpecialistSectionFragmentContainer as FaqAndSpecialistSection } from "./FaqAndSpecialistSection"
 
-
 describe("FAQ and specialist BNMO links", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+  const { renderWithRelay } = setupTestWrapper<FaqAndSpecialistSectionTestsQuery>({
+    Component: (props) => {
+      if (props?.artwork) {
+        return <FaqAndSpecialistSection artwork={props.artwork} />
+      }
 
-  const TestRenderer = () => (
-    <QueryRenderer<FaqAndSpecialistSectionTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query FaqAndSpecialistSectionTestsQuery @relay_test_operation {
-          artwork(id: "artworkID") {
-            ...FaqAndSpecialistSection_artwork
-          }
+      return null
+    },
+    query: graphql`
+      query FaqAndSpecialistSectionTestsQuery @relay_test_operation {
+        artwork(id: "artworkID") {
+          ...FaqAndSpecialistSection_artwork
         }
-      `}
-      variables={{}}
-      render={({ props }) => {
-        if (props?.artwork) {
-          return <FaqAndSpecialistSection artwork={props.artwork} />
-        }
-
-        return null
-      }}
-    />
-  )
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+      }
+    `,
   })
 
   it("does not render FAQ or ask a specialist links when isInquireable", () => {
@@ -49,9 +36,7 @@ describe("FAQ and specialist BNMO links", () => {
       ],
     }
 
-    const { queryByText } = renderWithWrappers(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { queryByText } = renderWithRelay({
       Artwork: () => artwork,
     })
 
@@ -73,9 +58,7 @@ describe("FAQ and specialist BNMO links", () => {
       ],
     }
 
-    const { queryByText } = renderWithWrappers(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { queryByText } = renderWithRelay({
       Artwork: () => artwork,
     })
 
@@ -92,9 +75,7 @@ describe("FAQ and specialist BNMO links", () => {
       artists: [{ name: "Santa", isConsignable: true }],
     }
 
-    const { queryByText } = renderWithWrappers(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { queryByText } = renderWithRelay({
       Artwork: () => artwork,
     })
 

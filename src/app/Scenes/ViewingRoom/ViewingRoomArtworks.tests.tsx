@@ -1,51 +1,42 @@
 import { ViewingRoomArtworksTestsQuery } from "__generated__/ViewingRoomArtworksTestsQuery.graphql"
 import { navigate } from "app/system/navigation/navigate"
-import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import {
-  mockEdges,
-  resolveMostRecentRelayOperation,
-} from "app/utils/tests/resolveMostRecentRelayOperation"
+import { mockEdges } from "app/utils/tests/resolveMostRecentRelayOperation"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Touchable } from "palette"
 import { FlatList, TouchableHighlight } from "react-native"
-import { graphql, QueryRenderer } from "react-relay"
+import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { createMockEnvironment } from "relay-test-utils"
 import { tracks, ViewingRoomArtworksContainer } from "./ViewingRoomArtworks"
 
-
 describe("ViewingRoom", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  const TestRenderer = () => (
-    <QueryRenderer<ViewingRoomArtworksTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query ViewingRoomArtworksTestsQuery {
-          viewingRoom(id: "unused") {
-            ...ViewingRoomArtworks_viewingRoom
-          }
+  const { renderWithRelay } = setupTestWrapper<ViewingRoomArtworksTestsQuery>({
+    Component: (props) => {
+      if (props?.viewingRoom) {
+        return <ViewingRoomArtworksContainer viewingRoom={props.viewingRoom} />
+      }
+      return null
+    },
+    query: graphql`
+      query ViewingRoomArtworksTestsQuery {
+        viewingRoom(id: "unused") {
+          ...ViewingRoomArtworks_viewingRoom
         }
-      `}
-      render={renderWithLoadProgress(ViewingRoomArtworksContainer)}
-      variables={{}}
-    />
-  )
-  beforeEach(() => (mockEnvironment = createMockEnvironment()))
+      }
+    `,
+  })
 
   it("renders a flatlist with one artwork", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const tree = renderWithRelay({
       ViewingRoom: () => ({ artworksConnection: { edges: mockEdges(1) } }),
     })
 
-    expect(tree.root.findAllByType(FlatList)).toHaveLength(1)
-    expect(tree.root.findAllByType(TouchableHighlight)).toHaveLength(1)
+    expect(tree.UNSAFE_getAllByType(FlatList)).toHaveLength(1)
+    expect(tree.UNSAFE_getAllByType(TouchableHighlight)).toHaveLength(1)
   })
 
   it("renders additional information if it exists", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const tree = renderWithRelay({
       ViewingRoom: () => ({
         artworksConnection: {
           edges: mockEdges(1),
@@ -54,19 +45,18 @@ describe("ViewingRoom", () => {
     })
 
     expect(
-      extractText(tree.root.findByProps({ testID: "artwork-additional-information" }))
+      extractText(tree.UNSAFE_getByProps({ testID: "artwork-additional-information" }))
     ).toEqual("additionalInformation-1")
   })
 
   it("navigates to artwork screen + calls tracking on press", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const tree = renderWithRelay({
       ViewingRoom: () => ({
         artworksConnection: { edges: mockEdges(1) },
       }),
     })
 
-    tree.root.findByType(Touchable).props.onPress()
+    tree.UNSAFE_getByType(Touchable).props.onPress()
 
     expect(navigate).toHaveBeenCalledWith("/viewing-room/slug-1/artworksConnection.slug-1")
 
