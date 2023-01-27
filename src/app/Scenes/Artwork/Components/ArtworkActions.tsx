@@ -4,7 +4,6 @@ import { ArtworkActionsSaveMutation } from "__generated__/ArtworkActionsSaveMuta
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { navigate } from "app/navigation/navigate"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
-import { cm2in } from "app/utils/conversions"
 import { Schema, track } from "app/utils/track"
 import { userHadMeaningfulInteraction } from "app/utils/userHadMeaningfulInteraction"
 import { take } from "lodash"

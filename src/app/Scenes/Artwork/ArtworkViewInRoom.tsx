@@ -16,8 +16,8 @@ const HelloWorldSceneAR = () => {
 
   function onInitialized(state: number) {
     if (state === ViroTrackingStateConstants.TRACKING_NORMAL) {
-      // @ts-ignore
       setImage(
+        // @ts-ignore
         <ViroImage source={{ uri: source }} height={height} width={width} rotation={[0, 0, 0]} />
       )
     } else if (state === ViroTrackingStateConstants.TRACKING_UNAVAILABLE) {
