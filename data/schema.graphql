@@ -7635,6 +7635,28 @@ type DeleteBankAccountPayload {
   me: Me
 }
 
+type DeleteCollectionFailure {
+  mutationError: GravityMutationError
+}
+
+input deleteCollectionInput {
+  clientMutationId: String
+  id: String!
+}
+
+type deleteCollectionPayload {
+  clientMutationId: String
+
+  # On success: the deleted collection
+  responseOrError: DeleteCollectionResponseOrError
+}
+
+union DeleteCollectionResponseOrError = DeleteCollectionFailure | DeleteCollectionSuccess
+
+type DeleteCollectionSuccess {
+  collection: Collection
+}
+
 type DeleteConversationFailure {
   mutationError: GravityMutationError
 }
@@ -11514,6 +11536,9 @@ type Mutation {
 
   # Remove a bank account
   deleteBankAccount(input: DeleteBankAccountInput!): DeleteBankAccountPayload
+
+  # Delete a collection
+  deleteCollection(input: deleteCollectionInput!): deleteCollectionPayload
 
   # Soft-delete a conversation.
   deleteConversation(input: DeleteConversationMutationInput!): DeleteConversationMutationPayload
