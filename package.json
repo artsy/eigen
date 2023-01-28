@@ -34,6 +34,7 @@
     "generate-cities-cache": "node scripts/generate-cities-cache.js",
     "generate-cities-objc": "node scripts/generate-cities-objc.js",
     "navigate-to-route": "./scripts/navigate-to-route",
+    "navigate-to-route-android": "./scripts/navigate-to-route-android",
     "init-metaflags": "jq -Rn '{ startStorybook: false }' | sponge metaflags.json",
     "install:all": "./scripts/install",
     "ios": "react-native run-ios --udid=\"$(xcrun simctl list | awk -F'[()]' '/(Booted)/ { print $2 }')\"",
