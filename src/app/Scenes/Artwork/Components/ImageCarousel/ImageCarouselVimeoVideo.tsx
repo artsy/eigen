@@ -57,6 +57,7 @@ export const ImageCarouselVimeoVideo: React.FC<ImageCarouselVimeoVideoProps> = (
             params={`h=${token}&loop=true&autoplay=${
               isPlaying ? 1 : 0
             }&transparent=1&background=false`}
+            allowsFullscreenVideo
           />
         </Flex>
       )}
@@ -66,7 +67,7 @@ export const ImageCarouselVimeoVideo: React.FC<ImageCarouselVimeoVideoProps> = (
 
 const useVimeoVideoMetadata = (videoId: string) => {
   const [videoMetadata, setVideoMetadata] = useState<VimeoAPIResponse>(null)
-  const coverImage = videoMetadata?.pictures.sizes?.[4]?.link_with_play_button
+  const coverImage = videoMetadata?.pictures?.sizes?.[4]?.link_with_play_button
 
   useEffect(() => {
     const fetchVideoMetadata = async () => {
