@@ -62,7 +62,7 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
     )
   }
 
-  const moreImages = _.drop(selectedArtwork.images!, 1)
+  const moreImages = _.drop(selectedArtwork.figures!, 1)
 
   const tag = tagForStatus(vrInfo.status, vrInfo.distanceToOpen, vrInfo.distanceToClose)
 
@@ -72,7 +72,10 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
     >
       <ScrollView>
         <Flex>
-          <ImageCarousel images={[selectedArtwork.images![0]] as any} cardHeight={screenHeight} />
+          <ImageCarousel
+            staticImages={[selectedArtwork.figures![0]] as any}
+            cardHeight={screenHeight}
+          />
           {!!(
             LegacyNativeModules.ARCocoaConstantsModule.AREnabled && selectedArtwork.isHangable
           ) && (
@@ -140,7 +143,7 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
               data={moreImages}
               keyExtractor={(_item, index) => `${index}`}
               renderItem={({ item }) => (
-                <ImageCarousel images={[item] as any} cardHeight={screenHeight} />
+                <ImageCarousel staticImages={[item] as any} cardHeight={screenHeight} />
               )}
               ItemSeparatorComponent={() => <Spacer mt={0.5} />}
             />
@@ -266,8 +269,8 @@ const selectedArtworkFragmentSpec = graphql`
     widthCm
     heightCm
     id
-    images {
-      ...ImageCarousel_images @relay(mask: false) # We need this because ImageCarousel uses regular react-relay and we have relay-hooks here.
+    figures {
+      ...ImageCarousel_figures @relay(mask: false) # We need this because ImageCarousel uses regular react-relay and we have relay-hooks here.
     }
   }
 `

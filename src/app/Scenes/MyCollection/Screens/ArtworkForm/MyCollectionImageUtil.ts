@@ -72,7 +72,7 @@ export const isImage = (toCheck: any): toCheck is Image => !!toCheck
 
 export const hasImagesStillProcessing = (
   mainImage: any,
-  imagesToCheck: MyCollectionArtworkHeader_artwork$data["images"]
+  imagesToCheck: MyCollectionArtworkHeader_artwork$data["figures"]
 ) => {
   if (!isImage(mainImage) || imageIsProcessing(mainImage, "normalized")) {
     return true
@@ -101,7 +101,7 @@ export const getBoundingBox = (
 
 export const getImageMeasurements = (imageSize: Size, boundingBox: Size) => {
   const measurements = getMeasurements({
-    images: [
+    media: [
       {
         height: imageSize.height,
         width: imageSize.width,

@@ -2,7 +2,6 @@ import { tappedCollectedArtworkImages } from "@artsy/cohesion"
 import { useNavigation } from "@react-navigation/native"
 import { MyCollectionArtworkHeader_artwork$key } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
 import {
-  CarouselImageDescriptor,
   ImageCarousel,
   ImageCarouselFragmentContainer,
 } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
@@ -32,16 +31,15 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
   const {
     artistNames,
     date,
-    images,
+    imageMeta,
+    figures,
     internalID,
     title,
     slug,
     consignmentSubmission,
     submissionId,
   } = artwork
-  const [imagesToDisplay, setImagesToDisplay] = useState<
-    typeof images | CarouselImageDescriptor[] | null
-  >(images)
+  const [imagesToDisplay, setImagesToDisplay] = useState<typeof artwork.figures>(figures)
   const [isDisplayingLocalImages, setIsDisplayingLocalImages] = useState(false)
 
   const dimensions = useScreenDimensions()
@@ -74,7 +72,7 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
   }
 
   const handleImages = async () => {
-    const defaultImage = images?.find((i) => i?.isDefault) || (images && images[0])
+    const defaultImage = imageMeta?.find((i) => i?.isDefault) || (figures && figures[0])
     const [localVanillaArtworkImages, localSubmissionArtworkImages] = await Promise.all([
       retrieveLocalImages(slug),
       submissionId ? retrieveLocalImages(submissionId) : undefined,
@@ -85,7 +83,7 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
         localVanillaArtworkImages ?? localSubmissionArtworkImages ?? []
       )
 
-      setImagesToDisplay(mappedLocalImages)
+      setImagesToDisplay(mappedLocalImages as any)
       setIsDisplayingLocalImages(
         !!localVanillaArtworkImages?.length || !!localSubmissionArtworkImages?.length
       )
@@ -99,22 +97,33 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
     removeLocalPhotos(slug)
   }
 
-  const ImagesToDisplayCarousel = isDisplayingLocalImages
-    ? ImageCarousel
-    : ImageCarouselFragmentContainer
+  const hasImages = imagesToDisplay?.length > 0
 
   return (
     <Join separator={<Spacer my={1} />}>
-      {/* ImageCarousel */}
-      {!!imagesToDisplay && imagesToDisplay.length ? (
-        <ImagesToDisplayCarousel
-          images={imagesToDisplay as any}
-          cardHeight={dimensions.height / 3.5}
-          onImagePressed={() => trackEvent(tracks.tappedCollectedArtworkImages(internalID, slug))}
-        />
+      {hasImages ? (
+        <>
+          {!!isDisplayingLocalImages ? (
+            <ImageCarousel
+              staticImages={imagesToDisplay as any}
+              cardHeight={dimensions.height / 3.5}
+              onImagePressed={() =>
+                trackEvent(tracks.tappedCollectedArtworkImages(internalID, slug))
+              }
+            />
+          ) : (
+            <ImageCarouselFragmentContainer
+              figures={imagesToDisplay}
+              cardHeight={dimensions.height / 3.5}
+              onImagePressed={() =>
+                trackEvent(tracks.tappedCollectedArtworkImages(internalID, slug))
+              }
+            />
+          )}
+        </>
       ) : (
         <Flex
-          testID="Fallback-image-mycollection-header"
+          testID="MyCollectionArtworkHeaderFallback"
           bg={color("black5")}
           height={dimensions.height / 3.5}
           justifyContent="center"
@@ -162,10 +171,14 @@ const myCollectionArtworkHeaderFragment = graphql`
     }
     artistNames
     date
-    images {
-      ...ImageCarousel_images
-      imageVersions
-      isDefault
+    figures {
+      ...ImageCarousel_figures
+    }
+    imageMeta: figures {
+      ... on Image {
+        imageVersions
+        isDefault
+      }
     }
     internalID
     slug
