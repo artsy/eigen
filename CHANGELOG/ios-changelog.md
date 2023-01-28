@@ -7,6 +7,7 @@
 
   - User facing changes:
 
+    - Added support for viewing artwork page videos
     - Add works from galleries you follow rail - mounir
     - add switchContainer and ff for new search screen - gkartalis
 
