@@ -59,8 +59,10 @@ describe("MyCollection", () => {
     })
 
     it("shows zerostate", () => {
-      expect(tree.getByText).toContain("Your Art Collection in Your Pocket")
-      expect(tree.getByText).toContain("Access market insights and manage your collection online.")
+      expect(tree.getByText("Your Art Collection in Your Pocket")).toBeTruthy()
+      expect(
+        tree.getByText("Access market insights and manage your collection online.")
+      ).toBeTruthy()
     })
 
     it("navigates to MyCollectionArtworkForm when Add Artwork is pressed", () => {
