@@ -1,14 +1,26 @@
-import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
+import { createMockEnvironment } from "relay-test-utils"
 import { AuctionBuyersPremiumQueryRenderer } from "./AuctionBuyersPremium"
 
+
 describe("AuctionBuyersPremium", () => {
-  const { renderWithRelay } = setupTestWrapper({
-    Component: () => <AuctionBuyersPremiumQueryRenderer saleID="saleID" />,
+  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+
+  beforeEach(() => {
+    mockEnvironment.mockClear()
   })
+
+  const TestRenderer = () => {
+    return <AuctionBuyersPremiumQueryRenderer saleID="saleID" />
+  }
 
   describe("one point", () => {
     it("renders the schedule correctly", () => {
-      const { getByText } = renderWithRelay({
+      const { getByText } = renderWithWrappers(<TestRenderer />)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
         Sale: () => ({
           buyersPremium: [{ amount: "$0", cents: 0, percent: 0.2 }],
         }),
@@ -20,10 +32,11 @@ describe("AuctionBuyersPremium", () => {
 
   describe("two points", () => {
     it("renders the schedule correctly", () => {
+      const { getByText } = renderWithWrappers(<TestRenderer />)
       const textOne = "On the hammer price up to and including $500,000: 25%"
       const textTwo = "On the portion of the hammer price in excess of $500,000: 20%"
 
-      const { getByText } = renderWithRelay({
+      resolveMostRecentRelayOperation(mockEnvironment, {
         Sale: () => ({
           buyersPremium: [
             { amount: "$0", cents: 0, percent: 0.25 },
@@ -39,12 +52,13 @@ describe("AuctionBuyersPremium", () => {
 
   describe("three or more points", () => {
     it("renders the schedule correctly", () => {
+      const { getByText } = renderWithWrappers(<TestRenderer />)
       const textOne = "On the hammer price up to and including $250,000: 25%"
       const textTwo =
         "On the hammer price in excess of $250,000 up to and including $2,500,000: 20%"
       const textThree = "On the portion of the hammer price in excess of $2,500,000: 12%"
 
-      const { getByText } = renderWithRelay({
+      resolveMostRecentRelayOperation(mockEnvironment, {
         Sale: () => ({
           buyersPremium: [
             { amount: "$0", cents: 0, percent: 0.25 },
@@ -61,7 +75,9 @@ describe("AuctionBuyersPremium", () => {
 
     describe("with a percentage that isn't a whole number", () => {
       it("rounds to a single decimal place", () => {
-        const { getByText } = renderWithRelay({
+        const { getByText } = renderWithWrappers(<TestRenderer />)
+
+        resolveMostRecentRelayOperation(mockEnvironment, {
           Sale: () => ({
             buyersPremium: [{ amount: "$0", cents: 0, percent: 0.225 }],
           }),

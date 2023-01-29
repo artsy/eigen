@@ -1,8 +1,11 @@
 import { TrackOrderSectionTestsQuery } from "__generated__/TrackOrderSectionTestsQuery.graphql"
 import { extractText } from "app/utils/tests/extractText"
-import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { graphql } from "react-relay"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
+import { graphql, QueryRenderer } from "react-relay"
+import { createMockEnvironment } from "relay-test-utils"
 import { TrackOrderSectionFragmentContainer } from "./Components/TrackOrderSection"
+
 
 const CommerceShipOrder = {
   state: "SUBMITTED",
@@ -52,82 +55,91 @@ const CommerceShipArtaOrder = {
 }
 
 describe("TrackOrderSection", () => {
-  const { renderWithRelay } = setupTestWrapper<TrackOrderSectionTestsQuery>({
-    Component: (props) => {
-      if (props?.commerceOrder) {
-        return <TrackOrderSectionFragmentContainer section={props.commerceOrder} />
-      }
-      return null
-    },
-    query: graphql`
-      query TrackOrderSectionTestsQuery @relay_test_operation {
-        commerceOrder(id: "some-id") {
-          internalID
-          ...TrackOrderSection_section
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+  beforeEach(() => (mockEnvironment = createMockEnvironment()))
+
+  const TestRenderer = () => (
+    <QueryRenderer<TrackOrderSectionTestsQuery>
+      environment={mockEnvironment}
+      query={graphql`
+        query TrackOrderSectionTestsQuery @relay_test_operation {
+          commerceOrder(id: "some-id") {
+            internalID
+            ...TrackOrderSection_section
+          }
         }
-      }
-    `,
-  })
+      `}
+      variables={{}}
+      render={({ props }) => {
+        if (props?.commerceOrder) {
+          return <TrackOrderSectionFragmentContainer section={props.commerceOrder} />
+        }
+        return null
+      }}
+    />
+  )
 
   describe("when CommerceShip", () => {
     it("renders section", () => {
-      const tree = renderWithRelay({ CommerceOrder: () => CommerceShipOrder })
+      const tree = renderWithWrappersLEGACY(<TestRenderer />).root
+      resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => CommerceShipOrder })
 
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "orderStatus" }))).toBe("pending")
-      expect(tree.UNSAFE_getAllByProps({ testID: "trackingNumber" })).toHaveLength(0)
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "noTrackingNumber" }))).toBe(
+      expect(extractText(tree.findByProps({ testID: "orderStatus" }))).toBe("pending")
+      expect(tree.findAllByProps({ testID: "trackingNumber" })).toHaveLength(0)
+      expect(extractText(tree.findByProps({ testID: "noTrackingNumber" }))).toBe(
         "Tracking not available"
       )
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "shippedOn" }))).toContain("Sep 2, 2021")
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "estimatedDelivery" }))).toContain(
+      expect(extractText(tree.findByProps({ testID: "shippedOn" }))).toContain("Sep 2, 2021")
+      expect(extractText(tree.findByProps({ testID: "estimatedDelivery" }))).toContain(
         "Oct 2, 2021"
       )
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "trackingUrl" }))).toContain(
+      expect(extractText(tree.findByProps({ testID: "trackingUrl" }))).toContain(
         "View full tracking details"
       )
     })
 
     it("not renders fields without data", () => {
-      const tree = renderWithRelay({
+      const tree = renderWithWrappersLEGACY(<TestRenderer />).root
+      resolveMostRecentRelayOperation(mockEnvironment, {
         CommerceOrder: () => ({
           ...CommerceShipOrder,
           lineItems: { edges: [{ node: { shipment: null, fulfillments: null } }] },
         }),
       })
 
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "orderStatus" }))).toBe("pending")
-      expect(tree.UNSAFE_getAllByProps({ testID: "trackingNumber" })).toHaveLength(0)
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "noTrackingNumber" }))).toBe(
+      expect(extractText(tree.findByProps({ testID: "orderStatus" }))).toBe("pending")
+      expect(tree.findAllByProps({ testID: "trackingNumber" })).toHaveLength(0)
+      expect(extractText(tree.findByProps({ testID: "noTrackingNumber" }))).toBe(
         "Tracking not available"
       )
-      expect(tree.UNSAFE_getAllByProps({ testID: "shippedOn" })).toHaveLength(0)
-      expect(tree.UNSAFE_getAllByProps({ testID: "estimatedDelivery" })).toHaveLength(0)
-      expect(tree.UNSAFE_getAllByProps({ testID: "trackingUrl" })).toHaveLength(0)
+      expect(tree.findAllByProps({ testID: "shippedOn" })).toHaveLength(0)
+      expect(tree.findAllByProps({ testID: "estimatedDelivery" })).toHaveLength(0)
+      expect(tree.findAllByProps({ testID: "trackingUrl" })).toHaveLength(0)
     })
   })
 
   describe("when CommerceShipArta", () => {
     it("renders section", () => {
-      const tree = renderWithRelay({
+      const tree = renderWithWrappersLEGACY(<TestRenderer />).root
+      resolveMostRecentRelayOperation(mockEnvironment, {
         CommerceOrder: () => CommerceShipArtaOrder,
       })
 
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "orderStatus" }))).toBe("in transit")
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "trackingNumber" }))).toContain(
-        "12345678910"
-      )
-      expect(tree.UNSAFE_getAllByProps({ testID: "noTrackingNumber" })).toHaveLength(0)
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "shippedOn" }))).toContain("Oct 3, 2021")
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "estimatedDelivery" }))).toContain(
+      expect(extractText(tree.findByProps({ testID: "orderStatus" }))).toBe("in transit")
+      expect(extractText(tree.findByProps({ testID: "trackingNumber" }))).toContain("12345678910")
+      expect(tree.findAllByProps({ testID: "noTrackingNumber" })).toHaveLength(0)
+      expect(extractText(tree.findByProps({ testID: "shippedOn" }))).toContain("Oct 3, 2021")
+      expect(extractText(tree.findByProps({ testID: "estimatedDelivery" }))).toContain(
         "on September 20, 2021"
       )
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "trackingUrl" }))).toContain(
+      expect(extractText(tree.findByProps({ testID: "trackingUrl" }))).toContain(
         "View full tracking details"
       )
     })
 
     it("not renders fields without data", () => {
-      const tree = renderWithRelay({
+      const tree = renderWithWrappersLEGACY(<TestRenderer />).root
+      resolveMostRecentRelayOperation(mockEnvironment, {
         CommerceOrder: () => ({
           ...CommerceShipArtaOrder,
           lineItems: {
@@ -150,18 +162,19 @@ describe("TrackOrderSection", () => {
         }),
       })
 
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "orderStatus" }))).toBe("in transit")
-      expect(tree.UNSAFE_getAllByProps({ testID: "trackingNumber" })).toHaveLength(0)
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "noTrackingNumber" }))).toBe(
+      expect(extractText(tree.findByProps({ testID: "orderStatus" }))).toBe("in transit")
+      expect(tree.findAllByProps({ testID: "trackingNumber" })).toHaveLength(0)
+      expect(extractText(tree.findByProps({ testID: "noTrackingNumber" }))).toBe(
         "Tracking not available"
       )
-      expect(tree.UNSAFE_getAllByProps({ testID: "shippedOn" })).toHaveLength(0)
-      expect(tree.UNSAFE_getAllByProps({ testID: "estimatedDelivery" })).toHaveLength(0)
-      expect(tree.UNSAFE_getAllByProps({ testID: "trackingUrl" })).toHaveLength(0)
+      expect(tree.findAllByProps({ testID: "shippedOn" })).toHaveLength(0)
+      expect(tree.findAllByProps({ testID: "estimatedDelivery" })).toHaveLength(0)
+      expect(tree.findAllByProps({ testID: "trackingUrl" })).toHaveLength(0)
     })
 
     it("when delivered", () => {
-      const tree = renderWithRelay({
+      const tree = renderWithWrappersLEGACY(<TestRenderer />).root
+      resolveMostRecentRelayOperation(mockEnvironment, {
         CommerceOrder: () => ({
           ...CommerceShipArtaOrder,
           lineItems: {
@@ -176,23 +189,24 @@ describe("TrackOrderSection", () => {
         }),
       })
 
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "deliveredStatus" }))).toBe(
+      expect(extractText(tree.findByProps({ testID: "deliveredStatus" }))).toBe(
         "Delivered on Sep 2, 2021"
       )
     })
   })
 
-  // describe("when CommercePickup", () => {
-  //   it("not renders section", () => {
-  //     const tree = renderWithRelay({
-  //       CommerceOrder: () => ({
-  //         ...CommerceShipOrder,
-  //         requestedFulfillment: { __typename: "CommercePickup" },
-  //         lineItems: { edges: [{ node: { shipment: null, fulfillments: null } }] },
-  //       }),
-  //     })
+  describe("when CommercePickup", () => {
+    it("not renders section", () => {
+      const tree = renderWithWrappersLEGACY(<TestRenderer />).root
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        CommerceOrder: () => ({
+          ...CommerceShipOrder,
+          requestedFulfillment: { __typename: "CommercePickup" },
+          lineItems: { edges: [{ node: { shipment: null, fulfillments: null } }] },
+        }),
+      })
 
-  //     expect(tree).toBeNull()
-  //   })
-  // })
+      expect(tree.instance).toBeNull()
+    })
+  })
 })
