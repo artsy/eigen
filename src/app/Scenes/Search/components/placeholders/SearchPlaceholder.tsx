@@ -117,7 +117,7 @@ export const SearchPlaceholder: React.FC = () => {
 
   return (
     <ProvidePlaceholderContext>
-      <Box m={2} mb={0}>
+      <Box m={2} mb={0} testID="search-placeholder">
         {/* Search input */}
         <PlaceholderBox height={50} />
         <Spacer mt={2} />
