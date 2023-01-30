@@ -1,7 +1,6 @@
 import { Flex } from "palette/elements/Flex"
 import { Text } from "palette/elements/Text"
 import { useColor } from "palette/hooks"
-import { TriangleDown } from "palette/svgs"
 import { useEffect } from "react"
 import { TouchableWithoutFeedback, ViewStyle } from "react-native"
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
@@ -25,7 +24,6 @@ export const ToolTipFlyout: React.FC<Props> = ({
   width,
   onClose,
   onToolTipPress,
-  position,
   testID,
   text,
 }) => {

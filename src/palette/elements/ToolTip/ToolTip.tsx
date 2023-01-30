@@ -65,7 +65,7 @@ export const ToolTip: React.FC<ToolTipProps> = ({
   const dismissToolTip = () => setToolTip(undefined)
 
   const [pageX, setPageX] = useState(0)
-  const childrenRef = useRef(null)
+  const childrenRef = useRef<View>(null)
 
   const totalTextWidth = singleTextDimension.width * (toolTipText?.length ?? 0)
 
@@ -77,6 +77,9 @@ export const ToolTip: React.FC<ToolTipProps> = ({
 
   const triangleXDisplacement = childrenDimensions.x + childrenDimensions.width / 2
 
+  // Calculate the direction of flow of the tooltip. So a tooltip near the right edge of the screen
+  // should flow to the left so it remains in the viewport, and vice-versa. Without this, tooltip
+  // around the edges can flow off screen
   const nearLeftEdge = pageX < mWidth / 4
   const nearRightEdge = pageX > mWidth - mWidth / 4
   const extraStyle = nearLeftEdge ? { left: 0 } : nearRightEdge ? { right: 0 } : undefined
@@ -122,9 +125,18 @@ export const ToolTip: React.FC<ToolTipProps> = ({
             width: event.nativeEvent.layout.width,
             x: event.nativeEvent.layout.x,
           })
-          childrenRef.current.measure((_fx, _fy, _width, _height, px, _py) => {
-            setPageX(px)
-          })
+          childrenRef.current?.measure(
+            (
+              _fx: number,
+              _fy: number,
+              _width: number,
+              _height: number,
+              px: number,
+              _py: number
+            ) => {
+              setPageX(px)
+            }
+          )
         }}
       >
         {children}
@@ -156,6 +168,11 @@ export const ToolTip: React.FC<ToolTipProps> = ({
           )}
         </>
       )}
+
+      {/** We use the singleText here as a sample to precalculate the estimated height and width each
+       * letter of the text will need. With this info we can correctly estimated the needed total width.
+       * Also this helps us know before hand, the size (width and height) to animate/inflate the container to
+       */}
       {enabled && toolTipText && (
         <View
           style={{ position: "absolute", opacity: 0 }}
@@ -166,6 +183,7 @@ export const ToolTip: React.FC<ToolTipProps> = ({
             })
           }}
         >
+          {/** "x" is the perfect sample that fits all letter width and height */}
           <ToolTipTextContainer text="x" />
         </View>
       )}
@@ -175,7 +193,7 @@ export const ToolTip: React.FC<ToolTipProps> = ({
 
 export const useToolTipContext = () => {
   const context = useContext(ToolTipContext)
-  if (!context && __DEV__) {
+  if (!context) {
     throw new Error(
       "Attempted to use useToolTipContext outside of ToolTip Provider. Please wrap your component with <ToolTip>"
     )
