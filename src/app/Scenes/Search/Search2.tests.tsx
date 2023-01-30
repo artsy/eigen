@@ -4,7 +4,6 @@ import {
   waitFor,
   waitForElementToBeRemoved,
 } from "@testing-library/react-native"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { SearchScreen2 } from "./Search2"
 
