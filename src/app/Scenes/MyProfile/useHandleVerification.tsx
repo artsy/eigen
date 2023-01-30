@@ -1,5 +1,6 @@
 import { captureException } from "@sentry/react-native"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { verifyEmail } from "app/utils/verifyEmail"
 import { verifyID } from "app/utils/verifyID"
 import { useCallback, useState } from "react"
@@ -47,12 +48,12 @@ const useHandleVerification = (type: verificationType) => {
 
 const verify = async (type: verificationType) => {
   if (type === "Email") {
-    const { sendConfirmationEmail } = await verifyEmail(defaultEnvironment)
+    const { sendConfirmationEmail } = await verifyEmail(getRelayEnvironment())
 
     const confirmationOrError = sendConfirmationEmail?.confirmationOrError
     return confirmationOrError?.unconfirmedEmail
   } else {
-    const { sendIdentityVerificationEmail } = await verifyID(defaultEnvironment)
+    const { sendIdentityVerificationEmail } = await verifyID(getRelayEnvironment())
 
     const confirmationOrError = sendIdentityVerificationEmail?.confirmationOrError
     return confirmationOrError?.identityVerificationEmail?.state

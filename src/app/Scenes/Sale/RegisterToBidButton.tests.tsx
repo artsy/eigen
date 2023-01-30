@@ -73,8 +73,17 @@ describe("RegisterToBidButton", () => {
           qualifiedForBidding: true,
         },
       }),
+      Me: () => ({
+        biddedLots: [
+          {
+            saleArtwork: {
+              id: "some-id",
+            },
+          },
+        ],
+      }),
     })
 
-    expect(tree.getAllByText("You're approved to bid")).toBeFalsy()
+    expect(tree.queryByText("You're approved to bid")).toBeNull()
   })
 })

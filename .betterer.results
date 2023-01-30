@@ -1629,8 +1629,8 @@ exports[`Avoid using class components`] = {
     "src/app/Components/Bidding/Components/Timer.tsx:3834085858": [
       [197, 32, 23, "Try using a functional component.", "3210885008"]
     ],
-    "src/app/Components/Bidding/Context/TimeOffsetProvider.tests.tsx:4178120406": [
-      [13, 19, 23, "Try using a functional component.", "3210885008"]
+    "src/app/Components/Bidding/Context/TimeOffsetProvider.tests.tsx:2534639299": [
+      [14, 19, 23, "Try using a functional component.", "3210885008"]
     ],
     "src/app/Components/Bidding/Context/TimeOffsetProvider.tsx:1656948563": [
       [72, 32, 23, "Try using a functional component.", "3210885008"]
