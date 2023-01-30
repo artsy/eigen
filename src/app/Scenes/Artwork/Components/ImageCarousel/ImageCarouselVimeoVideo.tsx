@@ -72,15 +72,12 @@ const useVimeoVideoMetadata = (videoId: string) => {
   useEffect(() => {
     const fetchVideoMetadata = async () => {
       try {
-        const response = await fetch(
-          `https://api.vimeo.com/videos/${videoId}?access_token=${Config.VIMEO_PUBLIC_TOKEN}`,
-          {
-            headers: {
-              Accept: "application/vnd.vimeo.*+json;version=3.4",
-              Authorization: `Bearer ${Config.VIMEO_PUBLIC_TOKEN}`,
-            },
-          }
-        )
+        const response = await fetch(`https://api.vimeo.com/videos/${videoId}`, {
+          headers: {
+            Accept: "application/vnd.vimeo.*+json;version=3.4",
+            Authorization: `Bearer ${Config.VIMEO_PUBLIC_TOKEN}`,
+          },
+        })
         const data = await response.json()
         setVideoMetadata(data)
       } catch (error) {
