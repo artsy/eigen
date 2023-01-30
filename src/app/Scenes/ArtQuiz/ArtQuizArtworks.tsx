@@ -59,11 +59,6 @@ export const ArtQuizArtworks = () => {
   const handleNext = (action: "Like" | "Dislike") => {
     popoverMessage.hide()
 
-    if (activeCardIndex + 1 === artworks.length) {
-      navigate("ArtQuizResults")
-      return
-    }
-
     pagerViewRef.current?.setPage(activeCardIndex + 1)
 
     if (action === "Like") {
@@ -95,6 +90,11 @@ export const ArtQuizArtworks = () => {
         },
       },
     })
+
+    if (activeCardIndex + 1 === artworks.length) {
+      navigate("ArtQuizResults")
+      return
+    }
   }
 
   const handleOnBack = () => {
