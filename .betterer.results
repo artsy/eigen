@@ -42,8 +42,8 @@ exports[`Stop using useAnimatedValue, use useSharedValue instead`] = {
       [36, 16, 17, "\`useAnimatedValue\` is for reanimated v1. Use v2\'s \`useSharedValue\`.", "3761664346"],
       [37, 20, 17, "\`useAnimatedValue\` is for reanimated v1. Use v2\'s \`useSharedValue\`.", "3761664346"]
     ],
-    "src/app/Scenes/Artwork/Components/ImageCarousel/FullScreen/ImageCarouselFullScreen.tsx:2095063561": [
-      [47, 22, 17, "\`useAnimatedValue\` is for reanimated v1. Use v2\'s \`useSharedValue\`.", "3761664346"]
+    "src/app/Scenes/Artwork/Components/ImageCarousel/FullScreen/ImageCarouselFullScreen.tsx:654763029": [
+      [48, 22, 17, "\`useAnimatedValue\` is for reanimated v1. Use v2\'s \`useSharedValue\`.", "3761664346"]
     ],
     "src/app/Scenes/Artwork/Components/ImageCarousel/FullScreen/ImageZoomView.tsx:923915216": [
       [129, 23, 17, "\`useAnimatedValue\` is for reanimated v1. Use v2\'s \`useSharedValue\`.", "3761664346"],
@@ -311,18 +311,12 @@ exports[`Finish our strictness migration`] = {
       [26, 52, 40, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "1708246099"],
       [31, 52, 40, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "1708246099"]
     ],
-    "src/app/Scenes/Artwork/Components/ImageCarousel/FullScreen/ImageCarouselFullScreen.tsx:2095063561": [
-      [94, 60, 40, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "1708246099"],
-      [118, 68, 40, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "1708246099"]
+    "src/app/Scenes/Artwork/Components/ImageCarousel/FullScreen/ImageCarouselFullScreen.tsx:654763029": [
+      [127, 68, 40, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "1708246099"]
     ],
-    "src/app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext.tsx:2009706848": [
-      [72, 50, 40, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "1708246099"],
-      [96, 64, 40, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "1708246099"]
-    ],
-    "src/app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselEmbedded.tsx:2361132445": [
-      [41, 50, 40, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "1708246099"],
-      [143, 54, 40, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "1708246099"],
-      [155, 60, 40, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "1708246099"]
+    "src/app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext.tsx:2117699572": [
+      [87, 50, 40, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "1708246099"],
+      [112, 64, 40, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "1708246099"]
     ],
     "src/app/Scenes/Artwork/Components/OtherWorks/ContextGridCTA.tsx:1888146634": [
       [22, 52, 40, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "1708246099"]
@@ -1224,9 +1218,6 @@ exports[`Fix all STRICTNESS_MIGRATION`] = {
     "src/app/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName.tsx:3191161084": [
       [14, 35, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"]
     ],
-    "src/app/Scenes/Artwork/Components/ArtworkHeader.tsx:1676438438": [
-      [130, 43, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"]
-    ],
     "src/app/Scenes/Artwork/Components/AuctionPrice.tsx:2112730869": [
       [22, 22, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"],
       [26, 24, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"],
@@ -1271,20 +1262,16 @@ exports[`Fix all STRICTNESS_MIGRATION`] = {
       [26, 24, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"],
       [31, 24, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"]
     ],
-    "src/app/Scenes/Artwork/Components/ImageCarousel/FullScreen/ImageCarouselFullScreen.tsx:2095063561": [
-      [94, 32, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"],
-      [118, 40, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"]
+    "src/app/Scenes/Artwork/Components/ImageCarousel/FullScreen/ImageCarouselFullScreen.tsx:654763029": [
+      [127, 40, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"]
     ],
-    "src/app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext.tsx:2009706848": [
-      [72, 22, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"],
-      [96, 36, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"],
-      [140, 17, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"]
+    "src/app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext.tsx:2117699572": [
+      [87, 22, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"],
+      [112, 36, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"],
+      [156, 17, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"]
     ],
-    "src/app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselEmbedded.tsx:2361132445": [
-      [41, 22, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"],
-      [143, 26, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"],
-      [155, 32, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"],
-      [163, 49, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"]
+    "src/app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselEmbedded.tsx:1752216318": [
+      [173, 49, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"]
     ],
     "src/app/Scenes/Artwork/Components/OtherWorks/ContextGridCTA.tsx:1888146634": [
       [22, 24, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"]
@@ -1695,8 +1682,8 @@ exports[`Avoid using class components`] = {
     "src/app/Components/Modal.tsx:1394418038": [
       [38, 19, 23, "Try using a functional component.", "3210885008"]
     ],
-    "src/app/Components/OpaqueImageView/OpaqueImageView.tsx:1665090421": [
-      [79, 37, 23, "Try using a functional component.", "3210885008"]
+    "src/app/Components/OpaqueImageView/OpaqueImageView.tsx:3978137333": [
+      [80, 37, 23, "Try using a functional component.", "3210885008"]
     ],
     "src/app/Components/RelatedArtists/RelatedArtist.tsx:2207857089": [
       [15, 20, 17, "Try using a functional component.", "3548830911"]

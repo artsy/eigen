@@ -1,12 +1,21 @@
-import { ImageCarousel_images$data } from "__generated__/ImageCarousel_images.graphql"
+import { ImageCarousel_figures$data } from "__generated__/ImageCarousel_figures.graphql"
 import { Schema } from "app/utils/track"
 import { GlobalState, useGlobalState } from "app/utils/useGlobalState"
 import React, { useMemo, useRef } from "react"
 import { Animated, FlatList, View } from "react-native"
 import { useTracking } from "react-tracking"
 
+export type ImageCarouselImage = Extract<ImageCarousel_figures$data[0], { __typename: "Image" }>
+export type ImageCarouselVideo = Extract<ImageCarousel_figures$data[0], { __typename: "Video" }> & {
+  width: number
+  height: number
+  url: string
+}
+
+export type ImageCarouselMedia = ImageCarouselImage | ImageCarouselVideo
+
 export type ImageDescriptor = Pick<
-  ImageCarousel_images$data[number],
+  ImageCarouselImage,
   "deepZoom" | "height" | "width" | "url" | "largeImageURL"
 >
 
@@ -43,22 +52,26 @@ export type FullScreenState =
   | "exiting"
 
 export interface ImageCarouselContext {
-  imageIndex: GlobalState<number>
-  lastImageIndex: GlobalState<number>
-  fullScreenState: GlobalState<FullScreenState>
-  isZoomedCompletelyOut: GlobalState<boolean>
-  images: ImageDescriptor[]
-  embeddedImageRefs: View[]
-  embeddedFlatListRef: React.RefObject<FlatList<any>>
-  xScrollOffsetAnimatedValue: React.RefObject<Animated.Value>
   dispatch(action: ImageCarouselAction): void
+  embeddedFlatListRef: React.RefObject<FlatList<any>>
+  embeddedImageRefs: View[]
+  fullScreenState: GlobalState<FullScreenState>
+  imageIndex: GlobalState<number>
+  images: ImageDescriptor[]
+  isZoomedCompletelyOut: GlobalState<boolean>
+  lastImageIndex: GlobalState<number>
+  media: ImageCarouselImage[] & ImageCarouselVideo[]
+  setVideoAsCover?: boolean
+  videos?: ImageCarouselVideo[]
+  xScrollOffsetAnimatedValue: React.RefObject<Animated.Value>
 }
 
 export function useNewImageCarouselContext({
   images,
   onImageIndexChange,
-}: {
-  images: ImageDescriptor[]
+  setVideoAsCover = false,
+  videos = [],
+}: Pick<ImageCarouselContext, "images" | "setVideoAsCover" | "videos"> & {
   onImageIndexChange?: (imageIndex: number) => void
 }): ImageCarouselContext {
   const embeddedImageRefs = useMemo(() => [], [])
@@ -70,6 +83,8 @@ export function useNewImageCarouselContext({
   const [isZoomedCompletelyOut, setIsZoomedCompletelyOut] = useGlobalState(true)
   const tracking = useTracking()
 
+  const media = setVideoAsCover ? [...videos, ...images] : [...images, ...videos]
+
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   return useMemo(
     () => ({
@@ -78,6 +93,7 @@ export function useNewImageCarouselContext({
       fullScreenState,
       isZoomedCompletelyOut,
       images,
+      media,
       embeddedImageRefs,
       embeddedFlatListRef,
       xScrollOffsetAnimatedValue,
@@ -112,7 +128,7 @@ export function useNewImageCarouselContext({
             break
           case "TAPPED_TO_GO_FULL_SCREEN":
             // some artwork images are corrupt (!?) and do not have deepZoom
-            if (images[imageIndex.current].deepZoom) {
+            if ((media[imageIndex.current] as ImageDescriptor).deepZoom) {
               tracking.trackEvent({
                 action_name: Schema.ActionNames.ArtworkImageZoom,
                 action_type: Schema.ActionTypes.Tap,

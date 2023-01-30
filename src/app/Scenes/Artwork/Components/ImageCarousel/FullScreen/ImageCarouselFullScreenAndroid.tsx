@@ -1,7 +1,8 @@
 import {
   ImageCarouselContext,
-  ImageDescriptor,
+  ImageCarouselMedia,
 } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
+import { ImageCarouselVimeoVideo } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselVimeoVideo"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useCallback, useContext, useEffect, useMemo } from "react"
 import { FlatList, Modal, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
@@ -16,7 +17,7 @@ const ZoomFlatList = createZoomListComponent(FlatList)
 
 export const ImageCarouselFullScreenAndroid = () => {
   const screenDimensions = useScreenDimensions()
-  const { images, dispatch, fullScreenState, imageIndex } = useContext(ImageCarouselContext)
+  const { media, dispatch, fullScreenState, imageIndex } = useContext(ImageCarouselContext)
   fullScreenState.useUpdates()
   const initialScrollIndex = useMemo(() => imageIndex.current, [])
   const { setIsDeepZoomModalVisible } = GlobalStore.actions.devicePrefs
@@ -37,13 +38,23 @@ export const ImageCarouselFullScreenAndroid = () => {
   }, [fullScreenState.current])
 
   const renderItem = useCallback(
-    ({ item: image, index }: { item: ImageDescriptor; index: number }) => {
-      return <ImageZoomViewAndroid image={image} index={index} />
+    ({ item, index }: { item: ImageCarouselMedia; index: number }) => {
+      if (item.__typename === "Video") {
+        return (
+          <ImageCarouselVimeoVideo
+            width={screenDimensions.width}
+            height={screenDimensions.height}
+            vimeoUrl={item.url!}
+          />
+        )
+      }
+
+      return <ImageZoomViewAndroid image={item} index={index} />
     },
     [screenDimensions.orientation]
   )
 
-  // update the imageIndex on scroll
+  // Update the imageIndex on scroll
   const onScroll = useCallback(
     (e: NativeSyntheticEvent<NativeScrollEvent>) => {
       const nextImageIndex = Math.round(e.nativeEvent.contentOffset.x / screenDimensions.width)
@@ -55,7 +66,7 @@ export const ImageCarouselFullScreenAndroid = () => {
   )
 
   return (
-    // on mount we want the modal to be visible instantly and handle transitions elsewhere ourselves
+    // On mount we want the modal to be visible instantly and handle transitions elsewhere ourselves
     // on unmount we use it's built-in fade transition
     <Modal
       transparent
@@ -65,8 +76,8 @@ export const ImageCarouselFullScreenAndroid = () => {
       statusBarTranslucent
     >
       <GestureHandlerRootView style={{ flex: 1, backgroundColor: "white" }}>
-        <ZoomFlatList
-          data={images}
+        <ZoomFlatList<ImageCarouselMedia>
+          data={media}
           pagingEnabled
           showsHorizontalScrollIndicator={false}
           horizontal

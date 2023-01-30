@@ -1,8 +1,9 @@
 import { captureMessage } from "@sentry/react-native"
-import { ImageCarousel_images$data } from "__generated__/ImageCarousel_images.graphql"
+import { ImageCarousel_figures$data } from "__generated__/ImageCarousel_figures.graphql"
 import { createGeminiUrl } from "app/Components/OpaqueImageView/createGeminiUrl"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { isPad } from "app/utils/hardware"
+import { guardFactory } from "app/utils/types/guardFactory"
 import { Flex } from "palette"
 import { useMemo } from "react"
 import { PixelRatio, Platform } from "react-native"
@@ -12,6 +13,8 @@ import { ImageCarouselFullScreen } from "./FullScreen/ImageCarouselFullScreen"
 import { ImageCarouselFullScreenAndroid } from "./FullScreen/ImageCarouselFullScreenAndroid"
 import {
   ImageCarouselContext,
+  ImageCarouselImage,
+  ImageCarouselVideo,
   ImageDescriptor,
   useNewImageCarouselContext,
 } from "./ImageCarouselContext"
@@ -31,7 +34,9 @@ interface MappedImageDescriptor extends Pick<ImageDescriptor, "deepZoom"> {
 
 export interface ImageCarouselProps {
   /** CarouselImageDescriptor for when you want to display local images */
-  images: ImageCarousel_images$data | CarouselImageDescriptor[]
+  staticImages?: CarouselImageDescriptor[]
+  figures?: ImageCarousel_figures$data
+  setVideoAsCover?: boolean
   cardHeight: number
   onImageIndexChange?: (imageIndex: number) => void
   paginationIndicatorType?: IndicatorType
@@ -45,65 +50,18 @@ export interface ImageCarouselProps {
  * and use those to calculate a dynamic version of cardBoundingBox and perhaps other geometric quantities.
  */
 export const ImageCarousel = (props: ImageCarouselProps) => {
-  const screenDimensions = useScreenDimensions()
-  const { cardHeight, onImageIndexChange } = props
-
-  const embeddedCardBoundingBox = {
-    width: screenDimensions.width,
-    height: isPad() ? 460 : cardHeight,
-  }
-
-  // TODO:- Deepzoom for local images?
-  const disableDeepZoom = props.images.some((image) => isALocalImage(image.url))
-
-  const images: ImageDescriptor[] = useMemo(() => {
-    let result = props.images
-      .map((image): MappedImageDescriptor | null => {
-        if (!image.height || !image.width || !image.url) {
-          // something is very wrong
-          return null
-        }
-        const { width, height } = fitInside(embeddedCardBoundingBox, image as MappedImageDescriptor)
-        return {
-          width,
-          height,
-          url:
-            isALocalImage(image.url) || !imageHasVersions(image)
-              ? image.url
-              : createGeminiUrl({
-                  imageURL: image.url.replace(
-                    ":version",
-                    getBestImageVersionForThumbnail(image.imageVersions as string[])
-                  ),
-                  // upscale to match screen resolution
-                  width: width * PixelRatio.get(),
-                  height: height * PixelRatio.get(),
-                }),
-          deepZoom: image.deepZoom,
-          largeImageURL: image.largeImageURL ?? image.url ?? null,
-        }
-      })
-      .filter((mappedImage): mappedImage is MappedImageDescriptor => Boolean(mappedImage))
-
-    if (!disableDeepZoom) {
-      if (result.some((image) => !image.deepZoom)) {
-        const filteredResult = result.filter((image) => image.deepZoom)
-        if (filteredResult.length === 0) {
-          result = [result[0]]
-        } else {
-          result = filteredResult
-        }
-      }
-    }
-
-    return result
-  }, [props.images])
-
-  const context = useNewImageCarouselContext({ images, onImageIndexChange })
+  const { cardHeight, onImageIndexChange, setVideoAsCover } = props
+  const { images, videos, disableDeepZoom } = useImageCarouselMedia(props)
+  const context = useNewImageCarouselContext({
+    images,
+    videos,
+    setVideoAsCover,
+    onImageIndexChange,
+  })
 
   context.fullScreenState.useUpdates()
 
-  if (images.length === 0) {
+  if (context.media.length === 0) {
     return null
   }
 
@@ -111,7 +69,11 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
     <ImageCarouselContext.Provider value={context}>
       <Flex>
         <ImageCarouselEmbedded cardHeight={cardHeight} disableFullScreen={disableDeepZoom} />
-        {images.length > 1 && <PaginationIndicator indicatorType={props.paginationIndicatorType} />}
+
+        {context.media.length > 1 && (
+          <PaginationIndicator indicatorType={props.paginationIndicatorType} />
+        )}
+
         {context.fullScreenState.current !== "none" && <ImagesCarousel />}
       </Flex>
     </ImageCarouselContext.Provider>
@@ -133,23 +95,35 @@ export const ImagesCarousel = () => {
 }
 
 export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarousel, {
-  images: graphql`
-    fragment ImageCarousel_images on Image @relay(plural: true) {
-      url: imageURL
-      largeImageURL: url(version: "larger")
-      width
-      height
-      imageVersions
-      deepZoom {
-        image: Image {
-          tileSize: TileSize
-          url: Url
-          format: Format
-          size: Size {
-            width: Width
-            height: Height
+  figures: graphql`
+    fragment ImageCarousel_figures on ArtworkFigures @relay(plural: true) {
+      ... on Image {
+        __typename
+        url
+        largeImageURL: url(version: "larger")
+        width
+        height
+        imageVersions
+        isDefault
+        deepZoom {
+          image: Image {
+            tileSize: TileSize
+            url: Url
+            format: Format
+            size: Size {
+              width: Width
+              height: Height
+            }
           }
         }
+      }
+      ... on Video {
+        __typename
+        # Unfortunately, in MP, these types are ambiguous within the union
+        # so we have to alias them to avoid a conflict.
+        videoWidth: width
+        videoHeight: height
+        playerUrl
       }
     }
   `,
@@ -188,6 +162,106 @@ function getBestImageVersionForThumbnail(imageVersions: readonly string[]) {
   return "normalized"
 }
 
-const imageHasVersions = (image: CarouselImageDescriptor | ImageCarousel_images$data[number]) => {
+const imageHasVersions = (image: CarouselImageDescriptor) => {
   return image.imageVersions && image.imageVersions.length
+}
+
+const useImageCarouselMedia = (
+  props: ImageCarouselProps
+): {
+  images: ImageCarouselImage[]
+  videos: ImageCarouselVideo[]
+  disableDeepZoom: boolean | undefined
+} => {
+  const screenDimensions = useScreenDimensions()
+
+  const embeddedCardBoundingBox = {
+    width: screenDimensions.width,
+    height: isPad() ? 460 : props.cardHeight,
+  }
+
+  const imageFigures = props.staticImages?.length
+    ? props.staticImages
+    : props.figures?.filter(guardFactory("__typename", "Image"))
+
+  const videoFigures = props.figures?.filter(guardFactory("__typename", "Video"))
+
+  const disableDeepZoom = imageFigures?.some((image) => isALocalImage(image.url))
+
+  const images = useMemo(() => {
+    const mappedImages = imageFigures ?? props.staticImages ?? []
+
+    let result = mappedImages
+      .map((image) => {
+        const brokenImage = !image.height || !image.width || !image.url
+
+        if (brokenImage) {
+          return null
+        }
+
+        const { width, height } = fitInside(embeddedCardBoundingBox, image as MappedImageDescriptor)
+
+        const url = (() => {
+          if (isALocalImage(image.url) || !imageHasVersions(image as CarouselImageDescriptor)) {
+            return image.url
+          } else {
+            return createGeminiUrl({
+              imageURL: image.url.replace(
+                ":version",
+                getBestImageVersionForThumbnail(image.imageVersions as string[])
+              ),
+              // upscale to match screen resolution
+              width: width * PixelRatio.get(),
+              height: height * PixelRatio.get(),
+            })
+          }
+        })()
+
+        const largeImageURL = image.largeImageURL ?? image.url ?? null
+
+        return {
+          deepZoom: image?.deepZoom,
+          height,
+          largeImageURL,
+          url,
+          width,
+        }
+      })
+      .filter((mappedImage) => {
+        return Boolean(mappedImage)
+      })
+
+    if (!disableDeepZoom) {
+      if (result.some((image) => !image?.deepZoom)) {
+        const filteredResult = result.filter((image) => image?.deepZoom)
+        if (filteredResult.length === 0) {
+          result = [result[0]]
+        } else {
+          result = filteredResult
+        }
+      }
+    }
+
+    return result
+  }, [props.staticImages, imageFigures]) as ImageCarouselImage[]
+
+  // Map video props to the same format thats used for images
+  const videos = useMemo(() => {
+    if (!videoFigures) {
+      return []
+    }
+
+    return videoFigures.map((video) => ({
+      ...video,
+      width: video.videoWidth,
+      height: video.videoHeight,
+      url: video.playerUrl,
+    }))
+  }, [videoFigures]) as ImageCarouselVideo[]
+
+  return {
+    disableDeepZoom,
+    images: images ?? [],
+    videos,
+  }
 }

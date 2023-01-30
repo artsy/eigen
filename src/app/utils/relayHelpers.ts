@@ -1,4 +1,5 @@
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { useReducer } from "react"
 import { Record } from "relay-runtime/lib/store/RelayStoreTypes"
 
 export type CleanRelayFragment<T> = Omit<
@@ -39,4 +40,13 @@ export const findRelayRecordByDataID = (id: string): Record | undefined | null =
   const record = store.getSource().get(id)
 
   return record
+}
+
+/**
+ * Returns a fetchKey and a refetch function that can be used to force a refetch of a relay query
+ */
+export const useRefetch = () => {
+  const [fetchKey, refetch] = useReducer((state: number) => state + 1, 0)
+
+  return { fetchKey, refetch }
 }

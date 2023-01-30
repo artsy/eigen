@@ -6987,6 +6987,26 @@ type CreateBidderPayload {
   clientMutationId: String
 }
 
+type CreateCollectionFailure {
+  mutationError: GravityMutationError
+}
+
+input createCollectionInput {
+  clientMutationId: String
+  name: String!
+}
+
+type createCollectionPayload {
+  clientMutationId: String
+  responseOrError: CreateCollectionResponseOrError
+}
+
+union CreateCollectionResponseOrError = CreateCollectionFailure | CreateCollectionSuccess
+
+type CreateCollectionSuccess {
+  collection: Collection
+}
+
 input CreateConsignmentInquiryMutationInput {
   clientMutationId: String
   email: String!
@@ -7613,6 +7633,28 @@ type DeleteBankAccountPayload {
   bankAccountOrError: BankAccountMutationType
   clientMutationId: String
   me: Me
+}
+
+type DeleteCollectionFailure {
+  mutationError: GravityMutationError
+}
+
+input deleteCollectionInput {
+  clientMutationId: String
+  id: String!
+}
+
+type deleteCollectionPayload {
+  clientMutationId: String
+
+  # On success: the deleted collection
+  responseOrError: DeleteCollectionResponseOrError
+}
+
+union DeleteCollectionResponseOrError = DeleteCollectionFailure | DeleteCollectionSuccess
+
+type DeleteCollectionSuccess {
+  collection: Collection
 }
 
 type DeleteConversationFailure {
@@ -10787,6 +10829,7 @@ type Me implements Node {
     hasReply: Boolean
     last: Int
     partnerId: String
+    toBeReplied: Boolean
     type: ConversationsInputMode = USER
   ): ConversationConnection
   createdAt(
@@ -11422,6 +11465,9 @@ type Mutation {
   # Creates a bidder position
   createBidderPosition(input: BidderPositionInput!): BidderPositionPayload
 
+  # Create a collection
+  createCollection(input: createCollectionInput!): createCollectionPayload
+
   # Make inquiry about consignments
   createConsignmentInquiry(
     input: CreateConsignmentInquiryMutationInput!
@@ -11490,6 +11536,9 @@ type Mutation {
 
   # Remove a bank account
   deleteBankAccount(input: DeleteBankAccountInput!): DeleteBankAccountPayload
+
+  # Delete a collection
+  deleteCollection(input: deleteCollectionInput!): deleteCollectionPayload
 
   # Soft-delete a conversation.
   deleteConversation(input: DeleteConversationMutationInput!): DeleteConversationMutationPayload
@@ -13764,6 +13813,7 @@ type Query {
     hasReply: Boolean
     last: Int
     partnerId: String
+    toBeReplied: Boolean
     type: ConversationsInputMode = USER
   ): ConversationConnection
 
@@ -17902,6 +17952,7 @@ type Viewer {
     hasReply: Boolean
     last: Int
     partnerId: String
+    toBeReplied: Boolean
     type: ConversationsInputMode = USER
   ): ConversationConnection
 

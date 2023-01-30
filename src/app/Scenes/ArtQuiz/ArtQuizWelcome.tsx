@@ -1,5 +1,5 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { ArtQuizNavigationStack } from "app/Scenes/ArtQuiz/ArtQuiz"
+import { ArtQuizNavigationStack } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
 import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
 import { GlobalStore } from "app/store/GlobalStore"
 import { ArtsyLogoIcon, Button, Flex, Screen, Spacer, Text } from "palette"

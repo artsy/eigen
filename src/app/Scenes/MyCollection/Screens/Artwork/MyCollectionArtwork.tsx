@@ -7,6 +7,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { goBack, navigate, popToRoot } from "app/system/navigation/navigate"
 import { getVortexMedium } from "app/utils/marketPriceInsightHelpers"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
+import { useRefetch } from "app/utils/relayHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { compact } from "lodash"
@@ -31,25 +32,22 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
   category,
 }) => {
   const { trackEvent } = useTracking()
+  const { fetchKey, refetch } = useRefetch()
 
-  const data = useLazyLoadQuery<MyCollectionArtworkQuery>(MyCollectionArtworkScreenQuery, {
-    artworkId: artworkId || "",
-    // To not let the whole query fail if the artwork doesn't has an artist
-    artistInternalID: artistInternalID || "",
-    // TODO: Fix this logic once we only need category to fetch insights
-    medium: getVortexMedium(medium, category),
-  })
+  const data = useLazyLoadQuery<MyCollectionArtworkQuery>(
+    MyCollectionArtworkScreenQuery,
+    {
+      artworkId: artworkId || "",
+      // To not let the whole query fail if the artwork doesn't has an artist
+      artistInternalID: artistInternalID || "",
+      // TODO: Fix this logic once we only need category to fetch insights
+      medium: getVortexMedium(medium, category),
+    },
+    { fetchPolicy: "store-and-network", fetchKey }
+  )
 
   const comparableWorksCount = data?.artwork?.comparableAuctionResults?.totalCount
   const auctionResultsCount = data?.artwork?.artist?.auctionResultsConnection?.totalCount
-
-  if (!data.artwork) {
-    return (
-      <Flex flex={1} justifyContent="center" alignItems="center">
-        <Text>The requested Artwork is not available</Text>
-      </Flex>
-    )
-  }
 
   const handleEdit = useCallback(() => {
     trackEvent(tracks.editCollectedArtwork(data.artwork!.internalID, data.artwork!.slug))
@@ -59,11 +57,22 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
       passProps: {
         mode: "edit",
         artwork: data.artwork,
-        onSuccess: goBack,
+        onSuccess: () => {
+          refetch()
+          goBack()
+        },
         onDelete: popToRoot,
       },
     })
   }, [data.artwork])
+
+  if (!data.artwork) {
+    return (
+      <Flex flex={1} justifyContent="center" alignItems="center">
+        <Text>The requested Artwork is not available</Text>
+      </Flex>
+    )
+  }
 
   const shouldShowInsightsTab =
     !!data?._marketPriceInsights ||

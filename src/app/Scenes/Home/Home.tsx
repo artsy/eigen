@@ -207,6 +207,11 @@ const Home = (props: Props) => {
     },
     { title: "Trending Artists", type: "artist", data: homePageBelow?.popularArtistsArtistModule },
     {
+      title: "Works from Galleries You Follow",
+      type: "artwork",
+      data: homePageBelow?.worksFromGalleriesYouFollowArtworkModule,
+    },
+    {
       title: "Recently Viewed",
       type: "artwork",
       data: homePageBelow?.recentlyViewedWorksArtworkModule,
@@ -277,6 +282,14 @@ const Home = (props: Props) => {
                     rail={item.data || null}
                     scrollRef={scrollRefs.current[index]}
                     mb={MODULE_SEPARATOR_HEIGHT - 2}
+                  />
+                )
+              case "worksByArtistsYouFollow":
+                return (
+                  <ArtworkModuleRailFragmentContainer
+                    title={item.title}
+                    rail={item.data || null}
+                    scrollRef={scrollRefs.current[index]}
                   />
                 )
               case "artworkRecommendations":
@@ -450,6 +463,10 @@ export const HomeFragmentContainer = createRefetchContainer(
           ...ArtworkModuleRail_rail
         }
         similarToRecentlyViewedArtworkModule: artworkModule(key: SIMILAR_TO_RECENTLY_VIEWED) {
+          id
+          ...ArtworkModuleRail_rail
+        }
+        worksFromGalleriesYouFollowArtworkModule: artworkModule(key: FOLLOWED_GALLERIES) {
           id
           ...ArtworkModuleRail_rail
         }
