@@ -1,7 +1,7 @@
+import { screen } from "@testing-library/react-native"
 import { ArtistAboutShowsTestsQuery } from "__generated__/ArtistAboutShowsTestsQuery.graphql"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { Button, Flex } from "palette"
 import { FlatList } from "react-native"
 import { graphql } from "react-relay"
 import { ArtistAboutShowsFragmentContainer } from "./ArtistAboutShows"
@@ -27,7 +27,7 @@ describe("ArtistAboutShows", () => {
   })
 
   it("returns nothing if the user has no past/running/upcoming events", () => {
-    const tree = renderWithRelay({
+    renderWithRelay({
       ShowConnection: (context) => {
         switch (context.alias) {
           case "currentShows":
@@ -40,7 +40,8 @@ describe("ArtistAboutShows", () => {
       },
     })
 
-    expect(tree.UNSAFE_getAllByType(Flex).length).toEqual(0)
+    // component doesn't render anything
+    expect(screen.toJSON()).toBe(null)
   })
 
   it("returns list of shows if the user has past/running/upcoming events", () => {
@@ -63,7 +64,7 @@ describe("ArtistAboutShows", () => {
 
   describe("See all past shows Button", () => {
     it("is visible when the user has past shows", () => {
-      const tree = renderWithRelay({
+      renderWithRelay({
         ShowConnection: (context) => {
           switch (context.alias) {
             case "currentShows":
@@ -76,11 +77,11 @@ describe("ArtistAboutShows", () => {
         },
       })
 
-      expect(tree.UNSAFE_getAllByType(Button).length).toEqual(1)
+      expect(screen.queryByText(/See all past shows/)).toBeTruthy()
     })
 
     it("is hidden when the user has no past shows", () => {
-      const tree = renderWithRelay({
+      renderWithRelay({
         ShowConnection: (context) => {
           switch (context.alias) {
             case "currentShows":
@@ -93,7 +94,7 @@ describe("ArtistAboutShows", () => {
         },
       })
 
-      expect(tree.UNSAFE_getAllByType(Button).length).toEqual(0)
+      expect(screen.queryByText(/See all past shows/)).toBeFalsy()
     })
   })
 })
