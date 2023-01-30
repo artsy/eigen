@@ -1,4 +1,5 @@
 import { waitFor } from "@testing-library/react-native"
+import { TimeOffsetProviderTestsQuery } from "__generated__/TimeOffsetProviderTestsQuery.graphql"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Text } from "palette"
 import PropTypes from "prop-types"
