@@ -1,5 +1,4 @@
 import { captureException } from "@sentry/react-native"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { verifyEmail } from "app/utils/verifyEmail"
 import { verifyID } from "app/utils/verifyID"
