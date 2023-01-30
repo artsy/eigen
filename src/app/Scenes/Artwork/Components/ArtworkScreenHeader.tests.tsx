@@ -77,6 +77,8 @@ describe("ArtworkScreenHeader", () => {
     it("should correctly track event when `Create Alert` button is pressed", () => {
       const { getByText } = renderWithRelay({
         Artwork: () => ({
+          internalID: "internalID-1",
+          slug: "slug-1",
           artists: [{ name: "some-artist-name" }],
         }),
       })
