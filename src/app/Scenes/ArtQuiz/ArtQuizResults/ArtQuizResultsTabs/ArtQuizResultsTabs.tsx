@@ -2,30 +2,15 @@ import { ArtQuizResultsQuery$data } from "__generated__/ArtQuizResultsQuery.grap
 import { ArtQuizResultsTabs_me$key } from "__generated__/ArtQuizResultsTabs_me.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { ArtQuizLikedArtworks } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizLikedArtworks"
+import { ArtQuizResultsTabsHeader } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsTabsHeader"
 import { compact } from "lodash"
-import { Button, Flex, Screen, Spacer, Text } from "palette"
+import { Screen } from "palette"
 import { graphql, useFragment } from "react-relay"
 
 enum Tab {
   worksYouLiked = "Works you liked",
   collections = "Collections",
   artists = "Artists",
-}
-
-const ArtQuizResultsHeader = () => {
-  return (
-    <Flex px={2}>
-      <Text variant="lg">Explore Your Quiz Results</Text>
-      <Text variant="lg-display" color="black60">
-        Explore these collections and artists recommended based on your likes. Follow them to see
-        their latest works on your Artsy home.
-      </Text>
-      <Spacer m={1} />
-      <Button size="small" variant="outlineGray">
-        Email My Results
-      </Button>
-    </Flex>
-  )
 }
 
 export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] }) => {
@@ -52,7 +37,12 @@ export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] 
               content: <ArtQuizLikedArtworks savedArtworks={savedArtworks!} />,
             },
           ])}
-          staticHeaderContent={<ArtQuizResultsHeader />}
+          staticHeaderContent={
+            <ArtQuizResultsTabsHeader
+              title="Explore Your Quiz Results"
+              subtitle="We think you’ll enjoy these recommendations based on your likes. To tailor Artsy to your art tastes, follow artists and save works you love."
+            />
+          }
         />
       </Screen.Body>
     </Screen>

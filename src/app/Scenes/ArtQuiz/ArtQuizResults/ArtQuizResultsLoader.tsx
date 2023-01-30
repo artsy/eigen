@@ -1,7 +1,7 @@
 import { Flex, Screen, Spinner, Text } from "palette"
 import { useEffect, useState } from "react"
 
-export const ArtQuizResultsLoader = ({ onReady }: { onReady?: () => void }) => {
+export const ArtQuizResultsLoader = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -10,14 +10,13 @@ export const ArtQuizResultsLoader = ({ onReady }: { onReady?: () => void }) => {
     timeouts.push(
       setTimeout(() => {
         setLoading(false)
-        timeouts.push(setTimeout(onReady!, 1000))
       }, 2000)
     )
 
     return () => {
       timeouts.forEach(clearTimeout)
     }
-  }, [onReady])
+  }, [])
 
   return (
     <Screen>
