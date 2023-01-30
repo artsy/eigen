@@ -28,6 +28,7 @@
     "clean": "yarn clean-ios; yarn clean-android",
     "clean-android": "cd android; ./gradlew clean cleanBuildCache; cd -",
     "clean-ios": "yarn rimraf ~/Library/Developer/Xcode/DerivedData",
+    "deploy-beta": "./scripts/deploy-beta-both",
     "doctor": "./scripts/doctor.js",
     "flip_table": "./scripts/flip-table",
     "flip_table_extreme": "./scripts/flip-table-extreme",
