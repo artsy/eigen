@@ -273,7 +273,7 @@ describe("ImageCarouselFragmentContainer", () => {
 
       await waitFor(() => {
         expect(fetchMock).toHaveBeenCalledWith(
-          'https://api.vimeo.com/videos/<mock-value-for-field-"playerUrl">?access_token=undefined',
+          'https://api.vimeo.com/videos/<mock-value-for-field-"playerUrl">',
           {
             headers: {
               Accept: "application/vnd.vimeo.*+json;version=3.4",
