@@ -7,6 +7,7 @@
 
   - User facing changes:
 
+    - add search2 with ES only Artwork / Top pill functionality, behind FF - gkartalis
     - Added support for viewing artwork page videos
     - Add works from galleries you follow rail - mounir
     - add switchContainer and ff for new search screen - gkartalis
