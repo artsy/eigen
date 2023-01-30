@@ -1,6 +1,7 @@
 import { isALocalImage } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
 import React from "react"
 import {
+  ColorValue,
   Image,
   ImageResizeMode,
   LayoutChangeEvent,
@@ -32,7 +33,7 @@ interface Props extends ViewProps {
   retryFailedURLs?: boolean
 
   /** The background color for the image view */
-  placeholderBackgroundColor?: string
+  placeholderBackgroundColor?: ColorValue
 
   width?: number
   height?: number
@@ -79,7 +80,7 @@ interface State {
  */
 export default class OpaqueImageView extends React.Component<Props, State> {
   static defaultProps: Props = {
-    placeholderBackgroundColor: "#E7E7E7", // this is black10. Change it to that when this component becomes a function component.
+    placeholderBackgroundColor: processColor("#E7E7E7") as ColorValue, // this is black10. Change it to that when this component becomes a function component.
   }
 
   constructor(props: Props) {
