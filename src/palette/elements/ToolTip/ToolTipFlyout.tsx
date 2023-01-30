@@ -85,8 +85,8 @@ export const ToolTipFlyout: React.FC<Props> = ({
   )
 }
 
-/** Please Be careful applying any styling here. This forms the basis with which we measure
- * in advance how large we can inflate a tooltip.
+/** Please be careful with applying any styling here. This forms the basis with which we measure
+ * in advance by how large we can inflate a tooltip.
  */
 export const ToolTipTextContainer: React.FC<{ text?: string }> = ({ text }) => {
   const color = useColor()

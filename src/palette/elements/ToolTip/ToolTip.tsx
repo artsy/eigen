@@ -171,9 +171,9 @@ export const ToolTip: React.FC<ToolTipProps> = ({
         </>
       )}
 
-      {/** We use the singleText here as a sample to precalculate the estimated height and width each
-       * letter of the text will need. With this info we can correctly estimated the needed total width.
-       * Also this helps us know before hand, the size (width and height) to animate/inflate the container to
+      {/** We use the singleText here as a sample to precalculate the height and width each
+       * letter of the text will need. With this info we can correctly estimate the required total width.
+       * Also this helps us to know beforehand the size (width and height) to animate/inflate the container to
        */}
       {enabled && toolTipText && (
         <View
@@ -185,7 +185,7 @@ export const ToolTip: React.FC<ToolTipProps> = ({
             })
           }}
         >
-          {/** "x" is the perfect sample that fits all letter width and height */}
+          {/** "x" is the perfect sample that fits all letters' width and height */}
           <ToolTipTextContainer text="x" />
         </View>
       )}
@@ -203,9 +203,9 @@ export const useToolTipContext = () => {
   return context
 }
 
-/** Given a maximum width permissible and a total width, how many maximum widths can we get from the total width?
+/** Given a maximum width and a total width, how many of the maximum widths can we get from the total width?
  * The answer gotten will let us know how many lines of text the tool tip text will need.
- *  Note: We add plus one for whatever spill over remains i.e text that does not fill an entire line.
+ *  Note: We add one for whatever spill over remains i.e text that does not fill an entire line.
  */
 const getNumberOfLines = (maxWidth: number, totalWidth: number, numLines = 0): number => {
   if (maxWidth >= totalWidth) {
