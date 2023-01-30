@@ -1727,8 +1727,8 @@ exports[`Avoid using class components`] = {
     "src/app/Components/Modal.tsx:1394418038": [
       [38, 19, 23, "Try using a functional component.", "3210885008"]
     ],
-    "src/app/Components/OpaqueImageView/OpaqueImageView.tsx:1665090421": [
-      [79, 37, 23, "Try using a functional component.", "3210885008"]
+    "src/app/Components/OpaqueImageView/OpaqueImageView.tsx:3978137333": [
+      [80, 37, 23, "Try using a functional component.", "3210885008"]
     ],
     "src/app/Components/RelatedArtists/RelatedArtist.tsx:2207857089": [
       [15, 20, 17, "Try using a functional component.", "3548830911"]
