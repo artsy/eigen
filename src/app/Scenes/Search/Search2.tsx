@@ -67,6 +67,22 @@ export const Search2: React.FC = () => {
     setSelectedPill(TOP_PILL)
   }
 
+  const onSearchTextChanged = (queryText: string) => {
+    if (queryText.length === 0) {
+      trackEvent({
+        action_type: Schema.ActionNames.ARAnalyticsSearchCleared,
+      })
+      handleResetSearchInput()
+    }
+
+    queryText = queryText.trim()
+    setSearchState((state) => ({ ...state, query: queryText }))
+    trackEvent({
+      action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
+      query: queryText,
+    })
+  }
+
   const renderCityGuideCTA = () => {
     if (Platform.OS === "ios" && !isPad()) {
       return <CityGuideCTA />
@@ -95,21 +111,7 @@ export const Search2: React.FC = () => {
             ref={searchProviderValues?.inputRef}
             placeholder={SEARCH_INPUT_PLACEHOLDER}
             enableCancelButton
-            onChangeText={(queryText) => {
-              if (queryText.length === 0) {
-                trackEvent({
-                  action_type: Schema.ActionNames.ARAnalyticsSearchCleared,
-                })
-                handleResetSearchInput()
-              }
-
-              queryText = queryText.trim()
-              setSearchState((state) => ({ ...state, query: queryText }))
-              trackEvent({
-                action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
-                query: queryText,
-              })
-            }}
+            onChangeText={onSearchTextChanged}
           />
         </Flex>
 
