@@ -1,49 +1,31 @@
 import { fireEvent } from "@testing-library/react-native"
 import { ArtworkEditionSets_Test_Query } from "__generated__/ArtworkEditionSets_Test_Query.graphql"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { ArtworkEditionSetsFragmentContainer as ArtworkEditionSets } from "./ArtworkEditionSets"
 
-
 describe("ArtworkEditionSets", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const onSelectEditionMock = jest.fn()
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+  const { renderWithRelay } = setupTestWrapper<ArtworkEditionSets_Test_Query>({
+    Component: (props) => {
+      if (props?.artwork) {
+        return <ArtworkEditionSets artwork={props.artwork} onSelectEdition={onSelectEditionMock} />
+      }
+
+      return null
+    },
+    query: graphql`
+      query ArtworkEditionSets_Test_Query @relay_test_operation {
+        artwork(id: "artworkID") {
+          ...ArtworkEditionSets_artwork
+        }
+      }
+    `,
   })
 
-  const TestRenderer = () => {
-    return (
-      <QueryRenderer<ArtworkEditionSets_Test_Query>
-        environment={mockEnvironment}
-        query={graphql`
-          query ArtworkEditionSets_Test_Query @relay_test_operation {
-            artwork(id: "artworkID") {
-              ...ArtworkEditionSets_artwork
-            }
-          }
-        `}
-        variables={{}}
-        render={({ props }) => {
-          if (props?.artwork) {
-            return (
-              <ArtworkEditionSets artwork={props.artwork} onSelectEdition={onSelectEditionMock} />
-            )
-          }
-
-          return null
-        }}
-      />
-    )
-  }
-
   it("should render all edition sets", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText } = renderWithRelay({
       Artwork: () => artwork,
     })
 
@@ -52,9 +34,7 @@ describe("ArtworkEditionSets", () => {
   })
 
   it("should call `onSelectEdition` handler with the selected edition set id", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText } = renderWithRelay({
       Artwork: () => artwork,
     })
 

@@ -1,45 +1,28 @@
 import { ContextCardTestsQuery } from "__generated__/ContextCardTestsQuery.graphql"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { ContextCardFragmentContainer } from "./ContextCard"
 
-
 describe("ContextCard", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+  const { renderWithRelay } = setupTestWrapper<ContextCardTestsQuery>({
+    Component: (props) => {
+      if (props?.artwork) {
+        return <ContextCardFragmentContainer artwork={props.artwork} />
+      }
 
-  const TestWrapper = () => {
-    return (
-      <QueryRenderer<ContextCardTestsQuery>
-        environment={mockEnvironment}
-        query={graphql`
-          query ContextCardTestsQuery @relay_test_operation {
-            artwork(id: "artworkId") {
-              ...ContextCard_artwork
-            }
-          }
-        `}
-        variables={{}}
-        render={({ props }) => {
-          if (props?.artwork) {
-            return <ContextCardFragmentContainer artwork={props.artwork} />
-          }
-
-          return null
-        }}
-      />
-    )
-  }
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+      return null
+    },
+    query: graphql`
+      query ContextCardTestsQuery @relay_test_operation {
+        artwork(id: "artworkId") {
+          ...ContextCard_artwork
+        }
+      }
+    `,
   })
 
   it("renders sale name correctly", () => {
-    const { getByText } = renderWithWrappers(<TestWrapper />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText } = renderWithRelay({
       Artwork: () => auctionContextArtwork,
     })
 
@@ -47,9 +30,7 @@ describe("ContextCard", () => {
   })
 
   it("renders formatted sale start/end date correctly", () => {
-    const { getByText } = renderWithWrappers(<TestWrapper />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText } = renderWithRelay({
       Artwork: () => auctionContextArtwork,
     })
 
@@ -64,9 +45,7 @@ describe("ContextCard", () => {
         formattedStartDateTime: "In progress",
       },
     }
-    const { getByText } = renderWithWrappers(<TestWrapper />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText } = renderWithRelay({
       Artwork: () => saleContextArtwork,
     })
 
@@ -74,9 +53,7 @@ describe("ContextCard", () => {
   })
 
   it("renders sale image", () => {
-    const { getByLabelText } = renderWithWrappers(<TestWrapper />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByLabelText } = renderWithRelay({
       Artwork: () => auctionContextArtwork,
     })
 
@@ -84,9 +61,7 @@ describe("ContextCard", () => {
   })
 
   it("renders 'Auction' if the sale is an auction", () => {
-    const { getByText } = renderWithWrappers(<TestWrapper />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText } = renderWithRelay({
       Artwork: () => auctionContextArtwork,
     })
 
@@ -101,9 +76,7 @@ describe("ContextCard", () => {
         isAuction: false,
       },
     }
-    const { toJSON } = renderWithWrappers(<TestWrapper />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { toJSON } = renderWithRelay({
       Artwork: () => saleContextArtwork,
     })
 

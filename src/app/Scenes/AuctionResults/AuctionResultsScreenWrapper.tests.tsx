@@ -1,49 +1,35 @@
 import { AuctionResultsScreenWrapperTestsQuery } from "__generated__/AuctionResultsScreenWrapperTestsQuery.graphql"
 import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import {
   AuctionResultsScreenWrapperContainer,
   AuctionResultsState,
 } from "./AuctionResultsScreenWrapper"
 
-
 describe("AuctionResultsForArtistsYouFollowContainer", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  const TestRenderer = () => (
-    <QueryRenderer<AuctionResultsScreenWrapperTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query AuctionResultsScreenWrapperTestsQuery($first: Int!, $after: String)
-        @relay_test_operation {
-          me {
-            ...AuctionResultsScreenWrapper_me @arguments(first: $first, after: $after)
-          }
+  const { renderWithRelay } = setupTestWrapper<AuctionResultsScreenWrapperTestsQuery>({
+    Component: (props) => {
+      if (props?.me) {
+        return (
+          <AuctionResultsScreenWrapperContainer me={props.me} state={AuctionResultsState.ALL} />
+        )
+      }
+      return null
+    },
+    variables: { after: "YXJyYXljb25uZWN0aW9uOjA", first: 3 },
+    query: graphql`
+      query AuctionResultsScreenWrapperTestsQuery($first: Int!, $after: String)
+      @relay_test_operation {
+        me {
+          ...AuctionResultsScreenWrapper_me @arguments(first: $first, after: $after)
         }
-      `}
-      variables={{ after: "YXJyYXljb25uZWN0aW9uOjA", first: 3 }}
-      render={({ props }) => {
-        if (props?.me) {
-          return (
-            <AuctionResultsScreenWrapperContainer me={props.me} state={AuctionResultsState.ALL} />
-          )
-        }
-        return null
-      }}
-    />
-  )
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+      }
+    `,
   })
 
   it("Renders list of auction results for artists you follow", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const tree = renderWithRelay({
       Me: () => ({
         id: "test-id",
         auctionResultsByFollowedArtists: {
@@ -53,10 +39,10 @@ describe("AuctionResultsForArtistsYouFollowContainer", () => {
       }),
     })
 
-    expect(extractText(tree.root.findAllByType(AuctionResultsScreenWrapperContainer)[0])).toContain(
-      "Latest Auction Results"
-    )
-    expect(tree.root.findAllByType(AuctionResultsScreenWrapperContainer)).toHaveLength(1)
+    expect(
+      extractText(tree.UNSAFE_getAllByType(AuctionResultsScreenWrapperContainer)[0])
+    ).toContain("Latest Auction Results")
+    expect(tree.UNSAFE_getAllByType(AuctionResultsScreenWrapperContainer)).toHaveLength(1)
   })
 })
 

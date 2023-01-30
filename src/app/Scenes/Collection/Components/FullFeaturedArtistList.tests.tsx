@@ -1,46 +1,29 @@
 import { FullFeaturedArtistListTestsQuery } from "__generated__/FullFeaturedArtistListTestsQuery.graphql"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from "./FullFeaturedArtistList"
 import { FullFeaturedArtistListCollectionFixture } from "./__fixtures__/CollectionFixture"
 
-
 describe("FullFeaturedArtistList", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+  const { renderWithRelay } = setupTestWrapper<FullFeaturedArtistListTestsQuery>({
+    Component: (props) => {
+      if (props?.marketingCollection) {
+        return <CollectionFeaturedArtists collection={props.marketingCollection} />
+      }
 
-  const TestWrapper = () => {
-    return (
-      <QueryRenderer<FullFeaturedArtistListTestsQuery>
-        environment={mockEnvironment}
-        query={graphql`
-          query FullFeaturedArtistListTestsQuery @relay_test_operation @raw_response_type {
-            marketingCollection(slug: "emerging-photographers") {
-              ...FullFeaturedArtistList_collection
-            }
-          }
-        `}
-        variables={{}}
-        render={({ props }) => {
-          if (props?.marketingCollection) {
-            return <CollectionFeaturedArtists collection={props.marketingCollection} />
-          }
-
-          return null
-        }}
-      />
-    )
-  }
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+      return null
+    },
+    query: graphql`
+      query FullFeaturedArtistListTestsQuery @relay_test_operation @raw_response_type {
+        marketingCollection(slug: "emerging-photographers") {
+          ...FullFeaturedArtistList_collection
+        }
+      }
+    `,
   })
 
   it("renders featured artist", () => {
-    const { getByText } = renderWithWrappers(<TestWrapper />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText } = renderWithRelay({
       MarketingCollection: () => FullFeaturedArtistListCollectionFixture,
     })
 
@@ -52,9 +35,7 @@ describe("FullFeaturedArtistList", () => {
   })
 
   it("does not render an EntityHeader for excluded artists", async () => {
-    const { getByText, queryByText } = renderWithWrappers(<TestWrapper />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText, queryByText } = renderWithRelay({
       MarketingCollection: () => ({
         ...FullFeaturedArtistListCollectionFixture,
         featuredArtistExclusionIds: ["34534-andy-warhols-id", "2342-pablo-picassos-id"],
@@ -70,9 +51,7 @@ describe("FullFeaturedArtistList", () => {
 
   describe("when artist ids are explicitly requested", () => {
     it("does not render an EntityHeader for any non-requested artists", async () => {
-      const { getByText, queryByText } = renderWithWrappers(<TestWrapper />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      const { getByText, queryByText } = renderWithRelay({
         MarketingCollection: () => ({
           ...FullFeaturedArtistListCollectionFixture,
           query: {

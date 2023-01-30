@@ -1,51 +1,33 @@
+import { screen } from "@testing-library/react-native"
 import { ArtistAboutShowsTestsQuery } from "__generated__/ArtistAboutShowsTestsQuery.graphql"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { Button, Flex } from "palette"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { FlatList } from "react-native"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { graphql } from "react-relay"
 import { ArtistAboutShowsFragmentContainer } from "./ArtistAboutShows"
 
-
 describe("ArtistAboutShows", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  const TestRenderer = () => (
-    <QueryRenderer<ArtistAboutShowsTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query ArtistAboutShowsTestsQuery($artistID: String!) @relay_test_operation {
-          artist(id: $artistID) {
-            ...ArtistAboutShows_artist
-            currentShows: showsConnection(status: "running", first: 10) {
-              edges {
-                node {
-                  id
-                }
+  const { renderWithRelay } = setupTestWrapper<ArtistAboutShowsTestsQuery>({
+    Component: (props) => <ArtistAboutShowsFragmentContainer artist={props.artist!} />,
+    query: graphql`
+      query ArtistAboutShowsTestsQuery($artistID: String!) @relay_test_operation {
+        artist(id: $artistID) {
+          ...ArtistAboutShows_artist
+          currentShows: showsConnection(status: "running", first: 10) {
+            edges {
+              node {
+                id
               }
             }
           }
         }
-      `}
-      variables={{ artistID: "artist-id" }}
-      render={({ props }) => {
-        if (props?.artist) {
-          return <ArtistAboutShowsFragmentContainer artist={props.artist} />
-        }
-        return null
-      }}
-    />
-  )
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+      }
+    `,
+    variables: { artistID: "artist-id" },
   })
 
   it("returns nothing if the user has no past/running/upcoming events", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    renderWithRelay({
       ShowConnection: (context) => {
         switch (context.alias) {
           case "currentShows":
@@ -58,13 +40,12 @@ describe("ArtistAboutShows", () => {
       },
     })
 
-    expect(tree.root.findAllByType(Flex).length).toEqual(0)
+    // component doesn't render anything
+    expect(screen.toJSON()).toBe(null)
   })
 
   it("returns list of shows if the user has past/running/upcoming events", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const tree = renderWithRelay({
       ShowConnection: (context) => {
         switch (context.alias) {
           case "currentShows":
@@ -78,14 +59,12 @@ describe("ArtistAboutShows", () => {
       },
     })
 
-    expect(tree.root.findAllByType(FlatList).length).toEqual(1)
+    expect(tree.UNSAFE_getAllByType(FlatList).length).toEqual(1)
   })
 
   describe("See all past shows Button", () => {
     it("is visible when the user has past shows", () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      renderWithRelay({
         ShowConnection: (context) => {
           switch (context.alias) {
             case "currentShows":
@@ -98,13 +77,11 @@ describe("ArtistAboutShows", () => {
         },
       })
 
-      expect(tree.root.findAllByType(Button).length).toEqual(1)
+      expect(screen.queryByText(/See all past shows/)).toBeTruthy()
     })
 
     it("is hidden when the user has no past shows", () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      renderWithRelay({
         ShowConnection: (context) => {
           switch (context.alias) {
             case "currentShows":
@@ -117,7 +94,7 @@ describe("ArtistAboutShows", () => {
         },
       })
 
-      expect(tree.root.findAllByType(Button).length).toEqual(0)
+      expect(screen.queryByText(/See all past shows/)).toBeFalsy()
     })
   })
 })

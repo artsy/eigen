@@ -1,47 +1,35 @@
 import { MyAccountEditPriceRangeTestsQuery } from "__generated__/MyAccountEditPriceRangeTestsQuery.graphql"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { QueryRenderer } from "react-relay"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "relay-runtime"
-import { createMockEnvironment } from "relay-test-utils"
 import {
   MyAccountEditPriceRangeContainer,
   MyAccountEditPriceRangeQueryRenderer,
 } from "./MyAccountEditPriceRange"
 
-
 describe(MyAccountEditPriceRangeQueryRenderer, () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   beforeEach(() => {
     jest.clearAllMocks()
-    mockEnvironment = createMockEnvironment()
   })
 
-  const TestRenderer = () => (
-    <QueryRenderer<MyAccountEditPriceRangeTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query MyAccountEditPriceRangeTestsQuery @relay_test_operation {
-          me {
-            ...MyAccountEditPriceRange_me
-          }
+  const { renderWithRelay } = setupTestWrapper<MyAccountEditPriceRangeTestsQuery>({
+    Component: (props) => {
+      if (props?.me) {
+        return <MyAccountEditPriceRangeContainer me={props.me} />
+      }
+      return null
+    },
+    query: graphql`
+      query MyAccountEditPriceRangeTestsQuery @relay_test_operation {
+        me {
+          ...MyAccountEditPriceRange_me
         }
-      `}
-      variables={{}}
-      render={({ props }) => {
-        if (props?.me) {
-          return <MyAccountEditPriceRangeContainer me={props.me} />
-        }
-        return null
-      }}
-    />
-  )
+      }
+    `,
+  })
 
   it("submits the changes", async () => {
-    const { getAllByText, getByText } = renderWithWrappers(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getAllByText, getByText } = renderWithRelay({
       Me: () => ({
         priceRange: "-1:2500",
         priceRangeMax: 2500,

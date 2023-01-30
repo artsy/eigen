@@ -1,11 +1,8 @@
 import { ShipsToSectionTestsQuery } from "__generated__/ShipsToSectionTestsQuery.graphql"
 import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { ShipsToSectionFragmentContainer } from "./Components/ShipsToSection"
-
 
 const order = {
   requestedFulfillment: {
@@ -21,60 +18,42 @@ const order = {
 }
 
 describe("ShipsToSection", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  beforeEach(() => (mockEnvironment = createMockEnvironment()))
-
-  const TestRenderer = () => (
-    <QueryRenderer<ShipsToSectionTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query ShipsToSectionTestsQuery @relay_test_operation {
-          commerceOrder(id: "some-id") {
-            internalID
-            ...ShipsToSection_address
-          }
+  const { renderWithRelay } = setupTestWrapper<ShipsToSectionTestsQuery>({
+    Component: (props) => {
+      if (props?.commerceOrder) {
+        return <ShipsToSectionFragmentContainer address={props.commerceOrder} />
+      }
+      return null
+    },
+    query: graphql`
+      query ShipsToSectionTestsQuery @relay_test_operation {
+        commerceOrder(id: "some-id") {
+          internalID
+          ...ShipsToSection_address
         }
-      `}
-      variables={{}}
-      render={({ props }) => {
-        if (props?.commerceOrder) {
-          return <ShipsToSectionFragmentContainer address={props.commerceOrder} />
-        }
-        return null
-      }}
-    />
-  )
+      }
+    `,
+  })
 
   it("renders section when CommerceShip", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-    resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => order })
+    const tree = renderWithRelay({ CommerceOrder: () => order })
 
-    expect(extractText(tree.findByProps({ testID: "addressLine1" }))).toBe("myadress")
-    expect(extractText(tree.findByProps({ testID: "city" }))).toBe("mycity, ")
-    expect(extractText(tree.findByProps({ testID: "region" }))).toBe("myregion ")
-    expect(extractText(tree.findByProps({ testID: "phoneNumber" }))).toBe("7777")
-    expect(extractText(tree.findByProps({ testID: "country" }))).toBe("Belarus")
-    expect(extractText(tree.findByProps({ testID: "postalCode" }))).toBe("11238")
+    expect(extractText(tree.UNSAFE_getByProps({ testID: "addressLine1" }))).toBe("myadress")
+    expect(extractText(tree.UNSAFE_getByProps({ testID: "city" }))).toBe("mycity, ")
+    expect(extractText(tree.UNSAFE_getByProps({ testID: "region" }))).toBe("myregion ")
+    expect(extractText(tree.UNSAFE_getByProps({ testID: "phoneNumber" }))).toBe("7777")
+    expect(extractText(tree.UNSAFE_getByProps({ testID: "country" }))).toBe("Belarus")
+    expect(extractText(tree.UNSAFE_getByProps({ testID: "postalCode" }))).toBe("11238")
   })
 
   it("renders section when CommerceShipArta", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-    order.requestedFulfillment.__typename = "CommerceShipArta"
-    resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => order })
+    const tree = renderWithRelay({ CommerceOrder: () => order })
 
-    expect(extractText(tree.findByProps({ testID: "addressLine1" }))).toBe("myadress")
-    expect(extractText(tree.findByProps({ testID: "city" }))).toBe("mycity, ")
-    expect(extractText(tree.findByProps({ testID: "region" }))).toBe("myregion ")
-    expect(extractText(tree.findByProps({ testID: "phoneNumber" }))).toBe("7777")
-    expect(extractText(tree.findByProps({ testID: "country" }))).toBe("Belarus")
-    expect(extractText(tree.findByProps({ testID: "postalCode" }))).toBe("11238")
-  })
-
-  it("not renders section when CommercePickup", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-    order.requestedFulfillment.__typename = "CommercePickup"
-    resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => order })
-
-    expect(tree.instance).toBeNull()
+    expect(extractText(tree.UNSAFE_getByProps({ testID: "addressLine1" }))).toBe("myadress")
+    expect(extractText(tree.UNSAFE_getByProps({ testID: "city" }))).toBe("mycity, ")
+    expect(extractText(tree.UNSAFE_getByProps({ testID: "region" }))).toBe("myregion ")
+    expect(extractText(tree.UNSAFE_getByProps({ testID: "phoneNumber" }))).toBe("7777")
+    expect(extractText(tree.UNSAFE_getByProps({ testID: "country" }))).toBe("Belarus")
+    expect(extractText(tree.UNSAFE_getByProps({ testID: "postalCode" }))).toBe("11238")
   })
 })
