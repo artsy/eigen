@@ -296,7 +296,7 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
         <OpaqueImageView
           style={{ maxHeight: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size] }}
           imageURL={src}
-          height={imageDimensions.height}
+          height={imageDimensions.height || ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size]}
           width={containerWidth!}
         />
       </Flex>
