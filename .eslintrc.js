@@ -10,6 +10,7 @@ module.exports = {
     "no-relative-import-paths",
     "react-hooks",
     "testing-library",
+    "unused-imports",
   ],
   extends: [
     "eslint:recommended",
@@ -51,7 +52,7 @@ module.exports = {
     "import/no-duplicates": ERR,
     "react/jsx-curly-brace-presence": ERR,
     "react-hooks/rules-of-hooks": ERR,
-
+    "unused-imports/no-unused-imports": ERR,
     /**
      * Warnings
      */
