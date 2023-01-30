@@ -1,4 +1,5 @@
 import { noop } from "lodash"
+import { useTheme } from "palette/Theme"
 import { ToolTipFlyout, ToolTipTextContainer } from "palette/elements/ToolTip/ToolTipFlyout"
 import { TriangleDown } from "palette/svgs"
 import { createContext, useContext, useRef, useState } from "react"
@@ -56,7 +57,8 @@ export const ToolTip: React.FC<ToolTipProps> = ({
   testID,
   yOffset = 5,
 }) => {
-  const mWidth = useScreenDimensions().width - 40 // 40 accounting for padding 20 on each side of the screen
+  const { space } = useTheme()
+  const mWidth = useScreenDimensions().width - space(2) * 2 // 40 accounting for padding 20 on each side of the screen
   const MAX_TOOLTIP_WIDTH = maxWidth ?? mWidth
 
   const [toolTipText, setToolTip] = useState(initialToolTipText)
