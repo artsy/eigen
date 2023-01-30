@@ -1,3 +1,4 @@
+import { GlobalStore } from "app/store/GlobalStore"
 import useAppState from "app/utils/useAppState"
 import { createContext, useCallback, useEffect, useState } from "react"
 import { forceFetchToggles } from "./helpers"
@@ -12,29 +13,45 @@ export const UnleashContext = createContext<UnleashContext>({ lastUpdate: null }
 
 export function UnleashProvider({ children }: { children?: React.ReactNode }) {
   const [lastUpdate, setLastUpdate] = useState<UnleashContext["lastUpdate"]>(null)
+  const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
+
   const { unleashEnv } = useUnleashEnvironment()
+  const userId = GlobalStore.useAppState((store) => store.auth.userID)
 
   useEffect(() => {
-    const client = getUnleashClient(unleashEnv)
+    if (isHydrated) {
+      const client = getUnleashClient(unleashEnv, userId)
 
-    client.on("initialized", () => {})
+      client.on("initialized", () => {
+        if (__DEV__) {
+          console.log("Unleash initialized")
+        }
+      })
 
-    client.on("ready", () => {})
+      client.on("ready", () => {
+        if (__DEV__) {
+          console.log("Unleash ready")
+        }
+      })
 
-    client.on("update", () => {
-      setLastUpdate(new Date())
-    })
+      client.on("update", () => {
+        if (__DEV__) {
+          console.log("Unleash updated")
+        }
+        setLastUpdate(new Date())
+      })
 
-    client.on("error", () => {
-      console.error("Unleash error")
-    })
+      client.on("error", () => {
+        console.error("Unleash error")
+      })
 
-    client.on("impression", () => {})
+      client.on("impression", () => {})
 
-    return () => {
-      client.stop()
+      return () => {
+        client.stop()
+      }
     }
-  }, [unleashEnv])
+  }, [unleashEnv, isHydrated])
 
   const onForeground = useCallback(() => {
     forceFetchToggles(unleashEnv)

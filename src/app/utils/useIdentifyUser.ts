@@ -19,6 +19,7 @@ export function useIdentifyUser() {
       ReactAppboy.changeUser(userId)
     }
     SegmentTrackingProvider.identify?.(userId, { is_temporary_user: userId === null ? 1 : 0 })
+
     updateExperimentsContext({ userId: nullToUndef(userId) })
   }, [userId])
 }
