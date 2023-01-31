@@ -19,7 +19,7 @@ import { TrendingArtists } from "./TrendingArtists"
 import { CityGuideCTA } from "./components/CityGuideCTA"
 import { SearchPills } from "./components/SearchPills"
 import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
-import { DEFAULT_PILLS, TOP_PILL } from "./constants"
+import { ES_ONLY_PILLS, TOP_PILL } from "./constants"
 import { getContextModuleByPillName } from "./helpers"
 import { PillType } from "./types"
 import { useSearchDiscoveryContentEnabled } from "./useSearchDiscoveryContentEnabled"
@@ -32,19 +32,19 @@ interface SearchState {
 const SEARCH_INPUT_PLACEHOLDER = "Search artists, artworks, galleries, etc"
 
 export const Search2: React.FC = () => {
-  const queryData = useLazyLoadQuery<Search2Query>(SearchScreenQuery, {})
   const isSearchDiscoveryContentEnabled = useSearchDiscoveryContentEnabled()
 
   const searchPillsRef = useRef<ScrollView>(null)
   const [searchState, setSearchState] = useState<SearchState>({})
   const [selectedPill, setSelectedPill] = useState<PillType>(TOP_PILL)
   const searchQuery = searchState?.query ?? ""
+  const queryData = useLazyLoadQuery<Search2Query>(SearchScreenQuery, { keyword: searchQuery })
   const searchProviderValues = useSearchProviderValues(searchQuery)
   const { trackEvent } = useTracking()
   const isAndroid = Platform.OS === "android"
   const navigation = useNavigation()
 
-  const pillsArray = [...DEFAULT_PILLS]
+  console.warn({ v: queryData.viewer })
 
   const handleRetry = () => {
     setSearchState((prevState) => ({ ...prevState }))
@@ -122,7 +122,7 @@ export const Search2: React.FC = () => {
                 <SearchPills
                   ref={searchPillsRef}
                   loading={false}
-                  pills={pillsArray}
+                  pills={ES_ONLY_PILLS}
                   onPillPress={handlePillPress}
                   isSelected={isSelected}
                 />
@@ -161,9 +161,32 @@ export const Search2: React.FC = () => {
 }
 
 export const SearchScreenQuery = graphql`
-  query Search2Query {
+  query Search2Query($keyword: String!) {
+    viewer {
+      ...Search2_viewer @arguments(term: $keyword)
+    }
     ...CuratedCollections_collections
     ...TrendingArtists_query
+  }
+`
+
+export const SearchFragment = graphql`
+  fragment Search2_viewer on Viewer
+  @argumentDefinitions(term: { type: "String!", defaultValue: "" }) {
+    searchConnection(query: $term, first: 1, aggregations: [TYPE]) {
+      aggregations {
+        slice
+        counts {
+          count
+          name
+        }
+      }
+    }
+    artworksConnection(keyword: $term, size: 0, aggregations: [TOTAL]) {
+      counts {
+        total
+      }
+    }
   }
 `
 
