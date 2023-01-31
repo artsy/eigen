@@ -15,14 +15,14 @@ const ResultsScreen = () => {
       setIsResultReady(true)
     }, 2000)
     return () => clearTimeout(timer)
-  }, [])
+  }, [hasSavedArtworks])
+
+  if (hasSavedArtworks && isResultReady) {
+    return <ArtQuizResultsTabs me={queryResult.me} />
+  }
 
   if (!isResultReady) {
     return <ArtQuizResultsLoader isReady />
-  }
-
-  if (hasSavedArtworks) {
-    return <ArtQuizResultsTabs me={queryResult.me} />
   }
 
   return <ArtQuizResultsEmptyTabs />
