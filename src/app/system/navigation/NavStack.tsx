@@ -119,7 +119,11 @@ export const NavStack: React.FC<{
           const params = focusedRoute?.params as any
 
           if (__DEV__ && logNavitation) {
-            console.log(`navigated to ${params.moduleName}: ${JSON.stringify(params.props)}`)
+            console.log(
+              `navigated to ${params.moduleName} ${
+                params.props ? JSON.stringify(params.props) : ""
+              } `
+            )
           }
 
           addBreadcrumb({
