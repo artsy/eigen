@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { EXPERIMENT_NAME, experiments } from "app/utils/experiments/experiments"
+import { nullToUndef } from "app/utils/nullAndUndef"
 import { Config } from "react-native-config"
 import { UnleashClient } from "unleash-proxy-client"
 
@@ -10,12 +11,12 @@ import { UnleashClient } from "unleash-proxy-client"
  * If a specific env is asked, then it will either use the current one if it's right,
  * or create a new one in the requested env.
  */
-export function getUnleashClient(env?: "production" | "staging") {
+export function getUnleashClient(env?: "production" | "staging", userId?: string | null) {
   if (!unleashClient || (env !== undefined && env !== envBeingUsed)) {
     if (env !== undefined) {
       envBeingUsed = env
     }
-    unleashClient = createUnleashClient()
+    unleashClient = createUnleashClient(nullToUndef(userId))
     unleashClient.start()
   }
   return unleashClient
@@ -25,7 +26,7 @@ let unleashClient: UnleashClient | null = null
 
 const storageName = (name: string) => `unleash-values:${name}`
 
-const createUnleashClient = () => {
+const createUnleashClient = (userId: string | undefined) => {
   console.debug("Unleash creating client", envBeingUsed)
 
   return new UnleashClient({
@@ -38,6 +39,9 @@ const createUnleashClient = () => {
         ? Config.UNLEASH_PROXY_CLIENT_KEY_PRODUCTION
         : Config.UNLEASH_PROXY_CLIENT_KEY_STAGING,
     appName: "eigen",
+    context: {
+      userId,
+    },
     refreshInterval: 0, // don't refresh. we will manually refresh on appStart and goingForeground.
     storageProvider: {
       save: async (name, data) => AsyncStorage.setItem(storageName(name), JSON.stringify(data)),
