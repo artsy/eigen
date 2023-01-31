@@ -7,6 +7,7 @@
 
   - User facing changes:
 
+    - Fix issue making some artwork images not visible in the home screen large artworks rail - mounir
     - add search2 with ES only Artwork / Top pill functionality, behind FF - gkartalis
     - Added support for viewing artwork page videos
     - Add works from galleries you follow rail - mounir
