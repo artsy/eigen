@@ -1,6 +1,7 @@
 import { ArtQuizResultsQuery$data } from "__generated__/ArtQuizResultsQuery.graphql"
 import { ArtQuizResultsTabs_me$key } from "__generated__/ArtQuizResultsTabs_me.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
+import { ArtQuizExploreArtists } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizExploreArtists"
 import { ArtQuizLikedArtworks } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizLikedArtworks"
 import { ArtQuizResultsTabsHeader } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsTabsHeader"
 import { compact } from "lodash"
@@ -9,8 +10,8 @@ import { graphql, useFragment } from "react-relay"
 
 enum Tab {
   worksYouLiked = "Works you liked",
-  collections = "Collections",
-  artists = "Artists",
+  exploreWorks = "Explore Works",
+  exploreArtists = "Explore Artists",
 }
 
 export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] }) => {
@@ -29,12 +30,12 @@ export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] 
               initial: true,
             },
             {
-              title: Tab.collections,
+              title: Tab.exploreWorks,
               content: <ArtQuizLikedArtworks savedArtworks={savedArtworks!} />,
             },
             {
-              title: Tab.artists,
-              content: <ArtQuizLikedArtworks savedArtworks={savedArtworks!} />,
+              title: Tab.exploreArtists,
+              content: <ArtQuizExploreArtists savedArtworks={savedArtworks!} />,
             },
           ])}
           staticHeaderContent={
@@ -53,7 +54,8 @@ const artQuizResultsTabsFragment = graphql`
   fragment ArtQuizResultsTabs_me on Me {
     quiz {
       savedArtworks {
-        ...ArtQuizLikedArtworks_me
+        ...ArtQuizLikedArtworks_artworks
+        ...ArtQuizExploreArtists_artworks
       }
     }
   }
