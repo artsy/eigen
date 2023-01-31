@@ -139,7 +139,7 @@ const Home = (props: Props) => {
     },
     {
       title: "Auctions",
-      subtitle: "Discover and bid on works for you",
+      subtitle: "Discover and Bid on Works for You",
       type: "sales",
       data: homePageAbove?.salesModule,
       prefetchUrl: "/auctions",
@@ -189,7 +189,7 @@ const Home = (props: Props) => {
     },
     {
       title: "Collections",
-      subtitle: "The newest works curated by Artsy",
+      subtitle: "The Newest Works Curated by Artsy",
       type: "collections",
       data: homePageBelow?.marketingCollectionsModule,
     },
@@ -200,13 +200,13 @@ const Home = (props: Props) => {
     },
     {
       title: "Featured Fairs",
-      subtitle: "See works in top art fairs",
+      subtitle: "See Works in Top Art Fairs",
       type: "fairs",
       data: homePageBelow?.fairsModule,
     },
     { title: "Trending Artists", type: "artist", data: homePageBelow?.popularArtistsArtistModule },
     {
-      title: "Works from Galleries You Follow",
+      title: "New Works from Galleries You Follow",
       type: "artwork",
       data: homePageBelow?.worksFromGalleriesYouFollowArtworkModule,
     },
