@@ -44,8 +44,6 @@ export const Search2: React.FC = () => {
   const isAndroid = Platform.OS === "android"
   const navigation = useNavigation()
 
-  console.warn({ v: queryData.viewer })
-
   const handleRetry = () => {
     setSearchState((prevState) => ({ ...prevState }))
   }
@@ -180,11 +178,6 @@ export const SearchFragment = graphql`
           count
           name
         }
-      }
-    }
-    artworksConnection(keyword: $term, size: 0, aggregations: [TOTAL]) {
-      counts {
-        total
       }
     }
   }
