@@ -46,12 +46,19 @@ const prefetchQuery = async (query: GraphQLTaggedNode, variables?: Variables) =>
   const environment = defaultEnvironment
   const operation = createOperationDescriptor(getRequest(query), variables ?? {})
 
-  await fetchQuery(environment, query, variables ?? {}, {
-    networkCacheConfig: { force: false },
-  }).toPromise()
-
-  // this will retain the result in the relay store so it's not garbage collected.
-  environment.retain(operation)
+  try {
+    await fetchQuery(environment, query, variables ?? {}, {
+      networkCacheConfig: { force: true },
+    }).toPromise()
+    // this will retain the result in the relay store so it's not garbage collected.
+    environment.retain(operation)
+  } catch (error) {
+    // We don't want to throw an error here because we don't want to block the user from navigating to the page.
+    // We still want to log the error so we can investigate it.
+    if (__DEV__) {
+      console.log(`Prefetching query failed: ${error}`)
+    }
+  }
 }
 
 const prefetchUrl = async (url: string, variables?: Variables) => {
