@@ -101,8 +101,8 @@ exports[`Stop using moment, use luxon instead`] = {
     "src/app/Components/Countdown/Ticker.tsx:1619936038": [
       [2, 20, 13, "We are migrating away from \`moment\`, towards \`luxon\`.", "3265611491"]
     ],
-    "src/app/Components/Lists/AuctionResultListItem.tests.tsx:1548682260": [
-      [5, 14, 13, "We are migrating away from \`moment\`, towards \`luxon\`.", "3265611491"]
+    "src/app/Components/Lists/AuctionResultListItem.tests.tsx:2328333107": [
+      [6, 14, 13, "We are migrating away from \`moment\`, towards \`luxon\`.", "3265611491"]
     ],
     "src/app/Components/Lists/AuctionResultListItem.tsx:288945715": [
       [6, 14, 13, "We are migrating away from \`moment\`, towards \`luxon\`.", "3265611491"]
@@ -504,7 +504,7 @@ exports[`Finish our strictness migration`] = {
       [49, 56, 40, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "1708246099"],
       [65, 52, 40, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "1708246099"]
     ],
-    "src/app/system/relay/middlewares/metaphysicsMiddleware.ts:702430560": [
+    "src/app/system/relay/middlewares/metaphysicsMiddleware.ts:1634627424": [
       [13, 50, 40, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "1708246099"],
       [15, 52, 40, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "1708246099"]
     ],
@@ -667,6 +667,9 @@ exports[`Avoid using test-renderer`] = {
     ],
     "src/app/Components/Home/ArtistRails/ArtistCard.tests.tsx:3488289762": [
       [0, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
+    ],
+    "src/app/Components/Lists/AuctionResultListItem.tests.tsx:2328333107": [
+      [4, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
     ],
     "src/app/Components/Lists/SavedItemRow.tests.tsx:3450992164": [
       [0, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
@@ -959,8 +962,11 @@ exports[`Avoid using test-renderer`] = {
     "src/app/Scenes/Onboarding/OnboardingLogin.tests.tsx:927225381": [
       [0, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
     ],
-    "src/app/Scenes/OrderHistory/OrderDetails/OrderDetails.tests.tsx:826183475": [
-      [1, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
+    "src/app/Scenes/OrderHistory/OrderDetails/OrderDetails.tests.tsx:1323552499": [
+      [2, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
+    ],
+    "src/app/Scenes/OrderHistory/OrderDetails/TrackOrderSection.tests.tsx:1314268179": [
+      [2, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
     ],
     "src/app/Scenes/OrderHistory/OrderHistory.tests.tsx:2734769865": [
       [3, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
@@ -1487,7 +1493,7 @@ exports[`Fix all STRICTNESS_MIGRATION`] = {
     "src/app/Scenes/ViewingRoom/Components/ViewingRoomSubsections.tsx:4227710958": [
       [10, 56, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"]
     ],
-    "src/app/system/relay/middlewares/metaphysicsMiddleware.ts:702430560": [
+    "src/app/system/relay/middlewares/metaphysicsMiddleware.ts:1634627424": [
       [13, 22, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"],
       [15, 24, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"]
     ],
@@ -1561,8 +1567,8 @@ exports[`Avoid having skipped tests`] = {
     "src/app/Scenes/ArtworkAttributionClassFAQ/ArtworkAttributionClassFAQ.tests.tsx:2878120211": [
       [27, 2, 8, "Is this skipped on purpose, or accidentally?", "593069535"]
     ],
-    "src/app/Scenes/MyCollection/MyCollection.tests.tsx:4100351617": [
-      [104, 4, 8, "Is this skipped on purpose, or accidentally?", "593069535"]
+    "src/app/Scenes/MyCollection/MyCollection.tests.tsx:527886401": [
+      [106, 4, 8, "Is this skipped on purpose, or accidentally?", "593069535"]
     ],
     "src/app/Scenes/Sale/SaleLotsList.tests.tsx:29178689": [
       [97, 2, 8, "Is this skipped on purpose, or accidentally?", "593069535"]
@@ -1583,8 +1589,8 @@ exports[`Avoid using class components`] = {
     "src/ambient.d.ts:123000066": [
       [28, 25, 23, "Try using a functional component.", "3210885008"]
     ],
-    "src/app/AppRegistry.tsx:2866048822": [
-      [244, 18, 23, "Try using a functional component.", "3210885008"]
+    "src/app/AppRegistry.tsx:3716522364": [
+      [241, 18, 23, "Try using a functional component.", "3210885008"]
     ],
     "src/app/Components/Artist/Articles/Articles.tsx:1150831805": [
       [13, 15, 17, "Try using a functional component.", "3548830911"]

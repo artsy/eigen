@@ -103,10 +103,7 @@ import { MyProfilePaymentQueryRenderer } from "./Scenes/MyProfile/MyProfilePayme
 import { MyProfilePaymentNewCreditCard } from "./Scenes/MyProfile/MyProfilePaymentNewCreditCard"
 import { MyProfilePushNotificationsQueryRenderer } from "./Scenes/MyProfile/MyProfilePushNotifications"
 import { MyProfileSettings } from "./Scenes/MyProfile/MyProfileSettings"
-import {
-  NewWorksForYouQueryRenderer,
-  NewWorksForYouScreenQuery,
-} from "./Scenes/NewWorksForYou/NewWorksForYou"
+import { NewWorksForYouQueryRenderer } from "./Scenes/NewWorksForYou/NewWorksForYou"
 import { OrderDetailsQueryRender } from "./Scenes/OrderHistory/OrderDetails/Components/OrderDetails"
 import { OrderHistoryQueryRender } from "./Scenes/OrderHistory/OrderHistory"
 import { PartnerQueryRenderer } from "./Scenes/Partner/Partner"
@@ -506,7 +503,7 @@ export const modules = defineModules({
   ViewingRoomArtworks: reactModule(ViewingRoomArtworksQueryRenderer),
   ViewingRooms: reactModule(ViewingRoomsListScreen, {}, [viewingRoomsListScreenQuery]),
   WorksForYou: reactModule(WorksForYouQueryRenderer, {}, [WorksForYouScreenQuery]),
-  NewWorksForYou: reactModule(NewWorksForYouQueryRenderer, {}, [NewWorksForYouScreenQuery]),
+  NewWorksForYou: reactModule(NewWorksForYouQueryRenderer),
   LotsByArtistsYouFollow: reactModule(LotsByArtistsYouFollowQueryRenderer, {}, [
     LotsByArtistsYouFollowScreenQuery,
   ]),

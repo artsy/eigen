@@ -115,6 +115,7 @@ export const NavStack: React.FC<{
         options={(props) => {
           const focusedRoute = findFocusedRoute(props.navigation.getState())
           const params = focusedRoute?.params as any
+
           const screenOptions = modules[params.moduleName as AppModule]?.options?.screenOptions
 
           return { ...screenOptions }

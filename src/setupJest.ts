@@ -195,6 +195,7 @@ jest.mock("@sentry/react-native", () => ({
   setUser() {},
   addBreadcrumb() {},
   withScope() {},
+  Severity: "info",
 }))
 
 // Needing to mock react-native-scrollable-tab-view due to Flow issue
