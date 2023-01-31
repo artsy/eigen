@@ -1,23 +1,6 @@
 import { Flex, Screen, Spinner, Text } from "palette"
-import { useEffect, useState } from "react"
 
-export const ArtQuizResultsLoader = () => {
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    const timeouts: ReturnType<typeof setTimeout>[] = []
-
-    timeouts.push(
-      setTimeout(() => {
-        setLoading(false)
-      }, 2000)
-    )
-
-    return () => {
-      timeouts.forEach(clearTimeout)
-    }
-  }, [])
-
+export const ArtQuizResultsLoader = ({ isReady }: { isReady?: boolean }) => {
   return (
     <Screen>
       <Screen.Body>
@@ -26,7 +9,7 @@ export const ArtQuizResultsLoader = () => {
             <Spinner color="blue100" />
           </Flex>
           <Text variant="lg-display">Art Taste Quiz</Text>
-          <Text color="black60">{loading ? "Calculating Results..." : "Results Completed"}</Text>
+          <Text color="black60">{isReady ? "Results Completed" : "Calculating Results..."}</Text>
         </Flex>
       </Screen.Body>
     </Screen>
