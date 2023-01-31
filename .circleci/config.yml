@@ -253,17 +253,17 @@ jobs:
           name: Update metaphysics
           command: yarn update-metaphysics
 
-  check-code-improvements:
+  check-code:
     executor:
       name: node/default
       tag: "16.18.0"
     steps:
       - checkout
-      - generate-checksums
-      - install-node-modules
+      - node/install-packages:
+          pkg-manager: yarn
       - run:
-          name: Check code improvements
-          command: yarn ci:betterer-check
+          name: Danger
+          command: yarn danger ci --verbose
 
   check-flags:
     environment:
@@ -527,7 +527,7 @@ workflows:
                 - play_store_submission
                 - update-changelog
 
-      - check-code-improvements:
+      - check-code:
           filters:
             branches:
               ignore:
