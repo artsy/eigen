@@ -142,9 +142,9 @@ index c498ba6..11338d0 100755
 +if [[ -f "$HOME/.asdf/asdf.sh" ]]; then
 +  # shellcheck source=/dev/null
 +  . "$HOME/.asdf/asdf.sh"
-+elif [[ -x "$(command -v brew)" && -f "$(brew --prefix asdf)/asdf.sh" ]]; then
++elif [[ -x "$(command -v brew)" && -f "$(brew --prefix asdf)/libexec/asdf.sh" ]]; then
 +  # shellcheck source=/dev/null
-+  . "$(brew --prefix asdf)/asdf.sh"
++  . "$(brew --prefix asdf)/libexec/asdf.sh"
 +fi
 +
 +# Set up volta if present
