@@ -122,7 +122,6 @@ const Home = (props: Props) => {
       title: "New Works for You",
       type: "newWorksForYou",
       data: newWorksForYou,
-      prefetchUrl: "/new-for-you",
     },
     {
       title: "",
