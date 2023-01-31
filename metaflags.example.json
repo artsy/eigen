@@ -3,7 +3,7 @@
   "logAction": true,
   "logDatadog": true,
   "logEventTracked": true,
-  "logNavitation": true,
+  "logNavigation": true,
   "logNotification": true,
   "logOperation": true,
   "logPrefetching": true,
