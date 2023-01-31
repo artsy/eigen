@@ -3,3 +3,5 @@
 
 
 yarn lint-staged
+
+yarn betterer:all && git add .betterer.results
