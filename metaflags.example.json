@@ -3,10 +3,11 @@
   "logAction": true,
   "logDatadog": true,
   "logEventTracked": true,
+  "logNavitation": true,
   "logNotification": true,
   "logOperation": true,
   "logPrefetching": true,
+  "logQueryPath": true,
   "logRelay": true,
-  "logRoute": true,
   "logRunningRequest": true
 }

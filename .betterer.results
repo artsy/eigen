@@ -504,7 +504,7 @@ exports[`Finish our strictness migration`] = {
       [49, 56, 40, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "1708246099"],
       [65, 52, 40, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "1708246099"]
     ],
-    "src/app/system/relay/middlewares/metaphysicsMiddleware.ts:702430560": [
+    "src/app/system/relay/middlewares/metaphysicsMiddleware.ts:1634627424": [
       [13, 50, 40, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "1708246099"],
       [15, 52, 40, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "1708246099"]
     ],
@@ -1487,7 +1487,7 @@ exports[`Fix all STRICTNESS_MIGRATION`] = {
     "src/app/Scenes/ViewingRoom/Components/ViewingRoomSubsections.tsx:4227710958": [
       [10, 56, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"]
     ],
-    "src/app/system/relay/middlewares/metaphysicsMiddleware.ts:702430560": [
+    "src/app/system/relay/middlewares/metaphysicsMiddleware.ts:1634627424": [
       [13, 22, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"],
       [15, 24, 20, "These comments were added when we switched on TypeScript\'s strict mode, and their number should only ever go down.", "273977750"]
     ],

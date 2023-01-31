@@ -1,7 +1,7 @@
 import { captureMessage } from "@sentry/react-native"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
-import { logRoute } from "app/utils/loggers"
+import { logQueryPath } from "app/utils/loggers"
 import _ from "lodash"
 import { Middleware, urlMiddleware } from "react-relay-network-modern/node8"
 
@@ -50,7 +50,7 @@ export function metaphysicsExtensionsLoggerMiddleware() {
         const title = `%cMetaphysics API -${requestSummary}${stitchSummary}`
 
         // Make sure we have something to show
-        if (logRoute && (requestCount || stitchCount)) {
+        if (logQueryPath && (requestCount || stitchCount)) {
           // The main title for the metaphysics section
           console.groupCollapsed(title, noBold, colorForRequests, noColor)
 

@@ -1,9 +1,11 @@
 import { findFocusedRoute, Route, useIsFocused, useNavigationState } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { addBreadcrumb, Severity } from "@sentry/react-native"
 import { AppModule, modules } from "app/AppRegistry"
 import { useBottomTabBarHeight } from "app/Scenes/BottomTabs/useBottomTabBarHeight"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { isPad } from "app/utils/hardware"
+import { logNavitation } from "app/utils/loggers"
 import { createContext, useState } from "react"
 import { View } from "react-native"
 import { ProvideScreenDimensions, useScreenDimensions } from "shared/hooks"
@@ -115,6 +117,18 @@ export const NavStack: React.FC<{
         options={(props) => {
           const focusedRoute = findFocusedRoute(props.navigation.getState())
           const params = focusedRoute?.params as any
+
+          if (__DEV__ && logNavitation) {
+            console.log(`navigated to ${params.moduleName}: ${JSON.stringify(params.props)}`)
+          }
+
+          addBreadcrumb({
+            message: `navigated to ${params.moduleName}`,
+            category: "navigation",
+            data: { ...params },
+            level: Severity.Info,
+          })
+
           const screenOptions = modules[params.moduleName as AppModule]?.options?.screenOptions
 
           return { ...screenOptions }
