@@ -50,8 +50,7 @@ export default {
       typescriptFiles
     ),
 
-  // TODO: Enable once we start working on palette
-  // "Extract palette": () => regexp(/from "palette"/).include(typescriptFiles),
+  "Extract palette": () => regexp(/from "palette"/).include(typescriptFiles),
 }
 
 // const countNonWebpImages = () =>
