@@ -668,6 +668,9 @@ exports[`Avoid using test-renderer`] = {
     "src/app/Components/Home/ArtistRails/ArtistCard.tests.tsx:3488289762": [
       [0, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
     ],
+    "src/app/Components/Lists/AuctionResultListItem.tests.tsx:2328333107": [
+      [4, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
+    ],
     "src/app/Components/Lists/SavedItemRow.tests.tsx:3450992164": [
       [0, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
     ],
@@ -959,8 +962,11 @@ exports[`Avoid using test-renderer`] = {
     "src/app/Scenes/Onboarding/OnboardingLogin.tests.tsx:927225381": [
       [0, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
     ],
-    "src/app/Scenes/OrderHistory/OrderDetails/OrderDetails.tests.tsx:826183475": [
-      [1, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
+    "src/app/Scenes/OrderHistory/OrderDetails/OrderDetails.tests.tsx:1323552499": [
+      [2, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
+    ],
+    "src/app/Scenes/OrderHistory/OrderDetails/TrackOrderSection.tests.tsx:1314268179": [
+      [2, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
     ],
     "src/app/Scenes/OrderHistory/OrderHistory.tests.tsx:2734769865": [
       [3, 9, 68, "We are migrating away from \`react-test-renderer\`, towards \`@testing-library/react-native\`.", "2624109799"]
