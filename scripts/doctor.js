@@ -31,7 +31,7 @@ const r = (text) => chalk.bold.red(text)
 
 const checkEnvVariablesAreUpToDate = () => {
   exec("touch .env.temp")
-  exec("aws s3 cp s3://artsy-citadel/dev/.env.eigen .env.temp")
+  exec("aws s3 cp s3://artsy-citadel/eigen/.env.eigen .env.temp")
 
   const updatedEnv = fs.readFileSync("./.env.temp", "utf8").toString()
   let localEnv = ""
