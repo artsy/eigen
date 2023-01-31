@@ -22,6 +22,7 @@
     - Release deep zoom - mounir
 
   - Dev changes:
+    - make sure app is rehydrated before initializing unleash - mounir
     - add unused imports eslint rule - gkartalis
     - fix: error with old opaque image view in search - gkartalis
     - Decrease the counter on the app icon by 1 when the user clicks on the activity panel item and this notification is marked as read - dimatretyak
