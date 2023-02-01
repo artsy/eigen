@@ -18,7 +18,7 @@ export const SearchPills2 = React.forwardRef<ScrollView, SearchPillsProps>((prop
 
   const data = useFragment<SearchPills2_viewer$key>(SearchPillsQuery, viewer)
 
-  const aggregations = data.searchConnection?.aggregations ?? []
+  const aggregations = data?.searchConnection?.aggregations ?? []
 
   // why is this not working? I can see the aggregations in flipper
   // when debugging the network request but not on the console log
