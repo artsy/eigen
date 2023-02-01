@@ -9,7 +9,6 @@ import {
 } from "app/system/relay/middlewares/metaphysicsMiddleware"
 import { simpleLoggerMiddleware } from "app/system/relay/middlewares/simpleLoggerMiddleware"
 import { Action, action, Thunk, thunk, ThunkOn, thunkOn } from "easy-peasy"
-import { DateTime } from "luxon"
 import { fetchQuery, graphql } from "react-relay"
 import { BottomTabType } from "./BottomTabType"
 
@@ -130,11 +129,10 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
       const conversations = result?.me?.unreadConversationCount ?? 0
       const notifications = result?.me?.unreadNotificationsCount ?? 0
       const unseenNotifications = result?.me?.unseenNotificationsCount ?? 0
-      const shouldDisplayIndicator = unseenNotifications > 0 && notifications > 0
 
       GlobalStore.actions.bottomTabs.setUnreadConversationsCount(conversations)
       GlobalStore.actions.bottomTabs.setUnreadNotificationsCount(notifications)
-      GlobalStore.actions.bottomTabs.setDisplayUnseenNotificationsIndicator(shouldDisplayIndicator)
+      GlobalStore.actions.bottomTabs.setDisplayUnseenNotificationsIndicator(unseenNotifications > 0)
     } catch (e) {
       if (__DEV__) {
         console.warn(
@@ -153,14 +151,3 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
     state.sessionState.tabProps[tab] = props
   }),
 })
-
-const checkIsNewPublishedAt = (prevPublishedAt: string | null, newPublishedAt: string | null) => {
-  if (prevPublishedAt === null || newPublishedAt === null) {
-    return false
-  }
-
-  const prevPublishedDate = DateTime.fromISO(prevPublishedAt)
-  const newPublishedDate = DateTime.fromISO(newPublishedAt)
-
-  return newPublishedDate > prevPublishedDate
-}

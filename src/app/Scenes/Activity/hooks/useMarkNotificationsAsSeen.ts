@@ -1,3 +1,4 @@
+import { captureMessage } from "@sentry/react-native"
 import {
   useMarkNotificationsAsSeenMutation,
   useMarkNotificationsAsSeenMutation$data,
@@ -12,10 +13,12 @@ export const useMarkNotificationsAsSeen = () => {
   const [commit] = useMutation<useMarkNotificationsAsSeenMutation>(MarkNotificationsAsSeenMutation)
 
   useEffect(() => {
+    const until = DateTime.local().toISO()
+
     commit({
       variables: {
         input: {
-          until: DateTime.local().toISO(),
+          until,
         },
       },
       updater,
@@ -29,6 +32,13 @@ export const useMarkNotificationsAsSeen = () => {
         }
 
         GlobalStore.actions.bottomTabs.setDisplayUnseenNotificationsIndicator(false)
+      },
+      onError: (error) => {
+        if (__DEV__) {
+          console.error(error)
+        } else {
+          captureMessage(error?.stack!)
+        }
       },
     })
   }, [])
