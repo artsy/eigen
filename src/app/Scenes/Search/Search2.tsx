@@ -9,7 +9,7 @@ import { isPad } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
 import { throttle } from "lodash"
 import { Box, Flex, Spacer } from "palette"
-import { Suspense, useEffect, useRef, useState } from "react"
+import { Suspense, useEffect, useMemo, useRef, useState } from "react"
 import { Platform, ScrollView } from "react-native"
 import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -67,10 +67,13 @@ export const Search2: React.FC = () => {
     setSelectedPill(TOP_PILL)
   }
 
-  const handleThrottledTextChange = () =>
-    throttle((value) => {
-      setSearchQuery(value)
-    }, SEARCH_THROTTLE_INTERVAL)
+  const handleThrottledTextChange = useMemo(
+    () =>
+      throttle((value) => {
+        setSearchQuery(value)
+      }, SEARCH_THROTTLE_INTERVAL),
+    []
+  )
 
   const onSearchTextChanged = (queryText: string) => {
     if (queryText.length === 0) {
@@ -78,11 +81,15 @@ export const Search2: React.FC = () => {
         action_type: Schema.ActionNames.ARAnalyticsSearchCleared,
       })
       handleResetSearchInput()
+
+      handleThrottledTextChange.flush()
+
+      return
     }
 
     queryText = queryText.trim()
 
-    handleThrottledTextChange()(queryText)
+    handleThrottledTextChange(queryText)
 
     trackEvent({
       action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
