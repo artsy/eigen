@@ -213,6 +213,8 @@ export default class HomeAnalytics {
     switch (key) {
       case "SUGGESTED":
         return Analytics.ContextModule.recommendedArtistsRail
+      case "CURATED_TRENDING":
+        return Analytics.ContextModule.curatedTrendingArtistsRail
       case "TRENDING":
         return Analytics.ContextModule.trendingArtistsRail
       case "POPULAR":
