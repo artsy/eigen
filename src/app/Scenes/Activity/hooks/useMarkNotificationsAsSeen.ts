@@ -37,6 +37,7 @@ export const useMarkNotificationsAsSeen = () => {
           return
         }
 
+        GlobalStore.actions.bottomTabs.setUnseenNotificationsCount(0)
         GlobalStore.actions.bottomTabs.setDisplayUnseenNotificationsIndicator(false)
       },
       onError: (error) => {
