@@ -20,6 +20,7 @@
     - Updates review prompt logic to every 5th session and after a purchase - pvinis, Brian
     - mark single activity item notification as read when pressed - gkartalis
     - Fix MyCollection Add Photos freeze - kizito
+    - Fix career highlights cards modal - mounir
     - Release deep zoom - mounir
 
   - Dev changes:
