@@ -24,6 +24,7 @@
     - Release deep zoom - mounir
 
   - Dev changes:
+    - Hide the global blue dot indicator if there are no unseen notifications - dimatretyak
     - make sure app is rehydrated before initializing unleash - mounir
     - add unused imports eslint rule - gkartalis
     - fix: error with old opaque image view in search - gkartalis
