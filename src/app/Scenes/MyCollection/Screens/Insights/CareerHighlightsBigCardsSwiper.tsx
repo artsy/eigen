@@ -134,8 +134,8 @@ const CareerHighlightsBigCardsSwiperScreen: React.FC<CareerHighlightsBigCardsSwi
         accessibilityLabel="Career Highlights Pagination Scroll Bar"
         style={{
           height: 2,
-          width: barWidth - space(1),
-          marginRight: space(1),
+          width: barWidth - space("1"),
+          marginRight: space("1"),
           borderRadius: 2,
           backgroundColor: color("black100"),
           opacity: opacityAnim,

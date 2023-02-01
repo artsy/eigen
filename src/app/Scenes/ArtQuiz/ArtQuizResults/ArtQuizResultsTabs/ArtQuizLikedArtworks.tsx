@@ -16,12 +16,12 @@ export const ArtQuizLikedArtworks = ({ me }: { me: ArtQuizResultsQuery$data["me"
   return (
     <StickyTabPageScrollView
       contentContainerStyle={{
-        paddingVertical: space(2),
+        paddingVertical: space("2"),
       }}
     >
       <GenericGrid
         artworks={artworks!}
-        width={dimensions.width - space(2)}
+        width={dimensions.width - space("2")}
         hidePartner
         artistNamesTextStyle={{ weight: "regular" }}
         saleInfoTextStyle={{ weight: "medium", color: "black100" }}

@@ -162,7 +162,7 @@ const Step = ({ isActive = false, goToStep }: { isActive?: boolean; goToStep: ()
 
   return (
     <TouchableOpacity
-      style={{ flex: 1, height: 2, marginHorizontal: space(1) }}
+      style={{ flex: 1, height: 2, marginHorizontal: space("1") }}
       onPress={goToStep}
       hitSlop={{ top: 10, left: 5, right: 5, bottom: 10 }}
     >

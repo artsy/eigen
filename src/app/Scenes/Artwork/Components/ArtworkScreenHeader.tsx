@@ -91,10 +91,10 @@ const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) =>
         <BackButton
           onPress={goBack}
           hitSlop={{
-            top: space(2),
-            left: space(2),
-            right: space(2),
-            bottom: space(2),
+            top: space("2"),
+            left: space("2"),
+            right: space("2"),
+            bottom: space("2"),
           }}
         />
       </Flex>

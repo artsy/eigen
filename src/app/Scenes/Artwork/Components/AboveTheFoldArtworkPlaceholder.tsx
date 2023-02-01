@@ -19,7 +19,7 @@ const ArtworkActionsPlaceholder = () => {
           key={`auction-${index}`}
           width={50}
           height={18}
-          marginHorizontal={space(1)}
+          marginHorizontal={space("1")}
         />
       ))}
     </Flex>
@@ -67,7 +67,7 @@ const RedesignedAboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> 
           <PlaceholderBox width={20} height={20} />
 
           <Flex flexDirection="row" alignItems="center">
-            <PlaceholderBox width={25} height={25} marginRight={space(2)} />
+            <PlaceholderBox width={25} height={25} marginRight={space("2")} />
             <PlaceholderBox width={105} height={25} />
           </Flex>
         </Flex>
