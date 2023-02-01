@@ -65,7 +65,6 @@ export const Search2: React.FC = () => {
   )
 
   const onRefetch = () => {
-    console.warn()
     if (isRefreshing) {
       return
     }
