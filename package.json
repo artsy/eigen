@@ -276,6 +276,7 @@
     "check-dependencies": "1.1.0",
     "concurrently": "7.0.0",
     "dedent": "0.7.0",
+    "detox": "20.1.2",
     "dotenv": "8.2.0",
     "eslint": "8.32.0",
     "eslint-config-prettier": "8.6.0",
