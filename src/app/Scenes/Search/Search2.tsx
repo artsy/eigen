@@ -157,12 +157,11 @@ export const Search2: React.FC = () => {
         </Flex>
         <RefetchSearchTermQuery query={searchQuery} refetch={onRefetch} />
         <Flex flex={1} collapsable={false}>
-          {shouldStartSearching(searchQuery) ? (
+          {shouldStartSearching(searchQuery) && queryData.viewer !== null ? (
             <>
               <Box pt={2} pb={1}>
                 <SearchPills2
-                  viewer={queryData.viewer!}
-                  query={searchQuery}
+                  viewer={queryData.viewer}
                   ref={searchPillsRef}
                   pills={ES_ONLY_PILLS}
                   onPillPress={handlePillPress}

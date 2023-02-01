@@ -9,7 +9,6 @@ export interface SearchPillsProps {
   pills: PillType[]
   onPillPress: (pill: PillType) => void
   isSelected: (pill: PillType) => boolean
-  query: string
   viewer: SearchPills2_viewer$key
 }
 
@@ -17,7 +16,13 @@ export const SearchPills2 = React.forwardRef<ScrollView, SearchPillsProps>((prop
   const { pills, onPillPress, isSelected, viewer } = props
   const space = useSpace()
 
-  useFragment<SearchPills2_viewer$key>(SearchPillsQuery, viewer)
+  const data = useFragment<SearchPills2_viewer$key>(SearchPillsQuery, viewer)
+
+  const aggregations = data.searchConnection?.aggregations ?? []
+
+  // why is this not working? I can see the aggregations in flipper
+  // when debugging the network request but not on the console log
+  console.warn({ aggregations })
 
   return (
     <ScrollView
@@ -56,7 +61,7 @@ export const SearchPills2 = React.forwardRef<ScrollView, SearchPillsProps>((prop
 export const SearchPillsQuery = graphql`
   fragment SearchPills2_viewer on Viewer
   @argumentDefinitions(term: { type: "String!", defaultValue: "" }) {
-    searchConnection(query: $term, first: 1, aggregations: [TYPE]) {
+    searchConnection(first: 1, query: $term, aggregations: [TYPE]) {
       aggregations {
         slice
         counts {
