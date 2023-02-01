@@ -1,4 +1,5 @@
 import { SearchPills2_viewer$key } from "__generated__/SearchPills2_viewer.graphql"
+import { TOP_PILL } from "app/Scenes/Search/constants"
 import { PillType } from "app/Scenes/Search/types"
 import { Pill, useSpace } from "palette"
 import React from "react"
@@ -26,13 +27,14 @@ export const SearchPills2 = React.forwardRef<ScrollView, SearchPillsProps>((prop
       accessibilityLabel="Scroll view for result type filter options"
       ref={ref}
       horizontal
-      contentContainerStyle={{ paddingLeft: space(1.5), paddingRight: space(1) }}
+      contentContainerStyle={{ paddingLeft: space("2"), paddingRight: space("1") }}
       showsHorizontalScrollIndicator={false}
       keyboardShouldPersistTaps="handled"
     >
       {pills.map((pill) => {
         const { key, displayName } = pill
-        const isPillDisabled = !aggregation?.counts?.find((agg) => agg?.name === key)
+        const isPillDisabled =
+          !aggregation?.counts?.find((agg) => agg?.name === key) && key !== TOP_PILL.key
         const selected = isSelected(pill)
         const disabled = !!selected || isPillDisabled
 
