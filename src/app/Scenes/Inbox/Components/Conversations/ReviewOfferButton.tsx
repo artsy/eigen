@@ -136,9 +136,10 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({
 
   const navigateToConversation = (path: string, title: string) => {
     trackEvent(tracks.tappedViewOffer(conversationID, message))
+    const shouldPromptForReview = title === "Offer Accepted"
     navigate(path, {
       modal: true,
-      passProps: { orderID, title },
+      passProps: { orderID, title, shouldPromptForReview: shouldPromptForReview },
     })
   }
 

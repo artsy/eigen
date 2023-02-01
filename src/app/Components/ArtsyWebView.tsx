@@ -1,4 +1,4 @@
-import { OwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { addBreadcrumb } from "@sentry/react-native"
 import { BottomTabRoutes } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { matchRoute } from "app/routes"
@@ -9,6 +9,7 @@ import {
   useEnvironment,
 } from "app/store/GlobalStore"
 import { dismissModal, goBack, GoBackProps, navigate } from "app/system/navigation/navigate"
+import { promptForReview } from "app/utils/promptForReview"
 import { Schema } from "app/utils/track"
 import { useWebViewCallback } from "app/utils/useWebViewEvent"
 import { Flex, Text } from "palette"
@@ -37,6 +38,10 @@ export interface ArtsyWebViewConfig {
    * Show the X  button on the right side
    */
   useRightCloseButton?: boolean
+  /**
+   * If set to true after the page loads we will request a review from the user once the page loads.
+   */
+  shouldPromptForReview?: boolean
 }
 
 type WebViewWithShareTitleUrl = WebView & { shareTitleUrl: string }
@@ -48,6 +53,7 @@ export const ArtsyWebViewPage = ({
   mimicBrowserBackButton = true,
   useRightCloseButton = false,
   showShareButton = false,
+  shouldPromptForReview = false,
   backProps,
   backAction,
 }: {
@@ -56,7 +62,8 @@ export const ArtsyWebViewPage = ({
   backProps?: GoBackProps
   backAction?: () => void
 } & ArtsyWebViewConfig) => {
-  const paddingTop = isPresentedModally ? 0 : useScreenDimensions().safeAreaInsets.top
+  const safeAreaTop = useScreenDimensions().safeAreaInsets.top
+  const paddingTop = isPresentedModally ? 0 : safeAreaTop
 
   const [canGoBack, setCanGoBack] = useState(false)
   const webURL = useEnvironment().webURL
@@ -121,6 +128,7 @@ export const ArtsyWebViewPage = ({
                 }
               : undefined
           }
+          shouldPromptForReview={shouldPromptForReview}
         />
       </ArtsyKeyboardAvoidingView>
     </Flex>
@@ -133,93 +141,116 @@ export const ArtsyWebView = forwardRef<
     url: string
     onNavigationStateChange?: WebViewProps["onNavigationStateChange"]
     isPresentedModally?: boolean
+    shouldPromptForReview?: boolean
   }
->(({ url, onNavigationStateChange, isPresentedModally = false }, ref) => {
-  const innerRef = useRef<WebViewWithShareTitleUrl>(null)
-  useImperativeHandle(ref, () => innerRef.current!)
-  const userAgent = getCurrentEmissionState().userAgent
-  const { callWebViewEventCallback } = useWebViewCallback()
+>(
+  (
+    { url, onNavigationStateChange, isPresentedModally = false, shouldPromptForReview = false },
+    ref
+  ) => {
+    const innerRef = useRef<WebViewWithShareTitleUrl>(null)
+    useImperativeHandle(ref, () => innerRef.current!)
+    const userAgent = getCurrentEmissionState().userAgent
+    const { callWebViewEventCallback } = useWebViewCallback()
 
-  const [loadProgress, setLoadProgress] = useState<number | null>(null)
-  const showIndicator = useDevToggle("DTShowWebviewIndicator")
+    const [loadProgress, setLoadProgress] = useState<number | null>(null)
+    const showIndicator = useDevToggle("DTShowWebviewIndicator")
 
-  const webURL = useEnvironment().webURL
-  const uri = url.startsWith("/") ? webURL + url : url
+    const webURL = useEnvironment().webURL
+    const uri = url.startsWith("/") ? webURL + url : url
 
-  return (
-    <Flex flex={1}>
-      <WebView
-        ref={innerRef}
-        // sharedCookiesEnabled is required on iOS for the user to be implicitly logged into force/prediction
-        // on android it works without it
-        sharedCookiesEnabled
-        decelerationRate="normal"
-        source={{ uri }}
-        style={{ flex: 1 }}
-        userAgent={userAgent}
-        onMessage={({ nativeEvent }) => {
-          const data = nativeEvent.data
-          try {
-            const jsonData = JSON.parse(data)
-            callWebViewEventCallback(jsonData)
-          } catch (e) {
-            console.log("error parsing webview message data", e, data)
-          }
-        }}
-        onLoadStart={() => setLoadProgress((p) => Math.max(0.02, p ?? 0))}
-        onLoadEnd={() => setLoadProgress(null)}
-        onLoadProgress={(e) => {
-          // we don't want to set load progress after navigating away from this
-          // web view (in onShouldStartLoadWithRequest). So we set
-          // loadProgress to null after navigating to another screen, and we
-          // check for that case here.
-          if (loadProgress !== null) {
-            setLoadProgress(e.nativeEvent.progress)
-          }
-        }}
-        onNavigationStateChange={(evt) => {
-          onNavigationStateChange?.(evt)
+    return (
+      <Flex flex={1}>
+        <WebView
+          ref={innerRef}
+          // sharedCookiesEnabled is required on iOS for the user to be implicitly logged into force/prediction
+          // on android it works without it
+          sharedCookiesEnabled
+          decelerationRate="normal"
+          source={{ uri }}
+          style={{ flex: 1 }}
+          userAgent={userAgent}
+          onMessage={({ nativeEvent }) => {
+            const data = nativeEvent.data
+            try {
+              const jsonData = JSON.parse(data)
+              callWebViewEventCallback(jsonData)
+            } catch (e) {
+              console.log("error parsing webview message data", e, data)
+            }
+          }}
+          onLoadStart={() => setLoadProgress((p) => Math.max(0.02, p ?? 0))}
+          onLoadEnd={() => {
+            if (shouldPromptForReview) {
+              setTimeout(() => {
+                promptForReview({
+                  contextModule: ContextModule.ordersAccept,
+                  contextOwnerType: OwnerType.artwork,
+                  contextOwnerSlug: "some-slug",
+                  contextOwnerId: "some-owner-id",
+                })
+              }, 3000)
+            }
+            setLoadProgress(null)
+          }}
+          onLoadProgress={(e) => {
+            // we don't want to set load progress after navigating away from this
+            // web view (in onShouldStartLoadWithRequest). So we set
+            // loadProgress to null after navigating to another screen, and we
+            // check for that case here.
+            if (loadProgress !== null) {
+              setLoadProgress(e.nativeEvent.progress)
+            }
+          }}
+          onNavigationStateChange={(evt) => {
+            onNavigationStateChange?.(evt)
 
-          const targetURL = expandGoogleAdLink(evt.url)
+            const targetURL = expandGoogleAdLink(evt.url)
 
-          const result = matchRoute(targetURL)
+            const result = matchRoute(targetURL)
 
-          // if it's a route that we know we don't have a native view for, keep it in the webview
-          if (result.type === "match" && result.module === "ReactWebView") {
-            innerRef.current!.shareTitleUrl = targetURL
-            return
-          }
+            // if it's a route that we know we don't have a native view for, keep it in the webview
+            if (result.type === "match" && result.module === "ReactWebView") {
+              innerRef.current!.shareTitleUrl = targetURL
+              return
+            }
 
-          // In case of a webview presented modally, if the targetURL is a tab View,
-          // we need to dismiss the modal first to avoid having a tab rendered within the modal
-          const modulePathName = new URL(targetURL).pathname?.split(/\/+/).filter(Boolean) ?? []
-          console.log({ isPresentedModally, modulePathName })
-          if (
-            isPresentedModally &&
-            result.type === "match" &&
-            modulePathName.length > 0 &&
-            BottomTabRoutes.includes("/" + modulePathName[0])
-          ) {
-            dismissModal()
-          }
+            // In case of a webview presented modally, if the targetURL is a tab View,
+            // we need to dismiss the modal first to avoid having a tab rendered within the modal
+            const modulePathName = new URL(targetURL).pathname?.split(/\/+/).filter(Boolean) ?? []
+            console.log({ isPresentedModally, modulePathName })
+            if (
+              isPresentedModally &&
+              result.type === "match" &&
+              modulePathName.length > 0 &&
+              BottomTabRoutes.includes("/" + modulePathName[0])
+            ) {
+              dismissModal()
+            }
 
-          // if it's an external url, or a route with a native view, use `navigate`
-          if (!__TEST__) {
-            innerRef.current?.stopLoading()
-          }
-          navigate(targetURL)
-          setLoadProgress(null)
-        }}
-      />
-      <ProgressBar loadProgress={loadProgress} />
-      {showIndicator ? (
-        <Flex position="absolute" top={50} left={-25} style={{ transform: [{ rotate: "90deg" }] }}>
-          <Text color="red">webview</Text>
-        </Flex>
-      ) : null}
-    </Flex>
-  )
-})
+            // if it's an external url, or a route with a native view, use `navigate`
+            if (!__TEST__) {
+              innerRef.current?.stopLoading()
+            }
+            navigate(targetURL)
+            setLoadProgress(null)
+          }}
+        />
+        <ProgressBar loadProgress={loadProgress} />
+        {showIndicator ? (
+          <Flex
+            position="absolute"
+            top={50}
+            left={-25}
+            style={{ transform: [{ rotate: "90deg" }] }}
+          >
+            <Text color="red">webview</Text>
+          </Flex>
+        ) : null}
+      </Flex>
+    )
+  }
+)
 
 const ProgressBar = ({ loadProgress }: { loadProgress: number | null }) => {
   if (loadProgress === null) {
