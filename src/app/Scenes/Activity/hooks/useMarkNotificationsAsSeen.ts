@@ -28,7 +28,13 @@ export const useMarkNotificationsAsSeen = () => {
         const errorMessage = result?.mutationError?.message
 
         if (errorMessage) {
-          throw new Error(errorMessage)
+          if (__DEV__) {
+            console.error(errorMessage)
+          } else {
+            captureMessage(errorMessage)
+          }
+
+          return
         }
 
         GlobalStore.actions.bottomTabs.setDisplayUnseenNotificationsIndicator(false)
