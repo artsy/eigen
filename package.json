@@ -222,7 +222,7 @@
     "@octokit/rest": "16.34.0",
     "@omakase/cli": "0.0.10",
     "@react-native-community/cli-platform-ios": "6.2.0",
-    "@testing-library/jest-native": "5.1.2",
+    "@testing-library/jest-native": "5.4.1",
     "@testing-library/react-hooks": "8.0.1",
     "@testing-library/react-native": "11.5.0",
     "@tsconfig/react-native": "2.0.2",
