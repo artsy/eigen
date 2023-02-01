@@ -2,12 +2,20 @@ import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { useNavigation } from "@react-navigation/native"
 import { Search2Query } from "__generated__/Search2Query.graphql"
 import { SearchInput } from "app/Components/SearchInput"
+import { RefetchSearchTermQuery } from "app/Scenes/Search/RefetchSearchTermQuery"
+import { SearchPills2 } from "app/Scenes/Search/SearchPills2"
 import { isPad } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
 import { Box, Flex, Spacer } from "palette"
 import { Suspense, useEffect, useRef, useState } from "react"
 import { Platform, ScrollView } from "react-native"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import {
+  FetchPolicy,
+  fetchQuery,
+  graphql,
+  useLazyLoadQuery,
+  useRelayEnvironment,
+} from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import styled from "styled-components"
@@ -17,7 +25,6 @@ import { SearchContext, useSearchProviderValues } from "./SearchContext"
 import { SearchResults } from "./SearchResults"
 import { TrendingArtists } from "./TrendingArtists"
 import { CityGuideCTA } from "./components/CityGuideCTA"
-import { SearchPills } from "./components/SearchPills"
 import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
 import { ES_ONLY_PILLS, TOP_PILL } from "./constants"
 import { getContextModuleByPillName } from "./helpers"
@@ -29,20 +36,56 @@ interface SearchState {
   page?: number
 }
 
+interface RefreshQueryOptions {
+  fetchKey?: number
+  fetchPolicy?: FetchPolicy
+}
+
 const SEARCH_INPUT_PLACEHOLDER = "Search artists, artworks, galleries, etc"
 
 export const Search2: React.FC = () => {
+  const environment = useRelayEnvironment()
+
   const isSearchDiscoveryContentEnabled = useSearchDiscoveryContentEnabled()
 
   const searchPillsRef = useRef<ScrollView>(null)
   const [searchState, setSearchState] = useState<SearchState>({})
   const [selectedPill, setSelectedPill] = useState<PillType>(TOP_PILL)
   const searchQuery = searchState?.query ?? ""
-  const queryData = useLazyLoadQuery<Search2Query>(SearchScreenQuery, { keyword: searchQuery })
+  const [isRefreshing, setIsRefreshing] = useState(false)
   const searchProviderValues = useSearchProviderValues(searchQuery)
   const { trackEvent } = useTracking()
   const isAndroid = Platform.OS === "android"
   const navigation = useNavigation()
+  const [refreshedQueryOptions, setRefreshedQueryOptions] = useState<RefreshQueryOptions>({})
+  const queryData = useLazyLoadQuery<Search2Query>(
+    SearchScreenQuery,
+    { term: "" },
+    refreshedQueryOptions
+  )
+
+  const onRefetch = () => {
+    console.warn()
+    if (isRefreshing) {
+      return
+    }
+
+    setIsRefreshing(true)
+
+    fetchQuery(environment, SearchScreenQuery, { term: searchQuery }).subscribe({
+      complete: () => {
+        setIsRefreshing(false)
+
+        setRefreshedQueryOptions((prev) => ({
+          fetchKey: (prev?.fetchKey ?? 0) + 1,
+          fetchPolicy: "store-only",
+        }))
+      },
+      error: () => {
+        setIsRefreshing(false)
+      },
+    })
+  }
 
   const handleRetry = () => {
     setSearchState((prevState) => ({ ...prevState }))
@@ -112,14 +155,15 @@ export const Search2: React.FC = () => {
             onChangeText={onSearchTextChanged}
           />
         </Flex>
-
+        <RefetchSearchTermQuery query={searchQuery} refetch={onRefetch} />
         <Flex flex={1} collapsable={false}>
           {shouldStartSearching(searchQuery) ? (
             <>
               <Box pt={2} pb={1}>
-                <SearchPills
+                <SearchPills2
+                  viewer={queryData.viewer!}
+                  query={searchQuery}
                   ref={searchPillsRef}
-                  loading={false}
                   pills={ES_ONLY_PILLS}
                   onPillPress={handlePillPress}
                   isSelected={isSelected}
@@ -159,27 +203,12 @@ export const Search2: React.FC = () => {
 }
 
 export const SearchScreenQuery = graphql`
-  query Search2Query($keyword: String!) {
+  query Search2Query($term: String!) {
     viewer {
-      ...Search2_viewer @arguments(term: $keyword)
+      ...SearchPills2_viewer @arguments(term: $term)
     }
     ...CuratedCollections_collections
     ...TrendingArtists_query
-  }
-`
-
-export const SearchFragment = graphql`
-  fragment Search2_viewer on Viewer
-  @argumentDefinitions(term: { type: "String!", defaultValue: "" }) {
-    searchConnection(query: $term, first: 1, aggregations: [TYPE]) {
-      aggregations {
-        slice
-        counts {
-          count
-          name
-        }
-      }
-    }
   }
 `
 
