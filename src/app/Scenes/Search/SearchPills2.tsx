@@ -18,11 +18,7 @@ export const SearchPills2 = React.forwardRef<ScrollView, SearchPillsProps>((prop
 
   const data = useFragment<SearchPills2_viewer$key>(SearchPillsQuery, viewer)
 
-  const aggregations = data?.searchConnection?.aggregations ?? []
-
-  // why is this not working? I can see the aggregations in flipper
-  // when debugging the network request but not on the console log
-  console.warn({ aggregations })
+  const aggregation = data?.searchConnection?.aggregations?.[0]
 
   return (
     <ScrollView
@@ -36,8 +32,9 @@ export const SearchPills2 = React.forwardRef<ScrollView, SearchPillsProps>((prop
     >
       {pills.map((pill) => {
         const { key, displayName } = pill
+        const isPillDisabled = !aggregation?.counts?.find((agg) => agg?.name === key)
         const selected = isSelected(pill)
-        const disabled = !!pill.disabled || !!selected
+        const disabled = !!selected || isPillDisabled
 
         return (
           <Pill
@@ -63,7 +60,6 @@ export const SearchPillsQuery = graphql`
   @argumentDefinitions(term: { type: "String!", defaultValue: "" }) {
     searchConnection(first: 1, query: $term, aggregations: [TYPE]) {
       aggregations {
-        slice
         counts {
           count
           name
