@@ -5,7 +5,6 @@ import { ModalStack } from "app/system/navigation/ModalStack"
 import { createEnvironment } from "app/system/relay/createEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { DateTime } from "luxon"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import useInterval from "react-use/lib/useInterval"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -71,190 +70,42 @@ describe(BottomTabs, () => {
   })
 
   describe("a blue dot on home icon", () => {
-    describe("should be displayed if there are unseen notifications", () => {
-      it("`lastSeenNotificationPublishedAt` is empty", async () => {
-        const currentDate = DateTime.local()
+    it("should be displayed if there are unseen notifications", async () => {
+      const tree = renderWithWrappersLEGACY(<TestWrapper />)
 
-        __globalStoreTestUtils__?.injectState({
-          bottomTabs: {
-            lastSeenNotificationPublishedAt: null,
-          },
-        })
-        const tree = renderWithWrappersLEGACY(<TestWrapper />)
+      const prevHomeButton = findButtonByTab(tree, "home")
+      expect((prevHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
 
-        const prevHomeButton = findButtonByTab(tree, "home")
-        expect((prevHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
-
-        resolveNotificationsInfoQuery({
-          Me: () => ({
-            unreadConversationCount: 5,
-            unreadNotificationsCount: 1,
-          }),
-          Viewer: () => ({
-            notificationsConnection: {
-              edges: [
-                {
-                  node: {
-                    publishedAt: currentDate.toISO(),
-                  },
-                },
-              ],
-            },
-          }),
-        })
-
-        await flushPromiseQueue()
-
-        const currentHomeButton = findButtonByTab(tree, "home")
-        expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
+      resolveNotificationsInfoQuery({
+        Me: () => ({
+          unreadConversationCount: 5,
+          unseenNotificationsCount: 1,
+        }),
       })
 
-      it("the latest notification `publishedAt` is more recent than the locally persisted `publishedAt`", async () => {
-        const currentDate = DateTime.local()
-        const prevNotificationPublishedAt = currentDate.minus({ hour: 1 }).toISO()
+      await flushPromiseQueue()
 
-        __globalStoreTestUtils__?.injectState({
-          bottomTabs: {
-            lastSeenNotificationPublishedAt: prevNotificationPublishedAt,
-          },
-        })
-        const tree = renderWithWrappersLEGACY(<TestWrapper />)
-
-        const prevHomeButton = findButtonByTab(tree, "home")
-        expect((prevHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
-
-        resolveNotificationsInfoQuery({
-          Me: () => ({
-            unreadConversationCount: 5,
-            unreadNotificationsCount: 1,
-          }),
-          Viewer: () => ({
-            notificationsConnection: {
-              edges: [
-                {
-                  node: {
-                    publishedAt: currentDate.toISO(),
-                  },
-                },
-                {
-                  node: {
-                    publishedAt: prevNotificationPublishedAt,
-                  },
-                },
-              ],
-            },
-          }),
-        })
-
-        await flushPromiseQueue()
-
-        const currentHomeButton = findButtonByTab(tree, "home")
-        expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
-      })
+      const currentHomeButton = findButtonByTab(tree, "home")
+      expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
     })
 
-    describe("should NOT be displayed if there are NO unseen notifications", () => {
-      it("`lastSeenNotificationPublishedAt` is empty", async () => {
-        const publishedAt = DateTime.local().toISO()
+    it("should NOT be displayed if there are NO unseen notifications", async () => {
+      const tree = renderWithWrappersLEGACY(<TestWrapper />)
 
-        __globalStoreTestUtils__?.injectState({
-          bottomTabs: {
-            lastSeenNotificationPublishedAt: null,
-          },
-        })
-        const tree = renderWithWrappersLEGACY(<TestWrapper />)
+      const prevHomeButton = findButtonByTab(tree, "home")
+      expect((prevHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
 
-        resolveNotificationsInfoQuery({
-          Me: () => ({
-            unreadConversationCount: 5,
-            unreadNotificationsCount: 0,
-          }),
-          Viewer: () => ({
-            notificationsConnection: {
-              edges: [
-                {
-                  node: {
-                    publishedAt: publishedAt,
-                  },
-                },
-              ],
-            },
-          }),
-        })
-
-        await flushPromiseQueue()
-
-        const currentHomeButton = findButtonByTab(tree, "home")
-        expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
+      resolveNotificationsInfoQuery({
+        Me: () => ({
+          unreadConversationCount: 5,
+          unseenNotificationsCount: 0,
+        }),
       })
 
-      it("the latest notification `publishedAt` is equal to the locally persisted `publishedAt`", async () => {
-        const publishedAt = DateTime.local().toISO()
+      await flushPromiseQueue()
 
-        __globalStoreTestUtils__?.injectState({
-          bottomTabs: {
-            lastSeenNotificationPublishedAt: publishedAt,
-          },
-        })
-        const tree = renderWithWrappersLEGACY(<TestWrapper />)
-
-        resolveNotificationsInfoQuery({
-          Me: () => ({
-            unreadConversationCount: 5,
-            unreadNotificationsCount: 0,
-          }),
-          Viewer: () => ({
-            notificationsConnection: {
-              edges: [
-                {
-                  node: {
-                    publishedAt: publishedAt,
-                  },
-                },
-              ],
-            },
-          }),
-        })
-
-        await flushPromiseQueue()
-
-        const currentHomeButton = findButtonByTab(tree, "home")
-        expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
-      })
-
-      it("the latest notification `publishedAt` is more recent than the locally persisted `publishedAt`", async () => {
-        const currentDate = DateTime.local()
-
-        __globalStoreTestUtils__?.injectState({
-          bottomTabs: {
-            lastSeenNotificationPublishedAt: currentDate.minus({ hour: 1 }).toISO(),
-          },
-        })
-        const tree = renderWithWrappersLEGACY(<TestWrapper />)
-
-        resolveNotificationsInfoQuery({
-          Me: () => ({
-            unreadConversationCount: 5,
-            unreadNotificationsCount: 0,
-          }),
-          Viewer: () => ({
-            notificationsConnection: {
-              edges: [
-                {
-                  node: {
-                    publishedAt: currentDate.toISO(),
-                  },
-                },
-              ],
-            },
-          }),
-        })
-
-        await flushPromiseQueue()
-
-        const currentHomeButton = findButtonByTab(tree, "home")
-        expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
-      })
+      const currentHomeButton = findButtonByTab(tree, "home")
+      expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
     })
   })
 
@@ -268,7 +119,7 @@ describe(BottomTabs, () => {
     resolveNotificationsInfoQuery({
       Me: () => ({
         unreadConversationCount: 5,
-        unreadNotificationsCount: 1,
+        unseenNotificationsCount: 1,
       }),
     })
 
@@ -314,7 +165,7 @@ describe(BottomTabs, () => {
     resolveNotificationsInfoQuery({
       Me: () => ({
         unreadConversationCount: 1,
-        unreadNotificationsCount: 1,
+        unseenNotificationsCount: 1,
       }),
     })
 
@@ -332,7 +183,7 @@ describe(BottomTabs, () => {
     resolveNotificationsInfoQuery({
       Me: () => ({
         unreadConversationCount: 3,
-        unreadNotificationsCount: 1,
+        unseenNotificationsCount: 1,
       }),
     })
 
