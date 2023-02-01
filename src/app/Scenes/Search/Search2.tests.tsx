@@ -4,6 +4,7 @@ import {
   waitFor,
   waitForElementToBeRemoved,
 } from "@testing-library/react-native"
+import { ES_ONLY_PILLS } from "app/Scenes/Search/constants"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { SearchScreen2 } from "./Search2"
 
@@ -78,5 +79,21 @@ describe("Search", () => {
     fireEvent(searchInput, "changeText", "new value")
 
     expect(screen.queryByA11yState({ selected: true })).toHaveTextContent("Top")
+  })
+
+  it("should render all the default pills", async () => {
+    renderWithRelay()
+
+    await waitForElementToBeRemoved(() => screen.getByTestId("search-placeholder"))
+
+    const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
+
+    fireEvent(searchInput, "changeText", "Ba")
+
+    screen.debug()
+
+    ES_ONLY_PILLS.forEach((pill) => {
+      expect(screen.queryByText(pill.displayName)).toBeTruthy()
+    })
   })
 })
