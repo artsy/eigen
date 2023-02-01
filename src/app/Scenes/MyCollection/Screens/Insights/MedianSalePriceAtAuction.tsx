@@ -234,16 +234,16 @@ const LoadingSkeleton = () => {
               style={{ marginTop: 3 }}
             />
             <Spacer p={1} />
-            <PlaceholderText width={150} height={10} marginTop={5} />
+            <PlaceholderText width={150} height={10} marginTop={6} />
           </Flex>
 
-          <PlaceholderText width={70} height={10} marginTop={5} />
+          <PlaceholderText width={70} height={10} marginTop={6} />
         </Flex>
         <Spacer mb={0.5} />
         <PlaceholderText width={30} height={20} />
         <Flex flexDirection="row" alignItems="center" my={0.1}>
           <PlaceholderBox width={10} height={10} borderRadius={5} marginRight={7} />
-          <PlaceholderText width={60} height={7} marginTop={5} />
+          <PlaceholderText width={60} height={7} marginTop={6} />
         </Flex>
         <PlaceholderText width={100} height={7} />
         <Spacer mb={2} />

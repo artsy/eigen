@@ -188,7 +188,7 @@ const Placeholder = () => (
           <React.Fragment key={i}>
             <PlaceholderBox width="100%" height={220} />
             <PlaceholderText width={120 + Math.random() * 100} marginTop={10} />
-            <PlaceholderText width={80 + Math.random() * 100} marginTop={5} />
+            <PlaceholderText width={80 + Math.random() * 100} marginTop={6} />
           </React.Fragment>
         ))}
       </Flex>
@@ -203,7 +203,7 @@ const LoadingMorePlaceholder = () => (
         <React.Fragment key={i}>
           <PlaceholderBox width="100%" height={220} />
           <PlaceholderText width={120 + Math.random() * 100} marginTop={10} />
-          <PlaceholderText width={80 + Math.random() * 100} marginTop={5} />
+          <PlaceholderText width={80 + Math.random() * 100} marginTop={6} />
           <Spacer mb="4" />
         </React.Fragment>
       ))}

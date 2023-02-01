@@ -140,7 +140,7 @@ const Steps = ({
       justifyContent="space-between"
       pl={1}
       style={{ marginTop: topInset + 10 }}
-      pr={5}
+      pr={6}
       zIndex={101}
     >
       {Array.from({ length: numberOfSteps }).map((_, index) => (

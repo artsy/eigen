@@ -355,14 +355,14 @@ export const SalePlaceholder: React.FC<{}> = () => (
         <Box>
           <PlaceholderText width={200 + Math.random() * 100} marginTop={20} />
           <PlaceholderText width={200 + Math.random() * 100} marginTop={20} />
-          <PlaceholderText width={100 + Math.random() * 100} marginTop={5} />
+          <PlaceholderText width={100 + Math.random() * 100} marginTop={6} />
         </Box>
         <Box>
           <PlaceholderText height={20} width={100 + Math.random() * 100} marginBottom={20} />
           <PlaceholderBox height={50} width="100%" />
         </Box>
         <Box>
-          <PlaceholderText height={20} width={100 + Math.random() * 100} marginBottom={5} />
+          <PlaceholderText height={20} width={100 + Math.random() * 100} marginBottom={6} />
           <Flex flexDirection="row" py={2}>
             {times(3).map((index: number) => (
               <Flex key={index} marginRight={1}>

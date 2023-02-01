@@ -76,7 +76,7 @@ export const RequestForPriceEstimateForm = () => {
               accessibilityLabel="Phone number"
               shouldDisplayLocalError={false}
             />
-            <Spacer mb={5} />
+            <Spacer mb={6} />
             <Text variant="xs" color="black60" mb={2}>
               By continuing, you agree to{" "}
               <LinkText variant="xs" onPress={() => navigate("/privacy", { modal: true })}>
