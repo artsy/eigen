@@ -25,6 +25,8 @@
     - Release deep zoom - mounir
 
   - Dev changes:
+    - sentry cli bump - gkartalis
+    - update jest-native dep - gkartalis
     - Hide the global blue dot indicator if there are no unseen notifications - dimatretyak
     - make sure app is rehydrated before initializing unleash - mounir
     - add unused imports eslint rule - gkartalis
