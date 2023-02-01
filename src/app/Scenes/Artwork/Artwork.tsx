@@ -7,7 +7,6 @@ import { Artwork_artworkBelowTheFold$data } from "__generated__/Artwork_artworkB
 import { Artwork_me$data } from "__generated__/Artwork_me.graphql"
 import { AuctionTimerState, currentTimerState } from "app/Components/Bidding/Components/Timer"
 import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
-import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { OfferSubmittedModal } from "app/Scenes/Inbox/Components/Conversations/OfferSubmittedModal"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
@@ -598,7 +597,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
           )
         }}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-        contentContainerStyle={{ paddingBottom: space(4) }}
+        contentContainerStyle={{ paddingBottom: space("4") }}
         renderItem={({ item }) => {
           if (enableArtworkRedesign) {
             return <Box px={item.excludePadding ? 0 : 2}>{item.element}</Box>
