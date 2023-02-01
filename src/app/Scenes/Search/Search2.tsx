@@ -7,6 +7,7 @@ import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQuer
 import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
 import { isPad } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
+import { throttle } from "lodash"
 import { Box, Flex, Spacer } from "palette"
 import { Suspense, useEffect, useRef, useState } from "react"
 import { Platform, ScrollView } from "react-native"
@@ -21,7 +22,7 @@ import { SearchResults } from "./SearchResults"
 import { TrendingArtists } from "./TrendingArtists"
 import { CityGuideCTA } from "./components/CityGuideCTA"
 import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
-import { ES_ONLY_PILLS, TOP_PILL } from "./constants"
+import { ES_ONLY_PILLS, SEARCH_THROTTLE_INTERVAL, TOP_PILL } from "./constants"
 import { getContextModuleByPillName } from "./helpers"
 import { PillType } from "./types"
 import { useSearchDiscoveryContentEnabled } from "./useSearchDiscoveryContentEnabled"
@@ -72,6 +73,11 @@ export const Search2: React.FC = () => {
     setSelectedPill(TOP_PILL)
   }
 
+  const handleThrottledTextChange = () =>
+    throttle((value) => {
+      setSearchState((state) => ({ ...state, query: value }))
+    }, SEARCH_THROTTLE_INTERVAL)
+
   const onSearchTextChanged = (queryText: string) => {
     if (queryText.length === 0) {
       trackEvent({
@@ -81,7 +87,9 @@ export const Search2: React.FC = () => {
     }
 
     queryText = queryText.trim()
-    setSearchState((state) => ({ ...state, query: queryText }))
+
+    handleThrottledTextChange()(queryText)
+
     trackEvent({
       action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
       query: queryText,

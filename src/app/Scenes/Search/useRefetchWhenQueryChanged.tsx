@@ -8,8 +8,6 @@ interface Props {
 
 export const useRefetchWhenQueryChanged = ({ query, refetch }: Props) => {
   useEffect(() => {
-    if (!!query) {
-      refetch({ term: query })
-    }
+    refetch({ term: query ?? "" })
   }, [query])
 }
