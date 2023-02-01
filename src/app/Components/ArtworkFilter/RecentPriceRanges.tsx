@@ -50,7 +50,7 @@ export const RecentPriceRanges: React.FC<RecentPriceRangesProps> = ({
             accessibilityRole="button"
             accessibilityLabel="Clear price ranges"
             onPress={handleClearRecentPriceRanges}
-            hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
+            hitSlop={{ top: space("1"), bottom: space("1"), left: space("1"), right: space("1") }}
           >
             <Text variant="sm" style={{ textDecorationLine: "underline" }}>
               Clear

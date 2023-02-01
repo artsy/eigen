@@ -18,8 +18,8 @@ export const AnimatableHeaderLargeTitle = () => {
     <Animated.View
       style={[
         {
-          paddingHorizontal: space(2),
-          paddingTop: space(1),
+          paddingHorizontal: space("2"),
+          paddingTop: space("1"),
           paddingBottom: largeTitleVerticalOffset,
           justifyContent: "center",
         },

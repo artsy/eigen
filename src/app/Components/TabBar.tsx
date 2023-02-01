@@ -94,7 +94,7 @@ export default class TabBar extends React.Component<TabBarProps> {
       <ClassTheme>
         {({ space }) => {
           // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          const containerWidth = this.props.containerWidth - space(4)
+          const containerWidth = this.props.containerWidth - space("4")
           const numberOfTabs = this.props.tabs.length
 
           // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

@@ -19,7 +19,7 @@ const ArtworkActionsPlaceholder = () => {
           key={`auction-${index}`}
           width={50}
           height={18}
-          marginHorizontal={space(1)}
+          marginHorizontal={space("1")}
         />
       ))}
     </Flex>
@@ -67,7 +67,7 @@ const RedesignedAboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> 
           <PlaceholderBox width={20} height={20} />
 
           <Flex flexDirection="row" alignItems="center">
-            <PlaceholderBox width={25} height={25} marginRight={space(2)} />
+            <PlaceholderBox width={25} height={25} marginRight={space("2")} />
             <PlaceholderBox width={105} height={25} />
           </Flex>
         </Flex>
@@ -107,7 +107,7 @@ const CurrentAboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> = (
   const { width, height } = useImagePlaceholderDimensions(artworkID)
 
   return (
-    <Flex pt={5} pb={2}>
+    <Flex pt="6" pb="2">
       {/* Artwork thumbnail */}
       <Flex mx="auto">
         <PlaceholderBox width={width} height={height} />
@@ -118,9 +118,9 @@ const CurrentAboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> = (
       <Flex px={2} flex={1}>
         {/* save/share buttons */}
         <Flex flexDirection="row" justifyContent="center" alignItems="center" height={30}>
-          <PlaceholderBox width={50} height={15} marginHorizontal={space(1)} />
-          <PlaceholderBox width={50} height={15} marginHorizontal={space(1)} />
-          <PlaceholderBox width={50} height={15} marginHorizontal={space(1)} />
+          <PlaceholderBox width={50} height={15} marginHorizontal={space("1")} />
+          <PlaceholderBox width={50} height={15} marginHorizontal={space("1")} />
+          <PlaceholderBox width={50} height={15} marginHorizontal={space("1")} />
         </Flex>
         <Spacer mb={4} />
 

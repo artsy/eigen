@@ -15,7 +15,7 @@ export const MyCollectionInsightsEmptyState = () => {
         <Image
           source={require("images/my-collection-insights-empty-state-median.png")}
           resizeMode="contain"
-          style={{ alignSelf: "center", marginVertical: space(2) }}
+          style={{ alignSelf: "center", marginVertical: space("2") }}
         />
       }
       callToAction={

@@ -65,15 +65,15 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
               </ArticlesListItem>
             )
           }}
-          ItemSeparatorComponent={() => <Spacer mt="3" />}
+          ItemSeparatorComponent={() => <Spacer mt="4" />}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={1}
           ListFooterComponent={() => (
             <Flex
               alignItems="center"
               justifyContent="center"
-              p="3"
-              pb="5"
+              p="4"
+              pb="6"
               style={{ opacity: isLoading() && hasMore() ? 1 : 0 }}
             >
               <ActivityIndicator />
@@ -145,7 +145,7 @@ export const ArticlesPlaceholder = () => {
               </ArticlesListItem>
             )
           }}
-          ItemSeparatorComponent={() => <Spacer mt="3" />}
+          ItemSeparatorComponent={() => <Spacer mt="4" />}
           onEndReachedThreshold={1}
         />
       </Flex>

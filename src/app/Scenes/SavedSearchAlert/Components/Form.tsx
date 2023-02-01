@@ -165,7 +165,7 @@ export const Form: React.FC<FormProps> = (props) => {
           Update email preferences
         </Text>
       )}
-      <Box mt={5}>
+      <Box mt="6">
         <Button
           testID="save-alert-button"
           disabled={isSaveAlertButtonDisabled}

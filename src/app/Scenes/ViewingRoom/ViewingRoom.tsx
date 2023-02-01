@@ -51,7 +51,7 @@ export const ClosedNotice: React.FC<{ status: string; partnerHref: string }> = (
 
   return (
     <Flex alignItems="center">
-      <Text variant="sm" mt="3" mx="4" textAlign="center">
+      <Text variant="sm" mt="4" mx="4" textAlign="center">
         {finalText}
       </Text>
       <Button variant="fillGray" onPress={() => navigate(partnerHref)} mt={2}>

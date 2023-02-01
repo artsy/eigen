@@ -20,7 +20,7 @@ export const SearchPills = React.forwardRef<ScrollView, SearchPillsProps>((props
       accessibilityLabel="Scroll view for result type filter options"
       ref={ref}
       horizontal
-      contentContainerStyle={{ paddingLeft: space(1.5), paddingRight: space(1) }}
+      contentContainerStyle={{ paddingLeft: space("2"), paddingRight: space("1") }}
       showsHorizontalScrollIndicator={false}
       keyboardShouldPersistTaps="handled"
     >

@@ -29,7 +29,7 @@ export const AutosuggestResultsPlaceholder: React.FC<AutosuggestResultsPlacehold
                 minWidth={50}
                 maxWidth={100}
                 height={TEXT_SIZE}
-                marginTop={5}
+                marginTop={6}
                 marginBottom={0}
               />
             )}

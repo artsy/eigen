@@ -99,7 +99,7 @@ export const AlgoliaSearchResults: React.FC<AlgoliaSearchResultsProps> = ({
     <AboveTheFoldFlatList<AlgoliaSearchResult>
       listRef={flatListRef}
       initialNumToRender={isPad() ? 24 : 12}
-      contentContainerStyle={{ paddingVertical: space(1), paddingHorizontal: space(2) }}
+      contentContainerStyle={{ paddingVertical: space("1"), paddingHorizontal: space("2") }}
       data={hits}
       keyExtractor={(item) => item.objectID}
       ItemSeparatorComponent={() => <Spacer mb={2} />}

@@ -49,7 +49,7 @@ export class FairEventSection extends Component<Props> {
               data={data.filter((fair) => Boolean(fair.image))}
               renderItem={this.renderItem}
               keyExtractor={(item) => item.id}
-              contentContainerStyle={{ padding: space(2) }}
+              contentContainerStyle={{ padding: space("2") }}
               horizontal
             />
             {data.length > 2 && (

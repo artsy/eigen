@@ -61,7 +61,7 @@ export const MediumCard: React.FC<MediumCardProps> = ({ image, title, subtitle, 
           position: "absolute",
           bottom: 0,
           left: 15,
-          right: space(6),
+          right: space("6"),
         }}
       >
         <Text lineHeight="20" color={color("white100")} mb={0.5}>

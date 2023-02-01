@@ -311,7 +311,7 @@ export const Input = forwardRef<InputRef, InputProps>(
             )}
             {renderShowPasswordIcon()}
             {loading ? (
-              <Flex pr="3" justifyContent="center" flexGrow={0}>
+              <Flex pr="4" justifyContent="center" flexGrow={0}>
                 <Spinner
                   size="medium"
                   style={{ marginLeft: 3, width: 15, height: 4, backgroundColor: color("black60") }}

@@ -406,24 +406,24 @@ const LoadingSkeleton = () => {
       <Spacer mb={4} />
       <Flex flexDirection="row" pl={2} alignItems="center">
         <PlaceholderBox width={99} height={99} borderRadius={50} />
-        <PlaceholderText width={100} height={20} marginTop={5} marginLeft={20} />
+        <PlaceholderText width={100} height={20} marginTop={6} marginLeft={20} />
       </Flex>
       {[...Array(4)].map((_x, i) => (
         <Flex mt={30} key={i}>
           <Flex mx={20}>
-            <PlaceholderText width={100} height={20} marginTop={5} />
-            <PlaceholderBox height={50} marginTop={5} />
+            <PlaceholderText width={100} height={20} marginTop={6} />
+            <PlaceholderBox height={50} marginTop={6} />
           </Flex>
         </Flex>
       ))}
       <Flex mt={30}>
         <Flex mx={20}>
-          <PlaceholderText width={100} height={20} marginTop={5} />
-          <PlaceholderBox height={100} marginTop={5} />
+          <PlaceholderText width={100} height={20} marginTop={6} />
+          <PlaceholderBox height={100} marginTop={6} />
         </Flex>
       </Flex>
       <Spacer mb={2} />
-      <PlaceholderBox height={50} marginTop={5} borderRadius={50} marginHorizontal={20} />
+      <PlaceholderBox height={50} marginTop={6} borderRadius={50} marginHorizontal={20} />
     </ProvidePlaceholderContext>
   )
 }

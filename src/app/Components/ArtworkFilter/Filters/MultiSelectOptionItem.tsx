@@ -5,7 +5,7 @@ import React, { memo } from "react"
 import { useScreenDimensions } from "shared/hooks"
 import styled from "styled-components/native"
 
-const OPTIONS_MARGIN_LEFT = 0.5
+const OPTIONS_MARGIN_LEFT = "0.5"
 const OPTION_PADDING = 15
 export const MULTI_SELECT_OPTION_ITEM_HEIGHT = 50
 

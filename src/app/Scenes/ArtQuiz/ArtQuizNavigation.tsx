@@ -4,7 +4,6 @@ import { ArtQuizArtworks } from "app/Scenes/ArtQuiz/ArtQuizArtworks"
 import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
 import { ArtQuizWelcome } from "./ArtQuizWelcome"
 
-// tslint:disable-next-line:interface-over-type-literal
 export type ArtQuizNavigationStack = {
   ArtQuizWelcome: undefined
   ArtQuizArtworks: undefined

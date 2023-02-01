@@ -82,8 +82,8 @@ const InquiryQuestionOption: React.FC<{
             borderWidth: 1,
             borderRadius: 5,
             flexDirection: "column",
-            marginTop: space(1),
-            padding: space(2),
+            marginTop: space("1"),
+            padding: space("2"),
           }}
         >
           <Flex flexDirection="row" justifyContent="space-between">

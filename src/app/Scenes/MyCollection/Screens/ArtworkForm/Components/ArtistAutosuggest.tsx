@@ -77,7 +77,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
         />
         {!enableArtworksFromNonArtsyArtists && <Spacer mb={1} />}
         {showResults ? (
-          <Box height="100%" mt={enableArtworksFromNonArtsyArtists ? 0 : 2} pb={5}>
+          <Box height="100%" mt={enableArtworksFromNonArtsyArtists ? 0 : 2} pb={6}>
             <AutosuggestResults
               query={trimmedQuery}
               prependResults={filteredCollecteArtists}

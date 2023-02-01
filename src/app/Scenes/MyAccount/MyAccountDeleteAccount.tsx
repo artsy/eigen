@@ -38,7 +38,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
           <Text variant="lg-display" mt="6">
             Delete My Account
           </Text>
-          <Spacer mt="3" />
+          <Spacer mt="4" />
           <Text>Are you sure you want to delete your account?</Text>
           <Spacer mt="2" />
           <Text>If you delete your account:</Text>
@@ -62,14 +62,14 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
               Private Sales, etc
             </Text>
           </Flex>
-          <Spacer mt="3" />
+          <Spacer mt="4" />
           <Input
             multiline
             placeholder="Please share with us why you are leaving"
             onChangeText={setExplanation}
             error={!hasPassword ? error : undefined}
           />
-          <Spacer mt="3" />
+          <Spacer mt="4" />
           <Text variant="xs" color={color("black100")} pb="1px">
             After you submit your request, we will disable your account. It may take up to 7 days to
             fully delete and remove all of your data.

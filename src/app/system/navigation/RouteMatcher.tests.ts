@@ -35,19 +35,12 @@ describe(RouteMatcher, () => {
   })
 
   it("does not throw errors for routes that look right", () => {
-    // tslint:disable-next-line:no-unused-expression
     new RouteMatcher("/", "Home")
-    // tslint:disable-next-line:no-unused-expression
     new RouteMatcher("/hello", "Home")
-    // tslint:disable-next-line:no-unused-expression
     new RouteMatcher("/hello/:id", "Home")
-    // tslint:disable-next-line:no-unused-expression
     new RouteMatcher("/:id/hello", "Home")
-    // tslint:disable-next-line:no-unused-expression
     new RouteMatcher("/:id/Capital", "Home")
-    // tslint:disable-next-line:no-unused-expression
     new RouteMatcher("/:id/Capital32", "Home")
-    // tslint:disable-next-line:no-unused-expression
     new RouteMatcher("/324/:Capital78/20f38h9s/:banana", "Home")
   })
 

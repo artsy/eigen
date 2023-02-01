@@ -64,7 +64,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
     <Screen.Background>
       <Flex flex={1} justifyContent="center" alignItems="center" minHeight={screenHeight}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Flex pb={5}>
+          <Flex pb="6">
             <Header
               onConsignPress={handleConsignPress}
               onInquiryPress={() =>

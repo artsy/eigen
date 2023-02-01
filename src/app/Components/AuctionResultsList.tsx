@@ -145,7 +145,7 @@ export const LoadingSkeleton: React.FC<{ title: string; listHeader: React.ReactE
   }
   return (
     <ProvidePlaceholderContext>
-      <Spacer mb={5} />
+      <Spacer mb={6} />
 
       {listHeader}
       <Flex mx={2}>

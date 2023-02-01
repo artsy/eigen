@@ -135,7 +135,7 @@ const CustomSizeInputsContainer: React.FC<CustomSizeInputsContainerProps> = ({
                 selected={isSelected}
                 onPress={() => handleMetricChange(currentMetric)}
               />
-              <Text marginRight="3">{currentMetric}</Text>
+              <Text marginRight="4">{currentMetric}</Text>
             </React.Fragment>
           )
         })}

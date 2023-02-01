@@ -19,7 +19,7 @@ export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({
   return (
     <Touchable haptic onPress={() => setChecked(!checked)}>
       <Flex flexDirection="row" alignItems="flex-start">
-        <Checkbox error={error} checked={checked} onPress={() => setChecked(!checked)} mt={0.3}>
+        <Checkbox error={error} checked={checked} onPress={() => setChecked(!checked)} mt="0.5">
           <Text variant="xs">
             By checking this box, you consent to our{" "}
             <Text

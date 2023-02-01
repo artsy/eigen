@@ -140,7 +140,7 @@ const Steps = ({
       justifyContent="space-between"
       pl={1}
       style={{ marginTop: topInset + 10 }}
-      pr={5}
+      pr={6}
       zIndex={101}
     >
       {Array.from({ length: numberOfSteps }).map((_, index) => (
@@ -162,7 +162,7 @@ const Step = ({ isActive = false, goToStep }: { isActive?: boolean; goToStep: ()
 
   return (
     <TouchableOpacity
-      style={{ flex: 1, height: 2, marginHorizontal: space(1) }}
+      style={{ flex: 1, height: 2, marginHorizontal: space("1") }}
       onPress={goToStep}
       hitSlop={{ top: 10, left: 5, right: 5, bottom: 10 }}
     >

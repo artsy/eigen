@@ -149,11 +149,11 @@ export const ViewingRoomsList = () => {
                 )
               }
             }}
-            ItemSeparatorComponent={() => <Spacer mt="3" />}
+            ItemSeparatorComponent={() => <Spacer mt="4" />}
             onEndReached={handleLoadMore}
             onEndReachedThreshold={1}
             ListFooterComponent={() =>
-              hasNext ? <LoadingMorePlaceholder /> : <Flex height={space(6)} />
+              hasNext ? <LoadingMorePlaceholder /> : <Flex height={space("6")} />
             }
           />
         </Flex>
@@ -188,7 +188,7 @@ const Placeholder = () => (
           <React.Fragment key={i}>
             <PlaceholderBox width="100%" height={220} />
             <PlaceholderText width={120 + Math.random() * 100} marginTop={10} />
-            <PlaceholderText width={80 + Math.random() * 100} marginTop={5} />
+            <PlaceholderText width={80 + Math.random() * 100} marginTop={6} />
           </React.Fragment>
         ))}
       </Flex>
@@ -203,8 +203,8 @@ const LoadingMorePlaceholder = () => (
         <React.Fragment key={i}>
           <PlaceholderBox width="100%" height={220} />
           <PlaceholderText width={120 + Math.random() * 100} marginTop={10} />
-          <PlaceholderText width={80 + Math.random() * 100} marginTop={5} />
-          <Spacer mb="3" />
+          <PlaceholderText width={80 + Math.random() * 100} marginTop={6} />
+          <Spacer mb="4" />
         </React.Fragment>
       ))}
     </Flex>

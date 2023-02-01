@@ -9,7 +9,7 @@ export const CertificateOfAuthenticity: React.FC = () => {
   return (
     <ScrollView>
       <Box flex={1} pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px={2} py={2}>
-        <Join separator={<Spacer my={1.5} />}>
+        <Join separator={<Spacer my="2" />}>
           <Text variant="lg-display">Certificate of Authenticity</Text>
           <Text>
             A certificate of authenticity (COA) is a document from an authoritative source that
