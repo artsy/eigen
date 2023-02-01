@@ -93,7 +93,7 @@ export const ColorsOptionsScreen: React.FC<ColorsOptionsScreenProps> = ({ naviga
           return (
             <ColorsSwatch
               key={i}
-              width={(layout.width - space(1) * 2) / SWATCHES_PER_ROW}
+              width={(layout.width - space("1") * 2) / SWATCHES_PER_ROW}
               selected={selected}
               name={color.name}
               backgroundColor={color.backgroundColor}

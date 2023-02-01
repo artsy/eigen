@@ -75,7 +75,7 @@ export const CareerHighlightBigCardBiennial: React.FC<CareerHighlightBigCardBien
   const [headerHeight, setHeaderHeight] = useState<number>(0)
 
   return (
-    <View style={{ paddingHorizontal: space(2), width }} testID="biennial-card">
+    <View style={{ paddingHorizontal: space("2"), width }} testID="biennial-card">
       <CardHeader
         count={count}
         label={label}
@@ -160,7 +160,7 @@ export const CareerHighlightBigCardCollected: React.FC<CareerHighlightBigCardCol
   const [headerHeight, setHeaderHeight] = useState<number>(0)
 
   return (
-    <View style={{ paddingHorizontal: space(2), width }} testID="collected-card">
+    <View style={{ paddingHorizontal: space("2"), width }} testID="collected-card">
       <CardHeader
         count={count}
         label={label}
@@ -246,7 +246,7 @@ export const CareerHighlightBigCardGroupShow: React.FC<CareerHighlightBigCardGro
   const [headerHeight, setHeaderHeight] = useState<number>(0)
 
   return (
-    <View style={{ paddingHorizontal: space(2), width }} testID="group-show-card">
+    <View style={{ paddingHorizontal: space("2"), width }} testID="group-show-card">
       <CardHeader
         count={count}
         label={label}
@@ -332,7 +332,7 @@ export const CareerHighlightBigCardSoloShow: React.FC<CareerHighlightBigCardSolo
   const [headerHeight, setHeaderHeight] = useState<number>(0)
 
   return (
-    <View style={{ paddingHorizontal: space(2), width }} testID="solo-show-card">
+    <View style={{ paddingHorizontal: space("2"), width }} testID="solo-show-card">
       <CardHeader
         count={count}
         label={label}
@@ -417,7 +417,7 @@ export const CareerHighlightBigCardReviewed: React.FC<CareerHighlightBigCardRevi
   const [headerHeight, setHeaderHeight] = useState<number>(0)
 
   return (
-    <View style={{ paddingHorizontal: space(2), width }} testID="reviewed-card">
+    <View style={{ paddingHorizontal: space("2"), width }} testID="reviewed-card">
       <CardHeader
         count={count}
         label={label}

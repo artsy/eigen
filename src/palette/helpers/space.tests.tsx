@@ -20,7 +20,7 @@ describe("space", () => {
     const TestComponent = () => (
       <>
         {/* @ts-ignore */}
-        <SpaceView name="0.3" />
+        <SpaceView name="0.5" />
         <SpaceView name="2" />
       </>
     )

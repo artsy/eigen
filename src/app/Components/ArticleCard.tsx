@@ -47,7 +47,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
                       // aspect ratio is fixed to 1.33 to match the old image aspect ratio
                       aspectRatio={1.33}
                       // 40 here comes from the mx={2} from the parent component
-                      width={width - 2 * space(2)}
+                      width={width - 2 * space("2")}
                     />
                   </View>
                 ) : (

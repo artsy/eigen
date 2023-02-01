@@ -91,7 +91,7 @@ export const OnboardingResultsGrid: FC<OnboardingResultsGridProps> = ({ connecti
         scrollsToTop={false}
         accessibilityLabel="Artworks ScrollView"
         contentContainerStyle={{
-          paddingHorizontal: space(2),
+          paddingHorizontal: space("2"),
         }}
       >
         <Flex flexDirection="row" pr={1} mt={2}>

@@ -130,7 +130,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
         {!!hasClosedBids && <BidTitle>Closed Bids</BidTitle>}
         {!!hasClosedBids && (
           <Flex testID="closed-section">
-            <Flex mt={2} px={1.5}>
+            <Flex mt={2} px="2">
               <Join separator={<Separator my={2} />}>
                 {closed
                   .filter((closedSale) => closedSale?.saleArtworks?.length)
@@ -170,7 +170,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
 
 const BidTitle: React.FC<{ topBorder?: boolean }> = (props) => (
   <Flex bg="white100">
-    <Text variant="sm-display" mx={1.5} my={2}>
+    <Text variant="sm-display" mx="2" my={2}>
       {props.children}
     </Text>
     <Separator />

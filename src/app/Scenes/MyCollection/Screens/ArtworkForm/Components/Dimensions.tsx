@@ -25,7 +25,7 @@ export const Dimensions: React.FC = () => {
       <Flex flexDirection="row">
         <Text variant="xs">DIMENSIONS</Text>
       </Flex>
-      <Spacer mt={1} mb={0.3} />
+      <Spacer mt="1" mb="0.5" />
       <Flex flexDirection="row">
         <RadioButton
           onPress={() => handleMetricChange("cm")}

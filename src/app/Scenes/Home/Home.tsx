@@ -557,7 +557,7 @@ const BelowTheFoldPlaceholder: React.FC = () => {
   return (
     <ProvidePlaceholderContext>
       <Flex>
-        <Flex ml="2" mt="3">
+        <Flex ml="2" mt="4">
           <RandomWidthPlaceholderText minWidth={100} maxWidth={200} marginBottom={20} />
           <Flex flexDirection="row">
             {times(4).map((i) => (
@@ -603,9 +603,9 @@ const HomePlaceholder: React.FC = () => {
 
       {
         // Small tiles to mimic the artwork rails
-        <Box ml={2} mr={2}>
+        <Box ml="2" mr="2">
           <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
-          <Spacer mb={0.3} />
+          <Spacer mb="0.5" />
           <Flex flexDirection="row">
             {enableLargeNewWorksForYouRail ? (
               <LargeArtworkRailPlaceholder />
@@ -621,13 +621,13 @@ const HomePlaceholder: React.FC = () => {
       {/* Larger tiles to mimic the artist rails */}
       <Box ml={2} mr={2}>
         <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
-        <Spacer mb={0.3} />
+        <Spacer mb="0.5" />
         <Flex flexDirection="row" mt={0.5}>
           <Join separator={<Spacer width={15} />}>
             {times(3 + randomValue * 10).map((index) => (
               <Flex key={index}>
                 <PlaceholderBox key={index} height={180} width={295} />
-                <Spacer mb={1} mt={0.3} />
+                <Spacer mb={1} mt="0.5" />
                 <PlaceholderText width={120} />
                 <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
               </Flex>
@@ -637,7 +637,7 @@ const HomePlaceholder: React.FC = () => {
         </Flex>
       </Box>
 
-      <Flex ml="2" mt="3">
+      <Flex ml="2" mt="4">
         <RandomWidthPlaceholderText minWidth={100} maxWidth={200} marginBottom={20} />
         <Flex flexDirection="row">
           {times(4).map((i) => (

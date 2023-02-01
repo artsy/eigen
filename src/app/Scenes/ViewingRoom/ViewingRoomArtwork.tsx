@@ -133,9 +133,9 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
         {moreImages.length > 0 && (
           <>
             <Box mx="2">
-              <Spacer mt="3" />
+              <Spacer mt="4" />
               <Separator />
-              <Spacer mt="3" />
+              <Spacer mt="4" />
               <Text variant="sm">More images</Text>
               <Spacer mt="2" />
             </Box>
@@ -151,9 +151,9 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
         )}
 
         <Box mx="2">
-          <Spacer mt="3" />
+          <Spacer mt="4" />
           <Separator />
-          <Spacer mt="3" />
+          <Spacer mt="4" />
           <Text variant="sm">In viewing room</Text>
           <Spacer mt="2" />
         </Box>

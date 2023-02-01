@@ -113,7 +113,7 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
           </Flex>
 
           {filteredOptions.length === 0 && (
-            <Flex my={1.5} mx={2} alignItems="center">
+            <Flex my="2" mx={2} alignItems="center">
               <Text variant="xs">{noResultsLabel}</Text>
             </Flex>
           )}

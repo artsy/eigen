@@ -106,7 +106,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
           error={receivedErrorCurrent}
         />
       </Flex>
-      <Separator mb="2" mt="3" />
+      <Separator mb="2" mt="4" />
       <Stack mx="2">
         <Input
           description="Must include at least one uppercase letter, one lowercase letter, and one number."

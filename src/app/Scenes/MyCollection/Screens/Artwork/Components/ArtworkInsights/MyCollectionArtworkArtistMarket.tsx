@@ -146,7 +146,7 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
                 flex: 1,
                 maxWidth: isIPad ? "33%" : "50%", // 100% devided by the number of rows
                 alignItems: "stretch",
-                paddingBottom: space(2),
+                paddingBottom: space("2"),
               }}
             >
               {item.component}

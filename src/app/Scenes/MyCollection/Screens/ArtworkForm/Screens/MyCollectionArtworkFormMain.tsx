@@ -148,7 +148,7 @@ export const MyCollectionArtworkFormMain: React.FC<
         <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
           {!!route.params.isSubmission && (
             <Message
-              containerStyle={{ marginX: space(2) }}
+              containerStyle={{ marginX: space("2") }}
               title="Changes will only appear in My Collection. They will not be applied to your sale submission."
               IconComponent={() => (
                 <Image

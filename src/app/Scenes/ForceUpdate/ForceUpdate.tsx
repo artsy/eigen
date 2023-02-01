@@ -25,7 +25,7 @@ export const ForceUpdate: React.FC<ForceUpdateProps> = ({ forceUpdateMessage }) 
   }
 
   return (
-    <Flex flex={1} justifyContent="center" alignItems="center" px={5}>
+    <Flex flex={1} justifyContent="center" alignItems="center" px="6">
       <ArtsyLogoIcon />
       <Text variant="xs" mt={3} textAlign="center" color={color("black60")}>
         {forceUpdateMessage}

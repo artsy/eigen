@@ -67,7 +67,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
       key: "description+callout",
       content: (
         <Flex alignItems="center">
-          <Stack spacing={3} pt="3" px="2" maxWidth={600}>
+          <Stack spacing={3} pt="4" px="2" maxWidth={600}>
             {!!feature.description && (
               <FeatureMarkdown content={feature.description} textProps={{ variant: "md" }} />
             )}

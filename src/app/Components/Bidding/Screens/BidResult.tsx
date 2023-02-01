@@ -102,13 +102,13 @@ export class BidResult extends React.Component<BidResultProps> {
           <View>
             <Flex alignItems="center">
               <Icon20 source={Icons[status] || require("images/circle-x-red.png")} />
-              <Title mt={2} mb={5}>
+              <Title mt={2} mb={6}>
                 {status === "PENDING"
                   ? messageForPollingTimeout.title
                   : message_header || "You’re the highest bidder"}
               </Title>
               {status !== "WINNING" && (
-                <Markdown mb={5}>
+                <Markdown mb={6}>
                   {status === "PENDING"
                     ? messageForPollingTimeout.description
                     : message_description_md}

@@ -216,7 +216,7 @@ export function defaultRules({
               style={{
                 borderLeftColor: color("black10"),
                 borderLeftWidth: 2,
-                paddingLeft: space(1),
+                paddingLeft: space("1"),
               }}
             >
               {output(node.content, state)}

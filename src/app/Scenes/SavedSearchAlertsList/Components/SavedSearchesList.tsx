@@ -58,7 +58,7 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
     <FlatList
       data={items}
       keyExtractor={(item) => item.internalID}
-      contentContainerStyle={{ paddingVertical: space(1) }}
+      contentContainerStyle={{ paddingVertical: space("1") }}
       refreshing={refreshMode !== null}
       onRefresh={() => {
         onRefresh("default")

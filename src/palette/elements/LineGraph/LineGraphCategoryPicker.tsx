@@ -147,7 +147,7 @@ export const CategoryPill: React.FC<CategoryPillProps> = ({
       onPress={handlePress}
       onLayout={onLayout}
       testID="categoryPill"
-      hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
+      hitSlop={{ top: space("1"), bottom: space("1"), left: space("1"), right: space("1") }}
       stateStyle={{
         pressed: {
           textColor: dotColor,

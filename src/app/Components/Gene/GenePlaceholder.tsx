@@ -24,7 +24,7 @@ export const GenePlaceholder = () => (
       <PlaceholderText width={180} />
       <PlaceholderText width={50} />
     </Flex>
-    <Spacer mb={1.5} />
+    <Spacer mb="2" />
     {/* masonry grid */}
     <PlaceholderGrid />
   </Flex>

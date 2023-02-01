@@ -19,7 +19,7 @@ export const WhySellWithArtsy: React.FC = () => {
 
         <Box flex={1}>
           <Text variant="sm">Earn more</Text>
-          <Spacer mb={0.3} />
+          <Spacer mb="0.5" />
           <Text variant="sm" color="black60">
             We charge less than traditional auction houses and dealers, so you’ll net more.
           </Text>
@@ -35,7 +35,7 @@ export const WhySellWithArtsy: React.FC = () => {
 
         <Box flex={1}>
           <Text variant="sm">Reach a global network</Text>
-          <Spacer mb={0.3} />
+          <Spacer mb={0.5} />
           <Text variant="sm" color="black60">
             We connect your work with interested buyers in 190 countries.
           </Text>
@@ -51,7 +51,7 @@ export const WhySellWithArtsy: React.FC = () => {
 
         <Box flex={1}>
           <Text variant="sm">Tap into our expertise</Text>
-          <Spacer mb={0.3} />
+          <Spacer mb={0.5} />
           <Text variant="sm" color="black60">
             <Text
               variant="sm"

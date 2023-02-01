@@ -170,7 +170,7 @@ export class RegistrationResult extends React.Component<RegistrationResultProps>
             <Title mt={2} mb={4}>
               {title}
             </Title>
-            <Markdown rules={markdownRules} mb={5}>
+            <Markdown rules={markdownRules} mb={6}>
               {msg}
             </Markdown>
           </Flex>

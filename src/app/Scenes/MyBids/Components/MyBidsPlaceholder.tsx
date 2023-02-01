@@ -4,7 +4,7 @@ import { Flex, Join, Separator } from "palette"
 import { COVER_IMAGE_HEIGHT } from "./SaleCard"
 
 export const MyBidsPlaceholder: React.FC = () => (
-  <Flex pt="3" px="1">
+  <Flex pt="4" px="1">
     {/* navbar title */}
     <Flex alignItems="center">
       <PlaceholderText width={100} />

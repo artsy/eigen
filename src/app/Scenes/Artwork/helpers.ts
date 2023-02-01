@@ -52,7 +52,7 @@ export const useImagePlaceholderDimensions = (artworkID?: string) => {
   // Calculate the dimensions of the image
   const { width, height } = hasImageBeenFound
     ? getImageDimensionsByImage(screenDimensions, image)
-    : getDefaultImageDimensions(screenDimensions, space(1))
+    : getDefaultImageDimensions(screenDimensions, space("1"))
 
   return { width, height }
 }

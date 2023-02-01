@@ -28,7 +28,7 @@ const TabWrapper = (props: TabWrapperProps) => <View {...props} />
 
 export const InboxTabs = (props: TabBarProps) => (
   <>
-    <Flex flexDirection="row" px={1.5} mb={2}>
+    <Flex flexDirection="row" px="2" mb={2}>
       {props.tabs?.map((name: JSX.Element, page: number) => {
         const isTabActive = props.activeTab === page
         return (

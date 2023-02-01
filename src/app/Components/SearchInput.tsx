@@ -5,7 +5,6 @@ import {
   INPUT_HEIGHT,
   InputProps,
   InputRef,
-  SpacingUnitV2,
   SpacingUnitV3,
   Text,
   useSpace,
@@ -19,11 +18,11 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated"
 
-const MX = 2
+const MX = "2"
 const CANCEL_BUTTON_DURATION = 180
 
 export interface SearchInputProps extends InputProps {
-  mx?: SpacingUnitV2 | SpacingUnitV3
+  mx?: SpacingUnitV3
   enableCancelButton?: boolean
   onCancelPress?: () => void
 }

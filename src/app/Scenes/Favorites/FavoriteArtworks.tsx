@@ -90,7 +90,7 @@ const SavedWorks: React.FC<Props> = ({ me, relay, onDataFetching }) => {
                 resizeMode="contain"
                 style={{
                   alignSelf: "center",
-                  marginVertical: space(2),
+                  marginVertical: space("2"),
                 }}
               />
             </>
@@ -107,7 +107,7 @@ const SavedWorks: React.FC<Props> = ({ me, relay, onDataFetching }) => {
 
   return (
     <StickyTabPageScrollView
-      contentContainerStyle={{ paddingVertical: space(2) }}
+      contentContainerStyle={{ paddingVertical: space("2") }}
       onEndReached={loadMore}
       refreshControl={
         <StickTabPageRefreshControl refreshing={refreshingFromPull} onRefresh={handleRefresh} />

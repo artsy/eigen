@@ -106,7 +106,7 @@ const AutoSuggestBoxContainer: React.FC = ({ children }) => {
     <Flex
       style={{
         flex: 1,
-        padding: space(2),
+        padding: space("2"),
         borderStyle: "solid",
         borderColor: "#707070",
         borderWidth: 1,
