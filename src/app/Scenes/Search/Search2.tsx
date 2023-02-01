@@ -27,19 +27,13 @@ import { getContextModuleByPillName } from "./helpers"
 import { PillType } from "./types"
 import { useSearchDiscoveryContentEnabled } from "./useSearchDiscoveryContentEnabled"
 
-interface SearchState {
-  query?: string
-  page?: number
-}
-
 const SEARCH_INPUT_PLACEHOLDER = "Search artists, artworks, galleries, etc"
 
 export const Search2: React.FC = () => {
   const isSearchDiscoveryContentEnabled = useSearchDiscoveryContentEnabled()
   const searchPillsRef = useRef<ScrollView>(null)
-  const [searchState, setSearchState] = useState<SearchState>({})
+  const [searchQuery, setSearchQuery] = useState<string>("")
   const [selectedPill, setSelectedPill] = useState<PillType>(TOP_PILL)
-  const searchQuery = searchState?.query ?? ""
   const searchProviderValues = useSearchProviderValues(searchQuery)
   const { trackEvent } = useTracking()
   const isAndroid = Platform.OS === "android"
@@ -53,15 +47,15 @@ export const Search2: React.FC = () => {
   useRefetchWhenQueryChanged({ query: searchQuery, refetch })
 
   const handleRetry = () => {
-    setSearchState((prevState) => ({ ...prevState }))
+    setSearchQuery((prevState) => prevState)
   }
 
   const handlePillPress = (pill: PillType) => {
     const contextModule = getContextModuleByPillName(selectedPill.displayName)
 
-    setSearchState((prevState) => ({ ...prevState, page: 1 }))
+    setSearchQuery((prevState) => prevState)
     setSelectedPill(pill)
-    trackEvent(tracks.tappedPill(contextModule, pill.displayName, searchState.query!))
+    trackEvent(tracks.tappedPill(contextModule, pill.displayName, searchQuery!))
   }
 
   const isSelected = (pill: PillType) => {
@@ -75,7 +69,7 @@ export const Search2: React.FC = () => {
 
   const handleThrottledTextChange = () =>
     throttle((value) => {
-      setSearchState((state) => ({ ...state, query: value }))
+      setSearchQuery(value)
     }, SEARCH_THROTTLE_INTERVAL)
 
   const onSearchTextChanged = (queryText: string) => {

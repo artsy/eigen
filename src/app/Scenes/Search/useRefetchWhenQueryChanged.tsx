@@ -3,11 +3,11 @@ import { useEffect } from "react"
 
 interface Props {
   refetch: (updatedVariables: Search2Query$variables) => void
-  query?: string
+  query: string
 }
 
 export const useRefetchWhenQueryChanged = ({ query, refetch }: Props) => {
   useEffect(() => {
-    refetch({ term: query ?? "" })
+    refetch({ term: query })
   }, [query])
 }
