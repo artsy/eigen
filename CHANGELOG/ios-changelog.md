@@ -12,6 +12,7 @@
     - Fix issue making some artwork images not visible in the home screen large artworks rail - mounir
 
   - Dev changes:
+    - Update home screen modules tracking - mounir
     - sentry cli bump - gkartalis
     - update jest-native dep - gkartalis
     - Hide the global blue dot indicator if there are no unseen notifications - dimatretyak
