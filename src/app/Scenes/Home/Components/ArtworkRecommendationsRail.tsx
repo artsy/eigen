@@ -51,6 +51,7 @@ export const ArtworkRecommendationsRail: React.FC<
               HomeAnalytics.artworkThumbnailTapEvent(
                 ContextModule.artworkRecommendationsRail,
                 artwork.slug,
+                artwork.internalID,
                 position,
                 "single"
               )
