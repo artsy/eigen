@@ -1,13 +1,20 @@
 import { ActionType } from "@artsy/cohesion"
 import { ClickedActivityPanelTab } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
+import {
+  ActivityMarkNotificationsAsSeenMutation,
+  ActivityMarkNotificationsAsSeenMutation$data,
+} from "__generated__/ActivityMarkNotificationsAsSeenMutation.graphql"
 import { ActivityQuery } from "__generated__/ActivityQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"
+import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
+import { DateTime } from "luxon"
 import { Flex } from "palette"
-import { Suspense } from "react"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { Suspense, useEffect } from "react"
+import { graphql, useLazyLoadQuery, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
+import { RecordSourceSelectorProxy } from "relay-runtime"
 import { ActivityList } from "./ActivityList"
 import { ActivityTabPlaceholder } from "./ActivityTabPlaceholder"
 import { NotificationType } from "./types"
@@ -19,6 +26,9 @@ interface ActivityProps {
 
 export const ActivityContent: React.FC<ActivityProps> = ({ type }) => {
   const types = getNotificationTypes(type)
+  const [commit] = useMutation<ActivityMarkNotificationsAsSeenMutation>(
+    MarkNotificationsAsSeenMutation
+  )
   const queryData = useLazyLoadQuery<ActivityQuery>(
     ActivityScreenQuery,
     {
@@ -29,6 +39,38 @@ export const ActivityContent: React.FC<ActivityProps> = ({ type }) => {
       fetchPolicy: "store-and-network",
     }
   )
+
+  useEffect(() => {
+    const updater = (
+      store: RecordSourceSelectorProxy<ActivityMarkNotificationsAsSeenMutation$data>
+    ) => {
+      const root = store.getRoot()
+      const me = root.getLinkedRecord("me")
+
+      // Set unseen notifications count to 0
+      me?.setValue(0, "unseenNotificationsCount")
+    }
+
+    commit({
+      variables: {
+        input: {
+          until: DateTime.local().toISO(),
+        },
+      },
+      updater,
+      optimisticUpdater: updater,
+      onCompleted: (response) => {
+        const result = response.markNotificationsAsSeen?.responseOrError
+        const errorMessage = result?.mutationError?.message
+
+        if (errorMessage) {
+          throw new Error(errorMessage)
+        }
+
+        GlobalStore.actions.bottomTabs.setDisplayUnseenNotificationsIndicator(false)
+      },
+    })
+  }, [])
 
   return <ActivityList viewer={queryData.viewer} me={queryData.me} type={type} />
 }
@@ -85,6 +127,23 @@ const ActivityScreenQuery = graphql`
     }
     me {
       ...ActivityList_me
+    }
+  }
+`
+
+const MarkNotificationsAsSeenMutation = graphql`
+  mutation ActivityMarkNotificationsAsSeenMutation($input: MarkNotificationsAsSeenInput!) {
+    markNotificationsAsSeen(input: $input) {
+      responseOrError {
+        ... on MarkNotificationsAsSeenSuccess {
+          success
+        }
+        ... on MarkNotificationsAsSeenFailure {
+          mutationError {
+            message
+          }
+        }
+      }
     }
   }
 `
