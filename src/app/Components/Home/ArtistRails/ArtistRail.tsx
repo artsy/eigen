@@ -235,12 +235,6 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
                 <ArtistCard
                   artist={artist as any}
                   onPress={() => {
-                    console.log("props.rail.key => ", props.rail.key)
-                    console.log(
-                      "contextModule: HomeAnalytics.artistRailContextModule(key), => ",
-                      HomeAnalytics.artistRailContextModule(props.rail.key)
-                    )
-
                     trackEvent(
                       HomeAnalytics.artistThumbnailTapEvent(
                         props.rail.key,
