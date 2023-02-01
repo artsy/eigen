@@ -7061,6 +7061,8 @@ input CreateFeatureMutationInput {
   description: String
   layout: FeatureLayouts
   name: String!
+  sourceBucket: String
+  sourceKey: String
   subheadline: String
 }
 
@@ -16680,13 +16682,15 @@ type UpdateFeatureFailure {
 }
 
 input UpdateFeatureMutationInput {
-  active: Boolean!
+  active: Boolean
   callout: String
   clientMutationId: String
   description: String
   id: String!
   layout: FeatureLayouts
-  name: String!
+  name: String
+  sourceBucket: String
+  sourceKey: String
   subheadline: String
 }
 
