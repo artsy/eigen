@@ -44,6 +44,7 @@ export const Search2: React.FC = () => {
   const isAndroid = Platform.OS === "android"
   const navigation = useNavigation()
 
+  const shouldShowCityGuide = Platform.OS === "ios" && !isPad()
   const { data: queryData, refetch } = useSearchQuery<Search2Query>(SearchScreenQuery, {
     term: "",
   })
@@ -85,14 +86,6 @@ export const Search2: React.FC = () => {
       action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
       query: queryText,
     })
-  }
-
-  const renderCityGuideCTA = () => {
-    if (Platform.OS === "ios" && !isPad()) {
-      return <CityGuideCTA />
-    }
-
-    return null
   }
 
   useEffect(() => {
@@ -152,7 +145,7 @@ export const Search2: React.FC = () => {
                 <Spacer mb={4} />
               )}
 
-              <HorizontalPadding>{renderCityGuideCTA()}</HorizontalPadding>
+              <HorizontalPadding>{shouldShowCityGuide && <CityGuideCTA />}</HorizontalPadding>
 
               <Spacer mb={4} />
             </Scrollable>
