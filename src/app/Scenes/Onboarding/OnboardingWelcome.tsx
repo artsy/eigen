@@ -1,5 +1,4 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { Text as PText } from "@artsy/palette-mobile"
 import {
   ArtsyNativeModule,
   DEFAULT_NAVIGATION_BAR_COLOR,
@@ -135,9 +134,6 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
           <Text variant="xl" color="white">
             Collect Art by the World’s Leading Artists
           </Text>
-          <PText variant="xl" color="onBackgroundHigh">
-            Collect Art by the World’s Leading Artists
-          </PText>
 
           <Spacer mt={1} />
 
