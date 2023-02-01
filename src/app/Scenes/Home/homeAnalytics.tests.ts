@@ -54,15 +54,19 @@ describe("Events", () => {
 
     const thumbnailTapEvent = HomeAnalytics.artworkThumbnailTapEventFromKey(
       artworkRail.key,
-      "some-slug"
+      "some-slug",
+      "some-id"
     )
     expect(thumbnailTapEvent).toEqual({
       action: Analytics.ActionType.tappedArtworkGroup,
       context_module: Analytics.ContextModule.newWorksByArtistsYouFollowRail,
+      destination_screen_owner_id: "some-id",
+      context_screen_owner_slug: undefined,
       context_screen_owner_type: "home",
       destination_screen_owner_type: Analytics.OwnerType.artwork,
       destination_screen_owner_slug: "some-slug",
       module_height: "double",
+      horizontal_slide_position: undefined,
       type: "thumbnail",
     })
   })

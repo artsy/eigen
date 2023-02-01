@@ -62,6 +62,7 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
       HomeAnalytics.artworkThumbnailTapEvent(
         ContextModule.newWorksForYouRail,
         artwork.slug,
+        artwork.internalID,
         position,
         "single"
       )
