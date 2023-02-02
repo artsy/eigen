@@ -1,5 +1,5 @@
+import { Box } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
-import { Box } from "palette/elements/Box"
 import styled, { css } from "styled-components/native"
 
 const RADIO_DOT_MODES = {

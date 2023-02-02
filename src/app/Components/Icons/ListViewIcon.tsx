@@ -1,4 +1,5 @@
-import { Color, useColor } from "palette"
+import { useColor } from "@artsy/palette-mobile"
+import { Color } from "palette"
 import Svg, { Rect } from "react-native-svg"
 
 interface ListViewIconProps extends React.ComponentProps<typeof Svg> {

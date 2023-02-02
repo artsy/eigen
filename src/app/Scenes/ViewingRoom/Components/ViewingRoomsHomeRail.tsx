@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex, SpacingUnit } from "@artsy/palette-mobile"
 import { ViewingRoomsHomeRailQuery } from "__generated__/ViewingRoomsHomeRailQuery.graphql"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { MediumCard } from "app/Components/Cards"
@@ -8,7 +8,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { Schema } from "app/utils/track"
 import _ from "lodash"
-import { Flex, Text, Touchable } from "palette"
+import { Text, Touchable } from "palette"
 import React, { Suspense } from "react"
 import { FlatList } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -23,7 +23,7 @@ import { tagForStatus } from "./ViewingRoomsListItem"
 interface ViewingRoomsHomeMainRailProps {
   featured: ViewingRoomsListFeatured_featured$key
   title: string
-  mb?: number
+  mb?: SpacingUnit
 }
 
 export const ViewingRoomsHomeMainRail: React.FC<ViewingRoomsHomeMainRailProps> = ({
@@ -38,7 +38,7 @@ export const ViewingRoomsHomeMainRail: React.FC<ViewingRoomsHomeMainRailProps> =
 
   return (
     <Flex mb={mb}>
-      <Flex mx="2">
+      <Flex mx={2}>
         <SectionTitle
           title={title}
           onPress={() => {
@@ -66,7 +66,7 @@ export const ViewingRoomsHomeMainRail: React.FC<ViewingRoomsHomeMainRailProps> =
 
 const Placeholder = () => (
   <ProvidePlaceholderContext>
-    <Flex ml="2">
+    <Flex ml={2}>
       <Flex flexDirection="row">
         {_.times(4).map((i) => (
           <PlaceholderBox key={i} width={280} height={370} marginRight={15} />

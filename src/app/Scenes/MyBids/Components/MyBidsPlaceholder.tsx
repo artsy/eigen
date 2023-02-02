@@ -1,10 +1,11 @@
+import { Flex } from "@artsy/palette-mobile"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { times } from "lodash"
-import { Flex, Join, Separator } from "palette"
+import { Join, Separator } from "palette"
 import { COVER_IMAGE_HEIGHT } from "./SaleCard"
 
 export const MyBidsPlaceholder: React.FC = () => (
-  <Flex pt="4" px="1">
+  <Flex pt={4} px={1}>
     {/* navbar title */}
     <Flex alignItems="center">
       <PlaceholderText width={100} />
@@ -24,7 +25,7 @@ export const MyBidsPlaceholder: React.FC = () => (
     <Separator mt={1} mb={2} />
 
     {/* registered sales */}
-    <Flex px="1">
+    <Flex px={1}>
       <PlaceholderText marginTop={6} marginBottom={20} width={100 + Math.random() * 100} />
 
       <Flex flexDirection="row" pb={2}>
@@ -39,7 +40,7 @@ export const MyBidsPlaceholder: React.FC = () => (
     </Flex>
 
     {/* your lots */}
-    <Flex px="1">
+    <Flex px={1}>
       <PlaceholderText marginTop={10} width={80} />
 
       <Join separator={<Separator my={1} />}>

@@ -1,7 +1,7 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex } from "@artsy/palette-mobile"
 import { MarketingCollectionHeaderFragment_marketingCollection$key } from "__generated__/MarketingCollectionHeaderFragment_marketingCollection.graphql"
 import { OnboardingMarketingCollectionSlug } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingMarketingCollection"
-import { Flex, Text } from "palette"
+import { Text } from "palette"
 import { ImageBackground, ImageSourcePropType } from "react-native"
 import { graphql, useFragment } from "react-relay"
 

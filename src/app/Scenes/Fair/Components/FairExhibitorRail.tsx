@@ -1,10 +1,10 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Flex } from "@artsy/palette-mobile"
 import { FairExhibitorRail_show$data } from "__generated__/FairExhibitorRail_show.graphql"
 import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 

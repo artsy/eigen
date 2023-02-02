@@ -1,10 +1,10 @@
+import { Flex, useSpace, useColor } from "@artsy/palette-mobile"
 import { CareerHighlightsBigCardsSwiperQuery } from "__generated__/CareerHighlightsBigCardsSwiperQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { useSpringValue } from "app/Scenes/Artwork/Components/ImageCarousel/useSpringValue"
 import { goBack } from "app/system/navigation/navigate"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { compact } from "lodash"
-import { Flex, useColor, useSpace } from "palette"
 import { Suspense, useState } from "react"
 import {
   Animated,
@@ -134,8 +134,8 @@ const CareerHighlightsBigCardsSwiperScreen: React.FC<CareerHighlightsBigCardsSwi
         accessibilityLabel="Career Highlights Pagination Scroll Bar"
         style={{
           height: 2,
-          width: barWidth - space("1"),
-          marginRight: space("1"),
+          width: barWidth - space(1),
+          marginRight: space(1),
           borderRadius: 2,
           backgroundColor: color("black100"),
           opacity: opacityAnim,
@@ -146,7 +146,7 @@ const CareerHighlightsBigCardsSwiperScreen: React.FC<CareerHighlightsBigCardsSwi
 
   return (
     <>
-      <Flex mt={Platform.OS === "android" ? insets.top : 0}>
+      <Flex mt={Platform.OS === "android" ? `${insets.top}px` : undefined}>
         <FancyModalHeader
           alignItems="flex-start"
           rightCloseButton

@@ -1,9 +1,9 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Button, Flex, Box, useColor } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { GlobalStore } from "app/store/GlobalStore"
 import { BackButton } from "app/system/navigation/BackButton"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
-import { Box, Button, Flex, Input, LinkText, SimpleMessage, Text, useColor } from "palette"
+import { Input, LinkText, SimpleMessage, Text } from "palette"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
@@ -57,7 +57,7 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
   const [recoveryCodeMode, setRecoveryCodeMode] = useState(false)
 
   return (
-    <Flex flex={1} backgroundColor="white" flexGrow={1} paddingBottom={10}>
+    <Flex flex={1} backgroundColor="white" flexGrow={1} pb={1}>
       <ArtsyKeyboardAvoidingView>
         <ScrollView
           contentContainerStyle={{

@@ -1,4 +1,5 @@
 import { ActionType, ContextModule, EditCollectedArtwork, OwnerType } from "@artsy/cohesion"
+import { Flex } from "@artsy/palette-mobile"
 import { MyCollectionArtworkQuery } from "__generated__/MyCollectionArtworkQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
@@ -11,7 +12,7 @@ import { useRefetch } from "app/utils/relayHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { compact } from "lodash"
-import { Flex, Text } from "palette/elements"
+import { Text } from "palette/elements"
 import React, { Suspense, useCallback } from "react"
 import { ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -168,7 +169,7 @@ export const MyCollectionArtworkScreenQuery = graphql`
 
 const MyCollectionArtworkPlaceholder = () => (
   <ProvidePlaceholderContext>
-    <Flex flexDirection="column" justifyContent="space-between" height="100%" pb={8}>
+    <Flex flexDirection="column" justifyContent="space-between" height="100%" pb="8px">
       <PlaceholderBox width="100%" marginBottom={10} />
     </Flex>
   </ProvidePlaceholderContext>

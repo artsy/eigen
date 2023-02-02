@@ -1,5 +1,4 @@
-import { useTheme } from "palette"
-import { isThemeV3 } from "palette/Theme"
+import { useTheme } from "@artsy/palette-mobile"
 import { TextStyle } from "react-native"
 import { NoUndefined } from "shared/types"
 import { TextProps } from "."
@@ -12,9 +11,6 @@ export const useFontFamilyFor = ({
   weight: TextProps["weight"]
 }) => {
   const { theme } = useTheme()
-  if (!isThemeV3(theme)) {
-    return "no-font"
-  }
   const { fonts } = theme
 
   if (italic && weight === "medium") {

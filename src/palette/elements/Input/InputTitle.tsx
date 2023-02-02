@@ -1,4 +1,5 @@
-import { Text, Theme, useColor } from "palette"
+import { useColor } from "@artsy/palette-mobile"
+import { Text, Theme } from "palette"
 
 export const InputTitle: React.FC<{ optional?: boolean; required?: boolean }> = ({
   children: title,

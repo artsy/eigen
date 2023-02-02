@@ -1,7 +1,7 @@
-import { Spacer, TriangleDown } from "@artsy/palette-mobile"
+import { Spacer, TriangleDown, Flex, useColor } from "@artsy/palette-mobile"
 import * as glibphone from "google-libphonenumber"
 import replace from "lodash/replace"
-import { Flex, InputProps, InputRef, Text, Touchable, useColor } from "palette"
+import { InputProps, InputRef, Text, Touchable } from "palette"
 import {
   INTERNALSelectAndInputCombinationBase,
   ValuePayload,
@@ -134,7 +134,7 @@ export const PhoneInput = forwardRef<
             return (
               <Touchable onPress={onPress}>
                 <Flex flex={1} flexDirection="row" style={{ width: "100%", height: "100%" }}>
-                  <Flex flexDirection="row" px="1" alignItems="center" backgroundColor="black10">
+                  <Flex flexDirection="row" px={1} alignItems="center" backgroundColor="black10">
                     {/* selectedValue should always be present */}
                     <Text variant="sm-display">
                       {countryIndex[selectedValue ?? countryCode].flag}
@@ -142,7 +142,7 @@ export const PhoneInput = forwardRef<
                     <Spacer x={0.5} />
                     <TriangleDown width="8" />
                   </Flex>
-                  <Flex justifyContent="center" pl="1">
+                  <Flex justifyContent="center" pl={1}>
                     <Text variant="sm" color="black60">
                       +{dialCode}
                     </Text>

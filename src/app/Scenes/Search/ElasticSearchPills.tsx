@@ -1,7 +1,8 @@
+import { useSpace } from "@artsy/palette-mobile"
 import { ElasticSearchPills_viewer$key } from "__generated__/ElasticSearchPills_viewer.graphql"
 import { TOP_PILL } from "app/Scenes/Search/constants"
 import { PillType } from "app/Scenes/Search/types"
-import { Pill, useSpace } from "palette"
+import { Pill } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -36,7 +37,7 @@ export const ElasticSearchPills = React.forwardRef<ScrollView, ElasticSearchPill
         accessibilityLabel="Scroll view for result type filter options"
         ref={ref}
         horizontal
-        contentContainerStyle={{ paddingLeft: space("2"), paddingRight: space("1") }}
+        contentContainerStyle={{ paddingLeft: space(2), paddingRight: space(1) }}
         showsHorizontalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
       >

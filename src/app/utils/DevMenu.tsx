@@ -1,4 +1,4 @@
-import { Spacer, CloseIcon, ChevronIcon, ReloadIcon } from "@artsy/palette-mobile"
+import { Spacer, CloseIcon, ChevronIcon, ReloadIcon, Flex, useColor } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import Clipboard from "@react-native-clipboard/clipboard"
 import * as Sentry from "@sentry/react-native"
@@ -14,7 +14,7 @@ import { eigenSentryReleaseName } from "app/system/errorReporting//sentrySetup"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { RelayCache } from "app/system/relay/RelayCache"
 import { capitalize, compact, sortBy } from "lodash"
-import { Flex, Separator, Text, Touchable, useColor } from "palette"
+import { Separator, Text, Touchable } from "palette"
 import { CollapseMenu } from "palette/elements/CollapseMenu"
 import { useCallback, useEffect, useState } from "react"
 import {
@@ -67,9 +67,9 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
   const { unleashEnv } = useUnleashEnvironment()
 
   return (
-    <Flex position="absolute" top={0} left={0} right={0} bottom={0} py="2">
+    <Flex position="absolute" top={0} left={0} right={0} bottom={0} py={2}>
       <Flex flexDirection="row" justifyContent="space-between">
-        <Text variant="lg-display" pb="2" px="2">
+        <Text variant="lg-display" pb={2} px={2}>
           Dev Settings
         </Text>
         <Buttons onClose={onClose} />
@@ -79,11 +79,11 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
         style={{ flex: 1, borderRadius: 4, overflow: "hidden" }}
         contentContainerStyle={{ paddingVertical: 10 }}
       >
-        <Text variant="xs" color="grey" mx="2">
+        <Text variant="xs" color="grey" mx={2}>
           eigen v{DeviceInfo.getVersion()}, build {DeviceInfo.getBuildNumber()} (
           {ArtsyNativeModule.gitCommitShortHash})
         </Text>
-        <Text variant="xs" color="grey" mx="2">
+        <Text variant="xs" color="grey" mx={2}>
           {userEmail}
         </Text>
         {Platform.OS === "ios" && (
@@ -117,13 +117,13 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
             ])
           }
         />
-        <Flex mx="2">
+        <Flex mx={2}>
           <Separator my="1" />
         </Flex>
 
         <EnvironmentOptions onClose={onClose} />
 
-        <Flex mx="2">
+        <Flex mx={2}>
           <Separator my="1" />
         </Flex>
 
@@ -147,7 +147,7 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
           />
         </CollapseMenu>
 
-        <Flex mx="2">
+        <Flex mx={2}>
           <Separator my="1" />
         </Flex>
         <CollapseMenu title="Dev tools">
@@ -258,7 +258,7 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
 
 const Buttons: React.FC<{ onClose(): void }> = ({ onClose }) => {
   return (
-    <Flex style={{ flexDirection: "row", alignItems: "center" }} pb="2" px="2">
+    <Flex style={{ flexDirection: "row", alignItems: "center" }} pb={2} px={2}>
       {!!__DEV__ && (
         <>
           <TouchableOpacity
@@ -482,7 +482,7 @@ const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
               }}
             >
               <Flex
-                ml="2"
+                ml={2}
                 mr="15px"
                 my="5px"
                 flexDirection="row"
@@ -520,11 +520,11 @@ export const FeatureFlagMenuItem: React.FC<{
         flexDirection="row"
         alignItems="center"
         justifyContent="space-between"
-        py={7.5}
-        px="2"
+        py="7.5px"
+        px={2}
         pr="15px"
       >
-        <Flex flexDirection="row" mr="2" flex={5}>
+        <Flex flexDirection="row" mr={2} flex={5}>
           <Text variant="sm-display" color={titleColor}>
             {title}
           </Text>
@@ -536,7 +536,7 @@ export const FeatureFlagMenuItem: React.FC<{
                 {value}
               </Text>
             </Flex>
-            <Flex ml="1" flex={1}>
+            <Flex ml={1} flex={1}>
               <ChevronIcon direction="right" fill="black60" />
             </Flex>
           </Flex>

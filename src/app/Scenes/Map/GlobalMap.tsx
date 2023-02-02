@@ -1,3 +1,4 @@
+import { Flex, Box, ClassTheme } from "@artsy/palette-mobile"
 import MapboxGL, { MapViewProps, OnPressEvent } from "@react-native-mapbox-gl/maps"
 import { themeGet } from "@styled-system/theme-get"
 import { GlobalMap_viewer$data } from "__generated__/GlobalMap_viewer.graphql"
@@ -14,7 +15,7 @@ import {
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema, screenTrack, track } from "app/utils/track"
 import { get, isEqual, uniq } from "lodash"
-import { Box, ClassTheme, Flex, Text } from "palette"
+import { Text } from "palette"
 import React from "react"
 import { Animated, Dimensions, Image, View } from "react-native"
 import Config from "react-native-config"

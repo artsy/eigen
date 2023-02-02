@@ -1,3 +1,4 @@
+import { Flex, Box, useTheme } from "@artsy/palette-mobile"
 import { OrderHistoryQuery } from "__generated__/OrderHistoryQuery.graphql"
 import { OrderHistory_me$data } from "__generated__/OrderHistory_me.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
@@ -6,7 +7,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderBox, PlaceholderButton, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Box, Flex, Separator, Text, useTheme } from "palette"
+import { Separator, Text } from "palette"
 import React, { useCallback, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -80,10 +81,10 @@ export const OrderHistory: React.FC<{ me: OrderHistory_me$data; relay: RelayPagi
 
 export const OrderHistoryPlaceholder: React.FC<{}> = () => (
   <PageWithSimpleHeader title="Order History">
-    <Flex px="15px" mt={15}>
+    <Flex px="15px" mt="15px">
       {times(2).map((index: number) => (
         <Box key={index}>
-          <Flex mt={10}>
+          <Flex mt={1}>
             <Flex flexDirection="row" justifyContent="space-between">
               <Box flexGrow={1}>
                 <PlaceholderBox height={50} width={50} />
@@ -102,7 +103,7 @@ export const OrderHistoryPlaceholder: React.FC<{}> = () => (
             </Flex>
           </Flex>
           <PlaceholderButton marginTop={10} />
-          <Flex flexDirection="column" justifyContent="center" alignItems="center" mt={10}>
+          <Flex flexDirection="column" justifyContent="center" alignItems="center" mt={1}>
             <Separator mt={10} mb={20} />
           </Flex>
         </Box>

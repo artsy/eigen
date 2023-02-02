@@ -1,9 +1,10 @@
+import { Flex } from "@artsy/palette-mobile"
 import { ParamListBase } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { FilterData } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
 import { SearchInput } from "app/Components/SearchInput"
-import { Flex, Text } from "palette"
+import { Text } from "palette"
 import React, { useCallback, useState } from "react"
 import { FlatList, ScrollView } from "react-native"
 import { MULTI_SELECT_OPTION_ITEM_HEIGHT, MultiSelectOptionItem } from "./MultiSelectOptionItem"
@@ -113,7 +114,7 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
           </Flex>
 
           {filteredOptions.length === 0 && (
-            <Flex my="2" mx={2} alignItems="center">
+            <Flex my={2} mx={2} alignItems="center">
               <Text variant="xs">{noResultsLabel}</Text>
             </Flex>
           )}

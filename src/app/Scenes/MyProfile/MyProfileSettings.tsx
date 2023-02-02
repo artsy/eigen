@@ -1,10 +1,10 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Button, Flex, useColor } from "@artsy/palette-mobile"
 import { MenuItem } from "app/Components/MenuItem"
 import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
 import { Tab } from "app/Scenes/Favorites/Favorites"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { Button, Flex, Separator, Text, useColor } from "palette"
+import { Separator, Text } from "palette"
 import { Alert, ScrollView } from "react-native"
 
 export const MyProfileSettings: React.FC<{}> = () => {
@@ -17,7 +17,7 @@ export const MyProfileSettings: React.FC<{}> = () => {
 
   return (
     <ScrollView>
-      <Text variant="lg-display" mx="2" mt="6">
+      <Text variant="lg-display" mx={2} mt="6">
         Settings
       </Text>
       <Spacer y={1} />
@@ -89,12 +89,12 @@ export const MyProfileSettings: React.FC<{}> = () => {
         flexDirection="row"
         alignItems="center"
         justifyContent="center"
-        py={7.5}
-        px="2"
+        py="7.5px"
+        px={2}
         pr="15px"
       >
         <Button variant="fillDark" haptic onPress={confirmLogout} block>
-          Log Out{" "}
+          Log Out
         </Button>
       </Flex>
       <Spacer y={1} />
@@ -103,7 +103,7 @@ export const MyProfileSettings: React.FC<{}> = () => {
 }
 
 export const SectionHeading: React.FC<{ title: string }> = ({ title }) => (
-  <Text variant="sm-display" color="black60" mb="1" mx="2">
+  <Text variant="sm-display" color="black60" mb={1} mx={2}>
     {title}
   </Text>
 )

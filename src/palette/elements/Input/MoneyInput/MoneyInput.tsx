@@ -1,6 +1,6 @@
-import { Spacer, TriangleDown } from "@artsy/palette-mobile"
+import { Spacer, TriangleDown, Flex, useColor } from "@artsy/palette-mobile"
 import { ThemeV3 } from "@artsy/palette-tokens"
-import { Flex, InputProps, InputRef, Text, Touchable, useColor } from "palette"
+import { InputProps, InputRef, Text, Touchable } from "palette"
 import {
   INTERNALSelectAndInputCombinationBase,
   ValuePayload,
@@ -121,7 +121,7 @@ export const MoneyInput = forwardRef<
                   borderRightWidth: 1,
                 }}
               >
-                <Flex flexDirection="row" px="1" alignItems="center">
+                <Flex flexDirection="row" px={1} alignItems="center">
                   {/* selectedValue should always be present */}
                   <Text variant={currencyTextVariant ?? "sm-display"}>
                     {currencyOptions.find((c) => c.value === selectedValue)?.label ??

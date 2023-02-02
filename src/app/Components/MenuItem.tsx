@@ -1,5 +1,5 @@
-import { Spacer, ChevronIcon } from "@artsy/palette-mobile"
-import { Flex, Text, TextProps, Touchable, useColor } from "palette"
+import { Spacer, ChevronIcon, Flex, useColor } from "@artsy/palette-mobile"
+import { Text, TextProps, Touchable } from "palette"
 import { StyleProp, ViewStyle } from "react-native"
 
 export const MenuItem: React.FC<{
@@ -38,8 +38,8 @@ export const MenuItem: React.FC<{
       <Flex
         flexDirection="row"
         alignItems="center"
-        py={7.5}
-        px="2"
+        py="7.5px"
+        px={2}
         style={style}
         opacity={disabled && allowDisabledVisualClue ? 0.5 : 1}
       >
@@ -85,7 +85,7 @@ export const MenuItem: React.FC<{
 
           {rightView}
 
-          {!!(onPress && chevron) && <Flex ml="1">{chevron}</Flex>}
+          {!!(onPress && chevron) && <Flex ml={1}>{chevron}</Flex>}
         </Flex>
       </Flex>
     </Touchable>

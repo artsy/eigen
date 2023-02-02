@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box } from "@artsy/palette-mobile"
 import { CARD_WIDTH } from "app/Components/Home/CardRailCard"
 import { MAX_SHOWN_RECENT_SEARCHES, useRecentSearches } from "app/Scenes/Search/SearchModel"
 import { IMAGE_SIZE } from "app/Scenes/Search/components/SearchResultImage"
@@ -12,7 +12,7 @@ import {
   RandomWidthPlaceholderText,
 } from "app/utils/placeholders"
 import { times } from "lodash"
-import { Box, Flex, Join } from "palette"
+import { Join } from "palette"
 
 const RecentSearchesPlaceholder = () => {
   const recentSearches = useRecentSearches(MAX_SHOWN_RECENT_SEARCHES)
@@ -90,7 +90,7 @@ const CuratedCollectionCardPlaceholder: React.FC = (props) => {
   return (
     <Box borderRadius={4} border="1px solid" borderColor="black10" overflow="hidden" {...props}>
       <PlaceholderBox width={CARD_WIDTH} borderRadius={0} height={180} />
-      <Box m={15} mb={1}>
+      <Box m="15px" mb={1}>
         <PlaceholderText width={120} height={20} />
         <RandomWidthPlaceholderText minWidth={30} maxWidth={90} height={20} />
       </Box>

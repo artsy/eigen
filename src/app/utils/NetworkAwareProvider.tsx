@@ -1,6 +1,6 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Button, Flex } from "@artsy/palette-mobile"
 import NetInfo from "@react-native-community/netinfo"
-import { Button, Flex, Text } from "palette"
+import { Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { Modal } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
@@ -37,7 +37,7 @@ export const NetworkAwareProvider: React.FC<{}> = () => {
           alignItems="center"
           px={2}
           py={2}
-          paddingBottom={safeAreaInsets.bottom + 20}
+          pb={`${safeAreaInsets.bottom + 20}px`}
         >
           <Text textAlign="center" variant="lg-display">
             Connection Error

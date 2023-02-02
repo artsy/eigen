@@ -1,5 +1,5 @@
 import { ScreenOwnerType, tappedMainArtworkGrid } from "@artsy/cohesion"
-import { Spacer, HeartIcon, HeartFillIcon } from "@artsy/palette-mobile"
+import { Spacer, HeartIcon, HeartFillIcon, Flex, Box } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -16,14 +16,7 @@ import {
   RandomNumberGenerator,
 } from "app/utils/placeholders"
 import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
-import {
-  Box,
-  Flex,
-  OpaqueImageView as NewOpaqueImageView,
-  Text,
-  TextProps,
-  Touchable,
-} from "palette"
+import { OpaqueImageView as NewOpaqueImageView, Text, TextProps, Touchable } from "palette"
 import React, { useRef } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql, useMutation } from "react-relay"
@@ -324,7 +317,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
             )}
           </Flex>
           {!!eableArtworkGridSaveIcon && !hideSaveIcon && (
-            <Flex ml={0.2}>
+            <Flex>
               <Touchable haptic onPress={handleArtworkSave} testID="save-artwork-icon">
                 {artwork.isSaved ? (
                   <HeartFillIcon

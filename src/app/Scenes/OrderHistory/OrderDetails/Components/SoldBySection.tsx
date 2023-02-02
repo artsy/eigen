@@ -1,7 +1,8 @@
+import { Box } from "@artsy/palette-mobile"
 import { SoldBySection_soldBy$data } from "__generated__/SoldBySection_soldBy.graphql"
 import { extractNodes } from "app/utils/extractNodes"
 import { DateTime } from "luxon"
-import { Box, Text } from "palette"
+import { Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {

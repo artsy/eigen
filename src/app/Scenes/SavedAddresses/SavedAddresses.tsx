@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import { themeGet } from "@styled-system/theme-get"
 import { SavedAddressesQuery } from "__generated__/SavedAddressesQuery.graphql"
@@ -11,7 +11,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Box, Flex, Separator, Text, Touchable } from "palette"
+import { Separator, Text, Touchable } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createRefetchContainer, QueryRenderer, RelayRefetchProp } from "react-relay"
@@ -101,7 +101,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me$data; relay: RelayRefetch
         renderItem={({ item }) => (
           <>
             <Flex mx={2}>
-              <Card py={2} px={16} isDefault={item.isDefault}>
+              <Card py={2} px="16px" isDefault={item.isDefault}>
                 <Text fontSize={16} lineHeight={24}>
                   {item.name}
                 </Text>

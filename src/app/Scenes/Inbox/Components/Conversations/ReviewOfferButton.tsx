@@ -4,11 +4,12 @@ import {
   MoneyFillIcon,
   AlertCircleFillIcon,
   IconProps,
+  Flex,
 } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { useEventTiming } from "app/utils/useEventTiming"
 import { DateTime } from "luxon"
-import { Color, Flex, Text } from "palette"
+import { Color, Text } from "palette"
 import { TouchableWithoutFeedback } from "react-native"
 import { useTracking } from "react-tracking"
 

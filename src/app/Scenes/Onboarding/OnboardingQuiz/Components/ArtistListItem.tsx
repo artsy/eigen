@@ -1,6 +1,7 @@
+import { FollowButton, Flex, FlexProps } from "@artsy/palette-mobile"
 import { ArtistListItemNew_artist$key } from "__generated__/ArtistListItemNew_artist.graphql"
 import { formatTombstoneText } from "app/Components/ArtistListItem"
-import { EntityHeader, Flex, FlexProps, FollowButton } from "palette"
+import { EntityHeader } from "palette"
 import { graphql, useFragment, useMutation } from "react-relay"
 
 interface ArtistListItemProps extends FlexProps {

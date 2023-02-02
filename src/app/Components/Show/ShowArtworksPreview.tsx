@@ -1,8 +1,9 @@
+import { Box } from "@artsy/palette-mobile"
 import { ShowArtworksPreview_show$data } from "__generated__/ShowArtworksPreview_show.graphql"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { extractNodes } from "app/utils/extractNodes"
-import { Box, Text } from "palette"
+import { Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 

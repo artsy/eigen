@@ -1,7 +1,8 @@
+import { FollowButton, Box } from "@artsy/palette-mobile"
 import { HeaderFollowGeneMutation } from "__generated__/HeaderFollowGeneMutation.graphql"
 import { Header_gene$data } from "__generated__/Header_gene.graphql"
 import { Schema, Track, track as _track } from "app/utils/track"
-import { Box, FollowButton, Text } from "palette"
+import { Text } from "palette"
 import React from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
@@ -27,7 +28,7 @@ class Header extends React.Component<Props, State> {
 
     return (
       <>
-        <Box marginTop={60} justifyContent="center">
+        <Box marginTop={6} justifyContent="center">
           <Text variant="lg-display" numberOfLines={2}>
             {title}
           </Text>
@@ -137,7 +138,7 @@ class Header extends React.Component<Props, State> {
     const { gene } = this.props
 
     return (
-      <Box mt={15}>
+      <Box mt="15px">
         <FollowButton
           block
           isFollowed={!!gene.isFollowed}

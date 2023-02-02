@@ -1,4 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { Flex } from "@artsy/palette-mobile"
 import { SaleInfoQueryRendererQuery } from "__generated__/SaleInfoQueryRendererQuery.graphql"
 import { SaleInfo_me$data } from "__generated__/SaleInfo_me.graphql"
 import { SaleInfo_sale$data } from "__generated__/SaleInfo_sale.graphql"
@@ -14,7 +15,7 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { sendEmail } from "app/utils/sendEmail"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import moment from "moment-timezone"
-import { Flex, Join, Separator, Text } from "palette"
+import { Join, Separator, Text } from "palette"
 import { useEffect, useRef } from "react"
 import { PanResponder, Platform, ScrollView, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -27,7 +28,7 @@ interface Props {
 const AuctionSupport = () => {
   return (
     <Flex mt={1}>
-      <Text variant="sm-display" px={2} mb={15}>
+      <Text variant="sm-display" px={2} mb="15px">
         Auction support
       </Text>
       <MenuItem
@@ -95,7 +96,7 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
       <ScrollView contentContainerStyle={{ paddingBottom: 30 }}>
         <Join separator={<Separator my={2} />}>
           {/*  About Auction */}
-          <Flex px={2} mt={70}>
+          <Flex px={2} mt="70px">
             <Text variant="lg-display">About this auction</Text>
             <Text variant="sm-display" mt={1} mb={4}>
               {sale.name}
@@ -197,7 +198,7 @@ const BuyersPremium: React.FC<{ sale: SaleInfo_sale$data }> = (props) => {
 
 const SaleInfoPlaceholder = () => (
   <Join separator={<Separator my={2} />}>
-    <Flex px={2} mt={70}>
+    <Flex px={2} mt="70px">
       <Text variant="lg-display">About this auction</Text>
       <Separator my={1} />
       <PlaceholderBox marginBottom={20} height={30} width={200 + Math.random() * 100} />

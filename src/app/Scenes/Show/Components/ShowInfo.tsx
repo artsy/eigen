@@ -1,7 +1,7 @@
-import { ChevronIcon } from "@artsy/palette-mobile"
+import { ChevronIcon, Box, BoxProps } from "@artsy/palette-mobile"
 import { ShowInfo_show$data } from "__generated__/ShowInfo_show.graphql"
 import { navigate } from "app/system/navigation/navigate"
-import { Box, BoxProps, Text } from "palette"
+import { Text } from "palette"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 

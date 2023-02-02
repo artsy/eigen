@@ -1,5 +1,5 @@
 import { ActionType, AddCollectedArtwork, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Spacer, LockIcon } from "@artsy/palette-mobile"
+import { Spacer, Button, LockIcon, Flex, useSpace } from "@artsy/palette-mobile"
 import { MyCollection_me$data } from "__generated__/MyCollection_me.graphql"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
@@ -11,7 +11,7 @@ import { navigate, popToRoot } from "app/system/navigation/navigate"
 import { cleanLocalImages } from "app/utils/LocalImageStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
-import { Button, Flex, Text, useSpace } from "palette"
+import { Text } from "palette"
 import { useEffect, useState } from "react"
 import {
   Alert,
@@ -187,7 +187,7 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
           />
         )
       ) : (
-        <Flex py="6" px="2">
+        <Flex py={6} px={2}>
           <FilteredArtworkGridZeroState hideClearButton />
         </Flex>
       )}
@@ -213,7 +213,7 @@ const MyCollectionZeroState: React.FC = () => {
           resizeMode="contain"
           style={{
             alignSelf: "center",
-            marginVertical: space("2"),
+            marginVertical: space(2),
           }}
         />
       }

@@ -1,10 +1,10 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
-import { Spacer, IncreaseIcon, DecreaseIcon } from "@artsy/palette-mobile"
+import { Spacer, IncreaseIcon, DecreaseIcon, Flex, useSpace } from "@artsy/palette-mobile"
 import { MyCollectionArtworkArtistMarket_artwork$key } from "__generated__/MyCollectionArtworkArtistMarket_artwork.graphql"
 import { MyCollectionArtworkArtistMarket_artworkPriceInsights$key } from "__generated__/MyCollectionArtworkArtistMarket_artworkPriceInsights.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { formatSellThroughRate } from "app/utils/marketPriceInsightHelpers"
-import { Flex, Text, useSpace } from "palette"
+import { Text } from "palette"
 import { ReactElement } from "react"
 import { FlatList, View } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -147,7 +147,7 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
                 flex: 1,
                 maxWidth: isIPad ? "33%" : "50%", // 100% devided by the number of rows
                 alignItems: "stretch",
-                paddingBottom: space("2"),
+                paddingBottom: space(2),
               }}
             >
               {item.component}

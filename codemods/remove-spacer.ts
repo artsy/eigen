@@ -9,12 +9,14 @@
 
 import { Transform } from "jscodeshift"
 
-const toRemove = "TriangleDown"
+const toRemove = "ClassTheme"
 
 const transform: Transform = (file, { jscodeshift: j }, options) => {
   const source = j(file.source)
 
-  const oldPaletteImports = source.find(j.ImportDeclaration, { source: { value: "palette" } })
+  const oldPaletteImports = source.find(j.ImportDeclaration, {
+    source: { value: "palette" },
+  })
 
   // add import from new palette
   oldPaletteImports

@@ -1,3 +1,4 @@
+import { Flex } from "@artsy/palette-mobile"
 import { VanityURLEntityQuery } from "__generated__/VanityURLEntityQuery.graphql"
 import { VanityURLEntity_fairOrPartner$data } from "__generated__/VanityURLEntity_fairOrPartner.graphql"
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
@@ -5,7 +6,7 @@ import { FairFragmentContainer, FairPlaceholder, FairQueryRenderer } from "app/S
 import { PartnerContainer } from "app/Scenes/Partner/Partner"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { Flex, Spinner } from "palette"
+import { Spinner } from "palette"
 import { View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"

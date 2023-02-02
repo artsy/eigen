@@ -1,4 +1,5 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
+import { Button, Flex } from "@artsy/palette-mobile"
 import { MakeOfferModalQuery } from "__generated__/MakeOfferModalQuery.graphql"
 import { MakeOfferModal_artwork$data } from "__generated__/MakeOfferModal_artwork.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
@@ -7,7 +8,7 @@ import { dismissModal } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
-import { BorderBox, Button, Flex, Text } from "palette"
+import { BorderBox, Text } from "palette"
 import React, { useState } from "react"
 import { ScrollView, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -40,7 +41,7 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
         Make Offer
       </FancyModalHeader>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Flex p="2">
+        <Flex p={2}>
           <Text variant="lg-display">Select edition set</Text>
           <BorderBox p={0} my={2}>
             <CollapsibleArtworkDetails hasSeparator={false} artwork={artwork} />

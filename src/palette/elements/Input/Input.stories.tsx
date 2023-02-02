@@ -1,7 +1,7 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Box } from "@artsy/palette-mobile"
 import { storiesOf } from "@storybook/react-native"
 import SearchIcon from "app/Components/Icons/SearchIcon"
-import { Box, Input } from "palette"
+import { Input } from "palette"
 import { PhoneInput } from "palette/elements/Input/PhoneInput/PhoneInput"
 import { DataList, List } from "storybook/helpers"
 

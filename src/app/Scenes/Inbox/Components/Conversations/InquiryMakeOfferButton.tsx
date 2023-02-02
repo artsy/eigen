@@ -1,7 +1,7 @@
+import { Button, ButtonProps } from "@artsy/palette-mobile"
 import { InquiryMakeOfferButtonOrderMutation } from "__generated__/InquiryMakeOfferButtonOrderMutation.graphql"
 import { InquiryMakeOfferButton_artwork$data } from "__generated__/InquiryMakeOfferButton_artwork.graphql"
 import { navigate } from "app/system/navigation/navigate"
-import { Button, ButtonProps } from "palette"
 import React from "react"
 import { Alert } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"

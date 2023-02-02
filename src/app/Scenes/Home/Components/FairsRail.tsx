@@ -1,4 +1,4 @@
-import { bullet } from "@artsy/palette-mobile"
+import { bullet, Flex, SpacingUnit } from "@artsy/palette-mobile"
 import { FairsRail_fairsModule$data } from "__generated__/FairsRail_fairsModule.graphql"
 import {
   CardRailCard,
@@ -11,8 +11,8 @@ import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { concat, take } from "lodash"
-import { Flex, Text } from "palette"
-import React, { useImperativeHandle, useRef } from "react"
+import { Text } from "palette"
+import { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -22,7 +22,7 @@ interface Props {
   title: string
   subtitle?: string
   fairsModule: FairsRail_fairsModule$data
-  mb?: number
+  mb?: SpacingUnit
 }
 
 type FairItem = FairsRail_fairsModule$data["results"][0]
@@ -36,7 +36,7 @@ const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
   }))
 
   const FairHeader = () => (
-    <Flex pl="2" pr="2">
+    <Flex pl={2} pr={2}>
       <SectionTitle title={props.title} subtitle={props.subtitle} />
     </Flex>
   )
@@ -51,7 +51,6 @@ const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
       <CardRailFlatList<FairItem>
         listRef={listRef}
         data={props.fairsModule.results}
-        ListEmptyComponent={() => <React.Fragment />}
         renderItem={({ item: result, index }) => {
           // Fairs are expected to always have >= 2 artworks and a hero image.
           // We can make assumptions about this in UI layout, but should still

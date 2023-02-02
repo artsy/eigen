@@ -1,4 +1,5 @@
 import { ActionType } from "@artsy/cohesion"
+import { Button, ButtonProps, ClassTheme } from "@artsy/palette-mobile"
 import { BidButton_artwork$data } from "__generated__/BidButton_artwork.graphql"
 import { BidButton_me$data } from "__generated__/BidButton_me.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
@@ -6,7 +7,7 @@ import { useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { bidderNeedsIdentityVerification } from "app/utils/auction/bidderNeedsIdentityVerification"
 import { Schema } from "app/utils/track"
-import { Button, ButtonProps, ClassTheme, Text, TextProps } from "palette"
+import { Text, TextProps } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import track from "react-tracking"
@@ -40,7 +41,7 @@ const IdentityVerificationRequiredMessage: React.FC<TextProps> = ({
   return (
     <Text
       variant={enableArtworkRedesign ? "xs" : "sm"}
-      mt="1"
+      mt={1}
       color="black60"
       pb="1"
       textAlign="center"

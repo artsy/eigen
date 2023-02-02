@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Box } from "@artsy/palette-mobile"
 import { PartnerLocationsQuery } from "__generated__/PartnerLocationsQuery.graphql"
 import { PartnerLocations_partner$data } from "__generated__/PartnerLocations_partner.graphql"
 import { PartnerMapContainer as PartnerMap } from "app/Scenes/Partner/Components/PartnerMap"
@@ -6,7 +6,7 @@ import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { Box, Text } from "palette"
+import { Text } from "palette"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -41,7 +41,7 @@ const PartnerLocations: React.FC<{
       onScroll={isCloseToBottom(fetchNextPage)}
       keyExtractor={(item) => item.id}
       ListHeaderComponent={() => (
-        <Box pt={60} px={2}>
+        <Box pt={6} px={2}>
           <Text variant="sm">{locations.length > 1 ? "Locations" : "Location"}</Text>
           <Text variant="sm-display">{partner.name}</Text>
         </Box>

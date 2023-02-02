@@ -1,7 +1,17 @@
+import { useColor } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { Text } from "palette"
 import React from "react"
-import { Animated, Dimensions, LayoutRectangle, ScrollView, View } from "react-native"
+import {
+  Animated,
+  Dimensions,
+  LayoutRectangle,
+  ScrollView,
+  ScrollViewProps,
+  TouchableNativeFeedbackProps,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native"
 import styled from "styled-components/native"
 
 export interface Tab {
@@ -16,16 +26,23 @@ interface ScrollableTabBarProps {
   containerWidth?: number
   scrollValue?: Animated.AnimatedInterpolation
 }
-const Button = styled.TouchableWithoutFeedback`
-  height: 50px;
-  flex: 1;
-`
+const Button = (props: TouchableNativeFeedbackProps) => (
+  <TouchableWithoutFeedback {...props} style={{ flex: 1, height: 50 }} />
+)
 
-const Tabs = styled.ScrollView`
-  height: 50px;
-  border-bottom-width: 1px;
-  border-color: ${themeGet("colors.black10")};
-`
+const Tabs = (props: ScrollViewProps) => {
+  const color = useColor()
+  return (
+    <ScrollView
+      {...props}
+      style={{
+        height: 50,
+        borderColor: color("black10"),
+        borderBottomWidth: 1,
+      }}
+    />
+  )
+}
 
 const TabButton = styled(View)<{ active: boolean }>`
   align-items: center;
@@ -132,6 +149,7 @@ export default class ScrollableTabBar extends React.Component<
   render() {
     return (
       <Tabs
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         ref={(r: any) => {
           if (r) {
             this.scrollView = r.root

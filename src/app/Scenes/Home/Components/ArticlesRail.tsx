@@ -1,11 +1,10 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex, SpacingUnit } from "@artsy/palette-mobile"
 import { ArticlesRail_articlesConnection$data } from "__generated__/ArticlesRail_articlesConnection.graphql"
 import { ArticleCardContainer } from "app/Components/ArticleCard"
 import { SectionTitle } from "app/Components/SectionTitle"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex } from "palette"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -13,17 +12,16 @@ import { useTracking } from "react-tracking"
 interface ArticlesRailProps {
   title: string
   articlesConnection: ArticlesRail_articlesConnection$data
-  mb?: number
+  mb?: SpacingUnit
 }
 
 export const ArticlesRail: React.FC<ArticlesRailProps> = ({ title, articlesConnection, mb }) => {
   const articles = extractNodes(articlesConnection)
+  const tracking = useTracking()
 
   if (!articles.length) {
     return null
   }
-
-  const tracking = useTracking()
 
   return (
     <Flex mb={mb}>

@@ -1,6 +1,6 @@
+import { Flex } from "@artsy/palette-mobile"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { Flex } from "palette"
 import React, { useRef } from "react"
 import { Platform } from "react-native"
 

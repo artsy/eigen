@@ -1,5 +1,6 @@
+import { Box, BoxProps } from "@artsy/palette-mobile"
 import moment from "moment"
-import { Box, BoxProps, Text, TextProps } from "palette"
+import { Text, TextProps } from "palette"
 import { ViewStyle } from "react-native"
 
 const exactDate = (time: string) => {

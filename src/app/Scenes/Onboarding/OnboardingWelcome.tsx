@@ -1,11 +1,11 @@
-import { Spacer, ArtsyLogoWhiteIcon } from "@artsy/palette-mobile"
+import { Spacer, Button, useTheme, ArtsyLogoWhiteIcon, Flex } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import {
   ArtsyNativeModule,
   DEFAULT_NAVIGATION_BAR_COLOR,
 } from "app/NativeModules/ArtsyNativeModule"
 import backgroundImage from "images/WelcomeImage.jpg"
-import { Button, Flex, Screen, Text, useTheme } from "palette"
+import { Screen, Text } from "palette"
 import React, { useEffect } from "react"
 import { Dimensions, Image, Platform } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
@@ -126,7 +126,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
           style={[
             {
               flex: 1,
-              paddingTop: space("2"),
+              paddingTop: space(2),
               justifyContent: "flex-end",
             },
             appearAnim,

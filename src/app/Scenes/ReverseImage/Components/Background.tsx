@@ -1,4 +1,4 @@
-import { Flex } from "palette"
+import { Flex } from "@artsy/palette-mobile"
 import styled from "styled-components/native"
 
 export const BACKGROUND_COLOR = "rgba(0, 0, 0, 0.6)"

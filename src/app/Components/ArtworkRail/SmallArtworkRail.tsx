@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex } from "@artsy/palette-mobile"
 import { SmallArtworkRail_artworks$key } from "__generated__/SmallArtworkRail_artworks.graphql"
 import {
   PlaceholderBox,
@@ -7,7 +7,7 @@ import {
   useMemoizedRandom,
 } from "app/utils/placeholders"
 import { times } from "lodash"
-import { Flex, Join } from "palette"
+import { Join } from "palette"
 import { PixelRatio } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"

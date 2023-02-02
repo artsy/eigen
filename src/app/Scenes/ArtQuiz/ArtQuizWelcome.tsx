@@ -1,8 +1,9 @@
-import { Spacer, Button, Flex, Screen, Text, ArtsyLogoBlackIcon } from "@artsy/palette-mobile"
+import { Spacer, Button, ArtsyLogoBlackIcon, Flex } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { ArtQuizNavigationStack } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
 import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
 import { GlobalStore } from "app/store/GlobalStore"
+import { Screen, Text } from "palette"
 
 export const ArtQuizWelcome = () => {
   const { onDone } = useOnboardingContext()

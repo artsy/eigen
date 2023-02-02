@@ -1,11 +1,12 @@
+import { Flex, Box, useSpace } from "@artsy/palette-mobile"
 import { FilterData } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { TouchableRow } from "app/Components/TouchableRow"
-import { Box, Check, CHECK_SIZE, Flex, Text, useSpace } from "palette"
+import { Check, CHECK_SIZE, Text } from "palette"
 import React, { memo } from "react"
 import { useScreenDimensions } from "shared/hooks"
 import styled from "styled-components/native"
 
-const OPTIONS_MARGIN_LEFT = "0.5"
+const OPTIONS_MARGIN_LEFT = 0.5
 const OPTION_PADDING = 15
 export const MULTI_SELECT_OPTION_ITEM_HEIGHT = 50
 

@@ -1,7 +1,7 @@
+import { Button, useSpace } from "@artsy/palette-mobile"
 import { ZeroState } from "app/Components/States/ZeroState"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { navigate, popToRoot } from "app/system/navigation/navigate"
-import { Button, useSpace } from "palette"
 import { Image } from "react-native"
 
 export const MyCollectionInsightsEmptyState = () => {
@@ -15,7 +15,7 @@ export const MyCollectionInsightsEmptyState = () => {
         <Image
           source={require("images/my-collection-insights-empty-state-median.png")}
           resizeMode="contain"
-          style={{ alignSelf: "center", marginVertical: space("2") }}
+          style={{ alignSelf: "center", marginVertical: space(2) }}
         />
       }
       callToAction={

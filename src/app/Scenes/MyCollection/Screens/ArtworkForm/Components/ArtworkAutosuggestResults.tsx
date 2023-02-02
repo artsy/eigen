@@ -1,3 +1,4 @@
+import { Button, Flex } from "@artsy/palette-mobile"
 import { ArtworkAutosuggestResultsContainerQuery } from "__generated__/ArtworkAutosuggestResultsContainerQuery.graphql"
 import { ArtworkAutosuggestResults_viewer$data } from "__generated__/ArtworkAutosuggestResults_viewer.graphql"
 import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
@@ -7,7 +8,6 @@ import { LoadFailureView } from "app/Components/LoadFailureView"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { trim } from "lodash"
-import { Button, Flex } from "palette"
 import React, { useEffect } from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
@@ -39,7 +39,7 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
   }, [viewer.artworks?.edges?.length])
 
   return (
-    <Flex py="2">
+    <Flex py={2}>
       <InfiniteScrollArtworksGridContainer
         connection={viewer.artworks!}
         loadMore={relay.loadMore}

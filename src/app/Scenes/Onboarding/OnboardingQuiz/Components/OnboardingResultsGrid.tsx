@@ -1,4 +1,11 @@
-import { HeartIcon, HeartFillIcon } from "@artsy/palette-mobile"
+import {
+  HeartIcon,
+  HeartFillIcon,
+  Flex,
+  Box,
+  SpacingUnitDSValueNumber,
+  useTheme,
+} from "@artsy/palette-mobile"
 import {
   OnboardingResultsGrid_connection$data,
   OnboardingResultsGrid_connection$key,
@@ -7,14 +14,14 @@ import { calculateLayoutValues, getSectionedItems } from "app/Components/Artwork
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useDoublePressCallback } from "app/Scenes/Artwork/Components/ImageCarousel/FullScreen/useDoublePressCallback"
 import { extractNodes } from "app/utils/extractNodes"
-import { Box, Flex, Text, TextProps, Touchable, useTheme } from "palette"
+import { Text, TextProps, Touchable } from "palette"
 import { FC } from "react"
 import { Dimensions, ScrollView } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"
 
-const DEFAULT_ITEM_PADDING = 20
-const DEFAULT_ITEM_MARGIN = 20
-const DEFAULT_SECTION_MARGIN = 20
+const DEFAULT_ITEM_PADDING: SpacingUnitDSValueNumber = 2
+const DEFAULT_ITEM_MARGIN: SpacingUnitDSValueNumber = 2
+const DEFAULT_SECTION_MARGIN: SpacingUnitDSValueNumber = 2
 
 export type GridItem = NonNullable<
   NonNullable<OnboardingResultsGrid_connection$data["edges"]>[number]
@@ -75,7 +82,7 @@ export const OnboardingResultsGrid: FC<OnboardingResultsGridProps> = ({ connecti
           flex={1}
           flexDirection="column"
           key={column}
-          mr={column === columns - 1 ? 0 : DEFAULT_SECTION_MARGIN}
+          mr={column === columns - 1 ? undefined : DEFAULT_SECTION_MARGIN}
         >
           {items}
         </Flex>
@@ -92,7 +99,7 @@ export const OnboardingResultsGrid: FC<OnboardingResultsGridProps> = ({ connecti
         scrollsToTop={false}
         accessibilityLabel="Artworks ScrollView"
         contentContainerStyle={{
-          paddingHorizontal: space("2"),
+          paddingHorizontal: space(2),
         }}
       >
         <Flex flexDirection="row" pr={1} mt={2}>

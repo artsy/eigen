@@ -1,7 +1,7 @@
-import { XCircleIcon, EyeOpenedIcon, EyeClosedIcon } from "@artsy/palette-mobile"
+import { XCircleIcon, EyeOpenedIcon, EyeClosedIcon, Flex, useTheme } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import _ from "lodash"
-import { Color, Flex, Spinner, Text, useTheme } from "palette"
+import { Color, Spinner, Text } from "palette"
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import {
   LayoutAnimation,
@@ -139,7 +139,7 @@ export const Input = forwardRef<InputRef, InputProps>(
         return
       }
       return (
-        <Flex pr="1" justifyContent="center" flexGrow={0}>
+        <Flex pr={1} justifyContent="center" flexGrow={0}>
           <TouchableOpacity
             onPress={() => {
               setShowPassword(!showPassword)
@@ -253,7 +253,7 @@ export const Input = forwardRef<InputRef, InputProps>(
           >
             {renderLeftHandSection?.()}
             {!!icon && (
-              <Flex pl="1" justifyContent="center" flexGrow={0}>
+              <Flex pl={1} justifyContent="center" flexGrow={0}>
                 {icon}
               </Flex>
             )}
@@ -265,7 +265,7 @@ export const Input = forwardRef<InputRef, InputProps>(
                 scrollEnabled={multiline ? false : undefined}
                 maxLength={maxLength}
                 editable={!disabled}
-                onLayout={(event) => {
+                onLayout={(event: any) => {
                   const newWidth = event.nativeEvent.layout.width
                   if (newWidth > inputWidth) {
                     requestAnimationFrame(() => setInputWidth(newWidth))
@@ -283,7 +283,7 @@ export const Input = forwardRef<InputRef, InputProps>(
                 value={value}
                 {...(rest as any)}
                 onChangeText={localOnChangeText}
-                onFocus={(e) => {
+                onFocus={(e: any) => {
                   if (Platform.OS === "android") {
                     LayoutAnimation.configureNext(
                       LayoutAnimation.create(60, "easeInEaseOut", "opacity")
@@ -292,7 +292,7 @@ export const Input = forwardRef<InputRef, InputProps>(
                   setFocused(true)
                   rest.onFocus?.(e)
                 }}
-                onBlur={(e) => {
+                onBlur={(e: any) => {
                   if (Platform.OS === "android") {
                     LayoutAnimation.configureNext(
                       LayoutAnimation.create(60, "easeInEaseOut", "opacity")
@@ -312,7 +312,7 @@ export const Input = forwardRef<InputRef, InputProps>(
             )}
             {renderShowPasswordIcon()}
             {loading ? (
-              <Flex pr="4" justifyContent="center" flexGrow={0}>
+              <Flex pr={4} justifyContent="center" flexGrow={0}>
                 <Spinner
                   size="medium"
                   style={{ marginLeft: 3, width: 15, height: 4, backgroundColor: color("black60") }}
@@ -320,7 +320,7 @@ export const Input = forwardRef<InputRef, InputProps>(
               </Flex>
             ) : (
               !!(value !== undefined && value !== "" && enableClearButton) && (
-                <Flex pr="1" justifyContent="center" flexGrow={0}>
+                <Flex pr={1} justifyContent="center" flexGrow={0}>
                   <TouchableOpacity
                     onPress={() => {
                       localClear()
@@ -370,7 +370,7 @@ export const computeBorderColor = (inputStatus: InputStatus): Color => {
 }
 
 const StyledInput = styled(TextInput)`
-  padding: ${themeGet("space.1")}px;
+  padding: ${themeGet("space.1")};
   font-family: ${themeGet("fonts.sans.regular")};
 `
 StyledInput.displayName = "StyledInput"

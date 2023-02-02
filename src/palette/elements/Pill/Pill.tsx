@@ -1,9 +1,7 @@
-import { Spacer, IconProps } from "@artsy/palette-mobile"
+import { Spacer, IconProps, FlexProps, Flex, useColor } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 
-import { useColor } from "palette"
 import { Color } from "palette/Theme"
-import { Flex, FlexProps } from "palette/elements/Flex"
 import { Text, useTextStyleForPalette } from "palette/elements/Text"
 import { useState } from "react"
 import { GestureResponderEvent, Pressable, PressableProps } from "react-native"

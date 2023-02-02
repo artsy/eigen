@@ -1,11 +1,11 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, useSpace } from "@artsy/palette-mobile"
 import { DEFAULT_PRICE_RANGE as USER_PREFERRED_DEFAULT_PRICE_RANGE } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import {
   MAX_SHOWN_RECENT_PRICE_RANGES,
   useRecentPriceRanges,
 } from "app/store/RecentPriceRangesModel"
-import { Box, Flex, Join, Pill, Text, useSpace } from "palette"
+import { Join, Pill, Text } from "palette"
 import { useRef } from "react"
 import { Platform, ScrollView, TouchableOpacity } from "react-native"
 import { parsePriceRange, parsePriceRangeLabel, PriceRange } from "./Filters/helpers"
@@ -51,7 +51,7 @@ export const RecentPriceRanges: React.FC<RecentPriceRangesProps> = ({
             accessibilityRole="button"
             accessibilityLabel="Clear price ranges"
             onPress={handleClearRecentPriceRanges}
-            hitSlop={{ top: space("1"), bottom: space("1"), left: space("1"), right: space("1") }}
+            hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
           >
             <Text variant="sm" style={{ textDecorationLine: "underline" }}>
               Clear
@@ -104,7 +104,7 @@ const RecentPriceRangesList: React.FC<RecentPriceRangesListProps> = ({
     <ScrollView
       ref={recentPriceRangeScrollRef}
       horizontal
-      contentContainerStyle={{ paddingHorizontal: space("2") }}
+      contentContainerStyle={{ paddingHorizontal: space(2) }}
       showsHorizontalScrollIndicator={false}
     >
       <Flex flexDirection="row">

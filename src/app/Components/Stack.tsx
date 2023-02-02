@@ -1,5 +1,5 @@
-import { Spacer, SpacingUnit } from "@artsy/palette-mobile"
-import { Flex, Join } from "palette"
+import { Spacer, SpacingUnit, Flex } from "@artsy/palette-mobile"
+import { Join } from "palette"
 
 export const Stack: React.FC<
   { spacing?: SpacingUnit; horizontal?: boolean } & React.ComponentPropsWithoutRef<typeof Flex>

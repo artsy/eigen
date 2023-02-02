@@ -1,8 +1,9 @@
+import { Box } from "@artsy/palette-mobile"
 import { CollectionHeader_collection$data } from "__generated__/CollectionHeader_collection.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "app/Components/ReadMore"
 import { Schema } from "app/utils/track"
-import { Box, Text } from "palette"
+import { Text } from "palette"
 import { Dimensions } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -28,7 +29,7 @@ export const CollectionHeader: React.FC<CollectionHeaderProps> = (props) => {
         {title}
       </Text>
       {!!collectionDescription && (
-        <Box mx="2" mb="2" mt="0.5" accessibilityLabel="Read more">
+        <Box mx={2} mb={2} mt={0.5} accessibilityLabel="Read more">
           <ReadMore
             content={collectionDescription}
             maxChars={screenWidth > 700 ? 300 : 250} // truncate at 300 characters on iPads and 250 on all other devices

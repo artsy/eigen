@@ -16,7 +16,7 @@ export class BidInfoRow extends React.Component<BidInfoRowProps> {
 
     return (
       <TouchableWithoutFeedback onPress={onPress}>
-        <Row p="2" pb="1" mb="1" {...props}>
+        <Row p={2} pb="1" mb={1} {...props}>
           <Col>
             <Text variant="xs">{label}</Text>
           </Col>

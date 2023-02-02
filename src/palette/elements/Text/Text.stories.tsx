@@ -1,5 +1,5 @@
+import { Flex, Box } from "@artsy/palette-mobile"
 import { ComponentMeta, ComponentStory } from "@storybook/react-native"
-import { Box, Flex } from "palette"
 import { Platform, Text as RNText, TextStyle, View } from "react-native"
 import { DataList, List } from "storybook/helpers"
 import { LinkText, Text, TextProps } from "."
@@ -46,7 +46,7 @@ export const BasicProps: TextStory = () => (
 export const Misc: TextStory = () => (
   <List>
     <View style={{ borderWidth: 1, borderColor: "black" }}>
-      <Text pl="2" mb="4" mr={80} color="red" backgroundColor="orange">
+      <Text pl={2} mb={4} mr={80} color="red" backgroundColor="orange">
         Testing the other props
       </Text>
     </View>

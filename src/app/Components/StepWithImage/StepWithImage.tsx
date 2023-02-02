@@ -11,7 +11,7 @@ interface StepWithImageProps {
 export const StepWithImage: React.FC<StepWithImageProps> = ({ icon: Icon, text, title }) => {
   return (
     <Flex flexDirection="row">
-      <Flex pr="1" mr="0.5" style={{ paddingTop: 6 }}>
+      <Flex pr={1} mr="0.5" style={{ paddingTop: 6 }}>
         <Icon width={18} height={18} />
       </Flex>
 

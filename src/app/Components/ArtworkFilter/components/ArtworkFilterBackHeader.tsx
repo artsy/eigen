@@ -1,5 +1,5 @@
-import { ArrowLeftIcon } from "@artsy/palette-mobile"
-import { Box, Separator, Text, useTheme } from "palette"
+import { ArrowLeftIcon, Box, useTheme } from "@artsy/palette-mobile"
+import { Separator, Text } from "palette"
 import { TouchableOpacity } from "react-native"
 
 export interface ArtworkFilterBackHeaderProps {
@@ -26,14 +26,14 @@ export const ArtworkFilterBackHeader: React.FC<ArtworkFilterBackHeaderProps> = (
         flexDirection="row"
         alignItems="center"
         justifyContent="space-between"
-        height={space("6")}
+        height={space(6)}
         px={2}
       >
         <TouchableOpacity
           onPress={onLeftButtonPress}
-          hitSlop={{ top: space("1"), bottom: space("1"), left: space("1"), right: space("1") }}
+          hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
           accessibilityLabel="Header back button"
-          style={{ paddingRight: space("0.5") }}
+          style={{ paddingRight: space(0.5) }}
         >
           <ArrowLeftIcon fill="black100" />
         </TouchableOpacity>
@@ -45,7 +45,7 @@ export const ArtworkFilterBackHeader: React.FC<ArtworkFilterBackHeaderProps> = (
         {!!onRightButtonPress && !!rightButtonText && (
           <TouchableOpacity
             onPress={onRightButtonPress}
-            hitSlop={{ top: space("1"), bottom: space("1"), left: space("1"), right: space("1") }}
+            hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
             accessibilityLabel={rightButtonAccessibilityLabel}
           >
             <Text variant="sm" style={{ textDecorationLine: "underline" }}>

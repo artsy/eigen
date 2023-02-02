@@ -1,12 +1,14 @@
 import {
+  Button,
   FairIcon,
   IconProps,
   InstitutionIcon,
   PublicationIcon,
   UserMultiIcon,
   UserSingleIcon,
+  Flex,
 } from "@artsy/palette-mobile"
-import { Button, Flex, Text, Touchable } from "palette"
+import { Text, Touchable } from "palette"
 import { Fragment, FunctionComponent } from "react"
 import { Image } from "react-native"
 
@@ -37,7 +39,7 @@ export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({
 
   return (
     <Touchable haptic onPress={onPress} testID="career-highlight-card-item">
-      <Flex p={1} height={135} width={205} background="white" border={1} borderColor="black10">
+      <Flex p={1} height={135} width={205} backgroundColor="white" border={1} borderColor="black10">
         <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
           <Flex
             width={26}

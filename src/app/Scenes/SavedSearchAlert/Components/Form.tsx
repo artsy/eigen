@@ -1,4 +1,4 @@
-import { CloseIcon, Spacer } from "@artsy/palette-mobile"
+import { CloseIcon, Spacer, Button, Flex, Box } from "@artsy/palette-mobile"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import {
   SavedSearchAlertFormValues,
@@ -7,7 +7,7 @@ import {
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useFormikContext } from "formik"
-import { Box, Button, Flex, Input, InputTitle, Pill, Text } from "palette"
+import { Input, InputTitle, Pill, Text } from "palette"
 import { SavedSearchAlertSwitch } from "./SavedSearchAlertSwitch"
 
 interface FormProps {
@@ -156,7 +156,7 @@ export const Form: React.FC<FormProps> = (props) => {
           Update email preferences
         </Text>
       )}
-      <Box mt="6">
+      <Box mt={6}>
         <Button
           testID="save-alert-button"
           disabled={isSaveAlertButtonDisabled}

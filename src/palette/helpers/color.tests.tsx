@@ -1,5 +1,6 @@
+import { useTheme } from "@artsy/palette-mobile"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { _test_THEMES, Color, useTheme } from "palette/Theme"
+import { _test_THEMES, Color } from "palette/Theme"
 import { View } from "react-native"
 
 describe("color", () => {

@@ -1,7 +1,8 @@
+import { Box } from "@artsy/palette-mobile"
 import { FairTiming_fair$data } from "__generated__/FairTiming_fair.graphql"
 import { EventTiming } from "app/Components/EventTiming"
 import { WithCurrentTime } from "app/Components/WithCurrentTime"
-import { Box, Text } from "palette"
+import { Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface FairTimingProps {

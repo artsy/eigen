@@ -1,3 +1,4 @@
+import { Flex } from "@artsy/palette-mobile"
 import { ActivityList_me$key } from "__generated__/ActivityList_me.graphql"
 import { ActivityList_viewer$key } from "__generated__/ActivityList_viewer.graphql"
 import { ActivityQuery } from "__generated__/ActivityQuery.graphql"
@@ -9,7 +10,7 @@ import {
 } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex, Separator, Spinner } from "palette"
+import { Separator, Spinner } from "palette"
 import { useContext, useEffect, useState } from "react"
 import { graphql, useFragment, usePaginationFragment } from "react-relay"
 import { ActivityEmptyView } from "./ActivityEmptyView"

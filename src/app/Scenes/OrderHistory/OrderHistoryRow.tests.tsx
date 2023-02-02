@@ -1,9 +1,9 @@
+import { Button } from "@artsy/palette-mobile"
 import { fireEvent } from "@testing-library/react-native"
 import { OrderHistoryRowTestsQuery } from "__generated__/OrderHistoryRowTestsQuery.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { extractText } from "app/utils/tests/extractText"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { Button } from "palette"
 import { graphql } from "react-relay"
 import { OrderHistoryRowContainer } from "./OrderHistoryRow"
 

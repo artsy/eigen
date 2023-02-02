@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Button, Flex } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
-import { Button, Flex, Text } from "palette"
+import { Text } from "palette"
 import { useTracking } from "react-tracking"
 
 export const NoBids: React.FC<{ headerText: string }> = ({ headerText }) => {

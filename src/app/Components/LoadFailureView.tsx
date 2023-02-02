@@ -1,7 +1,7 @@
-import { ReloadIcon } from "@artsy/palette-mobile"
+import { ReloadIcon, Flex, Box, BoxProps, useColor } from "@artsy/palette-mobile"
 import { useDevToggle, useIsStaging } from "app/store/GlobalStore"
 import { debounce } from "lodash"
-import { Box, BoxProps, Flex, Text, Touchable, useColor } from "palette"
+import { Text, Touchable } from "palette"
 import { useRef, useState } from "react"
 import { Animated, Easing } from "react-native"
 import { JustifyContentValue } from "./Bidding/Elements/types"
@@ -40,7 +40,7 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
   return (
     <Flex flex={1} alignItems="center" justifyContent="center" {...restProps}>
       <Text variant="lg-display">Unable to load</Text>
-      <Text variant="sm-display" mb="1">
+      <Text variant="sm-display" mb={1}>
         Please try again
       </Text>
       {isStaging && <Box mb={1} border={2} width={200} borderColor="devpurple" />}

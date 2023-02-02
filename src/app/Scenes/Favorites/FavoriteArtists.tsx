@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, ClassTheme } from "@artsy/palette-mobile"
 import { FavoriteArtistsQuery } from "__generated__/FavoriteArtistsQuery.graphql"
 import { FavoriteArtists_me$data } from "__generated__/FavoriteArtists_me.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
@@ -11,7 +11,6 @@ import { PAGE_SIZE } from "app/Components/constants"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { ClassTheme } from "palette"
 import React from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
@@ -96,7 +95,7 @@ class Artists extends React.Component<Props, State> {
           <StickyTabPageFlatList
             data={rows}
             onEndReached={this.loadMore}
-            contentContainerStyle={{ paddingVertical: space("2") }}
+            contentContainerStyle={{ paddingVertical: space(2) }}
             onEndReachedThreshold={0.2}
             refreshControl={
               <StickTabPageRefreshControl

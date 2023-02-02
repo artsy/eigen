@@ -1,5 +1,5 @@
-import { ArrowLeftIcon } from "@artsy/palette-mobile"
-import { Flex, Text, useTheme } from "palette"
+import { ArrowLeftIcon, Flex, useTheme } from "@artsy/palette-mobile"
+import { Text } from "palette"
 import { useEffect } from "react"
 import { TouchableOpacity } from "react-native"
 import Animated, { FadeInLeft, FadeOutLeft } from "react-native-reanimated"
@@ -26,21 +26,26 @@ export const AnimatableHeader = (props: AnimatableHeaderProps) => {
     <Animated.View
       style={{
         flexDirection: "row",
-        paddingHorizontal: space("2"),
+        paddingHorizontal: space(2),
         alignItems: "center",
         height: headerHeight,
         backgroundColor: "white",
       }}
     >
       <TouchableOpacity
-        hitSlop={{ top: space("1"), bottom: space("1"), left: space("1"), right: space("1") }}
+        hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
         onPress={props.onLeftButtonPress}
         accessibilityLabel="Header back button"
       >
         <ArrowLeftIcon fill="black100" mt="2px" />
       </TouchableOpacity>
 
-      <Flex flex={1} height={headerHeight} justifyContent="center" ml={space("0.5") + space("1")}>
+      <Flex
+        flex={1}
+        height={headerHeight}
+        justifyContent="center"
+        ml={`${space(0.5) + space(1)}px`}
+      >
         {!!titleShown && (
           <Animated.View entering={FadeInLeft} exiting={FadeOutLeft}>
             <Text testID="animated-header-title" variant="sm" numberOfLines={2}>
@@ -52,7 +57,7 @@ export const AnimatableHeader = (props: AnimatableHeaderProps) => {
 
       {!!onRightButtonPress && !!rightButtonText && (
         <TouchableOpacity
-          hitSlop={{ top: space("1"), bottom: space("1"), left: space("1"), right: space("1") }}
+          hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
           onPress={onRightButtonPress}
           disabled={rightButtonDisabled}
         >

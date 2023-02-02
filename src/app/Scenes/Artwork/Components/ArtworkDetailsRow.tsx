@@ -1,8 +1,8 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box } from "@artsy/palette-mobile"
 import { ReadMore } from "app/Components/ReadMore"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
-import { Box, Flex, Text } from "palette"
+import { Text } from "palette"
 import React from "react"
 
 interface Tracking {

@@ -1,7 +1,8 @@
+import { Flex } from "@artsy/palette-mobile"
 import { getTimerInfo } from "app/utils/saleTime"
 import { Time } from "app/utils/useTimer"
 import { Duration } from "moment"
-import { Flex, Text, TextProps } from "palette"
+import { Text, TextProps } from "palette"
 import React from "react"
 import { CountdownTimerProps } from "./CountdownTimer"
 

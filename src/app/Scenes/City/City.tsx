@@ -1,3 +1,4 @@
+import { Button, Flex, Box } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ScrollableTab } from "app/Components/ScrollableTabBar"
 import TabBar from "app/Components/TabBar"
@@ -6,7 +7,7 @@ import { EventEmitter } from "app/Scenes/Map/EventEmitter"
 import { BucketResults } from "app/Scenes/Map/bucketCityResults"
 import { MapTab, RelayErrorState } from "app/Scenes/Map/types"
 import { Schema, screenTrack, track } from "app/utils/track"
-import { Box, Button, Flex, Text } from "palette"
+import { Text } from "palette"
 import React, { Component } from "react"
 import { View } from "react-native"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

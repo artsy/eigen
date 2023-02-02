@@ -1,4 +1,5 @@
-import { Flex, Text, useSpace } from "palette"
+import { Flex, useSpace } from "@artsy/palette-mobile"
+import { Text } from "palette"
 import { useEffect, useRef, useState } from "react"
 import { Animated, Easing, Image, TouchableOpacity } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
@@ -54,7 +55,7 @@ export const AnimatedTooltip: React.FC = () => {
       <Text variant="xs" color="white100">
         Find your Saves and Follows in your settings.
       </Text>
-      <Flex position="absolute" height="100%" top={space("1")} right={space("2")}>
+      <Flex position="absolute" height="100%" top={space(1)} right={space(2)}>
         <TouchableOpacity
           style={{ alignContent: "flex-end" }}
           hitSlop={{ bottom: 40, right: 40, left: 40, top: 40 }}

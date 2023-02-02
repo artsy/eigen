@@ -1,4 +1,4 @@
-import { useColor } from "palette/hooks"
+import { useColor } from "@artsy/palette-mobile"
 import { Switch, View } from "react-native"
 
 interface FilterToggleButtonProps {

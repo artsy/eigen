@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { Search2Query, Search2Query$variables } from "__generated__/Search2Query.graphql"
 import { SearchInput } from "app/Components/SearchInput"
@@ -9,7 +9,6 @@ import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
 import { isPad } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
 import { throttle } from "lodash"
-import { Box, Flex } from "palette"
 import { Suspense, useEffect, useMemo, useRef, useState } from "react"
 import { Platform, ScrollView } from "react-native"
 import { graphql } from "react-relay"
@@ -120,7 +119,7 @@ export const Search2: React.FC = () => {
   return (
     <SearchContext.Provider value={searchProviderValues}>
       <ArtsyKeyboardAvoidingView>
-        <Flex p={2} pb={0}>
+        <Flex p={2}>
           <SearchInput
             ref={searchProviderValues?.inputRef}
             placeholder={SEARCH_INPUT_PLACEHOLDER}

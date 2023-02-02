@@ -1,10 +1,10 @@
+import { Flex, SpacingUnit } from "@artsy/palette-mobile"
 import { ArtworkModuleRail_rail$data } from "__generated__/ArtworkModuleRail_rail.graphql"
 import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { compact } from "lodash"
-import { Flex } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -33,7 +33,7 @@ export function getViewAllUrl(rail: ArtworkModuleRail_rail$data) {
 interface ArtworkModuleRailProps {
   title: string
   rail: ArtworkModuleRail_rail$data
-  mb?: number
+  mb?: SpacingUnit
 }
 
 const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
@@ -72,7 +72,7 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
 
   return artworks.length ? (
     <Flex ref={railRef} mb={mb}>
-      <Flex pl="2" pr="2">
+      <Flex pl={2} pr={2}>
         <SectionTitle
           title={title}
           subtitle={subtitle}

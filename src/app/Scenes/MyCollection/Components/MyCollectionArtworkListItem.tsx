@@ -1,5 +1,5 @@
 import { tappedCollectedArtwork } from "@artsy/cohesion"
-import { NoArtworkIcon } from "@artsy/palette-mobile"
+import { NoArtworkIcon, Flex } from "@artsy/palette-mobile"
 import {
   MyCollectionArtworkListItem_artwork$data,
   MyCollectionArtworkListItem_artwork$key,
@@ -8,7 +8,7 @@ import HighDemandIcon from "app/Components/Icons/HighDemandIcon"
 import { navigate } from "app/system/navigation/navigate"
 import { useLocalImage } from "app/utils/LocalImageStore"
 import { getImageSquareDimensions } from "app/utils/resizeImage"
-import { Flex, Text, Touchable } from "palette"
+import { Text, Touchable } from "palette"
 import OpaqueImageView2 from "palette/elements/OpaqueImageView/OpaqueImageView2"
 import { useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -91,7 +91,7 @@ export const MyCollectionArtworkListItem: React.FC<{
       <Flex pb={1} flexDirection="row">
         <ListItemImageView image={image} />
 
-        <Flex pl={15} flex={1} style={{ marginTop: 3 }}>
+        <Flex pl="15px" flex={1} style={{ marginTop: 3 }}>
           {!!artist?.name && (
             <Text variant="xs" testID="artist-name">
               {artist?.name}

@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Button, Flex, Box, useSpace, useColor } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
@@ -16,19 +16,7 @@ import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { isEmpty } from "lodash"
-import {
-  Box,
-  Button,
-  Flex,
-  Input,
-  Join,
-  Message,
-  MoneyInput,
-  Separator,
-  Text,
-  useColor,
-  useSpace,
-} from "palette"
+import { Input, Join, Message, MoneyInput, Separator, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { Alert, Image, ScrollView, TouchableOpacity } from "react-native"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
@@ -150,7 +138,7 @@ export const MyCollectionArtworkFormMain: React.FC<
         <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
           {!!route.params.isSubmission && (
             <Message
-              containerStyle={{ marginX: space("2") }}
+              containerStyle={{ mx: `${space(2)}px` }}
               title="Changes will only appear in My Collection. They will not be applied to your sale submission."
               IconComponent={() => (
                 <Image

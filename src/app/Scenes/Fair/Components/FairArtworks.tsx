@@ -1,4 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
+import { Box } from "@artsy/palette-mobile"
 import { FairArtworks_fair$data } from "__generated__/FairArtworks_fair.graphql"
 import {
   aggregationsType,
@@ -11,7 +12,6 @@ import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/Filter
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { FAIR2_ARTWORKS_PAGE_SIZE } from "app/Components/constants"
 import { Schema } from "app/utils/track"
-import { Box } from "palette"
 import React, { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"

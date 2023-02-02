@@ -1,9 +1,10 @@
+import { Flex } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ViewingRoomViewWorksButton_viewingRoom$data } from "__generated__/ViewingRoomViewWorksButton_viewingRoom.graphql"
 import { AnimatedBottomButton } from "app/Components/AnimatedBottomButton"
 import { navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
-import { Flex, Text } from "palette"
+import { Text } from "palette"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -39,8 +40,8 @@ export const ViewingRoomViewWorksButton: React.FC<ViewingRoomViewWorksButtonProp
           navigate(`/viewing-room/${viewingRoom.slug}/artworks`)
         }}
       >
-        <ViewWorksButton testID="view-works" px="2">
-          <Text variant="sm" py="1" color="white100" weight="medium">
+        <ViewWorksButton testID="view-works" px={2}>
+          <Text variant="sm" py={1} color="white100" weight="medium">
             View {pluralizedArtworksCount} ({artworksCount})
           </Text>
         </ViewWorksButton>

@@ -1,3 +1,4 @@
+import { Flex, useTheme } from "@artsy/palette-mobile"
 import { GridViewIcon } from "app/Components/Icons/GridViewIcon"
 import { ListViewIcon } from "app/Components/Icons/ListViewIcon"
 import SearchIcon from "app/Components/Icons/SearchIcon"
@@ -6,7 +7,7 @@ import { useAnimatedValue } from "app/Components/StickyTabPage/reanimatedHelpers
 import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { debounce } from "lodash"
-import { Flex, Input, Text, useTheme } from "palette"
+import { Input, Text } from "palette"
 import { useEffect, useMemo, useRef, useState } from "react"
 import {
   LayoutAnimation,
@@ -140,10 +141,10 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
                   requestAnimationFrame(() => inputRef.current?.focus())
                 }}
                 hitSlop={{
-                  top: space("1"),
-                  bottom: space("1"),
-                  left: space("1"),
-                  right: space("1"),
+                  top: space(1),
+                  bottom: space(1),
+                  left: space(1),
+                  right: space(1),
                 }}
               >
                 <Flex flexDirection="row" width="100%">
@@ -160,10 +161,10 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
                   testID="MyCollectionSearchListIconTouchable"
                   onPress={() => onViewOptionChange("list")}
                   hitSlop={{
-                    top: space("1"),
-                    bottom: space("1"),
-                    left: space("1"),
-                    right: space("1"),
+                    top: space(1),
+                    bottom: space(1),
+                    left: space(1),
+                    right: space(1),
                   }}
                 >
                   <Flex width={30} height={30} alignItems="center" justifyContent="center">
@@ -179,10 +180,10 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
                 testID="MyCollectionSearchGridIconTouchable"
                 onPress={() => onViewOptionChange("grid")}
                 hitSlop={{
-                  top: space("1"),
-                  bottom: space("1"),
-                  left: space("1"),
-                  right: space("1"),
+                  top: space(1),
+                  bottom: space(1),
+                  left: space(1),
+                  right: space(1),
                 }}
               >
                 <Flex width={30} height={30} alignItems="center" justifyContent="center">

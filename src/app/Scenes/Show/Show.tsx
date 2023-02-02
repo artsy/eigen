@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box } from "@artsy/palette-mobile"
 import { ShowQuery } from "__generated__/ShowQuery.graphql"
 import { Show_show$data } from "__generated__/Show_show.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -10,9 +10,10 @@ import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "app/utils/plac
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { times } from "lodash"
-import { Box, Flex, Separator } from "palette"
+import { Separator } from "palette"
 import React, { useRef, useState } from "react"
 import { Animated } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 import { ShowArtworksWithNavigation as ShowArtworks } from "./Components/ShowArtworks"
@@ -195,34 +196,37 @@ export const ShowQueryRenderer: React.FC<ShowQueryRendererProps> = ({ showID }) 
   )
 }
 
-export const ShowPlaceholder: React.FC = () => (
-  <Flex px={2} pt={useScreenDimensions().safeAreaInsets.top + 80}>
-    {/* Title */}
-    <PlaceholderText height={25} width={200 + Math.random() * 100} />
-    <PlaceholderText height={25} width={100 + Math.random() * 100} />
-    <Spacer y="15px" />
-    <PlaceholderText width={220} />
-    <Spacer y={2} />
-    {/* Owner */}
-    <PlaceholderText width={70} />
-    <Spacer y="15px" />
-    {/* Images */}
-    <Flex flexDirection="row" py={2}>
-      {times(3).map((index: number) => (
-        <Flex key={index} marginRight={1}>
-          <PlaceholderBox height={300} width={250} />
-        </Flex>
-      ))}
-    </Flex>
-    <Spacer y="15px" />
-    <PlaceholderText width="100%" />
-    <PlaceholderText width="100%" />
-    <PlaceholderText width="100%" />
-    <PlaceholderText width="100%" />
-    <PlaceholderText width="100%" />
-    <Spacer y="15px" />
+export const ShowPlaceholder: React.FC = () => {
+  const saInsets = useSafeAreaInsets()
+  return (
+    <Flex px={2} pt={`${saInsets.top + 80}px`}>
+      {/* Title */}
+      <PlaceholderText height={25} width={200 + Math.random() * 100} />
+      <PlaceholderText height={25} width={100 + Math.random() * 100} />
+      <Spacer y="15px" />
+      <PlaceholderText width={220} />
+      <Spacer y={2} />
+      {/* Owner */}
+      <PlaceholderText width={70} />
+      <Spacer y="15px" />
+      {/* Images */}
+      <Flex flexDirection="row" py={2}>
+        {times(3).map((index: number) => (
+          <Flex key={index} marginRight={1}>
+            <PlaceholderBox height={300} width={250} />
+          </Flex>
+        ))}
+      </Flex>
+      <Spacer y="15px" />
+      <PlaceholderText width="100%" />
+      <PlaceholderText width="100%" />
+      <PlaceholderText width="100%" />
+      <PlaceholderText width="100%" />
+      <PlaceholderText width="100%" />
+      <Spacer y="15px" />
 
-    {/* masonry grid */}
-    <PlaceholderGrid />
-  </Flex>
-)
+      {/* masonry grid */}
+      <PlaceholderGrid />
+    </Flex>
+  )
+}

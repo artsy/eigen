@@ -1,5 +1,4 @@
-import { Flex } from "palette/elements/Flex"
-import { useColor } from "palette/hooks"
+import { Flex, useColor } from "@artsy/palette-mobile"
 import React from "react"
 import {
   GestureResponderEvent,

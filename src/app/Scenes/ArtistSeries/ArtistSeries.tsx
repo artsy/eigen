@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box } from "@artsy/palette-mobile"
 import { ArtistSeriesQuery } from "__generated__/ArtistSeriesQuery.graphql"
 import { ArtistSeries_artistSeries$data } from "__generated__/ArtistSeries_artistSeries.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
@@ -19,7 +19,7 @@ import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "app/utils/plac
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
-import { Box, Flex, Separator, Text } from "palette"
+import { Separator, Text } from "palette"
 import React, { useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -158,7 +158,7 @@ export const ArtistSeriesFragmentContainer = createFragmentContainer(ArtistSerie
 const ArtistSeriesPlaceholder: React.FC<{}> = ({}) => {
   return (
     <Box>
-      <Box px="2" pt="1">
+      <Box px={2} pt={1}>
         {/* Series header image */}
         <PlaceholderBox height={180} width={180} alignSelf="center" />
         <Spacer y={2} />

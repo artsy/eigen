@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex } from "@artsy/palette-mobile"
 import { FeatureQuery } from "__generated__/FeatureQuery.graphql"
 import { Feature_feature$data } from "__generated__/Feature_feature.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
@@ -10,7 +10,7 @@ import { isPad } from "app/utils/hardware"
 import { PlaceholderRaggedText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { chunk, flattenDeep } from "lodash"
-import { Flex, Separator, Text } from "palette"
+import { Separator, Text } from "palette"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 import { FeatureFeaturedLinkFragmentContainer } from "./components/FeatureFeaturedLink"
@@ -68,7 +68,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
       key: "description+callout",
       content: (
         <Flex alignItems="center">
-          <Stack spacing={4} pt="4" px="2" maxWidth={600}>
+          <Stack spacing={4} pt={4} px={2} maxWidth={600}>
             {!!feature.description && (
               <FeatureMarkdown content={feature.description} textProps={{ variant: "md" }} />
             )}
@@ -99,7 +99,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
       renderedSet.push({
         key: "setTitle:" + set.id,
         content: (
-          <Flex pb="2" mx="2">
+          <Flex pb={2} mx={2}>
             {!!set.name && <Text variant="lg-display">{set.name}</Text>}
             {!!set.description && (
               <Text variant="sm" color="black60">
@@ -124,7 +124,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
             renderedRows.push({
               key: "featuredLinkRow:" + row[0].id,
               content: (
-                <Stack horizontal px="2">
+                <Stack horizontal px={2}>
                   {row.map((item) => {
                     return (
                       <FeatureFeaturedLinkFragmentContainer
@@ -149,7 +149,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
           renderedSet.push({
             key: "artworks:" + set.id,
             content: (
-              <Flex mx="2">
+              <Flex mx={2}>
                 <GenericGrid artworks={items as any} width={width - 40} />
               </Flex>
             ),
