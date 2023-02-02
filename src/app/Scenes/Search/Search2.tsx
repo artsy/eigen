@@ -2,12 +2,16 @@ import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { useNavigation } from "@react-navigation/native"
 import { Search2Query } from "__generated__/Search2Query.graphql"
 import { SearchInput } from "app/Components/SearchInput"
+import { SearchPills2 } from "app/Scenes/Search/SearchPills2"
+import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQueryChanged"
+import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
 import { isPad } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
+import { throttle } from "lodash"
 import { Box, Flex, Spacer } from "palette"
-import { Suspense, useEffect, useRef, useState } from "react"
+import { Suspense, useEffect, useMemo, useRef, useState } from "react"
 import { Platform, ScrollView } from "react-native"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import styled from "styled-components"
@@ -17,45 +21,45 @@ import { SearchContext, useSearchProviderValues } from "./SearchContext"
 import { SearchResults } from "./SearchResults"
 import { TrendingArtists } from "./TrendingArtists"
 import { CityGuideCTA } from "./components/CityGuideCTA"
-import { SearchPills } from "./components/SearchPills"
 import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
-import { DEFAULT_PILLS, TOP_PILL } from "./constants"
+import { ES_ONLY_PILLS, SEARCH_THROTTLE_INTERVAL, TOP_PILL } from "./constants"
 import { getContextModuleByPillName } from "./helpers"
 import { PillType } from "./types"
 import { useSearchDiscoveryContentEnabled } from "./useSearchDiscoveryContentEnabled"
 
-interface SearchState {
-  query?: string
-  page?: number
-}
-
 const SEARCH_INPUT_PLACEHOLDER = "Search artists, artworks, galleries, etc"
 
 export const Search2: React.FC = () => {
-  const queryData = useLazyLoadQuery<Search2Query>(SearchScreenQuery, {})
   const isSearchDiscoveryContentEnabled = useSearchDiscoveryContentEnabled()
-
   const searchPillsRef = useRef<ScrollView>(null)
-  const [searchState, setSearchState] = useState<SearchState>({})
+  const [searchQuery, setSearchQuery] = useState<string>("")
   const [selectedPill, setSelectedPill] = useState<PillType>(TOP_PILL)
-  const searchQuery = searchState?.query ?? ""
   const searchProviderValues = useSearchProviderValues(searchQuery)
   const { trackEvent } = useTracking()
   const isAndroid = Platform.OS === "android"
   const navigation = useNavigation()
 
-  const pillsArray = [...DEFAULT_PILLS]
+  const shouldShowCityGuide = Platform.OS === "ios" && !isPad()
+  const {
+    data: queryData,
+    refetch,
+    isLoading,
+  } = useSearchQuery<Search2Query>(SearchScreenQuery, {
+    term: "",
+  })
 
+  useRefetchWhenQueryChanged({ query: searchQuery, refetch })
+
+  // TODO: to be removed on ES results PR
   const handleRetry = () => {
-    setSearchState((prevState) => ({ ...prevState }))
+    setSearchQuery((prevState) => prevState)
   }
 
   const handlePillPress = (pill: PillType) => {
     const contextModule = getContextModuleByPillName(selectedPill.displayName)
 
-    setSearchState((prevState) => ({ ...prevState, page: 1 }))
     setSelectedPill(pill)
-    trackEvent(tracks.tappedPill(contextModule, pill.displayName, searchState.query!))
+    trackEvent(tracks.tappedPill(contextModule, pill.displayName, searchQuery!))
   }
 
   const isSelected = (pill: PillType) => {
@@ -67,28 +71,34 @@ export const Search2: React.FC = () => {
     setSelectedPill(TOP_PILL)
   }
 
+  const handleThrottledTextChange = useMemo(
+    () =>
+      throttle((value) => {
+        setSearchQuery(value)
+      }, SEARCH_THROTTLE_INTERVAL),
+    []
+  )
+
   const onSearchTextChanged = (queryText: string) => {
+    queryText = queryText.trim()
+
+    handleThrottledTextChange(queryText)
+
     if (queryText.length === 0) {
       trackEvent({
         action_type: Schema.ActionNames.ARAnalyticsSearchCleared,
       })
       handleResetSearchInput()
+
+      handleThrottledTextChange.flush()
+
+      return
     }
 
-    queryText = queryText.trim()
-    setSearchState((state) => ({ ...state, query: queryText }))
     trackEvent({
       action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
       query: queryText,
     })
-  }
-
-  const renderCityGuideCTA = () => {
-    if (Platform.OS === "ios" && !isPad()) {
-      return <CityGuideCTA />
-    }
-
-    return null
   }
 
   useEffect(() => {
@@ -114,22 +124,23 @@ export const Search2: React.FC = () => {
             onChangeText={onSearchTextChanged}
           />
         </Flex>
-
         <Flex flex={1} collapsable={false}>
-          {shouldStartSearching(searchQuery) ? (
+          {shouldStartSearching(searchQuery) && queryData.viewer !== null ? (
             <>
               <Box pt={2} pb={1}>
-                <SearchPills
+                <SearchPills2
+                  viewer={queryData.viewer}
                   ref={searchPillsRef}
-                  loading={false}
-                  pills={pillsArray}
+                  pills={ES_ONLY_PILLS}
                   onPillPress={handlePillPress}
                   isSelected={isSelected}
+                  isLoading={isLoading}
                 />
               </Box>
               <SearchResults
                 selectedPill={selectedPill}
                 query={searchQuery}
+                // TODO: to be removed on ES results PR
                 onRetry={handleRetry}
               />
             </>
@@ -149,7 +160,7 @@ export const Search2: React.FC = () => {
                 <Spacer mb={4} />
               )}
 
-              <HorizontalPadding>{renderCityGuideCTA()}</HorizontalPadding>
+              <HorizontalPadding>{shouldShowCityGuide && <CityGuideCTA />}</HorizontalPadding>
 
               <Spacer mb={4} />
             </Scrollable>
@@ -161,7 +172,10 @@ export const Search2: React.FC = () => {
 }
 
 export const SearchScreenQuery = graphql`
-  query Search2Query {
+  query Search2Query($term: String!) {
+    viewer {
+      ...SearchPills2_viewer @arguments(term: $term)
+    }
     ...CuratedCollections_collections
     ...TrendingArtists_query
   }
