@@ -79,7 +79,7 @@ const createAndMergePullRequest = async () => {
     repo: "eigen",
     issue_number: res.data.number,
     owner: "artsy",
-    labels: ["Changelog Updater", "Merge On Green"],
+    labels: ["Changelog Updater"],
   })
 
   logger.succeed()
