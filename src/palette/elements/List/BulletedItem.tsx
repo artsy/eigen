@@ -1,5 +1,5 @@
-import { Spacer } from "@artsy/palette-mobile"
-import { bullet, Flex, FlexProps, Text } from "palette"
+import { bullet, Spacer } from "@artsy/palette-mobile"
+import { Flex, FlexProps, Text } from "palette"
 
 interface BulletedItemProps extends FlexProps {
   children: string | Array<string | Element>
@@ -16,7 +16,7 @@ export const BulletedItem: React.FC<BulletedItemProps> = ({
       <Text variant="sm" color={color}>
         {bullet}
       </Text>
-      <Spacer mr={1} />
+      <Spacer x={1} />
       <Text variant="sm" color={color}>
         {children}
       </Text>

@@ -7,13 +7,9 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { Text } from "palette"
 import { act } from "react-test-renderer"
-import {
-  ALLOW_EMPTY_CREATED_DATES_FILTER,
-  OptionItem,
-  YearOptionsScreen,
-  YearText,
-} from "./YearOptions"
+import { ALLOW_EMPTY_CREATED_DATES_FILTER, OptionItem, YearOptionsScreen } from "./YearOptions"
 import { getEssentialProps } from "./helper"
 
 describe("Year Options Screen", () => {
@@ -72,7 +68,7 @@ describe("Year Options Screen", () => {
   it("renders propertly", () => {
     const tree = renderWithWrappersLEGACY(<MockYearOptionsScreen initialData={initialState} />)
 
-    expect(extractText(tree.root.findAllByType(YearText)[0])).toEqual("2010 – 2021")
+    expect(extractText(tree.root.findAllByType(Text)[0])).toEqual("2010 – 2021")
     expect(extractText(tree.root.findAllByType(OptionItem)[0])).toEqual(
       ALLOW_EMPTY_CREATED_DATES_FILTER.displayText
     )
