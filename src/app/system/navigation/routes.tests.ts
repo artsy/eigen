@@ -1,5 +1,4 @@
 import { addRoute, addWebViewRoute, matchRoute, replaceParams } from "app/routes"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 
 describe("artsy.net routes", () => {
   it("routes to Home", () => {

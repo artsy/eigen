@@ -12,7 +12,7 @@ import {
   ArtworkFiltersStoreProvider,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { CollectionArtworksFragmentContainer } from "app/Scenes/Collection/Screens/CollectionArtworks"
-import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
+import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { mockNavigate } from "app/utils/tests/navigationMocks"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
@@ -24,7 +24,6 @@ import { closeModalMock, getEssentialProps, MockFilterScreen } from "./FilterTes
 
 const exitModalMock = jest.fn()
 const trackEvent = jest.fn()
-
 
 beforeEach(() => {
   ;(useTracking as jest.Mock).mockImplementation(() => ({ trackEvent }))

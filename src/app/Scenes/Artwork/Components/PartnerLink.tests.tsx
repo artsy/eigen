@@ -8,7 +8,6 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { PartnerLink } from "./PartnerLink"
 
-
 describe("PartnerLink", () => {
   const TestRenderer = () => {
     const data = useLazyLoadQuery<PartnerLink_Test_Query>(

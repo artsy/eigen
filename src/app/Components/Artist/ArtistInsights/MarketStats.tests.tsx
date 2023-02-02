@@ -9,7 +9,6 @@ import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { MarketStatsFragmentContainer, MarketStatsQueryRenderer } from "./MarketStats"
 
-
 const trackEvent = useTracking().trackEvent
 
 describe("MarketStats", () => {

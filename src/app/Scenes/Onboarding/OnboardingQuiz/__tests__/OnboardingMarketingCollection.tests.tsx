@@ -4,7 +4,6 @@ import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { createMockEnvironment } from "relay-test-utils"
 
-
 const mockedNavigate = jest.fn()
 
 jest.mock("@react-navigation/native", () => {

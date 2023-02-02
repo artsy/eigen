@@ -12,7 +12,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
-
 describe("Featured Collections Rail", () => {
   let env: ReturnType<typeof createMockEnvironment>
 

@@ -7,7 +7,6 @@ import { ReactTestRenderer } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { FairMoreInfoFragmentContainer } from "./FairMoreInfo"
 
-
 const getText = (wrapper: ReactTestRenderer) =>
   [...wrapper.root.findAllByType(Text), ...wrapper.root.findAllByType(LinkText)]
     .map(({ props: { children } }) => children)

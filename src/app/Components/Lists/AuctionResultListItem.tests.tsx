@@ -9,7 +9,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { AuctionResultListItemFragmentContainer } from "./AuctionResultListItem"
 
-
 describe("AuctionResults", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   beforeEach(() => (mockEnvironment = createMockEnvironment()))

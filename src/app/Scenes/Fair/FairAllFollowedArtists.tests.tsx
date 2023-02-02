@@ -9,7 +9,6 @@ import {
   FairAllFollowedArtistsFragmentContainer,
 } from "./FairAllFollowedArtists"
 
-
 describe("FairAllFollowedArtists", () => {
   let env: ReturnType<typeof createMockEnvironment>
 

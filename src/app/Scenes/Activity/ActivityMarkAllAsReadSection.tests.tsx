@@ -2,7 +2,6 @@ import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { createMockEnvironment } from "relay-test-utils"
 import { ActivityMarkAllAsReadSection } from "./ActivityMarkAllAsReadSection"
 
-
 describe("ActivityMarkAllAsReadSection", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 

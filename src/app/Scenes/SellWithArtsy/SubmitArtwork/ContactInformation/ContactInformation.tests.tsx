@@ -16,7 +16,6 @@ jest.mock("../../mutations/updateConsignSubmissionMutation", () => ({
 
 const updateConsignSubmissionMock = updateConsignSubmission as jest.Mock
 
-
 describe("ContactInformationForm", () => {
   afterEach(() => {
     GlobalStore.actions.artworkSubmission.submission.resetSessionState()

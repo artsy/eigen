@@ -3,7 +3,6 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { PaymentMethodFragmentContainer } from "./PaymentMethod"
 
-
 describe("PaymentMethodFragmentContainer", () => {
   const { renderWithRelay } = setupTestWrapper<PaymentMethod_Test_Query>({
     Component: ({ me }) => {

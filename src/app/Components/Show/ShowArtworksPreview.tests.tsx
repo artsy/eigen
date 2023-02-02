@@ -6,7 +6,6 @@ import { createMockEnvironment } from "relay-test-utils"
 
 import { ShowArtworksPreviewContainer as ShowArtworksPreview } from "./ShowArtworksPreview"
 
-
 it("renders without throwing an error", async () => {
   const env = createMockEnvironment()
   const TestRenderer = () => (

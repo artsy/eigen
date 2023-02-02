@@ -1,7 +1,6 @@
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { SellWithArtsy } from "."
 
-
 jest.mock("../../../../../utils/useStatusBarStyle", () => {
   return {
     useLightStatusBarStyle: jest.fn(),

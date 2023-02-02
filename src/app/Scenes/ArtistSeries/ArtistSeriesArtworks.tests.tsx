@@ -9,7 +9,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
-
 describe("Artist Series Artworks", () => {
   let env: ReturnType<typeof createMockEnvironment>
 

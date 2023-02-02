@@ -4,7 +4,6 @@ import { ArticlesList, ArticlesPlaceholder } from "app/Scenes/Articles/ArticlesL
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import _ from "lodash"
 import React, { useState } from "react"
 import { createPaginationContainer, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { graphql } from "relay-runtime"

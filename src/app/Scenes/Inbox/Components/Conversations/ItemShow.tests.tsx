@@ -5,7 +5,6 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { ItemShowFragmentContainer } from "./ItemShow"
 
-
 describe("ItemShowFragmentContainer", () => {
   const { renderWithRelay } = setupTestWrapper<ItemShow_Test_Query>({
     Component: ({ show }) => <ItemShowFragmentContainer show={show!} />,

@@ -6,7 +6,6 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ShowHoursFragmentContainer } from "./Components/ShowHours"
 
-
 describe("ShowHours", () => {
   let env: ReturnType<typeof createMockEnvironment>
 

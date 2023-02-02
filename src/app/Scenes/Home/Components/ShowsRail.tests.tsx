@@ -6,7 +6,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ShowsRailFragmentContainer } from "./ShowsRail"
 
-
 const showEdge = {
   cursor: "YXJyYXljb25uZWN0aW9uOjA=",
   node: {

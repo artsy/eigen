@@ -8,7 +8,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { TroveFragmentContainer } from "./Trove"
 
-
 describe("Trove", () => {
   let environment = createMockEnvironment()
 

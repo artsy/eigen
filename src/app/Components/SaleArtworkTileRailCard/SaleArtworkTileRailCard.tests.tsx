@@ -7,7 +7,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { CONTAINER_HEIGHT, SaleArtworkTileRailCardContainer } from "."
 
-
 interface TestRendererProps {
   useCustomSaleMessage?: boolean
   useSquareAspectRatio?: boolean

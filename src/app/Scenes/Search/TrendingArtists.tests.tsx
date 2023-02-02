@@ -9,7 +9,6 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { TrendingArtists } from "./TrendingArtists"
 
-
 describe("TrendingArtists", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 

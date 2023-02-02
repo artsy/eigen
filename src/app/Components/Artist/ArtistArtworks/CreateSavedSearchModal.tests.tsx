@@ -6,7 +6,6 @@ import {
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { CreateSavedSearchAlert } from "app/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
 import { SavedSearchAlertMutationResult } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { delay } from "app/utils/delay"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"

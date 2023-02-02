@@ -18,7 +18,6 @@ import {
   SortMode,
 } from "./ArtistInsightsAuctionResults"
 
-
 describe("ArtistInsightsAuctionResults", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 

@@ -6,7 +6,6 @@ import { LineGraphCategoryPicker } from "./LineGraphCategoryPicker"
 import { LineGraphChart } from "./LineGraphChart"
 import { LineGraphHeader } from "./LineGraphHeader"
 import { AxisDisplayType } from "./helpers"
-import { _AVAILABLE_MEDIUMS } from "./testHelpers"
 import { LineChartData } from "./types"
 
 interface Props {

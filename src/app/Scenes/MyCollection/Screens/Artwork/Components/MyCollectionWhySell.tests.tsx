@@ -9,7 +9,6 @@ import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MyCollectionWhySell } from "./MyCollectionWhySell"
 
-
 const trackEvent = useTracking().trackEvent
 
 describe("MyCollectionWhySell", () => {

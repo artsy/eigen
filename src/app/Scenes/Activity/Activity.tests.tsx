@@ -6,7 +6,6 @@ import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRece
 import { createMockEnvironment } from "relay-test-utils"
 import { Activity } from "./Activity"
 
-
 describe("Activity", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 

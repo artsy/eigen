@@ -12,7 +12,6 @@ import { ViewingRoomArtworkRailContainer } from "./Components/ViewingRoomArtwork
 import { ViewingRoomSubsections } from "./Components/ViewingRoomSubsections"
 import { ClosedNotice, tracks, ViewingRoomFragmentContainer } from "./ViewingRoom"
 
-
 describe("ViewingRoom", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (

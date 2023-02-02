@@ -1,5 +1,4 @@
 import { fireEvent } from "@testing-library/react-native"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"

@@ -5,7 +5,6 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { CareerHighlightsBigCardsSwiper } from "./CareerHighlightsBigCardsSwiper"
 
-
 describe("CareerHighlightsBigCardsSwiper", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 

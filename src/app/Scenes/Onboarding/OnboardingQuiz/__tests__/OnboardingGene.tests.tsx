@@ -6,7 +6,6 @@ import { createMockEnvironment } from "relay-test-utils"
 
 jest.mock("app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingTracking")
 
-
 const mockedNavigate = jest.fn()
 
 jest.mock("@react-navigation/native", () => {

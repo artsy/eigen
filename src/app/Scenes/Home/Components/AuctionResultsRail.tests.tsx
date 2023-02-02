@@ -8,7 +8,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { AuctionResultsRailFragmentContainer } from "./AuctionResultsRail"
 
-
 describe("AuctionResultsRailFragmentContainer", () => {
   let env: ReturnType<typeof createMockEnvironment>
 

@@ -7,7 +7,6 @@ import {
   ArtworkAttributionClassFAQ,
 } from "./ArtworkAttributionClassFAQ"
 
-
 const { getWrapper } = setupTestWrapper_LEGACY({
   Component: ArtworkAttributionClassFAQ,
   query: ARTWORK_ATTRIBUTION_CLASS_FAQ_QUERY,

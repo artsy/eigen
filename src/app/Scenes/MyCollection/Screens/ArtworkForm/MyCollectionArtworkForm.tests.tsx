@@ -29,7 +29,6 @@ jest.mock("app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/uploadFileT
   uploadFileToS3: jest.fn(),
 }))
 
-
 const getConvectionGeminiKeyMock = getConvectionGeminiKey as jest.Mock<any>
 const getGeminiCredentialsForEnvironmentMock = getGeminiCredentialsForEnvironment as jest.Mock<any>
 const uploadFileToS3Mock = uploadFileToS3 as jest.Mock<any>

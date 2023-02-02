@@ -1,6 +1,5 @@
 import { screen } from "@testing-library/react-native"
 import { ArtistAboutShowsTestsQuery } from "__generated__/ArtistAboutShowsTestsQuery.graphql"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { FlatList } from "react-native"
 import { graphql } from "react-relay"

@@ -7,7 +7,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { TagArtworksPaginationContainer } from "./TagArtworks"
 
-
 describe("TagArtworks", () => {
   const tagID = "tag-id"
   let environment: ReturnType<typeof createMockEnvironment>

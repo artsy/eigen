@@ -3,7 +3,6 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { SellerReplyEstimateFragmentContainer } from "./SellerReplyEstimate"
 
-
 describe("SellerReplyEstimateFragmentContainer", () => {
   const { renderWithRelay } = setupTestWrapper<SellerReplyEstimate_Test_Query>({
     Component: ({ me }) => {

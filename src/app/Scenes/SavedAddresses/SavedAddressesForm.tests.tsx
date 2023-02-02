@@ -8,7 +8,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { SavedAddressesFormContainer, SavedAddressesFormQueryRenderer } from "./SavedAddressesForm"
 
-
 describe(SavedAddressesFormQueryRenderer, () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = ({ addressId }: { addressId?: string }) => (
