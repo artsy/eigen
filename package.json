@@ -234,6 +234,7 @@
     "@types/extract-files": "8.1.1",
     "@types/google-libphonenumber": "7.4.23",
     "@types/jest": "29.2.6",
+    "@types/jscodeshift": "0.11.6",
     "@types/lodash": "4.14.180",
     "@types/luxon": "2.0.9",
     "@types/moment-timezone": "0.5.30",
