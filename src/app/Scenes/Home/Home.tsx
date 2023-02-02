@@ -89,11 +89,13 @@ interface Props extends ViewProps {
 
 const Home = (props: Props) => {
   useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
-
+  const isESOnlySearchEnabled = useFeatureFlag("AREnableESOnlySearch")
   const prefetchUrl = usePrefetch()
 
   useEffect(() => {
-    prefetchUrl("search")
+    isESOnlySearchEnabled
+      ? prefetchUrl("search2", { term: "", skipSearchQuery: true })
+      : prefetchUrl("search")
     prefetchUrl("my-profile")
     prefetchUrl("inbox")
     prefetchUrl("sales")

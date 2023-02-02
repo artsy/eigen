@@ -47,6 +47,7 @@ export const Search2: React.FC = () => {
     isLoading,
   } = useSearchQuery<Search2Query>(SearchScreenQuery, {
     term: "",
+    skipSearchQuery: !shouldStartSearching(searchQuery),
   })
 
   useRefetchWhenQueryChanged({ query: searchQuery, refetch })
@@ -126,7 +127,7 @@ export const Search2: React.FC = () => {
           />
         </Flex>
         <Flex flex={1} collapsable={false}>
-          {shouldStartSearching(searchQuery) && queryData.viewer !== null ? (
+          {shouldStartSearching(searchQuery) && !!queryData.viewer ? (
             <>
               <Box pt={2} pb={1}>
                 <SearchPills2
@@ -173,8 +174,8 @@ export const Search2: React.FC = () => {
 }
 
 export const SearchScreenQuery = graphql`
-  query Search2Query($term: String!) {
-    viewer {
+  query Search2Query($term: String!, $skipSearchQuery: Boolean!) {
+    viewer @skip(if: $skipSearchQuery) {
       ...SearchPills2_viewer @arguments(term: $term)
     }
     ...CuratedCollections_collections
