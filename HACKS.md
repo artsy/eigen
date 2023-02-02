@@ -356,3 +356,13 @@ Once we can figure out how to mock `global.setImmediate` with `global.setTimeout
 #### Explanation/Context:
 
 After upgrading to Jest 29, our use of jest.useFakeTimers() became somewhat funky. In most cases passing `legacyFakeTimers: true` to the function fixes it, but in other cases it breaks @jest/fake-timers at this line. Not sure why. To elaborate more, when jest runs tests it errors out saying that `setImmediate` isn't a function (this was removed from Jest 28); however, when trying to mock it with `global.setImmediate = global.setTimeout` it doesn't work. So ran a patch and replaced it manually in the code, which appears harmless since `setImmediate` is the same as `setTimeout(..., 0)`.
+
+## Providers.tsx LegacyTheme
+
+#### When can we remove this:
+
+Once we have removed the `palette` directory from eigen.
+
+#### Explanation/Context:
+
+Look at the tech plan here: https://www.notion.so/artsy/palette-mobile-in-eigen-c5e3396302734f0a921aed3978f5dbeb
