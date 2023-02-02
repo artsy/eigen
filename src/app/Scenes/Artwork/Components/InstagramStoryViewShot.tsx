@@ -1,3 +1,4 @@
+import { ArtsyLogoBlackIcon } from "@artsy/palette-mobile"
 import { useDevToggle } from "app/store/GlobalStore"
 import { useSizeToFitScreen } from "app/utils/useSizeToFit"
 import { Flex, Text } from "palette"

@@ -1,4 +1,9 @@
-import { ArrowUpCircleFillIcon, ArrowDownCircleFillIcon } from "@artsy/palette-mobile"
+import {
+  ArrowUpCircleFillIcon,
+  ArrowDownCircleFillIcon,
+  ExclamationMarkCircleFill,
+  BookmarkFill,
+} from "@artsy/palette-mobile"
 import { Text } from "palette"
 
 export const ReserveNotMet = () => (

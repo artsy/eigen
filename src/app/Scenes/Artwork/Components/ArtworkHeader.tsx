@@ -1,5 +1,12 @@
 import { ContextModule, CustomService, OwnerType, share } from "@artsy/cohesion"
-import { Spacer, LinkIcon, InstagramAppIcon } from "@artsy/palette-mobile"
+import {
+  Spacer,
+  LinkIcon,
+  InstagramAppIcon,
+  ShareIcon,
+  WhatsAppAppIcon,
+  MoreIcon,
+} from "@artsy/palette-mobile"
 import Clipboard from "@react-native-clipboard/clipboard"
 import { ArtworkHeader_artwork$data } from "__generated__/ArtworkHeader_artwork.graphql"
 import { CustomShareSheet, CustomShareSheetItem } from "app/Components/CustomShareSheet"
@@ -8,7 +15,7 @@ import { unsafe__getEnvironment, useDevToggle } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { guardFactory } from "app/utils/types/guardFactory"
 import { useCanOpenURL } from "app/utils/useCanOpenURL"
-import { Box, Flex, MoreIcon, ShareIcon, WhatsAppAppIcon } from "palette"
+import { Box, Flex } from "palette"
 import React, { useRef, useState } from "react"
 import { Button, Modal, ScrollView } from "react-native"
 import Share from "react-native-share"

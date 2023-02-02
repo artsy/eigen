@@ -1,4 +1,4 @@
-import { ArtsyLogoIcon } from "@artsy/palette-mobile"
+import { ArtsyLogoBlackIcon } from "@artsy/palette-mobile"
 import { Button, Flex, Text, useColor } from "palette"
 import { Linking, Platform } from "react-native"
 
@@ -27,7 +27,7 @@ export const ForceUpdate: React.FC<ForceUpdateProps> = ({ forceUpdateMessage }) 
 
   return (
     <Flex flex={1} justifyContent="center" alignItems="center" px="6">
-      <ArtsyLogoIcon />
+      <ArtsyLogoBlackIcon />
       <Text variant="xs" mt={3} textAlign="center" color={color("black60")}>
         {forceUpdateMessage}
       </Text>

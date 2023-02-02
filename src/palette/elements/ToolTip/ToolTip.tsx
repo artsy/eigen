@@ -1,7 +1,7 @@
+import { TriangleDown } from "@artsy/palette-mobile"
 import { noop } from "lodash"
 import { useTheme } from "palette/Theme"
 import { ToolTipFlyout, ToolTipTextContainer } from "palette/elements/ToolTip/ToolTipFlyout"
-import { TriangleDown } from "palette/svgs"
 import { createContext, useContext, useRef, useState } from "react"
 import { View } from "react-native"
 import { useScreenDimensions } from "shared/hooks"

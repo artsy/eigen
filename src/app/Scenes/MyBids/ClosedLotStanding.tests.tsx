@@ -1,8 +1,8 @@
+import { StarCircleFill } from "@artsy/palette-mobile"
 import { ClosedLotStanding_saleArtwork$data } from "__generated__/ClosedLotStanding_saleArtwork.graphql"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { merge } from "lodash"
-import { StarCircleFill } from "palette/svgs/sf"
 import { ClosedLotStanding } from "./Components/ClosedLotStanding"
 
 const defaultSaleArtwork = {

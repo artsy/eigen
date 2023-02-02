@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { ArrowRightIcon, ExclamationMarkCircleFill } from "@artsy/palette-mobile"
+import { ArrowRightIcon, ClockFill, ExclamationMarkCircleFill } from "@artsy/palette-mobile"
 import { SaleCard_me$data } from "__generated__/SaleCard_me.graphql"
 import { SaleCard_sale$data } from "__generated__/SaleCard_sale.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"

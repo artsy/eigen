@@ -3,8 +3,8 @@ import {
   FairIcon,
   ArtworkIcon,
   PublicationIcon,
-  GroupIcon,
-  SoloIcon,
+  UserMultiIcon,
+  UserSingleIcon,
 } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { CareerHighlightKindValueType } from "app/Scenes/MyCollection/Screens/Insights/CareerHighlightBottomSheet"
@@ -51,12 +51,12 @@ const SectionedHighlight: React.FC<{ header: string; body: string[] }> = ({ head
       case "Solo Show":
         text =
           bodyCount > 1 ? "Solo shows at major institutions" : "Solo show at a major institution"
-        IconComponent = <SoloIcon />
+        IconComponent = <UserSingleIcon />
         break
       case "Group Show":
         text =
           bodyCount > 1 ? "Group shows at major institutions" : "Group show at a major institution"
-        IconComponent = <GroupIcon />
+        IconComponent = <UserMultiIcon />
         break
       case "Review":
         text =

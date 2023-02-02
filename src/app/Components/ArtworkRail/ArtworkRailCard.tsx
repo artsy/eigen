@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { HeartFillIcon, HeartIcon, Spacer } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import {
   ArtworkRailCard_artwork$data,

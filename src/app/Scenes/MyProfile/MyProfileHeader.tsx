@@ -1,4 +1,4 @@
-import { MapPinIcon, BriefcaseIcon, MuseumIcon, SettingsIcon } from "@artsy/palette-mobile"
+import { MapPinIcon, BriefcaseIcon, SettingsIcon, InstitutionIcon } from "@artsy/palette-mobile"
 import { MyProfileHeader_me$key } from "__generated__/MyProfileHeader_me.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { Avatar, Box, Flex, Text, Touchable, useColor } from "palette"
@@ -89,7 +89,7 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
 
         {!!me?.otherRelevantPositions && (
           <Flex flexDirection="row" alignItems="center" pr={0.5} pb={0.5}>
-            <MuseumIcon fill="black60" width={ICON_SIZE} height={ICON_SIZE} />
+            <InstitutionIcon fill="black60" width={ICON_SIZE} height={ICON_SIZE} />
             <Text variant="xs" color={color("black60")} px={0.5}>
               {me?.otherRelevantPositions}
             </Text>

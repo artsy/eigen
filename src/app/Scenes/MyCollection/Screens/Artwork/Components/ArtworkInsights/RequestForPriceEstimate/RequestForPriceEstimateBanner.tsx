@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedRequestPriceEstimate } from "@artsy/cohesion"
-import { WinningBidIcon } from "@artsy/palette-mobile"
+import { CheckCircleIcon } from "@artsy/palette-mobile"
 import { RequestForPriceEstimateBanner_artwork$key } from "__generated__/RequestForPriceEstimateBanner_artwork.graphql"
 import { RequestForPriceEstimateBanner_marketPriceInsights$key } from "__generated__/RequestForPriceEstimateBanner_marketPriceInsights.graphql"
 import { RequestForPriceEstimateBanner_me$key } from "__generated__/RequestForPriceEstimateBanner_me.graphql"
@@ -46,7 +46,7 @@ export const RequestForPriceEstimateBanner: React.FC<RequestForPriceEstimateProp
     return (
       <Box>
         <Flex alignItems="center" flexDirection="row">
-          <WinningBidIcon />
+          <CheckCircleIcon />
           <Text variant="sm" ml={0.5} textAlign="center">
             Price Estimate Request Sent
           </Text>

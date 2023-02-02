@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { EnvelopeIcon, Spacer } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { captureMessage } from "@sentry/react-native"
 import LoadingModal from "app/Components/Modals/LoadingModal"

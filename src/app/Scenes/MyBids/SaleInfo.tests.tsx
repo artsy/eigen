@@ -1,9 +1,9 @@
+import { BoltFill, Stopwatch } from "@artsy/palette-mobile"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { merge } from "lodash"
 import { DateTime, Settings } from "luxon"
 import { Text } from "palette"
-import { BoltFill, Stopwatch } from "palette/svgs/sf"
 import { ReactTestRenderer } from "react-test-renderer"
 import { SaleInfo } from "./Components/SaleInfo"
 

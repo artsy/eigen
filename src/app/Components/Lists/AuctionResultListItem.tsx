@@ -1,4 +1,4 @@
-import { Spacer, bullet, NoArtworkIcon } from "@artsy/palette-mobile"
+import { Spacer, bullet, NoArtworkIcon, Stopwatch } from "@artsy/palette-mobile"
 import { AuctionResultListItem_auctionResult$data } from "__generated__/AuctionResultListItem_auctionResult.graphql"
 import { AuctionResultsMidEstimate } from "app/Components/AuctionResult/AuctionResultMidEstimate"
 import { auctionResultHasPrice, auctionResultText } from "app/Scenes/AuctionResult/helpers"
@@ -7,7 +7,6 @@ import { QAInfoManualPanel, QAInfoRow } from "app/utils/QAInfo"
 import { capitalize } from "lodash"
 import moment from "moment"
 import { Flex, Text, Touchable, useColor } from "palette"
-import { Stopwatch } from "palette/svgs/sf"
 import FastImage from "react-native-fast-image"
 import { createFragmentContainer, graphql } from "react-relay"
 

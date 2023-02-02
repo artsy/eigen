@@ -1,4 +1,4 @@
-import { Spacer, ArtsyLogoIcon } from "@artsy/palette-mobile"
+import { ArtsyLogoBlackIcon, Spacer } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { ArtQuizNavigationStack } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
 import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
@@ -13,7 +13,7 @@ export const ArtQuizWelcome = () => {
     <Screen>
       <Screen.Body>
         <Flex flex={1} justifyContent="center">
-          <ArtsyLogoIcon scale={0.75} />
+          <ArtsyLogoBlackIcon scale={0.75} />
           <Spacer y="2" />
           <Text variant="xl">Art Taste Quiz</Text>
           <Spacer y="2" />
