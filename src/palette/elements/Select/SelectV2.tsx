@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { SearchInput } from "app/Components/SearchInput"
 import {
@@ -8,7 +9,6 @@ import {
   InputTitle,
   PopIn,
   Separator,
-  Spacer,
   Text,
   Touchable,
   TriangleDown,

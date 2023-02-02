@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { TagArtworks_tag$data } from "__generated__/TagArtworks_tag.graphql"
 import { ArtworkFilterNavigator } from "app/Components/ArtworkFilter"
 import { FilterModalMode } from "app/Components/ArtworkFilter/ArtworkFilterOptionsScreen"
@@ -12,7 +13,7 @@ import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { Schema } from "app/utils/track"
-import { Box, Separator, SimpleMessage, Spacer, Text } from "palette"
+import { Box, Separator, SimpleMessage, Text } from "palette"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"

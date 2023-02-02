@@ -1,4 +1,5 @@
 import { ActionType, ContextModule, OwnerType, SelectedRecentPriceRange } from "@artsy/cohesion"
+import { Spacer } from "@artsy/palette-mobile"
 import MultiSlider from "@ptomasroos/react-native-multi-slider"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
@@ -14,7 +15,7 @@ import {
 import { RecentPriceRanges } from "app/Components/ArtworkFilter/RecentPriceRanges"
 import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
 import { debounce, sortBy } from "lodash"
-import { Flex, Histogram, HistogramBarEntity, Input, Spacer, Text, useColor } from "palette"
+import { Flex, Histogram, HistogramBarEntity, Input, Text, useColor } from "palette"
 import React, { useMemo, useRef, useState } from "react"
 import { ScrollView, useWindowDimensions } from "react-native"
 import { useTracking } from "react-tracking"
@@ -203,7 +204,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
             testID="price-min-input"
             descriptionColor="black100"
           />
-          <Spacer mx={2} />
+          <Spacer x="2" />
           <Input
             containerStyle={{ flex: 1 }}
             description="Max"
@@ -216,7 +217,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
             descriptionColor="black100"
           />
         </Flex>
-        <Spacer m={2} />
+        <Spacer y="2" />
         <Flex mx={`${20 + RANGE_DOT_SIZE / 2}px`}>
           {!!shouldDisplayHistogram && (
             <Flex mb={2}>

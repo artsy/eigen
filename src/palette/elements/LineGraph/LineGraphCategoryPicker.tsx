@@ -1,5 +1,5 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { useColor, useSpace } from "palette"
-import { Spacer } from "palette/atoms"
 import { Flex } from "palette/elements/Flex"
 import { Pill } from "palette/elements/Pill"
 import { Text } from "palette/elements/Text"
@@ -88,7 +88,7 @@ export const LineGraphCategoryPicker: React.FC<LineGraphCategoryPickerProps> = m
       >
         {categories.map((category, index) => (
           <Flex key={index + category.name} flexDirection="row">
-            <Spacer p={index === 0 ? 1 : 0.5} />
+            <Spacer x={index === 0 ? 1 : 0.5} />
             <CategoryPill
               onCategorySelected={(sCategory) => onSelectCategory(sCategory, index)}
               selectedCategory={selectedCategory}

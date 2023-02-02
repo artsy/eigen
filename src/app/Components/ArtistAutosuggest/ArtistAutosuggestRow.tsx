@@ -1,7 +1,8 @@
+import { Spacer } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
 import { ResultWithHighlight } from "app/Scenes/Search/components/ResultWithHighlight"
-import { Box, Flex, Spacer } from "palette"
+import { Box, Flex } from "palette"
 
 const IMAGE_SIZE = 40
 

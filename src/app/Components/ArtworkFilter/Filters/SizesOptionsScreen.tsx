@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import {
   FilterData,
@@ -9,7 +10,7 @@ import {
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
-import { Box, Flex, RadioButton, Spacer, Text } from "palette"
+import { Box, Flex, RadioButton, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { CustomSizeInputs } from "./CustomSizeInputs"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"

@@ -1,4 +1,5 @@
-import { ChevronIcon, Flex, Spacer, Text, TextProps, Touchable, useColor } from "palette"
+import { Spacer } from "@artsy/palette-mobile"
+import { ChevronIcon, Flex, Text, TextProps, Touchable, useColor } from "palette"
 import { StyleProp, ViewStyle } from "react-native"
 
 export const MenuItem: React.FC<{

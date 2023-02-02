@@ -1,5 +1,6 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { AttachmentList_conversation$data } from "__generated__/AttachmentList_conversation.graphql"
-import { Box, DocumentIcon, Separator, Spacer, Text } from "palette"
+import { Box, DocumentIcon, Separator, Text } from "palette"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { FileDownloadFragmentContainer as FileDownload } from "./FileDownload"

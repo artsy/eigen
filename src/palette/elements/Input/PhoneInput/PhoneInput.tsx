@@ -1,15 +1,7 @@
+import { Spacer } from "@artsy/palette-mobile"
 import * as glibphone from "google-libphonenumber"
 import replace from "lodash/replace"
-import {
-  Flex,
-  InputProps,
-  InputRef,
-  Spacer,
-  Text,
-  Touchable,
-  TriangleDown,
-  useColor,
-} from "palette"
+import { Flex, InputProps, InputRef, Text, Touchable, TriangleDown, useColor } from "palette"
 import {
   INTERNALSelectAndInputCombinationBase,
   ValuePayload,

@@ -1,7 +1,7 @@
+import { Spacer } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { useTheme } from "palette/Theme"
-import { Spacer } from "palette/atoms"
 import { Box, BoxProps } from "palette/elements/Box"
 import { Flex } from "palette/elements/Flex"
 import { OpaqueImageView as NewOpaqueImageView } from "palette/elements/OpaqueImageView"

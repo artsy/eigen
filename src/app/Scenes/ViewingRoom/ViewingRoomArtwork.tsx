@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { ViewingRoomArtworkQuery } from "__generated__/ViewingRoomArtworkQuery.graphql"
 import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
 import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoomArtwork_viewingRoomInfo.graphql"
@@ -8,17 +9,7 @@ import { cm2in } from "app/utils/conversions"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import _ from "lodash"
-import {
-  Box,
-  Button,
-  EyeOpenedIcon,
-  Flex,
-  LargeCard,
-  Separator,
-  Spacer,
-  Text,
-  Touchable,
-} from "palette"
+import { Box, Button, EyeOpenedIcon, Flex, LargeCard, Separator, Text, Touchable } from "palette"
 import React, { Suspense, useEffect } from "react"
 import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
 import {

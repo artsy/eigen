@@ -1,4 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
+import { Spacer } from "@artsy/palette-mobile"
 import { MyBidsQuery } from "__generated__/MyBidsQuery.graphql"
 import { MyBids_me$data } from "__generated__/MyBids_me.graphql"
 
@@ -6,7 +7,7 @@ import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { Flex, Join, Separator, Spacer, Text } from "palette"
+import { Flex, Join, Separator, Text } from "palette"
 import { useEffect, useState } from "react"
 import { RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
@@ -80,7 +81,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
         {!!hasActiveSales && <BidTitle>Active Bids</BidTitle>}
         {!!hasActiveSales && (
           <Flex testID="active-section">
-            <Join separator={<Spacer my={1} />}>
+            <Join separator={<Spacer y={1} />}>
               {active.map((activeSale) => {
                 if (!activeSale) {
                   return null
@@ -162,7 +163,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
             </Flex>
           </Flex>
         )}
-        <Spacer my={2} />
+        <Spacer y={2} />
       </ScrollView>
     </ProvideScreenTrackingWithCohesionSchema>
   )

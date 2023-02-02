@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { OnboardingOrderedSetQuery } from "__generated__/OnboardingOrderedSetQuery.graphql"
 import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
@@ -5,7 +6,7 @@ import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingQuiz/Hook
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { isEmpty, times } from "lodash"
-import { Flex, Join, Spacer } from "palette"
+import { Flex, Join } from "palette"
 import { Suspense } from "react"
 import { FlatList } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -94,7 +95,7 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
 const OnboardingPersonalizationListPlaceholder = () => (
   <ProvidePlaceholderContext>
     <Flex testID="OnboardingPersonalizationListPlaceholder">
-      <Join separator={<Spacer height={20} />}>
+      <Join separator={<Spacer y={20} />}>
         {times(10).map((index: number) => (
           <Flex key={index}>
             <ArtistListItemPlaceholder />

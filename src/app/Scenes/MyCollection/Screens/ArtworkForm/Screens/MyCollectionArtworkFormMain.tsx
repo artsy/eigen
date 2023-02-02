@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
@@ -24,7 +25,6 @@ import {
   Message,
   MoneyInput,
   Separator,
-  Spacer,
   Text,
   useColor,
   useSpace,
@@ -160,7 +160,7 @@ export const MyCollectionArtworkFormMain: React.FC<
           )}
 
           <Flex p={2}>
-            <Join separator={<Spacer my={1} />}>
+            <Join separator={<Spacer y="1" />}>
               {formik.values.artistSearchResult ? (
                 <ArtistSearchResult result={formik.values.artistSearchResult} />
               ) : (

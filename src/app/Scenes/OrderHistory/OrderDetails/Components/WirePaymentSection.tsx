@@ -1,8 +1,9 @@
+import { Spacer } from "@artsy/palette-mobile"
 import Clipboard from "@react-native-clipboard/clipboard"
 import { WirePaymentSection_order$data } from "__generated__/WirePaymentSection_order.graphql"
 import { useToast } from "app/Components/Toast/toastHook"
 import { sendEmail } from "app/utils/sendEmail"
-import { Flex, LinkIcon, Spacer, Text } from "palette"
+import { Flex, LinkIcon, Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {

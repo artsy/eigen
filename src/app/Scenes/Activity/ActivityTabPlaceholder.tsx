@@ -1,7 +1,8 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { useStickyTabPageContext } from "app/Components/StickyTabPage/StickyTabPageContext"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { times } from "lodash"
-import { Box, Flex, Separator, Spacer } from "palette"
+import { Box, Flex, Separator } from "palette"
 import { Fragment } from "react"
 import Animated from "react-native-reanimated"
 

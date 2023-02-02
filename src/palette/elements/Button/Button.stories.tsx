@@ -1,6 +1,7 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { action } from "@storybook/addon-actions"
 import { storiesOf } from "@storybook/react-native"
-import { BellIcon, Box, Flex, LinkIcon, Spacer } from "palette"
+import { BellIcon, Box, Flex, LinkIcon } from "palette"
 import { useState } from "react"
 import { Button as RNButton } from "react-native"
 import { Wrap } from "shared/utils"

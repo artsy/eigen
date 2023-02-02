@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { ArtQuizArtworksDislikeMutation } from "__generated__/ArtQuizArtworksDislikeMutation.graphql"
 import { ArtQuizArtworksQuery } from "__generated__/ArtQuizArtworksQuery.graphql"
@@ -8,7 +9,7 @@ import { ArtQuizNavigationStack } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
 import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
 import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
-import { CloseIcon, Flex, HeartIcon, Screen, Spacer, Touchable } from "palette"
+import { CloseIcon, Flex, HeartIcon, Screen, Touchable } from "palette"
 import { useEffect, useRef, useState } from "react"
 import { Image } from "react-native"
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
@@ -183,7 +184,7 @@ export const ArtQuizArtworks = () => {
             <Touchable onPress={() => handleNext("Dislike")}>
               <CloseIcon height={40} width={50} />
             </Touchable>
-            <Spacer m={3} />
+            <Spacer y={4} />
             <Touchable onPress={() => handleNext("Like")}>
               <HeartIcon height={40} width={50} />
             </Touchable>

@@ -1,4 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
+import { Spacer } from "@artsy/palette-mobile"
 import { AuctionResultQuery } from "__generated__/AuctionResultQuery.graphql"
 import { AuctionResult_artist$data } from "__generated__/AuctionResult_artist.graphql"
 import { AuctionResult_auctionResult$data } from "__generated__/AuctionResult_auctionResult.graphql"
@@ -16,7 +17,7 @@ import { screen } from "app/utils/track/helpers"
 import { useStickyScrollHeader } from "app/utils/useStickyScrollHeader"
 import { capitalize } from "lodash"
 import moment from "moment"
-import { Box, Flex, NoArtworkIcon, Separator, Spacer, Text, useTheme } from "palette"
+import { Box, Flex, NoArtworkIcon, Separator, Text, useTheme } from "palette"
 import React, { useEffect, useState } from "react"
 import { Animated, Image, TextInput, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -141,12 +142,12 @@ export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
 
   const renderRealizedPriceModal = () => (
     <>
-      <Spacer my={1} />
+      <Spacer y={1} />
       <Text>
         The sale price includes the hammer price and buyer’s premium, as well as any other
         additional fees (e.g., Artist’s Resale Rights).
       </Text>
-      <Spacer mb={2} />
+      <Spacer y={2} />
     </>
   )
 
@@ -358,7 +359,7 @@ const LoadingSkeleton = () => {
   }
   return (
     <Flex mx={2}>
-      <Spacer height={70} />
+      <Spacer y={70} />
 
       <Flex flexDirection="row">
         {/* Image */}

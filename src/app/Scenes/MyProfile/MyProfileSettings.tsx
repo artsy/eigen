@@ -1,9 +1,10 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { MenuItem } from "app/Components/MenuItem"
 import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
 import { Tab } from "app/Scenes/Favorites/Favorites"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { Button, Flex, Separator, Spacer, Text, useColor } from "palette"
+import { Button, Flex, Separator, Text, useColor } from "palette"
 import { Alert, ScrollView } from "react-native"
 
 export const MyProfileSettings: React.FC<{}> = () => {
@@ -19,7 +20,7 @@ export const MyProfileSettings: React.FC<{}> = () => {
       <Text variant="lg-display" mx="2" mt="6">
         Settings
       </Text>
-      <Spacer my={1} />
+      <Spacer y={1} />
       <MenuItem title="Edit Profile" onPress={() => navigate("my-profile/edit")} />
       <Separator my={1} borderColor={separatorColor} />
       <MenuItem title="Saved Alerts" onPress={() => navigate("my-profile/saved-search-alerts")} />

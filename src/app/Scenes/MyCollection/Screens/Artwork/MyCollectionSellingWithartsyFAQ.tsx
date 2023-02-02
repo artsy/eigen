@@ -1,6 +1,7 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { sendEmailWithMailTo } from "app/utils/sendEmail"
-import { Box, Flex, Join, Spacer, Text } from "palette"
+import { Box, Flex, Join, Text } from "palette"
 import { ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 
@@ -12,7 +13,7 @@ export const MyCollectionSellingWithArtsyFAQ: React.FC = () => {
     <ScrollView>
       <Box pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px={2}>
         <Box my={2}>
-          <Join separator={<Spacer my={1} />}>
+          <Join separator={<Spacer y={1} />}>
             <Text variant="lg-display" mb={2}>
               How It Works
             </Text>

@@ -1,4 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
+import { Spacer } from "@artsy/palette-mobile"
 import { ArtistInsightsAuctionResults_artist$data } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
 import {
   filterArtworksParams,
@@ -21,7 +22,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { debounce } from "lodash"
-import { Box, bullet, Flex, Separator, Spacer, Text } from "palette"
+import { Box, bullet, Flex, Separator, Text } from "palette"
 import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { SectionList, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -120,17 +121,17 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
 
   const renderAuctionResultsModal = () => (
     <>
-      <Spacer my={1} />
+      <Spacer y={1} />
       <Text>
         These auction results bring together sale data from top auction houses around the world,
         including Christie’s, Sotheby’s, Phillips and Bonhams. Results are updated daily.
       </Text>
-      <Spacer mb={2} />
+      <Spacer y={2} />
       <Text>
         Please note that the sale price includes the hammer price and buyer’s premium, as well as
         any other additional fees (e.g., Artist’s Resale Rights).
       </Text>
-      <Spacer mb={2} />
+      <Spacer y={2} />
     </>
   )
 

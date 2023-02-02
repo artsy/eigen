@@ -1,4 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Spacer } from "@artsy/palette-mobile"
 import {
   MyCollectionArtworkArticles_article$data,
   MyCollectionArtworkArticles_article$key,
@@ -6,7 +7,7 @@ import {
 import { ArticleCardContainer } from "app/Components/ArticleCard"
 import { navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
-import { ArrowRightIcon, Flex, Spacer, Text } from "palette"
+import { ArrowRightIcon, Flex, Text } from "palette"
 import { FlatList, TouchableOpacity } from "react-native"
 import { useFragment } from "react-relay"
 import { useTracking } from "react-tracking"

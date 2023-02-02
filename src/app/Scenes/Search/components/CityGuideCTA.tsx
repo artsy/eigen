@@ -1,7 +1,8 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { BMWSponsorship } from "app/Scenes/City/CityBMWSponsorship"
 import { navigate } from "app/system/navigation/navigate"
-import { ClassTheme, Flex, Spacer, Text } from "palette"
+import { ClassTheme, Flex, Text } from "palette"
 import React from "react"
 import { Image, TouchableOpacity } from "react-native"
 

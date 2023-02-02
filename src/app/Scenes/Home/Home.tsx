@@ -1,4 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { Spacer } from "@artsy/palette-mobile"
 import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { Home_articlesConnection$data } from "__generated__/Home_articlesConnection.graphql"
@@ -45,7 +46,7 @@ import { usePrefetch } from "app/utils/queryPrefetching"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { compact, times } from "lodash"
-import { ArtsyLogoIcon, Box, Flex, Join, Spacer } from "palette"
+import { ArtsyLogoIcon, Box, Flex, Join } from "palette"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
 import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
@@ -572,7 +573,7 @@ const BelowTheFoldPlaceholder: React.FC = () => {
             <Box ml={2} mr={2}>
               <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
               <Flex flexDirection="row">
-                <Join separator={<Spacer width={15} />}>
+                <Join separator={<Spacer x={15} />}>
                   {times(10).map((index) => (
                     <PlaceholderBox key={index} height={270} width={270} />
                   ))}
@@ -623,7 +624,7 @@ const HomePlaceholder: React.FC = () => {
         <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
         <Spacer mb="0.5" />
         <Flex flexDirection="row" mt={0.5}>
-          <Join separator={<Spacer width={15} />}>
+          <Join separator={<Spacer x={15} />}>
             {times(3 + randomValue * 10).map((index) => (
               <Flex key={index}>
                 <PlaceholderBox key={index} height={180} width={295} />

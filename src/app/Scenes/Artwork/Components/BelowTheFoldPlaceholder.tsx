@@ -1,10 +1,11 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import {
   PlaceholderRaggedText,
   PlaceholderText,
   ProvidePlaceholderContext,
 } from "app/utils/placeholders"
-import { Separator, Spacer } from "palette"
+import { Separator } from "palette"
 import { ActivityIndicator } from "react-native"
 
 const CurrentBelowTheFoldPlaceholder = () => {

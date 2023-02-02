@@ -1,5 +1,6 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
-import { Box, Flex, Input, Join, Spacer, Text, useColor } from "palette"
+import { Box, Flex, Input, Join, Text, useColor } from "palette"
 import React, { useState } from "react"
 import { TextStyle } from "react-native"
 import { Numeric, Range } from "./helpers"

@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import Clipboard from "@react-native-clipboard/clipboard"
 import * as Sentry from "@sentry/react-native"
@@ -19,7 +20,6 @@ import {
   Flex,
   ReloadIcon,
   Separator,
-  Spacer,
   Text,
   Touchable,
   useColor,
