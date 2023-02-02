@@ -10,6 +10,8 @@ import { Home_meAbove$data } from "__generated__/Home_meAbove.graphql"
 import { Home_meBelow$data } from "__generated__/Home_meBelow.graphql"
 import { Home_newWorksForYou$data } from "__generated__/Home_newWorksForYou.graphql"
 import { Home_showsByFollowedArtists$data } from "__generated__/Home_showsByFollowedArtists.graphql"
+import { Search2Query } from "__generated__/Search2Query.graphql"
+import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { LargeArtworkRailPlaceholder } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { SmallArtworkRailPlaceholder } from "app/Components/ArtworkRail/SmallArtworkRail"
@@ -94,8 +96,8 @@ const Home = (props: Props) => {
 
   useEffect(() => {
     isESOnlySearchEnabled
-      ? prefetchUrl("search2", { term: "", skipSearchQuery: true })
-      : prefetchUrl("search")
+      ? prefetchUrl<Search2Query>("search2", { term: "", skipSearchQuery: true })
+      : prefetchUrl<SearchQuery>("search")
     prefetchUrl("my-profile")
     prefetchUrl("inbox")
     prefetchUrl("sales")
