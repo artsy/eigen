@@ -36,8 +36,6 @@ export function useSearchQuery<TQuery extends OperationType>(
   const data = useLazyLoadQuery<TQuery>(query, queryArgs.variables, queryArgs.options)
 
   const refetch = (updatedVariables: VariablesOf<TQuery>) => {
-    // TODO: to remove this log before merging this PR, left it here for debugging purposes
-    console.log("refetching", { updatedVariables })
     if (isRefreshing) {
       return
     }
