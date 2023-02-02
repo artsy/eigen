@@ -1,3 +1,4 @@
+import { range } from "@artsy/palette-mobile"
 import MultiSlider from "@ptomasroos/react-native-multi-slider"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
@@ -101,7 +102,7 @@ export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation
       <ArtworkFilterBackHeader title="Year created" onLeftButtonPress={navigation.goBack} />
       <Flex flexGrow={1} py={2}>
         <Text variant="xs" mb={15} mx={2}>
-          {range(sliderValues[0], sliderValues[1])}
+          {range(`${sliderValues[0]}`, `${sliderValues[1]}`)}
         </Text>
         <Flex alignItems="center" mx={2}>
           <MultiSlider

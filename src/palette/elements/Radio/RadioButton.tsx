@@ -1,6 +1,7 @@
+import { CssTransition } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { Flex, FlexProps } from "app/Components/Bidding/Elements/Flex"
-import { CssTransition, Text, useTheme } from "palette"
+import { Text, useTheme } from "palette"
 import {
   PixelRatio,
   StyleSheet,
