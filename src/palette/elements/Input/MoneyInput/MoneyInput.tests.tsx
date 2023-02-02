@@ -3,7 +3,8 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Input, Text } from "palette"
 import { Select } from "palette/elements/Select"
 import { act } from "react-test-renderer"
-import { deformatMoney, formatMoney, MoneyInput } from "./MoneyInput"
+import { MoneyInput } from "./MoneyInput"
+import { deformatMoney, formatMoney } from "./moneyInputHelpers"
 
 describe("MoneyInput", () => {
   let onChange = jest.fn()

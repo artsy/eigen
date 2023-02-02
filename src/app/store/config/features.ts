@@ -207,7 +207,8 @@ export const features = defineFeatures({
   AREnableMoneyFormattingInMyCollectionForm: {
     description: "Enable Money formatting in MyCollection Form",
     showInDevMenu: true,
-    readyForRelease: false,
+    readyForRelease: true,
+    echoFlagKey: "AREnableMoneyFormattingInMyCollectionForm",
   },
 })
 
