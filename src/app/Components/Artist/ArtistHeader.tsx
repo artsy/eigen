@@ -7,7 +7,6 @@ import { Box, Flex, FollowButton, Text } from "palette"
 import { useState } from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import styled from "styled-components/native"
 
 export const ARTIST_HEADER_HEIGHT = 156
 
@@ -166,5 +165,3 @@ export const ArtistHeaderFragmentContainer = createFragmentContainer(ArtistHeade
     }
   `,
 })
-
-export const TextWrapper = styled(Text)``

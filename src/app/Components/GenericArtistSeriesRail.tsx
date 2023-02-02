@@ -77,13 +77,13 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
                 <ThreeUpImageLayout imageURLs={artworkImageURLs} />
 
                 <MetadataContainer>
-                  <GenericArtistSeriesTitle weight="medium" variant="sm">
+                  <Text weight="medium" variant="sm" m={15} mb={0}>
                     {result.title}
-                  </GenericArtistSeriesTitle>
+                  </Text>
                   {!!result.priceGuidance && (
-                    <GenericArtistSeriesMeta color={color("black60")} variant="sm">
+                    <Text color={color("black60")} variant="sm" mx={15}>
                       {"From $" + `${result.priceGuidance.toLocaleString()}`}
-                    </GenericArtistSeriesMeta>
+                    </Text>
                   )}
                 </MetadataContainer>
               </View>
@@ -94,14 +94,6 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
     </View>
   )
 }
-
-export const GenericArtistSeriesMeta = styled(Text)`
-  margin: 0 15px;
-`
-
-export const GenericArtistSeriesTitle = styled(Text)`
-  margin: 15px 15px 0 15px;
-`
 
 const MetadataContainer = styled(View)`
   margin-bottom: 15px;

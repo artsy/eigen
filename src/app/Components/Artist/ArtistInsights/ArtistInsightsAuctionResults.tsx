@@ -28,7 +28,6 @@ import { SectionList, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
-import styled from "styled-components/native"
 
 interface Props {
   artist: ArtistInsightsAuctionResults_artist$data
@@ -203,12 +202,12 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
             modalContent={renderAuctionResultsModal()}
           />
         </Flex>
-        <SortMode variant="xs" color="black60">
+        <Text variant="xs" color="black60">
           {!!artist.auctionResultsConnection?.totalCount
             ? new Intl.NumberFormat().format(artist.auctionResultsConnection.totalCount)
             : 0}{" "}
           {resultsString} {bullet} Sorted by {getSortDescription()?.toLowerCase()}
-        </SortMode>
+        </Text>
         <Separator mt="2" />
         <KeywordFilter
           artistId={artist.internalID}
@@ -263,8 +262,6 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
     </View>
   )
 }
-
-export const SortMode = styled(Text)``
 
 export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationContainer(
   ArtistInsightsAuctionResults,
