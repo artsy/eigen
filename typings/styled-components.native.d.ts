@@ -19,7 +19,6 @@ declare module "styled-components/native" {
     isStyledComponent,
     ThemedCssFunction,
     ThemedStyledFunction,
-    ThemedStyledInterface,
     ThemeProviderComponent,
     WithThemeFnInterface,
   } from "styled-components"

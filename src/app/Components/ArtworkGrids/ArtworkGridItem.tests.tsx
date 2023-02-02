@@ -8,7 +8,6 @@ import { Touchable } from "palette"
 import "react-native"
 import Artwork from "./ArtworkGridItem"
 
-
 const ArtworkWithProviders = (props: any) => {
   return (
     <ArtworkFiltersStoreProvider>

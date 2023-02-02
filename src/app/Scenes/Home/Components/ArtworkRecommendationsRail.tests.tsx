@@ -6,7 +6,6 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtworkRecommendationsRail } from "./ArtworkRecommendationsRail"
 
-
 describe("ArtworkRecommendationsRail", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 

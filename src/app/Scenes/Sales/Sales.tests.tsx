@@ -9,7 +9,6 @@ import { CurrentlyRunningAuctions } from "./CurrentlyRunningAuctions"
 import { Sales } from "./Sales"
 import { UpcomingAuctions } from "./UpcomingAuctions"
 
-
 describe("Sales", () => {
   let environment: RelayMockEnvironment = defaultEnvironment as RelayMockEnvironment
 

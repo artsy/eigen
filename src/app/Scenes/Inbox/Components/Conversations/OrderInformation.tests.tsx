@@ -3,7 +3,6 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { OrderInformationFragmentContainer } from "./OrderInformation"
 
-
 describe("PaymentMethodFragmentContainer", () => {
   const { renderWithRelay } = setupTestWrapper<OrderInformation_Test_Query>({
     Component: ({ me, artwork }) => {

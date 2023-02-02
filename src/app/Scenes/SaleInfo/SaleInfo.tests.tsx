@@ -6,7 +6,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { SaleInfoContainer, tests } from "./SaleInfo"
 
-
 describe("SaleInfo", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (

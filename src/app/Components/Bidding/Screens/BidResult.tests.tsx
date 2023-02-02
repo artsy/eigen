@@ -10,7 +10,6 @@ import { graphql } from "relay-runtime"
 import { createMockEnvironment } from "relay-test-utils"
 import { BidResultScreen } from "./BidResult"
 
-
 const sale: BidResult_sale_artwork$data["sale"] = {
   cascadingEndTimeIntervalMinutes: null,
   liveStartAt: "2022-01-01T00:03:00+00:00",

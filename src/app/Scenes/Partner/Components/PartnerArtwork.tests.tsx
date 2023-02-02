@@ -6,7 +6,6 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { PartnerArtworkFragmentContainer as PartnerArtwork } from "./PartnerArtwork"
 
-
 describe("PartnerArtwork", () => {
   const { renderWithRelay } = setupTestWrapper<PartnerArtworkTestsQuery>({
     Component: (props) => (

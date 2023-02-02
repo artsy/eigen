@@ -7,7 +7,6 @@ import { createMockEnvironment } from "relay-test-utils"
 import { PartnerLocationsContainer as PartnerLocations } from "./PartnerLocations"
 import { PartnerLocationsFixture } from "./__fixtures__/PartnerLocations-fixture"
 
-
 describe("PartnerLocations", () => {
   let env: ReturnType<typeof createMockEnvironment>
 

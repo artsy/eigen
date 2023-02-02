@@ -7,7 +7,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { SavedAddressesContainer, SavedAddressesQueryRenderer, util } from "./SavedAddresses"
 
-
 describe(SavedAddressesQueryRenderer, () => {
   type MockEnvironment = ReturnType<typeof createMockEnvironment>
   const mockEnvironment = defaultEnvironment as MockEnvironment

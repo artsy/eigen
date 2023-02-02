@@ -1,5 +1,4 @@
 import { fireEvent } from "@testing-library/react-native"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useFormikContext } from "formik"
 import { UploadPhotosForm } from "./UploadPhotosForm"

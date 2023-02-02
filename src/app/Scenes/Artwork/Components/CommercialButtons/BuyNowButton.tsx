@@ -3,7 +3,6 @@ import { BuyNowButtonOrderMutation } from "__generated__/BuyNowButtonOrderMutati
 import { BuyNowButton_artwork$key } from "__generated__/BuyNowButton_artwork.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { promptForReview } from "app/utils/promptForReview"
-import { track as _track } from "app/utils/track"
 import { useSetWebViewCallback } from "app/utils/useWebViewEvent"
 import { Button, ButtonProps } from "palette"
 import { useState } from "react"

@@ -20,7 +20,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { AuctionPriceFragmentContainer, AuctionPriceProps } from "./AuctionPrice"
 
-
 describe("AuctionPrice", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 

@@ -2,7 +2,6 @@ import { AuctionResultTestsQuery } from "__generated__/AuctionResultTestsQuery.g
 import { AuctionResultsMidEstimate } from "app/Components/AuctionResult/AuctionResultMidEstimate"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Image, ScrollView } from "react-native"
@@ -10,7 +9,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { AuctionResultFragmentContainer } from "./AuctionResult"
-
 
 describe("AuctionResult", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

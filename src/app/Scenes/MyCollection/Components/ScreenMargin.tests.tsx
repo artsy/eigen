@@ -1,4 +1,3 @@
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { ScreenMargin } from "./ScreenMargin"
 

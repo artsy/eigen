@@ -11,7 +11,6 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { FairTimingFragmentContainer } from "./Components/FairTiming"
 
-
 describe("FairHeader", () => {
   let env: ReturnType<typeof createMockEnvironment>
 

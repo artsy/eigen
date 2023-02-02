@@ -6,7 +6,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { TrackOrderSectionFragmentContainer } from "./Components/TrackOrderSection"
 
-
 const CommerceShipOrder = {
   state: "SUBMITTED",
   requestedFulfillment: { __typename: "CommerceShip" },

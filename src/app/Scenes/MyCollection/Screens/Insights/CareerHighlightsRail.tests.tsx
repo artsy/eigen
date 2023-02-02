@@ -8,7 +8,6 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { CareerHighlightsRail } from "./CareerHighlightsRail"
 
-
 describe("CareerHighlightsRail", () => {
   const TestRenderer = () => {
     const data = useLazyLoadQuery<CareerHighlightsRailTestQuery>(

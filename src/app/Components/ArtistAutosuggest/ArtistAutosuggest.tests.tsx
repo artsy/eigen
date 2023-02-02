@@ -1,6 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
 import { ArtworkDetails } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/ArtworkDetails"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"

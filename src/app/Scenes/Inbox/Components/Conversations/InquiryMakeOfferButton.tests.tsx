@@ -8,7 +8,6 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { InquiryMakeOfferButtonFragmentContainer } from "./InquiryMakeOfferButton"
 
-
 jest.spyOn(Alert, "alert")
 
 beforeEach(() => {

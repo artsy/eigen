@@ -1,5 +1,4 @@
 import { PaymentMethod_order$data } from "__generated__/PaymentMethod_order.graphql"
-import { track as _track } from "app/utils/track"
 import { Flex, Separator, Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 

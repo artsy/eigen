@@ -5,7 +5,6 @@ import {
   SavedSearchEntity,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"

@@ -14,7 +14,7 @@ import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import _, { merge } from "lodash"
+import { merge } from "lodash"
 import { Suspense } from "react"
 import { ActivityIndicator } from "react-native"
 import { createMockEnvironment } from "relay-test-utils"
@@ -24,7 +24,6 @@ import { ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
 import { CommercialInformation } from "./Components/CommercialInformation"
 import { ImageCarousel } from "./Components/ImageCarousel/ImageCarousel"
 import { OtherWorksFragmentContainer } from "./Components/OtherWorks/OtherWorks"
-
 
 jest.mock("app/Components/Bidding/Context/TimeOffsetProvider", () => {
   class TimeOffsetProvider extends require("react").Component {

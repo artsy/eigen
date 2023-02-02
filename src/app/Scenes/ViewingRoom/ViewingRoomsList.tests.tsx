@@ -6,7 +6,6 @@ import { createMockEnvironment } from "relay-test-utils"
 import { ViewingRoomsListItem } from "./Components/ViewingRoomsListItem"
 import { ViewingRoomsListScreen } from "./ViewingRoomsList"
 
-
 describe("ViewingRoomsList", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   beforeEach(() => {

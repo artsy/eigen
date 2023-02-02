@@ -3,7 +3,6 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { PartnerLocationSectionContainer } from "./PartnerLocationSection"
 
-
 describe("PartnerLoationSection", () => {
   const { renderWithRelay } = setupTestWrapper<PartnerLocationSectionTestQuery>({
     Component: ({ partner }) => <PartnerLocationSectionContainer partner={partner!} />,

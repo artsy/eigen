@@ -3,7 +3,6 @@ import { plainTextFromTree } from "app/utils/plainTextFromTree"
 import { defaultRules, renderMarkdown } from "app/utils/renderMarkdown"
 import { sendEmailWithMailTo } from "app/utils/sendEmail"
 import { Schema } from "app/utils/track"
-import _ from "lodash"
 import {
   Color,
   emdash,
