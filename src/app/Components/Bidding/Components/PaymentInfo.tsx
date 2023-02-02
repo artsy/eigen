@@ -1,9 +1,9 @@
+import { bullet } from "@artsy/palette-mobile"
 import { FlexProps } from "app/Components/Bidding/Elements/Flex"
 import { BillingAddress } from "app/Components/Bidding/Screens/BillingAddress"
 import { CreditCardForm } from "app/Components/Bidding/Screens/CreditCardForm"
 import { Address, PaymentCardTextFieldParams, StripeToken } from "app/Components/Bidding/types"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
-import { bullet } from "palette"
 import React from "react"
 import { View } from "react-native"
 

@@ -9,7 +9,7 @@
 
 import { Transform } from "jscodeshift"
 
-const toRemove = "Spacer"
+const toRemove = "quoteLeft"
 
 const transform: Transform = (file, { jscodeshift: j }, options) => {
   const source = j(file.source)
