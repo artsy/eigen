@@ -11,7 +11,7 @@ import { Rarity } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/R
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { Currency } from "app/Scenes/Search/UserPrefsModel"
-import { GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { isEmpty } from "lodash"
@@ -85,6 +85,8 @@ export const MyCollectionArtworkFormMain: React.FC<
     artworkState.sessionState.formValues,
     artworkState.sessionState.dirtyFormCheckValues,
   ])
+
+  const enableMoneyFormatting = useFeatureFlag("AREnableMoneyFormattingInMyCollectionForm")
 
   const isFormDirty = () => {
     const { formValues, dirtyFormCheckValues } = artworkState.sessionState
@@ -212,21 +214,22 @@ export const MyCollectionArtworkFormMain: React.FC<
               <Rarity />
               <Dimensions />
               <MoneyInput
-                currencyTextVariant="xs"
-                title="Price Paid"
-                placeholder="Price paid"
-                keyboardType="decimal-pad"
                 accessibilityLabel="Price paid"
+                currencyTextVariant="xs"
+                format={enableMoneyFormatting}
                 initialValues={{
                   currency: initialCurrency as Currency,
                   amount: formikValues.pricePaidDollars,
                 }}
+                keyboardType="decimal-pad"
                 onChange={(values) => {
                   formik.handleChange("pricePaidDollars")(values.amount ?? "")
                   formik.handleChange("pricePaidCurrency")(values.currency ?? "")
                   GlobalStore.actions.userPrefs.setCurrency(values.currency as Currency)
                 }}
+                placeholder="Price paid"
                 shouldDisplayLocalError={false}
+                title="Price Paid"
               />
               <Input
                 title="Location"

@@ -22,6 +22,7 @@ export const MoneyInput = forwardRef<
   {
     currencyTextVariant?: keyof ThemeV3["textVariants"]
     initialValues?: { currency?: SupportedCurrencies; amount?: string }
+    format?: boolean
     maxModalHeight?: number
     onChange?: (value: { currency?: string; amount?: string }) => void
     onModalFinishedClosing?: () => void
@@ -30,12 +31,13 @@ export const MoneyInput = forwardRef<
 >(
   (
     {
+      initialValues,
+      format = true,
       currencyTextVariant,
+      maxModalHeight,
       onChange,
       onModalFinishedClosing,
-      maxModalHeight,
       shouldDisplayLocalError = true,
-      initialValues,
       ...rest
     },
     ref
@@ -44,7 +46,10 @@ export const MoneyInput = forwardRef<
     const [currency, setCurrency] = useState<SupportedCurrencies>(
       initialValues?.currency ?? currencyOptions[0].value
     )
-    const [amount, setAmount] = useState<string | undefined>(initialValues?.amount ?? undefined)
+    const initialAmount = format
+      ? formatMoney(initialValues?.amount ?? undefined)
+      : initialValues?.amount ?? undefined
+    const [amount, setAmount] = useState<string | undefined>(initialAmount)
     const [validationErrorMessage, setValidationErrorMessage] = useState("")
 
     const handleValidation = () => {
@@ -63,8 +68,9 @@ export const MoneyInput = forwardRef<
         select: { value: currencyValue },
         input: { value: amountValue },
       } = selectAndInputValue
+      const money = format ? formatMoney(amountValue) : amountValue
       setCurrency(currencyValue)
-      setAmount(amountValue)
+      setAmount(money)
     }
 
     const isFirstRun = useRef(true)
@@ -154,3 +160,43 @@ const currencyOptions: Array<SelectOption<SupportedCurrencies>> = [
   { label: "EUR €", value: "EUR" },
   { label: "GBP £", value: "GBP" },
 ]
+
+// Money Formatting
+
+const handleFirstChar = (str: string, removeLeadingZero = true) => {
+  const isNumericRegex = /^[0-9]$/
+  let money = str
+  if (
+    (removeLeadingZero && money.length > 1 && money[0] === "0") ||
+    !isNumericRegex.test(money[0])
+  ) {
+    money = money.replace(money[0], "")
+  }
+  return money
+}
+
+/** Converts bare digits or floats to readable en-US money format */
+export const formatMoney = (amount?: string) => {
+  if (!amount) {
+    return amount
+  }
+  // remove all special characters except "." for floats
+  let replaced = amount.replace(/[^\d.]/g, "")
+
+  // determine whether amount is 0 or user inserted 0 before amount & remove
+  replaced = handleFirstChar(replaced)
+
+  const [digits, cents] = replaced.split(".")
+  const formattedDigits = digits.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+  return (
+    formattedDigits + (cents !== undefined ? `.${handleFirstChar(cents, false).slice(0, 2)}` : "")
+  )
+}
+
+/** Converts a formatted money to bare float */
+export const deformatMoney = (amount?: string) => {
+  if (!amount) {
+    return amount
+  }
+  return amount.replace(/[^\d.]/g, "")
+}
