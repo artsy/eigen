@@ -7,7 +7,8 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 
 const ResultsScreen = () => {
   const queryResult = useLazyLoadQuery<ArtQuizResultsQuery>(artQuizResultsQuery, {})
-  const hasSavedArtworks = queryResult.me?.quiz.savedArtworks.length
+  // const hasSavedArtworks = queryResult.me?.quiz.savedArtworks.length
+  const hasSavedArtworks = 0
   const [isResultReady, setIsResultReady] = useState(false)
 
   useEffect(() => {

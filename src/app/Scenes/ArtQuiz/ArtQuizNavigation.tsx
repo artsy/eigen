@@ -4,7 +4,6 @@ import { ArtQuizNavigationQuery } from "__generated__/ArtQuizNavigationQuery.gra
 import { ArtQuizArtworks } from "app/Scenes/ArtQuiz/ArtQuizArtworks"
 import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { ArtQuizWelcome } from "./ArtQuizWelcome"
 
 export type ArtQuizNavigationStack = {
   ArtQuizWelcome: undefined
@@ -32,7 +31,7 @@ export const ArtQuizNavigation: React.FC = () => {
           gestureEnabled: false,
         }}
       >
-        <StackNavigator.Screen name="ArtQuizWelcome" component={ArtQuizWelcome} />
+        {/* <StackNavigator.Screen name="ArtQuizWelcome" component={ArtQuizWelcome} /> */}
         <StackNavigator.Screen name="ArtQuizArtworks" component={ArtQuizArtworks} />
         <StackNavigator.Screen name="ArtQuizResults" component={ArtQuizResults} />
       </StackNavigator.Navigator>
