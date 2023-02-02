@@ -60,5 +60,5 @@ export function useSearchQuery<TQuery extends OperationType>(
     })
   }
 
-  return { data, refetch }
+  return { data, refetch, isLoading: isRefreshing }
 }

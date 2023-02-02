@@ -40,7 +40,11 @@ export const Search2: React.FC = () => {
   const navigation = useNavigation()
 
   const shouldShowCityGuide = Platform.OS === "ios" && !isPad()
-  const { data: queryData, refetch } = useSearchQuery<Search2Query>(SearchScreenQuery, {
+  const {
+    data: queryData,
+    refetch,
+    isLoading,
+  } = useSearchQuery<Search2Query>(SearchScreenQuery, {
     term: "",
   })
 
@@ -53,7 +57,6 @@ export const Search2: React.FC = () => {
   const handlePillPress = (pill: PillType) => {
     const contextModule = getContextModuleByPillName(selectedPill.displayName)
 
-    setSearchQuery((prevState) => prevState)
     setSelectedPill(pill)
     trackEvent(tracks.tappedPill(contextModule, pill.displayName, searchQuery!))
   }
@@ -76,6 +79,10 @@ export const Search2: React.FC = () => {
   )
 
   const onSearchTextChanged = (queryText: string) => {
+    queryText = queryText.trim()
+
+    handleThrottledTextChange(queryText)
+
     if (queryText.length === 0) {
       trackEvent({
         action_type: Schema.ActionNames.ARAnalyticsSearchCleared,
@@ -86,10 +93,6 @@ export const Search2: React.FC = () => {
 
       return
     }
-
-    queryText = queryText.trim()
-
-    handleThrottledTextChange(queryText)
 
     trackEvent({
       action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
@@ -130,6 +133,7 @@ export const Search2: React.FC = () => {
                   pills={ES_ONLY_PILLS}
                   onPillPress={handlePillPress}
                   isSelected={isSelected}
+                  isLoading={isLoading}
                 />
               </Box>
               <SearchResults
