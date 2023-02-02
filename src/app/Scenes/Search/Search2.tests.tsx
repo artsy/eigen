@@ -3,6 +3,15 @@ import { ES_ONLY_PILLS } from "app/Scenes/Search/constants"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { SearchScreen2 } from "./Search2"
 
+jest.mock("lodash", () => ({
+  ...jest.requireActual("lodash"),
+  throttle: (fn: any) => {
+    fn.flush = jest.fn()
+
+    return fn
+  },
+}))
+
 describe("Search", () => {
   const { renderWithRelay } = setupTestWrapper({
     Component: () => <SearchScreen2 />,
