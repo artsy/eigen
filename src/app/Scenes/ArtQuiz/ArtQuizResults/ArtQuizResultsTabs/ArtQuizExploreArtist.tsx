@@ -72,7 +72,7 @@ export const ArtQuizExploreArtist = ({
       <Spacer m={1} />
       {/* the negative margin here is for resetting padding of 20 that all the parent
       components of this instance have and to avoid changing the component tree in multiple spots. */}
-      <Flex mx={-space(2)}>
+      <Flex mx={-space("2")}>
         <SmallArtworkRail
           artworks={artworks}
           onPress={(artwork) => {

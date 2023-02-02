@@ -1,9 +1,6 @@
 import { ArtQuizExploreArtists_artworks$key } from "__generated__/ArtQuizExploreArtists_artworks.graphql"
 import { ArtQuizResultsTabs_me$data } from "__generated__/ArtQuizResultsTabs_me.graphql"
-import {
-  StickyTabPageFlatList,
-  StickyTabSection,
-} from "app/Components/StickyTabPage/StickyTabPageFlatList"
+import { StickyTabPageFlatList } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { ArtQuizExploreArtist } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizExploreArtist"
 import { useSpace } from "palette"
 import { graphql, useFragment } from "react-relay"
@@ -20,15 +17,15 @@ export const ArtQuizExploreArtists = ({
     savedArtworks
   )
 
-  const artworkSections: StickyTabSection[] = artworks.map((artwork) => ({
-    key: artwork.artist?.internalID,
+  const artworkSections = artworks.map((artwork) => ({
+    key: artwork.artist?.internalID!,
     content: <ArtQuizExploreArtist artistData={artwork.artist} />,
   }))
 
   return (
     <StickyTabPageFlatList
       data={artworkSections}
-      contentContainerStyle={{ paddingVertical: space(1) }}
+      contentContainerStyle={{ paddingVertical: space("1") }}
       initialNumToRender={2}
       keyExtractor={(item, index) => String(item?.artist?.internalID || index)}
     />
