@@ -1,6 +1,6 @@
 import { Input, InputProps, InputRef } from "palette"
 import { Select } from "palette/elements/Select"
-import { SelectProps } from "palette/elements/Select/SelectV2"
+import { SelectProps } from "palette/elements/Select/Select"
 import { forwardRef, useImperativeHandle, useEffect, useRef } from "react"
 import { Platform } from "react-native"
 
@@ -72,7 +72,6 @@ export const INTERNALSelectAndInputCombinationBase = forwardRef<
 
     return (
       <Input
-        style={{ flex: 1 }}
         {...rest}
         ref={innerRef}
         value={value}

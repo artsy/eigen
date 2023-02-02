@@ -212,6 +212,7 @@ export const MyCollectionArtworkFormMain: React.FC<
               <Rarity />
               <Dimensions />
               <MoneyInput
+                currencyTextVariant="xs"
                 title="Price Paid"
                 placeholder="Price paid"
                 keyboardType="decimal-pad"

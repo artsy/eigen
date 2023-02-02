@@ -141,7 +141,7 @@ export const PhoneInput = forwardRef<
           renderButtonForSelect={({ selectedValue, onPress }) => {
             return (
               <Touchable onPress={onPress}>
-                <Flex flexDirection="row" style={{ width: "100%", height: "100%" }}>
+                <Flex flex={1} flexDirection="row" style={{ width: "100%", height: "100%" }}>
                   <Flex flexDirection="row" px="1" alignItems="center" backgroundColor="black10">
                     {/* selectedValue should always be present */}
                     <Text variant="sm-display">

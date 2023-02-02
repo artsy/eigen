@@ -1,3 +1,4 @@
+import { ThemeV3 } from "@artsy/palette-tokens"
 import {
   Flex,
   InputProps,
@@ -19,6 +20,7 @@ import { forwardRef, useEffect, useRef, useState } from "react"
 export const MoneyInput = forwardRef<
   InputRef,
   {
+    currencyTextVariant?: keyof ThemeV3["textVariants"]
     initialValues?: { currency?: SupportedCurrencies; amount?: string }
     maxModalHeight?: number
     onChange?: (value: { currency?: string; amount?: string }) => void
@@ -28,6 +30,7 @@ export const MoneyInput = forwardRef<
 >(
   (
     {
+      currencyTextVariant,
       onChange,
       onModalFinishedClosing,
       maxModalHeight,
@@ -101,6 +104,7 @@ export const MoneyInput = forwardRef<
           return (
             <Touchable onPress={onPress}>
               <Flex
+                flex={1}
                 flexDirection="row"
                 style={{
                   width: "100%",
@@ -111,7 +115,7 @@ export const MoneyInput = forwardRef<
               >
                 <Flex flexDirection="row" px="1" alignItems="center">
                   {/* selectedValue should always be present */}
-                  <Text variant="sm-display">
+                  <Text variant={currencyTextVariant ?? "sm-display"}>
                     {currencyOptions.find((c) => c.value === selectedValue)?.label ??
                       currencyOptions[0].label}
                   </Text>
