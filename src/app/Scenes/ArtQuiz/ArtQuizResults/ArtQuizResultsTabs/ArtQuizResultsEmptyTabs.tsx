@@ -43,7 +43,7 @@ const EmptyScreen = () => {
   return (
     <StickyTabPageScrollView
       contentContainerStyle={{
-        paddingVertical: space(2),
+        paddingVertical: space("2"),
       }}
     >
       <Text>In progress ...</Text>
