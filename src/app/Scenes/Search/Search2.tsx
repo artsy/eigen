@@ -50,6 +50,7 @@ export const Search2: React.FC = () => {
 
   useRefetchWhenQueryChanged({ query: searchQuery, refetch })
 
+  // TODO: to be removed on ES results PR
   const handleRetry = () => {
     setSearchQuery((prevState) => prevState)
   }
@@ -139,6 +140,7 @@ export const Search2: React.FC = () => {
               <SearchResults
                 selectedPill={selectedPill}
                 query={searchQuery}
+                // TODO: to be removed on ES results PR
                 onRetry={handleRetry}
               />
             </>
