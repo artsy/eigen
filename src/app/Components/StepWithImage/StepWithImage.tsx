@@ -1,5 +1,6 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { Flex } from "app/Components/Bidding/Elements/Flex"
-import { IconProps, Spacer, Text } from "palette"
+import { IconProps, Text } from "palette"
 
 interface StepWithImageProps {
   icon: React.FC<IconProps>

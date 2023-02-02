@@ -1,9 +1,9 @@
+import { Spacer } from "@artsy/palette-mobile"
 import {
   AboveTheFoldFlatList,
   AboveTheFoldFlatListProps,
 } from "app/Components/AboveTheFoldFlatList"
 import Spinner from "app/Components/Spinner"
-import { Spacer } from "palette"
 import { View } from "react-native"
 
 export const INTER_CARD_PADDING = 15

@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { LargeArtworkRail_artworks$key } from "__generated__/LargeArtworkRail_artworks.graphql"
 import {
   PlaceholderBox,
@@ -6,7 +7,7 @@ import {
   useMemoizedRandom,
 } from "app/utils/placeholders"
 import { times } from "lodash"
-import { Flex, Join, Spacer } from "palette"
+import { Flex, Join } from "palette"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { ArtworkRail, ArtworkRailProps } from "./ArtworkRail"
@@ -34,7 +35,7 @@ const largeArtworksFragment = graphql`
 `
 
 export const LargeArtworkRailPlaceholder: React.FC = () => (
-  <Join separator={<Spacer width={15} />}>
+  <Join separator={<Spacer x={15} />}>
     {times(3 + useMemoizedRandom() * 10).map((index) => (
       <Flex key={index}>
         <PlaceholderBox

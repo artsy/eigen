@@ -1,8 +1,9 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { ArtistAboutShows_artist$data } from "__generated__/ArtistAboutShows_artist.graphql"
 import { ArtistShowFragmentContainer } from "app/Components/Artist/ArtistShows/ArtistShow"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Button, Flex, Spacer, Text } from "palette"
+import { Button, Flex, Text } from "palette"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
@@ -49,7 +50,7 @@ const ArtistAboutShows: React.FC<Props> = ({ artist }) => {
               }}
             />
           )}
-          ItemSeparatorComponent={() => <Spacer width={10} />}
+          ItemSeparatorComponent={() => <Spacer x={10} />}
           keyExtractor={(show) => show.id}
           showsHorizontalScrollIndicator={false}
           horizontal

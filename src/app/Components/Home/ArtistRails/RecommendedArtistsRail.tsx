@@ -1,4 +1,5 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
+import { Spacer } from "@artsy/palette-mobile"
 import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
 import { RecommendedArtistsRailFollowMutation } from "__generated__/RecommendedArtistsRailFollowMutation.graphql"
 import { RecommendedArtistsRail_me$data } from "__generated__/RecommendedArtistsRail_me.graphql"
@@ -9,7 +10,7 @@ import { RailScrollProps } from "app/Scenes/Home/Components/types"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex, Spacer, Spinner } from "palette"
+import { Flex, Spinner } from "palette"
 import React, { useImperativeHandle, useRef, useState } from "react"
 import { FlatList, ViewProps } from "react-native"
 import {
@@ -105,7 +106,7 @@ export const RecommendedArtistsRail: React.FC<RecommendedArtistsRailProps & Rail
             />
           )
         }}
-        ItemSeparatorComponent={() => <Spacer width={15} />}
+        ItemSeparatorComponent={() => <Spacer x={15} />}
         ListFooterComponent={
           loadingMoreData ? (
             <Flex justifyContent="center" ml="4" mr="6" height="200">

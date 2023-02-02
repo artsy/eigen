@@ -1,10 +1,11 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { ShowArtistsPreview_show$data } from "__generated__/ShowArtistsPreview_show.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { navigate } from "app/system/navigation/navigate"
 import { Schema, Track, track as _track } from "app/utils/track"
 import { compact, take } from "lodash"
-import { Spacer, Text } from "palette"
+import { Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -41,19 +42,19 @@ export class ShowArtistsPreview extends React.Component<Props> {
     return (
       <>
         <Text variant="sm-display">Artists</Text>
-        <Spacer m={1} />
+        <Spacer y={1} />
         {items.map((artist, idx, arr) => {
           const { id } = artist
           return (
             <React.Fragment key={id}>
               <ArtistListItem artist={artist} Component={Component} />
-              {idx < arr.length - 1 && <Spacer m={1} />}
+              {idx < arr.length - 1 && <Spacer y={1} />}
             </React.Fragment>
           )
         })}
         {artists.length > artistsShown && (
           <>
-            <Spacer m={1} />
+            <Spacer y={1} />
             <CaretButton
               text={`View all ${artists.length} artists`}
               onPress={() => onViewAllArtistsPressed()}

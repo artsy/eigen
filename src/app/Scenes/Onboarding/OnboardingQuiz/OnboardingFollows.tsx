@@ -1,6 +1,7 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { SearchInput } from "app/Components/SearchInput"
-import { Box, Button, Flex, ProgressBar, Screen, Spacer, Text } from "palette"
+import { Box, Button, Flex, ProgressBar, Screen, Text } from "palette"
 import { useState } from "react"
 import { useBackHandler } from "shared/hooks/useBackHandler"
 import { useDebouncedValue } from "shared/hooks/useDebouncedValue"

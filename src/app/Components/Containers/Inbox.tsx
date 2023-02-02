@@ -1,4 +1,5 @@
 import { ActionType } from "@artsy/cohesion"
+import { Spacer } from "@artsy/palette-mobile"
 import { InboxQuery } from "__generated__/InboxQuery.graphql"
 import { Inbox_me$data } from "__generated__/Inbox_me.graphql"
 import { ConversationsContainer } from "app/Scenes/Inbox/Components/Conversations/Conversations"
@@ -9,7 +10,7 @@ import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { track } from "app/utils/track"
 import { ActionNames, ActionTypes } from "app/utils/track/schema"
-import { CssTransition, Flex, Separator, Spacer, Text } from "palette"
+import { CssTransition, Flex, Separator, Text } from "palette"
 import React from "react"
 import { EmitterSubscription, View, ViewProps } from "react-native"
 // @ts-expect-error @types file generates duplicate declaration problems
@@ -222,7 +223,7 @@ export const InboxPlaceholder: React.FC<{}> = () => {
     <Flex height="100%" testID="inbox-placeholder">
       <Flex flexDirection="row" mx={2} mt={3} mb={1}>
         <PlaceholderText width={60} height={26} />
-        <Spacer mx={1} />
+        <Spacer x={1} />
         <PlaceholderText width={80} height={26} />
       </Flex>
       <Flex>

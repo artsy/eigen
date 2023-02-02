@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { PartnerArtwork_partner$data } from "__generated__/PartnerArtwork_partner.graphql"
 import {
   AnimatedArtworkFilterButton,
@@ -9,7 +10,6 @@ import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } fro
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { TabEmptyState } from "app/Components/TabEmptyState"
 import { get } from "app/utils/get"
-import { Spacer } from "palette"
 import React, { useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 

@@ -1,4 +1,5 @@
-import { Spacer, TextVariantV3 } from "palette"
+import { Spacer } from "@artsy/palette-mobile"
+import { TextVariantV3 } from "palette"
 import { Box, BoxProps } from "palette/elements/Box"
 import { Flex } from "palette/elements/Flex"
 import { Spinner } from "palette/elements/Spinner"

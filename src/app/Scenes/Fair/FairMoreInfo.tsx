@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { FairMoreInfoQuery } from "__generated__/FairMoreInfoQuery.graphql"
 import { FairMoreInfo_fair$data } from "__generated__/FairMoreInfo_fair.graphql"
 import { LocationMapContainer } from "app/Components/LocationMap/LocationMap"
@@ -7,7 +8,7 @@ import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { defaultRules } from "app/utils/renderMarkdown"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { Box, ChevronIcon, Flex, LinkText, Spacer, Text } from "palette"
+import { Box, ChevronIcon, Flex, LinkText, Text } from "palette"
 import { ScrollView, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { shouldShowFairBMWArtActivationLink } from "./FairBMWArtActivation"
@@ -47,25 +48,25 @@ export const FairMoreInfo: React.FC<FairMoreInfoProps> = ({ fair }) => {
         <Box px={2} pb={2} pt={6}>
           <Text variant="lg-display">About</Text>
 
-          <Spacer my={1} />
+          <Spacer y="1" />
 
           {!!fair.summary && (
             <>
               <Markdown rules={markdownRules}>{fair.summary}</Markdown>
-              <Spacer my={1} />
+              <Spacer y="1" />
             </>
           )}
           {!!fair.about && (
             <>
               <Markdown rules={markdownRules}>{fair.about}</Markdown>
-              <Spacer my={1} />
+              <Spacer y="1" />
             </>
           )}
 
           {!!fair.tagline && (
             <>
               <Text variant="sm">{fair.tagline}</Text>
-              <Spacer my={1} />
+              <Spacer y="1" />
             </>
           )}
 
@@ -75,14 +76,14 @@ export const FairMoreInfo: React.FC<FairMoreInfoProps> = ({ fair }) => {
               {!!fair.location?.summary && <Text variant="sm">{fair.location?.summary}</Text>}
               {!!shouldShowLocationMap(fair.location?.coordinates) && (
                 <>
-                  <Spacer my={1} />
+                  <Spacer y={1} />
                   <LocationMapContainer
                     location={fair.location}
                     partnerName={fair.profile?.name ?? fair.name}
                   />
                 </>
               )}
-              <Spacer my={1} />
+              <Spacer y={1} />
             </>
           )}
 
@@ -99,14 +100,14 @@ export const FairMoreInfo: React.FC<FairMoreInfoProps> = ({ fair }) => {
             <>
               <Text variant="sm">Hours</Text>
               <Markdown rules={markdownRules}>{fair.fairHours}</Markdown>
-              <Spacer my={1} />
+              <Spacer y={1} />
             </>
           )}
           {!!fair.fairTickets && (
             <>
               <Text variant="sm">Tickets</Text>
               <Markdown rules={markdownRules}>{fair.fairTickets}</Markdown>
-              <Spacer my={1} />
+              <Spacer y={1} />
             </>
           )}
           {!!fair.ticketsLink && (
@@ -114,21 +115,21 @@ export const FairMoreInfo: React.FC<FairMoreInfoProps> = ({ fair }) => {
               <TouchableOpacity onPress={() => navigate(fair.ticketsLink!)}>
                 <LinkText>Buy Tickets</LinkText>
               </TouchableOpacity>
-              <Spacer my={1} />
+              <Spacer y={1} />
             </>
           )}
           {!!fair.fairLinks && (
             <>
               <Text variant="sm">Links</Text>
               <Markdown rules={markdownRules}>{fair.fairLinks}</Markdown>
-              <Spacer my={1} />
+              <Spacer y={1} />
             </>
           )}
           {!!fair.fairContact && (
             <>
               <Text variant="sm">Contact</Text>
               <Markdown rules={markdownRules}>{fair.fairContact}</Markdown>
-              <Spacer my={1} />
+              <Spacer y={1} />
             </>
           )}
         </Box>

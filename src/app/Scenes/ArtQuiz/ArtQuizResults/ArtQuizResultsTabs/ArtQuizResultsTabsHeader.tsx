@@ -1,4 +1,5 @@
-import { Button, Flex, Spacer, Text } from "palette"
+import { Spacer } from "@artsy/palette-mobile"
+import { Button, Flex, Text } from "palette"
 
 interface ArtQuizResultsTabsHeaderProps {
   title: string
@@ -12,7 +13,7 @@ export const ArtQuizResultsTabsHeader = ({ title, subtitle }: ArtQuizResultsTabs
       <Text variant="sm" color="black60">
         {subtitle}
       </Text>
-      <Spacer m={1} />
+      <Spacer y={1} />
       <Button size="small" variant="outlineGray">
         Email My Results
       </Button>

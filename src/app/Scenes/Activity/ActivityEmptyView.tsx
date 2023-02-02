@@ -1,4 +1,5 @@
-import { apostrophe, Flex, quoteLeft, quoteRight, Spacer, Text } from "palette"
+import { Spacer } from "@artsy/palette-mobile"
+import { apostrophe, Flex, quoteLeft, quoteRight, Text } from "palette"
 import { NotificationType } from "./types"
 
 interface ActivityEmptyViewProps {

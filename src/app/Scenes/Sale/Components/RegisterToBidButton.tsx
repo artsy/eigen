@@ -4,10 +4,11 @@ import {
   tappedRegisterToBid,
   TappedRegisterToBidArgs,
 } from "@artsy/cohesion"
+import { Spacer } from "@artsy/palette-mobile"
 import { RegisterToBidButton_me$data } from "__generated__/RegisterToBidButton_me.graphql"
 import { RegisterToBidButton_sale$data } from "__generated__/RegisterToBidButton_sale.graphql"
 import { navigate } from "app/system/navigation/navigate"
-import { Box, Button, CheckIcon, Flex, Spacer, Text } from "palette"
+import { Box, Button, CheckIcon, Flex, Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 

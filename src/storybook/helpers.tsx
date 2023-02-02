@@ -1,4 +1,5 @@
-import { Flex, Spacer } from "palette"
+import { Spacer } from "@artsy/palette-mobile"
+import { Flex } from "palette"
 import { FlatList, StyleProp, ViewStyle } from "react-native"
 
 export const DataList = <ItemT,>({

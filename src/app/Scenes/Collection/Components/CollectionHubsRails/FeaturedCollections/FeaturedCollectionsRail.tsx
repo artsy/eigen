@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { FeaturedCollectionsRail_collection$data } from "__generated__/FeaturedCollectionsRail_collection.graphql"
 import { FeaturedCollectionsRail_collectionGroup$data } from "__generated__/FeaturedCollectionsRail_collectionGroup.graphql"
@@ -6,7 +7,7 @@ import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
 import { defaultRules, renderMarkdown } from "app/utils/renderMarkdown"
 import { Schema } from "app/utils/track"
-import { Flex, Spacer, Text, Touchable, useColor } from "palette"
+import { Flex, Text, Touchable, useColor } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -63,9 +64,9 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
         data={collections as FeaturedCollection[]}
         keyExtractor={(_item, index) => String(index)}
         initialNumToRender={3}
-        ListHeaderComponent={() => <Spacer mx={1} />}
-        ListFooterComponent={() => <Spacer mx={1} />}
-        ItemSeparatorComponent={() => <Spacer mx={0.5} />}
+        ListHeaderComponent={() => <Spacer x={1} />}
+        ListFooterComponent={() => <Spacer x={1} />}
+        ItemSeparatorComponent={() => <Spacer x={0.5} />}
         renderItem={({ item: result, index }) => {
           return (
             <Touchable

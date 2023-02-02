@@ -1,5 +1,5 @@
+import { Spacer } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { Spacer } from "palette/atoms/Spacer"
 import { Box, BoxProps } from "palette/elements/Box"
 import { Text } from "palette/elements/Text"
 import { useSpace } from "palette/hooks"

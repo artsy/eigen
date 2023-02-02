@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { FairArticlesQuery } from "__generated__/FairArticlesQuery.graphql"
 import { FairArticles_fair$data } from "__generated__/FairArticles_fair.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
@@ -6,7 +7,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { compact } from "lodash"
-import { Box, Button, Join, SimpleMessage, Spacer, Text, Touchable, useSpace } from "palette"
+import { Box, Button, Join, SimpleMessage, Text, Touchable, useSpace } from "palette"
 import React, { useState } from "react"
 import { Dimensions, FlatList, ScrollView } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -28,6 +29,7 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
   const articles = fair.articlesConnection?.edges
   const totalCount = fair.articlesConnection?.totalCount ?? 0
   const [isLoading, setIsLoading] = useState(false)
+  const webURL = useEnvironment().webURL
 
   const handlePress = () => {
     if (!relay.hasMore() || relay.isLoading()) {
@@ -54,16 +56,14 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
   const { width: screenWidth } = Dimensions.get("screen")
   const imageWidth = screenWidth - space("4")
 
-  const webURL = useEnvironment().webURL
-
   return (
     <ScrollView>
       <Box px={2} py={6}>
         <Text variant="lg-display">Articles</Text>
 
-        <Spacer my={1} />
+        <Spacer y={1} />
 
-        <Join separator={<Spacer my={3} />}>
+        <Join separator={<Spacer y={3} />}>
           <Touchable
             onPress={() => {
               navigate(heroArticle!.href!)
@@ -99,7 +99,7 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
           <FlatList<typeof remainingArticles[number]>
             data={remainingArticles}
             keyExtractor={({ node }, i) => node?.internalID ?? `${i}`}
-            ItemSeparatorComponent={() => <Spacer my={3} />}
+            ItemSeparatorComponent={() => <Spacer y={3} />}
             renderItem={({ item: { node: article } }) => {
               return (
                 <Touchable

@@ -1,4 +1,5 @@
 import { ScreenOwnerType, tappedMainArtworkGrid } from "@artsy/cohesion"
+import { Spacer } from "@artsy/palette-mobile"
 import { SaleArtworkGridItem_saleArtwork$data } from "__generated__/SaleArtworkGridItem_saleArtwork.graphql"
 import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -9,7 +10,7 @@ import {
   PlaceholderRaggedText,
   RandomNumberGenerator,
 } from "app/utils/placeholders"
-import { Box, Flex, Spacer, Text, Touchable } from "palette"
+import { Box, Flex, Text, Touchable } from "palette"
 import { StyleSheet, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"

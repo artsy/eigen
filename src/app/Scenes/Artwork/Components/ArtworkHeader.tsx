@@ -1,4 +1,5 @@
 import { ContextModule, CustomService, OwnerType, share } from "@artsy/cohesion"
+import { Spacer } from "@artsy/palette-mobile"
 import Clipboard from "@react-native-clipboard/clipboard"
 import { ArtworkHeader_artwork$data } from "__generated__/ArtworkHeader_artwork.graphql"
 import { CustomShareSheet, CustomShareSheetItem } from "app/Components/CustomShareSheet"
@@ -14,7 +15,6 @@ import {
   LinkIcon,
   MoreIcon,
   ShareIcon,
-  Spacer,
   WhatsAppAppIcon,
 } from "palette"
 import React, { useRef, useState } from "react"

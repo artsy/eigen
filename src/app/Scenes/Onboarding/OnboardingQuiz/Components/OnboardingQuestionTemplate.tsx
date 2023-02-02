@@ -1,10 +1,11 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { useFocusEffect, useNavigation } from "@react-navigation/native"
 import {
   OnboardingContextAction,
   State,
   useOnboardingContext,
 } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
-import { Box, Button, CheckCircleFillIcon, Flex, ProgressBar, Screen, Spacer, Text } from "palette"
+import { Box, Button, CheckCircleFillIcon, Flex, ProgressBar, Screen, Text } from "palette"
 import { FC, useCallback, useState } from "react"
 import { AnimatedFadingPill, FADE_OUT_PILL_ANIMATION_DURATION } from "./AnimatedFadingPill"
 
@@ -86,15 +87,15 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
           <ProgressBar progress={progress} />
         </Box>
         <Flex flex={1} flexDirection="column">
-          <Spacer m={2} />
+          <Spacer y={2} />
           <Text variant="lg-display">{question}</Text>
           {!!subtitle && (
             <>
-              <Spacer m={1} />
+              <Spacer y={1} />
               <Text variant="sm">{subtitle}</Text>
             </>
           )}
-          <Spacer m={2} />
+          <Spacer y={2} />
           {answers.map((answer) => (
             <AnimatedFadingPill
               mb={2}

@@ -1,10 +1,9 @@
-import { SpacerProps } from "palette/atoms/Spacer"
 import { Avatar } from "palette/elements/Avatar"
 import { Flex, FlexProps } from "palette/elements/Flex"
 import { Text } from "palette/elements/Text"
 import { bullet } from "palette/helpers"
 
-interface EntityHeaderProps extends SpacerProps, FlexProps {
+interface EntityHeaderProps extends FlexProps {
   smallVariant?: boolean
   href?: string
   imageUrl?: string

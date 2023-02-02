@@ -1,5 +1,6 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { Flex, Spacer, Touchable } from "palette"
+import { Flex, Touchable } from "palette"
 import React from "react"
 import { FlatList, FlatListProps } from "react-native"
 
@@ -29,7 +30,7 @@ export const EmbeddedCarousel: React.FC<EmbeddedCarouselProps & FlatListProps<an
         testID={testID}
         horizontal
         showsHorizontalScrollIndicator={false}
-        ItemSeparatorComponent={() => <Spacer mx={1} />}
+        ItemSeparatorComponent={() => <Spacer x={1} />}
         data={data}
         renderItem={(item: any) =>
           onCardPress ? (

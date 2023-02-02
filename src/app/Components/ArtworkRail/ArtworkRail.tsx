@@ -1,10 +1,10 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { LargeArtworkRail_artworks$data } from "__generated__/LargeArtworkRail_artworks.graphql"
 import { SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$data } from "__generated__/SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection.graphql"
 import { SmallArtworkRail_artworks$data } from "__generated__/SmallArtworkRail_artworks.graphql"
 import { ArtworkCardSize, ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
 import { Schema } from "app/utils/track"
-import { Spacer } from "palette"
 import React, { ReactElement } from "react"
 import { FlatList } from "react-native"
 
@@ -52,7 +52,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
       horizontal
       ListHeaderComponent={ListHeaderComponent}
       ListFooterComponent={ListFooterComponent}
-      ItemSeparatorComponent={() => <Spacer width={15} />}
+      ItemSeparatorComponent={() => <Spacer x={15} />}
       showsHorizontalScrollIndicator={false}
       // We need to set the maximum number of artists to not cause layout shifts
       // @ts-expect-error
@@ -106,7 +106,7 @@ export const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> =
       horizontal
       ListHeaderComponent={ListHeaderComponent}
       ListFooterComponent={ListFooterComponent}
-      ItemSeparatorComponent={() => <Spacer width={15} />}
+      ItemSeparatorComponent={() => <Spacer x={15} />}
       showsHorizontalScrollIndicator={false}
       // We need to set the maximum number of artists to not cause layout shifts
       data={recentlySoldArtworks.slice(0, MAX_NUMBER_OF_ARTWORKS)}

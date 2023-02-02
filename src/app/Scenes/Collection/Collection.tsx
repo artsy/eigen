@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { CollectionQuery } from "__generated__/CollectionQuery.graphql"
 import { Collection_collection$data } from "__generated__/Collection_collection.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -7,7 +8,7 @@ import { CollectionHeaderContainer as CollectionHeader } from "app/Scenes/Collec
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Schema, screenTrack } from "app/utils/track"
-import { Box, Spacer } from "palette"
+import { Box } from "palette"
 import React, { Component, createRef } from "react"
 import { Animated, FlatList, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"

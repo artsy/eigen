@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { ArtistAbout_artist$data } from "__generated__/ArtistAbout_artist.graphql"
 import { ArtistCollectionsRail_collections$data } from "__generated__/ArtistCollectionsRail_collections.graphql"
 import { CollectionArtistSeriesRail_collectionGroup$data } from "__generated__/CollectionArtistSeriesRail_collectionGroup.graphql"
@@ -6,7 +7,7 @@ import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
-import { Spacer, Text, useColor } from "palette"
+import { Text, useColor } from "palette"
 import { View } from "react-native"
 import { useTracking } from "react-tracking"
 // @ts-ignore
@@ -43,9 +44,9 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
         data={collections as GenericArtistSeriesItem[]}
         keyExtractor={(_item, index) => String(index)}
         initialNumToRender={3}
-        ListHeaderComponent={() => <Spacer mx={2} />}
-        ListFooterComponent={() => <Spacer mx={2} />}
-        ItemSeparatorComponent={() => <Spacer mx={0.5} />}
+        ListHeaderComponent={() => <Spacer x={2} />}
+        ListFooterComponent={() => <Spacer x={2} />}
+        ItemSeparatorComponent={() => <Spacer x={0.5} />}
         renderItem={({ item: result, index }) => {
           const artworkImageURLs = extractNodes(
             result?.artworksConnection,

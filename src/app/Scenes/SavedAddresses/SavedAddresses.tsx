@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import { themeGet } from "@styled-system/theme-get"
 import { SavedAddressesQuery } from "__generated__/SavedAddressesQuery.graphql"
@@ -10,7 +11,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Box, Flex, Separator, Spacer, Text, Touchable } from "palette"
+import { Box, Flex, Separator, Text, Touchable } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createRefetchContainer, QueryRenderer, RelayRefetchProp } from "react-relay"
@@ -112,7 +113,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me$data; relay: RelayRefetch
                 <Text fontSize={16} lineHeight={24} color="black60">
                   {item.city}, {item.postalCode}
                 </Text>
-                <Spacer height={10} />
+                <Spacer y={10} />
                 <Text variant="sm" color="black60">
                   {item?.phoneNumber}
                 </Text>
@@ -144,7 +145,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me$data; relay: RelayRefetch
               </Card>
             </Flex>
 
-            <Spacer height={40} />
+            <Spacer y={40} />
           </>
         )}
         ListFooterComponent={

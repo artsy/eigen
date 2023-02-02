@@ -1,4 +1,5 @@
-import { Flex, Spacer } from "palette"
+import { Spacer } from "@artsy/palette-mobile"
+import { Flex } from "palette"
 import { useMemo } from "react"
 import { InterpolationPropType } from "victory-core"
 import { LineGraphBandProps, LineGraphBands } from "./LineGraphBands"

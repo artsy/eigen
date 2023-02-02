@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { AuctionResultListItem_auctionResult$data } from "__generated__/AuctionResultListItem_auctionResult.graphql"
 import { AuctionResultsMidEstimate } from "app/Components/AuctionResult/AuctionResultMidEstimate"
 import { auctionResultHasPrice, auctionResultText } from "app/Scenes/AuctionResult/helpers"
@@ -5,7 +6,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { QAInfoManualPanel, QAInfoRow } from "app/utils/QAInfo"
 import { capitalize } from "lodash"
 import moment from "moment"
-import { bullet, Flex, NoArtworkIcon, Spacer, Text, Touchable, useColor } from "palette"
+import { bullet, Flex, NoArtworkIcon, Text, Touchable, useColor } from "palette"
 import { Stopwatch } from "palette/svgs/sf"
 import FastImage from "react-native-fast-image"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -196,7 +197,7 @@ const AuctionResultPriceSection = ({
   )
 }
 
-export const AuctionResultListSeparator = () => <Spacer px={2} pt={2} />
+export const AuctionResultListSeparator = () => <Spacer y={2} />
 
 export const AuctionResultListItemFragmentContainer = createFragmentContainer(
   AuctionResultListItem,

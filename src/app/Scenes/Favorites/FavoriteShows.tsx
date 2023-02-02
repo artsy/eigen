@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { FavoriteShowsQuery } from "__generated__/FavoriteShowsQuery.graphql"
 import { FavoriteShows_me$data } from "__generated__/FavoriteShows_me.graphql"
 import { ShowItemRowContainer as ShowItemRow } from "app/Components/Lists/ShowItemRow"
@@ -11,7 +12,6 @@ import { PAGE_SIZE } from "app/Components/constants"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { Spacer } from "palette"
 import { Component } from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 

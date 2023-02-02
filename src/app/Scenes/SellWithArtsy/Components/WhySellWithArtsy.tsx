@@ -1,5 +1,6 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
-import { Box, Flex, Spacer, Text } from "palette"
+import { Box, Flex, Text } from "palette"
 
 export const WhySellWithArtsy: React.FC = () => {
   const handleOurSpecialistsPress = () => {

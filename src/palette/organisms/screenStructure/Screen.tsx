@@ -1,4 +1,5 @@
-import { BackButton, BackButtonWithBackground, Spacer, SpacingUnit } from "palette"
+import { Spacer } from "@artsy/palette-mobile"
+import { BackButton, BackButtonWithBackground, SpacingUnit } from "palette"
 import { Flex, FlexProps, Text, Touchable } from "palette/elements"
 import { createContext, useContext, useEffect, useState } from "react"
 import {

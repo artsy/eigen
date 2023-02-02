@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { CommercialInformation_artwork$data } from "__generated__/CommercialInformation_artwork.graphql"
 import { CommercialInformation_me$data } from "__generated__/CommercialInformation_me.graphql"
 import {
@@ -15,7 +16,7 @@ import { AuctionWebsocketContextProvider } from "app/utils/Websockets/auctions/A
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
 import { Schema } from "app/utils/track"
 import { capitalize } from "lodash"
-import { Box, Flex, Spacer, Text } from "palette"
+import { Box, Flex, Text } from "palette"
 import React, { useEffect } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp, useTracking } from "react-tracking"

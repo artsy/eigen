@@ -1,6 +1,7 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { DecoratorFunction } from "@storybook/addons"
 import { storiesOf } from "@storybook/react-native"
-import { Join, Spacer } from "palette"
+import { Join } from "palette"
 import { withHooks, withScreenDimensions } from "storybook/decorators"
 import { PlaceholderBox, ProvidePlaceholderContext } from "./placeholders"
 

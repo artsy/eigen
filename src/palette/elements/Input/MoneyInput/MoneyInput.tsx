@@ -1,13 +1,5 @@
-import {
-  Flex,
-  InputProps,
-  InputRef,
-  Spacer,
-  Text,
-  Touchable,
-  TriangleDown,
-  useColor,
-} from "palette"
+import { Spacer } from "@artsy/palette-mobile"
+import { Flex, InputProps, InputRef, Text, Touchable, TriangleDown, useColor } from "palette"
 import {
   INTERNALSelectAndInputCombinationBase,
   ValuePayload,

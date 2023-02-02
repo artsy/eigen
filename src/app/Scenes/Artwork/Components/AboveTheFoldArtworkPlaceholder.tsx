@@ -1,8 +1,9 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { useImagePlaceholderDimensions } from "app/Scenes/Artwork/helpers"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { PlaceholderBox, PlaceholderText, RandomNumberGenerator } from "app/utils/placeholders"
 import { times } from "lodash"
-import { Flex, Join, Separator, Spacer, useSpace } from "palette"
+import { Flex, Join, Separator, useSpace } from "palette"
 import { useMemo } from "react"
 
 interface AboveTheFoldPlaceholderProps {

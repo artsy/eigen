@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import {
   AuctionResultListItem_auctionResult$data,
   AuctionResultListItem_auctionResult$key,
@@ -6,7 +7,7 @@ import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/
 import { useStickyScrollHeader } from "app/utils/useStickyScrollHeader"
 import { groupBy } from "lodash"
 import moment from "moment"
-import { Flex, Separator, Spacer, Text } from "palette"
+import { Flex, Separator, Text } from "palette"
 import React from "react"
 import { Animated, RefreshControl, SectionListData } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
@@ -114,11 +115,11 @@ export const LoadingSkeleton: React.FC<{ title: string; listHeader: React.ReactE
   for (let i = 0; i < 8; i++) {
     placeholderResults.push(
       <React.Fragment key={i}>
-        <Spacer height={20} />
+        <Spacer y={20} />
         <Flex flexDirection="row" flexGrow={1}>
           {/* Image */}
           <PlaceholderBox width={60} height={60} />
-          <Spacer width={15} />
+          <Spacer x={15} />
           <Flex flexDirection="row" justifyContent="space-between" py={0.5} flexGrow={1}>
             <Flex>
               {/* Artist name */}
@@ -138,7 +139,7 @@ export const LoadingSkeleton: React.FC<{ title: string; listHeader: React.ReactE
             </Flex>
           </Flex>
         </Flex>
-        <Spacer height={10} />
+        <Spacer y={10} />
         <Separator borderColor="black10" />
       </React.Fragment>
     )
@@ -149,9 +150,9 @@ export const LoadingSkeleton: React.FC<{ title: string; listHeader: React.ReactE
 
       {listHeader}
       <Flex mx={2}>
-        <Spacer height={20} />
+        <Spacer y={20} />
         <PlaceholderText height={24} width={100 + Math.random() * 50} />
-        <Spacer height={10} />
+        <Spacer y={10} />
         <Separator borderColor="black10" />
         {placeholderResults}
       </Flex>
