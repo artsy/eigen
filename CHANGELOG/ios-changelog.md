@@ -7,6 +7,7 @@
 
   - User facing changes:
 
+    - search ES only pills behind a ff - gkartalis
     - The changes are cross-platform, applicable to all users.
     - ToolTip Component - kizito
     - Fix issue making some artwork images not visible in the home screen large artworks rail - mounir
