@@ -9,7 +9,7 @@ import { graphql, useFragment } from "react-relay"
 export const ArtQuizTrendingCollection = ({
   collectionData,
 }: {
-  collectionData: ArtQuizTrendingCollections_viewer$data
+  collectionData: NonNullable<ArtQuizTrendingCollections_viewer$data["marketingCollections"]>[0]
 }) => {
   const collection = useFragment<ArtQuizTrendingCollection_collection$key>(
     artQuizTrendingCollectionFragment,
@@ -52,14 +52,3 @@ const artQuizTrendingCollectionFragment = graphql`
     }
   }
 `
-
-// const FollowArtistMutation = graphql`
-//   mutation ArtQuizExploreArtistFollowArtistMutation($input: FollowArtistInput!) {
-//     followArtist(input: $input) {
-//       artist {
-//         id
-//         isFollowed
-//       }
-//     }
-//   }
-// `
