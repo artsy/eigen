@@ -1,13 +1,12 @@
+import { CloseIcon, TriangleDown } from "@artsy/palette-mobile"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { SearchInput } from "app/Components/SearchInput"
 import {
   Autocomplete,
-  CloseIcon,
   Flex,
   Separator,
   Text,
   Touchable,
-  TriangleDown,
   useColor,
   useTextStyleForPalette,
 } from "palette"

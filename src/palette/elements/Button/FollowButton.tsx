@@ -1,4 +1,5 @@
-import { Button, CheckIcon } from "palette"
+import { CheckIcon } from "@artsy/palette-mobile"
+import { Button } from "palette"
 import { ButtonProps } from "."
 
 type FollowButtonProps = Omit<

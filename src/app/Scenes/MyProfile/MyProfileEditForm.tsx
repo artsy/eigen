@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, EditedUserProfile, OwnerType } from "@artsy/cohesion"
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, CheckCircleIcon, CheckCircleFillIcon } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { useNavigation } from "@react-navigation/native"
 import { EditableLocation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
@@ -18,20 +18,7 @@ import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { sendEmail } from "app/utils/sendEmail"
 import { useFormik } from "formik"
 import { compact, isArray } from "lodash"
-import {
-  Avatar,
-  Box,
-  Button,
-  CheckCircleFillIcon,
-  CheckCircleIcon,
-  Flex,
-  Input,
-  Join,
-  Message,
-  Text,
-  Touchable,
-  useColor,
-} from "palette"
+import { Avatar, Box, Button, Flex, Input, Join, Message, Text, Touchable, useColor } from "palette"
 import React, { Suspense, useContext, useEffect, useRef, useState } from "react"
 import { ScrollView, TextInput } from "react-native"
 import { useLazyLoadQuery, useRefetchableFragment } from "react-relay"

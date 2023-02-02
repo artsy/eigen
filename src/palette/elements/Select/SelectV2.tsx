@@ -1,17 +1,14 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, CloseIcon, CheckIcon, TriangleDown } from "@artsy/palette-mobile"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { SearchInput } from "app/Components/SearchInput"
 import {
   Autocomplete,
-  CheckIcon,
-  CloseIcon,
   Flex,
   InputTitle,
   PopIn,
   Separator,
   Text,
   Touchable,
-  TriangleDown,
   useColor,
 } from "palette"
 import { INPUT_HEIGHT } from "palette/elements/Input"

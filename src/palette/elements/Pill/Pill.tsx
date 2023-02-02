@@ -1,7 +1,7 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, IconProps } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 
-import { IconProps, useColor } from "palette"
+import { useColor } from "palette"
 import { Color } from "palette/Theme"
 import { Flex, FlexProps } from "palette/elements/Flex"
 import { Text, useTextStyleForPalette } from "palette/elements/Text"

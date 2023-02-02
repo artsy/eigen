@@ -1,8 +1,8 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, GraphIcon, ArtworkIcon } from "@artsy/palette-mobile"
 import { PhoneIcon } from "app/Components/Icons/HomeFeedOnboarding/PhoneIcon"
 import { SellWithEaseIcon } from "app/Components/Icons/HomeFeedOnboarding/SellWithEaseIcon"
 import { StepWithImage } from "app/Components/StepWithImage/StepWithImage"
-import { ArtworkIcon, Flex, GraphIcon, Join } from "palette"
+import { Flex, Join } from "palette"
 import { HomeFeedModalCarouselContainer } from "./HomeFeedModalCarouselContainer"
 import { HomeFeedModalCarouselScreenWrapper } from "./HomeFeedModalCarouselScreenWrapper"
 

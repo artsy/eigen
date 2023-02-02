@@ -1,15 +1,7 @@
+import { ArrowRightIcon, CloseIcon, ArrowLeftIcon, ShareIcon } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ResponsiveAlignItemsValue } from "app/Components/Bidding/Elements/types"
-import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  CloseIcon,
-  Flex,
-  Separator,
-  ShareIcon,
-  Text,
-  useTheme,
-} from "palette"
+import { Flex, Separator, Text, useTheme } from "palette"
 import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 

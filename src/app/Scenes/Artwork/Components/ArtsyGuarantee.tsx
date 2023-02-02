@@ -1,8 +1,6 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, VerifiedIcon, IconProps } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
-import { Box, Flex, IconProps, Join, LinkText, Text, VerifiedIcon } from "palette"
-import { GuaranteeIcon } from "palette/svgs/GuaranteeIcon"
-import { SecureLockIcon } from "palette/svgs/SecureLockIcon"
+import { Box, Flex, Join, LinkText, Text } from "palette"
 
 export const ArtsyGuarantee: React.FC = () => {
   const iconProps: IconProps = {

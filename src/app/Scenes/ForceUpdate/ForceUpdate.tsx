@@ -1,4 +1,5 @@
-import { ArtsyLogoIcon, Button, Flex, Text, useColor } from "palette"
+import { ArtsyLogoIcon } from "@artsy/palette-mobile"
+import { Button, Flex, Text, useColor } from "palette"
 import { Linking, Platform } from "react-native"
 
 interface ForceUpdateProps {

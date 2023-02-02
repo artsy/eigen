@@ -1,6 +1,6 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, ImageIcon } from "@artsy/palette-mobile"
 import { StepWithImage } from "app/Components/StepWithImage/StepWithImage"
-import { Box, ImageIcon, Join, Payment2Icon, Tag2Icon, Text } from "palette"
+import { Box, Join, Text } from "palette"
 
 const STEPS = [
   {

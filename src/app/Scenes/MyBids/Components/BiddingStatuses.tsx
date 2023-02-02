@@ -1,5 +1,5 @@
-import { ArrowDownCircleFillIcon, ArrowUpCircleFillIcon, Text } from "palette"
-import { BookmarkFill, ExclamationMarkCircleFill } from "palette/svgs/sf"
+import { ArrowUpCircleFillIcon, ArrowDownCircleFillIcon } from "@artsy/palette-mobile"
+import { Text } from "palette"
 
 export const ReserveNotMet = () => (
   <>

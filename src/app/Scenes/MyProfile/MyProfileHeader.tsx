@@ -1,18 +1,8 @@
+import { MapPinIcon, BriefcaseIcon, MuseumIcon, SettingsIcon } from "@artsy/palette-mobile"
 import { MyProfileHeader_me$key } from "__generated__/MyProfileHeader_me.graphql"
 import { navigate } from "app/system/navigation/navigate"
-import {
-  Avatar,
-  Box,
-  BriefcaseIcon,
-  Flex,
-  MapPinIcon,
-  MuseumIcon,
-  SettingsIcon,
-  Text,
-  Touchable,
-  useColor,
-} from "palette"
-import React, { useContext } from "react"
+import { Avatar, Box, Flex, Text, Touchable, useColor } from "palette"
+import { useContext } from "react"
 import { Image, TouchableOpacity } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"

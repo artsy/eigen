@@ -1,5 +1,5 @@
 import { ScreenOwnerType, tappedMainArtworkGrid } from "@artsy/cohesion"
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, HeartIcon, HeartFillIcon } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -19,8 +19,6 @@ import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import {
   Box,
   Flex,
-  HeartFillIcon,
-  HeartIcon,
   OpaqueImageView as NewOpaqueImageView,
   Text,
   TextProps,

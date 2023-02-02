@@ -1,7 +1,8 @@
+import { InfoCircleIcon } from "@artsy/palette-mobile"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { InfoCircleIcon, Text } from "palette"
+import { Text } from "palette"
 import { TouchableOpacity } from "react-native"
 import { InfoButton } from "./InfoButton"
 

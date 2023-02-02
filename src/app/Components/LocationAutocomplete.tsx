@@ -1,10 +1,11 @@
+import { LocationIcon } from "@artsy/palette-mobile"
 import {
   getLocationDetails,
   getLocationPredictions,
   LocationWithDetails,
   SimpleLocation,
 } from "app/utils/googleMaps"
-import { Flex, Input, InputProps, LocationIcon, Text, Touchable } from "palette"
+import { Flex, Input, InputProps, Text, Touchable } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { useScreenDimensions } from "shared/hooks"

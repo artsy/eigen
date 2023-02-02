@@ -1,5 +1,5 @@
-import { Spacer } from "@artsy/palette-mobile"
-import { ArtsyLogoIcon, Box, Flex } from "palette"
+import { Spacer, ArtsyLogoIcon } from "@artsy/palette-mobile"
+import { Box, Flex } from "palette"
 import { StyleSheet } from "react-native"
 
 interface Props {

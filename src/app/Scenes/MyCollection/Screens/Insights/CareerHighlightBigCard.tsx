@@ -1,3 +1,4 @@
+import { IconProps } from "@artsy/palette-mobile"
 import {
   CareerHighlightBigCardBiennial_myCollectionInfo$data,
   CareerHighlightBigCardBiennial_myCollectionInfo$key,
@@ -19,7 +20,7 @@ import {
   CareerHighlightBigCardSoloShow_myCollectionInfo$key,
 } from "__generated__/CareerHighlightBigCardSoloShow_myCollectionInfo.graphql"
 import { formatTombstoneText } from "app/Components/ArtistListItem"
-import { EntityHeader, Flex, IconProps, Text, useSpace } from "palette"
+import { EntityHeader, Flex, Text, useSpace } from "palette"
 import { useState } from "react"
 import { FlatList, LayoutChangeEvent, View } from "react-native"
 import { useFragment } from "react-relay"

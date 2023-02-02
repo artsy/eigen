@@ -1,6 +1,6 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, ArtsyLogoIcon } from "@artsy/palette-mobile"
 import { GlobalStore } from "app/store/GlobalStore"
-import { ArtsyLogoIcon, Box, Flex } from "palette"
+import { Box, Flex } from "palette"
 import { ActivityIndicator } from "./ActivityIndicator"
 
 export const HomeHeader: React.FC = () => {

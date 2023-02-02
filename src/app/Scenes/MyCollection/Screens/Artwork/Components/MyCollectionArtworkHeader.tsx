@@ -1,5 +1,5 @@
 import { tappedCollectedArtworkImages } from "@artsy/cohesion"
-import { Spacer } from "@artsy/palette-mobile"
+import { NoImageIcon, Spacer } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { MyCollectionArtworkHeader_artwork$key } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
 import {
@@ -13,7 +13,7 @@ import {
 } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionImageUtil"
 import { navigate } from "app/system/navigation/navigate"
 import { LocalImage, retrieveLocalImages } from "app/utils/LocalImageStore"
-import { Flex, Join, NoImageIcon, Text, useColor } from "palette"
+import { Flex, Join, Text, useColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, useFragment } from "react-relay"

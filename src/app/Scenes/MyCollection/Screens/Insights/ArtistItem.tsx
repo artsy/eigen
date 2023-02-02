@@ -1,6 +1,7 @@
+import { NoArtworkIcon } from "@artsy/palette-mobile"
 import { ArtistItem_artist$key } from "__generated__/ArtistItem_artist.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { Flex, NoArtworkIcon, Text, Touchable, useColor } from "palette"
+import { Flex, Text, Touchable, useColor } from "palette"
 import { graphql, useFragment } from "react-relay"
 
 interface ArtistItemProps {

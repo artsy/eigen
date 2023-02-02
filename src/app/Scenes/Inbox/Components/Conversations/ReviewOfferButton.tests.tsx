@@ -1,10 +1,9 @@
+import { AlertCircleFillIcon, MoneyFillIcon } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { extractText } from "app/utils/tests/extractText"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { DateTime } from "luxon"
-import { AlertCircleFillIcon } from "palette"
-import { MoneyFillIcon } from "palette/svgs/MoneyFillIcon"
 import { TouchableWithoutFeedback } from "react-native"
 
 import { ReviewOfferButton, ReviewOfferButtonProps, ReviewOfferCTAKind } from "./ReviewOfferButton"

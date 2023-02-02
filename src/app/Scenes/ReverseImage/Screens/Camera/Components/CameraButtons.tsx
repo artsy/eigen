@@ -1,4 +1,5 @@
-import { DocumentIcon, Flex, FlexProps, useSpace } from "palette"
+import { DocumentIcon } from "@artsy/palette-mobile"
+import { Flex, FlexProps, useSpace } from "palette"
 import { TouchableOpacity } from "react-native"
 import { CapturePhotoButton } from "./CapturePhotoButton"
 

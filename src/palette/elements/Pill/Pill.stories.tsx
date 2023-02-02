@@ -1,6 +1,7 @@
+import { AuctionIcon, ArtworkIcon } from "@artsy/palette-mobile"
 import { action } from "@storybook/addon-actions"
 import { storiesOf } from "@storybook/react-native"
-import { ArtworkIcon, AuctionIcon, CheckIcon, CloseIcon } from "palette"
+import { CheckIcon, CloseIcon } from "palette"
 import { List } from "storybook/helpers"
 import { Pill } from "./Pill"
 

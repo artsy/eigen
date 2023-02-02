@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, TimerIcon } from "@artsy/palette-mobile"
 import { ArtworkLotTimer_artwork$data } from "__generated__/ArtworkLotTimer_artwork.graphql"
 import { ArtworkAuctionProgressBar } from "app/Components/Bidding/Components/ArtworkAuctionProgressBar"
 import {
@@ -17,7 +17,7 @@ import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBiddi
 import { getTimerInfo } from "app/utils/saleTime"
 import { Time } from "app/utils/useTimer"
 import moment from "moment"
-import { Flex, Text, TimerIcon } from "palette"
+import { Flex, Text } from "palette"
 import { Color } from "palette/Theme"
 import { useEffect } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
