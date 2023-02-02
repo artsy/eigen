@@ -1,5 +1,4 @@
 import { ActionType, ContextModule, EditCollectedArtwork, OwnerType } from "@artsy/cohesion"
-import { MyCollectionArtworkQuery } from "__generated__/MyCollectionArtworkQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
@@ -16,6 +15,7 @@ import React, { Suspense, useCallback } from "react"
 import { ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
+import { MyCollectionArtworkQuery } from "__generated__/MyCollectionArtworkQuery.graphql"
 import { MyCollectionArtworkHeader } from "./Components/MyCollectionArtworkHeader"
 import { MyCollectionArtworkAbout } from "./MyCollectionArtworkAbout"
 import { MyCollectionArtworkInsights } from "./MyCollectionArtworkInsights"
@@ -255,7 +255,7 @@ export const ArtworkMetaProps = graphql`
       name
     }
     id
-    images {
+    images(includeAll: true) {
       isDefault
       imageURL
       width

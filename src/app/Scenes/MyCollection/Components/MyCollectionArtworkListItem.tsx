@@ -1,13 +1,9 @@
 import { tappedCollectedArtwork } from "@artsy/cohesion"
 import { NoArtworkIcon } from "@artsy/palette-mobile"
-import {
-  MyCollectionArtworkListItem_artwork$data,
-  MyCollectionArtworkListItem_artwork$key,
-} from "__generated__/MyCollectionArtworkListItem_artwork.graphql"
 import HighDemandIcon from "app/Components/Icons/HighDemandIcon"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
-import { LocalImage, retrieveLocalImages } from "app/utils/LocalImageStore"
+import { getLocalImage, LocalImage } from "app/utils/LocalImageStore"
 import { getImageSquareDimensions } from "app/utils/resizeImage"
 import { Flex, Text, Touchable } from "palette"
 import { useEffect, useState } from "react"
@@ -15,6 +11,10 @@ import { Image as RNImage } from "react-native"
 import { useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { graphql } from "relay-runtime"
+import {
+  MyCollectionArtworkListItem_artwork$data,
+  MyCollectionArtworkListItem_artwork$key,
+} from "__generated__/MyCollectionArtworkListItem_artwork.graphql"
 
 export const ARTWORK_LIST_IMAGE_SIZE = 80
 
@@ -92,14 +92,7 @@ export const MyCollectionArtworkListItem: React.FC<{
   }, [myCollectionIsRefreshing])
 
   const handleImages = async () => {
-    const [localVanillaArtworkImages, localSubmissionArtworkImages] = await Promise.all([
-      retrieveLocalImages(slug),
-      submissionId ? retrieveLocalImages(submissionId) : undefined,
-    ])
-    const localDefaultImage =
-      localVanillaArtworkImages?.[0] ?? localSubmissionArtworkImages?.[0] ?? null
-
-    setLocalImage(localDefaultImage)
+    setLocalImage(await getLocalImage(artwork?.image?.internalID!))
   }
 
   const isP1Artist = artwork.artist?.targetSupply?.isP1
@@ -172,6 +165,7 @@ const artworkFragment = graphql`
       name
     }
     image {
+      internalID
       url(version: "small")
       aspectRatio
       width

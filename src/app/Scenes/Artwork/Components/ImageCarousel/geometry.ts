@@ -38,7 +38,7 @@ export function fitInside(
 /**
  * Represents geometric data to position images on the carousel rail
  */
-interface ImageMeasurements {
+export interface ImageMeasurements {
   width: number
   height: number
   marginLeft: number

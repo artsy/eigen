@@ -1,9 +1,9 @@
-import { ImageCarousel_figures$data } from "__generated__/ImageCarousel_figures.graphql"
 import { Schema } from "app/utils/track"
 import { GlobalState, useGlobalState } from "app/utils/useGlobalState"
 import React, { useMemo, useRef } from "react"
 import { Animated, FlatList, View } from "react-native"
 import { useTracking } from "react-tracking"
+import { ImageCarousel_figures$data } from "__generated__/ImageCarousel_figures.graphql"
 
 export type ImageCarouselImage = Extract<ImageCarousel_figures$data[0], { __typename: "Image" }>
 export type ImageCarouselVideo = Extract<ImageCarousel_figures$data[0], { __typename: "Video" }> & {
@@ -16,7 +16,7 @@ export type ImageCarouselMedia = ImageCarouselImage | ImageCarouselVideo
 
 export type ImageDescriptor = Pick<
   ImageCarouselImage,
-  "deepZoom" | "height" | "width" | "url" | "largeImageURL"
+  "deepZoom" | "height" | "width" | "url" | "largeImageURL" | "internalID"
 >
 
 export type ImageCarouselAction =

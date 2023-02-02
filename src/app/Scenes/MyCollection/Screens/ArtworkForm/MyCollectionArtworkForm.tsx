@@ -9,28 +9,29 @@ import { useActionSheet } from "@expo/react-native-action-sheet"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { captureException } from "@sentry/react-native"
-import { MyCollectionArtwork_sharedProps$data } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
-import { LengthUnitPreference } from "__generated__/UserPrefsModelQuery.graphql"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
-import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { deleteArtworkImage } from "app/Scenes/MyCollection/mutations/deleteArtworkImage"
 import { myCollectionCreateArtwork } from "app/Scenes/MyCollection/mutations/myCollectionCreateArtwork"
 import { myCollectionDeleteArtwork } from "app/Scenes/MyCollection/mutations/myCollectionDeleteArtwork"
 import { myCollectionUpdateArtwork } from "app/Scenes/MyCollection/mutations/myCollectionUpdateArtwork"
+import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { deletedPhotos } from "app/Scenes/MyCollection/utils/deletedPhotos"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { GlobalStore, addClue, setVisualClueAsSeen } from "app/store/GlobalStore"
+import { addClue, GlobalStore, setVisualClueAsSeen } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
+import { storeLocalImage } from "app/utils/LocalImageStore"
 import { refreshMyCollection, refreshMyCollectionInsights } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
-import { isEqual } from "lodash"
+import { isEqual, reverse } from "lodash"
 import { useEffect, useRef, useState } from "react"
 import { Alert, InteractionManager } from "react-native"
 import { useTracking } from "react-tracking"
+import { MyCollectionArtwork_sharedProps$data } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
+import { LengthUnitPreference } from "__generated__/UserPrefsModelQuery.graphql"
 import { SavingArtworkModal } from "./Components/SavingArtworkModal"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
-import { storeLocalPhotos, uploadPhotos } from "./MyCollectionImageUtil"
+import { uploadPhotos } from "./MyCollectionImageUtil"
 import { MyCollectionAddPhotos } from "./Screens/MyCollectionArtworkFormAddPhotos"
 import { MyCollectionArtworkFormArtist } from "./Screens/MyCollectionArtworkFormArtist"
 import { MyCollectionArtworkFormArtwork } from "./Screens/MyCollectionArtworkFormArtwork"
@@ -351,10 +352,21 @@ export const updateArtwork = async (
       width: others.width,
     })
 
-    const slug = response.myCollectionCreateArtwork?.artworkOrError?.artworkEdge?.node?.slug
-    if (slug) {
-      storeLocalPhotos(slug, photos)
-    }
+    const artwork = response.myCollectionCreateArtwork?.artworkOrError?.artworkEdge?.node
+
+    // Store images locally
+    photos.forEach((image, index) => {
+      const imageID = artwork?.images?.[index]?.internalID
+      console.log("asdf upload", { imageID, image, index })
+
+      if (!imageID) return
+
+      storeLocalImage(imageID, {
+        path: image.path!,
+        width: image.width!,
+        height: image.height!,
+      })
+    })
 
     const hasMarketPriceInsights =
       response.myCollectionCreateArtwork?.artworkOrError?.artworkEdge?.node?.hasMarketPriceInsights
@@ -384,11 +396,25 @@ export const updateArtwork = async (
       width: others.width,
     })
 
-    const slug = response.myCollectionUpdateArtwork?.artworkOrError?.artwork?.slug
-    // if the user has updated images, save to local store
-    if (slug) {
-      storeLocalPhotos(slug, photos)
-    }
+    const updatedArtwork = response.myCollectionUpdateArtwork?.artworkOrError?.artwork
+
+    // Store images locally and start from the end because
+    // it's only possible to add new images at the end
+    const reversedImages = reverse([...(updatedArtwork?.images ?? [])])
+
+    reverse([...photos]).forEach((image, index) => {
+      const imageID = reversedImages[index]?.internalID
+
+      if (!imageID) return
+
+      storeLocalImage(imageID, {
+        path: image.path!,
+        width: image.width!,
+        height: image.height!,
+      })
+    })
+
+    // Delete images
     const deletedImages = deletedPhotos(dirtyFormCheckValues.photos, photos)
     for (const photo of deletedImages) {
       await deleteArtworkImage(props.artwork.internalID, photo.id)

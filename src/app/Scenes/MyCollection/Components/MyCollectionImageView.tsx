@@ -2,7 +2,7 @@ import { NoImageIcon } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
 import { GlobalStore } from "app/store/GlobalStore"
-import { LocalImage, retrieveLocalImages } from "app/utils/LocalImageStore"
+import { LocalImage } from "app/utils/LocalImageStore"
 import { Flex, useColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { Image as RNImage } from "react-native"
@@ -30,13 +30,13 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
   const [localImage, setLocalImage] = useState<LocalImage | null>(null)
   const [localImageConsignments, setLocalImageConsignments] = useState<Photo | null>(null)
 
-  useEffect(() => {
-    retrieveLocalImages(artworkSlug).then((images) => {
-      if (images && images.length > 0) {
-        setLocalImage(images[0])
-      }
-    })
-  }, [myCollectionIsRefreshing])
+  // useEffect(() => {
+  //   retrieveLocalImages(artworkSlug).then((images) => {
+  //     if (images && images.length > 0) {
+  //       setLocalImage(images[0])
+  //     }
+  //   })
+  // }, [myCollectionIsRefreshing])
 
   const {
     photosForMyCollection: { photos },

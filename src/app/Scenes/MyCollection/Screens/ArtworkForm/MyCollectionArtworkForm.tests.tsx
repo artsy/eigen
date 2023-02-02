@@ -11,6 +11,7 @@ import {
 } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/uploadFileToS3"
 import { GlobalStore, __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import * as LocalImageStore from "app/utils/LocalImageStore"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { Image } from "react-native-image-crop-picker"
@@ -472,13 +473,13 @@ describe("MyCollectionArtworkForm", () => {
         const addArtworkMock = jest.spyOn(artworkMutations, "myCollectionCreateArtwork")
         addArtworkMock.mockImplementation(() => Promise.resolve(artworkResponse))
 
-        const storeLocalPhotosMock = jest.spyOn(photoUtil, "storeLocalPhotos")
+        const storeLocalImageMock = jest.spyOn(LocalImageStore, "storeLocalImage")
 
         await updateArtwork(formValues, formCheckValues, props)
 
         expect(uploadPhotosMock).toBeCalledWith(fakePhotos)
         expect(addArtworkMock).toBeCalled()
-        expect(storeLocalPhotosMock).toBeCalledWith(expect.anything(), fakePhotos)
+        expect(storeLocalImageMock).toBeCalledWith(expect.anything(), fakePhotos)
       })
     })
   })

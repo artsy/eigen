@@ -1,5 +1,4 @@
 import { captureMessage } from "@sentry/react-native"
-import { ImageCarousel_figures$data } from "__generated__/ImageCarousel_figures.graphql"
 import { createGeminiUrl } from "app/Components/OpaqueImageView/createGeminiUrl"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { isPad } from "app/utils/hardware"
@@ -9,8 +8,10 @@ import { useMemo } from "react"
 import { PixelRatio, Platform } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
+import { ImageCarousel_figures$data } from "__generated__/ImageCarousel_figures.graphql"
 import { ImageCarouselFullScreen } from "./FullScreen/ImageCarouselFullScreen"
 import { ImageCarouselFullScreenAndroid } from "./FullScreen/ImageCarouselFullScreenAndroid"
+import { fitInside } from "./geometry"
 import {
   ImageCarouselContext,
   ImageCarouselImage,
@@ -20,7 +21,6 @@ import {
 } from "./ImageCarouselContext"
 import { ImageCarouselEmbedded } from "./ImageCarouselEmbedded"
 import { IndicatorType, PaginationIndicator } from "./ImageCarouselPaginationIndicator"
-import { fitInside } from "./geometry"
 
 export interface CarouselImageDescriptor extends ImageDescriptor {
   imageVersions?: string[]
@@ -58,6 +58,8 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
     setVideoAsCover,
     onImageIndexChange,
   })
+
+  console.log("asdf", context.media.length, images.length, videos.length)
 
   context.fullScreenState.useUpdates()
 
@@ -99,6 +101,8 @@ export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarou
     fragment ImageCarousel_figures on ArtworkFigures @relay(plural: true) {
       ... on Image {
         __typename
+        internalID
+        versions
         url
         largeImageURL: url(version: "larger")
         width
@@ -193,33 +197,28 @@ const useImageCarouselMedia = (
 
     let result = mappedImages
       .map((image) => {
-        const brokenImage = !image.height || !image.width || !image.url
-
-        if (brokenImage) {
-          return null
-        }
-
         const { width, height } = fitInside(embeddedCardBoundingBox, image as MappedImageDescriptor)
 
         const url = (() => {
-          if (isALocalImage(image.url) || !imageHasVersions(image as CarouselImageDescriptor)) {
-            return image.url
-          } else {
-            return createGeminiUrl({
-              imageURL: image.url.replace(
-                ":version",
-                getBestImageVersionForThumbnail(image.imageVersions as string[])
-              ),
-              // upscale to match screen resolution
-              width: width * PixelRatio.get(),
-              height: height * PixelRatio.get(),
-            })
+          if (!image.url || !image.height || !image.width) {
+            return null
           }
+
+          return createGeminiUrl({
+            imageURL: image.url.replace(
+              ":version",
+              getBestImageVersionForThumbnail(image.imageVersions as string[])
+            ),
+            // upscale to match screen resolution
+            width: width * PixelRatio.get(),
+            height: height * PixelRatio.get(),
+          })
         })()
 
         const largeImageURL = image.largeImageURL ?? image.url ?? null
 
         return {
+          ...image,
           deepZoom: image?.deepZoom,
           height,
           largeImageURL,
