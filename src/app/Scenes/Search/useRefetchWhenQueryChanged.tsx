@@ -7,8 +7,11 @@ interface Props {
 }
 
 export const useRefetchWhenQueryChanged = ({ query, refetch }: Props) => {
-  const shouldStartSearching = query.length >= 2
   useEffect(() => {
-    refetch({ term: query, skipSearchQuery: !shouldStartSearching })
+    const shouldStartSearching = query.length >= 2
+
+    if (!shouldStartSearching) {
+      refetch({ term: query, skipSearchQuery: false })
+    }
   }, [query])
 }

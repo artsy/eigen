@@ -28,12 +28,14 @@ export function useSearchQuery<TQuery extends OperationType>(
   const [queryArgs, setQueryArgs] = useState<QueryArgs<VariablesOf<TQuery>>>({
     options: {
       fetchKey: 0,
-      fetchPolicy: "store-only",
     },
     variables,
   })
 
-  const data = useLazyLoadQuery<TQuery>(query, queryArgs.variables, queryArgs.options)
+  const data = useLazyLoadQuery<TQuery>(query, queryArgs.variables, {
+    ...queryArgs.options,
+    networkCacheConfig: { force: false },
+  })
 
   const refetch = (updatedVariables: VariablesOf<TQuery>) => {
     if (isRefreshing) {
@@ -49,7 +51,7 @@ export function useSearchQuery<TQuery extends OperationType>(
         setQueryArgs((prev) => ({
           options: {
             fetchKey: prev.options.fetchKey + 1,
-            fetchPolicy: prev.options.fetchPolicy,
+            fetchPolicy: "store-only",
           },
           variables: updatedVariables,
         }))
