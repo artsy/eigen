@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { ArtQuizExploreArtistFollowArtistMutation } from "__generated__/ArtQuizExploreArtistFollowArtistMutation.graphql"
 import {
   ArtQuizExploreArtist_artist$data,
@@ -10,7 +11,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { debounce } from "lodash"
-import { Flex, FollowButton, Spacer, Text } from "palette"
+import { Flex, FollowButton, Text } from "palette"
 import { graphql, useFragment, useMutation } from "react-relay"
 
 export const ArtQuizExploreArtist = ({
@@ -61,7 +62,7 @@ export const ArtQuizExploreArtist = ({
           />
         </Flex>
       </Flex>
-      <Spacer m={1} />
+      <Spacer y="1" />
       <Flex px={2}>
         <ReadMore
           content={artist?.biographyBlurb?.text!}
@@ -71,7 +72,7 @@ export const ArtQuizExploreArtist = ({
           linkTextVariant="sm-display"
         />
       </Flex>
-      <Spacer m={1} />
+      <Spacer y="1" />
       <SmallArtworkRail
         artworks={artworks}
         onPress={(artwork) => {
