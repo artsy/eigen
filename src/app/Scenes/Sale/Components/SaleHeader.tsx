@@ -1,3 +1,4 @@
+import { MoreIcon, LinkIcon, ShareIcon } from "@artsy/palette-mobile"
 import Clipboard from "@react-native-clipboard/clipboard"
 import { SaleHeader_sale$data } from "__generated__/SaleHeader_sale.graphql"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
@@ -8,12 +9,12 @@ import { useToast } from "app/Components/Toast/toastHook"
 import { navigate } from "app/system/navigation/navigate"
 import { getAbsoluteTimeOfSale, saleTime, useRelativeTimeOfSale } from "app/utils/saleTime"
 import moment from "moment"
-import { Flex, LinkIcon, MoreIcon, ShareIcon, Text, Touchable } from "palette"
+import { Flex, Text, Touchable } from "palette"
 import React, { useState } from "react"
 import { Animated, Dimensions, View } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import RNShare, { ShareOptions } from "react-native-share"
 import { createFragmentContainer, graphql } from "react-relay"
-import { useScreenDimensions } from "shared/hooks"
 
 export const COVER_IMAGE_HEIGHT = 260
 const SHARE_ICON_SIZE = 23
@@ -25,6 +26,7 @@ interface Props {
 
 export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
   const [shareSheetVisible, setShareSheetVisible] = useState(false)
+  const saInsets = useSafeAreaInsets()
 
   const toast = useToast()
 
@@ -117,9 +119,7 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
       <View
         style={{
           backgroundColor: "white",
-          marginTop: !!sale.coverImage?.url
-            ? COVER_IMAGE_HEIGHT
-            : useScreenDimensions().safeAreaInsets.top + 40,
+          marginTop: !!sale.coverImage?.url ? COVER_IMAGE_HEIGHT : saInsets.top + 40,
         }}
       >
         <Flex mx="2" mt="2">

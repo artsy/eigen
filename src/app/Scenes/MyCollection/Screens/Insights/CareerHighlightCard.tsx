@@ -1,15 +1,12 @@
 import {
-  Button,
   FairIcon,
-  Flex,
-  GroupIcon,
   IconProps,
-  MuseumIcon,
+  InstitutionIcon,
   PublicationIcon,
-  SoloIcon,
-  Text,
-  Touchable,
-} from "palette"
+  UserMultiIcon,
+  UserSingleIcon,
+} from "@artsy/palette-mobile"
+import { Button, Flex, Text, Touchable } from "palette"
 import { Fragment, FunctionComponent } from "react"
 import { Image } from "react-native"
 
@@ -120,13 +117,13 @@ export const getCareerHiglight = (type: CareerHighlightKind, count: number) => {
       label = `${
         pl ? "Artists are" : "Artist is"
       } collected by ${article}major institution${ending}.`
-      Icon = MuseumIcon
+      Icon = InstitutionIcon
       break
     case "GROUP_SHOW":
       label = `${
         pl ? "Artists were" : "Artist was"
       } in a group show at ${article}major institution${ending}.`
-      Icon = GroupIcon
+      Icon = UserMultiIcon
       break
     case "REVIEWED":
       label = `${
@@ -139,7 +136,7 @@ export const getCareerHiglight = (type: CareerHighlightKind, count: number) => {
       label = `${
         pl ? "Artists" : "Artist"
       } had a solo show at ${article}major institution${ending}.`
-      Icon = SoloIcon
+      Icon = UserSingleIcon
       break
     /*
     case "": // TODO: Collected by artists

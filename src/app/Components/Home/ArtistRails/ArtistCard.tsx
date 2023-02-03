@@ -1,10 +1,10 @@
+import { CloseIcon } from "@artsy/palette-mobile"
 import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
 
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import {
-  CloseIcon,
   Flex,
   FollowButton,
   OpaqueImageView as NewOpaqueImageView,

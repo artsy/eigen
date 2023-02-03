@@ -1,3 +1,4 @@
+import { HeartIcon, HeartFillIcon } from "@artsy/palette-mobile"
 import {
   OnboardingResultsGrid_connection$data,
   OnboardingResultsGrid_connection$key,
@@ -6,7 +7,7 @@ import { calculateLayoutValues, getSectionedItems } from "app/Components/Artwork
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useDoublePressCallback } from "app/Scenes/Artwork/Components/ImageCarousel/FullScreen/useDoublePressCallback"
 import { extractNodes } from "app/utils/extractNodes"
-import { Box, Flex, HeartFillIcon, HeartIcon, Text, TextProps, Touchable, useTheme } from "palette"
+import { Box, Flex, Text, TextProps, Touchable, useTheme } from "palette"
 import { FC } from "react"
 import { Dimensions, ScrollView } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"

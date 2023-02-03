@@ -1,4 +1,5 @@
-import { ArrowLeftIcon, Box, Separator, Text, useTheme } from "palette"
+import { ArrowLeftIcon } from "@artsy/palette-mobile"
+import { Box, Separator, Text, useTheme } from "palette"
 import { TouchableOpacity } from "react-native"
 
 export interface ArtworkFilterBackHeaderProps {

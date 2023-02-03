@@ -1,5 +1,5 @@
+import { ArrowRightIcon } from "@artsy/palette-mobile"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { ArrowRightIcon } from "palette"
 import { View } from "react-native"
 import { ArrowDetails } from "./ArrowDetails"
 

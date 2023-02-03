@@ -1,5 +1,6 @@
+import { IconProps } from "@artsy/palette-mobile"
 import { ActionSheetProps } from "@expo/react-native-action-sheet"
-import { Color, IconProps } from "palette"
+import { Color } from "palette"
 
 export type ToastDuration = "long" | "short"
 

@@ -1,3 +1,4 @@
+import { FilterIcon } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { themeGet } from "@styled-system/theme-get"
 import { AnimatableHeader } from "app/Components/AnimatableHeader/AnimatableHeader"
@@ -18,7 +19,7 @@ import {
 import { Schema } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import _ from "lodash"
-import { FilterIcon, Flex, Text } from "palette"
+import { Flex, Text } from "palette"
 import React, { useMemo } from "react"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"

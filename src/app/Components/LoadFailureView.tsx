@@ -1,8 +1,8 @@
+import { ReloadIcon } from "@artsy/palette-mobile"
 import { useDevToggle, useIsStaging } from "app/store/GlobalStore"
 import { debounce } from "lodash"
 import { Box, BoxProps, Flex, Text, Touchable, useColor } from "palette"
-import { ReloadIcon } from "palette/svgs/ReloadIcon"
-import React, { useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { Animated, Easing } from "react-native"
 import { JustifyContentValue } from "./Bidding/Elements/types"
 
@@ -20,6 +20,7 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
   const color = useColor()
   const spinAnimation = useRef(new Animated.Value(0)).current
   const [isAnimating, setIsAnimating] = useState(false)
+  const showErrorInLoadFailureViewToggle = useDevToggle("DTShowErrorInLoadFailureView")
 
   const playAnimation = () => {
     setIsAnimating(true)
@@ -33,7 +34,7 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
     ).start()
   }
 
-  const showErrorMessage = __DEV__ || useDevToggle("DTShowErrorInLoadFailureView")
+  const showErrorMessage = __DEV__ || showErrorInLoadFailureViewToggle
   const isStaging = useIsStaging()
 
   return (

@@ -1,9 +1,9 @@
 import { ActionType, OwnerType, TappedReverseImageSearch } from "@artsy/cohesion"
+import { AddIcon } from "@artsy/palette-mobile"
 import { HeaderButton } from "app/Components/HeaderButton"
 import { ReverseImageOwner } from "app/Scenes/ReverseImage/types"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { AddIcon } from "palette"
 import { useTracking } from "react-tracking"
 
 const CAMERA_ICON_SIZE = 20

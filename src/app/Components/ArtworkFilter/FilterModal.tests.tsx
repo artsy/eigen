@@ -12,11 +12,9 @@ import {
   ArtworkFiltersStoreProvider,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { CollectionArtworksFragmentContainer } from "app/Scenes/Collection/Screens/CollectionArtworks"
-import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { mockNavigate } from "app/utils/tests/navigationMocks"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { Theme } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
@@ -416,16 +414,12 @@ describe("Applying filters on Artworks", () => {
       render={({ props, error }) => {
         if (props?.marketingCollection) {
           return (
-            <GlobalStoreProvider>
-              <Theme>
-                <ArtworkFiltersStoreProvider initialData={initialData}>
-                  <CollectionArtworksFragmentContainer
-                    collection={props.marketingCollection}
-                    scrollToTop={jest.fn()}
-                  />
-                </ArtworkFiltersStoreProvider>
-              </Theme>
-            </GlobalStoreProvider>
+            <ArtworkFiltersStoreProvider initialData={initialData}>
+              <CollectionArtworksFragmentContainer
+                collection={props.marketingCollection}
+                scrollToTop={jest.fn()}
+              />
+            </ArtworkFiltersStoreProvider>
           )
         } else if (error) {
           console.log(error)

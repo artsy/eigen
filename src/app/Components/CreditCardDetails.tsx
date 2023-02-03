@@ -1,6 +1,6 @@
-import { bullet } from "@artsy/palette-mobile"
+import { bullet, CreditCardIcon } from "@artsy/palette-mobile"
 import { CreditCardDetails_card$data } from "__generated__/CreditCardDetails_card.graphql"
-import { CreditCardIcon, Flex, Text } from "palette"
+import { Flex, Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 const CreditCardDetails = ({

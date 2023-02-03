@@ -1,5 +1,6 @@
+import { CheckCircleFillIcon, CloseCircleFillIcon } from "@artsy/palette-mobile"
 import { ArtworkAuctionBidInfo_artwork$key } from "__generated__/ArtworkAuctionBidInfo_artwork.graphql"
-import { CheckCircleFillIcon, CloseCircleFillIcon, Flex, FlexProps, Text } from "palette"
+import { Flex, FlexProps, Text } from "palette"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 

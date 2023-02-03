@@ -1,6 +1,7 @@
+import { NoArtworkIcon } from "@artsy/palette-mobile"
 import { MedianAuctionPriceRail_me$data } from "__generated__/MedianAuctionPriceRail_me.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { Flex, NoArtworkIcon, Text, Touchable, useColor } from "palette"
+import { Flex, Text, Touchable, useColor } from "palette"
 import { ToolTip } from "palette/elements/ToolTip"
 
 export type MedianSalePriceArtwork = NonNullable<

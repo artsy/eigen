@@ -1,11 +1,12 @@
+import { ArtsyLogoBlackIcon } from "@artsy/palette-mobile"
 import { popToRoot } from "app/system/navigation/navigate"
-import { ArtsyLogoIcon, Box, Button, Flex, Text } from "palette"
+import { Box, Button, Flex, Text } from "palette"
 
 export const ConsignmentInquiryConfirmation: React.FC<{}> = () => {
   return (
     <Box mt={2} px={2}>
       <Flex mb={4}>
-        <ArtsyLogoIcon scale={0.75} />
+        <ArtsyLogoBlackIcon scale={0.75} />
       </Flex>
       <Text variant="lg-display" mb={2}>
         Your message has been sent

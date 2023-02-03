@@ -1,8 +1,9 @@
+import { CheckIcon } from "@artsy/palette-mobile"
 import { ParamListBase } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { FilterData } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
-import { Box, CheckIcon, Flex, Separator, Text } from "palette"
+import { Box, Flex, Separator, Text } from "palette"
 import { FlatList, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 

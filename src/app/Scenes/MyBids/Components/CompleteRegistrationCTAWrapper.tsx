@@ -1,7 +1,7 @@
 import { ContextModule } from "@artsy/cohesion"
+import { ArrowRightIcon, ExclamationMarkCircleFill } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
-import { ArrowRightIcon, Flex, Text, Touchable } from "palette"
-import { ExclamationMarkCircleFill } from "palette/svgs/sf"
+import { Flex, Text, Touchable } from "palette"
 import { useTracking } from "react-tracking"
 
 interface CompleteRegistrationCTAWrapperProps {

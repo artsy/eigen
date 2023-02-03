@@ -1,4 +1,5 @@
 import { tappedCollectedArtwork } from "@artsy/cohesion"
+import { NoArtworkIcon } from "@artsy/palette-mobile"
 import {
   MyCollectionArtworkListItem_artwork$data,
   MyCollectionArtworkListItem_artwork$key,
@@ -8,7 +9,7 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
 import { LocalImage, retrieveLocalImages } from "app/utils/LocalImageStore"
 import { getImageSquareDimensions } from "app/utils/resizeImage"
-import { Flex, NoArtworkIcon, Text, Touchable } from "palette"
+import { Flex, Text, Touchable } from "palette"
 import { useEffect, useState } from "react"
 import { Image as RNImage } from "react-native"
 import { useFragment } from "react-relay"

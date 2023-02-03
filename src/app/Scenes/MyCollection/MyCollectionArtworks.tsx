@@ -1,5 +1,5 @@
 import { ActionType, AddCollectedArtwork, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, LockIcon } from "@artsy/palette-mobile"
 import { MyCollection_me$data } from "__generated__/MyCollection_me.graphql"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
@@ -10,7 +10,7 @@ import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
 import { navigate, popToRoot } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
-import { Button, Flex, LockIcon, Text, useSpace } from "palette"
+import { Button, Flex, Text, useSpace } from "palette"
 import { useState } from "react"
 import {
   Alert,

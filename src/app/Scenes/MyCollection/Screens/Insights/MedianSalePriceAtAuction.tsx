@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, NoArtworkIcon } from "@artsy/palette-mobile"
 import { MedianSalePriceAtAuctionQuery } from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
 import {
   PlaceholderBox,
@@ -9,7 +9,7 @@ import {
 } from "app/utils/placeholders"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { Flex, NoArtworkIcon, OpaqueImageView, Text, Touchable } from "palette"
+import { Flex, OpaqueImageView, Text, Touchable } from "palette"
 import { Suspense, useCallback, useEffect, useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"

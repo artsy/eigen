@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { Spacer } from "@artsy/palette-mobile"
+import { ArtsyLogoBlackIcon, Spacer } from "@artsy/palette-mobile"
 import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { Home_articlesConnection$data } from "__generated__/Home_articlesConnection.graphql"
@@ -49,7 +49,7 @@ import { usePrefetch } from "app/utils/queryPrefetching"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { compact, times } from "lodash"
-import { ArtsyLogoIcon, Box, Flex, Join } from "palette"
+import { Box, Flex, Join } from "palette"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
 import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
@@ -601,7 +601,7 @@ const HomePlaceholder: React.FC = () => {
     <Flex>
       <Box mb={1} mt={2}>
         <Flex alignItems="center">
-          <ArtsyLogoIcon scale={0.75} />
+          <ArtsyLogoBlackIcon scale={0.75} />
           <ActivityIndicator hasUnseenNotifications={false} />
         </Flex>
       </Box>

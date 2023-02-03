@@ -1,5 +1,5 @@
-import { Spacer } from "@artsy/palette-mobile"
-import { ArtsyLogoIcon, Box, Flex } from "palette"
+import { ArtsyLogoBlackIcon, Spacer } from "@artsy/palette-mobile"
+import { Box, Flex } from "palette"
 import { StyleSheet } from "react-native"
 
 interface Props {
@@ -9,7 +9,7 @@ export const ArtsyLogoHeader: React.FC<Props> = ({ shadow = false }) => (
   <>
     <Box mt={2} mb={1} style={shadow ? styles.boxShadowStyle : {}}>
       <Flex alignItems="center">
-        <ArtsyLogoIcon scale={0.75} />
+        <ArtsyLogoBlackIcon scale={0.75} />
       </Flex>
       <Spacer mb="1" />
     </Box>

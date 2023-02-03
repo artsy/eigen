@@ -1,7 +1,7 @@
+import { XCircleIcon, EyeOpenedIcon, EyeClosedIcon } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import _ from "lodash"
-import { Color, EyeOpenedIcon, Flex, Spinner, Text, useTheme, XCircleIcon } from "palette"
-import { EyeClosedIcon } from "palette/svgs/EyeClosedIcon"
+import { Color, Flex, Spinner, Text, useTheme } from "palette"
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import {
   LayoutAnimation,

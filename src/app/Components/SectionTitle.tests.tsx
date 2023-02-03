@@ -1,6 +1,6 @@
+import { ArrowRightIcon } from "@artsy/palette-mobile"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { ArrowRightIcon } from "palette"
 import { SectionTitle } from "./SectionTitle"
 
 describe("SectionTitle", () => {

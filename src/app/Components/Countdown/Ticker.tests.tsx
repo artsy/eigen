@@ -1,7 +1,6 @@
-import { getDefaultNormalizer, render } from "@testing-library/react-native"
+import { getDefaultNormalizer } from "@testing-library/react-native"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import moment from "moment"
-import { Theme } from "palette"
 import { Text } from "react-native"
 import { LabeledTicker, ModernTicker, SimpleTicker } from "./Ticker"
 
@@ -10,10 +9,8 @@ const duration = moment.duration(1000)
 
 describe("SimpleTicker", () => {
   it("renders properly", () => {
-    const { getByText } = render(
-      <Theme>
-        <SimpleTicker duration={duration} separator="  " variant="sm-display" />
-      </Theme>
+    const { getByText } = renderWithWrappers(
+      <SimpleTicker duration={duration} separator="  " variant="sm-display" />
     )
 
     expect(
@@ -25,10 +22,8 @@ describe("SimpleTicker", () => {
 
   it("renders properly when duration is over", () => {
     const zeroDuration = moment.duration()
-    const { getByText } = render(
-      <Theme>
-        <SimpleTicker duration={zeroDuration} separator="  " variant="sm-display" />
-      </Theme>
+    const { getByText } = renderWithWrappers(
+      <SimpleTicker duration={zeroDuration} separator="  " variant="sm-display" />
     )
 
     expect(
@@ -41,10 +36,8 @@ describe("SimpleTicker", () => {
   it("renders properly with days overflowing a single month", () => {
     // 2 years
     const farOutDuration = moment.duration(63113904000)
-    const { getByText } = render(
-      <Theme>
-        <SimpleTicker duration={farOutDuration} separator="  " variant="sm-display" />
-      </Theme>
+    const { getByText } = renderWithWrappers(
+      <SimpleTicker duration={farOutDuration} separator="  " variant="sm-display" />
     )
 
     expect(
@@ -57,10 +50,8 @@ describe("SimpleTicker", () => {
 
 describe("LabeledTicker", () => {
   it("renders properly", () => {
-    const { queryByText, queryAllByText } = render(
-      <Theme>
-        <LabeledTicker duration={duration} renderSeparator={() => <Text>:</Text>} />
-      </Theme>
+    const { queryByText, queryAllByText } = renderWithWrappers(
+      <LabeledTicker duration={duration} renderSeparator={() => <Text>:</Text>} />
     )
     expect(queryByText("00d")).toBeTruthy()
     expect(queryByText("00h")).toBeTruthy()
@@ -75,11 +66,7 @@ describe("ModernTicker", () => {
     it("When Bidding in less than 1 day: it shows hours and minutes left", () => {
       const twentyHrsFiveMins = 1000 * 60 * 60 * 20 + 1000 * 60 * 5
       const todayDuration = moment.duration(twentyHrsFiveMins)
-      const { getByText } = render(
-        <Theme>
-          <ModernTicker duration={todayDuration} />
-        </Theme>
-      )
+      const { getByText } = renderWithWrappers(<ModernTicker duration={todayDuration} />)
 
       const timerText = getByText("20h 5m Until Bidding Starts")
 
@@ -90,11 +77,7 @@ describe("ModernTicker", () => {
     it("When Bidding in less than 1 hour: it shows minutes and seconds left", () => {
       const twentyMinsTenSecs = 1000 * 60 * 20 + 1000 * 10
       const todayDuration = moment.duration(twentyMinsTenSecs)
-      const { getByText } = render(
-        <Theme>
-          <ModernTicker duration={todayDuration} />
-        </Theme>
-      )
+      const { getByText } = renderWithWrappers(<ModernTicker duration={todayDuration} />)
 
       const timerText = getByText("20m 10s Until Bidding Starts")
 
@@ -105,11 +88,7 @@ describe("ModernTicker", () => {
     it("renders 1 Day Until Bidding Starts in blue when start time is >24 hours but less than 2 days away", () => {
       // 28 hours
       const dayDuration = moment.duration(100800000)
-      const { getByText } = render(
-        <Theme>
-          <ModernTicker duration={dayDuration} />
-        </Theme>
-      )
+      const { getByText } = renderWithWrappers(<ModernTicker duration={dayDuration} />)
 
       const timerText = getByText("1 Day Until Bidding Starts")
 
@@ -120,11 +99,7 @@ describe("ModernTicker", () => {
     it("renders 4 Days Until Bidding Starts in blue when start time is >2 days away", () => {
       // 3 days, 23 hours
       const daysDuration = moment.duration(342000000)
-      const { getByText } = render(
-        <Theme>
-          <ModernTicker duration={daysDuration} />
-        </Theme>
-      )
+      const { getByText } = renderWithWrappers(<ModernTicker duration={daysDuration} />)
 
       const timerText = getByText("3 Days Until Bidding Starts")
 
@@ -137,11 +112,7 @@ describe("ModernTicker", () => {
     it("renders 3d23h in blue when end time is days away", () => {
       // 3 days, 23 hours
       const daysDuration = moment.duration(342000000)
-      const { getByText } = render(
-        <Theme>
-          <ModernTicker duration={daysDuration} hasStarted />
-        </Theme>
-      )
+      const { getByText } = renderWithWrappers(<ModernTicker duration={daysDuration} hasStarted />)
 
       const timerText = getByText("3d 23h")
 
@@ -152,11 +123,7 @@ describe("ModernTicker", () => {
     it("renders 10h3m in blue when end time is hours away", () => {
       // 10 hours, 3 mins
       const hoursDuration = moment.duration(36180000)
-      const { getByText } = render(
-        <Theme>
-          <ModernTicker duration={hoursDuration} hasStarted />
-        </Theme>
-      )
+      const { getByText } = renderWithWrappers(<ModernTicker duration={hoursDuration} hasStarted />)
 
       const timerText = getByText("10h 3m")
 
@@ -167,10 +134,8 @@ describe("ModernTicker", () => {
     it("renders 45m 30s in red when end time is minutes away", () => {
       // 45 minutes,  30 seconds
       const minutesDuration = moment.duration(2730000)
-      const { getByText } = render(
-        <Theme>
-          <ModernTicker duration={minutesDuration} hasStarted />
-        </Theme>
+      const { getByText } = renderWithWrappers(
+        <ModernTicker duration={minutesDuration} hasStarted />
       )
 
       const timerText = getByText("45m 30s")
@@ -182,10 +147,8 @@ describe("ModernTicker", () => {
     it("renders 30s in red when end time is seconds away", () => {
       // 30 seconds
       const secondsDuration = moment.duration(30000)
-      const { getByText } = render(
-        <Theme>
-          <ModernTicker duration={secondsDuration} hasStarted />
-        </Theme>
+      const { getByText } = renderWithWrappers(
+        <ModernTicker duration={secondsDuration} hasStarted />
       )
 
       const timerText = getByText("0m 30s")
@@ -197,9 +160,7 @@ describe("ModernTicker", () => {
     it('prefixes "Extended: " when when sale is extended', () => {
       const momentDuration = moment.duration(1000 * 90) // 1m 30s
       const { getByText } = renderWithWrappers(
-        <Theme>
-          <ModernTicker duration={momentDuration} hasStarted isExtended />
-        </Theme>
+        <ModernTicker duration={momentDuration} hasStarted isExtended />
       )
       const timerTextBlock = getByText("Extended: 1m 30s")
 

@@ -1,3 +1,4 @@
+import { ShieldIcon } from "@artsy/palette-mobile"
 import { Messages_conversation$data } from "__generated__/Messages_conversation.graphql"
 import { ToastComponent } from "app/Components/Toast/ToastComponent"
 import { PAGE_SIZE } from "app/Components/constants"
@@ -6,7 +7,6 @@ import { extractNodes } from "app/utils/extractNodes"
 
 import { sortBy } from "lodash"
 import { DateTime } from "luxon"
-import { ShieldIcon } from "palette"
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import { Dimensions, FlatList, RefreshControl, ViewStyle } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"

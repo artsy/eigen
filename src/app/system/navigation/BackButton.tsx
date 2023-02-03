@@ -1,4 +1,4 @@
-import { ChevronIcon, CloseIcon } from "palette"
+import { CloseIcon, ChevronIcon } from "@artsy/palette-mobile"
 import { useEffect, useRef } from "react"
 import { Animated, TouchableOpacity, ViewStyle } from "react-native"
 import { useFirstMountState } from "react-use/esm/useFirstMountState"

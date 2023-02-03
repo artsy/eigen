@@ -1,5 +1,6 @@
+import { CheckIcon } from "@artsy/palette-mobile"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Box, CheckIcon } from "palette"
+import { Box } from "palette"
 import { ColorsSwatch } from "./ColorsSwatch"
 
 describe("Colors swatch", () => {
