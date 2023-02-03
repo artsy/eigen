@@ -1,7 +1,8 @@
 import { ArtQuizResultsEmptyTabsQuery } from "__generated__/ArtQuizResultsEmptyTabsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
+import { ArtQuizTrendingArtists } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsEmptyTabs/ArtQuizTrendingArtists"
+import { ArtQuizTrendingCollections } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsEmptyTabs/ArtQuizTrendingCollections"
 import { ArtQuizResultsTabsHeader } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsTabsHeader"
-import { ArtQuizTrendingCollections } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizTrendingCollections"
 import { compact } from "lodash"
 import { Screen } from "palette"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -30,7 +31,7 @@ export const ArtQuizResultsEmptyTabs = () => {
             },
             {
               title: Tab.trendingArtists,
-              content: <ArtQuizTrendingCollections viewer={queryResult.viewer} />,
+              content: <ArtQuizTrendingArtists viewer={queryResult.viewer} />,
             },
           ])}
           staticHeaderContent={
@@ -49,6 +50,7 @@ const artQuizResultsEmptyTabsQuery = graphql`
   query ArtQuizResultsEmptyTabsQuery {
     viewer {
       ...ArtQuizTrendingCollections_viewer
+      ...ArtQuizTrendingArtists_viewer
     }
   }
 `

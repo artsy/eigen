@@ -1,4 +1,5 @@
-import { Flex, Screen, Spinner, Text } from "palette"
+import { Flex, Spinner, Text } from "@artsy/palette-mobile"
+import { Screen } from "palette"
 
 export const ArtQuizResultsLoader = ({ isReady }: { isReady?: boolean }) => {
   return (

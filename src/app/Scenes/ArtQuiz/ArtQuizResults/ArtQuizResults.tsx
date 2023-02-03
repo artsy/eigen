@@ -1,14 +1,13 @@
 import { ArtQuizResultsQuery } from "__generated__/ArtQuizResultsQuery.graphql"
 import { ArtQuizResultsLoader } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsLoader"
-import { ArtQuizResultsEmptyTabs } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsEmptyTabs"
+import { ArtQuizResultsEmptyTabs } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsEmptyTabs/ArtQuizResultsEmptyTabs"
 import { ArtQuizResultsTabs } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsTabs"
 import { Suspense, useEffect, useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 const ResultsScreen = () => {
   const queryResult = useLazyLoadQuery<ArtQuizResultsQuery>(artQuizResultsQuery, {})
-  // const hasSavedArtworks = queryResult.me?.quiz.savedArtworks.length
-  const hasSavedArtworks = 0
+  const hasSavedArtworks = queryResult.me?.quiz.savedArtworks.length
   const [isResultReady, setIsResultReady] = useState(false)
 
   useEffect(() => {
@@ -18,15 +17,19 @@ const ResultsScreen = () => {
     return () => clearTimeout(timer)
   }, [hasSavedArtworks])
 
-  if (hasSavedArtworks && isResultReady) {
-    return <ArtQuizResultsTabs me={queryResult.me} />
-  }
-
-  if (!isResultReady) {
+  if (!isResultReady && hasSavedArtworks) {
     return <ArtQuizResultsLoader isReady />
   }
 
-  return <ArtQuizResultsEmptyTabs />
+  if (isResultReady && hasSavedArtworks) {
+    return <ArtQuizResultsTabs me={queryResult.me} />
+  }
+
+  return (
+    <Suspense fallback={<ArtQuizResultsLoader isReady />}>
+      <ArtQuizResultsEmptyTabs />
+    </Suspense>
+  )
 }
 
 export const ArtQuizResults = () => {
