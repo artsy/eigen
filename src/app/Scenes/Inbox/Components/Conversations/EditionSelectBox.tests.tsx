@@ -1,7 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
-import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { Theme } from "palette"
 import { graphql } from "relay-runtime"
 import { EditionSelectBoxFragmentContainer } from "./EditionSelectBox"
 
@@ -11,15 +10,11 @@ describe("EditionSelectBox", () => {
 
   const { renderWithRelay } = setupTestWrapper({
     Component: ({ artwork }: any) => (
-      <Theme>
-        <GlobalStoreProvider>
-          <EditionSelectBoxFragmentContainer
-            editionSet={artwork.editionSets[0]}
-            selected={selected}
-            onPress={onPress}
-          />
-        </GlobalStoreProvider>
-      </Theme>
+      <EditionSelectBoxFragmentContainer
+        editionSet={artwork.editionSets[0]}
+        selected={selected}
+        onPress={onPress}
+      />
     ),
     query: graphql`
       query EditionSelectBoxTestQuery {

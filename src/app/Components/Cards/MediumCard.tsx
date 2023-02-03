@@ -1,11 +1,7 @@
 import { Spacer } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { useTheme } from "palette/Theme"
-import { Box, BoxProps } from "palette/elements/Box"
-import { Flex } from "palette/elements/Flex"
-import { OpaqueImageView as NewOpaqueImageView } from "palette/elements/OpaqueImageView"
-import { Text } from "palette/elements/Text"
+import { useTheme, Box, BoxProps, Flex, Text, OpaqueImageView as NewOpaqueImageView } from "palette"
 import LinearGradient from "react-native-linear-gradient"
 import { CardTag, CardTagProps } from "./CardTag"
 
