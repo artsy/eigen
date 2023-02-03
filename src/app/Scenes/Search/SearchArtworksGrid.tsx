@@ -1,4 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
+import { quoteLeft, quoteRight } from "@artsy/palette-mobile"
 import { SearchArtworksGrid_viewer$data } from "__generated__/SearchArtworksGrid_viewer.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -11,7 +12,7 @@ import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids
 
 import { Schema } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
-import { Box, quoteLeft, quoteRight, Text, useTheme } from "palette"
+import { Box, Text, useTheme } from "palette"
 import React, { useEffect, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"

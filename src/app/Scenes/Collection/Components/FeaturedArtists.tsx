@@ -8,7 +8,6 @@ import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp } from "react-tracking"
-import styled from "styled-components/native"
 
 interface FeaturedArtistsProps {
   collection: FeaturedArtists_collection$data
@@ -81,9 +80,9 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
                 })
               }}
             >
-              <ViewAll variant="sm-display" color="black60">
+              <Text variant="sm-display" color="black60" textAlign="center">
                 View all
-              </ViewAll>
+              </Text>
             </TouchableOpacity>
           )}
         </Flex>
@@ -110,7 +109,3 @@ export const CollectionFeaturedArtistsContainer = createFragmentContainer(Featur
     }
   `,
 })
-
-export const ViewAll = styled(Text)`
-  text-align: center;
-`

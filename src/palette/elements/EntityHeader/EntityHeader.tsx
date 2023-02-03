@@ -1,7 +1,7 @@
+import { bullet } from "@artsy/palette-mobile"
 import { Avatar } from "palette/elements/Avatar"
 import { Flex, FlexProps } from "palette/elements/Flex"
 import { Text } from "palette/elements/Text"
-import { bullet } from "palette/helpers"
 
 interface EntityHeaderProps extends FlexProps {
   smallVariant?: boolean

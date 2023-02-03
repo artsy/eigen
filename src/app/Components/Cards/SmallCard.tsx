@@ -1,8 +1,6 @@
 import { Spacer } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { Box, BoxProps } from "palette/elements/Box"
-import { Text } from "palette/elements/Text"
-import { useSpace } from "palette/hooks"
+import { Box, BoxProps, Text, useSpace } from "palette"
 import { CardTag, CardTagProps } from "./CardTag"
 
 export interface SmallCardProps extends BoxProps {

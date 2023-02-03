@@ -1,6 +1,7 @@
+import { bullet } from "@artsy/palette-mobile"
 import { FilterDisplayConfig } from "app/Components/ArtworkFilter/types"
 import { TouchableRow } from "app/Components/TouchableRow"
-import { ArrowRightIcon, bullet, Flex, Text } from "palette"
+import { ArrowRightIcon, Flex, Text } from "palette"
 
 export interface ArtworkFilterOptionItemProps {
   item: FilterDisplayConfig

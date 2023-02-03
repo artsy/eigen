@@ -1,4 +1,4 @@
-import { endash, range } from "palette/helpers"
+import { endash, range } from "@artsy/palette-mobile"
 
 describe("Text", () => {
   it("uses endash in ranges", () => {

@@ -1,6 +1,4 @@
-import { Color } from "palette/Theme"
-import { Text } from "palette/elements/Text"
-import { useColor } from "palette/hooks"
+import { Color, Text, useColor } from "palette"
 import { View, StyleProp, ViewStyle } from "react-native"
 import { PositionProps } from "styled-system"
 

@@ -1,5 +1,6 @@
+import { bullet } from "@artsy/palette-mobile"
 import { storiesOf } from "@storybook/react-native"
-import { Box, bullet, Text } from "palette"
+import { Box, Text } from "palette"
 import { SpacingUnitV3 } from "palette/Theme"
 import { useSpace } from "palette/hooks"
 import { List } from "storybook/helpers"
