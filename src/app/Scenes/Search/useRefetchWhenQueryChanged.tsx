@@ -10,7 +10,7 @@ export const useRefetchWhenQueryChanged = ({ query, refetch }: Props) => {
   useEffect(() => {
     const shouldStartSearching = query.length >= 2
 
-    if (!shouldStartSearching) {
+    if (shouldStartSearching) {
       refetch({ term: query, skipSearchQuery: false })
     }
   }, [query])
