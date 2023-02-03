@@ -9,7 +9,8 @@ import { ReadMore } from "app/Components/ReadMore"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { truncatedTextLimit } from "app/utils/hardware"
-import { Flex, FollowButton, Spacer, Text, useSpace } from "palette"
+import { debounce } from "lodash"
+import { Flex, FollowButton, Spacer, Text } from "palette"
 import { graphql, useFragment, useMutation } from "react-relay"
 
 export const ArtQuizExploreArtist = ({
@@ -18,7 +19,6 @@ export const ArtQuizExploreArtist = ({
   artistData: ArtQuizExploreArtists_artworks$data[0]["artist"]
 }) => {
   const textLimit = truncatedTextLimit()
-  const space = useSpace()
   const artist = useFragment<ArtQuizExploreArtist_artist$key>(
     artQuizExploreArtistFragment,
     artistData
@@ -29,7 +29,7 @@ export const ArtQuizExploreArtist = ({
   const [followOrUnfollowArtist] =
     useMutation<ArtQuizExploreArtistFollowArtistMutation>(FollowArtistMutation)
 
-  const handleFollowChange = (artist: ArtQuizExploreArtist_artist$data) => {
+  const handleFollowChange = debounce((artist: ArtQuizExploreArtist_artist$data) => {
     followOrUnfollowArtist({
       variables: {
         input: { artistID: artist?.slug!, unfollow: artist?.isFollowed },
@@ -43,12 +43,12 @@ export const ArtQuizExploreArtist = ({
         },
       },
     })
-  }
+  })
 
   return (
     <Flex pt={2}>
-      <Flex flexDirection="row" justifyContent="space-between">
-        <Flex>
+      <Flex px={2} flexDirection="row" justifyContent="space-between">
+        <Flex flex={1}>
           <Text variant="lg-display">{artist?.name}</Text>
           <Text variant="lg-display" color="black60">
             {artist?.formattedNationalityAndBirthday}
@@ -62,24 +62,22 @@ export const ArtQuizExploreArtist = ({
         </Flex>
       </Flex>
       <Spacer m={1} />
-      <ReadMore
-        content={artist?.biographyBlurb?.text!}
-        maxChars={textLimit}
-        textStyle="new"
-        textVariant="sm"
-        linkTextVariant="sm-display"
-      />
-      <Spacer m={1} />
-      {/* the negative margin here is for resetting padding of 20 that all the parent
-      components of this instance have and to avoid changing the component tree in multiple spots. */}
-      <Flex mx={-space("2")}>
-        <SmallArtworkRail
-          artworks={artworks}
-          onPress={(artwork) => {
-            navigate(artwork?.href!)
-          }}
+      <Flex px={2}>
+        <ReadMore
+          content={artist?.biographyBlurb?.text!}
+          maxChars={textLimit}
+          textStyle="new"
+          textVariant="sm"
+          linkTextVariant="sm-display"
         />
       </Flex>
+      <Spacer m={1} />
+      <SmallArtworkRail
+        artworks={artworks}
+        onPress={(artwork) => {
+          navigate(artwork?.href!)
+        }}
+      />
     </Flex>
   )
 }

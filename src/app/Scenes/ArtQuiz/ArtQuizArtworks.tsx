@@ -40,7 +40,7 @@ export const ArtQuizArtworks = () => {
       title: `Like it? Hit the heart.${"\n"}Not for you? Choose X.`,
       placement: "bottom",
       withPointer: "bottom",
-      style: { width: "70%", marginBottom: 80, left: 55 },
+      style: { width: "70%", marginBottom: 100, left: 55 },
     })
     if (activeCardIndex !== 0) {
       popoverMessage.hide()
@@ -179,16 +179,14 @@ export const ArtQuizArtworks = () => {
             })}
           </PagerView>
         </Flex>
-        <Flex justifyContent="flex-end">
-          <Flex flexDirection="row" justifyContent="center" px={4}>
-            <Touchable onPress={() => handleNext("Dislike")}>
-              <CloseIcon height={40} width={50} />
-            </Touchable>
-            <Spacer y={4} />
-            <Touchable onPress={() => handleNext("Like")}>
-              <HeartIcon height={40} width={50} />
-            </Touchable>
-          </Flex>
+        <Flex flexDirection="row" justifyContent="center" mb={6}>
+          <Touchable onPress={() => handleNext("Dislike")} style={{ marginHorizontal: 40 }}>
+            <CloseIcon height={40} width={50} />
+          </Touchable>
+          <Spacer y={3} />
+          <Touchable onPress={() => handleNext("Like")} style={{ marginHorizontal: 40 }}>
+            <HeartIcon height={40} width={50} />
+          </Touchable>
         </Flex>
       </Screen.Body>
     </Screen>

@@ -21,6 +21,7 @@ export const ArtQuizExploreArtists = ({
 
   return (
     <StickyTabPageFlatList
+      style={{ paddingHorizontal: 0 }}
       data={artworkSections}
       initialNumToRender={2}
       keyExtractor={(item, index) => String(item?.artist?.internalID || index)}
