@@ -30,6 +30,7 @@ import {
   DEFAULT_RECS_MODEL_VERSION,
   RECOMMENDATION_MODEL_EXPERIMENT_NAME,
 } from "app/Scenes/NewWorksForYou/NewWorksForYou"
+import { search2QueryDefaultVariables } from "app/Scenes/Search/Search2"
 import { ViewingRoomsHomeMainRail } from "app/Scenes/ViewingRoom/Components/ViewingRoomsHomeRail"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
@@ -96,7 +97,7 @@ const Home = (props: Props) => {
 
   useEffect(() => {
     isESOnlySearchEnabled
-      ? prefetchUrl<Search2Query>("search2", { term: "", skipSearchQuery: true })
+      ? prefetchUrl<Search2Query>("search2", search2QueryDefaultVariables)
       : prefetchUrl<SearchQuery>("search")
     prefetchUrl("my-profile")
     prefetchUrl("inbox")
