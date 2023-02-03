@@ -78,10 +78,6 @@ interface State {
  * Use `OpaqueImageView` from palette instead.
  */
 export default class OpaqueImageView extends React.Component<Props, State> {
-  static defaultProps: Props = {
-    placeholderBackgroundColor: "#E7E7E7", // this is black10. Change it to that when this component becomes a function component.
-  }
-
   constructor(props: Props) {
     super(props)
 
@@ -168,11 +164,13 @@ export default class OpaqueImageView extends React.Component<Props, State> {
     let remainderProps = props
     if (Platform.OS === "ios" && this.props.imageURL) {
       const anyProps = props as any
-      anyProps.placeholderBackgroundColor = processColor(props.placeholderBackgroundColor)
+      anyProps.placeholderBackgroundColor = processColor(
+        props.placeholderBackgroundColor ?? "#E7E7E7"
+      )
     } else {
       const { ...remainder } = props
       remainderProps = remainder
-      backgroundColorStyle = { backgroundColor: props.placeholderBackgroundColor }
+      backgroundColorStyle = { backgroundColor: props.placeholderBackgroundColor ?? "#E7E7E7" }
     }
 
     if (React.Children.count(remainderProps.children) > 0) {
