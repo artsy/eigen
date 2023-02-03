@@ -1,4 +1,4 @@
-import { ArtQuizLikedArtworks_me$key } from "__generated__/ArtQuizLikedArtworks_me.graphql"
+import { ArtQuizLikedArtworks_artworks$key } from "__generated__/ArtQuizLikedArtworks_artworks.graphql"
 import { ArtQuizResultsTabs_me$data } from "__generated__/ArtQuizResultsTabs_me.graphql"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
@@ -11,7 +11,7 @@ export const ArtQuizLikedArtworks = ({
 }: {
   savedArtworks: ArtQuizResultsTabs_me$data["quiz"]["savedArtworks"]
 }) => {
-  const artworks = useFragment<ArtQuizLikedArtworks_me$key>(
+  const artworks = useFragment<ArtQuizLikedArtworks_artworks$key>(
     artQuizLikedArtworksFragment,
     savedArtworks
   )
@@ -37,7 +37,7 @@ export const ArtQuizLikedArtworks = ({
 }
 
 const artQuizLikedArtworksFragment = graphql`
-  fragment ArtQuizLikedArtworks_me on Artwork @relay(plural: true) {
+  fragment ArtQuizLikedArtworks_artworks on Artwork @relay(plural: true) {
     ...GenericGrid_artworks
   }
 `

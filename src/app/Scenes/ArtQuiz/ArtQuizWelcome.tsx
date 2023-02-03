@@ -27,7 +27,7 @@ export const ArtQuizWelcome = () => {
           <Button block onPress={() => navigate("ArtQuizArtworks")}>
             Start the Quiz
           </Button>
-          <Spacer y="0.5" />
+          <Spacer y="1" />
           <Button
             block
             variant="text"
