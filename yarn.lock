@@ -8141,6 +8141,14 @@ eslint-plugin-jest@27.2.1:
   dependencies:
     "@typescript-eslint/utils" "^5.10.0"
 
+eslint-plugin-no-autofix@1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-no-autofix/-/eslint-plugin-no-autofix-1.2.3.tgz#95cda2766bae7cd46b9b4206dd1383ef8fa6adff"
+  integrity sha512-JFSYe82Da2A8Krh+Gfq7+3X2pchTScKgmrlMKIA4HmV6t5xGBF/kgjiFL3YTWRQXQ0NB9eOqpcxh6SuLtQUFjQ==
+  dependencies:
+    eslint-rule-composer "^0.3.0"
+    find-up "^5.0.0"
+
 eslint-plugin-no-relative-import-paths@1.5.2:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/eslint-plugin-no-relative-import-paths/-/eslint-plugin-no-relative-import-paths-1.5.2.tgz#c35f2fd0bf2a6a57b268193ed7df63ff7000134e"
