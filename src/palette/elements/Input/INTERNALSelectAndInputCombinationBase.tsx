@@ -77,7 +77,7 @@ export const INTERNALSelectAndInputCombinationBase = forwardRef<
       <Input
         {...rest}
         ref={innerRef}
-        value={formatInputValue?.(innerValue) ?? innerValue}
+        value={formatInputValue ? formatInputValue(innerValue) : value}
         inputTextStyle={inputTextStyle}
         onChangeText={(text) => {
           setInnerValue(text)
