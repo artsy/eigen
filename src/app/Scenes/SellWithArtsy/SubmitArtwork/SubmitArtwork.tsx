@@ -255,15 +255,15 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
     >
       <ArtsyKeyboardAvoidingView>
         <Flex>
+          <BackButton onPress={handleBackPress} style={{ top: 10, zIndex: 100 }} />
           <ScrollView
             ref={scrollViewRef}
             contentContainerStyle={{
-              paddingVertical: 20,
+              paddingVertical: 50,
               paddingHorizontal: 20,
               justifyContent: "center",
             }}
           >
-            <BackButton onPress={handleBackPress} style={{ top: 10 }} />
             <Spacer mb={3} />
             <Join separator={<Separator my={2} marginTop="40" marginBottom="20" />}>
               {items.map(({ overtitle, title, Content, contextModule }, index) => (

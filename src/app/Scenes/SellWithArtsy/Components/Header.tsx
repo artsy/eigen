@@ -57,7 +57,7 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress, onInquiryPress }
           </Text>
         </Flex>
 
-        <Spacer mb={3} />
+        <Spacer y={2} />
 
         <Button testID="header-cta" variant="fillLight" block onPress={handleSubmitPress} haptic>
           <Text variant="sm" weight="medium">
