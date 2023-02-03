@@ -70,8 +70,6 @@ describe("Search", () => {
     fireEvent(screen.getByText("Artworks"), "press")
 
     fireEvent(screen.getByLabelText("Clear input button"), "press")
-    // mocks the clear button press request
-    resolveMostRecentRelayOperation(env)
 
     fireEvent(searchInput, "changeText", "new value")
     // needed to resolve the relay operation triggered for the text change
@@ -93,8 +91,6 @@ describe("Search", () => {
 
     fireEvent(searchInput, "focus")
     fireEvent(screen.getByText("Cancel"), "press")
-    // mocks the cancel button press request
-    resolveMostRecentRelayOperation(env)
 
     fireEvent(searchInput, "changeText", "new value")
     // needed to resolve the relay operation triggered for the text change
