@@ -10860,9 +10860,11 @@ type Me implements Node {
   collectionsConnection(
     after: String
     before: String
+    default: Boolean
     first: Int
     last: Int
     page: Int
+    saves: Boolean
     size: Int
   ): CollectionsConnection
   collectorLevel: Int
@@ -17236,7 +17238,7 @@ type User implements Node {
   ): UserAccessiblePropertyConnection
 
   # The admin notes associated with the user
-  adminNotes: [UserAdminNotes]!
+  adminNotes: [UserAdminNotes]
   analytics: AnalyticsUserStats
   cached: Int
   collectorProfile: CollectorProfileType
@@ -17307,7 +17309,7 @@ type User implements Node {
   # The paddle number of the user
   paddleNumber: String
 
-  # The Parnter or Profile access granted to the user
+  # The Partner or Profile access granted to the user
   partnerAccess: [String]!
 
   # The given phone number of the user.
@@ -17319,7 +17321,7 @@ type User implements Node {
   # The price range the collector has selected
   priceRange: String
 
-  # The Parnter or Profile access granted to the user
+  # The Partner or Profile access granted to the user
   profileAccess: [String]!
   purchasedArtworksConnection(
     after: String
