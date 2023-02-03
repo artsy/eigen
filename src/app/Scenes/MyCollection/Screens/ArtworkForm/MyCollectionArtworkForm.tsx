@@ -320,7 +320,7 @@ export const updateArtwork = async (
 
   let pricePaidCents
   if (pricePaidDollars && !isNaN(Number(pricePaidDollars))) {
-    pricePaidCents = Number(pricePaidDollars) * 100
+    pricePaidCents = parseFloat(pricePaidDollars) * 100
   }
 
   if (values.attributionClass !== "LIMITED_EDITION") {

@@ -4,6 +4,7 @@ import { Input, Text } from "palette"
 import { Select } from "palette/elements/Select"
 import { act } from "react-test-renderer"
 import { MoneyInput } from "./MoneyInput"
+import { deformatMoney, formatMoney } from "./moneyInputHelpers"
 
 describe("MoneyInput", () => {
   let onChange = jest.fn()
@@ -32,7 +33,7 @@ describe("MoneyInput", () => {
     )
     const inputs = wrapper.UNSAFE_getAllByType(Input)
     expect(inputs).toHaveLength(1)
-    expect(inputs[0].props.value).toBe("2000")
+    expect(inputs[0].props.value).toBe("2,000")
   })
 
   it("shows custom error message, when error is controlled and amount is invalid", () => {
@@ -50,15 +51,25 @@ describe("MoneyInput", () => {
     expect(wrapper.UNSAFE_getAllByType(Text)[1].props.children).toBe("custom error message")
   })
 
-  it("shows local error message when parent does not control error and amount is invalid", async () => {
+  it("shows local error message when parent does not control error and amount is invalid if formatting is not enabled", async () => {
     const wrapper = renderWithWrappers(
-      <MoneyInput shouldDisplayLocalError error="custom error message" onChange={onChange} />
+      <MoneyInput
+        shouldDisplayLocalError
+        error="custom error message"
+        onChange={onChange}
+        format={false}
+      />
     )
     const input = wrapper.UNSAFE_getAllByType(Input)[0]
 
-    input.props.onChangeText("200---")
-    input.parent?.props.validate()
-    expect(wrapper.UNSAFE_getAllByType(Text)[1].props.children).toBe("Please enter a valid amount.")
+    await waitFor(() => {
+      // if formatting is enabled "200---" will be automatically corrected
+      input.props.onChangeText("200---")
+      input.parent?.props.validate()
+      expect(wrapper.UNSAFE_getAllByType(Text)[1].props.children).toBe(
+        "Please enter a valid amount."
+      )
+    })
   })
 
   it("calls onChange when the value changes", async () => {
@@ -79,6 +90,31 @@ describe("MoneyInput", () => {
     })
     await waitFor(() => {
       expect(onChange).toHaveBeenCalledWith({ amount: "200", currency: "EUR" })
+    })
+  })
+
+  describe("formatMoney", () => {
+    it("Correctly formats large and small values", () => {
+      const small = "234"
+      const large = "26387267387972837962372.93082983"
+      expect(formatMoney(small)).toEqual(small)
+      expect(formatMoney(large)).toEqual("26,387,267,387,972,837,962,372.93")
+    })
+
+    it("Preserves floats to 2 precision", () => {
+      expect(formatMoney("2.222")).toEqual("2.22")
+    })
+
+    it("Corrects bad formatting", () => {
+      const badStr = "3,3,499.-4563,567"
+      expect(formatMoney(badStr)).toEqual("33,499.45")
+    })
+  })
+
+  describe("deformatMoney", () => {
+    it("Correctly removes previously applied format", () => {
+      const large = "26387267387972837962372.93"
+      expect(deformatMoney(formatMoney(large))).toEqual(large)
     })
   })
 })

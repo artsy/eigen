@@ -204,6 +204,12 @@ export const features = defineFeatures({
     showInDevMenu: true,
     readyForRelease: false,
   },
+  AREnableMoneyFormattingInMyCollectionForm: {
+    description: "Enable Money formatting in MyCollection Form",
+    showInDevMenu: true,
+    readyForRelease: true,
+    echoFlagKey: "AREnableMoneyFormattingInMyCollectionForm",
+  },
 })
 
 export interface DevToggleDescriptor {

@@ -242,6 +242,7 @@ export const Input = forwardRef<InputRef, InputProps>(
             style={[
               rest.style,
               {
+                alignItems: renderLeftHandSection ? "center" : undefined,
                 flexDirection: "row",
                 borderWidth: 1,
                 borderColor: color(computeBorderColor({ disabled, error: !!error, focused })),

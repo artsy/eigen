@@ -1,17 +1,25 @@
 import { Spacer } from "@artsy/palette-mobile"
+import { ThemeV3 } from "@artsy/palette-tokens"
 import { Flex, InputProps, InputRef, Text, Touchable, TriangleDown, useColor } from "palette"
 import {
   INTERNALSelectAndInputCombinationBase,
   ValuePayload,
 } from "palette/elements/Input/INTERNALSelectAndInputCombinationBase"
 import { computeBorderColor } from "palette/elements/Input/Input"
+import {
+  concatDigitsAndCents,
+  deformatMoney,
+  formatMoney,
+} from "palette/elements/Input/MoneyInput/moneyInputHelpers"
 import { SelectOption } from "palette/elements/Select"
 import { forwardRef, useEffect, useRef, useState } from "react"
 
 export const MoneyInput = forwardRef<
   InputRef,
   {
+    currencyTextVariant?: keyof ThemeV3["textVariants"]
     initialValues?: { currency?: SupportedCurrencies; amount?: string }
+    format?: boolean
     maxModalHeight?: number
     onChange?: (value: { currency?: string; amount?: string }) => void
     onModalFinishedClosing?: () => void
@@ -20,11 +28,13 @@ export const MoneyInput = forwardRef<
 >(
   (
     {
+      initialValues,
+      format = true,
+      currencyTextVariant,
+      maxModalHeight,
       onChange,
       onModalFinishedClosing,
-      maxModalHeight,
       shouldDisplayLocalError = true,
-      initialValues,
       ...rest
     },
     ref
@@ -33,7 +43,10 @@ export const MoneyInput = forwardRef<
     const [currency, setCurrency] = useState<SupportedCurrencies>(
       initialValues?.currency ?? currencyOptions[0].value
     )
-    const [amount, setAmount] = useState<string | undefined>(initialValues?.amount ?? undefined)
+    const initialAmount = format
+      ? formatMoney(initialValues?.amount ?? undefined)
+      : initialValues?.amount ?? undefined
+    const [amount, setAmount] = useState<string | undefined>(initialAmount)
     const [validationErrorMessage, setValidationErrorMessage] = useState("")
 
     const handleValidation = () => {
@@ -52,8 +65,13 @@ export const MoneyInput = forwardRef<
         select: { value: currencyValue },
         input: { value: amountValue },
       } = selectAndInputValue
+
+      // Because the value could have been bubbled up before display formatting in INTERNALSelectAndInputCombinationBase,
+      // we need to ensure we are not inadvertently sending values with 3 decimal floats
+      const [digits, cents] = amountValue?.split(".") ?? ["", ""]
+      const amt = format ? concatDigitsAndCents(digits, cents) : amountValue
       setCurrency(currencyValue)
-      setAmount(amountValue)
+      setAmount(amt)
     }
 
     const isFirstRun = useRef(true)
@@ -62,7 +80,7 @@ export const MoneyInput = forwardRef<
         isFirstRun.current = false
         return
       }
-      onChange?.({ currency, amount })
+      onChange?.({ currency, amount: deformatMoney(amount) })
     }, [amount, currency])
 
     const error =
@@ -73,6 +91,7 @@ export const MoneyInput = forwardRef<
         // Props for Input
         {...rest}
         ref={ref}
+        formatInputValue={format ? formatMoney : undefined}
         value={amount}
         keyboardType="numeric"
         onValueChange={onValueChange}
@@ -93,6 +112,7 @@ export const MoneyInput = forwardRef<
           return (
             <Touchable onPress={onPress}>
               <Flex
+                flex={1}
                 flexDirection="row"
                 style={{
                   width: "100%",
@@ -103,7 +123,7 @@ export const MoneyInput = forwardRef<
               >
                 <Flex flexDirection="row" px="1" alignItems="center">
                   {/* selectedValue should always be present */}
-                  <Text variant="sm-display">
+                  <Text variant={currencyTextVariant ?? "sm-display"}>
                     {currencyOptions.find((c) => c.value === selectedValue)?.label ??
                       currencyOptions[0].label}
                   </Text>
