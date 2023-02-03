@@ -49,7 +49,6 @@ const getStories = () => {
     require("../palette/elements/Text/Text.stories.tsx"),
     require("../palette/elements/ToolTip/ToolTip.stories.tsx"),
     require("../palette/elements/VisualClue/VisualClue.stories.tsx"),
-    require("../palette/icons.stories.tsx"),
     require("../palette/organisms/screenStructure/Screen.stories.tsx"),
   ]
 }
