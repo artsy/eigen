@@ -5,7 +5,6 @@ import { Theme } from "palette"
 import { graphql } from "relay-runtime"
 import { EditionSelectBoxFragmentContainer } from "./EditionSelectBox"
 
-
 describe("EditionSelectBox", () => {
   let selected: boolean
   const onPress = jest.fn()

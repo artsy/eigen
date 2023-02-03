@@ -1,8 +1,9 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { AuctionPrice_artwork$data } from "__generated__/AuctionPrice_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/system/navigation/navigate"
 import { get } from "app/utils/get"
-import { CheckCircleIcon, CloseCircleIcon, Flex, Spacer, Text } from "palette"
+import { CheckCircleIcon, CloseCircleIcon, Flex, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 

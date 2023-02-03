@@ -1,5 +1,6 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
-import { Flex, Separator, Spacer } from "palette"
+import { Flex, Separator } from "palette"
 
 export const GenePlaceholder = () => (
   <Flex>
@@ -24,7 +25,7 @@ export const GenePlaceholder = () => (
       <PlaceholderText width={180} />
       <PlaceholderText width={50} />
     </Flex>
-    <Spacer mb={1.5} />
+    <Spacer mb="2" />
     {/* masonry grid */}
     <PlaceholderGrid />
   </Flex>

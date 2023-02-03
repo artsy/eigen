@@ -120,7 +120,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) =
           }}
           refreshing={isLoadingMore}
           ListFooterComponent={() => (
-            <Flex alignItems="center" justifyContent="center" height={space(6)}>
+            <Flex alignItems="center" justifyContent="center" height={space("6")}>
               {isLoadingMore ? <Spinner /> : null}
             </Flex>
           )}

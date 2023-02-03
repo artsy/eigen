@@ -1,10 +1,6 @@
 import { captureException } from "@sentry/react-native"
 import { BottomTabsModelFetchCurrentUnreadConversationCountQuery } from "__generated__/BottomTabsModelFetchCurrentUnreadConversationCountQuery.graphql"
-import {
-  BottomTabsModelFetchNotificationsInfoQuery,
-  NotificationTypesEnum,
-} from "__generated__/BottomTabsModelFetchNotificationsInfoQuery.graphql"
-import { isArtworksBasedNotification } from "app/Scenes/Activity/utils/isArtworksBasedNotification"
+import { BottomTabsModelFetchNotificationsInfoQuery } from "__generated__/BottomTabsModelFetchNotificationsInfoQuery.graphql"
 import { GlobalStore } from "app/store/GlobalStore"
 import { createEnvironment } from "app/system/relay/createEnvironment"
 import {
@@ -12,21 +8,13 @@ import {
   persistedQueryMiddleware,
 } from "app/system/relay/middlewares/metaphysicsMiddleware"
 import { simpleLoggerMiddleware } from "app/system/relay/middlewares/simpleLoggerMiddleware"
-import { extractNodes } from "app/utils/extractNodes"
 import { Action, action, Thunk, thunk, ThunkOn, thunkOn } from "easy-peasy"
-import { DateTime } from "luxon"
 import { fetchQuery, graphql } from "react-relay"
 import { BottomTabType } from "./BottomTabType"
 
 export interface UnreadCounts {
   conversations: number
   notifications: number
-}
-
-interface NotificationNode {
-  notificationType: NotificationTypesEnum
-  publishedAt: string
-  artworksCount: number
 }
 
 export interface BottomTabsModel {
@@ -36,14 +24,8 @@ export interface BottomTabsModel {
     tabProps: Partial<{ [k in BottomTabType]: object }>
     selectedTab: BottomTabType
   }
-  lastSeenNotificationPublishedAt: string | null
-  setLastSeenNotificationPublishedAt: Action<BottomTabsModel, string | null>
   syncApplicationIconBadgeNumber: ThunkOn<BottomTabsModel>
   setUnreadConversationsCount: Action<BottomTabsModel, number>
-  syncActivityPanelState: Action<
-    BottomTabsModel,
-    { notifications: NotificationNode[]; unreadCount: number }
-  >
   fetchCurrentUnreadConversationCount: Thunk<BottomTabsModel>
   setUnreadNotificationsCount: Action<BottomTabsModel, number>
   decreaseUnreadNotificationsCount: Action<BottomTabsModel>
@@ -62,10 +44,6 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
     tabProps: {},
     selectedTab: "home",
   },
-  lastSeenNotificationPublishedAt: null,
-  setLastSeenNotificationPublishedAt: action((state, payload) => {
-    state.lastSeenNotificationPublishedAt = payload
-  }),
   syncApplicationIconBadgeNumber: thunkOn(
     (actions) => [
       actions.setUnreadConversationsCount,
@@ -137,21 +115,7 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
             me @principalField {
               unreadConversationCount
               unreadNotificationsCount
-            }
-
-            viewer {
-              notificationsConnection(first: 5) {
-                edges {
-                  node {
-                    notificationType
-                    publishedAt
-
-                    artworks: artworksConnection {
-                      totalCount
-                    }
-                  }
-                }
-              }
+              unseenNotificationsCount
             }
           }
         `,
@@ -164,19 +128,11 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
 
       const conversations = result?.me?.unreadConversationCount ?? 0
       const notifications = result?.me?.unreadNotificationsCount ?? 0
-      const nodes = extractNodes(result?.viewer?.notificationsConnection)
-      const formattedNotificationNodes: NotificationNode[] = nodes.map((node) => ({
-        publishedAt: node.publishedAt,
-        notificationType: node.notificationType,
-        artworksCount: node.artworks?.totalCount ?? 0,
-      }))
+      const unseenNotifications = result?.me?.unseenNotificationsCount ?? 0
 
       GlobalStore.actions.bottomTabs.setUnreadConversationsCount(conversations)
       GlobalStore.actions.bottomTabs.setUnreadNotificationsCount(notifications)
-      GlobalStore.actions.bottomTabs.syncActivityPanelState({
-        notifications: formattedNotificationNodes,
-        unreadCount: notifications,
-      })
+      GlobalStore.actions.bottomTabs.setDisplayUnseenNotificationsIndicator(unseenNotifications > 0)
     } catch (e) {
       if (__DEV__) {
         console.warn(
@@ -194,36 +150,4 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
   setTabProps: action((state, { tab, props }) => {
     state.sessionState.tabProps[tab] = props
   }),
-  syncActivityPanelState: action((state, payload) => {
-    const notifications = payload.notifications.filter((node) => {
-      if (isArtworksBasedNotification(node.notificationType)) {
-        return node.artworksCount > 0
-      }
-
-      return true
-    })
-    const lastNotification = notifications[0] as NotificationNode | undefined
-    const lastNotificationPublishedAt = lastNotification?.publishedAt ?? null
-    const isLastSeenPublishedAtEmpty =
-      state.lastSeenNotificationPublishedAt === null && lastNotificationPublishedAt
-    const isNewPublishedAtAvailable = checkIsNewPublishedAt(
-      state.lastSeenNotificationPublishedAt,
-      lastNotificationPublishedAt
-    )
-
-    if (isLastSeenPublishedAtEmpty || isNewPublishedAtAvailable) {
-      state.sessionState.displayUnseenNotificationsIndicator = payload.unreadCount > 0
-    }
-  }),
 })
-
-const checkIsNewPublishedAt = (prevPublishedAt: string | null, newPublishedAt: string | null) => {
-  if (prevPublishedAt === null || newPublishedAt === null) {
-    return false
-  }
-
-  const prevPublishedDate = DateTime.fromISO(prevPublishedAt)
-  const newPublishedDate = DateTime.fromISO(newPublishedAt)
-
-  return newPublishedDate > prevPublishedDate
-}

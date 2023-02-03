@@ -1,5 +1,6 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
-import { Box, Flex, IconProps, Join, LinkText, Spacer, Text, VerifiedIcon } from "palette"
+import { Box, Flex, IconProps, Join, LinkText, Text, VerifiedIcon } from "palette"
 import { GuaranteeIcon } from "palette/svgs/GuaranteeIcon"
 import { SecureLockIcon } from "palette/svgs/SecureLockIcon"
 

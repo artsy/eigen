@@ -139,7 +139,12 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
 
                   requestAnimationFrame(() => inputRef.current?.focus())
                 }}
-                hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
+                hitSlop={{
+                  top: space("1"),
+                  bottom: space("1"),
+                  left: space("1"),
+                  right: space("1"),
+                }}
               >
                 <Flex flexDirection="row" width="100%">
                   <SearchIcon width={18} height={18} />
@@ -154,7 +159,12 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
                 <TouchableWithoutFeedback
                   testID="MyCollectionSearchListIconTouchable"
                   onPress={() => onViewOptionChange("list")}
-                  hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
+                  hitSlop={{
+                    top: space("1"),
+                    bottom: space("1"),
+                    left: space("1"),
+                    right: space("1"),
+                  }}
                 >
                   <Flex width={30} height={30} alignItems="center" justifyContent="center">
                     <ListViewIcon
@@ -168,7 +178,12 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
               <TouchableWithoutFeedback
                 testID="MyCollectionSearchGridIconTouchable"
                 onPress={() => onViewOptionChange("grid")}
-                hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
+                hitSlop={{
+                  top: space("1"),
+                  bottom: space("1"),
+                  left: space("1"),
+                  right: space("1"),
+                }}
               >
                 <Flex width={30} height={30} alignItems="center" justifyContent="center">
                   <GridViewIcon

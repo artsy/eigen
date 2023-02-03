@@ -1,11 +1,16 @@
-import {
-  fireEvent,
-  screen,
-  waitFor,
-  waitForElementToBeRemoved,
-} from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { ES_ONLY_PILLS } from "app/Scenes/Search/constants"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { SearchScreen2 } from "./Search2"
+
+jest.mock("lodash", () => ({
+  ...jest.requireActual("lodash"),
+  throttle: (fn: any) => {
+    fn.flush = jest.fn()
+
+    return fn
+  },
+}))
 
 describe("Search", () => {
   const { renderWithRelay } = setupTestWrapper({
@@ -14,8 +19,6 @@ describe("Search", () => {
 
   it("should render a text input with placeholder and no pills", async () => {
     renderWithRelay()
-
-    await waitForElementToBeRemoved(() => screen.getByTestId("search-placeholder"))
 
     const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
 
@@ -40,8 +43,6 @@ describe("Search", () => {
   it("Top pill should be selected by default", async () => {
     renderWithRelay()
 
-    await waitForElementToBeRemoved(() => screen.getByTestId("search-placeholder"))
-
     const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
 
     fireEvent.changeText(searchInput, "text")
@@ -51,8 +52,6 @@ describe("Search", () => {
 
   it("when clear button is pressed", async () => {
     renderWithRelay()
-
-    await waitForElementToBeRemoved(() => screen.getByTestId("search-placeholder"))
 
     const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
 
@@ -67,8 +66,6 @@ describe("Search", () => {
   it("when cancel button is pressed", async () => {
     renderWithRelay()
 
-    await waitForElementToBeRemoved(() => screen.getByTestId("search-placeholder"))
-
     const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
 
     fireEvent(searchInput, "changeText", "prev value")
@@ -78,5 +75,17 @@ describe("Search", () => {
     fireEvent(searchInput, "changeText", "new value")
 
     expect(screen.queryByA11yState({ selected: true })).toHaveTextContent("Top")
+  })
+
+  it("should render all the default pills", async () => {
+    renderWithRelay()
+
+    const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
+
+    fireEvent(searchInput, "changeText", "Ba")
+
+    ES_ONLY_PILLS.forEach((pill) => {
+      expect(screen.queryByText(pill.displayName)).toBeTruthy()
+    })
   })
 })

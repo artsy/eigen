@@ -10,7 +10,6 @@ import { EditionSelectBox } from "./EditionSelectBox"
 import { InquiryMakeOfferButton } from "./InquiryMakeOfferButton"
 import { MakeOfferModalFragmentContainer } from "./MakeOfferModal"
 
-
 let env: ReturnType<typeof createMockEnvironment>
 
 const FakeApp = (props: MakeOfferModalTestsQuery["response"]) => {

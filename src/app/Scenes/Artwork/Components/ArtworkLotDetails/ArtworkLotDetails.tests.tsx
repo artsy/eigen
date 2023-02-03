@@ -23,7 +23,6 @@ import { createMockEnvironment } from "relay-test-utils"
 import { ArtworkLotDetails, ArtworkLotDetailsProps } from "./ArtworkLotDetails"
 import { formatLotDateTime } from "./utils/formatLotDateTime"
 
-
 describe("ArtworkLotDetails", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 

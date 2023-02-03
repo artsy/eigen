@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
+import { Spacer } from "@artsy/palette-mobile"
 import { storiesOf } from "@storybook/react-native"
-import { Button, Flex, Input, Spacer, Text } from "palette"
+import { Button, Flex, Input, Text } from "palette"
 import { ScrollView } from "react-native"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
 

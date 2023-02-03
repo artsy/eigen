@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
@@ -24,7 +25,6 @@ import {
   Message,
   MoneyInput,
   Separator,
-  Spacer,
   Text,
   useColor,
   useSpace,
@@ -150,7 +150,7 @@ export const MyCollectionArtworkFormMain: React.FC<
         <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
           {!!route.params.isSubmission && (
             <Message
-              containerStyle={{ marginX: space(2) }}
+              containerStyle={{ marginX: space("2") }}
               title="Changes will only appear in My Collection. They will not be applied to your sale submission."
               IconComponent={() => (
                 <Image
@@ -162,7 +162,7 @@ export const MyCollectionArtworkFormMain: React.FC<
           )}
 
           <Flex p={2}>
-            <Join separator={<Spacer my={1} />}>
+            <Join separator={<Spacer y="1" />}>
               {formik.values.artistSearchResult ? (
                 <ArtistSearchResult result={formik.values.artistSearchResult} />
               ) : (

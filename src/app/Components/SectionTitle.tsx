@@ -58,7 +58,7 @@ export const SectionTitle: React.FC<{
           )}
         </Flex>
         {!!onPress && (
-          <Flex flexShrink={0} pl={space(1)}>
+          <Flex flexShrink={0} pl={space("1")}>
             <RightButtonContent />
           </Flex>
         )}

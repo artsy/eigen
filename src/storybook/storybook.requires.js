@@ -29,7 +29,6 @@ const getStories = () => {
     require("../palette/atoms/BackButton/BackButton.stories.tsx"),
     require("../palette/atoms/colors.stories.tsx"),
     require("../palette/atoms/space.stories.tsx"),
-    require("../palette/atoms/Spacer/Spacer.stories.tsx"),
     require("../palette/elements/Avatar/Avatar.stories.tsx"),
     require("../palette/elements/Button/Button.stories.tsx"),
     require("../palette/elements/Checkbox/Checkbox.stories.tsx"),

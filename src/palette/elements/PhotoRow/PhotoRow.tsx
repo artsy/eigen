@@ -1,6 +1,7 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
-import { Button, Flex, ProgressBar, Spacer, Text } from "palette"
+import { Button, Flex, ProgressBar, Text } from "palette"
 import { Image } from "react-native"
 
 interface PhotoRowContainerProps {

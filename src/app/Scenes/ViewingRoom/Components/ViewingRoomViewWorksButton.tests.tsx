@@ -6,7 +6,6 @@ import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { tracks, ViewingRoomViewWorksButtonContainer } from "./ViewingRoomViewWorksButton"
 
-
 describe("ViewingRoomViewWorksButton", () => {
   const { renderWithRelay } = setupTestWrapper<ViewingRoomViewWorksButtonTestsQuery>({
     Component: ({ viewingRoom }) => (

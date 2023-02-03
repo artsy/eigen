@@ -3,7 +3,6 @@ import { CollectionFixture } from "app/Scenes/Collection/Components/__fixtures__
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { CollectionHeader } from "./CollectionHeader"
 
-
 describe("collection header", () => {
   let props: any
   beforeEach(() => {

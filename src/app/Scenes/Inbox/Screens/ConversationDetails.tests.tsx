@@ -4,7 +4,6 @@ import "react-native"
 import { graphql } from "react-relay"
 import { ConversationDetailsFragmentContainer } from "./ConversationDetails"
 
-
 describe("ConversationDetailsFragmentContainer", () => {
   const { renderWithRelay } = setupTestWrapper({
     Component: ({ me }: any) => (

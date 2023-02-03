@@ -1,10 +1,11 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
+import { ArtQuizNavigationQuery } from "__generated__/ArtQuizNavigationQuery.graphql"
 import { ArtQuizArtworks } from "app/Scenes/ArtQuiz/ArtQuizArtworks"
 import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
+import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtQuizWelcome } from "./ArtQuizWelcome"
 
-// tslint:disable-next-line:interface-over-type-literal
 export type ArtQuizNavigationStack = {
   ArtQuizWelcome: undefined
   ArtQuizArtworks: undefined
@@ -14,6 +15,13 @@ export type ArtQuizNavigationStack = {
 export const StackNavigator = createStackNavigator<ArtQuizNavigationStack>()
 
 export const ArtQuizNavigation: React.FC = () => {
+  const quizCompleted = useLazyLoadQuery<ArtQuizNavigationQuery>(artQuizNavigationQuery, {}).me
+    ?.quiz.completedAt
+
+  if (quizCompleted) {
+    return <ArtQuizResults />
+  }
+
   return (
     <NavigationContainer independent>
       <StackNavigator.Navigator
@@ -31,3 +39,13 @@ export const ArtQuizNavigation: React.FC = () => {
     </NavigationContainer>
   )
 }
+
+const artQuizNavigationQuery = graphql`
+  query ArtQuizNavigationQuery {
+    me {
+      quiz {
+        completedAt
+      }
+    }
+  }
+`

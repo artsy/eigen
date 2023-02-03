@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { ViewingRoomArtworkQuery } from "__generated__/ViewingRoomArtworkQuery.graphql"
 import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
 import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoomArtwork_viewingRoomInfo.graphql"
@@ -8,17 +9,7 @@ import { cm2in } from "app/utils/conversions"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import _ from "lodash"
-import {
-  Box,
-  Button,
-  EyeOpenedIcon,
-  Flex,
-  LargeCard,
-  Separator,
-  Spacer,
-  Text,
-  Touchable,
-} from "palette"
+import { Box, Button, EyeOpenedIcon, Flex, LargeCard, Separator, Text, Touchable } from "palette"
 import React, { Suspense, useEffect } from "react"
 import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
 import {
@@ -133,9 +124,9 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
         {moreImages.length > 0 && (
           <>
             <Box mx="2">
-              <Spacer mt="3" />
+              <Spacer mt="4" />
               <Separator />
-              <Spacer mt="3" />
+              <Spacer mt="4" />
               <Text variant="sm">More images</Text>
               <Spacer mt="2" />
             </Box>
@@ -151,9 +142,9 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
         )}
 
         <Box mx="2">
-          <Spacer mt="3" />
+          <Spacer mt="4" />
           <Separator />
-          <Spacer mt="3" />
+          <Spacer mt="4" />
           <Text variant="sm">In viewing room</Text>
           <Spacer mt="2" />
         </Box>

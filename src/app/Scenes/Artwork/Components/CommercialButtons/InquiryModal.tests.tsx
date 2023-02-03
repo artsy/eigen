@@ -22,7 +22,6 @@ import { InquiryModalFragmentContainer } from "./InquiryModal"
 import { ShippingModal } from "./ShippingModal"
 import { press } from "./helpers"
 
-
 let env: ReturnType<typeof createMockEnvironment>
 
 const toggleVisibility = jest.fn()

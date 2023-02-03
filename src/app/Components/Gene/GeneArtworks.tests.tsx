@@ -7,7 +7,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { GeneArtworksPaginationContainer } from "./GeneArtworks"
 
-
 describe("GeneArtworks", () => {
   const geneID = "gene-id"
   let environment: ReturnType<typeof createMockEnvironment>

@@ -25,14 +25,14 @@ export const AnimatableHeader = (props: AnimatableHeaderProps) => {
     <Animated.View
       style={{
         flexDirection: "row",
-        paddingHorizontal: space(2),
+        paddingHorizontal: space("2"),
         alignItems: "center",
         height: headerHeight,
         backgroundColor: "white",
       }}
     >
       <TouchableOpacity
-        hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
+        hitSlop={{ top: space("1"), bottom: space("1"), left: space("1"), right: space("1") }}
         onPress={props.onLeftButtonPress}
         accessibilityLabel="Header back button"
       >
@@ -51,7 +51,7 @@ export const AnimatableHeader = (props: AnimatableHeaderProps) => {
 
       {!!onRightButtonPress && !!rightButtonText && (
         <TouchableOpacity
-          hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
+          hitSlop={{ top: space("1"), bottom: space("1"), left: space("1"), right: space("1") }}
           onPress={onRightButtonPress}
           disabled={rightButtonDisabled}
         >

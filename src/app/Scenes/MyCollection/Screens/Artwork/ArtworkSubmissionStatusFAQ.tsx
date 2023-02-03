@@ -1,6 +1,7 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { sendEmailWithMailTo } from "app/utils/sendEmail"
-import { BulletedItem, Button, Flex, Join, Spacer, Text } from "palette"
+import { BulletedItem, Button, Flex, Join, Text } from "palette"
 
 export const ArtworkSubmissionStatusFAQ: React.FC<{ closeModal: () => void }> = ({
   closeModal,
@@ -17,7 +18,7 @@ export const ArtworkSubmissionStatusFAQ: React.FC<{ closeModal: () => void }> = 
         What does my Artwork’s status mean?
       </Text>
       <Flex flexDirection="column" mb={4}>
-        <Join separator={<Spacer my={1} />}>
+        <Join separator={<Spacer y={1} />}>
           <BulletedItem color="black">
             <Text fontWeight="bold">Submission in Progress</Text> - the artwork is being reviewed or
             is in the sale process.

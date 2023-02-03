@@ -1,6 +1,7 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { useFormikContext } from "formik"
-import { Box, Button, Input, LinkText, PhoneInput, Spacer, Text } from "palette"
+import { Box, Button, Input, LinkText, PhoneInput, Text } from "palette"
 import { Platform, ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
@@ -39,7 +40,7 @@ export const RequestForPriceEstimateForm = () => {
               value={values.requesterName}
               error={errors.requesterName}
             />
-            <Spacer m={2} />
+            <Spacer y={2} />
             <Input
               testID="request-price-estimate-email-input"
               title="Email"
@@ -63,7 +64,7 @@ export const RequestForPriceEstimateForm = () => {
               textContentType={Platform.OS === "ios" ? "username" : "emailAddress"}
               error={errors.requesterEmail}
             />
-            <Spacer m={2} />
+            <Spacer y="2" />
             <PhoneInput
               testID="request-price-estimate-phone-input"
               style={{ flex: 1 }}
@@ -76,7 +77,7 @@ export const RequestForPriceEstimateForm = () => {
               accessibilityLabel="Phone number"
               shouldDisplayLocalError={false}
             />
-            <Spacer mb={5} />
+            <Spacer y="6" />
             <Text variant="xs" color="black60" mb={2}>
               By continuing, you agree to{" "}
               <LinkText variant="xs" onPress={() => navigate("/privacy", { modal: true })}>

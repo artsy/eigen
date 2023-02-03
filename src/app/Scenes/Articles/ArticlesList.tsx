@@ -1,4 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Spacer } from "@artsy/palette-mobile"
 import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
 import { ArticleCardContainer } from "app/Components/ArticleCard"
 import {
@@ -9,7 +10,7 @@ import {
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import _ from "lodash"
-import { Flex, Separator, Spacer, Text } from "palette"
+import { Flex, Separator, Text } from "palette"
 import { ActivityIndicator, FlatList, RefreshControl } from "react-native"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
@@ -65,15 +66,15 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
               </ArticlesListItem>
             )
           }}
-          ItemSeparatorComponent={() => <Spacer mt="3" />}
+          ItemSeparatorComponent={() => <Spacer mt="4" />}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={1}
           ListFooterComponent={() => (
             <Flex
               alignItems="center"
               justifyContent="center"
-              p="3"
-              pb="5"
+              p="4"
+              pb="6"
               style={{ opacity: isLoading() && hasMore() ? 1 : 0 }}
             >
               <ActivityIndicator />
@@ -145,7 +146,7 @@ export const ArticlesPlaceholder = () => {
               </ArticlesListItem>
             )
           }}
-          ItemSeparatorComponent={() => <Spacer mt="3" />}
+          ItemSeparatorComponent={() => <Spacer mt="4" />}
           onEndReachedThreshold={1}
         />
       </Flex>

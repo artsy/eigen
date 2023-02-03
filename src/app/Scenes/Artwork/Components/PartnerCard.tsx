@@ -1,8 +1,9 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { PartnerCard_artwork$data } from "__generated__/PartnerCard_artwork.graphql"
 import { navigateToPartner } from "app/system/navigation/navigate"
 import { limitWithCount } from "app/utils/limitWithCount"
 import { compact } from "lodash"
-import { EntityHeader, Flex, Spacer, Text } from "palette"
+import { EntityHeader, Flex, Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -44,7 +45,7 @@ export const PartnerCard: React.FC<PartnerCardProps> = ({ artwork, shouldShowQue
       {!!showPartnerType && (
         <>
           <Text variant="md">{partnerTypeDisplayText}</Text>
-          <Spacer my={1} />
+          <Spacer y={1} />
         </>
       )}
       <TouchableWithoutFeedback onPress={() => handleTap(partner.href!)}>

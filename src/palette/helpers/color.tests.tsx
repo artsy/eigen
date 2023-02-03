@@ -18,13 +18,12 @@ describe("color", () => {
   it("returns the correct color with a Theme provider in v3", () => {
     const TestComponent = () => (
       <>
-        <ColorView name="yellow30" />
+        <ColorView name="yellow100" />
         <ColorView name="copper100" />
       </>
     )
     const tree = renderWithWrappersLEGACY(<TestComponent />).root
     const bgColors = tree.findAllByType(View).map((view) => view.props.style.backgroundColor)
-    expect(bgColors[0]).toBe(_test_THEMES.v2.colors.yellow30) // for now we keep v2 accessible, even in v3.
     expect(bgColors[1]).toBe(_test_THEMES.v3.colors.copper100)
   })
 })

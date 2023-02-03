@@ -1,7 +1,7 @@
+import { Spacer } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { useTheme } from "palette/Theme"
-import { Spacer } from "palette/atoms"
 import { Box, BoxProps } from "palette/elements/Box"
 import { Flex } from "palette/elements/Flex"
 import { OpaqueImageView as NewOpaqueImageView } from "palette/elements/OpaqueImageView"
@@ -61,7 +61,7 @@ export const MediumCard: React.FC<MediumCardProps> = ({ image, title, subtitle, 
           position: "absolute",
           bottom: 0,
           left: 15,
-          right: space(6),
+          right: space("6"),
         }}
       >
         <Text lineHeight="20" color={color("white100")} mb={0.5}>

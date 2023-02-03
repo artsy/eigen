@@ -1,5 +1,6 @@
 import { ActionType } from "@artsy/cohesion"
 import { ClickedActivityPanelNotificationItem } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
+import { Spacer } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import {
   ActivityItemMarkAsReadMutation,
@@ -12,7 +13,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { last } from "lodash"
-import { Flex, OpaqueImageView, Spacer, Text } from "palette"
+import { Flex, OpaqueImageView, Text } from "palette"
 import { parse as parseQueryString } from "query-string"
 import { TouchableOpacity } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"

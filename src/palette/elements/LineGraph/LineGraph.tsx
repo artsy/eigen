@@ -1,4 +1,5 @@
-import { Flex, Spacer } from "palette"
+import { Spacer } from "@artsy/palette-mobile"
+import { Flex } from "palette"
 import { useMemo } from "react"
 import { InterpolationPropType } from "victory-core"
 import { LineGraphBandProps, LineGraphBands } from "./LineGraphBands"
@@ -6,7 +7,6 @@ import { LineGraphCategoryPicker } from "./LineGraphCategoryPicker"
 import { LineGraphChart } from "./LineGraphChart"
 import { LineGraphHeader } from "./LineGraphHeader"
 import { AxisDisplayType } from "./helpers"
-import { _AVAILABLE_MEDIUMS } from "./testHelpers"
 import { LineChartData } from "./types"
 
 interface Props {

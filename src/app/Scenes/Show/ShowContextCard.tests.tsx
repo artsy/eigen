@@ -11,7 +11,6 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ShowContextCard, ShowContextCardFragmentContainer } from "./Components/ShowContextCard"
 
-
 describe("ShowContextCard", () => {
   let env: ReturnType<typeof createMockEnvironment>
 

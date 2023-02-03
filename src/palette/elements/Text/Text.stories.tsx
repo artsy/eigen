@@ -46,7 +46,7 @@ export const BasicProps: TextStory = () => (
 export const Misc: TextStory = () => (
   <List>
     <View style={{ borderWidth: 1, borderColor: "black" }}>
-      <Text pl="2" mb="3" mr={80} color="red" backgroundColor="orange">
+      <Text pl="2" mb="4" mr={80} color="red" backgroundColor="orange">
         Testing the other props
       </Text>
     </View>

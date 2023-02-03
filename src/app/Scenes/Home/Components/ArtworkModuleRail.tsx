@@ -98,6 +98,7 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
               HomeAnalytics.artworkThumbnailTapEvent(
                 contextModule,
                 artwork.slug,
+                artwork.internalID,
                 position,
                 "single"
               )

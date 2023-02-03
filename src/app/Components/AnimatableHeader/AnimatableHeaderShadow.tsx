@@ -26,7 +26,7 @@ export const AnimatableHeaderShadow = () => {
 
   return (
     <Box
-      paddingBottom={5}
+      paddingBottom={6}
       overflow="hidden"
       position="absolute"
       top={headerHeight - SHADOW_CONTAINER_HEIGHT}

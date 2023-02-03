@@ -234,7 +234,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
               <View style={{ flexDirection: "row" }}>
                 <ArtistCard
                   artist={artist as any}
-                  onPress={() =>
+                  onPress={() => {
                     trackEvent(
                       HomeAnalytics.artistThumbnailTapEvent(
                         props.rail.key,
@@ -243,7 +243,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
                         index
                       )
                     )
-                  }
+                  }}
                   onFollow={() => handleFollowChange(artist)}
                   onDismiss={
                     props.rail.key === "SUGGESTED" ? undefined : () => handleDismiss(artist)

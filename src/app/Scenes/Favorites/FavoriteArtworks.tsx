@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { FavoriteArtworksQuery } from "__generated__/FavoriteArtworksQuery.graphql"
 import { FavoriteArtworks_me$data } from "__generated__/FavoriteArtworks_me.graphql"
 import GenericGrid, { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
@@ -11,7 +12,7 @@ import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { FAVORITE_ARTWORKS_REFRESH_KEY, RefreshEvents } from "app/utils/refreshHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { Button, Spacer, useSpace } from "palette"
+import { Button, useSpace } from "palette"
 import { useEffect, useState } from "react"
 import { Image } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -90,7 +91,7 @@ const SavedWorks: React.FC<Props> = ({ me, relay, onDataFetching }) => {
                 resizeMode="contain"
                 style={{
                   alignSelf: "center",
-                  marginVertical: space(2),
+                  marginVertical: space("2"),
                 }}
               />
             </>
@@ -107,7 +108,7 @@ const SavedWorks: React.FC<Props> = ({ me, relay, onDataFetching }) => {
 
   return (
     <StickyTabPageScrollView
-      contentContainerStyle={{ paddingVertical: space(2) }}
+      contentContainerStyle={{ paddingVertical: space("2") }}
       onEndReached={loadMore}
       refreshControl={
         <StickTabPageRefreshControl refreshing={refreshingFromPull} onRefresh={handleRefresh} />

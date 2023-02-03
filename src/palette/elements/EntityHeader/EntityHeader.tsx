@@ -1,10 +1,9 @@
-import { SpacerProps } from "palette/atoms/Spacer"
 import { Avatar } from "palette/elements/Avatar"
 import { Flex, FlexProps } from "palette/elements/Flex"
 import { Text } from "palette/elements/Text"
 import { bullet } from "palette/helpers"
 
-interface EntityHeaderProps extends SpacerProps, FlexProps {
+interface EntityHeaderProps extends FlexProps {
   smallVariant?: boolean
   href?: string
   imageUrl?: string
@@ -25,7 +24,7 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
 }) => {
   const followButton = FollowButton && (
     <Flex
-      ml={smallVariant ? 0.3 : 1}
+      ml={smallVariant ? "0.5" : "1"}
       flexDirection="row"
       alignItems="center"
       justifyContent="flex-end"
@@ -64,7 +63,7 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
         <Flex flexDirection="row" justifyContent="flex-start" flexGrow={1} alignItems="center">
           {headerName}
 
-          <Text variant="sm" ml={0.3}>
+          <Text variant="sm" ml="0.5">
             {bullet}
           </Text>
 

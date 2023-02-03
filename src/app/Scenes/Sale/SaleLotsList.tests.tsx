@@ -22,7 +22,6 @@ import {
   SaleLotsListSortMode,
 } from "./Components/SaleLotsList"
 
-
 describe("SaleLotsListContainer", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 

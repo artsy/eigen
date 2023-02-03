@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { FeatureQuery } from "__generated__/FeatureQuery.graphql"
 import { Feature_feature$data } from "__generated__/Feature_feature.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
@@ -9,7 +10,7 @@ import { isPad } from "app/utils/hardware"
 import { PlaceholderRaggedText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { chunk, flattenDeep } from "lodash"
-import { Flex, Separator, Spacer, Text } from "palette"
+import { Flex, Separator, Text } from "palette"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 import { FeatureFeaturedLinkFragmentContainer } from "./components/FeatureFeaturedLink"
@@ -67,7 +68,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
       key: "description+callout",
       content: (
         <Flex alignItems="center">
-          <Stack spacing={3} pt="3" px="2" maxWidth={600}>
+          <Stack spacing={3} pt="4" px="2" maxWidth={600}>
             {!!feature.description && (
               <FeatureMarkdown content={feature.description} textProps={{ variant: "md" }} />
             )}

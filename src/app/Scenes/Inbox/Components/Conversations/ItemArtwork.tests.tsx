@@ -5,7 +5,6 @@ import { Theme } from "palette"
 import { graphql } from "react-relay"
 import { ItemArtworkFragmentContainer } from "./ItemArtwork"
 
-
 describe("ItemArtworkFragmentContainer", () => {
   const { renderWithRelay } = setupTestWrapper({
     Component: (props: any) => (

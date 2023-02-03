@@ -1,6 +1,6 @@
+import { Spacer } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useTheme } from "palette/Theme"
-import { Spacer } from "palette/atoms/Spacer"
 import { Flex } from "palette/elements/Flex"
 import { Text } from "palette/elements/Text"
 import { View } from "react-native"
@@ -39,8 +39,8 @@ export const LargeCard: React.FC<LargeCardProps> = ({ image, title, subtitle, ta
         style={{
           position: "absolute",
           bottom: 0,
-          left: space(2),
-          right: space(6),
+          left: space("2"),
+          right: space("6"),
         }}
       >
         <Text variant="sm-display" color={color("white100")}>
@@ -54,7 +54,7 @@ export const LargeCard: React.FC<LargeCardProps> = ({ image, title, subtitle, ta
         <Spacer mt={2} />
       </Flex>
       {!!tag && (
-        <CardTag {...tag} style={{ position: "absolute", top: space(2), left: space(2) }} />
+        <CardTag {...tag} style={{ position: "absolute", top: space("2"), left: space("2") }} />
       )}
     </View>
   )

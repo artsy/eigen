@@ -7,7 +7,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ViewingRoomSubsectionsContainer } from "./ViewingRoomSubsections"
 
-
 describe("ViewingRoomSubsections", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (

@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { CareerHighlightKindValueType } from "app/Scenes/MyCollection/Screens/Insights/CareerHighlightBottomSheet"
 import { uniq } from "lodash"
@@ -9,7 +10,6 @@ import {
   GroupIcon,
   PublicationIcon,
   SoloIcon,
-  Spacer,
   Text,
 } from "palette"
 import { useMemo } from "react"
@@ -38,7 +38,7 @@ export const CareerHighlightBottomSheetItem: React.FC<CareerHighlightBottomSheet
           {headerAndBodyTuple.map(([header, body], i) => (
             <SectionedHighlight key={header + i} header={header} body={body} />
           ))}
-          <Spacer p={6} />
+          <Spacer y={6} />
         </BottomSheetScrollView>
       </Flex>
     </Flex>

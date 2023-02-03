@@ -1,6 +1,7 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { Button, Flex, Spacer, Text } from "palette"
+import { Button, Flex, Text } from "palette"
 
 interface Props {
   title: string

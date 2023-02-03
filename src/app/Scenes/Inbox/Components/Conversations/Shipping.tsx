@@ -1,5 +1,4 @@
 import { Shipping_order$data } from "__generated__/Shipping_order.graphql"
-import { track as _track } from "app/utils/track"
 import { Flex, Separator, Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 

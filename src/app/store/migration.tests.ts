@@ -813,23 +813,3 @@ describe("App version Versions.MoveEnvironmentToDevicePrefsAndRenameAdminToLocal
     expect(migratedState.artsyPrefs.environment).toEqual(undefined)
   })
 })
-
-describe("App version Versions.AddLastSeenNotificationPublishedAt", () => {
-  const migrationToTest = Versions.AddLastSeenNotificationPublishedAt
-
-  it("add lastSeenNotificationPublishedAt", () => {
-    const previousState = migrate({
-      state: { version: 0 },
-      toVersion: migrationToTest - 1,
-    }) as any
-
-    expect(previousState.bottomTabs.lastSeenNotificationPublishedAt).toEqual(undefined)
-
-    const migratedState = migrate({
-      state: previousState,
-      toVersion: migrationToTest,
-    }) as any
-
-    expect(migratedState.bottomTabs.lastSeenNotificationPublishedAt).toEqual(null)
-  })
-})

@@ -1,5 +1,4 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { range } from "lodash"
 import { Text } from "react-native"

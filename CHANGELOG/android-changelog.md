@@ -7,6 +7,8 @@
 
   - User facing changes:
 
+    - search ES only pills behind a ff - gkartalis
+    - The changes are cross-platform, applicable to all users.
     - ToolTip Component - kizito
     - Fix issue making some artwork images not visible in the home screen large artworks rail - mounir
     - add search2 with ES only Artwork / Top pill functionality, behind FF - gkartalis
@@ -24,6 +26,10 @@
     - Release deep zoom - mounir
 
   - Dev changes:
+    - Update home screen modules tracking - mounir
+    - sentry cli bump - gkartalis
+    - update jest-native dep - gkartalis
+    - Hide the global blue dot indicator if there are no unseen notifications - dimatretyak
     - make sure app is rehydrated before initializing unleash - mounir
     - add unused imports eslint rule - gkartalis
     - fix: error with old opaque image view in search - gkartalis

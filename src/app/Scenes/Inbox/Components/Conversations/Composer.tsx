@@ -1,7 +1,7 @@
 import { themeGet } from "@styled-system/theme-get"
 import { Composer_conversation$data } from "__generated__/Composer_conversation.graphql"
 import { Schema, Track, track as _track } from "app/utils/track"
-import { Button, ClassTheme, Flex, themeProps } from "palette"
+import { Button, ClassTheme, Flex } from "palette"
 import React from "react"
 import { Keyboard, TextInput, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -86,7 +86,7 @@ export default class Composer extends React.Component<Props, State> {
             paddingRight: 10,
             borderColor: this.state.active ? color("blue100") : "transparent",
             borderWidth: 1,
-            fontFamily: themeProps.fontFamily.sans.regular.normal,
+            fontFamily: "Unica77LL-Regular",
           }
           return (
             <ArtsyKeyboardAvoidingView>

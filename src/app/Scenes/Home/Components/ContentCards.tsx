@@ -1,6 +1,7 @@
+import { Spacer } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
-import { Box, Button, Flex, Spacer, Text, Touchable } from "palette"
+import { Box, Button, Flex, Text, Touchable } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { FlatList, PixelRatio, ViewabilityConfig } from "react-native"
 import ReactAppboy from "react-native-appboy-sdk"

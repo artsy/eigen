@@ -405,7 +405,6 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
           )}
         </VictoryChart>
       </Flex>
-
       {!!lastPressedDatum && (
         <Flex position="absolute" top={70} left={lastPressedDatum.left}>
           <Text color="black60" variant="xs">

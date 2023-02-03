@@ -5,7 +5,6 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { SellWithArtsyRecentlySold } from "./Components/SellWithArtsyRecentlySold"
 import { SellWithArtsyHomeQueryRenderer } from "./SellWithArtsyHome"
 
-
 jest.mock("../../utils/useStatusBarStyle", () => {
   return {
     useLightStatusBarStyle: jest.fn(),

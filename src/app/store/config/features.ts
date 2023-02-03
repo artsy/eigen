@@ -103,7 +103,7 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableConversationalBuyNow",
   },
   AREnableArtworksFromNonArtsyArtists: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable My Collection artworks from non-Artsy artists",
     showInDevMenu: true,
     echoFlagKey: "AREnableArtworksFromNonArtsyArtists",

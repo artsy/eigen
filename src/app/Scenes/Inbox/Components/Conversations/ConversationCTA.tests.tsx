@@ -1,5 +1,4 @@
 import { ConversationCTATestsQuery } from "__generated__/ConversationCTATestsQuery.graphql"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { AlertCircleFillIcon, Color, Flex, MoneyFillIcon } from "palette"

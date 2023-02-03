@@ -4,7 +4,6 @@ import { setupTestWrapper_LEGACY } from "app/utils/tests/setupTestWrapper"
 import { DateTime } from "luxon"
 import { graphql } from "react-relay"
 
-
 const { getWrapper } = setupTestWrapper_LEGACY({
   Component: FairEmptyStateFragmentContainer,
   query: graphql`

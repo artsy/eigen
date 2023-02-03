@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
 import { ViewingRoom_viewingRoom$data } from "__generated__/ViewingRoom_viewingRoom.graphql"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
@@ -6,7 +7,7 @@ import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { once } from "lodash"
-import { Box, Button, Flex, ShareIcon, Spacer, Text, _maxWidth as maxWidth } from "palette"
+import { Box, Button, Flex, ShareIcon, Text, _maxWidth as maxWidth } from "palette"
 import React, { useCallback, useState } from "react"
 import { FlatList, LayoutAnimation, TouchableWithoutFeedback, View, ViewToken } from "react-native"
 import RNShare from "react-native-share"
@@ -51,7 +52,7 @@ export const ClosedNotice: React.FC<{ status: string; partnerHref: string }> = (
 
   return (
     <Flex alignItems="center">
-      <Text variant="sm" mt="3" mx="4" textAlign="center">
+      <Text variant="sm" mt="4" mx="4" textAlign="center">
         {finalText}
       </Text>
       <Button variant="fillGray" onPress={() => navigate(partnerHref)} mt={2}>

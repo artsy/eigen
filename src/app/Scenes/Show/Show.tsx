@@ -1,4 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
+import { Spacer } from "@artsy/palette-mobile"
 import { ShowQuery } from "__generated__/ShowQuery.graphql"
 import { Show_show$data } from "__generated__/Show_show.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -9,7 +10,7 @@ import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "app/utils/plac
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { times } from "lodash"
-import { Box, Flex, Separator, Spacer } from "palette"
+import { Box, Flex, Separator } from "palette"
 import React, { useRef, useState } from "react"
 import { Animated } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -123,9 +124,9 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
           keyExtractor={({ key }) => key}
           stickyHeaderIndices={[sections.findIndex((section) => section.key === "filter") + 1]}
           viewabilityConfig={viewConfigRef.current}
-          ListHeaderComponent={<Spacer mt={6} pt={2} />}
-          ListFooterComponent={<Spacer my={2} />}
-          ItemSeparatorComponent={() => <Spacer my={15} />}
+          ListHeaderComponent={<Spacer y={6} />}
+          ListFooterComponent={<Spacer y={2} />}
+          ItemSeparatorComponent={() => <Spacer y={15} />}
           contentContainerStyle={{
             paddingTop: useScreenDimensions().safeAreaInsets.top,
             paddingBottom: 40,

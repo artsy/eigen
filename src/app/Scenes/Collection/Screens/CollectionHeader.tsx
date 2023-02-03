@@ -28,7 +28,7 @@ export const CollectionHeader: React.FC<CollectionHeaderProps> = (props) => {
         {title}
       </Text>
       {!!collectionDescription && (
-        <Box mx="2" mb="2" mt="0.3" accessibilityLabel="Read more">
+        <Box mx="2" mb="2" mt="0.5" accessibilityLabel="Read more">
           <ReadMore
             content={collectionDescription}
             maxChars={screenWidth > 700 ? 300 : 250} // truncate at 300 characters on iPads and 250 on all other devices

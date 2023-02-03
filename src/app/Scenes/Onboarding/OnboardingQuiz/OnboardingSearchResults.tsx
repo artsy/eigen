@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { OnboardingSearchResultsQuery } from "__generated__/OnboardingSearchResultsQuery.graphql"
 import { OnboardingSearchResults_viewer$key } from "__generated__/OnboardingSearchResults_viewer.graphql"
@@ -5,7 +6,7 @@ import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { times } from "lodash"
-import { Flex, Join, Message, quoteLeft, quoteRight, Spacer } from "palette"
+import { Flex, Join, Message, quoteLeft, quoteRight } from "palette"
 import { Suspense } from "react"
 import { FlatList } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
@@ -168,7 +169,7 @@ const OnboardingSearchResultsFragment = graphql`
 const Placeholder = () => (
   <ProvidePlaceholderContext>
     <Flex testID="OnboardingSearchResultsPlaceholder">
-      <Join separator={<Spacer height={20} />}>
+      <Join separator={<Spacer y={20} />}>
         {times(10).map((index: number) => (
           <Flex key={index}>
             <ArtistListItemPlaceholder />

@@ -21,7 +21,7 @@ export class TabFairItemRow extends React.Component<Props> {
     return (
       <ClassTheme>
         {({ space }) => {
-          const boxWidth = Dimensions.get("window").width - 62 - space(4) - space(1)
+          const boxWidth = Dimensions.get("window").width - 62 - space("4") - space("1")
           return (
             <TouchableWithoutFeedback onPress={() => this.handleTap(item)}>
               <Flex flexWrap="nowrap" flexDirection="row" alignItems="center" mr={10}>

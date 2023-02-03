@@ -1,4 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedSkip } from "@artsy/cohesion"
+import { Spacer } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { MyCollectionArtworkFormArtworkQuery } from "__generated__/MyCollectionArtworkFormArtworkQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
@@ -11,7 +12,6 @@ import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/M
 import { GlobalStore } from "app/store/GlobalStore"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { omit, pickBy } from "lodash"
-import { Spacer } from "palette"
 import React, { useEffect, useState } from "react"
 import { ScrollView } from "react-native"
 import { useTracking } from "react-tracking"

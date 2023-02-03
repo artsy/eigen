@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { MyAccountDeleteAccountQuery } from "__generated__/MyAccountDeleteAccountQuery.graphql"
 import { MyAccountDeleteAccount_me$data } from "__generated__/MyAccountDeleteAccount_me.graphql"
@@ -5,7 +6,7 @@ import { DeleteAccountInput } from "__generated__/deleteUserAccountMutation.grap
 import { GlobalStore } from "app/store/GlobalStore"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { AuctionIcon, Box, Button, Flex, GenomeIcon, Input, Spacer, Text } from "palette"
+import { AuctionIcon, Box, Button, Flex, GenomeIcon, Input, Text } from "palette"
 import React, { useState } from "react"
 import { Alert, InteractionManager, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -38,7 +39,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
           <Text variant="lg-display" mt="6">
             Delete My Account
           </Text>
-          <Spacer mt="3" />
+          <Spacer mt="4" />
           <Text>Are you sure you want to delete your account?</Text>
           <Spacer mt="2" />
           <Text>If you delete your account:</Text>
@@ -62,14 +63,14 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
               Private Sales, etc
             </Text>
           </Flex>
-          <Spacer mt="3" />
+          <Spacer mt="4" />
           <Input
             multiline
             placeholder="Please share with us why you are leaving"
             onChangeText={setExplanation}
             error={!hasPassword ? error : undefined}
           />
-          <Spacer mt="3" />
+          <Spacer mt="4" />
           <Text variant="xs" color={color("black100")} pb="1px">
             After you submit your request, we will disable your account. It may take up to 7 days to
             fully delete and remove all of your data.

@@ -1,4 +1,5 @@
-import { Flex, Spacer, useColor } from "palette"
+import { Spacer } from "@artsy/palette-mobile"
+import { Flex, useColor } from "palette"
 import React, { useContext } from "react"
 import { Animated, View } from "react-native"
 import { useScreenDimensions } from "shared/hooks"

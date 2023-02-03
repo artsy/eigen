@@ -13,7 +13,6 @@ import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ArtistSeriesListItem } from "./ArtistSeriesListItem"
 
-
 const trackEvent = useTracking().trackEvent
 
 describe("Artist Series Rail", () => {

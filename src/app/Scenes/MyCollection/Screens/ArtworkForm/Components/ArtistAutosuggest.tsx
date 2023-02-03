@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { ArtistAutosuggestQuery } from "__generated__/ArtistAutosuggestQuery.graphql"
 import SearchIcon from "app/Components/Icons/SearchIcon"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
@@ -6,7 +7,7 @@ import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/Search
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { sortBy } from "lodash"
-import { Box, Button, Flex, Input, Spacer, Text, Touchable } from "palette"
+import { Box, Button, Flex, Input, Text, Touchable } from "palette"
 import { useLazyLoadQuery } from "react-relay"
 import { graphql } from "relay-runtime"
 import { normalizeText } from "shared/utils"
@@ -77,7 +78,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
         />
         {!enableArtworksFromNonArtsyArtists && <Spacer mb={1} />}
         {showResults ? (
-          <Box height="100%" mt={enableArtworksFromNonArtsyArtists ? 0 : 2} pb={5}>
+          <Box height="100%" mt={enableArtworksFromNonArtsyArtists ? 0 : 2} pb={6}>
             <AutosuggestResults
               query={trimmedQuery}
               prependResults={filteredCollecteArtists}

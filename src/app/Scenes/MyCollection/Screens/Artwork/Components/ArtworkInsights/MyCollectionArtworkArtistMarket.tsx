@@ -1,9 +1,10 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
+import { Spacer } from "@artsy/palette-mobile"
 import { MyCollectionArtworkArtistMarket_artwork$key } from "__generated__/MyCollectionArtworkArtistMarket_artwork.graphql"
 import { MyCollectionArtworkArtistMarket_artworkPriceInsights$key } from "__generated__/MyCollectionArtworkArtistMarket_artworkPriceInsights.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { formatSellThroughRate } from "app/utils/marketPriceInsightHelpers"
-import { DecreaseIcon, Flex, IncreaseIcon, Spacer, Text, useSpace } from "palette"
+import { DecreaseIcon, Flex, IncreaseIcon, Text, useSpace } from "palette"
 import { ReactElement } from "react"
 import { FlatList, View } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -118,7 +119,7 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
         modalTitle="Artist Market Insights"
         modalContent={
           <>
-            <Spacer my={0.5} />
+            <Spacer y={0.5} />
             <Text>
               These statistics are based on the last 36 months of auction sale data from top
               commercial auction houses.
@@ -146,7 +147,7 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
                 flex: 1,
                 maxWidth: isIPad ? "33%" : "50%", // 100% devided by the number of rows
                 alignItems: "stretch",
-                paddingBottom: space(2),
+                paddingBottom: space("2"),
               }}
             >
               {item.component}

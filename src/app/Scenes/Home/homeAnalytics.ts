@@ -111,6 +111,7 @@ export default class HomeAnalytics {
   static artworkThumbnailTapEvent(
     contextModule: Analytics.ContextModule,
     slug: string,
+    id: string,
     index?: number,
     moduleHeight?: "single" | "double"
   ): Analytics.TappedEntityGroup {
@@ -118,6 +119,7 @@ export default class HomeAnalytics {
       contextScreenOwnerType: Analytics.OwnerType.home,
       destinationScreenOwnerType: Analytics.OwnerType.artwork,
       destinationScreenOwnerSlug: slug,
+      destinationScreenOwnerId: id,
       contextModule,
       horizontalSlidePosition: index,
       moduleHeight: moduleHeight ?? "double",
@@ -128,11 +130,12 @@ export default class HomeAnalytics {
   static artworkThumbnailTapEventFromKey(
     key: string | null,
     slug: string,
+    id: string,
     index?: number
   ): Analytics.TappedEntityGroup | null {
     const contextModule = HomeAnalytics.artworkRailContextModule(key)
     if (contextModule) {
-      return HomeAnalytics.artworkThumbnailTapEvent(contextModule, slug, index)
+      return HomeAnalytics.artworkThumbnailTapEvent(contextModule, slug, id, index)
     } else {
       console.log("homeAnalytics.ts untracked rail", key)
       return null
@@ -210,6 +213,8 @@ export default class HomeAnalytics {
     switch (key) {
       case "SUGGESTED":
         return Analytics.ContextModule.recommendedArtistsRail
+      case "CURATED_TRENDING":
+        return Analytics.ContextModule.curatedTrendingArtistsRail
       case "TRENDING":
         return Analytics.ContextModule.trendingArtistsRail
       case "POPULAR":

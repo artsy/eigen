@@ -49,7 +49,7 @@ export const OnboardingGeneScreen: React.FC<OnboardingGeneProps> = (props) => (
     fallback={
       <FullScreenLoadingImage
         imgSource={images[props.id]}
-        spacerHeight="80px"
+        spacerHeight={80}
         loadingText={"Great choice" + "\n" + "We’re finding a collection for you"}
       />
     }

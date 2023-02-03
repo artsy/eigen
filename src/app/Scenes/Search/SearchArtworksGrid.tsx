@@ -110,7 +110,7 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
       ) : (
         <FlatList<ArtworkSection>
           data={content}
-          contentContainerStyle={{ paddingTop: space(2) }}
+          contentContainerStyle={{ paddingTop: space("2") }}
           renderItem={({ item }) => item.content}
           keyExtractor={({ key }) => key}
         />

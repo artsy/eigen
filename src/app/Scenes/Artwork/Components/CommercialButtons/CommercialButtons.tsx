@@ -1,7 +1,7 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { CommercialButtons_artwork$data } from "__generated__/CommercialButtons_artwork.graphql"
 import { CommercialButtons_me$data } from "__generated__/CommercialButtons_me.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
-import { Spacer } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { BidButtonFragmentContainer } from "./BidButton"
 import { BuyNowButton } from "./BuyNowButton"
@@ -79,7 +79,7 @@ export const CommercialButtons: React.FC<CommercialButtonProps> = ({
         <MakeOfferButtonFragmentContainer artwork={artwork} editionSetID={editionSetID ?? null} />
         {isInquireable && (
           <>
-            <Spacer my={0.5} />
+            <Spacer y={0.5} />
             <InquiryButtonsFragmentContainer artwork={artwork} variant="outline" block />
           </>
         )}

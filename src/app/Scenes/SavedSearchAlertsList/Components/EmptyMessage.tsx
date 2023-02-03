@@ -1,5 +1,6 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
-import { Box, Button, Flex, quoteLeft, quoteRight, Spacer, Text } from "palette"
+import { Box, Button, Flex, quoteLeft, quoteRight, Text } from "palette"
 import { ScrollView } from "react-native"
 
 export const EmptyMessage: React.FC = () => {

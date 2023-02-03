@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { SmallArtworkRail_artworks$key } from "__generated__/SmallArtworkRail_artworks.graphql"
 import {
   PlaceholderBox,
@@ -6,7 +7,7 @@ import {
   useMemoizedRandom,
 } from "app/utils/placeholders"
 import { times } from "lodash"
-import { Flex, Join, Spacer } from "palette"
+import { Flex, Join } from "palette"
 import { PixelRatio } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -41,7 +42,7 @@ export const SmallArtworkRailPlaceholder: React.FC = () => {
   const fontScale = PixelRatio.getFontScale()
 
   return (
-    <Join separator={<Spacer width={15} />}>
+    <Join separator={<Spacer x="12" />}>
       {times(3 + useMemoizedRandom() * 10).map((index) => (
         <Flex key={index}>
           <PlaceholderBox

@@ -7,7 +7,6 @@ import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import { act } from "react-test-renderer"
 
-
 describe("ArtistSeriesListItem", () => {
   it("navigates to the artist series when tapped", () => {
     const artistSeriesListItem = renderWithWrappersLEGACY(

@@ -15,7 +15,6 @@ import {
   OpenSettingsBanner,
 } from "./MyProfilePushNotifications"
 
-
 const env = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
 describe(SwitchMenu, () => {
