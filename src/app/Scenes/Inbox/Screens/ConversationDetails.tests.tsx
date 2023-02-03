@@ -1,16 +1,10 @@
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { Theme } from "palette"
-import "react-native"
 import { graphql } from "react-relay"
 import { ConversationDetailsFragmentContainer } from "./ConversationDetails"
 
 describe("ConversationDetailsFragmentContainer", () => {
   const { renderWithRelay } = setupTestWrapper({
-    Component: ({ me }: any) => (
-      <Theme>
-        <ConversationDetailsFragmentContainer me={me} />
-      </Theme>
-    ),
+    Component: ({ me }: any) => <ConversationDetailsFragmentContainer me={me} />,
     query: graphql`
       query ConversationDetails_Test_Query($conversationID: String!) {
         me {

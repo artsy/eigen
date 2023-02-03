@@ -1,10 +1,8 @@
-import { render } from "@testing-library/react-native"
 import {
   ImageCarouselContext,
   useNewImageCarouselContext,
 } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
-import { GlobalStoreProvider } from "app/store/GlobalStore"
-import { Theme } from "palette"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { ImageCarouselFullScreen } from "./ImageCarouselFullScreen"
 
 describe("ImageCarouselFullScreen", () => {
@@ -28,18 +26,14 @@ describe("ImageCarouselFullScreen", () => {
       ],
     })
     return (
-      <GlobalStoreProvider>
-        <Theme>
-          <ImageCarouselContext.Provider value={value}>
-            <ImageCarouselFullScreen />
-          </ImageCarouselContext.Provider>
-        </Theme>
-      </GlobalStoreProvider>
+      <ImageCarouselContext.Provider value={value}>
+        <ImageCarouselFullScreen />
+      </ImageCarouselContext.Provider>
     )
   }
 
   it("render only the current zoomable image as a perf optimisation", () => {
-    const { getAllByLabelText } = render(<Mock />)
+    const { getAllByLabelText } = renderWithWrappers(<Mock />)
 
     expect(getAllByLabelText("Full Screen Image")).toHaveLength(1)
     expect(getAllByLabelText("Full Screen Image Blank Box")).toHaveLength(1)
