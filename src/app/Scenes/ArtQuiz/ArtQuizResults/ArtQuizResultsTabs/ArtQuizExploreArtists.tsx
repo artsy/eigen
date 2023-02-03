@@ -1,7 +1,8 @@
+import { ArtQuizArtist_artist$key } from "__generated__/ArtQuizArtist_artist.graphql"
 import { ArtQuizExploreArtists_artworks$key } from "__generated__/ArtQuizExploreArtists_artworks.graphql"
 import { ArtQuizResultsTabs_me$data } from "__generated__/ArtQuizResultsTabs_me.graphql"
 import { StickyTabPageFlatList } from "app/Components/StickyTabPage/StickyTabPageFlatList"
-import { ArtQuizExploreArtist } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizExploreArtist"
+import { ArtQuizArtist } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizArtist"
 import { graphql, useFragment } from "react-relay"
 
 export const ArtQuizExploreArtists = ({
@@ -16,7 +17,7 @@ export const ArtQuizExploreArtists = ({
 
   const artworkSections = artworks.map((artwork) => ({
     key: artwork.artist?.internalID!,
-    content: <ArtQuizExploreArtist artistData={artwork.artist} />,
+    content: <ArtQuizArtist artistData={artwork.artist as ArtQuizArtist_artist$key} />,
   }))
 
   return (
@@ -33,7 +34,7 @@ const artQuizExploreArtistsFragment = graphql`
   fragment ArtQuizExploreArtists_artworks on Artwork @relay(plural: true) {
     artist {
       internalID
-      ...ArtQuizExploreArtist_artist
+      ...ArtQuizArtist_artist
     }
   }
 `

@@ -1,7 +1,8 @@
+import { ArtQuizArtist_artist$key } from "__generated__/ArtQuizArtist_artist.graphql"
 import { ArtQuizResultsEmptyTabsQuery$data } from "__generated__/ArtQuizResultsEmptyTabsQuery.graphql"
 import { ArtQuizTrendingArtists_viewer$key } from "__generated__/ArtQuizTrendingArtists_viewer.graphql"
 import { StickyTabPageFlatList } from "app/Components/StickyTabPage/StickyTabPageFlatList"
-import { ArtQuizTrendingArtist } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsEmptyTabs/ArtQuizTrendingArtist"
+import { ArtQuizArtist } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizArtist"
 import { extractNodes } from "app/utils/extractNodes"
 import { graphql, useFragment } from "react-relay"
 
@@ -19,7 +20,7 @@ export const ArtQuizTrendingArtists = ({
 
   const artistSections = artists.map((artist) => ({
     key: artist.internalID,
-    content: <ArtQuizTrendingArtist artistData={artist} />,
+    content: <ArtQuizArtist artistData={artist as ArtQuizArtist_artist$key} />,
   }))
 
   return (
@@ -37,7 +38,7 @@ const artQuizTrendingArtistsFragment = graphql`
     curatedTrendingArtists(first: 16) {
       edges {
         node {
-          ...ArtQuizTrendingArtist_artist
+          ...ArtQuizArtist_artist
           internalID
         }
       }

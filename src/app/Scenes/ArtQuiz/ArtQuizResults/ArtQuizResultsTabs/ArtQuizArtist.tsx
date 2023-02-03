@@ -1,10 +1,9 @@
-import { Flex, FollowButton, Spacer, Text } from "@artsy/palette-mobile"
-import { ArtQuizTrendingArtistFollowArtistMutation } from "__generated__/ArtQuizTrendingArtistFollowArtistMutation.graphql"
+import { Spacer, Flex, FollowButton, Text } from "@artsy/palette-mobile"
+import { ArtQuizArtistFollowArtistMutation } from "__generated__/ArtQuizArtistFollowArtistMutation.graphql"
 import {
-  ArtQuizTrendingArtist_artist$data,
-  ArtQuizTrendingArtist_artist$key,
-} from "__generated__/ArtQuizTrendingArtist_artist.graphql"
-import { ArtQuizTrendingArtists_viewer$data } from "__generated__/ArtQuizTrendingArtists_viewer.graphql"
+  ArtQuizArtist_artist$data,
+  ArtQuizArtist_artist$key,
+} from "__generated__/ArtQuizArtist_artist.graphql"
 import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { ReadMore } from "app/Components/ReadMore"
 import { navigate } from "app/system/navigation/navigate"
@@ -13,27 +12,16 @@ import { truncatedTextLimit } from "app/utils/hardware"
 import { debounce } from "lodash"
 import { graphql, useFragment, useMutation } from "react-relay"
 
-export const ArtQuizTrendingArtist = ({
-  artistData,
-}: {
-  artistData: NonNullable<
-    NonNullable<
-      NonNullable<ArtQuizTrendingArtists_viewer$data["curatedTrendingArtists"]>["edges"]
-    >[0]
-  >["node"]
-}) => {
+export const ArtQuizArtist = ({ artistData }: { artistData: ArtQuizArtist_artist$key }) => {
   const textLimit = truncatedTextLimit()
-  const artist = useFragment<ArtQuizTrendingArtist_artist$key>(
-    artQuizTrendingArtistFragment,
-    artistData
-  )
+  const artist = useFragment<ArtQuizArtist_artist$key>(artQuizArtistFragment, artistData)
 
   const artworks = extractNodes(artist?.artworksConnection)
 
   const [followOrUnfollowArtist] =
-    useMutation<ArtQuizTrendingArtistFollowArtistMutation>(FollowArtistMutation)
+    useMutation<ArtQuizArtistFollowArtistMutation>(FollowArtistMutation)
 
-  const handleFollowChange = debounce((artist: ArtQuizTrendingArtist_artist$data) => {
+  const handleFollowChange = debounce((artist: ArtQuizArtist_artist$data) => {
     followOrUnfollowArtist({
       variables: {
         input: { artistID: artist?.slug!, unfollow: artist?.isFollowed },
@@ -86,8 +74,8 @@ export const ArtQuizTrendingArtist = ({
   )
 }
 
-const artQuizTrendingArtistFragment = graphql`
-  fragment ArtQuizTrendingArtist_artist on Artist {
+const artQuizArtistFragment = graphql`
+  fragment ArtQuizArtist_artist on Artist {
     id
     slug
     internalID
@@ -109,7 +97,7 @@ const artQuizTrendingArtistFragment = graphql`
 `
 
 const FollowArtistMutation = graphql`
-  mutation ArtQuizTrendingArtistFollowArtistMutation($input: FollowArtistInput!) {
+  mutation ArtQuizArtistFollowArtistMutation($input: FollowArtistInput!) {
     followArtist(input: $input) {
       artist {
         id

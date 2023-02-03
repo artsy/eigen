@@ -1,7 +1,7 @@
 import { ArtQuizResultsEmptyTabsQuery$data } from "__generated__/ArtQuizResultsEmptyTabsQuery.graphql"
 import { ArtQuizTrendingCollections_viewer$key } from "__generated__/ArtQuizTrendingCollections_viewer.graphql"
 import { StickyTabPageFlatList } from "app/Components/StickyTabPage/StickyTabPageFlatList"
-import { ArtQuizTrendingCollection } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsEmptyTabs/ArtQuizTrendingCollection"
+import { ArtQuizTrendingCollection } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizTrendingCollection"
 import { graphql, useFragment } from "react-relay"
 
 export const ArtQuizTrendingCollections = ({
