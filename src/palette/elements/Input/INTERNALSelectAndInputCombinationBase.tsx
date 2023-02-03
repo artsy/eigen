@@ -1,7 +1,7 @@
 import { Input, InputProps, InputRef } from "palette"
 import { Select } from "palette/elements/Select"
 import { SelectProps } from "palette/elements/Select/Select"
-import { forwardRef, useImperativeHandle, useEffect, useRef } from "react"
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import { Platform } from "react-native"
 
 // Mark the props that should pass to Select Component with ForSelect suffix
@@ -24,6 +24,7 @@ const UNDERLINE_TEXTINPUT_HEIGHT_ANDROID = 1.5
 export const INTERNALSelectAndInputCombinationBase = forwardRef<
   InputRef,
   {
+    formatInputValue?: (inputValue?: string) => string | undefined
     onValueChange: (value: ValuePayload) => void
     shouldDisplayLocalError?: boolean
     validate?: () => void
@@ -36,6 +37,7 @@ export const INTERNALSelectAndInputCombinationBase = forwardRef<
         android: { paddingTop: UNDERLINE_TEXTINPUT_HEIGHT_ANDROID },
         default: {},
       }),
+      formatInputValue,
       onValueChange,
       value,
       validate,
@@ -53,6 +55,7 @@ export const INTERNALSelectAndInputCombinationBase = forwardRef<
     },
     ref
   ) => {
+    const [innerValue, setInnerValue] = useState(value)
     const innerRef = useRef<InputRef>(null)
     useImperativeHandle(ref, () => innerRef.current!)
 
@@ -67,18 +70,18 @@ export const INTERNALSelectAndInputCombinationBase = forwardRef<
         return
       }
       validate?.()
-      onValueChange({ select: { value: valueForSelect }, input: { value } })
-    }, [value, valueForSelect])
+      onValueChange({ select: { value: valueForSelect }, input: { value: innerValue } })
+    }, [innerValue, valueForSelect])
 
     return (
       <Input
         {...rest}
         ref={innerRef}
-        value={value}
+        value={formatInputValue?.(innerValue) ?? innerValue}
         inputTextStyle={inputTextStyle}
-        onChangeText={(text) =>
-          onValueChange({ select: { value: valueForSelect }, input: { value: text } })
-        }
+        onChangeText={(text) => {
+          setInnerValue(text)
+        }}
         renderLeftHandSection={() => (
           <Select<string>
             options={optionsForSelect}

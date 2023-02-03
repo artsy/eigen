@@ -62,10 +62,14 @@ describe("MoneyInput", () => {
     )
     const input = wrapper.UNSAFE_getAllByType(Input)[0]
 
-    // if formatting is enabled "200---" will be automatically corrected
-    input.props.onChangeText("200---")
-    input.parent?.props.validate()
-    expect(wrapper.UNSAFE_getAllByType(Text)[1].props.children).toBe("Please enter a valid amount.")
+    await waitFor(() => {
+      // if formatting is enabled "200---" will be automatically corrected
+      input.props.onChangeText("200---")
+      input.parent?.props.validate()
+      expect(wrapper.UNSAFE_getAllByType(Text)[1].props.children).toBe(
+        "Please enter a valid amount."
+      )
+    })
   })
 
   it("calls onChange when the value changes", async () => {

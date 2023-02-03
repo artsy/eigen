@@ -4,12 +4,18 @@ const handleFirstChar = (str: string, removeLeadingZero = true) => {
   const isNumericRegex = /^[0-9]$/
   let money = str
   if (
-    (removeLeadingZero && money.length > 1 && money[0] === "0") ||
+    // if removeLeadingZero eliminate zeros in front of digits unless the next char is .
+    // So eg 03 will be 3; 0.3 will remain 0.3
+    (removeLeadingZero && money.length > 1 && money[0] === "0" && money[1] !== ".") ||
     !isNumericRegex.test(money[0])
   ) {
     money = money.replace(money[0], "")
   }
   return money
+}
+
+export const concatDigitsAndCents = (digits: string, cents?: string) => {
+  return digits + (cents !== undefined ? `.${handleFirstChar(cents, false).slice(0, 2)}` : "")
 }
 
 /** Converts bare digits or floats to readable en-US money format */
@@ -25,9 +31,7 @@ export const formatMoney = (amount?: string) => {
 
   const [digits, cents] = replaced.split(".")
   const formattedDigits = digits.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
-  return (
-    formattedDigits + (cents !== undefined ? `.${handleFirstChar(cents, false).slice(0, 2)}` : "")
-  )
+  return concatDigitsAndCents(formattedDigits, cents)
 }
 
 /** Converts a formatted money to bare float */
@@ -35,5 +39,11 @@ export const deformatMoney = (amount?: string) => {
   if (!amount) {
     return amount
   }
-  return amount.replace(/[^\d.]/g, "")
+  let res = amount.replace(/[^\d.]/g, "")
+  // remove all trailing dots
+  while (res.length > 0 && res[res.length - 1] === ".") {
+    res = res.replace(".", "")
+  }
+
+  return res
 }

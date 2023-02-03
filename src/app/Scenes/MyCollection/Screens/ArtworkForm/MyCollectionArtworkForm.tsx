@@ -25,7 +25,6 @@ import { goBack } from "app/system/navigation/navigate"
 import { refreshMyCollection, refreshMyCollectionInsights } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { isEqual } from "lodash"
-import { deformatMoney } from "palette/elements/Input/MoneyInput/moneyInputHelpers"
 import { useEffect, useRef, useState } from "react"
 import { Alert, InteractionManager } from "react-native"
 import { useTracking } from "react-tracking"
@@ -320,9 +319,8 @@ export const updateArtwork = async (
   const externalImageUrls = await uploadPhotos(photos)
 
   let pricePaidCents
-  const deformattedPricePaidDollars = deformatMoney(pricePaidDollars)
-  if (deformattedPricePaidDollars && !isNaN(Number(deformattedPricePaidDollars))) {
-    pricePaidCents = parseFloat(deformattedPricePaidDollars) * 100
+  if (pricePaidDollars && !isNaN(Number(pricePaidDollars))) {
+    pricePaidCents = parseFloat(pricePaidDollars) * 100
   }
 
   if (values.attributionClass !== "LIMITED_EDITION") {

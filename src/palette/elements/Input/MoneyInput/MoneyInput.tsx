@@ -1,12 +1,16 @@
-import { ThemeV3 } from "@artsy/palette-tokens"
 import { Spacer } from "@artsy/palette-mobile"
+import { ThemeV3 } from "@artsy/palette-tokens"
 import { Flex, InputProps, InputRef, Text, Touchable, TriangleDown, useColor } from "palette"
 import {
   INTERNALSelectAndInputCombinationBase,
   ValuePayload,
 } from "palette/elements/Input/INTERNALSelectAndInputCombinationBase"
 import { computeBorderColor } from "palette/elements/Input/Input"
-import { formatMoney } from "palette/elements/Input/MoneyInput/moneyInputHelpers"
+import {
+  concatDigitsAndCents,
+  deformatMoney,
+  formatMoney,
+} from "palette/elements/Input/MoneyInput/moneyInputHelpers"
 import { SelectOption } from "palette/elements/Select"
 import { forwardRef, useEffect, useRef, useState } from "react"
 
@@ -61,9 +65,13 @@ export const MoneyInput = forwardRef<
         select: { value: currencyValue },
         input: { value: amountValue },
       } = selectAndInputValue
-      const money = format ? formatMoney(amountValue) : amountValue
+
+      // Because the value could have been bubbled up before display formatting in INTERNALSelectAndInputCombinationBase,
+      // we need to ensure we are not inadvertently sending values with 3 decimal floats
+      const [digits, cents] = amountValue?.split(".") ?? ["", ""]
+      const amt = format ? concatDigitsAndCents(digits, cents) : amountValue
       setCurrency(currencyValue)
-      setAmount(money)
+      setAmount(amt)
     }
 
     const isFirstRun = useRef(true)
@@ -72,7 +80,7 @@ export const MoneyInput = forwardRef<
         isFirstRun.current = false
         return
       }
-      onChange?.({ currency, amount })
+      onChange?.({ currency, amount: deformatMoney(amount) })
     }, [amount, currency])
 
     const error =
@@ -83,6 +91,7 @@ export const MoneyInput = forwardRef<
         // Props for Input
         {...rest}
         ref={ref}
+        formatInputValue={format ? formatMoney : undefined}
         value={amount}
         keyboardType="numeric"
         onValueChange={onValueChange}
