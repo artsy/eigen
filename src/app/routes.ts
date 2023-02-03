@@ -118,6 +118,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/sales", "Sales"),
     addRoute("/map", "NewMap"),
     addRoute("/search", "Search"),
+    addRoute("/search2", "Search2"),
     addRoute("/inbox", "Inbox"),
     addRoute("/my-profile", "MyProfile"),
     addRoute("/my-profile/edit", "MyProfileEditForm"),

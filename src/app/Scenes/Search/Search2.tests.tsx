@@ -1,5 +1,6 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ES_ONLY_PILLS } from "app/Scenes/Search/constants"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { SearchScreen2 } from "./Search2"
 
@@ -18,7 +19,7 @@ describe("Search", () => {
   })
 
   it("should render a text input with placeholder and no pills", async () => {
-    renderWithRelay()
+    const { env } = renderWithRelay()
 
     const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
 
@@ -33,6 +34,9 @@ describe("Search", () => {
 
     fireEvent.changeText(searchInput, "Ba")
 
+    // needed to resolve the second relay operation triggered for the text change > 2
+    resolveMostRecentRelayOperation(env)
+
     // Pills should be visible
     await waitFor(() => {
       screen.getByText("Artworks")
@@ -41,48 +45,69 @@ describe("Search", () => {
   })
 
   it("Top pill should be selected by default", async () => {
-    renderWithRelay()
+    const { env } = renderWithRelay()
 
     const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
 
     fireEvent.changeText(searchInput, "text")
 
+    // needed to resolve the second relay operation triggered for the text change > 2
+    resolveMostRecentRelayOperation(env, {})
+
     expect(screen.getByA11yState({ selected: true })).toHaveTextContent("Top")
   })
 
   it("when clear button is pressed", async () => {
-    renderWithRelay()
+    const { env } = renderWithRelay()
 
     const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
 
     fireEvent(searchInput, "changeText", "prev value")
+
+    // needed to resolve the second relay operation triggered for the text change
+    resolveMostRecentRelayOperation(env)
+
     fireEvent(screen.getByText("Artworks"), "press")
+
     fireEvent(screen.getByLabelText("Clear input button"), "press")
+
     fireEvent(searchInput, "changeText", "new value")
+    // needed to resolve the relay operation triggered for the text change
+    resolveMostRecentRelayOperation(env)
 
     expect(screen.queryByA11yState({ selected: true })).toHaveTextContent("Top")
   })
 
   it("when cancel button is pressed", async () => {
-    renderWithRelay()
+    const { env } = renderWithRelay()
 
     const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
 
     fireEvent(searchInput, "changeText", "prev value")
+    // needed to resolve the relay operation triggered for the text change
+    resolveMostRecentRelayOperation(env)
+
     fireEvent(screen.getByText("Artworks"), "press")
+
     fireEvent(searchInput, "focus")
     fireEvent(screen.getByText("Cancel"), "press")
+
     fireEvent(searchInput, "changeText", "new value")
+    // needed to resolve the relay operation triggered for the text change
+    resolveMostRecentRelayOperation(env)
 
     expect(screen.queryByA11yState({ selected: true })).toHaveTextContent("Top")
   })
 
   it("should render all the default pills", async () => {
-    renderWithRelay()
+    const { env } = renderWithRelay()
 
     const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
 
     fireEvent(searchInput, "changeText", "Ba")
+
+    // needed to resolve the second relay operation triggered for the text change > 2
+    resolveMostRecentRelayOperation(env)
 
     ES_ONLY_PILLS.forEach((pill) => {
       expect(screen.queryByText(pill.displayName)).toBeTruthy()

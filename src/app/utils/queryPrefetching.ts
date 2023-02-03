@@ -9,7 +9,9 @@ import {
   fetchQuery,
   getRequest,
   GraphQLTaggedNode,
+  OperationType,
   Variables,
+  VariablesOf,
 } from "relay-runtime"
 import { logPrefetching } from "./loggers"
 
@@ -61,7 +63,10 @@ const prefetchQuery = async (query: GraphQLTaggedNode, variables?: Variables) =>
   }
 }
 
-const prefetchUrl = async (url: string, variables?: Variables) => {
+const prefetchUrl = async <TQuery extends OperationType>(
+  url: string,
+  variables?: VariablesOf<TQuery>
+) => {
   if (await isRateLimited()) {
     console.log("Reached prefetching rate limit.")
     return

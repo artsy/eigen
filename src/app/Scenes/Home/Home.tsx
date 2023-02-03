@@ -10,6 +10,8 @@ import { Home_meAbove$data } from "__generated__/Home_meAbove.graphql"
 import { Home_meBelow$data } from "__generated__/Home_meBelow.graphql"
 import { Home_newWorksForYou$data } from "__generated__/Home_newWorksForYou.graphql"
 import { Home_showsByFollowedArtists$data } from "__generated__/Home_showsByFollowedArtists.graphql"
+import { Search2Query } from "__generated__/Search2Query.graphql"
+import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { LargeArtworkRailPlaceholder } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { SmallArtworkRailPlaceholder } from "app/Components/ArtworkRail/SmallArtworkRail"
@@ -28,6 +30,7 @@ import {
   DEFAULT_RECS_MODEL_VERSION,
   RECOMMENDATION_MODEL_EXPERIMENT_NAME,
 } from "app/Scenes/NewWorksForYou/NewWorksForYou"
+import { search2QueryDefaultVariables } from "app/Scenes/Search/Search2"
 import { ViewingRoomsHomeMainRail } from "app/Scenes/ViewingRoom/Components/ViewingRoomsHomeRail"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
@@ -89,11 +92,13 @@ interface Props extends ViewProps {
 
 const Home = (props: Props) => {
   useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
-
+  const isESOnlySearchEnabled = useFeatureFlag("AREnableESOnlySearch")
   const prefetchUrl = usePrefetch()
 
   useEffect(() => {
-    prefetchUrl("search")
+    isESOnlySearchEnabled
+      ? prefetchUrl<Search2Query>("search2", search2QueryDefaultVariables)
+      : prefetchUrl<SearchQuery>("search")
     prefetchUrl("my-profile")
     prefetchUrl("inbox")
     prefetchUrl("sales")

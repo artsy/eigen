@@ -9,6 +9,7 @@ import {
 } from "app/Components/Containers/WorksForYou"
 import { FadeIn } from "app/Components/FadeIn"
 import { SearchScreenQuery } from "app/Scenes/Search/Search"
+import { SearchScreenQuery as SearchScreenQuery2 } from "app/Scenes/Search/Search2"
 import { SearchSwitchContainer } from "app/Scenes/Search/SearchSwitchContainer"
 import React from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
@@ -483,6 +484,7 @@ export const modules = defineModules({
   Search: reactModule(SearchSwitchContainer, { isRootViewForTabName: "search" }, [
     SearchScreenQuery,
   ]),
+  Search2: reactModule(SearchSwitchContainer, {}, [SearchScreenQuery2]),
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
   ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),
   SavedAddresses: reactModule(SavedAddressesQueryRenderer),

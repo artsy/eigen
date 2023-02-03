@@ -1,7 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Spacer } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
-import { Search2Query } from "__generated__/Search2Query.graphql"
+import { Search2Query, Search2Query$variables } from "__generated__/Search2Query.graphql"
 import { SearchInput } from "app/Components/SearchInput"
 import { SearchPills2 } from "app/Scenes/Search/SearchPills2"
 import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQueryChanged"
@@ -30,6 +30,11 @@ import { useSearchDiscoveryContentEnabled } from "./useSearchDiscoveryContentEna
 
 const SEARCH_INPUT_PLACEHOLDER = "Search artists, artworks, galleries, etc"
 
+export const search2QueryDefaultVariables: Search2Query$variables = {
+  term: "",
+  skipSearchQuery: true,
+}
+
 export const Search2: React.FC = () => {
   const isSearchDiscoveryContentEnabled = useSearchDiscoveryContentEnabled()
   const searchPillsRef = useRef<ScrollView>(null)
@@ -45,9 +50,7 @@ export const Search2: React.FC = () => {
     data: queryData,
     refetch,
     isLoading,
-  } = useSearchQuery<Search2Query>(SearchScreenQuery, {
-    term: "",
-  })
+  } = useSearchQuery<Search2Query>(SearchScreenQuery, search2QueryDefaultVariables)
 
   useRefetchWhenQueryChanged({ query: searchQuery, refetch })
 
@@ -126,7 +129,7 @@ export const Search2: React.FC = () => {
           />
         </Flex>
         <Flex flex={1} collapsable={false}>
-          {shouldStartSearching(searchQuery) && queryData.viewer !== null ? (
+          {shouldStartSearching(searchQuery) && !!queryData.viewer ? (
             <>
               <Box pt={2} pb={1}>
                 <SearchPills2
@@ -173,8 +176,8 @@ export const Search2: React.FC = () => {
 }
 
 export const SearchScreenQuery = graphql`
-  query Search2Query($term: String!) {
-    viewer {
+  query Search2Query($term: String!, $skipSearchQuery: Boolean!) {
+    viewer @skip(if: $skipSearchQuery) {
       ...SearchPills2_viewer @arguments(term: $term)
     }
     ...CuratedCollections_collections
