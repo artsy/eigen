@@ -1,40 +1,30 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
-import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
-import { useFormikContext } from "formik"
-import { Touchable } from "palette"
-import { Modal, TouchableOpacity } from "react-native"
-import { act } from "react-test-renderer"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { CategoryPicker } from "./CategoryPicker"
 
-jest.mock("formik")
-
 describe("CategoryPicker", () => {
-  const useFormikContextMock = useFormikContext as jest.Mock
-
-  beforeEach(() => {
-    useFormikContextMock.mockImplementation(() => ({
-      handleChange: jest.fn(),
-      values: {
-        category: "Painting",
-      },
-    }))
-  })
-
   it("displays and selects the correct category", async () => {
     const handleChangeMock = jest.fn()
-    const { UNSAFE_getAllByType } = renderWithHookWrappersTL(
+    renderWithWrappers(
       <CategoryPicker
         handleChange={handleChangeMock}
         options={artworkMediumCategories}
-        value={null}
+        value={artworkMediumCategories[0].value}
       />
     )
-    const SelectInput = UNSAFE_getAllByType(TouchableOpacity)[0]
-    await act(() => fireEvent(SelectInput, "onPress"))
-    const modal = UNSAFE_getAllByType(Modal)[0]
-    modal.findAllByType(Touchable)[0].props.onPress()
 
-    expect(handleChangeMock).toHaveBeenCalledWith(artworkMediumCategories[0].value, 0)
+    const SelectInput = screen.getByText("Painting")
+    fireEvent.press(SelectInput)
+
+    const modal = screen.UNSAFE_getByType(FancyModal)
+
+    // wait for modal to be visible
+    await waitFor(() => expect(modal).toHaveProp("visible", true))
+
+    fireEvent.press(screen.getByText(artworkMediumCategories[2].label))
+
+    expect(handleChangeMock).toHaveBeenCalledWith("Photography", 2)
   })
 })

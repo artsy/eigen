@@ -1,4 +1,4 @@
-import { act, fireEvent, screen } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import _ from "lodash"
@@ -58,7 +58,7 @@ describe("Saved search banner on artist screen", () => {
     mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
 
-    act(() => fireEvent.press(screen.getByText("Sort & Filter")))
+    fireEvent.press(screen.getByText("Sort & Filter"))
 
     expect(screen.getByText("Sort By • 1")).toBeTruthy()
     expect(screen.getByText("Rarity • 2")).toBeTruthy()

@@ -1,6 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { act } from "react-test-renderer"
 import { LineGraphBands } from "./LineGraphBands"
 
 describe(LineGraphBands, () => {
@@ -22,9 +21,8 @@ describe(LineGraphBands, () => {
     const Component = () => <LineGraphBands bands={bands} onBandSelected={onBandSelected} />
     const { findAllByTestId } = renderWithWrappers(<Component />)
     const allTheBands = await findAllByTestId("band")
-    act(() => {
-      fireEvent(allTheBands[0], "onPress")
-    })
+
+    fireEvent(allTheBands[0], "onPress")
     expect(onBandSelected).toHaveBeenCalledWith(bands[0].name)
   })
 })

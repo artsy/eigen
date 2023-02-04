@@ -1,15 +1,13 @@
-import { act, fireEvent } from "@testing-library/react-native"
+import { fireEvent } from "@testing-library/react-native"
 import { MyCollectionWhySellTestsQuery } from "__generated__/MyCollectionWhySellTestsQuery.graphql"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MyCollectionWhySell } from "./MyCollectionWhySell"
-
-const trackEvent = useTracking().trackEvent
 
 describe("MyCollectionWhySell", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -60,7 +58,8 @@ describe("MyCollectionWhySell", () => {
             Artwork: () => artworkWithoutSubmission,
           })
           const button = getByTestId("submitArtworkToSellButton")
-          act(() => fireEvent.press(button))
+
+          fireEvent.press(button)
           expect(navigate).toBeCalledWith("/collections/my-collection/artworks/new/submissions/new")
         })
         it("navigates to the explanatory page when learn more is press", () => {
@@ -70,7 +69,7 @@ describe("MyCollectionWhySell", () => {
             Artwork: () => artworkWithoutSubmission,
           })
           const button = getByTestId("learnMoreLink")
-          act(() => fireEvent.press(button))
+          fireEvent.press(button)
           expect(navigate).toBeCalledWith("/selling-with-artsy")
         })
       })
@@ -82,10 +81,12 @@ describe("MyCollectionWhySell", () => {
             Artwork: () => artworkWithoutSubmission,
           })
           const button = getByTestId("submitArtworkToSellButton")
-          act(() => fireEvent.press(button))
+
+          fireEvent.press(button)
           await flushPromiseQueue()
-          expect(trackEvent).toHaveBeenCalled()
-          expect(trackEvent).toHaveBeenCalledWith({
+
+          expect(mockTrackEvent).toHaveBeenCalled()
+          expect(mockTrackEvent).toHaveBeenCalledWith({
             action: "tappedSellArtwork",
             context_module: "sellFooter",
             context_screen_owner_type: "myCollectionArtwork",
@@ -94,17 +95,18 @@ describe("MyCollectionWhySell", () => {
             subject: "Submit This Artwork to Sell",
           })
         })
+
         it("tracks events, about tab", async () => {
           const { getByTestId } = renderWithWrappers(<TestRenderer contextModule="about" />)
           resolveData({
             Artwork: () => artworkWithoutSubmission,
           })
           const button = getByTestId("submitArtworkToSellButton")
-          act(() => fireEvent.press(button))
+          fireEvent.press(button)
           await flushPromiseQueue()
-          expect(trackEvent).toHaveBeenCalled()
+          expect(mockTrackEvent).toHaveBeenCalled()
 
-          expect(trackEvent).toHaveBeenCalledWith({
+          expect(mockTrackEvent).toHaveBeenCalledWith({
             action: "tappedSellArtwork",
             context_module: "myCollectionArtworkAbout",
             context_screen: "myCollectionArtworkAbout",
@@ -121,11 +123,11 @@ describe("MyCollectionWhySell", () => {
             Artwork: () => artworkWithoutSubmission,
           })
           const button = getByTestId("submitArtworkToSellButton")
-          act(() => fireEvent.press(button))
+          fireEvent.press(button)
           await flushPromiseQueue()
-          expect(trackEvent).toHaveBeenCalled()
+          expect(mockTrackEvent).toHaveBeenCalled()
 
-          expect(trackEvent).toHaveBeenCalledWith({
+          expect(mockTrackEvent).toHaveBeenCalledWith({
             action: "tappedSellArtwork",
             context_module: "myCollectionArtworkInsights",
             context_screen: "myCollectionArtworkInsights",
@@ -146,7 +148,7 @@ describe("MyCollectionWhySell", () => {
         })
         const button = getByTestId("submitArtworkToSellButton")
 
-        act(() => fireEvent.press(button))
+        fireEvent.press(button)
 
         await flushPromiseQueue()
 

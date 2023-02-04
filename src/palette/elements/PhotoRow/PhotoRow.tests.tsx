@@ -3,7 +3,6 @@ import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/valid
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
-import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { PhotoRow } from "./PhotoRow"
 
@@ -39,7 +38,7 @@ describe("PhotoRow", () => {
       const { getByTestId } = renderWithWrappers(<TestRenderer />)
       const DeleteButton = getByTestId("Submission_Delete_Photo_Button")
 
-      act(() => fireEvent.press(DeleteButton))
+      fireEvent.press(DeleteButton)
 
       expect(mockHandlePhotoDelete).toHaveBeenCalled()
       expect(mockHandlePhotoDelete).toHaveBeenCalledWith(mockUploadedPhoto)
