@@ -1,4 +1,3 @@
-import { ArtQuizArtist_artist$key } from "__generated__/ArtQuizArtist_artist.graphql"
 import { ArtQuizResultsEmptyTabsQuery$data } from "__generated__/ArtQuizResultsEmptyTabsQuery.graphql"
 import { ArtQuizTrendingArtists_viewer$key } from "__generated__/ArtQuizTrendingArtists_viewer.graphql"
 import { StickyTabPageFlatList } from "app/Components/StickyTabPage/StickyTabPageFlatList"
@@ -20,7 +19,7 @@ export const ArtQuizTrendingArtists = ({
 
   const artistSections = artists.map((artist) => ({
     key: artist.internalID,
-    content: <ArtQuizArtist artistData={artist as ArtQuizArtist_artist$key} />,
+    content: <ArtQuizArtist artistData={artist} />,
   }))
 
   return (

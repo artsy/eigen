@@ -12,7 +12,7 @@ import { truncatedTextLimit } from "app/utils/hardware"
 import { debounce } from "lodash"
 import { graphql, useFragment, useMutation } from "react-relay"
 
-export const ArtQuizArtist = ({ artistData }: { artistData: ArtQuizArtist_artist$key }) => {
+export const ArtQuizArtist = ({ artistData }: { artistData: ArtQuizArtist_artist$key | null }) => {
   const textLimit = truncatedTextLimit()
   const artist = useFragment<ArtQuizArtist_artist$key>(artQuizArtistFragment, artistData)
 
