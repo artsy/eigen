@@ -1,4 +1,13 @@
-import { Spacer, HeartIcon, CloseIcon } from "@artsy/palette-mobile"
+import {
+  Spacer,
+  Touchable,
+  CloseIcon,
+  Flex,
+  HeartIcon,
+  Screen,
+  Text,
+  BackButton,
+} from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { ArtQuizArtworksDislikeMutation } from "__generated__/ArtQuizArtworksDislikeMutation.graphql"
 import { ArtQuizArtworksQuery } from "__generated__/ArtQuizArtworksQuery.graphql"
@@ -9,7 +18,6 @@ import { ArtQuizNavigationStack } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
 import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
 import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex, Screen, Touchable } from "palette"
 import { useEffect, useRef, useState } from "react"
 import { Image } from "react-native"
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
@@ -152,11 +160,27 @@ export const ArtQuizArtworks = () => {
 
   return (
     <Screen>
-      <Screen.Header
-        onBack={handleOnBack}
-        title={`${activeCardIndex + 1}/${artworks.length}`}
-        onSkip={handleOnSkip}
-      />
+      <Screen.RawHeader>
+        <Flex
+          height={44}
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="space-between"
+          px={2}
+        >
+          <Flex>
+            <BackButton onPress={handleOnBack} />
+          </Flex>
+          <Text>{`${activeCardIndex + 1}/${artworks.length}`}</Text>
+          <Touchable haptic="impactLight" onPress={handleOnSkip}>
+            <Flex height="100%" justifyContent="center">
+              <Text textAlign="right" variant="xs">
+                Skip
+              </Text>
+            </Flex>
+          </Touchable>
+        </Flex>
+      </Screen.RawHeader>
       <Screen.Body>
         <Flex flex={1} py={2}>
           <PagerView

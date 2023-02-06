@@ -3,8 +3,8 @@ import { createStackNavigator, TransitionPresets } from "@react-navigation/stack
 import { ArtQuizNavigationQuery } from "__generated__/ArtQuizNavigationQuery.graphql"
 import { ArtQuizArtworks } from "app/Scenes/ArtQuiz/ArtQuizArtworks"
 import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
+import { ArtQuizWelcome } from "app/Scenes/ArtQuiz/ArtQuizWelcome"
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { ArtQuizWelcome } from "./ArtQuizWelcome"
 
 export type ArtQuizNavigationStack = {
   ArtQuizWelcome: undefined

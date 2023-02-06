@@ -17,15 +17,19 @@ const ResultsScreen = () => {
     return () => clearTimeout(timer)
   }, [hasSavedArtworks])
 
-  if (hasSavedArtworks && isResultReady) {
-    return <ArtQuizResultsTabs me={queryResult.me} />
-  }
-
-  if (!isResultReady) {
+  if (!isResultReady && hasSavedArtworks) {
     return <ArtQuizResultsLoader isReady />
   }
 
-  return <ArtQuizResultsEmptyTabs />
+  if (isResultReady && hasSavedArtworks) {
+    return <ArtQuizResultsTabs me={queryResult.me} />
+  }
+
+  return (
+    <Suspense fallback={<ArtQuizResultsLoader isReady />}>
+      <ArtQuizResultsEmptyTabs />
+    </Suspense>
+  )
 }
 
 export const ArtQuizResults = () => {

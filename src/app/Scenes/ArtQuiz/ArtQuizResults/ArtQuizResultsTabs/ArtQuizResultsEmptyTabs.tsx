@@ -1,8 +1,11 @@
+import { Screen } from "@artsy/palette-mobile"
+import { ArtQuizResultsEmptyTabsQuery } from "__generated__/ArtQuizResultsEmptyTabsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
-import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { ArtQuizResultsTabsHeader } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsTabsHeader"
+import { ArtQuizTrendingArtists } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizTrendingArtists"
+import { ArtQuizTrendingCollections } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizTrendingCollections"
 import { compact } from "lodash"
-import { Screen, Text, useSpace } from "palette"
+import { graphql, useLazyLoadQuery } from "react-relay"
 
 enum Tab {
   trendingCollections = "Trending Collections",
@@ -10,6 +13,11 @@ enum Tab {
 }
 
 export const ArtQuizResultsEmptyTabs = () => {
+  const queryResult = useLazyLoadQuery<ArtQuizResultsEmptyTabsQuery>(
+    artQuizResultsEmptyTabsQuery,
+    {}
+  )
+
   return (
     <Screen>
       <Screen.Body fullwidth>
@@ -18,12 +26,12 @@ export const ArtQuizResultsEmptyTabs = () => {
           tabs={compact([
             {
               title: Tab.trendingCollections,
-              content: <EmptyScreen />,
+              content: <ArtQuizTrendingCollections viewer={queryResult.viewer} />,
               initial: true,
             },
             {
               title: Tab.trendingArtists,
-              content: <EmptyScreen />,
+              content: <ArtQuizTrendingArtists viewer={queryResult.viewer} />,
             },
           ])}
           staticHeaderContent={
@@ -38,15 +46,11 @@ export const ArtQuizResultsEmptyTabs = () => {
   )
 }
 
-const EmptyScreen = () => {
-  const space = useSpace()
-  return (
-    <StickyTabPageScrollView
-      contentContainerStyle={{
-        paddingVertical: space("2"),
-      }}
-    >
-      <Text>In progress ...</Text>
-    </StickyTabPageScrollView>
-  )
-}
+const artQuizResultsEmptyTabsQuery = graphql`
+  query ArtQuizResultsEmptyTabsQuery {
+    viewer {
+      ...ArtQuizTrendingCollections_viewer
+      ...ArtQuizTrendingArtists_viewer
+    }
+  }
+`

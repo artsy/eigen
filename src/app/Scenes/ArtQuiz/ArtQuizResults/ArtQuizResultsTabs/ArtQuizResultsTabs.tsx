@@ -1,3 +1,4 @@
+import { Screen } from "@artsy/palette-mobile"
 import { ArtQuizResultsQuery$data } from "__generated__/ArtQuizResultsQuery.graphql"
 import { ArtQuizResultsTabs_me$key } from "__generated__/ArtQuizResultsTabs_me.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
@@ -5,7 +6,6 @@ import { ArtQuizExploreArtists } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuiz
 import { ArtQuizLikedArtworks } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizLikedArtworks"
 import { ArtQuizResultsTabsHeader } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsTabsHeader"
 import { compact } from "lodash"
-import { Screen } from "palette"
 import { graphql, useFragment } from "react-relay"
 
 enum Tab {

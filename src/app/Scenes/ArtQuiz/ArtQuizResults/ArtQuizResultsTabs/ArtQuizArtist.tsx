@@ -1,36 +1,27 @@
-import { Spacer } from "@artsy/palette-mobile"
-import { ArtQuizExploreArtistFollowArtistMutation } from "__generated__/ArtQuizExploreArtistFollowArtistMutation.graphql"
+import { Spacer, Flex, FollowButton, Text } from "@artsy/palette-mobile"
+import { ArtQuizArtistFollowArtistMutation } from "__generated__/ArtQuizArtistFollowArtistMutation.graphql"
 import {
-  ArtQuizExploreArtist_artist$data,
-  ArtQuizExploreArtist_artist$key,
-} from "__generated__/ArtQuizExploreArtist_artist.graphql"
-import { ArtQuizExploreArtists_artworks$data } from "__generated__/ArtQuizExploreArtists_artworks.graphql"
+  ArtQuizArtist_artist$data,
+  ArtQuizArtist_artist$key,
+} from "__generated__/ArtQuizArtist_artist.graphql"
 import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { ReadMore } from "app/Components/ReadMore"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { debounce } from "lodash"
-import { Flex, FollowButton, Text } from "palette"
 import { graphql, useFragment, useMutation } from "react-relay"
 
-export const ArtQuizExploreArtist = ({
-  artistData,
-}: {
-  artistData: ArtQuizExploreArtists_artworks$data[0]["artist"]
-}) => {
+export const ArtQuizArtist = ({ artistData }: { artistData: ArtQuizArtist_artist$key | null }) => {
   const textLimit = truncatedTextLimit()
-  const artist = useFragment<ArtQuizExploreArtist_artist$key>(
-    artQuizExploreArtistFragment,
-    artistData
-  )
+  const artist = useFragment<ArtQuizArtist_artist$key>(artQuizArtistFragment, artistData)
 
   const artworks = extractNodes(artist?.artworksConnection)
 
   const [followOrUnfollowArtist] =
-    useMutation<ArtQuizExploreArtistFollowArtistMutation>(FollowArtistMutation)
+    useMutation<ArtQuizArtistFollowArtistMutation>(FollowArtistMutation)
 
-  const handleFollowChange = debounce((artist: ArtQuizExploreArtist_artist$data) => {
+  const handleFollowChange = debounce((artist: ArtQuizArtist_artist$data) => {
     followOrUnfollowArtist({
       variables: {
         input: { artistID: artist?.slug!, unfollow: artist?.isFollowed },
@@ -83,8 +74,8 @@ export const ArtQuizExploreArtist = ({
   )
 }
 
-const artQuizExploreArtistFragment = graphql`
-  fragment ArtQuizExploreArtist_artist on Artist {
+const artQuizArtistFragment = graphql`
+  fragment ArtQuizArtist_artist on Artist {
     id
     slug
     internalID
@@ -106,7 +97,7 @@ const artQuizExploreArtistFragment = graphql`
 `
 
 const FollowArtistMutation = graphql`
-  mutation ArtQuizExploreArtistFollowArtistMutation($input: FollowArtistInput!) {
+  mutation ArtQuizArtistFollowArtistMutation($input: FollowArtistInput!) {
     followArtist(input: $input) {
       artist {
         id
