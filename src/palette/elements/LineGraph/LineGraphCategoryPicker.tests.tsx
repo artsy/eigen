@@ -1,6 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { act } from "react-test-renderer"
 import { CategoryPill, LineGraphCategoryPicker } from "./LineGraphCategoryPicker"
 
 describe("LineGraphCategoryPicker", () => {
@@ -30,9 +29,8 @@ describe("LineGraphCategoryPicker", () => {
       />
     )
     const categoryPill = await findByTestId("categoryPill")
-    act(() => {
-      fireEvent(categoryPill, "onPress")
-    })
+
+    fireEvent(categoryPill, "onPress")
     expect(onCategorySelected).toHaveBeenCalledWith(categories[0].name)
   })
 })

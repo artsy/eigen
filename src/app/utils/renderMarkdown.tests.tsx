@@ -1,6 +1,6 @@
 import { readFileSync } from "fs"
 import { join } from "path"
-import { act, fireEvent, within } from "@testing-library/react-native"
+import { fireEvent, within } from "@testing-library/react-native"
 import { navigate } from "app/system/navigation/navigate"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -104,7 +104,7 @@ describe("renderMarkdown", () => {
     const { queryAllByTestId } = renderWithWrappers(<Flex>{componentList}</Flex>)
     expect(queryAllByTestId(/linktext-/)).toHaveLength(2)
 
-    act(() => fireEvent.press(queryAllByTestId(/linktext-/)[0]))
+    fireEvent.press(queryAllByTestId(/linktext-/)[0])
 
     expect(navigate).toHaveBeenCalledWith("/artist/first", { modal: true })
   })
@@ -133,7 +133,7 @@ describe("renderMarkdown", () => {
     const { queryAllByTestId } = renderWithWrappers(<Flex>{componentList}</Flex>)
     expect(queryAllByTestId(/linktext-/)).toHaveLength(2)
 
-    act(() => fireEvent.press(queryAllByTestId(/linktext-/)[0]))
+    fireEvent.press(queryAllByTestId(/linktext-/)[0])
 
     expect(navigate).toHaveBeenCalledWith("/artist/first")
   })

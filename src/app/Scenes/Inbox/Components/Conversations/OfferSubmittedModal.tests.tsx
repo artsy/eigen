@@ -36,7 +36,7 @@ describe("OfferSubmittedModal", () => {
     const { getAllByText } = renderWithWrappers(<OfferSubmittedModal />)
     act(() => callback?.({ orderCode: "1234", message: "Test message" }))
 
-    act(() => fireEvent.press(getAllByText("Go to inbox")[0]))
+    fireEvent.press(getAllByText("Go to inbox")[0])
     expect(navigate).toHaveBeenCalledWith("inbox")
   })
 })
