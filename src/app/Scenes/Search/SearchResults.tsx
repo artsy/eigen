@@ -1,4 +1,6 @@
 import { ContextModule } from "@artsy/cohesion"
+import { SearchResults2Screen } from "app/Scenes/Search/components/SearchResults2"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { Flex } from "palette"
 import { FC } from "react"
@@ -7,7 +9,7 @@ import { useTracking } from "react-tracking"
 import { AutosuggestResult, AutosuggestResults } from "./AutosuggestResults"
 import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
 import { AlgoliaSearchResults } from "./components/AlgoliaSearchResults"
-import { TOP_PILL } from "./constants"
+import { ARTWORKS_PILL, TOP_PILL } from "./constants"
 import { getContextModuleByPillName } from "./helpers"
 import { AlgoliaSearchResult, PillType } from "./types"
 
@@ -28,6 +30,9 @@ interface TappedSearchResultData {
 
 export const SearchResults: FC<SearchResultsProps> = ({ selectedPill, query, onRetry }) => {
   const { trackEvent } = useTracking()
+  const isTopPillSelected = selectedPill.key === TOP_PILL.key
+  const isArtworksPillSelected = selectedPill.key === ARTWORKS_PILL.key
+  const isESOnlySearchEnabled = useFeatureFlag("AREnableESOnlySearch")
 
   const handleTrackAlgoliaResultPress = (result: AlgoliaSearchResult) => {
     const contextModule = getContextModuleByPillName(selectedPill.displayName)
@@ -69,7 +74,7 @@ export const SearchResults: FC<SearchResultsProps> = ({ selectedPill, query, onR
     )
   }
 
-  if (selectedPill.key === TOP_PILL.key) {
+  if (isTopPillSelected) {
     return (
       <Flex p={2}>
         <AutosuggestResults
@@ -79,6 +84,19 @@ export const SearchResults: FC<SearchResultsProps> = ({ selectedPill, query, onR
           showOnRetryErrorMessage
           trackResultPress={handleTrackAutosuggestResultPress}
         />
+      </Flex>
+    )
+  }
+
+  if (
+    isESOnlySearchEnabled &&
+    !isTopPillSelected &&
+    !isArtworksPillSelected &&
+    selectedPill.type === "elastic"
+  ) {
+    return (
+      <Flex p={2} flex={1} bg="red10">
+        <SearchResults2Screen query={query} selectedPill={selectedPill} />
       </Flex>
     )
   }
