@@ -2515,8 +2515,14 @@ type ArtworkVersion implements Node {
   # The Artwork Version attribution class
   attributionClass: AttributionClass
 
+  # The Artwork Version formatted date
+  date: String
+
   # The Image id
   defaultImageID: String
+
+  # The Artwork Version dimensions formatted for different units
+  dimensions: dimensions
 
   # A globally unique ID.
   id: ID!
@@ -3789,6 +3795,7 @@ type CommerceBuyOrder implements CommerceOrder {
     thousand: String = ","
   ): String
   artsyTotalCents: Int
+  artworkDetails: String
   availablePaymentMethods: [CommercePaymentMethodEnum!]!
   bankAccountId: String
   buyer: CommerceOrderPartyUnion!
@@ -4518,6 +4525,7 @@ type CommerceOfferOrder implements CommerceOrder {
     thousand: String = ","
   ): String
   artsyTotalCents: Int
+  artworkDetails: String
   availablePaymentMethods: [CommercePaymentMethodEnum!]!
   awaitingResponseFrom: CommerceOrderParticipantEnum
   bankAccountId: String
@@ -4755,6 +4763,7 @@ interface CommerceOrder {
     thousand: String = ","
   ): String
   artsyTotalCents: Int
+  artworkDetails: String
   availablePaymentMethods: [CommercePaymentMethodEnum!]!
   bankAccountId: String
   buyer: CommerceOrderPartyUnion!
