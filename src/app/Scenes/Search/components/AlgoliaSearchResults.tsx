@@ -1,7 +1,8 @@
 import { Spacer } from "@artsy/palette-mobile"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { LoadFailureView } from "app/Components/LoadFailureView"
-import { ALGOLIA_INDICES_WITH_AN_ARTICLE } from "app/Scenes/Search/constants"
+import { SingleIndexSearchPlaceholder } from "app/Scenes/Search/components/placeholders/SingleIndexSearchPlaceholder"
+import { SINGLE_INDICES_WITH_AN_ARTICLE } from "app/Scenes/Search/constants"
 import { isAlgoliaApiKeyExpiredError } from "app/Scenes/Search/helpers"
 import { AlgoliaIndexKey, AlgoliaSearchResult, PillType } from "app/Scenes/Search/types"
 import { isPad } from "app/utils/hardware"
@@ -11,7 +12,6 @@ import React, { useEffect, useRef, useState } from "react"
 import { InfiniteHitsProvided, StateResultsProvided } from "react-instantsearch-core"
 import { FlatList } from "react-native"
 import { SearchResult } from "./SearchResult"
-import { AlgoliaSearchPlaceholder } from "./placeholders/AlgoliaSearchPlaceholder"
 
 interface AlgoliaSearchResultsProps
   extends StateResultsProvided<AlgoliaSearchResult>,
@@ -73,13 +73,15 @@ export const AlgoliaSearchResults: React.FC<AlgoliaSearchResultsProps> = ({
   if (showLoadingPlaceholder) {
     return (
       <ProvidePlaceholderContext>
-        <AlgoliaSearchPlaceholder hasRoundedImages={selectedPill.key === AlgoliaIndexKey.Artist} />
+        <SingleIndexSearchPlaceholder
+          hasRoundedImages={selectedPill.key === AlgoliaIndexKey.Artist}
+        />
       </ProvidePlaceholderContext>
     )
   }
 
   if (searchResults?.nbHits === 0) {
-    const article = ALGOLIA_INDICES_WITH_AN_ARTICLE.includes(selectedPill.key as AlgoliaIndexKey)
+    const article = SINGLE_INDICES_WITH_AN_ARTICLE.includes(selectedPill.key as AlgoliaIndexKey)
       ? "an"
       : "a"
 

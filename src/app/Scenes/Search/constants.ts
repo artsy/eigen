@@ -3,7 +3,7 @@ import { AlgoliaIndexKey, PillType } from "./types"
 
 export const SEARCH_THROTTLE_INTERVAL = 500
 
-export const ALGOLIA_INDICES_WITH_AN_ARTICLE = [
+export const SINGLE_INDICES_WITH_AN_ARTICLE = [
   AlgoliaIndexKey.Artist,
   AlgoliaIndexKey.Auction,
   AlgoliaIndexKey.ArtistSeries,

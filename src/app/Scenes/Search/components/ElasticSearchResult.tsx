@@ -18,7 +18,6 @@ interface ElasticSearchResult {
 interface ElasticSearchResultItemProps {
   result: ElasticSearchResult
   selectedPill: PillType
-  trackResultPress?: (result: ElasticSearchResult) => void
   query?: string
 }
 
@@ -26,7 +25,6 @@ export const ElasticSearchResult: React.FC<ElasticSearchResultItemProps> = ({
   query,
   result,
   selectedPill,
-  trackResultPress,
 }) => {
   const addArtworkToRecentSearches = () => {
     GlobalStore.actions.search.addRecentSearch({
@@ -42,6 +40,10 @@ export const ElasticSearchResult: React.FC<ElasticSearchResultItemProps> = ({
     })
   }
 
+  // TODO: Re-enable tracking
+  // const trackResultPress = (elasticSearchResult: ElasticSearchResult) => {
+  // }
+
   const onPress = (): void => {
     if (result.href === null) {
       return
@@ -50,7 +52,8 @@ export const ElasticSearchResult: React.FC<ElasticSearchResultItemProps> = ({
     navigate(result.href)
     addArtworkToRecentSearches()
 
-    trackResultPress?.(result)
+    // TODO: Re-enable tracking
+    // trackResultPress?.(result)
   }
 
   return (

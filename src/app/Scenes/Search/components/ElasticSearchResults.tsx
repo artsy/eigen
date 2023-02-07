@@ -1,13 +1,18 @@
-import { Flex, Spacer, useSpace, Text } from "@artsy/palette-mobile"
+import { Flex, Spacer, useSpace, Text, Spinner } from "@artsy/palette-mobile"
 import { ElasticSearchResultsQuery } from "__generated__/ElasticSearchResultsQuery.graphql"
 import { ElasticSearchResults_searchConnection$key } from "__generated__/ElasticSearchResults_searchConnection.graphql"
 import { ElasticSearchResult } from "app/Scenes/Search/components/ElasticSearchResult"
-import { AlgoliaSearchPlaceholder } from "app/Scenes/Search/components/placeholders/AlgoliaSearchPlaceholder"
-import { ELASTIC_PILL_KEY_TO_SEARCH_ENTITY } from "app/Scenes/Search/constants"
-import { PillType } from "app/Scenes/Search/types"
+import { SingleIndexSearchPlaceholder } from "app/Scenes/Search/components/placeholders/SingleIndexSearchPlaceholder"
+import {
+  ELASTIC_PILL_KEY_TO_SEARCH_ENTITY,
+  SINGLE_INDICES_WITH_AN_ARTICLE,
+} from "app/Scenes/Search/constants"
+import { AlgoliaIndexKey, PillType } from "app/Scenes/Search/types"
 import { extractNodes } from "app/utils/extractNodes"
+import { isPad } from "app/utils/hardware"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
-import { Suspense } from "react"
+import { Box } from "palette"
+import { Suspense, useEffect, useRef } from "react"
 import { FlatList } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
@@ -16,54 +21,89 @@ interface SearchResults2Props {
   selectedPill: PillType
 }
 
+const PAGE_SIZE = isPad() ? 20 : 10
+
 export const SearchResults2: React.FC<SearchResults2Props> = ({ query, selectedPill }) => {
   const space = useSpace()
+  const flatListRef = useRef<FlatList>(null)
+
   const selectedEntity = ELASTIC_PILL_KEY_TO_SEARCH_ENTITY?.[selectedPill.key]
 
   const queryData = useLazyLoadQuery<ElasticSearchResultsQuery>(elasticSearchResultsQuery, {
     query,
-    first: 10,
+    first: PAGE_SIZE,
     entities: [selectedEntity],
   })
 
-  const { data } = usePaginationFragment<
+  const { data, loadNext, hasNext, isLoadingNext } = usePaginationFragment<
     ElasticSearchResultsQuery,
     ElasticSearchResults_searchConnection$key
   >(searchResultsFragment, queryData)
 
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      flatListRef.current?.scrollToOffset({ offset: 0, animated: true })
+    })
+  }, [selectedPill.indexName])
+
   const hits = extractNodes(data?.searchConnection)
+
+  const handleLoadMore = () => {
+    if (!hasNext || isLoadingNext) {
+      return
+    }
+
+    loadNext(PAGE_SIZE)
+  }
 
   return (
     <FlatList
+      ref={flatListRef}
       contentContainerStyle={{ paddingVertical: space("1"), paddingHorizontal: space("2") }}
       data={hits}
       keyExtractor={(item, index) => item.internalID ?? index.toString()}
-      // TODO: add analytics
       renderItem={({ item }) => (
         <ElasticSearchResult result={item} selectedPill={selectedPill} query={query} />
       )}
+      initialNumToRender={PAGE_SIZE}
       showsVerticalScrollIndicator={false}
       ItemSeparatorComponent={() => <Spacer y={2} />}
       keyboardDismissMode="on-drag"
       keyboardShouldPersistTaps="handled"
-      // TODO: change that with the default empty component
-      ListEmptyComponent={() => <Text>No results</Text>}
+      ListEmptyComponent={() => {
+        // type casting to AlgoliaIndexKey to be removed when we remove algolia
+        const article = SINGLE_INDICES_WITH_AN_ARTICLE.includes(selectedPill.key as AlgoliaIndexKey)
+          ? "an"
+          : "a"
+
+        return (
+          <Box px={2} py={1}>
+            <Spacer mt={4} />
+            <Text variant="sm-display" textAlign="center">
+              Sorry, we couldn’t find {article} {selectedPill.displayName} for “{query}
+              .”
+            </Text>
+            <Text variant="sm-display" color="black60" textAlign="center">
+              Please try searching again with a different spelling.
+            </Text>
+          </Box>
+        )
+      }}
       ListFooterComponent={
         <Flex alignItems="center" my={2}>
-          {/* TODO: add loading */}
-          {/* {loading ? <Spinner /> : null} */}
+          {isLoadingNext ? <Spinner /> : null}
         </Flex>
       }
+      onEndReached={handleLoadMore}
     />
   )
 }
 
 export const ElasticSearchResults2Screen: React.FC<SearchResults2Props> = (props) => (
-  // TODO: Add the correct placeholder
   <Suspense
     fallback={
       <ProvidePlaceholderContext>
-        <AlgoliaSearchPlaceholder hasRoundedImages={props.selectedPill.key === "artist"} />
+        <SingleIndexSearchPlaceholder hasRoundedImages={props.selectedPill.key === "artist"} />
       </ProvidePlaceholderContext>
     }
   >
