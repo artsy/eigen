@@ -1,9 +1,8 @@
 import { ContextModule } from "@artsy/cohesion"
-import { SearchResults2Screen } from "app/Scenes/Search/components/SearchResults2"
+import { ElasticSearchResults2Screen } from "app/Scenes/Search/components/ElasticSearchResults"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { Flex } from "palette"
-import { FC } from "react"
 import { connectInfiniteHits, connectStateResults } from "react-instantsearch-core"
 import { useTracking } from "react-tracking"
 import { AutosuggestResult, AutosuggestResults } from "./AutosuggestResults"
@@ -28,7 +27,7 @@ interface TappedSearchResultData {
   objectTab?: string
 }
 
-export const SearchResults: FC<SearchResultsProps> = ({ selectedPill, query, onRetry }) => {
+export const SearchResults: React.FC<SearchResultsProps> = ({ selectedPill, query, onRetry }) => {
   const { trackEvent } = useTracking()
   const isTopPillSelected = selectedPill.key === TOP_PILL.key
   const isArtworksPillSelected = selectedPill.key === ARTWORKS_PILL.key
@@ -94,11 +93,7 @@ export const SearchResults: FC<SearchResultsProps> = ({ selectedPill, query, onR
     !isArtworksPillSelected &&
     selectedPill.type === "elastic"
   ) {
-    return (
-      <Flex p={2} flex={1} bg="red10">
-        <SearchResults2Screen query={query} selectedPill={selectedPill} />
-      </Flex>
-    )
+    return <ElasticSearchResults2Screen query={query} selectedPill={selectedPill} />
   }
 
   return <SearchArtworksQueryRenderer keyword={query} />
