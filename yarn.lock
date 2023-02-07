@@ -229,10 +229,10 @@
   dependencies:
     core-js "3"
 
-"@artsy/palette-mobile@6.1.0":
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-6.1.0.tgz#2812af440035e9addf3563d4d4af79d5399e27f7"
-  integrity sha512-p9rb3AbTCp1Ro9nhq3qblQjmFx0V4SujSthb4Oh9kaxyHT2RKWWyBtfwO5Urdm31JvoMQdWPKF1bX7fJAbVfvA==
+"@artsy/palette-mobile@7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-7.0.0.tgz#0fa1869302e0b6bd02f490a0faf41310c33d30b2"
+  integrity sha512-RnSZWr7vDo+1qQAy2F3bgsad/BicZnd4308+qznVOic+4Co0G6r371I4B6udo35qDXBgFlfKFT4y/znnR/sX4A==
   dependencies:
     "@artsy/palette-tokens" "^4.0.1"
     "@styled-system/core" "^5.1.2"
@@ -240,7 +240,6 @@
     events "^3.3.0"
     lodash "^4.17.21"
     react-nanny "^2.15.0"
-    react-spring "8.0.22"
     styled-components "^5.3.6"
     styled-system "^5.1.5"
 
@@ -14229,14 +14228,6 @@ react-sizeme@^3.0.1:
     invariant "^2.2.4"
     shallowequal "^1.1.0"
     throttle-debounce "^3.0.1"
-
-react-spring@8.0.22:
-  version "8.0.22"
-  resolved "https://registry.yarnpkg.com/react-spring/-/react-spring-8.0.22.tgz#df55bba25ff0d7d31455bf9a1ff78b63dd968c07"
-  integrity sha512-X2E75K9JvwqUGzTE9v1B3f0po6eOr2LwErXG4MNZ+QXl5LmBsprbH+ZUEgyDj9p8ZRIhdtIlndvhYtmG9Etl6g==
-  dependencies:
-    "@babel/runtime" "^7.3.1"
-    prop-types "^15.5.8"
 
 react-spring@8.0.23:
   version "8.0.23"
