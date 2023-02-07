@@ -295,6 +295,21 @@ describe("ActivityItem", () => {
       expect(queryByLabelText("Remaining artworks count")).toBeFalsy()
     })
 
+    it("should NOT be rendered if notification is not artwork-based", async () => {
+      const { queryByLabelText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Notification: () => ({
+          ...notification,
+          notificationType: "PARTNER_SHOW_OPENED",
+          objectsCount: 5,
+        }),
+      })
+      await flushPromiseQueue()
+
+      expect(queryByLabelText("Remaining artworks count")).toBeFalsy()
+    })
+
     it("should be rendered if there are more than 4", async () => {
       const { getByText, getByLabelText } = renderWithHookWrappersTL(
         <TestRenderer />,
