@@ -9,13 +9,15 @@ import { useActionSheet } from "@expo/react-native-action-sheet"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { captureException } from "@sentry/react-native"
+import { MyCollectionArtwork_sharedProps$data } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
+import { LengthUnitPreference } from "__generated__/UserPrefsModelQuery.graphql"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
+import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { deleteArtworkImage } from "app/Scenes/MyCollection/mutations/deleteArtworkImage"
 import { myCollectionCreateArtwork } from "app/Scenes/MyCollection/mutations/myCollectionCreateArtwork"
 import { myCollectionDeleteArtwork } from "app/Scenes/MyCollection/mutations/myCollectionDeleteArtwork"
 import { myCollectionUpdateArtwork } from "app/Scenes/MyCollection/mutations/myCollectionUpdateArtwork"
-import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { deletedPhotos } from "app/Scenes/MyCollection/utils/deletedPhotos"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { addClue, GlobalStore, setVisualClueAsSeen } from "app/store/GlobalStore"
@@ -27,8 +29,6 @@ import { isEqual, reverse } from "lodash"
 import { useEffect, useRef, useState } from "react"
 import { Alert, InteractionManager } from "react-native"
 import { useTracking } from "react-tracking"
-import { MyCollectionArtwork_sharedProps$data } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
-import { LengthUnitPreference } from "__generated__/UserPrefsModelQuery.graphql"
 import { SavingArtworkModal } from "./Components/SavingArtworkModal"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
 import { uploadPhotos } from "./MyCollectionImageUtil"
@@ -355,18 +355,20 @@ export const updateArtwork = async (
     const artwork = response.myCollectionCreateArtwork?.artworkOrError?.artworkEdge?.node
 
     // Store images locally
-    photos.forEach((image, index) => {
-      const imageID = artwork?.images?.[index]?.internalID
-      console.log("asdf upload", { imageID, image, index })
+    await Promise.all(
+      photos.map((image, index) => {
+        const imageID = artwork?.images?.[index]?.internalID
+        console.log("asdf upload", { imageID, image, index })
 
-      if (!imageID) return
+        if (!imageID) return
 
-      storeLocalImage(imageID, {
-        path: image.path!,
-        width: image.width!,
-        height: image.height!,
+        storeLocalImage(imageID, {
+          path: image.path!,
+          width: image.width!,
+          height: image.height!,
+        })
       })
-    })
+    )
 
     const hasMarketPriceInsights =
       response.myCollectionCreateArtwork?.artworkOrError?.artworkEdge?.node?.hasMarketPriceInsights

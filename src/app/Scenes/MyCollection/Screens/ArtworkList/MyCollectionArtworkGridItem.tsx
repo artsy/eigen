@@ -5,6 +5,7 @@ import { DEFAULT_SECTION_MARGIN } from "app/Components/ArtworkGrids/InfiniteScro
 import HighDemandIcon from "app/Components/Icons/HighDemandIcon"
 import { MyCollectionImageView } from "app/Scenes/MyCollection/Components/MyCollectionImageView"
 import { navigate } from "app/system/navigation/navigate"
+import { useLocalImage } from "app/utils/LocalImageStore"
 import { isPad } from "app/utils/hardware"
 import { Box, Flex, Text } from "palette"
 import { View } from "react-native"
@@ -23,10 +24,12 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
   myCollectionIsRefreshing,
 }) => {
   const { trackEvent } = useTracking()
-  const imageURL =
-    artwork.images?.find((i: any) => i?.isDefault)?.url ||
-    (artwork.images && artwork.images[0]?.url)
+  const displayImage = artwork.images?.find((i: any) => i?.isDefault) || artwork.images?.[0]
   const { width } = useScreenDimensions()
+
+  const localImage = useLocalImage(displayImage)
+
+  const imageURL = displayImage?.url
 
   const {
     artist,
@@ -51,6 +54,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
 
   const showHighDemandIcon = isP1Artist && isHighDemand
 
+  console.log("qwer", "MyCollectionArtworkGridItem", { localImage })
   return (
     <TouchElement
       onPress={() => {
@@ -71,8 +75,8 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
       <View>
         <MyCollectionImageView
           imageWidth={imageWidth}
-          imageURL={imageURL ?? undefined}
-          aspectRatio={image?.aspectRatio}
+          imageURL={(localImage?.path || imageURL) ?? undefined}
+          aspectRatio={localImage?.aspectRatio || image?.aspectRatio}
           artworkSlug={slug}
           artworkSubmissionId={submissionId}
           myCollectionIsRefreshing={myCollectionIsRefreshing}
@@ -118,9 +122,13 @@ export const MyCollectionArtworkGridItemFragmentContainer = createFragmentContai
         images {
           url
           isDefault
+          internalID
+          versions
         }
         image {
+          internalID
           aspectRatio
+          versions
         }
         artistNames
         medium

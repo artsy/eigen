@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 // Expiration time is 5 minutes
 // TODO: Decrease number
@@ -27,9 +27,9 @@ export const storeLocalImage = async (key: string, image: LocalImage) => {
 }
 
 export const getLocalImage = async (key: string): Promise<LocalImage | null> => {
-  console.log("asdf", "getLocalImage", key)
   const storeKey = `${IMAGE_KEY_PREFIX}_${key}`
   const imageJSONString = await AsyncStorage.getItem(storeKey)
+  console.log("asdf", "getLocalImage", key, imageJSONString)
 
   if (!imageJSONString) return null
 
@@ -52,11 +52,24 @@ export const deleteLocalImages = (key: string): Promise<void> => {
   return AsyncStorage.removeItem(key)
 }
 
+export const useLocalImages = (
+  images: ({ internalID: string | null; versions?: any } | null | undefined)[] | null | undefined,
+  requestedImageVersion?: string
+) => {
+  const initialLocalImages = useMemo(() => images, [])
+
+  const localImages = initialLocalImages?.map((image) =>
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useLocalImage(image, requestedImageVersion)
+  )
+
+  return localImages
+}
 /**
  * Returns the local image if it is stored and the requested image version is not available
  */
 export const useLocalImage = (
-  image: { internalID: string | null; versions: any } | null,
+  image: { internalID: string | null; versions?: any } | null | undefined,
   requestedImageVersion?: string
 ) => {
   return useLocalImageStorage(image?.internalID, image?.versions, requestedImageVersion)
@@ -70,7 +83,6 @@ export const useLocalImageStorage = (
   imageVersions?: any,
   requestedImageVersion?: string
 ) => {
-  console.log("asdf", { key })
   const [localImage, setLocalImage] = useState<LocalImage | null>(null)
 
   const isImageAvailable =
@@ -78,10 +90,10 @@ export const useLocalImageStorage = (
     isImageVersionAvailable(imageVersions, requestedImageVersion || DEFAULT_IMAGE_VERSION)
 
   const changeLocalImage = async () => {
-    // if (isImageAvailable || !key) {
-    //   setLocalImage(null)
-    //   return
-    // }
+    if (isImageAvailable || !key) {
+      setLocalImage(null)
+      return
+    }
 
     try {
       setLocalImage(await getLocalImage(key!))

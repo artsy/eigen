@@ -1,12 +1,12 @@
 import { tappedCollectedArtworkImages } from "@artsy/cohesion"
 import { useColor, Join, Spacer, Flex, NoImageIcon, Text } from "@artsy/palette-mobile"
+import { MyCollectionArtworkHeader_artwork$key } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
 import { ImageCarouselFragmentContainer } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
 import { navigate } from "app/system/navigation/navigate"
 import { TouchableOpacity } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
-import { MyCollectionArtworkHeader_artwork$key } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
 import { MyCollectionArtworkSubmissionStatus } from "./MyCollectionArtworkSubmissionStatus"
 
 const NO_ARTIST_NAMES_TEXT = "-"
@@ -27,7 +27,7 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
 
   const hasImages = artwork?.figures?.length > 0
 
-  console.log("asdf", artwork?.figures.length, dimensions.height)
+  console.log("qwer", "MyCollectionArtworkHeader", artwork.figures?.length)
 
   return (
     <Join separator={<Spacer y={1} />}>

@@ -1,6 +1,7 @@
-import { captureMessage } from "@sentry/react-native"
+import { ImageCarousel_figures$data } from "__generated__/ImageCarousel_figures.graphql"
 import { createGeminiUrl } from "app/Components/OpaqueImageView/createGeminiUrl"
 import { useFeatureFlag } from "app/store/GlobalStore"
+import { useLocalImages } from "app/utils/LocalImageStore"
 import { isPad } from "app/utils/hardware"
 import { guardFactory } from "app/utils/types/guardFactory"
 import { Flex } from "palette"
@@ -8,10 +9,8 @@ import { useMemo } from "react"
 import { PixelRatio, Platform } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
-import { ImageCarousel_figures$data } from "__generated__/ImageCarousel_figures.graphql"
 import { ImageCarouselFullScreen } from "./FullScreen/ImageCarouselFullScreen"
 import { ImageCarouselFullScreenAndroid } from "./FullScreen/ImageCarouselFullScreenAndroid"
-import { fitInside } from "./geometry"
 import {
   ImageCarouselContext,
   ImageCarouselImage,
@@ -21,6 +20,7 @@ import {
 } from "./ImageCarouselContext"
 import { ImageCarouselEmbedded } from "./ImageCarouselEmbedded"
 import { IndicatorType, PaginationIndicator } from "./ImageCarouselPaginationIndicator"
+import { fitInside } from "./geometry"
 
 export interface CarouselImageDescriptor extends ImageDescriptor {
   imageVersions?: string[]
@@ -59,7 +59,9 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
     onImageIndexChange,
   })
 
-  console.log("asdf", context.media.length, images.length, videos.length)
+  console.log("qwer", "ImageCarousel", props?.figures?.length, images?.length, context.media.length)
+
+  console.log("ImageCarousel", { images, cImages: context.media })
 
   context.fullScreenState.useUpdates()
 
@@ -108,6 +110,7 @@ export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarou
         width
         height
         imageVersions
+        versions
         isDefault
         deepZoom {
           image: Image {
@@ -154,20 +157,10 @@ function getBestImageVersionForThumbnail(imageVersions: readonly string[]) {
     }
   }
 
-  if (!__DEV__) {
-    captureMessage("No appropriate image size found for artwork (see breadcrumbs for artwork slug)")
-  } else {
-    console.warn("No appropriate image size found!")
-  }
-
   // doesn't really matter what we return here, the gemini image url
   // will fail to load and we'll see a gray square. I haven't come accross an image
   // that this will happen for, but better safe than sorry.
   return "normalized"
-}
-
-const imageHasVersions = (image: CarouselImageDescriptor) => {
-  return image.imageVersions && image.imageVersions.length
 }
 
 const useImageCarouselMedia = (
@@ -190,18 +183,28 @@ const useImageCarouselMedia = (
 
   const videoFigures = props.figures?.filter(guardFactory("__typename", "Video"))
 
-  const disableDeepZoom = imageFigures?.some((image) => isALocalImage(image.url))
+  const localImages = useLocalImages(imageFigures)
+
+  const disableDeepZoom = imageFigures?.some((_, index) => localImages?.[index])
 
   const images = useMemo(() => {
-    const mappedImages = imageFigures ?? props.staticImages ?? []
+    const mappedImages =
+      imageFigures?.map((image, i) => ({
+        ...image,
+        url: localImages?.[i]?.path || image.url,
+        width: localImages?.[i]?.width || image.width,
+        height: localImages?.[i]?.height || image.height,
+      })) ??
+      props.staticImages ??
+      []
 
     let result = mappedImages
-      .map((image) => {
+      .map((image, index) => {
         const { width, height } = fitInside(embeddedCardBoundingBox, image as MappedImageDescriptor)
 
         const url = (() => {
-          if (!image.url || !image.height || !image.width) {
-            return null
+          if (!image.url || localImages?.[index]) {
+            return image.url
           }
 
           return createGeminiUrl({
@@ -215,7 +218,9 @@ const useImageCarouselMedia = (
           })
         })()
 
-        const largeImageURL = image.largeImageURL ?? image.url ?? null
+        const largeImageURL = localImages?.[index]
+          ? image.url
+          : image.largeImageURL ?? image.url ?? null
 
         return {
           ...image,
@@ -241,8 +246,11 @@ const useImageCarouselMedia = (
       }
     }
 
+    // Filter out (local) images that are not loaded yet
+    result = result.filter((image) => image?.width && image?.height)
+
     return result
-  }, [props.staticImages, imageFigures]) as ImageCarouselImage[]
+  }, [props.staticImages, imageFigures, localImages]) as ImageCarouselImage[]
 
   // Map video props to the same format thats used for images
   const videos = useMemo(() => {
