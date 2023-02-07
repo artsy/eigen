@@ -28,55 +28,55 @@ export const TOP_PILL: PillType = {
 export const ARTWORKS_PILL: PillType = {
   displayName: "Artworks",
   type: "elastic",
-  key: "artwork",
+  key: "ARTWORK",
 }
 
 export const ARTIST_PILL: PillType = {
   displayName: "Artist",
   type: "elastic",
-  key: "artist",
+  key: "ARTIST",
 }
 
 export const ARTICLE_PILL: PillType = {
   displayName: "Article",
   type: "elastic",
-  key: "article",
+  key: "ARTICLE",
 }
 
 export const AUCTION_PILL: PillType = {
   displayName: "Auction",
   type: "elastic",
-  key: "sale",
+  key: "SALE",
 }
 
 export const ARTIST_SERIES_PILL: PillType = {
   displayName: "Artist Series",
   type: "elastic",
-  key: "artist_series",
+  key: "ARTIST_SERIES",
 }
 
 export const COLLECTION_PILL: PillType = {
   displayName: "Collection",
   type: "elastic",
-  key: "marketing_collection",
+  key: "COLLECTION",
 }
 
 export const FAIR_PILL: PillType = {
   displayName: "Fair",
   type: "elastic",
-  key: "fair",
+  key: "FAIR",
 }
 
 export const SHOW_PILL: PillType = {
   displayName: "Show",
   type: "elastic",
-  key: "partner_show",
+  key: "SHOW",
 }
 
 export const GALLERY_PILL: PillType = {
   displayName: "Gallery",
   type: "elastic",
-  key: "PartnerGallery",
+  key: "GALLERY",
 }
 
 export const ES_ONLY_PILLS: PillType[] = [
