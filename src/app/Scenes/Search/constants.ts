@@ -28,55 +28,55 @@ export const TOP_PILL: PillType = {
 export const ARTWORKS_PILL: PillType = {
   displayName: "Artworks",
   type: "elastic",
-  key: "ARTWORK",
+  key: "artwork",
 }
 
 export const ARTIST_PILL: PillType = {
   displayName: "Artist",
   type: "elastic",
-  key: "ARTIST",
+  key: "artist",
 }
 
 export const ARTICLE_PILL: PillType = {
   displayName: "Article",
   type: "elastic",
-  key: "ARTICLE",
+  key: "article",
 }
 
 export const AUCTION_PILL: PillType = {
   displayName: "Auction",
   type: "elastic",
-  key: "SALE",
+  key: "sale",
 }
 
 export const ARTIST_SERIES_PILL: PillType = {
   displayName: "Artist Series",
   type: "elastic",
-  key: "ARTIST_SERIES",
+  key: "artist_series",
 }
 
 export const COLLECTION_PILL: PillType = {
   displayName: "Collection",
   type: "elastic",
-  key: "COLLECTION",
+  key: "marketing_collection",
 }
 
 export const FAIR_PILL: PillType = {
   displayName: "Fair",
   type: "elastic",
-  key: "FAIR",
+  key: "fair",
 }
 
 export const SHOW_PILL: PillType = {
   displayName: "Show",
   type: "elastic",
-  key: "SHOW",
+  key: "partner_show",
 }
 
 export const GALLERY_PILL: PillType = {
   displayName: "Gallery",
   type: "elastic",
-  key: "GALLERY",
+  key: "PartnerGallery",
 }
 
 export const ES_ONLY_PILLS: PillType[] = [
@@ -93,3 +93,15 @@ export const ES_ONLY_PILLS: PillType[] = [
 ]
 
 export const DEFAULT_PILLS: PillType[] = [TOP_PILL, ARTWORKS_PILL]
+
+export const ELASTIC_PILL_KEY_TO_SEARCH_ENTITY = {
+  artwork: "ARTWORK",
+  artist: "ARTIST",
+  article: "ARTICLE",
+  sale: "SALE",
+  artist_series: "ARTIST_SERIES",
+  marketing_collection: "COLLECTION",
+  fair: "FAIR",
+  partner_show: "SHOW",
+  PartnerGallery: "GALLERY",
+}
