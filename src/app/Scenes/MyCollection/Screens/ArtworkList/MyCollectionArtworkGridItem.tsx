@@ -8,6 +8,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { useLocalImage } from "app/utils/LocalImageStore"
 import { isPad } from "app/utils/hardware"
 import { Box, Flex, Text } from "palette"
+import { useState, useEffect } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -28,8 +29,6 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
   const { width } = useScreenDimensions()
 
   const localImage = useLocalImage(displayImage)
-
-  const imageURL = displayImage?.url
 
   const {
     artist,
@@ -54,7 +53,17 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
 
   const showHighDemandIcon = isP1Artist && isHighDemand
 
-  console.log("qwer", "MyCollectionArtworkGridItem", { localImage })
+  const [timer, setTimer] = useState(0)
+  useEffect(() => {
+    setInterval(() => {
+      setTimer(timer + 1)
+    })
+  }, [])
+  console.log("qwer", "MyCollectionArtworkGridItem", {
+    timer,
+    localImage,
+    ar: displayImage?.internalID,
+  })
   return (
     <TouchElement
       onPress={() => {
@@ -75,7 +84,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
       <View>
         <MyCollectionImageView
           imageWidth={imageWidth}
-          imageURL={(localImage?.path || imageURL) ?? undefined}
+          imageURL={(localImage?.path || displayImage?.url) ?? undefined}
           aspectRatio={localImage?.aspectRatio || image?.aspectRatio}
           artworkSlug={slug}
           artworkSubmissionId={submissionId}

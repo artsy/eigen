@@ -1,6 +1,6 @@
+import { myCollectionCreateArtworkMutation } from "__generated__/myCollectionCreateArtworkMutation.graphql"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { commitMutation, graphql } from "react-relay"
-import { myCollectionCreateArtworkMutation } from "__generated__/myCollectionCreateArtworkMutation.graphql"
 
 export function myCollectionCreateArtwork(
   input: myCollectionCreateArtworkMutation["variables"]["input"]

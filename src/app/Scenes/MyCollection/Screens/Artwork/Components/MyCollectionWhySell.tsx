@@ -1,5 +1,6 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Spacer } from "@artsy/palette-mobile"
+import { MyCollectionWhySell_artwork$key } from "__generated__/MyCollectionWhySell_artwork.graphql"
 import { initializeSubmissionArtworkForm } from "app/Scenes/MyCollection/utils/initializeSubmissionArtworkForm"
 import { navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
@@ -7,7 +8,6 @@ import { Button, Flex, Separator, Text } from "palette"
 import { useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { graphql } from "relay-runtime"
-import { MyCollectionWhySell_artwork$key } from "__generated__/MyCollectionWhySell_artwork.graphql"
 
 interface MyCollectionWhySellProps {
   artwork: MyCollectionWhySell_artwork$key

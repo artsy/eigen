@@ -1,5 +1,6 @@
 import { tappedCollectedArtwork } from "@artsy/cohesion"
 import { act, fireEvent } from "@testing-library/react-native"
+import { MyCollectionArtworkListItemTestsQuery } from "__generated__/MyCollectionArtworkListItemTestsQuery.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import * as LocalImageStore from "app/utils/LocalImageStore"
 import { LocalImage } from "app/utils/LocalImageStore"
@@ -7,7 +8,6 @@ import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { MyCollectionArtworkListItemTestsQuery } from "__generated__/MyCollectionArtworkListItemTestsQuery.graphql"
 import { MyCollectionArtworkListItem } from "./MyCollectionArtworkListItem"
 
 describe("MyCollectionArtworkListItem", () => {

@@ -1,4 +1,3 @@
-import { isALocalImage } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
 import React from "react"
 import {
   Image,
@@ -8,7 +7,6 @@ import {
   Platform,
   processColor,
   requireNativeComponent,
-  StyleSheet,
   View,
   ViewProps,
 } from "react-native"
@@ -81,49 +79,13 @@ export default class OpaqueImageView extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
 
-    // Unless `aspectRatio` was not specified at all, default the ratio to 1 to prevent illegal layout calculations.
-    const ratio = props.aspectRatio
-    this.state = {
-      aspectRatio: ratio === undefined ? undefined : ratio || 1,
-    }
-
-    if (__DEV__) {
-      const style = StyleSheet.flatten(props.style)
-      if (style == null) {
-        return
-      }
-      if (
-        !(
-          this.state.aspectRatio ||
-          (style.width && style.height) ||
-          (props.height && props.width) ||
-          (style.height && style.flexGrow) ||
-          style.flex
-        )
-      ) {
-        console.error(
-          "[OpaqueImageView] Either an aspect ratio or specific dimensions or flex should be specified."
-        )
-      }
-    }
+    this.state = {}
   }
 
   imageURL() {
     const { imageURL, useRawURL } = this.props
 
     if (imageURL) {
-      if (isALocalImage(imageURL)) {
-        // we will always useRawURL for local images
-        if (imageURL.startsWith("file://")) {
-          return imageURL
-        }
-        if (imageURL.startsWith("/")) {
-          return "file://" + imageURL
-        }
-        // TODO:- Handling of './' paths
-        // Ignore android's assets:// path (This is because using assets:// in OpaqueImageView is not a use case for us now.)
-        return null
-      }
       if (useRawURL) {
         return imageURL
       }
@@ -153,7 +115,7 @@ export default class OpaqueImageView extends React.Component<Props, State> {
     const { style, ...props } = this.props
 
     Object.assign(props, {
-      aspectRatio: this.state.aspectRatio,
+      aspectRatio: this.props.aspectRatio,
       imageURL: isLaidOut ? this.imageURL() : null,
       onLayout: this.onLayout,
     })

@@ -1,4 +1,5 @@
 import { tappedCollectedArtwork } from "@artsy/cohesion"
+import { MyCollectionArtworkGridItemTestsQuery } from "__generated__/MyCollectionArtworkGridItemTestsQuery.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import * as LocalImageStore from "app/utils/LocalImageStore"
 import { LocalImage } from "app/utils/LocalImageStore"
@@ -9,7 +10,6 @@ import { Image as RNImage } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { MyCollectionArtworkGridItemTestsQuery } from "__generated__/MyCollectionArtworkGridItemTestsQuery.graphql"
 import { MyCollectionArtworkGridItemFragmentContainer, tests } from "./MyCollectionArtworkGridItem"
 
 describe("MyCollectionArtworkGridItem", () => {
