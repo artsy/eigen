@@ -17,7 +17,7 @@ export const DataList = <ItemT,>({
     data={data}
     keyExtractor={keyExtractor ?? ((item) => `${item}`)}
     renderItem={renderItem}
-    ItemSeparatorComponent={() => <Spacer mb="4" />}
+    ItemSeparatorComponent={() => <Spacer y="4" />}
     contentContainerStyle={[
       {
         flexGrow: 1,

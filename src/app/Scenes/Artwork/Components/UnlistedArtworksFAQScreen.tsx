@@ -15,7 +15,7 @@ export const UnlistedArtworksFAQScreen: React.FC = () => {
           <Join separator={<Spacer y="2" />}>
             <Text variant="lg-display">Private Listings</Text>
 
-            <Join separator={<Spacer y={1} />}>
+            <Join separator={<Spacer y="1" />}>
               <Text>
                 Private listings are shared by galleries with select collectors. You need a link to
                 find them—they won’t appear in searches on Artsy. Use the heart icon to add a

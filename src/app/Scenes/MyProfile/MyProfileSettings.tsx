@@ -20,7 +20,7 @@ export const MyProfileSettings: React.FC<{}> = () => {
       <Text variant="lg-display" mx="2" mt="6">
         Settings
       </Text>
-      <Spacer y={1} />
+      <Spacer y="1" />
       <MenuItem title="Edit Profile" onPress={() => navigate("my-profile/edit")} />
       <Separator my={1} borderColor={separatorColor} />
       <MenuItem title="Saved Alerts" onPress={() => navigate("my-profile/saved-search-alerts")} />
@@ -37,9 +37,9 @@ export const MyProfileSettings: React.FC<{}> = () => {
       />
       <Separator my={1} borderColor={separatorColor} />
 
-      <Spacer mt={2} mb={1} />
+      <Spacer y="2" mb={1} />
       <SectionHeading title="Account Settings" />
-      <Spacer mt={1} />
+      <Spacer y="1" />
       <MenuItem title="Account" onPress={() => navigate("my-account")} />
       <Separator my={1} borderColor={separatorColor} />
       {!!showOrderHistory && (
@@ -97,7 +97,7 @@ export const MyProfileSettings: React.FC<{}> = () => {
           Log Out{" "}
         </Button>
       </Flex>
-      <Spacer mb={1} />
+      <Spacer y="1" />
     </ScrollView>
   )
 }

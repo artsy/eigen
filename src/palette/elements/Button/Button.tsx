@@ -176,13 +176,13 @@ export const Button: React.FC<ButtonProps> = ({
                   {iconPosition === "left-start" && !!icon ? (
                     <Box position="absolute" left={0}>
                       {icon}
-                      <Spacer mr={0.5} />
+                      <Spacer x="0.5" />
                     </Box>
                   ) : null}
                   {iconPosition === "left" && !!icon ? (
                     <>
                       {icon}
-                      <Spacer mr={0.5} />
+                      <Spacer x="0.5" />
                     </>
                   ) : null}
                   {/* This makes sure that in testing environment the button text is
@@ -212,7 +212,7 @@ export const Button: React.FC<ButtonProps> = ({
                   </AnimatedText>
                   {iconPosition === "right" && !!icon ? (
                     <>
-                      <Spacer mr={0.5} />
+                      <Spacer x="0.5" />
                       {icon}
                     </>
                   ) : null}

@@ -48,7 +48,7 @@ export const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay, openFilter
   useEffect(() => {
     setJSX(
       <Box backgroundColor="white">
-        <Spacer mb={1} />
+        <Spacer y="1" />
         <Separator />
         <ArtworksFilterHeader
           selectedFiltersCount={selectedFiltersCount}
@@ -76,7 +76,7 @@ export const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay, openFilter
 
   return (
     <>
-      <Spacer mb={1} />
+      <Spacer y="1" />
       <Text variant="sm-display" color="black60" mb={2}>
         Showing {artworksTotal} works
       </Text>

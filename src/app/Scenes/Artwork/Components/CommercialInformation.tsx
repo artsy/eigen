@@ -224,7 +224,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
     if (!!(canTakeCommercialAction && !isInClosedAuction)) {
       return (
         <>
-          {!hidesPriceInformation && <Spacer mb={2} />}
+          {!hidesPriceInformation && <Spacer y="2" />}
           <CommercialButtons
             artwork={artwork}
             me={me}
@@ -244,7 +244,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
     if (!!isBiddableInAuction) {
       return (
         <>
-          <Spacer mb={2} />
+          <Spacer y="2" />
           <Countdown
             label={label}
             hasStarted={hasStarted}
@@ -276,7 +276,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
       )}
       {!!(artistIsConsignable || isAcquireable || isOfferable || isBiddableInAuction) && (
         <>
-          <Spacer mb={2} />
+          <Spacer y="2" />
           <ArtworkExtraLinks
             artwork={artwork}
             // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

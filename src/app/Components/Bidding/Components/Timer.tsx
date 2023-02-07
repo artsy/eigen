@@ -182,7 +182,7 @@ export const Countdown: React.FC<CountdownProps> = ({
       </Text>
       {!!extendedBiddingPeriodMinutes && (
         <>
-          <Spacer mt={1} />
+          <Spacer y="1" />
           <Text variant="xs" color="black60" textAlign="center">
             *Closure times may be extended to accommodate last-minute bids
           </Text>

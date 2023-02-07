@@ -103,14 +103,14 @@ export const ViewingRoomsList = () => {
             key={`${numColumns}`}
             ListHeaderComponent={() => (
               <>
-                <Spacer mt="2" />
+                <Spacer y="2" />
                 {featuredLength > 0 && (
                   <>
                     <Flex mx="2">
                       <SectionTitle title="Featured" />
                     </Flex>
                     <FeaturedRail featured={queryData.featured!} scrollRef={scrollRef} />
-                    <Spacer mt="4" />
+                    <Spacer y="4" />
                   </>
                 )}
                 <Flex mx="2">
@@ -131,26 +131,26 @@ export const ViewingRoomsList = () => {
               } else {
                 return (
                   <Flex flex={1 / numColumns} flexDirection="row">
-                    {/* left list padding */ index % numColumns === 0 && <Spacer ml="2" />}
-                    {/* left side separator */ index % numColumns > 0 && <Spacer ml="1" />}
+                    {/* left list padding */ index % numColumns === 0 && <Spacer x="2" />}
+                    {/* left side separator */ index % numColumns > 0 && <Spacer x="1" />}
                     <Flex flex={1}>
                       <ViewingRoomsListItem item={item} />
                     </Flex>
                     {
                       /* right side separator*/ index % numColumns < numColumns - 1 && (
-                        <Spacer mr="1" />
+                        <Spacer x="1" />
                       )
                     }
                     {
                       /* right list padding */ index % numColumns === numColumns - 1 && (
-                        <Spacer mr="2" />
+                        <Spacer x="2" />
                       )
                     }
                   </Flex>
                 )
               }
             }}
-            ItemSeparatorComponent={() => <Spacer mt="4" />}
+            ItemSeparatorComponent={() => <Spacer y="4" />}
             onEndReached={handleLoadMore}
             onEndReachedThreshold={1}
             ListFooterComponent={() =>
@@ -174,7 +174,7 @@ const tracks = {
 const Placeholder = () => (
   <ProvidePlaceholderContext>
     <PageWithSimpleHeader title={SCREEN_TITLE}>
-      <Spacer mb="2" />
+      <Spacer y="2" />
       <Flex ml="2" testID="viewing-rooms-list-placeholder">
         <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
         <Flex flexDirection="row">
@@ -205,7 +205,7 @@ const LoadingMorePlaceholder = () => (
           <PlaceholderBox width="100%" height={220} />
           <PlaceholderText width={120 + Math.random() * 100} marginTop={10} />
           <PlaceholderText width={80 + Math.random() * 100} marginTop={6} />
-          <Spacer mb="4" />
+          <Spacer y="4" />
         </React.Fragment>
       ))}
     </Flex>

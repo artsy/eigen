@@ -56,7 +56,7 @@ class PartnerLocationSection extends React.Component<Props> {
             )}
             .
           </Text>
-          <Spacer mb={2} />
+          <Spacer y="2" />
           <Button
             variant="fillGray"
             size="large"
@@ -66,7 +66,7 @@ class PartnerLocationSection extends React.Component<Props> {
           >
             See all location details
           </Button>
-          <Spacer mb={3} />
+          <Spacer y="4" />
         </>
       )
     )

@@ -44,7 +44,7 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
         paddingBottom: 80,
       }}
       data={nodes}
-      ItemSeparatorComponent={() => <Spacer mt={2} />}
+      ItemSeparatorComponent={() => <Spacer y="2" />}
       renderItem={({ item }) => {
         switch (item.__typename) {
           case "Artist":
@@ -95,7 +95,7 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
 const OnboardingPersonalizationListPlaceholder = () => (
   <ProvidePlaceholderContext>
     <Flex testID="OnboardingPersonalizationListPlaceholder">
-      <Join separator={<Spacer y={20} />}>
+      <Join separator={<Spacer y="2" />}>
         {times(10).map((index: number) => (
           <Flex key={index}>
             <ArtistListItemPlaceholder />

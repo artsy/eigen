@@ -71,7 +71,7 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({
               </Flex>
             )}
             {!!isAcquireableFromInquiry &&
-              (!!isOfferableFromInquiry || !!isOfferableConversationalBuyNow) && <Spacer ml={1} />}
+              (!!isOfferableFromInquiry || !!isOfferableConversationalBuyNow) && <Spacer x="1" />}
             {(!!isOfferableFromInquiry || !!isOfferableConversationalBuyNow) && (
               <Flex flex={1}>
                 <Button
@@ -107,7 +107,7 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({
               </Flex>
             )}
             {!!isAcquireableFromInquiry &&
-              (!!isOfferableFromInquiry || !!isOfferableConversationalBuyNow) && <Spacer ml={1} />}
+              (!!isOfferableFromInquiry || !!isOfferableConversationalBuyNow) && <Spacer x="1" />}
             {(!!isOfferableFromInquiry || !!isOfferableConversationalBuyNow) && (
               <Flex flex={1}>
                 <InquiryMakeOfferButtonFragmentContainer

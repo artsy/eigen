@@ -57,15 +57,15 @@ export const FeaturedRail: React.FC<FeaturedRailProps & Partial<RailScrollProps>
   return (
     <View>
       <AboveTheFoldFlatList
-        ListHeaderComponent={() => <Spacer ml="2" />}
-        ListFooterComponent={() => <Spacer ml="2" />}
+        ListHeaderComponent={() => <Spacer x="2" />}
+        ListFooterComponent={() => <Spacer x="2" />}
         horizontal
         listRef={listRef}
         showsHorizontalScrollIndicator={false}
         initialNumToRender={2}
         keyExtractor={(item) => item.internalID}
         data={featured}
-        ItemSeparatorComponent={() => <Spacer ml={15} />}
+        ItemSeparatorComponent={() => <Spacer x={15} />}
         renderItem={({ item }) => {
           const tag = tagForStatus(item.status, item.distanceToOpen, item.distanceToClose)
           return (

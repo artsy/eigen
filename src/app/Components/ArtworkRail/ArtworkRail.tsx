@@ -132,4 +132,4 @@ export const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> =
   )
 }
 
-const SpacerComponent = () => <Spacer mr={2} />
+const SpacerComponent = () => <Spacer x="2" />

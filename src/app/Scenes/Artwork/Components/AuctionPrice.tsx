@@ -112,7 +112,7 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
         </Flex>
         {sale! /* STRICTNESS_MIGRATION */.isWithBuyersPremium && (
           <>
-            <Spacer mb={1} />
+            <Spacer y="1" />
             <Text variant="sm" color="black60">
               This auction has a{" "}
               <Text

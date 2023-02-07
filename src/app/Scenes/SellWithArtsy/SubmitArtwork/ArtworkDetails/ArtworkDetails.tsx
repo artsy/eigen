@@ -29,7 +29,7 @@ export const ArtworkDetails: React.FC<{
       </BulletedItem>
       <BulletedItem>All fields are required to submit an artwork.</BulletedItem>
 
-      <Spacer mt={4} />
+      <Spacer y="4" />
       <Formik<ArtworkDetailsFormModel>
         initialValues={artworkDetails}
         onSubmit={handlePress}
@@ -39,7 +39,7 @@ export const ArtworkDetails: React.FC<{
         {({ values, isValid }) => (
           <>
             <ArtworkDetailsForm />
-            <Spacer mt={2} />
+            <Spacer y="2" />
             <CTAButton
               disabled={!isValid}
               onPress={() => handlePress(values)}

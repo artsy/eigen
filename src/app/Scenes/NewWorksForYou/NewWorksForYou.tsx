@@ -39,7 +39,7 @@ const NewWorksForYou: React.FC<NewWorksForYouProps> = ({ viewer }) => {
               hasMore={() => false}
               pageSize={PAGE_SIZE}
               contextScreenOwnerType={OwnerType.newWorksForYou}
-              HeaderComponent={<Spacer mt={2} />}
+              HeaderComponent={<Spacer y="2" />}
               shouldAddPadding
               showLoadingSpinner
               useParentAwareScrollView={false}
@@ -151,7 +151,7 @@ const Placeholder = () => {
   return (
     <ProvidePlaceholderContext>
       <PageWithSimpleHeader title={SCREEN_TITLE}>
-        <Spacer mt={2} />
+        <Spacer y="2" />
         <PlaceholderGrid />
       </PageWithSimpleHeader>
     </ProvidePlaceholderContext>

@@ -102,7 +102,7 @@ export const ConsignmentInquiryForm: React.FC<{
             value={values.name}
             error={errors.name}
           />
-          <Spacer y={2} />
+          <Spacer y="2" />
           <Input
             required
             ref={emailInputRef}
@@ -124,7 +124,7 @@ export const ConsignmentInquiryForm: React.FC<{
             textContentType={Platform.OS === "ios" ? "username" : "emailAddress"}
             error={errors.email}
           />
-          <Spacer y={2} />
+          <Spacer y="2" />
           <PhoneInput
             ref={phoneInputRef}
             testID="swa-inquiry-phone-input"
@@ -140,7 +140,7 @@ export const ConsignmentInquiryForm: React.FC<{
             accessibilityLabel="Phone number"
             shouldDisplayLocalError={false}
           />
-          <Spacer y={4} />
+          <Spacer y="4" />
           <Input
             required
             ref={messageInputRef}
@@ -161,7 +161,7 @@ export const ConsignmentInquiryForm: React.FC<{
             autoCorrect={false}
             error={errors.message}
           />
-          <Spacer y={4} />
+          <Spacer y="4" />
           <Text variant="xs" color="black60" mb={2}>
             By continuing, you agree to{" "}
             <LinkText variant="xs" onPress={() => navigate("/privacy", { modal: true })}>

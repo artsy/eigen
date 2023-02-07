@@ -30,7 +30,7 @@ const PhotoRowContainer: React.FC<PhotoRowContainerProps> = ({ error, errorMsg, 
         {errorMsg}
       </Text>
     )}
-    <Spacer mt={2} />
+    <Spacer y="2" />
   </>
 )
 

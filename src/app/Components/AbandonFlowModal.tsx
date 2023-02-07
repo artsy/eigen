@@ -38,7 +38,7 @@ export const AbandonFlowModal: React.FC<AbandonFlowModalProps> = ({
         <Button onPress={() => popToRoot()} block variant="fillDark" size="large">
           {leaveButtonTitle}
         </Button>
-        <Spacer y={1} />
+        <Spacer y="1" />
         <Button onPress={onDismiss} block variant="outline" size="large">
           {continueButtonTitle}
         </Button>

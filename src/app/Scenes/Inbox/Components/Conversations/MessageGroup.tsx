@@ -47,7 +47,7 @@ const IndividualMessage: React.FC<{
   isSameDay: boolean
 }> = ({ message, nextMessage, conversationId, isLastMessage, isSameDay }) => {
   const senderChanges = !!nextMessage && nextMessage.isFromUser !== message.isFromUser
-  const spaceAfter = senderChanges || isLastMessage ? 2 : 0.5
+  const spaceAfter = senderChanges || isLastMessage ? "2" : "0.5"
   return (
     <React.Fragment>
       {!!message.body && (
@@ -57,7 +57,7 @@ const IndividualMessage: React.FC<{
           conversationId={conversationId!}
         />
       )}
-      <Spacer mb={spaceAfter} />
+      <Spacer y={spaceAfter} />
     </React.Fragment>
   )
 }

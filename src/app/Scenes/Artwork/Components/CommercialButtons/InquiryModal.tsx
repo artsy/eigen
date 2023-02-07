@@ -89,7 +89,7 @@ const InquiryQuestionOption: React.FC<{
         >
           <Flex flexDirection="row" justifyContent="space-between">
             <Flex flexDirection="row">
-              <Join separator={<Spacer ml={3} />}>
+              <Join separator={<Spacer x="4" />}>
                 <Checkbox
                   testID={`checkbox-${id}`}
                   checked={questionSelected}

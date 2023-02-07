@@ -66,7 +66,7 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
               </ArticlesListItem>
             )
           }}
-          ItemSeparatorComponent={() => <Spacer mt="4" />}
+          ItemSeparatorComponent={() => <Spacer y="4" />}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={1}
           ListFooterComponent={() => (
@@ -142,11 +142,11 @@ export const ArticlesPlaceholder = () => {
                   marginTop={1}
                 />
                 <RandomWidthPlaceholderText minWidth={100} maxWidth={100} marginTop={1} />
-                <Spacer mb={2} />
+                <Spacer y="2" />
               </ArticlesListItem>
             )
           }}
-          ItemSeparatorComponent={() => <Spacer mt="4" />}
+          ItemSeparatorComponent={() => <Spacer y="4" />}
           onEndReachedThreshold={1}
         />
       </Flex>

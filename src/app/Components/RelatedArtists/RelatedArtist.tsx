@@ -30,7 +30,7 @@ class RelatedArtist extends Component<Props> {
             style={[this.props.imageSize, { overflow: "hidden", borderRadius: 2 }]}
             imageURL={imageURL}
           />
-          <Spacer mb={1} />
+          <Spacer y="1" />
           <Text variant="sm" weight="medium">
             {artist.name}
           </Text>

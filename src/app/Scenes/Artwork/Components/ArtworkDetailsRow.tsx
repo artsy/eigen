@@ -31,7 +31,7 @@ export const ArtworkDetailsRow: React.FC<ArtworkDetailsRowProps> = ({
           {title}
         </Text>
       </Box>
-      <Spacer mr={2} />
+      <Spacer x="2" />
       <Box flex={1}>
         {React.isValidElement(value) ? (
           value

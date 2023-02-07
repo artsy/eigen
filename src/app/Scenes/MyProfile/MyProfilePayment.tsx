@@ -159,7 +159,7 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPag
           </Flex>
         )}
         onEndReached={onLoadMore}
-        ItemSeparatorComponent={() => <Spacer mb={10} />}
+        ItemSeparatorComponent={() => <Spacer y="1" />}
         ListFooterComponent={
           <Flex pt={creditCards.length === 0 ? 0 : "2"}>
             <MenuItem

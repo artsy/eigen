@@ -100,7 +100,7 @@ const CreateArtworkAlertButtonsSection: FC<CreateArtworkAlertButtonsSectionProps
             <Text variant="xs" color="black60">
               Be notified when a similar work is available
             </Text>
-            <Spacer mt={2} />
+            <Spacer y="2" />
 
             <Button block onPress={handleCreateAlertPress}>
               Create Alert

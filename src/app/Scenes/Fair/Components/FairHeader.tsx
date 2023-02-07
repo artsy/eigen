@@ -102,7 +102,7 @@ export const FairHeader: React.FC<FairHeaderProps> = ({ fair }) => {
   )
 }
 
-const SafeTopMargin = () => <Spacer y={6} />
+const SafeTopMargin = () => <Spacer y="6" />
 
 export const FairHeaderFragmentContainer = createFragmentContainer(FairHeader, {
   fair: graphql`

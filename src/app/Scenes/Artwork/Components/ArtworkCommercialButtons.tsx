@@ -24,7 +24,7 @@ const RowContainer: React.FC = ({ children }) => {
 
   return (
     <Flex flexDirection="row" alignItems="center">
-      <Join separator={<Spacer ml={1} />}>{childArray}</Join>
+      <Join separator={<Spacer x="1" />}>{childArray}</Join>
     </Flex>
   )
 }

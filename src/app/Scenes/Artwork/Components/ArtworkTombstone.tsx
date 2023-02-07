@@ -30,7 +30,7 @@ export const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork, ref
     <Box textAlign="left">
       {!!displayAuctionLotLabel && (
         <>
-          <Spacer mb={1} />
+          <Spacer y="1" />
           <Text variant="md" color="black100">
             Lot {artwork.saleArtwork.lotLabel}
           </Text>
@@ -53,7 +53,7 @@ export const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork, ref
       </Flex>
       {!!shouldDisplaySaleMessage && (
         <>
-          <Spacer mt={2} />
+          <Spacer y="2" />
           <Text variant="md" color="black100">
             {artwork.saleMessage}
           </Text>
@@ -71,7 +71,7 @@ export const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork, ref
           )}
           {!enableArtworkRedesign && (
             <>
-              <Spacer mb={1} />
+              <Spacer y="1" />
               {!!artwork.partner && (
                 <Text variant="sm" color="black100" weight="medium">
                   {artwork.partner.name}

@@ -171,10 +171,10 @@ export const OnboardingSocialLink: React.FC<
           <BackButton onPress={() => navigation.goBack()} />
           <Flex px={2} mt={insets.top + NAVBAR_HEIGHT + 20} mb={insets.bottom}>
             <Text variant="lg-display">Link Accounts</Text>
-            <Spacer mt={2} />
+            <Spacer y="2" />
             <Text variant="xs">{screenText()}</Text>
 
-            <Spacer mt={3} />
+            <Spacer y="4" />
 
             <Input
               title="Artsy Password"
@@ -197,13 +197,13 @@ export const OnboardingSocialLink: React.FC<
               error={errors.password}
               testID="artsySocialLinkPasswordInput"
             />
-            <Spacer mt={1} />
+            <Spacer y="1" />
             <Touchable onPress={() => navigation.replace("ForgotPassword")}>
               <Text variant="sm" color="black60" style={{ textDecorationLine: "underline" }}>
                 Forgot password?
               </Text>
             </Touchable>
-            <Spacer mt={4} />
+            <Spacer y="4" />
 
             <Button
               block
@@ -215,7 +215,7 @@ export const OnboardingSocialLink: React.FC<
                 ? "Yes, Link Accounts"
                 : "Link Accounts"}
             </Button>
-            <Spacer mt="2" />
+            <Spacer y="2" />
             <Button
               block
               variant="outline"
@@ -240,9 +240,9 @@ export const OnboardingSocialLink: React.FC<
       <BackButton onPress={() => navigation.goBack()} />
       <Flex flex={1} px={2} mt={insets.top + NAVBAR_HEIGHT + 20} mb={insets.bottom}>
         <Text variant="lg-display">Link Accounts</Text>
-        <Spacer mt={2} />
+        <Spacer y="2" />
         <Text variant="xs">{screenText()}</Text>
-        <Spacer mt={3} />
+        <Spacer y="4" />
         {permittedProviders.map((provider) => (
           <LinkAccountButton
             key={provider}

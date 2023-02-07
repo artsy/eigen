@@ -44,43 +44,43 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
 
   const renderInfoModal = () => (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <Spacer y={1} />
+      <Spacer y="1" />
       <Text>
         The following data points provide an overview of an artist’s auction market for a specific
         medium (e.g., photography, painting) over the past 36 months.
       </Text>
-      <Spacer y={2} />
+      <Spacer y="2" />
       <Text>
         These market signals bring together data from top auction houses around the world, including
         Christie’s, Sotheby’s, Phillips and Bonhams.
       </Text>
-      <Spacer y={2} />
+      <Spacer y="2" />
       <Text>
         In this data set, please note that the sale price includes the hammer price and buyer’s
         premium, as well as any other additional fees (e.g., Artist’s Resale Rights). The data set
         only includes works valued over $1,000.
       </Text>
-      <Spacer mb={2} />
+      <Spacer y="2" />
       <Text fontWeight="bold">Average yearly lots sold</Text>
-      <Spacer mb={1} />
+      <Spacer y="1" />
       <Text>The average number of lots sold per year at auction over the past 36 months.</Text>
-      <Spacer mb={2} />
+      <Spacer y="2" />
       <Text fontWeight="bold">Sell-through rate</Text>
-      <Spacer mb={1} />
+      <Spacer y="1" />
       <Text>The percentage of lots in auctions that sold over the past 36 months.</Text>
-      <Spacer mb={2} />
+      <Spacer y="2" />
       <Text fontWeight="bold">Average sale price</Text>
-      <Spacer mb={1} />
+      <Spacer y="1" />
       <Text>The average sale price of lots sold at auction over the past 36 months.</Text>
-      <Spacer mb={2} />
+      <Spacer y="2" />
       <Text fontWeight="bold">Sale price over estimate</Text>
-      <Spacer mb={1} />
+      <Spacer y="1" />
       <Text>
         The average percentage difference of the sale price over the mid-estimate (the midpoint of
         the low and high estimates set by the auction house before the auction takes place) for lots
         sold at auction over the past 36 months.
       </Text>
-      <Spacer mb={100} />
+      <Spacer y={100} />
     </ScrollView>
   )
 
@@ -151,7 +151,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
         </Flex>
         <Flex width="50%" mt={2}>
           <Flex width="50%" flexDirection="row" alignItems="center">
-            <Join separator={<Spacer mr={0.5} />}>
+            <Join separator={<Spacer x="0.5" />}>
               {deltaIcon}
               <Text variant="lg-display">{formattedMedianSaleOverEstimatePercentage}%</Text>
             </Join>
@@ -218,26 +218,26 @@ const LoadingSkeleton = () => {
       <Text variant="xs" color="black60" my={0.5}>
         Last 36 months
       </Text>
-      <Spacer mb="0.5" />
+      <Spacer y="0.5" />
       <PlaceholderBox width="100%" height={40} />
       <Flex flexDirection="row" flexWrap="wrap" mt={15}>
         <Flex width="50%">
-          <Spacer mb="0.5" />
+          <Spacer y="0.5" />
           <PlaceholderText width={30} height={25} />
           <Text variant="sm">Yearly lots sold</Text>
         </Flex>
         <Flex width="50%">
-          <Spacer mb="0.5" />
+          <Spacer y="0.5" />
           <PlaceholderText width={60} height={25} />
           <Text variant="sm">Sell-through rate</Text>
         </Flex>
         <Flex width="50%" mt={2}>
-          <Spacer mb="0.5" />
+          <Spacer y="0.5" />
           <PlaceholderText width={50} height={25} />
           <Text variant="sm">Average sale price</Text>
         </Flex>
         <Flex width="50%" mt={2}>
-          <Spacer mb="0.5" />
+          <Spacer y="0.5" />
           <PlaceholderText width={70} height={25} />
           <Text variant="sm">Sale price over estimate</Text>
         </Flex>

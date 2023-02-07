@@ -36,7 +36,7 @@ export const CareerHighlightBottomSheetItem: React.FC<CareerHighlightBottomSheet
           {headerAndBodyTuple.map(([header, body], i) => (
             <SectionedHighlight key={header + i} header={header} body={body} />
           ))}
-          <Spacer y={6} />
+          <Spacer y="6" />
         </BottomSheetScrollView>
       </Flex>
     </Flex>

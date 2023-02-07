@@ -45,7 +45,7 @@ export const HomeFeedModalCarousel: React.FC<HomeFeedModalCarouselProps> = ({
 const HowItWorksScreen = () => {
   return (
     <Flex mt={4}>
-      <Join separator={<Spacer mt={2} />}>
+      <Join separator={<Spacer y="2" />}>
         <StepWithImage
           title="Add your artworks"
           text="Upload images and details about your artworks to your private space."

@@ -27,7 +27,7 @@ export const ArtworkHistory: React.FC<ArtworkHistoryProps> = ({ artwork }) => {
   const textLimit = truncatedTextLimit()
 
   return (
-    <Join separator={<Spacer y={3} />}>
+    <Join separator={<Spacer y="4" />}>
       {displaySections.map(({ title, value, contextModule }, index) => (
         <Box key={index}>
           <Text variant="md" pb={1}>

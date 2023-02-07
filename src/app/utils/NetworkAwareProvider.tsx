@@ -43,13 +43,13 @@ export const NetworkAwareProvider: React.FC<{}> = () => {
             Connection Error
           </Text>
 
-          <Spacer mt={1} />
+          <Spacer y="1" />
 
           <Text textAlign="center" variant="sm" color="black60">
             Oops! Looks like your device is not connected to the Internet.
           </Text>
 
-          <Spacer mt={2} />
+          <Spacer y="2" />
 
           <Button
             block

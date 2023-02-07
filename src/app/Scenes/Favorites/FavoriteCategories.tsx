@@ -92,7 +92,7 @@ export class Categories extends React.Component<Props, State> {
         style={{ paddingHorizontal: 0 }}
         contentContainerStyle={{ paddingVertical: 15 }}
         data={rows}
-        ItemSeparatorComponent={() => <Spacer mb="5px" />}
+        ItemSeparatorComponent={() => <Spacer y="5px" />}
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
         refreshControl={

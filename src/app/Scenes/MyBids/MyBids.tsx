@@ -81,7 +81,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
         {!!hasActiveSales && <BidTitle>Active Bids</BidTitle>}
         {!!hasActiveSales && (
           <Flex testID="active-section">
-            <Join separator={<Spacer y={1} />}>
+            <Join separator={<Spacer y="1" />}>
               {active.map((activeSale) => {
                 if (!activeSale) {
                   return null
@@ -163,7 +163,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
             </Flex>
           </Flex>
         )}
-        <Spacer y={2} />
+        <Spacer y="2" />
       </ScrollView>
     </ProvideScreenTrackingWithCohesionSchema>
   )

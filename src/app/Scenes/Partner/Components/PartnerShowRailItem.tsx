@@ -46,7 +46,7 @@ export class PartnerShowRailItem extends React.Component<Props> {
             imageURL={imageURL}
             style={{ alignItems: "center", justifyContent: "center" }}
           />
-          <Spacer mb={1} />
+          <Spacer y="1" />
           <Text variant="sm" numberOfLines={1}>
             {name}
           </Text>

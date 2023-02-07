@@ -352,7 +352,7 @@ export const SalePlaceholder: React.FC<{}> = () => (
   <ProvidePlaceholderContext>
     <PlaceholderBox height={COVER_IMAGE_HEIGHT} width="100%" />
     <Flex px={2}>
-      <Join separator={<Spacer y={2} />}>
+      <Join separator={<Spacer y="2" />}>
         <Box>
           <PlaceholderText width={200 + Math.random() * 100} marginTop={20} />
           <PlaceholderText width={200 + Math.random() * 100} marginTop={20} />

@@ -17,7 +17,7 @@ export const StepWithImage: React.FC<StepWithImageProps> = ({ icon: Icon, text, 
 
       <Flex flex={1}>
         <Text variant="sm-display">{title}</Text>
-        <Spacer mb="0.5" />
+        <Spacer y="0.5" />
         <Text variant="sm" color="black60">
           {text}
         </Text>

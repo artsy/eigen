@@ -19,9 +19,9 @@ export const ShowInstallShots: React.FC<ShowInstallShotsProps> = ({ show, ...res
         data={images}
         horizontal
         showsHorizontalScrollIndicator={false}
-        ListHeaderComponent={<Spacer x={1} />}
-        ListFooterComponent={<Spacer x={1} />}
-        ItemSeparatorComponent={() => <Spacer x={0.5} />}
+        ListHeaderComponent={<Spacer x="1" />}
+        ListFooterComponent={<Spacer x="1" />}
+        ItemSeparatorComponent={() => <Spacer x="0.5" />}
         keyExtractor={(image, i) => String(image.internalID || i)}
         renderItem={({ item: image }) => {
           if (!image.src || !image.dimensions) {

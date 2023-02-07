@@ -20,7 +20,7 @@ export const PartnerOverview: React.FC<{
       return (
         <Box key={artist.id}>
           <ArtistListItem artist={artist} />
-          <Spacer mb={2} />
+          <Spacer y="2" />
         </Box>
       )
     })
@@ -39,11 +39,11 @@ export const PartnerOverview: React.FC<{
   return (
     // TODO: Switch to StickyTabPageFlatList
     <StickyTabPageScrollView>
-      <Spacer mb={2} />
+      <Spacer y="2" />
       {!!aboutText && (
         <>
           <ReadMore content={aboutText} maxChars={300} textStyle="sans" />
-          <Spacer mb={2} />
+          <Spacer y="2" />
         </>
       )}
       <PartnerLocationSection partner={partner} />
@@ -52,9 +52,9 @@ export const PartnerOverview: React.FC<{
           <Text>
             <Text variant="sm-display">Artists ({artistsData.length})</Text>
           </Text>
-          <Spacer mb={2} />
+          <Spacer y="2" />
           {renderArtists()}
-          <Spacer mb={3} />
+          <Spacer y="4" />
         </>
       )}
     </StickyTabPageScrollView>

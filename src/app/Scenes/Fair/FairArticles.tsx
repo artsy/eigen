@@ -61,9 +61,9 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
       <Box px={2} py={6}>
         <Text variant="lg-display">Articles</Text>
 
-        <Spacer y={1} />
+        <Spacer y="1" />
 
-        <Join separator={<Spacer y={3} />}>
+        <Join separator={<Spacer y="4" />}>
           <Touchable
             onPress={() => {
               navigate(heroArticle!.href!)
@@ -99,7 +99,7 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
           <FlatList<typeof remainingArticles[number]>
             data={remainingArticles}
             keyExtractor={({ node }, i) => node?.internalID ?? `${i}`}
-            ItemSeparatorComponent={() => <Spacer y={3} />}
+            ItemSeparatorComponent={() => <Spacer y="4" />}
             renderItem={({ item: { node: article } }) => {
               return (
                 <Touchable

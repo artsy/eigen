@@ -270,11 +270,11 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
           </Flex>
         </Flex>
 
-        <Spacer mt={2} />
+        <Spacer y="2" />
 
         <RecentPriceRanges selectedRange={range} onSelected={handleRecentPriceRangeSelected} />
 
-        <Spacer mt={2} />
+        <Spacer y="2" />
       </ScrollView>
     </Flex>
   )

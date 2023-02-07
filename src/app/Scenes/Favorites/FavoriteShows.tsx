@@ -90,7 +90,7 @@ export class Shows extends Component<Props, State> {
         contentContainerStyle={{ paddingVertical: 15 }}
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
-        ItemSeparatorComponent={() => <Spacer mb="5px" />}
+        ItemSeparatorComponent={() => <Spacer y="5px" />}
         refreshControl={
           <StickTabPageRefreshControl
             refreshing={this.state.refreshingFromPull}

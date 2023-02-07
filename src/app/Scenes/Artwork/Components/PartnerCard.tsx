@@ -45,7 +45,7 @@ export const PartnerCard: React.FC<PartnerCardProps> = ({ artwork, shouldShowQue
       {!!showPartnerType && (
         <>
           <Text variant="md">{partnerTypeDisplayText}</Text>
-          <Spacer y={1} />
+          <Spacer y="1" />
         </>
       )}
       <TouchableWithoutFeedback onPress={() => handleTap(partner.href!)}>
@@ -57,7 +57,7 @@ export const PartnerCard: React.FC<PartnerCardProps> = ({ artwork, shouldShowQue
           initials={partner.initials || undefined}
         />
       </TouchableWithoutFeedback>
-      <Spacer mt={2} />
+      <Spacer y="2" />
       {!!shouldShowQuestions && <Questions artwork={artwork} />}
     </Flex>
   )

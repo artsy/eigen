@@ -85,7 +85,7 @@ const SavedWorks: React.FC<Props> = ({ me, relay, onDataFetching }) => {
           subtitle="Tap the heart on an artwork to find it again easily here."
           image={
             <>
-              <Spacer mt={1} />
+              <Spacer y="1" />
               <Image
                 source={require("images/SavesEmptyStateImage.jpg")}
                 resizeMode="contain"

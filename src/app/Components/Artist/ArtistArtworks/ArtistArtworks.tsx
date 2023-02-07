@@ -196,7 +196,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
     } else {
       return (
         <>
-          <Spacer mb={1} />
+          <Spacer y="1" />
           <InfiniteScrollArtworksGrid
             connection={artist.artworks!}
             loadMore={relay.loadMore}

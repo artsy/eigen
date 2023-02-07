@@ -76,7 +76,7 @@ export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps>
         <Box height="230px">
           <ScrollView>
             <Flex mx={2} mb={1}>
-              <Join separator={<Spacer y={1} />}>
+              <Join separator={<Spacer y="1" />}>
                 {detailItems.map(({ title, value }, index) => (
                   <ArtworkDetailsRow key={index.toString()} title={title} value={value} />
                 ))}

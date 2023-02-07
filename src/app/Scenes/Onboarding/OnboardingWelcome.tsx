@@ -136,13 +136,13 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
             Collect Art by the World’s Leading Artists
           </Text>
 
-          <Spacer mt={1} />
+          <Spacer y="1" />
 
           <Text variant="sm" color="white">
             Build your personalized profile, get market insights, buy and sell art with confidence.
           </Text>
 
-          <Spacer mt={2} />
+          <Spacer y="2" />
 
           <Flex flexDirection="row">
             <Flex flex={1}>

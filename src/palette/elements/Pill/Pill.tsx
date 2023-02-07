@@ -98,7 +98,7 @@ export const Pill: React.FC<PillProps> = ({
     onPress?.(event)
   }
 
-  const iconSpacerMargin = size === "xxs" ? 0.5 : 1
+  const iconSpacerMargin = size === "xxs" ? "0.5" : "1"
   const to = useStyleForState(displayState, stateStyle)
   const iconColor = to.textColor as Color
 
@@ -138,7 +138,7 @@ export const Pill: React.FC<PillProps> = ({
             {iconPosition === "left" && !!Icon && (
               <>
                 <Icon fill={iconColor} />
-                <Spacer mr={iconSpacerMargin} />
+                <Spacer x={iconSpacerMargin} />
               </>
             )}
             {!!imageUrl && <OpaqueImageViewContainer imageURL={imageUrl} />}
@@ -147,7 +147,7 @@ export const Pill: React.FC<PillProps> = ({
             </AnimatedText>
             {iconPosition === "right" && !!Icon && (
               <>
-                <Spacer mr={iconSpacerMargin} />
+                <Spacer x={iconSpacerMargin} />
                 <Icon fill={iconColor} />
               </>
             )}

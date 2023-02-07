@@ -223,7 +223,7 @@ export const InboxPlaceholder: React.FC<{}> = () => {
     <Flex height="100%" testID="inbox-placeholder">
       <Flex flexDirection="row" mx={2} mt={3} mb={1}>
         <PlaceholderText width={60} height={26} />
-        <Spacer x={1} />
+        <Spacer x="1" />
         <PlaceholderText width={80} height={26} />
       </Flex>
       <Flex>
@@ -232,14 +232,14 @@ export const InboxPlaceholder: React.FC<{}> = () => {
       <Flex flex={1} px="2">
         <Flex my="auto" alignItems="center">
           <PlaceholderText width={240} />
-          <Spacer mb={1} mt={1} />
+          <Spacer y="1" mt={1} />
           <PlaceholderText width={230} />
 
           <PlaceholderText width={240} />
 
           <PlaceholderText width={200} />
           <PlaceholderText width={70} />
-          <Spacer mb={1} mt={1} />
+          <Spacer y="1" mt={1} />
 
           <PlaceholderBox width={176} height={50} borderRadius={25} />
         </Flex>

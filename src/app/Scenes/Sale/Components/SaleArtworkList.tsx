@@ -48,7 +48,7 @@ export const SaleArtworkList: React.FC<Props> = ({
     <FlatList
       data={artworks}
       onEndReached={loadMoreArtworks}
-      ItemSeparatorComponent={() => <Spacer mb="20px" />}
+      ItemSeparatorComponent={() => <Spacer y="20px" />}
       ListFooterComponent={
         loadingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null
       }

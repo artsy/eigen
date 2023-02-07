@@ -12,7 +12,7 @@ export const ArtQuizResultsTabsHeader = ({ title, subtitle }: ArtQuizResultsTabs
       <Text variant="sm" color="black60">
         {subtitle}
       </Text>
-      <Spacer y={1} />
+      <Spacer y="1" />
       <Button size="small" variant="outlineGray">
         Email My Results
       </Button>

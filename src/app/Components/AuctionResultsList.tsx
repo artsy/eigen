@@ -115,7 +115,7 @@ export const LoadingSkeleton: React.FC<{ title: string; listHeader: React.ReactE
   for (let i = 0; i < 8; i++) {
     placeholderResults.push(
       <React.Fragment key={i}>
-        <Spacer y={20} />
+        <Spacer y="2" />
         <Flex flexDirection="row" flexGrow={1}>
           {/* Image */}
           <PlaceholderBox width={60} height={60} />
@@ -139,20 +139,20 @@ export const LoadingSkeleton: React.FC<{ title: string; listHeader: React.ReactE
             </Flex>
           </Flex>
         </Flex>
-        <Spacer y={10} />
+        <Spacer y="1" />
         <Separator borderColor="black10" />
       </React.Fragment>
     )
   }
   return (
     <ProvidePlaceholderContext>
-      <Spacer mb={6} />
+      <Spacer y="6" />
 
       {listHeader}
       <Flex mx={2}>
-        <Spacer y={20} />
+        <Spacer y="2" />
         <PlaceholderText height={24} width={100 + Math.random() * 50} />
-        <Spacer y={10} />
+        <Spacer y="1" />
         <Separator borderColor="black10" />
         {placeholderResults}
       </Flex>

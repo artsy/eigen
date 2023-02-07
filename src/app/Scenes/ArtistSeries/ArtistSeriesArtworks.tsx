@@ -65,7 +65,7 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({
           slug={artistSeries.slug}
           trackClear={trackClear}
         />
-        <Spacer mb={2} />
+        <Spacer y="2" />
       </Box>
     )
   } else {

@@ -142,12 +142,12 @@ export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
 
   const renderRealizedPriceModal = () => (
     <>
-      <Spacer y={1} />
+      <Spacer y="1" />
       <Text>
         The sale price includes the hammer price and buyer’s premium, as well as any other
         additional fees (e.g., Artist’s Resale Rights).
       </Text>
-      <Spacer y={2} />
+      <Spacer y="2" />
     </>
   )
 
@@ -367,24 +367,24 @@ const LoadingSkeleton = () => {
         <Flex ml={2} mt={1}>
           {/* Artist name */}
           <PlaceholderBox width={100} height={20} />
-          <Spacer mb={1} />
+          <Spacer y="1" />
           {/* Artwork name */}
           <PlaceholderBox width={150} height={25} />
         </Flex>
       </Flex>
-      <Spacer mb={4} />
+      <Spacer y="4" />
       {/* "Realized price" */}
       <PlaceholderBox width={100} height={15} />
-      <Spacer mb={1} />
+      <Spacer y="1" />
       {/* Price */}
       <PlaceholderBox width={120} height={40} />
-      <Spacer mb={1} />
+      <Spacer y="1" />
       {/* Ratio */}
       <PlaceholderBox width={200} height={20} />
-      <Spacer mb={4} />
+      <Spacer y="4" />
       {/* "details" */}
       <PlaceholderBox width={60} height={30} />
-      <Spacer mb={2} />
+      <Spacer y="2" />
       {details}
     </Flex>
   )

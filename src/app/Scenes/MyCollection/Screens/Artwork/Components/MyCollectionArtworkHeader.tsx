@@ -101,7 +101,7 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
   const hasImages = imagesToDisplay?.length > 0
 
   return (
-    <Join separator={<Spacer y={1} />}>
+    <Join separator={<Spacer y="1" />}>
       {hasImages ? (
         <>
           {!!isDisplayingLocalImages ? (

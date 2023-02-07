@@ -76,14 +76,14 @@ export const FairMoreInfo: React.FC<FairMoreInfoProps> = ({ fair }) => {
               {!!fair.location?.summary && <Text variant="sm">{fair.location?.summary}</Text>}
               {!!shouldShowLocationMap(fair.location?.coordinates) && (
                 <>
-                  <Spacer y={1} />
+                  <Spacer y="1" />
                   <LocationMapContainer
                     location={fair.location}
                     partnerName={fair.profile?.name ?? fair.name}
                   />
                 </>
               )}
-              <Spacer y={1} />
+              <Spacer y="1" />
             </>
           )}
 
@@ -100,14 +100,14 @@ export const FairMoreInfo: React.FC<FairMoreInfoProps> = ({ fair }) => {
             <>
               <Text variant="sm">Hours</Text>
               <Markdown rules={markdownRules}>{fair.fairHours}</Markdown>
-              <Spacer y={1} />
+              <Spacer y="1" />
             </>
           )}
           {!!fair.fairTickets && (
             <>
               <Text variant="sm">Tickets</Text>
               <Markdown rules={markdownRules}>{fair.fairTickets}</Markdown>
-              <Spacer y={1} />
+              <Spacer y="1" />
             </>
           )}
           {!!fair.ticketsLink && (
@@ -115,21 +115,21 @@ export const FairMoreInfo: React.FC<FairMoreInfoProps> = ({ fair }) => {
               <TouchableOpacity onPress={() => navigate(fair.ticketsLink!)}>
                 <LinkText>Buy Tickets</LinkText>
               </TouchableOpacity>
-              <Spacer y={1} />
+              <Spacer y="1" />
             </>
           )}
           {!!fair.fairLinks && (
             <>
               <Text variant="sm">Links</Text>
               <Markdown rules={markdownRules}>{fair.fairLinks}</Markdown>
-              <Spacer y={1} />
+              <Spacer y="1" />
             </>
           )}
           {!!fair.fairContact && (
             <>
               <Text variant="sm">Contact</Text>
               <Markdown rules={markdownRules}>{fair.fairContact}</Markdown>
-              <Spacer y={1} />
+              <Spacer y="1" />
             </>
           )}
         </Box>

@@ -121,17 +121,17 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
 
   const renderAuctionResultsModal = () => (
     <>
-      <Spacer y={1} />
+      <Spacer y="1" />
       <Text>
         These auction results bring together sale data from top auction houses around the world,
         including Christie’s, Sotheby’s, Phillips and Bonhams. Results are updated daily.
       </Text>
-      <Spacer y={2} />
+      <Spacer y="2" />
       <Text>
         Please note that the sale price includes the hammer price and buyer’s premium, as well as
         any other additional fees (e.g., Artist’s Resale Rights).
       </Text>
-      <Spacer y={2} />
+      <Spacer y="2" />
     </>
   )
 

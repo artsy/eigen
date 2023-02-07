@@ -11,11 +11,11 @@ export const EmptyMessage: React.FC = () => {
           <Text variant="sm-display" textAlign="center">
             Create an alert to get notified about new works.
           </Text>
-          <Spacer mb={1} />
+          <Spacer y="1" />
           <Text textAlign="center" variant="xs" color="black60">
             {`Search for an artist, use the filters to define the artwork you want, and select ${quoteLeft}Create Alert.${quoteRight}`}
           </Text>
-          <Spacer mb={2} />
+          <Spacer y="2" />
           <Button onPress={() => navigate("/")}>Explore Artists</Button>
         </Box>
       </Flex>

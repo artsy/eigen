@@ -21,7 +21,7 @@ class Articles extends Component<Props> {
         <AboveTheFoldFlatList<Articles_articles$data[number]>
           horizontal
           showsHorizontalScrollIndicator={false}
-          ItemSeparatorComponent={() => <Spacer ml="2" />}
+          ItemSeparatorComponent={() => <Spacer x="2" />}
           scrollsToTop={false}
           style={{ overflow: "visible" }}
           initialNumToRender={2}

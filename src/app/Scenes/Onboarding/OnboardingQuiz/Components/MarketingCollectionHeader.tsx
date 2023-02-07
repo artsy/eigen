@@ -32,15 +32,15 @@ export const MarketingCollectionHeader: React.FC<MarketingCollectionHeaderProps>
         <Text variant="xl" color="white100">
           {collection.title}
         </Text>
-        <Spacer mt={2} />
+        <Spacer y="2" />
         <Text variant="sm" color="white100">
           {description}
         </Text>
-        <Spacer mt={2} />
+        <Spacer y="2" />
         <Text variant="sm" color="white100">
           {SAVE_INSTRUCTIONS}
         </Text>
-        <Spacer mt={4} />
+        <Spacer y="4" />
       </Flex>
     </ImageBackground>
   )

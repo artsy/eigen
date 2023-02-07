@@ -194,7 +194,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
             )}
             {!!isRecentlySoldArtwork && size === "large" && (
               <>
-                <Spacer mt={2} />
+                <Spacer y="2" />
                 <Flex flexDirection="row" justifyContent="space-between">
                   <Text variant="xs" color="black60" numberOfLines={1} fontWeight="500">
                     Estimate

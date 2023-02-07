@@ -38,7 +38,7 @@ export const OtherCollectionsRail: React.FC<OtherCollectionsRailProps> = ({
         data={members}
         initialNumToRender={3}
         keyExtractor={({ id }) => id}
-        ItemSeparatorComponent={() => <Spacer mr={0.5} />}
+        ItemSeparatorComponent={() => <Spacer x="0.5" />}
         renderItem={({ item: { slug, title } }) => {
           return (
             <TouchableOpacity
