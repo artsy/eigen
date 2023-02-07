@@ -1,16 +1,13 @@
-import { Flex, Spacer, useSpace, Text, Spinner } from "@artsy/palette-mobile"
+import { Flex, Spacer, useSpace, Spinner } from "@artsy/palette-mobile"
 import { ElasticSearchResultsQuery } from "__generated__/ElasticSearchResultsQuery.graphql"
 import { ElasticSearchResults_searchConnection$key } from "__generated__/ElasticSearchResults_searchConnection.graphql"
 import { ElasticSearchResult } from "app/Scenes/Search/components/ElasticSearchResult"
+import { SingleIndexEmptyResultsMessage } from "app/Scenes/Search/components/SingleIndexEmptyResults"
 import { SingleIndexSearchPlaceholder } from "app/Scenes/Search/components/placeholders/SingleIndexSearchPlaceholder"
-import {
-  ELASTIC_PILL_KEY_TO_SEARCH_ENTITY,
-  SINGLE_INDICES_WITH_AN_ARTICLE,
-} from "app/Scenes/Search/constants"
-import { AlgoliaIndexKey, PillType } from "app/Scenes/Search/types"
+import { ELASTIC_PILL_KEY_TO_SEARCH_ENTITY } from "app/Scenes/Search/constants"
+import { PillType } from "app/Scenes/Search/types"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
-import { Box } from "palette"
 import { Suspense, useEffect, useRef } from "react"
 import { FlatList } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
@@ -69,25 +66,9 @@ export const SearchResults2: React.FC<SearchResults2Props> = ({ query, selectedP
       ItemSeparatorComponent={() => <Spacer y={2} />}
       keyboardDismissMode="on-drag"
       keyboardShouldPersistTaps="handled"
-      ListEmptyComponent={() => {
-        // type casting to AlgoliaIndexKey to be removed when we remove algolia
-        const article = SINGLE_INDICES_WITH_AN_ARTICLE.includes(selectedPill.key as AlgoliaIndexKey)
-          ? "an"
-          : "a"
-
-        return (
-          <Box px={2} py={1}>
-            <Spacer mt={4} />
-            <Text variant="sm-display" textAlign="center">
-              Sorry, we couldn’t find {article} {selectedPill.displayName} for “{query}
-              .”
-            </Text>
-            <Text variant="sm-display" color="black60" textAlign="center">
-              Please try searching again with a different spelling.
-            </Text>
-          </Box>
-        )
-      }}
+      ListEmptyComponent={() => (
+        <SingleIndexEmptyResultsMessage query={query} selectedPill={selectedPill} />
+      )}
       ListFooterComponent={
         <Flex alignItems="center" my={2}>
           {isLoadingNext ? <Spinner /> : null}
