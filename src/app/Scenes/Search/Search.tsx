@@ -108,11 +108,7 @@ export const Search: React.FC = () => {
       ALLOWED_ALGOLIA_KEYS.includes(indice.key as AlgoliaIndexKey)
     )
     const formattedIndices: PillType[] = allowedIndices.map((index) => {
-      const { name, ...other } = index as {
-        name: string
-        key: AlgoliaIndexKey
-        displayName: string
-      }
+      const { name, ...other } = index
 
       return {
         ...other,
