@@ -416,6 +416,7 @@ const artworkFixture: ImageCarouselTestsQuery["rawResponse"]["artwork"] = {
 
 const localImages: CarouselImageDescriptor[] = [
   {
+    internalID: "1",
     url: "file:///this/is/not/a/real/image.jpg",
     largeImageURL: "file:///this/is/not/a/real/image.jpg",
     width: 2800,
@@ -423,6 +424,7 @@ const localImages: CarouselImageDescriptor[] = [
     deepZoom: null,
   },
   {
+    internalID: "2",
     url: "file:///this/is/not/a/real/image.jpg",
     largeImageURL: "file:///this/is/not/a/real/image.jpg",
     width: 2800,
@@ -430,6 +432,7 @@ const localImages: CarouselImageDescriptor[] = [
     deepZoom: null,
   },
   {
+    internalID: "3",
     url: "file:///this/is/not/a/real/image.jpg",
     largeImageURL: "file:///this/is/not/a/real/image.jpg",
     width: 2800,

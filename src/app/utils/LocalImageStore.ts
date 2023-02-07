@@ -16,7 +16,7 @@ export interface LocalImage {
 }
 
 export const storeLocalImage = async (key: string, image: LocalImage) => {
-  console.log("asdf", "storeLocalImage", key)
+  console.log("asdf", "storeLocalImage", key, image)
 
   const expires = new Date().getTime() + EXPIRATION_TIME
   const storeKey = `${IMAGE_KEY_PREFIX}_${key}`
@@ -81,7 +81,8 @@ export const useLocalImage = (
 export const useLocalImageStorage = (
   key: string | null | undefined,
   imageVersions?: any,
-  requestedImageVersion?: string
+  requestedImageVersion?: string,
+  refreshKey?: any
 ) => {
   const [localImage, setLocalImage] = useState<LocalImage | null>(null)
 
@@ -90,10 +91,10 @@ export const useLocalImageStorage = (
     isImageVersionAvailable(imageVersions, requestedImageVersion || DEFAULT_IMAGE_VERSION)
 
   const changeLocalImage = async () => {
-    // if (isImageAvailable || !key) {
-    //   setLocalImage(null)
-    //   return
-    // }
+    if (isImageAvailable || !key) {
+      setLocalImage(null)
+      return
+    }
 
     try {
       setLocalImage(await getLocalImage(key!))
@@ -105,7 +106,7 @@ export const useLocalImageStorage = (
   useEffect(() => {
     changeLocalImage()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [key])
+  }, [key, refreshKey])
 
   return localImage
 }

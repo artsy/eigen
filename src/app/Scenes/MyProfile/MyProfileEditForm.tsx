@@ -11,22 +11,22 @@ import { buildLocationDisplay, LocationAutocomplete } from "app/Components/Locat
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
 import { navigate } from "app/system/navigation/navigate"
+import { storeLocalImage, useLocalImageStorage } from "app/utils/LocalImageStore"
 import { getConvertedImageUrlFromS3 } from "app/utils/getConvertedImageUrlFromS3"
 import { useHasBeenTrue } from "app/utils/hooks"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { sendEmail } from "app/utils/sendEmail"
 import { useFormik } from "formik"
-import { compact, isArray } from "lodash"
+import { compact } from "lodash"
 import { Avatar, Box, Button, Flex, Input, Join, Message, Text, Touchable, useColor } from "palette"
-import React, { Suspense, useContext, useEffect, useRef, useState } from "react"
+import React, { Suspense, useEffect, useRef, useState } from "react"
 import { ScrollView, TextInput } from "react-native"
 import { useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { graphql } from "relay-runtime"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import * as Yup from "yup"
-import { MyProfileContext } from "./MyProfileProvider"
 import { useHandleEmailVerification, useHandleIDVerification } from "./useHandleVerification"
 
 const ICON_SIZE = 22
@@ -70,6 +70,7 @@ export const MyProfileEditForm: React.FC = () => {
   const professionInputRef = useRef<Input>(null)
   const locationInputRef = useRef<Input>(null)
 
+  const [refreshKey, setRefreshKey] = useState(0)
   const [loading, setLoading] = useState<boolean>(false)
   const [didUpdatePhoto, setDidUpdatePhoto] = useState(false)
 
@@ -82,12 +83,10 @@ export const MyProfileEditForm: React.FC = () => {
     handleVerification: handleIDVerification,
   } = useHandleIDVerification()
 
-  const { localImage, setLocalImage } = useContext(MyProfileContext)
+  const localImage = useLocalImageStorage("profile", undefined, undefined, refreshKey)
 
   const uploadProfilePhoto = async (photo: string) => {
     try {
-      // We want to show the local image initially for better UX since Gemini takes a while to process
-      setLocalImage(photo)
       const iconUrl = await getConvertedImageUrlFromS3(photo)
       await updateMyUserProfile({ iconUrl })
     } catch (error) {
@@ -131,7 +130,7 @@ export const MyProfileEditForm: React.FC = () => {
         profession: me?.profession ?? "",
         otherRelevantPositions: me?.otherRelevantPositions ?? "",
         bio: me?.bio ?? "",
-        photo: localImage || me?.icon?.url || "",
+        photo: localImage?.path || me?.icon?.url || "",
       },
       initialErrors: {},
       onSubmit: async ({ photo, ...otherValues }) => {
@@ -160,9 +159,12 @@ export const MyProfileEditForm: React.FC = () => {
 
   const chooseImageHandler = () => {
     showPhotoActionSheet(showActionSheetWithOptions, true, false)
-      .then((images) => {
-        if (isArray(images) && images.length >= 1) {
-          setDidUpdatePhoto(true)
+      .then(async (images) => {
+        storeLocalImage("profile", images[0])
+
+        if (images?.length >= 1) {
+          await storeLocalImage("profile", images[0])
+          setRefreshKey(refreshKey + 1)
           ;(handleChange("photo") as (value: string) => void)(images[0].path)
         }
       })
@@ -190,6 +192,7 @@ export const MyProfileEditForm: React.FC = () => {
 
   const showCompleteYourProfileBanner = !me?.collectorProfile?.isProfileComplete
 
+  console.log("qwer", "MyProfile", { localImage })
   return (
     <>
       <FancyModalHeader
@@ -222,8 +225,8 @@ export const MyProfileEditForm: React.FC = () => {
                 justifyContent="center"
                 alignItems="center"
               >
-                {!!values.photo ? (
-                  <Avatar src={values.photo} size="md" />
+                {!!localImage || values.photo ? (
+                  <Avatar src={localImage?.path || values.photo} size="md" />
                 ) : (
                   <Image source={require("images/profile_placeholder_avatar.png")} />
                 )}

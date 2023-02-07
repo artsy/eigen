@@ -1,12 +1,11 @@
 import { MapPinIcon, BriefcaseIcon, SettingsIcon, InstitutionIcon } from "@artsy/palette-mobile"
 import { MyProfileHeader_me$key } from "__generated__/MyProfileHeader_me.graphql"
 import { navigate } from "app/system/navigation/navigate"
+import { useLocalImageStorage } from "app/utils/LocalImageStore"
 import { Avatar, Box, Flex, Text, Touchable, useColor } from "palette"
-import { useContext } from "react"
 import { Image, TouchableOpacity } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
-import { MyProfileContext } from "./MyProfileProvider"
 import { normalizeMyProfileBio } from "./utils"
 
 const ICON_SIZE = 14
@@ -16,9 +15,9 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
 
   const color = useColor()
 
-  const { localImage } = useContext(MyProfileContext)
+  const localImage = useLocalImageStorage("profile")
 
-  const userProfileImagePath = localImage || me?.icon?.url
+  const userProfileImagePath = localImage?.path || me?.icon?.url
 
   return (
     <Flex pt={2}>

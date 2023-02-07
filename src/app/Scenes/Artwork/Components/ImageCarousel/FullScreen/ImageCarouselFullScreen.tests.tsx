@@ -10,6 +10,7 @@ describe("ImageCarouselFullScreen", () => {
     const value = useNewImageCarouselContext({
       images: [
         {
+          internalID: "123",
           height: 5,
           width: 5,
           url: "a",
@@ -17,6 +18,7 @@ describe("ImageCarouselFullScreen", () => {
           deepZoom: { image: { size: { width: 5, height: 5 } } as any },
         },
         {
+          internalID: "1234",
           height: 5,
           width: 5,
           url: "b",

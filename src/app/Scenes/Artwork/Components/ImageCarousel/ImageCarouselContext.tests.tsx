@@ -5,6 +5,7 @@ import { ImageCarouselContext, useNewImageCarouselContext } from "./ImageCarouse
 const contextMock: Parameters<typeof useNewImageCarouselContext>[0] = {
   images: [
     {
+      internalID: "123",
       height: 5,
       width: 5,
       url: "a",
@@ -14,6 +15,7 @@ const contextMock: Parameters<typeof useNewImageCarouselContext>[0] = {
       },
     },
     {
+      internalID: "1234",
       height: 5,
       width: 5,
       url: "b",

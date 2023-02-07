@@ -7,7 +7,7 @@ import {
   MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer,
 } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { navigate } from "app/system/navigation/navigate"
-import { LocalImage, storeLocalImages } from "app/utils/LocalImageStore"
+import { LocalImage, storeLocalImage } from "app/utils/LocalImageStore"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
@@ -107,7 +107,7 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
         height: 10,
       }
       await act(async () => {
-        await storeLocalImages([localImage], LOCAL_PROFILE_ICON_PATH_KEY)
+        await storeLocalImage(LOCAL_PROFILE_ICON_PATH_KEY, localImage)
       })
 
       const { container } = getWrapper({

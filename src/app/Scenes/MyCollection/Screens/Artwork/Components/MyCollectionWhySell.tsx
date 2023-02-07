@@ -103,6 +103,9 @@ const artworkFragment = graphql`
     attributionClass {
       name
     }
+    images(includeAll: true) {
+      url: imageURL
+    }
     editionNumber
     editionSize
     metric
