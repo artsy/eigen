@@ -1,3 +1,5 @@
+import { SearchEntity } from "__generated__/SearchResults2Query.graphql"
+
 export interface AlgoliaSearchResult {
   href: string
   image_url: string
@@ -15,7 +17,7 @@ export interface PillType {
   displayName: string
   disabled?: boolean
   type: PillEntityType
-  key: AlgoliaIndexKey | string
+  key: AlgoliaIndexKey | SearchEntity | "top"
 }
 
 export enum AlgoliaIndexKey {
