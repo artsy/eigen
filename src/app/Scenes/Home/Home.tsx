@@ -65,7 +65,7 @@ import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
 import { RailScrollRef } from "./Components/types"
 
 const LARGE_MODULE_SEPARATOR_HEIGHT = 4
-const MODULE_SEPARATOR_HEIGHT = "6"
+const MODULE_SEPARATOR_HEIGHT = 6
 
 interface HomeModule {
   title: string
