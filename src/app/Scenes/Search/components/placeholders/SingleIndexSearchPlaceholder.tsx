@@ -1,5 +1,9 @@
 import { IMAGE_SIZE } from "app/Scenes/Search/components/SearchResultImage"
-import { PlaceholderBox, RandomWidthPlaceholderText } from "app/utils/placeholders"
+import {
+  PlaceholderBox,
+  ProvidePlaceholderContext,
+  RandomWidthPlaceholderText,
+} from "app/utils/placeholders"
 import { times } from "lodash"
 import { Box, Flex } from "palette"
 
@@ -9,9 +13,8 @@ interface SingleIndexSearchPlaceholderProps {
 
 export const SingleIndexSearchPlaceholder: React.FC<SingleIndexSearchPlaceholderProps> = ({
   hasRoundedImages,
-}) => {
-  return (
-    // <ProvidePlaceholderContext>
+}) => (
+  <ProvidePlaceholderContext>
     <Box px={2}>
       {times(20).map((index) => (
         <Flex key={`algolia-search-placeholder-${index}`} flexDirection="row" my={1}>
@@ -31,6 +34,5 @@ export const SingleIndexSearchPlaceholder: React.FC<SingleIndexSearchPlaceholder
         </Flex>
       ))}
     </Box>
-    // </ProvidePlaceholderContext>
-  )
-}
+  </ProvidePlaceholderContext>
+)

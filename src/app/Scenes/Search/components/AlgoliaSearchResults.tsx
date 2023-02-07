@@ -6,7 +6,6 @@ import { SINGLE_INDICES_WITH_AN_ARTICLE } from "app/Scenes/Search/constants"
 import { isAlgoliaApiKeyExpiredError } from "app/Scenes/Search/helpers"
 import { AlgoliaIndexKey, AlgoliaSearchResult, PillType } from "app/Scenes/Search/types"
 import { isPad } from "app/utils/hardware"
-import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { Box, Flex, Spinner, Text, useSpace } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { InfiniteHitsProvided, StateResultsProvided } from "react-instantsearch-core"
@@ -72,11 +71,9 @@ export const AlgoliaSearchResults: React.FC<AlgoliaSearchResultsProps> = ({
 
   if (showLoadingPlaceholder) {
     return (
-      <ProvidePlaceholderContext>
-        <SingleIndexSearchPlaceholder
-          hasRoundedImages={selectedPill.key === AlgoliaIndexKey.Artist}
-        />
-      </ProvidePlaceholderContext>
+      <SingleIndexSearchPlaceholder
+        hasRoundedImages={selectedPill.key === AlgoliaIndexKey.Artist}
+      />
     )
   }
 

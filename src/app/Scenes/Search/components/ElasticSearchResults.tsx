@@ -10,7 +10,6 @@ import {
 import { AlgoliaIndexKey, PillType } from "app/Scenes/Search/types"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
-import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { Box } from "palette"
 import { Suspense, useEffect, useRef } from "react"
 import { FlatList } from "react-native"
@@ -102,9 +101,7 @@ export const SearchResults2: React.FC<SearchResults2Props> = ({ query, selectedP
 export const ElasticSearchResults2Screen: React.FC<SearchResults2Props> = (props) => (
   <Suspense
     fallback={
-      <ProvidePlaceholderContext>
-        <SingleIndexSearchPlaceholder hasRoundedImages={props.selectedPill.key === "artist"} />
-      </ProvidePlaceholderContext>
+      <SingleIndexSearchPlaceholder hasRoundedImages={props.selectedPill.key === "artist"} />
     }
   >
     <SearchResults2 {...props} />
