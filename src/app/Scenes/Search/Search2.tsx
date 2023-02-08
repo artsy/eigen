@@ -3,7 +3,7 @@ import { Spacer } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { Search2Query, Search2Query$variables } from "__generated__/Search2Query.graphql"
 import { SearchInput } from "app/Components/SearchInput"
-import { SearchPills2 } from "app/Scenes/Search/SearchPills2"
+import { ElasticSearchPills } from "app/Scenes/Search/ElasticSearchPills"
 import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQueryChanged"
 import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
 import { isPad } from "app/utils/hardware"
@@ -132,7 +132,7 @@ export const Search2: React.FC = () => {
           {shouldStartSearching(searchQuery) && !!queryData.viewer ? (
             <>
               <Box pt={2} pb={1}>
-                <SearchPills2
+                <ElasticSearchPills
                   viewer={queryData.viewer}
                   ref={searchPillsRef}
                   pills={ES_ONLY_PILLS}
@@ -178,7 +178,7 @@ export const Search2: React.FC = () => {
 export const SearchScreenQuery = graphql`
   query Search2Query($term: String!, $skipSearchQuery: Boolean!) {
     viewer @skip(if: $skipSearchQuery) {
-      ...SearchPills2_viewer @arguments(term: $term)
+      ...ElasticSearchPills_viewer @arguments(term: $term)
     }
     ...CuratedCollections_collections
     ...TrendingArtists_query

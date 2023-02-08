@@ -1,8 +1,9 @@
+import { SearchEntity } from "__generated__/ElasticSearchResultsQuery.graphql"
 import { AlgoliaIndexKey, PillType } from "./types"
 
 export const SEARCH_THROTTLE_INTERVAL = 500
 
-export const ALGOLIA_INDICES_WITH_AN_ARTICLE = [
+export const SINGLE_INDICES_WITH_AN_ARTICLE = [
   AlgoliaIndexKey.Artist,
   AlgoliaIndexKey.Auction,
   AlgoliaIndexKey.ArtistSeries,
@@ -93,3 +94,19 @@ export const ES_ONLY_PILLS: PillType[] = [
 ]
 
 export const DEFAULT_PILLS: PillType[] = [TOP_PILL, ARTWORKS_PILL]
+
+interface SearchEntityMap {
+  [key: string]: SearchEntity
+}
+
+export const ELASTIC_PILL_KEY_TO_SEARCH_ENTITY: SearchEntityMap = {
+  artwork: "ARTWORK",
+  artist: "ARTIST",
+  article: "ARTICLE",
+  sale: "SALE",
+  artist_series: "ARTIST_SERIES",
+  marketing_collection: "COLLECTION",
+  fair: "FAIR",
+  partner_show: "SHOW",
+  PartnerGallery: "GALLERY",
+}

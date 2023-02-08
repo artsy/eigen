@@ -1,17 +1,16 @@
 import { Spacer } from "@artsy/palette-mobile"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { LoadFailureView } from "app/Components/LoadFailureView"
-import { ALGOLIA_INDICES_WITH_AN_ARTICLE } from "app/Scenes/Search/constants"
+import { SingleIndexEmptyResultsMessage } from "app/Scenes/Search/components/SingleIndexEmptyResultsMessage"
+import { SingleIndexSearchPlaceholder } from "app/Scenes/Search/components/placeholders/SingleIndexSearchPlaceholder"
 import { isAlgoliaApiKeyExpiredError } from "app/Scenes/Search/helpers"
 import { AlgoliaIndexKey, AlgoliaSearchResult, PillType } from "app/Scenes/Search/types"
 import { isPad } from "app/utils/hardware"
-import { ProvidePlaceholderContext } from "app/utils/placeholders"
-import { Box, Flex, Spinner, Text, useSpace } from "palette"
+import { Flex, Spinner, useSpace } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { InfiniteHitsProvided, StateResultsProvided } from "react-instantsearch-core"
 import { FlatList } from "react-native"
 import { SearchResult } from "./SearchResult"
-import { AlgoliaSearchPlaceholder } from "./placeholders/AlgoliaSearchPlaceholder"
 
 interface AlgoliaSearchResultsProps
   extends StateResultsProvided<AlgoliaSearchResult>,
@@ -72,28 +71,14 @@ export const AlgoliaSearchResults: React.FC<AlgoliaSearchResultsProps> = ({
 
   if (showLoadingPlaceholder) {
     return (
-      <ProvidePlaceholderContext>
-        <AlgoliaSearchPlaceholder hasRoundedImages={selectedPill.key === AlgoliaIndexKey.Artist} />
-      </ProvidePlaceholderContext>
+      <SingleIndexSearchPlaceholder
+        hasRoundedImages={selectedPill.key === AlgoliaIndexKey.Artist}
+      />
     )
   }
 
   if (searchResults?.nbHits === 0) {
-    const article = ALGOLIA_INDICES_WITH_AN_ARTICLE.includes(selectedPill.key as AlgoliaIndexKey)
-      ? "an"
-      : "a"
-
-    return (
-      <Box px={2} py={1}>
-        <Spacer y={4} />
-        <Text variant="sm-display" textAlign="center">
-          Sorry, we couldn’t find {article} {selectedPill.displayName} for “{searchState.query}.”
-        </Text>
-        <Text variant="sm-display" color="black60" textAlign="center">
-          Please try searching again with a different spelling.
-        </Text>
-      </Box>
-    )
+    return <SingleIndexEmptyResultsMessage query={searchState.query!} selectedPill={selectedPill} />
   }
 
   return (

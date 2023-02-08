@@ -204,6 +204,11 @@ export const features = defineFeatures({
     showInDevMenu: true,
     readyForRelease: false,
   },
+  AREnableAutosuggestModeESSearch: {
+    description: "Enables autosuggest mode, valid when AREnableESOnlySearch true",
+    showInDevMenu: true,
+    readyForRelease: false,
+  },
   AREnableMoneyFormattingInMyCollectionForm: {
     description: "Enable Money formatting in MyCollection Form",
     showInDevMenu: true,
