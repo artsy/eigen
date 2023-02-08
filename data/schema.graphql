@@ -3517,7 +3517,7 @@ type Collection {
     before: String
     first: Int
     last: Int
-    sort: CollectionSorts
+    sort: CollectionArtworkSorts
   ): ArtworkConnection
 
   # Number of artworks associated with this collection.
@@ -3538,6 +3538,13 @@ type Collection {
 
   # True if this collection represents artworks explicitly saved by the user, false otherwise.
   saves: Boolean!
+}
+
+enum CollectionArtworkSorts {
+  POSITION_ASC
+  POSITION_DESC
+  SAVED_AT_ASC
+  SAVED_AT_DESC
 }
 
 # A connection to a list of items.
@@ -3561,10 +3568,8 @@ type CollectionsEdge {
 }
 
 enum CollectionSorts {
-  POSITION_ASC
-  POSITION_DESC
-  SAVED_AT_ASC
-  SAVED_AT_DESC
+  CREATED_AT_ASC
+  CREATED_AT_DESC
 }
 
 type CollectorProfileArtists {
@@ -9283,7 +9288,7 @@ type FollowsAndSaves {
     page: Int
     private: Boolean = false
     size: Int
-    sort: CollectionSorts
+    sort: CollectionArtworkSorts
   ): SavedArtworksConnection
 
   # A list of published artworks by followed artists (grouped by date and artists).
@@ -10875,6 +10880,7 @@ type Me implements Node {
     page: Int
     saves: Boolean
     size: Int
+    sort: CollectionSorts
   ): CollectionsConnection
   collectorLevel: Int
 
