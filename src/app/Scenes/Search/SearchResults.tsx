@@ -93,7 +93,13 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ selectedPill, quer
     !isArtworksPillSelected &&
     selectedPill.type === "elastic"
   ) {
-    return <ElasticSearchResults2Screen query={query} selectedPill={selectedPill} />
+    return (
+      <ElasticSearchResults2Screen
+        query={query}
+        selectedPill={selectedPill}
+        selectedKey={selectedPill.key}
+      />
+    )
   }
 
   return <SearchArtworksQueryRenderer keyword={query} />

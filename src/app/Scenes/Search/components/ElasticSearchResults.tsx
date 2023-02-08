@@ -9,23 +9,28 @@ import { PillType } from "app/Scenes/Search/types"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
-import { Suspense, useEffect, useRef } from "react"
+import { Suspense, useRef } from "react"
 import { FlatList } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 interface SearchResults2Props {
   query: string
   selectedPill: PillType
+  selectedKey: PillType["key"]
 }
 
 const PAGE_SIZE = isPad() ? 20 : 10
 
-export const SearchResults2: React.FC<SearchResults2Props> = ({ query, selectedPill }) => {
+export const SearchResults2: React.FC<SearchResults2Props> = ({
+  query,
+  selectedPill,
+  selectedKey,
+}) => {
   const space = useSpace()
   const isAutosuggestModeEnabled = useFeatureFlag("AREnableAutosuggestModeESSearch")
   const flatListRef = useRef<FlatList>(null)
 
-  const selectedEntity = ELASTIC_PILL_KEY_TO_SEARCH_ENTITY?.[selectedPill.key]
+  const selectedEntity = ELASTIC_PILL_KEY_TO_SEARCH_ENTITY?.[selectedKey]
 
   const mode = isAutosuggestModeEnabled ? "AUTOSUGGEST" : "SITE"
 
@@ -40,12 +45,6 @@ export const SearchResults2: React.FC<SearchResults2Props> = ({ query, selectedP
     ElasticSearchResultsQuery,
     ElasticSearchResults_searchConnection$key
   >(searchResultsFragment, queryData)
-
-  useEffect(() => {
-    requestAnimationFrame(() => {
-      flatListRef.current?.scrollToOffset({ offset: 0, animated: true })
-    })
-  }, [selectedPill.indexName])
 
   const hits = extractNodes(data?.searchConnection)
 
