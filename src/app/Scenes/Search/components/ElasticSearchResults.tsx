@@ -6,6 +6,7 @@ import { SingleIndexEmptyResultsMessage } from "app/Scenes/Search/components/Sin
 import { SingleIndexSearchPlaceholder } from "app/Scenes/Search/components/placeholders/SingleIndexSearchPlaceholder"
 import { ELASTIC_PILL_KEY_TO_SEARCH_ENTITY } from "app/Scenes/Search/constants"
 import { PillType } from "app/Scenes/Search/types"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
 import { Suspense, useRef } from "react"
@@ -21,14 +22,18 @@ const PAGE_SIZE = isPad() ? 20 : 10
 
 export const SearchResults2: React.FC<SearchResults2Props> = ({ query, selectedPill }) => {
   const space = useSpace()
+  const isAutosuggestModeEnabled = useFeatureFlag("AREnableAutosuggestModeESSearch")
   const flatListRef = useRef<FlatList>(null)
 
   const selectedEntity = ELASTIC_PILL_KEY_TO_SEARCH_ENTITY?.[selectedPill.key]
+
+  const mode = isAutosuggestModeEnabled ? "AUTOSUGGEST" : "SITE"
 
   const queryData = useLazyLoadQuery<ElasticSearchResultsQuery>(elasticSearchResultsQuery, {
     query,
     first: PAGE_SIZE,
     entities: [selectedEntity],
+    mode,
   })
 
   const { data, loadNext, hasNext, isLoadingNext } = usePaginationFragment<
@@ -91,9 +96,11 @@ const searchResultsFragment = graphql`
     first: { type: "Int" }
     cursor: { type: "String" }
     page: { type: "Int" }
+    mode: { type: "SearchMode" }
     entities: { type: "[SearchEntity]" }
   ) {
     searchConnection(
+      mode: $mode
       first: $first
       after: $cursor
       page: $page
@@ -123,12 +130,20 @@ const searchResultsFragment = graphql`
 const elasticSearchResultsQuery = graphql`
   query ElasticSearchResultsQuery(
     $query: String!
+    $mode: SearchMode
     $first: Int
     $cursor: String
     $entities: [SearchEntity]
     $page: Int
   ) {
     ...ElasticSearchResults_searchConnection
-      @arguments(query: $query, first: $first, cursor: $cursor, page: $page, entities: $entities)
+      @arguments(
+        query: $query
+        mode: $mode
+        first: $first
+        cursor: $cursor
+        page: $page
+        entities: $entities
+      )
   }
 `
