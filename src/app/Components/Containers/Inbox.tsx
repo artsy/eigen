@@ -218,7 +218,7 @@ export const InboxQueryRenderer: React.FC<{ isVisible: boolean }> = (props) => {
   )
 }
 
-export const InboxPlaceholder: React.FC<{}> = () => {
+export const InboxPlaceholder = () => {
   return (
     <Flex height="100%" testID="inbox-placeholder">
       <Flex flexDirection="row" mx={2} mt={3} mb={1}>
