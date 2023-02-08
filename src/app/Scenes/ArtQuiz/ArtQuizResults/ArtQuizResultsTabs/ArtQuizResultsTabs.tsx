@@ -3,6 +3,7 @@ import { ArtQuizResultsQuery$data } from "__generated__/ArtQuizResultsQuery.grap
 import { ArtQuizResultsTabs_me$key } from "__generated__/ArtQuizResultsTabs_me.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { ArtQuizExploreArtists } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizExploreArtists"
+import { ArtQuizExploreArtworks } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizExploreArtworks"
 import { ArtQuizLikedArtworks } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizLikedArtworks"
 import { ArtQuizResultsTabsHeader } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsTabsHeader"
 import { compact } from "lodash"
@@ -31,7 +32,7 @@ export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] 
             },
             {
               title: Tab.exploreWorks,
-              content: <ArtQuizLikedArtworks savedArtworks={savedArtworks!} />,
+              content: <ArtQuizExploreArtworks savedArtworks={savedArtworks!} />,
             },
             {
               title: Tab.exploreArtists,
