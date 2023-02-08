@@ -1,7 +1,5 @@
 This update includes a number of improvements and bug fixes including:
 
-- Improvements to the new works for you rail
-- Improvements to the career highlights
-- New works from galleries you follow rail is visible on the home screen
+- See new works from galleries you follow directly in your home feed.
 
 Have feedback? Email us at support@artsy.net
