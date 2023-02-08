@@ -15,7 +15,7 @@ export const SavingArtworkModal: React.FC<SavingArtworkModalProps & ModalProps> 
     <FullScreenLoadingImage
       loadingText={loadingText}
       imgSource={require("images/InsightsLoadingImage.jpg")}
-      spacerHeight={100}
+      spacerHeight="100px"
     />
   </Modal>
 )

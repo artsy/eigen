@@ -80,7 +80,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
         the low and high estimates set by the auction house before the auction takes place) for lots
         sold at auction over the past 36 months.
       </Text>
-      <Spacer y={100} />
+      <Spacer y="100px" />
     </ScrollView>
   )
 
@@ -151,7 +151,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
         </Flex>
         <Flex width="50%" mt={2}>
           <Flex width="50%" flexDirection="row" alignItems="center">
-            <Join separator={<Spacer x="0.5" />}>
+            <Join separator={<Spacer x={0.5} />}>
               {deltaIcon}
               <Text variant="lg-display">{formattedMedianSaleOverEstimatePercentage}%</Text>
             </Join>
@@ -218,26 +218,26 @@ const LoadingSkeleton = () => {
       <Text variant="xs" color="black60" my={0.5}>
         Last 36 months
       </Text>
-      <Spacer y="0.5" />
+      <Spacer y={0.5} />
       <PlaceholderBox width="100%" height={40} />
       <Flex flexDirection="row" flexWrap="wrap" mt={15}>
         <Flex width="50%">
-          <Spacer y="0.5" />
+          <Spacer y={0.5} />
           <PlaceholderText width={30} height={25} />
           <Text variant="sm">Yearly lots sold</Text>
         </Flex>
         <Flex width="50%">
-          <Spacer y="0.5" />
+          <Spacer y={0.5} />
           <PlaceholderText width={60} height={25} />
           <Text variant="sm">Sell-through rate</Text>
         </Flex>
         <Flex width="50%" mt={2}>
-          <Spacer y="0.5" />
+          <Spacer y={0.5} />
           <PlaceholderText width={50} height={25} />
           <Text variant="sm">Average sale price</Text>
         </Flex>
         <Flex width="50%" mt={2}>
-          <Spacer y="0.5" />
+          <Spacer y={0.5} />
           <PlaceholderText width={70} height={25} />
           <Text variant="sm">Sale price over estimate</Text>
         </Flex>

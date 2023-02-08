@@ -125,7 +125,7 @@ export class Message extends React.Component<Props> {
                     </Text>
                   </Hyperlink>
                 </AttachmentContainer>
-                {!!message.attachments?.length && <Spacer y="0.5" />}
+                {!!message.attachments?.length && <Spacer y={0.5} />}
                 {this.renderAttachmentPreviews(message.attachments, backgroundColor)}
               </Flex>
               {!!showTimeSince && (

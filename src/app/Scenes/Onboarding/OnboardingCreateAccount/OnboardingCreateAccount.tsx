@@ -207,12 +207,12 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="always"
       >
-        <Spacer y={60} />
+        <Spacer y="60px" />
         <Box minHeight={85}>
           <Text variant="lg-display">{title}</Text>
           {!!caption && (
             <>
-              <Spacer y="0.5" />
+              <Spacer y={0.5} />
               <Text variant="xs" color={color("black100")}>
                 {caption}
               </Text>

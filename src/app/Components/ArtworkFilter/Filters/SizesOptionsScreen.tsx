@@ -124,7 +124,7 @@ const CustomSizeInputsContainer: React.FC<CustomSizeInputsContainerProps> = ({
   }
 
   return (
-    <Box mx={15} my={2}>
+    <Box mx="15px" my={2}>
       <Flex flexDirection="row">
         {metrics.map((currentMetric) => {
           const isSelected = metric === currentMetric

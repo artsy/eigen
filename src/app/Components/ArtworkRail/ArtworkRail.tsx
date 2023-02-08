@@ -52,7 +52,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
       horizontal
       ListHeaderComponent={ListHeaderComponent}
       ListFooterComponent={ListFooterComponent}
-      ItemSeparatorComponent={() => <Spacer x={15} />}
+      ItemSeparatorComponent={() => <Spacer x="15px" />}
       showsHorizontalScrollIndicator={false}
       // We need to set the maximum number of artists to not cause layout shifts
       // @ts-expect-error
@@ -106,7 +106,7 @@ export const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> =
       horizontal
       ListHeaderComponent={ListHeaderComponent}
       ListFooterComponent={ListFooterComponent}
-      ItemSeparatorComponent={() => <Spacer x={15} />}
+      ItemSeparatorComponent={() => <Spacer x="15px" />}
       showsHorizontalScrollIndicator={false}
       // We need to set the maximum number of artists to not cause layout shifts
       data={recentlySoldArtworks.slice(0, MAX_NUMBER_OF_ARTWORKS)}

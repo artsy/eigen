@@ -7,7 +7,7 @@ export const HeaderTabsGridPlaceholder: React.FC = () => {
     <Flex>
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
         <Flex>
-          <Spacer y={75} />
+          <Spacer y="75px" />
           {/* Entity name */}
           <PlaceholderText width={180} />
           <Spacer y={1} />

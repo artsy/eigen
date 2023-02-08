@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, SpacingUnitDSValueNumber } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
 import { Box, Button, Flex, Text, Touchable } from "palette"
@@ -54,7 +54,7 @@ const ContentCard: React.FC<CardProps> = ({ item }) => {
   )
 }
 
-export const ContentCards: React.FC<{ mb?: number }> = ({ mb }) => {
+export const ContentCards: React.FC<{ mb?: SpacingUnitDSValueNumber }> = ({ mb }) => {
   const [cards, setCards] = useState<ReactAppboy.CaptionedContentCard[]>([])
   const eventName = ReactAppboy.Events?.CONTENT_CARDS_UPDATED
 
@@ -89,10 +89,10 @@ export const ContentCards: React.FC<{ mb?: number }> = ({ mb }) => {
 
 interface CardListProps {
   cards: ReactAppboy.CaptionedContentCard[]
-  mb?: number
+  mb?: SpacingUnitDSValueNumber
 }
 
-export const CardList: React.FC<CardListProps> = ({ cards, mb }) => {
+const CardList: React.FC<CardListProps> = ({ cards, mb }) => {
   const [currentCardIndex, setCurrentCardIndex] = useState(0)
   const [viewedCards, setViewedCards] = useState([] as ReactAppboy.CaptionedContentCard[])
 

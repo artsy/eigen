@@ -269,7 +269,7 @@ export const MyCollectionArtworkFormMain: React.FC<
             }}
           />
 
-          <Spacer y={2} mb={1} />
+          <Spacer y={2} />
 
           <ScreenMargin>
             {modalType === "edit" && (

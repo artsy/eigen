@@ -66,7 +66,7 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
         initialNumToRender={3}
         ListHeaderComponent={() => <Spacer x={1} />}
         ListFooterComponent={() => <Spacer x={1} />}
-        ItemSeparatorComponent={() => <Spacer x="0.5" />}
+        ItemSeparatorComponent={() => <Spacer x={0.5} />}
         renderItem={({ item: result, index }) => {
           return (
             <Touchable

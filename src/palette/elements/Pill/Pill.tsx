@@ -98,7 +98,7 @@ export const Pill: React.FC<PillProps> = ({
     onPress?.(event)
   }
 
-  const iconSpacerMargin = size === "xxs" ? "0.5" : "1"
+  const iconSpacerMargin = size === "xxs" ? 0.5 : 1
   const to = useStyleForState(displayState, stateStyle)
   const iconColor = to.textColor as Color
 

@@ -307,7 +307,7 @@ export const SavedAddressesFormContainer = createFragmentContainer(SavedAddresse
 export const SavedAddressesFormPlaceholder: React.FC<{ addressId?: string }> = (props) => {
   return (
     <PageWithSimpleHeader title={!!props?.addressId ? "Edit Address" : "Add New Address"}>
-      <Flex px={2} py={15}>
+      <Flex px={2} py="15px">
         {times(5).map((index) => (
           <Flex key={index} py={1}>
             <PlaceholderText height={15} width={50 + Math.random() * 100} />

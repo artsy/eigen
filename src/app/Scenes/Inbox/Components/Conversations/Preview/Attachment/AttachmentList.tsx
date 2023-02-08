@@ -33,7 +33,7 @@ const AttachmentList: React.FC<Props> = ({ conversation }) => {
               Attachments
             </Text>
           }
-          ItemSeparatorComponent={() => <Spacer y="0.5" />}
+          ItemSeparatorComponent={() => <Spacer y={0.5} />}
         />
       </Box>
       <Separator />

@@ -80,7 +80,7 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
           <>
             <Flex px={2}>
               <ArtistSeriesHeaderFragmentContainer artistSeries={artistSeries} />
-              <Spacer y={2} mb={1} />
+              <Spacer y={2} />
               <ArtistSeriesMetaFragmentContainer artistSeries={artistSeries} />
             </Flex>
             <Separator mt={2} />

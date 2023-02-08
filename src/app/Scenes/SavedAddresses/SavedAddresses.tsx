@@ -188,7 +188,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me$data; relay: RelayRefetch
 export const SavedAddressesPlaceholder: React.FC = () => {
   return (
     <PageWithSimpleHeader title="Saved Addresses">
-      <Flex px={2} py={15}>
+      <Flex px={2} py="15px">
         {times(2).map((index: number) => (
           <Flex key={index} py={1}>
             <PlaceholderText width={100 + Math.random() * 100} />

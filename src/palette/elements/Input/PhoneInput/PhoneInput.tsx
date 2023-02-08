@@ -139,7 +139,7 @@ export const PhoneInput = forwardRef<
                     <Text variant="sm-display">
                       {countryIndex[selectedValue ?? countryCode].flag}
                     </Text>
-                    <Spacer x="0.5" />
+                    <Spacer x={0.5} />
                     <TriangleDown width="8" />
                   </Flex>
                   <Flex justifyContent="center" pl="1">

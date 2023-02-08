@@ -176,7 +176,7 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPag
 
 export const MyProfilePaymentPlaceholder: React.FC<{}> = () => (
   <PageWithSimpleHeader title="Payment">
-    <Flex px={2} py={15}>
+    <Flex px={2} py="15px">
       {times(2).map((index: number) => (
         <Flex key={index} py={1}>
           <PlaceholderText width={100 + Math.random() * 100} />

@@ -5,7 +5,7 @@ import { Flex, Separator } from "palette"
 export const GenePlaceholder = () => (
   <Flex>
     <Flex px={2}>
-      <Spacer y={75} />
+      <Spacer y="75px" />
       {/* Entity name */}
       <PlaceholderText width={150} />
       <Spacer y={1} />

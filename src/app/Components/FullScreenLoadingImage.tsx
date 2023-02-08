@@ -11,7 +11,7 @@ interface FullScreenLoadingImageProps {
 export const FullScreenLoadingImage: React.FC<FullScreenLoadingImageProps> = ({
   loadingText,
   imgSource,
-  spacerHeight = "6",
+  spacerHeight = 6,
 }) => {
   return (
     <ImageBackground

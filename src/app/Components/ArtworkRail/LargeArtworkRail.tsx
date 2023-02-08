@@ -35,7 +35,7 @@ const largeArtworksFragment = graphql`
 `
 
 export const LargeArtworkRailPlaceholder: React.FC = () => (
-  <Join separator={<Spacer x={15} />}>
+  <Join separator={<Spacer x="15px" />}>
     {times(3 + useMemoizedRandom() * 10).map((index) => (
       <Flex key={index}>
         <PlaceholderBox

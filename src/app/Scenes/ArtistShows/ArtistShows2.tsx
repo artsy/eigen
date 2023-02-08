@@ -177,11 +177,11 @@ const LoadingSkeleton = () => {
         <PlaceholderBox width={82} height={82} marginRight={15} />
         <Flex>
           <PlaceholderBox width={80 + Math.round(Math.random() * 80)} height={15} />
-          <Spacer y="0.5" />
+          <Spacer y={0.5} />
           <PlaceholderBox width={200 + Math.round(Math.random() * 100)} height={15} />
-          <Spacer y="0.5" />
+          <Spacer y={0.5} />
           <PlaceholderBox width={60 + Math.round(Math.random() * 60)} height={15} />
-          <Spacer y="0.5" />
+          <Spacer y={0.5} />
           <PlaceholderBox width={100 + Math.round(Math.random() * 100)} height={15} />
         </Flex>
       </Flex>
@@ -189,11 +189,11 @@ const LoadingSkeleton = () => {
   }
   return (
     <Flex mx={2}>
-      <Spacer y={70} />
+      <Spacer y="70px" />
 
       {/* Artist name */}
       <PlaceholderBox width={100} height={15} />
-      <Spacer y="0.5" />
+      <Spacer y={0.5} />
       {/* "Past Shows" */}
       <PlaceholderBox width={120} height={30} />
       <Spacer y={2} />

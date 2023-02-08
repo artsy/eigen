@@ -119,7 +119,7 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
         modalTitle="Artist Market Insights"
         modalContent={
           <>
-            <Spacer y="0.5" />
+            <Spacer y={0.5} />
             <Text>
               These statistics are based on the last 36 months of auction sale data from top
               commercial auction houses.
@@ -129,7 +129,7 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
         onPress={() => trackEvent(tracks.tappedInfoBubble(artwork.internalID, artwork.slug))}
       />
 
-      <Spacer y={2} mt={0.5} />
+      <Spacer y={2} />
 
       <View
         style={{

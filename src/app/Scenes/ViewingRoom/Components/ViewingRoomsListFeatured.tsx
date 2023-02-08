@@ -65,7 +65,7 @@ export const FeaturedRail: React.FC<FeaturedRailProps & Partial<RailScrollProps>
         initialNumToRender={2}
         keyExtractor={(item) => item.internalID}
         data={featured}
-        ItemSeparatorComponent={() => <Spacer x={15} />}
+        ItemSeparatorComponent={() => <Spacer x="15px" />}
         renderItem={({ item }) => {
           const tag = tagForStatus(item.status, item.distanceToOpen, item.distanceToClose)
           return (

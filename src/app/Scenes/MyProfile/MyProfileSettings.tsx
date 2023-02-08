@@ -37,7 +37,7 @@ export const MyProfileSettings: React.FC<{}> = () => {
       />
       <Separator my={1} borderColor={separatorColor} />
 
-      <Spacer y={2} mb={1} />
+      <Spacer y={2} />
       <SectionHeading title="Account Settings" />
       <Spacer y={1} />
       <MenuItem title="Account" onPress={() => navigate("my-account")} />

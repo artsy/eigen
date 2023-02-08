@@ -240,7 +240,7 @@ const LoadingSkeleton = () => {
 
           <PlaceholderText width={70} height={10} marginTop={6} />
         </Flex>
-        <Spacer y="0.5" />
+        <Spacer y={0.5} />
         <PlaceholderText width={30} height={20} />
         <Flex flexDirection="row" alignItems="center" my={0.1}>
           <PlaceholderBox width={10} height={10} borderRadius={5} marginRight={7} />

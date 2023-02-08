@@ -16,7 +16,7 @@ export const TagPlaceholder: React.FC = () => (
       <PlaceholderText width={180} />
       <PlaceholderText width={50} />
     </Flex>
-    <Spacer y="0.5" />
+    <Spacer y={0.5} />
     {/* Grid */}
     <PlaceholderGrid />
   </Flex>

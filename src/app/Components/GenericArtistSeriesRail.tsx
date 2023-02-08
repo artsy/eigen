@@ -46,7 +46,7 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
         initialNumToRender={3}
         ListHeaderComponent={() => <Spacer x={2} />}
         ListFooterComponent={() => <Spacer x={2} />}
-        ItemSeparatorComponent={() => <Spacer x="0.5" />}
+        ItemSeparatorComponent={() => <Spacer x={0.5} />}
         renderItem={({ item: result, index }) => {
           const artworkImageURLs = extractNodes(
             result?.artworksConnection,
@@ -81,7 +81,7 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
                     {result.title}
                   </Text>
                   {!!result.priceGuidance && (
-                    <Text color={color("black60")} variant="sm" mx={15}>
+                    <Text color={color("black60")} variant="sm" mx="15px">
                       {"From $" + `${result.priceGuidance.toLocaleString()}`}
                     </Text>
                   )}

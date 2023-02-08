@@ -83,7 +83,7 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
               <TouchableWithoutFeedback onPress={viewInAR}>
                 <Flex flexDirection="row" mx="1" height={24} alignItems="center">
                   <EyeOpenedIcon />
-                  <Spacer x="0.5" />
+                  <Spacer x={0.5} />
                   <Text variant="xs">View on wall</Text>
                 </Flex>
               </TouchableWithoutFeedback>
@@ -137,7 +137,7 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
               renderItem={({ item }) => (
                 <ImageCarousel staticImages={[item] as any} cardHeight={screenHeight} />
               )}
-              ItemSeparatorComponent={() => <Spacer y="0.5" />}
+              ItemSeparatorComponent={() => <Spacer y={0.5} />}
             />
           </>
         )}

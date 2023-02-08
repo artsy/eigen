@@ -41,7 +41,7 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
       <Text variant="sm-display" testID="SWA-banner-in-MC">
         Interested in Selling This Work?
       </Text>
-      <Spacer y="0.5" />
+      <Spacer y={0.5} />
       <Text variant="xs" color="black60" mb={2}>
         Let our experts find the best sales option for you.
       </Text>

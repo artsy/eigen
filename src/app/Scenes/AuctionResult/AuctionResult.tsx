@@ -359,7 +359,7 @@ const LoadingSkeleton = () => {
   }
   return (
     <Flex mx={2}>
-      <Spacer y={70} />
+      <Spacer y="70px" />
 
       <Flex flexDirection="row">
         {/* Image */}

@@ -23,7 +23,7 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
 
   return (
     <StickyTabPageScrollView>
-      <Stack spacing={3} my={2}>
+      <Stack spacing={4} my={2}>
         {!!artist.hasMetadata && <Biography artist={artist as any} />}
         <ArtistSeriesMoreSeriesFragmentContainer
           contextScreenOwnerId={artist.internalID}

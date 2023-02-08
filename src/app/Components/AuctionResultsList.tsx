@@ -119,7 +119,7 @@ export const LoadingSkeleton: React.FC<{ title: string; listHeader: React.ReactE
         <Flex flexDirection="row" flexGrow={1}>
           {/* Image */}
           <PlaceholderBox width={60} height={60} />
-          <Spacer x={15} />
+          <Spacer x="15px" />
           <Flex flexDirection="row" justifyContent="space-between" py={0.5} flexGrow={1}>
             <Flex>
               {/* Artist name */}

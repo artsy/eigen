@@ -79,7 +79,7 @@ export const CommercialButtons: React.FC<CommercialButtonProps> = ({
         <MakeOfferButtonFragmentContainer artwork={artwork} editionSetID={editionSetID ?? null} />
         {isInquireable && (
           <>
-            <Spacer y="0.5" />
+            <Spacer y={0.5} />
             <InquiryButtonsFragmentContainer artwork={artwork} variant="outline" block />
           </>
         )}

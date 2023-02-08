@@ -88,7 +88,7 @@ export const LineGraphCategoryPicker: React.FC<LineGraphCategoryPickerProps> = m
       >
         {categories.map((category, index) => (
           <Flex key={index + category.name} flexDirection="row">
-            <Spacer x={index === 0 ? "1" : "0.5"} />
+            <Spacer x={index === 0 ? 1 : 0.5} />
             <CategoryPill
               onCategorySelected={(sCategory) => onSelectCategory(sCategory, index)}
               selectedCategory={selectedCategory}

@@ -56,7 +56,7 @@ class ShowGridItem extends React.Component<ShowGridItemProps> {
                   ) : (
                     <EmptyImage />
                   )}
-                  <Spacer y="0.5" />
+                  <Spacer y={0.5} />
                   <Text variant="sm">{show.name}</Text>
                   <Text variant="sm" color="black60">
                     {show.exhibitionPeriod}
