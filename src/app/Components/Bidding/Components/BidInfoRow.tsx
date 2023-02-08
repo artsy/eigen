@@ -24,7 +24,7 @@ export class BidInfoRow extends React.Component<BidInfoRowProps> {
           <Col alignItems="flex-end">{!!value && <Text numberOfLines={1}>{value}</Text>}</Col>
 
           <Col alignItems="flex-end" flexGrow={0} flexShrink={0} flexBasis="auto" flex={null}>
-            <Text color="blue100" ml={3}>
+            <Text color="blue100" ml={4}>
               {Boolean(value) ? "Edit" : "Add"}
             </Text>
           </Col>

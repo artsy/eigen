@@ -401,7 +401,7 @@ const Home = (props: Props) => {
             }
           }}
           ListHeaderComponent={<HomeHeader />}
-          ListFooterComponent={() => <Flex mb={3}>{!!loading && <BelowTheFoldPlaceholder />}</Flex>}
+          ListFooterComponent={() => <Flex mb={4}>{!!loading && <BelowTheFoldPlaceholder />}</Flex>}
           keyExtractor={(_item, index) => String(index)}
         />
         {!!meAbove && <EmailConfirmationBannerFragmentContainer me={meAbove} />}

@@ -11,7 +11,7 @@ export const UnlistedArtworksFAQScreen: React.FC = () => {
   return (
     <ScrollView>
       <Box pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px={2}>
-        <Box my={3}>
+        <Box my={4}>
           <Join separator={<Spacer y={2} />}>
             <Text variant="lg-display">Private Listings</Text>
 

@@ -42,7 +42,7 @@ export const SaleActiveBids: React.FC<SaleActiveBidsProps> = ({ me, relay, saleI
   }
 
   return (
-    <Flex px={2} mt={3}>
+    <Flex px={2} mt={4}>
       <FlatList
         data={me.lotStandings}
         ListHeaderComponent={() => <SectionTitle title="Your active bids" />}

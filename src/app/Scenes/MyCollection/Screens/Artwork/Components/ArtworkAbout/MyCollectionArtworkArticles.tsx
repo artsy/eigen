@@ -30,7 +30,7 @@ export const MyCollectionArtworkArticles: React.FC<MyCollectionArtworkArticlesPr
   }
 
   return (
-    <Flex mb={3}>
+    <Flex mb={4}>
       <TouchableOpacity
         onPress={() => {
           trackEvent(tracks.tappedArticleGroup())
