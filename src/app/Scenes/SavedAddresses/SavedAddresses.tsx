@@ -113,7 +113,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me$data; relay: RelayRefetch
                 <Text fontSize={16} lineHeight={24} color="black60">
                   {item.city}, {item.postalCode}
                 </Text>
-                <Spacer y="1" />
+                <Spacer y={1} />
                 <Text variant="sm" color="black60">
                   {item?.phoneNumber}
                 </Text>
@@ -145,7 +145,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me$data; relay: RelayRefetch
               </Card>
             </Flex>
 
-            <Spacer y="4" />
+            <Spacer y={4} />
           </>
         )}
         ListFooterComponent={

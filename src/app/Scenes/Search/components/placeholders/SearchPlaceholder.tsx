@@ -21,7 +21,7 @@ const RecentSearchesPlaceholder = () => {
     return (
       <>
         <PlaceholderText width="50%" height={25} />
-        <Spacer y="1" />
+        <Spacer y={1} />
         <PlaceholderText height={66} marginBottom={0} />
       </>
     )
@@ -30,8 +30,8 @@ const RecentSearchesPlaceholder = () => {
   return (
     <>
       <PlaceholderText width="50%" height={25} />
-      <Spacer y="1" />
-      <Join separator={<Spacer y="2" />}>
+      <Spacer y={1} />
+      <Join separator={<Spacer y={2} />}>
         {times(recentSearches.length).map((index) => (
           <Flex key={`search-placeholder-${index}`} height={IMAGE_SIZE} flexDirection="row">
             <PlaceholderBox width={IMAGE_SIZE} height={IMAGE_SIZE} />
@@ -49,7 +49,7 @@ const TrendingArtistLargeCard = () => {
   return (
     <>
       <PlaceholderBox width={295} height={180} />
-      <Spacer y="1" />
+      <Spacer y={1} />
       <PlaceholderText width={120} height={20} />
       <RandomWidthPlaceholderText minWidth={30} maxWidth={90} height={20} marginBottom={0} />
     </>
@@ -60,7 +60,7 @@ const TrendingArtistSmallCard = () => {
   return (
     <>
       <PlaceholderBox width={140} height={105} />
-      <Spacer y="1" />
+      <Spacer y={1} />
       <PlaceholderText width={120} height={15} />
       <RandomWidthPlaceholderText minWidth={30} maxWidth={90} height={15} marginBottom={0} />
     </>
@@ -74,7 +74,7 @@ const TrendingArtistPlaceholder = () => {
     <>
       <PlaceholderText width="50%" height={25} />
       <Flex flexDirection="row" mt={1}>
-        <Join separator={<Spacer x="1" />}>
+        <Join separator={<Spacer x={1} />}>
           {times(3).map((index) => (
             <Flex key={index}>
               {isTablet ? <TrendingArtistLargeCard /> : <TrendingArtistSmallCard />}
@@ -103,7 +103,7 @@ const CuratedCollectionsPlaceholder = () => {
     <>
       <PlaceholderText width="50%" height={25} />
       <Flex flexDirection="row" mt={1}>
-        <Join separator={<Spacer x="1" />}>
+        <Join separator={<Spacer x={1} />}>
           {times(3).map((index) => (
             <CuratedCollectionCardPlaceholder key={`curated-collaction-card-${index}`} />
           ))}
@@ -121,15 +121,15 @@ export const SearchPlaceholder: React.FC = () => {
       <Box m={2} mb={0} testID="search-placeholder">
         {/* Search input */}
         <PlaceholderBox height={50} />
-        <Spacer y="2" />
+        <Spacer y={2} />
 
         <RecentSearchesPlaceholder />
-        <Spacer y="4" />
+        <Spacer y={4} />
 
         {!!isSearchDiscoveryContentEnabled && (
           <>
             <TrendingArtistPlaceholder />
-            <Spacer y="4" />
+            <Spacer y={4} />
             <CuratedCollectionsPlaceholder />
           </>
         )}

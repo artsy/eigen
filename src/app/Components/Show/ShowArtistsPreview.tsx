@@ -42,19 +42,19 @@ export class ShowArtistsPreview extends React.Component<Props> {
     return (
       <>
         <Text variant="sm-display">Artists</Text>
-        <Spacer y="1" />
+        <Spacer y={1} />
         {items.map((artist, idx, arr) => {
           const { id } = artist
           return (
             <React.Fragment key={id}>
               <ArtistListItem artist={artist} Component={Component} />
-              {idx < arr.length - 1 && <Spacer y="1" />}
+              {idx < arr.length - 1 && <Spacer y={1} />}
             </React.Fragment>
           )
         })}
         {artists.length > artistsShown && (
           <>
-            <Spacer y="1" />
+            <Spacer y={1} />
             <CaretButton
               text={`View all ${artists.length} artists`}
               onPress={() => onViewAllArtistsPressed()}

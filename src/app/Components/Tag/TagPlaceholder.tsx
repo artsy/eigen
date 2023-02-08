@@ -8,9 +8,9 @@ export const TagPlaceholder: React.FC = () => (
       {/* Entity name */}
       <PlaceholderText />
     </Flex>
-    <Spacer y="1" />
+    <Spacer y={1} />
     <Separator />
-    <Spacer y="2" />
+    <Spacer y={2} />
     {/* Filters */}
     <Flex justifyContent="space-between" flexDirection="row" px={2}>
       <PlaceholderText width={180} />

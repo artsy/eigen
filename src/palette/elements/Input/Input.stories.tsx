@@ -20,7 +20,7 @@ storiesOf("Input", module)
           console.log("validation function")
         }}
       />
-      <Spacer y="2" />
+      <Spacer y={2} />
       <PhoneInput
         title="Phone number (disabled)"
         value={phoneNumber}

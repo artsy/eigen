@@ -17,7 +17,7 @@ import {
 import { limitedEditionValue, rarityOptions } from "./utils/rarityOptions"
 import { ArtworkDetailsFormModel } from "./validation"
 
-const StandardSpace = () => <Spacer y="4" />
+const StandardSpace = () => <Spacer y={4} />
 
 export const ArtworkDetailsForm: React.FC = () => {
   const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
@@ -104,7 +104,7 @@ export const ArtworkDetailsForm: React.FC = () => {
       </InfoModal>
       {values.attributionClass === limitedEditionValue && (
         <>
-          <Spacer y="2" />
+          <Spacer y={2} />
           <Flex flexDirection="row" justifyContent="space-between">
             <Box width="48%" mr={1}>
               <Input
@@ -131,7 +131,7 @@ export const ArtworkDetailsForm: React.FC = () => {
       )}
       <StandardSpace />
       <InputTitle>Dimensions</InputTitle>
-      <Spacer y="1" />
+      <Spacer y={1} />
       <Flex flexDirection="row">
         <RadioButton
           mr={2}
@@ -145,7 +145,7 @@ export const ArtworkDetailsForm: React.FC = () => {
           onPress={() => setFieldValue("dimensionsMetric", "cm")}
         />
       </Flex>
-      <Spacer y="2" />
+      <Spacer y={2} />
       <Flex flexDirection="row" justifyContent="space-between">
         <Box width="31%" mr={1}>
           <Input

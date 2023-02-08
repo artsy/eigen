@@ -17,9 +17,9 @@ export class PrivacyRequest extends React.Component {
           </Flex>
         </Box>
         <Separator />
-        <Spacer y="1" />
+        <Spacer y={1} />
         <Box mx={2}>
-          <Join separator={<Spacer y="2" />}>
+          <Join separator={<Spacer y={2} />}>
             <Text variant="sm" textAlign="left">
               Please see Artsy’s{" "}
               <LinkText onPress={() => navigate("/privacy", { modal: true })}>

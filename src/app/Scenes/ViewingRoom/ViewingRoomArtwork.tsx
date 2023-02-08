@@ -97,17 +97,17 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
           <Text variant="sm" color="black60">
             {selectedArtwork.title}, {selectedArtwork.date}
           </Text>
-          <Spacer y="2" />
+          <Spacer y={2} />
           <Text variant="sm" color="black100">
             {selectedArtwork.saleMessage}
           </Text>
           {!!selectedArtwork.additionalInformation && (
             <>
-              <Spacer y="2" />
+              <Spacer y={2} />
               <Text variant="sm">{selectedArtwork.additionalInformation}</Text>
             </>
           )}
-          <Spacer y="4" />
+          <Spacer y={4} />
           <Button
             variant="fillDark"
             block
@@ -125,11 +125,11 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
         {moreImages.length > 0 && (
           <>
             <Box mx="2">
-              <Spacer y="4" />
+              <Spacer y={4} />
               <Separator />
-              <Spacer y="4" />
+              <Spacer y={4} />
               <Text variant="sm">More images</Text>
-              <Spacer y="2" />
+              <Spacer y={2} />
             </Box>
             <FlatList
               data={moreImages}
@@ -143,11 +143,11 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
         )}
 
         <Box mx="2">
-          <Spacer y="4" />
+          <Spacer y={4} />
           <Separator />
-          <Spacer y="4" />
+          <Spacer y={4} />
           <Text variant="sm">In viewing room</Text>
-          <Spacer y="2" />
+          <Spacer y={2} />
         </Box>
         <Touchable onPress={() => navigate(`/viewing-room/${vrInfo.slug!}`)}>
           <LargeCard

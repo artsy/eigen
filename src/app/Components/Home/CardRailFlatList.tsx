@@ -18,8 +18,8 @@ export function CardRailFlatList<ItemType>({
 
   return (
     <AboveTheFoldFlatList<ItemType>
-      ListHeaderComponent={() => <Spacer x="2" />}
-      ListFooterComponent={() => <Spacer x="2" />}
+      ListHeaderComponent={() => <Spacer x={2} />}
+      ListFooterComponent={() => <Spacer x={2} />}
       ItemSeparatorComponent={() => <View style={{ width: INTER_CARD_PADDING }} />}
       ListEmptyComponent={() => <Spinner style={{ flex: 1, marginBottom: 20 }} />}
       horizontal

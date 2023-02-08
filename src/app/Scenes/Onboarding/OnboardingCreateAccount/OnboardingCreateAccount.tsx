@@ -219,7 +219,7 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<
             </>
           )}
         </Box>
-        <Spacer y="2" />
+        <Spacer y={2} />
         {children}
       </ScrollView>
       {!!onBackButtonPress && <BackButton onPress={onBackButtonPress} />}

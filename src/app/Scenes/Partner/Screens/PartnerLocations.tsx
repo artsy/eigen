@@ -46,7 +46,7 @@ const PartnerLocations: React.FC<{
           <Text variant="sm-display">{partner.name}</Text>
         </Box>
       )}
-      ListFooterComponent={() => <Spacer y="2" />}
+      ListFooterComponent={() => <Spacer y={2} />}
       renderItem={({ item }) => <PartnerMap location={item} />}
     />
   )

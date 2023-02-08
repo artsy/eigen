@@ -105,7 +105,7 @@ class Artists extends React.Component<Props, State> {
               />
             }
             style={{ paddingHorizontal: 0 }}
-            ItemSeparatorComponent={() => <Spacer y="1" />}
+            ItemSeparatorComponent={() => <Spacer y={1} />}
             ListFooterComponent={
               this.state.fetchingMoreData ? (
                 <Spinner style={{ marginTop: 20, marginBottom: 20 }} />

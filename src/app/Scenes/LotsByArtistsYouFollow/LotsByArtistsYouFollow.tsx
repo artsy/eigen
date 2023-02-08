@@ -25,7 +25,7 @@ export const LotsByArtistsYouFollow: React.FC<LotsByArtistsYouFollowProps> = ({ 
             hasMore={relay.hasMore}
             connection={me.lotsByFollowedArtistsConnection}
             shouldAddPadding
-            HeaderComponent={<Spacer y="2" />}
+            HeaderComponent={<Spacer y={2} />}
             useParentAwareScrollView={false}
             showLoadingSpinner
           />
@@ -95,7 +95,7 @@ const Placeholder = () => {
   return (
     <ProvidePlaceholderContext>
       <PageWithSimpleHeader title={SCREEN_TITLE}>
-        <Spacer y="2" />
+        <Spacer y={2} />
         <PlaceholderGrid />
       </PageWithSimpleHeader>
     </ProvidePlaceholderContext>

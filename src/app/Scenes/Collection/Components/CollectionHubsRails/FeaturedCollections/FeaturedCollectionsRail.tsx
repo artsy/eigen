@@ -64,8 +64,8 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
         data={collections as FeaturedCollection[]}
         keyExtractor={(_item, index) => String(index)}
         initialNumToRender={3}
-        ListHeaderComponent={() => <Spacer x="1" />}
-        ListFooterComponent={() => <Spacer x="1" />}
+        ListHeaderComponent={() => <Spacer x={1} />}
+        ListFooterComponent={() => <Spacer x={1} />}
         ItemSeparatorComponent={() => <Spacer x="0.5" />}
         renderItem={({ item: result, index }) => {
           return (

@@ -12,7 +12,7 @@ storiesOf("List", module).add("Bulleted Item", () => (
         The good thing about Bulleted Item text is that the bullet is aligned separately from the
         rest of the text
       </BulletedItem>
-      <Spacer y="2" />
+      <Spacer y={2} />
       <Text variant="sm" mx={1} color="black60">
         • Simple text acting as bulleted item
       </Text>

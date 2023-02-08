@@ -21,7 +21,7 @@ const PaginationDots: React.FC = () => {
   const { media } = useContext(ImageCarouselContext)
   return (
     <>
-      <Spacer y="2" />
+      <Spacer y={2} />
       <Flex flexDirection="row" justifyContent="center">
         {media.map((_, index) => (
           <PaginationDot key={index} diameter={5} index={index} />
@@ -76,7 +76,7 @@ export const ScrollBar: React.FC = () => {
           borderBottomColor: color("black30"),
         }}
       />
-      <Spacer y="2" />
+      <Spacer y={2} />
       <Animated.View
         accessibilityLabel="Image Pagination Scroll Bar"
         style={{

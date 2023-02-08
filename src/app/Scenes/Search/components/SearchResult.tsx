@@ -51,7 +51,7 @@ export const SearchResult: React.FC<SearchResultsItemProps> = ({
       <Flex height={IMAGE_SIZE} flexDirection="row" alignItems="center">
         <SearchResultImage imageURL={result.image_url} resultType={selectedPill.displayName} />
 
-        <Spacer x="1" />
+        <Spacer x={1} />
 
         <Flex flex={1}>
           <SearchHighlight attribute="name" hit={result} />

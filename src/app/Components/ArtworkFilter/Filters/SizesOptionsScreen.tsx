@@ -141,7 +141,7 @@ const CustomSizeInputsContainer: React.FC<CustomSizeInputsContainerProps> = ({
           )
         })}
       </Flex>
-      <Spacer y="2" />
+      <Spacer y={2} />
       <CustomSizeInputs
         label="Width"
         range={values.width}
@@ -149,7 +149,7 @@ const CustomSizeInputsContainer: React.FC<CustomSizeInputsContainerProps> = ({
         onChange={handleChange(FilterParamName.width)}
         selectedMetric={metric}
       />
-      <Spacer y="2" />
+      <Spacer y={2} />
       <CustomSizeInputs
         label="Height"
         range={values.height}

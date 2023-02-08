@@ -43,7 +43,7 @@ const ArtworkEditionSetInformation: React.FC<ArtworkEditionSetInformationProps> 
 
       {!!selectedEdition?.saleMessage && (
         <>
-          <Spacer y="4" />
+          <Spacer y={4} />
           <Text variant="lg-display" accessibilityLabel="Selected edition set">
             {selectedEdition.saleMessage}
           </Text>

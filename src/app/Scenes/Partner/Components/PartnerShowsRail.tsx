@@ -48,7 +48,7 @@ const PartnerShowsRail: React.FC<{
               return <RailItem show={item} />
             }}
           />
-          <Spacer y="2" />
+          <Spacer y={2} />
         </>
       )}
     </>

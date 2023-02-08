@@ -62,7 +62,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
             ) : (
               <ImageView imageURL={imageURL} width={WIDTH} height={HEIGHT} />
             ))}
-          <Spacer y="1" />
+          <Spacer y={1} />
           <Text variant="xs">{article.vertical || " "}</Text>
           <Text numberOfLines={3} ellipsizeMode="tail" variant="lg-display">
             {article.thumbnailTitle}

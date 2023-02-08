@@ -40,9 +40,9 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = ({ title, articlesConne
         <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}
-          ListHeaderComponent={() => <Spacer x="2" />}
-          ListFooterComponent={() => <Spacer x="2" />}
-          ItemSeparatorComponent={() => <Spacer x="2" />}
+          ListHeaderComponent={() => <Spacer x={2} />}
+          ListFooterComponent={() => <Spacer x={2} />}
+          ItemSeparatorComponent={() => <Spacer x={2} />}
           data={articles}
           keyExtractor={(item) => `${item.internalID}`}
           renderItem={({ item, index }) => (

@@ -193,7 +193,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
           viewabilityConfig={{ itemVisiblePercentThreshold: 15 }}
           data={sections}
           ListHeaderComponent={<ViewingRoomHeaderContainer viewingRoom={viewingRoom} />}
-          ItemSeparatorComponent={() => <Spacer y="4" />}
+          ItemSeparatorComponent={() => <Spacer y={4} />}
           renderItem={({ item }) => {
             return item.content
           }}

@@ -42,8 +42,8 @@ interface ShowCardState {
 }
 
 const PageIndicator = styled(Box)`
-  height: ${themeGet("space.2")}px;
-  border-radius: ${themeGet("space.1")}px;
+  height: ${themeGet("space.2")};
+  border-radius: ${themeGet("space.1")};
   background: ${themeGet("colors.white100")};
   margin-left: 15px;
   margin-right: auto;

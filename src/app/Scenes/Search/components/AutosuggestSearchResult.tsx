@@ -113,7 +113,7 @@ export const AutosuggestSearchResult: React.FC<{
             resultType={resultType}
           />
 
-          <Spacer x="1" />
+          <Spacer x={1} />
 
           <Flex flex={1}>
             <ResultWithHighlight displayLabel={result.displayLabel!} highlight={highlight} />
@@ -146,11 +146,11 @@ export const AutosuggestSearchResult: React.FC<{
 
       {!!showNavigationButtons && (
         <>
-          <Spacer y="1" />
+          <Spacer y={1} />
           <Flex flexDirection="row" alignItems="center">
-            <Spacer x="4" />
+            <Spacer x={4} />
 
-            <Spacer x="1" />
+            <Spacer x={1} />
             <Pill
               highlightEnabled
               Icon={ArtworkIcon}
@@ -160,7 +160,7 @@ export const AutosuggestSearchResult: React.FC<{
             >
               Artworks
             </Pill>
-            <Spacer x="1" />
+            <Spacer x={1} />
             <Pill
               highlightEnabled
               Icon={AuctionIcon}

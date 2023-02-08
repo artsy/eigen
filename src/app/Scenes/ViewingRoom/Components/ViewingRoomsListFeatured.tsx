@@ -57,8 +57,8 @@ export const FeaturedRail: React.FC<FeaturedRailProps & Partial<RailScrollProps>
   return (
     <View>
       <AboveTheFoldFlatList
-        ListHeaderComponent={() => <Spacer x="2" />}
-        ListFooterComponent={() => <Spacer x="2" />}
+        ListHeaderComponent={() => <Spacer x={2} />}
+        ListFooterComponent={() => <Spacer x={2} />}
         horizontal
         listRef={listRef}
         showsHorizontalScrollIndicator={false}

@@ -149,7 +149,7 @@ storiesOf("Button", module)
           >
             shortest text
           </Button>
-          <Spacer y="1" />
+          <Spacer y={1} />
           <Button
             size="small"
             icon={<LinkIcon fill="white100" />}

@@ -221,17 +221,17 @@ export const Search: React.FC = () => {
 
                 {!!isSearchDiscoveryContentEnabled ? (
                   <>
-                    <Spacer y="4" />
+                    <Spacer y={4} />
                     <TrendingArtists data={queryData} mb={4} />
                     <CuratedCollections collections={queryData} mb={4} />
                   </>
                 ) : (
-                  <Spacer y="4" />
+                  <Spacer y={4} />
                 )}
 
                 <HorizontalPadding>{renderCityGuideCTA()}</HorizontalPadding>
 
-                <Spacer y="4" />
+                <Spacer y={4} />
               </Scrollable>
             )}
           </Flex>

@@ -122,7 +122,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
 
           <Text variant="sm-display">{item.message}</Text>
 
-          <Spacer y="1" />
+          <Spacer y={1} />
 
           <Flex flexDirection="row" alignItems="center">
             {artworks.map((artwork) => {

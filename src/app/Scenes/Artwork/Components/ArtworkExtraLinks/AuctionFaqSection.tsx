@@ -49,7 +49,7 @@ export const AuctionFaqSection: React.FC<AuctionFaqSectionProps> = ({ artwork, a
           </Text>
           .
         </Text>
-        <Spacer y="1" />
+        <Spacer y={1} />
         <Text variant="xs" color="black60">
           Have a question?{" "}
           <Text

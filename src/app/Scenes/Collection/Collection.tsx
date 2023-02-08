@@ -67,7 +67,7 @@ export class Collection extends Component<CollectionProps> {
             keyExtractor={(_item, index) => String(index)}
             data={sections}
             ListHeaderComponent={<CollectionHeader collection={this.props.collection} />}
-            ItemSeparatorComponent={() => <Spacer y="2" />}
+            ItemSeparatorComponent={() => <Spacer y={2} />}
             stickyHeaderIndices={[stickySectionIndex]}
             keyboardShouldPersistTaps="handled"
             renderItem={({ item }): null | any => {

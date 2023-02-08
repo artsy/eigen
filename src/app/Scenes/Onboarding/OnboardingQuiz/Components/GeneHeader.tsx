@@ -61,15 +61,15 @@ export const GeneHeader: React.FC<GeneHeaderProps> = ({ geneID, gene, descriptio
           <Text variant="lg-display" color="white100">
             {name}
           </Text>
-          <Spacer y="2" />
+          <Spacer y={2} />
           <Text variant="sm" color="white100">
             {SAVE_INSTRUCTIONS}
           </Text>
-          <Spacer y="2" />
+          <Spacer y={2} />
           <Text variant="sm" color="white100">
             {description}
           </Text>
-          <Spacer y="2" />
+          <Spacer y={2} />
           <FollowButton
             isFollowed={!!isFollowed}
             onPress={handleFollowGene}

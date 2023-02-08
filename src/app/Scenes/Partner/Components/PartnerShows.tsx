@@ -63,7 +63,7 @@ class ShowGridItem extends React.Component<ShowGridItemProps> {
                   </Text>
                 </Box>
               </TouchableWithoutFeedback>
-              <Spacer y="2" />
+              <Spacer y={2} />
             </GridItem>
           )
         }}

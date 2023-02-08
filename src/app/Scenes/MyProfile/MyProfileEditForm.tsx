@@ -210,7 +210,7 @@ export const MyProfileEditForm: React.FC = () => {
       )}
 
       <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
-        <Join separator={<Spacer y="1" />}>
+        <Join separator={<Spacer y={1} />}>
           <Flex flexDirection="row" alignItems="center" px={2} mt={2}>
             <Touchable onPress={chooseImageHandler}>
               <Box
@@ -234,7 +234,7 @@ export const MyProfileEditForm: React.FC = () => {
             </Touchable>
           </Flex>
           <Flex m={2}>
-            <Join separator={<Spacer y="2" />}>
+            <Join separator={<Spacer y={2} />}>
               <Input
                 ref={nameInputRef}
                 title="Full name"
@@ -390,7 +390,7 @@ const LoadingSkeleton = () => {
           Edit Profile
         </Text>
       </Flex>
-      <Spacer y="4" />
+      <Spacer y={4} />
       <Flex flexDirection="row" pl={2} alignItems="center">
         <PlaceholderBox width={99} height={99} borderRadius={50} />
         <PlaceholderText width={100} height={20} marginTop={6} marginLeft={20} />
@@ -409,7 +409,7 @@ const LoadingSkeleton = () => {
           <PlaceholderBox height={100} marginTop={6} />
         </Flex>
       </Flex>
-      <Spacer y="2" />
+      <Spacer y={2} />
       <PlaceholderBox height={50} marginTop={6} borderRadius={50} marginHorizontal={20} />
     </ProvidePlaceholderContext>
   )
@@ -484,7 +484,7 @@ const ProfileVerifications = ({
         </Flex>
       )}
 
-      <Spacer y="4" />
+      <Spacer y={4} />
 
       {/* Email Verification */}
       {isEmailConfirmed ? (

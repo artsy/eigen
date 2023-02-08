@@ -34,7 +34,7 @@ export const CuratedCollections: React.FC<CuratedCollectionsProps> = ({
         renderItem={({ item, index }) => {
           return <CuratedCollectionItem collection={item} position={index} />
         }}
-        ItemSeparatorComponent={() => <Spacer x="1" />}
+        ItemSeparatorComponent={() => <Spacer x={1} />}
       />
     </Box>
   )

@@ -583,7 +583,7 @@ const BelowTheFoldPlaceholder: React.FC = () => {
                     <PlaceholderBox key={index} height={270} width={270} />
                   ))}
                 </Join>
-                <Spacer y="2" />
+                <Spacer y={2} />
               </Flex>
             </Box>
           </Box>
@@ -605,7 +605,7 @@ const HomePlaceholder: React.FC = () => {
           <ActivityIndicator hasUnseenNotifications={false} />
         </Flex>
       </Box>
-      <Spacer y="4" />
+      <Spacer y={4} />
 
       {
         // Small tiles to mimic the artwork rails
@@ -633,7 +633,7 @@ const HomePlaceholder: React.FC = () => {
             {times(3 + randomValue * 10).map((index) => (
               <Flex key={index}>
                 <PlaceholderBox key={index} height={180} width={295} />
-                <Spacer y="1" mt="0.5" />
+                <Spacer y={1} mt="0.5" />
                 <PlaceholderText width={120} />
                 <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
               </Flex>

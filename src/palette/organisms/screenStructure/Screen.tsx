@@ -300,7 +300,7 @@ const SafeBottomPadding = () => {
     return null
   }
 
-  return <Spacer y="2" />
+  return <Spacer y={2} />
 }
 
 export const Screen = Object.assign(ScreenWrapper, {

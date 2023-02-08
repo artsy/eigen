@@ -80,19 +80,19 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
               }
             />
 
-            <Spacer y="4" />
+            <Spacer y={4} />
 
             <HowItWorks />
 
-            <Spacer y="4" />
+            <Spacer y={4} />
 
             <SellWithArtsyRecentlySold recentlySoldArtworks={recentlySoldArtworks!} />
 
-            <Spacer y="4" />
+            <Spacer y={4} />
 
             <WhySellWithArtsy />
 
-            <Spacer y="4" />
+            <Spacer y={4} />
 
             <Flex mx={2}>
               <Button
@@ -106,7 +106,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
               </Button>
             </Flex>
 
-            <Spacer y="4" />
+            <Spacer y={4} />
 
             <Footer />
           </Flex>

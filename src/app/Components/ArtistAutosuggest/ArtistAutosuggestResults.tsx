@@ -77,7 +77,7 @@ const ArtistAutosuggestResultsFlatList: React.FC<{
   if (noResults) {
     return (
       <AutoSuggestBoxContainer>
-        <Spacer y="4" />
+        <Spacer y={4} />
         <Text variant="sm-display" textAlign="center">
           Sorry, we couldn’t find anything for {quoteLeft}
           {query}.{quoteRight}

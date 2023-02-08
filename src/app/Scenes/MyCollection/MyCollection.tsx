@@ -338,7 +338,7 @@ export const MyCollectionPlaceholder: React.FC = () => {
       {/* collector's info */}
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
         <Flex flex={1}>
-          <Spacer y="2" />
+          <Spacer y={2} />
           {/* icon, name, time joined */}
           <Flex flexDirection="row">
             <PlaceholderBox width={50} height={50} borderRadius={50} />
@@ -349,26 +349,26 @@ export const MyCollectionPlaceholder: React.FC = () => {
             {/* settings icon */}
             <PlaceholderBox width={20} height={20} />
           </Flex>
-          <Spacer y="1" />
+          <Spacer y={1} />
         </Flex>
       </Flex>
-      <Spacer y="4" />
+      <Spacer y={4} />
       {/* tabs */}
       <Flex justifyContent="space-around" flexDirection="row" px={2}>
         <PlaceholderText width="25%" height={22} />
         <PlaceholderText width="25%" height={22} />
         <PlaceholderText width="25%" height={22} />
       </Flex>
-      <Spacer y="1" />
+      <Spacer y={1} />
       <Separator />
-      <Spacer y="1" />
+      <Spacer y={1} />
       {/* Sort & Filter  */}
       <Flex justifyContent="space-between" flexDirection="row" px={2} py={0.5}>
         <PlaceholderText width={120} height={22} />
         <PlaceholderText width={90} height={22} borderRadius={11} />
       </Flex>
       <Separator />
-      <Spacer y="2" />
+      <Spacer y={2} />
       {/* masonry grid */}
       {viewOption === "grid" ? (
         <PlaceholderGrid />

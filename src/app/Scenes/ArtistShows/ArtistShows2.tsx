@@ -61,7 +61,7 @@ const ArtistShows2: React.FC<Props> = ({ artist, relay }) => {
         renderItem={({ item }) => <ArtistShowFragmentContainer show={item} styles={showStyles} />}
         keyExtractor={({ id }) => id}
         onEndReachedThreshold={0.2}
-        ItemSeparatorComponent={() => <Spacer y="2" />}
+        ItemSeparatorComponent={() => <Spacer y={2} />}
         contentContainerStyle={{ paddingTop: top, paddingBottom: 20, paddingHorizontal: 20 }}
         ListFooterComponent={
           isFetchingMoreData ? (
@@ -196,7 +196,7 @@ const LoadingSkeleton = () => {
       <Spacer y="0.5" />
       {/* "Past Shows" */}
       <PlaceholderBox width={120} height={30} />
-      <Spacer y="2" />
+      <Spacer y={2} />
       {shows}
     </Flex>
   )

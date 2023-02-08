@@ -190,8 +190,8 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
           data={sections}
           ref={flatListRef}
           viewabilityConfig={viewConfigRef.current}
-          ItemSeparatorComponent={() => <Spacer y="4" />}
-          ListFooterComponent={<Spacer y="4" />}
+          ItemSeparatorComponent={() => <Spacer y={4} />}
+          ListFooterComponent={<Spacer y={4} />}
           keyExtractor={(_item, index) => String(index)}
           stickyHeaderIndices={[stickyIndex]}
           onScroll={scrollHandler}
@@ -349,7 +349,7 @@ export const FairPlaceholder: React.FC = () => (
     <PlaceholderBox height={400} />
     <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
       <Flex>
-        <Spacer y="2" />
+        <Spacer y={2} />
         {/* Fair name */}
         <PlaceholderText width={220} />
         {/* Fair info */}
@@ -357,9 +357,9 @@ export const FairPlaceholder: React.FC = () => (
         <PlaceholderText width={190} />
       </Flex>
     </Flex>
-    <Spacer y="2" />
+    <Spacer y={2} />
     <Separator />
-    <Spacer y="2" />
+    <Spacer y={2} />
     {/* masonry grid */}
     <PlaceholderGrid />
   </Flex>

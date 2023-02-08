@@ -38,7 +38,7 @@ export const SavedItemRow: React.FC<SavedItemRowProps> = ({
             height={size}
             style={{ borderRadius: square_image ? 2 : size / 2, overflow: "hidden" }}
           />
-          <Spacer x="2" />
+          <Spacer x={2} />
           <Text variant="sm" weight="medium">
             {name}
           </Text>

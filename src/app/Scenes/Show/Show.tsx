@@ -75,7 +75,7 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
       key: "filter",
       element: (
         <Flex backgroundColor="white">
-          <Spacer y="1" mb={0.5} />
+          <Spacer y={1} mb={0.5} />
           <HeaderArtworksFilter
             animationValue={filterComponentAnimationValue}
             onPress={toggleFilterArtworksModal}
@@ -124,8 +124,8 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
           keyExtractor={({ key }) => key}
           stickyHeaderIndices={[sections.findIndex((section) => section.key === "filter") + 1]}
           viewabilityConfig={viewConfigRef.current}
-          ListHeaderComponent={<Spacer y="6" />}
-          ListFooterComponent={<Spacer y="2" />}
+          ListHeaderComponent={<Spacer y={6} />}
+          ListFooterComponent={<Spacer y={2} />}
           ItemSeparatorComponent={() => <Spacer y={15} />}
           contentContainerStyle={{
             paddingTop: useScreenDimensions().safeAreaInsets.top,
@@ -202,7 +202,7 @@ export const ShowPlaceholder: React.FC = () => (
     <PlaceholderText height={25} width={100 + Math.random() * 100} />
     <Spacer y={15} />
     <PlaceholderText width={220} />
-    <Spacer y="2" />
+    <Spacer y={2} />
     {/* Owner */}
     <PlaceholderText width={70} />
     <Spacer y={15} />

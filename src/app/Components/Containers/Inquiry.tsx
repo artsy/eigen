@@ -105,7 +105,7 @@ export const BottomAlignedButton: React.FC<BottomAlignedProps> = ({
       {children}
     </View>
     {!!showSeparator && <Separator key="separator" />}
-    <Spacer y="1" />
+    <Spacer y={1} />
     <Box px={2}>
       <Button
         accessibilityLabel={buttonText}
@@ -117,7 +117,7 @@ export const BottomAlignedButton: React.FC<BottomAlignedProps> = ({
         {buttonText}
       </Button>
     </Box>
-    <Spacer y="1" />
+    <Spacer y={1} />
   </ArtsyKeyboardAvoidingView>
 )
 

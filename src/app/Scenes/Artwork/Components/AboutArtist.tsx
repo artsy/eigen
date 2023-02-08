@@ -26,7 +26,7 @@ export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
         <Text variant="md" mb={2}>
           {hasSingleArtist ? "About the artist" : "About the artists"}
         </Text>
-        <Join separator={<Spacer y="1" />}>
+        <Join separator={<Spacer y={1} />}>
           {artists.map(
             (artist) =>
               !!artist && (

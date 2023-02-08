@@ -130,7 +130,7 @@ export const CardList: React.FC<CardListProps> = ({ cards, mb }) => {
         snapToInterval={width}
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
       />
-      <Spacer y="2" />
+      <Spacer y={2} />
       <PaginationDots currentIndex={currentCardIndex} length={cards.length} />
       <Spacer y={mb} />
     </>

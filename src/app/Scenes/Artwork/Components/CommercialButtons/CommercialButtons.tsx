@@ -40,7 +40,7 @@ export const CommercialButtons: React.FC<CommercialButtonProps> = ({
         {isBuyNowable && noEditions ? (
           <>
             <BidButtonFragmentContainer artwork={artwork} me={me} auctionState={auctionState} />
-            <Spacer y="1" />
+            <Spacer y={1} />
             <BuyNowButton
               variant="outline"
               artwork={artwork}
@@ -59,7 +59,7 @@ export const CommercialButtons: React.FC<CommercialButtonProps> = ({
     return (
       <>
         <BuyNowButton artwork={artwork} editionSetID={editionSetID ?? null} />
-        <Spacer y="1" />
+        <Spacer y={1} />
         <MakeOfferButtonFragmentContainer
           artwork={artwork}
           editionSetID={editionSetID ?? null}

@@ -76,7 +76,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
           autoFocus={typeof jest === "undefined"}
           autoCorrect={false}
         />
-        {!enableArtworksFromNonArtsyArtists && <Spacer y="1" />}
+        {!enableArtworksFromNonArtsyArtists && <Spacer y={1} />}
         {showResults ? (
           <Box height="100%" mt={enableArtworksFromNonArtsyArtists ? 0 : 2} pb={6}>
             <AutosuggestResults
@@ -93,7 +93,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
                     Artists in My Collection
                   </Text>
                 ) : enableArtworksFromNonArtsyArtists ? (
-                  <Spacer y="2" />
+                  <Spacer y={2} />
                 ) : null
               }
               ListEmptyComponent={() =>

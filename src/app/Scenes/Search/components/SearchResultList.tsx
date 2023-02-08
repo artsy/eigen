@@ -6,7 +6,7 @@ import { AutosuggestSearchResult } from "./AutosuggestSearchResult"
 
 export const SearchResultList: React.FC<{ results: React.ReactElement[] }> = ({ results }) => {
   return (
-    <Join separator={<Spacer y="2" />}>
+    <Join separator={<Spacer y={2} />}>
       {React.Children.map(results, (child, i) => {
         const props = child.props as Parameters<typeof AutosuggestSearchResult>[0]
         if (!props.result?.href) {

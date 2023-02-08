@@ -16,7 +16,7 @@ export const BulletedItem: React.FC<BulletedItemProps> = ({
       <Text variant="sm" color={color}>
         {bullet}
       </Text>
-      <Spacer x="1" />
+      <Spacer x={1} />
       <Text variant="sm" color={color}>
         {children}
       </Text>

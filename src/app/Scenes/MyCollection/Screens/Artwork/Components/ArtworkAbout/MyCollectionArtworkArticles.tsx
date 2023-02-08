@@ -56,7 +56,7 @@ export const MyCollectionArtworkArticles: React.FC<MyCollectionArtworkArticlesPr
       <FlatList<MyCollectionArtworkArticles_article$data[number]>
         testID="test-articles-flatlist"
         horizontal
-        ItemSeparatorComponent={() => <Spacer x="2" />}
+        ItemSeparatorComponent={() => <Spacer x={2} />}
         scrollsToTop={false}
         style={{ overflow: "visible" }}
         initialNumToRender={2}

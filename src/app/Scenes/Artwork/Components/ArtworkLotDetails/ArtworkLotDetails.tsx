@@ -73,7 +73,7 @@ export const ArtworkLotDetails: React.FC<ArtworkLotDetailsProps> = ({ artwork, a
   }
 
   return (
-    <Join separator={<Spacer y="2" />}>
+    <Join separator={<Spacer y={2} />}>
       {!!estimate && <ArtworkLotDetailsRow title="Estimated value" value={estimate} />}
 
       {!!(shouldRenderExtraInfo && currentBid?.display) && (

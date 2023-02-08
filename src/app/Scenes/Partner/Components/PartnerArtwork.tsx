@@ -34,7 +34,7 @@ export const PartnerArtwork: React.FC<{
   return (
     <>
       <StickyTabPageScrollView>
-        <Spacer y="2" />
+        <Spacer y={2} />
 
         {artworksCount > 0 ? (
           <InfiniteScrollArtworksGrid

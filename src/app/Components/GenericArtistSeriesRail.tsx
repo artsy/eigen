@@ -44,8 +44,8 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
         data={collections as GenericArtistSeriesItem[]}
         keyExtractor={(_item, index) => String(index)}
         initialNumToRender={3}
-        ListHeaderComponent={() => <Spacer x="2" />}
-        ListFooterComponent={() => <Spacer x="2" />}
+        ListHeaderComponent={() => <Spacer x={2} />}
+        ListFooterComponent={() => <Spacer x={2} />}
         ItemSeparatorComponent={() => <Spacer x="0.5" />}
         renderItem={({ item: result, index }) => {
           const artworkImageURLs = extractNodes(

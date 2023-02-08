@@ -51,7 +51,7 @@ export const FairAllFollowedArtists: React.FC<FairAllFollowedArtistsProps> = ({
           Artworks
         </Text>
         <Separator />
-        <Spacer y="2" />
+        <Spacer y={2} />
         <Box px="15px">
           <FairArtworksFragmentContainer
             fair={fair}
@@ -152,7 +152,7 @@ export const FairAllFollowedArtistsQueryRenderer: React.FC<{ fairID: string }> =
 
 export const FairAllFollowedArtistsPlaceholder: React.FC = () => (
   <Flex>
-    <Spacer y="2" />
+    <Spacer y={2} />
     <PlaceholderText width={220} />
     <Separator my={2} />
     {/* masonry grid */}

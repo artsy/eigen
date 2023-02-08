@@ -75,11 +75,11 @@ const tracks = {
 const Placeholder: React.FC = () => (
   <ProvidePlaceholderContext>
     <PlaceholderBox height={50} />
-    <Spacer y="2" />
+    <Spacer y={2} />
     <PlaceholderText width={250} />
-    <Spacer y="4" />
+    <Spacer y={4} />
     <PlaceholderText width={180} />
-    <Spacer y="2" />
+    <Spacer y={2} />
     <AutosuggestResultsPlaceholder />
   </ProvidePlaceholderContext>
 )

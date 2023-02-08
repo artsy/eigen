@@ -87,15 +87,15 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
           <ProgressBar progress={progress} />
         </Box>
         <Flex flex={1} flexDirection="column">
-          <Spacer y="2" />
+          <Spacer y={2} />
           <Text variant="lg-display">{question}</Text>
           {!!subtitle && (
             <>
-              <Spacer y="1" />
+              <Spacer y={1} />
               <Text variant="sm">{subtitle}</Text>
             </>
           )}
-          <Spacer y="2" />
+          <Spacer y={2} />
           {answers.map((answer) => (
             <AnimatedFadingPill
               mb={2}

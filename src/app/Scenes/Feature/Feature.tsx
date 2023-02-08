@@ -140,7 +140,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
           }
 
           renderedSet.push(
-            addSeparatorBetweenAllSections(renderedRows, set.id + ":featuredLink", <Spacer y="4" />)
+            addSeparatorBetweenAllSections(renderedRows, set.id + ":featuredLink", <Spacer y={4} />)
           )
 
           break

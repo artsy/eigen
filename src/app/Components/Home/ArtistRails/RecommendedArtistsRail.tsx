@@ -113,7 +113,7 @@ export const RecommendedArtistsRail: React.FC<RecommendedArtistsRailProps & Rail
               <Spinner />
             </Flex>
           ) : (
-            <Spacer x="2" />
+            <Spacer x={2} />
           )
         }
       />

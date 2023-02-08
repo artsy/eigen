@@ -9,7 +9,7 @@ export const ArtworkDetails = ({ handlePress }: { handlePress: () => void }) => 
   return (
     <Flex backgroundColor="peachpuff" p={1} mt={1}>
       <Text>ArtworkDetails content</Text>
-      <Spacer y="1" />
+      <Spacer y={1} />
       <CTAButton text="Save & Continue" onPress={handlePress} />
     </Flex>
   )
@@ -19,7 +19,7 @@ export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
   return (
     <Flex backgroundColor="peachpuff" p={1} mt={1}>
       <Text>Upload Photos content</Text>
-      <Spacer y="1" />
+      <Spacer y={1} />
       <CTAButton text="Save & Continue" onPress={handlePress} />
     </Flex>
   )
@@ -29,7 +29,7 @@ export const ContactInformation = ({ handlePress }: { handlePress: () => void })
   return (
     <Flex backgroundColor="peachpuff" p={1} mt={1}>
       <Text>ContactInformation content</Text>
-      <Spacer y="1" />
+      <Spacer y={1} />
       <CTAButton text="Submit Artwork" onPress={handlePress} />
     </Flex>
   )
@@ -122,7 +122,7 @@ export const ComponentWithCollapsibleMenu = () => {
             justifyContent: "center",
           }}
         >
-          <Spacer y="4" />
+          <Spacer y={4} />
           <Join separator={<Separator my={2} marginTop="40" marginBottom="20" />}>
             {items.map(({ overtitle, title, Content }, index) => {
               const disabled = !validSteps[index]

@@ -264,7 +264,7 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
               justifyContent: "center",
             }}
           >
-            <Spacer y="4" />
+            <Spacer y={4} />
             <Join separator={<Separator my={2} marginTop="40" marginBottom="20" />}>
               {items.map(({ overtitle, title, Content, contextModule }, index) => (
                 <CollapsibleMenuItem

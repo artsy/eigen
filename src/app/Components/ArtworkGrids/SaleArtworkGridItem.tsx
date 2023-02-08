@@ -142,7 +142,7 @@ export const SaleArtworkGridItemPlaceholder: React.FC<{ seed?: number }> = ({
   return (
     <Flex>
       <PlaceholderBox height={rng.next({ from: 50, to: 150 })} width="100%" />
-      <Spacer y="1" />
+      <Spacer y={1} />
       <PlaceholderRaggedText seed={rng.next()} numLines={2} />
     </Flex>
   )

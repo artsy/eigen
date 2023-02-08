@@ -56,7 +56,7 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
         )
       })}
 
-      <Spacer y="1" />
+      <Spacer y={1} />
 
       <Box mb={2}>
         <CaretButton

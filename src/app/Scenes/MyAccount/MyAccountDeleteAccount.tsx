@@ -39,11 +39,11 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
           <Text variant="lg-display" mt="6">
             Delete My Account
           </Text>
-          <Spacer y="4" />
+          <Spacer y={4} />
           <Text>Are you sure you want to delete your account?</Text>
-          <Spacer y="2" />
+          <Spacer y={2} />
           <Text>If you delete your account:</Text>
-          <Spacer y="2" />
+          <Spacer y={2} />
           <Flex flexDirection="row" alignItems="center" pr="1">
             <Flex pb={1}>
               <GenomeIcon width={ICON_SIZE} height={ICON_SIZE} />
@@ -53,7 +53,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
               with Galleries
             </Text>
           </Flex>
-          <Spacer y="2" />
+          <Spacer y={2} />
           <Flex flexDirection="row" alignItems="center" pr="1">
             <Flex pb={1}>
               <AuctionIcon width={ICON_SIZE} height={ICON_SIZE} />
@@ -63,19 +63,19 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
               Private Sales, etc
             </Text>
           </Flex>
-          <Spacer y="4" />
+          <Spacer y={4} />
           <Input
             multiline
             placeholder="Please share with us why you are leaving"
             onChangeText={setExplanation}
             error={!hasPassword ? error : undefined}
           />
-          <Spacer y="4" />
+          <Spacer y={4} />
           <Text variant="xs" color={color("black100")} pb="1px">
             After you submit your request, we will disable your account. It may take up to 7 days to
             fully delete and remove all of your data.
           </Text>
-          <Spacer y="2" />
+          <Spacer y={2} />
           {!!hasPassword && (
             <>
               <Input
@@ -84,7 +84,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
                 onChangeText={setPassword}
                 error={error}
               />
-              <Spacer y="2" />
+              <Spacer y={2} />
             </>
           )}
           <Button
@@ -125,7 +125,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
           >
             Delete My Account
           </Button>
-          <Spacer y="1" />
+          <Spacer y={1} />
           <Button block variant="outline" onPress={() => navigation.goBack()}>
             Cancel
           </Button>

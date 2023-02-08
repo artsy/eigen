@@ -36,7 +36,7 @@ export const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandI
         title="Demand index"
         modalContent={
           <>
-            <Spacer y="1" />
+            <Spacer y={1} />
             <Text>
               Overall strength of demand for this artist and medium combination. Based on the last
               36 months of auction sale data from top commercial auction houses.
@@ -46,7 +46,7 @@ export const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandI
         onPress={() => trackEvent(tracks.tappedInfoBubble(artwork?.internalID, artwork?.slug))}
       />
 
-      <Spacer y="1" />
+      <Spacer y={1} />
       <DemandRankScale demandRank={demandRank} demandRankDisplayText={demandRankDisplayText} />
 
       <Separator my={2} borderColor="black10" />

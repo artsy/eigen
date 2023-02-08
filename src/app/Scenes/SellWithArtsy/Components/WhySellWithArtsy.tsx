@@ -11,7 +11,7 @@ export const WhySellWithArtsy: React.FC = () => {
     <Box px={2}>
       <Text variant="lg-display">Why sell with Artsy?</Text>
 
-      <Spacer y="2" />
+      <Spacer y={2} />
 
       <Flex flexDirection="row">
         <Box pl={0.5} pr={1}>
@@ -27,7 +27,7 @@ export const WhySellWithArtsy: React.FC = () => {
         </Box>
       </Flex>
 
-      <Spacer y="2" />
+      <Spacer y={2} />
 
       <Flex flexDirection="row">
         <Box pl={0.5} pr={1}>
@@ -43,7 +43,7 @@ export const WhySellWithArtsy: React.FC = () => {
         </Box>
       </Flex>
 
-      <Spacer y="2" />
+      <Spacer y={2} />
 
       <Flex flexDirection="row">
         <Box pl={0.5} pr={1}>

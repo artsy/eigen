@@ -116,7 +116,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
       </Screen.Background>
 
       <Screen.Body>
-        <Spacer y="1" />
+        <Spacer y={1} />
 
         <Animated.View style={[{ alignItems: "center", width: "100%" }, appearAnim]}>
           <ArtsyLogoWhiteIcon height={25} width={75} />
@@ -136,13 +136,13 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
             Collect Art by the World’s Leading Artists
           </Text>
 
-          <Spacer y="1" />
+          <Spacer y={1} />
 
           <Text variant="sm" color="white">
             Build your personalized profile, get market insights, buy and sell art with confidence.
           </Text>
 
-          <Spacer y="2" />
+          <Spacer y={2} />
 
           <Flex flexDirection="row">
             <Flex flex={1}>
@@ -157,7 +157,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
               </Button>
             </Flex>
 
-            <Spacer x="2" />
+            <Spacer x={2} />
 
             <Flex flex={1}>
               <Button

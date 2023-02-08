@@ -62,7 +62,7 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({
   if (artworksTotal === 0) {
     return (
       <Box mb="80px">
-        <Spacer y="4" />
+        <Spacer y={4} />
         <FilteredArtworkGridZeroState
           id={collection.id}
           slug={collection.slug}

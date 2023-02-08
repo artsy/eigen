@@ -127,7 +127,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
             <UnlistedArtworksBanner partnerName={artwork.partner?.name} />
           </Flex>
         )}
-        <Spacer y="2" />
+        <Spacer y={2} />
         <ImageCarouselFragmentContainer
           figures={artwork.figures}
           setVideoAsCover={artwork.isSetVideoAsCover ?? false}
@@ -147,7 +147,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
             }}
           />
         </Flex>
-        <Spacer y="4" />
+        <Spacer y={4} />
         <Box px={2}>
           <ArtworkTombstone artwork={artwork} refetchArtwork={refetchArtwork} />
         </Box>

@@ -13,7 +13,7 @@ export const MyCollectionSellingWithArtsyFAQ: React.FC = () => {
     <ScrollView>
       <Box pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px={2}>
         <Box my={2}>
-          <Join separator={<Spacer y="1" />}>
+          <Join separator={<Spacer y={1} />}>
             <Text variant="lg-display" mb={2}>
               How It Works
             </Text>

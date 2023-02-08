@@ -113,7 +113,7 @@ export const MyCollectionArtworkFormArtwork: React.FC<
           {!!formik.values.artistSearchResult && (
             <ArtistSearchResult result={formik.values.artistSearchResult} />
           )}
-          <Spacer y="2" />
+          <Spacer y={2} />
           <ArtworkAutosuggest onResultPress={updateFormValues} onSkipPress={onSkip} />
         </ScreenMargin>
       </ScrollView>

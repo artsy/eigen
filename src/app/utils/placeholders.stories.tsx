@@ -14,7 +14,7 @@ storiesOf("Placeholders", module)
   .addDecorator(withPlaceholders)
   .addDecorator(withHooks)
   .add("Test", () => (
-    <Join separator={<Spacer y="1" />}>
+    <Join separator={<Spacer y={1} />}>
       <PlaceholderBox width={100} height={100} />
       <PlaceholderBox width={100} height={100} />
       <PlaceholderBox width={100} height={100} />

@@ -47,7 +47,7 @@ export const UploadPhotos = ({
           return (
             <>
               <UploadPhotosForm isAnyPhotoLoading={isAnyPhotoLoading} />
-              <Spacer y="2" />
+              <Spacer y={2} />
               <CTAButton
                 disabled={!isValid || isAnyPhotoLoading || isSizeLimitExceeded(values.photos)}
                 onPress={() => submitUploadPhotosStep()}

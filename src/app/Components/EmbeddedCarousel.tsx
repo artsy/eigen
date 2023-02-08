@@ -30,7 +30,7 @@ export const EmbeddedCarousel: React.FC<EmbeddedCarouselProps & FlatListProps<an
         testID={testID}
         horizontal
         showsHorizontalScrollIndicator={false}
-        ItemSeparatorComponent={() => <Spacer x="1" />}
+        ItemSeparatorComponent={() => <Spacer x={1} />}
         data={data}
         renderItem={(item: any) =>
           onCardPress ? (
@@ -41,8 +41,8 @@ export const EmbeddedCarousel: React.FC<EmbeddedCarouselProps & FlatListProps<an
             renderItem(item)
           )
         }
-        ListHeaderComponent={() => <Spacer x="2" />}
-        ListFooterComponent={() => <Spacer x="2" />}
+        ListHeaderComponent={() => <Spacer x={2} />}
+        ListFooterComponent={() => <Spacer x={2} />}
         {...restProps}
       />
     </Flex>

@@ -234,7 +234,7 @@ const LoadingSkeleton = () => {
               overflow="hidden"
               style={{ marginTop: 3 }}
             />
-            <Spacer x="1" />
+            <Spacer x={1} />
             <PlaceholderText width={150} height={10} marginTop={6} />
           </Flex>
 
@@ -247,7 +247,7 @@ const LoadingSkeleton = () => {
           <PlaceholderText width={60} height={7} marginTop={6} />
         </Flex>
         <PlaceholderText width={100} height={7} />
-        <Spacer y="2" />
+        <Spacer y={2} />
         <PlaceholderBox width="100%" height={screenHeight / 2.8} marginVertical={10} />
         <Flex flexDirection="row" my={25} justifyContent="center">
           <PlaceholderBox height={15} width={25} marginHorizontal={10} />

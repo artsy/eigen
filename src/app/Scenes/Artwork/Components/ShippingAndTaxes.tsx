@@ -18,7 +18,7 @@ const ShippingAndTaxes: React.FC<ShippingAndTaxesProps> = ({ artwork }) => {
   return (
     <Box>
       <Text variant="md">Shipping and taxes</Text>
-      <Spacer y="1" />
+      <Spacer y={1} />
 
       {!!taxInfo && (
         <Text variant="sm" color="black60">

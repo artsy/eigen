@@ -49,7 +49,7 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress, onInquiryPress }
             Sell Artworks from Your Collection
           </Text>
 
-          <Spacer y="2" />
+          <Spacer y={2} />
 
           <Text variant="sm-display" color="white100">
             Our experts will find the best sales option for you, at auction, private sale, or
@@ -57,7 +57,7 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress, onInquiryPress }
           </Text>
         </Flex>
 
-        <Spacer y="2" />
+        <Spacer y={2} />
 
         <Button testID="header-cta" variant="fillLight" block onPress={handleSubmitPress} haptic>
           <Text variant="sm" weight="medium">
@@ -67,7 +67,7 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress, onInquiryPress }
 
         {!!enableInquiry && (
           <>
-            <Spacer y="2" />
+            <Spacer y={2} />
             <Button
               testID="header-inquiry-cta"
               variant="outlineLight"
@@ -80,7 +80,7 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress, onInquiryPress }
           </>
         )}
 
-        <Spacer y="2" />
+        <Spacer y={2} />
 
         <Text variant="xs" italic color="white100">
           Alex Katz, Forest, 2009

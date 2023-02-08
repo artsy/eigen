@@ -37,9 +37,9 @@ export const EditSavedSearchFormPlaceholder = () => {
           </Flex>
         </Box>
 
-        <Spacer y="4" />
+        <Spacer y={4} />
         <PlaceholderText height={50} />
-        <Spacer y="2" />
+        <Spacer y={2} />
         <PlaceholderText height={50} />
       </Box>
     </PageWithSimpleHeader>

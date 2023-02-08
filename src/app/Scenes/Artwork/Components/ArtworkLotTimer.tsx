@@ -186,7 +186,7 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
 
         {!!shouldShowTimer && (
           <>
-            <Spacer x="4" />
+            <Spacer x={4} />
             <Flex flexDirection="row" alignItems="center" accessibilityLabel="CountdownTimer">
               {sale?.cascadingEndTimeIntervalMinutes ? (
                 <ModernTicker
@@ -208,7 +208,7 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
           <Text variant="xs" color="black60" textAlign="right">
             {label}
           </Text>
-          <Spacer y="1" />
+          <Spacer y={1} />
           {!!sale?.extendedBiddingPeriodMinutes && !!sale?.extendedBiddingIntervalMinutes && (
             <>
               <ArtworkAuctionProgressBar
@@ -219,7 +219,7 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
                 hasBeenExtended={!!hasBeenExtended}
                 height={5}
               />
-              <Spacer y="2" />
+              <Spacer y={2} />
             </>
           )}
         </>

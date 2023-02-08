@@ -28,7 +28,7 @@ storiesOf("ArtsyKeyboardAvoidingView", module).add("ArtsyKeyboardAvoidingView", 
         <Input title="Hello" />
         <Input title="Hello" />
         <Input title="Hello" />
-        <Spacer y="4" />
+        <Spacer y={4} />
         <Button>"Submit"</Button>
       </ScrollView>
     </Flex>

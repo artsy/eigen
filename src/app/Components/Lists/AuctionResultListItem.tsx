@@ -120,7 +120,7 @@ const AuctionResultListItem: React.FC<Props> = ({
               </Text>
             )}
 
-            <Spacer y="1" />
+            <Spacer y={1} />
 
             {!!auctionResult.saleDate && (
               <Text variant="xs" color="black60" numberOfLines={1} testID="saleInfo">
@@ -196,7 +196,7 @@ const AuctionResultPriceSection = ({
   )
 }
 
-export const AuctionResultListSeparator = () => <Spacer y="2" />
+export const AuctionResultListSeparator = () => <Spacer y={2} />
 
 export const AuctionResultListItemFragmentContainer = createFragmentContainer(
   AuctionResultListItem,
