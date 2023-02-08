@@ -19,6 +19,7 @@ import { TouchableOpacity } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
 import { RecordSourceSelectorProxy } from "relay-runtime"
+import { isArtworksBasedNotification } from "./utils/isArtworksBasedNotification"
 
 interface ActivityItemProps {
   item: ActivityItem_item$key
@@ -42,6 +43,8 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
   const item = useFragment(activityItemFragment, props.item)
   const artworks = extractNodes(item.artworksConnection)
   const remainingArtworksCount = item.objectsCount - 4
+  const shouldDisplayCounts =
+    isArtworksBasedNotification(item.notificationType) && remainingArtworksCount > 0
 
   const getNotificationType = () => {
     if (item.notificationType === "ARTWORK_ALERT") {
@@ -141,7 +144,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
               )
             })}
 
-            {remainingArtworksCount > 0 && (
+            {shouldDisplayCounts && (
               <Text variant="xs" color="black60" accessibilityLabel="Remaining artworks count">
                 + {remainingArtworksCount}
               </Text>
