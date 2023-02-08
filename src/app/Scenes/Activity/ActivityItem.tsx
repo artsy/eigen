@@ -19,7 +19,9 @@ import { TouchableOpacity } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
 import { RecordSourceSelectorProxy } from "relay-runtime"
+import { ActivityItemTypeLabel } from "./ActivityItemTypeLabel"
 import { isArtworksBasedNotification } from "./utils/isArtworksBasedNotification"
+import { shouldDisplayNotificationTypeLabel } from "./utils/shouldDisplayNotificationTypeLabel"
 
 interface ActivityItemProps {
   item: ActivityItem_item$key
@@ -45,15 +47,6 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
   const remainingArtworksCount = item.objectsCount - 4
   const shouldDisplayCounts =
     isArtworksBasedNotification(item.notificationType) && remainingArtworksCount > 0
-
-  const getNotificationType = () => {
-    if (item.notificationType === "ARTWORK_ALERT") {
-      return "Alert"
-    }
-
-    return null
-  }
-  const notificationTypeLabel = getNotificationType()
 
   const handlePress = () => {
     const splittedQueryParams = item.targetHref.split("?")
@@ -104,14 +97,8 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
       <Flex py={2} flexDirection="row" alignItems="center">
         <Flex flex={1}>
           <Flex flexDirection="row">
-            {!!notificationTypeLabel && (
-              <Text
-                color="blue100"
-                variant="xs"
-                accessibilityLabel={`Notification type: ${notificationTypeLabel}`}
-              >
-                {notificationTypeLabel} •{" "}
-              </Text>
+            {shouldDisplayNotificationTypeLabel(item.notificationType) && (
+              <ActivityItemTypeLabel notificationType={item.notificationType} />
             )}
 
             <Text variant="xs" color="black60">
