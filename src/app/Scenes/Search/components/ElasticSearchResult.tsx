@@ -67,7 +67,7 @@ export const ElasticSearchResult: React.FC<ElasticSearchResultItemProps> = ({
     navigate(result.href)
     addArtworkToRecentSearches()
 
-    handleTrackResultPress?.(result)
+    handleTrackResultPress(result)
   }
 
   return (
