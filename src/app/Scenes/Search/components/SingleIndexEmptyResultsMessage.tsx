@@ -18,7 +18,7 @@ export const SingleIndexEmptyResultsMessage: React.FC<SingleIndexEmptyResultsMes
 
   return (
     <Box px={2} py={1}>
-      <Spacer mt={4} />
+      <Spacer y={4} />
       <Text variant="sm-display" textAlign="center">
         {`Sorry, we couldn${apostrophe}t find ${article} ${selectedPill.displayName} for ${quoteLeft}${query}
       .${quoteRight}`}

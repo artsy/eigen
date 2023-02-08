@@ -2,7 +2,7 @@ import { Flex, Spacer, useSpace, Spinner } from "@artsy/palette-mobile"
 import { ElasticSearchResultsQuery } from "__generated__/ElasticSearchResultsQuery.graphql"
 import { ElasticSearchResults_searchConnection$key } from "__generated__/ElasticSearchResults_searchConnection.graphql"
 import { ElasticSearchResult } from "app/Scenes/Search/components/ElasticSearchResult"
-import { SingleIndexEmptyResultsMessage } from "app/Scenes/Search/components/SingleIndexEmptyResults"
+import { SingleIndexEmptyResultsMessage } from "app/Scenes/Search/components/SingleIndexEmptyResultsMessage"
 import { SingleIndexSearchPlaceholder } from "app/Scenes/Search/components/placeholders/SingleIndexSearchPlaceholder"
 import { ELASTIC_PILL_KEY_TO_SEARCH_ENTITY } from "app/Scenes/Search/constants"
 import { PillType } from "app/Scenes/Search/types"
@@ -55,7 +55,7 @@ export const SearchResults2: React.FC<SearchResults2Props> = ({ query, selectedP
   return (
     <FlatList
       ref={flatListRef}
-      contentContainerStyle={{ paddingVertical: space("1"), paddingHorizontal: space("2") }}
+      contentContainerStyle={{ paddingVertical: space(1), paddingHorizontal: space(2) }}
       data={hits}
       keyExtractor={(item, index) => item.internalID ?? index.toString()}
       renderItem={({ item }) => (

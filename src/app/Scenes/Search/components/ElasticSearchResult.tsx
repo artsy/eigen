@@ -61,7 +61,7 @@ export const ElasticSearchResult: React.FC<ElasticSearchResultItemProps> = ({
       <Flex height={IMAGE_SIZE} flexDirection="row" alignItems="center">
         <SearchResultImage imageURL={result.imageUrl} resultType={selectedPill.displayName} />
 
-        <Spacer ml={1} />
+        <Spacer x={1} />
 
         <Flex flex={1}>
           <ResultWithHighlight displayLabel={result.displayLabel!} highlight={query} />
