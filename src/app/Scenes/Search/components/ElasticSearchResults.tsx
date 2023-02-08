@@ -9,7 +9,7 @@ import { PillType } from "app/Scenes/Search/types"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
-import { Suspense, useRef } from "react"
+import { Suspense, useEffect, useRef } from "react"
 import { FlatList } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
@@ -40,6 +40,12 @@ export const SearchResults2: React.FC<SearchResults2Props> = ({ query, selectedP
     ElasticSearchResultsQuery,
     ElasticSearchResults_searchConnection$key
   >(searchResultsFragment, queryData)
+
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      flatListRef.current?.scrollToOffset({ offset: 0, animated: true })
+    })
+  }, [selectedPill.indexName])
 
   const hits = extractNodes(data?.searchConnection)
 
