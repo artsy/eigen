@@ -1,30 +1,20 @@
 import { ContextModule } from "@artsy/cohesion"
 import { ElasticSearchResults2Screen } from "app/Scenes/Search/components/ElasticSearchResults"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { Schema } from "app/utils/track"
 import { Flex } from "palette"
 import { connectInfiniteHits, connectStateResults } from "react-instantsearch-core"
 import { useTracking } from "react-tracking"
 import { AutosuggestResult, AutosuggestResults } from "./AutosuggestResults"
 import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
 import { AlgoliaSearchResults } from "./components/AlgoliaSearchResults"
-import { ARTWORKS_PILL, TOP_PILL } from "./constants"
+import { ARTWORKS_PILL, objectTabByContextModule, TOP_PILL, tracks } from "./constants"
 import { getContextModuleByPillName } from "./helpers"
-import { AlgoliaSearchResult, PillType } from "./types"
+import { AlgoliaSearchResult, PillType, TappedSearchResultData } from "./types"
 
 interface SearchResultsProps {
   selectedPill: PillType
   query: string
   onRetry: () => void
-}
-
-interface TappedSearchResultData {
-  query: string
-  type: string
-  position: number
-  contextModule: ContextModule
-  slug: string
-  objectTab?: string
 }
 
 export const SearchResults: React.FC<SearchResultsProps> = ({ selectedPill, query, onRetry }) => {
@@ -107,21 +97,3 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ selectedPill, quer
 
 const AlgoliaSearchResultsWithState = connectStateResults(AlgoliaSearchResults)
 const AlgoliaSearchResultsContainer = connectInfiniteHits(AlgoliaSearchResultsWithState)
-
-const objectTabByContextModule: Partial<Record<ContextModule, string>> = {
-  [ContextModule.auctionTab]: "Auction Results",
-  [ContextModule.artistsTab]: "Artworks",
-}
-
-const tracks = {
-  tappedSearchResult: (data: TappedSearchResultData) => ({
-    context_screen_owner_type: Schema.OwnerEntityTypes.Search,
-    context_screen: Schema.PageNames.Search,
-    query: data.query,
-    position: data.position,
-    selected_object_type: data.type,
-    selected_object_slug: data.slug,
-    context_module: data.contextModule,
-    action: Schema.ActionNames.SelectedResultFromSearchScreen,
-  }),
-}

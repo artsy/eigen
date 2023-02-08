@@ -1,31 +1,32 @@
 import { Spacer } from "@artsy/palette-mobile"
 import { ResultWithHighlight } from "app/Scenes/Search/components/ResultWithHighlight"
-import { PillType } from "app/Scenes/Search/types"
+import { objectTabByContextModule, tracks } from "app/Scenes/Search/constants"
+import { getContextModuleByPillName } from "app/Scenes/Search/helpers"
+import {
+  PillType,
+  ElasticSearchResultInterface,
+  TappedSearchResultData,
+} from "app/Scenes/Search/types"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { Flex, Touchable } from "palette"
+import { useTracking } from "react-tracking"
 import { IMAGE_SIZE, SearchResultImage } from "./SearchResultImage"
 
-interface ElasticSearchResult {
-  __typename: string
-  displayLabel: string | null
-  href: string | null
-  imageUrl: string | null
-  internalID?: string
-  slug?: string
-}
-
 interface ElasticSearchResultItemProps {
-  result: ElasticSearchResult
+  result: ElasticSearchResultInterface
   selectedPill: PillType
   query?: string
+  position: number
 }
 
 export const ElasticSearchResult: React.FC<ElasticSearchResultItemProps> = ({
   query,
   result,
   selectedPill,
+  position,
 }) => {
+  const { trackEvent } = useTracking()
   const addArtworkToRecentSearches = () => {
     GlobalStore.actions.search.addRecentSearch({
       type: "AUTOSUGGEST_RESULT_TAPPED",
@@ -40,9 +41,23 @@ export const ElasticSearchResult: React.FC<ElasticSearchResultItemProps> = ({
     })
   }
 
-  // TODO: Re-enable tracking
-  // const trackResultPress = (elasticSearchResult: ElasticSearchResult) => {
-  // }
+  const handleTrackResultPress = (result: ElasticSearchResultInterface) => {
+    const contextModule = getContextModuleByPillName(selectedPill.displayName)
+
+    const data: TappedSearchResultData = {
+      type: selectedPill.displayName,
+      slug: result.slug!,
+      position,
+      query: query!,
+      contextModule: contextModule!,
+    }
+
+    if (contextModule && objectTabByContextModule[contextModule]) {
+      data.objectTab = objectTabByContextModule[contextModule]
+    }
+
+    trackEvent(tracks.tappedSearchResult(data))
+  }
 
   const onPress = (): void => {
     if (result.href === null) {
@@ -52,8 +67,7 @@ export const ElasticSearchResult: React.FC<ElasticSearchResultItemProps> = ({
     navigate(result.href)
     addArtworkToRecentSearches()
 
-    // TODO: Re-enable tracking
-    // trackResultPress?.(result)
+    handleTrackResultPress?.(result)
   }
 
   return (
