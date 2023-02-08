@@ -563,7 +563,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
             {requiresCheckbox ? (
               <Checkbox
                 mt={4}
-                mx={3}
+                mx="30px"
                 justifyContent="center"
                 onPress={() => this.onConditionsOfSaleCheckboxPressed()}
                 disabled={isLoading}

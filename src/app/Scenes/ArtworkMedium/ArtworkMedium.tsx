@@ -19,7 +19,7 @@ export const ArtworkMedium: React.FC<Props> = ({ artwork }) => {
   return (
     <ScrollView>
       <Box pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px={2}>
-        <Box my={3}>
+        <Box my="30px">
           <Join separator={<Spacer y={2} />} flatten>
             {!!artwork.mediumType && (
               <>

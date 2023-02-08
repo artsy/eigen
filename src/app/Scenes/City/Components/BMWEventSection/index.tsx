@@ -88,7 +88,7 @@ export class BMWEventSection extends React.Component<Props> {
                 </Text>
               </Box>
             </Box>
-            <Box mb={3} px={2}>
+            <Box mb="30px" px={2}>
               <CaretButton
                 onPress={() => this.getArtGuidePressed(artGuideUrl, citySlug)}
                 text="Get the BMW Art Guide"

@@ -36,7 +36,7 @@ export const PhoneNumberForm: React.FC<PhoneNumberFormProps> = (props) => {
   const buttonComponent = (
     <Box m="4">
       <Button
-        mt={3}
+        mt="30px"
         block
         disabled={!isValidNumber}
         width={100}

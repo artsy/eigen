@@ -97,7 +97,7 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
           {/*  About Auction */}
           <Flex px={2} mt={70}>
             <Text variant="lg-display">About this auction</Text>
-            <Text variant="sm-display" mt={1} mb={3}>
+            <Text variant="sm-display" mt={1} mb="30px">
               {sale.name}
             </Text>
             {saleStatus(sale.startAt, sale.endAt, sale.registrationEndsAt) === "closed" || (

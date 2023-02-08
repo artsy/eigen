@@ -1,6 +1,6 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
 import { UploadSizeLimitExceeded } from "@artsy/cohesion/dist/Schema/Events/UploadSizeLimitExceeded"
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { captureMessage } from "@sentry/react-native"
 import { storeLocalPhotos } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionImageUtil"
@@ -12,7 +12,7 @@ import { removeAssetFromSubmission } from "app/Scenes/SellWithArtsy/mutations/re
 import { GlobalStore } from "app/store/GlobalStore"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { useFormikContext } from "formik"
-import { Button, Flex, Text } from "palette"
+import { Button, Text } from "palette"
 import { PhotoRow } from "palette/elements/PhotoRow/PhotoRow"
 import React, { useEffect, useState } from "react"
 import { useTracking } from "react-tracking"
@@ -149,14 +149,21 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
 
   return (
     <>
-      <Flex style={{ borderColor: "lightgray", borderWidth: 1 }} mt={4} mb={2} p={2} pt={3} pb={3}>
+      <Flex
+        style={{ borderColor: "lightgray", borderWidth: 1 }}
+        mt={4}
+        mb={2}
+        p={2}
+        pt="30px"
+        pb="30px"
+      >
         <Text variant="lg-display" color="black100" marginBottom={1}>
           Add Files Here
         </Text>
         <Text variant="sm-display" color="black60" marginBottom={1}>
           Files Supported: JPG, PNG, HEIC
         </Text>
-        <Text variant="sm-display" color="black60" marginBottom={3}>
+        <Text variant="sm-display" color="black60" marginBottom={30}>
           Total Maximum Size: 30MB
         </Text>
         <Button

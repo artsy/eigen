@@ -19,7 +19,7 @@ export const NewBuyNowArtworksRail: React.FC<NewBuyNowArtworksRailProps> = ({ sa
   }
 
   return (
-    <Flex mt={3} testID="bnmo-rail-wrapper">
+    <Flex mt="30px" testID="bnmo-rail-wrapper">
       <Flex mx={2}>
         <SectionTitle title="Artworks Available to Buy Now" />
       </Flex>

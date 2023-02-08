@@ -51,7 +51,7 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
           <Flex alignItems="center">
             {/* Using `FadeIn` prevents the button from being displayed too early. */}
             <FadeIn delay={100} slide={false}>
-              <Button variant="outline" onPress={() => onSkipPress?.(trim(keyword))} mt={3}>
+              <Button variant="outline" onPress={() => onSkipPress?.(trim(keyword))} mt="30px">
                 Go to Add Artwork Details
               </Button>
             </FadeIn>

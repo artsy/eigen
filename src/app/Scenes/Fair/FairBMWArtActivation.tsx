@@ -41,7 +41,7 @@ export const shouldShowFairBMWArtActivationLink = (data: ShowMoreMetadataForFair
   context_screen_owner_id: props.fair.internalID,
 }))
 export class FairBMWArtActivation extends React.Component<Props, State> {
-  renderItemSeparator = () => <Box py={3} px={2} />
+  renderItemSeparator = () => <Box py="30px" px={2} />
 
   @track(eventProps(Schema.ActionNames.PressRelease))
   handleViewPressRelease(url: string) {

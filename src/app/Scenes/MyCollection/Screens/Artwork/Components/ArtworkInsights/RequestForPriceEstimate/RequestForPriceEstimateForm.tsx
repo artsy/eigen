@@ -16,7 +16,7 @@ export const RequestForPriceEstimateForm = () => {
     <ArtsyKeyboardAvoidingView>
       <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
         <Box pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px={2}>
-          <Box my={3}>
+          <Box my="30px">
             <Text variant="lg-display" mb={2}>
               Let us know how to reach you
             </Text>
