@@ -1,7 +1,5 @@
 This update includes a number of improvements and bug fixes including:
 
-- Upcoming Auctions listed on the homepage and in My Collection Insights
-- New look for Auction Results
-- Easy filtering for Auction Results
+- See new works from galleries you follow directly in your home feed.
 
 Have feedback? Email us at support@artsy.net
