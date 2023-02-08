@@ -481,11 +481,13 @@ export const InfiniteScrollArtworksGridContainer = createFragmentContainer(
           node {
             slug
             id
-            image {
+            image(includeAll: false) {
               aspectRatio
             }
-            ...ArtworkGridItem_artwork
-            ...MyCollectionArtworkGridItem_artwork @skip(if: $skipMyCollection)
+            ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
+            ...MyCollectionArtworkGridItem_artwork
+              @skip(if: $skipMyCollection)
+              @arguments(includeAllImages: false)
           }
         }
       }
@@ -510,7 +512,7 @@ export const InfiniteScrollMyCollectionArtworksGridContainer = createFragmentCon
             title
             slug
             id
-            image {
+            image(includeAll: true) {
               aspectRatio
             }
             artistNames
@@ -527,8 +529,10 @@ export const InfiniteScrollMyCollectionArtworksGridContainer = createFragmentCon
             height
             date
             ...MyCollectionArtworks_filterProps @relay(mask: false)
-            ...ArtworkGridItem_artwork @skip(if: $skipArtworkGridItem)
-            ...MyCollectionArtworkGridItem_artwork
+            ...ArtworkGridItem_artwork
+              @skip(if: $skipArtworkGridItem)
+              @arguments(includeAllImages: true)
+            ...MyCollectionArtworkGridItem_artwork @arguments(includeAllImages: true)
           }
         }
       }

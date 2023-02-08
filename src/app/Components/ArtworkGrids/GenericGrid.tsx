@@ -214,10 +214,10 @@ const GenericGrid = createFragmentContainer(GenericArtworksGrid, {
   artworks: graphql`
     fragment GenericGrid_artworks on Artwork @relay(plural: true) {
       id
-      image {
+      image(includeAll: false) {
         aspectRatio
       }
-      ...ArtworkGridItem_artwork
+      ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
     }
   `,
 })

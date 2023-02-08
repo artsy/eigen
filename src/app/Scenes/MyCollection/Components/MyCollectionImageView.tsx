@@ -1,6 +1,6 @@
 import { NoImageIcon } from "@artsy/palette-mobile"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Flex, useColor } from "palette"
+import OpaqueImageView2 from "palette/elements/OpaqueImageView/OpaqueImageView2"
 import React from "react"
 
 export interface MyCollectionImageViewProps {
@@ -41,14 +41,15 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
 
   const targetURL = imageURL.replace(":version", "square")
   return (
-    <OpaqueImageView
-      testID="Image-Remote"
-      imageURL={targetURL}
-      retryFailedURLs
-      height={imageHeight}
-      width={imageWidth}
-      aspectRatio={aspectRatio}
-      useRawURL={useRawURL}
-    />
+    <Flex testID="Image-Remote">
+      <OpaqueImageView2
+        imageURL={targetURL}
+        retryFailedURLs
+        height={imageHeight}
+        width={imageWidth}
+        aspectRatio={aspectRatio}
+        useRawURL={useRawURL}
+      />
+    </Flex>
   )
 }

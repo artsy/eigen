@@ -35,10 +35,10 @@ describe("Artist Series Artworks", () => {
               node {
                 slug
                 id
-                image {
+                image(includeAll: false) {
                   aspectRatio
                 }
-                ...ArtworkGridItem_artwork
+                ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
               }
             }
           }

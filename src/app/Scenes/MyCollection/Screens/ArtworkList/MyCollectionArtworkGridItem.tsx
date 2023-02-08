@@ -89,6 +89,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
           artworkSlug={slug}
           artworkSubmissionId={submissionId}
           myCollectionIsRefreshing={myCollectionIsRefreshing}
+          useRawURL={!!localImage}
         />
         <Box maxWidth={width} mt={1} style={{ flex: 1 }}>
           <Text lineHeight="18" weight="regular" variant="xs" numberOfLines={2}>
@@ -117,7 +118,8 @@ export const MyCollectionArtworkGridItemFragmentContainer = createFragmentContai
   MyCollectionArtworkGridItem,
   {
     artwork: graphql`
-      fragment MyCollectionArtworkGridItem_artwork on Artwork {
+      fragment MyCollectionArtworkGridItem_artwork on Artwork
+      @argumentDefinitions(includeAllImages: { type: "Boolean", defaultValue: false }) {
         internalID
         artist {
           internalID
@@ -128,13 +130,13 @@ export const MyCollectionArtworkGridItemFragmentContainer = createFragmentContai
         mediumType {
           name
         }
-        images {
+        images(includeAll: $includeAllImages) {
           url
           isDefault
           internalID
           versions
         }
-        image {
+        image(includeAll: $includeAllImages) {
           internalID
           aspectRatio
           versions

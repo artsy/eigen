@@ -111,7 +111,7 @@ export const SaleArtworkListItemContainer = createFragmentContainer(SaleArtworkL
       artistNames
       date
       href
-      image {
+      image(includeAll: false) {
         small: url(version: "small")
         aspectRatio
         height

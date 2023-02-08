@@ -99,13 +99,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageComponent")
   const [saveArtwork] = useMutation(SaveArtworkMutation)
 
-  let filterParams: any
-
-  // This is needed to make sure the filter context is defined
-  if (ArtworksFiltersStore.useStore()) {
-    const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
-    filterParams = filterArtworksParams(appliedFilters)
-  }
+  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const filterParams = filterArtworksParams(appliedFilters)
 
   const extendedBiddingEndAt = artwork.saleArtwork?.extendedBiddingEndAt
   const lotEndAt = artwork.saleArtwork?.endAt
@@ -412,7 +407,8 @@ export const saleMessageOrBidInfo = ({
 
 export default createFragmentContainer(Artwork, {
   artwork: graphql`
-    fragment ArtworkGridItem_artwork on Artwork {
+    fragment ArtworkGridItem_artwork on Artwork
+    @argumentDefinitions(includeAllImages: { type: "Boolean", defaultValue: false }) {
       title
       date
       saleMessage
@@ -448,7 +444,7 @@ export default createFragmentContainer(Artwork, {
       partner {
         name
       }
-      image {
+      image(includeAll: $includeAllImages) {
         url(version: "large")
         aspectRatio
       }
