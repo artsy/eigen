@@ -51,7 +51,7 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
       <Flex flexDirection="row" alignItems="center">
         <Arrow fill={color} width={15} height={15} />
 
-        <Spacer mr={1} />
+        <Spacer x={1} />
 
         <Text variant="lg-display" color={color}>
           {Math.abs(value)}%
@@ -129,7 +129,7 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
         onPress={() => trackEvent(tracks.tappedInfoBubble(artwork.internalID, artwork.slug))}
       />
 
-      <Spacer mb={2} mt={0.5} />
+      <Spacer y={2} />
 
       <View
         style={{

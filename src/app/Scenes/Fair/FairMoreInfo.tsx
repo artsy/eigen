@@ -48,25 +48,25 @@ export const FairMoreInfo: React.FC<FairMoreInfoProps> = ({ fair }) => {
         <Box px={2} pb={2} pt={6}>
           <Text variant="lg-display">About</Text>
 
-          <Spacer y="1" />
+          <Spacer y={1} />
 
           {!!fair.summary && (
             <>
               <Markdown rules={markdownRules}>{fair.summary}</Markdown>
-              <Spacer y="1" />
+              <Spacer y={1} />
             </>
           )}
           {!!fair.about && (
             <>
               <Markdown rules={markdownRules}>{fair.about}</Markdown>
-              <Spacer y="1" />
+              <Spacer y={1} />
             </>
           )}
 
           {!!fair.tagline && (
             <>
               <Text variant="sm">{fair.tagline}</Text>
-              <Spacer y="1" />
+              <Spacer y={1} />
             </>
           )}
 

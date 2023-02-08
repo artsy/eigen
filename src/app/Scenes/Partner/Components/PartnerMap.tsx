@@ -33,7 +33,7 @@ const PartnerMap: React.FC<{
       <Text variant="sm" weight="medium">
         {city}
       </Text>
-      <Spacer mb={0.5} />
+      <Spacer y={0.5} />
       <TouchableOpacity
         onPress={() =>
           showActionSheetWithOptions(

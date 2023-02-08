@@ -234,7 +234,7 @@ export class AllEvents extends React.Component<Props, State> {
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         keyExtractor={(item) => item.type}
         renderItem={(item) => this.renderItem(item)}
-        ListFooterComponent={() => <Spacer y={3} />}
+        ListFooterComponent={() => <Spacer y={4} />}
       />
     )
   }

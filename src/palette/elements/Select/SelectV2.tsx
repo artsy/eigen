@@ -133,7 +133,7 @@ const SelectButton: React.FC<{
           {subTitle}
         </Text>
       ) : (
-        <Spacer mb={0.5} />
+        <Spacer y={0.5} />
       )}
       <TouchableOpacity accessible accessibilityRole="button" onPress={onPress} testID={testID}>
         <Flex

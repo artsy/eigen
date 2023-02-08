@@ -8,15 +8,15 @@ export const TagPlaceholder: React.FC = () => (
       {/* Entity name */}
       <PlaceholderText />
     </Flex>
-    <Spacer mb={1} />
+    <Spacer y={1} />
     <Separator />
-    <Spacer mb={2} />
+    <Spacer y={2} />
     {/* Filters */}
     <Flex justifyContent="space-between" flexDirection="row" px={2}>
       <PlaceholderText width={180} />
       <PlaceholderText width={50} />
     </Flex>
-    <Spacer mb={0.5} />
+    <Spacer y={0.5} />
     {/* Grid */}
     <PlaceholderGrid />
   </Flex>

@@ -23,6 +23,7 @@ const getStories = () => {
   return [
     require("../app/Components/ArtsyKeyboardAvoidingView.stories.tsx"),
     require("../app/Components/ArtworkGrids/ArtworksFilterHeader.stories.tsx"),
+    require("../app/Components/Cards/SmallCard.stories.tsx"),
     require("../app/Components/PopoverMessage/PopoverMessage.stories.tsx"),
     require("../app/Components/ReadMore.stories.tsx"),
     require("../app/utils/placeholders.stories.tsx"),

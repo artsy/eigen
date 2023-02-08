@@ -271,7 +271,7 @@ const Buttons: React.FC<{ onClose(): void }> = ({ onClose }) => {
           >
             <ReloadIcon width={16} height={16} />
           </TouchableOpacity>
-          <Spacer mr="2" />
+          <Spacer x={2} />
         </>
       )}
 

@@ -41,12 +41,12 @@ export class PartnerShowRailItem extends React.Component<Props> {
 
     return (
       <TouchableWithoutFeedback onPress={() => this.onPress()}>
-        <Flex my={15} mr={2} width={windowWidth - 100}>
+        <Flex my="15px" mr={2} width={windowWidth - 100}>
           <ImageView
             imageURL={imageURL}
             style={{ alignItems: "center", justifyContent: "center" }}
           />
-          <Spacer mb={1} />
+          <Spacer y={1} />
           <Text variant="sm" numberOfLines={1}>
             {name}
           </Text>

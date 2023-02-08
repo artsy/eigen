@@ -106,14 +106,14 @@ export const RecommendedArtistsRail: React.FC<RecommendedArtistsRailProps & Rail
             />
           )
         }}
-        ItemSeparatorComponent={() => <Spacer x={15} />}
+        ItemSeparatorComponent={() => <Spacer x="15px" />}
         ListFooterComponent={
           loadingMoreData ? (
             <Flex justifyContent="center" ml="4" mr="6" height="200">
               <Spinner />
             </Flex>
           ) : (
-            <Spacer mr={2} />
+            <Spacer x={2} />
           )
         }
       />

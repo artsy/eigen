@@ -41,8 +41,8 @@ export const EmbeddedCarousel: React.FC<EmbeddedCarouselProps & FlatListProps<an
             renderItem(item)
           )
         }
-        ListHeaderComponent={() => <Spacer mr={2} />}
-        ListFooterComponent={() => <Spacer mr={2} />}
+        ListHeaderComponent={() => <Spacer x={2} />}
+        ListFooterComponent={() => <Spacer x={2} />}
         {...restProps}
       />
     </Flex>

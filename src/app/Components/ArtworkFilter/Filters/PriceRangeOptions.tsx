@@ -204,7 +204,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
             testID="price-min-input"
             descriptionColor="black100"
           />
-          <Spacer x="2" />
+          <Spacer x={2} />
           <Input
             containerStyle={{ flex: 1 }}
             description="Max"
@@ -217,7 +217,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
             descriptionColor="black100"
           />
         </Flex>
-        <Spacer y="2" />
+        <Spacer y={2} />
         <Flex mx={`${20 + RANGE_DOT_SIZE / 2}px`}>
           {!!shouldDisplayHistogram && (
             <Flex mb={2}>
@@ -270,11 +270,11 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
           </Flex>
         </Flex>
 
-        <Spacer mt={2} />
+        <Spacer y={2} />
 
         <RecentPriceRanges selectedRange={range} onSelected={handleRecentPriceRangeSelected} />
 
-        <Spacer mt={2} />
+        <Spacer y={2} />
       </ScrollView>
     </Flex>
   )

@@ -53,7 +53,7 @@ export const ArtQuizArtist = ({ artistData }: { artistData: ArtQuizArtist_artist
           />
         </Flex>
       </Flex>
-      <Spacer y="1" />
+      <Spacer y={1} />
       <Flex px={2}>
         <ReadMore
           content={artist?.biographyBlurb?.text!}
@@ -63,7 +63,7 @@ export const ArtQuizArtist = ({ artistData }: { artistData: ArtQuizArtist_artist
           linkTextVariant="sm-display"
         />
       </Flex>
-      <Spacer y="1" />
+      <Spacer y={1} />
       <SmallArtworkRail
         artworks={artworks}
         onPress={(artwork) => {

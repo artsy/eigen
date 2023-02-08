@@ -37,9 +37,9 @@ export const MyProfileSettings: React.FC<{}> = () => {
       />
       <Separator my={1} borderColor={separatorColor} />
 
-      <Spacer mt={2} mb={1} />
+      <Spacer y={2} />
       <SectionHeading title="Account Settings" />
-      <Spacer mt={1} />
+      <Spacer y={1} />
       <MenuItem title="Account" onPress={() => navigate("my-account")} />
       <Separator my={1} borderColor={separatorColor} />
       {!!showOrderHistory && (
@@ -97,7 +97,7 @@ export const MyProfileSettings: React.FC<{}> = () => {
           Log Out{" "}
         </Button>
       </Flex>
-      <Spacer mb={1} />
+      <Spacer y={1} />
     </ScrollView>
   )
 }

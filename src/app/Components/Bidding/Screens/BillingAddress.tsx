@@ -117,7 +117,7 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
       >
-        <Stack spacing={3}>
+        <Stack spacing={4}>
           <Input
             ref={fullNameRef}
             title="Full name"

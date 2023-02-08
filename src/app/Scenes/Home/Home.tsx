@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { ArtsyLogoBlackIcon, Spacer } from "@artsy/palette-mobile"
+import { ArtsyLogoBlackIcon, Spacer, SpacingUnitDSValueNumber } from "@artsy/palette-mobile"
 import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { Home_articlesConnection$data } from "__generated__/Home_articlesConnection.graphql"
@@ -64,8 +64,8 @@ import { NewWorksForYouRail } from "./Components/NewWorksForYouRail"
 import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
 import { RailScrollRef } from "./Components/types"
 
-const LARGE_MODULE_SEPARATOR_HEIGHT = 4
-const MODULE_SEPARATOR_HEIGHT = 6
+const LARGE_MODULE_SEPARATOR_HEIGHT: SpacingUnitDSValueNumber = 4
+const MODULE_SEPARATOR_HEIGHT: SpacingUnitDSValueNumber = 6
 
 interface HomeModule {
   title: string
@@ -557,7 +557,7 @@ export const HomeFragmentContainer = createRefetchContainer(
   `
 )
 
-const ModuleSeparator = () => <Spacer mb={MODULE_SEPARATOR_HEIGHT} />
+const ModuleSeparator = () => <Spacer y={MODULE_SEPARATOR_HEIGHT} />
 
 const BelowTheFoldPlaceholder: React.FC = () => {
   return (
@@ -578,12 +578,12 @@ const BelowTheFoldPlaceholder: React.FC = () => {
             <Box ml={2} mr={2}>
               <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
               <Flex flexDirection="row">
-                <Join separator={<Spacer x={15} />}>
+                <Join separator={<Spacer x="15px" />}>
                   {times(10).map((index) => (
                     <PlaceholderBox key={index} height={270} width={270} />
                   ))}
                 </Join>
-                <Spacer mb={2} />
+                <Spacer y={2} />
               </Flex>
             </Box>
           </Box>
@@ -605,13 +605,13 @@ const HomePlaceholder: React.FC = () => {
           <ActivityIndicator hasUnseenNotifications={false} />
         </Flex>
       </Box>
-      <Spacer mb={4} />
+      <Spacer y={4} />
 
       {
         // Small tiles to mimic the artwork rails
         <Box ml="2" mr="2">
           <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
-          <Spacer mb="0.5" />
+          <Spacer y={0.5} />
           <Flex flexDirection="row">
             {enableLargeNewWorksForYouRail ? (
               <LargeArtworkRailPlaceholder />
@@ -627,13 +627,13 @@ const HomePlaceholder: React.FC = () => {
       {/* Larger tiles to mimic the artist rails */}
       <Box ml={2} mr={2}>
         <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
-        <Spacer mb="0.5" />
+        <Spacer y={0.5} />
         <Flex flexDirection="row" mt={0.5}>
-          <Join separator={<Spacer x={15} />}>
+          <Join separator={<Spacer x="15px" />}>
             {times(3 + randomValue * 10).map((index) => (
               <Flex key={index}>
                 <PlaceholderBox key={index} height={180} width={295} />
-                <Spacer mb={1} mt="0.5" />
+                <Spacer y={1} />
                 <PlaceholderText width={120} />
                 <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
               </Flex>

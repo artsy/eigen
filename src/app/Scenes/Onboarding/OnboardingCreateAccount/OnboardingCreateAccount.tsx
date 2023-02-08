@@ -207,19 +207,19 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="always"
       >
-        <Spacer mt={60} />
+        <Spacer y="60px" />
         <Box minHeight={85}>
           <Text variant="lg-display">{title}</Text>
           {!!caption && (
             <>
-              <Spacer mt={0.5} />
+              <Spacer y={0.5} />
               <Text variant="xs" color={color("black100")}>
                 {caption}
               </Text>
             </>
           )}
         </Box>
-        <Spacer mt={2} />
+        <Spacer y={2} />
         {children}
       </ScrollView>
       {!!onBackButtonPress && <BackButton onPress={onBackButtonPress} />}

@@ -60,7 +60,7 @@ export const RecentPriceRanges: React.FC<RecentPriceRangesProps> = ({
         )}
       </Flex>
 
-      <Spacer mt={2} />
+      <Spacer y={2} />
 
       {isEmptyPriceRanges ? (
         <EmptyState />
@@ -108,7 +108,7 @@ const RecentPriceRangesList: React.FC<RecentPriceRangesListProps> = ({
       showsHorizontalScrollIndicator={false}
     >
       <Flex flexDirection="row">
-        <Join separator={<Spacer ml={1} />}>
+        <Join separator={<Spacer x={1} />}>
           {priceRanges.map((recentPrice) => {
             const { value } = recentPrice
             const [min, max] = parsePriceRange(value)

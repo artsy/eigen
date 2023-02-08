@@ -20,7 +20,7 @@ import { Animated, Dimensions, Image, View } from "react-native"
 import Config from "react-native-config"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 // @ts-ignore
-import { animated, config, Spring } from "react-spring/renderprops-native.cjs"
+import { animated, config, Spring } from "react-spring/renderprops-native.cjs" // TODO: get rid of this, and then remove `react-spring` from eigen.
 import { SafeAreaInsets } from "shared/hooks"
 import styled from "styled-components/native"
 import Supercluster, { AnyProps, ClusterProperties, PointFeature } from "supercluster"

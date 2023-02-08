@@ -139,7 +139,7 @@ export const PhoneInput = forwardRef<
                     <Text variant="sm-display">
                       {countryIndex[selectedValue ?? countryCode].flag}
                     </Text>
-                    <Spacer mr={0.5} />
+                    <Spacer x={0.5} />
                     <TriangleDown width="8" />
                   </Flex>
                   <Flex justifyContent="center" pl="1">
@@ -155,11 +155,11 @@ export const PhoneInput = forwardRef<
             return (
               <Flex flexDirection="row" alignItems="center" flexShrink={1}>
                 <Text variant="sm-display">{countryIndex[value].flag}</Text>
-                <Spacer mr="1" />
+                <Spacer x={1} />
                 <Text variant="sm-display" style={{ width: 45 }}>
                   +{countryIndex[value].dialCode}
                 </Text>
-                <Spacer mr="1" />
+                <Spacer x={1} />
                 <Text
                   variant="sm-display"
                   numberOfLines={1}

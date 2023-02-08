@@ -57,7 +57,7 @@ export const PartnerCard: React.FC<PartnerCardProps> = ({ artwork, shouldShowQue
           initials={partner.initials || undefined}
         />
       </TouchableWithoutFeedback>
-      <Spacer mt={2} />
+      <Spacer y={2} />
       {!!shouldShowQuestions && <Questions artwork={artwork} />}
     </Flex>
   )

@@ -28,7 +28,7 @@ export const CityGuideCTA: React.FC = () => {
             <Text variant="sm" style={{ color: color("black60") }}>
               Browse fairs and shows in different cities
             </Text>
-            <Spacer mb={1} />
+            <Spacer y={1} />
             <BMWSponsorship logoText="Presented in partnership with BMW" pressable={false} />
           </Flex>
         </Flex>

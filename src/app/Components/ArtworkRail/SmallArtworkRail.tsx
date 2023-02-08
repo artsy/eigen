@@ -42,14 +42,14 @@ export const SmallArtworkRailPlaceholder: React.FC = () => {
   const fontScale = PixelRatio.getFontScale()
 
   return (
-    <Join separator={<Spacer x="12" />}>
+    <Join separator={<Spacer x={12} />}>
       {times(3 + useMemoizedRandom() * 10).map((index) => (
         <Flex key={index}>
           <PlaceholderBox
             height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT.small}
             width={SMALL_RAIL_IMAGE_WIDTH}
           />
-          <Spacer mb={2} />
+          <Spacer y={2} />
           <Flex height={fontScale * ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT}>
             <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
             <PlaceholderText width={SMALL_RAIL_IMAGE_WIDTH} />

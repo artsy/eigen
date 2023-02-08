@@ -187,7 +187,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
             )}
           </Flex>
         )}
-        <Spacer mt={2} />
+        <Spacer y={2} />
         <Button variant="text" block onPress={() => navigate("my-account/delete-account")}>
           <Text color="red100">Delete My Account</Text>
         </Button>

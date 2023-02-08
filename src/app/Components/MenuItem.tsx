@@ -57,7 +57,7 @@ export const MenuItem: React.FC<{
           )}
         </Flex>
 
-        <Spacer ml={20} />
+        <Spacer x={2} />
 
         <Flex flexDirection="row" justifyContent="flex-end" flex={1} height="100%">
           {!!value && (

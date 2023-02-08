@@ -66,10 +66,10 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
           }}
           keyboardShouldPersistTaps="always"
         >
-          <Spacer mt={60} />
+          <Spacer y={6} />
           <Text variant="lg-display">Authentication Code</Text>
           <Box>
-            <Spacer mt={50} />
+            <Spacer y={6} />
             <Input
               ref={otpInputRef}
               autoCapitalize="none"
@@ -94,14 +94,14 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
               value={values.otp}
               error={errors.otp}
             />
-            <Spacer mt={1} />
+            <Spacer y={1} />
             <LinkText variant="sm" color="black60" onPress={() => setRecoveryCodeMode((v) => !v)}>
               {recoveryCodeMode ? "Enter authentication code" : "Enter recovery code instead"}
             </LinkText>
 
             {otpMode === "on_demand" ? (
               <>
-                <Spacer mb={20} />
+                <Spacer y={2} />
                 <SimpleMessage testID="on_demand_message">
                   Your safety and security are important to us. Please check your email for a
                   one-time authentication code to complete your login.
@@ -109,7 +109,7 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
               </>
             ) : null}
           </Box>
-          <Spacer mt={4} />
+          <Spacer y={4} />
         </ScrollView>
         <BackButton onPress={() => navigation.goBack()} />
         <Flex px={2} paddingBottom={2}>

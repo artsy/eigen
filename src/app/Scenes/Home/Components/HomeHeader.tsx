@@ -14,7 +14,7 @@ export const HomeHeader: React.FC = () => {
         <ArtsyLogoBlackIcon scale={0.75} />
         <ActivityIndicator hasUnseenNotifications={hasUnseenNotifications} />
       </Flex>
-      <Spacer mb="1" />
+      <Spacer y={1} />
     </Box>
   )
 }

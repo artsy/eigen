@@ -20,9 +20,9 @@ export const ArtsyGuarantee: React.FC = () => {
       <Text variant="md" color="black100">
         Be covered by the Artsy Guarantee when you checkout with Artsy
       </Text>
-      <Spacer mt={2} />
+      <Spacer y={2} />
 
-      <Join separator={<Spacer mt={1} />}>
+      <Join separator={<Spacer y={1} />}>
         <Flex flexDirection="row" alignItems="center">
           <SecureLockIcon
             accessibilityRole="image"

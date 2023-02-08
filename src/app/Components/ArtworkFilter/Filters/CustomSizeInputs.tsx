@@ -62,7 +62,7 @@ export const CustomSizeInputs: React.FC<CustomSizeInputsProps> = ({
         {label}
       </Text>
       <Flex flexDirection="row">
-        <Join separator={<Spacer ml={2} />}>
+        <Join separator={<Spacer x={2} />}>
           <Flex flex={1}>
             <Input
               description="Min"

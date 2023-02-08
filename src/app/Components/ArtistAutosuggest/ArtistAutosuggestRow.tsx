@@ -23,7 +23,7 @@ export const ArtistAutosuggestRow: React.FC<Props> = ({ result, highlight, onRes
           overflow: "hidden",
         }}
       />
-      <Spacer ml={1} />
+      <Spacer x={1} />
       <Flex flex={1}>
         <ResultWithHighlight displayLabel={result.displayLabel!} highlight={highlight} />
       </Flex>

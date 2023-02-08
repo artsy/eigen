@@ -29,7 +29,7 @@ export const ArtQuizTrendingCollection = ({
           {collection?.description}
         </Text>
       </Flex>
-      <Spacer y="1" />
+      <Spacer y={1} />
       <SmallArtworkRail
         artworks={artworks}
         onPress={(artwork) => {

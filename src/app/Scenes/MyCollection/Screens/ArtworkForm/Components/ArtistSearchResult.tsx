@@ -12,7 +12,7 @@ export const ArtistSearchResult: React.FC<{
         initials={result.initials || undefined}
         size="xs"
       />
-      <Spacer ml="1" />
+      <Spacer x={1} />
       <Flex flex={1} flexDirection="column" justifyContent="center">
         <Text variant="sm-display" ellipsizeMode="tail" numberOfLines={1}>
           {result.displayLabel}

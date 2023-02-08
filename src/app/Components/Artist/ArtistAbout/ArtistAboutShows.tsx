@@ -50,7 +50,7 @@ const ArtistAboutShows: React.FC<Props> = ({ artist }) => {
               }}
             />
           )}
-          ItemSeparatorComponent={() => <Spacer x={10} />}
+          ItemSeparatorComponent={() => <Spacer x={1} />}
           keyExtractor={(show) => show.id}
           showsHorizontalScrollIndicator={false}
           horizontal

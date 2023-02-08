@@ -169,7 +169,7 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
         >
           Add Photo
         </Button>
-        <Spacer mt={1} />
+        <Spacer y={1} />
       </Flex>
 
       {values.photos.map((photo: Photo, idx: number) => (

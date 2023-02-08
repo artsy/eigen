@@ -233,7 +233,7 @@ export const GenericGridPlaceholder: React.FC<{ width: number }> = ({ width }) =
   return (
     <Stack horizontal>
       {times(numColumns).map((i) => (
-        <Stack key={i} spacing={3} width={(width + 20) / numColumns - 20}>
+        <Stack key={i} spacing={4} width={(width + 20) / numColumns - 20}>
           {times(isPad ? 10 : 5).map((j) => (
             <ArtworkGridItemPlaceholder key={j} seed={rng.next()} />
           ))}

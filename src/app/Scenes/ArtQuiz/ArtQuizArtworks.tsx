@@ -207,7 +207,7 @@ export const ArtQuizArtworks = () => {
           <Touchable onPress={() => handleNext("Dislike")} style={{ marginHorizontal: 40 }}>
             <CloseIcon height={40} width={50} />
           </Touchable>
-          <Spacer y="2" />
+          <Spacer y={2} />
           <Touchable onPress={() => handleNext("Like")} style={{ marginHorizontal: 40 }}>
             <HeartIcon height={40} width={50} />
           </Touchable>

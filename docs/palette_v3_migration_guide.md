@@ -14,7 +14,7 @@ import { themeGet } from "@styled-system/theme-get"
 
 const TheComp = styled(Flex)`
   background-color: ${themeGet("colors.black100")};
-  margin-left: ${themeGet("space.2")}px;
+  margin-left: ${themeGet("space.2")};
   border-width: 3;
 `
 ```

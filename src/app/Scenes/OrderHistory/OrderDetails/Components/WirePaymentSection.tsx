@@ -61,7 +61,7 @@ const WirePaymentSection: React.FC<Props> = ({ order: { code, currencyCode, sour
           Please provide your proof of payment within 7 days. After this period, your order will be
           eligible for cancellation by the gallery.
         </Text>
-        <Spacer mt={2} />
+        <Spacer y={2} />
 
         <NumberedListItem index={1}>
           <Text>Find the order total and Artsy’s banking details below.</Text>
@@ -113,66 +113,66 @@ const wireTransferArtsyBankDetails = (currencyCode: string) => {
     case "GBP":
       return (
         <>
-          <Spacer mt={1} />
+          <Spacer y={1} />
           <PaymentInfoItem label="Account name" value="Art.sy Inc." />
           <PaymentInfoItem label="Account number" value="88005417" />
           <PaymentInfoItem label="IBAN" value="GB30PNBP16567188005417" />
           <PaymentInfoItem label="SWIFT" value="PNBPGB2L" />
           <PaymentInfoItem label="Sort Code" value="16-56-71" />
 
-          <Spacer mt={2} />
+          <Spacer y={2} />
 
           <Text fontWeight="bold" color="black100">
             Bank address
           </Text>
-          <Spacer mt={1} />
+          <Spacer y={1} />
           <Text>Wells Fargo Bank, N.A. London Branch</Text>
           <Text>1 Planation Place</Text>
           <Text>30 Fenchurch Street</Text>
           <Text>London, United Kingdom, EC3M 3BD</Text>
-          <Spacer mt={2} />
+          <Spacer y={2} />
         </>
       )
     case "EUR":
       return (
         <>
-          <Spacer mt={1} />
+          <Spacer y={1} />
           <PaymentInfoItem label="Account name" value="Art.sy Inc." />
           <PaymentInfoItem label="IBAN" value="GB73PNBP16567188005419" />
           <PaymentInfoItem label="BIC" value="PNBPGB2LXXX" />
 
-          <Spacer mt={2} />
+          <Spacer y={2} />
 
           <Text fontWeight="bold" color="black100">
             Bank address
           </Text>
-          <Spacer mt={1} />
+          <Spacer y={1} />
           <Text>Wells Fargo Bank, N.A. London Branch</Text>
           <Text>1 Planation Place</Text>
           <Text>30 Fenchurch Street</Text>
           <Text>London, United Kingdom, EC3M 3BD</Text>
-          <Spacer mt={2} />
+          <Spacer y={2} />
         </>
       )
     default:
       return (
         <>
-          <Spacer mt={1} />
+          <Spacer y={1} />
           <PaymentInfoItem label="Account name" value="Art.sy Inc." />
           <PaymentInfoItem label="Account number" value="4243851425" />
           <PaymentInfoItem label="Routing number" value="121000248" />
           <PaymentInfoItem label="International SWIFT" value="WFBIUS6S" />
 
-          <Spacer mt={2} />
+          <Spacer y={2} />
 
           <Text fontWeight="bold" color="black100">
             Bank address
           </Text>
-          <Spacer mt={1} />
+          <Spacer y={1} />
           <Text>Wells Fargo Bank, N.A.</Text>
           <Text>420 Montgomery Street</Text>
           <Text>San Francisco, CA 9410</Text>
-          <Spacer mt={2} />
+          <Spacer y={2} />
         </>
       )
   }

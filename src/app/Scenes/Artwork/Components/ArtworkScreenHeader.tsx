@@ -110,7 +110,7 @@ const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) =>
           <SaveIcon isSaved={!!isSaved} />
         </Touchable>
 
-        <Spacer ml={2} />
+        <Spacer x={2} />
 
         <ArtworkScreenHeaderCreateAlertFragmentContainer artwork={artwork} />
       </Flex>

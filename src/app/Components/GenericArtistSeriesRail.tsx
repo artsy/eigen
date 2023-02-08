@@ -81,7 +81,7 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
                     {result.title}
                   </Text>
                   {!!result.priceGuidance && (
-                    <Text color={color("black60")} variant="sm" mx={15}>
+                    <Text color={color("black60")} variant="sm" mx="15px">
                       {"From $" + `${result.priceGuidance.toLocaleString()}`}
                     </Text>
                   )}

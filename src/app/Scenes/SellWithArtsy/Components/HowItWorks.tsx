@@ -25,8 +25,8 @@ export const HowItWorks: React.FC = () => {
     <Box px={2}>
       <Text variant="lg-display">How it works</Text>
 
-      <Spacer mb={2} />
-      <Join separator={<Spacer mb={2} />}>
+      <Spacer y={2} />
+      <Join separator={<Spacer y={2} />}>
         {STEPS.map((step, index) => (
           <StepWithImage key={index} {...step} />
         ))}

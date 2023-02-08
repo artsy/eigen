@@ -20,7 +20,7 @@ export const OnboardingPostFollowLoadingScreen = () => {
         <FullScreenLoadingImage
           imgSource={require("images/HirstTheWonder.jpg")}
           loadingText={text}
-          spacerHeight={70}
+          spacerHeight="70px"
         />
       </Screen.Background>
     </Screen>
