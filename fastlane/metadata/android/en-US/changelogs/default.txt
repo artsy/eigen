@@ -1,7 +1,7 @@
 This update includes a number of improvements and bug fixes including:
 
-- Upcoming Auctions listed on the homepage and in My Collection Insights
-- New look for Auction Results
-- Easy filtering for Auction Results
+- Improvements to the new works for you rail
+- Improvements to the career highlights
+- New works from galleries you follow rail is visible on the home screen
 
 Have feedback? Email us at support@artsy.net
