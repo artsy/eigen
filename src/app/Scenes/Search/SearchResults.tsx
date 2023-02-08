@@ -97,7 +97,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ selectedPill, quer
       <ElasticSearchResults2Screen
         query={query}
         selectedPill={selectedPill}
-        selectedKey={selectedPill.key}
+        key={selectedPill.key}
       />
     )
   }
