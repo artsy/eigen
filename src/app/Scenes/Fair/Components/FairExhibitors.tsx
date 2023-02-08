@@ -43,7 +43,7 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
         }
 
         return (
-          <Box key={show.id} mb="30px">
+          <Box key={show.id} mb={4}>
             <FairExhibitorRailFragmentContainer key={show.id} show={show} />
           </Box>
         )

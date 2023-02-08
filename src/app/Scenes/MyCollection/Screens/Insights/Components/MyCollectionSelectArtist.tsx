@@ -34,7 +34,7 @@ export const SelectArtistList: React.FC<SelectArtistListProps> = (props) => {
       )}
       ListFooterComponent={
         isLoadingNext ? (
-          <Flex my="30px" flexDirection="row" justifyContent="center">
+          <Flex my={4} flexDirection="row" justifyContent="center">
             <Spinner />
           </Flex>
         ) : null

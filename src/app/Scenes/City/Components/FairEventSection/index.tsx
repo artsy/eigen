@@ -40,7 +40,7 @@ export class FairEventSection extends Component<Props> {
       <ClassTheme>
         {({ space }) => (
           <FairSectionBackground>
-            <Box mx={2} mt="30px">
+            <Box mx={2} mt={4}>
               <Text variant="lg-display" color="white">
                 Fairs
               </Text>
@@ -53,7 +53,7 @@ export class FairEventSection extends Component<Props> {
               horizontal
             />
             {data.length > 2 && (
-              <Box mx={2} mb="30px">
+              <Box mx={2} mb={4}>
                 <CaretButton
                   onPress={() => this.viewAllPressed()}
                   text={`View all ${data.length} fairs`}

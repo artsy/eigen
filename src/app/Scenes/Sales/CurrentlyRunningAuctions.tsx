@@ -44,7 +44,7 @@ export const CurrentlyRunningAuctions: React.FC<CurrentlyRunningAuctionsProps> =
   return (
     <>
       {!!liveAuctions.length && <SaleList title="Current Live Auctions" sales={liveAuctions} />}
-      {!!liveAuctions.length && !!timedAuctions.length && <Box pb="30px" />}
+      {!!liveAuctions.length && !!timedAuctions.length && <Box pb={4} />}
       {!!timedAuctions.length && <SaleList title="Current Timed Auctions" sales={timedAuctions} />}
     </>
   )

@@ -149,14 +149,7 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
 
   return (
     <>
-      <Flex
-        style={{ borderColor: "lightgray", borderWidth: 1 }}
-        mt={4}
-        mb={2}
-        p={2}
-        pt="30px"
-        pb="30px"
-      >
+      <Flex style={{ borderColor: "lightgray", borderWidth: 1 }} mt={4} mb={2} p={2} pt={4} pb={4}>
         <Text variant="lg-display" color="black100" marginBottom={1}>
           Add Files Here
         </Text>

@@ -47,7 +47,7 @@ export type UserPushNotificationSettings =
 
 export const OpenSettingsBanner = () => (
   <>
-    <Flex py="30px" px={2} backgroundColor="black5" alignItems="center">
+    <Flex py={4} px={2} backgroundColor="black5" alignItems="center">
       <Text variant="sm-display" weight="medium" color="black">
         Artsy would like to send you notifications
       </Text>
@@ -72,7 +72,7 @@ export const OpenSettingsBanner = () => (
 
 export const AllowPushNotificationsBanner = () => (
   <>
-    <Flex py="30px" px={2} backgroundColor="black5" alignItems="center">
+    <Flex py={4} px={2} backgroundColor="black5" alignItems="center">
       <Text variant="sm-display" weight="medium" color="black">
         Artsy would like to send you notifications
       </Text>

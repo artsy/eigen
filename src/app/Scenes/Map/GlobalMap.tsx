@@ -582,12 +582,7 @@ export class GlobalMap extends React.Component<Props, State> {
                   ],
                 }}
               >
-                <Flex
-                  flexDirection="row"
-                  justifyContent="flex-end"
-                  alignContent="flex-end"
-                  px="30px"
-                >
+                <Flex flexDirection="row" justifyContent="flex-end" alignContent="flex-end" px={4}>
                   <CitySwitcherButton
                     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                     sponsoredContentUrl={

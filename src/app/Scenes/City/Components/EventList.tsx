@@ -60,7 +60,7 @@ export class EventList extends React.Component<Props> {
       return (
         <>
           <Separator />
-          <Box mt={2} mb="30px">
+          <Box mt={2} mb={4}>
             <CaretButton
               onPress={() => this.viewAllPressed()}
               text={`View all ${bucket.length} shows`}
@@ -97,7 +97,7 @@ export class EventList extends React.Component<Props> {
         ListHeaderComponent={() => {
           if (!!header) {
             return (
-              <Box pt={6} mt="30px" mb={2}>
+              <Box pt={6} mt={4} mb={2}>
                 <Text variant="lg-display">{header}</Text>
               </Box>
             )

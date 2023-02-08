@@ -35,7 +35,7 @@ export const OtherWorksFragmentContainer = createFragmentContainer<{
       return (
         <Join
           separator={
-            <Box my="30px">
+            <Box my={4}>
               <Separator />
             </Box>
           }

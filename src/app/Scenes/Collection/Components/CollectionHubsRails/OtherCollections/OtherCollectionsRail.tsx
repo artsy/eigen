@@ -14,7 +14,7 @@ export interface OtherCollectionsRailProps {
 export const CollectionGroupMemberPill: React.FC<Partial<TextProps>> = (props) => (
   <Text
     variant="sm"
-    px="30px"
+    px={4}
     py={2}
     bg="black10"
     // @ts-ignore

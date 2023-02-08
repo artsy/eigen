@@ -59,10 +59,10 @@ export class CitySwitcherButton extends Component<Props> {
             >
               {city ? (
                 <>
-                  <Text variant="sm" weight="medium" ml="30px">
+                  <Text variant="sm" weight="medium" ml={4}>
                     {city.name}
                   </Text>
-                  <Box ml={2} mr="30px">
+                  <Box ml={2} mr={4}>
                     <ChevronIcon
                       initialDirection="down"
                       // @ts-ignore

@@ -165,11 +165,11 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me$data; relay: RelayRefetch
           )
         }
         ListEmptyComponent={
-          <Flex py="30px" px={2} alignItems="center" height="100%" justifyContent="center">
+          <Flex py={4} px={2} alignItems="center" height="100%" justifyContent="center">
             <Text variant="sm-display" mb={2}>
               No Saved Addresses
             </Text>
-            <Text variant="xs" textAlign="center" mb="30px">
+            <Text variant="xs" textAlign="center" mb={4}>
               Please add an address for a faster checkout experience in the future.
             </Text>
             <AddAddressButton

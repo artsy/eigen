@@ -94,7 +94,7 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
         }
         ListFooterComponent={
           isLoadingNext ? (
-            <Flex my="30px" flexDirection="row" justifyContent="center">
+            <Flex my={4} flexDirection="row" justifyContent="center">
               <Spinner />
             </Flex>
           ) : null

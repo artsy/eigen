@@ -99,7 +99,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
         )}
         {!!me.paddleNumber && <MenuItem title="Paddle Number" value={me.paddleNumber} />}
         {!!showLinkedAccounts && (
-          <Flex mt="30px">
+          <Flex mt={4}>
             <Box mx={2}>
               <SectionTitle title="LINKED ACCOUNTS" />
             </Box>

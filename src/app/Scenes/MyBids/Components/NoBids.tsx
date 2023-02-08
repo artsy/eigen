@@ -18,7 +18,7 @@ export const NoBids: React.FC<{ headerText: string }> = ({ headerText }) => {
   }
 
   return (
-    <Flex mt="30px" mx={2}>
+    <Flex mt={4} mx={2}>
       <Text variant="sm-display" textAlign="center" fontWeight="normal">
         {headerText}
       </Text>

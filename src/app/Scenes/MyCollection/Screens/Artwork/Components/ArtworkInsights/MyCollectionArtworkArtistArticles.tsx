@@ -27,7 +27,7 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
 
   return (
     <ScreenMargin>
-      <Separator mb="30px" />
+      <Separator mb={4} />
 
       <Text variant="sm" mb={2}>
         Latest Articles featuring {artist?.name}

@@ -71,7 +71,7 @@ class CityFairList extends React.Component<Props, State> {
         <FlatList
           ListHeaderComponent={() => {
             return (
-              <Box pt={6} mt="30px" mb={2}>
+              <Box pt={6} mt={4} mb={2}>
                 <Text variant="lg-display">Fairs</Text>
               </Box>
             )

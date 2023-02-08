@@ -205,7 +205,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
                 return (
                   <>
                     <FairHeaderFragmentContainer fair={fair} />
-                    <Separator mt="30px" />
+                    <Separator mt={4} />
                   </>
                 )
               }
