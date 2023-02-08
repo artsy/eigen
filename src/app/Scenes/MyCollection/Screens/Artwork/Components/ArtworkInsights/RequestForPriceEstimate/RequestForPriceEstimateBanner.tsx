@@ -51,7 +51,7 @@ export const RequestForPriceEstimateBanner: React.FC<RequestForPriceEstimateProp
           </Text>
         </Flex>
 
-        <Separator mt={2} mb={3} borderColor="black10" />
+        <Separator mt={2} mb={4} borderColor="black10" />
       </Box>
     )
   }
@@ -104,7 +104,7 @@ export const RequestForPriceEstimateBanner: React.FC<RequestForPriceEstimateProp
         Request a Price Estimate
       </Button>
 
-      <Separator mt={2} mb={3} borderColor="black10" />
+      <Separator mt={2} mb={4} borderColor="black10" />
     </Box>
   )
 }

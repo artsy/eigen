@@ -22,7 +22,7 @@ export const SaleArtworksRail: React.FC<Props> = ({ me }) => {
   }
 
   return (
-    <Flex mt={3}>
+    <Flex mt={4}>
       <Flex mx={2} my={1}>
         <SectionTitle title="Lots by artists you follow" />
       </Flex>

@@ -115,7 +115,7 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
                   }}
                 />
                 {!!this.state.isError && (
-                  <Text variant="xs" mt={3} color="red100">
+                  <Text variant="xs" mt={4} color="red100">
                     {errorText}
                   </Text>
                 )}

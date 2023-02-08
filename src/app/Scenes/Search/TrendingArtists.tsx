@@ -75,7 +75,7 @@ export const TrendingArtists: React.FC<TrendingArtistsProps> = ({ data, ...boxPr
 
 const LoadingIndicator = () => {
   return (
-    <Flex flex={1} flexDirection="row" alignItems="center" justifyContent="center" px={3}>
+    <Flex flex={1} flexDirection="row" alignItems="center" justifyContent="center" px={4}>
       <Spinner />
     </Flex>
   )

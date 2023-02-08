@@ -133,7 +133,7 @@ const AutosuggestResultsFlatList: React.FC<{
 
   const ListFooterComponent = useMemo(() => {
     return () => (
-      <Flex justifyContent="center" p={3} pb={6} height={250}>
+      <Flex justifyContent="center" p={4} pb={6} height={250}>
         {hasMoreResults ? <Spinner /> : null}
       </Flex>
     )
