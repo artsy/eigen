@@ -6,7 +6,7 @@ import { Stack } from "app/Components/Stack"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { Flex, Spinner } from "palette"
-import React, { Suspense, useRef, useState } from "react"
+import { Suspense, useRef, useState } from "react"
 import { RefreshControl, ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ZeroState } from "./Components/ZeroState"
@@ -30,7 +30,16 @@ export const SalesScreenQuery = graphql`
   }
 `
 
-export const Sales: React.FC<{ data: SalesQuery["response"] }> = ({ data }) => {
+export const Sales: React.FC = () => {
+  const data = useLazyLoadQuery<SalesQuery>(
+    SalesScreenQuery,
+    {},
+    {
+      fetchPolicy: "store-and-network",
+      networkCacheConfig: { force: true },
+    }
+  )
+
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   // using max_value because we want CurrentlyRunningAuctions & UpcomingAuctions
@@ -88,15 +97,7 @@ export const Sales: React.FC<{ data: SalesQuery["response"] }> = ({ data }) => {
   )
 }
 
-export const SalesQueryRenderer = () => {
-  const data = useLazyLoadQuery<SalesQuery>(
-    SalesScreenQuery,
-    {},
-    {
-      fetchPolicy: "store-and-network",
-      networkCacheConfig: { force: true },
-    }
-  )
+export const SalesScreen = () => {
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.auctions })}
@@ -105,12 +106,12 @@ export const SalesQueryRenderer = () => {
         fallback={
           <PageWithSimpleHeader title="Auctions">
             <Flex flex={1} justifyContent="center" alignItems="center">
-              <Spinner />
+              <Spinner testID="SalePlaceholder" />
             </Flex>
           </PageWithSimpleHeader>
         }
       >
-        <Sales data={data} />
+        <Sales />
       </Suspense>
     </ProvideScreenTrackingWithCohesionSchema>
   )
