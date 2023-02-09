@@ -235,19 +235,28 @@ const useImageCarouselMedia = (
         return Boolean(mappedImage)
       })
 
-    if (!disableDeepZoom) {
-      if (result.some((image) => !image?.deepZoom)) {
-        const filteredResult = result.filter((image) => image?.deepZoom)
-        if (filteredResult.length === 0) {
-          result = [result[0]]
-        } else {
-          result = filteredResult
-        }
-      }
-    }
+    // if (!disableDeepZoom) {
+    //   if (result.some((image) => !image?.deepZoom)) {
+    //     const filteredResult = result.filter((image) => image?.deepZoom)
+    //     if (filteredResult.length === 0) {
+    //       result = [result[0]]
+    //     } else {
+    //       result = filteredResult
+    //     }
+    //   }
+    // }
 
+    console.log(
+      "result1",
+      result.map((image) => [image?.width, image?.internalID])
+    )
+    console.log(
+      "result1local",
+      localImages?.map((image) => [image?.width, !!image])
+    )
     // Filter out (local) images that are not loaded yet
     result = result.filter((image) => image?.width && image?.height)
+    console.log("result12", result.length)
 
     return result
   }, [props.staticImages, imageFigures, localImages]) as ImageCarouselImage[]

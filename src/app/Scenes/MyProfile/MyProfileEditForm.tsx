@@ -18,10 +18,9 @@ import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { sendEmail } from "app/utils/sendEmail"
 import { useFormik } from "formik"
-import { compact } from "lodash"
 import { Avatar, Box, Button, Flex, Input, Join, Message, Text, Touchable, useColor } from "palette"
 import React, { Suspense, useEffect, useRef, useState } from "react"
-import { ScrollView, TextInput } from "react-native"
+import { InteractionManager, ScrollView, TextInput } from "react-native"
 import { useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { graphql } from "relay-runtime"
@@ -50,7 +49,11 @@ const editMyProfileSchema = Yup.object().shape({
   bio: Yup.string(),
 })
 
-export const MyProfileEditForm: React.FC = () => {
+interface MyProfileEditFormProps {
+  onSuccess?: () => void
+}
+
+export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = ({ onSuccess }) => {
   const { trackEvent } = useTracking()
   const data = useLazyLoadQuery<MyProfileEditFormQuery>(MyProfileEditFormScreenQuery, {})
 
@@ -136,19 +139,21 @@ export const MyProfileEditForm: React.FC = () => {
       onSubmit: async ({ photo, ...otherValues }) => {
         try {
           setLoading(true)
-          await Promise.all(
-            compact([
-              await updateUserInfo(otherValues),
-              didUpdatePhoto && (await uploadProfilePhoto(photo)),
-            ])
-          )
+          await Promise.all([
+            updateUserInfo(otherValues),
+            didUpdatePhoto && uploadProfilePhoto(photo),
+          ])
 
-          trackEvent(tracks.editedUserProfile)
+          trackEvent(tracks.editedUserProfile())
         } catch (error) {
-          console.error("Failed to update user profile ", error)
+          console.error("Failed to update profile", error)
         } finally {
           setLoading(false)
         }
+
+        InteractionManager.runAfterInteractions(() => {
+          onSuccess?.()
+        })
         navigation.goBack()
       },
       validationSchema: editMyProfileSchema,
@@ -160,12 +165,11 @@ export const MyProfileEditForm: React.FC = () => {
   const chooseImageHandler = () => {
     showPhotoActionSheet(showActionSheetWithOptions, true, false)
       .then(async (images) => {
-        storeLocalImage("profile", images[0])
-
         if (images?.length >= 1) {
-          await storeLocalImage("profile", images[0])
+          storeLocalImage("profile", images[0])
+          setDidUpdatePhoto(true)
           setRefreshKey(refreshKey + 1)
-          ;(handleChange("photo") as (value: string) => void)(images[0].path)
+          handleChange("photo")(images[0].path)
         }
       })
       .catch((e) =>
@@ -192,7 +196,6 @@ export const MyProfileEditForm: React.FC = () => {
 
   const showCompleteYourProfileBanner = !me?.collectorProfile?.isProfileComplete
 
-  console.log("qwer", "MyProfile", { localImage })
   return (
     <>
       <FancyModalHeader
@@ -375,11 +378,11 @@ const MyProfileEditFormScreenQuery = graphql`
   }
 `
 
-export const MyProfileEditFormScreen: React.FC = () => {
+export const MyProfileEditFormScreen: React.FC<MyProfileEditFormProps> = (props) => {
   return (
     <ArtsyKeyboardAvoidingView>
       <Suspense fallback={<LoadingSkeleton />}>
-        <MyProfileEditForm />
+        <MyProfileEditForm {...props} />
       </Suspense>
     </ArtsyKeyboardAvoidingView>
   )

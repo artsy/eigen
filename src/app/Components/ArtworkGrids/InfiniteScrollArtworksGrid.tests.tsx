@@ -38,7 +38,7 @@ describe("Artist Series Artworks", () => {
                 image(includeAll: false) {
                   aspectRatio
                 }
-                ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
+                ...ArtworkGridItem_artwork
               }
             }
           }

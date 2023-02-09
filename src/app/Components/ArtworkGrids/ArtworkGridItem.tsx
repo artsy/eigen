@@ -99,8 +99,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageComponent")
   const [saveArtwork] = useMutation(SaveArtworkMutation)
 
-  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
-  const filterParams = filterArtworksParams(appliedFilters)
+  let filterParams: any = undefined
+
+  // This is needed to make sure the filter context is defined
+  if (ArtworksFiltersStore.useStore()) {
+    const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+    filterParams = filterArtworksParams(appliedFilters)
+  }
 
   const extendedBiddingEndAt = artwork.saleArtwork?.extendedBiddingEndAt
   const lotEndAt = artwork.saleArtwork?.endAt

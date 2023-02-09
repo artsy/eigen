@@ -45,6 +45,8 @@ export const SegmentTrackingProvider: TrackingProvider = {
       category: "analytics",
     })
 
+    console.log({ info })
+
     // Events bubbled up from ios native
     if ("screen_name" in info) {
       const { screen_name, ...rest } = info

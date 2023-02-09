@@ -217,7 +217,7 @@ const GenericGrid = createFragmentContainer(GenericArtworksGrid, {
       image(includeAll: false) {
         aspectRatio
       }
-      ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
+      ...ArtworkGridItem_artwork
     }
   `,
 })

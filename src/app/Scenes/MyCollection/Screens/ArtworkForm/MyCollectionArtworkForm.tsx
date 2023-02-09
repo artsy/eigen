@@ -317,7 +317,8 @@ export const updateArtwork = async (
     ...others
   } = values
 
-  const externalImageUrls = await uploadPhotos(photos)
+  const newPhotos = photos.filter((photo) => photo.path)
+  const externalImageUrls = await uploadPhotos(newPhotos)
 
   let pricePaidCents
   if (pricePaidDollars && !isNaN(Number(pricePaidDollars))) {
@@ -356,13 +357,13 @@ export const updateArtwork = async (
 
     // Store images locally
     await Promise.all(
-      photos.map((image, index) => {
+      newPhotos.map(async (image, index) => {
         const imageID = artwork?.images?.[index]?.internalID
         console.log("asdf upload", { imageID, image, index })
 
         if (!imageID) return
 
-        storeLocalImage(imageID, {
+        await storeLocalImage(imageID, {
           path: image.path!,
           width: image.width!,
           height: image.height!,
@@ -400,21 +401,33 @@ export const updateArtwork = async (
 
     const updatedArtwork = response.myCollectionUpdateArtwork?.artworkOrError?.artwork
 
+    console.log(
+      "storeLocalImage",
+      "images IDs",
+      updatedArtwork?.images?.map((a) => a?.internalID)
+    )
+
     // Store images locally and start from the end because
     // it's only possible to add new images at the end
     const reversedImages = reverse([...(updatedArtwork?.images ?? [])])
 
-    reverse([...photos]).forEach((image, index) => {
-      const imageID = reversedImages[index]?.internalID
+    await Promise.all(
+      reverse([...newPhotos]).map(async (image, index) => {
+        const imageID = reversedImages[index]?.internalID
 
-      if (!imageID) return
+        if (!imageID) return
 
-      storeLocalImage(imageID, {
-        path: image.path!,
-        width: image.width!,
-        height: image.height!,
+        console.log("storeLocalImage", { imageID, image, index })
+
+        await storeLocalImage(imageID, {
+          path: image.path!,
+          width: image.width!,
+          height: image.height!,
+        })
       })
-    })
+    )
+
+    await new Promise((resolve) => setTimeout(resolve, 4000))
 
     // Delete images
     const deletedImages = deletedPhotos(dirtyFormCheckValues.photos, photos)

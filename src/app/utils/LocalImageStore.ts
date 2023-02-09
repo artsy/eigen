@@ -91,10 +91,10 @@ export const useLocalImageStorage = (
     isImageVersionAvailable(imageVersions, requestedImageVersion || DEFAULT_IMAGE_VERSION)
 
   const changeLocalImage = async () => {
-    if (isImageAvailable || !key) {
-      setLocalImage(null)
-      return
-    }
+    // if (isImageAvailable || !key) {
+    //   setLocalImage(null)
+    //   return
+    // }
 
     try {
       setLocalImage(await getLocalImage(key!))
@@ -104,6 +104,8 @@ export const useLocalImageStorage = (
   }
 
   useEffect(() => {
+    console.log("useLocalImageStorage", { key })
+
     changeLocalImage()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key, refreshKey])
