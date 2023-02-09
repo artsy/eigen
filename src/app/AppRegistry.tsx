@@ -113,7 +113,7 @@ import { PrivacyRequest } from "./Scenes/PrivacyRequest/PrivacyRequest"
 import { ReverseImage } from "./Scenes/ReverseImage/ReverseImage"
 import { SaleQueryRenderer, SaleScreenQuery } from "./Scenes/Sale/Sale"
 import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo/SaleInfo"
-import { SalesQueryRenderer, SalesScreenQuery } from "./Scenes/Sales/Sales"
+import { SalesScreen, SalesScreenQuery } from "./Scenes/Sales/Sales"
 import { SavedAddressesQueryRenderer } from "./Scenes/SavedAddresses/SavedAddresses"
 import { SavedAddressesFormQueryRenderer } from "./Scenes/SavedAddresses/SavedAddressesForm"
 import { EditSavedSearchAlertQueryRenderer } from "./Scenes/SavedSearchAlert/EditSavedSearchAlert"
@@ -352,7 +352,7 @@ export const modules = defineModules({
   ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer),
   ArtworkCertificateAuthenticity: reactModule(CertificateOfAuthenticity),
   Auction: reactModule(SaleQueryRenderer, { fullBleed: true }, [SaleScreenQuery]),
-  Auctions: reactModule(SalesQueryRenderer, {}, [SalesScreenQuery]),
+  Auctions: reactModule(SalesScreen, {}, [SalesScreenQuery]),
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
 
   AuctionResult: reactModule(AuctionResultQueryRenderer),
