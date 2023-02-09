@@ -400,12 +400,6 @@ export const updateArtwork = async (
 
     const updatedArtwork = response.myCollectionUpdateArtwork?.artworkOrError?.artwork
 
-    console.log(
-      "storeLocalImage",
-      "images IDs",
-      updatedArtwork?.images?.map((a) => a?.internalID)
-    )
-
     // Store images locally and start from the end because
     // it's only possible to add new images at the end
     const reversedImages = reverse([...(updatedArtwork?.images ?? [])])
@@ -416,8 +410,6 @@ export const updateArtwork = async (
 
         if (!imageID) return
 
-        console.log("storeLocalImage", { imageID, image, index })
-
         await storeLocalImage(imageID, {
           path: image.path!,
           width: image.width!,
@@ -425,8 +417,6 @@ export const updateArtwork = async (
         })
       })
     )
-
-    await new Promise((resolve) => setTimeout(resolve, 4000))
 
     // Delete images
     const deletedImages = deletedPhotos(dirtyFormCheckValues.photos, photos)
