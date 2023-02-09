@@ -7,6 +7,7 @@ import {
   Platform,
   processColor,
   requireNativeComponent,
+  StyleSheet,
   View,
   ViewProps,
 } from "react-native"
@@ -79,7 +80,31 @@ export default class OpaqueImageView extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
 
-    this.state = {}
+    // Unless `aspectRatio` was not specified at all, default the ratio to 1 to prevent illegal layout calculations.
+    const ratio = props.aspectRatio
+    this.state = {
+      aspectRatio: ratio === undefined ? undefined : ratio || 1,
+    }
+
+    if (__DEV__) {
+      const style = StyleSheet.flatten(props.style)
+      if (style == null) {
+        return
+      }
+      if (
+        !(
+          this.state.aspectRatio ||
+          (style.width && style.height) ||
+          (props.height && props.width) ||
+          (style.height && style.flexGrow) ||
+          style.flex
+        )
+      ) {
+        console.error(
+          "[OpaqueImageView] Either an aspect ratio or specific dimensions or flex should be specified."
+        )
+      }
+    }
   }
 
   imageURL() {
@@ -115,7 +140,7 @@ export default class OpaqueImageView extends React.Component<Props, State> {
     const { style, ...props } = this.props
 
     Object.assign(props, {
-      aspectRatio: this.props.aspectRatio,
+      aspectRatio: this.state.aspectRatio,
       imageURL: isLaidOut ? this.imageURL() : null,
       onLayout: this.onLayout,
     })
