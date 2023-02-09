@@ -133,8 +133,6 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
     goFullScreen()
   }, [])
 
-  console.log("ImageCarouselEmbedded", { media: media.map((e) => e.width) })
-
   return (
     <FlatList<ImageCarouselMedia>
       // force full re-render on orientation change

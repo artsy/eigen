@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 
 // Expiration time is 5 minutes
 // TODO: Decrease number
@@ -16,8 +16,6 @@ export interface LocalImage {
 }
 
 export const storeLocalImage = async (key: string, image: LocalImage) => {
-  console.log("asdf", "storeLocalImage", key, image)
-
   const expires = new Date().getTime() + EXPIRATION_TIME
   const storeKey = `${IMAGE_KEY_PREFIX}_${key}`
 
@@ -29,7 +27,6 @@ export const storeLocalImage = async (key: string, image: LocalImage) => {
 export const getLocalImage = async (key: string): Promise<LocalImage | null> => {
   const storeKey = `${IMAGE_KEY_PREFIX}_${key}`
   const imageJSONString = await AsyncStorage.getItem(storeKey)
-  console.log("asdf", "getLocalImage", key, imageJSONString)
 
   if (!imageJSONString) return null
 
@@ -57,10 +54,8 @@ export const useLocalImages = (
   requestedImageVersion?: string,
   refreshKey?: any
 ) => {
-  if (!images) return []
-
   return useLocalImagesStorage(
-    images?.map((image) => ({ key: image?.internalID, imageVersions: image?.versions })),
+    images?.map((image) => ({ key: image?.internalID, imageVersions: image?.versions })) || [],
     requestedImageVersion,
     refreshKey
   )
@@ -117,13 +112,11 @@ export const useLocalImagesStorage = (
   }
 
   useEffect(() => {
-    console.log("result1", "YEAH")
     changeLocalImages()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refreshKey])
+  }, [images.map((image) => image.key).join(""), refreshKey])
 
   return localImages
 }
 
-export const isImageVersionAvailable = (versions: any[], version: string) =>
-  !!versions?.includes(version)
+const isImageVersionAvailable = (versions: any[], version: string) => !!versions?.includes(version)

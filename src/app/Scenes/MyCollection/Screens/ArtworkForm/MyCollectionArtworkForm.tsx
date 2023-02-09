@@ -359,7 +359,6 @@ export const updateArtwork = async (
     await Promise.all(
       newPhotos.map(async (image, index) => {
         const imageID = artwork?.images?.[index]?.internalID
-        console.log("asdf upload", { imageID, image, index })
 
         if (!imageID) return
 

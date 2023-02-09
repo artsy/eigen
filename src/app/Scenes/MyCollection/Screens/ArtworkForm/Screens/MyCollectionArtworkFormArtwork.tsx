@@ -59,11 +59,6 @@ export const MyCollectionArtworkFormArtwork: React.FC<
         width: image?.width || undefined,
       }))
 
-      console.log(
-        "qwer",
-        photos?.map((a) => a.width)
-      )
-
       GlobalStore.actions.myCollection.artwork.updateFormValues({
         metric: preferredMetric,
         pricePaidCurrency: preferredCurrency,

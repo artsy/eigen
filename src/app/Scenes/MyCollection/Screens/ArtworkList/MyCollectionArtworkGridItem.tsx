@@ -59,11 +59,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
       setTimer(timer + 1)
     })
   }, [])
-  console.log("qwer", "MyCollectionArtworkGridItem", {
-    timer,
-    localImage,
-    ar: displayImage?.internalID,
-  })
+
   return (
     <TouchElement
       onPress={() => {

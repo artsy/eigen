@@ -27,8 +27,6 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
 
   const hasImages = artwork?.figures?.length > 0
 
-  console.log("qwer", "MyCollectionArtworkHeader", artwork.figures?.length)
-
   return (
     <Join separator={<Spacer y={1} />}>
       {hasImages ? (
