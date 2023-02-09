@@ -54,16 +54,16 @@ export const deleteLocalImages = (key: string): Promise<void> => {
 
 export const useLocalImages = (
   images: ({ internalID: string | null; versions?: any } | null | undefined)[] | null | undefined,
-  requestedImageVersion?: string
+  requestedImageVersion?: string,
+  refreshKey?: any
 ) => {
-  const initialLocalImages = useMemo(() => images, [])
+  if (!images) return []
 
-  const localImages = initialLocalImages?.map((image) =>
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useLocalImage(image, requestedImageVersion)
+  return useLocalImagesStorage(
+    images?.map((image) => ({ key: image?.internalID, imageVersions: image?.versions })),
+    requestedImageVersion,
+    refreshKey
   )
-
-  return localImages
 }
 /**
  * Returns the local image if it is stored and the requested image version is not available
@@ -81,36 +81,48 @@ export const useLocalImage = (
 export const useLocalImageStorage = (
   key: string | null | undefined,
   imageVersions?: any,
+  requestedImageVersion?: string
+) => {
+  return useLocalImagesStorage([{ key, imageVersions }], requestedImageVersion)[0]
+}
+
+export const useLocalImagesStorage = (
+  images: { key: string | null | undefined; imageVersions?: any }[],
   requestedImageVersion?: string,
   refreshKey?: any
 ) => {
-  const [localImage, setLocalImage] = useState<LocalImage | null>(null)
+  const [localImages, setLocalImages] = useState<(LocalImage | null)[]>([])
 
-  const isImageAvailable =
-    imageVersions &&
-    isImageVersionAvailable(imageVersions, requestedImageVersion || DEFAULT_IMAGE_VERSION)
-
-  const changeLocalImage = async () => {
-    // if (isImageAvailable || !key) {
-    //   setLocalImage(null)
-    //   return
-    // }
-
+  const changeLocalImages = async () => {
     try {
-      setLocalImage(await getLocalImage(key!))
+      const allImages = await Promise.all(
+        images.map((image) => {
+          const isImageAvailable =
+            image.imageVersions &&
+            isImageVersionAvailable(
+              image.imageVersions,
+              requestedImageVersion || DEFAULT_IMAGE_VERSION
+            )
+
+          if (isImageAvailable || !image.key) return null
+
+          return getLocalImage(image.key!)
+        })
+      )
+
+      setLocalImages(allImages)
     } catch (error) {
       console.error(error)
     }
   }
 
   useEffect(() => {
-    console.log("useLocalImageStorage", { key })
-
-    changeLocalImage()
+    console.log("result1", "YEAH")
+    changeLocalImages()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [key, refreshKey])
+  }, [refreshKey])
 
-  return localImage
+  return localImages
 }
 
 export const isImageVersionAvailable = (versions: any[], version: string) =>

@@ -183,7 +183,7 @@ const useImageCarouselMedia = (
 
   const videoFigures = props.figures?.filter(guardFactory("__typename", "Video"))
 
-  const localImages = useLocalImages(imageFigures)
+  const localImages = useLocalImages(imageFigures, undefined, imageFigures?.length)
 
   const disableDeepZoom = imageFigures?.some((_, index) => localImages?.[index])
 

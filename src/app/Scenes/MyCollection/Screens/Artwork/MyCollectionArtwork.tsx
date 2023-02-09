@@ -60,7 +60,6 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
         onSuccess: () => {
           refetch()
           goBack()
-          navigate(`my-collection/artwork/${data.artwork?.internalID}`)
         },
         onDelete: popToRoot,
       },
