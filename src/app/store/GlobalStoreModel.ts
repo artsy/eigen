@@ -11,6 +11,7 @@ import {
   getSubmissionModel,
   SubmissionModel,
 } from "app/Scenes/SellWithArtsy/utils/submissionModelState"
+import { ArtworkPageableModel, getArtworkPageableModel } from "app/store/ArtworkPageableModel"
 import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy"
 import { ArtsyPrefsModel, getArtsyPrefsModel } from "./ArtsyPrefsModel"
 import { AuthModel, getAuthModel } from "./AuthModel"
@@ -36,20 +37,21 @@ interface GlobalStoreStateModel {
     isHydrated: boolean
   }
 
-  native: NativeModel
-  bottomTabs: BottomTabsModel
-  search: SearchModel
-  myCollection: MyCollectionModel
-  auth: AuthModel
-  toast: ToastModel
-  pendingPushNotification: PendingPushNotificationModel
   artsyPrefs: ArtsyPrefsModel
-  userPrefs: UserPrefsModel
-  devicePrefs: DevicePrefsModel
-  visualClue: VisualClueModel
+  artworkPageable: ArtworkPageableModel
   artworkSubmission: SubmissionModel
-  requestedPriceEstimates: RequestedPriceEstimatesModel
+  auth: AuthModel
+  bottomTabs: BottomTabsModel
+  devicePrefs: DevicePrefsModel
+  myCollection: MyCollectionModel
+  native: NativeModel
+  pendingPushNotification: PendingPushNotificationModel
   recentPriceRanges: RecentPriceRangesModel
+  requestedPriceEstimates: RequestedPriceEstimatesModel
+  search: SearchModel
+  toast: ToastModel
+  userPrefs: UserPrefsModel
+  visualClue: VisualClueModel
 }
 export interface GlobalStoreModel extends GlobalStoreStateModel {
   rehydrate: Action<this, DeepPartial<State<GlobalStoreStateModel>>>
@@ -121,19 +123,20 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   native: getNativeModel(),
 
   // APP MODULE STATE
-  bottomTabs: getBottomTabsModel(),
-  search: getSearchModel(),
-  myCollection: getMyCollectionModel(),
   artsyPrefs: getArtsyPrefsModel(),
+  artworkPageable: getArtworkPageableModel(),
+  artworkSubmission: getSubmissionModel(),
   auth: getAuthModel(),
-  toast: getToastModel(),
+  bottomTabs: getBottomTabsModel(),
   devicePrefs: getDevicePrefsModel(),
+  myCollection: getMyCollectionModel(),
   pendingPushNotification: getPendingPushNotificationModel(),
+  recentPriceRanges: getRecentPriceRangesModel(),
+  requestedPriceEstimates: getRequestedPriceEstimatesModel(),
+  search: getSearchModel(),
+  toast: getToastModel(),
   userPrefs: getUserPrefsModel(),
   visualClue: getVisualClueModel(),
-  artworkSubmission: getSubmissionModel(),
-  requestedPriceEstimates: getRequestedPriceEstimatesModel(),
-  recentPriceRanges: getRecentPriceRangesModel(),
 
   // for dev only.
   _setVersion: action((state, newVersion) => {

@@ -1,4 +1,5 @@
 import { ChevronIcon, CloseIcon } from "@artsy/palette-mobile"
+import { GlobalStore } from "app/store/GlobalStore"
 import { Color, Flex } from "palette"
 import { TouchableOpacity, TouchableOpacityProps } from "react-native"
 
@@ -17,11 +18,16 @@ export const BackButton: React.FC<BackButtonProps> = ({
   containerStyle,
   hitSlop,
 }) => {
+  const handleOnBackPress = () => {
+    GlobalStore.actions.artworkPageable.resetPageableArtworkSlugs()
+    onPress?.()
+  }
+
   return (
     <TouchableOpacity
       hitSlop={hitSlop}
       style={containerStyle}
-      onPress={onPress}
+      onPress={handleOnBackPress}
       accessibilityRole="button"
       accessibilityLabel={showX ? "Close" : "Go back"}
       accessibilityHint={showX ? "Dismiss this screen" : "Go back to the previous screen"}
@@ -36,9 +42,14 @@ export const BackButton: React.FC<BackButtonProps> = ({
 }
 
 export const BackButtonWithBackground: React.FC<BackButtonProps> = ({ onPress, showX = false }) => {
+  const handleOnBackPress = () => {
+    GlobalStore.actions.artworkPageable.resetPageableArtworkSlugs()
+    onPress?.()
+  }
+
   return (
     <TouchableOpacity
-      onPress={onPress}
+      onPress={handleOnBackPress}
       accessibilityRole="button"
       accessibilityLabel={showX ? "Close" : "Go back"}
       accessibilityHint={showX ? "Dismiss this screen" : "Go back to the previous screen"}

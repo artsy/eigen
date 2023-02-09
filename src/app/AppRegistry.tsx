@@ -8,10 +8,11 @@ import {
   WorksForYouScreenQuery,
 } from "app/Components/Containers/WorksForYou"
 import { FadeIn } from "app/Components/FadeIn"
+import { PageableScreensView } from "app/Components/PageableScreensView/PageableScreensView"
 import { SearchScreenQuery } from "app/Scenes/Search/Search"
 import { SearchScreenQuery as SearchScreenQuery2 } from "app/Scenes/Search/Search2"
 import { SearchSwitchContainer } from "app/Scenes/Search/SearchSwitchContainer"
-import React from "react"
+import React, { useMemo } from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
 import { SafeAreaInsets, useScreenDimensions } from "shared/hooks"
@@ -145,9 +146,7 @@ import {
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
-
   "Require cycle:",
-
   ".removeListener(", // this is coming from https://github.com/facebook/react-native/blob/v0.68.0-rc.2/Libraries/AppState/AppState.js and other libs.
 ])
 
@@ -159,7 +158,39 @@ interface ArtworkProps {
   isVisible: boolean
 }
 
-const Artwork = (props: ArtworkProps) => <ArtworkQueryRenderer {...props} />
+const Artwork: React.FC<ArtworkProps> = React.memo(
+  (props) => {
+    const pageableArtworkSlugs = GlobalStore.useAppState(
+      (state) => state.artworkPageable.pageableArtworkSlugs
+    )
+
+    const screens = useMemo(() => {
+      return pageableArtworkSlugs.map((slug) => ({
+        name: slug,
+        Component: <ArtworkQueryRenderer {...props} artworkID={slug} isVisible />,
+      }))
+    }, [pageableArtworkSlugs])
+
+    // Check to see if we're within the context of an artwork rail and show
+    // pager view.
+    if (screens.length > 0) {
+      return (
+        <PageableScreensView
+          screens={screens}
+          initialScreenName={props.artworkID}
+          prefetchScreensCount={2}
+        />
+      )
+      // If not within the context of an artwork collection, just render the
+      // individual artwork.
+    } else {
+      return <ArtworkQueryRenderer {...props} />
+    }
+  },
+  (prevProps, nextProps) => {
+    return prevProps.artworkID === nextProps.artworkID
+  }
+)
 
 interface PartnerLocationsProps {
   partnerID: string
