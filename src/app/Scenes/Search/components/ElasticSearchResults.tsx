@@ -16,21 +16,16 @@ import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 interface SearchResults2Props {
   query: string
   selectedPill: PillType
-  selectedKey: PillType["key"]
 }
 
 const PAGE_SIZE = isPad() ? 20 : 10
 
-export const SearchResults2: React.FC<SearchResults2Props> = ({
-  query,
-  selectedPill,
-  selectedKey,
-}) => {
+export const SearchResults2: React.FC<SearchResults2Props> = ({ query, selectedPill }) => {
   const space = useSpace()
   const isAutosuggestModeEnabled = useFeatureFlag("AREnableAutosuggestModeESSearch")
   const flatListRef = useRef<FlatList>(null)
 
-  const selectedEntity = ELASTIC_PILL_KEY_TO_SEARCH_ENTITY?.[selectedKey]
+  const selectedEntity = ELASTIC_PILL_KEY_TO_SEARCH_ENTITY?.[selectedPill.key]
 
   const mode = isAutosuggestModeEnabled ? "AUTOSUGGEST" : "SITE"
 
