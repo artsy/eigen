@@ -105,7 +105,7 @@ export const SalesQueryRenderer = () => {
         fallback={
           <PageWithSimpleHeader title="Auctions">
             <Flex flex={1} justifyContent="center" alignItems="center">
-              <Spinner />
+              <Spinner testID="SalePlaceholder" />
             </Flex>
           </PageWithSimpleHeader>
         }
