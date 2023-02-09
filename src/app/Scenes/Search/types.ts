@@ -1,3 +1,5 @@
+import { ContextModule } from "@artsy/cohesion"
+
 export interface AlgoliaSearchResult {
   href: string
   image_url: string
@@ -27,4 +29,22 @@ export enum AlgoliaIndexKey {
   Fair = "fair",
   Show = "partner_show",
   Gallery = "partner_gallery",
+}
+
+export interface ElasticSearchResultInterface {
+  __typename: string
+  displayLabel: string | null
+  href: string | null
+  imageUrl: string | null
+  internalID?: string
+  slug?: string
+}
+
+export interface TappedSearchResultData {
+  query: string
+  type: string
+  position: number
+  contextModule: ContextModule
+  slug: string
+  objectTab?: string
 }

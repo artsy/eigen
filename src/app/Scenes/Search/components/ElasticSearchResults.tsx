@@ -57,8 +57,13 @@ export const SearchResults2: React.FC<SearchResults2Props> = ({ query, selectedP
       contentContainerStyle={{ paddingVertical: space(1), paddingHorizontal: space(2) }}
       data={hits}
       keyExtractor={(item, index) => item.internalID ?? index.toString()}
-      renderItem={({ item }) => (
-        <ElasticSearchResult result={item} selectedPill={selectedPill} query={query} />
+      renderItem={({ item, index }) => (
+        <ElasticSearchResult
+          result={item}
+          selectedPill={selectedPill}
+          query={query}
+          position={index}
+        />
       )}
       initialNumToRender={PAGE_SIZE}
       showsVerticalScrollIndicator={false}

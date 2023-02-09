@@ -1,5 +1,7 @@
+import { ContextModule } from "@artsy/cohesion"
 import { SearchEntity } from "__generated__/ElasticSearchResultsQuery.graphql"
-import { AlgoliaIndexKey, PillType } from "./types"
+import { Schema } from "app/utils/track"
+import { AlgoliaIndexKey, PillType, TappedSearchResultData } from "./types"
 
 export const SEARCH_THROTTLE_INTERVAL = 500
 
@@ -109,4 +111,22 @@ export const ELASTIC_PILL_KEY_TO_SEARCH_ENTITY: SearchEntityMap = {
   fair: "FAIR",
   partner_show: "SHOW",
   PartnerGallery: "GALLERY",
+}
+
+export const objectTabByContextModule: Partial<Record<ContextModule, string>> = {
+  [ContextModule.auctionTab]: "Auction Results",
+  [ContextModule.artistsTab]: "Artworks",
+}
+
+export const tracks = {
+  tappedSearchResult: (data: TappedSearchResultData) => ({
+    context_screen_owner_type: Schema.OwnerEntityTypes.Search,
+    context_screen: Schema.PageNames.Search,
+    query: data.query,
+    position: data.position,
+    selected_object_type: data.type,
+    selected_object_slug: data.slug,
+    context_module: data.contextModule,
+    action: Schema.ActionNames.SelectedResultFromSearchScreen,
+  }),
 }
