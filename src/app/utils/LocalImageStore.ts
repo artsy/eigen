@@ -76,9 +76,10 @@ export const useLocalImage = (
 export const useLocalImageStorage = (
   key: string | null | undefined,
   imageVersions?: any,
-  requestedImageVersion?: string
+  requestedImageVersion?: string,
+  refreshKey?: any
 ) => {
-  return useLocalImagesStorage([{ key, imageVersions }], requestedImageVersion)[0]
+  return useLocalImagesStorage([{ key, imageVersions }], requestedImageVersion, refreshKey)[0]
 }
 
 export const useLocalImagesStorage = (

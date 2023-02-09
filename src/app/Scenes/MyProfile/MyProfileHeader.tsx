@@ -2,12 +2,12 @@ import { MapPinIcon, BriefcaseIcon, SettingsIcon, InstitutionIcon } from "@artsy
 import { MyProfileHeader_me$key } from "__generated__/MyProfileHeader_me.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { useLocalImageStorage } from "app/utils/LocalImageStore"
+import { useRefetch } from "app/utils/relayHelpers"
 import { Avatar, Box, Flex, Text, Touchable, useColor } from "palette"
 import { Image, TouchableOpacity } from "react-native"
-import { useFragment, useRefetchableFragment } from "react-relay"
+import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { normalizeMyProfileBio } from "./utils"
-import { useRefetch } from "app/utils/relayHelpers"
 
 const ICON_SIZE = 14
 

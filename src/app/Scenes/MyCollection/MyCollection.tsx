@@ -213,7 +213,6 @@ const MyCollection: React.FC<{
           relay={relay}
           showSearchBar={showSearchBar}
           setShowSearchBar={setShowSearchBar}
-          myCollectionIsRefreshing={isRefreshing}
         />
         {!!showDevAddButton && (
           <Button

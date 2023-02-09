@@ -10,7 +10,6 @@ import { graphql } from "relay-runtime"
 import { MyCollectionArtworkListItem } from "./MyCollectionArtworkListItem"
 
 export const MyCollectionArtworkList: React.FC<{
-  myCollectionIsRefreshing?: boolean
   myCollectionConnection: MyCollectionArtworkList_myCollectionConnection$key | null
   localSortAndFilterArtworks?: (artworks: any[]) => any[]
   loadMore: RelayPaginationProp["loadMore"]
@@ -19,7 +18,6 @@ export const MyCollectionArtworkList: React.FC<{
   onScroll?: PrefetchFlatListProps<any>["onScroll"]
   scrollEventThrottle?: PrefetchFlatListProps<any>["scrollEventThrottle"]
 }> = ({
-  myCollectionIsRefreshing,
   localSortAndFilterArtworks,
   isLoading,
   loadMore,
@@ -55,12 +53,7 @@ export const MyCollectionArtworkList: React.FC<{
     <Flex pb={Platform.OS === "android" ? 5 : 0}>
       <PrefetchFlatList
         data={preprocessedArtworks}
-        renderItem={({ item }) => (
-          <MyCollectionArtworkListItem
-            artwork={item}
-            myCollectionIsRefreshing={myCollectionIsRefreshing}
-          />
-        )}
+        renderItem={({ item }) => <MyCollectionArtworkListItem artwork={item} />}
         prefetchUrlExtractor={(artwork) => `/my-collection/artwork/${artwork.slug}`}
         prefetchVariablesExtractor={(artwork) => ({
           artworkSlug: artwork.slug,

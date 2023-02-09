@@ -130,7 +130,6 @@ interface PrivateProps {
   loadMore: RelayPaginationProp["loadMore"]
   hasMore: RelayPaginationProp["hasMore"]
   isLoading?: RelayPaginationProp["isLoading"]
-  myCollectionIsRefreshing?: boolean
 }
 
 interface MapperProps extends Omit<PrivateProps, "connection"> {
@@ -200,7 +199,6 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
   contextScreenOwnerSlug,
   contextScreenOwnerId,
   contextScreenOwnerType,
-  myCollectionIsRefreshing,
 }) => {
   const getSectionDimension = (gridWidth: number | null | undefined) => {
     // Setting the dimension to 1 for tests to avoid adjusting the screen width
@@ -332,7 +330,6 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
             updateRecentSearchesOnTap={updateRecentSearchesOnTap}
             {...itemComponentProps}
             height={imgHeight}
-            myCollectionIsRefreshing={myCollectionIsRefreshing}
             {...componentSpecificProps}
           />
         )

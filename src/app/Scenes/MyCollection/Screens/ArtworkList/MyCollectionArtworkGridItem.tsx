@@ -17,13 +17,9 @@ import styled from "styled-components/native"
 
 interface MyCollectionArtworkGridItemProps {
   artwork: MyCollectionArtworkGridItem_artwork$data
-  myCollectionIsRefreshing?: boolean
 }
 
-const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = ({
-  artwork,
-  myCollectionIsRefreshing,
-}) => {
+const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = ({ artwork }) => {
   const { trackEvent } = useTracking()
   const displayImage = artwork.images?.find((i: any) => i?.isDefault) || artwork.images?.[0]
   const { width } = useScreenDimensions()
@@ -84,7 +80,6 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
           aspectRatio={localImage?.aspectRatio || image?.aspectRatio}
           artworkSlug={slug}
           artworkSubmissionId={submissionId}
-          myCollectionIsRefreshing={myCollectionIsRefreshing}
           useRawURL={!!localImage}
         />
         <Box maxWidth={width} mt={1} style={{ flex: 1 }}>

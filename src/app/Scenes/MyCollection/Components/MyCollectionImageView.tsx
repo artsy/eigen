@@ -10,7 +10,6 @@ export interface MyCollectionImageViewProps {
   aspectRatio?: number
   artworkSlug: string
   artworkSubmissionId?: string | null
-  myCollectionIsRefreshing?: boolean
   useRawURL?: boolean
   internalID?: string | null
   versions?: string[]
