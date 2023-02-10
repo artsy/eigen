@@ -1,8 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { useEffect, useState } from "react"
 
-// Expiration time is 5 minutes
-const EXPIRATION_TIME = 1 * 60 * 1000
+// Expiration time is 10 minutes
+const EXPIRATION_TIME = 10 * 60 * 1000
 const IMAGE_KEY_PREFIX = "IMAGES"
 const DEFAULT_IMAGE_VERSION = "large"
 
