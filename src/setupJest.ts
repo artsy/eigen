@@ -92,8 +92,6 @@ jest.mock("@react-native-async-storage/async-storage", () => mockAsyncStorage)
 
 jest.mock("@react-native-community/netinfo", () => mockRNCNetInfo)
 
-jest.mock("react-native-vision-camera", () => {})
-
 jest.mock("react-native-safe-area-context", () => mockSafeAreaContext)
 
 require("jest-fetch-mock").enableMocks()
@@ -197,7 +195,6 @@ jest.mock("@sentry/react-native", () => ({
   setUser() {},
   addBreadcrumb() {},
   withScope() {},
-  Severity: "info",
 }))
 
 // Needing to mock react-native-scrollable-tab-view due to Flow issue
@@ -553,6 +550,7 @@ jest.mock("app/system/relay/defaultEnvironment", () => {
   return {
     getRelayEnvironment: mockedFunction,
     getMockRelayEnvironment: mockedFunction,
+    bottomTabsRelayEnvironment: mockEnvironment,
   }
 })
 const resetMockEnvironment = () => {
