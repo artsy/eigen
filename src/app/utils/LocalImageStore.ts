@@ -2,7 +2,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import { useEffect, useState } from "react"
 
 // Expiration time is 5 minutes
-// TODO: Decrease number
 const EXPIRATION_TIME = 5 * 60 * 1000
 const IMAGE_KEY_PREFIX = "IMAGES"
 const DEFAULT_IMAGE_VERSION = "large"
@@ -45,8 +44,26 @@ const prepareImage = (image: LocalImage, expires: string) => {
   return JSON.stringify(imageToStore)
 }
 
-export const deleteLocalImages = (key: string): Promise<void> => {
+export const deleteLocalImages = (key: string) => {
+  AsyncStorage.getAllKeys()
   return AsyncStorage.removeItem(key)
+}
+
+// Clean all images that have been expired
+export const cleanLocalImages = async () => {
+  const keys = await AsyncStorage.getAllKeys()
+
+  const imageKeys = keys.filter((key) => key.startsWith(IMAGE_KEY_PREFIX))
+
+  imageKeys.forEach(async (key) => {
+    const item = JSON.parse((await AsyncStorage.getItem(key)) || "{}")
+
+    if (!item?.expires || +item?.expires > new Date().getTime()) {
+      return
+    }
+
+    AsyncStorage.removeItem(key)
+  })
 }
 
 export const useLocalImages = (

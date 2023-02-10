@@ -100,7 +100,6 @@ export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarou
       ... on Image {
         __typename
         internalID
-        versions
         url
         largeImageURL: url(version: "larger")
         width

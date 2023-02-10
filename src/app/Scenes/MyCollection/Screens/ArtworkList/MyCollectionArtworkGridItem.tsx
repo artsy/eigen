@@ -8,7 +8,6 @@ import { navigate } from "app/system/navigation/navigate"
 import { useLocalImage } from "app/utils/LocalImageStore"
 import { isPad } from "app/utils/hardware"
 import { Box, Flex, Text } from "palette"
-import { useState, useEffect } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -48,13 +47,6 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
   const isHighDemand = Number((artwork.marketPriceInsights?.demandRank || 0) * 10) >= 9
 
   const showHighDemandIcon = isP1Artist && isHighDemand
-
-  const [timer, setTimer] = useState(0)
-  useEffect(() => {
-    setInterval(() => {
-      setTimer(timer + 1)
-    })
-  }, [])
 
   return (
     <TouchElement
