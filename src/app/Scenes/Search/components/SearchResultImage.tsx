@@ -7,7 +7,8 @@ export const SearchResultImage: React.FC<{
   imageURL: string | null
   resultType: string
   initials?: string | null
-}> = ({ imageURL, resultType, initials }) => {
+  testID?: string
+}> = ({ imageURL, resultType, initials, testID }) => {
   const round = resultType === "Artist"
 
   if (!imageURL && initials) {
@@ -16,6 +17,7 @@ export const SearchResultImage: React.FC<{
 
   return (
     <OpaqueImageView
+      testID={testID}
       useRawURL={resultType === "Article"}
       imageURL={imageURL}
       style={{
