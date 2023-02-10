@@ -53,6 +53,8 @@ export const SearchResults2: React.FC<SearchResults2Props> = ({ query, selectedP
 
   return (
     <FlatList
+      accessibilityRole="list"
+      accessibilityLabel={`${selectedPill.displayName} search results list`}
       ref={flatListRef}
       contentContainerStyle={{ paddingVertical: space(1), paddingHorizontal: space(2) }}
       data={hits}
