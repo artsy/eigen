@@ -28,12 +28,22 @@ describe("ElasticSearchResult", () => {
 
     expect(screen.queryByText("Banksy")).toBeTruthy()
     expect(screen.queryByTestId("search-result-image-Banksy")).toBeTruthy()
+  })
+
+  it("navigates to the artist page when the result is pressed", () => {
+    renderWithWrappers(<ElasticSearchResult {...initialProps} />)
 
     fireEvent.press(screen.getByText("Banksy"))
 
     // navigates to the artist page
     expect(navigate).toHaveBeenCalledTimes(1)
     expect(navigate).toHaveBeenCalledWith("/artist/banksy")
+  })
+
+  it("tracks the tap event", () => {
+    renderWithWrappers(<ElasticSearchResult {...initialProps} />)
+
+    fireEvent.press(screen.getByText("Banksy"))
 
     // tracks the press event
     expect(mockTrackEvent).toHaveBeenCalledTimes(1)
