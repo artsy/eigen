@@ -147,7 +147,7 @@ export const isALocalImage = (imageUrl?: string | null) => {
 // gemini for the actual thumbnail we fetch.
 function getBestImageVersionForThumbnail(imageVersions: readonly string[]) {
   for (const size of imageVersionsSortedBySize) {
-    if (imageVersions.includes(size)) {
+    if (imageVersions?.includes(size)) {
       return size
     }
   }
@@ -180,7 +180,9 @@ const useImageCarouselMedia = (
 
   const localImages = useLocalImages(imageFigures)
 
-  const disableDeepZoom = imageFigures?.some((_, index) => localImages?.[index])
+  const disableDeepZoom = imageFigures?.some(
+    (image, index) => isALocalImage(image.url) || localImages?.[index]
+  )
 
   const images = useMemo(() => {
     const mappedImages =

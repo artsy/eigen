@@ -1,4 +1,4 @@
-import { fireEvent, act } from "@testing-library/react-native"
+import { act, fireEvent } from "@testing-library/react-native"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { myCollectionCreateArtworkMutation } from "__generated__/myCollectionCreateArtworkMutation.graphql"
 import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
@@ -446,6 +446,15 @@ describe("MyCollectionArtworkForm", () => {
                     in: "23",
                     cm: "26",
                   },
+                  images: [
+                    {
+                      internalID: "some-internal-id",
+                      height: 100,
+                      width: 100,
+                      imageURL: "some-image-url",
+                      isDefault: true,
+                    },
+                  ],
                   artistNames: "some-artist-name",
                   category: null,
                   pricePaid: null,
@@ -455,7 +464,6 @@ describe("MyCollectionArtworkForm", () => {
                   editionNumber: null,
                   height: null,
                   medium: null,
-                  images: null,
                   isEdition: null,
                   metric: null,
                   artworkLocation: null,
@@ -479,7 +487,11 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(uploadPhotosMock).toBeCalledWith(fakePhotos)
         expect(addArtworkMock).toBeCalled()
-        expect(storeLocalImageMock).toBeCalledWith(expect.anything(), fakePhotos)
+        expect(storeLocalImageMock).toBeCalledWith("some-internal-id", {
+          height: 10,
+          path: "some-path",
+          width: 10,
+        })
       })
     })
   })
