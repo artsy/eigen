@@ -71,7 +71,11 @@ export const ElasticSearchResult: React.FC<ElasticSearchResultItemProps> = ({
   }
 
   return (
-    <Touchable onPress={onPress}>
+    <Touchable
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={`Search Result for ${result.displayLabel}`}
+    >
       <Flex height={IMAGE_SIZE} flexDirection="row" alignItems="center">
         <SearchResultImage
           imageURL={result.imageUrl}
