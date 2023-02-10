@@ -3,11 +3,18 @@ import { ImageCarouselVimeoVideo } from "app/Scenes/Artwork/Components/ImageCaro
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { isPad } from "app/utils/hardware"
 import React, { useCallback, useContext } from "react"
-import { Animated, FlatList, NativeScrollEvent, NativeSyntheticEvent, Platform } from "react-native"
+import {
+  Animated,
+  FlatList,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  Platform,
+  View,
+} from "react-native"
 import { useScreenDimensions } from "shared/hooks"
-import { ImageCarouselContext, ImageCarouselMedia } from "./ImageCarouselContext"
+import { ImageCarouselContext, ImageCarouselMedia, ImageDescriptor } from "./ImageCarouselContext"
 import { ImageWithLoadingState } from "./ImageWithLoadingState"
-import { findClosestIndex, getMeasurements } from "./geometry"
+import { findClosestIndex, getMeasurements, ImageMeasurements } from "./geometry"
 
 interface ImageCarouselEmbeddedProps {
   cardHeight: number
@@ -149,34 +156,68 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
       accessibilityLabel="Image Carousel"
       initialNumToRender={Math.min(media.length, 20)}
       renderItem={({ item, index }) => {
-        const { ...styles } = measurements[index]
-
-        if (item.__typename === "Video") {
-          return (
-            <ImageCarouselVimeoVideo
-              width={styles.width}
-              height={styles.height}
-              maxHeight={embeddedCardBoundingBox.height}
-              vimeoUrl={item.url!}
-            />
-          )
-        }
-
         return (
-          <ImageWithLoadingState
-            imageURL={item.url!}
-            width={styles.width}
-            height={styles.height}
-            onPress={goFullScreen}
-            // make sure first image loads first
-            highPriority={index === 0}
-            ref={(ref) => {
-              embeddedImageRefs[index] = ref! /* STRICTNESS_MIGRATION */
-            }}
-            style={[styles, images.length === 1 ? { marginTop: 0, marginBottom: 0 } : {}]}
+          <EmbeddedItem
+            item={item}
+            index={index}
+            measurements={measurements}
+            embeddedCardBoundingBox={embeddedCardBoundingBox}
+            goFullScreen={goFullScreen}
+            embeddedImageRefs={embeddedImageRefs}
+            images={images}
           />
         )
       }}
+    />
+  )
+}
+
+const EmbeddedItem: React.FC<{
+  item: ImageCarouselMedia
+  index: number
+  measurements: ImageMeasurements[]
+  embeddedImageRefs: View[]
+  embeddedCardBoundingBox: { width: number; height: number }
+  images: ImageDescriptor[]
+  goFullScreen: () => void
+}> = ({
+  item,
+  index,
+  measurements,
+  embeddedCardBoundingBox,
+  goFullScreen,
+  embeddedImageRefs,
+  images,
+}) => {
+  const { ...styles } = measurements[index]
+
+  if (item.__typename === "Video") {
+    return (
+      <ImageCarouselVimeoVideo
+        width={styles.width}
+        height={styles.height}
+        maxHeight={embeddedCardBoundingBox.height}
+        vimeoUrl={item.url!}
+      />
+    )
+  }
+
+  if (!item.url) {
+    return null
+  }
+
+  return (
+    <ImageWithLoadingState
+      imageURL={item.url!}
+      width={styles.width}
+      height={styles.height}
+      onPress={goFullScreen}
+      // make sure first image loads first
+      highPriority={index === 0}
+      ref={(ref) => {
+        embeddedImageRefs[index] = ref! /* STRICTNESS_MIGRATION */
+      }}
+      style={[styles, images.length === 1 ? { marginTop: 0, marginBottom: 0 } : {}]}
     />
   )
 }

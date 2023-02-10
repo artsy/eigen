@@ -1,31 +1,40 @@
 import { MapPinIcon, BriefcaseIcon, SettingsIcon, InstitutionIcon } from "@artsy/palette-mobile"
 import { MyProfileHeader_me$key } from "__generated__/MyProfileHeader_me.graphql"
 import { navigate } from "app/system/navigation/navigate"
+import { useLocalImageStorage } from "app/utils/LocalImageStore"
+import { useRefetch } from "app/utils/relayHelpers"
 import { Avatar, Box, Flex, Text, Touchable, useColor } from "palette"
-import { useContext } from "react"
 import { Image, TouchableOpacity } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
-import { MyProfileContext } from "./MyProfileProvider"
 import { normalizeMyProfileBio } from "./utils"
 
 const ICON_SIZE = 14
 
 export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props) => {
+  const { fetchKey, refetch } = useRefetch()
   const me = useFragment(myProfileHeaderFragment, props.me)
 
   const color = useColor()
 
-  const { localImage } = useContext(MyProfileContext)
+  const localImage = useLocalImageStorage("profile", undefined, undefined, fetchKey)
 
-  const userProfileImagePath = localImage || me?.icon?.url
+  const userProfileImagePath = localImage?.path || me?.icon?.url
 
   return (
     <Flex pt={2}>
       <Flex flexDirection="row" alignItems="center" px={2}>
         <Box height={45} width={45} borderRadius={25} backgroundColor={color("black10")}>
           <TouchableOpacity
-            onPress={() => navigate("/my-profile/edit")}
+            onPress={() => {
+              navigate("/my-profile/edit", {
+                passProps: {
+                  onSuccess: () => {
+                    refetch()
+                  },
+                },
+              })
+            }}
             testID="profile-image"
             style={{
               height: 45,
@@ -101,7 +110,8 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
 }
 
 const myProfileHeaderFragment = graphql`
-  fragment MyProfileHeader_me on Me {
+  fragment MyProfileHeader_me on Me
+  @refetchable(queryName: "MyProfileHeaderMyProfileHeaderFragmentRefetchQuery") {
     name
     bio
     location {

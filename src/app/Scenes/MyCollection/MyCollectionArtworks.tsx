@@ -8,10 +8,11 @@ import { ZeroState } from "app/Components/States/ZeroState"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
 import { navigate, popToRoot } from "app/system/navigation/navigate"
+import { cleanLocalImages } from "app/utils/LocalImageStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { Button, Flex, Text, useSpace } from "palette"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {
   Alert,
   Image,
@@ -35,7 +36,6 @@ interface MyCollectionArtworksProps {
   relay: RelayPaginationProp
   showSearchBar: boolean
   setShowSearchBar: (show: boolean) => void
-  myCollectionIsRefreshing?: boolean
 }
 
 export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
@@ -43,7 +43,6 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
   relay,
   showSearchBar,
   setShowSearchBar,
-  myCollectionIsRefreshing,
 }) => {
   const { height: screenHeight } = useScreenDimensions()
 
@@ -66,6 +65,10 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
     filterOptions,
     keywordFilter
   )
+
+  useEffect(() => {
+    cleanLocalImages()
+  }, [])
 
   if (artworks.length === 0) {
     return <MyCollectionZeroState />
@@ -151,7 +154,6 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
       {filteredArtworks.length > 0 ? (
         viewOption === "grid" ? (
           <InfiniteScrollMyCollectionArtworksGridContainer
-            myCollectionIsRefreshing={myCollectionIsRefreshing}
             myCollectionConnection={me.myCollectionConnection!}
             hasMore={relay.hasMore}
             loadMore={relay.loadMore}
@@ -168,7 +170,6 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
           />
         ) : (
           <MyCollectionArtworkList
-            myCollectionIsRefreshing={myCollectionIsRefreshing}
             myCollectionConnection={me.myCollectionConnection}
             hasMore={relay.hasMore}
             loadMore={relay.loadMore}

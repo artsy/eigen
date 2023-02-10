@@ -1,7 +1,7 @@
-import { captureMessage } from "@sentry/react-native"
 import { ImageCarousel_figures$data } from "__generated__/ImageCarousel_figures.graphql"
 import { createGeminiUrl } from "app/Components/OpaqueImageView/createGeminiUrl"
 import { useFeatureFlag } from "app/store/GlobalStore"
+import { useLocalImages } from "app/utils/LocalImageStore"
 import { isPad } from "app/utils/hardware"
 import { guardFactory } from "app/utils/types/guardFactory"
 import { Flex } from "palette"
@@ -99,11 +99,13 @@ export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarou
     fragment ImageCarousel_figures on ArtworkFigures @relay(plural: true) {
       ... on Image {
         __typename
+        internalID
         url
         largeImageURL: url(version: "larger")
         width
         height
         imageVersions
+        versions
         isDefault
         deepZoom {
           image: Image {
@@ -145,25 +147,15 @@ export const isALocalImage = (imageUrl?: string | null) => {
 // gemini for the actual thumbnail we fetch.
 function getBestImageVersionForThumbnail(imageVersions: readonly string[]) {
   for (const size of imageVersionsSortedBySize) {
-    if (imageVersions.includes(size)) {
+    if (imageVersions?.includes(size)) {
       return size
     }
-  }
-
-  if (!__DEV__) {
-    captureMessage("No appropriate image size found for artwork (see breadcrumbs for artwork slug)")
-  } else {
-    console.warn("No appropriate image size found!")
   }
 
   // doesn't really matter what we return here, the gemini image url
   // will fail to load and we'll see a gray square. I haven't come accross an image
   // that this will happen for, but better safe than sorry.
   return "normalized"
-}
-
-const imageHasVersions = (image: CarouselImageDescriptor) => {
-  return image.imageVersions && image.imageVersions.length
 }
 
 const useImageCarouselMedia = (
@@ -186,40 +178,49 @@ const useImageCarouselMedia = (
 
   const videoFigures = props.figures?.filter(guardFactory("__typename", "Video"))
 
-  const disableDeepZoom = imageFigures?.some((image) => isALocalImage(image.url))
+  const localImages = useLocalImages(imageFigures)
+
+  const disableDeepZoom = imageFigures?.some(
+    (image, index) => isALocalImage(image.url) || localImages?.[index]
+  )
 
   const images = useMemo(() => {
-    const mappedImages = imageFigures ?? props.staticImages ?? []
+    const mappedImages =
+      imageFigures?.map((image, i) => ({
+        ...image,
+        url: localImages?.[i]?.path || image.url,
+        width: localImages?.[i]?.width || image.width,
+        height: localImages?.[i]?.height || image.height,
+      })) ??
+      props.staticImages ??
+      []
 
     let result = mappedImages
-      .map((image) => {
-        const brokenImage = !image.height || !image.width || !image.url
-
-        if (brokenImage) {
-          return null
-        }
-
+      .map((image, index) => {
         const { width, height } = fitInside(embeddedCardBoundingBox, image as MappedImageDescriptor)
 
         const url = (() => {
-          if (isALocalImage(image.url) || !imageHasVersions(image as CarouselImageDescriptor)) {
+          if (!image.url || localImages?.[index]) {
             return image.url
-          } else {
-            return createGeminiUrl({
-              imageURL: image.url.replace(
-                ":version",
-                getBestImageVersionForThumbnail(image.imageVersions as string[])
-              ),
-              // upscale to match screen resolution
-              width: width * PixelRatio.get(),
-              height: height * PixelRatio.get(),
-            })
           }
+
+          return createGeminiUrl({
+            imageURL: image.url.replace(
+              ":version",
+              getBestImageVersionForThumbnail(image.imageVersions as string[])
+            ),
+            // upscale to match screen resolution
+            width: width * PixelRatio.get(),
+            height: height * PixelRatio.get(),
+          })
         })()
 
-        const largeImageURL = image.largeImageURL ?? image.url ?? null
+        const largeImageURL = localImages?.[index]
+          ? image.url
+          : image.largeImageURL ?? image.url ?? null
 
         return {
+          ...image,
           deepZoom: image?.deepZoom,
           height,
           largeImageURL,
@@ -242,8 +243,11 @@ const useImageCarouselMedia = (
       }
     }
 
+    // Filter out (local) images that are not loaded yet
+    result = result.filter((image) => image?.width && image?.height)
+
     return result
-  }, [props.staticImages, imageFigures]) as ImageCarouselImage[]
+  }, [props.staticImages, imageFigures, localImages]) as ImageCarouselImage[]
 
   // Map video props to the same format thats used for images
   const videos = useMemo(() => {

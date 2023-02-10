@@ -1,4 +1,4 @@
-import { fireEvent, act } from "@testing-library/react-native"
+import { act, fireEvent } from "@testing-library/react-native"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { myCollectionCreateArtworkMutation } from "__generated__/myCollectionCreateArtworkMutation.graphql"
 import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
@@ -11,6 +11,7 @@ import {
 } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/uploadFileToS3"
 import { GlobalStore, __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import * as LocalImageStore from "app/utils/LocalImageStore"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { Image } from "react-native-image-crop-picker"
@@ -445,6 +446,15 @@ describe("MyCollectionArtworkForm", () => {
                     in: "23",
                     cm: "26",
                   },
+                  images: [
+                    {
+                      internalID: "some-internal-id",
+                      height: 100,
+                      width: 100,
+                      imageURL: "some-image-url",
+                      isDefault: true,
+                    },
+                  ],
                   artistNames: "some-artist-name",
                   category: null,
                   pricePaid: null,
@@ -454,7 +464,6 @@ describe("MyCollectionArtworkForm", () => {
                   editionNumber: null,
                   height: null,
                   medium: null,
-                  images: null,
                   isEdition: null,
                   metric: null,
                   artworkLocation: null,
@@ -472,13 +481,17 @@ describe("MyCollectionArtworkForm", () => {
         const addArtworkMock = jest.spyOn(artworkMutations, "myCollectionCreateArtwork")
         addArtworkMock.mockImplementation(() => Promise.resolve(artworkResponse))
 
-        const storeLocalPhotosMock = jest.spyOn(photoUtil, "storeLocalPhotos")
+        const storeLocalImageMock = jest.spyOn(LocalImageStore, "storeLocalImage")
 
         await updateArtwork(formValues, formCheckValues, props)
 
         expect(uploadPhotosMock).toBeCalledWith(fakePhotos)
         expect(addArtworkMock).toBeCalled()
-        expect(storeLocalPhotosMock).toBeCalledWith(expect.anything(), fakePhotos)
+        expect(storeLocalImageMock).toBeCalledWith("some-internal-id", {
+          height: 10,
+          path: "some-path",
+          width: 10,
+        })
       })
     })
   })

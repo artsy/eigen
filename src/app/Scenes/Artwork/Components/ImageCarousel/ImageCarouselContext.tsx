@@ -16,7 +16,7 @@ export type ImageCarouselMedia = ImageCarouselImage | ImageCarouselVideo
 
 export type ImageDescriptor = Pick<
   ImageCarouselImage,
-  "deepZoom" | "height" | "width" | "url" | "largeImageURL"
+  "deepZoom" | "height" | "width" | "url" | "largeImageURL" | "internalID"
 >
 
 export type ImageCarouselAction =
@@ -149,7 +149,7 @@ export function useNewImageCarouselContext({
         }
       },
     }),
-    []
+    [images]
   )
 }
 

@@ -103,7 +103,7 @@ const artworkFragment = graphql`
     attributionClass {
       name
     }
-    images {
+    images(includeAll: true) {
       url: imageURL
     }
     editionNumber

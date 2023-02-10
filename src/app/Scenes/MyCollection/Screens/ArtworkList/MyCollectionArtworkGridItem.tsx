@@ -5,6 +5,7 @@ import { DEFAULT_SECTION_MARGIN } from "app/Components/ArtworkGrids/InfiniteScro
 import HighDemandIcon from "app/Components/Icons/HighDemandIcon"
 import { MyCollectionImageView } from "app/Scenes/MyCollection/Components/MyCollectionImageView"
 import { navigate } from "app/system/navigation/navigate"
+import { useLocalImage } from "app/utils/LocalImageStore"
 import { isPad } from "app/utils/hardware"
 import { Box, Flex, Text } from "palette"
 import { View } from "react-native"
@@ -15,18 +16,14 @@ import styled from "styled-components/native"
 
 interface MyCollectionArtworkGridItemProps {
   artwork: MyCollectionArtworkGridItem_artwork$data
-  myCollectionIsRefreshing?: boolean
 }
 
-const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = ({
-  artwork,
-  myCollectionIsRefreshing,
-}) => {
+const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = ({ artwork }) => {
   const { trackEvent } = useTracking()
-  const imageURL =
-    artwork.images?.find((i: any) => i?.isDefault)?.url ||
-    (artwork.images && artwork.images[0]?.url)
+  const displayImage = artwork.images?.find((i: any) => i?.isDefault) || artwork.images?.[0]
   const { width } = useScreenDimensions()
+
+  const localImage = useLocalImage(displayImage)
 
   const {
     artist,
@@ -71,11 +68,11 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
       <View>
         <MyCollectionImageView
           imageWidth={imageWidth}
-          imageURL={imageURL ?? undefined}
-          aspectRatio={image?.aspectRatio}
+          imageURL={(localImage?.path || displayImage?.url) ?? undefined}
+          aspectRatio={localImage?.aspectRatio || image?.aspectRatio}
           artworkSlug={slug}
           artworkSubmissionId={submissionId}
-          myCollectionIsRefreshing={myCollectionIsRefreshing}
+          useRawURL={!!localImage}
         />
         <Box maxWidth={width} mt={1} style={{ flex: 1 }}>
           <Text lineHeight="18" weight="regular" variant="xs" numberOfLines={2}>
@@ -104,7 +101,8 @@ export const MyCollectionArtworkGridItemFragmentContainer = createFragmentContai
   MyCollectionArtworkGridItem,
   {
     artwork: graphql`
-      fragment MyCollectionArtworkGridItem_artwork on Artwork {
+      fragment MyCollectionArtworkGridItem_artwork on Artwork
+      @argumentDefinitions(includeAllImages: { type: "Boolean", defaultValue: false }) {
         internalID
         artist {
           internalID
@@ -115,12 +113,16 @@ export const MyCollectionArtworkGridItemFragmentContainer = createFragmentContai
         mediumType {
           name
         }
-        images {
+        images(includeAll: $includeAllImages) {
           url
           isDefault
+          internalID
+          versions
         }
-        image {
+        image(includeAll: $includeAllImages) {
+          internalID
           aspectRatio
+          versions
         }
         artistNames
         medium

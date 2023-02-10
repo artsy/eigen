@@ -84,7 +84,7 @@ export const ArtworkAutosuggestResultsPaginationContainer = createPaginationCont
               title
               id
               slug
-              image {
+              image(includeAll: false) {
                 aspectRatio
               }
             }

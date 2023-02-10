@@ -3,7 +3,6 @@ import { UploadSizeLimitExceeded } from "@artsy/cohesion/dist/Schema/Events/Uplo
 import { Spacer, Flex } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { captureMessage } from "@sentry/react-native"
-import { storeLocalPhotos } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionImageUtil"
 import {
   Photo,
   PhotosFormModel,
@@ -100,9 +99,6 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
     GlobalStore.actions.artworkSubmission.submission.setPhotos({
       photos: allPhotos,
     })
-
-    // store photos in asynstorage to be retrieved later when the user goes to My Collection
-    storeLocalPhotos(submission.submissionId, allPhotos)
 
     setFieldValue("photos", allPhotos)
   }

@@ -6,6 +6,7 @@ import { ImageCarouselEmbedded } from "./ImageCarouselEmbedded"
 const contextMock: Parameters<typeof useNewImageCarouselContext>[0] = {
   images: [
     {
+      internalID: "123",
       height: 5,
       width: 5,
       url: "a",
@@ -15,6 +16,7 @@ const contextMock: Parameters<typeof useNewImageCarouselContext>[0] = {
       },
     },
     {
+      internalID: "1234",
       height: 5,
       width: 5,
       url: "b",
@@ -73,6 +75,7 @@ describe("ImageCarouselEmbedded", () => {
     const contextInit: ContextInit = {
       images: [
         {
+          internalID: "123",
           deepZoom: null,
           height: 302,
           url: "https://example.com/image.jpg",

@@ -17,7 +17,6 @@ export function myCollectionCreateArtwork(
                   node {
                     hasMarketPriceInsights
                     ...MyCollectionArtwork_sharedProps @relay(mask: false)
-                    ...MyCollectionArtwork_sharedProps @relay(mask: false)
                   }
                 }
               }

@@ -5,13 +5,11 @@ import {
   MyCollectionArtworkListItem_artwork$key,
 } from "__generated__/MyCollectionArtworkListItem_artwork.graphql"
 import HighDemandIcon from "app/Components/Icons/HighDemandIcon"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
-import { LocalImage, retrieveLocalImages } from "app/utils/LocalImageStore"
+import { useLocalImage } from "app/utils/LocalImageStore"
 import { getImageSquareDimensions } from "app/utils/resizeImage"
 import { Flex, Text, Touchable } from "palette"
-import { useEffect, useState } from "react"
-import { Image as RNImage } from "react-native"
+import OpaqueImageView2 from "palette/elements/OpaqueImageView/OpaqueImageView2"
 import { useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { graphql } from "relay-runtime"
@@ -20,27 +18,16 @@ export const ARTWORK_LIST_IMAGE_SIZE = 80
 
 const ListItemImageView: React.FC<{
   image?: MyCollectionArtworkListItem_artwork$data["image"] | null
-  localImage?: LocalImage | null
-}> = ({ image, localImage }) => {
+}> = ({ image }) => {
+  const localImage = useLocalImage(image, "small")
   // The order of image is important as local images are used before Gemini processed images are ready
-  if (localImage) {
-    return (
-      <RNImage
-        testID="Image-Local"
-        style={{
-          width: ARTWORK_LIST_IMAGE_SIZE,
-          height: ARTWORK_LIST_IMAGE_SIZE,
-        }}
-        resizeMode="contain"
-        source={{ uri: localImage.path }}
-      />
-    )
-  } else if (image?.url) {
+  if (image?.url) {
     const imageDimensions = getImageSquareDimensions(
-      image?.height,
-      image?.width,
+      localImage?.height || image?.height,
+      localImage?.width || image?.width,
       ARTWORK_LIST_IMAGE_SIZE
     )
+
     return (
       <Flex
         width={ARTWORK_LIST_IMAGE_SIZE}
@@ -51,16 +38,17 @@ const ListItemImageView: React.FC<{
         // To align the image with the text we have to add top margin to compensate the line height.
         style={{ marginTop: 3 }}
       >
-        <OpaqueImageView
-          imageURL={image.url}
+        <OpaqueImageView2
+          imageURL={localImage?.path || image.url}
           width={imageDimensions.width}
           height={imageDimensions.height}
-          resizeMode="contain"
           aspectRatio={image.aspectRatio}
+          useRawURL={!!localImage}
         />
       </Flex>
     )
   }
+
   return (
     <Flex
       testID="no-artwork-icon"
@@ -77,30 +65,12 @@ const ListItemImageView: React.FC<{
 
 export const MyCollectionArtworkListItem: React.FC<{
   artwork: MyCollectionArtworkListItem_artwork$key
-  myCollectionIsRefreshing?: boolean
-}> = ({ myCollectionIsRefreshing, ...restProps }) => {
-  const [localImage, setLocalImage] = useState<LocalImage | null>(null)
-
+}> = ({ ...restProps }) => {
   const { trackEvent } = useTracking()
 
   const artwork = useFragment(artworkFragment, restProps.artwork)
 
-  const { artist, date, image, internalID, medium, mediumType, slug, title, submissionId } = artwork
-
-  useEffect(() => {
-    handleImages()
-  }, [myCollectionIsRefreshing])
-
-  const handleImages = async () => {
-    const [localVanillaArtworkImages, localSubmissionArtworkImages] = await Promise.all([
-      retrieveLocalImages(slug),
-      submissionId ? retrieveLocalImages(submissionId) : undefined,
-    ])
-    const localDefaultImage =
-      localVanillaArtworkImages?.[0] ?? localSubmissionArtworkImages?.[0] ?? null
-
-    setLocalImage(localDefaultImage)
-  }
+  const { artist, date, image, internalID, medium, mediumType, slug, title } = artwork
 
   const isP1Artist = artwork.artist?.targetSupply?.isP1
   const isHighDemand = Number((artwork.marketPriceInsights?.demandRank || 0) * 10) >= 9
@@ -119,7 +89,7 @@ export const MyCollectionArtworkListItem: React.FC<{
       }}
     >
       <Flex pb={1} flexDirection="row">
-        <ListItemImageView image={image} localImage={localImage} />
+        <ListItemImageView image={image} />
 
         <Flex pl={15} flex={1} style={{ marginTop: 3 }}>
           {!!artist?.name && (
@@ -171,8 +141,10 @@ const artworkFragment = graphql`
     mediumType {
       name
     }
-    image {
+    image(includeAll: true) {
+      internalID
       url(version: "small")
+      versions
       aspectRatio
       width
       height

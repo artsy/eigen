@@ -38,7 +38,7 @@ export function fitInside(
 /**
  * Represents geometric data to position images on the carousel rail
  */
-interface ImageMeasurements {
+export interface ImageMeasurements {
   width: number
   height: number
   marginLeft: number
@@ -78,12 +78,12 @@ export function getMeasurements({
         : result[i - 1].cumulativeScrollOffset + boundingBox.width - (marginHorizontal - marginLeft)
 
     result.push({
-      width,
-      height,
-      marginLeft: marginLeft + paddingLeft,
-      marginRight: marginHorizontal,
-      marginTop: marginVertical,
-      marginBottom: marginVertical,
+      width: width || 0,
+      height: height || 0,
+      marginLeft: marginLeft + paddingLeft || 0,
+      marginRight: marginHorizontal || 0,
+      marginTop: marginVertical || 0,
+      marginBottom: marginVertical || 0,
       cumulativeScrollOffset: cumulativeScrollOffset + paddingLeft,
     })
   }
