@@ -32,23 +32,6 @@ export const getLocalImage = async (key: string): Promise<LocalImage | null> => 
   return JSON.parse(imageJSONString as string)
 }
 
-const prepareImage = (image: LocalImage, expires: string) => {
-  const imageToStore: LocalImage = {
-    expires,
-    path: image.path,
-    height: image.height,
-    width: image.width,
-    aspectRatio: image.width / (image.height || 1),
-  }
-
-  return JSON.stringify(imageToStore)
-}
-
-export const deleteLocalImages = (key: string) => {
-  AsyncStorage.getAllKeys()
-  return AsyncStorage.removeItem(key)
-}
-
 // Clean all images that have been expired
 export const cleanLocalImages = async () => {
   const keys = await AsyncStorage.getAllKeys()
@@ -58,16 +41,27 @@ export const cleanLocalImages = async () => {
   imageKeys.forEach(async (key) => {
     const item = JSON.parse((await AsyncStorage.getItem(key)) || "{}")
 
-    console.log("cleanTry", item.expires)
     if (!item?.expires || +item?.expires > new Date().getTime()) {
       return
     }
-    console.log("cleanTry", item.expires, "success")
 
     AsyncStorage.removeItem(key)
   })
 }
 
+/**
+ * Returns the local image if it is stored and the requested image version is not available
+ */
+export const useLocalImage = (
+  image: { internalID: string | null; versions?: any } | null | undefined,
+  requestedImageVersion?: string
+) => {
+  return useLocalImageStorage(image?.internalID, image?.versions, requestedImageVersion)
+}
+
+/**
+ * Returns local images if they are stored and the requested image version is not available
+ */
 export const useLocalImages = (
   images: ({ internalID: string | null; versions?: any } | null | undefined)[] | null | undefined,
   requestedImageVersion?: string,
@@ -78,15 +72,6 @@ export const useLocalImages = (
     requestedImageVersion,
     refreshKey
   )
-}
-/**
- * Returns the local image if it is stored and the requested image version is not available
- */
-export const useLocalImage = (
-  image: { internalID: string | null; versions?: any } | null | undefined,
-  requestedImageVersion?: string
-) => {
-  return useLocalImageStorage(image?.internalID, image?.versions, requestedImageVersion)
 }
 
 /**
@@ -140,3 +125,15 @@ export const useLocalImagesStorage = (
 }
 
 const isImageVersionAvailable = (versions: any[], version: string) => !!versions?.includes(version)
+
+const prepareImage = (image: LocalImage, expires: string) => {
+  const imageToStore: LocalImage = {
+    expires,
+    path: image.path,
+    height: image.height,
+    width: image.width,
+    aspectRatio: image.width / (image.height || 1),
+  }
+
+  return JSON.stringify(imageToStore)
+}
