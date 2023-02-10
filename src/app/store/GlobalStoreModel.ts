@@ -11,7 +11,7 @@ import {
   getSubmissionModel,
   SubmissionModel,
 } from "app/Scenes/SellWithArtsy/utils/submissionModelState"
-import { ArtworkPageableModel, getArtworkPageableModel } from "app/store/ArtworkPageableModel"
+import { PageableModel, getPageableModel } from "app/store/PageableModel"
 import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy"
 import { ArtsyPrefsModel, getArtsyPrefsModel } from "./ArtsyPrefsModel"
 import { AuthModel, getAuthModel } from "./AuthModel"
@@ -38,13 +38,13 @@ interface GlobalStoreStateModel {
   }
 
   artsyPrefs: ArtsyPrefsModel
-  artworkPageable: ArtworkPageableModel
   artworkSubmission: SubmissionModel
   auth: AuthModel
   bottomTabs: BottomTabsModel
   devicePrefs: DevicePrefsModel
   myCollection: MyCollectionModel
   native: NativeModel
+  pageable: PageableModel
   pendingPushNotification: PendingPushNotificationModel
   recentPriceRanges: RecentPriceRangesModel
   requestedPriceEstimates: RequestedPriceEstimatesModel
@@ -124,12 +124,12 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
 
   // APP MODULE STATE
   artsyPrefs: getArtsyPrefsModel(),
-  artworkPageable: getArtworkPageableModel(),
   artworkSubmission: getSubmissionModel(),
   auth: getAuthModel(),
   bottomTabs: getBottomTabsModel(),
   devicePrefs: getDevicePrefsModel(),
   myCollection: getMyCollectionModel(),
+  pageable: getPageableModel(),
   pendingPushNotification: getPendingPushNotificationModel(),
   recentPriceRanges: getRecentPriceRangesModel(),
   requestedPriceEstimates: getRequestedPriceEstimatesModel(),

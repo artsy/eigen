@@ -160,16 +160,14 @@ interface ArtworkProps {
 
 const Artwork: React.FC<ArtworkProps> = React.memo(
   (props) => {
-    const pageableArtworkSlugs = GlobalStore.useAppState(
-      (state) => state.artworkPageable.pageableArtworkSlugs
-    )
+    const pageableSlugs = GlobalStore.useAppState((state) => state.pageable.pageableSlugs)
 
     const screens = useMemo(() => {
-      return pageableArtworkSlugs.map((slug) => ({
+      return pageableSlugs.map((slug) => ({
         name: slug,
         Component: <ArtworkQueryRenderer {...props} artworkID={slug} isVisible />,
       }))
-    }, [pageableArtworkSlugs])
+    }, [pageableSlugs])
 
     // Check to see if we're within the context of an artwork rail and show
     // pager view.

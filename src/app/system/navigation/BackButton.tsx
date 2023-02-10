@@ -1,4 +1,5 @@
 import { CloseIcon, ChevronIcon } from "@artsy/palette-mobile"
+import { GlobalStore } from "app/store/GlobalStore"
 import { useEffect, useRef } from "react"
 import { Animated, TouchableOpacity, ViewStyle } from "react-native"
 import { useFirstMountState } from "react-use/esm/useFirstMountState"
@@ -13,6 +14,7 @@ export const BackButton: React.FC<{
 }> = ({ onPress = goBack, show = true, showCloseIcon = false, style }) => {
   const isFirstRender = useFirstMountState()
   const opacity = useRef(new Animated.Value(show ? 1 : 0)).current
+
   useEffect(() => {
     if (!isFirstRender) {
       Animated.spring(opacity, {
@@ -21,6 +23,12 @@ export const BackButton: React.FC<{
       }).start()
     }
   }, [show])
+
+  const handleBackButtonPress = () => {
+    GlobalStore.actions.pageable.resetPageableSlugs()
+    onPress()
+  }
+
   return (
     <Animated.View
       pointerEvents={show ? undefined : "none"}
@@ -39,7 +47,7 @@ export const BackButton: React.FC<{
       ]}
     >
       <TouchableOpacity
-        onPress={() => onPress()}
+        onPress={handleBackButtonPress}
         style={{ width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}
       >
         {showCloseIcon ? (

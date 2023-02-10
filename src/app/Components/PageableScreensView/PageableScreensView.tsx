@@ -1,6 +1,6 @@
 import { PageableLazyScreen } from "app/Components/PageableScreensView/PageableLazyScreen"
+import { Flex } from "palette"
 import { useState } from "react"
-import { StyleSheet, View } from "react-native"
 import PagerView, { PagerViewProps } from "react-native-pager-view"
 import {
   PageableScreenEntity,
@@ -32,7 +32,7 @@ export const PageableScreensView: React.FC<PageableScreensViewProps> = (props) =
   return (
     <PageableScreensContext.Provider value={context}>
       <PagerView
-        style={styles.container}
+        style={{ flex: 1 }}
         overScrollMode="never"
         onPageSelected={handlePageSelected}
         initialPage={activeScreenIndex}
@@ -41,22 +41,12 @@ export const PageableScreensView: React.FC<PageableScreensViewProps> = (props) =
           const shouldRender = Math.abs(activeScreenIndex - screenIndex) <= prefetchScreensCount
 
           return (
-            <View style={styles.page} key={screen.name}>
+            <Flex width="100%" height="100%" key={screen.name}>
               <PageableLazyScreen screen={screen} shouldRender={shouldRender} />
-            </View>
+            </Flex>
           )
         })}
       </PagerView>
     </PageableScreensContext.Provider>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  page: {
-    width: "100%",
-    height: "100%",
-  },
-})

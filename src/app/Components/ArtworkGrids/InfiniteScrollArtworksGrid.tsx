@@ -14,6 +14,7 @@ import { PAGE_SIZE } from "app/Components/constants"
 import { MyCollectionArtworkGridItemFragmentContainer } from "app/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkGridItem"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
+import { usePageableArtworks } from "app/utils/usePageableArtworks"
 import { Box, Button, Flex, Spinner } from "palette"
 import React, { useState } from "react"
 import {
@@ -200,6 +201,9 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
   contextScreenOwnerId,
   contextScreenOwnerType,
 }) => {
+  const artworks = extractNodes(connection)
+  const { enablePageableArtworks } = usePageableArtworks({ artworks })
+
   const getSectionDimension = (gridWidth: number | null | undefined) => {
     // Setting the dimension to 1 for tests to avoid adjusting the screen width
     if (__TEST__) {
@@ -243,7 +247,6 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
 
   const getSectionedArtworks = () => {
     const sectionRatioSums: number[] = []
-    const artworks = extractNodes(connection)
     const sectionedArtworksArray: Array<typeof artworks> = []
     const columnCount = sectionCount ?? 0
 
@@ -292,7 +295,6 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
       height: itemMargin,
     }
 
-    const artworks = extractNodes(connection)
     const sectionedArtworks = getSectionedArtworks()
     const sections: JSX.Element[] = []
     const columnCount = sectionCount ?? 0
@@ -331,6 +333,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
             {...itemComponentProps}
             height={imgHeight}
             {...componentSpecificProps}
+            onEnablePageableArtworks={enablePageableArtworks}
           />
         )
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.

@@ -7,6 +7,7 @@ import { MyCollectionImageView } from "app/Scenes/MyCollection/Components/MyColl
 import { navigate } from "app/system/navigation/navigate"
 import { useLocalImage } from "app/utils/LocalImageStore"
 import { isPad } from "app/utils/hardware"
+import { PageableArtworksEvents } from "app/utils/usePageableArtworks"
 import { Box, Flex, Text } from "palette"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -14,11 +15,14 @@ import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
 import styled from "styled-components/native"
 
-interface MyCollectionArtworkGridItemProps {
+interface MyCollectionArtworkGridItemProps extends PageableArtworksEvents {
   artwork: MyCollectionArtworkGridItem_artwork$data
 }
 
-const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = ({ artwork }) => {
+const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = ({
+  artwork,
+  onEnablePageableArtworks,
+}) => {
   const { trackEvent } = useTracking()
   const displayImage = artwork.images?.find((i: any) => i?.isDefault) || artwork.images?.[0]
   const { width } = useScreenDimensions()
@@ -28,14 +32,14 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
   const {
     artist,
     artistNames,
+    date,
+    image,
     internalID,
     medium,
     mediumType,
     slug,
-    title,
-    image,
-    date,
     submissionId,
+    title,
   } = artwork
 
   // consistent with how sections are derived in InfiniteScrollArtworksGrid
@@ -52,6 +56,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
     <TouchElement
       onPress={() => {
         if (!!artist) {
+          onEnablePageableArtworks?.()
           trackEvent(tracks.tappedCollectedArtwork(internalID, slug))
           navigate("/my-collection/artwork/" + slug, {
             passProps: {

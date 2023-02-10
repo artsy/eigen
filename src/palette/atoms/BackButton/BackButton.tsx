@@ -19,7 +19,7 @@ export const BackButton: React.FC<BackButtonProps> = ({
   hitSlop,
 }) => {
   const handleOnBackPress = () => {
-    GlobalStore.actions.artworkPageable.resetPageableArtworkSlugs()
+    GlobalStore.actions.pageable.resetPageableSlugs()
     onPress?.()
   }
 
@@ -43,7 +43,7 @@ export const BackButton: React.FC<BackButtonProps> = ({
 
 export const BackButtonWithBackground: React.FC<BackButtonProps> = ({ onPress, showX = false }) => {
   const handleOnBackPress = () => {
-    GlobalStore.actions.artworkPageable.resetPageableArtworkSlugs()
+    GlobalStore.actions.pageable.resetPageableSlugs()
     onPress?.()
   }
 

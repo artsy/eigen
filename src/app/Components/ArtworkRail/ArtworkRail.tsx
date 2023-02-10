@@ -4,9 +4,9 @@ import { SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$data } from
 import { SmallArtworkRail_artworks$data } from "__generated__/SmallArtworkRail_artworks.graphql"
 import { ArtworkCardSize, ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
-import { GlobalStore } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
-import React, { ReactElement, useEffect } from "react"
+import { usePageableArtworks } from "app/utils/usePageableArtworks"
+import React, { ReactElement } from "react"
 import { FlatList } from "react-native"
 
 const MAX_NUMBER_OF_ARTWORKS = 30
@@ -44,11 +44,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
   showSaveIcon = false,
   trackingContextScreenOwnerType,
 }) => {
-  const pageableArtworkSlugs = artworks.map((artwork) => artwork.slug)
-
-  useEffect(() => {
-    // GlobalStore.actions.artworkPageable.setPageableArtworkSlugs(pageableArtworkSlugs)
-  }, [pageableArtworkSlugs])
+  const { enablePageableArtworks } = usePageableArtworks<{ slug: string }>({ artworks })
 
   return (
     <PrefetchFlatList
@@ -72,7 +68,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
           hidePartnerName
           hideArtistName={hideArtistName}
           onPress={() => {
-            GlobalStore.actions.artworkPageable.setPageableArtworkSlugs(pageableArtworkSlugs)
+            enablePageableArtworks()
             onPress?.(item, index)
           }}
           showSaveIcon={showSaveIcon}

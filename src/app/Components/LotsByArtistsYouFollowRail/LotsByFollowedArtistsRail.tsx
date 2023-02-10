@@ -6,6 +6,7 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToEdge } from "app/utils/isCloseToEdge"
+import { usePageableArtworks } from "app/utils/usePageableArtworks"
 import { Flex } from "palette"
 import React, { useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -24,6 +25,8 @@ export const LotsByFollowedArtistsRail: React.FC<Props> = ({ title, me, relay, m
 
   const artworks = extractNodes(me?.lotsByFollowedArtistsConnection)
   const hasArtworks = artworks?.length
+
+  const { enablePageableArtworks } = usePageableArtworks({ artworks })
 
   if (!hasArtworks) {
     return null
@@ -58,6 +61,7 @@ export const LotsByFollowedArtistsRail: React.FC<Props> = ({ title, me, relay, m
         renderItem={({ item: artwork }) => (
           <SaleArtworkTileRailCardContainer
             onPress={() => {
+              enablePageableArtworks()
               navigate(artwork.href!)
             }}
             saleArtwork={artwork.saleArtwork!}
@@ -95,6 +99,7 @@ export const LotsByFollowedArtistsRailContainer = createPaginationContainer(
             node {
               id
               href
+              slug
               saleArtwork {
                 ...SaleArtworkTileRailCard_saleArtwork
               }

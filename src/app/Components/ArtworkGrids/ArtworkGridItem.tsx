@@ -16,6 +16,7 @@ import {
   RandomNumberGenerator,
 } from "app/utils/placeholders"
 import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
+import { PageableArtworksEvents } from "app/utils/usePageableArtworks"
 import {
   Box,
   Flex,
@@ -33,7 +34,7 @@ import { LotProgressBar } from "./LotProgressBar"
 
 const SAVE_ICON_SIZE = 22
 
-export interface ArtworkProps {
+export interface ArtworkProps extends PageableArtworksEvents {
   artwork: ArtworkGridItem_artwork$data
   /** Overrides onPress and prevents the default behaviour. */
   onPress?: (artworkID: string) => void
@@ -59,12 +60,12 @@ export interface ArtworkProps {
   /** Show the lot number (Lot 213) */
   showLotLabel?: boolean
   /** styles for each field: allows for customization of each field */
-  urgencyTagTextStyle?: TextProps
-  lotLabelTextStyle?: TextProps
   artistNamesTextStyle?: TextProps
-  titleTextStyle?: TextProps
-  saleInfoTextStyle?: TextProps
+  lotLabelTextStyle?: TextProps
   partnerNameTextStyle?: TextProps
+  saleInfoTextStyle?: TextProps
+  titleTextStyle?: TextProps
+  urgencyTagTextStyle?: TextProps
   /** allows for artwork to be added to recent searches */
   updateRecentSearchesOnTap?: boolean
 }
@@ -72,6 +73,7 @@ export interface ArtworkProps {
 export const Artwork: React.FC<ArtworkProps> = ({
   artwork,
   onPress,
+  onEnablePageableArtworks,
   trackTap,
   itemIndex,
   height,
@@ -163,11 +165,14 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const handleTap = () => {
     if (onPress) {
-      return onPress(artwork.slug)
+      onEnablePageableArtworks?.()
+      onPress(artwork.slug)
+      return
     }
 
     addArtworkToRecentSearches()
     trackArtworkTap()
+    onEnablePageableArtworks?.()
     navigate(artwork.href!)
   }
 

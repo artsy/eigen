@@ -10,12 +10,13 @@ import { saleMessageOrBidInfo } from "app/Components/ArtworkGrids/ArtworkGridIte
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
 import { getImageSquareDimensions } from "app/utils/resizeImage"
+import { PageableArtworksEvents } from "app/utils/usePageableArtworks"
 import { Flex, Text, Touchable } from "palette"
 import React, { useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
-interface Props {
+interface Props extends PageableArtworksEvents {
   artwork: SaleArtworkListItem_artwork$data
   contextScreenOwnerType?: ScreenOwnerType
   contextScreenOwnerId?: string
@@ -24,11 +25,16 @@ interface Props {
 
 const CONTAINER_HEIGHT = 100
 
-export const SaleArtworkListItem: React.FC<Props> = ({ artwork, contextScreenOwnerType }) => {
+export const SaleArtworkListItem: React.FC<Props> = ({
+  artwork,
+  contextScreenOwnerType,
+  onEnablePageableArtworks,
+}) => {
   const itemRef = useRef<any>()
   const tracking = useTracking()
 
   const onPress = () => {
+    onEnablePageableArtworks?.()
     trackArtworkTap()
     navigate(artwork.href!)
   }

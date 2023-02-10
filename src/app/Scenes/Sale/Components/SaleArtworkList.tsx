@@ -5,6 +5,7 @@ import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
 import { PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
+import { usePageableArtworks } from "app/utils/usePageableArtworks"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -44,6 +45,8 @@ export const SaleArtworkList: React.FC<Props> = ({
 
   const artworks = extractNodes(connection)
 
+  const { enablePageableArtworks } = usePageableArtworks({ artworks })
+
   return (
     <FlatList
       data={artworks}
@@ -57,6 +60,7 @@ export const SaleArtworkList: React.FC<Props> = ({
           artwork={item}
           key={item.id}
           contextScreenOwnerType={contextScreenOwnerType}
+          onEnablePageableArtworks={enablePageableArtworks}
         />
       )}
       keyExtractor={(item) => item.id!}
@@ -77,6 +81,7 @@ export const SaleArtworkListContainer = createFragmentContainer(SaleArtworkList,
       edges {
         node {
           id
+          slug
           ...SaleArtworkListItem_artwork
         }
       }
