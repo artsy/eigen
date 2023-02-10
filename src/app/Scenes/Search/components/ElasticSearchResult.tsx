@@ -13,7 +13,7 @@ import { Flex, Touchable } from "palette"
 import { useTracking } from "react-tracking"
 import { IMAGE_SIZE, SearchResultImage } from "./SearchResultImage"
 
-interface ElasticSearchResultItemProps {
+export interface ElasticSearchResultItemProps {
   result: ElasticSearchResultInterface
   selectedPill: PillType
   query?: string
@@ -73,7 +73,11 @@ export const ElasticSearchResult: React.FC<ElasticSearchResultItemProps> = ({
   return (
     <Touchable onPress={onPress}>
       <Flex height={IMAGE_SIZE} flexDirection="row" alignItems="center">
-        <SearchResultImage imageURL={result.imageUrl} resultType={selectedPill.displayName} />
+        <SearchResultImage
+          imageURL={result.imageUrl}
+          resultType={selectedPill.displayName}
+          testID={`search-result-image-${result.displayLabel}`}
+        />
 
         <Spacer x={1} />
 
