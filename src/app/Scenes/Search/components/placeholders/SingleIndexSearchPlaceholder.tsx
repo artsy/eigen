@@ -15,7 +15,7 @@ export const SingleIndexSearchPlaceholder: React.FC<SingleIndexSearchPlaceholder
   hasRoundedImages,
 }) => (
   <ProvidePlaceholderContext>
-    <Box px={2}>
+    <Box px={2} testID="SingleIndexSearchPlaceholder">
       {times(20).map((index) => (
         <Flex key={`algolia-search-placeholder-${index}`} flexDirection="row" my={1}>
           <PlaceholderBox
