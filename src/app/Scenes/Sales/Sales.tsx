@@ -29,17 +29,8 @@ export const SalesScreenQuery = graphql`
     }
   }
 `
-
-export const Sales: React.FC = () => {
-  const data = useLazyLoadQuery<SalesQuery>(
-    SalesScreenQuery,
-    {},
-    {
-      fetchPolicy: "store-and-network",
-      networkCacheConfig: { force: true },
-    }
-  )
-
+// TODO: change me to be ok, testing purposes
+export const Sales: React.FC = (data: any) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   // using max_value because we want CurrentlyRunningAuctions & UpcomingAuctions
@@ -98,6 +89,15 @@ export const Sales: React.FC = () => {
 }
 
 export const SalesScreen = () => {
+  const data = useLazyLoadQuery<SalesQuery>(
+    SalesScreenQuery,
+    {},
+    {
+      fetchPolicy: "store-and-network",
+      networkCacheConfig: { force: true },
+    }
+  )
+
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.auctions })}
@@ -111,7 +111,7 @@ export const SalesScreen = () => {
           </PageWithSimpleHeader>
         }
       >
-        <Sales />
+        <Sales data={data} />
       </Suspense>
     </ProvideScreenTrackingWithCohesionSchema>
   )

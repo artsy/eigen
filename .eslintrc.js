@@ -12,6 +12,7 @@ module.exports = {
     "testing-library",
     "unused-imports",
     "no-autofix",
+    "artsy",
   ],
   extends: [
     "eslint:recommended",
@@ -41,7 +42,7 @@ module.exports = {
     /**
      * Errors
      */
-
+    "artsy/no-uselazyloadquery-inside-suspense": ERR,
     "import/order": [
       ERR,
       {
