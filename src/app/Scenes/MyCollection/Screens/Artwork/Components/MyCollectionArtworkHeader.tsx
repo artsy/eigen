@@ -41,7 +41,7 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
           bg={color("black5")}
           height={dimensions.height / 3.5}
           justifyContent="center"
-          mx={20}
+          mx={2}
         >
           <NoImageIcon fill="black60" mx="auto" />
         </Flex>
