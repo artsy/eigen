@@ -12549,6 +12549,9 @@ type Partner implements Node {
   # A type-specific ID likely used as a database ID.
   internalID: ID!
   isDefaultProfilePublic: Boolean
+
+  # If the partner supports inquiries
+  isInquireable: Boolean!
   isLinkable: Boolean
   isPreQualify: Boolean
 
