@@ -14,20 +14,22 @@ interface OrderHistoryRowProps {
 
 export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
   const [lineItem] = extractNodes(order?.lineItems)
-  const { artwork } = lineItem || {}
+  const { artwork, artworkVersion } = lineItem || {}
   const trackingUrl = getTrackingUrl(lineItem)
   const orderStatus = getOrderStatus(order.state as OrderState, lineItem)
   const orderIsInactive = orderStatus === "canceled" || orderStatus === "refunded"
   const isViewOffer = orderStatus === "pending" && order?.mode === "OFFER"
+
+  const artworkImageUrl = artworkVersion?.image?.resized?.url
 
   return (
     <Flex width="100%" testID="order-container">
       <Flex mb={1}>
         <Flex flexDirection="row" justifyContent="space-between">
           <Flex justifyContent="center" testID="image-container" mr={2}>
-            {!!artwork?.image ? (
+            {!!artworkImageUrl ? (
               <Image
-                source={{ uri: artwork?.image?.resized?.url }}
+                source={{ uri: artworkImageUrl }}
                 style={{ height: 50, width: 50 }}
                 testID="image"
               />
@@ -119,12 +121,14 @@ export const OrderHistoryRowContainer = createFragmentContainer(OrderHistoryRow,
               trackingUrl
               trackingNumber
             }
-            artwork {
+            artworkVersion {
               image {
                 resized(width: 55) {
                   url
                 }
               }
+            }
+            artwork {
               partner {
                 name
               }
