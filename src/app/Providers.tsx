@@ -1,6 +1,7 @@
+import { Theme } from "@artsy/palette-mobile"
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { Spinner, Theme } from "palette"
+import { Spinner, Theme as LegacyTheme } from "palette"
 import { Component, Suspense } from "react"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { SafeAreaProvider } from "react-native-safe-area-context"
@@ -50,6 +51,7 @@ export const Providers = ({
       SafeAreaProvider,
       ProvideScreenDimensions, // uses: SafeAreaProvider
       !skipRelay && RelayDefaultEnvProvider,
+      simpleTheme ? LegacyTheme : LegacyThemeProvider, // uses: GlobalStoreProvider
       simpleTheme ? Theme : ThemeProvider, // uses: GlobalStoreProvider
       !skipRetryErrorBoundary && RetryErrorBoundary,
       !skipSuspense && SuspenseProvider,
@@ -87,12 +89,24 @@ class PureWrapper extends Component {
 }
 
 // theme with dark mode support
+function LegacyThemeProvider({ children }: { children?: React.ReactNode }) {
+  const supportDarkMode = useFeatureFlag("ARDarkModeSupport")
+  const darkMode = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
+
+  return (
+    <LegacyTheme theme={supportDarkMode ? (darkMode === "dark" ? "v5dark" : "v5") : undefined}>
+      {children}
+    </LegacyTheme>
+  )
+}
+
+// theme with dark mode support
 function ThemeProvider({ children }: { children?: React.ReactNode }) {
   const supportDarkMode = useFeatureFlag("ARDarkModeSupport")
   const darkMode = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
 
   return (
-    <Theme theme={supportDarkMode ? (darkMode === "dark" ? "v5dark" : "v5") : undefined}>
+    <Theme theme={supportDarkMode ? (darkMode === "dark" ? "v5dark" : "v5light") : undefined}>
       {children}
     </Theme>
   )
