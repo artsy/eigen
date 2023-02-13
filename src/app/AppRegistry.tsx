@@ -12,6 +12,7 @@ import { PageableScreensView } from "app/Components/PageableScreensView/Pageable
 import { SearchScreenQuery } from "app/Scenes/Search/Search"
 import { SearchScreenQuery as SearchScreenQuery2 } from "app/Scenes/Search/Search2"
 import { SearchSwitchContainer } from "app/Scenes/Search/SearchSwitchContainer"
+import { PagableParams } from "app/utils/usePageableArtworks"
 import React, { useMemo } from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
@@ -156,11 +157,12 @@ addTrackingProvider("console", ConsoleTrackingProvider)
 interface ArtworkProps {
   artworkID: string
   isVisible: boolean
+  pagable: PagableParams
 }
 
 const Artwork: React.FC<ArtworkProps> = React.memo(
   (props) => {
-    const pageableSlugs = GlobalStore.useAppState((state) => state.pageable.pageableSlugs)
+    const pageableSlugs = props?.pagable?.slugs ?? []
 
     const screens = useMemo(() => {
       return pageableSlugs.map((slug) => ({

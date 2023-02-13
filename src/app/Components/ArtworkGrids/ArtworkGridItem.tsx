@@ -16,7 +16,7 @@ import {
   RandomNumberGenerator,
 } from "app/utils/placeholders"
 import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
-import { PageableArtworksEvents } from "app/utils/usePageableArtworks"
+import { PagableParams, PageableArtworksEvents } from "app/utils/usePageableArtworks"
 import {
   Box,
   Flex,
@@ -37,7 +37,7 @@ const SAVE_ICON_SIZE = 22
 export interface ArtworkProps extends PageableArtworksEvents {
   artwork: ArtworkGridItem_artwork$data
   /** Overrides onPress and prevents the default behaviour. */
-  onPress?: (artworkID: string) => void
+  onPress?: (artworkID: string, params: PagableParams) => void
   trackingFlow?: string
   contextModule?: string
   /** Pass Tap to override generic ing, used for home tracking in rails */
@@ -73,7 +73,7 @@ export interface ArtworkProps extends PageableArtworksEvents {
 export const Artwork: React.FC<ArtworkProps> = ({
   artwork,
   onPress,
-  onEnablePageableArtworks,
+  pagableParams,
   trackTap,
   itemIndex,
   height,
@@ -165,15 +165,17 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const handleTap = () => {
     if (onPress) {
-      onEnablePageableArtworks?.()
-      onPress(artwork.slug)
+      onPress(artwork.slug, pagableParams)
       return
     }
 
     addArtworkToRecentSearches()
     trackArtworkTap()
-    onEnablePageableArtworks?.()
-    navigate(artwork.href!)
+    navigate(artwork.href!, {
+      passProps: {
+        pagable: pagableParams,
+      },
+    })
   }
 
   const trackArtworkTap = () => {

@@ -154,7 +154,7 @@ export class GenericArtworksGrid extends React.Component<Props & PropsForArtwork
             itemIndex={itemIndex}
             trackTap={trackTap}
             {...this.props}
-            onEnablePageableArtworks={this.props.onEnablePageableArtworks}
+            pagableParams={this.props.pagableParams}
           />
         )
         if (row < artworks.length - 1) {

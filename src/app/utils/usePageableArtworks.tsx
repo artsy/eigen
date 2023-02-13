@@ -4,8 +4,12 @@ interface UsePageableArtworksProps<T> {
   artworks: ReadonlyArray<T>
 }
 
+export interface PagableParams {
+  slugs: string[]
+}
+
 export interface PageableArtworksEvents {
-  onEnablePageableArtworks?: () => void
+  pagableParams: PagableParams
 }
 
 export function usePageableArtworks<T extends { slug: string }>(

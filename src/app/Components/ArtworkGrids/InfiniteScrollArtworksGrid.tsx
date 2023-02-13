@@ -333,7 +333,9 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
             {...itemComponentProps}
             height={imgHeight}
             {...componentSpecificProps}
-            onEnablePageableArtworks={enablePageableArtworks}
+            pagableParams={{
+              slugs: artworks.map((artwork) => artwork.slug),
+            }}
           />
         )
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.
