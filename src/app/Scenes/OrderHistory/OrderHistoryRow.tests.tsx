@@ -110,6 +110,9 @@ describe("Order history row", () => {
                   ...mockOrder.lineItems.edges[0].node.artwork,
                   image: null,
                 },
+                artworkVersion: {
+                  image: null,
+                },
               },
             },
           ],
