@@ -1,15 +1,15 @@
-import { useSpace } from "@artsy/palette-mobile"
+import { Flex, Spinner, useSpace } from "@artsy/palette-mobile"
 import { ArtQuizExploreArtworksQuery } from "__generated__/ArtQuizExploreArtworksQuery.graphql"
 import { ArtQuizResultsTabs_me$data } from "__generated__/ArtQuizResultsTabs_me.graphql"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractNodes } from "app/utils/extractNodes"
 import { uniqBy } from "lodash"
-import { useMemo } from "react"
+import { Suspense, useMemo } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 
-export const ArtQuizExploreArtworks = ({
+const ArtQuizExploreArtworksContent = ({
   savedArtworks,
 }: {
   savedArtworks: ArtQuizResultsTabs_me$data["quiz"]["savedArtworks"]
@@ -35,8 +35,6 @@ export const ArtQuizExploreArtworks = ({
     "internalID"
   )
 
-  console.log("Check :: ", artworks)
-
   return (
     <StickyTabPageScrollView
       contentContainerStyle={{
@@ -51,6 +49,33 @@ export const ArtQuizExploreArtworks = ({
         saleInfoTextStyle={{ weight: "medium", color: "black100" }}
       />
     </StickyTabPageScrollView>
+  )
+}
+
+const ArtQuizExploreArtworksFallback = () => {
+  const space = useSpace()
+  return (
+    <StickyTabPageScrollView
+      contentContainerStyle={{
+        paddingVertical: space(2),
+      }}
+    >
+      <Flex p={2} justifyContent="center" alignItems="center">
+        <Spinner color="blue100" />
+      </Flex>
+    </StickyTabPageScrollView>
+  )
+}
+
+export const ArtQuizExploreArtworks = ({
+  savedArtworks,
+}: {
+  savedArtworks: ArtQuizResultsTabs_me$data["quiz"]["savedArtworks"]
+}) => {
+  return (
+    <Suspense fallback={<ArtQuizExploreArtworksFallback />}>
+      <ArtQuizExploreArtworksContent savedArtworks={savedArtworks} />
+    </Suspense>
   )
 }
 
