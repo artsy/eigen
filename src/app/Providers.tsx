@@ -26,6 +26,7 @@ export const Providers = ({
   skipSuspense = false,
   skipWebsocket = false,
   skipRetryErrorBoundary = false,
+  skipRelay = false,
   simpleTheme = false,
 }: {
   children?: React.ReactNode
@@ -36,6 +37,7 @@ export const Providers = ({
   skipSuspense?: boolean
   skipWebsocket?: boolean
   skipRetryErrorBoundary?: boolean
+  skipRelay?: boolean
   simpleTheme?: boolean
 }) =>
   combineProviders(
@@ -48,7 +50,7 @@ export const Providers = ({
       !skipUnleash && UnleashProvider, // uses: GlobalStoreProvider
       SafeAreaProvider,
       ProvideScreenDimensions, // uses: SafeAreaProvider
-      RelayDefaultEnvProvider,
+      !skipRelay && RelayDefaultEnvProvider,
       simpleTheme ? LegacyTheme : LegacyThemeProvider, // uses: GlobalStoreProvider
       simpleTheme ? Theme : ThemeProvider, // uses: GlobalStoreProvider
       !skipRetryErrorBoundary && RetryErrorBoundary,

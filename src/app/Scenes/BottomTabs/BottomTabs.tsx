@@ -9,6 +9,8 @@ import { useScreenDimensions } from "shared/hooks"
 import { BottomTabsButton } from "./BottomTabsButton"
 import { ICON_HEIGHT } from "./BottomTabsIcon"
 
+export const FETCH_NOTIFICATIONS_INFO_INTERVAL = 60 * 1000 // every 60 seconds
+
 export const BottomTabs: React.FC<BottomTabBarProps> = (props) => {
   const { color } = useTheme()
   const focusedRoute = findFocusedRoute(props.state)
@@ -30,7 +32,7 @@ export const BottomTabs: React.FC<BottomTabBarProps> = (props) => {
   useInterval(() => {
     GlobalStore.actions.bottomTabs.fetchNotificationsInfo()
     // run this every 60 seconds
-  }, 1000 * 60)
+  }, FETCH_NOTIFICATIONS_INFO_INTERVAL)
 
   const isStaging = useIsStaging()
 

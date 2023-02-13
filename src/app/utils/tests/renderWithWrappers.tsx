@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react-native"
+import { render, RenderOptions } from "@testing-library/react-native"
 import { Providers } from "app/Providers"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { track } from "app/utils/track"
@@ -7,7 +7,11 @@ import { Environment, RelayEnvironmentProvider } from "react-relay"
 import ReactTestRenderer from "react-test-renderer"
 import { ReactElement } from "simple-markdown"
 
-const Wrappers = ({ children }: { children: React.ReactNode }) => (
+interface WrappersProps {
+  skipRelay?: boolean
+}
+
+const Wrappers: React.FC<WrappersProps> = ({ skipRelay, children }) => (
   <Providers
     skipGestureHandler
     skipUnleash
@@ -17,6 +21,7 @@ const Wrappers = ({ children }: { children: React.ReactNode }) => (
     skipSuspense
     skipWebsocket
     skipRetryErrorBoundary
+    skipRelay={skipRelay}
   >
     {children}
   </Providers>
@@ -71,9 +76,13 @@ class PureWrapper extends Component {
  * by using @testing-library/react-native
  * @param component
  */
-export const renderWithWrappers = (component: ReactElement) => {
+export const renderWithWrappers = (component: ReactElement, wrapperProps?: WrappersProps) => {
   try {
-    return render(component, { wrapper: Wrappers })
+    const wrapper = (props: RenderOptions["wrapper"]) => {
+      return <Wrappers {...wrapperProps} {...props} />
+    }
+
+    return render(component, { wrapper })
   } catch (error: any) {
     throw new Error(error.stack)
   }
