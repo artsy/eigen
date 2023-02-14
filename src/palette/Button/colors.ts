@@ -1,3 +1,4 @@
+import { useColor } from "@artsy/palette-mobile"
 import { NoUndefined } from "@artsy/palette-mobile/dist/utils/types"
 import { ButtonProps } from "."
 
