@@ -1,10 +1,10 @@
-import { Spacer, HeartIcon, HeartFillIcon, Flex, useSpace } from "@artsy/palette-mobile"
+import { HeartIcon, HeartFillIcon, Flex, useSpace } from "@artsy/palette-mobile"
 import { ArtworkScreenHeader_artwork$data } from "__generated__/ArtworkScreenHeader_artwork.graphql"
 import { useIsStaging } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { Schema } from "app/utils/track"
-import { BackButton, Touchable } from "palette"
+import { BackButton, Button } from "palette"
 import { createFragmentContainer, graphql, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtworkScreenHeaderCreateAlertFragmentContainer } from "./ArtworkScreenHeaderCreateAlert"
@@ -104,7 +104,6 @@ const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) =>
         <Button
           size="small"
           variant="text"
-          textVariant="sm-display"
           haptic
           accessibilityRole="button"
           accessibilityLabel="Save artwork"
