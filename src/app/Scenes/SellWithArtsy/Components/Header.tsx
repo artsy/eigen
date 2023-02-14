@@ -6,6 +6,7 @@ import {
   TappedConsignmentInquiry,
 } from "@artsy/cohesion"
 import { Spacer } from "@artsy/palette-mobile"
+import { SWALandingPageHeroImage } from "app/Scenes/SellWithArtsy/Components/SWALandingPageHeroImage"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Button, Flex, Text } from "palette"
 import { ImageBackground } from "react-native"
@@ -24,6 +25,8 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ onConsignPress, onInquiryPress }) => {
+  const enableNewSWALandingPage = useFeatureFlag("AREnableNewSWALandingPage")
+
   const { trackEvent } = useTracking()
   const handleSubmitPress = () => {
     onConsignPress(consignArgs)
@@ -33,10 +36,21 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress, onInquiryPress }
     trackEvent(tracks.consignmentInquiryTapped())
     onInquiryPress()
   }
+
+  return enableNewSWALandingPage ? (
+    <NewHeader handleInquiryPress={handleInquiryPress} handleSubmitPress={handleSubmitPress} />
+  ) : (
+    <OldHeader handleInquiryPress={handleInquiryPress} handleSubmitPress={handleSubmitPress} />
+  )
+}
+
+const OldHeader: React.FC<{ handleInquiryPress: () => void; handleSubmitPress: () => void }> = ({
+  handleInquiryPress,
+  handleSubmitPress,
+}) => {
   const screenDimensions = useScreenDimensions()
 
   const enableInquiry = useFeatureFlag("AREnableConsignmentInquiry")
-
   return (
     <ImageBackground
       style={{ height: 430, width: screenDimensions.width }}
@@ -87,6 +101,35 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress, onInquiryPress }
         </Text>
       </Flex>
     </ImageBackground>
+  )
+}
+
+const NewHeader: React.FC<{ handleInquiryPress: () => void; handleSubmitPress: () => void }> = ({
+  handleInquiryPress,
+  handleSubmitPress,
+}) => {
+  return (
+    <>
+      <SWALandingPageHeroImage />
+
+      <Flex mx={2} mt={1}>
+        <Text variant="xl" mb={1}>
+          Sell art from your collection
+        </Text>
+        <Text variant="xs" mb={2}>
+          With our global reach and art market expertise, our specialists will find the right buyer
+          for your work.
+        </Text>
+        <Flex justifyContent="center" alignItems="center">
+          <Button block onPress={handleSubmitPress} my={1} variant="fillDark">
+            Start Selling
+          </Button>
+          <Button block onPress={handleInquiryPress} my={1} variant="outline">
+            Get in Touch
+          </Button>
+        </Flex>
+      </Flex>
+    </>
   )
 }
 
