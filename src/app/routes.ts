@@ -206,6 +206,10 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
       "RequestForPriceEstimateConfirmationScreen"
     ),
 
+    addRoute("/art-quiz", "ArtQuizWelcome"),
+    addRoute("/art-quiz/welcome", "ArtQuizWelcome"),
+    addRoute("/art-quiz/results", "ArtQuizResults"),
+
     // TODO: Follow-up about below route names
     addRoute("/collections/my-collection/artworks/new/submissions/new", "SubmitArtwork"),
     addRoute("/consign/submission", "SubmitArtwork"),
