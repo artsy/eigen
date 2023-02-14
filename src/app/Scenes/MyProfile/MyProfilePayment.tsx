@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex } from "@artsy/palette-mobile"
 import { MyProfilePaymentDeleteCardMutation } from "__generated__/MyProfilePaymentDeleteCardMutation.graphql"
 import { MyProfilePaymentQuery } from "__generated__/MyProfilePaymentQuery.graphql"
 import { MyProfilePayment_me$data } from "__generated__/MyProfilePayment_me.graphql"
@@ -11,7 +11,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Flex, Text } from "palette"
+import { Text } from "palette"
 import React, { useCallback, useEffect, useReducer, useState } from "react"
 import {
   ActivityIndicator,
@@ -161,7 +161,7 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPag
         onEndReached={onLoadMore}
         ItemSeparatorComponent={() => <Spacer y={1} />}
         ListFooterComponent={
-          <Flex pt={creditCards.length === 0 ? 0 : "2"}>
+          <Flex pt={creditCards.length === 0 ? undefined : 2}>
             <MenuItem
               title="Add New Card"
               onPress={() => navigate("/my-profile/payment/new-card")}

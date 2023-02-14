@@ -1,11 +1,9 @@
+import { Flex, FlexProps } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
-import { SpacingUnitTheme } from "palette/Theme"
-// @ts-ignore
-import { Flex, FlexProps } from "palette/elements/Flex"
 import styled from "styled-components/native"
-import { border, BorderProps, space as styledSpace, SpaceProps } from "styled-system"
+import { border, BorderProps, space as styledSpace } from "styled-system"
 
-export interface BorderBoxProps extends FlexProps, BorderProps, SpaceProps<SpacingUnitTheme> {
+export interface BorderBoxProps extends FlexProps, BorderProps {
   hover?: boolean
 }
 
@@ -16,7 +14,7 @@ export interface BorderBoxProps extends FlexProps, BorderProps, SpaceProps<Spaci
 export const BorderBox = styled(Flex)<BorderBoxProps>`
   border: 1px solid ${themeGet("colors.black10")};
   border-radius: 2px;
-  padding: ${themeGet("space.2")}px;
+  padding: ${themeGet("space.2")};
   ${border}
   ${styledSpace}
 `

@@ -1,4 +1,4 @@
-import { DownloadIcon, IconProps } from "@artsy/palette-mobile"
+import { DownloadIcon, Flex, IconProps } from "@artsy/palette-mobile"
 import { FileDownload_attachment$data } from "__generated__/FileDownload_attachment.graphql"
 import { Text } from "palette"
 import { Linking } from "react-native"
@@ -8,8 +8,7 @@ import AttachmentPreview, { AttachmentProps } from "./AttachmentPreview"
 
 import { AttachmentContainer, AttachmentTextContainer } from "./PDFPreview"
 
-export const NoBorderContainer = styled.View`
-  flex: 1;
+export const NoBorderContainer = styled(Flex)`
   flex-direction: row;
 `
 

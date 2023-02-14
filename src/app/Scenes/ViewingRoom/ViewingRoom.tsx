@@ -1,4 +1,4 @@
-import { Spacer, ShareIcon } from "@artsy/palette-mobile"
+import { Spacer, ShareIcon, Flex, Box } from "@artsy/palette-mobile"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
 import { ViewingRoom_viewingRoom$data } from "__generated__/ViewingRoom_viewingRoom.graphql"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
@@ -7,7 +7,7 @@ import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { once } from "lodash"
-import { Box, Button, Flex, Text, _maxWidth as maxWidth } from "palette"
+import { Button, Text, _maxWidth as maxWidth } from "palette"
 import React, { useCallback, useState } from "react"
 import { FlatList, LayoutAnimation, TouchableWithoutFeedback, View, ViewToken } from "react-native"
 import RNShare from "react-native-share"
@@ -52,7 +52,7 @@ export const ClosedNotice: React.FC<{ status: string; partnerHref: string }> = (
 
   return (
     <Flex alignItems="center">
-      <Text variant="sm" mt="4" mx="4" textAlign="center">
+      <Text variant="sm" mt={4} mx={4} textAlign="center">
         {finalText}
       </Text>
       <Button variant="fillGray" onPress={() => navigate(partnerHref)} mt={2}>
@@ -106,8 +106,8 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
     sections.push({
       key: "introStatement",
       content: (
-        <Flex mt="2" mx="2">
-          <Text testID="intro-statement" mt="2" variant="sm" mx="2" style={maxWidth}>
+        <Flex mt={2} mx={2}>
+          <Text testID="intro-statement" mt={2} variant="sm" mx={2} style={maxWidth}>
             {viewingRoom.introStatement}
           </Text>
         </Flex>
@@ -125,7 +125,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
         content: (
           <>
             {!!viewingRoom.pullQuote && (
-              <Flex mx="2">
+              <Flex mx={2}>
                 <Text testID="pull-quote" variant="lg-display" textAlign="center">
                   {viewingRoom.pullQuote}
                 </Text>
@@ -137,7 +137,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
       {
         key: "body",
         content: (
-          <Flex mx="2">
+          <Flex mx={2}>
             <Text testID="body" variant="sm" style={maxWidth}>
               {viewingRoom.body}
             </Text>

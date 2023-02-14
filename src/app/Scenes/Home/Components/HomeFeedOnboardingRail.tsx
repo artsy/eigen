@@ -1,9 +1,9 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Flex, SpacingUnit } from "@artsy/palette-mobile"
 import { HomeFeedOnboardingRail_onboardingModule$data } from "__generated__/HomeFeedOnboardingRail_onboardingModule.graphql"
 import { EmbeddedCarousel } from "app/Components/EmbeddedCarousel"
 import { switchTab } from "app/system/navigation/navigate"
-import { Flex } from "palette"
-import React, { useState } from "react"
+import { useState } from "react"
 import { ImageSourcePropType } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -12,7 +12,7 @@ import { HomeFeedOnboardingCard } from "./HomeFeedOnboardingCard"
 
 interface HomeFeedOnboardingRailProps {
   title: string
-  mb?: number
+  mb?: SpacingUnit
   onboardingModule: HomeFeedOnboardingRail_onboardingModule$data
 }
 

@@ -1,4 +1,4 @@
-import { Flex } from "palette"
+import { Flex } from "@artsy/palette-mobile"
 
 type FrameIndicatorPlacement = "top-left" | "top-right" | "bottom-left" | "bottom-right"
 

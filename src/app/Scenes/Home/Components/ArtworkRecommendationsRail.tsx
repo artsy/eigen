@@ -1,11 +1,11 @@
 import { ContextModule } from "@artsy/cohesion"
+import { Flex, SpacingUnit } from "@artsy/palette-mobile"
 import { ArtworkRecommendationsRail_me$key } from "__generated__/ArtworkRecommendationsRail_me.graphql"
 import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -15,7 +15,7 @@ import { RailScrollProps } from "./types"
 interface ArtworkRecommendationsRailProps {
   title: string
   me: ArtworkRecommendationsRail_me$key
-  mb?: number
+  mb?: SpacingUnit
 }
 
 export const ArtworkRecommendationsRail: React.FC<
@@ -41,7 +41,7 @@ export const ArtworkRecommendationsRail: React.FC<
   return (
     <Flex mb={mb}>
       <View ref={railRef}>
-        <Flex pl="2" pr="2">
+        <Flex pl={2} pr={2}>
           <SectionTitle title={title} />
         </Flex>
         <SmallArtworkRail

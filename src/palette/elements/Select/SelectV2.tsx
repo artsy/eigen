@@ -1,16 +1,7 @@
-import { Spacer, CloseIcon, CheckIcon, TriangleDown } from "@artsy/palette-mobile"
+import { Spacer, CloseIcon, CheckIcon, TriangleDown, Flex, useColor } from "@artsy/palette-mobile"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { SearchInput } from "app/Components/SearchInput"
-import {
-  Autocomplete,
-  Flex,
-  InputTitle,
-  PopIn,
-  Separator,
-  Text,
-  Touchable,
-  useColor,
-} from "palette"
+import { Autocomplete, InputTitle, PopIn, Separator, Text, Touchable } from "palette"
 import { INPUT_HEIGHT } from "palette/elements/Input"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, TextInput, TouchableOpacity } from "react-native"
@@ -137,7 +128,7 @@ const SelectButton: React.FC<{
       )}
       <TouchableOpacity accessible accessibilityRole="button" onPress={onPress} testID={testID}>
         <Flex
-          px="1"
+          px={1}
           flexDirection="row"
           height={INPUT_HEIGHT}
           borderWidth={1}
@@ -260,7 +251,7 @@ const SelectModal: React.FC<{
       maxHeight={props.maxHeight}
       onModalFinishedClosing={props.onModalFinishedClosing}
     >
-      <Flex p="2" pb={15} flexDirection="row" alignItems="center" flexGrow={0}>
+      <Flex p={2} pb="15px" flexDirection="row" alignItems="center" flexGrow={0}>
         <Flex flex={1} />
         <Flex flex={2} alignItems="center">
           <Text variant="sm-display" weight="medium">
@@ -276,7 +267,7 @@ const SelectModal: React.FC<{
         </TouchableOpacity>
       </Flex>
       {!!props.enableSearch && (
-        <Flex mb="1" mx="2">
+        <Flex mb={1} mx={2}>
           <SearchInput placeholder="Type to search..." onChangeText={setSearchTerm} />
         </Flex>
       )}
@@ -315,8 +306,8 @@ const SelectModal: React.FC<{
           >
             <Flex
               flexDirection="row"
-              pl="2"
-              pr={15}
+              pl={2}
+              pr="15px"
               justifyContent="space-between"
               height={ROW_HEIGHT}
               alignItems="center"

@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex, useSpace } from "@artsy/palette-mobile"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { SingleIndexEmptyResultsMessage } from "app/Scenes/Search/components/SingleIndexEmptyResultsMessage"
@@ -6,7 +6,7 @@ import { SingleIndexSearchPlaceholder } from "app/Scenes/Search/components/place
 import { isAlgoliaApiKeyExpiredError } from "app/Scenes/Search/helpers"
 import { AlgoliaIndexKey, AlgoliaSearchResult, PillType } from "app/Scenes/Search/types"
 import { isPad } from "app/utils/hardware"
-import { Flex, Spinner, useSpace } from "palette"
+import { Spinner } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { InfiniteHitsProvided, StateResultsProvided } from "react-instantsearch-core"
 import { FlatList } from "react-native"
@@ -85,7 +85,7 @@ export const AlgoliaSearchResults: React.FC<AlgoliaSearchResultsProps> = ({
     <AboveTheFoldFlatList<AlgoliaSearchResult>
       listRef={flatListRef}
       initialNumToRender={isPad() ? 24 : 12}
-      contentContainerStyle={{ paddingVertical: space("1"), paddingHorizontal: space("2") }}
+      contentContainerStyle={{ paddingVertical: space(1), paddingHorizontal: space(2) }}
       data={hits}
       keyExtractor={(item) => item.objectID}
       ItemSeparatorComponent={() => <Spacer y={2} />}

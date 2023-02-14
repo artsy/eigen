@@ -89,7 +89,7 @@ export class Modal extends React.Component<ModalProps, ModalState> {
                       {headerText}
                     </Text>
                   </View>
-                  <Markdown rules={markdownRules} pb={15}>
+                  <Markdown rules={markdownRules} pb="15px">
                     {detailText}
                   </Markdown>
                   <Button

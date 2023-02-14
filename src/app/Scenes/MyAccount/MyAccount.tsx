@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box } from "@artsy/palette-mobile"
 import { MyAccountQuery } from "__generated__/MyAccountQuery.graphql"
 import { MyAccount_me$data } from "__generated__/MyAccount_me.graphql"
 import { MenuItem } from "app/Components/MenuItem"
@@ -12,7 +12,7 @@ import { useGoogleLink } from "app/utils/LinkedAccounts/google"
 import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Box, Button, Flex, Text } from "palette"
+import { Button, Text } from "palette"
 import { ActivityIndicator, Image, Platform, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { PRICE_BUCKETS } from "./MyAccountEditPriceRange"
@@ -201,7 +201,7 @@ const MyAccountPlaceholder: React.FC = () => {
     <PageWithSimpleHeader title="Account">
       <Flex px={2} py={1}>
         {times(5).map((index: number) => (
-          <Flex key={index} py={7.5}>
+          <Flex key={index} py="7.5px">
             <PlaceholderText width={100 + Math.random() * 100} />
           </Flex>
         ))}

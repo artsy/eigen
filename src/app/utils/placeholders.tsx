@@ -1,5 +1,5 @@
+import { Flex, useColor } from "@artsy/palette-mobile"
 import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
-import { Flex, useColor } from "palette"
 import { createContext, useContext, useMemo } from "react"
 import { View, ViewStyle } from "react-native"
 import { useScreenDimensions } from "shared/hooks"

@@ -1,4 +1,4 @@
-import { Spacer, Flex, FollowButton, Text } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { ArtQuizArtistFollowArtistMutation } from "__generated__/ArtQuizArtistFollowArtistMutation.graphql"
 import {
   ArtQuizArtist_artist$data,
@@ -10,6 +10,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { debounce } from "lodash"
+import { FollowButton } from "palette"
 import { graphql, useFragment, useMutation } from "react-relay"
 
 export const ArtQuizArtist = ({ artistData }: { artistData: ArtQuizArtist_artist$key | null }) => {

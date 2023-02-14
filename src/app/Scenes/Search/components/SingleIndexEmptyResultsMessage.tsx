@@ -1,7 +1,6 @@
-import { apostrophe, quoteLeft, quoteRight, Spacer, Text } from "@artsy/palette-mobile"
+import { apostrophe, quoteLeft, quoteRight, Text, Spacer, Box } from "@artsy/palette-mobile"
 import { SINGLE_INDICES_WITH_AN_ARTICLE } from "app/Scenes/Search/constants"
 import { AlgoliaIndexKey, PillType } from "app/Scenes/Search/types"
-import { Box } from "palette"
 
 interface SingleIndexEmptyResultsMessageProps {
   query: string

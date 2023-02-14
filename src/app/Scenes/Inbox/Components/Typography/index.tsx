@@ -1,4 +1,4 @@
-import { useTheme } from "palette"
+import { useTheme } from "@artsy/palette-mobile"
 import { StyleSheet, Text, TextProps, TextStyle } from "react-native"
 
 const LargeHeadline: React.FC<TextProps> = (props) => {

@@ -1,5 +1,6 @@
+import { Flex } from "@artsy/palette-mobile"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { Button, Flex, Text } from "palette"
+import { Button, Text } from "palette"
 
 export interface ZeroStateProps {
   id?: string
@@ -19,7 +20,7 @@ export const FilteredArtworkGridZeroState: React.FC<ZeroStateProps> = (props) =>
       <Text textAlign="center" color="black100" variant="sm">
         No results found{"\n"}Please try another search.
       </Text>
-      <Flex m="0 auto" pt={2}>
+      <Flex pt={2}>
         {!hideClearButton && (
           <Button
             size="small"

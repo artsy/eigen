@@ -1,4 +1,4 @@
-import { Spacer, EyeOpenedIcon } from "@artsy/palette-mobile"
+import { Spacer, EyeOpenedIcon, Flex, Box } from "@artsy/palette-mobile"
 import { ViewingRoomArtworkQuery } from "__generated__/ViewingRoomArtworkQuery.graphql"
 import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
 import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoomArtwork_viewingRoomInfo.graphql"
@@ -10,7 +10,7 @@ import { cm2in } from "app/utils/conversions"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import _ from "lodash"
-import { Box, Button, Flex, Separator, Text, Touchable } from "palette"
+import { Button, Separator, Text, Touchable } from "palette"
 import React, { Suspense, useEffect } from "react"
 import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
 import {
@@ -73,7 +73,7 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
           ) && (
             <Flex
               position="absolute"
-              bottom="1"
+              bottom={1}
               right="1"
               backgroundColor="white100"
               borderColor="black5"
@@ -81,7 +81,7 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
               borderRadius={2}
             >
               <TouchableWithoutFeedback onPress={viewInAR}>
-                <Flex flexDirection="row" mx="1" height={24} alignItems="center">
+                <Flex flexDirection="row" mx={1} height={24} alignItems="center">
                   <EyeOpenedIcon />
                   <Spacer x={0.5} />
                   <Text variant="xs">View on wall</Text>
@@ -90,7 +90,7 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
             </Flex>
           )}
         </Flex>
-        <Box mt="2" mx="2">
+        <Box mt={2} mx={2}>
           <Text variant="sm-display" color="black100">
             {selectedArtwork.artistNames}
           </Text>
@@ -124,7 +124,7 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
 
         {moreImages.length > 0 && (
           <>
-            <Box mx="2">
+            <Box mx={2}>
               <Spacer y={4} />
               <Separator />
               <Spacer y={4} />
@@ -142,7 +142,7 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
           </>
         )}
 
-        <Box mx="2">
+        <Box mx={2}>
           <Spacer y={4} />
           <Separator />
           <Spacer y={4} />
@@ -214,7 +214,7 @@ export const ViewingRoomArtworkScreen: React.FC<{
 export const Placeholder = () => (
   <ProvidePlaceholderContext>
     <PlaceholderBox width="100%" height="60%" />
-    <Flex mt="2" ml="2">
+    <Flex mt={2} ml={2}>
       <PlaceholderText width={130 + Math.random() * 100} marginTop={10} />
       <PlaceholderText width={100 + Math.random() * 100} marginTop={8} />
       <PlaceholderText width={100 + Math.random() * 100} marginTop={15} />

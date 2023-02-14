@@ -1,5 +1,5 @@
-import { useTheme } from "palette"
-import { isThemeV3, TextVariantV3 } from "palette/Theme"
+import { useTheme } from "@artsy/palette-mobile"
+import { TextVariantV3 } from "palette/Theme"
 import { forwardRef, Ref } from "react"
 import { StyleProp, TextStyle, Text as RNText, TextProps as RNTextProps } from "react-native"
 import styled from "styled-components/native"
@@ -41,10 +41,6 @@ export const Text = forwardRef(
   ) => {
     const { theme } = useTheme()
     const fontFamily = useFontFamilyFor({ italic, weight })
-    if (!isThemeV3(theme)) {
-      console.warn("Text is missing because null is returned. Wrap your Text with ThemeV3.")
-      return null
-    }
 
     const nativeTextStyle: StyleProp<TextStyle> = [caps ? { textTransform: "uppercase" } : {}]
 

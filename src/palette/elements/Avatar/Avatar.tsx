@@ -1,5 +1,5 @@
+import { Flex } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
-import { Flex } from "palette/elements/Flex"
 import { Text } from "palette/elements/Text"
 import { ImgHTMLAttributes } from "react"
 import { Image } from "react-native"

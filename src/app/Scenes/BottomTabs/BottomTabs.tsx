@@ -1,11 +1,12 @@
+import { Flex, useTheme } from "@artsy/palette-mobile"
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs"
 import { findFocusedRoute } from "@react-navigation/native"
 import { AppModule, modules } from "app/AppRegistry"
 import { GlobalStore, useFeatureFlag, useIsStaging } from "app/store/GlobalStore"
-import { Flex, Separator, useTheme } from "palette"
-import React, { useEffect } from "react"
+import { Separator } from "palette"
+import { useEffect } from "react"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import useInterval from "react-use/lib/useInterval"
-import { useScreenDimensions } from "shared/hooks"
 import { BottomTabsButton } from "./BottomTabsButton"
 import { ICON_HEIGHT } from "./BottomTabsIcon"
 
@@ -36,14 +37,14 @@ export const BottomTabs: React.FC<BottomTabBarProps> = (props) => {
 
   const isStaging = useIsStaging()
 
-  const { bottom } = useScreenDimensions().safeAreaInsets
+  const { bottom } = useSafeAreaInsets()
 
   if (enableArtworkRedesign && module?.options?.hidesBottomTabs) {
     return null
   }
 
   return (
-    <Flex position="absolute" left={0} right={0} bottom={0} paddingBottom={bottom} bg="white100">
+    <Flex position="absolute" left={0} right={0} bottom={0} pb={`${bottom}px`} bg="white100">
       <Separator
         style={{
           borderColor: isStaging ? color("devpurple") : color("black10"),

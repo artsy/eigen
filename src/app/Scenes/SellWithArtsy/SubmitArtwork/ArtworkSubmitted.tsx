@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import {
   submitAnotherArtworkEvent,
@@ -9,7 +9,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { Box, Button, Flex, Text } from "palette"
+import { Button, Text } from "palette"
 import { ArtsyLogoHeader } from "palette/elements/Header/ArtsyLogoHeader"
 import { ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
@@ -37,16 +37,16 @@ export const ArtworkSubmittedScreen: React.FC<ArtworkSubmittedScreenNavigationPr
       <ScrollView>
         <Box>
           <ArtsyLogoHeader />
-          <Text variant="lg-display" mx="2">
+          <Text variant="lg-display" mx={2}>
             Your Artwork Has Been Submitted
           </Text>
           <Spacer y={2} />
-          <Text mx="2" color="black60">
+          <Text mx={2} color="black60">
             We will email you within 1-3 days to confirm if your artwork has been accepted or not.
             In the meantime your submission will appear in the feature, My Collection.
           </Text>
           <Spacer y={2} />
-          <Text mx="2" color="black60">
+          <Text mx={2} color="black60">
             With low fees, informed pricing, and multiple sales options, why not submit another
             piece with Artsy.
           </Text>

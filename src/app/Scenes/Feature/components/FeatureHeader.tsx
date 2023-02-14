@@ -1,9 +1,10 @@
+import { Flex, FlexProps } from "@artsy/palette-mobile"
 import { FeatureHeader_feature$data } from "__generated__/FeatureHeader_feature.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Stack } from "app/Components/Stack"
 import { isPad } from "app/utils/hardware"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
-import { Flex, FlexProps, Text } from "palette"
+import { Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 import { FeatureMarkdown } from "./FeatureMarkdown"
@@ -40,15 +41,15 @@ export const FeatureHeader: React.FC<FeatureHeaderProps> = ({ feature }) => {
       <Flex flex={1} alignItems="center" justifyContent="center">
         {image}
       </Flex>
-      <Stack px="2" alignItems="center" justifyContent="center" flex={1}>
+      <Stack px={2} alignItems="center" justifyContent="center" flex={1}>
         {title}
         {subtitle}
       </Stack>
     </Flex>
   ) : (
-    <Stack spacing={4} borderBottomWidth={1} borderBottomColor="black" pb="4">
+    <Stack spacing={4} borderBottomWidth={1} borderBottomColor="black" pb={4}>
       {image}
-      <Stack mx="2" alignItems="center">
+      <Stack mx={2} alignItems="center">
         {title}
         {subtitle}
       </Stack>
@@ -75,15 +76,15 @@ export const FeatureHeaderPlaceholder: React.FC<{}> = ({}) => {
   return isPad() ? (
     <Flex flexDirection="row" borderBottomWidth={1} borderBottomColor="black">
       <PlaceholderBox height={imageHeight} flex={1} />
-      <Stack px="2" alignItems="center" justifyContent="center" flex={1}>
+      <Stack px={2} alignItems="center" justifyContent="center" flex={1}>
         <PlaceholderText width={220} />
         <PlaceholderText width={330} />
       </Stack>
     </Flex>
   ) : (
-    <Stack spacing={4} borderBottomWidth={1} borderBottomColor="black" pb="4">
+    <Stack spacing={4} borderBottomWidth={1} borderBottomColor="black" pb={4}>
       <PlaceholderBox height={imageHeight} />
-      <Stack mx="2" alignItems="center" justifyContent="center" minHeight={140}>
+      <Stack mx={2} alignItems="center" justifyContent="center" minHeight={140}>
         <PlaceholderText width={220} />
         <PlaceholderText width={330} />
       </Stack>

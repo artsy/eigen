@@ -1,4 +1,4 @@
-import { Text, TextProps, Touchable } from "palette"
+import { Touchable, Text, TextProps } from ".."
 
 export const LinkButton = (props: TextProps) => (
   <Touchable onPress={props.onPress}>

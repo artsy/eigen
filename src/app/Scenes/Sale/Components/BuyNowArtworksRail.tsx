@@ -1,10 +1,10 @@
+import { Flex } from "@artsy/palette-mobile"
 import { BuyNowArtworksRail_sale$data } from "__generated__/BuyNowArtworksRail_sale.graphql"
 import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact } from "lodash"
-import { Flex } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface BuyNowArtworksRailProps {

@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, useColor } from "@artsy/palette-mobile"
 import { ArtistAbout_artist$data } from "__generated__/ArtistAbout_artist.graphql"
 import { ArtistCollectionsRail_collections$data } from "__generated__/ArtistCollectionsRail_collections.graphql"
 import { CollectionArtistSeriesRail_collectionGroup$data } from "__generated__/CollectionArtistSeriesRail_collectionGroup.graphql"
@@ -7,7 +7,7 @@ import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
-import { Text, useColor } from "palette"
+import { Text } from "palette"
 import { View } from "react-native"
 import { useTracking } from "react-tracking"
 // @ts-ignore
@@ -77,7 +77,7 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
                 <ThreeUpImageLayout imageURLs={artworkImageURLs} />
 
                 <MetadataContainer>
-                  <Text weight="medium" variant="sm" m={15} mb={0}>
+                  <Text weight="medium" variant="sm" m="15px" mb={0}>
                     {result.title}
                   </Text>
                   {!!result.priceGuidance && (

@@ -1,5 +1,5 @@
+import { Flex, Box } from "@artsy/palette-mobile"
 import MapboxGL from "@react-native-mapbox-gl/maps"
-import { Box, Flex } from "palette"
 import { FC, useRef, useState } from "react"
 import { Dimensions, StyleSheet, View } from "react-native"
 import Config from "react-native-config"

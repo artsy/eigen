@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, useColor } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
 import { OnboardingNavigationStack } from "app/Scenes/Onboarding/Onboarding"
@@ -8,7 +8,7 @@ import { showBlockedAuthError } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { BackButton } from "app/system/navigation/BackButton"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
-import { Box, Button, Flex, Text, useColor } from "palette"
+import { Button, Text } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Alert, Animated, ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
@@ -142,7 +142,7 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
   })
 
   return (
-    <Flex flex={1} backgroundColor="white" flexGrow={1} paddingBottom={10}>
+    <Flex flex={1} backgroundColor="white" flexGrow={1} pb={1}>
       <ArtsyKeyboardAvoidingView>
         <FormikProvider value={formik}>
           <NavigationContainer

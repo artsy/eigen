@@ -1,32 +1,21 @@
 import { CheckIcon } from "@artsy/palette-mobile"
-import { Button } from "palette"
-import { ButtonProps } from "."
+import { Button, ButtonProps } from "."
 
 type FollowButtonProps = Omit<
   ButtonProps,
   "variant" | "size" | "longestText" | "icon" | "children"
 > & {
   isFollowed: boolean
-  variant?: "v1" | "v2"
 }
 
-export const FollowButton: React.FC<FollowButtonProps> = ({
-  isFollowed,
-  variant = "v1",
-  ...rest
-}) => {
-  const style: { variant: ButtonProps["variant"] } =
-    variant === "v2"
-      ? { variant: "fillLight" }
-      : { variant: isFollowed ? "outline" : "outlineGray" }
-
+export const FollowButton = ({ isFollowed, ...restProps }: FollowButtonProps) => {
   return (
     <Button
+      variant={isFollowed ? "outline" : "outlineGray"}
       size="small"
       longestText="Following"
       icon={isFollowed && <CheckIcon fill="black60" width="16px" height="16px" />}
-      {...style}
-      {...rest}
+      {...restProps}
     >
       {isFollowed ? "Following" : "Follow"}
     </Button>

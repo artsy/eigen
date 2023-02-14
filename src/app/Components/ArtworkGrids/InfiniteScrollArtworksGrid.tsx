@@ -7,6 +7,7 @@
 // 4. Update height of grid to encompass all items.
 
 import { ScreenOwnerType } from "@artsy/cohesion"
+import { Flex, Box } from "@artsy/palette-mobile"
 import { InfiniteScrollArtworksGrid_connection$data } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
 import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
 import ParentAwareScrollView from "app/Components/ParentAwareScrollView"
@@ -14,7 +15,7 @@ import { PAGE_SIZE } from "app/Components/constants"
 import { MyCollectionArtworkGridItemFragmentContainer } from "app/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkGridItem"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
-import { Box, Button, Flex, Spinner } from "palette"
+import { Button, Spinner } from "palette"
 import React, { useState } from "react"
 import {
   ActivityIndicator,
@@ -411,8 +412,8 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
 
         {!autoFetch && !!hasMore() && (
           <Button
-            mt="6"
-            mb="4"
+            mt={6}
+            mb={4}
             variant="fillGray"
             size="large"
             block
@@ -423,7 +424,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
           </Button>
         )}
         {!!showLoadingSpinner && !!localIsLoading && (
-          <Flex mt="2" mb={4} flexDirection="row" justifyContent="center">
+          <Flex mt={2} mb={4} flexDirection="row" justifyContent="center">
             <Spinner />
           </Flex>
         )}
@@ -433,8 +434,8 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
         <Flex
           alignItems="center"
           justifyContent="center"
-          p="4"
-          pb="6"
+          p={4}
+          pb={6}
           style={{ opacity: localIsLoading && hasMore() ? 1 : 0 }}
         >
           {!!autoFetch && (

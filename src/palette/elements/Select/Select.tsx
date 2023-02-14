@@ -1,15 +1,7 @@
-import { CloseIcon, TriangleDown } from "@artsy/palette-mobile"
+import { CloseIcon, TriangleDown, Flex, useColor } from "@artsy/palette-mobile"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { SearchInput } from "app/Components/SearchInput"
-import {
-  Autocomplete,
-  Flex,
-  Separator,
-  Text,
-  Touchable,
-  useColor,
-  useTextStyleForPalette,
-} from "palette"
+import { Autocomplete, Separator, Text, Touchable, useTextStyleForPalette } from "palette"
 import { INPUT_HEIGHT, InputTitle } from "palette/elements/Input"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, TextInput, TouchableOpacity } from "react-native"
@@ -167,7 +159,7 @@ const SelectButton: React.FC<{
           )}
         </Flex>
         {!!tooltipText && (
-          <Flex justifyContent="flex-end" marginLeft="auto">
+          <Flex justifyContent="flex-end" ml="auto">
             <Text variant="xs" color="black60" mb={0.5} onPress={onTooltipPress}>
               {tooltipText}
             </Text>
@@ -176,7 +168,7 @@ const SelectButton: React.FC<{
       </Flex>
       <TouchableOpacity accessible accessibilityRole="button" onPress={onPress} testID={testID}>
         <Flex
-          px="1"
+          px={1}
           flexDirection="row"
           height={INPUT_HEIGHT}
           borderWidth={1}
@@ -304,7 +296,7 @@ const SelectModal: React.FC<{
       maxHeight={maxHeight}
       onModalFinishedClosing={onModalFinishedClosing}
     >
-      <Flex p="2" pb={15} flexDirection="row" alignItems="center" flexGrow={0}>
+      <Flex p={2} pb="15px" flexDirection="row" alignItems="center" flexGrow={0}>
         <Flex flex={1} />
         <Flex flex={2} alignItems="center">
           <Text>{title}</Text>
@@ -318,7 +310,7 @@ const SelectModal: React.FC<{
         </TouchableOpacity>
       </Flex>
       {!!enableSearch && (
-        <Flex mb="1" mx="2">
+        <Flex mb={1} mx={2}>
           <SearchInput placeholder="Type to search..." onChangeText={setSearchTerm} />
         </Flex>
       )}
@@ -357,8 +349,8 @@ const SelectModal: React.FC<{
             >
               <Flex
                 flexDirection="row"
-                pl="2"
-                pr={15}
+                pl={2}
+                pr="15px"
                 justifyContent="space-between"
                 height={INPUT_HEIGHT}
                 alignItems="center"

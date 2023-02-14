@@ -1,4 +1,4 @@
-import { range, CheckIcon } from "@artsy/palette-mobile"
+import { range, CheckIcon, Flex, Box, useColor } from "@artsy/palette-mobile"
 import MultiSlider from "@ptomasroos/react-native-multi-slider"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
@@ -13,7 +13,7 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
 import { TouchableRow } from "app/Components/TouchableRow"
-import { Box, Flex, Separator, Text, useColor } from "palette"
+import { Separator, Text } from "palette"
 import React, { useState } from "react"
 import Haptic from "react-native-haptic-feedback"
 import { useScreenDimensions } from "shared/hooks"
@@ -101,7 +101,7 @@ export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation
     <Flex flexGrow={1}>
       <ArtworkFilterBackHeader title="Year created" onLeftButtonPress={navigation.goBack} />
       <Flex flexGrow={1} py={2}>
-        <Text variant="xs" mb={15} mx={2}>
+        <Text variant="xs" mb="15px" mx={2}>
           {range(`${sliderValues[0]}`, `${sliderValues[1]}`)}
         </Text>
         <Flex alignItems="center" mx={2}>
@@ -171,7 +171,7 @@ export const OptionItem = ({ onPress, text, selected }: OptionItemProps) => (
       >
         <Text variant="xs">{text}</Text>
         {!!selected && (
-          <Box mb={0.1}>
+          <Box>
             <CheckIcon fill="black100" />
           </Box>
         )}

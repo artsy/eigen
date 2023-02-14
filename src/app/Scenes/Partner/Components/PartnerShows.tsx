@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, ClassTheme } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { PartnerShows_partner$data } from "__generated__/PartnerShows_partner.graphql"
 import {
@@ -10,7 +10,7 @@ import { useNativeValue } from "app/Components/StickyTabPage/reanimatedHelpers"
 import { TabEmptyState } from "app/Components/TabEmptyState"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Box, ClassTheme, Flex, Text } from "palette"
+import { Text } from "palette"
 import React, { useContext, useState } from "react"
 import { ActivityIndicator, ImageBackground, TouchableWithoutFeedback, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -42,7 +42,7 @@ class ShowGridItem extends React.Component<ShowGridItemProps> {
       <ClassTheme>
         {({ space }) => {
           const styles =
-            itemIndex % 2 === 0 ? { paddingRight: space("1") } : { paddingLeft: space("1") }
+            itemIndex % 2 === 0 ? { paddingRight: space(1) } : { paddingLeft: space(1) }
           return (
             <GridItem key={show.id}>
               <TouchableWithoutFeedback onPress={this.onPress}>
@@ -153,7 +153,7 @@ export const PartnerShows: React.FC<{
             contentContainerStyle={{ paddingTop: 20 }}
             ListEmptyComponent={<TabEmptyState text="There are no shows from this gallery yet" />}
             ListFooterComponent={
-              <Flex alignItems="center" justifyContent="center" height={space("6")}>
+              <Flex alignItems="center" justifyContent="center" height={space(6)}>
                 {isLoadingMore ? <ActivityIndicator /> : null}
               </Flex>
             }

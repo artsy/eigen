@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex, useColor } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { FeaturedCollectionsRail_collection$data } from "__generated__/FeaturedCollectionsRail_collection.graphql"
 import { FeaturedCollectionsRail_collectionGroup$data } from "__generated__/FeaturedCollectionsRail_collectionGroup.graphql"
@@ -7,7 +7,7 @@ import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
 import { defaultRules, renderMarkdown } from "app/utils/renderMarkdown"
 import { Schema } from "app/utils/track"
-import { Flex, Text, Touchable, useColor } from "palette"
+import { Text, Touchable } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -53,7 +53,7 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
 
   return collections.length > 0 ? (
     <>
-      <Flex ml="-20px">
+      <Flex ml={-2}>
         <Text variant="sm-display" my={2} ml={4} testID="group">
           {collectionGroup.name}
         </Text>

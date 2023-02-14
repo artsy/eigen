@@ -1,6 +1,6 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Box, BoxProps, useSpace } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { Box, BoxProps, Text, useSpace } from "palette"
+import { Text } from "palette"
 import { CardTag, CardTagProps } from "./CardTag"
 
 export interface SmallCardProps extends BoxProps {
@@ -61,7 +61,7 @@ export const SmallCard: React.FC<SmallCardProps> = ({ images, title, subtitle, t
       )}
 
       {!!tag && (
-        <CardTag {...tag} style={{ position: "absolute", top: space("1"), left: space("1") }} />
+        <CardTag {...tag} style={{ position: "absolute", top: space(1), left: space(1) }} />
       )}
     </Box>
   )

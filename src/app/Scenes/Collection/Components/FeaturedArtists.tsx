@@ -1,9 +1,10 @@
+import { Flex, Box } from "@artsy/palette-mobile"
 import { FeaturedArtists_collection$data } from "__generated__/FeaturedArtists_collection.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
 import { navigate } from "app/system/navigation/navigate"
 import { Schema, Track, track as _track } from "app/utils/track"
 import { ContextModules } from "app/utils/track/schema"
-import { Box, Flex, Text } from "palette"
+import { Text } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -25,7 +26,7 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     return artists.map((artist) => {
       return (
-        <Box width="100%" key={artist.internalID} pb={20}>
+        <Box width="100%" key={artist.internalID} pb={2}>
           <ArtistListItem artist={artist} contextModule={ContextModules.FeaturedArtists} />
         </Box>
       )
@@ -64,7 +65,7 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
 
     return (
       <Box pb={1}>
-        <Flex justifyContent="space-between" pb={15} flexDirection="row">
+        <Flex justifyContent="space-between" pb="15px" flexDirection="row">
           <Text variant="sm-display">{headlineLabel}</Text>
           {artists.length > artistCount && (
             <TouchableOpacity

@@ -1,5 +1,5 @@
+import { useColor } from "@artsy/palette-mobile"
 import { Text, TextProps } from "palette"
-import { useColor } from "palette/hooks"
 import { ViewProps, Pressable, View, ViewStyle } from "react-native"
 
 export interface TabProps {

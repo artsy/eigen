@@ -1,4 +1,4 @@
-import { Box } from "palette"
+import { Box } from "@artsy/palette-mobile"
 import { useCallback } from "react"
 import { LayoutChangeEvent } from "react-native"
 import { useOffscreenStyle } from "shared/hooks"
@@ -25,7 +25,7 @@ export const MeasuredView: React.FC<Props> = ({ children, setMeasuredState, show
   }, [])
 
   return (
-    <Box {...offscreenStyle} backgroundColor="pink" onLayout={onLayout}>
+    <Box style={offscreenStyle} backgroundColor="pink" onLayout={onLayout}>
       {children}
     </Box>
   )

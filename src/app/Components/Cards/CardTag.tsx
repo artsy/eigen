@@ -1,4 +1,5 @@
-import { Color, Text, useColor } from "palette"
+import { useColor } from "@artsy/palette-mobile"
+import { Color, Text } from "palette"
 import { View, StyleProp, ViewStyle } from "react-native"
 import { PositionProps } from "styled-system"
 

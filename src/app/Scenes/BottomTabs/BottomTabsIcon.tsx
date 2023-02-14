@@ -1,4 +1,4 @@
-import { useColor } from "palette"
+import { useColor } from "@artsy/palette-mobile"
 import Svg, { Path } from "react-native-svg"
 import { BottomTabType } from "./BottomTabType"
 

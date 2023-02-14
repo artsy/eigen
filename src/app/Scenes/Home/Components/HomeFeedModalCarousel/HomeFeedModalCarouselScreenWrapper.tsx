@@ -1,4 +1,5 @@
-import { Flex, Text } from "palette"
+import { Flex } from "@artsy/palette-mobile"
+import { Text } from "palette"
 import { isValidElement } from "react"
 import { Image, ImageSourcePropType } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -27,7 +28,13 @@ export const HomeFeedModalCarouselScreenWrapper: React.FC<
       </Flex>
 
       {!!imgSrc && (
-        <Flex alignItems="center" mt={1} pb={bottomInset + 70} justifyContent="center" flexGrow={1}>
+        <Flex
+          alignItems="center"
+          mt={1}
+          pb={`${bottomInset + 70}px`}
+          justifyContent="center"
+          flexGrow={1}
+        >
           <Image source={imgSrc} style={{ flex: 1 }} resizeMode="contain" />
         </Flex>
       )}

@@ -1,8 +1,9 @@
+import { Flex } from "@artsy/palette-mobile"
 import { MyCollectionArtworkList_myCollectionConnection$key } from "__generated__/MyCollectionArtworkList_myCollectionConnection.graphql"
 import { PrefetchFlatList, PrefetchFlatListProps } from "app/Components/PrefetchFlatList"
 import { PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex, Spinner } from "palette"
+import { Spinner } from "palette"
 import React, { useState } from "react"
 import { Platform } from "react-native"
 import { RelayPaginationProp, useFragment } from "react-relay"
@@ -50,7 +51,7 @@ export const MyCollectionArtworkList: React.FC<{
   }
 
   return (
-    <Flex pb={Platform.OS === "android" ? 5 : 0}>
+    <Flex pb={Platform.OS === "android" ? 6 : 0}>
       <PrefetchFlatList
         data={preprocessedArtworks}
         renderItem={({ item }) => <MyCollectionArtworkListItem artwork={item} />}
@@ -65,7 +66,7 @@ export const MyCollectionArtworkList: React.FC<{
         keyExtractor={(item, index) => String(item.slug || index)}
         ListFooterComponent={
           loadingMoreData ? (
-            <Flex mx="auto" mb={15} mt={15}>
+            <Flex mx="auto" mb="15px" mt="15px">
               <Spinner />
             </Flex>
           ) : null

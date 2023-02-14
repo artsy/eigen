@@ -1,4 +1,5 @@
-import { Box, Flex, Text, useColor } from "palette"
+import { Flex, Box, useColor } from "@artsy/palette-mobile"
+import { Text } from "palette"
 import React, { Dispatch, SetStateAction } from "react"
 import { TouchableOpacity, View } from "react-native"
 
@@ -51,7 +52,7 @@ export const Tabs: React.FC<TabsProps> = ({ setActiveTab, activeTab, tabs }) => 
       backgroundColor="white"
       borderBottomColor={color("black10")}
       borderBottomWidth="1px"
-      px="2"
+      px={2}
     >
       {tabs.map(({ label }, index) => {
         const active = activeTab === index

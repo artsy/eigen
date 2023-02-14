@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Box } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { InquiryQuery } from "__generated__/InquiryQuery.graphql"
 import { Inquiry_artwork$data } from "__generated__/Inquiry_artwork.graphql"
@@ -9,7 +9,7 @@ import { dismissModal } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Schema, Track, track as _track } from "app/utils/track"
-import { Box, Button, Separator } from "palette"
+import { Button, Separator } from "palette"
 import React from "react"
 import { Dimensions, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -253,6 +253,7 @@ export class Inquiry extends React.Component<Props, State> {
               onEndEditing={() => {
                 this.setState({ text: null })
               }}
+              // @ts-expect-error
               onChangeText={(text) => this.setState({ text })}
             />
           </Content>

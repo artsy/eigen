@@ -1,3 +1,4 @@
+import { Box } from "@artsy/palette-mobile"
 import { BidderPositionQuery } from "__generated__/BidderPositionQuery.graphql"
 import { ConfirmBidCreateBidderPositionMutation } from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
 import { ConfirmBidCreateCreditCardMutation } from "__generated__/ConfirmBidCreateCreditCardMutation.graphql"
@@ -23,7 +24,7 @@ import { AuctionWebsocketContextProvider } from "app/utils/Websockets/auctions/A
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Schema, screenTrack, track } from "app/utils/track"
 import { get, isEmpty } from "lodash"
-import { Box, Button, Checkbox, LinkText, Text, Theme } from "palette"
+import { Button, Checkbox, LinkText, Text } from "palette"
 import React from "react"
 import { Image, ScrollView, ViewProps } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
@@ -472,13 +473,11 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
         }}
       >
         <Flex m={0} flex={1} flexDirection="column">
-          <Theme>
-            <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>
-              Confirm your bid
-            </FancyModalHeader>
-          </Theme>
+          <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>
+            Confirm your bid
+          </FancyModalHeader>
           <ScrollView scrollEnabled>
-            <Flex alignItems="center" pt="20px">
+            <Flex alignItems="center" pt={2}>
               <Timer
                 liveStartsAt={sale?.live_start_at ?? undefined}
                 lotEndAt={sale_artwork.endAt}

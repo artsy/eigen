@@ -1,6 +1,6 @@
-import { CheckCircleFillIcon, CloseCircleFillIcon } from "@artsy/palette-mobile"
+import { CheckCircleFillIcon, CloseCircleFillIcon, Flex } from "@artsy/palette-mobile"
 import { LotCurrentBidInfo_artwork$key } from "__generated__/LotCurrentBidInfo_artwork.graphql"
-import { Flex, Text } from "palette"
+import { Text } from "palette"
 import { graphql, useFragment } from "react-relay"
 
 interface LotCurrentBidInfoProps {

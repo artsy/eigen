@@ -1,5 +1,6 @@
+import { Flex } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
-import { Flex, Separator, Text } from "palette"
+import { Separator, Text } from "palette"
 import React from "react"
 
 export const Footer: React.FC = () => {

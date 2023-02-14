@@ -1,5 +1,12 @@
 import { ActionType, ContextModule, EditedUserProfile, OwnerType } from "@artsy/cohesion"
-import { Spacer, CheckCircleIcon, CheckCircleFillIcon } from "@artsy/palette-mobile"
+import {
+  Spacer,
+  CheckCircleIcon,
+  CheckCircleFillIcon,
+  Flex,
+  Box,
+  useColor,
+} from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { useNavigation } from "@react-navigation/native"
 import { EditableLocation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
@@ -18,7 +25,7 @@ import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { sendEmail } from "app/utils/sendEmail"
 import { useFormik } from "formik"
-import { Avatar, Box, Button, Flex, Input, Join, Message, Text, Touchable, useColor } from "palette"
+import { Button, Avatar, Input, Join, Message, Text, Touchable } from "palette"
 import React, { Suspense, useEffect, useRef, useState } from "react"
 import { InteractionManager, ScrollView, TextInput } from "react-native"
 import { useLazyLoadQuery, useRefetchableFragment } from "react-relay"
@@ -402,15 +409,15 @@ const LoadingSkeleton = () => {
         <PlaceholderText width={100} height={20} marginTop={6} marginLeft={20} />
       </Flex>
       {[...Array(4)].map((_x, i) => (
-        <Flex mt={30} key={i}>
-          <Flex mx={20}>
+        <Flex mt={4} key={i}>
+          <Flex mx={2}>
             <PlaceholderText width={100} height={20} marginTop={6} />
             <PlaceholderBox height={50} marginTop={6} />
           </Flex>
         </Flex>
       ))}
-      <Flex mt={30}>
-        <Flex mx={20}>
+      <Flex mt={4}>
+        <Flex mx={2}>
           <PlaceholderText width={100} height={20} marginTop={6} />
           <PlaceholderBox height={100} marginTop={6} />
         </Flex>
@@ -540,7 +547,7 @@ const VerificationBanner = ({ resultText }: { resultText: string }) => {
       px={2}
       py={1}
       // Avoid system bottom navigation bar
-      background={color("black100")}
+      backgroundColor="black100"
       flexDirection="row"
       justifyContent="space-between"
       alignItems="center"

@@ -1,5 +1,6 @@
+import { Flex } from "@artsy/palette-mobile"
 import { SellerReplyEstimate_order$data } from "__generated__/SellerReplyEstimate_order.graphql"
-import { Flex, Separator, Text } from "palette"
+import { Separator, Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface SellerReplyEstimateProps {

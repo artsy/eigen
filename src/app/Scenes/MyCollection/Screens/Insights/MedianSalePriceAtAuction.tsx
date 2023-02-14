@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Spacer, NoArtworkIcon } from "@artsy/palette-mobile"
+import { Spacer, NoArtworkIcon, Flex } from "@artsy/palette-mobile"
 import { MedianSalePriceAtAuctionQuery } from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
 import {
   PlaceholderBox,
@@ -9,7 +9,7 @@ import {
 } from "app/utils/placeholders"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { Flex, OpaqueImageView, Text, Touchable } from "palette"
+import { OpaqueImageView, Text, Touchable } from "palette"
 import { Suspense, useCallback, useEffect, useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -242,14 +242,14 @@ const LoadingSkeleton = () => {
         </Flex>
         <Spacer y={0.5} />
         <PlaceholderText width={30} height={20} />
-        <Flex flexDirection="row" alignItems="center" my={0.1}>
+        <Flex flexDirection="row" alignItems="center">
           <PlaceholderBox width={10} height={10} borderRadius={5} marginRight={7} />
           <PlaceholderText width={60} height={7} marginTop={6} />
         </Flex>
         <PlaceholderText width={100} height={7} />
         <Spacer y={2} />
         <PlaceholderBox width="100%" height={screenHeight / 2.8} marginVertical={10} />
-        <Flex flexDirection="row" my={25} justifyContent="center">
+        <Flex flexDirection="row" my="25px" justifyContent="center">
           <PlaceholderBox height={15} width={25} marginHorizontal={10} />
           <PlaceholderBox height={15} width={25} marginHorizontal={10} />
         </Flex>

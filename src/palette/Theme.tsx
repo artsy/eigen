@@ -1,15 +1,12 @@
 import { THEME_V3 } from "@artsy/palette-tokens"
-import {
-  Color as ColorV3BeforeDevPurple,
-  SpacingUnit as SpacingUnitV3Numbers,
-} from "@artsy/palette-tokens/dist/themes/v3"
+/// TODO: remove tokens too from package.json
+import { Color as ColorV3BeforeDevPurple } from "@artsy/palette-tokens/dist/themes/v3"
 import {
   TextTreatment as TextTreatmentWithUnits,
   TextVariant as TextVariantV3,
 } from "@artsy/palette-tokens/dist/typography/v3"
 import _ from "lodash"
-import React, { useContext } from "react"
-import { ThemeContext, ThemeProvider } from "styled-components/native"
+import { ThemeProvider } from "styled-components/native"
 
 /**
  * All of the config for the Artsy theming system, based on the
@@ -17,8 +14,6 @@ import { ThemeContext, ThemeProvider } from "styled-components/native"
  * https://www.notion.so/artsy/Master-Library-810612339f474d0997fe359af4285c56
  */
 
-type SpacingUnitV3 = `${SpacingUnitV3Numbers}`
-export type SpacingUnit = SpacingUnitV3 | (number & {})
 export type Color =
   | ColorV3BeforeDevPurple
   | "devpurple"
@@ -31,7 +26,6 @@ export type Color =
   // v5 stuff
   | "appBackground"
   | "appForeground"
-export type { SpacingUnitV3 }
 export type { TextVariantV3 }
 
 const {
@@ -195,55 +189,6 @@ export const Theme: React.FC<{
   return <ThemeProvider theme={actualTheme}>{children}</ThemeProvider>
 }
 
-interface ColorFuncOverload {
-  (colorNumber: undefined): undefined
-  (colorNumber: Color): string
-  (colorNumber: Color | undefined): string | undefined
-}
-const color =
-  (theme: ThemeType): ColorFuncOverload =>
-  (colorName: any): any => {
-    if (colorName === undefined) {
-      return undefined
-    }
-    return (theme.colors as { [key: string]: string })[colorName as Color]
-  }
-
-const space =
-  (theme: ThemeType) =>
-  (spaceName: SpacingUnitV3): number =>
-    theme.space[spaceName]
-
-export const useTheme = () => {
-  const theme: ThemeType = useContext(ThemeContext)
-
-  // if we are not wrapped in `<Theme>`, if we dev, throw error.
-  // if we are in prod, we will default to v2 to avoid a crash.
-  // if we are wrapped, then all good.
-  if ((__DEV__ || __TEST__) && theme === undefined) {
-    console.error(
-      "You are trying to use the `Theme` but you have not wrapped your component/screen with `<Theme>`. Please wrap and try again."
-    )
-    throw new Error(
-      "ThemeContext is not defined. Wrap your component with `<Theme>` and try again."
-    )
-  }
-  const themeIfUnwrapped = THEMES.v3
-
-  return {
-    theme: theme ?? themeIfUnwrapped,
-    color: color(theme ?? themeIfUnwrapped),
-    space: space(theme ?? themeIfUnwrapped),
-  }
-}
-
-export const isThemeV3 = (theme: ThemeType): theme is ThemeV3Type => theme.id === "v3"
-
-// these here are temporary, for better editor completion
-type SpacingUnitAnyNumber = number & {} // for things like `12` (which RN handles as number of pixels)
-type SpacingUnitAnyString = string & {} // for things like `12px`
-type SpacingUnits = SpacingUnitV3 | SpacingUnitAnyNumber | SpacingUnitAnyString
-export type SpacingUnitTheme = { space: Record<SpacingUnits, any> }
 type ColorAnyString = string & {}
 type Colors = Color | ColorAnyString
 

@@ -1,3 +1,4 @@
+import { Box } from "@artsy/palette-mobile"
 import { useFocusEffect } from "@react-navigation/core"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
@@ -15,7 +16,6 @@ import {
   PushAuthorizationStatus,
 } from "app/utils/PushNotification"
 import useAppState from "app/utils/useAppState"
-import { Box } from "palette"
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 

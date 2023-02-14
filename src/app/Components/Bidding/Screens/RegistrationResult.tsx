@@ -6,7 +6,7 @@ import { Markdown } from "app/Components/Markdown"
 import { dismissModal } from "app/system/navigation/navigate"
 import { defaultRules } from "app/utils/renderMarkdown"
 import { Schema, screenTrack } from "app/utils/track"
-import { Button, Text, Theme } from "palette"
+import { Button, Text } from "palette"
 import React from "react"
 import { BackHandler, NativeEventSubscription, View } from "react-native"
 import { blockRegex } from "simple-markdown"
@@ -159,9 +159,7 @@ export class RegistrationResult extends React.Component<RegistrationResultProps>
 
     return (
       <View style={{ flex: 1 }}>
-        <Theme>
-          <FancyModalHeader useXButton onLeftButtonPress={() => dismissModal()} />
-        </Theme>
+        <FancyModalHeader useXButton onLeftButtonPress={() => dismissModal()} />
         <View style={{ padding: 20 }}>
           <Flex alignItems="center">
             {status !== RegistrationStatus.RegistrationStatusPending && (

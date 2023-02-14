@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex, useSpace } from "@artsy/palette-mobile"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { ViewingRoomsListQuery } from "__generated__/ViewingRoomsListQuery.graphql"
 import { ViewingRoomsList_viewingRooms$key } from "__generated__/ViewingRoomsList_viewingRooms.graphql"
@@ -10,7 +10,6 @@ import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import _ from "lodash"
-import { Flex, useSpace } from "palette"
 import React, { Suspense, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { useLazyLoadQuery, usePaginationFragment, graphql, useFragment } from "react-relay"
@@ -106,14 +105,14 @@ export const ViewingRoomsList = () => {
                 <Spacer y={2} />
                 {featuredLength > 0 && (
                   <>
-                    <Flex mx="2">
+                    <Flex mx={2}>
                       <SectionTitle title="Featured" />
                     </Flex>
                     <FeaturedRail featured={queryData.featured!} scrollRef={scrollRef} />
                     <Spacer y={4} />
                   </>
                 )}
-                <Flex mx="2">
+                <Flex mx={2}>
                   <SectionTitle title="Latest" />
                 </Flex>
               </>
@@ -124,7 +123,7 @@ export const ViewingRoomsList = () => {
             renderItem={({ item, index }) => {
               if (numColumns === 1) {
                 return (
-                  <Flex mx="2">
+                  <Flex mx={2}>
                     <ViewingRoomsListItem item={item} />
                   </Flex>
                 )
@@ -154,7 +153,7 @@ export const ViewingRoomsList = () => {
             onEndReached={handleLoadMore}
             onEndReachedThreshold={1}
             ListFooterComponent={() =>
-              hasNext ? <LoadingMorePlaceholder /> : <Flex height={space("6")} />
+              hasNext ? <LoadingMorePlaceholder /> : <Flex height={space(6)} />
             }
           />
         </Flex>
@@ -175,7 +174,7 @@ const Placeholder = () => (
   <ProvidePlaceholderContext>
     <PageWithSimpleHeader title={SCREEN_TITLE}>
       <Spacer y={2} />
-      <Flex ml="2" testID="viewing-rooms-list-placeholder">
+      <Flex ml={2} testID="viewing-rooms-list-placeholder">
         <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
         <Flex flexDirection="row">
           {_.times(4).map((i) => (
@@ -183,7 +182,7 @@ const Placeholder = () => (
           ))}
         </Flex>
       </Flex>
-      <Flex mx="2" mt="4">
+      <Flex mx={2} mt={4}>
         <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
         {_.times(2).map((i) => (
           <React.Fragment key={i}>
@@ -199,7 +198,7 @@ const Placeholder = () => (
 
 const LoadingMorePlaceholder = () => (
   <ProvidePlaceholderContext>
-    <Flex mx="2" mt="4">
+    <Flex mx={2} mt={4}>
       {_.times(2).map((i) => (
         <React.Fragment key={i}>
           <PlaceholderBox width="100%" height={220} />

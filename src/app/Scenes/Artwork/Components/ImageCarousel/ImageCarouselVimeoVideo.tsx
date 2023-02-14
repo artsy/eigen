@@ -1,5 +1,6 @@
 import querystring from "querystring"
-import { Flex, Touchable } from "palette"
+import { Flex } from "@artsy/palette-mobile"
+import { Touchable } from "palette"
 import { useEffect, useState } from "react"
 import { Image } from "react-native"
 import { Config } from "react-native-config"

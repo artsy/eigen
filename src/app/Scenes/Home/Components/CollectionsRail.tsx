@@ -1,3 +1,4 @@
+import { SpacingUnit, Flex } from "@artsy/palette-mobile"
 import { CollectionsRail_collectionsModule$data } from "__generated__/CollectionsRail_collectionsModule.graphql"
 import {
   CardRailCard,
@@ -10,7 +11,7 @@ import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact } from "lodash"
-import { Flex, Text } from "palette"
+import { Text } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -21,7 +22,7 @@ interface Props {
   title: string
   subtitle?: string
   collectionsModule: CollectionsRail_collectionsModule$data
-  mb?: number
+  mb?: SpacingUnit
 }
 
 type Collection = CollectionsRail_collectionsModule$data["results"][0]
@@ -40,7 +41,7 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
 
   return (
     <Flex mb={props.mb}>
-      <Flex pl="2" pr="2">
+      <Flex pl={2} pr={2}>
         <SectionTitle title={props.title} subtitle={props.subtitle} />
       </Flex>
 

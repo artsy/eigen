@@ -1,16 +1,15 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Box } from "@artsy/palette-mobile"
 import { goBack } from "app/system/navigation/navigate"
-import { Box, Button, Join, Text } from "palette"
-import React from "react"
+import { Button, Join, Text } from "palette"
 import { ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks/useScreenDimensions"
 
-export const UnlistedArtworksFAQScreen: React.FC = () => {
+export const UnlistedArtworksFAQScreen = () => {
   const { safeAreaInsets } = useScreenDimensions()
 
   return (
     <ScrollView>
-      <Box pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px={2}>
+      <Box pt={`${safeAreaInsets.top}px`} pb={`${safeAreaInsets.bottom}px`} px={2}>
         <Box my={4}>
           <Join separator={<Spacer y={2} />}>
             <Text variant="lg-display">Private Listings</Text>

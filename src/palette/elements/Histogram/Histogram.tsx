@@ -1,4 +1,4 @@
-import { Box, Flex } from "palette"
+import { Flex, Box } from "@artsy/palette-mobile"
 
 const BAR_WIDTH = 2
 const BAR_ROUNDNESS = 10

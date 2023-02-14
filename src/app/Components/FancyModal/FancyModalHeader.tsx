@@ -1,7 +1,14 @@
-import { ArrowRightIcon, CloseIcon, ArrowLeftIcon, ShareIcon } from "@artsy/palette-mobile"
+import {
+  ArrowRightIcon,
+  CloseIcon,
+  ArrowLeftIcon,
+  ShareIcon,
+  Flex,
+  useTheme,
+} from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ResponsiveAlignItemsValue } from "app/Components/Bidding/Elements/types"
-import { Flex, Separator, Text, useTheme } from "palette"
+import { Separator, Text } from "palette"
 import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 
@@ -63,7 +70,7 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
         <Flex position="absolute" left={0} alignItems="flex-start">
           {!!onLeftButtonPress && (
             <LeftButtonContainer
-              hitSlop={{ top: space("1"), bottom: space("1"), left: space("1"), right: space("1") }}
+              hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
               onPress={() => onLeftButtonPress()}
               testID="fancy-modal-header-left-button"
             >
@@ -74,7 +81,7 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
         <Flex position="absolute" right={0} alignItems="flex-end">
           {!!onRightButtonPress && (
             <RightButtonContainer
-              hitSlop={{ top: space("1"), bottom: space("1"), left: space("1"), right: space("1") }}
+              hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
               onPress={() => !rightButtonDisabled && onRightButtonPress()}
               testID="fancy-modal-header-right-button"
             >

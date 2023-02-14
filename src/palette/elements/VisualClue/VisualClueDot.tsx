@@ -1,4 +1,4 @@
-import { Flex, useColor } from "palette"
+import { Flex, useColor } from "@artsy/palette-mobile"
 import { StyleProp, ViewStyle } from "react-native"
 
 const DOT_DIAMETER = 6

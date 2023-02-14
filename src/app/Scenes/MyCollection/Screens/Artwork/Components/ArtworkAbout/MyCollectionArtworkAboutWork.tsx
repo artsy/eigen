@@ -1,10 +1,10 @@
+import { Flex } from "@artsy/palette-mobile"
 import { MyCollectionArtworkAboutWork_artwork$key } from "__generated__/MyCollectionArtworkAboutWork_artwork.graphql"
 import { MyCollectionArtworkAboutWork_marketPriceInsights$key } from "__generated__/MyCollectionArtworkAboutWork_marketPriceInsights.graphql"
 import { Field, MetaDataField } from "app/Scenes/MyCollection/Screens/Artwork/Components/Field"
 import { formatCentsToDollars } from "app/Scenes/MyCollection/utils/formatCentsToDollars"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { capitalize } from "lodash"
-import { Flex } from "palette"
 import { graphql, useFragment } from "react-relay"
 
 interface EstimatePriceType {

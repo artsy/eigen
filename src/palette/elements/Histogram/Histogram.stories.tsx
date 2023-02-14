@@ -1,6 +1,6 @@
+import { Flex } from "@artsy/palette-mobile"
 import { storiesOf } from "@storybook/react-native"
 import { Histogram, HistogramBarEntity } from "."
-import { Flex } from ".."
 
 storiesOf("Histogram", module).add("Simple Histogram", () => (
   <Flex mx={2} my={2}>

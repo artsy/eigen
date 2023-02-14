@@ -1,26 +1,27 @@
+import { Flex } from "@artsy/palette-mobile"
 import { storiesOf } from "@storybook/react-native"
-import { Button, Flex, Text } from "palette"
+import { Button, Text } from "palette"
 import { withScreenDimensions } from "storybook/decorators"
 import { ToolTip, ToolTipContext } from "./ToolTip"
 
 storiesOf("ToolTip", module)
   .addDecorator(withScreenDimensions)
   .add("Simple ToolTip", () => (
-    <Flex alignSelf="center" mt={200} alignItems="center" flexWrap="wrap">
+    <Flex alignSelf="center" mt="200px" alignItems="center" flexWrap="wrap">
       <ToolTip initialToolTipText="Tap to dismiss me" position="TOP" tapToDismiss>
         <Text weight="medium">I am a Text</Text>
       </ToolTip>
     </Flex>
   ))
   .add("Bottom ToolTip", () => (
-    <Flex alignSelf="center" mt={200} flexWrap="wrap">
+    <Flex alignSelf="center" mt="200px" flexWrap="wrap">
       <ToolTip initialToolTipText="Bottom tooltip" position="BOTTOM" tapToDismiss>
         <Text weight="medium">I am a Text</Text>
       </ToolTip>
     </Flex>
   ))
   .add("Change ToolTip", () => (
-    <Flex alignSelf="center" mt={200}>
+    <Flex alignSelf="center" mt="200px">
       <ToolTip initialToolTipText="I can be changed" position="TOP" tapToDismiss>
         <ToolTipContext.Consumer>
           {({ setToolTip }) => {

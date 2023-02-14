@@ -1,9 +1,9 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex, useTheme } from "@artsy/palette-mobile"
 import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { Flex, OpaqueImageView, Text, useTheme } from "palette"
+import { OpaqueImageView, Text } from "palette"
 import {
   GestureResponderEvent,
   TouchableWithoutFeedback,
@@ -48,7 +48,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
                       // aspect ratio is fixed to 1.33 to match the old image aspect ratio
                       aspectRatio={1.33}
                       // 40 here comes from the mx={2} from the parent component
-                      width={width - 2 * space("2")}
+                      width={width - 2 * space(2)}
                     />
                   </View>
                 ) : (

@@ -1,6 +1,6 @@
+import { Flex, FlexProps } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { Text } from "palette"
-import { Flex, FlexProps } from "palette/elements/Flex"
 import { TextProps } from "palette/elements/Text"
 import styled from "styled-components/native"
 

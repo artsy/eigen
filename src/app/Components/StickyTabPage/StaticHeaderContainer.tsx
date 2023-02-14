@@ -1,4 +1,4 @@
-import { useColor } from "palette"
+import { useColor } from "@artsy/palette-mobile"
 import {
   GestureEventPayload,
   HandlerStateChangeEventPayload,

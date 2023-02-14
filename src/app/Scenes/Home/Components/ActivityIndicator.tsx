@@ -1,8 +1,7 @@
 import { ActionType } from "@artsy/cohesion"
 import { ClickedNotificationsBell } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
-import { BellIcon } from "@artsy/palette-mobile"
+import { BellIcon, Box, useTheme } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
-import { Box, useTheme } from "palette"
 import { VisualClueDot } from "palette/elements/VisualClue"
 import { TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
@@ -26,10 +25,10 @@ export const ActivityIndicator: React.FC<ActivityIndicatorProps> = ({ hasUnseenN
         accessibilityLabel="Activity"
         onPress={navigateToActivityPanel}
         hitSlop={{
-          top: space("1"),
-          bottom: space("1"),
-          left: space("1"),
-          right: space("1"),
+          top: space(1),
+          bottom: space(1),
+          left: space(1),
+          right: space(1),
         }}
       >
         <BellIcon height={24} width={24} />

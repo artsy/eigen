@@ -1,4 +1,4 @@
-import { Spacer, GenomeIcon, AuctionIcon } from "@artsy/palette-mobile"
+import { Spacer, GenomeIcon, AuctionIcon, Flex, Box } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { MyAccountDeleteAccountQuery } from "__generated__/MyAccountDeleteAccountQuery.graphql"
 import { MyAccountDeleteAccount_me$data } from "__generated__/MyAccountDeleteAccount_me.graphql"
@@ -6,7 +6,7 @@ import { DeleteAccountInput } from "__generated__/deleteUserAccountMutation.grap
 import { GlobalStore } from "app/store/GlobalStore"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { Box, Button, Flex, Input, Text } from "palette"
+import { Button, Input, Text } from "palette"
 import React, { useState } from "react"
 import { Alert, InteractionManager, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -35,7 +35,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
   return (
     <ArtsyKeyboardAvoidingView>
       <ScrollView>
-        <Box pr="2" pl="2">
+        <Box pr={2} pl={2}>
           <Text variant="lg-display" mt="6">
             Delete My Account
           </Text>
@@ -44,21 +44,21 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
           <Spacer y={2} />
           <Text>If you delete your account:</Text>
           <Spacer y={2} />
-          <Flex flexDirection="row" alignItems="center" pr="1">
+          <Flex flexDirection="row" alignItems="center" pr={1}>
             <Flex pb={1}>
               <GenomeIcon width={ICON_SIZE} height={ICON_SIZE} />
             </Flex>
-            <Text variant="xs" color={color("black100")} px="1" pb="1px">
+            <Text variant="xs" color={color("black100")} px={1} pb="1px">
               You will lose all data on Artsy including all existing offers, inquiries and mesages
               with Galleries
             </Text>
           </Flex>
           <Spacer y={2} />
-          <Flex flexDirection="row" alignItems="center" pr="1">
+          <Flex flexDirection="row" alignItems="center" pr={1}>
             <Flex pb={1}>
               <AuctionIcon width={ICON_SIZE} height={ICON_SIZE} />
             </Flex>
-            <Text variant="xs" color={color("black100")} px="1" pb="1px">
+            <Text variant="xs" color={color("black100")} px={1} pb="1px">
               You won’t have access to any exclusive Artsy benefits, such as Artsy Curated Auctions,
               Private Sales, etc
             </Text>

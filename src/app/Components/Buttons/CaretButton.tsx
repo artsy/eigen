@@ -1,5 +1,6 @@
+import { Flex, Box } from "@artsy/palette-mobile"
 import ChevronIcon from "app/Components/Icons/ChevronIcon"
-import { Box, Flex, Text } from "palette"
+import { Text } from "palette"
 import { GestureResponderEvent, TouchableOpacity } from "react-native"
 
 interface Props {

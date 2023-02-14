@@ -1,4 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Flex, useColor } from "@artsy/palette-mobile"
 import { Conversations_me$data } from "__generated__/Conversations_me.graphql"
 import { PAGE_SIZE } from "app/Components/constants"
 import { ICON_HEIGHT } from "app/Scenes/BottomTabs/BottomTabsIcon"
@@ -7,7 +8,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { ActionNames, ActionTypes } from "app/utils/track/schema"
-import { Flex, Separator, Text, useColor } from "palette"
+import { Separator, Text } from "palette"
 import { useEffect, useState } from "react"
 import { ActivityIndicator, FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -116,7 +117,7 @@ export const Conversations: React.FC<Props> = (props) => {
         ListFooterComponent={() => {
           if (!!(relay.hasMore() && isLoading)) {
             return (
-              <Flex mb={ICON_HEIGHT} mt={2} alignItems="center">
+              <Flex mb={`${ICON_HEIGHT}px`} mt={2} alignItems="center">
                 <ActivityIndicator />
               </Flex>
             )

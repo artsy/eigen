@@ -1,11 +1,12 @@
 import { ActionType, OwnerType, SelectedArtworkFromReverseImageSearch } from "@artsy/cohesion"
+import { Flex } from "@artsy/palette-mobile"
 import { ReverseImageArtworksRail$key } from "__generated__/ReverseImageArtworksRail.graphql"
 import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { useReverseImageContext } from "app/Scenes/ReverseImage/ReverseImageContext"
 import { ReverseImageOwner } from "app/Scenes/ReverseImage/types"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex, Text } from "palette"
+import { Text } from "palette"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 

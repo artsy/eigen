@@ -1,5 +1,5 @@
+import { useColor } from "@artsy/palette-mobile"
 import { useAnimatedValue } from "app/Scenes/Artwork/Components/ImageCarousel/useAnimatedValue"
-import { useColor } from "palette"
 import React, { useEffect } from "react"
 import { Animated, Easing } from "react-native"
 import styled from "styled-components/native"
@@ -97,7 +97,6 @@ export const CircularSpinner: React.FC<SpinnerProps> = ({
 
 type CircleProps = Omit<SpinnerProps, "color"> & { color?: string }
 
-/** Circle Spinner component */
 const Circle = styled(Animated.View)<CircleProps>`
   background: black;
   position: absolute;
@@ -122,7 +121,12 @@ const Circle = styled(Animated.View)<CircleProps>`
   }};
 `
 
-/** Circle Background Spinner component */
+// @ts-expect-error
+Circle.defaultProps = {
+  width: 50,
+  height: 50,
+}
+
 const CircleBackground = styled(Animated.View)<CircleProps>`
   background: black;
   position: absolute;
@@ -140,8 +144,3 @@ const CircleBackground = styled(Animated.View)<CircleProps>`
     `
   }};
 `
-
-Circle.defaultProps = {
-  width: 50,
-  height: 50,
-}

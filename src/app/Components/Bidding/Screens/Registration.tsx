@@ -1,3 +1,4 @@
+import { Flex, Box } from "@artsy/palette-mobile"
 import { captureException } from "@sentry/react-native"
 import {
   RegistrationCreateBidderMutation,
@@ -22,7 +23,7 @@ import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { saleTime } from "app/utils/saleTime"
 import { Schema, screenTrack } from "app/utils/track"
 import { get, isEmpty } from "lodash"
-import { Box, Button, Flex, LinkText, Text } from "palette"
+import { Button, LinkText, Text } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 import React from "react"
 import { ScrollView, View, ViewProps } from "react-native"
@@ -58,7 +59,7 @@ interface RegistrationState {
 }
 
 const Hint: React.FC = ({ children }) => (
-  <Text variant="xs" fontSize={12} mb="4">
+  <Text variant="xs" fontSize={12} mb={4}>
     {children}
   </Text>
 )
@@ -368,7 +369,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
     if (missingInformation === "payment") {
       return (
-        <Flex flex={1} py={20}>
+        <Flex flex={1} py={2}>
           <PaymentInfo
             navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
             onCreditCardAdded={this.onCreditCardAdded.bind(this)}
@@ -381,7 +382,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       )
     } else if (missingInformation === "phone") {
       return (
-        <Flex justifyContent="center" py={20}>
+        <Flex justifyContent="center" py={2}>
           <PhoneInfo
             navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
             onPhoneAdded={this.onPhoneAdded.bind(this)}
@@ -412,8 +413,8 @@ export class Registration extends React.Component<RegistrationProps, Registratio
         contentContainerStyle={{ flexGrow: 1, justifyContent: "space-between" }}
         keyboardDismissMode="on-drag"
       >
-        <Box p={20} pt={25} flex={1}>
-          <Text fontSize={16} variant="xs" mb="2">
+        <Box p={2} pt="25px" flex={1}>
+          <Text fontSize={16} variant="xs" mb={2}>
             {sale.name}
           </Text>
 
@@ -425,7 +426,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
         </Box>
 
         {this.renderRequiredInfoForm()}
-        <Flex px={20} flex={1}>
+        <Flex px={2} flex={1}>
           {this.renderRequiredInfoHint()}
           {
             // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

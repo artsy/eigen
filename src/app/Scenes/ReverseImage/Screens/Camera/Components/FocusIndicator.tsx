@@ -1,5 +1,5 @@
+import { Flex } from "@artsy/palette-mobile"
 import { FocusCoords } from "app/Scenes/ReverseImage/types"
-import { Flex } from "palette"
 
 interface FocusIndicatorProps {
   coords: FocusCoords

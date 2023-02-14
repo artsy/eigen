@@ -1,8 +1,8 @@
+import { Flex } from "@artsy/palette-mobile"
 import { DecoratorFunction } from "@storybook/addons"
 import { storiesOf } from "@storybook/react-native"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtworkFilters"
-import { Flex } from "palette"
 import { withHooks } from "storybook/decorators"
 import { ArtworksFilterHeader } from "./ArtworksFilterHeader"
 
@@ -16,7 +16,7 @@ storiesOf("ArtworkFilterHeader", module)
   .add("Regular", () => {
     const selectedFiltersCount = useSelectedFiltersCount()
     return (
-      <Flex mt={100}>
+      <Flex mt="100px">
         <ArtworksFilterHeader
           selectedFiltersCount={selectedFiltersCount}
           onFilterPress={() => {}}

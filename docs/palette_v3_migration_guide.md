@@ -31,7 +31,7 @@ const TheComp = (props) => {
         props.style,
         {
           backgroundColor: color("black100"),
-          marginLeft: space("0.5"),
+          marginLeft: space(0.5),
           borderWidth: 3,
         },
       ]}

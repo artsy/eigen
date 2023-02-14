@@ -1,4 +1,4 @@
-import { Box, Flex } from "palette"
+import { Flex, Box } from "@artsy/palette-mobile"
 import { ActivityIndicator } from "react-native"
 
 export const LoadingIndicator = () => {
