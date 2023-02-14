@@ -553,6 +553,7 @@ jest.mock("app/system/relay/defaultEnvironment", () => {
   return {
     getRelayEnvironment: mockedFunction,
     getMockRelayEnvironment: mockedFunction,
+    bottomTabsRelayEnvironment: mockEnvironment,
   }
 })
 const resetMockEnvironment = () => {

@@ -17021,6 +17021,7 @@ input updateOrderedSetMutationInput {
   key: String
   layout: String
   name: String
+  ownerId: String
   ownerType: String
   published: Boolean
 }
@@ -17035,6 +17036,7 @@ type updateOrderedSetMutationPayload {
 union updateOrderedSetResponseOrError = updateOrderedSetFailure | updateOrderedSetSuccess
 
 type updateOrderedSetSuccess {
+  feature: Feature
   set: OrderedSet
 }
 

@@ -2,12 +2,7 @@ import { captureException } from "@sentry/react-native"
 import { BottomTabsModelFetchCurrentUnreadConversationCountQuery } from "__generated__/BottomTabsModelFetchCurrentUnreadConversationCountQuery.graphql"
 import { BottomTabsModelFetchNotificationsInfoQuery } from "__generated__/BottomTabsModelFetchNotificationsInfoQuery.graphql"
 import { GlobalStore } from "app/store/GlobalStore"
-import { createEnvironment } from "app/system/relay/createEnvironment"
-import {
-  metaphysicsURLMiddleware,
-  persistedQueryMiddleware,
-} from "app/system/relay/middlewares/metaphysicsMiddleware"
-import { simpleLoggerMiddleware } from "app/system/relay/middlewares/simpleLoggerMiddleware"
+import { bottomTabsRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { Action, action, Thunk, thunk, ThunkOn, thunkOn } from "easy-peasy"
 import { fetchQuery, graphql } from "react-relay"
 import { BottomTabType } from "./BottomTabType"
@@ -62,9 +57,7 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
   fetchCurrentUnreadConversationCount: thunk(async () => {
     try {
       const result = await fetchQuery<BottomTabsModelFetchCurrentUnreadConversationCountQuery>(
-        createEnvironment([
-          [persistedQueryMiddleware(), metaphysicsURLMiddleware(), simpleLoggerMiddleware()],
-        ]),
+        bottomTabsRelayEnvironment,
         graphql`
           query BottomTabsModelFetchCurrentUnreadConversationCountQuery {
             me @principalField {
@@ -107,9 +100,7 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
   fetchNotificationsInfo: thunk(async () => {
     try {
       const query = fetchQuery<BottomTabsModelFetchNotificationsInfoQuery>(
-        createEnvironment([
-          [persistedQueryMiddleware(), metaphysicsURLMiddleware(), simpleLoggerMiddleware()],
-        ]),
+        bottomTabsRelayEnvironment,
         graphql`
           query BottomTabsModelFetchNotificationsInfoQuery {
             me @principalField {

@@ -13,12 +13,19 @@ import { BottomTabOption, BottomTabType } from "./BottomTabType"
 import { BottomTabsIcon, ICON_HEIGHT, ICON_WIDTH } from "./BottomTabsIcon"
 import { bottomTabsConfig } from "./bottomTabsConfig"
 
-export const BottomTabsButton: React.FC<{
+export interface BottomTabsButtonProps {
   tab: BottomTabType
   badgeCount?: number
   visualClue?: VisualClueName
   forceDisplayVisualClue?: boolean
-}> = ({ tab, badgeCount = 0, visualClue, forceDisplayVisualClue }) => {
+}
+
+export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
+  tab,
+  badgeCount = 0,
+  visualClue,
+  forceDisplayVisualClue,
+}) => {
   const selectedTab = useSelectedTab()
   const isActive = selectedTab === tab
   const timeout = useRef<ReturnType<typeof setTimeout>>()
@@ -91,7 +98,7 @@ export const BottomTabsButton: React.FC<{
         </IconWrapper>
 
         {!!badgeCount && (
-          <IconWrapper>
+          <IconWrapper accessibilityLabel="badge count">
             <View style={{ width: ICON_WIDTH, height: ICON_HEIGHT }}>
               <View
                 style={{
@@ -108,7 +115,7 @@ export const BottomTabsButton: React.FC<{
           </IconWrapper>
         )}
         {(!!showVisualClue(visualClue) || !!forceDisplayVisualClue) && (
-          <IconWrapper>
+          <IconWrapper accessibilityLabel={`${tab} visual clue`}>
             <View style={{ width: ICON_WIDTH, height: ICON_HEIGHT }}>
               <View
                 style={{
