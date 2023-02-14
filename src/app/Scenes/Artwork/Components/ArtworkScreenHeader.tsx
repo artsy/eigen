@@ -105,6 +105,8 @@ const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) =>
           size="small"
           variant="outlineLight"
           haptic
+          accessibilityRole="button"
+          accessibilityLabel="Save artwork"
           onPress={handleArtworkSave}
           icon={<SaveIcon isSaved={!!isSaved} />}
           longestText="Savedd"

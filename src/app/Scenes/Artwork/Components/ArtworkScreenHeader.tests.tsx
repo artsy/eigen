@@ -40,6 +40,8 @@ describe("ArtworkScreenHeader", () => {
 
     await flushPromiseQueue()
 
+    screen.debug()
+
     expect(screen.queryByLabelText("Artwork page header")).toBeTruthy()
     expect(screen.queryByLabelText("Go back")).toBeTruthy()
     expect(screen.queryByLabelText("Save artwork")).toBeTruthy()
