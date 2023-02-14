@@ -10,7 +10,7 @@ import { useTracking } from "react-tracking"
 import { ArtworkScreenHeaderCreateAlertFragmentContainer } from "./ArtworkScreenHeaderCreateAlert"
 
 const HEADER_HEIGHT = 44
-const SAVE_ICON_SIZE = 25
+const SAVE_ICON_SIZE = 20
 
 interface SaveIconProps {
   isSaved: boolean
@@ -101,16 +101,19 @@ const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) =>
       </Flex>
 
       <Flex flexDirection="row" alignItems="center">
-        <Touchable
+        <Button
+          size="small"
+          variant="text"
+          textVariant="sm-display"
+          haptic
           accessibilityRole="button"
           accessibilityLabel="Save artwork"
-          haptic
           onPress={handleArtworkSave}
+          icon={<SaveIcon isSaved={!!isSaved} />}
+          longestText="Saved"
         >
-          <SaveIcon isSaved={!!isSaved} />
-        </Touchable>
-
-        <Spacer x={2} />
+          {isSaved ? "Saved" : "Save"}
+        </Button>
 
         <ArtworkScreenHeaderCreateAlertFragmentContainer artwork={artwork} />
       </Flex>
