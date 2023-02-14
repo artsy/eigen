@@ -1,4 +1,4 @@
-import { Spacer, HeartIcon, HeartFillIcon, Text } from "@artsy/palette-mobile"
+import { HeartIcon, HeartFillIcon } from "@artsy/palette-mobile"
 import { ArtworkScreenHeader_artwork$data } from "__generated__/ArtworkScreenHeader_artwork.graphql"
 import { useIsStaging } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
@@ -103,18 +103,17 @@ const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) =>
       <Flex flexDirection="row" alignItems="center">
         <Button
           size="small"
-          variant="outlineLight"
+          variant="text"
+          textVariant="sm-display"
           haptic
           accessibilityRole="button"
           accessibilityLabel="Save artwork"
           onPress={handleArtworkSave}
           icon={<SaveIcon isSaved={!!isSaved} />}
-          longestText="Savedd"
+          longestText="Saved"
         >
-          <Text variant="sm-display">{isSaved ? "Saved" : "Save"}</Text>
+          {isSaved ? "Saved" : "Save"}
         </Button>
-
-        <Spacer x={1} />
 
         <ArtworkScreenHeaderCreateAlertFragmentContainer artwork={artwork} />
       </Flex>
