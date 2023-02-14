@@ -3,7 +3,9 @@ import { Spacer } from "@artsy/palette-mobile"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { SellWithArtsyHome_me$data } from "__generated__/SellWithArtsyHome_me.graphql"
 import { SellWithArtsyHome_recentlySoldArtworksTypeConnection$data } from "__generated__/SellWithArtsyHome_recentlySoldArtworksTypeConnection.graphql"
-import { GlobalStore } from "app/store/GlobalStore"
+import { Highlights } from "app/Scenes/SellWithArtsy/Components/Highlights"
+import { WaysWeSell } from "app/Scenes/SellWithArtsy/Components/WaysWeSell"
+import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -37,6 +39,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
   me,
 }) => {
   useLightStatusBarStyle()
+  const enableNewSWALandingPage = useFeatureFlag("AREnableNewSWALandingPage")
 
   const { height: screenHeight } = useScreenDimensions()
   const tracking = useTracking()
@@ -81,6 +84,11 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
             />
 
             <Spacer y={4} />
+
+            {enableNewSWALandingPage && <Highlights />}
+            {enableNewSWALandingPage && <Spacer y={4} />}
+            {enableNewSWALandingPage && <WaysWeSell />}
+            {enableNewSWALandingPage && <Spacer y={4} />}
 
             <HowItWorks />
 
