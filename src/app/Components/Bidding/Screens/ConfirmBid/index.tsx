@@ -473,11 +473,9 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
         }}
       >
         <Flex m={0} flex={1} flexDirection="column">
-          <Theme>
-            <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>
-              Confirm your bid
-            </FancyModalHeader>
-          </Theme>
+          <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>
+            Confirm your bid
+          </FancyModalHeader>
           <ScrollView scrollEnabled>
             <Flex alignItems="center" pt={2}>
               <Timer

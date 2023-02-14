@@ -159,9 +159,7 @@ export class RegistrationResult extends React.Component<RegistrationResultProps>
 
     return (
       <View style={{ flex: 1 }}>
-        <Theme>
-          <FancyModalHeader useXButton onLeftButtonPress={() => dismissModal()} />
-        </Theme>
+        <FancyModalHeader useXButton onLeftButtonPress={() => dismissModal()} />
         <View style={{ padding: 20 }}>
           <Flex alignItems="center">
             {status !== RegistrationStatus.RegistrationStatusPending && (

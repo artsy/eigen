@@ -6,7 +6,7 @@ import {
 } from "app/NativeModules/ArtsyNativeModule"
 import backgroundImage from "images/WelcomeImage.jpg"
 import { Button, Screen, Text } from "palette"
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { Dimensions, Image, Platform } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import Animated, {

@@ -90,3 +90,20 @@ index 1cf0d86..cb67077 100644
  // Project: https://github.com/software-mansion/react-native-reanimated
  // TypeScript Version: 2.8
  
+diff --git a/node_modules/react-native-reanimated/src/createAnimatedComponent.tsx b/node_modules/react-native-reanimated/src/createAnimatedComponent.tsx
+index 23a65fa..0d7616f 100644
+--- a/node_modules/react-native-reanimated/src/createAnimatedComponent.tsx
++++ b/node_modules/react-native-reanimated/src/createAnimatedComponent.tsx
+@@ -683,9 +683,9 @@ export default function createAnimatedComponent(
+     }
+   }
+ 
+-  AnimatedComponent.displayName = `AnimatedComponent(${
+-    Component.displayName || Component.name || 'Component'
+-  })`;
++  // AnimatedComponent.displayName = `AnimatedComponent(${
++  //   Component.displayName || Component.name || 'Component'
++  // })`;
+ 
+   return React.forwardRef<Component>((props, ref) => {
+     return (

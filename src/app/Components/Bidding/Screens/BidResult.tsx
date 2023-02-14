@@ -95,9 +95,7 @@ export class BidResult extends React.Component<BidResultProps> {
 
     return (
       <View style={{ flex: 1 }}>
-        <Theme>
-          <FancyModalHeader useXButton onLeftButtonPress={() => dismissModal()} />
-        </Theme>
+        <FancyModalHeader useXButton onLeftButtonPress={() => dismissModal()} />
         <Container mt={6}>
           <View>
             <Flex alignItems="center">
