@@ -1,11 +1,11 @@
-import { Spacer, Button, useTheme, ArtsyLogoWhiteIcon, Flex } from "@artsy/palette-mobile"
+import { Spacer, useTheme, ArtsyLogoWhiteIcon, Flex } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import {
   ArtsyNativeModule,
   DEFAULT_NAVIGATION_BAR_COLOR,
 } from "app/NativeModules/ArtsyNativeModule"
 import backgroundImage from "images/WelcomeImage.jpg"
-import { Screen, Text } from "palette"
+import { Button, Screen, Text } from "palette"
 import React, { useEffect } from "react"
 import { Dimensions, Image, Platform } from "react-native"
 import LinearGradient from "react-native-linear-gradient"

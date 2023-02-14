@@ -1,7 +1,6 @@
-import { Button } from "@artsy/palette-mobile"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Text } from "palette"
+import { Button, Text } from "palette"
 // @ts-expect-error
 import stripe from "tipsi-stripe"
 import { CreditCardForm } from "./CreditCardForm"

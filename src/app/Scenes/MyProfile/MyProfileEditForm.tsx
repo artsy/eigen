@@ -1,7 +1,6 @@
 import { ActionType, ContextModule, EditedUserProfile, OwnerType } from "@artsy/cohesion"
 import {
   Spacer,
-  Button,
   CheckCircleIcon,
   CheckCircleFillIcon,
   Flex,
@@ -26,7 +25,7 @@ import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { sendEmail } from "app/utils/sendEmail"
 import { useFormik } from "formik"
-import { Avatar, Input, Join, Message, Text, Touchable } from "palette"
+import { Button, Avatar, Input, Join, Message, Text, Touchable } from "palette"
 import React, { Suspense, useEffect, useRef, useState } from "react"
 import { InteractionManager, ScrollView, TextInput } from "react-native"
 import { useLazyLoadQuery, useRefetchableFragment } from "react-relay"

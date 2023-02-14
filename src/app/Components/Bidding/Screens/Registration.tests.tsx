@@ -1,4 +1,3 @@
-import { Button } from "@artsy/palette-mobile"
 import { RenderAPI } from "@testing-library/react-native"
 import { Registration_me$data } from "__generated__/Registration_me.graphql"
 import { Registration_sale$data } from "__generated__/Registration_sale.graphql"
@@ -12,7 +11,7 @@ import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { mockTimezone } from "app/utils/tests/mockTimezone"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Checkbox, LinkText, Text } from "palette"
+import { Button, Checkbox, LinkText, Text } from "palette"
 import { TouchableWithoutFeedback } from "react-native"
 import relay from "react-relay"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

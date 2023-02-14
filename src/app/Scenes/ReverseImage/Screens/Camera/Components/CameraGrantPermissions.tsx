@@ -1,7 +1,7 @@
-import { Button, Flex } from "@artsy/palette-mobile"
+import { Flex } from "@artsy/palette-mobile"
 import { HeaderBackButton } from "app/Scenes/ReverseImage/Components/HeaderBackButton"
 import { HeaderContainer } from "app/Scenes/ReverseImage/Components/HeaderContainer"
-import { Text } from "palette"
+import { Button, Text } from "palette"
 
 interface CameraGrantPermissionsProps {
   onBackPress: () => void

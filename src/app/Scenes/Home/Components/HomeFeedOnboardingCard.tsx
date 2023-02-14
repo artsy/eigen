@@ -1,5 +1,5 @@
-import { Button, Flex } from "@artsy/palette-mobile"
-import { Text, Touchable } from "palette"
+import { Flex } from "@artsy/palette-mobile"
+import { Button, Text, Touchable } from "palette"
 import React from "react"
 import { Image, ImageSourcePropType } from "react-native"
 
@@ -27,7 +27,7 @@ export const HomeFeedOnboardingCard: React.FC<HomeFeedOnboardingCardProps> = ({
     <Touchable haptic="impactMedium" onPress={onPress}>
       <Flex width={CARD_WIDTH} testID={testID}>
         <Image
-          width={CARD_WIDTH}
+          style={{ width: CARD_WIDTH }}
           source={image}
           borderTopLeftRadius={CARD_BORDER_RADIUS}
           borderTopRightRadius={CARD_BORDER_RADIUS}

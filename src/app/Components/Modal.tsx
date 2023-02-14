@@ -1,6 +1,5 @@
-import { Button } from "@artsy/palette-mobile"
 import { defaultRules, MarkdownRules } from "app/utils/renderMarkdown"
-import { Text, TextProps } from "palette"
+import { Button, Text, TextProps } from "palette"
 import React from "react"
 import { Modal as RNModal, TouchableWithoutFeedback, View, ViewProps } from "react-native"
 import styled from "styled-components/native"

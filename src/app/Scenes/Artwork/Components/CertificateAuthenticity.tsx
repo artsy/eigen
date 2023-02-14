@@ -1,6 +1,6 @@
-import { Spacer, Button, Box } from "@artsy/palette-mobile"
+import { Spacer, Box } from "@artsy/palette-mobile"
 import { goBack, navigate } from "app/system/navigation/navigate"
-import { Join, Text } from "palette"
+import { Button, Join, Text } from "palette"
 import { ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 

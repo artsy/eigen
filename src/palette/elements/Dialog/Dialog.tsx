@@ -1,4 +1,5 @@
-import { Button, Flex, useTheme } from "@artsy/palette-mobile"
+import { Flex, useTheme } from "@artsy/palette-mobile"
+import { Button } from "palette"
 import { Text } from "palette/elements/Text"
 import { useEffect, useRef, useState } from "react"
 import { Animated, Modal, ScrollView, StyleSheet, TouchableWithoutFeedback } from "react-native"

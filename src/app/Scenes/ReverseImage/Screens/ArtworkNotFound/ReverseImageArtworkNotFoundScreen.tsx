@@ -1,10 +1,10 @@
-import { Button, Flex } from "@artsy/palette-mobile"
+import { Flex } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { HeaderBackButton } from "app/Scenes/ReverseImage/Components/HeaderBackButton"
 import { HeaderContainer } from "app/Scenes/ReverseImage/Components/HeaderContainer"
 import { HeaderTitle } from "app/Scenes/ReverseImage/Components/HeaderTitle"
 import { ReverseImageNavigationStack } from "app/Scenes/ReverseImage/types"
-import { Text } from "palette"
+import { Button, Text } from "palette"
 import { Image } from "react-native"
 
 type Props = StackScreenProps<ReverseImageNavigationStack, "ArtworkNotFound">

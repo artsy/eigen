@@ -1,4 +1,3 @@
-import { Button } from "@artsy/palette-mobile"
 import { ArtsyWebView } from "app/Components/ArtsyWebView"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
@@ -7,7 +6,7 @@ import { fetchMockResponseOnce } from "app/utils/tests/fetchMockHelpers"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import fetchMock from "jest-fetch-mock"
-import { Spinner } from "palette"
+import { Button, Spinner } from "palette"
 import { Linking } from "react-native"
 import { VanityURLPossibleRedirect } from "./VanityURLPossibleRedirect"
 

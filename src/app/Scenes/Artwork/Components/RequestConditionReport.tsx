@@ -1,4 +1,4 @@
-import { Button, Flex } from "@artsy/palette-mobile"
+import { Flex } from "@artsy/palette-mobile"
 import { RequestConditionReportMutation } from "__generated__/RequestConditionReportMutation.graphql"
 import { RequestConditionReportQuery } from "__generated__/RequestConditionReportQuery.graphql"
 import { RequestConditionReport_artwork$data } from "__generated__/RequestConditionReport_artwork.graphql"
@@ -6,6 +6,7 @@ import { RequestConditionReport_me$data } from "__generated__/RequestConditionRe
 import { Modal } from "app/Components/Modal"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { Schema, track } from "app/utils/track"
+import { Button } from "palette"
 import { Component } from "react"
 import { View } from "react-native"
 import {

@@ -1,6 +1,6 @@
-import { Button, Flex } from "@artsy/palette-mobile"
+import { Flex } from "@artsy/palette-mobile"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { Text } from "palette"
+import { Button, Text } from "palette"
 
 export interface ZeroStateProps {
   id?: string

@@ -1,7 +1,7 @@
-import { Button, Flex } from "@artsy/palette-mobile"
+import { Flex } from "@artsy/palette-mobile"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
-import { Text } from "palette"
+import { Button, Text } from "palette"
 import { Image } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 

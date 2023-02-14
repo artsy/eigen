@@ -1,5 +1,5 @@
-import { Spacer, Button, Flex } from "@artsy/palette-mobile"
-import { Text } from "palette"
+import { Spacer, Flex } from "@artsy/palette-mobile"
+import { Button, Text } from "palette"
 
 interface ArtQuizResultsTabsHeaderProps {
   title: string

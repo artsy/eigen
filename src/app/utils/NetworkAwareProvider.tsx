@@ -1,6 +1,6 @@
-import { Spacer, Button, Flex } from "@artsy/palette-mobile"
+import { Spacer, Flex } from "@artsy/palette-mobile"
 import NetInfo from "@react-native-community/netinfo"
-import { Text } from "palette"
+import { Button, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { Modal } from "react-native"
 import { useScreenDimensions } from "shared/hooks"

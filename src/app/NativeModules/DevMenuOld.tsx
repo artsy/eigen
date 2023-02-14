@@ -1,5 +1,5 @@
-import { Button } from "@artsy/palette-mobile"
 import { dismissModal } from "app/system/navigation/navigate"
+import { Button } from "palette"
 import { requireNativeComponent, View } from "react-native"
 
 const ARTOldAdminView = requireNativeComponent("ARTOldAdminView")
