@@ -1,4 +1,8 @@
-import { MoneyCircleIcon, StarCircleIcon, WorldGlobeCircleIcon } from "@artsy/palette-mobile"
+import { StarCircleIcon } from "@artsy/palette-mobile"
+import {
+  MoneyCircleIcon,
+  WorldGlobeCircleIcon,
+} from "app/Scenes/SellWithArtsy/Components/icons/Icons"
 import { Flex, Text } from "palette"
 
 const reasons = [
