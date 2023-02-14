@@ -5,6 +5,7 @@ import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SaleArtworkTileRailCardContainer } from "app/Components/SaleArtworkTileRailCard"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
+import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
 import { isCloseToEdge } from "app/utils/isCloseToEdge"
@@ -24,6 +25,9 @@ export const LotsByFollowedArtistsRail: React.FC<Props> = ({ title, me, relay })
   const isTablet = isPad()
 
   const artworks = extractNodes(me?.lotsByFollowedArtistsConnection)
+
+  const { navigateToPageableRoute } = useNavigateToPageableRoute({ artworks })
+
   const hasArtworks = artworks?.length
 
   if (!hasArtworks) {
@@ -59,7 +63,7 @@ export const LotsByFollowedArtistsRail: React.FC<Props> = ({ title, me, relay })
         renderItem={({ item: artwork }) => (
           <SaleArtworkTileRailCardContainer
             onPress={() => {
-              navigate(artwork.href!)
+              navigateToPageableRoute(artwork.href!)
             }}
             saleArtwork={artwork.saleArtwork!}
             useSquareAspectRatio

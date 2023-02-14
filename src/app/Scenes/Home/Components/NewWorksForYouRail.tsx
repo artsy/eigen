@@ -6,6 +6,7 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
+import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
 import React, { memo, useImperativeHandle, useRef } from "react"
@@ -35,6 +36,8 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
 
     const artworks = extractNodes(artworksForUser)
 
+    const { navigateToPageableRoute } = useNavigateToPageableRoute({ artworks })
+
     if (!artworks.length) {
       return null
     }
@@ -49,7 +52,7 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
           "single"
         )
       )
-      navigate(artwork.href!)
+      navigateToPageableRoute(artwork.href)
     }
 
     return (
@@ -87,6 +90,7 @@ const artworksFragment = graphql`
         node {
           title
           internalID
+          slug
           ...LargeArtworkRail_artworks
         }
       }

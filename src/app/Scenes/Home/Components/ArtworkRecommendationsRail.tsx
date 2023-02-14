@@ -4,7 +4,7 @@ import { ArtworkRecommendationsRail_me$key } from "__generated__/ArtworkRecommen
 import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
-import { navigate } from "app/system/navigation/navigate"
+import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
 import React, { memo, useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
@@ -34,6 +34,8 @@ export const ArtworkRecommendationsRail: React.FC<
 
   const artworks = extractNodes(artworkRecommendations)
 
+  const { navigateToPageableRoute } = useNavigateToPageableRoute({ artworks })
+
   if (!artworks.length) {
     return null
   }
@@ -56,7 +58,7 @@ export const ArtworkRecommendationsRail: React.FC<
                 "single"
               )
             )
-            navigate(artwork.href!)
+            navigateToPageableRoute(artwork.href!)
           }}
         />
       </View>
@@ -76,6 +78,7 @@ const artworksFragment = graphql`
       }
       edges {
         node {
+          slug
           ...LargeArtworkRail_artworks
         }
       }

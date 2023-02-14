@@ -5,7 +5,7 @@ import { MyCollectionArtworkGridItem_artwork$data } from "__generated__/MyCollec
 import { DEFAULT_SECTION_MARGIN } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import HighDemandIcon from "app/Components/Icons/HighDemandIcon"
 import { MyCollectionImageView } from "app/Scenes/MyCollection/Components/MyCollectionImageView"
-import { navigate } from "app/system/navigation/navigate"
+import { PageableRouteProps } from "app/system/navigation/useNavigateToPageableRoute"
 import { useLocalImage } from "app/utils/LocalImageStore"
 import { isPad } from "app/utils/hardware"
 import { View } from "react-native"
@@ -14,11 +14,14 @@ import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
 import styled from "styled-components/native"
 
-interface MyCollectionArtworkGridItemProps {
+interface MyCollectionArtworkGridItemProps extends PageableRouteProps {
   artwork: MyCollectionArtworkGridItem_artwork$data
 }
 
-const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = ({ artwork }) => {
+const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = ({
+  artwork,
+  navigateToPageableRoute,
+}) => {
   const { trackEvent } = useTracking()
   const displayImage = artwork.images?.find((i: any) => i?.isDefault) || artwork.images?.[0]
   const { width } = useScreenDimensions()
@@ -53,7 +56,8 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
       onPress={() => {
         if (!!artist) {
           trackEvent(tracks.tappedCollectedArtwork(internalID, slug))
-          navigate("/my-collection/artwork/" + slug, {
+
+          navigateToPageableRoute("/my-collection/artwork/" + slug, {
             passProps: {
               medium,
               category: mediumType?.name,

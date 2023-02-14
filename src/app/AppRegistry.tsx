@@ -8,13 +8,14 @@ import {
   WorksForYouScreenQuery,
 } from "app/Components/Containers/WorksForYou"
 import { FadeIn } from "app/Components/FadeIn"
+import { PageableScreensView } from "app/Components/PageableScreensView/PageableScreensView"
 import { ArtQuizArtworks } from "app/Scenes/ArtQuiz/ArtQuizArtworks"
 import { ArtQuizNavigation } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
 import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
 import { SearchScreenQuery } from "app/Scenes/Search/Search"
 import { SearchScreenQuery as SearchScreenQuery2 } from "app/Scenes/Search/Search2"
 import { SearchSwitchContainer } from "app/Scenes/Search/SearchSwitchContainer"
-import React from "react"
+import React, { useMemo } from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
 import { SafeAreaInsets, useScreenDimensions } from "shared/hooks"
@@ -164,9 +165,37 @@ addTrackingProvider("console", ConsoleTrackingProvider)
 interface ArtworkProps {
   artworkID: string
   isVisible: boolean
+  pageableSlugs: string[]
 }
 
-const Artwork = (props: ArtworkProps) => <ArtworkQueryRenderer {...props} />
+const Artwork = (props: ArtworkProps) => {
+  const pageableSlugs = props.pageableSlugs ?? []
+
+  console.log(pageableSlugs)
+
+  const screens = useMemo(() => {
+    return pageableSlugs.map((slug) => ({
+      name: slug,
+      Component: <ArtworkQueryRenderer {...props} artworkID={slug} isVisible />,
+    }))
+  }, [pageableSlugs])
+
+  // Check to see if we're within the context of an artwork rail and show
+  // pager view.
+  if (screens.length > 0) {
+    return (
+      <PageableScreensView
+        screens={screens}
+        initialScreenName={props.artworkID}
+        prefetchScreensCount={2}
+      />
+    )
+    // If not within the context of an artwork collection, just render the
+    // individual artwork.
+  } else {
+    return <ArtworkQueryRenderer {...props} />
+  }
+}
 
 interface PartnerLocationsProps {
   partnerID: string
