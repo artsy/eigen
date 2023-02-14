@@ -75,7 +75,7 @@ const trackError = (
       `kind:${queryKind}`,
       `handler: ${handler}`,
       `OS: ${Platform.OS}`,
-      `versionNumber: ${deviceInfoModule.getVersion()}`,
+      `appVersion: ${deviceInfoModule.getVersion()}`,
     ],
   })
 }
