@@ -1,5 +1,7 @@
 import * as Sentry from "@sentry/react-native"
 import { volleyClient } from "app/utils/volleyClient"
+import { Platform } from "react-native"
+import deviceInfoModule from "react-native-device-info"
 import {
   createRequestError,
   formatGraphQLErrors,
@@ -68,7 +70,13 @@ const trackError = (
   volleyClient.send({
     type: "increment",
     name: "graphql-request-with-errors",
-    tags: [`query:${queryName}`, `kind:${queryKind}`, `handler: ${handler}`],
+    tags: [
+      `query:${queryName}`,
+      `kind:${queryKind}`,
+      `handler: ${handler}`,
+      `OS: ${Platform.OS}`,
+      `versionNumber: ${deviceInfoModule.getVersion()}`,
+    ],
   })
 }
 
