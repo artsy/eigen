@@ -17036,6 +17036,7 @@ type updateOrderedSetMutationPayload {
 union updateOrderedSetResponseOrError = updateOrderedSetFailure | updateOrderedSetSuccess
 
 type updateOrderedSetSuccess {
+  feature: Feature
   set: OrderedSet
 }
 
