@@ -159,11 +159,6 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "AREnableSearchDiscoveryContentAndroid",
   },
-  AREnforceLargeNewWorksRail: {
-    description: "Enforce large new works rail",
-    showInDevMenu: true,
-    readyForRelease: false,
-  },
   AREnableArtworkGridSaveIcon: {
     description: "Enable artwork grid save icon",
     showInDevMenu: true,
