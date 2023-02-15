@@ -8,8 +8,9 @@ import {
   WorksForYouScreenQuery,
 } from "app/Components/Containers/WorksForYou"
 import { FadeIn } from "app/Components/FadeIn"
+import { ArtQuizArtworks } from "app/Scenes/ArtQuiz/ArtQuizArtworks"
+import { ArtQuizNavigation } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
 import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
-import { ArtQuizWelcome } from "app/Scenes/ArtQuiz/ArtQuizWelcome"
 import { SearchScreenQuery } from "app/Scenes/Search/Search"
 import { SearchScreenQuery as SearchScreenQuery2 } from "app/Scenes/Search/Search2"
 import { SearchSwitchContainer } from "app/Scenes/Search/SearchSwitchContainer"
@@ -325,6 +326,12 @@ function defineModules<T extends string>(obj: Record<T, ModuleDescriptor>) {
   return obj
 }
 
+const artQuizScreenOptions = {
+  hidesBottomTabs: true,
+  hidesBackButton: true,
+  fullBleed: true,
+}
+
 export type AppModule = keyof typeof modules
 
 export const modules = defineModules({
@@ -336,8 +343,9 @@ export const modules = defineModules({
   DevMenu: reactModule(DevMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   About: reactModule(About),
   AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkForm, { hidesBackButton: true }),
-  ArtQuizWelcome: reactModule(ArtQuizWelcome),
-  ArtQuizResults: reactModule(ArtQuizResults),
+  ArtQuiz: reactModule(ArtQuizNavigation, artQuizScreenOptions),
+  ArtQuizArtworks: reactModule(ArtQuizArtworks, artQuizScreenOptions),
+  ArtQuizResults: reactModule(ArtQuizResults, artQuizScreenOptions),
   Articles: reactModule(ArticlesScreen, {}, [ArticlesScreenQuery]),
   Artist: reactModule(ArtistQueryRenderer, { hidesBackButton: true }, [ArtistScreenQuery]),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),

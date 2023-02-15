@@ -8,7 +8,7 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 const ResultsScreen = () => {
   const queryResult = useLazyLoadQuery<ArtQuizResultsQuery>(artQuizResultsQuery, {})
   const hasSavedArtworks = queryResult.me?.quiz.savedArtworks.length
-  const [isResultReady, setIsResultReady] = useState(false)
+  const [isResultReady, setIsResultReady] = useState(!queryResult.me?.quiz.completedAt)
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -32,9 +32,14 @@ const ResultsScreen = () => {
   )
 }
 
-export const ArtQuizResults = () => {
+interface ArtQuizResultsProps {
+  utm_medium?: string
+  utm_source?: string
+}
+
+export const ArtQuizResults = (props: ArtQuizResultsProps) => {
   return (
-    <Suspense fallback={<ArtQuizResultsLoader />}>
+    <Suspense fallback={<ArtQuizResultsLoader isFromEmail={props.utm_medium === "email"} />}>
       <ResultsScreen />
     </Suspense>
   )
@@ -47,6 +52,7 @@ const artQuizResultsQuery = graphql`
         savedArtworks {
           __typename
         }
+        completedAt
       }
       ...ArtQuizResultsTabs_me
     }

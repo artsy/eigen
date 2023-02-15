@@ -8,15 +8,13 @@ import {
   Text,
   BackButton,
 } from "@artsy/palette-mobile"
-import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { ArtQuizArtworksDislikeMutation } from "__generated__/ArtQuizArtworksDislikeMutation.graphql"
 import { ArtQuizArtworksQuery } from "__generated__/ArtQuizArtworksQuery.graphql"
 import { ArtQuizArtworksSaveMutation } from "__generated__/ArtQuizArtworksSaveMutation.graphql"
 import { ArtQuizArtworksUpdateQuizMutation } from "__generated__/ArtQuizArtworksUpdateQuizMutation.graphql"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
-import { ArtQuizNavigationStack } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
-import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
 import { GlobalStore } from "app/store/GlobalStore"
+import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useEffect, useRef, useState } from "react"
 import { Image } from "react-native"
@@ -24,8 +22,6 @@ import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
 import { graphql, useLazyLoadQuery, useMutation } from "react-relay"
 
 export const ArtQuizArtworks = () => {
-  const { goBack, navigate } = useNavigation<NavigationProp<ArtQuizNavigationStack>>()
-  const { onDone } = useOnboardingContext()
   const [activeCardIndex, setActiveCardIndex] = useState(0)
   const artQuizArtworksQueryResult = useLazyLoadQuery<ArtQuizArtworksQuery>(
     artQuizArtworksQuery,
@@ -101,7 +97,7 @@ export const ArtQuizArtworks = () => {
     })
 
     if (activeCardIndex + 1 === artworks.length) {
-      navigate("ArtQuizResults")
+      navigate("/art-quiz/results")
       return
     }
   }
@@ -149,12 +145,7 @@ export const ArtQuizArtworks = () => {
   }
 
   const handleOnSkip = () => {
-    onDone()
-    // Turn off Art quiz feature flag
-    GlobalStore.actions.artsyPrefs.features.setLocalOverride({
-      key: "ARShowArtQuizApp",
-      value: false,
-    })
+    navigate("/")
     popoverMessage.hide()
   }
 

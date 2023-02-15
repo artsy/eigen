@@ -189,11 +189,6 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "ARShowUpcomingAuctionResultsRails",
   },
-  ARShowArtQuizApp: {
-    description: "Show Art Quiz App",
-    showInDevMenu: true,
-    readyForRelease: false,
-  },
   AREnableESOnlySearch: {
     description: "Enable ES only search",
     showInDevMenu: true,

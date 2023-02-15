@@ -22,6 +22,8 @@ export const ArtQuizNavigation: React.FC = () => {
     return <ArtQuizResults />
   }
 
+  return <ArtQuizWelcome />
+
   return (
     <NavigationContainer independent>
       <StackNavigator.Navigator

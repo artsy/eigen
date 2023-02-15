@@ -180,6 +180,12 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
             }
           />
           <FeatureFlagMenuItem
+            title="Open Art Quiz"
+            onPress={() => {
+              dismissModal(() => navigate("art-quiz"))
+            }}
+          />
+          <FeatureFlagMenuItem
             title={`Migration name: "${
               (Object.entries(Versions).find(([_, v]) => v === migrationVersion) ?? ["N/A"])[0]
             }"`}
