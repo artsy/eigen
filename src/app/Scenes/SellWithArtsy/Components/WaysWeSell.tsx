@@ -6,17 +6,14 @@ import { useScreenDimensions } from "shared/hooks"
 
 const data = [
   {
-    image: require("images/ways-we-sell-auction.png"),
     title: "Auctions",
     text: "Find the highest bidder, with our roster of auction houses in 190 countries.",
   },
   {
-    image: require("images/ways-we-sell-private-sales.png"),
     title: "Private Sales",
     text: "We match your work to potential buyers in our global network of collectors.",
   },
   {
-    image: require("images/ways-we-sell-online-storefront.png"),
     title: "Online storefront",
     text: "List directly on Artsy.net, the world’s largest online art marketplace.",
   },
@@ -40,9 +37,22 @@ export const WaysWeSell: React.FC = () => {
         horizontal
         showsHorizontalScrollIndicator={false}
         data={data}
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <Flex maxWidth={width / 1.2} mr={2} alignSelf="flex-end">
-            <Image source={item.image} style={{ maxWidth: width - 60 }} resizeMode="cover" />
+            <Image
+              source={
+                // because these images are suffixed @1x, @2x etc we cannot `require` outside Image
+                // as this would break tests since in test env the module would not be found without
+                // the suffixes included literally
+                index === 0
+                  ? require("images/ways-we-sell-auction.png")
+                  : index === 1
+                  ? require("images/ways-we-sell-private-sales.png")
+                  : require("images/ways-we-sell-online-storefront.png")
+              }
+              style={{ maxWidth: width - 60 }}
+              resizeMode="cover"
+            />
 
             <Text variant="md" color={color("white100")} mt={1}>
               {item.title}
