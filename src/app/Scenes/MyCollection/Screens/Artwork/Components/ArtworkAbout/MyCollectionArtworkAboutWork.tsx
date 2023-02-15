@@ -27,6 +27,7 @@ export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWork
 
   const {
     category,
+    confidentialNotes,
     medium,
     attributionClass,
     dimensions,
@@ -54,6 +55,9 @@ export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWork
       <MetaDataField label="Year created" value={date} />
       <MetaDataField label="Provenance" value={provenance} />
       <MetaDataField label="Price Paid" value={pricePaid?.display} />
+      {confidentialNotes ? (
+        <MetaDataField label="Notes" value={confidentialNotes} truncateLimit={70} />
+      ) : null}
     </Flex>
   )
 }
@@ -61,6 +65,7 @@ export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWork
 const artworkFragment = graphql`
   fragment MyCollectionArtworkAboutWork_artwork on Artwork {
     category
+    confidentialNotes
     medium
     metric
     dimensions {
