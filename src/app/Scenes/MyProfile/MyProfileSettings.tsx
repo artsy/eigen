@@ -85,14 +85,7 @@ export const MyProfileSettings: React.FC<{}> = () => {
       <MenuItem title="About" onPress={() => navigate("about")} />
       <Separator my={1} borderColor={separatorColor} />
 
-      <Flex
-        flexDirection="row"
-        alignItems="center"
-        justifyContent="center"
-        py="7.5px"
-        px={2}
-        pr="15px"
-      >
+      <Flex flexDirection="row" alignItems="center" justifyContent="center" py="7.5px" px={2}>
         <Button variant="fillDark" haptic onPress={confirmLogout} block>
           Log Out
         </Button>
