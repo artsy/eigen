@@ -5,12 +5,13 @@ import { AutosuggestResults_results$data } from "__generated__/AutosuggestResult
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import Spinner from "app/Components/Spinner"
+import { useSearchProviderValues } from "app/Scenes/Search/SearchContext"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { isPad } from "app/utils/hardware"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { Text } from "palette"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { FlatList } from "react-native"
+import { FlatList, Keyboard } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
 import {
@@ -57,7 +58,7 @@ const AutosuggestResultsFlatList: React.FC<{
 }) => {
   const [shouldShowLoadingPlaceholder, setShouldShowLoadingPlaceholder] = useState(true)
   const loadMore = useCallback(() => relay.loadMore(SUBSEQUENT_BATCH_SIZE), [])
-
+  const searchProviderValues = useSearchProviderValues(query)
   // We only want to load more results after the user has started scrolling, and unfortunately
   // FlatList calls onEndReached right after mounting because the default threshold is quite
   // generous. We want that generosity during a scroll but most of the time a user will not
@@ -65,6 +66,11 @@ const AutosuggestResultsFlatList: React.FC<{
   // So we're using this flag to 'gate' loadMore
   const userHasStartedScrolling = useRef(false)
   const onScrollBeginDrag = useCallback(() => {
+    // blurs the input
+    searchProviderValues.inputRef.current?.blur()
+    // dismisses the keyboard
+    Keyboard.dismiss()
+
     if (!userHasStartedScrolling.current) {
       userHasStartedScrolling.current = true
       // fetch second page immediately
