@@ -66,7 +66,6 @@ export const AutosuggestSearchResult: React.FC<{
     if (onResultPress) {
       onResultPress(result)
     } else {
-      // @ts-expect-error
       inputRef.current?.blur()
       // need to wait a tick to push next view otherwise the input won't blur ¯\_(ツ)_/¯
       setTimeout(() => {

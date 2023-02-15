@@ -1,6 +1,7 @@
 import { Flex, Spacer, useSpace, Spinner } from "@artsy/palette-mobile"
 import { ElasticSearchResultsQuery } from "__generated__/ElasticSearchResultsQuery.graphql"
 import { ElasticSearchResults_searchConnection$key } from "__generated__/ElasticSearchResults_searchConnection.graphql"
+import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { ElasticSearchResult } from "app/Scenes/Search/components/ElasticSearchResult"
 import { SingleIndexEmptyResultsMessage } from "app/Scenes/Search/components/SingleIndexEmptyResultsMessage"
 import { SingleIndexSearchPlaceholder } from "app/Scenes/Search/components/placeholders/SingleIndexSearchPlaceholder"
@@ -9,8 +10,8 @@ import { PillType } from "app/Scenes/Search/types"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
-import { Suspense, useRef } from "react"
-import { FlatList } from "react-native"
+import { Suspense, useContext, useRef } from "react"
+import { FlatList, Keyboard } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 interface SearchResults2Props {
@@ -24,6 +25,7 @@ export const SearchResults2: React.FC<SearchResults2Props> = ({ query, selectedP
   const space = useSpace()
   const isAutosuggestModeEnabled = useFeatureFlag("AREnableAutosuggestModeESSearch")
   const flatListRef = useRef<FlatList>(null)
+  const { inputRef } = useContext(SearchContext)
 
   const selectedEntity = ELASTIC_PILL_KEY_TO_SEARCH_ENTITY?.[selectedPill.key]
 
@@ -49,6 +51,11 @@ export const SearchResults2: React.FC<SearchResults2Props> = ({ query, selectedP
     }
 
     loadNext(PAGE_SIZE)
+  }
+
+  const handleOnScrollBeginDrag = () => {
+    inputRef.current?.blur()
+    Keyboard.dismiss()
   }
 
   return (
@@ -80,6 +87,7 @@ export const SearchResults2: React.FC<SearchResults2Props> = ({ query, selectedP
           {isLoadingNext ? <Spinner /> : null}
         </Flex>
       }
+      onScrollBeginDrag={handleOnScrollBeginDrag}
       onEndReached={handleLoadMore}
     />
   )
