@@ -137,7 +137,7 @@ import {
   ViewingRoomsListScreen,
   viewingRoomsListScreenQuery,
 } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { GlobalStore, useSelectedTab } from "./store/GlobalStore"
+import { GlobalStore, useFeatureFlag, useSelectedTab } from "./store/GlobalStore"
 import { propsStore } from "./store/PropsStore"
 import { DevMenu } from "./utils/DevMenu"
 import { addTrackingProvider, Schema, screenTrack } from "./utils/track"
@@ -169,25 +169,26 @@ interface ArtworkProps {
 }
 
 const Artwork = (props: ArtworkProps) => {
-  const pageableSlugs = props.pageableSlugs ?? []
+  const enablePageableArtworkScreens = useFeatureFlag("AREnablePageableArtworkScreens")
 
-  console.log(pageableSlugs)
+  const pageableSlugs = props.pageableSlugs ?? []
 
   const screens = useMemo(() => {
     return pageableSlugs.map((slug) => ({
       name: slug,
-      Component: <ArtworkQueryRenderer {...props} artworkID={slug} isVisible />,
+      Component: <ArtworkQueryRenderer {...props} artworkID={slug} />,
     }))
   }, [pageableSlugs])
 
   // Check to see if we're within the context of an artwork rail and show
   // pager view.
-  if (screens.length > 0) {
+  // TODO: Remove feature flag once we're ready to launch.
+  if (enablePageableArtworkScreens && screens.length > 0) {
     return (
       <PageableScreensView
         screens={screens}
         initialScreenName={props.artworkID}
-        prefetchScreensCount={2}
+        prefetchScreensCount={5}
       />
     )
     // If not within the context of an artwork collection, just render the

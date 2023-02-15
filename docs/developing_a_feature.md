@@ -68,7 +68,13 @@ First you need to add the new feature block in `src/app/store/config/features.ts
 The `description` property is what makes it possible to override the feature flag from the [Dev Menu](/dev_menu.md).
 
 We also need to add a flag in Echo, our remote feature flags configuration service.
-[Here](https://github.com/artsy/echo/commit/978a103e2c67a8010fabb2184f84aaef31d16f93) is an example PR for how to do that.
+[Here](https://github.com/artsy/echo/commit/978a103e2c67a8010fabb2184f84aaef31d16f93) is an example PR for how to do that. The general feature development flow around adding a flag and updating Echo is like so:
+
+- Add flag to eigen, `readyToRelease: false`
+- Add flag to echo, with `false`
+- Finish dev
+- Change eigen `readyToRelease: true`
+- When the app version is released, swap echo flag to `true` whenever we want users to get it
 
 After adding the echo key, and the PR is merged, update you local copy of echo by running `./scripts/update-echo`.
 
