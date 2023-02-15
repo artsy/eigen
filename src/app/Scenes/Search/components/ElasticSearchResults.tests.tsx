@@ -1,6 +1,7 @@
 import { Spinner } from "@artsy/palette-mobile"
 import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { ElasticSearchResultsQuery } from "__generated__/ElasticSearchResultsQuery.graphql"
+import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { ElasticSearchResults2Screen } from "app/Scenes/Search/components/ElasticSearchResults"
 import { ARTIST_PILL } from "app/Scenes/Search/constants"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
@@ -31,7 +32,13 @@ describe("ElasticSearchResults", () => {
   }
 
   const { renderWithRelay } = setupTestWrapper<ElasticSearchResultsQuery>({
-    Component: () => <ElasticSearchResults2Screen {...initialProps} />,
+    Component: () => (
+      <SearchContext.Provider
+        value={{ inputRef: { current: { blur: jest.fn() } as any }, queryRef: { current: "" } }}
+      >
+        <ElasticSearchResults2Screen {...initialProps} />,
+      </SearchContext.Provider>
+    ),
   })
 
   it("renders without throwing an error", async () => {
