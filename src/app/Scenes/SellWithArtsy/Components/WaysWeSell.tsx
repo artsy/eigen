@@ -1,5 +1,5 @@
-import { Spacer, useColor } from "@artsy/palette-mobile"
-import { Flex, Text } from "palette"
+import { Flex, Spacer, useColor } from "@artsy/palette-mobile"
+import { Text } from "palette"
 import { Image } from "react-native"
 import { FlatList } from "react-native-gesture-handler"
 import { useScreenDimensions } from "shared/hooks"
