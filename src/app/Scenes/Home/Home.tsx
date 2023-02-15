@@ -1,10 +1,10 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import {
   ArtsyLogoBlackIcon,
+  Box,
+  Flex,
   Spacer,
   SpacingUnitDSValueNumber,
-  Flex,
-  Box,
 } from "@artsy/palette-mobile"
 import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
@@ -20,7 +20,6 @@ import { Search2Query } from "__generated__/Search2Query.graphql"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { LargeArtworkRailPlaceholder } from "app/Components/ArtworkRail/LargeArtworkRail"
-import { SmallArtworkRailPlaceholder } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { ArtistRailFragmentContainer } from "app/Components/Home/ArtistRails/ArtistRail"
 import { RecommendedArtistsRailFragmentContainer } from "app/Components/Home/ArtistRails/RecommendedArtistsRail"
 import { LotsByFollowedArtistsRailContainer } from "app/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail"
@@ -59,6 +58,7 @@ import { Join } from "palette"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
 import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+
 import { ActivityIndicator } from "./Components/ActivityIndicator"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { ArtworkRecommendationsRail } from "./Components/ArtworkRecommendationsRail"
@@ -125,7 +125,6 @@ const Home = (props: Props) => {
 
   const enableMyCollectionHFOnboarding = useFeatureFlag("AREnableMyCollectionHFOnboarding")
   const showUpcomingAuctionResultsRail = useFeatureFlag("ARShowUpcomingAuctionResultsRails")
-  const enableLargeNewWorksForYouRail = useLargeNewWorksForYouRail()
 
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
   let modules: HomeModule[] = compact([
@@ -353,11 +352,7 @@ const Home = (props: Props) => {
                     title={item.title}
                     artworkConnection={item.data}
                     scrollRef={scrollRefs.current[index]}
-                    mb={
-                      enableLargeNewWorksForYouRail
-                        ? LARGE_MODULE_SEPARATOR_HEIGHT
-                        : MODULE_SEPARATOR_HEIGHT
-                    }
+                    mb={LARGE_MODULE_SEPARATOR_HEIGHT}
                   />
                 )
               case "recommended-artists":
@@ -414,12 +409,6 @@ const Home = (props: Props) => {
       </View>
     </ProvideScreenTracking>
   )
-}
-
-const useLargeNewWorksForYouRail = () => {
-  const railVariant = useExperimentVariant("eigen-new-works-for-you-rail-size")
-  const enforceLargeRail = useFeatureFlag("AREnforceLargeNewWorksRail")
-  return railVariant.variant === "experiment" || enforceLargeRail
 }
 
 const useHandleRefresh = (relay: RelayRefetchProp, modules: any[]) => {
@@ -600,7 +589,6 @@ const BelowTheFoldPlaceholder: React.FC = () => {
 }
 
 const HomePlaceholder: React.FC = () => {
-  const enableLargeNewWorksForYouRail = useLargeNewWorksForYouRail()
   const randomValue = useMemoizedRandom()
 
   return (
@@ -619,11 +607,7 @@ const HomePlaceholder: React.FC = () => {
           <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
           <Spacer y={0.5} />
           <Flex flexDirection="row">
-            {enableLargeNewWorksForYouRail ? (
-              <LargeArtworkRailPlaceholder />
-            ) : (
-              <SmallArtworkRailPlaceholder />
-            )}
+            <LargeArtworkRailPlaceholder />
           </Flex>
         </Box>
       }

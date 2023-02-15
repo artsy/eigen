@@ -1,6 +1,6 @@
 import { Flex, SpacingUnit } from "@artsy/palette-mobile"
 import { ArtworkModuleRail_rail$data } from "__generated__/ArtworkModuleRail_rail.graphql"
-import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
+import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
@@ -89,7 +89,7 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
           }
         />
       </Flex>
-      <SmallArtworkRail
+      <LargeArtworkRail
         listRef={listRef}
         artworks={artworks}
         onPress={(artwork, position) => {
@@ -118,7 +118,7 @@ export const ArtworkModuleRailFragmentContainer = createFragmentContainer(Artwor
       title
       key
       results {
-        ...SmallArtworkRail_artworks
+        ...LargeArtworkRail_artworks
       }
       context {
         ... on HomePageRelatedArtistArtworkModule {
