@@ -2,13 +2,10 @@ import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, SpacingUnit } from "@artsy/palette-mobile"
 import { NewWorksForYouRail_artworkConnection$key } from "__generated__/NewWorksForYouRail_artworkConnection.graphql"
 import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
-import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { useExperimentVariant } from "app/utils/experiments/hooks"
-import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
 import React, { useImperativeHandle, useRef } from "react"
@@ -30,18 +27,9 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
   mb,
 }) => {
   const { trackEvent } = useTracking()
-  const enforceLargeRail = useFeatureFlag("AREnforceLargeNewWorksRail")
-  const railVariant = useExperimentVariant("eigen-new-works-for-you-rail-size")
   const enableSaveIcon = useFeatureFlag("AREnableLargeArtworkRailSaveIcon")
 
-  trackExperimentVariant(
-    "eigen-new-works-for-you-rail-size",
-    railVariant.enabled,
-    railVariant.variant,
-    railVariant.payload
-  )
-
-  const { artworksForUser, smallArtworksForUser } = useFragment(artworksFragment, artworkConnection)
+  const { artworksForUser } = useFragment(artworksFragment, artworkConnection)
 
   const railRef = useRef<View>(null)
   const listRef = useRef<FlatList<any>>(null)
@@ -51,7 +39,6 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
   }))
 
   const artworks = extractNodes(artworksForUser)
-  const smallArtworks = extractNodes(smallArtworksForUser)
 
   if (!artworks.length) {
     return null
@@ -82,20 +69,12 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
             }}
           />
         </Flex>
-        {railVariant.variant === "experiment" || enforceLargeRail ? (
-          <LargeArtworkRail
-            artworks={artworks}
-            onPress={handleOnArtworkPress}
-            showSaveIcon={enableSaveIcon}
-            trackingContextScreenOwnerType={Schema.OwnerEntityTypes.Home}
-          />
-        ) : (
-          <SmallArtworkRail
-            artworks={smallArtworks}
-            onPress={handleOnArtworkPress}
-            trackingContextScreenOwnerType={Schema.OwnerEntityTypes.Home}
-          />
-        )}
+        <LargeArtworkRail
+          artworks={artworks}
+          onPress={handleOnArtworkPress}
+          showSaveIcon={enableSaveIcon}
+          trackingContextScreenOwnerType={Schema.OwnerEntityTypes.Home}
+        />
       </View>
     </Flex>
   )
@@ -103,20 +82,6 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
 
 const artworksFragment = graphql`
   fragment NewWorksForYouRail_artworkConnection on Viewer {
-    smallArtworksForUser: artworksForUser(
-      maxWorksPerArtist: 3
-      includeBackfill: true
-      first: 40
-      version: $worksForYouRecommendationsModelVariant
-    ) {
-      edges {
-        node {
-          title
-          internalID
-          ...SmallArtworkRail_artworks
-        }
-      }
-    }
     artworksForUser(
       maxWorksPerArtist: 3
       includeBackfill: true
@@ -143,19 +108,3 @@ const tracks = {
     type: "header",
   }),
 }
-
-const trackExperimentVariant = (
-  name: string,
-  enabled: boolean,
-  variant: string,
-  payload?: string
-) =>
-  maybeReportExperimentVariant({
-    experimentName: name,
-    enabled,
-    variantName: variant,
-    payload,
-    context_module: ContextModule.newWorksForYouRail,
-    context_owner_type: OwnerType.home,
-    context_owner_screen: OwnerType.home,
-  })
