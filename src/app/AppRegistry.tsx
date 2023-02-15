@@ -8,8 +8,8 @@ import {
   WorksForYouScreenQuery,
 } from "app/Components/Containers/WorksForYou"
 import { FadeIn } from "app/Components/FadeIn"
+import { ArtQuiz } from "app/Scenes/ArtQuiz/ArtQuiz"
 import { ArtQuizArtworks } from "app/Scenes/ArtQuiz/ArtQuizArtworks"
-import { ArtQuizNavigation } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
 import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
 import { SearchScreenQuery } from "app/Scenes/Search/Search"
 import { SearchScreenQuery as SearchScreenQuery2 } from "app/Scenes/Search/Search2"
@@ -343,7 +343,7 @@ export const modules = defineModules({
   DevMenu: reactModule(DevMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   About: reactModule(About),
   AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkForm, { hidesBackButton: true }),
-  ArtQuiz: reactModule(ArtQuizNavigation, artQuizScreenOptions),
+  ArtQuiz: reactModule(ArtQuiz, artQuizScreenOptions),
   ArtQuizArtworks: reactModule(ArtQuizArtworks, artQuizScreenOptions),
   ArtQuizResults: reactModule(ArtQuizResults, artQuizScreenOptions),
   Articles: reactModule(ArticlesScreen, {}, [ArticlesScreenQuery]),

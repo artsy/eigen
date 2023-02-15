@@ -1,5 +1,5 @@
-import { ArtQuizNavigation } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
+import { ArtQuiz } from "app/Scenes/ArtQuiz/ArtQuiz"
 
 export const OnboardingArtTasteQuiz: React.FC = () => {
-  return <ArtQuizNavigation />
+  return <ArtQuiz />
 }

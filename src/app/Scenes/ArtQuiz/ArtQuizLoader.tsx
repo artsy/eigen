@@ -1,12 +1,6 @@
-import { Flex, Spinner, Text, Screen } from "@artsy/palette-mobile"
+import { Flex, Spinner, Screen, Text } from "@artsy/palette-mobile"
 
-export const ArtQuizResultsLoader = ({
-  isReady,
-  isFromEmail,
-}: {
-  isReady?: boolean
-  isFromEmail?: boolean
-}) => {
+export const ArtQuizLoader = ({ isCalculatingResult }: { isCalculatingResult?: boolean }) => {
   return (
     <Screen>
       <Screen.Body>
@@ -14,12 +8,10 @@ export const ArtQuizResultsLoader = ({
           <Flex p={2} justifyContent="center" alignItems="center">
             <Spinner color="blue100" />
           </Flex>
-          {!isFromEmail && (
+          {isCalculatingResult && (
             <>
               <Text variant="lg-display">Art Taste Quiz</Text>
-              <Text color="black60">
-                {isReady ? "Results Completed" : "Calculating Results..."}
-              </Text>
+              <Text color="black60">Calculating Results...</Text>
             </>
           )}
         </Flex>

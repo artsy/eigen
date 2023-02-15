@@ -13,15 +13,16 @@ import { ArtQuizArtworksQuery } from "__generated__/ArtQuizArtworksQuery.graphql
 import { ArtQuizArtworksSaveMutation } from "__generated__/ArtQuizArtworksSaveMutation.graphql"
 import { ArtQuizArtworksUpdateQuizMutation } from "__generated__/ArtQuizArtworksUpdateQuizMutation.graphql"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
+import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { useEffect, useRef, useState } from "react"
+import { Suspense, useEffect, useRef, useState } from "react"
 import { Image } from "react-native"
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
 import { graphql, useLazyLoadQuery, useMutation } from "react-relay"
 
-export const ArtQuizArtworks = () => {
+export const ArtQuizResultsScreen = () => {
   const [activeCardIndex, setActiveCardIndex] = useState(0)
   const artQuizArtworksQueryResult = useLazyLoadQuery<ArtQuizArtworksQuery>(
     artQuizArtworksQuery,
@@ -97,7 +98,11 @@ export const ArtQuizArtworks = () => {
     })
 
     if (activeCardIndex + 1 === artworks.length) {
-      navigate("/art-quiz/results")
+      navigate("/art-quiz/results", {
+        passProps: {
+          isCalculatingResult: true,
+        },
+      })
       return
     }
   }
@@ -205,6 +210,14 @@ export const ArtQuizArtworks = () => {
         </Flex>
       </Screen.Body>
     </Screen>
+  )
+}
+
+export const ArtQuizArtworks = () => {
+  return (
+    <Suspense fallback={<ArtQuizLoader />}>
+      <ArtQuizResultsScreen />
+    </Suspense>
   )
 }
 

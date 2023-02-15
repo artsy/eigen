@@ -1,45 +1,28 @@
 import { ArtQuizResultsQuery } from "__generated__/ArtQuizResultsQuery.graphql"
-import { ArtQuizResultsLoader } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsLoader"
+import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
 import { ArtQuizResultsEmptyTabs } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsEmptyTabs"
 import { ArtQuizResultsTabs } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsTabs"
-import { Suspense, useEffect, useState } from "react"
+import { Suspense } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 const ResultsScreen = () => {
   const queryResult = useLazyLoadQuery<ArtQuizResultsQuery>(artQuizResultsQuery, {})
   const hasSavedArtworks = queryResult.me?.quiz.savedArtworks.length
-  const [isResultReady, setIsResultReady] = useState(!queryResult.me?.quiz.completedAt)
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsResultReady(true)
-    }, 2000)
-    return () => clearTimeout(timer)
-  }, [hasSavedArtworks])
-
-  if (!isResultReady && hasSavedArtworks) {
-    return <ArtQuizResultsLoader isReady />
-  }
-
-  if (isResultReady && hasSavedArtworks) {
+  if (hasSavedArtworks) {
     return <ArtQuizResultsTabs me={queryResult.me} />
   }
 
   return (
-    <Suspense fallback={<ArtQuizResultsLoader isReady />}>
+    <Suspense fallback={<ArtQuizLoader />}>
       <ArtQuizResultsEmptyTabs />
     </Suspense>
   )
 }
 
-interface ArtQuizResultsProps {
-  utm_medium?: string
-  utm_source?: string
-}
-
-export const ArtQuizResults = (props: ArtQuizResultsProps) => {
+export const ArtQuizResults = ({ isCalculatingResult }: { isCalculatingResult?: boolean }) => {
   return (
-    <Suspense fallback={<ArtQuizResultsLoader isFromEmail={props.utm_medium === "email"} />}>
+    <Suspense fallback={<ArtQuizLoader isCalculatingResult={isCalculatingResult} />}>
       <ResultsScreen />
     </Suspense>
   )
@@ -52,7 +35,6 @@ const artQuizResultsQuery = graphql`
         savedArtworks {
           __typename
         }
-        completedAt
       }
       ...ArtQuizResultsTabs_me
     }
