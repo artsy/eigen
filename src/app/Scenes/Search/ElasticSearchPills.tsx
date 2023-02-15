@@ -16,7 +16,7 @@ export interface ElasticSearchPillsProps {
 }
 
 export const ElasticSearchPills = React.forwardRef<ScrollView, ElasticSearchPillsProps>(
-  ({ pills, onPillPress, isSelected, viewer, isLoading }, ref) => {
+  ({ pills, onPillPress, isSelected, viewer }, ref) => {
     const space = useSpace()
 
     const data = useFragment<ElasticSearchPills_viewer$key>(ElasticSearchPillsQuery, viewer)
@@ -44,7 +44,7 @@ export const ElasticSearchPills = React.forwardRef<ScrollView, ElasticSearchPill
         {pills.map((pill) => {
           const { key, displayName } = pill
           const selected = isSelected(pill)
-          const disabled = !!selected || isLoading || isPillDisabled(key)
+          const disabled = !!selected || isPillDisabled(key)
 
           return (
             <Pill
