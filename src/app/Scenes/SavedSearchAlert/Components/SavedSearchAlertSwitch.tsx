@@ -1,4 +1,5 @@
-import { Flex, Text, useColor } from "palette"
+import { Flex, useColor } from "@artsy/palette-mobile"
+import { Text } from "palette"
 import { Platform, Switch } from "react-native"
 
 export interface SavedSearchAlertSwitchProps {

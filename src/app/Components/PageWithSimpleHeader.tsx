@@ -1,4 +1,5 @@
-import { Box, Flex, Separator, Text } from "palette"
+import { Flex, Box } from "@artsy/palette-mobile"
+import { Separator, Text } from "palette"
 import { View } from "react-native"
 
 export const PageWithSimpleHeader: React.FC<{
@@ -9,7 +10,7 @@ export const PageWithSimpleHeader: React.FC<{
 }> = ({ title, left, right, children, noSeparator }) => {
   return (
     <Box style={{ flex: 1 }}>
-      <Flex px="2" pb="1" pt="2" mb={0.5} flexDirection="row" alignItems="center" minHeight={54}>
+      <Flex px={2} pb={1} pt={2} mb={0.5} flexDirection="row" alignItems="center" minHeight={54}>
         <Flex flex={1} alignItems="flex-start">
           {left}
         </Flex>

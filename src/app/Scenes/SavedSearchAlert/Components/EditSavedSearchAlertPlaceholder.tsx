@@ -1,7 +1,6 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box } from "@artsy/palette-mobile"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { PlaceholderText } from "app/utils/placeholders"
-import { Box, Flex } from "palette"
 
 export const EditSavedSearchFormPlaceholder = () => {
   return (

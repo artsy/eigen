@@ -1,5 +1,4 @@
-import { NoImageIcon } from "@artsy/palette-mobile"
-import { Flex, useColor } from "palette"
+import { NoImageIcon, Flex, useColor } from "@artsy/palette-mobile"
 import OpaqueImageView2 from "palette/elements/OpaqueImageView/OpaqueImageView2"
 import React from "react"
 

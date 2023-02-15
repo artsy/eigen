@@ -1,4 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { Flex, Box } from "@artsy/palette-mobile"
 import { ArtistSeriesFullArtistSeriesListQuery } from "__generated__/ArtistSeriesFullArtistSeriesListQuery.graphql"
 import { ArtistSeriesFullArtistSeriesList_artist$data } from "__generated__/ArtistSeriesFullArtistSeriesList_artist.graphql"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
@@ -6,7 +7,7 @@ import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
-import { Box, Flex, Text } from "palette"
+import { Text } from "palette"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
@@ -29,7 +30,7 @@ export const FullArtistSeriesList: React.FC<FullArtistSeriesListProps> = ({ arti
       }}
     >
       <ScrollView>
-        <Box px="2" py="2">
+        <Box px={2} py={2}>
           <Text variant="sm-display" weight="medium" textAlign="center">
             Artist Series
           </Text>

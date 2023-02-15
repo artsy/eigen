@@ -1,4 +1,4 @@
-import { Spacer, quoteLeft, quoteRight } from "@artsy/palette-mobile"
+import { Spacer, quoteLeft, quoteRight, Flex, useSpace } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import { ArtistAutosuggestResultsQuery } from "__generated__/ArtistAutosuggestResultsQuery.graphql"
 import { ArtistAutosuggestResults_results$data } from "__generated__/ArtistAutosuggestResults_results.graphql"
@@ -10,7 +10,7 @@ import {
   RandomWidthPlaceholderText,
 } from "app/utils/placeholders"
 import { times } from "lodash"
-import { Flex, Separator, Text, useSpace } from "palette"
+import { Separator, Text } from "palette"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -107,7 +107,7 @@ const AutoSuggestBoxContainer: React.FC = ({ children }) => {
     <Flex
       style={{
         flex: 1,
-        padding: space("2"),
+        padding: space(2),
         borderStyle: "solid",
         borderColor: "#707070",
         borderWidth: 1,

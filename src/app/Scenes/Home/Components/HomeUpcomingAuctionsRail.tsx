@@ -1,10 +1,10 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Flex, SpacingUnit } from "@artsy/palette-mobile"
 import { HomeUpcomingAuctionsRail_me$key } from "__generated__/HomeUpcomingAuctionsRail_me.graphql"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex } from "palette"
 import { FlatList } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -12,7 +12,7 @@ import { useScreenDimensions } from "shared/hooks"
 
 interface HomeUpcomingAuctionsRailProps {
   me: HomeUpcomingAuctionsRail_me$key
-  mb?: number
+  mb?: SpacingUnit
   title: string
 }
 
@@ -36,7 +36,7 @@ export const HomeUpcomingAuctionsRail: React.FC<HomeUpcomingAuctionsRailProps> =
 
   return (
     <Flex mb={mb}>
-      <Flex pl="2" pr="2">
+      <Flex pl={2} pr={2}>
         <SectionTitle
           title={title}
           onPress={() => {

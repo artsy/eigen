@@ -1,9 +1,10 @@
+import { Box } from "@artsy/palette-mobile"
 import { Container } from "app/Components/Bidding/Components/Containers"
 import { PaymentCardTextFieldParams } from "app/Components/Bidding/types"
 import { BottomAlignedButtonWrapper } from "app/Components/Buttons/BottomAlignedButtonWrapper"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
-import { Box, Button, Text, Theme } from "palette"
+import { Button, Text } from "palette"
 import React, { Component } from "react"
 import { ScrollView, View } from "react-native"
 import { LiteCreditCardInput } from "react-native-credit-card-input"
@@ -68,7 +69,7 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
 
   render() {
     const buttonComponent = (
-      <Box m="1">
+      <Box m={1}>
         <Button
           disabled={!this.state.valid}
           loading={this.state.isLoading}
@@ -88,15 +89,13 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
         onPress={this.state.valid ? () => this.tokenizeCardAndSubmit() : undefined}
         buttonComponent={buttonComponent}
       >
-        <Theme>
-          <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>
-            Add credit card
-          </FancyModalHeader>
-        </Theme>
+        <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>
+          Add credit card
+        </FancyModalHeader>
         <ScrollView scrollEnabled={false}>
           <Container m={0}>
             <View>
-              <Box m="1">
+              <Box m={1}>
                 <Text variant="sm" mb={2}>
                   Card Information
                 </Text>

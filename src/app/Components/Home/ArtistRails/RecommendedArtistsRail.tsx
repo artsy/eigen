@@ -1,5 +1,5 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex, SpacingUnit } from "@artsy/palette-mobile"
 import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
 import { RecommendedArtistsRailFollowMutation } from "__generated__/RecommendedArtistsRailFollowMutation.graphql"
 import { RecommendedArtistsRail_me$data } from "__generated__/RecommendedArtistsRail_me.graphql"
@@ -10,7 +10,7 @@ import { RailScrollProps } from "app/Scenes/Home/Components/types"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex, Spinner } from "palette"
+import { Spinner } from "palette"
 import React, { useImperativeHandle, useRef, useState } from "react"
 import { FlatList, ViewProps } from "react-native"
 import {
@@ -30,7 +30,7 @@ interface RecommendedArtistsRailProps extends ViewProps {
   subtitle?: string
   relay: RelayPaginationProp
   me: RecommendedArtistsRail_me$data
-  mb?: number
+  mb?: SpacingUnit
 }
 
 export const RecommendedArtistsRail: React.FC<RecommendedArtistsRailProps & RailScrollProps> = ({
@@ -83,7 +83,7 @@ export const RecommendedArtistsRail: React.FC<RecommendedArtistsRailProps & Rail
 
   return (
     <Flex mb={mb}>
-      <Flex pl="2" pr="2">
+      <Flex pl={2} pr={2}>
         <SectionTitle title={title} subtitle={subtitle} />
       </Flex>
       <CardRailFlatList<ArtistCard_artist$data>
@@ -109,7 +109,7 @@ export const RecommendedArtistsRail: React.FC<RecommendedArtistsRailProps & Rail
         ItemSeparatorComponent={() => <Spacer x="15px" />}
         ListFooterComponent={
           loadingMoreData ? (
-            <Flex justifyContent="center" ml="4" mr="6" height="200">
+            <Flex justifyContent="center" ml={4} mr={6} height="200">
               <Spinner />
             </Flex>
           ) : (

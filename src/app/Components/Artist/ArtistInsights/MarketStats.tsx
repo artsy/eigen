@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
-import { Spacer, IncreaseIcon, DecreaseIcon } from "@artsy/palette-mobile"
+import { Spacer, IncreaseIcon, DecreaseIcon, Flex } from "@artsy/palette-mobile"
 import { MarketStatsQuery } from "__generated__/MarketStatsQuery.graphql"
 import { MarketStats_priceInsightsConnection$data } from "__generated__/MarketStats_priceInsightsConnection.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
@@ -8,7 +8,7 @@ import { formatLargeNumber } from "app/utils/formatLargeNumber"
 import { formatSellThroughRate } from "app/utils/marketPriceInsightHelpers"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { Flex, Join, Separator, Text } from "palette"
+import { Join, Separator, Text } from "palette"
 import { Select } from "palette/elements/Select"
 import { useRef, useState } from "react"
 import { ScrollView } from "react-native"
@@ -132,7 +132,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
         }}
       />
       {/* Market Stats Values */}
-      <Flex flexDirection="row" flexWrap="wrap" mt={15}>
+      <Flex flexDirection="row" flexWrap="wrap" mt="15px">
         <Flex width="50%">
           <Text variant="lg-display" testID="annualLotsSold">
             {selectedPriceInsight.annualLotsSold}
@@ -220,7 +220,7 @@ const LoadingSkeleton = () => {
       </Text>
       <Spacer y={0.5} />
       <PlaceholderBox width="100%" height={40} />
-      <Flex flexDirection="row" flexWrap="wrap" mt={15}>
+      <Flex flexDirection="row" flexWrap="wrap" mt="15px">
         <Flex width="50%">
           <Spacer y={0.5} />
           <PlaceholderText width={30} height={25} />

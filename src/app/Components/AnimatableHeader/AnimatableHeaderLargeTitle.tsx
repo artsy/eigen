@@ -1,4 +1,5 @@
-import { Text, useSpace } from "palette"
+import { useSpace } from "@artsy/palette-mobile"
+import { Text } from "palette"
 import Animated, { Extrapolate, interpolate, useAnimatedStyle } from "react-native-reanimated"
 import { useAnimatableHeaderContext } from "./AnimatableHeaderContext"
 
@@ -18,8 +19,8 @@ export const AnimatableHeaderLargeTitle = () => {
     <Animated.View
       style={[
         {
-          paddingHorizontal: space("2"),
-          paddingTop: space("1"),
+          paddingHorizontal: space(2),
+          paddingTop: space(1),
           paddingBottom: largeTitleVerticalOffset,
           justifyContent: "center",
         },

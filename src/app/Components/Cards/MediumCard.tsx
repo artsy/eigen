@@ -1,7 +1,7 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, BoxProps, useTheme } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { useTheme, Box, BoxProps, Flex, Text, OpaqueImageView as NewOpaqueImageView } from "palette"
+import { Text, OpaqueImageView as NewOpaqueImageView } from "palette"
 import LinearGradient from "react-native-linear-gradient"
 import { CardTag, CardTagProps } from "./CardTag"
 
@@ -32,7 +32,7 @@ export const MediumCard: React.FC<MediumCardProps> = ({ image, title, subtitle, 
       overflow="hidden"
       {...rest}
     >
-      <Flex flex={2} background={color("black10")}>
+      <Flex flex={2} backgroundColor="black10">
         {enableNewOpaqueImageView ? (
           <NewOpaqueImageView
             imageURL={image}
@@ -57,7 +57,7 @@ export const MediumCard: React.FC<MediumCardProps> = ({ image, title, subtitle, 
           position: "absolute",
           bottom: 0,
           left: 15,
-          right: space("6"),
+          right: space(6),
         }}
       >
         <Text lineHeight="20" color={color("white100")} mb={0.5}>

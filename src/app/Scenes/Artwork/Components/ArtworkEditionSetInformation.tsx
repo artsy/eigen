@@ -1,8 +1,8 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Box } from "@artsy/palette-mobile"
 import { ArtworkEditionSetInformation_artwork$data } from "__generated__/ArtworkEditionSetInformation_artwork.graphql"
 import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { Box, Separator, Text } from "palette"
+import { Separator, Text } from "palette"
 import { createFragmentContainer } from "react-relay"
 import { graphql } from "relay-runtime"
 import { ArtworkEditionSetsFragmentContainer as ArtworkEditionSets } from "./ArtworkEditionSets"
@@ -36,7 +36,7 @@ const ArtworkEditionSetInformation: React.FC<ArtworkEditionSetInformationProps> 
 
   return (
     <>
-      <Box mt={-3}>
+      <Box mt={-4}>
         <ArtworkEditionSets artwork={artwork} onSelectEdition={handleSelectEdition} />
       </Box>
       <Separator />

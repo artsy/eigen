@@ -1,5 +1,11 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { ArtsyLogoBlackIcon, Spacer, SpacingUnitDSValueNumber } from "@artsy/palette-mobile"
+import {
+  ArtsyLogoBlackIcon,
+  Spacer,
+  SpacingUnitDSValueNumber,
+  Flex,
+  Box,
+} from "@artsy/palette-mobile"
 import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { Home_articlesConnection$data } from "__generated__/Home_articlesConnection.graphql"
@@ -49,7 +55,7 @@ import { usePrefetch } from "app/utils/queryPrefetching"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { compact, times } from "lodash"
-import { Box, Flex, Join } from "palette"
+import { Join } from "palette"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
 import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
@@ -286,7 +292,7 @@ const Home = (props: Props) => {
                     title={item.title}
                     rail={item.data || null}
                     scrollRef={scrollRefs.current[index]}
-                    mb={MODULE_SEPARATOR_HEIGHT - 2}
+                    mb={4}
                   />
                 )
               case "worksByArtistsYouFollow":
@@ -303,7 +309,7 @@ const Home = (props: Props) => {
                     title={item.title}
                     me={item.data || null}
                     scrollRef={scrollRefs.current[index]}
-                    mb={MODULE_SEPARATOR_HEIGHT - 2}
+                    mb={4}
                   />
                 )
               case "auction-results":
@@ -563,7 +569,7 @@ const BelowTheFoldPlaceholder: React.FC = () => {
   return (
     <ProvidePlaceholderContext>
       <Flex>
-        <Flex ml="2" mt="4">
+        <Flex ml={2} mt={4}>
           <RandomWidthPlaceholderText minWidth={100} maxWidth={200} marginBottom={20} />
           <Flex flexDirection="row">
             {times(4).map((i) => (
@@ -609,7 +615,7 @@ const HomePlaceholder: React.FC = () => {
 
       {
         // Small tiles to mimic the artwork rails
-        <Box ml="2" mr="2">
+        <Box ml={2} mr={2}>
           <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
           <Spacer y={0.5} />
           <Flex flexDirection="row">
@@ -643,7 +649,7 @@ const HomePlaceholder: React.FC = () => {
         </Flex>
       </Box>
 
-      <Flex ml="2" mt="4">
+      <Flex ml={2} mt={4}>
         <RandomWidthPlaceholderText minWidth={100} maxWidth={200} marginBottom={20} />
         <Flex flexDirection="row">
           {times(4).map((i) => (

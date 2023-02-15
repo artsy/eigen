@@ -1,6 +1,6 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex, useTheme } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { Text, Flex, useTheme } from "palette"
+import { Text } from "palette"
 import { View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 
@@ -21,7 +21,7 @@ export const LargeCard: React.FC<LargeCardProps> = ({ image, title, subtitle, ta
   const { color, space } = useTheme()
   return (
     <View style={{ width: "100%", aspectRatio: 1.0 / 1.33, flexDirection: "row" }}>
-      <Flex flex={2} background={color("black10")}>
+      <Flex flex={2} backgroundColor="black10">
         <OpaqueImageView imageURL={image} style={{ flex: 1 }} />
       </Flex>
       <LinearGradient
@@ -37,8 +37,8 @@ export const LargeCard: React.FC<LargeCardProps> = ({ image, title, subtitle, ta
         style={{
           position: "absolute",
           bottom: 0,
-          left: space("2"),
-          right: space("6"),
+          left: space(2),
+          right: space(6),
         }}
       >
         <Text variant="sm-display" color={color("white100")}>
@@ -52,7 +52,7 @@ export const LargeCard: React.FC<LargeCardProps> = ({ image, title, subtitle, ta
         <Spacer y={2} />
       </Flex>
       {!!tag && (
-        <CardTag {...tag} style={{ position: "absolute", top: space("2"), left: space("2") }} />
+        <CardTag {...tag} style={{ position: "absolute", top: space(2), left: space(2) }} />
       )}
     </View>
   )

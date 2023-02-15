@@ -5,11 +5,11 @@ import {
   ScreenOwnerType,
   TappedArtistSeriesGroup,
 } from "@artsy/cohesion"
-import { ArrowRightIcon } from "@artsy/palette-mobile"
+import { ArrowRightIcon, Flex, useColor } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ArtistSeriesConnectionEdge } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { navigate } from "app/system/navigation/navigate"
-import { Flex, Text, Touchable, useColor } from "palette"
+import { Text, Touchable } from "palette"
 import { useTracking } from "react-tracking"
 
 interface ArtistSeriesListItemProps {

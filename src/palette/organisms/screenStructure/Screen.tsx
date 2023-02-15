@@ -1,6 +1,6 @@
-import { Spacer } from "@artsy/palette-mobile"
-import { BackButton, BackButtonWithBackground, SpacingUnit } from "palette"
-import { Flex, FlexProps, Text, Touchable } from "palette/elements"
+import { Spacer, FlexProps, Flex, SpacingUnitDSValueNumber } from "@artsy/palette-mobile"
+import { BackButton, BackButtonWithBackground } from "palette"
+import { Text, Touchable } from "palette/elements"
 import { createContext, useContext, useEffect, useState } from "react"
 import {
   getChildByType,
@@ -90,7 +90,7 @@ export const Header: React.FC<HeaderProps> = ({ onBack, title, onSkip }) => {
 
   return (
     <Flex
-      mt={insets.top}
+      mt={`${insets.top}px`}
       height={NAVBAR_HEIGHT}
       flexDirection="row"
       alignItems="center"
@@ -135,7 +135,7 @@ export const FloatingHeader: React.FC<HeaderProps> = ({ onBack }) => {
         left={0}
         right={0}
         height={NAVBAR_HEIGHT}
-        px={10}
+        px={1}
         flexDirection="row"
         alignItems="center"
       >
@@ -146,7 +146,7 @@ export const FloatingHeader: React.FC<HeaderProps> = ({ onBack }) => {
   return null
 }
 
-const SCREEN_HORIZONTAL_PADDING: SpacingUnit = 2
+const SCREEN_HORIZONTAL_PADDING: SpacingUnitDSValueNumber = 2
 
 interface BodyProps extends Pick<FlexProps, "backgroundColor"> {
   children?: React.ReactNode
@@ -266,7 +266,7 @@ const BottomView: React.FC = ({ children }) => {
       />
       <Flex
         px={SCREEN_HORIZONTAL_PADDING}
-        py={keyboardShowing ? "1" : undefined}
+        py={keyboardShowing ? 1 : undefined}
         backgroundColor="white100"
       >
         {children}

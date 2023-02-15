@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, useTheme } from "@artsy/palette-mobile"
 import { InquiryModal_artwork$data } from "__generated__/InquiryModal_artwork.graphql"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
@@ -9,7 +9,7 @@ import { InquiryQuestionIDs } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { LocationWithDetails } from "app/utils/googleMaps"
 import { Schema } from "app/utils/track"
-import { Box, Flex, Input, Join, Separator, Text, useTheme } from "palette"
+import { Input, Join, Separator, Text } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
 import { LayoutAnimation, ScrollView, TouchableOpacity } from "react-native"
@@ -83,8 +83,8 @@ const InquiryQuestionOption: React.FC<{
             borderWidth: 1,
             borderRadius: 5,
             flexDirection: "column",
-            marginTop: space("1"),
-            padding: space("2"),
+            marginTop: space(1),
+            padding: space(2),
           }}
         >
           <Flex flexDirection="row" justifyContent="space-between">

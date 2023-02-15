@@ -1,3 +1,4 @@
+import { Flex, Box, useSpace } from "@artsy/palette-mobile"
 import { ViewingRoomArtworksQueryRendererQuery } from "__generated__/ViewingRoomArtworksQueryRendererQuery.graphql"
 import { ViewingRoomArtworks_viewingRoom$data } from "__generated__/ViewingRoomArtworks_viewingRoom.graphql"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
@@ -8,7 +9,7 @@ import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { Box, Flex, OpaqueImageView, Separator, Spinner, Text, useSpace, Touchable } from "palette"
+import { OpaqueImageView, Separator, Spinner, Text, Touchable } from "palette"
 import React, { useMemo, useState } from "react"
 import { FlatList, useWindowDimensions } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -67,7 +68,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) =
                     aspectRatio={artwork.image!.aspectRatio}
                   />
                 )}
-                <Box mt="1" mx="2">
+                <Box mt={1} mx={2}>
                   <Text variant="sm">{artwork.artistNames}</Text>
                   <Text variant="sm" color="black60" key={index}>
                     {artwork.title}
@@ -79,7 +80,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) =
               </Box>
             </Touchable>
             {!!artwork.additionalInformation && (
-              <Flex mx="2" mt="1">
+              <Flex mx={2} mt={1}>
                 <ReadMore
                   content={artwork.additionalInformation}
                   maxChars={300}
@@ -120,7 +121,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) =
           }}
           refreshing={isLoadingMore}
           ListFooterComponent={() => (
-            <Flex alignItems="center" justifyContent="center" height={space("6")}>
+            <Flex alignItems="center" justifyContent="center" height={space(6)}>
               {isLoadingMore ? <Spinner /> : null}
             </Flex>
           )}

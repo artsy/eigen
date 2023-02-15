@@ -1,4 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
+import { Box, SpacingUnit, useSpace } from "@artsy/palette-mobile"
 import { ArtworkAboveTheFoldQuery } from "__generated__/ArtworkAboveTheFoldQuery.graphql"
 import { ArtworkBelowTheFoldQuery } from "__generated__/ArtworkBelowTheFoldQuery.graphql"
 import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRecentlyViewedQuery.graphql"
@@ -22,7 +23,7 @@ import {
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { isEmpty } from "lodash"
-import { Box, Separator, useSpace } from "palette"
+import { Separator } from "palette"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
@@ -30,7 +31,6 @@ import { TrackingProp } from "react-tracking"
 import usePrevious from "react-use/lib/usePrevious"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { useScreenDimensions } from "shared/hooks"
-import { ResponsiveValue } from "styled-system"
 import { ArtworkStore, ArtworkStoreProvider } from "./ArtworkStore"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
@@ -597,14 +597,14 @@ export const Artwork: React.FC<ArtworkProps> = ({
           )
         }}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-        contentContainerStyle={{ paddingBottom: space("4") }}
+        contentContainerStyle={{ paddingBottom: space(4) }}
         renderItem={({ item }) => {
           if (enableArtworkRedesign) {
             return <Box px={item.excludePadding ? 0 : 2}>{item.element}</Box>
           }
 
           return (
-            <Box my={item.verticalMargin ?? 3} px={item.excludePadding ? 0 : 2}>
+            <Box my={item.verticalMargin ?? 4} px={item.excludePadding ? 0 : 2}>
               {item.element}
             </Box>
           )
@@ -627,7 +627,7 @@ interface ArtworkPageSection {
   excludePadding?: boolean
   excludeSeparator?: boolean
   // use verticalMargin to pass custom spacing between separator and section
-  verticalMargin?: ResponsiveValue<number>
+  verticalMargin?: SpacingUnit
 }
 
 const ArtworkProvidersContainer: React.FC<ArtworkProps> = (props) => {

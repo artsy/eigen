@@ -1,3 +1,4 @@
+import { Flex, Box } from "@artsy/palette-mobile"
 import { OrderDetailsQuery } from "__generated__/OrderDetailsQuery.graphql"
 import { OrderDetails_order$data } from "__generated__/OrderDetails_order.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
@@ -6,7 +7,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { compact } from "lodash"
-import { Box, Flex, Separator, Text } from "palette"
+import { Separator, Text } from "palette"
 import { SectionList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ArtworkInfoSectionFragmentContainer } from "./ArtworkInfoSection"
@@ -120,7 +121,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
         SectionSeparatorComponent={(data) => (
           <Box
             height={!!data.leadingItem && !!data.trailingSection ? 2 : 0}
-            marginTop={data.leadingItem && data.trailingSection ? 20 : 0}
+            mt={data.leadingItem && data.trailingSection ? 2 : 0}
             backgroundColor="black10"
             flexDirection="column"
             justifyContent="center"
@@ -150,7 +151,7 @@ export const OrderDetailsPlaceholder: React.FC<{}> = () => (
         </Flex>
       </Flex>
       <Flex flexDirection="column" justifyContent="center" alignItems="center" mt={1}>
-        <Separator mt={15} mb={2} />
+        <Separator mt="15px" mb={2} />
       </Flex>
       <Flex>
         <PlaceholderText width={90} />
@@ -170,7 +171,7 @@ export const OrderDetailsPlaceholder: React.FC<{}> = () => (
       </Flex>
       <PlaceholderText width={100} />
       <Flex flexDirection="row" justifyContent="space-between">
-        <Flex mt={2.2}>
+        <Flex mt="2px">
           <PlaceholderText width={40} />
           <PlaceholderText width={60} marginTop={15} />
           <PlaceholderText width={30} />

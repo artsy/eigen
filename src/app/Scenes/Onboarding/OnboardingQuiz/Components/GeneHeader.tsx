@@ -1,9 +1,9 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { GeneHeaderFragment_Gene$key } from "__generated__/GeneHeaderFragment_Gene.graphql"
 import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingTracking"
 import { OnboardingGeneId } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingGene"
-import { Flex, FollowButton, Text } from "palette"
+import { FollowButton, Text } from "palette"
 import { useCallback, useEffect, useState } from "react"
 import { ImageBackground, ImageSourcePropType } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"
@@ -70,12 +70,7 @@ export const GeneHeader: React.FC<GeneHeaderProps> = ({ geneID, gene, descriptio
             {description}
           </Text>
           <Spacer y={2} />
-          <FollowButton
-            isFollowed={!!isFollowed}
-            onPress={handleFollowGene}
-            loading={isInFlight}
-            variant="v2"
-          />
+          <FollowButton isFollowed={!!isFollowed} onPress={handleFollowGene} loading={isInFlight} />
         </Flex>
       </ImageBackground>
       {!!shouldDisplayTooltip && <AnimatedTooltip />}

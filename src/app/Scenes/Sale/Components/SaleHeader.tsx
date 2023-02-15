@@ -1,4 +1,4 @@
-import { MoreIcon, LinkIcon, ShareIcon } from "@artsy/palette-mobile"
+import { MoreIcon, LinkIcon, ShareIcon, Flex } from "@artsy/palette-mobile"
 import Clipboard from "@react-native-clipboard/clipboard"
 import { SaleHeader_sale$data } from "__generated__/SaleHeader_sale.graphql"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
@@ -9,7 +9,7 @@ import { useToast } from "app/Components/Toast/toastHook"
 import { navigate } from "app/system/navigation/navigate"
 import { getAbsoluteTimeOfSale, saleTime, useRelativeTimeOfSale } from "app/utils/saleTime"
 import moment from "moment"
-import { Flex, Text, Touchable } from "palette"
+import { Text, Touchable } from "palette"
 import React, { useState } from "react"
 import { Animated, Dimensions, View } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -122,7 +122,7 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
           marginTop: !!sale.coverImage?.url ? COVER_IMAGE_HEIGHT : saInsets.top + 40,
         }}
       >
-        <Flex mx="2" mt="2">
+        <Flex mx={2} mt={2}>
           <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
             <Flex flex={1}>
               <Text variant="lg-display" testID="saleName">
@@ -148,7 +148,7 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
           </Flex>
           {cascadingEndTimeFeatureEnabled ? (
             <>
-              <Flex mb="1" mt="2">
+              <Flex mb={1} mt={2}>
                 {!!relativeTimeOfSale?.copy && (
                   <Text variant="sm" color={relativeTimeOfSale.color}>
                     {relativeTimeOfSale.copy}
@@ -164,7 +164,7 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
               )}
             </>
           ) : (
-            <Flex my="1">
+            <Flex my={1}>
               {saleTimeDetails.absolute !== null && (
                 <Text style={{ fontWeight: "bold" }} variant="sm">
                   {saleTimeDetails.absolute}

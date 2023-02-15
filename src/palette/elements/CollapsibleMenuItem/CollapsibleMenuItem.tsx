@@ -1,5 +1,5 @@
-import { ChevronIcon, CheckCircleIcon } from "@artsy/palette-mobile"
-import { Collapse, Flex, Text, Touchable } from "palette"
+import { ChevronIcon, CheckCircleIcon, Flex } from "@artsy/palette-mobile"
+import { Collapse, Text, Touchable } from "palette"
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import { LayoutAnimation, View } from "react-native"
 

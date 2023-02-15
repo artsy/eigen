@@ -1,6 +1,7 @@
+import { Flex, Box } from "@artsy/palette-mobile"
 import { Lot_saleArtwork$data } from "__generated__/Lot_saleArtwork.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { Box, Flex, Text } from "palette"
+import { Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 

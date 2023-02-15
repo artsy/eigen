@@ -1,3 +1,4 @@
+import { Flex } from "@artsy/palette-mobile"
 import {
   ArtistItem_artist$data,
   ArtistItem_artist$key,
@@ -12,7 +13,7 @@ import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { SearchInput } from "app/Components/SearchInput"
 import { extractNodes } from "app/utils/extractNodes"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
-import { Flex, Text } from "palette"
+import { Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { graphql, usePaginationFragment } from "react-relay"
 import { normalizeText } from "shared/utils"

@@ -1,6 +1,5 @@
-import { bullet } from "@artsy/palette-mobile"
+import { bullet, Flex, FlexProps } from "@artsy/palette-mobile"
 import { Avatar } from "palette/elements/Avatar"
-import { Flex, FlexProps } from "palette/elements/Flex"
 import { Text } from "palette/elements/Text"
 
 interface EntityHeaderProps extends FlexProps {
@@ -24,7 +23,7 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
 }) => {
   const followButton = FollowButton && (
     <Flex
-      ml={smallVariant ? "0.5" : "1"}
+      ml={smallVariant ? 0.5 : 1}
       flexDirection="row"
       alignItems="center"
       justifyContent="flex-end"

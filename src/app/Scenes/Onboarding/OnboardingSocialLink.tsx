@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { OAuthProvider } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -9,7 +9,7 @@ import { useGoogleLink } from "app/utils/LinkedAccounts/google"
 import { osMajorVersion } from "app/utils/platformUtil"
 import { FormikProvider, useFormik } from "formik"
 import { capitalize } from "lodash"
-import { Button, Flex, Input, Spinner, Text, Touchable } from "palette"
+import { Button, Input, Spinner, Text, Touchable } from "palette"
 import React, { useEffect, useState } from "react"
 import { Alert, Image, ImageSourcePropType, Platform } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -169,7 +169,7 @@ export const OnboardingSocialLink: React.FC<
       <FormikProvider value={formik}>
         <Flex flex={1} backgroundColor="white100">
           <BackButton onPress={() => navigation.goBack()} />
-          <Flex px={2} mt={insets.top + NAVBAR_HEIGHT + 20} mb={insets.bottom}>
+          <Flex px={2} mt={`${insets.top + NAVBAR_HEIGHT + 20}px`} mb={`${insets.bottom}px`}>
             <Text variant="lg-display">Link Accounts</Text>
             <Spacer y={2} />
             <Text variant="xs">{screenText()}</Text>
@@ -238,7 +238,7 @@ export const OnboardingSocialLink: React.FC<
   return (
     <Flex justifyContent="center" flex={1} backgroundColor="white">
       <BackButton onPress={() => navigation.goBack()} />
-      <Flex flex={1} px={2} mt={insets.top + NAVBAR_HEIGHT + 20} mb={insets.bottom}>
+      <Flex flex={1} px={2} mt={`${insets.top + NAVBAR_HEIGHT + 20}px`} mb={`${insets.bottom}px`}>
         <Text variant="lg-display">Link Accounts</Text>
         <Spacer y={2} />
         <Text variant="xs">{screenText()}</Text>

@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import { SaleAboveTheFoldQuery } from "__generated__/SaleAboveTheFoldQuery.graphql"
 import { SaleBelowTheFoldNewQuery$data } from "__generated__/SaleBelowTheFoldNewQuery.graphql"
@@ -26,7 +26,7 @@ import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import _, { times } from "lodash"
 import { DateTime } from "luxon"
-import { Box, Flex, Join } from "palette"
+import { Join } from "palette"
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { Animated, FlatList, RefreshControl } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
@@ -214,7 +214,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
     saleStatus(sale.startAt, sale.endAt, sale.registrationEndsAt) !== "closed" && {
       key: SALE_REGISTER_TO_BID,
       content: (
-        <Flex mx="2" mt={2}>
+        <Flex mx={2} mt={2}>
           <RegisterToBidButtonContainer
             sale={sale}
             me={me}

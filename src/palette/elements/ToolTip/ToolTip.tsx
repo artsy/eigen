@@ -1,6 +1,5 @@
-import { TriangleDown } from "@artsy/palette-mobile"
+import { TriangleDown, useTheme } from "@artsy/palette-mobile"
 import { noop } from "lodash"
-import { useTheme } from "palette/Theme"
 import { ToolTipFlyout, ToolTipTextContainer } from "palette/elements/ToolTip/ToolTipFlyout"
 import { createContext, useContext, useRef, useState } from "react"
 import { View } from "react-native"
@@ -58,7 +57,7 @@ export const ToolTip: React.FC<ToolTipProps> = ({
   yOffset = 5,
 }) => {
   const { space } = useTheme()
-  const mWidth = useScreenDimensions().width - space("2") * 2 // 40 accounting for padding 20 on each side of the screen
+  const mWidth = useScreenDimensions().width - space(2) * 2 // 40 accounting for padding 20 on each side of the screen
   const MAX_TOOLTIP_WIDTH = maxWidth ?? mWidth
 
   const [toolTipText, setToolTip] = useState(initialToolTipText)

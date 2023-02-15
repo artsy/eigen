@@ -1,7 +1,7 @@
-import { NoArtworkIcon } from "@artsy/palette-mobile"
+import { NoArtworkIcon, Flex, useColor } from "@artsy/palette-mobile"
 import { MedianAuctionPriceRail_me$data } from "__generated__/MedianAuctionPriceRail_me.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { Flex, Text, Touchable, useColor } from "palette"
+import { Text, Touchable } from "palette"
 import { ToolTip } from "palette/elements/ToolTip"
 
 export type MedianSalePriceArtwork = NonNullable<
@@ -51,7 +51,7 @@ export const MedianAuctionPriceListItem: React.FC<Props> = ({
               <NoArtworkIcon width={20} height={20} opacity={0.3} />
             )}
           </Flex>
-          <Flex pl={15}>
+          <Flex pl="15px">
             <Text variant="xs" ellipsizeMode="middle">
               {artist?.name}
             </Text>
@@ -61,7 +61,7 @@ export const MedianAuctionPriceListItem: React.FC<Props> = ({
           </Flex>
         </Flex>
         <Flex mx={2} pt={1} pb={1} flexDirection="row" justifyContent="space-between">
-          <Flex flex={1} pr={15}>
+          <Flex flex={1} pr="15px">
             <Text variant="xs">{firstItem?.mediumType?.name}</Text>
           </Flex>
           <Flex alignItems="flex-end">
@@ -90,7 +90,7 @@ export const MedianAuctionPriceListItem: React.FC<Props> = ({
           }}
         >
           <Flex mx={2} pt={index === 0 ? 0 : 1} flexDirection="row" justifyContent="space-between">
-            <Flex flex={1} pr={15}>
+            <Flex flex={1} pr="15px">
               <Text variant="xs">{artwork?.mediumType?.name}</Text>
             </Flex>
             <Flex alignItems="flex-end">

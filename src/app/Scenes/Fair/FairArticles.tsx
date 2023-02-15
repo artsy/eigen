@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Box, useSpace } from "@artsy/palette-mobile"
 import { FairArticlesQuery } from "__generated__/FairArticlesQuery.graphql"
 import { FairArticles_fair$data } from "__generated__/FairArticles_fair.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
@@ -7,7 +7,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { compact } from "lodash"
-import { Box, Button, Join, SimpleMessage, Text, Touchable, useSpace } from "palette"
+import { Button, Join, SimpleMessage, Text, Touchable } from "palette"
 import React, { useState } from "react"
 import { Dimensions, FlatList, ScrollView } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -54,7 +54,7 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
   const [{ node: heroArticle }, ...remainingArticles] = compact(articles)
 
   const { width: screenWidth } = Dimensions.get("screen")
-  const imageWidth = screenWidth - space("4")
+  const imageWidth = screenWidth - space(4)
 
   return (
     <ScrollView>

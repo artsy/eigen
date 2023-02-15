@@ -1,8 +1,8 @@
+import { Flex, useTheme } from "@artsy/palette-mobile"
 import { MyCollectionArtworkAbout_artwork$key } from "__generated__/MyCollectionArtworkAbout_artwork.graphql"
 import { MyCollectionArtworkAbout_marketPriceInsights$key } from "__generated__/MyCollectionArtworkAbout_marketPriceInsights.graphql"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex, useTheme } from "palette"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { MyCollectionArtworkAboutWork } from "./Components/ArtworkAbout/MyCollectionArtworkAboutWork"
@@ -26,7 +26,7 @@ export function MyCollectionArtworkAbout(props: MyCollectionArtworkAboutProps) {
 
   const Wrapper = props.renderWithoutScrollView ? Flex : StickyTabPageScrollView
   return (
-    <Wrapper style={{ paddingHorizontal: space("2") }}>
+    <Wrapper style={{ paddingHorizontal: space(2) }}>
       <Flex mt={props.renderWithoutScrollView ? 1 : 2} mb={4}>
         <MyCollectionArtworkAboutWork artwork={artwork} marketPriceInsights={marketPriceInsights} />
 

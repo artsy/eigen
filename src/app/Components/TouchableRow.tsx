@@ -1,4 +1,5 @@
-import { Touchable, TouchableProps, useColor } from "palette"
+import { useColor } from "@artsy/palette-mobile"
+import { Touchable, TouchableProps } from "palette"
 
 export type TouchableRowProps = TouchableProps
 

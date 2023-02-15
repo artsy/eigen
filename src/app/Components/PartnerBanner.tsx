@@ -1,5 +1,6 @@
+import { BoxProps, Flex } from "@artsy/palette-mobile"
 import { TextVariant } from "@artsy/palette-tokens/dist/typography/v3"
-import { BoxProps, Flex, Text } from "palette"
+import { Text } from "palette"
 
 export interface PartnerBannerProps extends BoxProps {
   textVariant?: TextVariant

@@ -1,3 +1,4 @@
+import { Flex, Box } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import ChevronIcon from "app/Components/Icons/ChevronIcon"
 import PinSavedOff from "app/Components/Icons/PinSavedOff"
@@ -5,7 +6,7 @@ import PinSavedOn from "app/Components/Icons/PinSavedOn"
 import { BMWSponsorship } from "app/Scenes/City/CityBMWSponsorship"
 import { navigate } from "app/system/navigation/navigate"
 import { Track, track as _track } from "app/utils/track"
-import { Box, Flex, Text } from "palette"
+import { Text } from "palette"
 import { Component } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
@@ -46,7 +47,7 @@ export class SavedEventSection extends Component<any> {
       <>
         <Flex flexDirection="row" alignItems="center">
           <PinSavedOff width={30} height={30} />
-          <Flex ml={24}>
+          <Flex ml="24px">
             <Text variant="sm" color="black60" weight="medium">
               No saved events
             </Text>

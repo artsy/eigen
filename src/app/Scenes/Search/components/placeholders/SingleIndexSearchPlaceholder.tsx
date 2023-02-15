@@ -1,3 +1,4 @@
+import { Box, Flex } from "@artsy/palette-mobile"
 import { IMAGE_SIZE } from "app/Scenes/Search/components/SearchResultImage"
 import {
   PlaceholderBox,
@@ -5,7 +6,6 @@ import {
   RandomWidthPlaceholderText,
 } from "app/utils/placeholders"
 import { times } from "lodash"
-import { Box, Flex } from "palette"
 
 interface SingleIndexSearchPlaceholderProps {
   hasRoundedImages: boolean

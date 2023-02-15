@@ -1,8 +1,8 @@
+import { Box } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtsyWebView } from "app/Components/ArtsyWebView"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { CreateSavedSearchAlertNavigationStack } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
-import { Box } from "palette"
 
 type Props = StackScreenProps<CreateSavedSearchAlertNavigationStack, "EmailPreferences">
 

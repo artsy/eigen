@@ -1,8 +1,8 @@
+import { Box } from "@artsy/palette-mobile"
 import { CurrentlyRunningAuctionsRefetchQuery } from "__generated__/CurrentlyRunningAuctionsRefetchQuery.graphql"
 import { CurrentlyRunningAuctions_viewer$key } from "__generated__/CurrentlyRunningAuctions_viewer.graphql"
 
 import { extractNodes } from "app/utils/extractNodes"
-import { Box } from "palette"
 import React, { useEffect } from "react"
 import { graphql, RefetchFnDynamic, useRefetchableFragment } from "react-relay"
 import { Options } from "react-relay/relay-hooks/useRefetchableFragmentNode"

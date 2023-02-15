@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex } from "@artsy/palette-mobile"
 import { ResultWithHighlight } from "app/Scenes/Search/components/ResultWithHighlight"
 import { objectTabByContextModule, tracks } from "app/Scenes/Search/constants"
 import { getContextModuleByPillName } from "app/Scenes/Search/helpers"
@@ -9,7 +9,7 @@ import {
 } from "app/Scenes/Search/types"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { Flex, Touchable } from "palette"
+import { Touchable } from "palette"
 import { useTracking } from "react-tracking"
 import { IMAGE_SIZE, SearchResultImage } from "./SearchResultImage"
 

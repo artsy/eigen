@@ -1,3 +1,4 @@
+import { Flex } from "@artsy/palette-mobile"
 import { SelectMaxBidQuery } from "__generated__/SelectMaxBidQuery.graphql"
 import { SelectMaxBid_me$data } from "__generated__/SelectMaxBid_me.graphql"
 import { SelectMaxBid_sale_artwork$data } from "__generated__/SelectMaxBid_sale_artwork.graphql"
@@ -8,7 +9,7 @@ import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Schema, screenTrack } from "app/utils/track"
 import { compact } from "lodash"
-import { Button, Flex } from "palette"
+import { Button } from "palette"
 import { Select } from "palette/elements/Select"
 import React, { memo } from "react"
 import { ActivityIndicator, View, ViewProps } from "react-native"
@@ -71,7 +72,7 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
     const bids = compact(this.props.sale_artwork && this.props.sale_artwork.increments) || []
 
     return (
-      <Flex flex={1} m="2">
+      <Flex flex={1} m={2}>
         <View style={{ flexGrow: 1, justifyContent: "center" }}>
           {this.state.isRefreshingSaleArtwork ? (
             <ActivityIndicator testID="spinner" />

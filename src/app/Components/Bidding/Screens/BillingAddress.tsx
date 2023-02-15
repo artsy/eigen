@@ -1,3 +1,4 @@
+import { Flex } from "@artsy/palette-mobile"
 import { findCountryNameByCountryCode } from "app/Components/Bidding/Utils/findCountryNameByCountryCode"
 import { validateAddressFieldsPresence } from "app/Components/Bidding/Validators/validateAddressFieldsPresence"
 import { Address } from "app/Components/Bidding/types"
@@ -6,7 +7,7 @@ import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Stack } from "app/Components/Stack"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Schema, screenTrack, track } from "app/utils/track"
-import { Button, Flex, Input, Text } from "palette"
+import { Button, Input, Text } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { ScreenDimensionsContext } from "shared/hooks"
@@ -223,7 +224,7 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
                     hasError={!!countryError}
                   />
                   {!!countryError && (
-                    <Text variant="xs" mt="1" color="red100">
+                    <Text variant="xs" mt={1} color="red100">
                       {countryError}
                     </Text>
                   )}

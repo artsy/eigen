@@ -1,5 +1,5 @@
 import { ActionType } from "@artsy/cohesion"
-import { CssTransition, Spacer } from "@artsy/palette-mobile"
+import { CssTransition, Spacer, Flex } from "@artsy/palette-mobile"
 import { InboxQuery } from "__generated__/InboxQuery.graphql"
 import { Inbox_me$data } from "__generated__/Inbox_me.graphql"
 import { ConversationsContainer } from "app/Scenes/Inbox/Components/Conversations/Conversations"
@@ -10,7 +10,7 @@ import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { track } from "app/utils/track"
 import { ActionNames, ActionTypes } from "app/utils/track/schema"
-import { Flex, Separator, Text } from "palette"
+import { Separator, Text } from "palette"
 import React from "react"
 import { EmitterSubscription, View, ViewProps } from "react-native"
 // @ts-expect-error @types file generates duplicate declaration problems
@@ -29,7 +29,7 @@ const TabWrapper = (props: TabWrapperProps) => <View {...props} />
 
 export const InboxTabs = (props: TabBarProps) => (
   <>
-    <Flex flexDirection="row" px="2" mb={2}>
+    <Flex flexDirection="row" px={2} mb={2}>
       {props.tabs?.map((name: JSX.Element, page: number) => {
         const isTabActive = props.activeTab === page
         return (
@@ -229,7 +229,7 @@ export const InboxPlaceholder = () => {
       <Flex>
         <Separator mx={1} />
       </Flex>
-      <Flex flex={1} px="2">
+      <Flex flex={1} px={2}>
         <Flex my="auto" alignItems="center">
           <PlaceholderText width={240} />
           <Spacer y={1} />

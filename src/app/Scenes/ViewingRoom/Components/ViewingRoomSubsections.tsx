@@ -1,6 +1,7 @@
+import { Box } from "@artsy/palette-mobile"
 import { ViewingRoomSubsections_viewingRoom$data } from "__generated__/ViewingRoomSubsections_viewingRoom.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { Box, Text, _maxWidth as maxWidth } from "palette"
+import { Text, _maxWidth as maxWidth } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ViewingRoomSubsectionProps {
@@ -12,17 +13,17 @@ export const ViewingRoomSubsections: React.FC<ViewingRoomSubsectionProps> = (pro
   return (
     <>
       {subsections.map((subsection, index) => (
-        <Box key={index} mt="4">
+        <Box key={index} mt={4}>
           {!!subsection.title && (
-            <Box mx="2" testID="subsection">
-              <Text mb="1" variant="sm-display" style={maxWidth}>
+            <Box mx={2} testID="subsection">
+              <Text mb={1} variant="sm-display" style={maxWidth}>
                 {subsection.title}
               </Text>
             </Box>
           )}
           {!!subsection.body && (
-            <Box mx="2">
-              <Text mb="2" variant="sm" style={maxWidth}>
+            <Box mx={2}>
+              <Text mb={2} variant="sm" style={maxWidth}>
                 {subsection.body}
               </Text>
             </Box>
@@ -34,8 +35,8 @@ export const ViewingRoomSubsections: React.FC<ViewingRoomSubsectionProps> = (pro
             />
           )}
           {!!subsection.caption && (
-            <Box mx="2">
-              <Text mt="1" variant="xs" color="black60">
+            <Box mx={2}>
+              <Text mt={1} variant="xs" color="black60">
                 {subsection.caption}
               </Text>
             </Box>

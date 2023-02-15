@@ -1,7 +1,8 @@
+import { Box, ClassTheme } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { navigate } from "app/system/navigation/navigate"
-import { Box, ClassTheme, Text } from "palette"
+import { Text } from "palette"
 import { Component } from "react"
 import { FlatList } from "react-native"
 import styled from "styled-components/native"
@@ -49,7 +50,7 @@ export class FairEventSection extends Component<Props> {
               data={data.filter((fair) => Boolean(fair.image))}
               renderItem={this.renderItem}
               keyExtractor={(item) => item.id}
-              contentContainerStyle={{ padding: space("2") }}
+              contentContainerStyle={{ padding: space(2) }}
               horizontal
             />
             {data.length > 2 && (

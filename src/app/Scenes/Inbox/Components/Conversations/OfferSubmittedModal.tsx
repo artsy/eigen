@@ -1,9 +1,10 @@
+import { Box } from "@artsy/palette-mobile"
 import { NavigationContainer } from "@react-navigation/native"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { useSetWebViewCallback } from "app/utils/useWebViewEvent"
-import { Box, Button, Text } from "palette"
+import { Button, Text } from "palette"
 import React, { useState } from "react"
 
 export const OfferSubmittedModal: React.FC = (props) => {

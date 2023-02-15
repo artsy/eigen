@@ -1,3 +1,4 @@
+import { Flex } from "@artsy/palette-mobile"
 import { ConversationDetailsQuery } from "__generated__/ConversationDetailsQuery.graphql"
 import { ConversationDetails_me$data } from "__generated__/ConversationDetails_me.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
@@ -11,7 +12,6 @@ import { Support } from "app/Scenes/Inbox/Components/Conversations/Support"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { Flex } from "palette"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 

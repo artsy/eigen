@@ -1,4 +1,5 @@
-import { Text, Theme, useColor } from "palette"
+import { useColor } from "@artsy/palette-mobile"
+import { Text } from "palette"
 
 export const InputTitle: React.FC<{ optional?: boolean; required?: boolean }> = ({
   children: title,
@@ -12,33 +13,31 @@ export const InputTitle: React.FC<{ optional?: boolean; required?: boolean }> = 
   }
 
   return (
-    <Theme>
-      <Text
-        variant="sm-display"
-        style={{ fontSize: 13, marginBottom: 2, textTransform: "uppercase" }}
-      >
-        {title}
-        {!!required && (
-          <Text
-            variant="sm-display"
-            style={{ fontSize: 13, textTransform: "none" }}
-            color={color("black60")}
-          >
-            {" "}
-            Required
-          </Text>
-        )}
-        {!!optional && (
-          <Text
-            variant="sm-display"
-            style={{ fontSize: 13, textTransform: "none" }}
-            color={color("black60")}
-          >
-            {" "}
-            Optional
-          </Text>
-        )}
-      </Text>
-    </Theme>
+    <Text
+      variant="sm-display"
+      style={{ fontSize: 13, marginBottom: 2, textTransform: "uppercase" }}
+    >
+      {title}
+      {!!required && (
+        <Text
+          variant="sm-display"
+          style={{ fontSize: 13, textTransform: "none" }}
+          color={color("black60")}
+        >
+          {" "}
+          Required
+        </Text>
+      )}
+      {!!optional && (
+        <Text
+          variant="sm-display"
+          style={{ fontSize: 13, textTransform: "none" }}
+          color={color("black60")}
+        >
+          {" "}
+          Optional
+        </Text>
+      )}
+    </Text>
   )
 }

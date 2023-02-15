@@ -1,6 +1,6 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Box } from "@artsy/palette-mobile"
 import { goBack, navigate } from "app/system/navigation/navigate"
-import { Box, Button, Join, Text } from "palette"
+import { Button, Join, Text } from "palette"
 import { ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 
@@ -9,7 +9,7 @@ export const CertificateOfAuthenticity: React.FC = () => {
 
   return (
     <ScrollView>
-      <Box flex={1} pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px={2} py={2}>
+      <Box flex={1} pt={`${safeAreaInsets.top}px`} pb={`${safeAreaInsets.bottom}px`} px={2} py={2}>
         <Join separator={<Spacer y={2} />}>
           <Text variant="lg-display">Certificate of Authenticity</Text>
           <Text>

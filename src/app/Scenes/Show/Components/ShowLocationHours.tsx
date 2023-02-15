@@ -1,7 +1,8 @@
+import { Box, BoxProps } from "@artsy/palette-mobile"
 import { ShowLocationHours_location$data } from "__generated__/ShowLocationHours_location.graphql"
 import { Markdown } from "app/Components/Markdown"
 import { defaultRules } from "app/utils/renderMarkdown"
-import { Box, BoxProps, Text } from "palette"
+import { Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 const MARKDOWN_RULES = defaultRules({ useNewTextStyles: true })

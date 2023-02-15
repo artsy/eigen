@@ -1,4 +1,5 @@
-import { Flex, Text, Touchable } from "palette"
+import { Flex } from "@artsy/palette-mobile"
+import { Text, Touchable } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 
 interface EmailSubscriptionCheckboxProps {
@@ -15,7 +16,7 @@ export const EmailSubscriptionCheckbox: React.FC<EmailSubscriptionCheckboxProps>
   return (
     <Touchable haptic onPress={() => setChecked(!checked)}>
       <Flex my={2} flexDirection="row" alignItems="flex-start">
-        <Checkbox error={error} checked={checked} onPress={() => setChecked(!checked)} mt="0.5">
+        <Checkbox error={error} checked={checked} onPress={() => setChecked(!checked)} mt={0.5}>
           <Text variant="xs">
             Dive deeper into the art market with Artsy emails. Subscribe to hear about our products,
             services, editorials, and other promotional content. Unsubscribe at any time.

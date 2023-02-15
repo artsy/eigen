@@ -1,7 +1,7 @@
 import { ContextModule } from "@artsy/cohesion"
+import { Flex } from "@artsy/palette-mobile"
 import { ElasticSearchResults2Screen } from "app/Scenes/Search/components/ElasticSearchResults"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { Flex } from "palette"
 import { connectInfiniteHits, connectStateResults } from "react-instantsearch-core"
 import { useTracking } from "react-tracking"
 import { AutosuggestResult, AutosuggestResults } from "./AutosuggestResults"

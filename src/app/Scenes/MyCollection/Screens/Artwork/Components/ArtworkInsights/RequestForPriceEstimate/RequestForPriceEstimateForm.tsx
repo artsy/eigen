@@ -1,7 +1,7 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Box } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { useFormikContext } from "formik"
-import { Box, Button, Input, LinkText, PhoneInput, Text } from "palette"
+import { Button, Input, LinkText, PhoneInput, Text } from "palette"
 import { Platform, ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
@@ -15,7 +15,7 @@ export const RequestForPriceEstimateForm = () => {
   return (
     <ArtsyKeyboardAvoidingView>
       <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
-        <Box pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px={2}>
+        <Box pt={`${safeAreaInsets.top}px`} pb={`${safeAreaInsets.bottom}px`} px={2}>
           <Box my={4}>
             <Text variant="lg-display" mb={2}>
               Let us know how to reach you

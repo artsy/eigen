@@ -1,4 +1,5 @@
-import { Box, Flex, Text } from "palette"
+import { Flex, Box } from "@artsy/palette-mobile"
+import { Text } from "palette"
 import React from "react"
 import { Dimensions, FlatList, Image, View } from "react-native"
 import styled from "styled-components/native"

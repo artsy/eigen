@@ -347,6 +347,16 @@ Once we can remove it and have `yarn type-check` pass. They have some broken typ
 
 Types failing because of broken types in the package.
 
+## react-native-reanimated patch-package (`displayName` part)
+
+#### When can we remove this:
+
+Whenever eigen stops crashing without it. Just try to view any screen with a `Button` from palette. If it crashes, keep this. If it doesn't, remove this.
+
+#### Explanation/Context:
+
+Something is up with `displayName` and eigen doesn't like it. We use `Animated.createAnimatedComponent` in `Button` for the text, and that's what's causing the crash.
+
 ## @jest/fake-timers
 
 #### When can we remove this:

@@ -1,7 +1,7 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Box } from "@artsy/palette-mobile"
 import { ShippingAndTaxes_artwork$data } from "__generated__/ShippingAndTaxes_artwork.graphql"
 import { navigate } from "app/system/navigation/navigate"
-import { Box, LinkText, Text } from "palette"
+import { LinkText, Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ShippingAndTaxesProps {

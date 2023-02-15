@@ -1,4 +1,5 @@
-import { Flex, Text } from "palette"
+import { Flex } from "@artsy/palette-mobile"
+import { Text } from "palette"
 import { TouchableOpacity } from "react-native"
 import { EntityItem, EntityItemProps, Item } from "./Components/EntityItem"
 

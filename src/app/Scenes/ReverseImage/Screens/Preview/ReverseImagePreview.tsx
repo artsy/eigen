@@ -4,6 +4,7 @@ import {
   SearchedReverseImageWithNoResults,
   SearchedReverseImageWithResults,
 } from "@artsy/cohesion"
+import { Flex } from "@artsy/palette-mobile"
 import { CommonActions } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
@@ -19,7 +20,6 @@ import { navigate } from "app/system/navigation/navigate"
 import { nextTick } from "app/utils/nextTick"
 import { useImageSearch } from "app/utils/useImageSearch"
 import { compact } from "lodash"
-import { Flex } from "palette"
 import { useEffect, useRef } from "react"
 import { Alert, Image, StyleSheet } from "react-native"
 import { useTracking } from "react-tracking"

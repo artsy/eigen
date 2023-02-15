@@ -1,6 +1,6 @@
+import { Flex, FlexProps } from "@artsy/palette-mobile"
 import { defaultRules, renderMarkdown } from "app/utils/renderMarkdown"
 import _ from "lodash"
-import { Flex, FlexProps } from "palette"
 import React from "react"
 
 interface Props {

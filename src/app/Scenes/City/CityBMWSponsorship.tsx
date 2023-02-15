@@ -1,6 +1,7 @@
+import { Flex } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
-import { Flex, Text } from "palette"
+import { Text } from "palette"
 import { TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"

@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Spacer, ChevronIcon } from "@artsy/palette-mobile"
+import { Spacer, ChevronIcon, Flex, Box } from "@artsy/palette-mobile"
 import { FairQuery } from "__generated__/FairQuery.graphql"
 import { Fair_fair$data } from "__generated__/Fair_fair.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
@@ -12,7 +12,7 @@ import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { Box, Flex, Separator } from "palette"
+import { Separator } from "palette"
 import { NavigationalTabs, TabsType } from "palette/elements/Tabs"
 import React, { useCallback, useRef, useState } from "react"
 import { FlatList, View } from "react-native"
@@ -224,7 +224,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
               case "fairTabsAndFilter": {
                 const tabToShow = tabs ? tabs[activeTab] : null
                 return (
-                  <Box paddingTop={safeAreaInsets.top} backgroundColor="white">
+                  <Box pt={`${safeAreaInsets.top}px`} backgroundColor="white">
                     <NavigationalTabs
                       onTabPress={(_, index) => {
                         trackTappedNavigationTab(index as number)
@@ -347,7 +347,7 @@ export const FairQueryRenderer: React.FC<FairQueryRendererProps> = ({ fairID }) 
 export const FairPlaceholder: React.FC = () => (
   <Flex>
     <PlaceholderBox height={400} />
-    <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
+    <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px={2}>
       <Flex>
         <Spacer y={2} />
         {/* Fair name */}

@@ -1,4 +1,4 @@
-import { Flex } from "palette/elements/Flex"
+import { Flex } from "@artsy/palette-mobile"
 import React from "react"
 
 const DOT_DIAMETER = 8

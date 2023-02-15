@@ -1,4 +1,4 @@
-import { XCircleIcon, AddIcon } from "@artsy/palette-mobile"
+import { XCircleIcon, AddIcon, Flex, Box, useColor } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { FancyModalHeader as NavHeader } from "app/Components/FancyModal/FancyModalHeader"
@@ -8,12 +8,12 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { isPad } from "app/utils/hardware"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
-import { BorderBox, Box, Flex, useColor } from "palette"
+import { BorderBox } from "palette"
 import { useEffect, useState } from "react"
 import { ActivityIndicator, FlatList, Image, TouchableOpacity } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 
-const MARGIN = 20
+const MARGIN = 2
 export const DELAY_TIME_MS = 500
 
 export const MyCollectionAddPhotos: React.FC<StackScreenProps<ArtworkFormScreen, "AddPhotos">> = ({

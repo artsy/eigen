@@ -1,4 +1,4 @@
-import { useSpace } from "palette"
+import { useSpace } from "@artsy/palette-mobile"
 import React, { createContext, useContext, useRef, useState } from "react"
 import { FlatList, FlatListProps } from "react-native"
 import Animated from "react-native-reanimated"
@@ -108,7 +108,7 @@ export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = (props) =
         style={[
           {
             flex: 1,
-            paddingHorizontal: props.paddingHorizontal ?? space("2"),
+            paddingHorizontal: props.paddingHorizontal ?? space(2),
           },
           style,
         ]}

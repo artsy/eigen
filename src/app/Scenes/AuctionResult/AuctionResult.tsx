@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
-import { Spacer, NoArtworkIcon } from "@artsy/palette-mobile"
+import { Spacer, NoArtworkIcon, Flex, Box, useTheme } from "@artsy/palette-mobile"
 import { AuctionResultQuery } from "__generated__/AuctionResultQuery.graphql"
 import { AuctionResult_artist$data } from "__generated__/AuctionResult_artist.graphql"
 import { AuctionResult_auctionResult$data } from "__generated__/AuctionResult_auctionResult.graphql"
@@ -17,7 +17,7 @@ import { screen } from "app/utils/track/helpers"
 import { useStickyScrollHeader } from "app/utils/useStickyScrollHeader"
 import { capitalize } from "lodash"
 import moment from "moment"
-import { Box, Flex, Separator, Text, useTheme } from "palette"
+import { Separator, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { Animated, Image, TextInput, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -98,7 +98,7 @@ export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
           <Text style={{ width: "35%" }} color="black60">
             {label}
           </Text>
-          <Flex width="65%" pl={15}>
+          <Flex width="65%" pl="15px">
             <Text pl={2} textAlign="right" testID={options?.testID} selectable>
               {value}
             </Text>

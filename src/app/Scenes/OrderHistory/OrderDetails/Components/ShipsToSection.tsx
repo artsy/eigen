@@ -1,6 +1,7 @@
+import { Flex, Box } from "@artsy/palette-mobile"
 import { ShipsToSection_address$data } from "__generated__/ShipsToSection_address.graphql"
 import { COUNTRY_SELECT_OPTIONS } from "app/Components/CountrySelect"
-import { Box, Flex, Text } from "palette"
+import { Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {

@@ -1,8 +1,8 @@
-import { Box, SpacingUnitTheme } from "palette"
+import { Box, SpacingUnitsTheme } from "@artsy/palette-mobile"
 import { View } from "react-native"
 import { SpaceProps } from "styled-system"
 
-interface ScreenMarginProps extends SpaceProps<SpacingUnitTheme> {
+interface ScreenMarginProps extends SpaceProps<SpacingUnitsTheme> {
   ref?: React.Ref<View>
 }
 

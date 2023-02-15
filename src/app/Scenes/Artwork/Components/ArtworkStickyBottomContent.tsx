@@ -1,8 +1,9 @@
+import { Box } from "@artsy/palette-mobile"
 import { ArtworkStickyBottomContent_artwork$key } from "__generated__/ArtworkStickyBottomContent_artwork.graphql"
 import { ArtworkStickyBottomContent_me$key } from "__generated__/ArtworkStickyBottomContent_me.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
-import { Box, Separator } from "palette"
+import { Separator } from "palette"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { useScreenDimensions } from "shared/hooks"
@@ -31,7 +32,7 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
     <Box
       accessibilityLabel="Sticky bottom commercial section"
       bg="white100"
-      pb={safeAreaInsets.bottom}
+      pb={`${safeAreaInsets.bottom}px`}
     >
       <Separator />
       <Box px={2} py={1}>

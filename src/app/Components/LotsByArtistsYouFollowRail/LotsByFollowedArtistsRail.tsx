@@ -1,4 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
+import { Flex, SpacingUnit } from "@artsy/palette-mobile"
 import { LotsByFollowedArtistsRail_me$data } from "__generated__/LotsByFollowedArtistsRail_me.graphql"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SaleArtworkTileRailCardContainer } from "app/Components/SaleArtworkTileRailCard"
@@ -6,8 +7,7 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToEdge } from "app/utils/isCloseToEdge"
-import { Flex } from "palette"
-import React, { useState } from "react"
+import { useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 export const PAGE_SIZE = 6
@@ -16,7 +16,7 @@ interface Props {
   title: string
   me: LotsByFollowedArtistsRail_me$data
   relay: RelayPaginationProp
-  mb?: number
+  mb?: SpacingUnit
 }
 
 export const LotsByFollowedArtistsRail: React.FC<Props> = ({ title, me, relay, mb }) => {

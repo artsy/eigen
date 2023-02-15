@@ -1,11 +1,11 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex } from "@artsy/palette-mobile"
 import { PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
-import { Flex, Separator } from "palette"
+import { Separator } from "palette"
 
 export const HeaderTabsGridPlaceholder: React.FC = () => {
   return (
     <Flex>
-      <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
+      <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px={2}>
         <Flex>
           <Spacer y="75px" />
           {/* Entity name */}

@@ -1,4 +1,5 @@
-import { Color, Flex, Spinner } from "palette"
+import { Flex } from "@artsy/palette-mobile"
+import { Color, Spinner } from "palette"
 import { Modal, ModalProps } from "react-native"
 
 interface LoadingModalProps {

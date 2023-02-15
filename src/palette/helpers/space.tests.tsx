@@ -1,6 +1,5 @@
+import { SpacingUnit, useSpace } from "@artsy/palette-mobile"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { SpacingUnit } from "palette/Theme"
-import { useSpace } from "palette/hooks"
 import { View } from "react-native"
 
 describe("space", () => {
@@ -19,9 +18,8 @@ describe("space", () => {
   it("returns the correct space with a Theme provider in v3", () => {
     const TestComponent = () => (
       <>
-        {/* @ts-ignore */}
-        <SpaceView name="0.5" />
-        <SpaceView name="2" />
+        <SpaceView name={0.5} />
+        <SpaceView name={2} />
       </>
     )
     const tree = renderWithWrappersLEGACY(<TestComponent />).root

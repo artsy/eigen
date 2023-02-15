@@ -1,7 +1,8 @@
+import { Flex } from "@artsy/palette-mobile"
 import { useDevToggle } from "app/store/GlobalStore"
 import { BackButton } from "app/system/navigation/BackButton"
 import { goBack } from "app/system/navigation/navigate"
-import { Button, Flex, Text } from "palette"
+import { Button, Text } from "palette"
 
 interface NotFoundFailureViewProps {
   error?: Error
@@ -23,10 +24,10 @@ export const NotFoundFailureView: React.FC<NotFoundFailureViewProps> = ({
       <BackButton onPress={() => goBack()} style={{ top: 10 }} />
 
       <Flex flex={1} m={4} justifyContent="center" alignItems="center">
-        <Text variant="lg-display" mb="1" textAlign="center">
+        <Text variant="lg-display" mb={1} textAlign="center">
           {title ?? "Not Found"}
         </Text>
-        <Text variant="lg-display" color="black60" mb="4" textAlign="center">
+        <Text variant="lg-display" color="black60" mb={4} textAlign="center">
           {text ?? "Sorry, the resource you were looking for doesn’t exist."}
         </Text>
 

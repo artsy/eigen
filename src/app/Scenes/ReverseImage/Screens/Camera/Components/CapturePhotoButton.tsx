@@ -1,4 +1,4 @@
-import { Flex } from "palette"
+import { Flex } from "@artsy/palette-mobile"
 import { StyleSheet, TouchableOpacity, TouchableOpacityProps } from "react-native"
 
 const BORDER_SIZE = 2

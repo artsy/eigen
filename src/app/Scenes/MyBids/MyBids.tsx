@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex } from "@artsy/palette-mobile"
 import { MyBidsQuery } from "__generated__/MyBidsQuery.graphql"
 import { MyBids_me$data } from "__generated__/MyBids_me.graphql"
 
@@ -7,7 +7,7 @@ import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { Flex, Join, Separator, Text } from "palette"
+import { Join, Separator, Text } from "palette"
 import { useEffect, useState } from "react"
 import { RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
@@ -131,7 +131,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
         {!!hasClosedBids && <BidTitle>Closed Bids</BidTitle>}
         {!!hasClosedBids && (
           <Flex testID="closed-section">
-            <Flex mt={2} px="2">
+            <Flex mt={2} px={2}>
               <Join separator={<Separator my={2} />}>
                 {closed
                   .filter((closedSale) => closedSale?.saleArtworks?.length)
@@ -171,7 +171,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
 
 const BidTitle: React.FC<{ topBorder?: boolean }> = (props) => (
   <Flex bg="white100">
-    <Text variant="sm-display" mx="2" my={2}>
+    <Text variant="sm-display" mx={2} my={2}>
       {props.children}
     </Text>
     <Separator />

@@ -1,4 +1,5 @@
-import { Flex, Text } from "palette"
+import { Flex } from "@artsy/palette-mobile"
+import { Text } from "palette"
 
 const EMPTY_VALUE = "----"
 

@@ -1,10 +1,9 @@
 import { ActionType, ContextModule, OwnerType, TappedShowGroup } from "@artsy/cohesion"
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex, SpacingUnit } from "@artsy/palette-mobile"
 import { ShowsRail_showsConnection$data } from "__generated__/ShowsRail_showsConnection.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { ShowCardContainer } from "app/Components/ShowCard"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex } from "palette"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -12,7 +11,7 @@ import { useTracking } from "react-tracking"
 interface ShowsRailProps {
   title: string
   showsConnection: ShowsRail_showsConnection$data
-  mb?: number
+  mb?: SpacingUnit
 }
 
 // Because we never show more than 2 shows per gallery we need to overfetch, filter out, and then limit the number of shows.

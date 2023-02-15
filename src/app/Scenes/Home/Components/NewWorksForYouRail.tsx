@@ -1,4 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Flex, SpacingUnit } from "@artsy/palette-mobile"
 import { NewWorksForYouRail_artworkConnection$key } from "__generated__/NewWorksForYouRail_artworkConnection.graphql"
 import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
@@ -10,7 +11,6 @@ import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
-import { Flex } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -20,7 +20,7 @@ import { RailScrollProps } from "./types"
 interface NewWorksForYouRailProps {
   title: string
   artworkConnection: NewWorksForYouRail_artworkConnection$key
-  mb?: number
+  mb?: SpacingUnit
 }
 
 export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = ({
@@ -73,7 +73,7 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
   return (
     <Flex mb={mb}>
       <View ref={railRef}>
-        <Flex pl="2" pr="2">
+        <Flex pl={2} pr={2}>
           <SectionTitle
             title={title}
             onPress={() => {

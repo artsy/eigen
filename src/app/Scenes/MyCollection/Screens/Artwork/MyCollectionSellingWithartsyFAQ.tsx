@@ -1,17 +1,17 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { sendEmailWithMailTo } from "app/utils/sendEmail"
-import { Box, Flex, Join, Text } from "palette"
+import { Join, Text } from "palette"
 import { ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 
-export const MyCollectionSellingWithArtsyFAQ: React.FC = () => {
+export const MyCollectionSellingWithArtsyFAQ = () => {
   const { safeAreaInsets } = useScreenDimensions()
   const article = "https://support.artsy.net/hc/en-us/sections/360008311913-Sell-with-Artsy"
 
   return (
     <ScrollView>
-      <Box pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px={2}>
+      <Box pt={`${safeAreaInsets.top}px`} pb={`${safeAreaInsets.bottom}px`} px={2}>
         <Box my={2}>
           <Join separator={<Spacer y={1} />}>
             <Text variant="lg-display" mb={2}>

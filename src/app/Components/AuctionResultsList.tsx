@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Flex } from "@artsy/palette-mobile"
 import {
   AuctionResultListItem_auctionResult$data,
   AuctionResultListItem_auctionResult$key,
@@ -7,7 +7,7 @@ import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/
 import { useStickyScrollHeader } from "app/utils/useStickyScrollHeader"
 import { groupBy } from "lodash"
 import moment from "moment"
-import { Flex, Separator, Text } from "palette"
+import { Separator, Text } from "palette"
 import React from "react"
 import { Animated, RefreshControl, SectionListData } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
@@ -74,8 +74,8 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
         ListHeaderComponent={ListHeaderComponent}
         ItemSeparatorComponent={() => <Flex mt={2} />}
         renderSectionHeader={({ section: { sectionTitle } }) => (
-          <Flex bg="white" mx="2">
-            <Text my="2" variant="sm-display">
+          <Flex bg="white" mx={2}>
+            <Text my={2} variant="sm-display">
               {sectionTitle}
             </Text>
           </Flex>

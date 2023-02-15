@@ -1,9 +1,9 @@
 import { ActionType, DeletedSavedSearch, EditedSavedSearch, OwnerType } from "@artsy/cohesion"
-import { quoteLeft, quoteRight } from "@artsy/palette-mobile"
+import { quoteLeft, quoteRight, useTheme } from "@artsy/palette-mobile"
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { FormikProvider, useFormik } from "formik"
-import { Dialog, useTheme } from "palette"
+import { Dialog } from "palette"
 import React, { useEffect, useState } from "react"
 import { Alert, ScrollView, StyleProp, ViewStyle } from "react-native"
 import { useTracking } from "react-tracking"
@@ -246,7 +246,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       <ScrollView
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={[{ padding: space("2") }, contentContainerStyle]}
+        contentContainerStyle={[{ padding: space(2) }, contentContainerStyle]}
       >
         <Form
           pills={pills}
