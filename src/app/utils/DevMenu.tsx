@@ -86,6 +86,10 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
         <Text variant="xs" color="grey" mx={2}>
           {userEmail}
         </Text>
+        <FeatureFlagMenuItem
+          title="Open RN Dev Menu"
+          onPress={() => NativeModules.DevMenu.show()}
+        />
         {Platform.OS === "ios" && (
           <FeatureFlagMenuItem
             title="Go to old Dev Menu"
@@ -197,10 +201,7 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
               Keychain.resetInternetCredentials(server)
             }}
           />
-          <FeatureFlagMenuItem
-            title="Open RN Dev Menu"
-            onPress={() => NativeModules.DevMenu.show()}
-          />
+
           <FeatureFlagMenuItem
             title="Clear AsyncStorage"
             onPress={() => {
