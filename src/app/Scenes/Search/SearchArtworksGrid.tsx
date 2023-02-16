@@ -126,7 +126,7 @@ export const SearchArtworksGridPaginationContainer = createPaginationContainer(
     viewer: graphql`
       fragment SearchArtworksGrid_viewer on Viewer
       @argumentDefinitions(
-        count: { type: "Int", defaultValue: 20 }
+        count: { type: "Int", defaultValue: 10 }
         cursor: { type: "String" }
         keyword: { type: "String" }
         input: { type: "FilterArtworksInput" }
