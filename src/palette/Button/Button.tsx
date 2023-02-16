@@ -1,33 +1,28 @@
-import { Box, BoxProps, Flex, Spacer, Spinner, useTextStyleForPalette } from "@artsy/palette-mobile"
-import { Text } from "palette"
-import { useColorsForVariantAndState } from "palette/Button/colors"
-import { useEffect, useState } from "react"
-import { PressableProps, GestureResponderEvent, Pressable } from "react-native"
+import { Box, BoxProps, Flex, Spacer, SpacingUnit, Spinner, useColor } from "@artsy/palette-mobile"
+import { TextVariant } from "@artsy/palette-tokens/dist/typography/v3"
+import { Text, useTextStyleForPalette } from "palette/elements/Text"
+import { useState } from "react"
+import { PressableProps, TextStyle, GestureResponderEvent, Pressable } from "react-native"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
-import Animated, {
-  useAnimatedReaction,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated"
+import { config } from "react-spring"
+// @ts-ignore
+import { animated, Spring } from "react-spring/renderprops-native"
 import { MeasuredView, ViewMeasurements } from "shared/utils"
-
-type ButtonSize = "small" | "large"
-type ButtonVariant =
-  | "fillDark"
-  | "fillLight"
-  | "fillGray"
-  | "fillSuccess"
-  | "outline"
-  | "outlineGray"
-  | "outlineLight"
-  | "text"
+import styled from "styled-components/native"
 
 export interface ButtonProps extends BoxProps {
   children: React.ReactNode
 
-  size?: ButtonSize
-  variant?: ButtonVariant
+  size?: "small" | "large"
+  variant?:
+    | "fillDark"
+    | "fillLight"
+    | "fillGray"
+    | "fillSuccess"
+    | "outline"
+    | "outlineGray"
+    | "outlineLight"
+    | "text"
   onPress?: PressableProps["onPress"]
 
   icon?: React.ReactNode
@@ -55,50 +50,60 @@ export interface ButtonProps extends BoxProps {
   longestText?: string
 
   /** Used only for tests and stories */
-  testOnly_pressed?: PressableProps["testOnly_pressed"]
+  testOnly_state?: DisplayState
+
+  textVariant?: TextVariant
 }
 
-export const Button = ({
+enum DisplayState {
+  Enabled = "enabled",
+  Disabled = "disabled",
+  Loading = "loading",
+  Pressed = "pressed",
+}
+
+export const Button: React.FC<ButtonProps> = ({
   children,
-  disabled: disabledProp,
+  disabled,
   haptic,
   icon,
   iconPosition = "left",
-  loading: loadingProp,
-  block,
+  loading,
   longestText,
   onPress,
   size = "large",
   variant = "fillDark",
-  testOnly_pressed,
+  testOnly_state,
   testID,
-  ...restProps
-}: ButtonProps) => {
-  // these are basically booleans
-  const disabled = useSharedValue<0 | 1>(!!disabledProp ? 1 : 0)
-  const loading = useSharedValue<0 | 1>(!!loadingProp ? 1 : 0)
-  const pressed = useSharedValue<0 | 1>(!!testOnly_pressed ? 1 : 0)
+  textVariant,
+  ...rest
+}) => {
+  const textVariantBySize = size === "small" ? "xs" : "sm"
+  const textStyle = useTextStyleForPalette(textVariant ?? textVariantBySize)
 
-  useEffect(() => {
-    disabled.value = disabledProp ? 1 : 0
-    loading.value = loadingProp ? 1 : 0
-    pressed.value = testOnly_pressed ? 1 : 0
-  }, [disabledProp, loadingProp, testOnly_pressed])
+  const [innerDisplayState, setInnerDisplayState] = useState(DisplayState.Enabled)
 
-  const textStyle = useTextStyleForPalette(size === "small" ? "xs" : "sm")
   const [longestTextMeasurements, setLongestTextMeasurements] = useState<ViewMeasurements>({
     width: 0,
     height: 0,
   })
 
-  const height = (() => {
+  const displayState =
+    testOnly_state ?? // if we use the test prop, use that
+    (loading // if we have loading or disabled in props, they are used
+      ? DisplayState.Loading
+      : disabled
+      ? DisplayState.Disabled
+      : innerDisplayState) // otherwise use the inner state for pressed or enabled
+
+  const getSize = (): { height: number; mx: SpacingUnit } => {
     switch (size) {
       case "small":
-        return 30
+        return { height: 30, mx: "15px" }
       case "large":
-        return 50
+        return { height: 50, mx: "30px" }
     }
-  })()
+  }
 
   const spinnerColor = variant === "text" ? "blue100" : "white100"
 
@@ -107,8 +112,19 @@ export const Button = ({
       return
     }
 
-    if (disabled.value === 1 || loading.value === 1) {
+    if (displayState === DisplayState.Loading || displayState === DisplayState.Disabled) {
       return
+    }
+
+    // Did someone tap really fast? Flick the highlighted state
+    if (displayState === DisplayState.Enabled) {
+      setInnerDisplayState(DisplayState.Pressed)
+      setTimeout(() => {
+        setInnerDisplayState(DisplayState.Enabled)
+      }, 0.3)
+    } else {
+      // Was already selected
+      setInnerDisplayState(DisplayState.Enabled)
     }
 
     if (haptic !== undefined) {
@@ -118,132 +134,325 @@ export const Button = ({
     onPress(event)
   }
 
-  const bgColor = useSharedValue("black")
-  const borderColor = useSharedValue("black")
-  const containerColorsAnim = useAnimatedStyle(() => ({
-    backgroundColor: bgColor.value,
-    borderColor: borderColor.value,
-  }))
-
-  const textColor = useSharedValue("black")
-  const underline = useSharedValue<0 | 1>(0)
-  const textAnim = useAnimatedStyle(() => ({
-    color: textColor.value,
-    textDecorationLine: underline.value === 1 ? "underline" : "none",
-  }))
-
-  const colorsForVariantAndState = useColorsForVariantAndState()
-
-  useAnimatedReaction(
-    () => [disabled.value, loading.value, pressed.value],
-    ([disabledVal, loadingVal, pressedVal]) => {
-      const toColor = (c: string) => withTiming(c, { duration: 150 })
-
-      const states = colorsForVariantAndState[variant]
-      const colors =
-        disabledVal === 1 ? states.disabled : pressedVal === 1 ? states.pressed : states.active
-      const { bg, border, text } = colors
-
-      bgColor.value = toColor(bg)
-      borderColor.value = toColor(border)
-      textColor.value = loadingVal === 1 ? "rgba(0, 0, 0, 0)" : text
-      underline.value = pressedVal
-    },
-    [variant]
-  )
+  const containerSize = getSize()
+  const to = useStyleForVariantAndState(variant, testOnly_state ?? displayState)
 
   return (
-    <Pressable
-      disabled={disabled.value === 1}
-      onPressIn={() => {
-        if (loading.value === 1) {
-          return
-        }
-        pressed.value = 1
-      }}
-      onPressOut={() => {
-        if (loading.value === 1) {
-          return
-        }
-        pressed.value = 0
-      }}
-      onPress={handlePress}
-      testID={testID}
-      testOnly_pressed={testOnly_pressed}
-    >
-      <Flex
-        {...restProps}
-        height={height}
-        width={block ? "100%" : undefined}
-        borderRadius={50}
-        overflow="hidden"
-      >
-        <Animated.View
-          style={[{ borderWidth: 1, borderRadius: 50, overflow: "hidden" }, containerColorsAnim]}
+    <Spring native to={to} config={config.stiff}>
+      {(springProps: typeof to) => (
+        <Pressable
+          testOnly_pressed={testOnly_state === DisplayState.Pressed}
+          disabled={testOnly_state === DisplayState.Disabled || disabled}
+          onPressIn={() => {
+            if (displayState === DisplayState.Loading) {
+              return
+            }
+            setInnerDisplayState(DisplayState.Pressed)
+          }}
+          onPressOut={() => {
+            if (displayState === DisplayState.Loading) {
+              return
+            }
+            setInnerDisplayState(DisplayState.Enabled)
+          }}
+          onPress={handlePress}
+          testID={testID}
         >
-          <Flex
-            height="100%"
-            mx="25px"
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="center"
-          >
-            {iconPosition === "left-start" && !!icon ? (
-              <Box position="absolute" left={0}>
-                {icon}
-                <Spacer x={0.5} />
-              </Box>
-            ) : null}
-
-            {iconPosition === "left" && !!icon ? (
-              <>
-                {icon}
-                <Spacer x={0.5} />
-              </>
-            ) : null}
-
-            <AText
-              style={[{ width: Math.ceil(longestTextMeasurements.width) }, textStyle, textAnim]}
-              textAlign="center"
+          <Flex flexDirection="row">
+            <AnimatedContainer
+              {...rest}
+              style={{
+                backgroundColor: springProps.backgroundColor,
+                borderColor: springProps.borderColor,
+                height: containerSize.height,
+              }}
             >
-              {children}
-            </AText>
+              <Flex mx={containerSize.mx}>
+                <Flex height="100%" flexDirection="row" alignItems="center" justifyContent="center">
+                  {iconPosition === "left-start" && !!icon ? (
+                    <Box position="absolute" left={0}>
+                      {icon}
+                      <Spacer x={0.5} />
+                    </Box>
+                  ) : null}
+                  {iconPosition === "left" && !!icon ? (
+                    <>
+                      {icon}
+                      <Spacer x={0.5} />
+                    </>
+                  ) : null}
+                  {/* This makes sure that in testing environment the button text is
+                      not rendered twice, in normal environment this is not visible.
+                      This will result in us being able to use getByText over
+                      getAllByText()[0] to select the buttons in the test environment.
+                  */}
+                  {!__TEST__ && (
+                    <MeasuredView setMeasuredState={setLongestTextMeasurements}>
+                      <Text color="red" style={textStyle}>
+                        {longestText ? longestText : children}
+                      </Text>
+                    </MeasuredView>
+                  )}
+                  <AnimatedText
+                    style={[
+                      {
+                        width: Math.ceil(longestTextMeasurements.width),
+                        color: springProps.textColor,
+                        textDecorationLine: springProps.textDecorationLine,
+                      },
+                      textStyle,
+                    ]}
+                    textAlign="center"
+                  >
+                    {children}
+                  </AnimatedText>
+                  {iconPosition === "right" && !!icon ? (
+                    <>
+                      <Spacer x={0.5} />
+                      {icon}
+                    </>
+                  ) : null}
+                </Flex>
 
-            {/* This makes sure that in testing environment the button text is
-                not rendered twice, in normal environment this is not visible.
-                This will result in us being able to use getByText over
-                getAllByText()[0] to select the buttons in the test environment. */}
-            {!__TEST__ && (
-              <MeasuredView setMeasuredState={setLongestTextMeasurements}>
-                <Text color="red" style={textStyle}>
-                  {longestText ? longestText : children}
-                </Text>
-              </MeasuredView>
-            )}
-
-            {iconPosition === "right" && !!icon ? (
-              <>
-                <Spacer x={0.5} />
-                {icon}
-              </>
-            ) : null}
+                {displayState === DisplayState.Loading ? (
+                  <SpinnerContainer>
+                    <Spinner size={size} color={spinnerColor} />
+                  </SpinnerContainer>
+                ) : null}
+              </Flex>
+            </AnimatedContainer>
           </Flex>
-
-          {loading.value === 1 ? (
-            <Box
-              position="absolute"
-              width="100%"
-              height="100%"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Spinner size={size} color={spinnerColor} />
-            </Box>
-          ) : null}
-        </Animated.View>
-      </Flex>
-    </Pressable>
+        </Pressable>
+      )}
+    </Spring>
   )
 }
 
-const AText = Animated.createAnimatedComponent(Text)
+const useStyleForVariantAndState = (
+  variant: Exclude<ButtonProps["variant"], undefined>,
+  state: DisplayState
+): {
+  backgroundColor: string
+  borderColor: string
+  borderWidth?: number
+  textColor: string
+  textDecorationLine?: TextStyle["textDecorationLine"]
+} => {
+  const color = useColor()
+
+  const retval = {
+    textDecorationLine: "none",
+  } as ReturnType<typeof useStyleForVariantAndState>
+
+  if (state === DisplayState.Loading) {
+    retval.backgroundColor = variant === "text" ? color("black10") : color("blue100")
+    retval.borderColor = "rgba(0, 0, 0, 0)"
+    retval.borderWidth = 0
+    retval.textColor = "rgba(0, 0, 0, 0)"
+    return retval
+  }
+
+  switch (variant) {
+    case "fillDark":
+      retval.textColor = color("white100")
+      switch (state) {
+        case DisplayState.Enabled:
+          retval.backgroundColor = color("black100")
+          retval.borderColor = color("black100")
+          break
+        case DisplayState.Disabled:
+          retval.backgroundColor = color("black30")
+          retval.borderColor = color("black30")
+          break
+        case DisplayState.Pressed:
+          retval.backgroundColor = color("blue100")
+          retval.borderColor = color("blue100")
+          retval.textDecorationLine = "underline"
+          break
+        default:
+          assertNever(state)
+      }
+      break
+
+    case "fillLight":
+      switch (state) {
+        case DisplayState.Enabled:
+          retval.backgroundColor = color("white100")
+          retval.borderColor = color("white100")
+          retval.textColor = color("black100")
+          break
+        case DisplayState.Disabled:
+          retval.backgroundColor = color("black30")
+          retval.borderColor = color("black30")
+          retval.textColor = color("white100")
+          break
+        case DisplayState.Pressed:
+          retval.backgroundColor = color("blue100")
+          retval.borderColor = color("blue100")
+          retval.textColor = color("white100")
+          retval.textDecorationLine = "underline"
+          break
+        default:
+          assertNever(state)
+      }
+      break
+
+    case "fillGray":
+      switch (state) {
+        case DisplayState.Enabled:
+          retval.backgroundColor = color("black10")
+          retval.borderColor = color("black10")
+          retval.textColor = color("black100")
+          break
+        case DisplayState.Disabled:
+          retval.backgroundColor = color("black30")
+          retval.borderColor = color("black30")
+          retval.textColor = color("white100")
+          break
+        case DisplayState.Pressed:
+          retval.backgroundColor = color("blue100")
+          retval.borderColor = color("blue100")
+          retval.textColor = color("white100")
+          retval.textDecorationLine = "underline"
+          break
+        default:
+          assertNever(state)
+      }
+      break
+
+    case "fillSuccess":
+      retval.textColor = color("white100")
+      switch (state) {
+        case DisplayState.Enabled:
+          retval.backgroundColor = color("blue100")
+          retval.borderColor = color("blue100")
+          break
+        case DisplayState.Disabled:
+          retval.backgroundColor = color("blue100")
+          retval.borderColor = color("blue100")
+          break
+        case DisplayState.Pressed:
+          retval.backgroundColor = color("blue10")
+          retval.borderColor = color("blue10")
+          retval.textDecorationLine = "underline"
+          break
+        default:
+          assertNever(state)
+      }
+      break
+
+    case "outline":
+      switch (state) {
+        case DisplayState.Enabled:
+          retval.backgroundColor = color("white100")
+          retval.borderColor = color("black60")
+          retval.textColor = color("black100")
+          break
+        case DisplayState.Disabled:
+          retval.backgroundColor = color("white100")
+          retval.borderColor = color("black30")
+          retval.textColor = color("black30")
+          break
+        case DisplayState.Pressed:
+          retval.backgroundColor = color("blue100")
+          retval.borderColor = color("blue100")
+          retval.textColor = color("white100")
+          retval.textDecorationLine = "underline"
+          break
+        default:
+          assertNever(state)
+      }
+      break
+
+    case "outlineGray":
+      switch (state) {
+        case DisplayState.Enabled:
+          retval.backgroundColor = color("white100")
+          retval.borderColor = color("black30")
+          retval.textColor = color("black100")
+          break
+        case DisplayState.Disabled:
+          retval.backgroundColor = color("white100")
+          retval.borderColor = color("black30")
+          retval.textColor = color("black30")
+          break
+        case DisplayState.Pressed:
+          retval.backgroundColor = color("blue100")
+          retval.borderColor = color("blue100")
+          retval.textColor = color("white100")
+          retval.textDecorationLine = "underline"
+          break
+        default:
+          assertNever(state)
+      }
+      break
+
+    case "outlineLight":
+      switch (state) {
+        case DisplayState.Enabled:
+          retval.backgroundColor = "rgba(0, 0, 0, 0)"
+          retval.borderColor = color("white100")
+          retval.textColor = color("white100")
+          break
+        case DisplayState.Disabled:
+          retval.backgroundColor = "rgba(0, 0, 0, 0)"
+          retval.borderColor = color("black30")
+          retval.textColor = color("black30")
+          break
+        case DisplayState.Pressed:
+          retval.backgroundColor = color("blue100")
+          retval.borderColor = color("blue100")
+          retval.textColor = color("white100")
+          retval.textDecorationLine = "underline"
+          break
+        default:
+          assertNever(state)
+      }
+      break
+
+    case "text":
+      retval.backgroundColor = "rgba(0, 0, 0, 0)"
+      retval.borderColor = "rgba(0, 0, 0, 0)"
+      switch (state) {
+        case DisplayState.Enabled:
+          retval.textColor = color("black100")
+          break
+        case DisplayState.Disabled:
+          retval.textColor = color("black30")
+          break
+        case DisplayState.Pressed:
+          retval.textColor = color("blue100")
+          retval.textDecorationLine = "underline"
+          break
+        default:
+          assertNever(state)
+      }
+      break
+
+    default:
+      assertNever(variant)
+  }
+
+  return retval
+}
+
+const Container = styled(Box)<ButtonProps>`
+  position: relative;
+  border-width: 1;
+  border-radius: 50;
+  width: ${(p) => (p.block ? "100%" : "auto")};
+  overflow: hidden;
+`
+
+const SpinnerContainer = styled(Box)<ButtonProps>`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+`
+
+const AnimatedContainer = animated(Container)
+const AnimatedText = animated(Text)
+
+export { DisplayState as _test_DisplayState }
