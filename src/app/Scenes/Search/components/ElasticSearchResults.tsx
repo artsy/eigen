@@ -10,7 +10,7 @@ import { PillType } from "app/Scenes/Search/types"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
-import { Suspense, useContext, useRef } from "react"
+import { Suspense, useContext, useEffect, useRef } from "react"
 import { FlatList, Keyboard } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
@@ -57,6 +57,12 @@ export const SearchResults2: React.FC<SearchResults2Props> = ({ query, selectedP
     inputRef.current?.blur()
     Keyboard.dismiss()
   }
+
+  useEffect(() => {
+    if (flatListRef.current) {
+      flatListRef.current.scrollToOffset({ offset: 0, animated: true })
+    }
+  }, [query])
 
   return (
     <FlatList

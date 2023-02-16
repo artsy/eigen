@@ -82,10 +82,14 @@ const AutosuggestResultsFlatList: React.FC<{
       loadMore()
     }
   }, [])
+
   useEffect(() => {
     if (query) {
       // the query changed, prevent loading more pages until the user starts scrolling
       userHasStartedScrolling.current = false
+    }
+    if (flatListRef.current) {
+      flatListRef.current.scrollToOffset({ offset: 0, animated: true })
     }
   }, [query])
 
