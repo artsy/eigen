@@ -182,7 +182,7 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
           <FeatureFlagMenuItem
             title="Open Art Quiz"
             onPress={() => {
-              dismissModal(() => navigate("art-quiz"))
+              dismissModal(() => navigate("/art-quiz"))
             }}
           />
           <FeatureFlagMenuItem

@@ -29,8 +29,6 @@ export const ModalStack: React.FC = ({ children }) => {
       onStateChange={() => {
         const currentRoute = __unsafe_mainModalStackRef.current?.getCurrentRoute()
 
-        console.log("CURRENT :: ", currentRoute)
-
         if (currentRoute) {
           const params = currentRoute.params as any
 
