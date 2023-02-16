@@ -19,10 +19,16 @@ type LargeArtworkRailProps = Omit<ArtworkRailProps, "artworks" | "size"> & {
 
 export const LARGE_RAIL_IMAGE_WIDTH = 295
 
-export const LargeArtworkRail: React.FC<LargeArtworkRailProps> = ({ artworks, ...restProps }) => {
+export const LargeArtworkRail: React.FC<LargeArtworkRailProps> = ({
+  artworks,
+  showSaveIcon = true,
+  ...restProps
+}) => {
   const artworksData = useFragment(largeArtworksFragment, artworks)
 
-  return <ArtworkRail artworks={artworksData} {...restProps} size="large" />
+  return (
+    <ArtworkRail artworks={artworksData} showSaveIcon={showSaveIcon} {...restProps} size="large" />
+  )
 }
 
 const largeArtworksFragment = graphql`
