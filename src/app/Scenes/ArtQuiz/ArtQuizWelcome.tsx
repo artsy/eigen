@@ -1,8 +1,13 @@
 import { Spacer, Flex, Screen, Text, ArtsyLogoBlackIcon } from "@artsy/palette-mobile"
-import { navigate } from "app/system/navigation/navigate"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { ArtQuizNavigationStack } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
+import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
 import { Button } from "palette"
 
 export const ArtQuizWelcome = () => {
+  const { onDone } = useOnboardingContext()
+  const { navigate } = useNavigation<NavigationProp<ArtQuizNavigationStack>>()
+
   return (
     <Screen>
       <Screen.Body>
@@ -18,11 +23,16 @@ export const ArtQuizWelcome = () => {
           </Text>
         </Flex>
         <Flex justifyContent="flex-end">
-          <Button block onPress={() => navigate("/art-quiz/artworks")}>
+          <Button
+            block
+            onPress={() => {
+              return navigate("ArtQuizArtworks")
+            }}
+          >
             Start the Quiz
           </Button>
           <Spacer y={1} />
-          <Button block variant="text" onPress={() => navigate("/")}>
+          <Button block variant="text" onPress={onDone}>
             Skip
           </Button>
         </Flex>
