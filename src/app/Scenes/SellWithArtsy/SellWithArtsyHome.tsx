@@ -3,7 +3,8 @@ import { Spacer, Flex } from "@artsy/palette-mobile"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { SellWithArtsyHome_me$data } from "__generated__/SellWithArtsyHome_me.graphql"
 import { SellWithArtsyHome_recentlySoldArtworksTypeConnection$data } from "__generated__/SellWithArtsyHome_recentlySoldArtworksTypeConnection.graphql"
-import { GlobalStore } from "app/store/GlobalStore"
+import { GetInTouchBanner } from "app/Scenes/SellWithArtsy/Components/GetInTouchBanner"
+import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -37,6 +38,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
   me,
 }) => {
   useLightStatusBarStyle()
+  const enableNewSWALandingPage = useFeatureFlag("AREnableNewSWALandingPage")
 
   const { height: screenHeight } = useScreenDimensions()
   const tracking = useTracking()
@@ -49,6 +51,17 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
     GlobalStore.actions.artworkSubmission.submission.setSubmissionIdForMyCollection("")
     const route = "/collections/my-collection/artworks/new/submissions/new"
     navigate(route)
+  }
+
+  const handleInquiryPress = () => {
+    navigate("/sell/inquiry", {
+      passProps: {
+        email: me?.email ?? "",
+        name: me?.name ?? "",
+        phone: me?.phone ?? "",
+        userId: me?.internalID ?? undefined,
+      },
+    })
   }
 
   useEffect(() => {
@@ -66,26 +79,16 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
       <Flex flex={1} justifyContent="center" alignItems="center" minHeight={screenHeight}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Flex pb={6}>
-            <Header
-              onConsignPress={handleConsignPress}
-              onInquiryPress={() =>
-                navigate("/sell/inquiry", {
-                  passProps: {
-                    email: me?.email ?? "",
-                    name: me?.name ?? "",
-                    phone: me?.phone ?? "",
-                    userId: me?.internalID ?? undefined,
-                  },
-                })
-              }
-            />
+            <Header onConsignPress={handleConsignPress} onInquiryPress={handleInquiryPress} />
 
             <Spacer y={4} />
 
-            <HowItWorks />
+            <HowItWorks onConsignPress={handleConsignPress} />
 
             <Spacer y={4} />
 
+            {enableNewSWALandingPage && <GetInTouchBanner onInquiryPress={handleInquiryPress} />}
+            {enableNewSWALandingPage && <Spacer y={4} />}
             <SellWithArtsyRecentlySold recentlySoldArtworks={recentlySoldArtworks!} />
 
             <Spacer y={4} />
