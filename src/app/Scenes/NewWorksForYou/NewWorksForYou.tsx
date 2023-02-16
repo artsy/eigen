@@ -14,6 +14,7 @@ import { screen } from "app/utils/track/helpers"
 import { SimpleMessage } from "palette"
 import { useEffect } from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
+import { props } from "lodash/fp"
 
 const SCREEN_TITLE = "New Works for You"
 const PAGE_SIZE = 100
@@ -115,10 +116,32 @@ export const NewWorksForYouScreenQuery = graphql`
   }
 `
 
-export const NewWorksForYouQueryRenderer: React.FC = () => {
+interface NewWorksForYouQueryRendererProps {
+  utm_medium?: string
+  includeBackfill?: boolean
+  maxWorksPerArtist?: number
+  version?: string
+}
+
+export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererProps> = ({
+  utm_medium,
+  includeBackfill,
+  maxWorksPerArtist,
+  version,
+}) => {
   const worksForYouRecommendationsModel = useExperimentVariant(RECOMMENDATION_MODEL_EXPERIMENT_NAME)
 
+  const isReferredFromEmail = utm_medium === "email"
+
+  const variant = isReferredFromEmail
+    ? version?.toUpperCase() || undefined
+    : worksForYouRecommendationsModel.payload || DEFAULT_RECS_MODEL_VERSION
+
   useEffect(() => {
+    if (isReferredFromEmail) {
+      return
+    }
+
     maybeReportExperimentVariant({
       experimentName: RECOMMENDATION_MODEL_EXPERIMENT_NAME,
       enabled: worksForYouRecommendationsModel.enabled,
@@ -135,8 +158,9 @@ export const NewWorksForYouQueryRenderer: React.FC = () => {
       environment={defaultEnvironment}
       query={NewWorksForYouScreenQuery}
       variables={{
-        worksForYouRecommendationsModelVariant:
-          worksForYouRecommendationsModel.payload || DEFAULT_RECS_MODEL_VERSION,
+        worksForYouRecommendationsModelVariant: variant,
+        includeBackfill,
+        maxWorksPerArtist,
       }}
       render={renderWithPlaceholder({
         Container: NewWorksForYouFragmentContainer,
