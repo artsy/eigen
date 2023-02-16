@@ -1,5 +1,5 @@
+import { Flex } from "@artsy/palette-mobile"
 import { PageableLazyScreen } from "app/Components/PageableScreensView/PageableLazyScreen"
-import { Flex } from "palette"
 import { useState } from "react"
 import PagerView, { PagerViewProps } from "react-native-pager-view"
 import {

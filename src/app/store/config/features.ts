@@ -223,6 +223,11 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "ARImpressionsTrackingHomeRailViews",
   },
+  AREnablePageableArtworkScreens: {
+    description: "Enable pageable artwork screens",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {

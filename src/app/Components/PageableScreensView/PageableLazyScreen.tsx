@@ -1,5 +1,5 @@
+import { Flex } from "@artsy/palette-mobile"
 import { PageableScreenEntity } from "app/Components/PageableScreensView/PageableScreensContext"
-import { Flex } from "palette"
 import { useEffect, useState } from "react"
 
 interface PageableLazyScreenProps {

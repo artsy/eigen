@@ -15,7 +15,7 @@ import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults
 import { SearchScreenQuery } from "app/Scenes/Search/Search"
 import { SearchScreenQuery as SearchScreenQuery2 } from "app/Scenes/Search/Search2"
 import { SearchSwitchContainer } from "app/Scenes/Search/SearchSwitchContainer"
-import React, { useMemo } from "react"
+import React from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
 import { SafeAreaInsets, useScreenDimensions } from "shared/hooks"
@@ -173,12 +173,10 @@ const Artwork = (props: ArtworkProps) => {
 
   const pageableSlugs = props.pageableSlugs ?? []
 
-  const screens = useMemo(() => {
-    return pageableSlugs.map((slug) => ({
-      name: slug,
-      Component: <ArtworkQueryRenderer {...props} artworkID={slug} />,
-    }))
-  }, [pageableSlugs])
+  const screens = pageableSlugs.map((slug) => ({
+    name: slug,
+    Component: <ArtworkQueryRenderer {...props} artworkID={slug} />,
+  }))
 
   // Check to see if we're within the context of an artwork rail and show
   // pager view.
