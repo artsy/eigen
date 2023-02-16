@@ -6,10 +6,9 @@ import {
   TappedConsignmentInquiry,
 } from "@artsy/cohesion"
 import { Spacer, Flex } from "@artsy/palette-mobile"
-import { SWALandingPageHeroImage } from "app/Scenes/SellWithArtsy/Components/SWALandingPageHeroImage"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Button, Text } from "palette"
-import { ImageBackground } from "react-native"
+import { Image, ImageBackground } from "react-native"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
 
@@ -110,7 +109,11 @@ const NewHeader: React.FC<{ handleInquiryPress: () => void; handleSubmitPress: (
 }) => {
   return (
     <>
-      <SWALandingPageHeroImage />
+      <Image
+        source={require("images/swa-landing-page-header.png")}
+        style={{ width: "100%" }}
+        resizeMode="contain"
+      />
 
       <Flex mx={2} mt={1}>
         <Text variant="xl" mb={1}>

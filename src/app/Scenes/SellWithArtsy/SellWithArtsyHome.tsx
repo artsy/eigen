@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType, tappedConsign, TappedConsignArgs } from "@artsy/cohesion"
-import { Spacer, Flex } from "@artsy/palette-mobile"
+import { Spacer, Flex, Join } from "@artsy/palette-mobile"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { SellWithArtsyHome_me$data } from "__generated__/SellWithArtsyHome_me.graphql"
 import { SellWithArtsyHome_recentlySoldArtworksTypeConnection$data } from "__generated__/SellWithArtsyHome_recentlySoldArtworksTypeConnection.graphql"
@@ -85,9 +85,12 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
 
             <Spacer y={4} />
 
-            {enableNewSWALandingPage && <Highlights />}
-            {enableNewSWALandingPage && <Spacer y={4} />}
-            {enableNewSWALandingPage && <WaysWeSell />}
+            {enableNewSWALandingPage && (
+              <Join separator={<Spacer y={4} />}>
+                <Highlights />
+                <WaysWeSell />
+              </Join>
+            )}
             {enableNewSWALandingPage && <Spacer y={4} />}
 
             <HowItWorks />
