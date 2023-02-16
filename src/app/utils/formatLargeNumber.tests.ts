@@ -7,7 +7,7 @@ describe(formatLargeNumber, () => {
     })
 
     it("returns the number of thousands when less than 1m", () => {
-      expect(formatLargeNumber(123456)).toEqual("123k")
+      expect(formatLargeNumber(123456)).toEqual("123K")
     })
 
     it("returns the number of millions when less than 1b", () => {
@@ -21,7 +21,7 @@ describe(formatLargeNumber, () => {
 
   describe("decimal places specified", () => {
     it("includes specified decimal places", () => {
-      expect(formatLargeNumber(123456, 2)).toEqual("123.46k")
+      expect(formatLargeNumber(123456, 2)).toEqual("123.46K")
     })
   })
 })
