@@ -7,7 +7,11 @@ import { navigate } from "app/system/navigation/navigate"
 import { Button, Separator, Text } from "palette"
 import { Alert, ScrollView } from "react-native"
 
-export const MyProfileSettings: React.FC<{}> = () => {
+interface MyProfileSettingsProps {
+  onSuccess?: () => void
+}
+
+export const MyProfileSettings: React.FC<MyProfileSettingsProps> = ({ onSuccess }) => {
   const showOrderHistory = useFeatureFlag("AREnableOrderHistoryOption")
   const showSavedAddresses = useFeatureFlag("AREnableSavedAddresses")
   const darkModeSupport = useFeatureFlag("ARDarkModeSupport")
@@ -21,7 +25,16 @@ export const MyProfileSettings: React.FC<{}> = () => {
         Settings
       </Text>
       <Spacer y={1} />
-      <MenuItem title="Edit Profile" onPress={() => navigate("my-profile/edit")} />
+      <MenuItem
+        title="Edit Profile"
+        onPress={() =>
+          navigate("my-profile/edit", {
+            passProps: {
+              onSuccess,
+            },
+          })
+        }
+      />
       <Separator my={1} borderColor={separatorColor} />
       <MenuItem title="Saved Alerts" onPress={() => navigate("my-profile/saved-search-alerts")} />
       <Separator my={1} borderColor={separatorColor} />

@@ -72,7 +72,15 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
         <Touchable
           haptic
           hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
-          onPress={() => navigate("/my-profile/settings")}
+          onPress={() =>
+            navigate("/my-profile/settings", {
+              passProps: {
+                onSuccess: () => {
+                  refetch()
+                },
+              },
+            })
+          }
           style={{ height: "100%" }}
         >
           <SettingsIcon height={24} width={24} fill="black100" />
