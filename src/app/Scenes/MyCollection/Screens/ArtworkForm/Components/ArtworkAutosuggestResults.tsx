@@ -48,6 +48,7 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
         contextScreenQuery={keyword}
         useParentAwareScrollView={false}
         itemComponentProps={{ hideSaleInfo: true, hidePartner: true, onPress: handlePress }}
+        hideSaveIcon
         FooterComponent={() => (
           <Flex alignItems="center">
             {/* Using `FadeIn` prevents the button from being displayed too early. */}

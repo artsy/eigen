@@ -1,4 +1,4 @@
-import { Flex, Spacer, useColor } from "@artsy/palette-mobile"
+import { Flex, Spacer, useColor, useSpace } from "@artsy/palette-mobile"
 import { Text } from "palette"
 import { Image } from "react-native"
 import { FlatList } from "react-native-gesture-handler"
@@ -20,6 +20,7 @@ const data = [
 ]
 
 export const WaysWeSell: React.FC = () => {
+  const space = useSpace(2)
   const color = useColor()
   const { width } = useScreenDimensions()
   return (
@@ -33,7 +34,7 @@ export const WaysWeSell: React.FC = () => {
         </Text>
       </Flex>
       <FlatList
-        contentContainerStyle={{ marginLeft: 20 }}
+        contentContainerStyle={{ marginLeft: space(2) }}
         horizontal
         showsHorizontalScrollIndicator={false}
         data={data}
@@ -50,7 +51,7 @@ export const WaysWeSell: React.FC = () => {
                   ? require("images/ways-we-sell-private-sales.png")
                   : require("images/ways-we-sell-online-storefront.png")
               }
-              style={{ maxWidth: width - 60 }}
+              style={{ maxWidth: width - space(6) }}
               resizeMode="cover"
             />
 

@@ -3,6 +3,7 @@ import { Spacer, Flex, Join } from "@artsy/palette-mobile"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { SellWithArtsyHome_me$data } from "__generated__/SellWithArtsyHome_me.graphql"
 import { SellWithArtsyHome_recentlySoldArtworksTypeConnection$data } from "__generated__/SellWithArtsyHome_recentlySoldArtworksTypeConnection.graphql"
+import { GetInTouchBanner } from "app/Scenes/SellWithArtsy/Components/GetInTouchBanner"
 import { Highlights } from "app/Scenes/SellWithArtsy/Components/Highlights"
 import { WaysWeSell } from "app/Scenes/SellWithArtsy/Components/WaysWeSell"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
@@ -54,6 +55,17 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
     navigate(route)
   }
 
+  const handleInquiryPress = () => {
+    navigate("/sell/inquiry", {
+      passProps: {
+        email: me?.email ?? "",
+        name: me?.name ?? "",
+        phone: me?.phone ?? "",
+        userId: me?.internalID ?? undefined,
+      },
+    })
+  }
+
   useEffect(() => {
     return () => {
       GlobalStore.actions.artworkSubmission.submission.resetSessionState()
@@ -69,19 +81,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
       <Flex flex={1} justifyContent="center" alignItems="center" minHeight={screenHeight}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Flex pb={6}>
-            <Header
-              onConsignPress={handleConsignPress}
-              onInquiryPress={() =>
-                navigate("/sell/inquiry", {
-                  passProps: {
-                    email: me?.email ?? "",
-                    name: me?.name ?? "",
-                    phone: me?.phone ?? "",
-                    userId: me?.internalID ?? undefined,
-                  },
-                })
-              }
-            />
+            <Header onConsignPress={handleConsignPress} onInquiryPress={handleInquiryPress} />
 
             <Spacer y={4} />
 
@@ -93,10 +93,12 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
             )}
             {enableNewSWALandingPage && <Spacer y={4} />}
 
-            <HowItWorks />
+            <HowItWorks onConsignPress={handleConsignPress} />
 
             <Spacer y={4} />
 
+            {enableNewSWALandingPage && <GetInTouchBanner onInquiryPress={handleInquiryPress} />}
+            {enableNewSWALandingPage && <Spacer y={4} />}
             <SellWithArtsyRecentlySold recentlySoldArtworks={recentlySoldArtworks!} />
 
             <Spacer y={4} />

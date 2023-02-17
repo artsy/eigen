@@ -9,7 +9,7 @@ describe(formatLargeNumberOfItems, () => {
       expect(formatLargeNumberOfItems(850, "artwork")).toMatchInlineSnapshot(`"850 artworks"`)
     })
     it("formats more than a thousand less than a million", () => {
-      expect(formatLargeNumberOfItems(151000, "artwork")).toMatchInlineSnapshot(`"151.0k artworks"`)
+      expect(formatLargeNumberOfItems(151000, "artwork")).toMatchInlineSnapshot(`"151.0K artworks"`)
     })
     it("formats more than a million", () => {
       expect(formatLargeNumberOfItems(2200000, "artwork")).toMatchInlineSnapshot(`"2.2M artworks"`)
@@ -30,7 +30,7 @@ describe(formatLargeNumberOfItems, () => {
     it("formats more than a thousand less than a million", () => {
       expect(
         formatLargeNumberOfItems(151000, "work for sale", "works for sale")
-      ).toMatchInlineSnapshot(`"151.0k works for sale"`)
+      ).toMatchInlineSnapshot(`"151.0K works for sale"`)
     })
     it("formats more than a million", () => {
       expect(

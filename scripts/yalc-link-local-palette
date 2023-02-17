@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if ! command -v yalc &> /dev/null
+then
+    echo "Error linking @artsy/palette-mobile for dev. 'yalc' is not installed. Please install it with 'yarn global add yalc'."
+    echo "See https://docs.joshuatz.com/cheatsheets/devops/yalc/ for more info."
+    exit
+fi
+
+yalc add @artsy/palette-mobile
+yarn install

@@ -94,7 +94,7 @@ export const MyCollectionAddPhotos: React.FC<StackScreenProps<ArtworkFormScreen,
 const ImageItem: React.FC<{ item: ImageProps; imageSize: number }> = ({ item, imageSize }) => {
   const [deleting, setDeleting] = useState(false)
   return (
-    <Flex marginRight={MARGIN}>
+    <Flex mt={0.5}>
       <Image
         style={{ width: imageSize, height: imageSize, resizeMode: "cover" }}
         source={{ uri: item.imageURL?.replace(":version", "medium") || item.path }}
@@ -126,8 +126,7 @@ const AddPhotosButton: React.FC<{ imageSize: number }> = ({ imageSize }) => {
       }}
     >
       <BorderBox
-        p={0}
-        mr={MARGIN}
+        mt={0.5}
         bg={color("white100")}
         width={imageSize}
         height={imageSize}

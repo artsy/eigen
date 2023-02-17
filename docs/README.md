@@ -21,6 +21,7 @@
 - [Add a new component](adding_new_components.md)
 - [State Migrations](adding_state_migrations.md)
 - [Analytics and Tracking](analytics_and_tracking.md)
+- [Developing features using local @artsy/palette-mobile](developing_local_palette.md)
 
 - [Images handling](images.md)
 - [Storybook](storybook.md)
