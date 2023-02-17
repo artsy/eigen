@@ -17,7 +17,12 @@ export const ZeroState = (props: ZeroStateProps) => {
     <Flex px={1} alignItems="center" pt={2}>
       <Flex>
         {!!title && (
-          <Text variant="sm" lineHeight="20" style={{ maxWidth: "80%" }} color={color("black100")}>
+          <Text
+            variant="sm"
+            lineHeight="20px"
+            style={{ maxWidth: "80%" }}
+            color={color("black100")}
+          >
             {title}
           </Text>
         )}

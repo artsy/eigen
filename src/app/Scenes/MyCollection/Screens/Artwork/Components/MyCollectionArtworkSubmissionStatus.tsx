@@ -52,7 +52,7 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<{ displayText?: strin
           </Touchable>
         </Flex>
         <Text
-          lineHeight={16}
+          lineHeight="16px"
           mt={1}
           color={STATUSES[displayText!.toLowerCase()]?.color ?? "black100"}
         >

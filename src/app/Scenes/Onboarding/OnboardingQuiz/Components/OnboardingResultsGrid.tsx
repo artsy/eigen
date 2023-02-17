@@ -180,7 +180,7 @@ const GridItem: FC<GridItemProps> = ({ artwork, itemWidth }) => {
 
 const GridItemText: FC<TextProps> = ({ children, ...rest }) => {
   return (
-    <Text lineHeight="18" weight="regular" variant="xs" {...rest}>
+    <Text lineHeight="18px" weight="regular" variant="xs" {...rest}>
       {children}
     </Text>
   )

@@ -118,7 +118,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
                       resizeMode="contain"
                       style={{ marginRight: 10 }}
                     />
-                    <Text variant="sm-display" color="black60" lineHeight={18}>
+                    <Text variant="sm-display" color="black60" lineHeight="18px">
                       {facebookLinked ? "Unlink" : "Link"}
                     </Text>
                   </Flex>
@@ -145,7 +145,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
                       resizeMode="contain"
                       style={{ marginRight: 10 }}
                     />
-                    <Text variant="sm-display" color="black60" lineHeight={18}>
+                    <Text variant="sm-display" color="black60" lineHeight="18px">
                       {googleLinked ? "Unlink" : "Link"}
                     </Text>
                   </Flex>
@@ -172,7 +172,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
                         resizeMode="contain"
                         style={{ marginRight: 10, tintColor: "black" }}
                       />
-                      <Text variant="sm-display" color="black60" lineHeight={18}>
+                      <Text variant="sm-display" color="black60" lineHeight="18px">
                         {appleLinked ? "Unlink" : "Link"}
                       </Text>
                     </Flex>

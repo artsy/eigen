@@ -61,11 +61,11 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
           </TouchableOpacity>
         </Box>
         <Flex flex={1} px={1}>
-          <Text fontSize={20} lineHeight={24} color={color("black100")}>
+          <Text fontSize={20} lineHeight="24px" color="black100">
             {me?.name}
           </Text>
           {!!me?.createdAt && (
-            <Text variant="xs" color={color("black60")}>{`Member since ${new Date(
+            <Text variant="xs" color="black60">{`Member since ${new Date(
               me?.createdAt
             ).getFullYear()}`}</Text>
           )}

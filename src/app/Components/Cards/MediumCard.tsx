@@ -60,7 +60,7 @@ export const MediumCard: React.FC<MediumCardProps> = ({ image, title, subtitle, 
           right: space(6),
         }}
       >
-        <Text lineHeight="20" color={color("white100")} mb={0.5}>
+        <Text lineHeight="20px" color={color("white100")} mb={0.5}>
           {title}
         </Text>
         {!!subtitle && (

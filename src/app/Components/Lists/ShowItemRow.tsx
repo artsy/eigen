@@ -139,7 +139,7 @@ export class ShowItemRow extends React.Component<Props, State> {
               {!!(show.partner && show.partner.name) && (
                 <Text
                   variant="sm"
-                  lineHeight="20"
+                  lineHeight="20px"
                   color="black"
                   weight="medium"
                   numberOfLines={1}
@@ -151,7 +151,7 @@ export class ShowItemRow extends React.Component<Props, State> {
               {!!show.name && (
                 <Text
                   variant="sm"
-                  lineHeight="20"
+                  lineHeight="20px"
                   color={color("black60")}
                   ml="15px"
                   numberOfLines={1}
@@ -162,7 +162,7 @@ export class ShowItemRow extends React.Component<Props, State> {
               {!!(show.exhibition_period && show.status) && (
                 <Text
                   variant="sm"
-                  lineHeight="20"
+                  lineHeight="20px"
                   color={color("black60")}
                   ml="15px"
                   numberOfLines={1}

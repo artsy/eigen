@@ -102,15 +102,15 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me$data; relay: RelayRefetch
           <>
             <Flex mx={2}>
               <Card py={2} px="16px" isDefault={item.isDefault}>
-                <Text fontSize={16} lineHeight={24}>
+                <Text fontSize={16} lineHeight="24px">
                   {item.name}
                 </Text>
-                <Text fontSize={16} lineHeight={24} color="black60">
+                <Text fontSize={16} lineHeight="24px" color="black60">
                   {[item.addressLine1, item?.addressLine2, item?.addressLine3]
                     .filter(Boolean)
                     .join(", ")}
                 </Text>
-                <Text fontSize={16} lineHeight={24} color="black60">
+                <Text fontSize={16} lineHeight="24px" color="black60">
                   {item.city}, {item.postalCode}
                 </Text>
                 <Spacer y={1} />

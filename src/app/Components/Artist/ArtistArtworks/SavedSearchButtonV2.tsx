@@ -28,7 +28,7 @@ export const SavedSearchButtonV2: React.FC<SavedSearchButtonV2Props> = (props) =
             <Box backgroundColor="white">
               <BellIcon fill={color} width="16px" height="16px" />
             </Box>
-            <Text variant="xs" color={color} ml={0.5} numberOfLines={1} lineHeight={16}>
+            <Text variant="xs" color={color} ml={0.5} numberOfLines={1} lineHeight="16px">
               Create Alert
             </Text>
           </Flex>

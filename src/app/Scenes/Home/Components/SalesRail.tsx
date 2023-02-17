@@ -97,12 +97,12 @@ const SalesRail: React.FC<Props & RailScrollProps> = ({
               <View>
                 <ThreeUpImageLayout imageURLs={availableArtworkImageURLs} />
                 <MetadataContainer>
-                  <Text numberOfLines={2} lineHeight="20" variant="sm">
+                  <Text numberOfLines={2} lineHeight="20px" variant="sm">
                     {result?.name}
                   </Text>
                   <Text
                     numberOfLines={1}
-                    lineHeight="20"
+                    lineHeight="20px"
                     color="black60"
                     variant="sm"
                     testID="sale-subtitle"

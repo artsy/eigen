@@ -35,7 +35,7 @@ const InnerButton: React.FC<Button> = (props) => {
         <Text
           variant="xs"
           color="white100"
-          lineHeight={14}
+          lineHeight="14px"
           style={{ textDecorationLine: isPressed ? "underline" : "none" }}
         >
           {label}

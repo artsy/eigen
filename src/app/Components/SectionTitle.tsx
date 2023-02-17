@@ -43,7 +43,7 @@ export const SectionTitle: React.FC<{
       <Flex mb={mb} flexDirection="row" alignItems="flex-start">
         <Flex flex={1} overflow="hidden">
           <Text
-            lineHeight="20"
+            lineHeight="20px"
             variant={titleVariant}
             ellipsizeMode="tail"
             numberOfLines={1}
@@ -52,7 +52,7 @@ export const SectionTitle: React.FC<{
             {typeof title === "string" ? titleText : title}
           </Text>
           {Boolean(subtitle) && (
-            <Text variant="sm" color={color("black60")} lineHeight="20" testID="subtitle">
+            <Text variant="sm" color={color("black60")} lineHeight="20px" testID="subtitle">
               {subtitle}
             </Text>
           )}

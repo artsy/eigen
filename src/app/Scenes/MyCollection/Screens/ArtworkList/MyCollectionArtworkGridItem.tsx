@@ -75,7 +75,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
           useRawURL={!!localImage}
         />
         <Box maxWidth={width} mt={1} style={{ flex: 1 }}>
-          <Text lineHeight="18" weight="regular" variant="xs" numberOfLines={2}>
+          <Text lineHeight="18px" weight="regular" variant="xs" numberOfLines={2}>
             {artistNames}
             {!!showHighDemandIcon && (
               <Flex testID="test-high-demand-icon">
@@ -84,8 +84,8 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
             )}
           </Text>
           {!!title ? (
-            <Text lineHeight="18" variant="xs" weight="regular" numberOfLines={1} color="black60">
-              <Text lineHeight="18" variant="xs" weight="regular" italic>
+            <Text lineHeight="18px" variant="xs" weight="regular" numberOfLines={1} color="black60">
+              <Text lineHeight="18px" variant="xs" weight="regular" italic>
                 {title}
               </Text>
               {date ? `, ${date}` : ""}

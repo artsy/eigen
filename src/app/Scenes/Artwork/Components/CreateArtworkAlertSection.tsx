@@ -104,7 +104,7 @@ export const CreateArtworkAlertSection: FC<CreateArtworkAlertSectionProps> = ({ 
             onPress={handleCreateAlertPress}
             disabled={!artwork}
           >
-            <Text variant="xs" ml={0.5} numberOfLines={1} lineHeight={16}>
+            <Text variant="xs" ml={0.5} numberOfLines={1} lineHeight="16px">
               Create Alert
             </Text>
           </Button>

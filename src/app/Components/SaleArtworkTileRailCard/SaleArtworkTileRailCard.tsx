@@ -87,13 +87,13 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
   )
 
   const artistNamesDisplay = artwork.artistNames ? (
-    <Text color="black60" lineHeight="20" numberOfLines={1}>
+    <Text color="black60" lineHeight="20px" numberOfLines={1}>
       {artwork.artistNames}
     </Text>
   ) : null
 
   const saleMessageDisplay = artwork.saleMessage ? (
-    <Text variant="xs" lineHeight="20" numberOfLines={1}>
+    <Text variant="xs" lineHeight="20px" numberOfLines={1}>
       {artwork.saleMessage}
     </Text>
   ) : null
@@ -109,20 +109,20 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
   })
 
   const customSaleMessageDisplay = useCustomSaleMessage ? (
-    <Text variant="xs" lineHeight="20" numberOfLines={1}>
+    <Text variant="xs" lineHeight="20px" numberOfLines={1}>
       {customSaleMessage}
     </Text>
   ) : null
 
   const titleAndDateDisplay =
     artwork.title || artwork.date ? (
-      <Text color="black60" lineHeight="20" numberOfLines={1}>
+      <Text color="black60" lineHeight="20px" numberOfLines={1}>
         {[artwork.title, artwork.date].filter(Boolean).join(", ")}
       </Text>
     ) : null
 
   const lotNumber = saleArtwork.lotLabel ? (
-    <Text numberOfLines={1} lineHeight="20" variant="sm">
+    <Text numberOfLines={1} lineHeight="20px" variant="sm">
       Lot {saleArtwork.lotLabel}
     </Text>
   ) : null
