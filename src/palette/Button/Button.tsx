@@ -7,9 +7,9 @@ import {
   Spinner,
   useColor,
   Text,
+  useTextStyleForPalette,
 } from "@artsy/palette-mobile"
 import { TextVariant } from "@artsy/palette-tokens/dist/typography/v3" // TODO: remove palette-tokens when this file (Button.tsx) is removed.
-import { useTextStyleForPalette } from "palette/elements/Text"
 import { useState } from "react"
 import { PressableProps, TextStyle, GestureResponderEvent, Pressable } from "react-native"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
