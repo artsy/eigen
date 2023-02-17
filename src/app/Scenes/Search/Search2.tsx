@@ -119,7 +119,7 @@ export const Search2: React.FC = () => {
   return (
     <SearchContext.Provider value={searchProviderValues}>
       <ArtsyKeyboardAvoidingView>
-        <Flex p={2}>
+        <Flex p={2} pb={0}>
           <SearchInput
             ref={searchProviderValues?.inputRef}
             placeholder={SEARCH_INPUT_PLACEHOLDER}
