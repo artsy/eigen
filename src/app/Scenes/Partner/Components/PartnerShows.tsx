@@ -232,7 +232,7 @@ export const PartnerShowsFragmentContainer = createPaginationContainer(
 )
 
 const BackgroundImage = styled(ImageBackground)`
-  height: 120;
+  height: 120px;
 `
 
 const GridItem = styled(Box)`
@@ -240,7 +240,7 @@ const GridItem = styled(Box)`
 `
 
 const EmptyImage = styled(Box)`
-  height: 120;
+  height: 120px;
   background-color: ${themeGet("colors.black10")};
 `
 

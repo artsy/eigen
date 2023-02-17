@@ -93,9 +93,9 @@ export const CityPicker: React.FC<Props> = (props) => {
 const Overlay = styled.ScrollView`
   flex: 1;
   background-color: ${themeGet("colors.white100")};
-  margin-top: ${themeGet("space.2")};
-  margin-left: ${themeGet("space.2")};
-  margin-right: ${themeGet("space.2")};
+  margin-top: ${themeGet("space.2")}px;
+  margin-left: ${themeGet("space.2")}px;
+  margin-right: ${themeGet("space.2")}px;
   flex-direction: column;
 `
 const LogoContainer = styled(Flex)`

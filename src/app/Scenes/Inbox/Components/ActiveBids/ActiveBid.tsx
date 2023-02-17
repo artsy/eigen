@@ -37,7 +37,7 @@ const MetadataContainer = styled.View`
 `
 
 const Separator = styled.View`
-  height: 1;
+  height: 1px;
   width: 100%;
   background-color: ${themeGet("colors.black10")};
 `

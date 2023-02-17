@@ -56,8 +56,8 @@ const BackgroundImage = styled(OpaqueImageView)`
 `
 
 const Container = styled(Box)`
-  width: ${Dimensions.get("window").width / 2 + 50};
-  height: 310;
+  width: ${Dimensions.get("window").width / 2 + 50}px;
+  height: 310px;
   position: relative;
   overflow: hidden;
   background: ${themeGet("colors.black60")};
@@ -72,9 +72,9 @@ const Overlay = styled.View`
 `
 
 const Logo = styled(Image)`
-  width: 100;
-  height: 100;
+  width: 100px;
+  height: 100px;
   background-color: transparent;
-  margin-bottom: ${themeGet("space.1")};
+  margin-bottom: ${themeGet("space.1")}px;
   tint-color: white;
 `

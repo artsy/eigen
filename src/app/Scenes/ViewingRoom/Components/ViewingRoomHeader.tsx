@@ -24,7 +24,7 @@ const CountdownContainer = styled.View`
   width: 100%;
   flex-direction: row;
   align-items: center;
-  height: 20;
+  height: 20px;
   justify-content: center;
 `
 

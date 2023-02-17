@@ -48,6 +48,6 @@ export const BMWSponsorship: React.FC<BMWSponsorshipProps> = ({
 }
 
 export const Logo = styled.Image`
-  height: 32;
-  width: 32;
+  height: 32px;
+  width: 32px;
 `

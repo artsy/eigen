@@ -12,7 +12,7 @@ import styled from "styled-components/native"
 
 const { width: windowWidth } = Dimensions.get("window")
 const ImageView = styled(OpaqueImageView)`
-  height: 200;
+  height: 200px;
   width: 100%;
 `
 

@@ -18,10 +18,10 @@ export const AttachmentTextContainer = styled.View`
 `
 const Icon = styled(Image)`
   resize-mode: contain;
-  width: 40;
-  margin-top: 12;
-  margin-right: 12;
-  margin-bottom: 12;
+  width: 40px;
+  margin-top: 12px;
+  margin-right: 12px;
+  margin-bottom: 12px;
 `
 
 interface Props extends AttachmentProps {

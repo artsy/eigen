@@ -43,25 +43,25 @@ const AnimatedView = animated(View)
 
 const ShowCardContainer = styled(Box)`
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 200;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  height: 200px;
 `
 
 const LoadingScreen = styled(Image)`
   position: absolute;
-  left: 0;
-  top: 0;
+  left: 0px;
+  top: 0px;
 `
 
 const TopButtonsContainer = styled(Box)`
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 0px;
+  right: 0px;
   z-index: 1;
   width: 100%;
-  height: 100;
+  height: 100px;
 `
 
 interface Props {

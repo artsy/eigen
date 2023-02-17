@@ -153,7 +153,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
 
   const ButtonBox = styled(Box)`
     position: absolute;
-    top: ${useScreenDimensions().safeAreaInsets.top + 12};
+    top: ${useScreenDimensions().safeAreaInsets.top + 12}px;
     right: 12px;
     z-index: 1;
     background-color: #ffffff;

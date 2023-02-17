@@ -104,8 +104,8 @@ export const ArtistConsignButtonFragmentContainer = createFragmentContainer(Arti
 })
 
 const Image = styled.Image`
-  width: 76;
-  height: 70;
+  width: 76px;
+  height: 70px;
 `
 
 export const tests = {
