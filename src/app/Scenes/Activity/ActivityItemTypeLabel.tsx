@@ -1,4 +1,4 @@
-import { Text } from "palette"
+import { Text } from "@artsy/palette-mobile"
 
 interface Props {
   notificationType: string

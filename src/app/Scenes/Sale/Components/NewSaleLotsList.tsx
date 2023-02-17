@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, Box } from "@artsy/palette-mobile"
+import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { NewSaleLotsList_unfilteredArtworks$data } from "__generated__/NewSaleLotsList_unfilteredArtworks.graphql"
 import { NewSaleLotsList_viewer$data } from "__generated__/NewSaleLotsList_viewer.graphql"
 import {
@@ -14,7 +14,6 @@ import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilter
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { Schema } from "app/utils/track"
-import { Text } from "palette"
 import { MutableRefObject, useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"

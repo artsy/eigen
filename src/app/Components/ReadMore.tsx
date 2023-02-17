@@ -1,10 +1,17 @@
-import { nbsp, emdash, Flex } from "@artsy/palette-mobile"
+import {
+  nbsp,
+  emdash,
+  Flex,
+  LinkText,
+  Text as PaletteText,
+  TextProps as PaletteTextProps,
+} from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { plainTextFromTree } from "app/utils/plainTextFromTree"
 import { defaultRules, renderMarkdown } from "app/utils/renderMarkdown"
 import { sendEmailWithMailTo } from "app/utils/sendEmail"
 import { Schema } from "app/utils/track"
-import { Color, LinkText, Text as PaletteText, TextProps as PaletteTextProps } from "palette"
+import { Color } from "palette"
 import React, { useState } from "react"
 import { Text } from "react-native"
 import { useTracking } from "react-tracking"

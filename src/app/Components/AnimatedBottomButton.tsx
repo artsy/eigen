@@ -5,7 +5,7 @@ import styled from "styled-components/native"
 
 export const BottomButtonContainer = styled(Animated.View)`
   position: absolute;
-  bottom: 20;
+  bottom: 20px;
   flex: 1;
   justify-content: center;
   width: 100%;

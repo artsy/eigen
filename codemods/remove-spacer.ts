@@ -9,7 +9,7 @@
 
 import { Transform } from "jscodeshift"
 
-const toRemove = "ClassTheme"
+const toRemove = "Text"
 
 const transform: Transform = (file, { jscodeshift: j }, options) => {
   const source = j(file.source)

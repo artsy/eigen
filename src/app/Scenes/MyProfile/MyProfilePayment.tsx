@@ -1,4 +1,4 @@
-import { Spacer, Flex } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { MyProfilePaymentDeleteCardMutation } from "__generated__/MyProfilePaymentDeleteCardMutation.graphql"
 import { MyProfilePaymentQuery } from "__generated__/MyProfilePaymentQuery.graphql"
 import { MyProfilePayment_me$data } from "__generated__/MyProfilePayment_me.graphql"
@@ -11,7 +11,6 @@ import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Text } from "palette"
 import React, { useCallback, useEffect, useReducer, useState } from "react"
 import {
   ActivityIndicator,

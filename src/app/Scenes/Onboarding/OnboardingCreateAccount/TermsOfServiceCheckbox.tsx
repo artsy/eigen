@@ -1,7 +1,7 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { ParamListBase } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
-import { Text, Touchable } from "palette"
+import { Touchable } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 
 interface TermsOfServiceCheckboxProps {

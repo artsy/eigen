@@ -1,4 +1,4 @@
-import { HeartFillIcon, HeartIcon, Spacer, Flex, useColor } from "@artsy/palette-mobile"
+import { HeartFillIcon, HeartIcon, Spacer, Flex, useColor, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import {
   ArtworkRailCard_artwork$data,
@@ -10,7 +10,7 @@ import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { Schema } from "app/utils/track"
 import { compact } from "lodash"
-import { Text, Touchable } from "palette"
+import { Touchable } from "palette"
 import { useMemo } from "react"
 import { GestureResponderEvent, PixelRatio } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"
@@ -155,18 +155,18 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
         >
           <Flex flex={1}>
             {!!lotLabel && (
-              <Text lineHeight="20" color="black60" numberOfLines={1}>
+              <Text lineHeight="20px" color="black60" numberOfLines={1}>
                 Lot {lotLabel}
               </Text>
             )}
             {!hideArtistName && !!artistNames && (
-              <Text numberOfLines={size === "small" ? 2 : 1} lineHeight="20" variant="xs">
+              <Text numberOfLines={size === "small" ? 2 : 1} lineHeight="20px" variant="xs">
                 {artistNames}
               </Text>
             )}
             {!!title && (
               <Text
-                lineHeight="20"
+                lineHeight="20px"
                 color="black60"
                 numberOfLines={size === "small" ? 2 : 1}
                 variant="xs"
@@ -175,7 +175,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                 {title}
                 {!!date && (
                   <Text
-                    lineHeight="20"
+                    lineHeight="20px"
                     color="black60"
                     numberOfLines={size === "small" ? 2 : 1}
                     variant="xs"
@@ -188,7 +188,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
             )}
 
             {!hidePartnerName && !!partner?.name && (
-              <Text lineHeight="20" color="black60" numberOfLines={1}>
+              <Text lineHeight="20px" color="black60" numberOfLines={1}>
                 {partner?.name}
               </Text>
             )}
@@ -216,7 +216,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
 
             {!!saleMessage && !isRecentlySoldArtwork && (
               <Text
-                lineHeight="20"
+                lineHeight="20px"
                 variant="xs"
                 color="black100"
                 numberOfLines={1}

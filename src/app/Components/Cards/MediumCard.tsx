@@ -1,7 +1,7 @@
-import { Spacer, Flex, Box, BoxProps, useTheme } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, BoxProps, useTheme, Text } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { Text, OpaqueImageView as NewOpaqueImageView } from "palette"
+import { OpaqueImageView as NewOpaqueImageView } from "palette"
 import LinearGradient from "react-native-linear-gradient"
 import { CardTag, CardTagProps } from "./CardTag"
 
@@ -60,7 +60,7 @@ export const MediumCard: React.FC<MediumCardProps> = ({ image, title, subtitle, 
           right: space(6),
         }}
       >
-        <Text lineHeight="20" color={color("white100")} mb={0.5}>
+        <Text lineHeight="20px" color={color("white100")} mb={0.5}>
           {title}
         </Text>
         {!!subtitle && (

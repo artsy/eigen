@@ -1,7 +1,6 @@
-import { ArrowRightIcon, Flex } from "@artsy/palette-mobile"
+import { ArrowRightIcon, Flex, Text } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { Schema, track } from "app/utils/track"
-import { Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 

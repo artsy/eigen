@@ -5,7 +5,7 @@ import {
   ScreenOwnerType,
   TappedCreateAlert,
 } from "@artsy/cohesion"
-import { Spacer, Box } from "@artsy/palette-mobile"
+import { Spacer, Box, Text } from "@artsy/palette-mobile"
 import { CreateArtworkAlertButtonsSection_artwork$data } from "__generated__/CreateArtworkAlertButtonsSection_artwork.graphql"
 import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
@@ -16,7 +16,7 @@ import {
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { compact, isEmpty } from "lodash"
-import { Button, Text } from "palette"
+import { Button } from "palette"
 import { FC, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"

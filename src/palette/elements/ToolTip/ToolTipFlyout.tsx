@@ -1,5 +1,4 @@
-import { Flex, useColor } from "@artsy/palette-mobile"
-import { Text } from "palette/elements/Text"
+import { Flex, useColor, Text } from "@artsy/palette-mobile"
 import { useEffect } from "react"
 import { TouchableWithoutFeedback, ViewStyle } from "react-native"
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"

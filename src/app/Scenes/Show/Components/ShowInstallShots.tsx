@@ -1,8 +1,7 @@
-import { Spacer, Box, BoxProps } from "@artsy/palette-mobile"
+import { Spacer, Box, BoxProps, Text } from "@artsy/palette-mobile"
 import { ShowInstallShots_show$data } from "__generated__/ShowInstallShots_show.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { compact } from "lodash"
-import { Text } from "palette"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 

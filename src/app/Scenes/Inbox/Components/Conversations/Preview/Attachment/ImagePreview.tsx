@@ -6,7 +6,7 @@ import styled from "styled-components/native"
 import AttachmentPreview, { AttachmentProps } from "./AttachmentPreview"
 
 const Image = styled(OpaqueImageView)`
-  height: 250;
+  height: 250px;
   flex: 1;
 `
 

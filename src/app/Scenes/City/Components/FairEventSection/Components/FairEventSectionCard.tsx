@@ -1,9 +1,8 @@
-import { Flex, Box } from "@artsy/palette-mobile"
+import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Fair } from "app/Scenes/Map/types"
 import { navigate } from "app/system/navigation/navigate"
-import { Text } from "palette"
 import { Component } from "react"
 import { Dimensions, Image, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
@@ -57,8 +56,8 @@ const BackgroundImage = styled(OpaqueImageView)`
 `
 
 const Container = styled(Box)`
-  width: ${Dimensions.get("window").width / 2 + 50};
-  height: 310;
+  width: ${Dimensions.get("window").width / 2 + 50}px;
+  height: 310px;
   position: relative;
   overflow: hidden;
   background: ${themeGet("colors.black60")};
@@ -73,8 +72,8 @@ const Overlay = styled.View`
 `
 
 const Logo = styled(Image)`
-  width: 100;
-  height: 100;
+  width: 100px;
+  height: 100px;
   background-color: transparent;
   margin-bottom: ${themeGet("space.1")};
   tint-color: white;

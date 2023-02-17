@@ -1,5 +1,5 @@
 import { tappedCollectedArtwork } from "@artsy/cohesion"
-import { Flex, Box } from "@artsy/palette-mobile"
+import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { MyCollectionArtworkGridItem_artwork$data } from "__generated__/MyCollectionArtworkGridItem_artwork.graphql"
 import { DEFAULT_SECTION_MARGIN } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
@@ -8,7 +8,6 @@ import { MyCollectionImageView } from "app/Scenes/MyCollection/Components/MyColl
 import { navigate } from "app/system/navigation/navigate"
 import { useLocalImage } from "app/utils/LocalImageStore"
 import { isPad } from "app/utils/hardware"
-import { Text } from "palette"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -76,7 +75,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
           useRawURL={!!localImage}
         />
         <Box maxWidth={width} mt={1} style={{ flex: 1 }}>
-          <Text lineHeight="18" weight="regular" variant="xs" numberOfLines={2}>
+          <Text lineHeight="18px" weight="regular" variant="xs" numberOfLines={2}>
             {artistNames}
             {!!showHighDemandIcon && (
               <Flex testID="test-high-demand-icon">
@@ -85,8 +84,8 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
             )}
           </Text>
           {!!title ? (
-            <Text lineHeight="18" variant="xs" weight="regular" numberOfLines={1} color="black60">
-              <Text lineHeight="18" variant="xs" weight="regular" italic>
+            <Text lineHeight="18px" variant="xs" weight="regular" numberOfLines={1} color="black60">
+              <Text lineHeight="18px" variant="xs" weight="regular" italic>
                 {title}
               </Text>
               {date ? `, ${date}` : ""}

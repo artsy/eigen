@@ -1,10 +1,9 @@
-import { Flex, Box } from "@artsy/palette-mobile"
+import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { PriceSummaryQuery } from "__generated__/PriceSummaryQuery.graphql"
 import { PriceSummary_calculatedCost$data } from "__generated__/PriceSummary_calculatedCost.graphql"
 import { Bid } from "app/Components/Bidding/types"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { Text } from "palette"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 interface PriceSummaryViewProps {

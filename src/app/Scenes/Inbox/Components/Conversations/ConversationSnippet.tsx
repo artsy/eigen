@@ -1,32 +1,32 @@
-import { Flex, ClassTheme } from "@artsy/palette-mobile"
+import { Flex, ClassTheme, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ConversationSnippet_conversation$data } from "__generated__/ConversationSnippet_conversation.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Schema, Track, track as _track } from "app/utils/track"
 import moment from "moment"
-import { Text, Touchable } from "palette"
+import { Touchable } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import styled from "styled-components/native"
 
 const Unread = styled(Flex)`
-  height: 14;
-  width: 14;
-  border-radius: 7;
+  height: 14px;
+  width: 14px;
+  border-radius: 7px;
   background-color: ${themeGet("colors.white100")};
   position: absolute;
-  left: -7;
-  top: -7;
+  left: -7px;
+  top: -7px;
   z-index: 99;
   justify-content: center;
   align-items: center;
 `
 
 const Indicator = styled.View`
-  height: 10;
-  width: 10;
-  border-radius: 5;
+  height: 10px;
+  width: 10px;
+  border-radius: 5px;
   background-color: ${themeGet("colors.blue100")};
 `
 

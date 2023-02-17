@@ -1,9 +1,8 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { CollectionArtistSeriesRail_collection$data } from "__generated__/CollectionArtistSeriesRail_collection.graphql"
 import { CollectionArtistSeriesRail_collectionGroup$data } from "__generated__/CollectionArtistSeriesRail_collectionGroup.graphql"
 import { GenericArtistSeriesRail } from "app/Components/GenericArtistSeriesRail"
 import { Schema } from "app/utils/track"
-import { Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface CollectionArtistSeriesRailProps {

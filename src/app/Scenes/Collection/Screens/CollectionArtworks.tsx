@@ -86,7 +86,7 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({
 }
 
 const ArtworkGridWrapper = styled(Box)<{ isDepartment: boolean }>`
-  margin-top: ${(p: any /* STRICTNESS_MIGRATION */) => (p.isDepartment ? 0 : "-50px")};
+  margin-top: ${(p: any /* STRICTNESS_MIGRATION */) => (p.isDepartment ? "0px" : "-50px")};
   padding-bottom: 50px;
 `
 

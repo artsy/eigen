@@ -1,6 +1,5 @@
-import { ArrowRightIcon, Flex, SpacingUnit, useTheme } from "@artsy/palette-mobile"
+import { ArrowRightIcon, Flex, SpacingUnit, useTheme, Text, TextProps } from "@artsy/palette-mobile"
 import { toTitleCase } from "@artsy/to-title-case"
-import { Text, TextProps } from "palette"
 import { TouchableOpacity } from "react-native"
 
 const Wrapper: React.FC<{ onPress?(): any }> = ({ onPress, children }) => {
@@ -44,7 +43,7 @@ export const SectionTitle: React.FC<{
       <Flex mb={mb} flexDirection="row" alignItems="flex-start">
         <Flex flex={1} overflow="hidden">
           <Text
-            lineHeight="20"
+            lineHeight="20px"
             variant={titleVariant}
             ellipsizeMode="tail"
             numberOfLines={1}
@@ -53,7 +52,7 @@ export const SectionTitle: React.FC<{
             {typeof title === "string" ? titleText : title}
           </Text>
           {Boolean(subtitle) && (
-            <Text variant="sm" color={color("black60")} lineHeight="20" testID="subtitle">
+            <Text variant="sm" color={color("black60")} lineHeight="20px" testID="subtitle">
               {subtitle}
             </Text>
           )}

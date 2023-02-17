@@ -1,6 +1,7 @@
+import { Text } from "@artsy/palette-mobile"
 import { waitFor } from "@testing-library/react-native"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { Input, Text } from "palette"
+import { Input } from "palette"
 import { Select } from "palette/elements/Select"
 import { act } from "react-test-renderer"
 import { MoneyInput } from "./MoneyInput"

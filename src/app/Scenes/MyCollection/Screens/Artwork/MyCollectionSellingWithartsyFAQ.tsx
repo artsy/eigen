@@ -1,7 +1,7 @@
-import { Spacer, Flex, Box } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { sendEmailWithMailTo } from "app/utils/sendEmail"
-import { Join, Text } from "palette"
+import { Join } from "palette"
 import { ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 

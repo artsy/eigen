@@ -6,9 +6,11 @@ import {
   GuaranteeIcon,
   Flex,
   Box,
+  Text,
+  LinkText,
 } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
-import { Join, LinkText, Text } from "palette"
+import { Join } from "palette"
 
 export const ArtsyGuarantee: React.FC = () => {
   const iconProps: IconProps = {

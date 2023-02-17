@@ -3,8 +3,8 @@ import {
   ArrowDownCircleFillIcon,
   ExclamationMarkCircleFill,
   BookmarkFill,
+  Text,
 } from "@artsy/palette-mobile"
-import { Text } from "palette"
 
 export const ReserveNotMet = () => (
   <>

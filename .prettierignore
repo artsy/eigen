@@ -3,3 +3,4 @@ data/complete.queryMap.json
 Pod/Assets/PreHeatedGraphQLCache/*.json
 node_modules
 package.json
+src/storybook/storybook.requires.js

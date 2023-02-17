@@ -1,8 +1,8 @@
 import { TappedConsignArgs } from "@artsy/cohesion"
-import { Spacer, ImageIcon, Tag2Icon, Payment2Icon, Box, Flex } from "@artsy/palette-mobile"
+import { Spacer, ImageIcon, Tag2Icon, Payment2Icon, Box, Flex, Text } from "@artsy/palette-mobile"
 import { StepWithImage } from "app/Components/StepWithImage/StepWithImage"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { Button, Join, Text } from "palette"
+import { Button, Join } from "palette"
 
 const STEPS = [
   {

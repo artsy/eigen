@@ -1,9 +1,8 @@
-import { ClassTheme } from "@artsy/palette-mobile"
+import { ClassTheme, Text } from "@artsy/palette-mobile"
 import { Notification_notification$data } from "__generated__/Notification_notification.graphql"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Text } from "palette"
 import React from "react"
 import {
   Image,

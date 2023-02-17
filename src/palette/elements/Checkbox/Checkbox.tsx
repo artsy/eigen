@@ -1,6 +1,5 @@
-import { Box, CssTransition, Flex, FlexProps, useTheme } from "@artsy/palette-mobile"
+import { Box, CssTransition, Flex, FlexProps, useTheme, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
-import { Text } from "palette"
 import { useState } from "react"
 import {
   PixelRatio,

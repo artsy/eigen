@@ -1,7 +1,6 @@
-import { comma, Spacer, Flex, Box } from "@artsy/palette-mobile"
+import { comma, Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
 import { ArtworkTombstone_artwork$data } from "__generated__/ArtworkTombstone_artwork.graphql"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ArtworkLotTimerFragmentContainer } from "./ArtworkLotTimer"
 import { ArtworkMakerTitleFragmentContainer } from "./ArtworkMakerTitle"
