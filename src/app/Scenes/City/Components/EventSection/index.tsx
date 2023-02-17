@@ -1,8 +1,7 @@
-import { Box } from "@artsy/palette-mobile"
+import { Box, Text } from "@artsy/palette-mobile"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { Event } from "app/Scenes/City/Components/Event"
 import { navigate } from "app/system/navigation/navigate"
-import { Text } from "palette"
 import React from "react"
 import { RelayProp } from "react-relay"
 

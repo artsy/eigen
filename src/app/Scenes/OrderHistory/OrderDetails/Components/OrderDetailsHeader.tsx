@@ -1,9 +1,8 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { OrderDetailsHeader_info$data } from "__generated__/OrderDetailsHeader_info.graphql"
 import { extractNodes } from "app/utils/extractNodes"
 import { getOrderStatus, OrderState } from "app/utils/getOrderStatus"
 import { DateTime } from "luxon"
-import { Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {

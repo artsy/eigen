@@ -1,10 +1,10 @@
-import { Flex, ClassTheme } from "@artsy/palette-mobile"
+import { Flex, ClassTheme, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ConversationSnippet_conversation$data } from "__generated__/ConversationSnippet_conversation.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Schema, Track, track as _track } from "app/utils/track"
 import moment from "moment"
-import { Text, Touchable } from "palette"
+import { Touchable } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 

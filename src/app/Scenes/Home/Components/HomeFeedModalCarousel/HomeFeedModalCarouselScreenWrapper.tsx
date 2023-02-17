@@ -1,5 +1,4 @@
-import { Flex } from "@artsy/palette-mobile"
-import { Text } from "palette"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { isValidElement } from "react"
 import { Image, ImageSourcePropType } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"

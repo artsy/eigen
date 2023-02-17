@@ -1,6 +1,6 @@
+import { Text } from "@artsy/palette-mobile"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import moment from "moment"
-import { Text } from "palette"
 import { DurationProvider } from "./DurationProvider"
 
 describe("DurationProvider", () => {

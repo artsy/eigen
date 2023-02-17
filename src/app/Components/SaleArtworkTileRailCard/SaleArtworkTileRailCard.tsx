@@ -5,12 +5,11 @@ import {
   tappedEntityGroup,
   TappedEntityGroupArgs,
 } from "@artsy/cohesion"
-import { Flex, Box, useColor } from "@artsy/palette-mobile"
+import { Flex, Box, useColor, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { SaleArtworkTileRailCard_saleArtwork$data } from "__generated__/SaleArtworkTileRailCard_saleArtwork.graphql"
 import { saleMessageOrBidInfo } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"

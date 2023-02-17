@@ -1,6 +1,6 @@
+import { Text } from "@artsy/palette-mobile"
 import { ImageCarouselContext } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
 import { useSpringValue } from "app/Scenes/Artwork/Components/ImageCarousel/useSpringValue"
-import { Text } from "palette"
 import { useContext, useMemo } from "react"
 import { Animated, View } from "react-native"
 import { boxShadow } from "./boxShadow"

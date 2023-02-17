@@ -1,6 +1,6 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { Shipping_order$data } from "__generated__/Shipping_order.graphql"
-import { Separator, Text } from "palette"
+import { Separator } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ShippingProps {

@@ -1,5 +1,5 @@
-import { Flex } from "@artsy/palette-mobile"
-import { Screen, Text } from "palette"
+import { Flex, Text } from "@artsy/palette-mobile"
+import { Screen } from "palette"
 
 interface CameraErrorStateProps {
   onBackPress: () => void

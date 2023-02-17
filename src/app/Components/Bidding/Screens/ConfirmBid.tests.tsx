@@ -1,3 +1,4 @@
+import { Text, LinkText } from "@artsy/palette-mobile"
 import { waitFor } from "@testing-library/react-native"
 import { BidderPositionQuery$data } from "__generated__/BidderPositionQuery.graphql"
 import { ConfirmBidCreateBidderPositionMutation } from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
@@ -18,7 +19,7 @@ import NavigatorIOS, {
 } from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { merge } from "lodash"
-import { Button, LinkText, Text } from "palette"
+import { Button } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 import { TouchableWithoutFeedback } from "react-native"
 import relay from "react-relay"

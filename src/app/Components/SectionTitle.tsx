@@ -1,6 +1,5 @@
-import { ArrowRightIcon, Flex, SpacingUnit, useTheme } from "@artsy/palette-mobile"
+import { ArrowRightIcon, Flex, SpacingUnit, useTheme, Text, TextProps } from "@artsy/palette-mobile"
 import { toTitleCase } from "@artsy/to-title-case"
-import { Text, TextProps } from "palette"
 import { TouchableOpacity } from "react-native"
 
 const Wrapper: React.FC<{ onPress?(): any }> = ({ onPress, children }) => {

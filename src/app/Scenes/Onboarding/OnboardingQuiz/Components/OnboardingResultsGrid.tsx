@@ -5,6 +5,8 @@ import {
   Box,
   SpacingUnitDSValueNumber,
   useTheme,
+  Text,
+  TextProps,
 } from "@artsy/palette-mobile"
 import {
   OnboardingResultsGrid_connection$data,
@@ -14,7 +16,7 @@ import { calculateLayoutValues, getSectionedItems } from "app/Components/Artwork
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useDoublePressCallback } from "app/Scenes/Artwork/Components/ImageCarousel/FullScreen/useDoublePressCallback"
 import { extractNodes } from "app/utils/extractNodes"
-import { Text, TextProps, Touchable } from "palette"
+import { Touchable } from "palette"
 import { FC } from "react"
 import { Dimensions, ScrollView } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"

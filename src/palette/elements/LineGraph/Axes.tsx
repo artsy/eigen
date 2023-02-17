@@ -1,7 +1,6 @@
-import { Flex, useColor } from "@artsy/palette-mobile"
+import { Flex, useColor, Text } from "@artsy/palette-mobile"
 import { scaleLinear } from "d3-scale"
 import * as shape from "d3-shape"
-import { Text } from "palette/elements/Text"
 import { ViewProps, ViewStyle } from "react-native"
 import { G, Path } from "react-native-svg"
 import { AxisDisplayType, randomSVGId, tickFormat as labelFormat } from "./helpers"

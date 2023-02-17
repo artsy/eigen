@@ -1,4 +1,12 @@
-import { Spacer, CloseIcon, ChevronIcon, ReloadIcon, Flex, useColor } from "@artsy/palette-mobile"
+import {
+  Spacer,
+  CloseIcon,
+  ChevronIcon,
+  ReloadIcon,
+  Flex,
+  useColor,
+  Text,
+} from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import Clipboard from "@react-native-clipboard/clipboard"
 import * as Sentry from "@sentry/react-native"
@@ -14,7 +22,7 @@ import { eigenSentryReleaseName } from "app/system/errorReporting//sentrySetup"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { RelayCache } from "app/system/relay/RelayCache"
 import { capitalize, compact, sortBy } from "lodash"
-import { Separator, Text, Touchable } from "palette"
+import { Separator, Touchable } from "palette"
 import { CollapseMenu } from "palette/elements/CollapseMenu"
 import { useCallback, useEffect, useState } from "react"
 import {

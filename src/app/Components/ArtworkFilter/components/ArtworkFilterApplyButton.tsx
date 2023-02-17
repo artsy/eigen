@@ -1,5 +1,5 @@
-import { BellIcon, Box, useColor } from "@artsy/palette-mobile"
-import { Button, Separator, Text } from "palette"
+import { BellIcon, Box, useColor, Text } from "@artsy/palette-mobile"
+import { Button, Separator } from "palette"
 import { useState } from "react"
 import { Pressable } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"

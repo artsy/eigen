@@ -1,4 +1,4 @@
-import { Text } from "palette"
+import { Text } from "@artsy/palette-mobile"
 import { connectHighlight } from "react-instantsearch-native"
 
 export const SearchHighlight = connectHighlight(

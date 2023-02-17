@@ -1,5 +1,5 @@
+import { Text, LinkText } from "@artsy/palette-mobile"
 import { storiesOf } from "@storybook/react-native"
-import { LinkText, Text } from "palette"
 import { List } from "storybook/helpers"
 import { Checkbox } from "./Checkbox"
 

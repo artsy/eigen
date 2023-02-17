@@ -1,9 +1,9 @@
-import { Flex, Box } from "@artsy/palette-mobile"
+import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { toTitleCase } from "@artsy/to-title-case"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { ArtworkSubmissionStatusFAQ } from "app/Scenes/MyCollection/Screens/Artwork/ArtworkSubmissionStatusFAQ"
-import { Text, Touchable } from "palette"
+import { Touchable } from "palette"
 import { useState } from "react"
 
 // TODO:- We are using displayText for Statuses for now. Consider changing the logic when proper statuses are made available on Metaphysics.

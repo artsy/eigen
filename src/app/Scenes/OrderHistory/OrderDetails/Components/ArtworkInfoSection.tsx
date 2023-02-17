@@ -1,8 +1,7 @@
-import { Flex, Box } from "@artsy/palette-mobile"
+import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { ArtworkInfoSection_artwork$data } from "__generated__/ArtworkInfoSection_artwork.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { extractNodes } from "app/utils/extractNodes"
-import { Text } from "palette"
 import { Image } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 

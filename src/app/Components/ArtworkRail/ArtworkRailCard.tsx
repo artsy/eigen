@@ -1,4 +1,4 @@
-import { HeartFillIcon, HeartIcon, Spacer, Flex, useColor } from "@artsy/palette-mobile"
+import { HeartFillIcon, HeartIcon, Spacer, Flex, useColor, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import {
   ArtworkRailCard_artwork$data,
@@ -10,7 +10,7 @@ import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { Schema } from "app/utils/track"
 import { compact } from "lodash"
-import { Text, Touchable } from "palette"
+import { Touchable } from "palette"
 import { useMemo } from "react"
 import { GestureResponderEvent, PixelRatio } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"

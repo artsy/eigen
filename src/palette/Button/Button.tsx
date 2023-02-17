@@ -1,6 +1,15 @@
-import { Box, BoxProps, Flex, Spacer, SpacingUnit, Spinner, useColor } from "@artsy/palette-mobile"
-import { TextVariant } from "@artsy/palette-tokens/dist/typography/v3"
-import { Text, useTextStyleForPalette } from "palette/elements/Text"
+import {
+  Box,
+  BoxProps,
+  Flex,
+  Spacer,
+  SpacingUnit,
+  Spinner,
+  useColor,
+  Text,
+} from "@artsy/palette-mobile"
+import { TextVariant } from "@artsy/palette-tokens/dist/typography/v3" // TODO: remove palette-tokens when this file (Button.tsx) is removed.
+import { useTextStyleForPalette } from "palette/elements/Text"
 import { useState } from "react"
 import { PressableProps, TextStyle, GestureResponderEvent, Pressable } from "react-native"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"

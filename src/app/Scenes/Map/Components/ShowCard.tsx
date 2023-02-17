@@ -1,11 +1,10 @@
-import { Box, ClassTheme } from "@artsy/palette-mobile"
+import { Box, ClassTheme, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ShowItemRow } from "app/Components/Lists/ShowItemRow"
 import { TabFairItemRow } from "app/Scenes/City/Components/TabFairItemRow"
 import { Fair, Show } from "app/Scenes/Map/types"
 import { navigate } from "app/system/navigation/navigate"
 import { isEqual } from "lodash"
-import { Text } from "palette"
 import { Component } from "react"
 import {
   Dimensions,

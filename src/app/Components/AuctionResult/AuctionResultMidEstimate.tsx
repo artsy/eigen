@@ -1,4 +1,4 @@
-import { Text, TextProps } from "palette"
+import { Text, TextProps } from "@artsy/palette-mobile"
 
 interface AuctionResultsMidEstimateProps {
   value: string

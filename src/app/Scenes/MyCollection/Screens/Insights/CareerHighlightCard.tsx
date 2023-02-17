@@ -6,8 +6,9 @@ import {
   UserMultiIcon,
   UserSingleIcon,
   Flex,
+  Text,
 } from "@artsy/palette-mobile"
-import { Button, Text, Touchable } from "palette"
+import { Button, Touchable } from "palette"
 import { Fragment, FunctionComponent } from "react"
 import { Image } from "react-native"
 

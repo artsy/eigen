@@ -1,7 +1,7 @@
+import { Text, LinkText } from "@artsy/palette-mobile"
 import { FairMoreInfoTestsQuery } from "__generated__/FairMoreInfoTestsQuery.graphql"
 import { LocationMapContainer } from "app/Components/LocationMap/LocationMap"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { LinkText, Text } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { ReactTestRenderer } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"

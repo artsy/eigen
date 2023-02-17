@@ -1,5 +1,4 @@
-import { bullet, Spacer, Flex, FlexProps } from "@artsy/palette-mobile"
-import { Text } from "palette"
+import { bullet, Spacer, Flex, FlexProps, Text } from "@artsy/palette-mobile"
 
 interface BulletedItemProps extends FlexProps {
   children: string | Array<string | Element>

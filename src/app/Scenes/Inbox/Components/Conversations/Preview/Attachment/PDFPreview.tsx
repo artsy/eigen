@@ -1,6 +1,5 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { PDFPreview_attachment$data } from "__generated__/PDFPreview_attachment.graphql"
-import { Text } from "palette"
 import { Image } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"

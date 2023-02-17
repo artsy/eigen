@@ -1,6 +1,5 @@
-import { Box, ClassTheme } from "@artsy/palette-mobile"
+import { Box, ClassTheme, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
-import { Text } from "palette"
 import React from "react"
 import { Animated, View } from "react-native"
 import styled from "styled-components/native"

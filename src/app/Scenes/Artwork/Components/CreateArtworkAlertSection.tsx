@@ -5,7 +5,7 @@ import {
   ScreenOwnerType,
   TappedCreateAlert,
 } from "@artsy/cohesion"
-import { BellIcon, Flex } from "@artsy/palette-mobile"
+import { BellIcon, Flex, Text } from "@artsy/palette-mobile"
 import { CreateArtworkAlertSection_artwork$data } from "__generated__/CreateArtworkAlertSection_artwork.graphql"
 import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
@@ -15,7 +15,7 @@ import {
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { compact } from "lodash"
-import { Button, Text } from "palette"
+import { Button } from "palette"
 import { FC, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
