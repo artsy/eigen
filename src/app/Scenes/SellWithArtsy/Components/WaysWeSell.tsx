@@ -20,7 +20,7 @@ const data = [
 ]
 
 export const WaysWeSell: React.FC = () => {
-  const space = useSpace(2)
+  const space = useSpace()
   const color = useColor()
   const { width } = useScreenDimensions()
   return (
