@@ -1,7 +1,7 @@
+import { Text } from "@artsy/palette-mobile"
 import { SaleListItem_sale$data } from "__generated__/SaleListItem_sale.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
-import { Text } from "palette"
 import { TouchableOpacity, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 

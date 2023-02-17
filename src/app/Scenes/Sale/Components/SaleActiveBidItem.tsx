@@ -1,10 +1,9 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { SaleActiveBidItem_lotStanding$data } from "__generated__/SaleActiveBidItem_lotStanding.graphql"
 import { HighestBid, Outbid, ReserveNotMet } from "app/Scenes/MyBids/Components/BiddingStatuses"
 import { LotFragmentContainer } from "app/Scenes/MyBids/Components/Lot"
 import { TimelySale } from "app/Scenes/MyBids/helpers/timely"
 import { navigate } from "app/system/navigation/navigate"
-import { Text } from "palette"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 

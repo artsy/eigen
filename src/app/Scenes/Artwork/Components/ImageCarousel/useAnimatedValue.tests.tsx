@@ -1,6 +1,6 @@
+import { Text } from "@artsy/palette-mobile"
 import { fireEvent } from "@testing-library/react-native"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { Text } from "palette"
 import { useState } from "react"
 import { Animated, View } from "react-native"
 import { useAnimatedValue } from "./useAnimatedValue"

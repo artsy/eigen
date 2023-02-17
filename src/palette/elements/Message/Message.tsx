@@ -1,7 +1,6 @@
-import { Flex, FlexProps, useColor } from "@artsy/palette-mobile"
+import { Flex, FlexProps, useColor, Text, TextProps } from "@artsy/palette-mobile"
 import { Color } from "@artsy/palette-tokens/dist/themes/v3"
 import { Image } from "app/Components/Bidding/Elements/Image"
-import { Text, TextProps } from "palette"
 import { useRef, useState } from "react"
 import { Animated, Easing, TouchableOpacity } from "react-native"
 

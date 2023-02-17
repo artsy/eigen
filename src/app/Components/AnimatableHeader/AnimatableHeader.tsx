@@ -1,5 +1,4 @@
-import { ArrowLeftIcon, Flex, useTheme } from "@artsy/palette-mobile"
-import { Text } from "palette"
+import { ArrowLeftIcon, Flex, useTheme, Text } from "@artsy/palette-mobile"
 import { useEffect } from "react"
 import { TouchableOpacity } from "react-native"
 import Animated, { FadeInLeft, FadeOutLeft } from "react-native-reanimated"

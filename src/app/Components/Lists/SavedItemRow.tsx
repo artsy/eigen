@@ -1,7 +1,7 @@
-import { Spacer, Flex, useColor } from "@artsy/palette-mobile"
+import { Spacer, Flex, useColor, Text } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
-import { Text, Touchable } from "palette"
+import { Touchable } from "palette"
 
 interface SavedItemRowProps {
   href: string

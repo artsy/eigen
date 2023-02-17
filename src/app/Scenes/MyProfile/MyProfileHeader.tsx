@@ -6,12 +6,13 @@ import {
   Flex,
   Box,
   useColor,
+  Text,
 } from "@artsy/palette-mobile"
 import { MyProfileHeader_me$key } from "__generated__/MyProfileHeader_me.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { useLocalImageStorage } from "app/utils/LocalImageStore"
 import { useRefetch } from "app/utils/relayHelpers"
-import { Avatar, Text, Touchable } from "palette"
+import { Avatar, Touchable } from "palette"
 import { Image, TouchableOpacity } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -60,11 +61,11 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
           </TouchableOpacity>
         </Box>
         <Flex flex={1} px={1}>
-          <Text fontSize={20} lineHeight={24} color={color("black100")}>
+          <Text fontSize={20} lineHeight="24px" color="black100">
             {me?.name}
           </Text>
           {!!me?.createdAt && (
-            <Text variant="xs" color={color("black60")}>{`Member since ${new Date(
+            <Text variant="xs" color="black60">{`Member since ${new Date(
               me?.createdAt
             ).getFullYear()}`}</Text>
           )}

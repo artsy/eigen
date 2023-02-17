@@ -1,7 +1,7 @@
+import { Text } from "@artsy/palette-mobile"
 import { Biography_artist$data } from "__generated__/Biography_artist.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { Stack } from "app/Components/Stack"
-import { Text } from "palette"
 import React from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"

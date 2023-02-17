@@ -1,6 +1,6 @@
-import { QuestionCircleIcon, Flex } from "@artsy/palette-mobile"
+import { QuestionCircleIcon, Flex, Text } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
-import { Text, Touchable } from "palette"
+import { Touchable } from "palette"
 
 export const Support = () => {
   return (

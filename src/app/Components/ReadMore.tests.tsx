@@ -1,9 +1,8 @@
-import { nbsp, emdash } from "@artsy/palette-mobile"
+import { nbsp, emdash, LinkText } from "@artsy/palette-mobile"
 import { fireEvent, getDefaultNormalizer, screen, within } from "@testing-library/react-native"
 import { navigate } from "app/system/navigation/navigate"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { LinkText } from "palette"
 import { Text as RNText } from "react-native"
 import { ReadMore } from "./ReadMore"
 

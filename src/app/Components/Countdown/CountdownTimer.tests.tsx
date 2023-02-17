@@ -1,6 +1,5 @@
-import { Spacer, Flex } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { Text } from "palette"
 import { LabeledTicker } from "."
 import { CountdownTimer, CountdownTimerProps } from "./CountdownTimer"
 

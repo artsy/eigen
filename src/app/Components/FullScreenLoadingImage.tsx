@@ -1,5 +1,5 @@
-import { Spacer, SpacerProps, Flex } from "@artsy/palette-mobile"
-import { CircularSpinner, Text } from "palette"
+import { Spacer, SpacerProps, Flex, Text } from "@artsy/palette-mobile"
+import { CircularSpinner } from "palette"
 import { ImageBackground, ImageSourcePropType, StyleSheet } from "react-native"
 
 interface FullScreenLoadingImageProps {

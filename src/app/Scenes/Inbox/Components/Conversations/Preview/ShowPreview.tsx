@@ -1,9 +1,9 @@
-import { Flex, ClassTheme } from "@artsy/palette-mobile"
+import { Flex, ClassTheme, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ShowPreview_show$data } from "__generated__/ShowPreview_show.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Schema, Track, track as _track } from "app/utils/track"
-import { Text, Touchable } from "palette"
+import { Touchable } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -11,9 +11,9 @@ import styled from "styled-components/native"
 
 const Container = styled.View`
   background-color: ${themeGet("colors.black100")};
-  border-radius: 15;
+  border-radius: 15px;
   overflow: hidden;
-  margin-bottom: 5;
+  margin-bottom: 5px;
 `
 
 const ImageContainer = styled(Flex)`

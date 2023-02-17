@@ -1,5 +1,5 @@
 import { ScreenOwnerType, tappedMainArtworkGrid } from "@artsy/cohesion"
-import { Spacer, HeartIcon, HeartFillIcon, Flex, Box } from "@artsy/palette-mobile"
+import { Spacer, HeartIcon, HeartFillIcon, Flex, Box, Text, TextProps } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -16,7 +16,7 @@ import {
   RandomNumberGenerator,
 } from "app/utils/placeholders"
 import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
-import { OpaqueImageView as NewOpaqueImageView, Text, TextProps, Touchable } from "palette"
+import { OpaqueImageView as NewOpaqueImageView, Touchable } from "palette"
 import React, { useRef } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql, useMutation } from "react-relay"
@@ -269,7 +269,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
             )}
             {!!artwork.artistNames && (
               <Text
-                lineHeight="18"
+                lineHeight="18px"
                 weight="regular"
                 variant="xs"
                 numberOfLines={1}
@@ -280,14 +280,14 @@ export const Artwork: React.FC<ArtworkProps> = ({
             )}
             {!!artwork.title && (
               <Text
-                lineHeight="18"
+                lineHeight="18px"
                 variant="xs"
                 weight="regular"
                 color="black60"
                 numberOfLines={1}
                 {...titleTextStyle}
               >
-                <Text lineHeight="18" variant="xs" weight="regular" italic>
+                <Text lineHeight="18px" variant="xs" weight="regular" italic>
                   {artwork.title}
                 </Text>
                 {artwork.date ? `, ${artwork.date}` : ""}
@@ -296,7 +296,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
             {!hidePartner && !!artwork.partner?.name && (
               <Text
                 variant="xs"
-                lineHeight="18"
+                lineHeight="18px"
                 color="black60"
                 numberOfLines={1}
                 {...partnerNameTextStyle}
@@ -306,7 +306,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
             )}
             {!!saleInfo && !hideSaleInfo && (
               <Text
-                lineHeight="18"
+                lineHeight="18px"
                 variant="xs"
                 weight="medium"
                 numberOfLines={1}

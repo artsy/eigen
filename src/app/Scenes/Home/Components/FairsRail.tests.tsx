@@ -1,3 +1,4 @@
+import { Text } from "@artsy/palette-mobile"
 import { FairsRail_fairsModule$data } from "__generated__/FairsRail_fairsModule.graphql"
 
 import { CardRailCard } from "app/Components/Home/CardRailCard"
@@ -9,7 +10,6 @@ import { extractText } from "app/utils/tests/extractText"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { cloneDeep } from "lodash"
-import { Text } from "palette"
 import "react-native"
 import { FairsRailFragmentContainer } from "./FairsRail"
 

@@ -1,4 +1,12 @@
-import { Spacer, bullet, NoArtworkIcon, Stopwatch, Flex, useColor } from "@artsy/palette-mobile"
+import {
+  Spacer,
+  bullet,
+  NoArtworkIcon,
+  Stopwatch,
+  Flex,
+  useColor,
+  Text,
+} from "@artsy/palette-mobile"
 import { AuctionResultListItem_auctionResult$data } from "__generated__/AuctionResultListItem_auctionResult.graphql"
 import { AuctionResultsMidEstimate } from "app/Components/AuctionResult/AuctionResultMidEstimate"
 import { auctionResultHasPrice, auctionResultText } from "app/Scenes/AuctionResult/helpers"
@@ -6,7 +14,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { QAInfoManualPanel, QAInfoRow } from "app/utils/QAInfo"
 import { capitalize } from "lodash"
 import moment from "moment"
-import { Text, Touchable } from "palette"
+import { Touchable } from "palette"
 import FastImage from "react-native-fast-image"
 import { createFragmentContainer, graphql } from "react-relay"
 

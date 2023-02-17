@@ -4,9 +4,9 @@ import styled from "styled-components/native"
 
 const BackgroundCircle = styled.View`
   background-color: ${themeGet("colors.black60")};
-  height: 46;
-  width: 46;
-  border-radius: 22;
+  height: 46px;
+  width: 46px;
+  border-radius: 22px;
 `
 
 interface NameProps {
@@ -18,7 +18,7 @@ const Name = styled.Text`
   font-family: "Unica77LL-Regular"; /* this should be taken from the theme, but in here we cant, so until we rework this component, hardcode it. */
   font-size: 12;
   align-self: center;
-  margin-top: 14;
+  margin-top: 14px;
 `
 
 interface Props {

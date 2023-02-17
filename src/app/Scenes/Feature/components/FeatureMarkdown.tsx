@@ -1,5 +1,5 @@
+import { Text } from "@artsy/palette-mobile"
 import { defaultRules, renderMarkdown } from "app/utils/renderMarkdown"
-import { Text } from "palette"
 import SimpleMarkdown from "simple-markdown"
 
 export const FeatureMarkdown: React.FC<{

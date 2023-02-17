@@ -1,9 +1,9 @@
-import { ArrowRightIcon, Flex, Box } from "@artsy/palette-mobile"
+import { ArrowRightIcon, Flex, Box, Text } from "@artsy/palette-mobile"
 import { ArtistConsignButton_artist$data } from "__generated__/ArtistConsignButton_artist.graphql"
 import { useSelectedTab } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
-import { BorderBox, Text } from "palette"
+import { BorderBox } from "palette"
 import React, { useRef } from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -104,8 +104,8 @@ export const ArtistConsignButtonFragmentContainer = createFragmentContainer(Arti
 })
 
 const Image = styled.Image`
-  width: 76;
-  height: 70;
+  width: 76px;
+  height: 70px;
 `
 
 export const tests = {

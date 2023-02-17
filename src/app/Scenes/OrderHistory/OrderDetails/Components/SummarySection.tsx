@@ -1,7 +1,6 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { SummarySection_section$data } from "__generated__/SummarySection_section.graphql"
 import { extractNodes } from "app/utils/extractNodes"
-import { Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {

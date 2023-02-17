@@ -1,4 +1,4 @@
-import { Flex, SpacingUnit } from "@artsy/palette-mobile"
+import { Flex, SpacingUnit, Text } from "@artsy/palette-mobile"
 import { SalesRail_salesModule$data } from "__generated__/SalesRail_salesModule.graphql"
 import {
   CardRailCard,
@@ -12,7 +12,6 @@ import { useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact } from "lodash"
-import { Text } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -98,12 +97,12 @@ const SalesRail: React.FC<Props & RailScrollProps> = ({
               <View>
                 <ThreeUpImageLayout imageURLs={availableArtworkImageURLs} />
                 <MetadataContainer>
-                  <Text numberOfLines={2} lineHeight="20" variant="sm">
+                  <Text numberOfLines={2} lineHeight="20px" variant="sm">
                     {result?.name}
                   </Text>
                   <Text
                     numberOfLines={1}
-                    lineHeight="20"
+                    lineHeight="20px"
                     color="black60"
                     variant="sm"
                     testID="sale-subtitle"

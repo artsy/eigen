@@ -1,3 +1,4 @@
+import { Text } from "@artsy/palette-mobile"
 import { ArtistInsightsAuctionResultsTestsQuery } from "__generated__/ArtistInsightsAuctionResultsTestsQuery.graphql"
 import {
   ArtworkFiltersState,
@@ -10,7 +11,6 @@ import {
   mockEdges,
   resolveMostRecentRelayOperation,
 } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { Text } from "palette"
 import { SectionList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"

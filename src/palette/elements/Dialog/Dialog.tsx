@@ -1,6 +1,5 @@
-import { Flex, useTheme } from "@artsy/palette-mobile"
+import { Flex, useTheme, Text } from "@artsy/palette-mobile"
 import { Button } from "palette"
-import { Text } from "palette/elements/Text"
 import { useEffect, useRef, useState } from "react"
 import { Animated, Modal, ScrollView, StyleSheet, TouchableWithoutFeedback } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"

@@ -1,6 +1,6 @@
-import { Spacer, FlexProps, Flex, SpacingUnitDSValueNumber } from "@artsy/palette-mobile"
+import { Spacer, FlexProps, Flex, SpacingUnitDSValueNumber, Text } from "@artsy/palette-mobile"
 import { BackButton, BackButtonWithBackground } from "palette"
-import { Text, Touchable } from "palette/elements"
+import { Touchable } from "palette/elements"
 import { createContext, useContext, useEffect, useState } from "react"
 import {
   getChildByType,

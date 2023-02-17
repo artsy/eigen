@@ -1,4 +1,4 @@
-import { SpacingUnit, Flex } from "@artsy/palette-mobile"
+import { SpacingUnit, Flex, Text } from "@artsy/palette-mobile"
 import { CollectionsRail_collectionsModule$data } from "__generated__/CollectionsRail_collectionsModule.graphql"
 import {
   CardRailCard,
@@ -11,7 +11,6 @@ import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact } from "lodash"
-import { Text } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"

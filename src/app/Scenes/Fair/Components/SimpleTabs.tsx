@@ -1,5 +1,4 @@
-import { Flex, Box, useColor } from "@artsy/palette-mobile"
-import { Text } from "palette"
+import { Flex, Box, useColor, Text } from "@artsy/palette-mobile"
 import React, { Dispatch, SetStateAction } from "react"
 import { TouchableOpacity, View } from "react-native"
 

@@ -1,6 +1,6 @@
+import { Text, LinkText } from "@artsy/palette-mobile"
 import { PartnerLink_artwork$key } from "__generated__/PartnerLink_artwork.graphql"
 import { navigateToPartner } from "app/system/navigation/navigate"
-import { LinkText, Text } from "palette"
 import { graphql, useFragment } from "react-relay"
 
 interface PartnerLinkProps {

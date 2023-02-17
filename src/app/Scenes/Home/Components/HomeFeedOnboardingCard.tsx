@@ -1,5 +1,5 @@
-import { Flex } from "@artsy/palette-mobile"
-import { Button, Text, Touchable } from "palette"
+import { Flex, Text } from "@artsy/palette-mobile"
+import { Button, Touchable } from "palette"
 import React from "react"
 import { Image, ImageSourcePropType } from "react-native"
 
