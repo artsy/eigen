@@ -1,4 +1,4 @@
-import { Spacer, Box, Text } from "@artsy/palette-mobile"
+import { Spacer, Box, Text, useSpace } from "@artsy/palette-mobile"
 import { Artwork_artworkBelowTheFold$data } from "__generated__/Artwork_artworkBelowTheFold.graphql"
 import { OtherWorks_artwork$data } from "__generated__/OtherWorks_artwork.graphql"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
@@ -8,6 +8,7 @@ import { filter } from "lodash"
 import { Join, Separator } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useScreenDimensions } from "shared/hooks"
 import { ContextGridCTA } from "./ContextGridCTA"
 
 type OtherWorksGrid = NonNullable<NonNullable<OtherWorks_artwork$data["contextGrids"]>[number]>
@@ -28,6 +29,8 @@ export const OtherWorksFragmentContainer = createFragmentContainer<{
   artwork: OtherWorks_artwork$data
 }>(
   (props) => {
+    const { width } = useScreenDimensions()
+    const space = useSpace()
     const grids = props.artwork.contextGrids
     const gridsToShow = populatedGrids(grids) as ReadonlyArray<OtherWorksGrid>
 
@@ -50,6 +53,7 @@ export const OtherWorksFragmentContainer = createFragmentContainer<{
                 trackingFlow={Schema.Flow.RecommendedArtworks}
                 contextModule={grid.__typename}
                 artworks={extractNodes(grid.artworks)}
+                width={width - space(2)}
               />
               <Box mt={2}>
                 <ContextGridCTA
