@@ -229,10 +229,10 @@
   dependencies:
     core-js "3"
 
-"@artsy/palette-mobile@10.0.2":
-  version "10.0.2"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-10.0.2.tgz#6ed4b5195ddbd6d824b9b93fe25b3625aad8538c"
-  integrity sha512-Qy1LC8kLWWaOVqh65YER5nmzvCCCJfMoC+dqPYImn8dIY3OBJU3olaJSM1H9tbGtjYKMoUQ/DJUgogcFu+9dJA==
+"@artsy/palette-mobile@10.0.3":
+  version "10.0.3"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-10.0.3.tgz#5490b1f8c85831ef15c9c6e1c58b1736a5e7ee44"
+  integrity sha512-7w+MW5KRp7ndmPOx543UfFMHYwsqlLy+Wt7Y99/CvyLyUkquN0IiGIsHDIERl7BqkwuVj4/pH0Q5lninn2ocUA==
   dependencies:
     "@artsy/palette-tokens" "^4.0.1"
     "@styled-system/core" "^5.1.2"
