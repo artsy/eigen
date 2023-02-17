@@ -447,8 +447,8 @@ const useStyleForVariantAndState = (
 
 const Container = styled(Box)<ButtonProps>`
   position: relative;
-  border-width: 1;
-  border-radius: 50;
+  border-width: 1px;
+  border-radius: 50px;
   width: ${(p) => (p.block ? "100%" : "auto")};
   overflow: hidden;
 `

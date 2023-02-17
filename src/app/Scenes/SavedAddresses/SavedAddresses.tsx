@@ -28,7 +28,7 @@ const Card = styled(Flex)`
   border: 1px solid
     ${(props: CardProps) =>
       props.isDefault ? themeGet("colors.black100") : themeGet("colors.black30")};
-  border-radius: 4;
+  border-radius: 4px;
 `
 
 const NUM_ADDRESSES_TO_FETCH = 10

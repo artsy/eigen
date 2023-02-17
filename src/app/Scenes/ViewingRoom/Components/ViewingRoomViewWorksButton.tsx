@@ -50,7 +50,7 @@ export const ViewingRoomViewWorksButton: React.FC<ViewingRoomViewWorksButtonProp
 }
 
 const ViewWorksButton = styled(Flex)`
-  border-radius: 20;
+  border-radius: 20px;
   background-color: ${themeGet("colors.black100")};
   align-items: center;
   justify-content: center;

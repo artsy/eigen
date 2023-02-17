@@ -11,9 +11,9 @@ import styled from "styled-components/native"
 
 const Container = styled.View`
   background-color: ${themeGet("colors.black100")};
-  border-radius: 15;
+  border-radius: 15px;
   overflow: hidden;
-  margin-bottom: 5;
+  margin-bottom: 5px;
 `
 
 const ImageContainer = styled(Flex)`

@@ -773,7 +773,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
 const SelectedCluster = styled(Flex)`
   background-color: ${themeGet("colors.blue100")};
-  border-radius: 60;
+  border-radius: 60px;
   flex-direction: row;
   justify-content: center;
   align-items: center;

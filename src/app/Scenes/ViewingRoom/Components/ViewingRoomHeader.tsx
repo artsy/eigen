@@ -86,7 +86,7 @@ const Countdown: React.FC<{ startAt: string; endAt: string; status: string }> = 
 }
 
 export const PartnerIconImage = styled.Image`
-  border-radius: 100;
+  border-radius: 100px;
 `
 
 export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = (props) => {

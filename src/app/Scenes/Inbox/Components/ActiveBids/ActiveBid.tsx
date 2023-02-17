@@ -26,7 +26,7 @@ const Content = styled.View`
 const ImageView = styled(OpaqueImageView)`
   width: 80px;
   height: 80px;
-  border-radius: 4;
+  border-radius: 4px;
 `
 
 const MetadataContainer = styled.View`

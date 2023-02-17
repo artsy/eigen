@@ -213,11 +213,11 @@ const Container = styled(Flex)<PillProps>`
 `
 
 export const OpaqueImageViewContainer = styled(OpaqueImageView)`
-  width: 30;
-  height: 30;
-  border-radius: 15;
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
   overflow: hidden;
-  margin-right: 10;
+  margin-right: 10px;
 `
 
 const AnimatedContainer = animated(Container)

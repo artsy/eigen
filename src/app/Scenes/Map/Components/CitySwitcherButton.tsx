@@ -16,8 +16,8 @@ shadow-opacity: 0.3;
 
 const Background = styled(Flex)`
   background: white;
-  height: 40;
-  border-radius: 20;
+  height: 40px;
+  border-radius: 20px;
   ${shadowProps};
 `
 

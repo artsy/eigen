@@ -69,11 +69,11 @@ const ResponseRate = styled(SmallHeadline)`
 `
 // TODO: Uncomment when use is uncommented in code below
 // const ResponseIndicator = styled.View`
-//   width: 8;
-//   height: 8;
-//   border-radius: 4;
-//   margin-top: 5;
-//   margin-right: 5;
+//   width: 8px;
+//   height: 8px;
+//   border-radius: 4px;
+//   margin-top: 5px;
+//   margin-right: 5px;
 //   background-color: ${colors["yellow-bold"]};
 // `
 
@@ -81,8 +81,8 @@ const ResponseRateLine = styled.View`
   flex: 1;
   flex-direction: row;
   align-items: center;
-  min-height: 12;
-  margin-top: 5;
+  min-height: 12px;
+  margin-top: 5px;
 `
 
 export interface BottomAlignedProps extends React.Props<JSX.Element> {

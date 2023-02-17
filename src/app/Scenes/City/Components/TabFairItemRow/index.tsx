@@ -61,7 +61,7 @@ export class TabFairItemRow extends React.Component<Props> {
 }
 
 const RoundedImageWrapper = styled(Box)`
-  width: 58;
-  border-radius: 30;
+  width: 58px;
+  border-radius: 30px;
   overflow: hidden;
 `
