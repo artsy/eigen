@@ -1,12 +1,24 @@
 import { Spacer, Flex, Screen, Text, ArtsyLogoBlackIcon } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { ArtQuizWelcomeQuery } from "__generated__/ArtQuizWelcomeQuery.graphql"
+import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
 import { ArtQuizNavigationStack } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
 import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
+import { extractNodes } from "app/utils/extractNodes"
 import { Button } from "palette"
+import { Suspense } from "react"
+import { graphql, useLazyLoadQuery } from "react-relay"
 
-export const ArtQuizWelcome = () => {
+export const ArtQuizWelcomeScreen = () => {
   const { onDone } = useOnboardingContext()
+  const queryResult = useLazyLoadQuery<ArtQuizWelcomeQuery>(artQuizWelcomeQuery, {})
   const { navigate } = useNavigation<NavigationProp<ArtQuizNavigationStack>>()
+
+  const artworks = extractNodes(queryResult.artworksConnection)
+
+  if (!artworks) {
+    return null
+  }
 
   return (
     <Screen>
@@ -40,3 +52,23 @@ export const ArtQuizWelcome = () => {
     </Screen>
   )
 }
+
+export const ArtQuizWelcome = () => {
+  return (
+    <Suspense fallback={<ArtQuizLoader />}>
+      <ArtQuizWelcomeScreen />
+    </Suspense>
+  )
+}
+
+const artQuizWelcomeQuery = graphql`
+  query ArtQuizWelcomeQuery {
+    artworksConnection(first: 1) {
+      edges {
+        node {
+          isSaved
+        }
+      }
+    }
+  }
+`
