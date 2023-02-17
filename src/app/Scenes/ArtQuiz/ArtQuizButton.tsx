@@ -1,4 +1,4 @@
-import { CloseIcon, HeartIcon, Touchable } from "palette"
+import { CloseIcon, HeartIcon, Touchable } from "@artsy/palette-mobile"
 
 interface ArtQuizButtonProps {
   variant: "Like" | "Dislike"

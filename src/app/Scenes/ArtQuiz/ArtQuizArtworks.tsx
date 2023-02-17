@@ -1,4 +1,4 @@
-import { Spacer, Touchable, Flex, Screen, Text, BackButton } from "@artsy/palette-mobile"
+import { Touchable, Flex, Screen, Text, BackButton } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { ArtQuizArtworksDislikeMutation } from "__generated__/ArtQuizArtworksDislikeMutation.graphql"
 import { ArtQuizArtworksQuery } from "__generated__/ArtQuizArtworksQuery.graphql"
@@ -192,12 +192,9 @@ export const ArtQuizResultsScreen = () => {
             })}
           </PagerView>
         </Flex>
-        <Flex justifyContent="flex-end">
-          <Flex flexDirection="row" justifyContent="center" px={4}>
-            <ArtQuizButton variant="Dislike" onPress={() => handleNext("Dislike")} />
-            <Spacer y={2} />
-            <ArtQuizButton variant="Like" onPress={() => handleNext("Like")} />
-          </Flex>
+        <Flex flexDirection="row" justifyContent="space-around" mb={6} mx={4}>
+          <ArtQuizButton variant="Dislike" onPress={() => handleNext("Dislike")} />
+          <ArtQuizButton variant="Like" onPress={() => handleNext("Like")} />
         </Flex>
       </Screen.Body>
     </Screen>
