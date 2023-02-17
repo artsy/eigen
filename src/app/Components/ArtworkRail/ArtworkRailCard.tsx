@@ -9,6 +9,7 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { Schema } from "app/utils/track"
+import { sizeToFit } from "app/utils/useSizeToFit"
 import { compact } from "lodash"
 import { Text, Touchable } from "palette"
 import { useMemo } from "react"
@@ -26,6 +27,8 @@ export const ARTWORK_RAIL_CARD_IMAGE_HEIGHT = {
   small: 230,
   large: 320,
 }
+
+const ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH = 295
 
 export type ArtworkCardSize = "small" | "large"
 
@@ -82,11 +85,16 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   }
 
   const containerWidth = useMemo(() => {
-    const imageDimensions = getImageDimensions({
-      width: image?.resized?.width ?? 0,
-      height: image?.resized?.height ?? 0,
-      maxHeight: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
-    })
+    const imageDimensions = sizeToFit(
+      {
+        width: image?.resized?.width ?? 0,
+        height: image?.resized?.height ?? 0,
+      },
+      {
+        width: ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
+        height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
+      }
+    )
 
     switch (size) {
       case "small":
@@ -285,11 +293,16 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
     )
   }
 
-  const imageDimensions = getImageDimensions({
-    width: width ?? 0,
-    height: height ?? 0,
-    maxHeight: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
-  })
+  const imageDimensions = sizeToFit(
+    {
+      width: width ?? 0,
+      height: height ?? 0,
+    },
+    {
+      width: ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
+      height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
+    }
+  )
 
   return (
     <Flex>
@@ -319,23 +332,6 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
       )}
     </Flex>
   )
-}
-
-const getImageDimensions = ({
-  height,
-  width,
-  maxHeight,
-}: {
-  height: number
-  width: number
-  maxHeight: number
-}) => {
-  const aspectRatio = width / height
-  if (height > maxHeight) {
-    const maxWidth = maxHeight * aspectRatio
-    return { width: maxWidth, height: maxHeight }
-  }
-  return { width, height }
 }
 
 const SaveArtworkMutation = graphql`
