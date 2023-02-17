@@ -75,6 +75,6 @@ const Logo = styled(Image)`
   width: 100px;
   height: 100px;
   background-color: transparent;
-  margin-bottom: ${themeGet("space.1")}px;
+  margin-bottom: ${themeGet("space.1")};
   tint-color: white;
 `
