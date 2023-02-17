@@ -210,6 +210,11 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "AREnableMoneyFormattingInMyCollectionForm",
   },
+  AREnableNewSWALandingPage: {
+    description: "Enable New SWA Landing Page",
+    showInDevMenu: true,
+    readyForRelease: false,
+  },
 })
 
 export interface DevToggleDescriptor {
