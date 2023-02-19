@@ -152,6 +152,7 @@ export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererPr
 
   const isReferredFromEmail = utm_medium === "email"
 
+  // Use the version specified in the URL or no version if the screen is opened from the email.
   const version = isReferredFromEmail
     ? versionProp?.toUpperCase() || undefined
     : worksForYouRecommendationsModel.payload || DEFAULT_RECS_MODEL_VERSION
