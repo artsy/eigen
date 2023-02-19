@@ -65,7 +65,7 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
             title={title}
             onPress={() => {
               trackEvent(tracks.tappedHeader())
-              navigate(`/new-for-you`)
+              navigate("/new-for-you")
             }}
           />
         </Flex>
@@ -74,6 +74,10 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
           onPress={handleOnArtworkPress}
           showSaveIcon={enableSaveIcon}
           trackingContextScreenOwnerType={Schema.OwnerEntityTypes.Home}
+          onMorePress={() => {
+            trackEvent(tracks.tappedHeader())
+            navigate("/new-for-you")
+          }}
         />
       </View>
     </Flex>

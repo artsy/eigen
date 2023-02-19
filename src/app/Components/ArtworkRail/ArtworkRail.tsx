@@ -1,4 +1,4 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Button, Flex, Spacer } from "@artsy/palette-mobile"
 import { LargeArtworkRail_artworks$data } from "__generated__/LargeArtworkRail_artworks.graphql"
 import { SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$data } from "__generated__/SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection.graphql"
 import { SmallArtworkRail_artworks$data } from "__generated__/SmallArtworkRail_artworks.graphql"
@@ -20,6 +20,7 @@ interface CommonArtworkRailProps {
   size: ArtworkCardSize
   showSaveIcon?: boolean
   trackingContextScreenOwnerType?: Schema.OwnerEntityTypes
+  onMorePress?: () => void
 }
 
 export interface ArtworkRailProps extends CommonArtworkRailProps {
@@ -42,6 +43,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
   artworks,
   showSaveIcon = false,
   trackingContextScreenOwnerType,
+  onMorePress,
 }) => {
   return (
     <PrefetchFlatList
@@ -51,7 +53,9 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
       listRef={listRef}
       horizontal
       ListHeaderComponent={ListHeaderComponent}
-      ListFooterComponent={ListFooterComponent}
+      ListFooterComponent={
+        onMorePress ? () => <ShowMoreCard onPress={onMorePress} /> : ListFooterComponent
+      }
       ItemSeparatorComponent={() => <Spacer x="15px" />}
       showsHorizontalScrollIndicator={false}
       // We need to set the maximum number of artists to not cause layout shifts
@@ -133,3 +137,17 @@ export const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> =
 }
 
 const SpacerComponent = () => <Spacer x={2} />
+
+interface ShowMoreCardProps {
+  onPress: () => void
+}
+
+const ShowMoreCard: React.FC<ShowMoreCardProps> = ({ onPress }) => {
+  return (
+    <Flex height="200" mx={2}>
+      <Button variant="outline" onPress={onPress} verticalAlign="center" my="auto">
+        Browse More Artworks
+      </Button>
+    </Flex>
+  )
+}
