@@ -89,8 +89,8 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({ trac
     <Flex>
       <FlatList
         horizontal
-        ListHeaderComponent={() => <Spacer ml="2" />}
-        ListFooterComponent={() => <Spacer ml="2" />}
+        ListHeaderComponent={() => <Spacer x={2} />}
+        ListFooterComponent={() => <Spacer x={2} />}
         data={regular}
         keyExtractor={(item) => `${item.internalID}`}
         renderItem={({ item }) => {
@@ -120,7 +120,7 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({ trac
             </Touchable>
           )
         }}
-        ItemSeparatorComponent={() => <Spacer ml="2" />}
+        ItemSeparatorComponent={() => <Spacer x={2} />}
       />
     </Flex>
   )

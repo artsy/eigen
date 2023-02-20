@@ -107,7 +107,7 @@ export const MoneyInput = forwardRef<
                     {currencyOptions.find((c) => c.value === selectedValue)?.label ??
                       currencyOptions[0].label}
                   </Text>
-                  <Spacer mr={0.5} />
+                  <Spacer x={0.5} />
                   <TriangleDown width="8" />
                 </Flex>
               </Flex>

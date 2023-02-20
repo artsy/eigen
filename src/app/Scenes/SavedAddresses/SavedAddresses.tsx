@@ -113,7 +113,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me$data; relay: RelayRefetch
                 <Text fontSize={16} lineHeight={24} color="black60">
                   {item.city}, {item.postalCode}
                 </Text>
-                <Spacer y={10} />
+                <Spacer y={1} />
                 <Text variant="sm" color="black60">
                   {item?.phoneNumber}
                 </Text>
@@ -145,7 +145,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me$data; relay: RelayRefetch
               </Card>
             </Flex>
 
-            <Spacer y={40} />
+            <Spacer y={4} />
           </>
         )}
         ListFooterComponent={
@@ -188,7 +188,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me$data; relay: RelayRefetch
 export const SavedAddressesPlaceholder: React.FC = () => {
   return (
     <PageWithSimpleHeader title="Saved Addresses">
-      <Flex px={2} py={15}>
+      <Flex px={2} py="15px">
         {times(2).map((index: number) => (
           <Flex key={index} py={1}>
             <PlaceholderText width={100 + Math.random() * 100} />

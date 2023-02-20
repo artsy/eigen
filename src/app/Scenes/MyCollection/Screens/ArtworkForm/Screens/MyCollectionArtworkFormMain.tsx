@@ -156,7 +156,7 @@ export const MyCollectionArtworkFormMain: React.FC<
           )}
 
           <Flex p={2}>
-            <Join separator={<Spacer y="1" />}>
+            <Join separator={<Spacer y={1} />}>
               {formik.values.artistSearchResult ? (
                 <ArtistSearchResult result={formik.values.artistSearchResult} />
               ) : (
@@ -251,7 +251,7 @@ export const MyCollectionArtworkFormMain: React.FC<
             </Join>
           </Flex>
 
-          <Spacer mt={1} />
+          <Spacer y={1} />
 
           <PhotosButton
             testID="PhotosButton"
@@ -268,7 +268,7 @@ export const MyCollectionArtworkFormMain: React.FC<
             }}
           />
 
-          <Spacer mt={2} mb={1} />
+          <Spacer y={2} />
 
           <ScreenMargin>
             {modalType === "edit" && (
@@ -343,7 +343,7 @@ const PhotosButton: React.FC<{ onPress: () => void; testID?: string }> = ({ onPr
     <>
       <Separator />
       <TouchableOpacity onPress={onPress} testID={testID}>
-        <Spacer mt={2} />
+        <Spacer y={2} />
         <ScreenMargin>
           <ArrowDetails>
             <Flex flexDirection="row">
@@ -364,7 +364,7 @@ const PhotosButton: React.FC<{ onPress: () => void; testID?: string }> = ({ onPr
             )}
           </ArrowDetails>
         </ScreenMargin>
-        <Spacer mb={2} />
+        <Spacer y={2} />
       </TouchableOpacity>
       <Separator />
     </>

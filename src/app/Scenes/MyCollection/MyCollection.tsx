@@ -338,7 +338,7 @@ export const MyCollectionPlaceholder: React.FC = () => {
       {/* collector's info */}
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
         <Flex flex={1}>
-          <Spacer mb={20} />
+          <Spacer y={2} />
           {/* icon, name, time joined */}
           <Flex flexDirection="row">
             <PlaceholderBox width={50} height={50} borderRadius={50} />

@@ -75,7 +75,7 @@ export const Sales: React.FC = () => {
         testID="Sales-Screen-ScrollView"
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
       >
-        <Stack py={2} spacing={3}>
+        <Stack py={2} spacing={4}>
           {!!data.me && (
             <LotsByFollowedArtistsRailContainer title="Lots by Artists You Follow" me={data.me} />
           )}

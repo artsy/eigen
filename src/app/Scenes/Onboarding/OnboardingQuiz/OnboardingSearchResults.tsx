@@ -47,7 +47,7 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entit
       contentContainerStyle={{
         paddingBottom: 80,
       }}
-      ItemSeparatorComponent={() => <Spacer mt={2} />}
+      ItemSeparatorComponent={() => <Spacer y={2} />}
       keyExtractor={(item, index) => {
         switch (item.__typename) {
           case "Artist":
@@ -93,7 +93,7 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entit
       }}
       ListEmptyComponent={
         <>
-          <Spacer mt={2} />
+          <Spacer y={2} />
           <Message
             variant="default"
             title={`Sorry, we couldn’t find anything for ${quoteLeft}${term}.${quoteRight}`}
@@ -169,7 +169,7 @@ const OnboardingSearchResultsFragment = graphql`
 const Placeholder = () => (
   <ProvidePlaceholderContext>
     <Flex testID="OnboardingSearchResultsPlaceholder">
-      <Join separator={<Spacer y={20} />}>
+      <Join separator={<Spacer y={2} />}>
         {times(10).map((index: number) => (
           <Flex key={index}>
             <ArtistListItemPlaceholder />

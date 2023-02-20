@@ -85,7 +85,7 @@ export const AlgoliaSearchResults: React.FC<AlgoliaSearchResultsProps> = ({
 
     return (
       <Box px={2} py={1}>
-        <Spacer mt={4} />
+        <Spacer y={4} />
         <Text variant="sm-display" textAlign="center">
           Sorry, we couldn’t find {article} {selectedPill.displayName} for “{searchState.query}.”
         </Text>
@@ -103,7 +103,7 @@ export const AlgoliaSearchResults: React.FC<AlgoliaSearchResultsProps> = ({
       contentContainerStyle={{ paddingVertical: space("1"), paddingHorizontal: space("2") }}
       data={hits}
       keyExtractor={(item) => item.objectID}
-      ItemSeparatorComponent={() => <Spacer mb={2} />}
+      ItemSeparatorComponent={() => <Spacer y={2} />}
       renderItem={({ item }) => (
         <SearchResult
           result={item}

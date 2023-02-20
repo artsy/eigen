@@ -75,7 +75,7 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
       key: "filter",
       element: (
         <Flex backgroundColor="white">
-          <Spacer mt={1} mb={0.5} />
+          <Spacer y={1} />
           <HeaderArtworksFilter
             animationValue={filterComponentAnimationValue}
             onPress={toggleFilterArtworksModal}
@@ -126,7 +126,7 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
           viewabilityConfig={viewConfigRef.current}
           ListHeaderComponent={<Spacer y={6} />}
           ListFooterComponent={<Spacer y={2} />}
-          ItemSeparatorComponent={() => <Spacer y={15} />}
+          ItemSeparatorComponent={() => <Spacer y="15px" />}
           contentContainerStyle={{
             paddingTop: useScreenDimensions().safeAreaInsets.top,
             paddingBottom: 40,
@@ -200,12 +200,12 @@ export const ShowPlaceholder: React.FC = () => (
     {/* Title */}
     <PlaceholderText height={25} width={200 + Math.random() * 100} />
     <PlaceholderText height={25} width={100 + Math.random() * 100} />
-    <Spacer mb={15} />
+    <Spacer y="15px" />
     <PlaceholderText width={220} />
-    <Spacer mb={20} />
+    <Spacer y={2} />
     {/* Owner */}
     <PlaceholderText width={70} />
-    <Spacer mb={15} />
+    <Spacer y="15px" />
     {/* Images */}
     <Flex flexDirection="row" py={2}>
       {times(3).map((index: number) => (
@@ -214,13 +214,13 @@ export const ShowPlaceholder: React.FC = () => (
         </Flex>
       ))}
     </Flex>
-    <Spacer mb={15} />
+    <Spacer y="15px" />
     <PlaceholderText width="100%" />
     <PlaceholderText width="100%" />
     <PlaceholderText width="100%" />
     <PlaceholderText width="100%" />
     <PlaceholderText width="100%" />
-    <Spacer mb={15} />
+    <Spacer y="15px" />
 
     {/* masonry grid */}
     <PlaceholderGrid />

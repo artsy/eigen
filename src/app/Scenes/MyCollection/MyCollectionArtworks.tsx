@@ -191,7 +191,7 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
         </Flex>
       )}
 
-      {filteredArtworks.length > 0 && <Spacer mb={2} />}
+      {filteredArtworks.length > 0 && <Spacer y={2} />}
     </Flex>
   )
 }

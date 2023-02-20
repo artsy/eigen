@@ -45,7 +45,7 @@ export const OtherWorksFragmentContainer = createFragmentContainer<{
               <Text variant="md" textAlign="left">
                 {grid.title}
               </Text>
-              <Spacer mb={2} />
+              <Spacer y={2} />
               <GenericGrid
                 trackingFlow={Schema.Flow.RecommendedArtworks}
                 contextModule={grid.__typename}

@@ -64,7 +64,7 @@ export const OnboardingMarketingCollectionScreen: React.FC<OnboardingMarketingCo
     fallback={
       <FullScreenLoadingImage
         imgSource={images[props.slug]}
-        spacerHeight={80}
+        spacerHeight="80px"
         loadingText={"Great choice" + "\n" + "We’re finding a collection for you"}
       />
     }

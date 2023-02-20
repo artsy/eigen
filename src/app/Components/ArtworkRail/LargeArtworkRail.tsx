@@ -35,14 +35,14 @@ const largeArtworksFragment = graphql`
 `
 
 export const LargeArtworkRailPlaceholder: React.FC = () => (
-  <Join separator={<Spacer x={15} />}>
+  <Join separator={<Spacer x="15px" />}>
     {times(3 + useMemoizedRandom() * 10).map((index) => (
       <Flex key={index}>
         <PlaceholderBox
           height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT.large}
           width={LARGE_RAIL_IMAGE_WIDTH}
         />
-        <Spacer mb={2} />
+        <Spacer y={2} />
         <PlaceholderText width={295} />
         <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
       </Flex>

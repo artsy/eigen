@@ -101,7 +101,7 @@ export const LineGraph: React.FC<Props> = ({
             onBandSelected={onBandSelected}
           />
         </Flex>
-        <Spacer mb={0.5} />
+        <Spacer y={0.5} />
         {!!categories && !!onCategorySelected && !!selectedCategory && (
           <LineGraphCategoryPicker
             categories={categories}

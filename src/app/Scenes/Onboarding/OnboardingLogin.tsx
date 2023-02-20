@@ -84,9 +84,9 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
           }}
           keyboardShouldPersistTaps="always"
         >
-          <Spacer mt={60} />
+          <Spacer y={6} />
           <Text variant="lg-display">Log In</Text>
-          <Spacer mt={50} />
+          <Spacer y={6} />
           <Box>
             <Input
               ref={emailInputRef}
@@ -117,7 +117,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
               textContentType="username"
               error={errors.email}
             />
-            <Spacer mt={2} />
+            <Spacer y={2} />
             <Input
               autoCapitalize="none"
               autoComplete="password"
@@ -150,7 +150,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
               error={errors.password}
             />
           </Box>
-          <Spacer mt={4} />
+          <Spacer y={4} />
           <Touchable
             onPress={() => {
               navigation.navigate("ForgotPassword")

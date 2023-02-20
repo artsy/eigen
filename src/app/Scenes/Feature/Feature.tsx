@@ -68,7 +68,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
       key: "description+callout",
       content: (
         <Flex alignItems="center">
-          <Stack spacing={3} pt="4" px="2" maxWidth={600}>
+          <Stack spacing={4} pt="4" px="2" maxWidth={600}>
             {!!feature.description && (
               <FeatureMarkdown content={feature.description} textProps={{ variant: "md" }} />
             )}
@@ -140,11 +140,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
           }
 
           renderedSet.push(
-            addSeparatorBetweenAllSections(
-              renderedRows,
-              set.id + ":featuredLink",
-              <Spacer mb={4} />
-            )
+            addSeparatorBetweenAllSections(renderedRows, set.id + ":featuredLink", <Spacer y={4} />)
           )
 
           break

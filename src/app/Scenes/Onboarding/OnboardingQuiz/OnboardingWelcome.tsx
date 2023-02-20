@@ -132,7 +132,7 @@ const OnboardingWelcome = () => {
             Ready to find{"\n"}
             art you love?
           </Text>
-          <Spacer mt={4} />
+          <Spacer y={4} />
           <AnimatedFlex entering={enteringAnim}>
             <Text variant="lg-display" color="white100">
               Start building your profile and tailor Artsy to your tastes.
@@ -154,7 +154,7 @@ const OnboardingWelcome = () => {
             >
               Get Started
             </Button>
-            <Spacer mt={1} />
+            <Spacer y={1} />
             <Button
               accessible
               accessibilityLabel="Skip Onboarding Quiz"

@@ -122,17 +122,17 @@ export const Container = styled(Flex)`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  height: ${themeGet("space.6")}px;
+  height: ${themeGet("space.6")};
 `
 
 export const LeftButtonContainer = styled(TouchableOpacity)`
-  padding-left: ${themeGet("space.2")}px;
-  padding-right: ${themeGet("space.2")}px;
+  padding-left: ${themeGet("space.2")};
+  padding-right: ${themeGet("space.2")};
   justify-content: center;
 `
 
 export const RightButtonContainer = styled(TouchableOpacity)`
-  padding-left: ${themeGet("space.2")}px;
-  padding-right: ${themeGet("space.2")}px;
+  padding-left: ${themeGet("space.2")};
+  padding-right: ${themeGet("space.2")};
   justify-content: center;
 `

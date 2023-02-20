@@ -39,9 +39,9 @@ export const ShowsRail: React.FC<ShowsRailProps> = ({ title, showsConnection, mb
           horizontal
           initialNumToRender={2}
           showsHorizontalScrollIndicator={false}
-          ListHeaderComponent={() => <Spacer ml="2" />}
-          ListFooterComponent={() => <Spacer ml="2" />}
-          ItemSeparatorComponent={() => <Spacer ml="2" />}
+          ListHeaderComponent={() => <Spacer x={2} />}
+          ListFooterComponent={() => <Spacer x={2} />}
+          ItemSeparatorComponent={() => <Spacer x={2} />}
           data={shows.slice(0, NUMBER_OF_SHOWS)}
           keyExtractor={(item) => `${item.internalID}`}
           renderItem={({ item, index }) => (

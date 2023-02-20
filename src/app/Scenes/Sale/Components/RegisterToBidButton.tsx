@@ -48,7 +48,7 @@ const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = ({
         >
           Register to bid
         </Button>
-        <Spacer mt={15} />
+        <Spacer y="15px" />
 
         {sale.requireIdentityVerification ? (
           <Box>

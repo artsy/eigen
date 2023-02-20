@@ -51,7 +51,7 @@ export const LargeCard: React.FC<LargeCardProps> = ({ image, title, subtitle, ta
             {subtitle}
           </Text>
         )}
-        <Spacer mt={2} />
+        <Spacer y={2} />
       </Flex>
       {!!tag && (
         <CardTag {...tag} style={{ position: "absolute", top: space("2"), left: space("2") }} />

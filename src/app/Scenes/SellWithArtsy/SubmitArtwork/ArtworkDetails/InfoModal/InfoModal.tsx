@@ -17,7 +17,7 @@ export const InfoModal: React.FC<Props> = ({ title, visible, onDismiss, children
       </FancyModalHeader>
 
       <Flex m={2}>{children}</Flex>
-      <Spacer mt={2} />
+      <Spacer y={2} />
       <Flex justifyContent="center" alignSelf="center" width="90%">
         <Button block haptic onPress={onDismiss}>
           Close

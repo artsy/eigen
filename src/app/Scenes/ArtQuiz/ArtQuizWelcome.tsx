@@ -14,11 +14,11 @@ export const ArtQuizWelcome = () => {
       <Screen.Body>
         <Flex flex={1} justifyContent="center">
           <ArtsyLogoIcon scale={0.75} />
-          <Spacer y="2" />
+          <Spacer y={2} />
           <Text variant="xl">Art Taste Quiz</Text>
-          <Spacer y="2" />
+          <Spacer y={2} />
           <Text variant="md">See more of what you love.</Text>
-          <Spacer y="1" />
+          <Spacer y={1} />
           <Text variant="md">
             Rate artworks to discover your taste profile and get recommendations tailored to you.
           </Text>
@@ -27,7 +27,7 @@ export const ArtQuizWelcome = () => {
           <Button block onPress={() => navigate("ArtQuizArtworks")}>
             Start the Quiz
           </Button>
-          <Spacer y="0.5" />
+          <Spacer y={1} />
           <Button
             block
             variant="text"

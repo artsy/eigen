@@ -80,7 +80,7 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
           <>
             <Flex px={2}>
               <ArtistSeriesHeaderFragmentContainer artistSeries={artistSeries} />
-              <Spacer mt={2} mb={1} />
+              <Spacer y={2} />
               <ArtistSeriesMetaFragmentContainer artistSeries={artistSeries} />
             </Flex>
             <Separator mt={2} />
@@ -161,14 +161,14 @@ const ArtistSeriesPlaceholder: React.FC<{}> = ({}) => {
       <Box px="2" pt="1">
         {/* Series header image */}
         <PlaceholderBox height={180} width={180} alignSelf="center" />
-        <Spacer mb={2} />
+        <Spacer y={2} />
         {/* Artist Series name */}
         <PlaceholderText width={220} />
         {/* Artist series info */}
         <PlaceholderText width={190} />
         <PlaceholderText width={190} />
       </Box>
-      <Spacer mb={2} />
+      <Spacer y={2} />
       {/* masonry grid */}
       <PlaceholderGrid />
     </Box>

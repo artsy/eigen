@@ -129,7 +129,7 @@ export const Form: React.FC<FormProps> = (props) => {
         onChange={onTogglePushNotification}
         active={values.push}
       />
-      <Spacer mt={2} />
+      <Spacer y={2} />
       <SavedSearchAlertSwitch
         label="Email Alerts"
         onChange={onToggleEmailNotification}
@@ -169,7 +169,7 @@ export const Form: React.FC<FormProps> = (props) => {
         </Button>
         {!!isEditMode && (
           <>
-            <Spacer mt={2} />
+            <Spacer y={2} />
             <Button
               testID="delete-alert-button"
               variant="outline"

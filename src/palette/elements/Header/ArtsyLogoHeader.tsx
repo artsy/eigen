@@ -11,9 +11,9 @@ export const ArtsyLogoHeader: React.FC<Props> = ({ shadow = false }) => (
       <Flex alignItems="center">
         <ArtsyLogoIcon scale={0.75} />
       </Flex>
-      <Spacer mb="1" />
+      <Spacer y={1} />
     </Box>
-    <Spacer mb="2" />
+    <Spacer y={2} />
   </>
 )
 

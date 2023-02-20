@@ -25,6 +25,7 @@ export const ArtworkAttributionClassFAQ: React.FC<Props> = ({ artworkAttribution
             <Text variant="lg-display">Artwork classifications</Text>
 
             <Join separator={<Spacer y={1} />}>
+            <Join separator={<Spacer y={1} />}>
               {artworkAttributionClasses.map((attributionClass, index) => {
                 return (
                   <React.Fragment key={index}>

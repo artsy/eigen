@@ -10,11 +10,11 @@ const ActivityItemPlaceholder = () => {
   return (
     <Box my={2}>
       <PlaceholderBox width={30} height={20} />
-      <Spacer mt={0.5} />
+      <Spacer y={0.5} />
       <PlaceholderBox width={130} height={15} />
-      <Spacer mt={0.5} />
+      <Spacer y={0.5} />
       <PlaceholderBox width={100} height={15} />
-      <Spacer mt={1} />
+      <Spacer y={1} />
       <Flex flexDirection="row">
         <PlaceholderBox width={55} height={55} marginRight={10} />
         <PlaceholderBox width={55} height={55} marginRight={10} />

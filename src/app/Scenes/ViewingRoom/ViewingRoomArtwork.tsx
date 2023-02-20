@@ -82,7 +82,7 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
               <TouchableWithoutFeedback onPress={viewInAR}>
                 <Flex flexDirection="row" mx="1" height={24} alignItems="center">
                   <EyeOpenedIcon />
-                  <Spacer ml={0.5} />
+                  <Spacer x={0.5} />
                   <Text variant="xs">View on wall</Text>
                 </Flex>
               </TouchableWithoutFeedback>
@@ -96,17 +96,17 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
           <Text variant="sm" color="black60">
             {selectedArtwork.title}, {selectedArtwork.date}
           </Text>
-          <Spacer mt="2" />
+          <Spacer y={2} />
           <Text variant="sm" color="black100">
             {selectedArtwork.saleMessage}
           </Text>
           {!!selectedArtwork.additionalInformation && (
             <>
-              <Spacer mt="2" />
+              <Spacer y={2} />
               <Text variant="sm">{selectedArtwork.additionalInformation}</Text>
             </>
           )}
-          <Spacer mt="4" />
+          <Spacer y={4} />
           <Button
             variant="fillDark"
             block
@@ -124,11 +124,11 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
         {moreImages.length > 0 && (
           <>
             <Box mx="2">
-              <Spacer mt="4" />
+              <Spacer y={4} />
               <Separator />
-              <Spacer mt="4" />
+              <Spacer y={4} />
               <Text variant="sm">More images</Text>
-              <Spacer mt="2" />
+              <Spacer y={2} />
             </Box>
             <FlatList
               data={moreImages}
@@ -136,17 +136,17 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
               renderItem={({ item }) => (
                 <ImageCarousel staticImages={[item] as any} cardHeight={screenHeight} />
               )}
-              ItemSeparatorComponent={() => <Spacer mt={0.5} />}
+              ItemSeparatorComponent={() => <Spacer y={0.5} />}
             />
           </>
         )}
 
         <Box mx="2">
-          <Spacer mt="4" />
+          <Spacer y={4} />
           <Separator />
-          <Spacer mt="4" />
+          <Spacer y={4} />
           <Text variant="sm">In viewing room</Text>
-          <Spacer mt="2" />
+          <Spacer y={2} />
         </Box>
         <Touchable onPress={() => navigate(`/viewing-room/${vrInfo.slug!}`)}>
           <LargeCard

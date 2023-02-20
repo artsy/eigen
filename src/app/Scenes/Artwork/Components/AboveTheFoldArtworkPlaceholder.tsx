@@ -42,11 +42,11 @@ const ArtworkDetailPlaceholderText = () => {
 
 const ArtworkDetailsPlaceholder = () => {
   return (
-    <Join separator={<Spacer mt={1} />}>
+    <Join separator={<Spacer y={1} />}>
       {times(10).map((index) => (
         <Flex key={`detail-row-${index}`} flexDirection="row">
           <PlaceholderText width={128} height={20} />
-          <Spacer mr={2} />
+          <Spacer x={2} />
           <ArtworkDetailPlaceholderText />
         </Flex>
       ))}
@@ -79,14 +79,14 @@ const RedesignedAboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> 
         <PlaceholderBox width={width} height={height} />
       </Flex>
 
-      <Spacer mt={1} />
+      <Spacer y={1} />
 
       {/* Content */}
       <Flex px={2}>
         {/* save/share buttons */}
         <ArtworkActionsPlaceholder />
 
-        <Spacer mb={4} />
+        <Spacer y={4} />
 
         {/* Artist name */}
         <PlaceholderText width={100} height={30} />
@@ -94,7 +94,7 @@ const RedesignedAboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> 
         {/* Artwork tombstone details */}
         <PlaceholderText width={250} height={26} />
 
-        <Spacer mb={4} />
+        <Spacer y={4} />
 
         {/* Artwork details */}
         <ArtworkDetailsPlaceholder />
@@ -113,7 +113,7 @@ const CurrentAboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> = (
       <Flex mx="auto">
         <PlaceholderBox width={width} height={height} />
       </Flex>
-      <Spacer mb={2} />
+      <Spacer y={2} />
 
       {/* Content */}
       <Flex px={2} flex={1}>
@@ -123,7 +123,7 @@ const CurrentAboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> = (
           <PlaceholderBox width={50} height={15} marginHorizontal={space("1")} />
           <PlaceholderBox width={50} height={15} marginHorizontal={space("1")} />
         </Flex>
-        <Spacer mb={4} />
+        <Spacer y={4} />
 
         {/* Artist name */}
         <PlaceholderText width={100} height={26} />
@@ -132,13 +132,13 @@ const CurrentAboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> = (
         <PlaceholderText width={250} height={26} marginBottom={0} />
 
         {/* more junk */}
-        <Spacer mb={3} />
+        <Spacer y={4} />
         <Separator />
-        <Spacer mb={3} />
+        <Spacer y={4} />
 
         {/* Artwork price */}
         <PlaceholderText width={100} height={36} />
-        <Spacer mb={1} />
+        <Spacer y={1} />
 
         {/* commerce button */}
         <PlaceholderBox height={50} />

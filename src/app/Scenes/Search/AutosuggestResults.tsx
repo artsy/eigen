@@ -51,7 +51,7 @@ const AutosuggestResultsFlatList: React.FC<{
   onResultPress,
   trackResultPress,
   ListEmptyComponent = EmptyList,
-  ListHeaderComponent = () => <Spacer mb={2} />,
+  ListHeaderComponent = () => <Spacer y={2} />,
   HeaderComponent = null,
   prependResults = [],
 }) => {
@@ -191,8 +191,8 @@ const AutosuggestResultsFlatList: React.FC<{
 const EmptyList: React.FC<{ query: string }> = ({ query }) => {
   return (
     <>
-      <Spacer mt={1} />
-      <Spacer mt={2} />
+      <Spacer y={1} />
+      <Spacer y={2} />
       <Text variant="sm-display" textAlign="center">
         Sorry, we couldn’t find anything for {quoteLeft}
         {query}.{quoteRight}

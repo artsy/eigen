@@ -81,9 +81,9 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
                     {result.title}
                   </GenericArtistSeriesTitle>
                   {!!result.priceGuidance && (
-                    <GenericArtistSeriesMeta color={color("black60")} variant="sm">
+                    <Text color="black60" variant="sm" mx="15px">
                       {"From $" + `${result.priceGuidance.toLocaleString()}`}
-                    </GenericArtistSeriesMeta>
+                    </Text>
                   )}
                 </MetadataContainer>
               </View>
@@ -94,10 +94,6 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
     </View>
   )
 }
-
-export const GenericArtistSeriesMeta = styled(Text)`
-  margin: 0 15px;
-`
 
 export const GenericArtistSeriesTitle = styled(Text)`
   margin: 15px 15px 0 15px;

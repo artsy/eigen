@@ -148,7 +148,7 @@ export const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ show }) => {
         keyExtractor={({ key }) => key}
         ListHeaderComponent={<Spacer y={6} />}
         ListFooterComponent={<Spacer y={2} />}
-        ItemSeparatorComponent={() => <Spacer y={15} />}
+        ItemSeparatorComponent={() => <Spacer y="15px" />}
         renderItem={({ item: { element } }) => element}
       />
     </ProvideScreenTracking>

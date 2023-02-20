@@ -105,7 +105,7 @@ export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event, conversationId 
           </Flex>
         </Flex>
       </Flex>
-      <Spacer mb={2} />
+      <Spacer y={2} />
     </Flex>
   )
 }
