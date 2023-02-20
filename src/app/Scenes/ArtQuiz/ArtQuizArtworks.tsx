@@ -18,6 +18,7 @@ import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
 import { ArtQuizNavigationStack } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
 import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
 import { GlobalStore } from "app/store/GlobalStore"
+import { navigate as globalNavigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Suspense, useEffect, useRef, useState } from "react"
 import { Image } from "react-native"
@@ -26,6 +27,7 @@ import { graphql, useLazyLoadQuery, useMutation } from "react-relay"
 
 export const ArtQuizResultsScreen = () => {
   const [activeCardIndex, setActiveCardIndex] = useState(0)
+  const [isInteracted, setIsInteracted] = useState(false)
   const queryResult = useLazyLoadQuery<ArtQuizArtworksQuery>(artQuizArtworksQuery, {})
   const { userID } = GlobalStore.useAppState((store) => store.auth)
   const artworks = extractNodes(queryResult.me?.quiz.quizArtworkConnection)
@@ -56,7 +58,12 @@ export const ArtQuizResultsScreen = () => {
 
   const edges = queryResult.me?.quiz.quizArtworkConnection?.edges
   const lastInteractedArtworkIndex = edges?.findIndex((edge) => edge?.interactedAt === null)
-  pagerViewRef.current?.setPage(lastInteractedArtworkIndex! + 1)
+  if (lastInteractedArtworkIndex !== 0) {
+    popoverMessage.hide()
+  }
+  if (!isInteracted) {
+    pagerViewRef.current?.setPage(lastInteractedArtworkIndex!)
+  }
 
   const handleIndexChange = (e: PagerViewOnPageScrollEvent) => {
     if (e.nativeEvent.position !== undefined) {
@@ -70,7 +77,7 @@ export const ArtQuizResultsScreen = () => {
 
   const handleNext = (action: "Like" | "Dislike") => {
     popoverMessage.hide()
-
+    setIsInteracted(true)
     pagerViewRef.current?.setPage(activeCardIndex + 1)
 
     if (action === "Like") {
@@ -111,6 +118,7 @@ export const ArtQuizResultsScreen = () => {
 
   const handleOnBack = () => {
     popoverMessage.hide()
+    setIsInteracted(true)
     if (activeCardIndex === 0) {
       goBack()
     } else {
@@ -152,8 +160,9 @@ export const ArtQuizResultsScreen = () => {
   }
 
   const handleOnSkip = () => {
-    onDone()
+    onDone?.()
     popoverMessage.hide()
+    globalNavigate("/")
   }
 
   return (
