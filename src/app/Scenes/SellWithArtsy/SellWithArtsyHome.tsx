@@ -1,9 +1,11 @@
 import { ContextModule, OwnerType, tappedConsign, TappedConsignArgs } from "@artsy/cohesion"
-import { Spacer, Flex, Text } from "@artsy/palette-mobile"
+import { Spacer, Flex, Join, Text } from "@artsy/palette-mobile"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { SellWithArtsyHome_me$data } from "__generated__/SellWithArtsyHome_me.graphql"
 import { SellWithArtsyHome_recentlySoldArtworksTypeConnection$data } from "__generated__/SellWithArtsyHome_recentlySoldArtworksTypeConnection.graphql"
 import { GetInTouchBanner } from "app/Scenes/SellWithArtsy/Components/GetInTouchBanner"
+import { Highlights } from "app/Scenes/SellWithArtsy/Components/Highlights"
+import { WaysWeSell } from "app/Scenes/SellWithArtsy/Components/WaysWeSell"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
@@ -82,6 +84,14 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
             <Header onConsignPress={handleConsignPress} onInquiryPress={handleInquiryPress} />
 
             <Spacer y={4} />
+
+            {enableNewSWALandingPage && (
+              <Join separator={<Spacer y={4} />}>
+                <Highlights />
+                <WaysWeSell />
+              </Join>
+            )}
+            {enableNewSWALandingPage && <Spacer y={4} />}
 
             <HowItWorks onConsignPress={handleConsignPress} />
 
