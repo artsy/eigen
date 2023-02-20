@@ -8,14 +8,16 @@ import {
   Text,
   BackButton,
 } from "@artsy/palette-mobile"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { ArtQuizArtworksDislikeMutation } from "__generated__/ArtQuizArtworksDislikeMutation.graphql"
 import { ArtQuizArtworksQuery } from "__generated__/ArtQuizArtworksQuery.graphql"
 import { ArtQuizArtworksSaveMutation } from "__generated__/ArtQuizArtworksSaveMutation.graphql"
 import { ArtQuizArtworksUpdateQuizMutation } from "__generated__/ArtQuizArtworksUpdateQuizMutation.graphql"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
+import { ArtQuizNavigationStack } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
+import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
 import { GlobalStore } from "app/store/GlobalStore"
-import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Suspense, useEffect, useRef, useState } from "react"
 import { Image } from "react-native"
@@ -32,6 +34,9 @@ export const ArtQuizResultsScreen = () => {
   const artworks = extractNodes(artQuizArtworksQueryResult.me?.quiz.quizArtworkConnection)
   const pagerViewRef = useRef<PagerView>(null)
   const popoverMessage = usePopoverMessage()
+
+  const { goBack, navigate } = useNavigation<NavigationProp<ArtQuizNavigationStack>>()
+  const { onDone } = useOnboardingContext()
 
   const currentArtwork = artworks[activeCardIndex]
   const previousArtwork = artworks[activeCardIndex - 1]
@@ -98,11 +103,7 @@ export const ArtQuizResultsScreen = () => {
     })
 
     if (activeCardIndex + 1 === artworks.length) {
-      navigate("/art-quiz/results", {
-        passProps: {
-          isCalculatingResult: true,
-        },
-      })
+      navigate("ArtQuizResults", { isCalculatingResult: true })
       return
     }
   }
@@ -150,7 +151,7 @@ export const ArtQuizResultsScreen = () => {
   }
 
   const handleOnSkip = () => {
-    navigate("/")
+    onDone()
     popoverMessage.hide()
   }
 
