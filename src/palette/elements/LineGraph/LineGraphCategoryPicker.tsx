@@ -1,6 +1,5 @@
-import { Flex, Spacer, useSpace, useColor } from "@artsy/palette-mobile"
+import { Flex, Spacer, useSpace, useColor, Text } from "@artsy/palette-mobile"
 import { Pill } from "palette/elements/Pill"
-import { Text } from "palette/elements/Text"
 import { memo, useEffect, useRef, useState } from "react"
 import { Dimensions, LayoutRectangle, ViewProps } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"

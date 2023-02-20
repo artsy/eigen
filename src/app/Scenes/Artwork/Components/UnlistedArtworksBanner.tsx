@@ -1,6 +1,5 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Text, LinkText } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
-import { LinkText, Text } from "palette"
 
 interface UnlistedArtworksBannerProps {
   partnerName?: string | null

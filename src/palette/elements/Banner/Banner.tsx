@@ -1,5 +1,4 @@
-import { Flex, FlexProps, useColor } from "@artsy/palette-mobile"
-import { Text, TextProps } from "palette"
+import { Flex, FlexProps, useColor, Text, TextProps } from "@artsy/palette-mobile"
 import React, { useRef, useState } from "react"
 import { Animated, Easing, Image, TouchableOpacity } from "react-native"
 

@@ -1,3 +1,4 @@
+import { Text } from "@artsy/palette-mobile"
 import { SaleLotsListTestsQuery } from "__generated__/SaleLotsListTestsQuery.graphql"
 import {
   FilterParamName,
@@ -12,7 +13,6 @@ import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { Text } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { SaleArtworkListContainer } from "./Components/SaleArtworkList"

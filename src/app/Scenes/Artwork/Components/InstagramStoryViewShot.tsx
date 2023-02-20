@@ -1,7 +1,6 @@
-import { ArtsyLogoBlackIcon, Flex } from "@artsy/palette-mobile"
+import { ArtsyLogoBlackIcon, Flex, Text } from "@artsy/palette-mobile"
 import { useDevToggle } from "app/store/GlobalStore"
 import { useSizeToFitScreen } from "app/utils/useSizeToFit"
-import { Text } from "palette"
 import React, { RefObject } from "react"
 import { Image } from "react-native"
 import ViewShot from "react-native-view-shot"

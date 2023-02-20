@@ -1,4 +1,4 @@
-import { Spacer, Flex, Box } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
 import { MyAccountQuery } from "__generated__/MyAccountQuery.graphql"
 import { MyAccount_me$data } from "__generated__/MyAccount_me.graphql"
 import { MenuItem } from "app/Components/MenuItem"
@@ -12,7 +12,7 @@ import { useGoogleLink } from "app/utils/LinkedAccounts/google"
 import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Button, Text } from "palette"
+import { Button } from "palette"
 import { ActivityIndicator, Image, Platform, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { PRICE_BUCKETS } from "./MyAccountEditPriceRange"
@@ -118,7 +118,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
                       resizeMode="contain"
                       style={{ marginRight: 10 }}
                     />
-                    <Text variant="sm-display" color="black60" lineHeight={18}>
+                    <Text variant="sm-display" color="black60" lineHeight="18px">
                       {facebookLinked ? "Unlink" : "Link"}
                     </Text>
                   </Flex>
@@ -145,7 +145,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
                       resizeMode="contain"
                       style={{ marginRight: 10 }}
                     />
-                    <Text variant="sm-display" color="black60" lineHeight={18}>
+                    <Text variant="sm-display" color="black60" lineHeight="18px">
                       {googleLinked ? "Unlink" : "Link"}
                     </Text>
                   </Flex>
@@ -172,7 +172,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
                         resizeMode="contain"
                         style={{ marginRight: 10, tintColor: "black" }}
                       />
-                      <Text variant="sm-display" color="black60" lineHeight={18}>
+                      <Text variant="sm-display" color="black60" lineHeight="18px">
                         {appleLinked ? "Unlink" : "Link"}
                       </Text>
                     </Flex>

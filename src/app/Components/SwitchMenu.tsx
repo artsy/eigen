@@ -1,5 +1,4 @@
-import { Flex, useColor } from "@artsy/palette-mobile"
-import { Text } from "palette"
+import { Flex, useColor, Text } from "@artsy/palette-mobile"
 import { Switch } from "react-native"
 
 interface SwitchMenuProps {

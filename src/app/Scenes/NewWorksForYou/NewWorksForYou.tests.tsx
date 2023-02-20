@@ -11,9 +11,18 @@ describe("NewWorksForYou", () => {
   const TestRenderer = () => (
     <QueryRenderer<NewWorksForYouTestsQuery>
       query={graphql`
-        query NewWorksForYouTestsQuery($worksForYouRecommendationsModelVariant: String!) {
+        query NewWorksForYouTestsQuery(
+          $version: String
+          $includeBackfill: Boolean!
+          $maxWorksPerArtist: Int
+        ) {
           viewer {
             ...NewWorksForYou_viewer
+              @arguments(
+                includeBackfill: $includeBackfill
+                version: $version
+                maxWorksPerArtist: $maxWorksPerArtist
+              )
           }
         }
       `}
@@ -21,7 +30,9 @@ describe("NewWorksForYou", () => {
         return props?.viewer && <NewWorksForYouFragmentContainer viewer={props.viewer} />
       }}
       variables={{
-        worksForYouRecommendationsModelVariant: DEFAULT_RECS_MODEL_VERSION,
+        version: DEFAULT_RECS_MODEL_VERSION,
+        includeBackfill: true,
+        maxWorksPerArtist: 3,
       }}
       environment={mockEnvironment}
     />

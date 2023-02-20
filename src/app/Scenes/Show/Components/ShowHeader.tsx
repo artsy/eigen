@@ -1,8 +1,7 @@
-import { Box, BoxProps } from "@artsy/palette-mobile"
+import { Box, BoxProps, Text } from "@artsy/palette-mobile"
 import { ShowHeader_show$data } from "__generated__/ShowHeader_show.graphql"
 import { useEventTiming } from "app/utils/useEventTiming"
 import { DateTime } from "luxon"
-import { Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 

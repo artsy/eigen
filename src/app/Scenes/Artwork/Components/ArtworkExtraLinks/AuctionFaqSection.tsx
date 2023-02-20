@@ -1,10 +1,9 @@
-import { Spacer } from "@artsy/palette-mobile"
+import { Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkExtraLinks_artwork$data } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/system/navigation/navigate"
 import { sendEmail } from "app/utils/sendEmail"
 import { Schema } from "app/utils/track"
-import { Text } from "palette"
 import { useTracking } from "react-tracking"
 import { partnerName } from "./partnerName"
 

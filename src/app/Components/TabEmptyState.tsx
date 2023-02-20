@@ -1,5 +1,4 @@
-import { Box } from "@artsy/palette-mobile"
-import { Text } from "palette"
+import { Box, Text } from "@artsy/palette-mobile"
 
 export const TabEmptyState: React.FC<{
   text: string

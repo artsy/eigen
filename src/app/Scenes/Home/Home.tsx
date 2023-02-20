@@ -183,22 +183,6 @@ const Home = (props: Props) => {
       hidden: !enableMyCollectionHFOnboarding || !homePageBelow?.onboardingModule,
     },
     {
-      title: "Recommended Artists",
-      type: "recommended-artists",
-      data: meBelow,
-    },
-    {
-      title: "Shows for You",
-      type: "shows",
-      data: showsByFollowedArtists,
-    },
-    {
-      title: "Viewing Rooms",
-      type: "viewing-rooms",
-      data: featured,
-      prefetchUrl: "/viewing-rooms",
-    },
-    {
       title: "Collections",
       subtitle: "The Newest Works Curated by Artsy",
       type: "collections",
@@ -210,10 +194,9 @@ const Home = (props: Props) => {
       data: meBelow,
     },
     {
-      title: "Featured Fairs",
-      subtitle: "See Works in Top Art Fairs",
-      type: "fairs",
-      data: homePageBelow?.fairsModule,
+      title: "Recommended Artists",
+      type: "recommended-artists",
+      data: meBelow,
     },
     { title: "Trending Artists", type: "artist", data: homePageBelow?.popularArtistsArtistModule },
     {
@@ -230,6 +213,23 @@ const Home = (props: Props) => {
       title: "Similar to Works You've Viewed",
       type: "artwork",
       data: homePageBelow?.similarToRecentlyViewedArtworkModule,
+    },
+    {
+      title: "Viewing Rooms",
+      type: "viewing-rooms",
+      data: featured,
+      prefetchUrl: "/viewing-rooms",
+    },
+    {
+      title: "Featured Fairs",
+      subtitle: "See Works in Top Art Fairs",
+      type: "fairs",
+      data: homePageBelow?.fairsModule,
+    },
+    {
+      title: "Shows for You",
+      type: "shows",
+      data: showsByFollowedArtists,
     },
   ])
 
@@ -521,7 +521,7 @@ export const HomeFragmentContainer = createRefetchContainer(
     `,
   },
   graphql`
-    query HomeRefetchQuery($worksForYouRecommendationsModelVariant: String) {
+    query HomeRefetchQuery($version: String) {
       homePage @optionalField {
         ...Home_homePageAbove
       }
@@ -711,7 +711,7 @@ export const HomeQueryRenderer: React.FC = () => {
       environment={defaultEnvironment}
       above={{
         query: graphql`
-          query HomeAboveTheFoldQuery($worksForYouRecommendationsModelVariant: String!) {
+          query HomeAboveTheFoldQuery($version: String!) {
             homePage @optionalField {
               ...Home_homePageAbove
             }
@@ -728,13 +728,12 @@ export const HomeQueryRenderer: React.FC = () => {
           }
         `,
         variables: {
-          worksForYouRecommendationsModelVariant:
-            worksForYouRecommendationsModel.payload || DEFAULT_RECS_MODEL_VERSION,
+          version: worksForYouRecommendationsModel.payload || DEFAULT_RECS_MODEL_VERSION,
         },
       }}
       below={{
         query: graphql`
-          query HomeBelowTheFoldQuery($worksForYouRecommendationsModelVariant: String!) {
+          query HomeBelowTheFoldQuery($version: String!) {
             newWorksForYou: viewer @optionalField {
               ...Home_newWorksForYou
             }
@@ -755,7 +754,7 @@ export const HomeQueryRenderer: React.FC = () => {
           }
         `,
         variables: {
-          worksForYouRecommendationsModelVariant: worksForYouRecommendationsModel.payload || "B",
+          version: worksForYouRecommendationsModel.payload || "B",
         },
       }}
       render={{

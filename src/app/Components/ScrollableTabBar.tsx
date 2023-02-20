@@ -1,6 +1,5 @@
-import { useColor } from "@artsy/palette-mobile"
+import { useColor, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
-import { Text } from "palette"
 import React from "react"
 import {
   Animated,

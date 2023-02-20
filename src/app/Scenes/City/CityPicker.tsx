@@ -1,10 +1,10 @@
-import { Flex, Box } from "@artsy/palette-mobile"
+import { Flex, Box, Text, TextProps } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { CircleWhiteCheckIcon } from "app/Components/Icons/CircleWhiteCheckIcon"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { BMWSponsorship } from "app/Scenes/City/CityBMWSponsorship"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { Separator, Text, TextProps } from "palette"
+import { Separator } from "palette"
 import React, { useEffect, useState } from "react"
 import { TouchableOpacity } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
@@ -64,7 +64,7 @@ export const CityPicker: React.FC<Props> = (props) => {
                   <Text
                     mt={1}
                     variant={dimensions(screenHeight)[size].cityFontSize}
-                    lineHeight={dimensions(screenHeight)[size].lineHeight}
+                    lineHeight={`${dimensions(screenHeight)[size].lineHeight}px`}
                   >
                     {city}
                   </Text>

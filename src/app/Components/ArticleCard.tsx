@@ -1,9 +1,9 @@
-import { Spacer, Flex, useTheme } from "@artsy/palette-mobile"
+import { Spacer, Flex, useTheme, Text } from "@artsy/palette-mobile"
 import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { OpaqueImageView, Text } from "palette"
+import { OpaqueImageView } from "palette"
 import {
   GestureResponderEvent,
   TouchableWithoutFeedback,

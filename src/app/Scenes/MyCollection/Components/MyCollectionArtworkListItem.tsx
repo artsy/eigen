@@ -1,5 +1,5 @@
 import { tappedCollectedArtwork } from "@artsy/cohesion"
-import { NoArtworkIcon, Flex } from "@artsy/palette-mobile"
+import { NoArtworkIcon, Flex, Text } from "@artsy/palette-mobile"
 import {
   MyCollectionArtworkListItem_artwork$data,
   MyCollectionArtworkListItem_artwork$key,
@@ -8,7 +8,7 @@ import HighDemandIcon from "app/Components/Icons/HighDemandIcon"
 import { navigate } from "app/system/navigation/navigate"
 import { useLocalImage } from "app/utils/LocalImageStore"
 import { getImageSquareDimensions } from "app/utils/resizeImage"
-import { Text, Touchable } from "palette"
+import { Touchable } from "palette"
 import OpaqueImageView2 from "palette/elements/OpaqueImageView/OpaqueImageView2"
 import { useFragment } from "react-relay"
 import { useTracking } from "react-tracking"

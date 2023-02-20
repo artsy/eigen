@@ -1,8 +1,14 @@
-import { Spacer, IconProps, FlexProps, Flex, useColor } from "@artsy/palette-mobile"
+import {
+  Spacer,
+  IconProps,
+  FlexProps,
+  Flex,
+  useColor,
+  Text,
+  useTextStyleForPalette,
+} from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-
 import { Color } from "palette/Theme"
-import { Text, useTextStyleForPalette } from "palette/elements/Text"
 import { useState } from "react"
 import { GestureResponderEvent, Pressable, PressableProps } from "react-native"
 import { config } from "react-spring"
@@ -207,11 +213,11 @@ const Container = styled(Flex)<PillProps>`
 `
 
 export const OpaqueImageViewContainer = styled(OpaqueImageView)`
-  width: 30;
-  height: 30;
-  border-radius: 15;
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
   overflow: hidden;
-  margin-right: 10;
+  margin-right: 10px;
 `
 
 const AnimatedContainer = animated(Container)

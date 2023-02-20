@@ -1,8 +1,7 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { SwitchMenu } from "app/Components/SwitchMenu"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Text } from "palette"
 
 export function DarkModeSettings() {
   const syncWithSystem = GlobalStore.useAppState(

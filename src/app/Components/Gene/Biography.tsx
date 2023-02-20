@@ -1,5 +1,5 @@
+import { Text } from "@artsy/palette-mobile"
 import { Biography_gene$data } from "__generated__/Biography_gene.graphql"
-import { Text } from "palette"
 import { Dimensions, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import removeMarkdown from "remove-markdown"

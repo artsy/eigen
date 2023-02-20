@@ -1,5 +1,5 @@
+import { Text, TextProps } from "@artsy/palette-mobile"
 import { useEventTiming } from "app/utils/useEventTiming"
-import { Text, TextProps } from "palette"
 
 interface Props extends TextProps {
   startAt: string | null

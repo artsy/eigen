@@ -1,5 +1,5 @@
+import { Text } from "@artsy/palette-mobile"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { Text } from "palette/elements/Text"
 import { ToolTip } from "palette/elements/ToolTip/ToolTip"
 
 describe("ToolTip", () => {

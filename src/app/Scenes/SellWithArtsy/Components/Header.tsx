@@ -5,10 +5,10 @@ import {
   TappedConsignArgs,
   TappedConsignmentInquiry,
 } from "@artsy/cohesion"
-import { Spacer, Flex } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { Button, Text } from "palette"
 import { Image, ImageBackground } from "react-native"
+import { Button } from "palette"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
 

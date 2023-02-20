@@ -1,6 +1,5 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { PDFPreview_attachment$data } from "__generated__/PDFPreview_attachment.graphql"
-import { Text } from "palette"
 import { Image } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
@@ -19,10 +18,10 @@ export const AttachmentTextContainer = styled.View`
 `
 const Icon = styled(Image)`
   resize-mode: contain;
-  width: 40;
-  margin-top: 12;
-  margin-right: 12;
-  margin-bottom: 12;
+  width: 40px;
+  margin-top: 12px;
+  margin-right: 12px;
+  margin-bottom: 12px;
 `
 
 interface Props extends AttachmentProps {

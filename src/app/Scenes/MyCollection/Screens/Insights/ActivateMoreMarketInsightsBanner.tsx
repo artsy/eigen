@@ -1,12 +1,12 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { navigate, popToRoot } from "app/system/navigation/navigate"
-import { Button, Text } from "palette"
+import { Button } from "palette"
 import { ImageBackground } from "react-native"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
-import styled from "styled-components"
+import styled from "styled-components/native"
 
 const BackgroundImage = styled(ImageBackground)``
 

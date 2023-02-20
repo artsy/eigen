@@ -1,5 +1,5 @@
-import { ChevronIcon, Flex } from "@artsy/palette-mobile"
-import { Text, Touchable } from "palette"
+import { ChevronIcon, Flex, Text } from "@artsy/palette-mobile"
+import { Touchable } from "palette"
 import { useScreenDimensions } from "shared/hooks"
 import { FancyModal } from "./FancyModal/FancyModal"
 import { FancyModalHeader } from "./FancyModal/FancyModalHeader"

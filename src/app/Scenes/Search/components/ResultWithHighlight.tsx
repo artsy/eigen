@@ -1,6 +1,6 @@
+import { Text } from "@artsy/palette-mobile"
 import match from "autosuggest-highlight/match"
 import parse from "autosuggest-highlight/parse"
-import { Text } from "palette"
 
 export const ResultWithHighlight = ({
   displayLabel,

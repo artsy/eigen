@@ -1,6 +1,6 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { storiesOf } from "@storybook/react-native"
-import { Button, Text } from "palette"
+import { Button } from "palette"
 import { withScreenDimensions } from "storybook/decorators"
 import { ToolTip, ToolTipContext } from "./ToolTip"
 

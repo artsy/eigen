@@ -1,5 +1,5 @@
+import { Text } from "@artsy/palette-mobile"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Text } from "palette"
 import { TouchableWithoutFeedback } from "react-native"
 import { RadioButton } from "./RadioButton"
 

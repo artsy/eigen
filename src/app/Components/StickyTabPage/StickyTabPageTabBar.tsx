@@ -1,4 +1,4 @@
-import { Text } from "palette"
+import { Text } from "@artsy/palette-mobile"
 import { NavigationalTabs } from "palette/elements/Tabs"
 import React, { useEffect, useRef, useState } from "react"
 import {

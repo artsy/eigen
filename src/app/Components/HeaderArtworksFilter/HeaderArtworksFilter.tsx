@@ -1,6 +1,6 @@
-import { FilterIcon, Flex, Box } from "@artsy/palette-mobile"
+import { FilterIcon, Flex, Box, Text } from "@artsy/palette-mobile"
 import { isPad } from "app/utils/hardware"
-import { Separator, Text, TouchableHighlightColor } from "palette"
+import { Separator, TouchableHighlightColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { Animated, Dimensions, LayoutChangeEvent, PixelRatio } from "react-native"
 import { useScreenDimensions } from "shared/hooks"

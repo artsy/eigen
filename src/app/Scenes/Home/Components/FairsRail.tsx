@@ -1,4 +1,4 @@
-import { bullet, Flex, SpacingUnit } from "@artsy/palette-mobile"
+import { bullet, Flex, SpacingUnit, Text } from "@artsy/palette-mobile"
 import { FairsRail_fairsModule$data } from "__generated__/FairsRail_fairsModule.graphql"
 import {
   CardRailCard,
@@ -11,7 +11,6 @@ import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { concat, take } from "lodash"
-import { Text } from "palette"
 import { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -79,12 +78,12 @@ const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
               <View>
                 <ThreeUpImageLayout imageURLs={artworkImageURLs} />
                 <MetadataContainer>
-                  <Text numberOfLines={1} lineHeight="20" variant="sm">
+                  <Text numberOfLines={1} lineHeight="20px" variant="sm">
                     {result?.name}
                   </Text>
                   <Text
                     numberOfLines={1}
-                    lineHeight="20"
+                    lineHeight="20px"
                     color="black60"
                     variant="sm"
                     testID="card-subtitle"

@@ -1,4 +1,4 @@
-import { Spacer, Box } from "@artsy/palette-mobile"
+import { Spacer, Box, Text } from "@artsy/palette-mobile"
 import { ShowMoreInfoQuery } from "__generated__/ShowMoreInfoQuery.graphql"
 import { ShowMoreInfo_show$data } from "__generated__/ShowMoreInfo_show.graphql"
 import { PartnerEntityHeaderFragmentContainer as PartnerEntityHeader } from "app/Components/PartnerEntityHeader"
@@ -8,7 +8,6 @@ import { ShowLocationFragmentContainer as ShowLocation } from "app/Scenes/Show/C
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { Text } from "palette"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 

@@ -1,4 +1,4 @@
-import { Spacer, ShareIcon, Flex, Box } from "@artsy/palette-mobile"
+import { Spacer, ShareIcon, Flex, Box, Text } from "@artsy/palette-mobile"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
 import { ViewingRoom_viewingRoom$data } from "__generated__/ViewingRoom_viewingRoom.graphql"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
@@ -7,7 +7,7 @@ import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { once } from "lodash"
-import { Button, Text, _maxWidth as maxWidth } from "palette"
+import { Button } from "palette"
 import React, { useCallback, useState } from "react"
 import { FlatList, LayoutAnimation, TouchableWithoutFeedback, View, ViewToken } from "react-native"
 import RNShare from "react-native-share"
@@ -107,7 +107,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
       key: "introStatement",
       content: (
         <Flex mt={2} mx={2}>
-          <Text testID="intro-statement" mt={2} variant="sm" mx={2} style={maxWidth}>
+          <Text testID="intro-statement" mt={2} variant="sm" mx={2} maxWidth>
             {viewingRoom.introStatement}
           </Text>
         </Flex>
@@ -138,7 +138,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
         key: "body",
         content: (
           <Flex mx={2}>
-            <Text testID="body" variant="sm" style={maxWidth}>
+            <Text testID="body" variant="sm" maxWidth>
               {viewingRoom.body}
             </Text>
           </Flex>
@@ -153,13 +153,13 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
 
   const ButtonBox = styled(Box)`
     position: absolute;
-    top: ${useScreenDimensions().safeAreaInsets.top + 12};
-    right: 12;
+    top: ${useScreenDimensions().safeAreaInsets.top + 12}px;
+    right: 12px;
     z-index: 1;
     background-color: #ffffff;
     height: 40px;
     width: 40px;
-    border-radius: 50;
+    border-radius: 50px;
     align-items: center;
     justify-content: center;
   `
