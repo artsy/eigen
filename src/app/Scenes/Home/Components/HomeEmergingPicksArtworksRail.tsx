@@ -46,8 +46,9 @@ export const HomeEmergingPicksArtworksRail: React.FC<HomeEmergingPicksArtworksRa
   return (
     <Flex mb={mb} py={2} backgroundColor="black100">
       <Image
-        style={{ width: "100%" }}
-        source={require("images/homefeed-my-collection-inboarding-0.jpg")}
+        style={{ width: "100%", height: 80 }}
+        resizeMode="cover"
+        source={require("images/curators-picks-header.jpg")}
       />
       <Flex mx={2} mt={2} mb={4}>
         <Text color="white100" variant="lg-display" mb={0.5}>
