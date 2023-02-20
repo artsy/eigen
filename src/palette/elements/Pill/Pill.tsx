@@ -6,9 +6,9 @@ import {
   useColor,
   Text,
   useTextStyleForPalette,
+  Color,
 } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { Color } from "palette/Theme"
 import { useState } from "react"
 import { GestureResponderEvent, Pressable, PressableProps } from "react-native"
 import { config } from "react-spring"

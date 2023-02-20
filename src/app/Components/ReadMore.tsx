@@ -5,13 +5,13 @@ import {
   LinkText,
   Text as PaletteText,
   TextProps as PaletteTextProps,
+  Color,
 } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { plainTextFromTree } from "app/utils/plainTextFromTree"
 import { defaultRules, renderMarkdown } from "app/utils/renderMarkdown"
 import { sendEmailWithMailTo } from "app/utils/sendEmail"
 import { Schema } from "app/utils/track"
-import { Color } from "palette"
 import React, { useState } from "react"
 import { Text } from "react-native"
 import { useTracking } from "react-tracking"

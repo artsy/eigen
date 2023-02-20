@@ -3,13 +3,11 @@
 // jscodeshift --parser=tsx -t codemods/remove-spacer.ts src/**/*
 //
 // Afterwards:
-// yarn lint:all
-// yarn prettier-project
-//
+// yarn lint:all; yarn prettier-project
 
 import { Transform } from "jscodeshift"
 
-const toRemove = "Text"
+const toRemove = "Color"
 
 const transform: Transform = (file, { jscodeshift: j }, options) => {
   const source = j(file.source)

@@ -1,5 +1,4 @@
-import { useColor } from "@artsy/palette-mobile"
-import { Color } from "palette/Theme"
+import { Color, useColor } from "@artsy/palette-mobile"
 import React, { useEffect, useMemo } from "react"
 import { Animated, Easing, ViewProps } from "react-native"
 import styled from "styled-components/native"

@@ -5,10 +5,11 @@ import {
   Flex,
   useTheme,
   Text,
+  Color,
 } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import _ from "lodash"
-import { Color, Spinner } from "palette"
+import { Spinner } from "palette"
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import {
   LayoutAnimation,

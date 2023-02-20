@@ -1,5 +1,4 @@
-import { ChevronIcon, CloseIcon, Flex } from "@artsy/palette-mobile"
-import { Color } from "palette"
+import { ChevronIcon, CloseIcon, Flex, Color } from "@artsy/palette-mobile"
 import { TouchableOpacity, TouchableOpacityProps } from "react-native"
 
 interface BackButtonProps {

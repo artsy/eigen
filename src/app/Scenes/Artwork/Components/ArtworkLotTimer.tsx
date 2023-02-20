@@ -1,4 +1,4 @@
-import { Spacer, TimerIcon, Flex, Text } from "@artsy/palette-mobile"
+import { Spacer, TimerIcon, Flex, Text, Color } from "@artsy/palette-mobile"
 import { ArtworkLotTimer_artwork$data } from "__generated__/ArtworkLotTimer_artwork.graphql"
 import { ArtworkAuctionProgressBar } from "app/Components/Bidding/Components/ArtworkAuctionProgressBar"
 import {
@@ -17,7 +17,6 @@ import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBiddi
 import { getTimerInfo } from "app/utils/saleTime"
 import { Time } from "app/utils/useTimer"
 import moment from "moment"
-import { Color } from "palette/Theme"
 import { useEffect } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp } from "react-tracking"
@@ -48,9 +47,6 @@ const AuctionoWebsocketWrapper: React.FC<AuctionWebsocketWrapperProps> = (props)
 
 export const ArtworkLotTimerWrapper: React.FC<AuctionWebsocketWrapperProps> = (props) => {
   const { artwork, refetchArtwork } = props
-  if (!(artwork.isInAuction && artwork.saleArtwork && artwork.sale)) {
-    return null
-  }
 
   const {
     isPreview,
@@ -59,9 +55,9 @@ export const ArtworkLotTimerWrapper: React.FC<AuctionWebsocketWrapperProps> = (p
     liveStartAt: liveStartsAt,
     startAt: startsAt,
     endAt: saleEndAt,
-  } = props.artwork.sale || {}
+  } = props.artwork.sale ?? {}
 
-  const { endAt: lotEndAt, extendedBiddingEndAt, lotID } = artwork.saleArtwork
+  const { endAt: lotEndAt, extendedBiddingEndAt, lotID } = artwork.saleArtwork ?? {}
 
   const initialBiddingEndAt = extendedBiddingEndAt ?? lotEndAt ?? saleEndAt
 
@@ -71,6 +67,10 @@ export const ArtworkLotTimerWrapper: React.FC<AuctionWebsocketWrapperProps> = (p
     biddingEndAt: initialBiddingEndAt,
     onDataReceived: refetchArtwork,
   })
+
+  if (!(artwork.isInAuction && artwork.saleArtwork && artwork.sale)) {
+    return null
+  }
 
   return (
     <TimeOffsetProvider>

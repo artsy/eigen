@@ -7,8 +7,8 @@ import {
 } from "@artsy/cohesion"
 import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { Image, ImageBackground } from "react-native"
 import { Button } from "palette"
+import { Image, ImageBackground } from "react-native"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
 

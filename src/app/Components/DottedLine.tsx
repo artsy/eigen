@@ -1,5 +1,4 @@
-import { useTheme } from "@artsy/palette-mobile"
-import { Color } from "palette"
+import { useTheme, Color } from "@artsy/palette-mobile"
 import { requireNativeComponent } from "react-native"
 
 interface Props {

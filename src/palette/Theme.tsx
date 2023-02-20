@@ -1,32 +1,10 @@
 import { THEME_V3 } from "@artsy/palette-tokens"
-/// TODO: remove tokens too from package.json
-import { Color as ColorV3BeforeDevPurple } from "@artsy/palette-tokens/dist/themes/v3"
 import {
   TextTreatment as TextTreatmentWithUnits,
   TextVariant as TextVariantV3,
 } from "@artsy/palette-tokens/dist/typography/v3"
 import _ from "lodash"
 import { ThemeProvider } from "styled-components/native"
-
-/**
- * All of the config for the Artsy theming system, based on the
- * design system from our design team:
- * https://www.notion.so/artsy/Master-Library-810612339f474d0997fe359af4285c56
- */
-
-export type Color =
-  | ColorV3BeforeDevPurple
-  | "devpurple"
-  | "yellow150"
-  | "yellow100"
-  | "yellow10"
-  | "orange10"
-  | "orange100" // yellows and orange are temporary, until we add them to palette-tokens
-  | "copper100" // this needs to go once we extract palette-mobile
-  // v5 stuff
-  | "appBackground"
-  | "appForeground"
-export type { TextVariantV3 }
 
 const {
   breakpoints: _eigenDoesntCareAboutBreakpoints,
@@ -79,7 +57,7 @@ const fixColorV3 = (
   return colors as any
 }
 
-export interface TextTreatment {
+interface TextTreatment {
   fontSize: number
   lineHeight: number
   letterSpacing?: number
@@ -164,8 +142,8 @@ const THEMES = {
   },
 }
 
-export type ThemeV3Type = typeof THEMES.v3
-export type ThemeType = ThemeV3Type
+type ThemeV3Type = typeof THEMES.v3
+type ThemeType = ThemeV3Type
 
 const figureOutTheme = (theme: keyof typeof THEMES | ThemeType): ThemeType => {
   if (!_.isString(theme)) {
@@ -188,14 +166,3 @@ export const Theme: React.FC<{
   const actualTheme = figureOutTheme(theme)
   return <ThemeProvider theme={actualTheme}>{children}</ThemeProvider>
 }
-
-type ColorAnyString = string & {}
-type Colors = Color | ColorAnyString
-
-export type ColorsTheme = { colors: Record<Colors, any> }
-
-/**
- * Only use this if it's are absolutely neccessary, and only in tests.
- */
-
-export const _test_THEMES = THEMES

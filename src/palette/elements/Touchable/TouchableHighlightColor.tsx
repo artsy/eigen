@@ -1,5 +1,5 @@
-import { Color } from "palette/Theme"
-import React, { useState } from "react"
+import { Color } from "@artsy/palette-mobile"
+import { useState } from "react"
 import { Touchable, TouchableProps } from "./Touchable"
 
 interface TouchableHighlightState {
