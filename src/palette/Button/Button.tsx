@@ -53,9 +53,6 @@ export interface ButtonProps extends BoxProps {
   testOnly_state?: DisplayState
 
   textVariant?: TextVariant
-
-  /** customHitslop: used only if you want the button to have bigger hitslop than its actual layout */
-  customHitslop?: ButtonProps["hitSlop"]
 }
 
 enum DisplayState {
@@ -79,7 +76,6 @@ export const Button: React.FC<ButtonProps> = ({
   testOnly_state,
   testID,
   textVariant,
-  customHitslop,
   ...rest
 }) => {
   const textVariantBySize = size === "small" ? "xs" : "sm"
@@ -145,7 +141,7 @@ export const Button: React.FC<ButtonProps> = ({
     <Spring native to={to} config={config.stiff}>
       {(springProps: typeof to) => (
         <Pressable
-          hitSlop={customHitslop}
+          hitSlop={rest?.hitSlop}
           testOnly_pressed={testOnly_state === DisplayState.Pressed}
           disabled={testOnly_state === DisplayState.Disabled || disabled}
           onPressIn={() => {
