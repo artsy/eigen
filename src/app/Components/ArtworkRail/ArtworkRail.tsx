@@ -46,38 +46,40 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
   onMorePress,
 }) => {
   return (
-    <PrefetchFlatList
-      onEndReached={onEndReached}
-      onEndReachedThreshold={onEndReachedThreshold}
-      prefetchUrlExtractor={(item) => item?.href!}
-      listRef={listRef}
-      horizontal
-      ListHeaderComponent={ListHeaderComponent}
-      ListFooterComponent={
-        onMorePress ? () => <ShowMoreCard onPress={onMorePress} /> : ListFooterComponent
-      }
-      ItemSeparatorComponent={() => <Spacer x="15px" />}
-      showsHorizontalScrollIndicator={false}
-      // We need to set the maximum number of artists to not cause layout shifts
-      // @ts-expect-error
-      data={artworks.slice(0, MAX_NUMBER_OF_ARTWORKS)}
-      initialNumToRender={MAX_NUMBER_OF_ARTWORKS}
-      contentContainerStyle={{ alignItems: "flex-end" }}
-      renderItem={({ item, index }) => (
-        <ArtworkRailCard
-          artwork={item}
-          hidePartnerName
-          hideArtistName={hideArtistName}
-          onPress={() => {
-            onPress?.(item, index)
-          }}
-          showSaveIcon={showSaveIcon}
-          size={size}
-          trackingContextScreenOwnerType={trackingContextScreenOwnerType}
-        />
-      )}
-      keyExtractor={(item, index) => String(item.slug || index)}
-    />
+    <Flex>
+      <PrefetchFlatList
+        onEndReached={onEndReached}
+        onEndReachedThreshold={onEndReachedThreshold}
+        prefetchUrlExtractor={(item) => item?.href!}
+        listRef={listRef}
+        horizontal
+        ListHeaderComponent={ListHeaderComponent}
+        ListFooterComponent={
+          onMorePress ? () => <BrowseMoreArtworksCard onPress={onMorePress} /> : ListFooterComponent
+        }
+        ItemSeparatorComponent={() => <Spacer x="15px" />}
+        showsHorizontalScrollIndicator={false}
+        // We need to set the maximum number of artists to not cause layout shifts
+        // @ts-expect-error
+        data={artworks.slice(0, MAX_NUMBER_OF_ARTWORKS)}
+        initialNumToRender={MAX_NUMBER_OF_ARTWORKS}
+        contentContainerStyle={{ alignItems: "flex-end" }}
+        renderItem={({ item, index }) => (
+          <ArtworkRailCard
+            artwork={item}
+            hidePartnerName
+            hideArtistName={hideArtistName}
+            onPress={() => {
+              onPress?.(item, index)
+            }}
+            showSaveIcon={showSaveIcon}
+            size={size}
+            trackingContextScreenOwnerType={trackingContextScreenOwnerType}
+          />
+        )}
+        keyExtractor={(item, index) => String(item.slug || index)}
+      />
+    </Flex>
   )
 }
 
@@ -112,7 +114,7 @@ export const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> =
       ListFooterComponent={ListFooterComponent}
       ItemSeparatorComponent={() => <Spacer x="15px" />}
       showsHorizontalScrollIndicator={false}
-      // We need to set the maximum number of artists to not cause layout shifts
+      // We need to set the maximum number of artworks to not cause layout shifts
       data={recentlySoldArtworks.slice(0, MAX_NUMBER_OF_ARTWORKS)}
       initialNumToRender={MAX_NUMBER_OF_ARTWORKS}
       contentContainerStyle={{ alignItems: "flex-end" }}
@@ -138,14 +140,14 @@ export const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> =
 
 const SpacerComponent = () => <Spacer x={2} />
 
-interface ShowMoreCardProps {
+interface BrowseMoreArtworksCardProps {
   onPress: () => void
 }
 
-const ShowMoreCard: React.FC<ShowMoreCardProps> = ({ onPress }) => {
+const BrowseMoreArtworksCard: React.FC<BrowseMoreArtworksCardProps> = ({ onPress }) => {
   return (
-    <Flex height="200" mx={2}>
-      <Button variant="outline" onPress={onPress} verticalAlign="center" my="auto">
+    <Flex flex={1} px={1} mx={2} justifyContent="center">
+      <Button variant="outline" onPress={onPress}>
         Browse More Artworks
       </Button>
     </Flex>
