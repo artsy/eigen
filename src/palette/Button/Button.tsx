@@ -76,6 +76,7 @@ export const Button: React.FC<ButtonProps> = ({
   testOnly_state,
   testID,
   textVariant,
+  hitSlop,
   ...rest
 }) => {
   const textVariantBySize = size === "small" ? "xs" : "sm"
@@ -141,6 +142,7 @@ export const Button: React.FC<ButtonProps> = ({
     <Spring native to={to} config={config.stiff}>
       {(springProps: typeof to) => (
         <Pressable
+          hitSlop={hitSlop}
           testOnly_pressed={testOnly_state === DisplayState.Pressed}
           disabled={testOnly_state === DisplayState.Disabled || disabled}
           onPressIn={() => {
