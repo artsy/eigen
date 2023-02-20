@@ -71,7 +71,7 @@ export const INTERNALSelectAndInputCombinationBase = forwardRef<
       }
       validate?.()
       onValueChange({ select: { value: valueForSelect }, input: { value: innerValue } })
-    }, [innerValue, valueForSelect])
+    }, [innerValue, value, valueForSelect])
 
     return (
       <Input
