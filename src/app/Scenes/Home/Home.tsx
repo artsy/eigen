@@ -26,7 +26,7 @@ import { LotsByFollowedArtistsRailContainer } from "app/Components/LotsByArtists
 import { articlesQueryVariables } from "app/Scenes/Articles/Articles"
 import { ArtworkModuleRailFragmentContainer } from "app/Scenes/Home/Components/ArtworkModuleRail"
 import { AuctionResultsRailFragmentContainer } from "app/Scenes/Home/Components/AuctionResultsRail"
-import { CollectionsRailFragmentContainer } from "app/Scenes/Home/Components/CollectionsRail"
+import { OldCollectionsRailFragmentContainer } from "app/Scenes/Home/Components/OldCollectionsRail"
 import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/Home/Components/EmailConfirmationBanner"
 import { FairsRailFragmentContainer } from "app/Scenes/Home/Components/FairsRail"
 import { SalesRailFragmentContainer } from "app/Scenes/Home/Components/SalesRail"
@@ -69,6 +69,7 @@ import { HomeUpcomingAuctionsRail } from "./Components/HomeUpcomingAuctionsRail"
 import { NewWorksForYouRail } from "./Components/NewWorksForYouRail"
 import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
 import { RailScrollRef } from "./Components/types"
+import { CollectionsRailFragmentContainer } from "app/Scenes/Home/Components/CollectionsRail"
 
 const LARGE_MODULE_SEPARATOR_HEIGHT: SpacingUnitDSValueNumber = 4
 const MODULE_SEPARATOR_HEIGHT: SpacingUnitDSValueNumber = 6
@@ -130,6 +131,12 @@ const Home = (props: Props) => {
   let modules: HomeModule[] = compact([
     // Above-The-Fold Modules
     {
+      title: "Collections",
+      subtitle: "The Newest Works Curated by Artsy",
+      type: "collections",
+      data: homePageBelow?.marketingCollectionsModule,
+    },
+    {
       title: "New Works for You",
       type: "newWorksForYou",
       data: newWorksForYou,
@@ -181,12 +188,6 @@ const Home = (props: Props) => {
       type: "homeFeedOnboarding",
       data: homePageBelow?.onboardingModule,
       hidden: !enableMyCollectionHFOnboarding || !homePageBelow?.onboardingModule,
-    },
-    {
-      title: "Collections",
-      subtitle: "The Newest Works Curated by Artsy",
-      type: "collections",
-      data: homePageBelow?.marketingCollectionsModule,
     },
     {
       title: "Artwork Recommendations",
@@ -320,8 +321,15 @@ const Home = (props: Props) => {
                   />
                 )
               case "collections":
-                return (
+                return true ? (
                   <CollectionsRailFragmentContainer
+                    title={item.title}
+                    collectionsModule={item.data}
+                    scrollRef={scrollRefs.current[index]}
+                    mb={MODULE_SEPARATOR_HEIGHT}
+                  />
+                ) : (
+                  <OldCollectionsRailFragmentContainer
                     title={item.title}
                     collectionsModule={item.data}
                     scrollRef={scrollRefs.current[index]}
@@ -478,6 +486,7 @@ export const HomeFragmentContainer = createRefetchContainer(
           ...FairsRail_fairsModule
         }
         marketingCollectionsModule {
+          ...OldCollectionsRail_collectionsModule
           ...CollectionsRail_collectionsModule
         }
         onboardingModule @optionalField {

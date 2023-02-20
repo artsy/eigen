@@ -1,12 +1,12 @@
 import { SpacingUnit, Flex, Text } from "@artsy/palette-mobile"
-import { CollectionsRail_collectionsModule$data } from "__generated__/CollectionsRail_collectionsModule.graphql"
+import { OldCollectionsRail_collectionsModule$data } from "__generated__/OldCollectionsRail_collectionsModule.graphql"
 import {
   CardRailCard,
   CardRailMetadataContainer as MetadataContainer,
 } from "app/Components/Home/CardRailCard"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { TouchableWithoutFeedback } from "react-native"
+import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -16,18 +16,17 @@ import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { RailScrollProps } from "./types"
-import { FiveUpImageLayout } from "app/Components/FiveUpImageLayout"
 
 interface Props {
   title: string
   subtitle?: string
-  collectionsModule: CollectionsRail_collectionsModule$data
+  collectionsModule: OldCollectionsRail_collectionsModule$data
   mb?: SpacingUnit
 }
 
-type Collection = CollectionsRail_collectionsModule$data["results"][0]
+type Collection = OldCollectionsRail_collectionsModule$data["results"][0]
 
-const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
+const OldCollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
   const listRef = useRef<FlatList<any>>()
   const tracking = useTracking()
 
@@ -58,7 +57,7 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
           )
 
           return (
-            <TouchableWithoutFeedback
+            <CardRailCard
               onPress={
                 result?.slug
                   ? () => {
@@ -75,7 +74,7 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
               }
             >
               <View>
-                <FiveUpImageLayout imageURLs={artworkImageURLs} />
+                <ThreeUpImageLayout imageURLs={artworkImageURLs} />
                 <MetadataContainer>
                   <Text variant="sm" numberOfLines={1} weight="medium">
                     {result?.title}
@@ -87,7 +86,7 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
                   </Text>
                 </MetadataContainer>
               </View>
-            </TouchableWithoutFeedback>
+            </CardRailCard>
           )
         }}
       />
@@ -95,9 +94,9 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
   )
 }
 
-export const CollectionsRailFragmentContainer = createFragmentContainer(CollectionsRail, {
+export const OldCollectionsRailFragmentContainer = createFragmentContainer(OldCollectionsRail, {
   collectionsModule: graphql`
-    fragment CollectionsRail_collectionsModule on HomePageMarketingCollectionsModule {
+    fragment OldCollectionsRail_collectionsModule on HomePageMarketingCollectionsModule {
       results {
         title
         slug
