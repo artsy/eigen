@@ -521,7 +521,7 @@ export const HomeFragmentContainer = createRefetchContainer(
     `,
   },
   graphql`
-    query HomeRefetchQuery($worksForYouRecommendationsModelVariant: String) {
+    query HomeRefetchQuery($version: String) {
       homePage @optionalField {
         ...Home_homePageAbove
       }
@@ -711,7 +711,7 @@ export const HomeQueryRenderer: React.FC = () => {
       environment={defaultEnvironment}
       above={{
         query: graphql`
-          query HomeAboveTheFoldQuery($worksForYouRecommendationsModelVariant: String!) {
+          query HomeAboveTheFoldQuery($version: String!) {
             homePage @optionalField {
               ...Home_homePageAbove
             }
@@ -728,13 +728,12 @@ export const HomeQueryRenderer: React.FC = () => {
           }
         `,
         variables: {
-          worksForYouRecommendationsModelVariant:
-            worksForYouRecommendationsModel.payload || DEFAULT_RECS_MODEL_VERSION,
+          version: worksForYouRecommendationsModel.payload || DEFAULT_RECS_MODEL_VERSION,
         },
       }}
       below={{
         query: graphql`
-          query HomeBelowTheFoldQuery($worksForYouRecommendationsModelVariant: String!) {
+          query HomeBelowTheFoldQuery($version: String!) {
             newWorksForYou: viewer @optionalField {
               ...Home_newWorksForYou
             }
@@ -755,7 +754,7 @@ export const HomeQueryRenderer: React.FC = () => {
           }
         `,
         variables: {
-          worksForYouRecommendationsModelVariant: worksForYouRecommendationsModel.payload || "B",
+          version: worksForYouRecommendationsModel.payload || "B",
         },
       }}
       render={{
