@@ -19,7 +19,7 @@ import { ArtQuizNavigationStack } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
 import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
 import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
-import { Suspense, useEffect, useMemo, useRef, useState } from "react"
+import { Suspense, useEffect, useRef, useState } from "react"
 import { Image } from "react-native"
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
 import { graphql, useLazyLoadQuery, useMutation } from "react-relay"
@@ -42,18 +42,6 @@ export const ArtQuizResultsScreen = () => {
   const [submitSave] = useMutation<ArtQuizArtworksSaveMutation>(SaveArtworkMutation)
   const [submitUpdate] = useMutation<ArtQuizArtworksUpdateQuizMutation>(UpdateQuizMutation)
 
-  const edges = queryResult.me?.quiz.quizArtworkConnection?.edges
-    ? // eslint-disable-next-line no-unsafe-optional-chaining
-      [...queryResult.me?.quiz.quizArtworkConnection.edges]
-    : []
-
-  // sort the artworks by position, ascending
-  const sortedEdges = useMemo(() => {
-    return edges.sort((a, b) => {
-      return a && b ? a.position - b.position : 0
-    })
-  }, [edges])
-
   useEffect(() => {
     popoverMessage.show({
       title: `Like it? Hit the heart.${"\n"}Not for you? Choose X.`,
@@ -65,6 +53,10 @@ export const ArtQuizResultsScreen = () => {
       popoverMessage.hide()
     }
   }, [])
+
+  const edges = queryResult.me?.quiz.quizArtworkConnection?.edges
+  const lastInteractedArtworkIndex = edges?.findIndex((edge) => edge?.interactedAt === null)
+  pagerViewRef.current?.setPage(lastInteractedArtworkIndex! + 1)
 
   const handleIndexChange = (e: PagerViewOnPageScrollEvent) => {
     if (e.nativeEvent.position !== undefined) {
@@ -237,7 +229,6 @@ const artQuizArtworksQuery = graphql`
       quiz {
         quizArtworkConnection(first: 16) {
           edges {
-            position
             interactedAt
             node {
               internalID
