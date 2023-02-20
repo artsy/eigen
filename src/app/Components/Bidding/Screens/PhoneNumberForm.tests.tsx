@@ -27,7 +27,7 @@ describe("PhoneNumberForm component", () => {
     fireEvent.changeText(phoneInput, phoneNumber)
 
     fireEvent.press(container.queryAllByText("Add phone number")[1])
-    waitFor(() => expect(onSubmitMock).toHaveBeenLastCalledWith(formattedPhoneNumber))
+    await waitFor(() => expect(onSubmitMock).toHaveBeenLastCalledWith(formattedPhoneNumber))
   })
 
   it("correctly populates relevant inputs with the passed address fields", () => {
