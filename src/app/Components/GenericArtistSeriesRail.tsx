@@ -7,7 +7,7 @@ import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
-import { Text, useColor } from "palette"
+import { Text } from "palette"
 import { View } from "react-native"
 import { useTracking } from "react-tracking"
 // @ts-ignore
@@ -28,7 +28,6 @@ type GenericArtistSeriesItem =
   | ArtistCollectionsRail_collections$data[0]
 
 export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (props) => {
-  const color = useColor()
   const { collections, contextScreenOwnerType, contextScreenOwnerId, contextScreenOwnerSlug } =
     props
 

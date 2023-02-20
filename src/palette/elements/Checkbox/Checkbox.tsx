@@ -149,8 +149,8 @@ interface CheckMarkProps {
 export const CheckMark = styled.View.attrs<CheckMarkProps>({})`
   transform: rotate(-45deg);
   top: -12%;
-  width: ${(props) => props.size * 0.625};
-  height: ${(props) => props.size * 0.3125};
+  width: ${(props: any) => props.size * 0.625};
+  height: ${(props: any) => props.size * 0.3125};
   border-bottom-color: white;
   border-bottom-width: 2px;
   border-left-color: white;

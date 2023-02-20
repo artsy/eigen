@@ -264,7 +264,7 @@ export const Input = forwardRef<InputRef, InputProps>(
                 scrollEnabled={multiline ? false : undefined}
                 maxLength={maxLength}
                 editable={!disabled}
-                onLayout={(event) => {
+                onLayout={(event: any) => {
                   const newWidth = event.nativeEvent.layout.width
                   if (newWidth > inputWidth) {
                     requestAnimationFrame(() => setInputWidth(newWidth))
@@ -282,7 +282,7 @@ export const Input = forwardRef<InputRef, InputProps>(
                 value={value}
                 {...(rest as any)}
                 onChangeText={localOnChangeText}
-                onFocus={(e) => {
+                onFocus={(e: any) => {
                   if (Platform.OS === "android") {
                     LayoutAnimation.configureNext(
                       LayoutAnimation.create(60, "easeInEaseOut", "opacity")
@@ -291,7 +291,7 @@ export const Input = forwardRef<InputRef, InputProps>(
                   setFocused(true)
                   rest.onFocus?.(e)
                 }}
-                onBlur={(e) => {
+                onBlur={(e: any) => {
                   if (Platform.OS === "android") {
                     LayoutAnimation.configureNext(
                       LayoutAnimation.create(60, "easeInEaseOut", "opacity")

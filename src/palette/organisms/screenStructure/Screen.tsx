@@ -252,7 +252,7 @@ const BottomView: React.FC = ({ children }) => {
       bottom={keyboardShowing ? keyboardHeight - insets.bottom : 0}
       left={0}
       right={0}
-      onLayout={(evt) => void setOptions({ bottomViewHeight: evt.nativeEvent.layout.height })}
+      onLayout={(evt: any) => void setOptions({ bottomViewHeight: evt.nativeEvent.layout.height })}
     >
       <LinearGradient
         colors={["rgba(255,255,255,0)", "rgba(255,255,255,1)"]}

@@ -29,7 +29,7 @@ export const StepTabs: React.FC<TabsProps> = ({ onTabPress, activeTab, tabs }) =
               justifyContent="space-between"
               flexDirection="row"
               alignItems="center"
-              onLayout={(e) => {
+              onLayout={(e: any) => {
                 const layout = e.nativeEvent.layout
                 setTabLayouts((layouts) => {
                   const result = layouts.slice(0)

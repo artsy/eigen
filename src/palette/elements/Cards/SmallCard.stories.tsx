@@ -1,5 +1,5 @@
 import { storiesOf } from "@storybook/react-native"
-import { SmallCard } from "app/Components/Cards/SmallCard"
+import { SmallCard } from "palette/elements/Cards/SmallCard"
 import { List } from "storybook/helpers"
 
 storiesOf("SmallCard", module).add("Small Card", () => (

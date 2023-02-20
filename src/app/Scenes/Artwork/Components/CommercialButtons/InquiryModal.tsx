@@ -280,7 +280,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
         <Box
           mx={2}
           mb={4}
-          onLayout={({ nativeEvent }) => {
+          onLayout={({ nativeEvent }: any) => {
             setAddMessageYCoordinate(nativeEvent.layout.y)
           }}
         >

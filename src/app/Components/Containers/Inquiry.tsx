@@ -253,6 +253,7 @@ export class Inquiry extends React.Component<Props, State> {
               onEndEditing={() => {
                 this.setState({ text: null })
               }}
+              // @ts-expect-error
               onChangeText={(text) => this.setState({ text })}
             />
           </Content>

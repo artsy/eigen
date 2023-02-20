@@ -81,7 +81,7 @@ export default class ScrollableTabBar extends React.Component<
         accessible
         accessibilityLabel={name}
         accessibilityRole="button"
-        onLayout={(e) => {
+        onLayout={(e: any) => {
           const layout = e.nativeEvent.layout
           this.els[page] = layout
         }}
@@ -141,7 +141,7 @@ export default class ScrollableTabBar extends React.Component<
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ flexDirection: "row", justifyContent: "space-between" }}
-        onContentSizeChange={(width) => (this.scrollViewWidth = width)}
+        onContentSizeChange={(width: any) => (this.scrollViewWidth = width)}
         horizontal
       >
         {this.props.tabs?.map((name, page) => {

@@ -102,7 +102,7 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationVa
   }
 
   return (
-    <Box backgroundColor="white" onLayout={(e) => _onLayout(e)} testID="HeaderArtworksFilter">
+    <Box backgroundColor="white" onLayout={(e: any) => _onLayout(e)} testID="HeaderArtworksFilter">
       {!!animationValue && <SeparatorWithSmoothOpacity {...separatorProps} />}
       {!!total && (
         <Animated.View

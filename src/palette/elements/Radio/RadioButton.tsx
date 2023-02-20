@@ -147,9 +147,9 @@ interface RadioDotProps {
 // properties with styled-component.
 // Height, Width, and Border Radius calculations are used to maintain the size of the white dot when scaling
 export const RadioDot = styled.View.attrs<RadioDotProps>({})`
-  height: ${({ size }) => size * 0.625};
-  width: ${({ size }) => size * 0.625};
-  border-radius: ${({ size }) => `${size * 0.3125}px`};
+  height: ${({ size }: any) => size * 0.625};
+  width: ${({ size }: any) => size * 0.625};
+  border-radius: ${({ size }: any) => `${size * 0.3125}px`};
   background-color: white;
 `
 

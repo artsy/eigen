@@ -141,6 +141,7 @@ const CircleBackground = styled(Animated.View)<CircleProps>`
   }};
 `
 
+// @ts-expect-error
 Circle.defaultProps = {
   width: 50,
   height: 50,

@@ -11,6 +11,7 @@ export type FlexProps = BoxProps
  */
 export const Flex = styled(Box)<FlexProps>``
 
+// @ts-expect-error
 Flex.defaultProps = {
   display: "flex",
 }

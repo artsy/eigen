@@ -104,7 +104,7 @@ function ThemeProvider({ children }: { children?: React.ReactNode }) {
   const darkMode = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
 
   return (
-    <Theme theme={supportDarkMode ? (darkMode === "dark" ? "v5dark" : "v5light") : undefined}>
+    <Theme theme={supportDarkMode ? (darkMode === "dark" ? "v3dark" : "v3light") : undefined}>
       {children}
     </Theme>
   )

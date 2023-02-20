@@ -27,6 +27,7 @@ export const FileDownload: React.FC<Props> = ({ attachment, tiny, Icon = Downloa
   const iconSize = tiny ? "20px" : "40px"
   return (
     <AttachmentPreview attachment={attachment} onSelected={() => downloadFile(attachment)}>
+      {/* @ts-expect-error */}
       <Container alignItems="center">
         <Icon width={iconSize} height={iconSize} mr={1} my={0.5} />
         <AttachmentTextContainer>

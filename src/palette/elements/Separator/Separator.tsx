@@ -16,6 +16,7 @@ export const Separator = styled.View<SeparatorProps>`
   ${border};
 `
 
+// @ts-expect-error
 Separator.defaultProps = {
   width: "100%",
 }
