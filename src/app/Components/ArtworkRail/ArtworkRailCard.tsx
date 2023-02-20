@@ -1,4 +1,4 @@
-import { HeartFillIcon, HeartIcon, Spacer, Flex, useColor, Text } from "@artsy/palette-mobile"
+import { Flex, HeartFillIcon, HeartIcon, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import {
   ArtworkRailCard_artwork$data,
@@ -20,7 +20,7 @@ import styled from "styled-components/native"
 import { LARGE_RAIL_IMAGE_WIDTH } from "./LargeArtworkRail"
 import { SMALL_RAIL_IMAGE_WIDTH } from "./SmallArtworkRail"
 
-export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = 60
+export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = 70
 const SAVE_ICON_SIZE = 26
 
 export const ARTWORK_RAIL_CARD_IMAGE_HEIGHT = {
@@ -34,8 +34,9 @@ export type ArtworkCardSize = "small" | "large"
 
 export interface ArtworkRailCardProps {
   artwork: ArtworkRailCard_artwork$key
+  dark?: boolean
   hideArtistName?: boolean
-  hidePartnerName?: boolean
+  showPartnerName?: boolean
   isRecentlySoldArtwork?: boolean
   lotLabel?: string | null
   lowEstimateDisplay?: string
@@ -50,7 +51,8 @@ export interface ArtworkRailCardProps {
 
 export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   hideArtistName = false,
-  hidePartnerName = false,
+  showPartnerName = false,
+  dark = false,
   isRecentlySoldArtwork = false,
   lotLabel,
   lowEstimateDisplay,
@@ -76,6 +78,10 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     artwork?.sale?.isAuction && !artwork?.sale?.isClosed
       ? getUrgencyTag(artwork?.sale?.endAt)
       : null
+
+  const primaryTextColor = dark ? "white100" : "black100"
+  const secondaryTextColor = dark ? "black15" : "black60"
+  const backgroundColor = dark ? "black100" : "white100"
 
   const getTextHeightByArtworkSize = (cardSize: ArtworkCardSize) => {
     if (cardSize === "small") {
@@ -163,19 +169,24 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
         >
           <Flex flex={1}>
             {!!lotLabel && (
-              <Text lineHeight="20px" color="black60" numberOfLines={1}>
+              <Text lineHeight="20px" color={secondaryTextColor} numberOfLines={1}>
                 Lot {lotLabel}
               </Text>
             )}
             {!hideArtistName && !!artistNames && (
-              <Text numberOfLines={size === "small" ? 2 : 1} lineHeight="20px" variant="xs">
+              <Text
+                color={primaryTextColor}
+                numberOfLines={size === "small" ? 2 : 1}
+                lineHeight="20px"
+                variant="xs"
+              >
                 {artistNames}
               </Text>
             )}
             {!!title && (
               <Text
                 lineHeight="20px"
-                color="black60"
+                color={secondaryTextColor}
                 numberOfLines={size === "small" ? 2 : 1}
                 variant="xs"
                 fontStyle="italic"
@@ -184,7 +195,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                 {!!date && (
                   <Text
                     lineHeight="20px"
-                    color="black60"
+                    color={secondaryTextColor}
                     numberOfLines={size === "small" ? 2 : 1}
                     variant="xs"
                   >
@@ -195,8 +206,8 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
               </Text>
             )}
 
-            {!hidePartnerName && !!partner?.name && (
-              <Text lineHeight="20px" color="black60" numberOfLines={1}>
+            {!!showPartnerName && !!partner?.name && (
+              <Text lineHeight="20px" variant="xs" color={secondaryTextColor} numberOfLines={1}>
                 {partner?.name}
               </Text>
             )}
@@ -204,10 +215,10 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
               <>
                 <Spacer y={2} />
                 <Flex flexDirection="row" justifyContent="space-between">
-                  <Text variant="xs" color="black60" numberOfLines={1} fontWeight="500">
+                  <Text variant="xs" color={secondaryTextColor} numberOfLines={1} fontWeight="500">
                     Estimate
                   </Text>
-                  <Text variant="xs" color="black60" numberOfLines={1} fontWeight="500">
+                  <Text variant="xs" color={secondaryTextColor} numberOfLines={1} fontWeight="500">
                     {compact([lowEstimateDisplay, highEstimateDisplay]).join("—")}
                   </Text>
                 </Flex>
@@ -226,7 +237,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
               <Text
                 lineHeight="20px"
                 variant="xs"
-                color="black100"
+                color={primaryTextColor}
                 numberOfLines={1}
                 fontWeight={500}
               >
@@ -241,6 +252,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                 hitSlop={{ bottom: 5, right: 5, left: 5, top: 5 }}
                 onPress={handleArtworkSave}
                 testID="save-artwork-icon"
+                underlayColor={backgroundColor}
               >
                 {isSaved ? (
                   <HeartFillIcon
@@ -254,6 +266,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                     testID="empty-heart-icon"
                     height={SAVE_ICON_SIZE}
                     width={SAVE_ICON_SIZE}
+                    fill={primaryTextColor}
                   />
                 )}
               </Touchable>

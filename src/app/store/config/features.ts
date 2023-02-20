@@ -210,6 +210,12 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "AREnableNewCollectionsRail",
   },
+  AREnableCuratorsPickRail: {
+    description: "Enable Curators Pick Rail",
+    showInDevMenu: true,
+    readyForRelease: true,
+    echoFlagKey: "AREnableCuratorsPickRail",
+  },
 })
 
 export interface DevToggleDescriptor {

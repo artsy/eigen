@@ -9,6 +9,7 @@ import {
 import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { Home_articlesConnection$data } from "__generated__/Home_articlesConnection.graphql"
+import { Home_emergingPicksArtworks$data } from "__generated__/Home_emergingPicksArtworks.graphql"
 import { Home_featured$data } from "__generated__/Home_featured.graphql"
 import { Home_homePageAbove$data } from "__generated__/Home_homePageAbove.graphql"
 import { Home_homePageBelow$data } from "__generated__/Home_homePageBelow.graphql"
@@ -30,6 +31,7 @@ import { CollectionsRailFragmentContainer } from "app/Scenes/Home/Components/Col
 import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/Home/Components/EmailConfirmationBanner"
 import { FairsRailFragmentContainer } from "app/Scenes/Home/Components/FairsRail"
 import { OldCollectionsRailFragmentContainer } from "app/Scenes/Home/Components/OldCollectionsRail"
+import { HomeEmergingPicksArtworksRail } from "app/Scenes/Home/Components/HomeEmergingPicksArtworksRail"
 import { SalesRailFragmentContainer } from "app/Scenes/Home/Components/SalesRail"
 import { lotsByArtistsYouFollowDefaultVariables } from "app/Scenes/LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import {
@@ -95,6 +97,7 @@ interface Props extends ViewProps {
   meAbove: Home_meAbove$data | null
   meBelow: Home_meBelow$data | null
   relay: RelayRefetchProp
+  emergingPicksArtworks: Home_emergingPicksArtworks$data | null
 }
 
 const Home = (props: Props) => {
@@ -112,6 +115,7 @@ const Home = (props: Props) => {
   }, [])
 
   const {
+    emergingPicksArtworks,
     homePageAbove,
     homePageBelow,
     meAbove,
@@ -121,14 +125,25 @@ const Home = (props: Props) => {
     showsByFollowedArtists,
     featured,
     loading,
+
     relay,
   } = props
 
   const showUpcomingAuctionResultsRail = useFeatureFlag("ARShowUpcomingAuctionResultsRails")
   const enableNewCollectionsRail = useFeatureFlag("AREnableNewCollectionsRail")
+  const enableCuratorsPickRail = useFeatureFlag("AREnableCuratorsPickRail")
+
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
   let modules: HomeModule[] = compact([
     // Above-The-Fold Modules
+    // TODO: Move to position
+    {
+      title: "Curators’ Picks: Emerging",
+      subtitle: "The best work by rising talents on Artsy, available now.",
+      type: "emergingPicksCollection",
+      data: emergingPicksArtworks,
+      hidden: !enableCuratorsPickRail,
+    },
     {
       title: "Collections",
       subtitle: "The Newest Works Curated by Artsy",
@@ -264,6 +279,15 @@ const Home = (props: Props) => {
             }
 
             switch (item.type) {
+              case "emergingPicksCollection":
+                return (
+                  <HomeEmergingPicksArtworksRail
+                    viewer={item.data}
+                    title={item.title}
+                    subtitle={item.subtitle}
+                    mb={MODULE_SEPARATOR_HEIGHT}
+                  />
+                )
               case "homeFeedOnboarding":
                 return (
                   <HomeFeedOnboardingRailFragmentContainer
@@ -533,6 +557,11 @@ export const HomeFragmentContainer = createRefetchContainer(
         ...NewWorksForYouRail_artworkConnection
       }
     `,
+    emergingPicksArtworks: graphql`
+      fragment Home_emergingPicksArtworks on Viewer {
+        ...HomeEmergingPicksArtworksRail_viewer
+      }
+    `,
   },
   graphql`
     query HomeRefetchQuery($version: String) {
@@ -561,6 +590,9 @@ export const HomeFragmentContainer = createRefetchContainer(
       }
       newWorksForYou: viewer {
         ...Home_newWorksForYou
+      }
+      emergingPicksArtworks: viewer {
+        ...Home_emergingPicksArtworks
       }
     }
   `
@@ -726,6 +758,9 @@ export const HomeQueryRenderer: React.FC = () => {
       above={{
         query: graphql`
           query HomeAboveTheFoldQuery($version: String!) {
+            emergingPicksArtworks: viewer @optionalField {
+              ...Home_emergingPicksArtworks
+            }
             homePage @optionalField {
               ...Home_homePageAbove
             }
@@ -747,10 +782,7 @@ export const HomeQueryRenderer: React.FC = () => {
       }}
       below={{
         query: graphql`
-          query HomeBelowTheFoldQuery($version: String!) {
-            newWorksForYou: viewer @optionalField {
-              ...Home_newWorksForYou
-            }
+          query HomeBelowTheFoldQuery {
             homePage @optionalField {
               ...Home_homePageBelow
             }
@@ -779,6 +811,7 @@ export const HomeQueryRenderer: React.FC = () => {
 
           return (
             <HomeFragmentContainer
+              emergingPicksArtworks={above.emergingPicksArtworks ?? null}
               articlesConnection={above?.articlesConnection ?? null}
               showsByFollowedArtists={below?.me?.showsByFollowedArtists ?? null}
               featured={below ? below.featured : null}
