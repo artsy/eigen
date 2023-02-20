@@ -1,6 +1,5 @@
-import { StarCircleIcon, Flex, useColor, Text } from "@artsy/palette-mobile"
+import { StarCircleIcon, Flex, useColor, Text, Color } from "@artsy/palette-mobile"
 import { compact, noop } from "lodash"
-import { Color } from "palette/Theme"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { Dimensions } from "react-native"
 import { Defs, G, LinearGradient, Stop } from "react-native-svg"

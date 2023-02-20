@@ -242,7 +242,7 @@
     react-nanny "^2.15.0"
     styled-system "^5.1.5"
 
-"@artsy/palette-tokens@4.0.1", "@artsy/palette-tokens@^4.0.1":
+"@artsy/palette-tokens@^4.0.1":
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/@artsy/palette-tokens/-/palette-tokens-4.0.1.tgz#ef171c0449f3c0a1c0765253a06beec160b0eed1"
   integrity sha512-JQ4t6eCAL3LpYnwyIMJCKc3UiVWY17IvKadNXRXfplo+GFZUqZs61nFGlchNWZvtNESpHkGKOksA5dZq3G1wiw==
