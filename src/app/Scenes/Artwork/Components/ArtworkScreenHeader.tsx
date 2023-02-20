@@ -102,11 +102,11 @@ const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) =>
 
       <Flex flexDirection="row" alignItems="center">
         <Button
-          hitSlop={{
-            top: space(2),
-            left: space(2),
-            right: space(2),
-            bottom: space(2),
+          customHitslop={{
+            top: space(1),
+            left: space(1),
+            right: 0,
+            bottom: space(1),
           }}
           size="small"
           variant="text"
