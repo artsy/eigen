@@ -98,7 +98,7 @@ const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateAlertPro
         variant={isForSale ? "outline" : "fillDark"}
         haptic
         onPress={handleCreateAlertPress}
-        icon={<BellIcon />}
+        icon={<BellIcon fill={isForSale ? "black100" : "white100"} />}
       >
         Create Alert
       </Button>
