@@ -7,11 +7,11 @@ import {
   UserSingleIcon,
   Flex,
   Box,
+  Text,
 } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { CareerHighlightKindValueType } from "app/Scenes/MyCollection/Screens/Insights/CareerHighlightBottomSheet"
 import { uniq } from "lodash"
-import { Text } from "palette"
 import { useMemo } from "react"
 import { useScreenDimensions } from "shared/hooks"
 

@@ -1,5 +1,4 @@
-import { Flex } from "@artsy/palette-mobile"
-import { Text } from "palette"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { useState } from "react"
 import { LayoutAnimation, TouchableWithoutFeedback } from "react-native"
 

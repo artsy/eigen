@@ -1,6 +1,5 @@
-import { EnvelopeIcon, Flex } from "@artsy/palette-mobile"
+import { EnvelopeIcon, Flex, Text } from "@artsy/palette-mobile"
 import { Questions_artwork$key } from "__generated__/Questions_artwork.graphql"
-import { Text } from "palette"
 import { graphql, useFragment } from "react-relay"
 import { InquiryButtonsFragmentContainer } from "./CommercialButtons/InquiryButtons"
 

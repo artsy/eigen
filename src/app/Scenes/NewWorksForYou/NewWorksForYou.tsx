@@ -58,13 +58,19 @@ export const NewWorksForYouFragmentContainer = createPaginationContainer(
   {
     viewer: graphql`
       fragment NewWorksForYou_viewer on Viewer
-      @argumentDefinitions(count: { type: "Int", defaultValue: 100 }, cursor: { type: "String" }) {
+      @argumentDefinitions(
+        count: { type: "Int", defaultValue: 100 }
+        cursor: { type: "String" }
+        includeBackfill: { type: "Boolean!" }
+        version: { type: "String" }
+        maxWorksPerArtist: { type: "Int" }
+      ) {
         artworks: artworksForUser(
           after: $cursor
           first: $count
-          includeBackfill: true
-          maxWorksPerArtist: 3
-          version: $worksForYouRecommendationsModelVariant
+          includeBackfill: $includeBackfill
+          maxWorksPerArtist: $maxWorksPerArtist
+          version: $version
         ) @connection(key: "NewWorksForYou_artworks") {
           edges {
             node {
@@ -97,10 +103,19 @@ export const NewWorksForYouFragmentContainer = createPaginationContainer(
       query NewWorksForYouRefetchQuery(
         $cursor: String
         $count: Int!
-        $worksForYouRecommendationsModelVariant: String!
+        $version: String
+        $includeBackfill: Boolean!
+        $maxWorksPerArtist: Int
       ) {
         viewer {
-          ...NewWorksForYou_viewer @arguments(cursor: $cursor, count: $count)
+          ...NewWorksForYou_viewer
+            @arguments(
+              cursor: $cursor
+              count: $count
+              includeBackfill: $includeBackfill
+              version: $version
+              maxWorksPerArtist: $maxWorksPerArtist
+            )
         }
       }
     `,
@@ -108,17 +123,45 @@ export const NewWorksForYouFragmentContainer = createPaginationContainer(
 )
 
 export const NewWorksForYouScreenQuery = graphql`
-  query NewWorksForYouQuery($worksForYouRecommendationsModelVariant: String!) {
+  query NewWorksForYouQuery($includeBackfill: Boolean!, $version: String, $maxWorksPerArtist: Int) {
     viewer {
       ...NewWorksForYou_viewer
+        @arguments(
+          includeBackfill: $includeBackfill
+          version: $version
+          maxWorksPerArtist: $maxWorksPerArtist
+        )
     }
   }
 `
 
-export const NewWorksForYouQueryRenderer: React.FC = () => {
+interface NewWorksForYouQueryRendererProps {
+  utm_medium?: string
+  includeBackfill?: boolean
+  maxWorksPerArtist?: number
+  version?: string
+}
+
+export const NewWorksForYouQueryRenderer: React.FC<NewWorksForYouQueryRendererProps> = ({
+  utm_medium,
+  includeBackfill = true,
+  maxWorksPerArtist = 3,
+  version: versionProp,
+}) => {
   const worksForYouRecommendationsModel = useExperimentVariant(RECOMMENDATION_MODEL_EXPERIMENT_NAME)
 
+  const isReferredFromEmail = utm_medium === "email"
+
+  // Use the version specified in the URL or no version if the screen is opened from the email.
+  const version = isReferredFromEmail
+    ? versionProp?.toUpperCase() || undefined
+    : worksForYouRecommendationsModel.payload || DEFAULT_RECS_MODEL_VERSION
+
   useEffect(() => {
+    if (isReferredFromEmail) {
+      return
+    }
+
     maybeReportExperimentVariant({
       experimentName: RECOMMENDATION_MODEL_EXPERIMENT_NAME,
       enabled: worksForYouRecommendationsModel.enabled,
@@ -135,8 +178,9 @@ export const NewWorksForYouQueryRenderer: React.FC = () => {
       environment={defaultEnvironment}
       query={NewWorksForYouScreenQuery}
       variables={{
-        worksForYouRecommendationsModelVariant:
-          worksForYouRecommendationsModel.payload || DEFAULT_RECS_MODEL_VERSION,
+        version,
+        includeBackfill,
+        maxWorksPerArtist,
       }}
       render={renderWithPlaceholder({
         Container: NewWorksForYouFragmentContainer,

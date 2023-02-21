@@ -1,6 +1,6 @@
-import { Flex, SpacingUnitDSValueNumber, useSpace } from "@artsy/palette-mobile"
+import { Flex, SpacingUnitDSValueNumber, useSpace, Text } from "@artsy/palette-mobile"
 import SearchIcon from "app/Components/Icons/SearchIcon"
-import { Input, INPUT_HEIGHT, InputProps, InputRef, Text } from "palette"
+import { Input, INPUT_HEIGHT, InputProps, InputRef } from "palette"
 import { forwardRef, useImperativeHandle, useRef, useState } from "react"
 import { TouchableOpacity, useWindowDimensions } from "react-native"
 import Animated, {

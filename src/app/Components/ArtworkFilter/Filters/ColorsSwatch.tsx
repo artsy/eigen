@@ -1,6 +1,5 @@
-import { CheckIcon, Box } from "@artsy/palette-mobile"
+import { CheckIcon, Box, Text } from "@artsy/palette-mobile"
 import { TouchableRow, TouchableRowProps } from "app/Components/TouchableRow"
-import { Text } from "palette"
 
 type ColorsSwatchProps = TouchableRowProps & {
   width: number

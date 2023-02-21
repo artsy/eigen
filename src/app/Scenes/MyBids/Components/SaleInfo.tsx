@@ -1,8 +1,7 @@
-import { BoltFill, IconProps, Stopwatch, Flex, Box } from "@artsy/palette-mobile"
+import { BoltFill, IconProps, Stopwatch, Flex, Box, Text } from "@artsy/palette-mobile"
 import { TimelySale } from "app/Scenes/MyBids/helpers/timely"
 import { DateTime } from "luxon"
 import ordinal from "ordinal"
-import { Text } from "palette"
 
 export const SaleInfo = ({
   sale,

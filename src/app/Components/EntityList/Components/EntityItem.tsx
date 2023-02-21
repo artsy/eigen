@@ -1,4 +1,4 @@
-import { Text } from "palette"
+import { Text } from "@artsy/palette-mobile"
 import { TouchableOpacity } from "react-native"
 
 export interface Item {
@@ -30,7 +30,7 @@ export const EntityItem: React.FC<EntityItemProps> = ({
   return (
     // FIXME: Should this be a slug or internalID?
     <TouchableOpacity onPress={() => onPress(href, slug, internalID)}>
-      <Text variant="sm" weight="medium" lineHeight="19">
+      <Text variant="sm" weight="medium" lineHeight="19px">
         {text}
       </Text>
     </TouchableOpacity>

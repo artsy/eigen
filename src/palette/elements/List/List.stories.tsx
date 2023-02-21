@@ -1,8 +1,7 @@
-import { Spacer, Flex } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { storiesOf } from "@storybook/react-native"
 import { List } from "storybook/helpers"
 import { BulletedItem } from "."
-import { Text } from ".."
 
 storiesOf("List", module).add("Bulleted Item", () => (
   <List>

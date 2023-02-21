@@ -1,3 +1,4 @@
+import { Text } from "@artsy/palette-mobile"
 import MultiSlider from "@ptomasroos/react-native-multi-slider"
 import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
@@ -7,7 +8,6 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Text } from "palette"
 import { act } from "react-test-renderer"
 import { ALLOW_EMPTY_CREATED_DATES_FILTER, OptionItem, YearOptionsScreen } from "./YearOptions"
 import { getEssentialProps } from "./helper"

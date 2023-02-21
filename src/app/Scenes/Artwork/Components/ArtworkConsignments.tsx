@@ -1,8 +1,8 @@
+import { Text, LinkText } from "@artsy/palette-mobile"
 import { ArtworkConsignments_artwork$key } from "__generated__/ArtworkConsignments_artwork.graphql"
 import { useSelectedTab } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
-import { LinkText, Text } from "palette"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 

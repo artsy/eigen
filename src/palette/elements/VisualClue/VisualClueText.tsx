@@ -1,5 +1,5 @@
-import { Flex, useColor } from "@artsy/palette-mobile"
-import { PopIn, Text } from "palette"
+import { Flex, useColor, Text } from "@artsy/palette-mobile"
+import { PopIn } from "palette"
 import { StyleProp, ViewStyle } from "react-native"
 
 const WRAPPER_WIDTH = 56

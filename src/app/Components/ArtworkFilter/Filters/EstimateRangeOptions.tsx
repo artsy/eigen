@@ -1,3 +1,4 @@
+import { Text } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
 import { AggregateOption, FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
@@ -6,7 +7,7 @@ import {
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { Separator, Text } from "palette"
+import { Separator } from "palette"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 type PriceRangeOptionsScreenProps = StackScreenProps<

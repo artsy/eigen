@@ -1,6 +1,6 @@
-import { ArtsyLogoBlackIcon, Flex, Box } from "@artsy/palette-mobile"
+import { ArtsyLogoBlackIcon, Flex, Box, Text } from "@artsy/palette-mobile"
 import { goBack } from "app/system/navigation/navigate"
-import { Button, Text } from "palette"
+import { Button } from "palette"
 
 export const RequestForPriceEstimateConfirmationScreen: React.FC<{}> = () => {
   return (

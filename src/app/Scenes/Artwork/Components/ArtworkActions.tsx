@@ -8,6 +8,7 @@ import {
   Flex,
   Box,
   ClassTheme,
+  Text,
 } from "@artsy/palette-mobile"
 import { ArtworkActionsSaveMutation } from "__generated__/ArtworkActionsSaveMutation.graphql"
 import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
@@ -17,7 +18,7 @@ import { cm2in } from "app/utils/conversions"
 import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { Schema, track } from "app/utils/track"
 import { take } from "lodash"
-import { Text, Touchable } from "palette"
+import { Touchable } from "palette"
 import React from "react"
 import { StyleSheet, TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"

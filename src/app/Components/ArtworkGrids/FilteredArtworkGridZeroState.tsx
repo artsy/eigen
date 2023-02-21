@@ -1,6 +1,6 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { Button, Text } from "palette"
+import { Button } from "palette"
 
 export interface ZeroStateProps {
   id?: string
@@ -16,7 +16,7 @@ export const FilteredArtworkGridZeroState: React.FC<ZeroStateProps> = (props) =>
   )
 
   return (
-    <Flex flexDirection="column" px={4}>
+    <Flex flexDirection="column" alignItems="center" px={4}>
       <Text textAlign="center" color="black100" variant="sm">
         No results found{"\n"}Please try another search.
       </Text>

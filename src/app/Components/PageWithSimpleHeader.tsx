@@ -1,5 +1,5 @@
-import { Flex, Box } from "@artsy/palette-mobile"
-import { Separator, Text } from "palette"
+import { Flex, Box, Text } from "@artsy/palette-mobile"
+import { Separator } from "palette"
 import { View } from "react-native"
 
 export const PageWithSimpleHeader: React.FC<{

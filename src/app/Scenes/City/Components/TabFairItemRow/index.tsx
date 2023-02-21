@@ -1,8 +1,7 @@
-import { Flex, Box, ClassTheme } from "@artsy/palette-mobile"
+import { Flex, Box, ClassTheme, Text } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Fair } from "app/Scenes/Map/types"
 import { navigate } from "app/system/navigation/navigate"
-import { Text } from "palette"
 import React from "react"
 import { Dimensions, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
@@ -62,7 +61,7 @@ export class TabFairItemRow extends React.Component<Props> {
 }
 
 const RoundedImageWrapper = styled(Box)`
-  width: 58;
-  border-radius: 30;
+  width: 58px;
+  border-radius: 30px;
   overflow: hidden;
 `

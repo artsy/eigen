@@ -4,7 +4,7 @@ import styled from "styled-components/native"
 const Header = styled.View`
   padding: 10px;
   padding-top: 25px;
-  padding-bottom: 0;
+  padding-bottom: 0px;
   margin-bottom: -4px;
   background-color: white;
 `

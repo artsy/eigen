@@ -1,4 +1,4 @@
-import { Spacer, Flex, Box } from "@artsy/palette-mobile"
+import { Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import MapboxGL from "@react-native-mapbox-gl/maps"
 import { themeGet } from "@styled-system/theme-get"
@@ -6,7 +6,6 @@ import { PartnerMap_location$data } from "__generated__/PartnerMap_location.grap
 import { Pin } from "app/Components/Icons/Pin"
 import { cityAndPostalCode, tappedOnMap } from "app/Components/LocationMap/LocationMap"
 import { ArtsyMapStyleURL } from "app/Scenes/Map/GlobalMap"
-import { Text } from "palette"
 import { TouchableOpacity } from "react-native"
 import Config from "react-native-config"
 import { createFragmentContainer, graphql } from "react-relay"

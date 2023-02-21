@@ -5,11 +5,12 @@ import {
   AlertCircleFillIcon,
   IconProps,
   Flex,
+  Text,
+  Color,
 } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { useEventTiming } from "app/utils/useEventTiming"
 import { DateTime } from "luxon"
-import { Color, Text } from "palette"
 import { TouchableWithoutFeedback } from "react-native"
 import { useTracking } from "react-tracking"
 

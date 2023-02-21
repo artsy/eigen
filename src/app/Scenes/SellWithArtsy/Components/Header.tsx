@@ -5,10 +5,10 @@ import {
   TappedConsignArgs,
   TappedConsignmentInquiry,
 } from "@artsy/cohesion"
-import { Spacer, Flex } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { Button, Text } from "palette"
-import { ImageBackground } from "react-native"
+import { Button } from "palette"
+import { Image, ImageBackground } from "react-native"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
 
@@ -24,6 +24,8 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ onConsignPress, onInquiryPress }) => {
+  const enableNewSWALandingPage = useFeatureFlag("AREnableNewSWALandingPage")
+
   const { trackEvent } = useTracking()
   const handleSubmitPress = () => {
     onConsignPress(consignArgs)
@@ -33,10 +35,21 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress, onInquiryPress }
     trackEvent(tracks.consignmentInquiryTapped())
     onInquiryPress()
   }
+
+  return enableNewSWALandingPage ? (
+    <NewHeader handleInquiryPress={handleInquiryPress} handleSubmitPress={handleSubmitPress} />
+  ) : (
+    <OldHeader handleInquiryPress={handleInquiryPress} handleSubmitPress={handleSubmitPress} />
+  )
+}
+
+const OldHeader: React.FC<{ handleInquiryPress: () => void; handleSubmitPress: () => void }> = ({
+  handleInquiryPress,
+  handleSubmitPress,
+}) => {
   const screenDimensions = useScreenDimensions()
 
   const enableInquiry = useFeatureFlag("AREnableConsignmentInquiry")
-
   return (
     <ImageBackground
       style={{ height: 430, width: screenDimensions.width }}
@@ -87,6 +100,39 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress, onInquiryPress }
         </Text>
       </Flex>
     </ImageBackground>
+  )
+}
+
+const NewHeader: React.FC<{ handleInquiryPress: () => void; handleSubmitPress: () => void }> = ({
+  handleInquiryPress,
+  handleSubmitPress,
+}) => {
+  return (
+    <>
+      <Image
+        source={require("images/swa-landing-page-header.png")}
+        style={{ width: "100%" }}
+        resizeMode="contain"
+      />
+
+      <Flex mx={2} mt={1}>
+        <Text variant="xl" mb={1}>
+          Sell art from your collection
+        </Text>
+        <Text variant="xs" mb={2}>
+          With our global reach and art market expertise, our specialists will find the right buyer
+          for your work.
+        </Text>
+        <Flex justifyContent="center" alignItems="center">
+          <Button block onPress={handleSubmitPress} my={1} variant="fillDark">
+            Start Selling
+          </Button>
+          <Button block onPress={handleInquiryPress} my={1} variant="outline">
+            Get in Touch
+          </Button>
+        </Flex>
+      </Flex>
+    </>
   )
 }
 

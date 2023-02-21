@@ -1,6 +1,5 @@
-import { Spacer, Flex, useTheme } from "@artsy/palette-mobile"
+import { Spacer, Flex, useTheme, Text } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { Text } from "palette"
 import { View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 

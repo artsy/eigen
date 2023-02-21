@@ -1,8 +1,7 @@
-import { Spacer, Flex, useColor } from "@artsy/palette-mobile"
+import { Spacer, Flex, useColor, Text } from "@artsy/palette-mobile"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { BMWSponsorship } from "app/Scenes/City/CityBMWSponsorship"
 import { navigate } from "app/system/navigation/navigate"
-import { Text } from "palette"
 import { Image, TouchableOpacity } from "react-native"
 
 export const CityGuideCTA: React.FC = () => {

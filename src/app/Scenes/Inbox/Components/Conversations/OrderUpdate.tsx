@@ -1,8 +1,16 @@
-import { Spacer, MoneyFillIcon, AlertCircleFillIcon, IconProps, Flex } from "@artsy/palette-mobile"
+import {
+  Spacer,
+  MoneyFillIcon,
+  AlertCircleFillIcon,
+  IconProps,
+  Flex,
+  Text,
+  LinkText,
+  Color,
+} from "@artsy/palette-mobile"
 import { OrderUpdate_event$data } from "__generated__/OrderUpdate_event.graphql"
 
 import { navigate } from "app/system/navigation/navigate"
-import { Color, LinkText, Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TimeSince } from "./TimeSince"
 

@@ -1,6 +1,6 @@
-import { Spacer, TriangleDown, Flex, useColor } from "@artsy/palette-mobile"
+import { Spacer, TriangleDown, Flex, useColor, Text } from "@artsy/palette-mobile"
 import { ThemeV3 } from "@artsy/palette-tokens"
-import { InputProps, InputRef, Text, Touchable } from "palette"
+import { InputProps, InputRef, Touchable } from "palette"
 import {
   INTERNALSelectAndInputCombinationBase,
   ValuePayload,

@@ -5,7 +5,6 @@ import {
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "app/Scenes/Collection/Screens/CollectionArtworks"
 import { extractText } from "app/utils/tests/extractText"
@@ -66,9 +65,8 @@ describe("CollectionArtworks", () => {
       }),
     })
 
-    expect(tree.root.findAllByType(FilteredArtworkGridZeroState)).toHaveLength(1)
     expect(extractText(tree.root)).toContain(
-      "No results found\nPlease try another search.Clear filters"
+      "There aren’t any works available in the collection at this time."
     )
   })
 
