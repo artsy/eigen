@@ -7,7 +7,8 @@ import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/Filter
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { get } from "app/utils/get"
 import { Schema } from "app/utils/track"
-import React, { useEffect } from "react"
+import { SimpleMessage } from "palette"
+import React, { useEffect, useRef } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -35,6 +36,7 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({
   const { isDepartment } = collection
   const artworks = get(collection, (p) => p.collectionArtworks)
   const artworksTotal = artworks?.counts?.total
+  const initialArtworksTotal = useRef(artworksTotal)
 
   const setFiltersCountAction = ArtworksFiltersStore.useStoreActions(
     (action) => action.setFiltersCountAction
@@ -56,6 +58,16 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({
       context_screen_owner_slug: slug,
       action_type: Schema.ActionTypes.Tap,
     })
+  }
+
+  if (initialArtworksTotal.current === 0) {
+    return (
+      <Box my={1}>
+        <SimpleMessage>
+          There aren’t any works available in the collection at this time.
+        </SimpleMessage>
+      </Box>
+    )
   }
 
   if (artworksTotal === 0) {
