@@ -1396,6 +1396,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   deathday: String
   disablePriceContext: Boolean
   displayLabel: String
+  displayName: String
   duplicates: [Artist]
 
   # Custom-sorted list of shows for an artist, in order of significance.
@@ -1464,6 +1465,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     tagID: String
     width: String
   ): FilterArtworksConnection
+  first: String
 
   # A string showing the total number of works and those for sale
   formattedArtworksCount: String
@@ -1511,6 +1513,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   isPersonalArtist: Boolean
   isPublic: Boolean
   isShareable: Boolean
+  last: String
   location: String
   marketingCollections(
     category: String
@@ -1519,6 +1522,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     slugs: [String!]
   ): [MarketingCollection]
   meta: ArtistMeta
+  middle: String
   name: String
   nationality: String
   partnerArtists(
@@ -2482,6 +2486,43 @@ type ArtworkPriceInsights {
 type ArtworksAggregationResults {
   counts: [AggregationCount]
   slice: ArtworkAggregation
+}
+
+type ArtworksCollectionsBatchUpdateCounts {
+  addedToCollections: Int
+  artworks: Int
+  removedFromCollections: Int
+}
+
+type ArtworksCollectionsBatchUpdateFailure {
+  mutationError: GravityMutationError
+}
+
+input ArtworksCollectionsBatchUpdateInput {
+  # Collection ids. To which collections to add artworks.
+  addToCollectionIDs: [String!]
+
+  # Artwork ids or slugs.
+  artworkIDs: [String!]!
+  clientMutationId: String
+
+  # Collection ids. From which collections to remove artworks.
+  removeFromCollectionIDs: [String!]
+}
+
+type ArtworksCollectionsBatchUpdatePayload {
+  clientMutationId: String
+  responseOrError: ArtworksCollectionsBatchUpdateResponseOrError
+}
+
+union ArtworksCollectionsBatchUpdateResponseOrError =
+    ArtworksCollectionsBatchUpdateFailure
+  | ArtworksCollectionsBatchUpdateSuccess
+
+type ArtworksCollectionsBatchUpdateSuccess {
+  addedToCollections: [Collection]
+  counts: ArtworksCollectionsBatchUpdateCounts
+  removedFromCollections: [Collection]
 }
 
 enum ArtworkSizes {
@@ -3532,6 +3573,9 @@ type Collection {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+
+  # Checking whether artwork is included in collection
+  isSavedArtwork(artworkID: String!): Boolean!
 
   # Name of the collection. Has a predictable value for 'standard' collections
   # such as Saved Artwork, My Collection, etc. Can be provided by user otherwise.
@@ -6764,6 +6808,9 @@ type Conversation implements Node {
   # Gravity inquiry id.
   inquiryID: String
 
+  # The inquiry request associated with the conversation.
+  inquiryRequest: PartnerInquiryRequest
+
   # An optional type-specific ID.
   internalID: ID
 
@@ -9074,6 +9121,7 @@ input FollowArtistInput {
 type FollowArtistPayload {
   artist: Artist
   clientMutationId: String
+  me: Me!
 
   # Popular artists
   popularArtists(
@@ -10494,6 +10542,10 @@ type MarkAllNotificationsAsReadSuccess {
   success: Boolean
 }
 
+type MarkdownContent {
+  content(format: Format): String
+}
+
 type MarketingCollection {
   artworksConnection(
     acquireable: Boolean
@@ -10907,6 +10959,7 @@ type Me implements Node {
     toBeReplied: Boolean
     type: ConversationsInputMode = USER
   ): ConversationConnection
+  counts: MeCounts
   createdAt(
     format: String
 
@@ -11222,6 +11275,11 @@ type Me implements Node {
   watchedLotConnection(after: String, before: String, first: Int, last: Int): LotConnection
 }
 
+type MeCounts {
+  followedArtists: Int!
+  savedArtworks: Int!
+}
+
 type MergeArtistsFailure {
   mutationError: GravityMutationError
 }
@@ -11411,6 +11469,11 @@ type Mutation {
 
   # Updates a feature flag
   adminUpdateFeatureFlag(input: AdminUpdateFeatureFlagInput!): AdminUpdateFeatureFlagPayload
+
+  # Add / remove artworks to / from collections
+  artworksCollectionsBatchUpdate(
+    input: ArtworksCollectionsBatchUpdateInput!
+  ): ArtworksCollectionsBatchUpdatePayload
 
   # Update all artworks that belong to the partner
   bulkUpdatePartnerArtworks(
@@ -11784,6 +11847,9 @@ type Mutation {
   ): UnlinkAuthenticationMutationPayload
   unpublishViewingRoom(input: UnpublishViewingRoomInput!): UnpublishViewingRoomPayload
   updateAppSecondFactor(input: UpdateAppSecondFactorInput!): UpdateAppSecondFactorPayload
+
+  # Update the artist
+  updateArtist(input: UpdateArtistMutationInput!): UpdateArtistMutationPayload
 
   # Updates an artwork.
   updateArtwork(input: UpdateArtworkMutationInput!): UpdateArtworkMutationPayload
@@ -12939,6 +13005,14 @@ type PartnerEdge {
 
 type PartnerInquiryRequest {
   collectorProfile: InquirerCollectorProfile
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  questions: [InquiryQuestion]
+  shippingLocation: Location
 }
 
 # A location
@@ -14091,6 +14165,7 @@ type Query {
   ): IdentityVerificationConnection
   job(id: ID!): Job!
   jobs: [Job!]!
+  markdown(content: String!): MarkdownContent
   marketingCategories: [MarketingCollectionCategory!]!
 
   # Find a marketing collection by ID or slug
@@ -14641,10 +14716,16 @@ type QuizArtworkEdge {
   position: Int!
 }
 
+type RecenltySoldArtworkPerformance {
+  # Percentage performance over mid-estimate
+  mid: String
+}
+
 type RecentlySoldArtworkType {
   artwork: Artwork
   highEstimate: Money
   lowEstimate: Money
+  performance: RecenltySoldArtworkPerformance
   priceRealized: Money
 }
 
@@ -15401,6 +15482,7 @@ input SaveArtworkInput {
 type SaveArtworkPayload {
   artwork: Artwork
   clientMutationId: String
+  me: Me!
 }
 
 # A connection to a list of items.
@@ -16534,6 +16616,31 @@ type UpdateAppSecondFactorPayload {
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
   secondFactorOrErrors: AppSecondFactorOrErrorsUnion!
+}
+
+type UpdateArtistFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateArtistMutationInput {
+  clientMutationId: String
+  displayName: String
+  first: String
+  id: String!
+  last: String
+  middle: String
+}
+
+type UpdateArtistMutationPayload {
+  # On success: the updated artist
+  artistOrError: UpdateArtistResponseOrError
+  clientMutationId: String
+}
+
+union UpdateArtistResponseOrError = UpdateArtistFailure | UpdateArtistSuccess
+
+type UpdateArtistSuccess {
+  artist: Artist
 }
 
 type updateArtworkFailure {
@@ -18265,6 +18372,7 @@ type Viewer {
   ): IdentityVerificationConnection
   job(id: ID!): Job!
   jobs: [Job!]!
+  markdown(content: String!): MarkdownContent
   marketingCollections(
     artistID: String
     category: String
