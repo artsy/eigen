@@ -482,10 +482,6 @@ export const ArtworkContainer = createRefetchContainer(
       fragment Artwork_artworkAboveTheFold on Artwork {
         ...ArtworkScreenHeader_artwork
         ...ArtworkHeader_artwork
-        ...CommercialInformation_artwork
-        ...FaqAndSpecialistSection_artwork
-        ...CreateArtworkAlertSection_artwork
-        ...PartnerLink_artwork
         ...ArtworkLotDetails_artwork
         ...ArtworkStickyBottomContent_artwork
         ...ArtworkDetails_artwork
@@ -589,7 +585,6 @@ export const ArtworkContainer = createRefetchContainer(
     `,
     me: graphql`
       fragment Artwork_me on Me {
-        ...CommercialInformation_me
         ...ArtworkStickyBottomContent_me
       }
     `,
