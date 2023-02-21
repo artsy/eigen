@@ -355,7 +355,6 @@ export const modules = defineModules({
     Artwork,
     {
       hidesBackButton: true,
-      // Only when ARArtworkRedesingPhase2 feature flag is enabled
       hidesBottomTabs: true,
     },
     [ArtworkScreenQuery]

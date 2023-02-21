@@ -2,7 +2,6 @@ import { findFocusedRoute, Route, useIsFocused, useNavigationState } from "@reac
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { AppModule, modules } from "app/AppRegistry"
 import { useBottomTabBarHeight } from "app/Scenes/BottomTabs/useBottomTabBarHeight"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { isPad } from "app/utils/hardware"
 import { createContext, useState } from "react"
 import { View } from "react-native"
@@ -78,7 +77,6 @@ export const NavStack: React.FC<{
   rootModuleProps?: any
 }> = ({ id, rootModuleName, rootModuleProps }) => {
   const bottomTabBarHeight = useBottomTabBarHeight()
-  const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
   const initialParams: ScreenProps = {
     moduleName: rootModuleName,
     props: rootModuleProps,
@@ -101,7 +99,7 @@ export const NavStack: React.FC<{
           orientation: isPad() ? "default" : "portrait",
         }
 
-        if (isPresentedModally || (enableArtworkRedesign && module?.options?.hidesBottomTabs)) {
+        if (isPresentedModally || module?.options?.hidesBottomTabs) {
           options.contentStyle.marginBottom = 0
         }
 
