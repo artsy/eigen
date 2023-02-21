@@ -4,8 +4,7 @@
   "recommendations": [
     "Orta.vscode-ios-common-files",
     "artsy.artsy-studio-extension-pack",
-    "meta.relay",
-    "artsy.palette-mobile"
+    "meta.relay"
   ],
   "unwantedRecommendations": ["prisma.vscode-graphql"]
 }
