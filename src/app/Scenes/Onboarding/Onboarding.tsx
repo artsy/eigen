@@ -1,4 +1,4 @@
-import { NavigationContainer } from "@react-navigation/native"
+import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import {
   CardStyleInterpolators,
   createStackNavigator,
@@ -7,6 +7,7 @@ import {
 import { FPSCounter } from "app/Components/FPSCounter"
 import { OAuthProvider } from "app/store/AuthModel"
 import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
+import { DevMenu as DevMenuDefault } from "app/utils/DevMenu"
 import { NetworkAwareProvider } from "app/utils/NetworkAwareProvider"
 import { Platform, View } from "react-native"
 import { ArtsyKeyboardAvoidingViewContext } from "shared/utils"
@@ -43,6 +44,8 @@ export type OnboardingNavigationStack = {
   }
   ForgotPassword: undefined
   OnboardingWebView: { url: OnboardingWebViewRoute }
+
+  DevMenu: undefined
 }
 
 declare global {
@@ -55,57 +58,79 @@ declare global {
 
 const StackNavigator = createStackNavigator<OnboardingNavigationStack>()
 
+export const __unsafe__onboardingNavigationRef: React.MutableRefObject<NavigationContainerRef<any> | null> =
+  {
+    current: null,
+  }
+
 export const OnboardingWelcomeScreens = () => {
+  const userIsDev = GlobalStore.useAppState((s) => s.artsyPrefs.userIsDev.value)
+
   return (
-    <NavigationContainer independent>
+    <NavigationContainer independent ref={__unsafe__onboardingNavigationRef}>
       <StackNavigator.Navigator
         initialRouteName="OnboardingWelcome"
         screenOptions={{
-          ...TransitionPresets.SlideFromRightIOS,
           headerShown: false,
           headerMode: "screen",
         }}
       >
-        <StackNavigator.Screen name="OnboardingWelcome" component={OnboardingWelcome} />
-        <StackNavigator.Screen
-          name="OnboardingLogin"
-          component={OnboardingLogin}
-          options={({ route: { params } }) => ({
-            cardStyleInterpolator: params?.withFadeAnimation
-              ? CardStyleInterpolators.forFadeFromBottomAndroid
-              : CardStyleInterpolators.forHorizontalIOS,
-          })}
-        />
-        <StackNavigator.Screen
-          name="OnboardingLoginWithEmail"
-          component={OnboardingLoginWithEmail}
-          options={({ route: { params } }) => ({
-            cardStyleInterpolator: params?.withFadeAnimation
-              ? CardStyleInterpolators.forFadeFromBottomAndroid
-              : CardStyleInterpolators.forHorizontalIOS,
-          })}
-        />
-        <StackNavigator.Screen name="OnboardingLoginWithOTP" component={OnboardingLoginWithOTP} />
-        <StackNavigator.Screen
-          name="OnboardingCreateAccount"
-          component={OnboardingCreateAccount}
-          options={({ route: { params } }) => ({
-            cardStyleInterpolator: params?.withFadeAnimation
-              ? CardStyleInterpolators.forFadeFromBottomAndroid
-              : CardStyleInterpolators.forHorizontalIOS,
-          })}
-        />
-        <StackNavigator.Screen
-          name="OnboardingCreateAccountWithEmail"
-          component={OnboardingCreateAccountWithEmail}
-        />
-        <StackNavigator.Screen name="OnboardingSocialLink" component={OnboardingSocialLink} />
-        <StackNavigator.Screen name="ForgotPassword" component={ForgotPassword} />
-        <StackNavigator.Screen name="OnboardingWebView" component={OnboardingWebView} />
+        <StackNavigator.Group screenOptions={{ ...TransitionPresets.SlideFromRightIOS }}>
+          <StackNavigator.Screen name="OnboardingWelcome" component={OnboardingWelcome} />
+          <StackNavigator.Screen
+            name="OnboardingLogin"
+            component={OnboardingLogin}
+            options={({ route: { params } }) => ({
+              cardStyleInterpolator: params?.withFadeAnimation
+                ? CardStyleInterpolators.forFadeFromBottomAndroid
+                : CardStyleInterpolators.forHorizontalIOS,
+            })}
+          />
+          <StackNavigator.Screen
+            name="OnboardingLoginWithEmail"
+            component={OnboardingLoginWithEmail}
+            options={({ route: { params } }) => ({
+              cardStyleInterpolator: params?.withFadeAnimation
+                ? CardStyleInterpolators.forFadeFromBottomAndroid
+                : CardStyleInterpolators.forHorizontalIOS,
+            })}
+          />
+          <StackNavigator.Screen name="OnboardingLoginWithOTP" component={OnboardingLoginWithOTP} />
+          <StackNavigator.Screen
+            name="OnboardingCreateAccount"
+            component={OnboardingCreateAccount}
+            options={({ route: { params } }) => ({
+              cardStyleInterpolator: params?.withFadeAnimation
+                ? CardStyleInterpolators.forFadeFromBottomAndroid
+                : CardStyleInterpolators.forHorizontalIOS,
+            })}
+          />
+          <StackNavigator.Screen
+            name="OnboardingCreateAccountWithEmail"
+            component={OnboardingCreateAccountWithEmail}
+          />
+          <StackNavigator.Screen name="OnboardingSocialLink" component={OnboardingSocialLink} />
+          <StackNavigator.Screen name="ForgotPassword" component={ForgotPassword} />
+          <StackNavigator.Screen name="OnboardingWebView" component={OnboardingWebView} />
+        </StackNavigator.Group>
+
+        <StackNavigator.Group screenOptions={{ presentation: "modal" }}>
+          {userIsDev && (
+            <StackNavigator.Screen
+              name="DevMenu"
+              component={DevMenu}
+              options={{ presentation: "modal", cardStyle: { backgroundColor: "white" } }}
+            />
+          )}
+        </StackNavigator.Group>
       </StackNavigator.Navigator>
     </NavigationContainer>
   )
 }
+
+const DevMenu = () => (
+  <DevMenuDefault onClose={() => __unsafe__onboardingNavigationRef.current?.goBack()} />
+)
 export const Onboarding = () => {
   const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
   const fpsCounter = useDevToggle("DTFPSCounter")
