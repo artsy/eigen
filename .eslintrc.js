@@ -53,8 +53,8 @@ module.exports = {
     "import/no-duplicates": ERR,
     "react/jsx-curly-brace-presence": ERR,
     "react-hooks/rules-of-hooks": ERR,
-    "unused-imports/no-unused-imports": ERR, // look below
-    "no-autofix/unused-imports/no-unused-imports": OFF,
+    "unused-imports/no-unused-imports": OFF, // look below
+    "no-autofix/unused-imports/no-unused-imports": ERR,
     /**
      * Warnings
      */
