@@ -11,6 +11,9 @@ const contextMock: Parameters<typeof useNewImageCarouselContext>[0] = {
       width: 5,
       url: "a",
       largeImageURL: "a",
+      resized: {
+        src: "a",
+      },
       deepZoom: {
         image: { url: "", format: "", tileSize: 300, size: { width: 302, height: 302 } },
       },
@@ -21,6 +24,9 @@ const contextMock: Parameters<typeof useNewImageCarouselContext>[0] = {
       width: 5,
       url: "b",
       largeImageURL: "b",
+      resized: {
+        src: "b",
+      },
       deepZoom: {
         image: { url: "", format: "", tileSize: 300, size: { width: 302, height: 302 } },
       },
@@ -80,6 +86,9 @@ describe("ImageCarouselEmbedded", () => {
           height: 302,
           url: "https://example.com/image.jpg",
           largeImageURL: "https://example.com/image.jpg",
+          resized: {
+            src: "https://example.com/image.jpg",
+          },
           width: 40,
         },
       ],

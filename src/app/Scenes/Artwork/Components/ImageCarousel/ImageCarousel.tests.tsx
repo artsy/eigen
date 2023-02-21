@@ -419,6 +419,9 @@ const localImages: CarouselImageDescriptor[] = [
     internalID: "1",
     url: "file:///this/is/not/a/real/image.jpg",
     largeImageURL: "file:///this/is/not/a/real/image.jpg",
+    resized: {
+      src: "file:///this/is/not/a/real/image.jpg",
+    },
     width: 2800,
     height: 2100,
     deepZoom: null,
@@ -427,6 +430,9 @@ const localImages: CarouselImageDescriptor[] = [
     internalID: "2",
     url: "file:///this/is/not/a/real/image.jpg",
     largeImageURL: "file:///this/is/not/a/real/image.jpg",
+    resized: {
+      src: "file:///this/is/not/a/real/image.jpg",
+    },
     width: 2800,
     height: 2100,
     deepZoom: null,
@@ -435,6 +441,9 @@ const localImages: CarouselImageDescriptor[] = [
     internalID: "3",
     url: "file:///this/is/not/a/real/image.jpg",
     largeImageURL: "file:///this/is/not/a/real/image.jpg",
+    resized: {
+      src: "file:///this/is/not/a/real/image.jpg",
+    },
     width: 2800,
     height: 2100,
     deepZoom: null,

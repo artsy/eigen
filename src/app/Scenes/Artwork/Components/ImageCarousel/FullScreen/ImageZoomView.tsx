@@ -363,7 +363,7 @@ export const ImageZoomView =
             >
               <OpaqueImageView
                 noAnimation
-                imageURL={image.url}
+                imageURL={image.resized?.src || image.url}
                 useRawURL
                 style={{
                   width: imageFittedWithinScreen.width,
