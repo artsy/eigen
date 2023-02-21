@@ -1,9 +1,5 @@
 import { SpacingUnit, Flex, Text } from "@artsy/palette-mobile"
 import { CollectionsRail_collectionsModule$data } from "__generated__/CollectionsRail_collectionsModule.graphql"
-import {
-  CardRailCard,
-  CardRailMetadataContainer as MetadataContainer,
-} from "app/Components/Home/CardRailCard"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { TouchableWithoutFeedback } from "react-native"
@@ -76,16 +72,16 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
             >
               <View>
                 <FiveUpImageLayout imageURLs={artworkImageURLs} />
-                <MetadataContainer>
-                  <Text variant="sm" numberOfLines={1} weight="medium">
+                <Flex mt={1}>
+                  <Text variant="sm-display" numberOfLines={1} weight="medium">
                     {result?.title}
                   </Text>
-                  <Text variant="sm" numberOfLines={1} color="black60">
+                  <Text variant="xs" numberOfLines={1} color="black60">
                     {result?.artworksConnection?.counts?.total
                       ? `${result.artworksConnection.counts.total} works`
                       : ""}
                   </Text>
-                </MetadataContainer>
+                </Flex>
               </View>
             </TouchableWithoutFeedback>
           )
@@ -101,7 +97,7 @@ export const CollectionsRailFragmentContainer = createFragmentContainer(Collecti
       results {
         title
         slug
-        artworksConnection(first: 3) {
+        artworksConnection(first: 5) {
           counts {
             total
           }

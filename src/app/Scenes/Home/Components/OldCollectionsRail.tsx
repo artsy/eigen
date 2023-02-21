@@ -100,7 +100,7 @@ export const OldCollectionsRailFragmentContainer = createFragmentContainer(OldCo
       results {
         title
         slug
-        artworksConnection(first: 3) {
+        artworksConnection(first: 5) {
           counts {
             total
           }
