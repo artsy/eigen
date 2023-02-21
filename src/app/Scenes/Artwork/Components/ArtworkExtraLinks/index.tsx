@@ -62,7 +62,6 @@ const ConsignmentsLink: React.FC<{ artistName: string }> = ({ artistName }) => {
 export const ArtworkExtraLinksFragmentContainer = createFragmentContainer(ArtworkExtraLinks, {
   artwork: graphql`
     fragment ArtworkExtraLinks_artwork on Artwork {
-      ...FaqAndSpecialistSection_artwork
       isAcquireable
       isInAuction
       isOfferable
