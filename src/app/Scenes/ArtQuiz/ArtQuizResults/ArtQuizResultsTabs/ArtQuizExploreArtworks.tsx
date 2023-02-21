@@ -1,4 +1,4 @@
-import { Flex, Spinner } from "@artsy/palette-mobile"
+import { Flex, Spinner, Text } from "@artsy/palette-mobile"
 import { ArtQuizExploreArtworksQuery } from "__generated__/ArtQuizExploreArtworksQuery.graphql"
 import { ArtQuizResultsTabs_me$data } from "__generated__/ArtQuizResultsTabs_me.graphql"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
@@ -6,7 +6,6 @@ import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabP
 import { useIsStaging } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { uniqBy } from "lodash"
-import { Text } from "palette"
 import { Suspense, useMemo } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
