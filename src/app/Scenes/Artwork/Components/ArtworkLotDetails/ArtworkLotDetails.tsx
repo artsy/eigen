@@ -1,8 +1,4 @@
-/* eslint-disable react/no-unescaped-entities */
-import { Spacer } from "@artsy/palette-mobile"
-import { Box } from "@artsy/palette-mobile"
-import { Text } from "@artsy/palette-mobile"
-import { LinkText } from "@artsy/palette-mobile"
+import { Spacer, Box, Text, LinkText } from "@artsy/palette-mobile"
 import { ArtworkLotDetails_artwork$key } from "__generated__/ArtworkLotDetails_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { partnerName } from "app/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName"

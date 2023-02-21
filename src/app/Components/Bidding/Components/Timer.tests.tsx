@@ -1,4 +1,3 @@
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTimezone } from "app/utils/tests/mockTimezone"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import moment from "moment"
@@ -196,53 +195,44 @@ describe("Countdown", () => {
   // 10h 3m
   const duration = moment.duration(36180000)
 
-  describe("when the enable cascade feature flag is turned on", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({
-        ARArtworkRedesingPhase2: false,
-      })
-    })
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
 
-    afterEach(() => {
-      jest.clearAllMocks()
-    })
+  it("shows extended bidding info when extendedBiddingPeriodMinutes is present", () => {
+    const { getByText } = renderWithWrappers(
+      <Countdown
+        duration={duration}
+        label="A label"
+        cascadingEndTimeIntervalMinutes={1}
+        extendedBiddingPeriodMinutes={2}
+      />
+    )
 
-    // TODO: Remove this test case when ARArtworkRedesingPhase2 will be released
-    it("shows extended bidding info when extendedBiddingPeriodMinutes is present", () => {
-      const { getByText } = renderWithWrappers(
-        <Countdown
-          duration={duration}
-          label="A label"
-          cascadingEndTimeIntervalMinutes={1}
-          extendedBiddingPeriodMinutes={2}
-        />
-      )
+    const textBlock = getByText("*Closure times may be extended to accommodate last-minute bids")
+    expect(textBlock).toBeDefined()
+  })
 
-      const textBlock = getByText("*Closure times may be extended to accommodate last-minute bids")
-      expect(textBlock).toBeDefined()
-    })
+  it("shows the new ticker if the sale has cascading end times", () => {
+    const { queryByLabelText } = renderWithWrappers(
+      <Countdown
+        duration={duration}
+        label="This is the label"
+        hasStarted
+        cascadingEndTimeIntervalMinutes={1}
+      />
+    )
 
-    it("shows the new ticker if the sale has cascading end times", () => {
-      const { queryByLabelText } = renderWithWrappers(
-        <Countdown
-          duration={duration}
-          label="This is the label"
-          hasStarted
-          cascadingEndTimeIntervalMinutes={1}
-        />
-      )
+    expect(queryByLabelText("Modern Ticker")).toBeTruthy()
+    expect(queryByLabelText("Simple Ticker")).toBeFalsy()
+  })
 
-      expect(queryByLabelText("Modern Ticker")).toBeTruthy()
-      expect(queryByLabelText("Simple Ticker")).toBeFalsy()
-    })
+  it("does not shows the new ticker if the sale does not have cascading end times", () => {
+    const { queryByLabelText } = renderWithWrappers(
+      <Countdown duration={duration} label="This is the label" />
+    )
 
-    it("does not shows the new ticker if the sale does not have cascading end times", () => {
-      const { queryByLabelText } = renderWithWrappers(
-        <Countdown duration={duration} label="This is the label" />
-      )
-
-      expect(queryByLabelText("Simple Ticker")).toBeTruthy()
-      expect(queryByLabelText("Modern Ticker")).toBeFalsy()
-    })
+    expect(queryByLabelText("Simple Ticker")).toBeTruthy()
+    expect(queryByLabelText("Modern Ticker")).toBeFalsy()
   })
 })

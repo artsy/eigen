@@ -3,7 +3,6 @@ import { ArtworkTombstone_Test_Query } from "__generated__/ArtworkTombstone_Test
 import { ArtworkTombstone_artwork$data } from "__generated__/ArtworkTombstone_artwork.graphql"
 import { ArtworkStoreProvider } from "app/Scenes/Artwork/ArtworkStore"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { ArtworkTombstoneFragmentContainer } from "./ArtworkTombstone"
@@ -24,12 +23,6 @@ describe("ArtworkTombstone", () => {
     `,
   })
 
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({
-      ARArtworkRedesingPhase2: false,
-    })
-  })
-
   it("renders fields correctly", async () => {
     renderWithRelay({
       Artwork: () => ({
@@ -42,44 +35,6 @@ describe("ArtworkTombstone", () => {
     expect(screen.queryByText("Lot 8")).toBeNull()
     expect(screen.queryByText("Cool Auction")).toBeNull()
     expect(screen.queryByText("Estimated value: CHF 160,000–CHF 230,000")).toBeNull()
-  })
-
-  it("renders auction fields correctly", async () => {
-    renderWithRelay({
-      Artwork: () => ({
-        ...artworkTombstoneAuctionArtwork,
-      }),
-    })
-
-    expect(screen.queryByText("Lot 8")).toBeTruthy()
-    expect(screen.queryByText("Cool Auction")).toBeTruthy()
-    expect(screen.queryByText("Estimated value: CHF 160,000–CHF 230,000")).toBeTruthy()
-  })
-
-  describe("for an artwork in a sale with cascading end times or popcorn bidding", () => {
-    const cascadingMessage = /Lots will close at 1-minute intervals./
-    const popcornMessage = /Closing times may be extended due to last-minute competitive bidding./
-    it("renders the notification banner with cascading message", () => {
-      renderWithRelay({
-        Artwork: () => ({
-          ...artworkTombstoneCascadingEndTimesAuctionArtwork(),
-        }),
-      })
-
-      expect(screen.queryByText(cascadingMessage)).toBeTruthy()
-      expect(screen.queryByText(popcornMessage)).toBeNull()
-    })
-
-    it("renders the notification banner with popcorn message", async () => {
-      renderWithRelay({
-        Artwork: () => ({
-          ...artworkTombstoneCascadingEndTimesAuctionArtwork(true),
-        }),
-      })
-
-      expect(screen.queryByText(cascadingMessage)).toBeNull()
-      expect(screen.queryByText(popcornMessage)).toBeTruthy()
-    })
   })
 
   describe("for an artwork in a sale without cascading end times", () => {
@@ -95,60 +50,26 @@ describe("ArtworkTombstone", () => {
   })
 
   describe("Sale Message for not for sale artworks", () => {
-    describe("with ARArtworkRedesingPhase2 switched set to true", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ ARArtworkRedesingPhase2: true })
+    it("should render the sale message when artwork is not for sale", () => {
+      renderWithRelay({
+        Artwork: () => ({
+          isForSale: false,
+          saleMessage: "On loan",
+        }),
       })
 
-      it("should render the sale message when artwork is not for sale", () => {
-        renderWithRelay({
-          Artwork: () => ({
-            isForSale: false,
-            saleMessage: "On loan",
-          }),
-        })
-
-        expect(screen.queryByText("On loan")).toBeTruthy()
-      })
-
-      it("should not render the sale message when artwork is not for sale", () => {
-        renderWithRelay({
-          Artwork: () => ({
-            isForSale: true,
-            saleMessage: "For sale",
-          }),
-        })
-
-        expect(screen.queryByText("For sale")).toBeNull()
-      })
+      expect(screen.queryByText("On loan")).toBeTruthy()
     })
 
-    describe("with ARArtworkRedesingPhase2 switched set to false", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ ARArtworkRedesingPhase2: false })
+    it("should not render the sale message when artwork is not for sale", () => {
+      renderWithRelay({
+        Artwork: () => ({
+          isForSale: true,
+          saleMessage: "For sale",
+        }),
       })
 
-      it("should not render the sale message when artwork is not for sale", () => {
-        renderWithRelay({
-          Artwork: () => ({
-            isForSale: false,
-            saleMessage: "On loan",
-          }),
-        })
-
-        expect(screen.queryByText("On loan")).toBeNull()
-      })
-
-      it("should not render the sale message when artwork is not for sale", () => {
-        renderWithRelay({
-          Artwork: () => ({
-            isForSale: true,
-            saleMessage: "For sale",
-          }),
-        })
-
-        expect(screen.queryByText("For sale")).toBeNull()
-      })
+      expect(screen.queryByText("For sale")).toBeNull()
     })
   })
 })
@@ -177,20 +98,3 @@ const artworkTombstoneAuctionArtwork = {
     extendedBiddingIntervalMinutes: null,
   },
 }
-
-const artworkTombstoneCascadingEndTimesAuctionArtwork = (withextendedBidding = false) => ({
-  ...artworkTombstoneArtwork,
-  isInAuction: true,
-  saleArtwork: {
-    lotLabel: "8",
-    estimate: "CHF 160,000–CHF 230,000",
-  },
-  partner: {
-    name: "Cool Auction",
-  },
-  sale: {
-    isClosed: false,
-    cascadingEndTimeIntervalMinutes: 1,
-    extendedBiddingIntervalMinutes: withextendedBidding ? 1 : null,
-  },
-})

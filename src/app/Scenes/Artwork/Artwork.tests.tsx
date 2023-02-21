@@ -2,12 +2,12 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import {
   ArtworkFromLiveAuctionRegistrationClosed,
-  ArtworkFromLiveAuctionRegistrationOpen,
-  NotRegisteredToBid,
   RegisteredBidder,
+  NotRegisteredToBid,
+  ArtworkFromLiveAuctionRegistrationOpen,
 } from "app/__fixtures__/ArtworkBidAction"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { navigationEvents } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
@@ -16,13 +16,9 @@ import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/re
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { merge } from "lodash"
 import { Suspense } from "react"
-import { ActivityIndicator } from "react-native"
 import { createMockEnvironment } from "relay-test-utils"
 import { Artwork, ArtworkQueryRenderer } from "./Artwork"
-import { ArtworkDetails } from "./Components/ArtworkDetails"
 import { ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
-import { CommercialInformation } from "./Components/CommercialInformation"
-import { ImageCarousel } from "./Components/ImageCarousel/ImageCarousel"
 import { OtherWorksFragmentContainer } from "./Components/OtherWorks/OtherWorks"
 
 jest.mock("app/Components/Bidding/Context/TimeOffsetProvider", () => {
@@ -65,46 +61,10 @@ describe("Artwork", () => {
   beforeEach(() => {
     require("app/system/relay/createEnvironment").reset()
     environment = require("app/system/relay/createEnvironment").defaultEnvironment
-
-    __globalStoreTestUtils__?.injectFeatureFlags({
-      ARArtworkRedesingPhase2: false,
-    })
   })
 
   afterEach(() => {
     jest.clearAllMocks()
-  })
-
-  it("renders above the fold content before the full query has been resolved", async () => {
-    renderWithWrappers(<TestRenderer />)
-
-    // ArtworkAboveTheFoldQuery
-    resolveMostRecentRelayOperation(environment)
-
-    await flushPromiseQueue()
-
-    expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeTruthy()
-    expect(screen.UNSAFE_queryByType(CommercialInformation)).toBeTruthy()
-    expect(screen.UNSAFE_queryByType(ActivityIndicator)).toBeTruthy()
-    expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeNull()
-  })
-
-  it("renders all content after the full query has been resolved", async () => {
-    renderWithWrappers(<TestRenderer />)
-
-    // ArtworkAboveTheFoldQuery
-    resolveMostRecentRelayOperation(environment)
-    // ArtworkMarkAsRecentlyViewedQuery
-    resolveMostRecentRelayOperation(environment)
-    // ArtworkBelowTheFoldQuery
-    resolveMostRecentRelayOperation(environment)
-
-    await flushPromiseQueue()
-
-    expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeTruthy()
-    expect(screen.UNSAFE_queryByType(CommercialInformation)).toBeTruthy()
-    expect(screen.UNSAFE_queryByType(ActivityIndicator)).toBeNull()
-    expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeTruthy()
   })
 
   describe("artist series components", () => {
@@ -354,12 +314,6 @@ describe("Artwork", () => {
 
   describe("Live Auction States", () => {
     describe("has the correct state for a work that is in an auction that is currently live", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({
-          ARArtworkRedesingPhase2: false,
-        })
-      })
-
       it("for which I am registered", () => {
         renderWithWrappers(<TestRenderer />)
 
@@ -375,8 +329,6 @@ describe("Artwork", () => {
           },
         })
 
-        expect(screen.queryByLabelText("Countdown")).toBeTruthy()
-        expect(screen.queryByText("In progress")).toBeTruthy()
         expect(screen.queryByText("Enter live bidding")).toBeTruthy()
       })
 
@@ -397,9 +349,7 @@ describe("Artwork", () => {
 
         await flushPromiseQueue()
 
-        expect(screen.queryByLabelText("Countdown")).toBeTruthy()
         expect(screen.queryByText("Watch live bidding")).toBeTruthy()
-        expect(screen.queryByText("In progress")).toBeTruthy()
         expect(screen.queryByText("Registration closed")).toBeTruthy()
       })
 
@@ -418,18 +368,13 @@ describe("Artwork", () => {
           },
         })
 
-        expect(screen.queryByLabelText("Countdown")).toBeTruthy()
-        expect(screen.queryByText("In progress")).toBeTruthy()
         expect(screen.queryByText("Enter live bidding")).toBeTruthy()
-        expect(screen.queryByText("00d  00h  00m  00s")).toBeTruthy()
       })
     })
   })
 
   describe("Partner Section", () => {
-    it("should not display partner link if CBN flag is on", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: true })
-
+    it("should not display partner link", () => {
       const { queryByA11yHint } = renderWithWrappers(<TestRenderer />)
 
       // ArtworkAboveTheFoldQuery
@@ -442,107 +387,6 @@ describe("Artwork", () => {
       })
 
       expect(queryByA11yHint("Visit Test Partner page")).toBeFalsy()
-    })
-
-    it("should display partner link if CBN flag is off", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: false })
-
-      const { queryByA11yHint } = renderWithWrappers(<TestRenderer />)
-
-      // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
-        Artwork: () => ({
-          partner: {
-            name: "Test Partner",
-          },
-        }),
-      })
-
-      expect(queryByA11yHint("Visit Test Partner page")).toBeTruthy()
-    })
-  })
-
-  describe("Create Alert button", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ ARArtworkRedesingPhase2: false })
-    })
-
-    it("should display create artwork alert section by default", () => {
-      const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
-
-      // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
-        Artwork: () => ({
-          isSold: false,
-          isInAuction: false,
-          sale: null,
-          artists: [
-            {
-              name: "Test Artist",
-            },
-          ],
-        }),
-      })
-
-      expect(queryByLabelText("Create artwork alert section")).toBeTruthy()
-      expect(queryByLabelText("Create artwork alert buttons section")).toBeFalsy()
-    })
-
-    it("should not display create artwork alert button section when artwork doesn't have any artist", () => {
-      const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
-
-      // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
-        Artwork: () => ({
-          isSold: false,
-          isInAuction: false,
-          sale: null,
-          artists: [],
-        }),
-      })
-
-      expect(queryByLabelText("Create artwork alert section")).toBeNull()
-      expect(queryByLabelText("Create artwork alert buttons section")).toBeNull()
-    })
-
-    it("should display create artwork alert buttons section when artwork is sold", () => {
-      const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
-
-      // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
-        Artwork: () => ({
-          isSold: true,
-          isInAuction: false,
-          sale: null,
-        }),
-      })
-
-      expect(queryByLabelText("Create artwork alert section")).toBeFalsy()
-      expect(queryByLabelText("Create artwork alert buttons section")).toBeTruthy()
-    })
-
-    it("should display create artwork alert buttons section when artwork is in closed auction", () => {
-      const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
-
-      // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
-        Artwork: () => ({
-          isSold: false,
-          isInAuction: true,
-          sale: {
-            isLiveOpen: false,
-            isPreview: false,
-            liveStartAt: null,
-            endAt: null,
-            startAt: null,
-            isClosed: true,
-            isAuction: true,
-          },
-        }),
-      })
-
-      expect(queryByLabelText("Create artwork alert section")).toBeFalsy()
-      expect(queryByLabelText("Create artwork alert buttons section")).toBeTruthy()
     })
   })
 
@@ -897,68 +741,60 @@ describe("Artwork", () => {
     })
   })
 
-  describe("when ARArtworkRedesingPhase2 feature flag is enabled", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({
-        ARArtworkRedesingPhase2: true,
+  describe("Consigments", () => {
+    it("shows consign link if at least 1 artist is consignable", async () => {
+      renderWithWrappers(<TestRenderer />)
+
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkMarkAsRecentlyViewedQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkBelowTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
+        Artwork: () => ({
+          isForSale: true,
+          artists: [
+            {
+              name: "Santa",
+              isConsignable: true,
+            },
+          ],
+        }),
       })
+      await flushPromiseQueue()
+
+      expect(screen.queryByText(/Consign with Artsy/)).toBeTruthy()
     })
 
-    describe("Consigments", () => {
-      it("shows consign link if at least 1 artist is consignable", async () => {
-        renderWithWrappers(<TestRenderer />)
+    it("doesn't render section", async () => {
+      renderWithWrappers(<TestRenderer />)
 
-        // ArtworkAboveTheFoldQuery
-        resolveMostRecentRelayOperation(environment)
-        // ArtworkMarkAsRecentlyViewedQuery
-        resolveMostRecentRelayOperation(environment)
-        // ArtworkBelowTheFoldQuery
-        resolveMostRecentRelayOperation(environment, {
-          Artwork: () => ({
-            isForSale: true,
-            artists: [
-              {
-                name: "Santa",
-                isConsignable: true,
-              },
-            ],
-          }),
-        })
-        await flushPromiseQueue()
-
-        expect(screen.queryByText(/Consign with Artsy/)).toBeTruthy()
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
+        Artwork: () => ({
+          isAcquireable: false,
+          isOfferable: false,
+          isInAuction: false,
+          sale: null,
+        }),
       })
-
-      it("doesn't render section", async () => {
-        renderWithWrappers(<TestRenderer />)
-
-        // ArtworkAboveTheFoldQuery
-        resolveMostRecentRelayOperation(environment, {
-          Artwork: () => ({
-            isAcquireable: false,
-            isOfferable: false,
-            isInAuction: false,
-            sale: null,
-          }),
-        })
-        // ArtworkMarkAsRecentlyViewedQuery
-        resolveMostRecentRelayOperation(environment)
-        // ArtworkBelowTheFoldQuery
-        resolveMostRecentRelayOperation(environment, {
-          Artwork: () => ({
-            isForSale: false,
-            artists: [
-              {
-                name: "Santa",
-                isConsignable: false,
-              },
-            ],
-          }),
-        })
-        await flushPromiseQueue()
-
-        expect(screen.queryByText(/Consign with Artsy/)).toBeNull()
+      // ArtworkMarkAsRecentlyViewedQuery
+      resolveMostRecentRelayOperation(environment)
+      // ArtworkBelowTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
+        Artwork: () => ({
+          isForSale: false,
+          artists: [
+            {
+              name: "Santa",
+              isConsignable: false,
+            },
+          ],
+        }),
       })
+      await flushPromiseQueue()
+
+      expect(screen.queryByText(/Consign with Artsy/)).toBeNull()
     })
   })
 })
