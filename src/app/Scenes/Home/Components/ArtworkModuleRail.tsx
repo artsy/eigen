@@ -70,9 +70,19 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
     return null
   }
 
-  const handlePressMore = viewAllUrl
+  const handleTitlePress = viewAllUrl
     ? () => {
         const tapEvent = HomeAnalytics.artworkHeaderTapEvent(rail.key)
+        if (tapEvent) {
+          tracking.trackEvent(tapEvent)
+        }
+        navigate(viewAllUrl)
+      }
+    : undefined
+
+  const handlePressMore = viewAllUrl
+    ? () => {
+        const tapEvent = HomeAnalytics.artworkShowMoreCardTapEvent(rail.key)
         if (tapEvent) {
           tracking.trackEvent(tapEvent)
         }
@@ -83,7 +93,7 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
   return artworks.length ? (
     <Flex ref={railRef} mb={mb}>
       <Flex pl={2} pr={2}>
-        <SectionTitle title={title} subtitle={subtitle} onPress={handlePressMore} />
+        <SectionTitle title={title} subtitle={subtitle} onPress={handleTitlePress} />
       </Flex>
       <LargeArtworkRail
         listRef={listRef}

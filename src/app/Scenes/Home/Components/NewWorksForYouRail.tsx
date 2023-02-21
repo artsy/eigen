@@ -75,7 +75,7 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
           showSaveIcon={enableSaveIcon}
           trackingContextScreenOwnerType={Schema.OwnerEntityTypes.Home}
           onMorePress={() => {
-            trackEvent(tracks.tappedHeader())
+            trackEvent(tracks.tappedMoreCard())
             navigate("/new-for-you")
           }}
         />
@@ -105,5 +105,12 @@ const tracks = {
     context_screen_owner_type: OwnerType.home,
     destination_screen_owner_type: OwnerType.newWorksForYou,
     type: "header",
+  }),
+  tappedMoreCard: () => ({
+    action: ActionType.tappedArtworkGroup,
+    context_module: ContextModule.newWorksForYouRail,
+    context_screen_owner_type: OwnerType.home,
+    destination_screen_owner_type: OwnerType.newWorksForYou,
+    type: "viewAll",
   }),
 }
