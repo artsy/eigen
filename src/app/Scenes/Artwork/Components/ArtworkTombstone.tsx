@@ -43,27 +43,10 @@ export const ArtworkTombstoneFragmentContainer = createFragmentContainer(Artwork
     fragment ArtworkTombstone_artwork on Artwork {
       ...ArtworkLotTimer_artwork
       title
-      isInAuction
       date
       isForSale
       saleMessage
-      saleArtwork {
-        lotLabel(trim: true)
-        estimate
-      }
-      partner {
-        name
-      }
-      sale {
-        isClosed
-        cascadingEndTimeIntervalMinutes
-        extendedBiddingIntervalMinutes
-      }
       ...ArtworkMakerTitle_artwork
-      artists {
-        name
-        href
-      }
     }
   `,
 })

@@ -66,7 +66,7 @@ describe("ArtworkActions", () => {
   it("does not show the View in Room option if the artwork is not hangable", () => {
     const artworkActionsArtworkNotHangable = {
       ...artworkActionsArtwork,
-      is_hangable: false,
+      isHangable: false,
     }
     const { queryByText } = renderWithWrappers(
       <ArtworkActions shareOnPress={jest.fn} artwork={artworkActionsArtworkNotHangable} />
@@ -116,7 +116,6 @@ describe("ArtworkActions", () => {
 
 const artworkActionsArtwork: ArtworkActions_artwork$data = {
   id: "artwork12345",
-  internalID: "12345",
   title: "test title",
   slug: "andreas-rod-prinzknecht",
   href: "/artwork/andreas-rod-prinzknecht",
@@ -131,12 +130,7 @@ const artworkActionsArtwork: ArtworkActions_artwork$data = {
   image: {
     url: "image.com/image",
   },
-  sale: {
-    isAuction: false,
-    isClosed: false,
-  },
-  is_saved: false,
-  is_hangable: true,
+  isHangable: true,
   heightCm: 10,
   widthCm: 10,
   " $fragmentType": "ArtworkActions_artwork",

@@ -512,11 +512,6 @@ export const ArtworkContainer = createRefetchContainer(
         saleArtwork {
           internalID
         }
-        partner {
-          name
-          href
-          isLinkable
-        }
         editionSets {
           internalID
         }

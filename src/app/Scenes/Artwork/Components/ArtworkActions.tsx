@@ -1,16 +1,14 @@
 import { EyeOpenedIcon, ShareIcon, Flex, Text } from "@artsy/palette-mobile"
-import { ArtworkActionsSaveMutation } from "__generated__/ArtworkActionsSaveMutation.graphql"
 import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { cm2in } from "app/utils/conversions"
-import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { Schema, track } from "app/utils/track"
 import { take } from "lodash"
 import { Touchable } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
 
 interface ArtworkActionsProps {
@@ -42,42 +40,6 @@ export const shareContent = (
 
 @track()
 export class ArtworkActions extends React.Component<ArtworkActionsProps> {
-  @track((props: ArtworkActionsProps) => {
-    return {
-      action_name: props.artwork.is_saved
-        ? Schema.ActionNames.ArtworkUnsave
-        : Schema.ActionNames.ArtworkSave,
-      action_type: Schema.ActionTypes.Success,
-      context_module: Schema.ContextModules.ArtworkActions,
-    }
-  })
-  handleArtworkSave() {
-    const { artwork, relay } = this.props
-    commitMutation<ArtworkActionsSaveMutation>(relay?.environment!, {
-      mutation: graphql`
-        mutation ArtworkActionsSaveMutation($input: SaveArtworkInput!) {
-          saveArtwork(input: $input) {
-            artwork {
-              id
-              is_saved: isSaved
-            }
-          }
-        }
-      `,
-      variables: { input: { artworkID: artwork.internalID, remove: artwork.is_saved } },
-      // @ts-ignore RELAY 12 MIGRATION
-      optimisticResponse: {
-        saveArtwork: { artwork: { id: artwork.id, is_saved: !artwork.is_saved } },
-      },
-      onCompleted: () => {
-        refreshFavoriteArtworks()
-      },
-      onError: () => {
-        refreshFavoriteArtworks()
-      },
-    })
-  }
-
   @track(() => ({
     action_name: Schema.ActionNames.ViewInRoom,
     action_type: Schema.ActionTypes.Tap,
@@ -101,12 +63,12 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
 
   render() {
     const {
-      artwork: { is_hangable },
+      artwork: { isHangable },
     } = this.props
 
     return (
       <Flex justifyContent="center" flexDirection="row" width="100%">
-        {!!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && is_hangable) && (
+        {!!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && isHangable) && (
           <TouchableWithoutFeedback onPress={() => this.openViewInRoom()}>
             <UtilButton pr={2}>
               <EyeOpenedIcon mr={0.5} />
@@ -135,21 +97,15 @@ export const ArtworkActionsFragmentContainer = createFragmentContainer(ArtworkAc
   artwork: graphql`
     fragment ArtworkActions_artwork on Artwork {
       id
-      internalID
       slug
       title
       href
-      is_saved: isSaved
-      is_hangable: isHangable
+      isHangable
       artists {
         name
       }
       image {
         url
-      }
-      sale {
-        isAuction
-        isClosed
       }
       widthCm
       heightCm

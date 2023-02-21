@@ -41,7 +41,7 @@ describe("ArtworkTombstone", () => {
     it("renders the notification banner", () => {
       renderWithRelay({
         Artwork: () => ({
-          ...artworkTombstoneAuctionArtwork,
+          ...artworkTombstoneArtwork,
         }),
       })
 
@@ -76,25 +76,7 @@ describe("ArtworkTombstone", () => {
 
 const artworkTombstoneArtwork: ArtworkTombstone_artwork$data = {
   ...ArtworkFixture,
-  artists: [{ name: "Artist", href: "/artist" }],
   title: "Hello im a title",
   date: "1992",
   isForSale: true,
-}
-
-const artworkTombstoneAuctionArtwork = {
-  ...artworkTombstoneArtwork,
-  isInAuction: true,
-  saleArtwork: {
-    lotLabel: "8",
-    estimate: "CHF 160,000–CHF 230,000",
-  },
-  partner: {
-    name: "Cool Auction",
-  },
-  sale: {
-    isClosed: false,
-    cascadingEndTimeIntervalMinutes: null,
-    extendedBiddingIntervalMinutes: null,
-  },
 }
