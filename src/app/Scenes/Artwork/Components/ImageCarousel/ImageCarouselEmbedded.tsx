@@ -208,7 +208,7 @@ const EmbeddedItem: React.FC<{
 
   return (
     <ImageWithLoadingState
-      imageURL={item.url!}
+      imageURL={item.resized?.src || item.url!}
       width={styles.width}
       height={styles.height}
       onPress={goFullScreen}

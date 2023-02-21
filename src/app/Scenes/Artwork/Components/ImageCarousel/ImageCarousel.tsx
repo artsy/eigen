@@ -102,6 +102,9 @@ export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarou
         internalID
         url
         largeImageURL: url(version: "larger")
+        resized(width: 590, height: 590, version: ["normalized", "larger", "large"]) {
+          src
+        }
         width
         height
         imageVersions

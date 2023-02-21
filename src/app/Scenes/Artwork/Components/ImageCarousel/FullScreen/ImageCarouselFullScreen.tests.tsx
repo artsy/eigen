@@ -15,6 +15,9 @@ describe("ImageCarouselFullScreen", () => {
           width: 5,
           url: "a",
           largeImageURL: "a",
+          resized: {
+            src: "a",
+          },
           deepZoom: { image: { size: { width: 5, height: 5 } } as any },
         },
         {
@@ -23,6 +26,9 @@ describe("ImageCarouselFullScreen", () => {
           width: 5,
           url: "b",
           largeImageURL: "b",
+          resized: {
+            src: "b",
+          },
           deepZoom: { image: { size: { width: 5, height: 5 } } as any },
         },
       ],
