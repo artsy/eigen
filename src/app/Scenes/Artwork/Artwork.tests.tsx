@@ -8,6 +8,7 @@ import {
 } from "app/__fixtures__/ArtworkBidAction"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { navigationEvents } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
@@ -374,19 +375,70 @@ describe("Artwork", () => {
   })
 
   describe("Partner Section", () => {
-    it("should not display partner link", () => {
-      const { queryByA11yHint } = renderWithWrappers(<TestRenderer />)
+    it("should display questions section", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: true })
+
+      renderWithWrappers(<TestRenderer />)
 
       // ArtworkAboveTheFoldQuery
       resolveMostRecentRelayOperation(environment, {
         Artwork: () => ({
+          isAcquireable: true,
+        }),
+      })
+
+      // ArtworkMarkAsRecentlyViewedQuery
+      resolveMostRecentRelayOperation(environment)
+
+      // ArtworkBelowTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
+        Artwork: () => ({
           partner: {
-            name: "Test Partner",
+            type: "Gallery",
+          },
+          sale: {
+            isBenefit: false,
+            isGalleryAuction: false,
           },
         }),
       })
 
-      expect(queryByA11yHint("Visit Test Partner page")).toBeFalsy()
+      expect(screen.queryByText("Gallery")).toBeTruthy()
+      expect(screen.queryByText("Questions about this piece?")).toBeTruthy()
+      expect(screen.queryByText("Contact Gallery")).toBeTruthy()
+    })
+
+    it("should not display questions section", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: false })
+
+      renderWithWrappers(<TestRenderer />)
+
+      // ArtworkAboveTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
+        Artwork: () => ({
+          isAcquireable: true,
+        }),
+      })
+
+      // ArtworkMarkAsRecentlyViewedQuery
+      resolveMostRecentRelayOperation(environment)
+
+      // ArtworkBelowTheFoldQuery
+      resolveMostRecentRelayOperation(environment, {
+        Artwork: () => ({
+          partner: {
+            type: "Gallery",
+          },
+          sale: {
+            isBenefit: false,
+            isGalleryAuction: false,
+          },
+        }),
+      })
+
+      expect(screen.queryByText("Gallery")).toBeTruthy()
+      expect(screen.queryByText("Questions about this piece?")).toBeFalsy()
+      expect(screen.queryByText("Contact Gallery")).toBeFalsy()
     })
   })
 
