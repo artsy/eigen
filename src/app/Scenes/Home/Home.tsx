@@ -123,7 +123,6 @@ const Home = (props: Props) => {
     relay,
   } = props
 
-  const enableMyCollectionHFOnboarding = useFeatureFlag("AREnableMyCollectionHFOnboarding")
   const showUpcomingAuctionResultsRail = useFeatureFlag("ARShowUpcomingAuctionResultsRails")
 
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
@@ -180,7 +179,7 @@ const Home = (props: Props) => {
       title: "Do More on Artsy",
       type: "homeFeedOnboarding",
       data: homePageBelow?.onboardingModule,
-      hidden: !enableMyCollectionHFOnboarding || !homePageBelow?.onboardingModule,
+      hidden: !homePageBelow?.onboardingModule,
     },
     {
       title: "Collections",
