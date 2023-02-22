@@ -45,27 +45,25 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
         listRef={listRef}
         data={compact(props.collectionsModule.results)}
         keyExtractor={(item, index) => item.slug || String(index)}
-        renderItem={({ item: result, index }) => {
+        renderItem={({ item, index }) => {
           // Collections are expected to always have >= 2 artworks, but we should
           // still be cautious to avoid crashes if this assumption is broken.
           const artworkImageURLs = extractNodes(
-            result.artworksConnection,
+            item.artworksConnection,
             (artwork) => artwork.image?.url!
           )
 
           return (
             <TouchableWithoutFeedback
+              testID={`collections-rail-card-${item.slug}`}
               onPress={
-                result?.slug
+                item?.slug
                   ? () => {
-                      const tapEvent = HomeAnalytics.collectionThumbnailTapEvent(
-                        result?.slug,
-                        index
-                      )
+                      const tapEvent = HomeAnalytics.collectionThumbnailTapEvent(item?.slug, index)
                       if (tapEvent) {
                         tracking.trackEvent(tapEvent)
                       }
-                      navigate(`/collection/${result.slug}`)
+                      navigate(`/collection/${item.slug}`)
                     }
                   : undefined
               }
@@ -75,11 +73,11 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
 
                 <Flex mt={1}>
                   <Text variant="sm-display" numberOfLines={1} weight="medium">
-                    {result?.title}
+                    {item?.title}
                   </Text>
                   <Text variant="xs" numberOfLines={1} color="black60">
-                    {result?.artworksConnection?.counts?.total
-                      ? `${result.artworksConnection.counts.total} works`
+                    {item?.artworksConnection?.counts?.total
+                      ? `${item.artworksConnection.counts.total} works`
                       : ""}
                   </Text>
                 </Flex>
