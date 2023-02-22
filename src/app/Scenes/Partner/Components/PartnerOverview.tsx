@@ -39,14 +39,15 @@ export const PartnerOverview: React.FC<{
 
 export const PartnerOverviewFragmentContainer = createFragmentContainer(PartnerOverview, {
   partner: graphql`
-    fragment PartnerOverview_partner on Partner {
+    fragment PartnerOverview_partner on Partner
+    @argumentDefinitions(displayArtistsSection: { type: "Boolean", defaultValue: false }) {
       cities
       displayArtistsSection
       profile {
         bio
       }
       ...PartnerLocationSection_partner
-      ...PartnerArtistsList_partner
+      ...PartnerArtistsList_partner @include(if: $displayArtistsSection)
     }
   `,
 })
