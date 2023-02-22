@@ -126,7 +126,7 @@ const Home = (props: Props) => {
 
   const enableMyCollectionHFOnboarding = useFeatureFlag("AREnableMyCollectionHFOnboarding")
   const showUpcomingAuctionResultsRail = useFeatureFlag("ARShowUpcomingAuctionResultsRails")
-
+  const enableNewCollectionsRail = useFeatureFlag("AREnableNewCollectionsRail")
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
   let modules: HomeModule[] = compact([
     // Above-The-Fold Modules
@@ -321,7 +321,7 @@ const Home = (props: Props) => {
                   />
                 )
               case "collections":
-                return true ? (
+                return enableNewCollectionsRail ? (
                   <CollectionsRailFragmentContainer
                     title={item.title}
                     collectionsModule={item.data}

@@ -70,8 +70,9 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
                   : undefined
               }
             >
-              <View>
+              <Flex>
                 <FiveUpImageLayout imageURLs={artworkImageURLs} />
+
                 <Flex mt={1}>
                   <Text variant="sm-display" numberOfLines={1} weight="medium">
                     {result?.title}
@@ -82,7 +83,7 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
                       : ""}
                   </Text>
                 </Flex>
-              </View>
+              </Flex>
             </TouchableWithoutFeedback>
           )
         }}
