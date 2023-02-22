@@ -1,5 +1,10 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
+import { ArtworkDetails } from "app/Scenes/Artwork/Components/ArtworkDetails"
+import { ArtworkHistory } from "app/Scenes/Artwork/Components/ArtworkHistory"
+import { ArtworkScreenHeaderFragmentContainer } from "app/Scenes/Artwork/Components/ArtworkScreenHeader"
+import { ArtworkStickyBottomContent } from "app/Scenes/Artwork/Components/ArtworkStickyBottomContent"
+import { ImageCarousel } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
 import {
   ArtworkFromLiveAuctionRegistrationClosed,
   RegisteredBidder,
@@ -17,6 +22,7 @@ import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/re
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { merge } from "lodash"
 import { Suspense } from "react"
+import { ActivityIndicator } from "react-native"
 import { createMockEnvironment } from "relay-test-utils"
 import { Artwork, ArtworkQueryRenderer } from "./Artwork"
 import { ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
@@ -66,6 +72,40 @@ describe("Artwork", () => {
 
   afterEach(() => {
     jest.clearAllMocks()
+  })
+
+  it("renders above the fold content before the full query has been resolved", async () => {
+    renderWithWrappers(<TestRenderer />)
+
+    // ArtworkAboveTheFoldQuery
+    resolveMostRecentRelayOperation(environment)
+
+    await flushPromiseQueue()
+
+    expect(screen.UNSAFE_queryByType(ArtworkScreenHeaderFragmentContainer)).toBeTruthy()
+    expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeTruthy()
+    expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeTruthy()
+    expect(screen.UNSAFE_queryByType(ArtworkStickyBottomContent)).toBeTruthy()
+    expect(screen.UNSAFE_queryByType(ActivityIndicator)).toBeTruthy()
+  })
+
+  it("renders all content after the full query has been resolved", async () => {
+    renderWithWrappers(<TestRenderer />)
+
+    // ArtworkAboveTheFoldQuery
+    resolveMostRecentRelayOperation(environment)
+    // ArtworkMarkAsRecentlyViewedQuery
+    resolveMostRecentRelayOperation(environment)
+    // ArtworkBelowTheFoldQuery
+    resolveMostRecentRelayOperation(environment)
+
+    await flushPromiseQueue()
+
+    expect(screen.UNSAFE_queryByType(ArtworkScreenHeaderFragmentContainer)).toBeTruthy()
+    expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeTruthy()
+    expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeTruthy()
+    expect(screen.UNSAFE_queryByType(ActivityIndicator)).toBeNull()
+    expect(screen.UNSAFE_queryByType(ArtworkHistory)).toBeTruthy()
   })
 
   describe("artist series components", () => {
