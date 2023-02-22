@@ -210,6 +210,12 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "AREnableBrowseMoreArtworksCard",
   },
+  AREnableNewCollectionsRail: {
+    description: "Enable New Collections Rail",
+    showInDevMenu: true,
+    readyForRelease: true,
+    echoFlagKey: "AREnableNewCollectionsRail",
+  },
 })
 
 export interface DevToggleDescriptor {
