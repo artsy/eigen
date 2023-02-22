@@ -131,6 +131,12 @@ const Home = (props: Props) => {
   let modules: HomeModule[] = compact([
     // Above-The-Fold Modules
     {
+      title: "Collections",
+      subtitle: "The Newest Works Curated by Artsy",
+      type: "collections",
+      data: homePageBelow?.marketingCollectionsModule,
+    },
+    {
       title: "New Works for You",
       type: "newWorksForYou",
       data: newWorksForYou,

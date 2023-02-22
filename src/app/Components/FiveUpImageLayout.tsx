@@ -1,4 +1,4 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Box, Flex } from "@artsy/palette-mobile"
 import { Image } from "react-native"
 
 interface FiveUpImageLayoutProps {
@@ -6,20 +6,22 @@ interface FiveUpImageLayoutProps {
   height?: number
 }
 
-const DEFAULT_HEIGHT = 422
+const DEFAULT_HEIGHT = 480
+const GAP = 2
 
 export const FiveUpImageLayout: React.FC<FiveUpImageLayoutProps> = ({
   imageURLs,
-  height = DEFAULT_HEIGHT,
+  height: heightProp = DEFAULT_HEIGHT,
 }) => {
   // Ensure we have an array of exactly 5 URLs, copying over the last image if we have less than 5
   const artworkImageURLs = backfillImageURLs(imageURLs, 5)
 
-  const width = 0.65 * height
+  const height = heightProp - GAP
+  const width = 0.65 * height - GAP
 
   const largeImageDimensions = { width: (2 / 3) * width, height: (2 / 3) * height }
-  const smallImageDimensions = { width: (1 / 3) * width, height: (1 / 3) * height }
-  const horizontalImageDimensions = { width: (2 / 3) * width, height: (1 / 3) * height }
+  const smallImageDimensions = { width: (1 / 3) * width, height: (1 / 3) * height - GAP / 2 }
+  const horizontalImageDimensions = { width: (2 / 3) * width, height: (1 / 3) * height - GAP / 2 }
 
   return (
     <Flex>
@@ -29,12 +31,13 @@ export const FiveUpImageLayout: React.FC<FiveUpImageLayoutProps> = ({
           source={{ uri: artworkImageURLs[0] }}
           resizeMode="cover"
         />
-        <Flex>
+        <Flex style={{ marginLeft: GAP }}>
           <Image
             style={smallImageDimensions}
             source={{ uri: artworkImageURLs[1] }}
             resizeMode="cover"
           />
+          <Box style={{ height: GAP }} />
           <Image
             style={smallImageDimensions}
             source={{ uri: artworkImageURLs[2] }}
@@ -42,12 +45,13 @@ export const FiveUpImageLayout: React.FC<FiveUpImageLayoutProps> = ({
           />
         </Flex>
       </Flex>
-      <Flex flexDirection="row">
+      <Flex flexDirection="row" style={{ marginTop: GAP }}>
         <Image
           style={smallImageDimensions}
           source={{ uri: artworkImageURLs[3] }}
           resizeMode="cover"
         />
+        <Box style={{ width: GAP }} />
         <Image
           style={horizontalImageDimensions}
           source={{ uri: artworkImageURLs[4] }}
@@ -59,7 +63,5 @@ export const FiveUpImageLayout: React.FC<FiveUpImageLayoutProps> = ({
 }
 
 const backfillImageURLs = (imageURLs: string[], arrayLength: number) => {
-  return Array.from({ length: arrayLength }, () => null).reduce((acc: string[], _, i) => {
-    return [...acc, imageURLs[i] || acc[i - 1]]
-  }, [])
+  return Array.from({ length: arrayLength }, (_, i) => imageURLs[i % imageURLs.length])
 }
