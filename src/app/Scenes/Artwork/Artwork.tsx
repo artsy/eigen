@@ -488,17 +488,12 @@ export const ArtworkContainer = createRefetchContainer(
         ...ArtworkEditionSetInformation_artwork
         slug
         internalID
-        id
         isAcquireable
         isOfferable
         isBiddable
         isInquireable
-        isSold
         isInAuction
         availability
-        artists {
-          name
-        }
         sale {
           internalID
           isClosed
@@ -523,7 +518,6 @@ export const ArtworkContainer = createRefetchContainer(
         isForSale
         partner {
           type
-          id
         }
         artist {
           biographyBlurb {
@@ -535,7 +529,6 @@ export const ArtworkContainer = createRefetchContainer(
           ...ArtistSeriesMoreSeries_artist
         }
         sale {
-          id
           isBenefit
           isGalleryAuction
           extendedBiddingIntervalMinutes
