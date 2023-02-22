@@ -81,12 +81,6 @@ export const PartnerContainer = createRefetchContainer(
         slug
         partnerType
         displayFullPartnerPage
-        profile {
-          id
-          isFollowed
-          internalID
-        }
-
         ...PartnerArtwork_partner @arguments(input: { sort: "-partner_updated_at" })
         ...PartnerOverview_partner
         ...PartnerShows_partner
