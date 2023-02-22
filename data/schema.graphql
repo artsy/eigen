@@ -13006,6 +13006,10 @@ type PartnerEdge {
 type PartnerInquiryRequest {
   collectorProfile: InquirerCollectorProfile
 
+  # Returns the first message of an inquiry with the addition of any inquiry
+  # questions submitted by the user, formatted and if present.
+  formattedFirstMessage: String
+
   # A globally unique ID.
   id: ID!
 
