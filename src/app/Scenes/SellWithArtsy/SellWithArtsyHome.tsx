@@ -1,10 +1,17 @@
-import { ContextModule, OwnerType, tappedConsign, TappedConsignArgs } from "@artsy/cohesion"
+import {
+  ContextModule,
+  OwnerType,
+  tappedConsign,
+  TappedConsignArgs,
+  TappedConsignmentInquiry,
+} from "@artsy/cohesion"
 import { Spacer, Flex, Join, Text } from "@artsy/palette-mobile"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { SellWithArtsyHome_me$data } from "__generated__/SellWithArtsyHome_me.graphql"
 import { SellWithArtsyHome_recentlySoldArtworksTypeConnection$data } from "__generated__/SellWithArtsyHome_recentlySoldArtworksTypeConnection.graphql"
 import { GetInTouchBanner } from "app/Scenes/SellWithArtsy/Components/GetInTouchBanner"
 import { Highlights } from "app/Scenes/SellWithArtsy/Components/Highlights"
+import { MeetTheSpecialists } from "app/Scenes/SellWithArtsy/Components/MeetTheSpecialists"
 import { WaysWeSell } from "app/Scenes/SellWithArtsy/Components/WaysWeSell"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
@@ -55,7 +62,11 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
     navigate(route)
   }
 
-  const handleInquiryPress = () => {
+  const handleInquiryPress = (inquiryTrackingArgs?: TappedConsignmentInquiry) => {
+    //TODO: Implement Tracking. Add the right ContextModules
+    if (inquiryTrackingArgs) {
+      // track
+    }
     navigate("/sell/inquiry", {
       passProps: {
         email: me?.email ?? "",
@@ -97,7 +108,12 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
 
             <Spacer y={4} />
 
-            {enableNewSWALandingPage && <GetInTouchBanner onInquiryPress={handleInquiryPress} />}
+            {enableNewSWALandingPage && (
+              <Join separator={<Spacer y={4} />}>
+                <GetInTouchBanner onInquiryPress={handleInquiryPress} />
+                <MeetTheSpecialists onInquiryPress={handleInquiryPress} />
+              </Join>
+            )}
             {enableNewSWALandingPage && <Spacer y={4} />}
             <SellWithArtsyRecentlySold recentlySoldArtworks={recentlySoldArtworks!} />
 

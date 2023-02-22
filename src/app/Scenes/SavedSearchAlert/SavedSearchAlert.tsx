@@ -21,7 +21,6 @@ export const SavedSearchAlertQueryRenderer: React.FC<SearchCriteriaAlertBaseProp
         query SavedSearchAlertQuery($savedSearchAlertId: ID!) {
           me {
             savedSearch(id: $savedSearchAlertId) {
-              internalID
               acquireable
               additionalGeneIDs
               artistIDs
@@ -32,7 +31,6 @@ export const SavedSearchAlertQueryRenderer: React.FC<SearchCriteriaAlertBaseProp
               sizes
               height
               inquireableOnly
-              internalID
               locationCities
               majorPeriods
               materialsTerms

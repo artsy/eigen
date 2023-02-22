@@ -136,12 +136,6 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "ARReorderSWAArtworkSubmissionFlow",
   },
-  ARArtworkRedesingPhase2: {
-    description: "Enable redesigned artwork page (phase 2)",
-    showInDevMenu: true,
-    readyForRelease: true,
-    echoFlagKey: "ARArtworkRedesingPhase2",
-  },
   AREnablePanOnStaticHeader: {
     description: "Enable Scroll/Pan on StaticHeader",
     showInDevMenu: true,
@@ -196,11 +190,6 @@ export const features = defineFeatures({
   },
   AREnableESOnlySearch: {
     description: "Enable ES only search",
-    showInDevMenu: true,
-    readyForRelease: false,
-  },
-  AREnableAutosuggestModeESSearch: {
-    description: "Enables autosuggest mode, valid when AREnableESOnlySearch true",
     showInDevMenu: true,
     readyForRelease: false,
   },

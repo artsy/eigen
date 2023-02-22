@@ -12,7 +12,6 @@ import {
   RegistedBidderWithBids,
   RegisteredBidder,
 } from "app/__fixtures__/ArtworkBidAction"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { merge as _merge } from "lodash"
@@ -43,12 +42,6 @@ describe("BidButton", () => {
     Settings.now = () => new Date("2019-08-15T12:00:00+00:00").valueOf()
 
     mockEnvironment = createMockEnvironment()
-  })
-
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({
-      ARArtworkRedesingPhase2: false,
-    })
   })
 
   afterAll(() => {
@@ -169,44 +162,6 @@ describe("BidButton", () => {
       })
 
       expect(getByText("Registration Pending")).toBeTruthy()
-    })
-
-    it("displays 'Identity verification is required' if the sale requires identity verification and the user is registered but not verified", () => {
-      const artworkWithIDVRequired = merge({}, ArtworkFromAuctionPreview, BidderPendingApproval, {
-        sale: { requireIdentityVerification: true },
-      })
-      const me = { isIdentityVerified: false }
-
-      const { getByText } = renderWithWrappers(
-        <TestWrapper auctionState={AuctionTimerState.PREVIEW} />
-      )
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artwork: () => artworkWithIDVRequired,
-        Me: () => me,
-      })
-
-      expect(getByText("Registration Pending")).toBeTruthy()
-      expect(getByText(/Identity verification required to bid./)).toBeTruthy()
-    })
-
-    it("does not display 'Identity verification is required' if the sale requires identity verification and the user is registered and verified", () => {
-      const artworkWithIDVRequired = merge({}, ArtworkFromAuctionPreview, BidderPendingApproval, {
-        sale: { requireIdentityVerification: true },
-      })
-      const me = { isIdentityVerified: true }
-
-      const { getByText, queryByText } = renderWithWrappers(
-        <TestWrapper auctionState={AuctionTimerState.PREVIEW} />
-      )
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Artwork: () => artworkWithIDVRequired,
-        Me: () => me,
-      })
-
-      expect(getByText("Registration Pending")).toBeTruthy()
-      expect(queryByText(/Identity verification required to bid./)).toBeFalsy()
     })
 
     it("with registered bidder", () => {

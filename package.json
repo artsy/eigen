@@ -101,7 +101,7 @@
     "react-spring": "Try removing this! We have reanimated now."
   },
   "dependencies": {
-    "@artsy/cohesion": "4.101.0",
+    "@artsy/cohesion": "4.102.0",
     "@artsy/palette-mobile": "10.0.4",
     "@artsy/to-title-case": "1.1.0",
     "@expo/react-native-action-sheet": "3.8.0",
@@ -224,7 +224,7 @@
     "@octokit/rest": "16.34.0",
     "@omakase/cli": "0.0.10",
     "@react-native-community/cli-platform-ios": "6.2.0",
-    "@testing-library/jest-native": "5.4.1",
+    "@testing-library/jest-native": "5.4.2",
     "@testing-library/react-hooks": "8.0.1",
     "@testing-library/react-native": "11.5.2",
     "@tsconfig/react-native": "2.0.2",

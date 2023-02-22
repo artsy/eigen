@@ -101,8 +101,6 @@ describe(BottomTabs, () => {
   })
 
   it("should not be rendered if the `hidesBottomTabs` option is specified", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ ARArtworkRedesingPhase2: true })
-
     const state: BottomTabBarProps["state"] = {
       ...navigationState,
       routes: [

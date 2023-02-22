@@ -46,9 +46,10 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
     isLoading: appleLoading,
   } = useAppleLink(relay.environment)
 
-  const facebookLinked = me.authentications.map((a) => a.provider).includes("FACEBOOK")
-  const googleLinked = me.authentications.map((a) => a.provider).includes("GOOGLE")
-  const appleLinked = me.authentications.map((a) => a.provider).includes("APPLE")
+  const providers = me.authentications.map((a) => a.provider)
+  const facebookLinked = providers.includes("FACEBOOK")
+  const googleLinked = providers.includes("GOOGLE")
+  const appleLinked = providers.includes("APPLE")
 
   const linkOrUnlink = (provider: "facebook" | "google" | "apple") => {
     switch (provider) {
