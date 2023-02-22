@@ -7,7 +7,7 @@ interface FiveUpImageLayoutProps {
 }
 
 const DEFAULT_HEIGHT = 480
-const GAP = 2
+const GAP = 3
 
 export const FiveUpImageLayout: React.FC<FiveUpImageLayoutProps> = ({
   imageURLs,
