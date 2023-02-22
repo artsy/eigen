@@ -1,8 +1,9 @@
 import { SpacingUnit, Flex, Text } from "@artsy/palette-mobile"
+import themeGet from "@styled-system/theme-get"
 import { CollectionsRail_collectionsModule$data } from "__generated__/CollectionsRail_collectionsModule.graphql"
+import { FiveUpImageLayout } from "app/Components/FiveUpImageLayout"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { TouchableWithoutFeedback } from "react-native"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -11,8 +12,8 @@ import React, { useImperativeHandle, useRef } from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
+import styled from "styled-components/native"
 import { RailScrollProps } from "./types"
-import { FiveUpImageLayout } from "app/Components/FiveUpImageLayout"
 
 interface Props {
   title: string
@@ -54,7 +55,7 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
           )
 
           return (
-            <TouchableWithoutFeedback
+            <CollectionCard
               testID={`collections-rail-card-${item.slug}`}
               onPress={
                 item?.slug
@@ -82,7 +83,7 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
                   </Text>
                 </Flex>
               </Flex>
-            </TouchableWithoutFeedback>
+            </CollectionCard>
           )
         }}
       />
@@ -112,3 +113,8 @@ export const CollectionsRailFragmentContainer = createFragmentContainer(Collecti
     }
   `,
 })
+
+const CollectionCard = styled.TouchableHighlight.attrs(() => ({
+  underlayColor: themeGet("colors.white100"),
+  activeOpacity: 0.8,
+}))``
