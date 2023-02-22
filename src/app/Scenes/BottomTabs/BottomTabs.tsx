@@ -2,7 +2,7 @@ import { Flex, useTheme } from "@artsy/palette-mobile"
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs"
 import { findFocusedRoute } from "@react-navigation/native"
 import { AppModule, modules } from "app/AppRegistry"
-import { GlobalStore, useFeatureFlag, useIsStaging } from "app/store/GlobalStore"
+import { GlobalStore, useIsStaging } from "app/store/GlobalStore"
 import { Separator } from "palette"
 import { useEffect } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -17,7 +17,6 @@ export const BottomTabs: React.FC<BottomTabBarProps> = (props) => {
   const focusedRoute = findFocusedRoute(props.state)
   const params = focusedRoute?.params as any
   const module = modules[params?.moduleName as AppModule]
-  const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
   const unreadConversationsCount = GlobalStore.useAppState(
     (state) => state.bottomTabs.sessionState.unreadCounts.conversations
   )
@@ -39,7 +38,7 @@ export const BottomTabs: React.FC<BottomTabBarProps> = (props) => {
 
   const { bottom } = useSafeAreaInsets()
 
-  if (enableArtworkRedesign && module?.options?.hidesBottomTabs) {
+  if (module?.options?.hidesBottomTabs) {
     return null
   }
 

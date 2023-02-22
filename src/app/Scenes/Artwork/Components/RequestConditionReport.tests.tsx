@@ -125,7 +125,7 @@ describe("RequestConditionReport", () => {
       expect(getByLabelText("Condition Report Requested Modal")).toHaveProp("visible", false)
     })
 
-    it("displays correct text when ARArtworkRedesingPhase2 ff is false", () => {
+    it("displays correct text", () => {
       renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(env, {

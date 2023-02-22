@@ -136,12 +136,6 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "ARReorderSWAArtworkSubmissionFlow",
   },
-  ARArtworkRedesingPhase2: {
-    description: "Enable redesigned artwork page (phase 2)",
-    showInDevMenu: true,
-    readyForRelease: true,
-    echoFlagKey: "ARArtworkRedesingPhase2",
-  },
   AREnablePanOnStaticHeader: {
     description: "Enable Scroll/Pan on StaticHeader",
     showInDevMenu: true,
