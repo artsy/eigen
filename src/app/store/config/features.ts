@@ -204,6 +204,12 @@ export const features = defineFeatures({
     showInDevMenu: true,
     readyForRelease: false,
   },
+  AREnableBrowseMoreArtworksCard: {
+    description: "Enable Browse More Artworks Card on Home Screen",
+    showInDevMenu: true,
+    readyForRelease: true,
+    echoFlagKey: "AREnableBrowseMoreArtworksCard",
+  },
 })
 
 export interface DevToggleDescriptor {
