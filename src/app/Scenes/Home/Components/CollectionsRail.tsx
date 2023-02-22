@@ -96,7 +96,7 @@ export const CollectionsRailFragmentContainer = createFragmentContainer(Collecti
       results {
         title
         slug
-        artworksConnection(first: 5) {
+        artworksConnection(first: 5, sort: "-decayed_merch") {
           counts {
             total
           }
