@@ -11904,7 +11904,7 @@ type Mutation {
   ): updateNotificationPreferencesMutationPayload
 
   # updates an ordered set.
-  updateOrderedSet(input: updateOrderedSetMutationInput!): updateOrderedSetMutationPayload
+  updateOrderedSet(input: UpdateOrderedSetMutationInput!): UpdateOrderedSetMutationPayload
 
   # Update a quiz artwork interacted_with flag
   updateQuiz(input: updateQuizMutationInput!): updateQuizMutationPayload
@@ -17127,15 +17127,19 @@ type updateNotificationPreferencesMutationPayload {
   notificationPreferences(authenticationToken: String): [NotificationPreference!]!
 }
 
-type updateOrderedSetFailure {
+type UpdateOrderedSetFailure {
   mutationError: GravityMutationError
 }
 
-input updateOrderedSetMutationInput {
+input UpdateOrderedSetMutationInput {
   clientMutationId: String
   description: String
   id: String!
+  internalName: String
   itemId: String
+
+  # Modify the OrderedSet's items to only included provided ids. An empty array will remove all items from the set
+  itemIds: [String]
   itemType: String
   key: String
   layout: String
@@ -17145,16 +17149,16 @@ input updateOrderedSetMutationInput {
   published: Boolean
 }
 
-type updateOrderedSetMutationPayload {
+type UpdateOrderedSetMutationPayload {
   clientMutationId: String
 
   # On success: the ordered set updated.
-  orderedSetOrError: updateOrderedSetResponseOrError
+  orderedSetOrError: UpdateOrderedSetResponseOrError
 }
 
-union updateOrderedSetResponseOrError = updateOrderedSetFailure | updateOrderedSetSuccess
+union UpdateOrderedSetResponseOrError = UpdateOrderedSetFailure | UpdateOrderedSetSuccess
 
-type updateOrderedSetSuccess {
+type UpdateOrderedSetSuccess {
   feature: Feature
   set: OrderedSet
 }
