@@ -65,12 +65,15 @@ export const OnboardingMarketingCollectionScreen: React.FC<OnboardingMarketingCo
     fallback={
       <FullScreenLoadingImage
         imgSource={images[props.slug]}
-        spacerHeight="80px"
         loadingText={"Great choice" + "\n" + "We’re finding a collection for you"}
       />
     }
   >
-    <OnboardingMarketingCollection {...props} />
+    <FullScreenLoadingImage
+      imgSource={images[props.slug]}
+      loadingText={"Great choice" + "\n" + "We’re finding a collection for you"}
+    />
+    {/* <OnboardingMarketingCollection {...props} /> */}
   </Suspense>
 )
 

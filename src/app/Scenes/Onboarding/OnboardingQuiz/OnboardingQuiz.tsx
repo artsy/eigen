@@ -60,6 +60,10 @@ export const OnboardingQuiz = () => {
           }}
         >
           <StackNavigator.Screen
+            name="OnboardingPostFollowLoadingScreen"
+            component={OnboardingPostFollowLoadingScreen}
+          />
+          <StackNavigator.Screen
             name="OnboardingWelcomeScreen"
             component={OnboardingWelcomeScreen}
           />
@@ -91,10 +95,10 @@ export const OnboardingQuiz = () => {
             name="OnboardingFollowGalleries"
             component={OnboardingFollowGalleries}
           />
-          <StackNavigator.Screen
+          {/* <StackNavigator.Screen
             name="OnboardingPostFollowLoadingScreen"
             component={OnboardingPostFollowLoadingScreen}
-          />
+          /> */}
 
           <StackNavigator.Screen name="OnboardingArtTasteQuiz" component={OnboardingArtTasteQuiz} />
         </StackNavigator.Navigator>

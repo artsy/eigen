@@ -12,7 +12,7 @@ export const OnboardingPostFollowLoadingScreen = () => {
 
   // prevents Android users from going back with hardware button
   useBackHandler(() => true)
-  useTimeoutFn(onDone, NAVIGATE_TO_NEXT_SCREEN_DELAY)
+  // useTimeoutFn(onDone, NAVIGATE_TO_NEXT_SCREEN_DELAY)
 
   return (
     <Screen>
@@ -20,7 +20,6 @@ export const OnboardingPostFollowLoadingScreen = () => {
         <FullScreenLoadingImage
           imgSource={require("images/HirstTheWonder.jpg")}
           loadingText={text}
-          spacerHeight="70px"
         />
       </Screen.Background>
     </Screen>
