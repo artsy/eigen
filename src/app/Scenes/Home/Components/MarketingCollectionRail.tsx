@@ -1,6 +1,4 @@
-import { ContextModule } from "@artsy/cohesion"
 import { Flex, SpacingUnit, Text } from "@artsy/palette-mobile"
-import { HomeEmergingPicksArtworksRail_viewer$key } from "__generated__/HomeEmergingPicksArtworksRail_viewer.graphql"
 import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
@@ -10,36 +8,42 @@ import { Image } from "react-native"
 import { useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { graphql } from "relay-runtime"
+import { MarketingCollectionRail_viewer$key } from "__generated__/MarketingCollectionRail_viewer.graphql"
 
-interface HomeEmergingPicksArtworksRailProps {
-  viewer: HomeEmergingPicksArtworksRail_viewer$key
+interface MarketingCollectionRailProps {
+  viewer: MarketingCollectionRail_viewer$key
   mb?: SpacingUnit
   title: string
   subtitle?: string
+  key: string
 }
 
-export const HomeEmergingPicksArtworksRail: React.FC<HomeEmergingPicksArtworksRailProps> = ({
+export const MarketingCollectionRail: React.FC<MarketingCollectionRailProps> = ({
   mb,
   title,
   subtitle,
+  key,
   ...restProps
 }) => {
   const { trackEvent } = useTracking()
+  const contextModule = HomeAnalytics.artworkRailContextModule(key)
 
   const viewer = useFragment(artworksFragment, restProps.viewer)
   const artworks = extractNodes(viewer.artworksConnection)
 
   const handleOnArtworkPress = (artwork: any, position: any) => {
-    // TODO: Adjust tracking
-    trackEvent(
-      HomeAnalytics.artworkThumbnailTapEvent(
-        ContextModule.newWorksForYouRail,
-        artwork.slug,
-        artwork.internalID,
-        position,
-        "single"
+    if (contextModule) {
+      trackEvent(
+        HomeAnalytics.artworkThumbnailTapEvent(
+          contextModule,
+          artwork.slug,
+          artwork.internalID,
+          position,
+          "single"
+        )
       )
-    )
+    }
+
     navigate(artwork.href!)
   }
 
@@ -72,8 +76,9 @@ export const HomeEmergingPicksArtworksRail: React.FC<HomeEmergingPicksArtworksRa
 }
 
 const artworksFragment = graphql`
-  fragment HomeEmergingPicksArtworksRail_viewer on Viewer {
-    artworksConnection(first: 12, marketingCollectionID: "curators-picks-emerging") {
+  fragment MarketingCollectionRail_viewer on Viewer
+  @argumentDefinitions(marketingCollectionID: { type: "String" }) {
+    artworksConnection(first: 12, marketingCollectionID: $marketingCollectionID) {
       edges {
         node {
           internalID

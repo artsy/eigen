@@ -6,19 +6,6 @@ import {
   Spacer,
   SpacingUnitDSValueNumber,
 } from "@artsy/palette-mobile"
-import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
-import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
-import { Home_articlesConnection$data } from "__generated__/Home_articlesConnection.graphql"
-import { Home_emergingPicksArtworks$data } from "__generated__/Home_emergingPicksArtworks.graphql"
-import { Home_featured$data } from "__generated__/Home_featured.graphql"
-import { Home_homePageAbove$data } from "__generated__/Home_homePageAbove.graphql"
-import { Home_homePageBelow$data } from "__generated__/Home_homePageBelow.graphql"
-import { Home_meAbove$data } from "__generated__/Home_meAbove.graphql"
-import { Home_meBelow$data } from "__generated__/Home_meBelow.graphql"
-import { Home_newWorksForYou$data } from "__generated__/Home_newWorksForYou.graphql"
-import { Home_showsByFollowedArtists$data } from "__generated__/Home_showsByFollowedArtists.graphql"
-import { Search2Query } from "__generated__/Search2Query.graphql"
-import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { LargeArtworkRailPlaceholder } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { ArtistRailFragmentContainer } from "app/Components/Home/ArtistRails/ArtistRail"
@@ -31,7 +18,7 @@ import { CollectionsRailFragmentContainer } from "app/Scenes/Home/Components/Col
 import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/Home/Components/EmailConfirmationBanner"
 import { FairsRailFragmentContainer } from "app/Scenes/Home/Components/FairsRail"
 import { OldCollectionsRailFragmentContainer } from "app/Scenes/Home/Components/OldCollectionsRail"
-import { HomeEmergingPicksArtworksRail } from "app/Scenes/Home/Components/HomeEmergingPicksArtworksRail"
+import { MarketingCollectionRail } from "app/Scenes/Home/Components/MarketingCollectionRail"
 import { SalesRailFragmentContainer } from "app/Scenes/Home/Components/SalesRail"
 import { lotsByArtistsYouFollowDefaultVariables } from "app/Scenes/LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import {
@@ -61,6 +48,19 @@ import { Join } from "palette"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
 import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
+import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
+import { Home_articlesConnection$data } from "__generated__/Home_articlesConnection.graphql"
+import { Home_emergingPicksArtworks$data } from "__generated__/Home_emergingPicksArtworks.graphql"
+import { Home_featured$data } from "__generated__/Home_featured.graphql"
+import { Home_homePageAbove$data } from "__generated__/Home_homePageAbove.graphql"
+import { Home_homePageBelow$data } from "__generated__/Home_homePageBelow.graphql"
+import { Home_meAbove$data } from "__generated__/Home_meAbove.graphql"
+import { Home_meBelow$data } from "__generated__/Home_meBelow.graphql"
+import { Home_newWorksForYou$data } from "__generated__/Home_newWorksForYou.graphql"
+import { Home_showsByFollowedArtists$data } from "__generated__/Home_showsByFollowedArtists.graphql"
+import { Search2Query } from "__generated__/Search2Query.graphql"
+import { SearchQuery } from "__generated__/SearchQuery.graphql"
 
 import { ActivityIndicator } from "./Components/ActivityIndicator"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
@@ -140,7 +140,7 @@ const Home = (props: Props) => {
     {
       title: "Curators’ Picks: Emerging",
       subtitle: "The best work by rising talents on Artsy, available now.",
-      type: "emergingPicksCollection",
+      type: "marketingCollection",
       data: emergingPicksArtworks,
       hidden: !enableCuratorsPickRail,
     },
@@ -279,9 +279,10 @@ const Home = (props: Props) => {
             }
 
             switch (item.type) {
-              case "emergingPicksCollection":
+              case "marketingCollection":
                 return (
-                  <HomeEmergingPicksArtworksRail
+                  <MarketingCollectionRail
+                    key="curators-picks-emerging"
                     viewer={item.data}
                     title={item.title}
                     subtitle={item.subtitle}
@@ -559,7 +560,8 @@ export const HomeFragmentContainer = createRefetchContainer(
     `,
     emergingPicksArtworks: graphql`
       fragment Home_emergingPicksArtworks on Viewer {
-        ...HomeEmergingPicksArtworksRail_viewer
+        ...MarketingCollectionRail_viewer
+          @arguments(marketingCollectionID: "curators-picks-emerging")
       }
     `,
   },
