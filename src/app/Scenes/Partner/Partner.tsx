@@ -1,3 +1,4 @@
+import { PartnerInitialQuery } from "__generated__/PartnerInitialQuery.graphql"
 import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
 import { Partner_partner$data } from "__generated__/Partner_partner.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -7,6 +8,7 @@ import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { Schema, screenTrack } from "app/utils/track"
+import { useClientQuery } from "app/utils/useClientQuery"
 import { Separator } from "palette"
 import React from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
@@ -75,20 +77,15 @@ export const PartnerContainer = createRefetchContainer(
   Partner,
   {
     partner: graphql`
-      fragment Partner_partner on Partner {
+      fragment Partner_partner on Partner
+      @argumentDefinitions(displayArtistsSection: { type: "Boolean", defaultValue: true }) {
         id
         internalID
         slug
         partnerType
         displayFullPartnerPage
-        profile {
-          id
-          isFollowed
-          internalID
-        }
-
         ...PartnerArtwork_partner @arguments(input: { sort: "-partner_updated_at" })
-        ...PartnerOverview_partner
+        ...PartnerOverview_partner @arguments(displayArtistsSection: $displayArtistsSection)
         ...PartnerShows_partner
         ...PartnerHeader_partner
         ...PartnerSubscriberBanner_partner
@@ -108,6 +105,22 @@ export const PartnerQueryRenderer: React.FC<{
   partnerID: string
   isVisible: boolean
 }> = ({ partnerID, ...others }) => {
+  const { loading, data } = useClientQuery<PartnerInitialQuery>({
+    environment: defaultEnvironment,
+    query: graphql`
+      query PartnerInitialQuery($partnerID: String!) {
+        partner(id: $partnerID) {
+          displayArtistsSection
+        }
+      }
+    `,
+    variables: { partnerID },
+  })
+
+  if (loading) {
+    return <HeaderTabsGridPlaceholder />
+  }
+
   return (
     <RetryErrorBoundaryLegacy
       render={({ isRetry }) => {
@@ -115,13 +128,16 @@ export const PartnerQueryRenderer: React.FC<{
           <QueryRenderer<PartnerQuery>
             environment={defaultEnvironment}
             query={graphql`
-              query PartnerQuery($partnerID: String!) {
+              query PartnerQuery($partnerID: String!, $displayArtistsSection: Boolean!) {
                 partner(id: $partnerID) {
-                  ...Partner_partner
+                  ...Partner_partner @arguments(displayArtistsSection: $displayArtistsSection)
                 }
               }
             `}
-            variables={{ partnerID }}
+            variables={{
+              partnerID,
+              displayArtistsSection: data?.partner?.displayArtistsSection ?? true,
+            }}
             cacheConfig={{
               // Bypass Relay cache on retries.
               ...(isRetry && { force: true }),

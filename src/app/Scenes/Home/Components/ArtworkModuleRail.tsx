@@ -1,5 +1,4 @@
 import { Flex, SpacingUnit } from "@artsy/palette-mobile"
-import { ArtworkModuleRail_rail$data } from "__generated__/ArtworkModuleRail_rail.graphql"
 import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
@@ -9,6 +8,7 @@ import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
+import { ArtworkModuleRail_rail$data } from "__generated__/ArtworkModuleRail_rail.graphql"
 import { RailScrollProps } from "./types"
 
 export function getViewAllUrl(rail: ArtworkModuleRail_rail$data) {
@@ -70,24 +70,30 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
     return null
   }
 
+  const handleTitlePress = viewAllUrl
+    ? () => {
+        const tapEvent = HomeAnalytics.artworkHeaderTapEvent(rail.key)
+        if (tapEvent) {
+          tracking.trackEvent(tapEvent)
+        }
+        navigate(viewAllUrl)
+      }
+    : undefined
+
+  const handlePressMore = viewAllUrl
+    ? () => {
+        const tapEvent = HomeAnalytics.artworkShowMoreCardTapEvent(rail.key)
+        if (tapEvent) {
+          tracking.trackEvent(tapEvent)
+        }
+        navigate(viewAllUrl)
+      }
+    : undefined
+
   return artworks.length ? (
     <Flex ref={railRef} mb={mb}>
       <Flex pl={2} pr={2}>
-        <SectionTitle
-          title={title}
-          subtitle={subtitle}
-          onPress={
-            viewAllUrl
-              ? () => {
-                  const tapEvent = HomeAnalytics.artworkHeaderTapEvent(rail.key)
-                  if (tapEvent) {
-                    tracking.trackEvent(tapEvent)
-                  }
-                  navigate(viewAllUrl)
-                }
-              : undefined
-          }
-        />
+        <SectionTitle title={title} subtitle={subtitle} onPress={handleTitlePress} />
       </Flex>
       <LargeArtworkRail
         listRef={listRef}
@@ -107,6 +113,7 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
 
           navigate(artwork.href!)
         }}
+        onMorePress={handlePressMore}
       />
     </Flex>
   ) : null

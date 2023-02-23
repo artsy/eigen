@@ -91,6 +91,23 @@ export default class HomeAnalytics {
 
   // Artwork Events
 
+  static artworkShowMoreCardTapEvent(key: string | null): Analytics.TappedEntityGroup | null {
+    const contextModule = HomeAnalytics.artworkRailContextModule(key)
+    const destinationScreen = HomeAnalytics.artworkHeaderDestinationScreen(key)
+    if (contextModule && destinationScreen) {
+      return Analytics.tappedEntityGroup({
+        contextScreenOwnerType: Analytics.OwnerType.home,
+        destinationScreenOwnerType: destinationScreen,
+        contextModule,
+        moduleHeight: "double",
+        type: "viewAll",
+      })
+    } else {
+      console.log("homeAnalytics.ts untracked header", key)
+      return null
+    }
+  }
+
   static artworkHeaderTapEvent(key: string | null): Analytics.TappedEntityGroup | null {
     const contextModule = HomeAnalytics.artworkRailContextModule(key)
     const destinationScreen = HomeAnalytics.artworkHeaderDestinationScreen(key)
@@ -242,6 +259,8 @@ export default class HomeAnalytics {
         return Analytics.ContextModule.recommendedWorksForYouRail
       case "genes":
         return Analytics.ContextModule.categoryRail
+      case "curators-picks-emerging":
+        return Analytics.ContextModule.curatorsPicksEmergingRail
     }
   }
 }
