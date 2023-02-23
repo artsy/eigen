@@ -16,8 +16,10 @@ enum Tab {
 }
 
 export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] }) => {
-  const savedArtworks = useFragment<ArtQuizResultsTabs_me$key>(artQuizResultsTabsFragment, me)?.quiz
-    .savedArtworks
+  const queryResult = useFragment<ArtQuizResultsTabs_me$key>(artQuizResultsTabsFragment, me)?.quiz
+
+  const savedArtworks = queryResult?.savedArtworks!
+  const recommendedArtworks = queryResult?.recommendedArtworks!
 
   return (
     <Screen>
@@ -27,16 +29,16 @@ export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] 
           tabs={compact([
             {
               title: Tab.worksYouLiked,
-              content: <ArtQuizLikedArtworks savedArtworks={savedArtworks!} />,
+              content: <ArtQuizLikedArtworks savedArtworks={savedArtworks} />,
               initial: true,
             },
             {
               title: Tab.exploreWorks,
-              content: <ArtQuizExploreArtworks savedArtworks={savedArtworks!} />,
+              content: <ArtQuizExploreArtworks recommendedArtworks={recommendedArtworks} />,
             },
             {
               title: Tab.exploreArtists,
-              content: <ArtQuizExploreArtists savedArtworks={savedArtworks!} />,
+              content: <ArtQuizExploreArtists savedArtworks={savedArtworks} />,
             },
           ])}
           staticHeaderContent={
@@ -54,6 +56,9 @@ export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] 
 const artQuizResultsTabsFragment = graphql`
   fragment ArtQuizResultsTabs_me on Me {
     quiz {
+      recommendedArtworks {
+        ...ArtQuizExploreArtworksFragment_artwork
+      }
       savedArtworks {
         ...ArtQuizLikedArtworks_artworks
         ...ArtQuizExploreArtists_artworks
