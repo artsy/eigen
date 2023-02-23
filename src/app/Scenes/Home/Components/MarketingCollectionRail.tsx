@@ -15,18 +15,18 @@ interface MarketingCollectionRailProps {
   mb?: SpacingUnit
   title: string
   subtitle?: string
-  key: string
+  contextModuleKey: string
 }
 
 export const MarketingCollectionRail: React.FC<MarketingCollectionRailProps> = ({
   mb,
   title,
   subtitle,
-  key,
+  contextModuleKey,
   ...restProps
 }) => {
   const { trackEvent } = useTracking()
-  const contextModule = HomeAnalytics.artworkRailContextModule(key)
+  const contextModule = HomeAnalytics.artworkRailContextModule(contextModuleKey)
 
   const viewer = useFragment(artworksFragment, restProps.viewer)
   const artworks = extractNodes(viewer.artworksConnection)

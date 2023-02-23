@@ -136,14 +136,6 @@ const Home = (props: Props) => {
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
   let modules: HomeModule[] = compact([
     // Above-The-Fold Modules
-    // TODO: Move to position
-    {
-      title: "Curators’ Picks: Emerging",
-      subtitle: "The best work by rising talents on Artsy, available now.",
-      type: "marketingCollection",
-      data: emergingPicksArtworks,
-      hidden: !enableCuratorsPickRail,
-    },
     {
       title: "Collections",
       subtitle: "The Newest Works Curated by Artsy",
@@ -202,6 +194,13 @@ const Home = (props: Props) => {
       type: "homeFeedOnboarding",
       data: homePageBelow?.onboardingModule,
       hidden: !homePageBelow?.onboardingModule,
+    },
+    {
+      title: "Curators’ Picks: Emerging",
+      subtitle: "The best work by rising talents on Artsy, available now.",
+      type: "marketingCollection",
+      data: emergingPicksArtworks,
+      hidden: !enableCuratorsPickRail,
     },
     {
       title: "Collections",
@@ -282,7 +281,7 @@ const Home = (props: Props) => {
               case "marketingCollection":
                 return (
                   <MarketingCollectionRail
-                    key="curators-picks-emerging"
+                    contextModuleKey="curators-picks-emerging"
                     viewer={item.data}
                     title={item.title}
                     subtitle={item.subtitle}
@@ -760,9 +759,6 @@ export const HomeQueryRenderer: React.FC = () => {
       above={{
         query: graphql`
           query HomeAboveTheFoldQuery($version: String!) {
-            emergingPicksArtworks: viewer @optionalField {
-              ...Home_emergingPicksArtworks
-            }
             homePage @optionalField {
               ...Home_homePageAbove
             }
@@ -787,6 +783,9 @@ export const HomeQueryRenderer: React.FC = () => {
           query HomeBelowTheFoldQuery {
             homePage @optionalField {
               ...Home_homePageBelow
+            }
+            emergingPicksArtworks: viewer @optionalField {
+              ...Home_emergingPicksArtworks
             }
             featured: viewingRooms(featured: true) @optionalField {
               ...Home_featured
@@ -813,8 +812,8 @@ export const HomeQueryRenderer: React.FC = () => {
 
           return (
             <HomeFragmentContainer
-              emergingPicksArtworks={above.emergingPicksArtworks ?? null}
               articlesConnection={above?.articlesConnection ?? null}
+              emergingPicksArtworks={below?.emergingPicksArtworks ?? null}
               showsByFollowedArtists={below?.me?.showsByFollowedArtists ?? null}
               featured={below ? below.featured : null}
               homePageAbove={above.homePage}
