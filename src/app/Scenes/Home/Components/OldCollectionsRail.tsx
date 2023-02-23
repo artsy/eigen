@@ -1,30 +1,32 @@
 import { SpacingUnit, Flex, Text } from "@artsy/palette-mobile"
-import themeGet from "@styled-system/theme-get"
-import { CollectionsRail_collectionsModule$data } from "__generated__/CollectionsRail_collectionsModule.graphql"
-import { FiveUpImageLayout } from "app/Components/FiveUpImageLayout"
+import { OldCollectionsRail_collectionsModule$data } from "__generated__/OldCollectionsRail_collectionsModule.graphql"
+import {
+  CardRailCard,
+  CardRailMetadataContainer as MetadataContainer,
+} from "app/Components/Home/CardRailCard"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact } from "lodash"
 import React, { useImperativeHandle, useRef } from "react"
-import { FlatList } from "react-native"
+import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import styled from "styled-components/native"
 import { RailScrollProps } from "./types"
 
 interface Props {
   title: string
   subtitle?: string
-  collectionsModule: CollectionsRail_collectionsModule$data
+  collectionsModule: OldCollectionsRail_collectionsModule$data
   mb?: SpacingUnit
 }
 
-type Collection = CollectionsRail_collectionsModule$data["results"][0]
+type Collection = OldCollectionsRail_collectionsModule$data["results"][0]
 
-const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
+const OldCollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
   const listRef = useRef<FlatList<any>>()
   const tracking = useTracking()
 
@@ -46,44 +48,45 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
         listRef={listRef}
         data={compact(props.collectionsModule.results)}
         keyExtractor={(item, index) => item.slug || String(index)}
-        renderItem={({ item, index }) => {
+        renderItem={({ item: result, index }) => {
           // Collections are expected to always have >= 2 artworks, but we should
           // still be cautious to avoid crashes if this assumption is broken.
           const artworkImageURLs = extractNodes(
-            item.artworksConnection,
+            result.artworksConnection,
             (artwork) => artwork.image?.url!
           )
 
           return (
-            <CollectionCard
-              testID={`collections-rail-card-${item.slug}`}
+            <CardRailCard
               onPress={
-                item?.slug
+                result?.slug
                   ? () => {
-                      const tapEvent = HomeAnalytics.collectionThumbnailTapEvent(item?.slug, index)
+                      const tapEvent = HomeAnalytics.collectionThumbnailTapEvent(
+                        result?.slug,
+                        index
+                      )
                       if (tapEvent) {
                         tracking.trackEvent(tapEvent)
                       }
-                      navigate(`/collection/${item.slug}`)
+                      navigate(`/collection/${result.slug}`)
                     }
                   : undefined
               }
             >
-              <Flex>
-                <FiveUpImageLayout imageURLs={artworkImageURLs} />
-
-                <Flex mt={1}>
-                  <Text variant="sm-display" numberOfLines={1} weight="medium">
-                    {item?.title}
+              <View>
+                <ThreeUpImageLayout imageURLs={artworkImageURLs} />
+                <MetadataContainer>
+                  <Text variant="sm" numberOfLines={1} weight="medium">
+                    {result?.title}
                   </Text>
-                  <Text variant="xs" numberOfLines={1} color="black60">
-                    {item?.artworksConnection?.counts?.total
-                      ? `${item.artworksConnection.counts.total} works`
+                  <Text variant="sm" numberOfLines={1} color="black60">
+                    {result?.artworksConnection?.counts?.total
+                      ? `${result.artworksConnection.counts.total} works`
                       : ""}
                   </Text>
-                </Flex>
-              </Flex>
-            </CollectionCard>
+                </MetadataContainer>
+              </View>
+            </CardRailCard>
           )
         }}
       />
@@ -91,9 +94,9 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
   )
 }
 
-export const CollectionsRailFragmentContainer = createFragmentContainer(CollectionsRail, {
+export const OldCollectionsRailFragmentContainer = createFragmentContainer(OldCollectionsRail, {
   collectionsModule: graphql`
-    fragment CollectionsRail_collectionsModule on HomePageMarketingCollectionsModule {
+    fragment OldCollectionsRail_collectionsModule on HomePageMarketingCollectionsModule {
       results {
         title
         slug
@@ -113,8 +116,3 @@ export const CollectionsRailFragmentContainer = createFragmentContainer(Collecti
     }
   `,
 })
-
-const CollectionCard = styled.TouchableHighlight.attrs(() => ({
-  underlayColor: themeGet("colors.white100"),
-  activeOpacity: 0.8,
-}))``

@@ -29,6 +29,7 @@ import { AuctionResultsRailFragmentContainer } from "app/Scenes/Home/Components/
 import { CollectionsRailFragmentContainer } from "app/Scenes/Home/Components/CollectionsRail"
 import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/Home/Components/EmailConfirmationBanner"
 import { FairsRailFragmentContainer } from "app/Scenes/Home/Components/FairsRail"
+import { OldCollectionsRailFragmentContainer } from "app/Scenes/Home/Components/OldCollectionsRail"
 import { SalesRailFragmentContainer } from "app/Scenes/Home/Components/SalesRail"
 import { lotsByArtistsYouFollowDefaultVariables } from "app/Scenes/LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import {
@@ -124,10 +125,16 @@ const Home = (props: Props) => {
   } = props
 
   const showUpcomingAuctionResultsRail = useFeatureFlag("ARShowUpcomingAuctionResultsRails")
-
+  const enableNewCollectionsRail = useFeatureFlag("AREnableNewCollectionsRail")
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
   let modules: HomeModule[] = compact([
     // Above-The-Fold Modules
+    {
+      title: "Collections",
+      subtitle: "The Newest Works Curated by Artsy",
+      type: "collections",
+      data: homePageBelow?.marketingCollectionsModule,
+    },
     {
       title: "New Works for You",
       type: "newWorksForYou",
@@ -319,8 +326,15 @@ const Home = (props: Props) => {
                   />
                 )
               case "collections":
-                return (
+                return enableNewCollectionsRail ? (
                   <CollectionsRailFragmentContainer
+                    title={item.title}
+                    collectionsModule={item.data}
+                    scrollRef={scrollRefs.current[index]}
+                    mb={MODULE_SEPARATOR_HEIGHT}
+                  />
+                ) : (
+                  <OldCollectionsRailFragmentContainer
                     title={item.title}
                     collectionsModule={item.data}
                     scrollRef={scrollRefs.current[index]}
@@ -477,6 +491,7 @@ export const HomeFragmentContainer = createRefetchContainer(
           ...FairsRail_fairsModule
         }
         marketingCollectionsModule {
+          ...OldCollectionsRail_collectionsModule
           ...CollectionsRail_collectionsModule
         }
         onboardingModule @optionalField {
