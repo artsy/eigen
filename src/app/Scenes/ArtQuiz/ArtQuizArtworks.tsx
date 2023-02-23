@@ -26,11 +26,14 @@ import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
 import { graphql, useLazyLoadQuery, useMutation } from "react-relay"
 
 export const ArtQuizResultsScreen = () => {
-  const [activeCardIndex, setActiveCardIndex] = useState(0)
-  const [isInteracted, setIsInteracted] = useState(false)
   const queryResult = useLazyLoadQuery<ArtQuizArtworksQuery>(artQuizArtworksQuery, {})
   const { userID } = GlobalStore.useAppState((store) => store.auth)
-  const artworks = extractNodes(queryResult.me?.quiz.quizArtworkConnection)
+  const quizArtworkConnection = queryResult.me?.quiz.quizArtworkConnection
+  const artworks = extractNodes(quizArtworkConnection)
+  const lastInteractedArtworkIndex = quizArtworkConnection?.edges?.findIndex(
+    (edge) => edge?.interactedAt === null
+  )
+  const [activeCardIndex, setActiveCardIndex] = useState(lastInteractedArtworkIndex ?? 0)
   const pagerViewRef = useRef<PagerView>(null)
   const popoverMessage = usePopoverMessage()
 
@@ -56,15 +59,6 @@ export const ArtQuizResultsScreen = () => {
     }
   }, [])
 
-  const edges = queryResult.me?.quiz.quizArtworkConnection?.edges
-  const lastInteractedArtworkIndex = edges?.findIndex((edge) => edge?.interactedAt === null)
-  if (lastInteractedArtworkIndex !== 0) {
-    popoverMessage.hide()
-  }
-  if (!isInteracted) {
-    pagerViewRef.current?.setPage(lastInteractedArtworkIndex!)
-  }
-
   const handleIndexChange = (e: PagerViewOnPageScrollEvent) => {
     if (e.nativeEvent.position !== undefined) {
       // We need to avoid updating the index when the position is -1. This happens when the user
@@ -77,7 +71,6 @@ export const ArtQuizResultsScreen = () => {
 
   const handleNext = (action: "Like" | "Dislike") => {
     popoverMessage.hide()
-    setIsInteracted(true)
     pagerViewRef.current?.setPage(activeCardIndex + 1)
 
     if (action === "Like") {
@@ -118,7 +111,6 @@ export const ArtQuizResultsScreen = () => {
 
   const handleOnBack = () => {
     popoverMessage.hide()
-    setIsInteracted(true)
     if (activeCardIndex === 0) {
       goBack()
     } else {
