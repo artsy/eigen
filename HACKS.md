@@ -40,16 +40,6 @@ https://github.com/ivpusic/react-native-image-crop-picker/pull/1354
 
 We do some swizzling in our AppDelegate that causes [[UIApplication sharedApplication] delegate] window] to return nil, this is used by image-crop-picker to find the currently presented viewController to present the picker onto. This patch looks for our custom window subclass (ARWindow) instead and uses that to find the presented viewController. Note we cannot reliably use the lastWindow rather than checking for our custom subclass because in some circumstances this is not our window but an apple window for example UIInputWindow used for managing the keyboard.
 
-## react-native patch-package (EXCLUDED_ARCHS part only).
-
-#### When can we remove this:
-
-When we upgrade to react-native 0.67 or later.
-
-#### Explanation/Context:
-
-This is an old restriction for an old hermes version. It's messing with our xcodeproj file for non-M1 macs, so we patch it out for now. That restriction is fixed and removed on RN 0.67.
-
 ## react-native patch-package (stacktrace-parser part only).
 
 #### When can we remove this:
@@ -305,6 +295,36 @@ We either need to find a library that gives us masonry layout using a Virtualize
 
 Currently our masonry layout (in InfiniteScrollArtworksGrid `render()`) is using a ScrollView, which is not a VirtualizedList.
 Also, currently, the parent that is the FlatList, comes from StickyTabPageFlatList.
+
+## react-native patch-package (find-node/asdf part)
+
+#### When we can remove this:
+
+When we upgrade to RN 0.69+.
+
+At that point, we need to add the following to our new `ios/.xcode.env` file:
+
+```
+
+# Support Homebrew on M1
+HOMEBREW_M1_BIN=/opt/homebrew/bin
+if [[ -d $HOMEBREW_M1_BIN && ! $PATH =~ $HOMEBREW_M1_BIN ]]; then
+  export PATH="$HOMEBREW_M1_BIN:$PATH"
+fi
+
+# Set up asdf
+if [[ -f "$HOME/.asdf/asdf.sh" ]]; then
+  # shellcheck source=/dev/null
+  . "$HOME/.asdf/asdf.sh"
+elif [[ -x "$(command -v brew)" && -f "$(brew --prefix asdf)/libexec/asdf.sh" ]]; then
+  # shellcheck source=/dev/null
+  . "$(brew --prefix asdf)/libexec/asdf.sh"
+fi
+```
+
+#### Explanation/Context
+
+RN 0.68- was using `find-node.sh` to find node on our systems, so it would look for asdf, nvm, nodenv, and others. After 0.69, this file is removed and now we have the `.xcode.env` file to do this ourselves. Since we use asdf, we need to add the asdf bit above. If we want to support other version managers, we can add those too. Grab whatever we need from here https://github.com/facebook/react-native/blob/0.68-stable/scripts/find-node.sh.
 
 ## react-native-scrollable-tab-view pointing to a commit hash
 
