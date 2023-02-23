@@ -1498,6 +1498,9 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
       HIGH_AUCTION_RECORD
       ARTSY_VANGUARD_YEAR
       CRITICALLY_ACCLAIMED
+      RESIDENCIES
+      PRIVATE_COLLECTIONS
+      AWARDS
     ]
   ): [ArtistInsight!]!
 
@@ -1703,11 +1706,14 @@ type ArtistInsight {
 enum ArtistInsightKind {
   ACTIVE_SECONDARY_MARKET
   ARTSY_VANGUARD_YEAR
+  AWARDS
   BIENNIAL
   COLLECTED
   CRITICALLY_ACCLAIMED
   GROUP_SHOW
   HIGH_AUCTION_RECORD
+  PRIVATE_COLLECTIONS
+  RESIDENCIES
   REVIEWED
   SOLO_SHOW
 }
