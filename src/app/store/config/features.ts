@@ -199,7 +199,7 @@ export const features = defineFeatures({
     readyForRelease: false,
   },
   AREnableBrowseMoreArtworksCard: {
-    description: "Enable Browse More Artworks Card on Home Screen",
+    description: "Enable Browse All Artworks Card on Home Screen",
     showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "AREnableBrowseMoreArtworksCard",

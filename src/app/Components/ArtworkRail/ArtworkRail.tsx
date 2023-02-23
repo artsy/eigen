@@ -158,8 +158,8 @@ interface BrowseMoreArtworksCardProps {
 const BrowseMoreArtworksCard: React.FC<BrowseMoreArtworksCardProps> = ({ onPress }) => {
   return (
     <Flex flex={1} px={1} mx={2} justifyContent="center">
-      <Button variant="outline" onPress={onPress} accessibilityLabel="Browse More Artworks">
-        Browse More Artworks
+      <Button variant="outline" onPress={onPress} accessibilityLabel="Browse All Artworks">
+        Browse All Artworks
       </Button>
     </Flex>
   )
