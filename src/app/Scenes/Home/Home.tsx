@@ -220,15 +220,15 @@ const Home = (props: Props) => {
       prefetchUrl: "/viewing-rooms",
     },
     {
+      title: "Shows for You",
+      type: "shows",
+      data: showsByFollowedArtists,
+    },
+    {
       title: "Featured Fairs",
       subtitle: "See Works in Top Art Fairs",
       type: "fairs",
       data: homePageBelow?.fairsModule,
-    },
-    {
-      title: "Shows for You",
-      type: "shows",
-      data: showsByFollowedArtists,
     },
   ])
 
