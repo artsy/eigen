@@ -13,7 +13,6 @@ import {
 } from "app/__fixtures__/ArtworkBidAction"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { navigationEvents } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
@@ -415,17 +414,11 @@ describe("Artwork", () => {
   })
 
   describe("Partner Section", () => {
-    it("should display questions section", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: true })
-
+    it("should display contact gallery button when partner is inquireable", () => {
       renderWithWrappers(<TestRenderer />)
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
-        Artwork: () => ({
-          isAcquireable: true,
-        }),
-      })
+      resolveMostRecentRelayOperation(environment, {})
 
       // ArtworkMarkAsRecentlyViewedQuery
       resolveMostRecentRelayOperation(environment)
@@ -435,6 +428,7 @@ describe("Artwork", () => {
         Artwork: () => ({
           partner: {
             type: "Gallery",
+            isInquireable: true,
           },
           sale: {
             isBenefit: false,
@@ -448,17 +442,11 @@ describe("Artwork", () => {
       expect(screen.queryByText("Contact Gallery")).toBeTruthy()
     })
 
-    it("should not display questions section", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: false })
-
+    it("should not display contact gallery button when partner is not inquireable", () => {
       renderWithWrappers(<TestRenderer />)
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
-        Artwork: () => ({
-          isAcquireable: true,
-        }),
-      })
+      resolveMostRecentRelayOperation(environment, {})
 
       // ArtworkMarkAsRecentlyViewedQuery
       resolveMostRecentRelayOperation(environment)
@@ -468,6 +456,7 @@ describe("Artwork", () => {
         Artwork: () => ({
           partner: {
             type: "Gallery",
+            isInquireable: false,
           },
           sale: {
             isBenefit: false,
@@ -477,8 +466,8 @@ describe("Artwork", () => {
       })
 
       expect(screen.queryByText("Gallery")).toBeTruthy()
-      expect(screen.queryByText("Questions about this piece?")).toBeFalsy()
-      expect(screen.queryByText("Contact Gallery")).toBeFalsy()
+      expect(screen.queryByText("Questions about this piece?")).toBeNull()
+      expect(screen.queryByText("Contact Gallery")).toBeNull()
     })
   })
 
