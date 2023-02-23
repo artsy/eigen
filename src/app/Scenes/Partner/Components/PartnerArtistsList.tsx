@@ -29,6 +29,8 @@ export const PartnerArtistsList: React.FC<PartnerArtistsListProps> = ({ partner 
       <Text variant="sm-display">Artists ({allArtistsConnection?.totalCount})</Text>
       <Spacer y={2} />
       <FlatList
+        accessibilityRole="list"
+        accessibilityLabel="Partner artists list"
         data={artists}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <ArtistListItem artist={item} />}
