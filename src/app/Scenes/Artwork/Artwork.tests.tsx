@@ -418,7 +418,7 @@ describe("Artwork", () => {
       renderWithWrappers(<TestRenderer />)
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {})
+      resolveMostRecentRelayOperation(environment)
 
       // ArtworkMarkAsRecentlyViewedQuery
       resolveMostRecentRelayOperation(environment)
@@ -446,7 +446,7 @@ describe("Artwork", () => {
       renderWithWrappers(<TestRenderer />)
 
       // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {})
+      resolveMostRecentRelayOperation(environment)
 
       // ArtworkMarkAsRecentlyViewedQuery
       resolveMostRecentRelayOperation(environment)
