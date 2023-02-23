@@ -10,7 +10,7 @@ import { AuctionTimerState, currentTimerState } from "app/Components/Bidding/Com
 import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { OfferSubmittedModal } from "app/Scenes/Inbox/Components/Conversations/OfferSubmittedModal"
-import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { navigationEvents } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
@@ -70,7 +70,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const space = useSpace()
   const [refreshing, setRefreshing] = useState(false)
   const [fetchingData, setFetchingData] = useState(false)
-  const enableConversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
   const isDeepZoomModalVisible = GlobalStore.useAppState(
     (store) => store.devicePrefs.sessionState.isDeepZoomModalVisible
   )
@@ -304,14 +303,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
         key: "partnerCard",
         element: (
           <PartnerCard
-            shouldShowQuestions={
-              !!(
-                enableConversationalBuyNow &&
-                artworkBelowTheFold &&
-                (artworkAboveTheFold?.isAcquireable ||
-                  (!artworkAboveTheFold?.isInquireable && artworkAboveTheFold?.isOfferable))
-              )
-            }
+            shouldShowQuestions={!!artworkBelowTheFold.partner?.isInquireable}
             artwork={artworkBelowTheFold}
           />
         ),
@@ -518,6 +510,7 @@ export const ArtworkContainer = createRefetchContainer(
         isForSale
         partner {
           type
+          isInquireable
         }
         artist {
           biographyBlurb {
