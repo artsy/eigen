@@ -69,11 +69,7 @@ export const OnboardingMarketingCollectionScreen: React.FC<OnboardingMarketingCo
       />
     }
   >
-    <FullScreenLoadingImage
-      imgSource={images[props.slug]}
-      loadingText={"Great choice" + "\n" + "We’re finding a collection for you"}
-    />
-    {/* <OnboardingMarketingCollection {...props} /> */}
+    <OnboardingMarketingCollection {...props} />
   </Suspense>
 )
 
