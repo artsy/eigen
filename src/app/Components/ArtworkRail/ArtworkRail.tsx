@@ -13,7 +13,9 @@ import { FlatList } from "react-native"
 const MAX_NUMBER_OF_ARTWORKS = 30
 
 interface CommonArtworkRailProps {
+  dark?: boolean
   hideArtistName?: boolean
+  showPartnerName?: boolean
   ListFooterComponent?: ReactElement | null
   ListHeaderComponent?: ReactElement | null
   listRef?: React.RefObject<FlatList<any>>
@@ -42,6 +44,8 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
   ListHeaderComponent = SpacerComponent,
   ListFooterComponent = SpacerComponent,
   hideArtistName = false,
+  showPartnerName = false,
+  dark = false,
   artworks,
   showSaveIcon = false,
   trackingContextScreenOwnerType,
@@ -74,8 +78,9 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
       renderItem={({ item, index }) => (
         <ArtworkRailCard
           artwork={item}
-          hidePartnerName
+          showPartnerName={showPartnerName}
           hideArtistName={hideArtistName}
+          dark={dark}
           onPress={() => {
             onPress?.(item, index)
           }}
@@ -134,7 +139,7 @@ export const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> =
           lowEstimateDisplay={item?.lowEstimate?.display!}
           highEstimateDisplay={item?.highEstimate?.display!}
           size={size}
-          hidePartnerName
+          showPartnerName
           isRecentlySoldArtwork
           hideArtistName={hideArtistName}
         />

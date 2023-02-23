@@ -6,18 +6,6 @@ import {
   Spacer,
   SpacingUnitDSValueNumber,
 } from "@artsy/palette-mobile"
-import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
-import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
-import { Home_articlesConnection$data } from "__generated__/Home_articlesConnection.graphql"
-import { Home_featured$data } from "__generated__/Home_featured.graphql"
-import { Home_homePageAbove$data } from "__generated__/Home_homePageAbove.graphql"
-import { Home_homePageBelow$data } from "__generated__/Home_homePageBelow.graphql"
-import { Home_meAbove$data } from "__generated__/Home_meAbove.graphql"
-import { Home_meBelow$data } from "__generated__/Home_meBelow.graphql"
-import { Home_newWorksForYou$data } from "__generated__/Home_newWorksForYou.graphql"
-import { Home_showsByFollowedArtists$data } from "__generated__/Home_showsByFollowedArtists.graphql"
-import { Search2Query } from "__generated__/Search2Query.graphql"
-import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { LargeArtworkRailPlaceholder } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { ArtistRailFragmentContainer } from "app/Components/Home/ArtistRails/ArtistRail"
@@ -30,6 +18,7 @@ import { CollectionsRailFragmentContainer } from "app/Scenes/Home/Components/Col
 import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/Home/Components/EmailConfirmationBanner"
 import { FairsRailFragmentContainer } from "app/Scenes/Home/Components/FairsRail"
 import { OldCollectionsRailFragmentContainer } from "app/Scenes/Home/Components/OldCollectionsRail"
+import { MarketingCollectionRail } from "app/Scenes/Home/Components/MarketingCollectionRail"
 import { SalesRailFragmentContainer } from "app/Scenes/Home/Components/SalesRail"
 import { lotsByArtistsYouFollowDefaultVariables } from "app/Scenes/LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import {
@@ -59,6 +48,19 @@ import { Join } from "palette"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
 import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
+import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
+import { Home_articlesConnection$data } from "__generated__/Home_articlesConnection.graphql"
+import { Home_emergingPicksArtworks$data } from "__generated__/Home_emergingPicksArtworks.graphql"
+import { Home_featured$data } from "__generated__/Home_featured.graphql"
+import { Home_homePageAbove$data } from "__generated__/Home_homePageAbove.graphql"
+import { Home_homePageBelow$data } from "__generated__/Home_homePageBelow.graphql"
+import { Home_meAbove$data } from "__generated__/Home_meAbove.graphql"
+import { Home_meBelow$data } from "__generated__/Home_meBelow.graphql"
+import { Home_newWorksForYou$data } from "__generated__/Home_newWorksForYou.graphql"
+import { Home_showsByFollowedArtists$data } from "__generated__/Home_showsByFollowedArtists.graphql"
+import { Search2Query } from "__generated__/Search2Query.graphql"
+import { SearchQuery } from "__generated__/SearchQuery.graphql"
 
 import { ActivityIndicator } from "./Components/ActivityIndicator"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
@@ -95,6 +97,7 @@ interface Props extends ViewProps {
   meAbove: Home_meAbove$data | null
   meBelow: Home_meBelow$data | null
   relay: RelayRefetchProp
+  emergingPicksArtworks: Home_emergingPicksArtworks$data | null
 }
 
 const Home = (props: Props) => {
@@ -112,6 +115,7 @@ const Home = (props: Props) => {
   }, [])
 
   const {
+    emergingPicksArtworks,
     homePageAbove,
     homePageBelow,
     meAbove,
@@ -121,20 +125,17 @@ const Home = (props: Props) => {
     showsByFollowedArtists,
     featured,
     loading,
+
     relay,
   } = props
 
   const showUpcomingAuctionResultsRail = useFeatureFlag("ARShowUpcomingAuctionResultsRails")
   const enableNewCollectionsRail = useFeatureFlag("AREnableNewCollectionsRail")
+  const enableCuratorsPickRail = useFeatureFlag("AREnableCuratorsPickRail")
+
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
   let modules: HomeModule[] = compact([
     // Above-The-Fold Modules
-    {
-      title: "Collections",
-      subtitle: "The Newest Works Curated by Artsy",
-      type: "collections",
-      data: homePageBelow?.marketingCollectionsModule,
-    },
     {
       title: "New Works for You",
       type: "newWorksForYou",
@@ -187,6 +188,13 @@ const Home = (props: Props) => {
       type: "homeFeedOnboarding",
       data: homePageBelow?.onboardingModule,
       hidden: !homePageBelow?.onboardingModule,
+    },
+    {
+      title: "Curators’ Picks: Emerging",
+      subtitle: "The best work by rising talents on Artsy, available now.",
+      type: "marketingCollection",
+      data: emergingPicksArtworks,
+      hidden: !enableCuratorsPickRail,
     },
     {
       title: "Collections",
@@ -264,6 +272,16 @@ const Home = (props: Props) => {
             }
 
             switch (item.type) {
+              case "marketingCollection":
+                return (
+                  <MarketingCollectionRail
+                    contextModuleKey="curators-picks-emerging"
+                    viewer={item.data}
+                    title={item.title}
+                    subtitle={item.subtitle}
+                    mb={MODULE_SEPARATOR_HEIGHT}
+                  />
+                )
               case "homeFeedOnboarding":
                 return (
                   <HomeFeedOnboardingRailFragmentContainer
@@ -533,6 +551,12 @@ export const HomeFragmentContainer = createRefetchContainer(
         ...NewWorksForYouRail_artworkConnection
       }
     `,
+    emergingPicksArtworks: graphql`
+      fragment Home_emergingPicksArtworks on Viewer {
+        ...MarketingCollectionRail_viewer
+          @arguments(marketingCollectionID: "curators-picks-emerging")
+      }
+    `,
   },
   graphql`
     query HomeRefetchQuery($version: String) {
@@ -561,6 +585,9 @@ export const HomeFragmentContainer = createRefetchContainer(
       }
       newWorksForYou: viewer {
         ...Home_newWorksForYou
+      }
+      emergingPicksArtworks: viewer {
+        ...Home_emergingPicksArtworks
       }
     }
   `
@@ -747,12 +774,12 @@ export const HomeQueryRenderer: React.FC = () => {
       }}
       below={{
         query: graphql`
-          query HomeBelowTheFoldQuery($version: String!) {
-            newWorksForYou: viewer @optionalField {
-              ...Home_newWorksForYou
-            }
+          query HomeBelowTheFoldQuery {
             homePage @optionalField {
               ...Home_homePageBelow
+            }
+            emergingPicksArtworks: viewer @optionalField {
+              ...Home_emergingPicksArtworks
             }
             featured: viewingRooms(featured: true) @optionalField {
               ...Home_featured
@@ -780,6 +807,7 @@ export const HomeQueryRenderer: React.FC = () => {
           return (
             <HomeFragmentContainer
               articlesConnection={above?.articlesConnection ?? null}
+              emergingPicksArtworks={below?.emergingPicksArtworks ?? null}
               showsByFollowedArtists={below?.me?.showsByFollowedArtists ?? null}
               featured={below ? below.featured : null}
               homePageAbove={above.homePage}
