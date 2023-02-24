@@ -2,10 +2,18 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug Packager",
-      "cwd": "${workspaceFolder}",
+      "name": "Debug iOS (starts packager and runs on device)",
+      "request": "launch",
       "type": "reactnative",
-      "request": "attach"
+      "cwd": "${workspaceFolder}",
+      "platform": "ios",
+      "runArguments": ["--simulator", "iPhone 14 Pro"]
+    },
+    {
+      "name": "Attach to packager (with packager already running)",
+      "request": "attach",
+      "type": "reactnative",
+      "cwd": "${workspaceFolder}"
     },
     {
       "name": "Debug Jest Tests",
@@ -20,7 +28,13 @@
       "name": "Debug Jest Current File",
       "type": "node",
       "request": "launch",
-      "runtimeArgs": ["--inspect-brk", "${workspaceRoot}/node_modules/.bin/jest", "--runInBand", "--watch", "${file}"],
+      "runtimeArgs": [
+        "--inspect-brk",
+        "${workspaceRoot}/node_modules/.bin/jest",
+        "--runInBand",
+        "--watch",
+        "${file}"
+      ],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "port": 9229
