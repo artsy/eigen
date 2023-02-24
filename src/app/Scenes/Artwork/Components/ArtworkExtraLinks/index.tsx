@@ -5,7 +5,6 @@ import { useSelectedTab } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
 import { View } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { AuctionFaqSection } from "./AuctionFaqSection"
 
@@ -58,29 +57,3 @@ const ConsignmentsLink: React.FC<{ artistName: string }> = ({ artistName }) => {
     </View>
   )
 }
-
-export const ArtworkExtraLinksFragmentContainer = createFragmentContainer(ArtworkExtraLinks, {
-  artwork: graphql`
-    fragment ArtworkExtraLinks_artwork on Artwork {
-      isAcquireable
-      isInAuction
-      isOfferable
-      title
-      isForSale
-      sale {
-        isClosed
-        isBenefit
-        partner {
-          name
-        }
-      }
-      artists {
-        isConsignable
-        name
-      }
-      artist {
-        name
-      }
-    }
-  `,
-})

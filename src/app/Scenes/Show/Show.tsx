@@ -37,18 +37,6 @@ interface ShowProps {
   show: Show_show$data
 }
 
-export interface ViewableItems {
-  viewableItems?: ViewToken[]
-}
-
-interface ViewToken {
-  item?: Section
-  key?: string
-  index?: number | null
-  isViewable?: boolean
-  section?: any
-}
-
 export const Show: React.FC<ShowProps> = ({ show }) => {
   const [visible, setVisible] = useState(false)
   const shouldShowImageSearchButton = show.isReverseImageSearchEnabled && !!show.isActive
