@@ -2,14 +2,6 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug iOS (starts packager and runs on device)",
-      "request": "launch",
-      "type": "reactnative",
-      "cwd": "${workspaceFolder}",
-      "platform": "ios",
-      "runArguments": ["--simulator", "iPhone 14 Pro"]
-    },
-    {
       "name": "Attach to packager (with packager already running)",
       "request": "attach",
       "type": "reactnative",
