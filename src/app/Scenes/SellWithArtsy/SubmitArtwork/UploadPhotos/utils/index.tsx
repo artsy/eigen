@@ -2,8 +2,7 @@ import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { SellWithArtsyHomeQueryRenderer } from "app/Scenes/SellWithArtsy/SellWithArtsyHome"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack, switchTab } from "app/system/navigation/navigate"
-import { SimpleLocation } from "app/utils/googleMaps"
-import React, { useCallback, useEffect, useRef } from "react"
+import { useCallback, useEffect, useRef } from "react"
 import { BackHandler } from "react-native"
 import { Image as RNCImage } from "react-native-image-crop-picker"
 
@@ -32,36 +31,10 @@ export interface ArtistResult {
   }
 }
 
-export type SearchResult = SimpleLocation | ArtistResult
-
 export interface Photo {
   image: RNCImage
   uploaded?: boolean
   uploading?: boolean
-}
-
-export interface SellWithArtsySetup {
-  submissionID?: string
-  state?: "DRAFT" | "SUBMITTED"
-  artist?: ArtistResult
-  photos?: Photo[]
-  metadata?: SellWithArtsyMetadata
-  provenance?: string
-  editionInfo?: {
-    size?: string
-    number?: string
-  }
-  utmMedium?: string
-  utmSource?: string
-  utmTerm?: string
-  signed?: boolean
-  certificateOfAuth?: boolean
-  location?: {
-    city: string
-    state: string
-    country: string
-  }
-  editionScreenViewed?: boolean
 }
 
 export interface SellTabProps {
