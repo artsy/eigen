@@ -21,7 +21,6 @@
 		1A4B97C7283CDD5A00878EAE /* ARMapContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97AA283CDD5900878EAE /* ARMapContainerViewController.m */; };
 		1A4B97C8283CDD5A00878EAE /* ARPHPhotoPickerModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97AF283CDD5900878EAE /* ARPHPhotoPickerModule.m */; };
 		1A4B97C9283CDD5A00878EAE /* ARNotificationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97B0283CDD5900878EAE /* ARNotificationsManager.m */; };
-		1A4B97CA283CDD5A00878EAE /* ARTakeCameraPhotoModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97B1283CDD5900878EAE /* ARTakeCameraPhotoModule.m */; };
 		1A4B97CB283CDD5A00878EAE /* ARCity+GeospatialAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97B5283CDD5900878EAE /* ARCity+GeospatialAdditions.m */; };
 		1A4B97CC283CDD5A00878EAE /* ARCity.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97B6283CDD5900878EAE /* ARCity.m */; };
 		1A4B97CD283CDD5A00878EAE /* AROpaqueImageViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97B9283CDD5900878EAE /* AROpaqueImageViewManager.m */; };
@@ -592,10 +591,8 @@
 		1A4B97AA283CDD5900878EAE /* ARMapContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARMapContainerViewController.m; sourceTree = "<group>"; };
 		1A4B97AC283CDD5900878EAE /* ARPHPhotoPickerModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARPHPhotoPickerModule.h; sourceTree = "<group>"; };
 		1A4B97AD283CDD5900878EAE /* ARNotificationsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARNotificationsManager.h; sourceTree = "<group>"; };
-		1A4B97AE283CDD5900878EAE /* ARTakeCameraPhotoModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTakeCameraPhotoModule.h; sourceTree = "<group>"; };
 		1A4B97AF283CDD5900878EAE /* ARPHPhotoPickerModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARPHPhotoPickerModule.m; sourceTree = "<group>"; };
 		1A4B97B0283CDD5900878EAE /* ARNotificationsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNotificationsManager.m; sourceTree = "<group>"; };
-		1A4B97B1283CDD5900878EAE /* ARTakeCameraPhotoModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTakeCameraPhotoModule.m; sourceTree = "<group>"; };
 		1A4B97B3283CDD5900878EAE /* ARCity+GeospatialAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARCity+GeospatialAdditions.h"; sourceTree = "<group>"; };
 		1A4B97B4283CDD5900878EAE /* ARCity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCity.h; sourceTree = "<group>"; };
 		1A4B97B5283CDD5900878EAE /* ARCity+GeospatialAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARCity+GeospatialAdditions.m"; sourceTree = "<group>"; };
@@ -1532,10 +1529,8 @@
 			children = (
 				1A4B97AC283CDD5900878EAE /* ARPHPhotoPickerModule.h */,
 				1A4B97AD283CDD5900878EAE /* ARNotificationsManager.h */,
-				1A4B97AE283CDD5900878EAE /* ARTakeCameraPhotoModule.h */,
 				1A4B97AF283CDD5900878EAE /* ARPHPhotoPickerModule.m */,
 				1A4B97B0283CDD5900878EAE /* ARNotificationsManager.m */,
-				1A4B97B1283CDD5900878EAE /* ARTakeCameraPhotoModule.m */,
 			);
 			path = EigenCommunications;
 			sourceTree = "<group>";
@@ -4010,7 +4005,6 @@
 				1A4B97C9283CDD5A00878EAE /* ARNotificationsManager.m in Sources */,
 				1A4E5121283F91BA0008EF35 /* UIColor+ArtsyColors.m in Sources */,
 				CBE3267027E275A300395A93 /* ARDefaults.m in Sources */,
-				1A4B97CA283CDD5A00878EAE /* ARTakeCameraPhotoModule.m in Sources */,
 				CBE3268227E275A300395A93 /* NSDate+DateRange.m in Sources */,
 				CBE326B927E275A300395A93 /* LiveAuctionStateManager.swift in Sources */,
 				CBE326A927E275A300395A93 /* LiveAuctionViewModel.swift in Sources */,
