@@ -359,16 +359,6 @@ function getNativeModules(): OurNativeModules {
       presentEmailComposerWithSubject: jest.fn(),
       presentMediaPreviewController: jest.fn(),
     },
-    ARTakeCameraPhotoModule: {
-      errorCodes: {
-        cameraNotAvailable: "cameraNotAvailable",
-        imageMediaNotAvailable: "imageMediaNotAvailable",
-        cameraAccessDenied: "cameraAccessDenied",
-        saveFailed: "saveFailed",
-      },
-      triggerCameraModal: jest.fn(),
-    },
-
     ARCocoaConstantsModule: {
       UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
       AREnabled: true,
@@ -439,16 +429,6 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
       presentEmailComposerWithSubject: jest.fn(),
       presentMediaPreviewController: jest.fn(),
     },
-    ARTakeCameraPhotoModule: {
-      errorCodes: {
-        cameraNotAvailable: "cameraNotAvailable",
-        imageMediaNotAvailable: "imageMediaNotAvailable",
-        cameraAccessDenied: "cameraAccessDenied",
-        saveFailed: "saveFailed",
-      },
-      triggerCameraModal: jest.fn(),
-    },
-
     ARCocoaConstantsModule: {
       UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
       AREnabled: true,
