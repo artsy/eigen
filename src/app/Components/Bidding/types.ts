@@ -84,11 +84,6 @@ export interface PaymentCardTextFieldParams {
   addressZip?: string
 }
 
-export interface SearchResult {
-  id: string
-  name: string
-}
-
 export interface StripeToken {
   tokenId: string
   created: number

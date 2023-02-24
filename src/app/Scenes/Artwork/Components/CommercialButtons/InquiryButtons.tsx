@@ -16,10 +16,6 @@ export type InquiryButtonsProps = Omit<ButtonProps, "children"> & {
   artwork: InquiryButtons_artwork$data
 }
 
-export interface InquiryButtonsState {
-  modalIsVisible: boolean
-}
-
 const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, ...rest }) => {
   const [modalVisibility, setModalVisibility] = useState(false)
   const { trackEvent } = useTracking()

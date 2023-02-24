@@ -236,42 +236,6 @@ export const CollectionFixture = {
   },
 }
 
-export const ZeroStateCollectionFixture = {
-  " $fragmentRefs": null,
-  slug: "street-art-now",
-  id: "top-level-id",
-  title: "Street Art Now",
-  isDepartment: false,
-  linkedCollections: null,
-  descriptionMarkdown:
-    "A beach towel by [Yayoi Kusama](https://www.artsy.net/artist/yayoi-kusama), a classic print by [Alexander Calder](https://www.artsy.net/artist/alexander-calder), or a piggy bank by [Yoshitomo Nara](https://www.artsy.net/artist/yoshitomo-nara)—there are many ways to give the gift of art. Below, discover creative presents that your loved ones will treasure for years to come.",
-  headerImage: "http://imageuploadedbymarketingteam.jpg",
-  image: {
-    id: "another-id",
-    edges: [
-      {
-        node: {
-          id: "an-id",
-          image: {
-            url: "https://defaultmostmarketableartworkincollectionimage.jpg",
-          },
-        },
-      },
-    ],
-  },
-  collectionArtworks: {
-    __isArtworkConnectionInterface: "FilterArtworksConnection" as const,
-    id: "QXJ0d29yazpjYXJvbHluLWJyYWR5LXN0b3VyaGVhZC1hY3Jvc3MtdGhlLWxha2U",
-    pageInfo: {
-      startCursor: "YXJyYXljb25uZWN0aW9uOjA=",
-      endCursor: "YXJyYXljb25uZWN0aW9uOjc=",
-      hasNextPage: false,
-    },
-    edges: [],
-    aggregations: null,
-    counts: { total: 0 },
-  },
-}
 export const FullFeaturedArtistListCollectionFixture: FullFeaturedArtistListTestsQuery$rawResponse["marketingCollection"] =
   {
     id: "some-id",

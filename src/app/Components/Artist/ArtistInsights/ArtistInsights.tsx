@@ -16,7 +16,6 @@ import React, { useCallback, useRef, useState } from "react"
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent, View } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { ReactElement } from "simple-markdown"
 import { ArtistInsightsAuctionResultsPaginationContainer } from "./ArtistInsightsAuctionResults"
 import { MarketStatsQueryRenderer } from "./MarketStats"
 
@@ -24,18 +23,6 @@ interface ArtistInsightsProps {
   artist: ArtistInsights_artist$data
   relay: RelayProp
   tabIndex: number
-}
-
-export interface ViewableItems {
-  viewableItems?: ViewToken[]
-}
-
-interface ViewToken {
-  item?: ReactElement
-  key?: string
-  index?: number | null
-  isViewable?: boolean
-  section?: any
 }
 
 const FILTER_BUTTON_OFFSET = 50
