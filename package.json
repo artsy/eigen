@@ -22,6 +22,7 @@
     "clean-android": "cd android; ./gradlew clean cleanBuildCache; cd -",
     "clean-ios": "yarn rimraf ~/Library/Developer/Xcode/DerivedData",
     "danger": "danger",
+    "dead-code": "./scripts/check-dead-code.sh",
     "deploy-beta": "./scripts/deploy-beta-both",
     "doctor": "./scripts/doctor.js",
     "flip_table": "./scripts/flip-table",

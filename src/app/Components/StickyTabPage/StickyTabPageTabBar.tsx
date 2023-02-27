@@ -1,18 +1,8 @@
-import { Text } from "@artsy/palette-mobile"
 import { NavigationalTabs } from "palette/elements/Tabs"
 import React, { useEffect, useRef, useState } from "react"
-import {
-  Animated,
-  LayoutRectangle,
-  ScrollView,
-  TouchableOpacity,
-  View,
-  ViewProps,
-} from "react-native"
+import { Animated, LayoutRectangle, ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 import { useStickyTabPageContext } from "./StickyTabPageContext"
-
-export const TAB_BAR_HEIGHT = 48
 
 export const StickyTabPageTabBar: React.FC<{
   onTabPress?(tab: { label: string; index: number }): void
@@ -64,32 +54,6 @@ export const StickyTabPageTabBar: React.FC<{
       }}
       activeTab={activeTabIndex.current}
     />
-  )
-}
-
-export const StickyTab: React.FC<{
-  label: string
-  active: boolean
-  onLayout: ViewProps["onLayout"]
-  onPress(): void
-}> = ({ label, active, onPress, onLayout }) => {
-  return (
-    <View onLayout={onLayout} style={{ flex: 1, height: TAB_BAR_HEIGHT }}>
-      <TouchableOpacity onPress={onPress}>
-        <View
-          style={{
-            height: TAB_BAR_HEIGHT,
-            alignItems: "center",
-            justifyContent: "center",
-            paddingHorizontal: 15,
-          }}
-        >
-          <Text variant="sm" weight={active ? "medium" : "regular"}>
-            {label}
-          </Text>
-        </View>
-      </TouchableOpacity>
-    </View>
   )
 }
 

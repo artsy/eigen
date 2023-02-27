@@ -1,23 +1,3 @@
-export function getSectionDimensions(
-  sectionMargin: number,
-  sectionCount: number,
-  artworkPadding: number,
-  gridWidth: number | null | undefined
-) {
-  // Setting the dimension to 1 for tests to avoid adjusting the screen width
-  if (__TEST__) {
-    return 1
-  }
-
-  if (gridWidth) {
-    // This is the sum of all margins in between sections, so do not count to the right of last column.
-    const sectionMargins = sectionMargin * (sectionCount - 1)
-
-    return (gridWidth - sectionMargins - artworkPadding) / sectionCount!
-  }
-  return 0
-}
-
 export function getSectionedItems<T extends { image: { aspectRatio: number } | null }>(
   items: T[],
   columnCount: number
