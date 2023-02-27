@@ -164,7 +164,7 @@ const Home = (props: Props) => {
     },
     // Below-The-Fold Modules
     {
-      title: "Upcoming Auctions",
+      title: "Upcoming Auctions by Artists You Follow",
       type: "upcoming-auctions",
       data: meBelow,
       hidden: !showUpcomingAuctionResultsRail,
