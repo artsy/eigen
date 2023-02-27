@@ -201,5 +201,12 @@ const OnboardingWelcomeScreenQuery = graphql`
     me {
       name
     }
+    artworksConnection(first: 1) {
+      edges {
+        node {
+          isSaved
+        }
+      }
+    }
   }
 `

@@ -10,6 +10,7 @@ import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
 import { ArtQuizNavigationStack } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
 import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
 import { GlobalStore } from "app/store/GlobalStore"
+import { navigate as globalNavigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Suspense, useEffect, useRef, useState } from "react"
 import { Image } from "react-native"
@@ -17,21 +18,19 @@ import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
 import { graphql, useLazyLoadQuery, useMutation } from "react-relay"
 
 export const ArtQuizResultsScreen = () => {
-  const [activeCardIndex, setActiveCardIndex] = useState(0)
-  const artQuizArtworksQueryResult = useLazyLoadQuery<ArtQuizArtworksQuery>(
-    artQuizArtworksQuery,
-    {}
-  )
+  const queryResult = useLazyLoadQuery<ArtQuizArtworksQuery>(artQuizArtworksQuery, {})
   const { userID } = GlobalStore.useAppState((store) => store.auth)
-  const artworks = extractNodes(artQuizArtworksQueryResult.me?.quiz.quizArtworkConnection)
+
+  const artworks = extractNodes(queryResult.me?.quiz.quizArtworkConnection)
+  const lastInteractedArtworkIndex = queryResult.me?.quiz.quizArtworkConnection?.edges?.findIndex(
+    (edge) => edge?.interactedAt === null
+  )
+  const [activeCardIndex, setActiveCardIndex] = useState(lastInteractedArtworkIndex ?? 0)
   const pagerViewRef = useRef<PagerView>(null)
   const popoverMessage = usePopoverMessage()
 
   const { goBack, navigate } = useNavigation<NavigationProp<ArtQuizNavigationStack>>()
   const { onDone } = useOnboardingContext()
-
-  const currentArtwork = artworks[activeCardIndex]
-  const previousArtwork = artworks[activeCardIndex - 1]
 
   const [submitDislike] = useMutation<ArtQuizArtworksDislikeMutation>(DislikeArtworkMutation)
   const [submitSave] = useMutation<ArtQuizArtworksSaveMutation>(SaveArtworkMutation)
@@ -61,8 +60,9 @@ export const ArtQuizResultsScreen = () => {
 
   const handleNext = (action: "Like" | "Dislike") => {
     popoverMessage.hide()
-
     pagerViewRef.current?.setPage(activeCardIndex + 1)
+
+    const currentArtwork = artworks[activeCardIndex]
 
     if (action === "Like") {
       submitSave({
@@ -105,6 +105,8 @@ export const ArtQuizResultsScreen = () => {
     if (activeCardIndex === 0) {
       goBack()
     } else {
+      const previousArtwork = artworks[activeCardIndex - 1]
+
       pagerViewRef.current?.setPage(activeCardIndex - 1)
       const { isSaved, isDisliked } = previousArtwork
 
@@ -143,8 +145,9 @@ export const ArtQuizResultsScreen = () => {
   }
 
   const handleOnSkip = () => {
-    onDone()
+    onDone?.()
     popoverMessage.hide()
+    globalNavigate("/")
   }
 
   return (
@@ -215,6 +218,8 @@ const artQuizArtworksQuery = graphql`
       quiz {
         quizArtworkConnection(first: 16) {
           edges {
+            interactedAt
+            position
             node {
               internalID
               imageUrl

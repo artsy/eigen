@@ -17,11 +17,19 @@ export type ArtQuizNavigationStack = {
 export const StackNavigator = createStackNavigator<ArtQuizNavigationStack>()
 
 const ArtQuiz: React.FC = () => {
-  const quizCompleted = useLazyLoadQuery<ArtQuizNavigationQuery>(artQuizNavigationQuery, {}).me
-    ?.quiz.completedAt
+  const queryResult = useLazyLoadQuery<ArtQuizNavigationQuery>(artQuizNavigationQuery, {}).me?.quiz
 
-  if (quizCompleted) {
+  const isQuizCompleted = !!queryResult?.completedAt
+  const edges = queryResult?.quizArtworkConnection?.edges
+  const lastInteractedArtwork = edges?.find((edge) => edge?.interactedAt === null)
+  const isQuizStartedButIncomplete = !!lastInteractedArtwork
+
+  if (isQuizCompleted) {
     return <ArtQuizResults />
+  }
+
+  if (isQuizStartedButIncomplete) {
+    return <ArtQuizArtworks />
   }
 
   return (
@@ -55,6 +63,11 @@ const artQuizNavigationQuery = graphql`
     me {
       quiz {
         completedAt
+        quizArtworkConnection(first: 16) {
+          edges {
+            interactedAt
+          }
+        }
       }
     }
   }
