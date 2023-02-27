@@ -34,7 +34,7 @@ export const ArtworkRecommendationsRail: React.FC<
 
   const artworks = extractNodes(artworkRecommendations)
 
-  const { navigateToPageableRoute } = useNavigateToPageableRoute({ artworks })
+  const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
 
   if (!artworks.length) {
     return null

@@ -36,7 +36,7 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
 
     const artworks = extractNodes(artworksForUser)
 
-    const { navigateToPageableRoute } = useNavigateToPageableRoute({ artworks })
+    const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
 
     if (!artworks.length) {
       return null

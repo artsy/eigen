@@ -26,7 +26,7 @@ import { LotProgressBar } from "./LotProgressBar"
 
 const SAVE_ICON_SIZE = 22
 
-export interface ArtworkProps extends PageableRouteProps {
+export interface ArtworkProps extends Partial<PageableRouteProps> {
   artwork: ArtworkGridItem_artwork$data
   /** Overrides onPress and prevents the default behaviour. */
   onPress?: (artworkID: string) => void
@@ -163,7 +163,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
     addArtworkToRecentSearches()
     trackArtworkTap()
-    navigateToPageableRoute(artwork.href!)
+    navigateToPageableRoute?.(artwork.href!)
   }
 
   const trackArtworkTap = () => {

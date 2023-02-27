@@ -11,7 +11,7 @@ describe("useNavigateToPageableRoute", () => {
   })
 
   it("returns a navigate function", () => {
-    const { navigateToPageableRoute } = useNavigateToPageableRoute({ artworks: [] })
+    const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: [] })
     expect(navigateToPageableRoute).toBeDefined()
   })
 
@@ -19,7 +19,7 @@ describe("useNavigateToPageableRoute", () => {
     const spy = jest.fn()
     mockNavigate.mockImplementation(spy)
 
-    const { navigateToPageableRoute } = useNavigateToPageableRoute({ artworks: [] })
+    const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: [] })
     navigateToPageableRoute("some-url", { passProps: { someProp: "some-value" } })
 
     expect(spy).toHaveBeenCalledWith("some-url", {
@@ -27,13 +27,13 @@ describe("useNavigateToPageableRoute", () => {
     })
   })
 
-  it("maps over artworks and returns the correct slugs", () => {
-    const artworks = [{ slug: "foo" }, { slug: "bar" }, { slug: "baz" }]
+  it("maps over items and returns the correct slugs", () => {
+    const items = [{ slug: "foo" }, { slug: "bar" }, { slug: "baz" }]
     const spy = jest.fn()
 
     mockNavigate.mockImplementation(spy)
 
-    const { navigateToPageableRoute } = useNavigateToPageableRoute({ artworks })
+    const { navigateToPageableRoute } = useNavigateToPageableRoute({ items })
     navigateToPageableRoute("some-url")
 
     expect(spy).toHaveBeenCalledWith("some-url", {

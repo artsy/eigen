@@ -66,7 +66,7 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
   // This is to satisfy the TypeScript compiler based on Metaphysics types.
   const artworks = compact(rail.results ?? [])
 
-  const { navigateToPageableRoute } = useNavigateToPageableRoute({ artworks })
+  const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
 
   const showRail = artworks.length
 
@@ -134,6 +134,7 @@ export const ArtworkModuleRailFragmentContainer = memo(
         title
         key
         results {
+          slug
           ...LargeArtworkRail_artworks
         }
         context {

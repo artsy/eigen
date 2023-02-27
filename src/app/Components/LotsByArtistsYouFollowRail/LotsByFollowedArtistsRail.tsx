@@ -26,7 +26,7 @@ export const LotsByFollowedArtistsRail: React.FC<Props> = ({ title, me, relay })
 
   const artworks = extractNodes(me?.lotsByFollowedArtistsConnection)
 
-  const { navigateToPageableRoute } = useNavigateToPageableRoute({ artworks })
+  const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
 
   const hasArtworks = artworks?.length
 
@@ -101,6 +101,7 @@ export const LotsByFollowedArtistsRailContainer = memo(
               node {
                 id
                 href
+                slug
                 saleArtwork {
                   ...SaleArtworkTileRailCard_saleArtwork
                 }

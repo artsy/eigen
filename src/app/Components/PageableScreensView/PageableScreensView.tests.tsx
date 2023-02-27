@@ -1,7 +1,7 @@
+import { Text } from "@artsy/palette-mobile"
 import { PageableLazyScreen } from "app/Components/PageableScreensView/PageableLazyScreen"
 import { PageableScreensView } from "app/Components/PageableScreensView/PageableScreensView"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { Text } from "palette"
 
 describe("PageableScreensView", () => {
   const screens = [
