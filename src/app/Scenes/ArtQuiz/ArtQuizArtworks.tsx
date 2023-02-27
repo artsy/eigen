@@ -18,7 +18,7 @@ import { Image } from "react-native"
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
 import { graphql, useLazyLoadQuery, useMutation } from "react-relay"
 
-export const ArtQuizResultsScreen = () => {
+const ArtQuizArtworksScreen = () => {
   const queryResult = useLazyLoadQuery<ArtQuizArtworksQuery>(artQuizArtworksQuery, {})
   const { userID } = GlobalStore.useAppState((store) => store.auth)
 
@@ -96,7 +96,7 @@ export const ArtQuizResultsScreen = () => {
     })
 
     if (activeCardIndex + 1 === artworks.length) {
-      globalNavigate("art-quiz/results", {
+      globalNavigate("/art-quiz/results", {
         passProps: {
           isCalculatingResult: true,
         },
@@ -212,7 +212,7 @@ export const ArtQuizResultsScreen = () => {
 export const ArtQuizArtworks = () => {
   return (
     <Suspense fallback={<ArtQuizLoader />}>
-      <ArtQuizResultsScreen />
+      <ArtQuizArtworksScreen />
     </Suspense>
   )
 }

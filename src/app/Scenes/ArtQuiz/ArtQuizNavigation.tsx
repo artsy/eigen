@@ -19,19 +19,20 @@ const ArtQuiz: React.FC = () => {
   const queryResult = useLazyLoadQuery<ArtQuizNavigationQuery>(artQuizNavigationQuery, {}).me?.quiz
 
   const isQuizCompleted = !!queryResult?.completedAt
-  const edges = queryResult?.quizArtworkConnection?.edges
-  const lastInteractedArtwork = edges?.find((edge) => edge?.interactedAt === null)
-  const isQuizStartedButIncomplete = !!lastInteractedArtwork
+  const lastInteractedArtworkIndex = queryResult?.quizArtworkConnection?.edges?.findIndex(
+    (edge) => edge?.interactedAt === null
+  )
+  const isQuizStartedButIncomplete = !!lastInteractedArtworkIndex
 
   useEffect(() => {
     if (isQuizCompleted) {
       navigate("/art-quiz/results")
     }
+  }, [isQuizCompleted])
 
-    if (isQuizStartedButIncomplete) {
-      navigate("/art-quiz/artworks")
-    }
-  }, [isQuizCompleted, isQuizStartedButIncomplete])
+  if (isQuizStartedButIncomplete) {
+    return <ArtQuizArtworks />
+  }
 
   return (
     <NavigationContainer independent>
