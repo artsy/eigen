@@ -1,28 +1,28 @@
-import { CollectionsRailTestsQuery } from "__generated__/CollectionsRailTestsQuery.graphql"
+import { OldCollectionsRailTestsQuery } from "__generated__/OldCollectionsRailTestsQuery.graphql"
+import { CardRailCard } from "app/Components/Home/CardRailCard"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { cloneDeep } from "lodash"
+import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { cloneDeep, first } from "lodash"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-import { CollectionsRailFragmentContainer } from "./CollectionsRail"
-import { fireEvent } from "@testing-library/react-native"
+import { OldCollectionsRailFragmentContainer } from "./OldCollectionsRail"
 
-describe("CollectionsRailFragmentContainer", () => {
+describe("OldCollectionsRailFragmentContainer", () => {
   let env: ReturnType<typeof createMockEnvironment>
   const mockScrollRef = jest.fn()
 
   const TestRenderer = () => (
-    <QueryRenderer<CollectionsRailTestsQuery>
+    <QueryRenderer<OldCollectionsRailTestsQuery>
       environment={env}
       query={graphql`
-        query CollectionsRailTestsQuery @raw_response_type {
+        query OldCollectionsRailTestsQuery @raw_response_type {
           homePage {
             marketingCollectionsModule {
-              ...CollectionsRail_collectionsModule
+              ...OldCollectionsRail_collectionsModule
             }
           }
         }
@@ -31,7 +31,7 @@ describe("CollectionsRailFragmentContainer", () => {
       render={({ props, error }) => {
         if (props) {
           return (
-            <CollectionsRailFragmentContainer
+            <OldCollectionsRailFragmentContainer
               title="Collections"
               collectionsModule={props.homePage?.marketingCollectionsModule!}
               scrollRef={mockScrollRef}
@@ -49,7 +49,7 @@ describe("CollectionsRailFragmentContainer", () => {
   })
 
   it("doesn't throw when rendered", () => {
-    renderWithWrappers(<TestRenderer />)
+    renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -64,13 +64,11 @@ describe("CollectionsRailFragmentContainer", () => {
 
   it("looks correct when rendered with sales missing artworks", () => {
     const collectionsCopy = cloneDeep(collectionsModuleMock)
-
     collectionsCopy.results.forEach((result) => {
+      // @ts-ignore
       result.artworksConnection.edges = []
     })
-
-    renderWithWrappers(<TestRenderer />)
-
+    renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -83,9 +81,8 @@ describe("CollectionsRailFragmentContainer", () => {
     })
   })
 
-  it("routes to collection URL", async () => {
-    const tree = renderWithWrappers(<TestRenderer />)
-
+  it("routes to collection URL", () => {
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -96,15 +93,13 @@ describe("CollectionsRailFragmentContainer", () => {
         },
       })
     })
-
-    fireEvent.press(await tree.findByTestId("collections-rail-card-test-collection-one"))
-
+    // @ts-ignore
+    first(tree.root.findAllByType(CardRailCard)).props.onPress()
     expect(navigate).toHaveBeenCalledWith("/collection/test-collection-one")
   })
 
-  it("tracks collection thumbnail taps", async () => {
-    const tree = renderWithWrappers(<TestRenderer />)
-
+  it("tracks collection thumbnail taps", () => {
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -115,9 +110,8 @@ describe("CollectionsRailFragmentContainer", () => {
         },
       })
     })
-
-    fireEvent.press(await tree.findByTestId("collections-rail-card-test-collection-one"))
-
+    // @ts-ignore
+    first(tree.root.findAllByType(CardRailCard)).props.onPress()
     expect(mockTrackEvent).toHaveBeenCalledWith(
       HomeAnalytics.collectionThumbnailTapEvent("test-collection-one", 0)
     )

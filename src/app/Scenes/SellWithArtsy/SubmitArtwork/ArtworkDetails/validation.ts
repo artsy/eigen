@@ -71,37 +71,6 @@ export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
   year: "",
 }
 
-export const countriesRequirePostalCode = [
-  "US",
-  "AT", // Austria
-  "BE", // Belgium
-  "CA", // Canada
-  "CN", // China
-  "HR", // Croatia
-  "CY", // Cyprus
-  "DK", // Denmark
-  "EE", // Estonia
-  "FI", // Finland
-  "FR", // France
-  "DE", // Germany
-  "GR", // Greece
-  "HU", // Hungary
-  "IS", // Iceland
-  "IL", // Ireland
-  "IT", // Italy
-  "JP", // Japan
-  "LV", // Latvia
-  "MC", // Monaco
-  "NO", // Norway
-  "PL", // Poland
-  "PT", // Portugal
-  "ES", // Spain
-  "SE", // Sweden
-  "CH", // Switzerland
-  "GB", // United Kingdom
-  "NL", // Netherlands
-]
-
 export const artworkDetailsValidationSchema = Yup.object().shape({
   artist: Yup.string().trim(),
   artistId: Yup.string().required(

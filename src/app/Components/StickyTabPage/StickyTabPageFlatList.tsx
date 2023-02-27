@@ -18,8 +18,6 @@ export const StickyTabPageFlatListContext = createContext<FlatListRequiredContex
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
 
-export type StickyTabPageFlatListType = typeof AnimatedFlatList
-
 export interface StickyTabSection {
   key: string // must be unique per-tab
   content: JSX.Element

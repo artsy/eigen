@@ -1,20 +1,5 @@
 import { DateTime } from "luxon"
 
-/** Whether lot is in one of its pre-closed states */
-export const lotInActiveSale: (lot: {
-  saleArtwork: { sale: { status: string | null } | null } | null
-}) => boolean = (lot) => {
-  const status = lot?.saleArtwork?.sale?.status
-  switch (status?.toLowerCase()) {
-    case "open":
-      return true
-    case "preview":
-      return true
-    default:
-      return false
-  }
-}
-
 interface SaleWithTimes {
   status?: string | null
   liveStartAt?: string | null

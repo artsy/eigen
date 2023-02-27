@@ -1,21 +1,7 @@
-import { Spacer, Flex } from "@artsy/palette-mobile"
 import { SmallArtworkRail_artworks$key } from "__generated__/SmallArtworkRail_artworks.graphql"
-import {
-  PlaceholderBox,
-  PlaceholderText,
-  RandomWidthPlaceholderText,
-  useMemoizedRandom,
-} from "app/utils/placeholders"
-import { times } from "lodash"
-import { Join } from "palette"
-import { PixelRatio } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { ArtworkRail, ArtworkRailProps } from "./ArtworkRail"
-import {
-  ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
-  ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT,
-} from "./ArtworkRailCard"
 
 type SmallArtworkRailProps = Omit<ArtworkRailProps, "artworks" | "size"> & {
   artworks: SmallArtworkRail_artworks$key
@@ -37,26 +23,3 @@ const smallArtworksFragment = graphql`
     slug
   }
 `
-
-export const SmallArtworkRailPlaceholder: React.FC = () => {
-  const fontScale = PixelRatio.getFontScale()
-
-  return (
-    <Join separator={<Spacer x={12} />}>
-      {times(3 + useMemoizedRandom() * 10).map((index) => (
-        <Flex key={index}>
-          <PlaceholderBox
-            height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT.small}
-            width={SMALL_RAIL_IMAGE_WIDTH}
-          />
-          <Spacer y={2} />
-          <Flex height={fontScale * ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT}>
-            <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
-            <PlaceholderText width={SMALL_RAIL_IMAGE_WIDTH} />
-            <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
-          </Flex>
-        </Flex>
-      ))}
-    </Join>
-  )
-}

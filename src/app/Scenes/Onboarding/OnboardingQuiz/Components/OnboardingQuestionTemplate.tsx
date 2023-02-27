@@ -7,6 +7,7 @@ import {
 } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
 import { Button, ProgressBar, Screen } from "palette"
 import { FC, useCallback, useState } from "react"
+import { LayoutAnimation } from "react-native"
 import { AnimatedFadingPill, FADE_OUT_PILL_ANIMATION_DURATION } from "./AnimatedFadingPill"
 
 interface OnboardingQuestionTemplateProps {
@@ -54,6 +55,7 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
     setHideUnselectedPills(true)
 
     setTimeout(() => {
+      LayoutAnimation.configureNext({ ...LayoutAnimation.Presets.easeInEaseOut, duration: 200 })
       setShowPillTick(true)
       next()
 
@@ -103,7 +105,7 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
               key={`${answer}-pill`}
               rounded
               size="xs"
-              Icon={showPillTick && selected(answer) ? CheckCircleFillIcon : undefined}
+              Icon={showPillTick && selected(answer) ? CheckCircleFillIconWhite : undefined}
               iconPosition="left"
               onPress={() => dispatch({ type: action, payload: answer })}
               selected={selected(answer)}
@@ -121,6 +123,10 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
       </Screen.Body>
     </Screen>
   )
+}
+
+const CheckCircleFillIconWhite = () => {
+  return <CheckCircleFillIcon fill="white100" />
 }
 
 const STATE_KEYS: Record<Exclude<OnboardingContextAction["type"], "RESET">, keyof State> = {

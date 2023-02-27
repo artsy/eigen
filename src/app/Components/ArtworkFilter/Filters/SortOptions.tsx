@@ -13,20 +13,6 @@ import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 type SortOptionsScreenProps = StackScreenProps<ArtworkFilterNavigationStack, "SortOptionsScreen">
 
-// Sorting types
-enum ArtworkSorts {
-  "Gallery Curated" = "partner_show_position",
-  "Recommended" = "-decayed_merch",
-  "Price (High to Low)" = "sold,-has_price,-prices",
-  "Price (Low to High)" = "sold,-has_price,prices",
-  "Recently Updated" = "-partner_updated_at",
-  "Recently Added" = "-published_at",
-  "Artwork Year (Descending)" = "-year",
-  "Artwork Year (Ascending)" = "year",
-}
-
-export type SortOption = keyof typeof ArtworkSorts
-
 export const DEFAULT_ARTWORK_SORT = {
   displayText: "Recommended",
   paramName: FilterParamName.sort,

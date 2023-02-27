@@ -21,8 +21,6 @@ export interface SpaceProps {
   py?: ResponsiveSpaceValue
 }
 
-export function space(...args: any[]): any
-
 // width
 export type WidthValue = number | string
 export type ResponsiveWidthValue = ResponsiveValue<WidthValue>
@@ -76,17 +74,7 @@ export interface TextAlignProps {
   align?: ResponsiveTextAlignValue
 }
 
-export function textAlign(...args: any[]): any
-
 // border
-
-export type BorderRadiusValue = number
-
-export interface BorderRadiusProps {
-  borderRadius?: BorderRadiusValue
-}
-
-export function borderRadius(...args: any[]): any
 
 export type BorderColorValue = string
 
@@ -105,8 +93,6 @@ export interface BorderProps {
   borderBottom?: boolean
   borderLeft?: boolean
 }
-
-export function borderWidth(...args: any[]): any
 
 // flex
 export type AlignItemsValue =
@@ -162,8 +148,6 @@ export function justifyContent(...args: any[]): any
 export interface FlexWrapProps {
   wrap?: boolean
 }
-
-export function flexWrap(...args: any[]): any
 
 export type FlexDirectionValue = "row" | "row-reverse" | "column" | "column-reverse"
 export type ResponsiveFlexDirectionValue = ResponsiveValue<FlexDirectionValue>

@@ -5,7 +5,6 @@ import { FilterData } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
 import { Separator } from "palette"
 import { FlatList, TouchableOpacity } from "react-native"
-import styled from "styled-components/native"
 
 interface MultiSelectOptionScreenProps {
   filterHeaderText: string
@@ -71,15 +70,6 @@ export const MultiSelectCheckOptionScreen: React.FC<MultiSelectOptionScreenProps
     </Flex>
   )
 }
-
-export const OptionListItem = styled(Flex)`
-  flex-direction: row;
-  justify-content: space-between;
-  flex-grow: 1;
-  align-items: flex-end;
-  border-left-width: 0;
-  border-top-width: 0;
-`
 
 export const CheckMarkOptionListItem = ({
   item,

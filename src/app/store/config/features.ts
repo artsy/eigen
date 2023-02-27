@@ -199,10 +199,22 @@ export const features = defineFeatures({
     readyForRelease: false,
   },
   AREnableBrowseMoreArtworksCard: {
-    description: "Enable Browse More Artworks Card on Home Screen",
+    description: "Enable Browse All Artworks Card on Home Screen",
     showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "AREnableBrowseMoreArtworksCard",
+  },
+  AREnableNewCollectionsRail: {
+    description: "Enable New Collections Rail",
+    showInDevMenu: true,
+    readyForRelease: true,
+    echoFlagKey: "AREnableNewCollectionsRail",
+  },
+  AREnableCuratorsPickRail: {
+    description: "Enable Curators Pick Rail",
+    showInDevMenu: true,
+    readyForRelease: true,
+    echoFlagKey: "AREnableCuratorsPickRail",
   },
 })
 

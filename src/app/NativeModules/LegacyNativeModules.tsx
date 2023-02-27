@@ -86,15 +86,6 @@ interface LegacyNativeModules {
     popToRootAndScrollToTop(stackID: string): Promise<void>
     updateShouldHideBackButton(shouldHideBackButton: boolean, currentTabStackID: string): void
   }
-  ARTakeCameraPhotoModule: {
-    errorCodes: {
-      cameraNotAvailable: string
-      imageMediaNotAvailable: string
-      cameraAccessDenied: string
-      saveFailed: string
-    }
-    triggerCameraModal(reactTag: number | null): Promise<void>
-  }
   AREventsModule: {
     requestAppStoreRating(): void
   }
@@ -114,15 +105,6 @@ const LegacyNativeModulesAndroid = {
     presentMediaPreviewController: () => {
       noop("presentMediaPreviewController not yet supported on android")
     },
-  },
-  ARTakeCameraPhotoModule: {
-    errorCodes: {
-      cameraNotAvailable: "cameraNotAvailable",
-      imageMediaNotAvailable: "imageMediaNotAvailable",
-      cameraAccessDenied: "cameraAccessDenied",
-      saveFailed: "saveFailed",
-    },
-    triggerCameraModal: noop("triggerCameraModal"),
   },
 
   ARCocoaConstantsModule: {
@@ -166,7 +148,6 @@ const LegacyNativeModulesAndroid = {
 const LegacyNativeModulesIOS: LegacyNativeModules = {
   ARScreenPresenterModule,
   ARTNativeScreenPresenterModule: AllNativeModules.ARTNativeScreenPresenterModule,
-  ARTakeCameraPhotoModule: AllNativeModules.ARTakeCameraPhotoModule,
   ARCocoaConstantsModule: AllNativeModules.ARCocoaConstantsModule,
   ArtsyNativeModule: AllNativeModules.ArtsyNativeModule,
   ARNotificationsManager: AllNativeModules.ARNotificationsManager,

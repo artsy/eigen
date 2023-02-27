@@ -259,6 +259,8 @@ export default class HomeAnalytics {
         return Analytics.ContextModule.recommendedWorksForYouRail
       case "genes":
         return Analytics.ContextModule.categoryRail
+      case "curators-picks-emerging":
+        return Analytics.ContextModule.curatorsPicksEmergingRail
     }
   }
 }
