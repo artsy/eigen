@@ -15,12 +15,16 @@ export function getViewAllUrl(rail: ArtworkModuleRail_rail$data) {
   const context = rail.context
   const key = rail.key
 
+  console.log({ key: rail.key })
+
   switch (key) {
     case "followed_artists":
       return "/works-for-you"
     case "followed_artist":
     case "related_artists":
       return context?.artist?.href
+    case "recently_viewed_works":
+      return "/recently-viewed"
     case "saved_works":
       return "/favorites"
     case "genes":

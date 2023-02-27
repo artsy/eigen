@@ -7,11 +7,9 @@
 // 4. Update height of grid to encompass all items.
 
 import { ScreenOwnerType } from "@artsy/cohesion"
-import { Flex, Box } from "@artsy/palette-mobile"
-import { InfiniteScrollArtworksGrid_connection$data } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
-import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
-import ParentAwareScrollView from "app/Components/ParentAwareScrollView"
+import { Box, Flex } from "@artsy/palette-mobile"
 import { PAGE_SIZE } from "app/Components/constants"
+import ParentAwareScrollView from "app/Components/ParentAwareScrollView"
 import { MyCollectionArtworkGridItemFragmentContainer } from "app/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkGridItem"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
@@ -24,6 +22,7 @@ import {
   NativeScrollEvent,
   NativeSyntheticEvent,
   Platform,
+  RefreshControlProps,
   ScrollView,
   StyleSheet,
   View,
@@ -31,6 +30,8 @@ import {
 } from "react-native"
 import { createFragmentContainer, RelayPaginationProp } from "react-relay"
 import { graphql } from "relay-runtime"
+import { InfiniteScrollArtworksGrid_connection$data } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
+import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
 import Artwork, { ArtworkProps } from "./ArtworkGridItem"
 
 /**
@@ -122,6 +123,11 @@ export interface Props {
   updateRecentSearchesOnTap?: boolean
 
   localSortAndFilterArtworks?: (artworks: any[]) => any[]
+
+  refreshControl?: React.ReactElement<
+    RefreshControlProps,
+    string | React.JSXElementConstructor<any>
+  >
 }
 
 interface PrivateProps {
@@ -134,7 +140,7 @@ interface PrivateProps {
 }
 
 interface MapperProps extends Omit<PrivateProps, "connection"> {
-  connection?: InfiniteScrollArtworksGrid_connection$data
+  connection?: InfiniteScrollArtworksGrid_connection$data | null
   myCollectionConnection?: InfiniteScrollArtworksGrid_myCollectionConnection$data
 }
 
@@ -200,6 +206,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
   contextScreenOwnerSlug,
   contextScreenOwnerId,
   contextScreenOwnerType,
+  refreshControl,
 }) => {
   const getSectionDimension = (gridWidth: number | null | undefined) => {
     // Setting the dimension to 1 for tests to avoid adjusting the screen width
@@ -395,6 +402,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
             handleFetchNextPageOnScroll(ev)
           }
         }}
+        refreshControl={refreshControl}
         scrollEventThrottle={scrollEventThrottle ?? 50}
         onLayout={onLayout}
         scrollsToTop={false}

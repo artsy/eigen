@@ -145,6 +145,10 @@ import {
   SEGMENT_TRACKING_PROVIDER,
   SegmentTrackingProvider,
 } from "./utils/track/SegmentTrackingProvider"
+import {
+  RecentlyViewedScreen,
+  RecentlyViewedScreenQuery,
+} from "app/Scenes/RecentlyViewed/RecentlyViewed"
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
@@ -482,6 +486,7 @@ export const modules = defineModules({
     RequestForPriceEstimateConfirmationScreen,
     { hidesBackButton: true }
   ),
+  RecentlyViewed: reactModule(RecentlyViewedScreen, {}, [RecentlyViewedScreenQuery]),
   ReverseImage: reactModule(ReverseImage, {
     hidesBackButton: true,
     fullBleed: true,
