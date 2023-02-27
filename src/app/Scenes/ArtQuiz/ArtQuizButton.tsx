@@ -32,19 +32,19 @@ export const ArtQuizButton = ({ variant, onPress }: ArtQuizButtonProps) => {
     }
   })
 
-  const hanldeOnPressIn = () => {
+  const handleOnPressIn = () => {
     setIsAnimating(true)
     pressed.value = true
   }
 
-  const hanldeOnPressOut = () => {
+  const handleOnPressOut = () => {
     setIsAnimating(false)
     onPress()
     pressed.value = false
   }
 
   return (
-    <Touchable onPressIn={hanldeOnPressIn} onPressOut={hanldeOnPressOut}>
+    <Touchable onPressIn={handleOnPressIn} onPressOut={handleOnPressOut}>
       <Animated.View style={animatedStyle}>
         {variant === "Dislike" && <CloseIcon height={40} width={50} />}
         {variant === "Like" && isAnimating && <HeartFillIcon height={40} width={50} />}
