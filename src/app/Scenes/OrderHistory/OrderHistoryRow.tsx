@@ -2,7 +2,7 @@ import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { OrderHistoryRow_order$data } from "__generated__/OrderHistoryRow_order.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { getOrderStatus, OrderState } from "app/utils/getOrderStatus"
+import { getOrderStatus } from "app/utils/getOrderStatus"
 import { getTrackingUrl } from "app/utils/getTrackingUrl"
 import moment from "moment"
 import { Button } from "palette"
@@ -17,7 +17,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
   const [lineItem] = extractNodes(order?.lineItems)
   const { artwork, artworkVersion } = lineItem || {}
   const trackingUrl = getTrackingUrl(lineItem)
-  const orderStatus = getOrderStatus(order.state as OrderState, lineItem)
+  const orderStatus = getOrderStatus(order.displayState, lineItem)
   const orderIsInactive = orderStatus === "canceled" || orderStatus === "refunded"
   const isViewOffer = orderStatus === "pending" && order?.mode === "OFFER"
 
@@ -105,11 +105,12 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
     </Flex>
   )
 }
+
 export const OrderHistoryRowContainer = createFragmentContainer(OrderHistoryRow, {
   order: graphql`
     fragment OrderHistoryRow_order on CommerceOrder {
       internalID
-      state
+      displayState
       mode
       buyerTotal(precision: 2)
       createdAt
