@@ -2,6 +2,7 @@ import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
 import { ArticleCardContainer } from "app/Components/ArticleCard"
+import { isPad } from "app/utils/hardware"
 import {
   PlaceholderBox,
   ProvidePlaceholderContext,
@@ -107,8 +108,8 @@ export const ArticlesListItem: React.FC<ArticlesListItemProps> = ({ children, in
 }
 
 export const useNumColumns = () => {
-  const { width, orientation } = useScreenDimensions()
-  const isTablet = width > 700
+  const { orientation } = useScreenDimensions()
+  const isTablet = isPad()
 
   if (!isTablet) {
     return 1

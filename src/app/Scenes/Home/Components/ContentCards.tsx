@@ -1,8 +1,8 @@
-import { Spacer, Flex, Box, SpacingUnit, Text } from "@artsy/palette-mobile"
+import { Box, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
 import { Button, Touchable } from "palette"
-import { useEffect, useRef, useState } from "react"
+import { memo, useEffect, useRef, useState } from "react"
 import { FlatList, PixelRatio, ViewabilityConfig } from "react-native"
 import ReactAppboy from "react-native-appboy-sdk"
 import { useScreenDimensions } from "shared/hooks"
@@ -21,6 +21,7 @@ const DESCRIPTION_LINES = fontScale > 1 ? 4 : 3
 const ContentCard: React.FC<CardProps> = ({ item }) => {
   const { width: screenWidth } = useScreenDimensions()
   const cardImageWidth = screenWidth > 700 ? screenWidth / 2 : CARD_IMAGE_WIDTH
+
   const handlePress = () => {
     ReactAppboy.logContentCardClicked(item.id)
 
@@ -54,45 +55,45 @@ const ContentCard: React.FC<CardProps> = ({ item }) => {
   )
 }
 
-export const ContentCards: React.FC<{ mb?: SpacingUnit }> = ({ mb }) => {
+export const useContentCards = () => {
   const [cards, setCards] = useState<ReactAppboy.CaptionedContentCard[]>([])
   const eventName = ReactAppboy.Events?.CONTENT_CARDS_UPDATED
 
-  if (!eventName) {
-    return null
-  }
-
   useEffect(() => {
-    const callback = async () => {
-      const updatedCards = await ReactAppboy.getContentCards()
+    if (eventName) {
+      const callback = async () => {
+        const updatedCards = await ReactAppboy.getContentCards()
 
-      const sortedCards = updatedCards.sort((lhs, rhs) =>
-        lhs.extras.position > rhs.extras.position ? 1 : -1
-      )
-      setCards(sortedCards as ReactAppboy.CaptionedContentCard[])
-    }
+        const sortedCards = updatedCards.sort((lhs, rhs) =>
+          lhs.extras.position > rhs.extras.position ? 1 : -1
+        )
+        setCards(sortedCards as ReactAppboy.CaptionedContentCard[])
+      }
 
-    const listener = ReactAppboy.addListener(eventName, callback)
-    ReactAppboy.requestContentCardsRefresh()
-
-    return () => {
-      listener.remove()
+      const listener = ReactAppboy.addListener(eventName, callback)
+      ReactAppboy.requestContentCardsRefresh()
+      return () => {
+        listener.remove()
+      }
     }
   }, [])
 
-  if (cards.length < 1) {
-    return null
+  return {
+    cards,
   }
-
-  return <CardList cards={cards} mb={mb} />
 }
+
+export const ContentCards: React.FC<{
+  cards: ReactAppboy.CaptionedContentCard[]
+}> = memo(({ cards }) => {
+  return <CardList cards={cards} />
+})
 
 interface CardListProps {
   cards: ReactAppboy.CaptionedContentCard[]
-  mb?: SpacingUnit
 }
 
-const CardList: React.FC<CardListProps> = ({ cards, mb }) => {
+const CardList: React.FC<CardListProps> = ({ cards }) => {
   const [currentCardIndex, setCurrentCardIndex] = useState(0)
   const [viewedCards, setViewedCards] = useState([] as ReactAppboy.CaptionedContentCard[])
 
@@ -132,7 +133,6 @@ const CardList: React.FC<CardListProps> = ({ cards, mb }) => {
       />
       <Spacer y={2} />
       <PaginationDots currentIndex={currentCardIndex} length={cards.length} />
-      <Spacer y={mb} />
     </>
   )
 }

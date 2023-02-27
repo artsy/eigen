@@ -1,10 +1,12 @@
-import { Spacer, Flex, SpacingUnit } from "@artsy/palette-mobile"
+import { Spacer, Flex } from "@artsy/palette-mobile"
 import { ArticlesRail_articlesConnection$data } from "__generated__/ArticlesRail_articlesConnection.graphql"
 import { ArticleCardContainer } from "app/Components/ArticleCard"
 import { SectionTitle } from "app/Components/SectionTitle"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { isPad } from "app/utils/hardware"
+import { memo } from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -12,19 +14,20 @@ import { useTracking } from "react-tracking"
 interface ArticlesRailProps {
   title: string
   articlesConnection: ArticlesRail_articlesConnection$data
-  mb?: SpacingUnit
 }
 
-export const ArticlesRail: React.FC<ArticlesRailProps> = ({ title, articlesConnection, mb }) => {
+export const ArticlesRail: React.FC<ArticlesRailProps> = ({ title, articlesConnection }) => {
   const articles = extractNodes(articlesConnection)
   const tracking = useTracking()
+
+  const isTablet = isPad()
 
   if (!articles.length) {
     return null
   }
 
   return (
-    <Flex mb={mb}>
+    <Flex>
       <Flex mx={2}>
         <SectionTitle
           title={title}
@@ -41,6 +44,7 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = ({ title, articlesConne
           ListHeaderComponent={() => <Spacer x={2} />}
           ListFooterComponent={() => <Spacer x={2} />}
           ItemSeparatorComponent={() => <Spacer x={2} />}
+          initialNumToRender={isTablet ? 10 : 5}
           data={articles}
           keyExtractor={(item) => `${item.internalID}`}
           renderItem={({ item, index }) => (
@@ -62,16 +66,18 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = ({ title, articlesConne
   )
 }
 
-export const ArticlesRailFragmentContainer = createFragmentContainer(ArticlesRail, {
-  articlesConnection: graphql`
-    fragment ArticlesRail_articlesConnection on ArticleConnection {
-      edges {
-        node {
-          internalID
-          slug
-          ...ArticleCard_article
+export const ArticlesRailFragmentContainer = memo(
+  createFragmentContainer(ArticlesRail, {
+    articlesConnection: graphql`
+      fragment ArticlesRail_articlesConnection on ArticleConnection {
+        edges {
+          node {
+            internalID
+            slug
+            ...ArticleCard_article
+          }
         }
       }
-    }
-  `,
-})
+    `,
+  })
+)
