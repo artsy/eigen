@@ -1,25 +1,31 @@
-import * as Analytics from "@artsy/cohesion"
-import { TappedEntityGroup } from "@artsy/cohesion"
+import {
+  ActionType,
+  ContextModule,
+  OwnerType,
+  TappedEntityGroup,
+  tappedEntityGroup,
+  RailViewed,
+} from "@artsy/cohesion"
 import { ArtworkModuleRail_rail$data } from "__generated__/ArtworkModuleRail_rail.graphql"
 
 type ValidHomeDestination =
-  | Analytics.OwnerType.auctions
-  | Analytics.OwnerType.collection
-  | Analytics.OwnerType.sale
-  | Analytics.OwnerType.fair
-  | Analytics.OwnerType.artwork
-  | Analytics.OwnerType.worksForYou
-  | Analytics.OwnerType.savesAndFollows
-  | Analytics.OwnerType.gene
+  | OwnerType.auctions
+  | OwnerType.collection
+  | OwnerType.sale
+  | OwnerType.fair
+  | OwnerType.artwork
+  | OwnerType.worksForYou
+  | OwnerType.savesAndFollows
+  | OwnerType.gene
 
 export default class HomeAnalytics {
   // Auction events
 
-  static auctionHeaderTapEvent(): Analytics.TappedEntityGroup {
-    return Analytics.tappedEntityGroup({
-      contextModule: Analytics.ContextModule.auctionRail,
-      contextScreenOwnerType: Analytics.OwnerType.home,
-      destinationScreenOwnerType: Analytics.OwnerType.auctions,
+  static auctionHeaderTapEvent(): TappedEntityGroup {
+    return tappedEntityGroup({
+      contextModule: ContextModule.auctionRail,
+      contextScreenOwnerType: OwnerType.home,
+      destinationScreenOwnerType: OwnerType.auctions,
       moduleHeight: "double",
       type: "header",
     })
@@ -29,13 +35,13 @@ export default class HomeAnalytics {
     id?: string,
     slug?: string,
     horizontalSlidePosition?: number
-  ): Analytics.TappedEntityGroup {
-    return Analytics.tappedEntityGroup({
-      contextScreenOwnerType: Analytics.OwnerType.home,
+  ): TappedEntityGroup {
+    return tappedEntityGroup({
+      contextScreenOwnerType: OwnerType.home,
       destinationScreenOwnerId: id,
       destinationScreenOwnerSlug: slug,
-      destinationScreenOwnerType: Analytics.OwnerType.sale,
-      contextModule: Analytics.ContextModule.auctionRail,
+      destinationScreenOwnerType: OwnerType.sale,
+      contextModule: ContextModule.auctionRail,
       horizontalSlidePosition,
       moduleHeight: "double",
       type: "thumbnail",
@@ -48,13 +54,13 @@ export default class HomeAnalytics {
     fairID?: string,
     fairSlug?: string,
     index?: number
-  ): Analytics.TappedEntityGroup {
-    return Analytics.tappedEntityGroup({
-      contextScreenOwnerType: Analytics.OwnerType.home,
+  ): TappedEntityGroup {
+    return tappedEntityGroup({
+      contextScreenOwnerType: OwnerType.home,
       destinationScreenOwnerId: fairID,
       destinationScreenOwnerSlug: fairSlug,
-      destinationScreenOwnerType: Analytics.OwnerType.fair,
-      contextModule: Analytics.ContextModule.fairRail,
+      destinationScreenOwnerType: OwnerType.fair,
+      contextModule: ContextModule.fairRail,
       horizontalSlidePosition: index,
       moduleHeight: "double",
       type: "thumbnail",
@@ -67,24 +73,24 @@ export default class HomeAnalytics {
     articleID?: string,
     articleSlug?: string,
     index?: number
-  ): Analytics.TappedEntityGroup {
-    return Analytics.tappedEntityGroup({
-      contextScreenOwnerType: Analytics.OwnerType.home,
+  ): TappedEntityGroup {
+    return tappedEntityGroup({
+      contextScreenOwnerType: OwnerType.home,
       destinationScreenOwnerId: articleID,
       destinationScreenOwnerSlug: articleSlug,
-      destinationScreenOwnerType: Analytics.OwnerType.article,
-      contextModule: Analytics.ContextModule.articleRail,
+      destinationScreenOwnerType: OwnerType.article,
+      contextModule: ContextModule.articleRail,
       horizontalSlidePosition: index,
       moduleHeight: "double",
       type: "thumbnail",
     })
   }
 
-  static articlesHeaderTapEvent(): Analytics.TappedEntityGroup {
-    return Analytics.tappedEntityGroup({
-      contextModule: Analytics.ContextModule.articleRail,
-      contextScreenOwnerType: Analytics.OwnerType.home,
-      destinationScreenOwnerType: Analytics.OwnerType.articles,
+  static articlesHeaderTapEvent(): TappedEntityGroup {
+    return tappedEntityGroup({
+      contextModule: ContextModule.articleRail,
+      contextScreenOwnerType: OwnerType.home,
+      destinationScreenOwnerType: OwnerType.articles,
       moduleHeight: "double",
       type: "header",
     })
@@ -92,13 +98,13 @@ export default class HomeAnalytics {
 
   // Artwork Events
 
-  static artworkShowMoreCardTapEvent(key: string | null): Analytics.TappedEntityGroup | null {
-    const contextModule = HomeAnalytics.artworkRailContextModule(key)
-    const destinationScreen = HomeAnalytics.artworkHeaderDestinationScreen(key)
+  static artworkShowMoreCardTapEvent(key: string | null): TappedEntityGroup | null {
+    const contextModule = this.artworkRailContextModule(key)
+    const destinationScreen = this.artworkHeaderDestinationScreen(key)
 
     if (contextModule && destinationScreen) {
-      return Analytics.tappedEntityGroup({
-        contextScreenOwnerType: Analytics.OwnerType.home,
+      return tappedEntityGroup({
+        contextScreenOwnerType: OwnerType.home,
         destinationScreenOwnerType: destinationScreen,
         contextModule,
         moduleHeight: "double",
@@ -110,13 +116,13 @@ export default class HomeAnalytics {
     }
   }
 
-  static artworkHeaderTapEvent(key: string | null): Analytics.TappedEntityGroup | null {
-    const contextModule = HomeAnalytics.artworkRailContextModule(key)
-    const destinationScreen = HomeAnalytics.artworkHeaderDestinationScreen(key)
+  static artworkHeaderTapEvent(key: string | null): TappedEntityGroup | null {
+    const contextModule = this.artworkRailContextModule(key)
+    const destinationScreen = this.artworkHeaderDestinationScreen(key)
 
     if (contextModule && destinationScreen) {
-      return Analytics.tappedEntityGroup({
-        contextScreenOwnerType: Analytics.OwnerType.home,
+      return tappedEntityGroup({
+        contextScreenOwnerType: OwnerType.home,
         destinationScreenOwnerType: destinationScreen,
         contextModule,
         moduleHeight: "double",
@@ -129,15 +135,15 @@ export default class HomeAnalytics {
   }
 
   static artworkThumbnailTapEvent(
-    contextModule: Analytics.ContextModule,
+    contextModule: ContextModule,
     slug: string,
     id: string,
     index?: number,
     moduleHeight?: "single" | "double"
-  ): Analytics.TappedEntityGroup {
-    return Analytics.tappedEntityGroup({
-      contextScreenOwnerType: Analytics.OwnerType.home,
-      destinationScreenOwnerType: Analytics.OwnerType.artwork,
+  ): TappedEntityGroup {
+    return tappedEntityGroup({
+      contextScreenOwnerType: OwnerType.home,
+      destinationScreenOwnerType: OwnerType.artwork,
       destinationScreenOwnerSlug: slug,
       destinationScreenOwnerId: id,
       contextModule,
@@ -152,10 +158,10 @@ export default class HomeAnalytics {
     slug: string,
     id: string,
     index?: number
-  ): Analytics.TappedEntityGroup | null {
-    const contextModule = HomeAnalytics.artworkRailContextModule(key)
+  ): TappedEntityGroup | null {
+    const contextModule = this.artworkRailContextModule(key)
     if (contextModule) {
-      return HomeAnalytics.artworkThumbnailTapEvent(contextModule, slug, id, index)
+      return this.artworkThumbnailTapEvent(contextModule, slug, id, index)
     } else {
       console.log("homeAnalytics.ts untracked rail", key)
       return null
@@ -169,11 +175,11 @@ export default class HomeAnalytics {
     id: string,
     slug: string,
     index?: number
-  ): Analytics.TappedEntityGroup {
-    return Analytics.tappedEntityGroup({
-      contextModule: HomeAnalytics.artistRailContextModule(key),
-      contextScreenOwnerType: Analytics.OwnerType.home,
-      destinationScreenOwnerType: Analytics.OwnerType.artist,
+  ): TappedEntityGroup {
+    return tappedEntityGroup({
+      contextModule: this.artistRailContextModule(key),
+      contextScreenOwnerType: OwnerType.home,
+      destinationScreenOwnerType: OwnerType.artist,
       destinationScreenOwnerId: id,
       destinationScreenOwnerSlug: slug,
       horizontalSlidePosition: index,
@@ -185,10 +191,10 @@ export default class HomeAnalytics {
   // Collections events
 
   static collectionThumbnailTapEvent(slug?: string, index?: number): TappedEntityGroup {
-    return Analytics.tappedEntityGroup({
-      contextModule: Analytics.ContextModule.collectionRail,
-      contextScreenOwnerType: Analytics.OwnerType.home,
-      destinationScreenOwnerType: Analytics.OwnerType.collection,
+    return tappedEntityGroup({
+      contextModule: ContextModule.collectionRail,
+      contextScreenOwnerType: OwnerType.home,
+      destinationScreenOwnerType: OwnerType.collection,
       destinationScreenOwnerSlug: slug,
       horizontalSlidePosition: index,
       moduleHeight: "double",
@@ -201,15 +207,15 @@ export default class HomeAnalytics {
   static artworkHeaderDestinationScreen(key: string | null): ValidHomeDestination | null {
     switch (key) {
       case "followed_artists":
-        return Analytics.OwnerType.worksForYou
+        return OwnerType.worksForYou
       case "saved_works":
-        return Analytics.OwnerType.savesAndFollows
+        return OwnerType.savesAndFollows
       case "recommended_works":
-        return Analytics.OwnerType.worksForYou
+        return OwnerType.worksForYou
       case "genes":
-        return Analytics.OwnerType.gene
+        return OwnerType.gene
       case "curators-picks-emerging":
-        return Analytics.OwnerType.collection
+        return OwnerType.collection
       default:
         return null
     }
@@ -231,41 +237,56 @@ export default class HomeAnalytics {
     }
   }
 
-  static artistRailContextModule(key: string | null): Analytics.ContextModule {
+  static artistRailContextModule(key: string | null): ContextModule {
     switch (key) {
       case "SUGGESTED":
-        return Analytics.ContextModule.recommendedArtistsRail
+        return ContextModule.recommendedArtistsRail
       case "CURATED_TRENDING":
-        return Analytics.ContextModule.curatedTrendingArtistsRail
+        return ContextModule.curatedTrendingArtistsRail
       case "TRENDING":
-        return Analytics.ContextModule.trendingArtistsRail
+        return ContextModule.trendingArtistsRail
       case "POPULAR":
-        return Analytics.ContextModule.popularArtistsRail
+        return ContextModule.popularArtistsRail
       default:
-        return Analytics.ContextModule.recommendedArtistsRail
+        return ContextModule.recommendedArtistsRail
     }
   }
 
-  static artworkRailContextModule(key: string | null): Analytics.ContextModule | undefined {
+  static artworkRailContextModule(key: string | null): ContextModule | undefined {
     switch (key) {
       case "followed_artists":
-        return Analytics.ContextModule.newWorksByArtistsYouFollowRail
+        return ContextModule.newWorksByArtistsYouFollowRail
       case "followed_galleries":
-        return Analytics.ContextModule.newWorksByGalleriesYouFollowRail
+        return ContextModule.newWorksByGalleriesYouFollowRail
       case "recently_viewed_works":
-        return Analytics.ContextModule.recentlyViewedRail
+        return ContextModule.recentlyViewedRail
       case "saved_works":
-        return Analytics.ContextModule.recentlySavedRail
+        return ContextModule.recentlySavedRail
       case "similar_to_saved_works":
-        return Analytics.ContextModule.similarToWorksYouSavedRail
+        return ContextModule.similarToWorksYouSavedRail
       case "similar_to_recently_viewed":
-        return Analytics.ContextModule.similarToWorksYouViewedRail
+        return ContextModule.similarToWorksYouViewedRail
       case "recommended_works":
-        return Analytics.ContextModule.recommendedWorksForYouRail
+        return ContextModule.recommendedWorksForYouRail
       case "genes":
-        return Analytics.ContextModule.categoryRail
+        return ContextModule.categoryRail
       case "curators-picks-emerging":
-        return Analytics.ContextModule.curatorsPicksEmergingRail
+        return ContextModule.curatorsPicksEmergingRail
+    }
+  }
+
+  static trackRailViewed({
+    contextModule,
+    positionY,
+  }: {
+    contextModule: ContextModule
+    positionY: number
+  }): RailViewed {
+    return {
+      action: ActionType.railViewed,
+      context_module: contextModule,
+      context_screen: OwnerType.home,
+      position_y: positionY,
     }
   }
 }

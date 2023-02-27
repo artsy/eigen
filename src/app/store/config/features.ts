@@ -217,6 +217,12 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "AREnableCuratorsPickRail",
   },
+  ARImpressionsTrackingHomeRailViews: {
+    description: "Enable tracking rail views on home screen",
+    showInDevMenu: true,
+    readyForRelease: true,
+    echoFlagKey: "ARImpressionsTrackingHomeRailViews",
+  },
 })
 
 export interface DevToggleDescriptor {

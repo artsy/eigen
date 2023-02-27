@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, SpacingUnit } from "@artsy/palette-mobile"
+import { Flex } from "@artsy/palette-mobile"
 import { AuctionResultsRail_me$data } from "__generated__/AuctionResultsRail_me.graphql"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import {
@@ -9,18 +9,17 @@ import {
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { memo } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface Props {
   title: string
-  mb?: SpacingUnit
 }
 
 const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me$data } & Props> = ({
   title,
   me,
-  mb,
 }) => {
   const { trackEvent } = useTracking()
   const auctionResultsByFollowedArtists = extractNodes(me?.auctionResultsByFollowedArtists)
@@ -34,7 +33,7 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me$data } & Props> =
   }
 
   return (
-    <Flex mb={mb}>
+    <Flex>
       <Flex pl={2} pr={2}>
         <SectionTitle title={title} onPress={navigateToAuctionResultsForArtistsYouFollow} />
       </Flex>
@@ -66,23 +65,25 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me$data } & Props> =
   )
 }
 
-export const AuctionResultsRailFragmentContainer = createFragmentContainer(AuctionResultsRail, {
-  me: graphql`
-    fragment AuctionResultsRail_me on Me {
-      auctionResultsByFollowedArtists(first: 3, state: PAST) {
-        totalCount
-        edges {
-          cursor
-          node {
-            ...AuctionResultListItem_auctionResult
-            artistID
-            internalID
+export const AuctionResultsRailFragmentContainer = memo(
+  createFragmentContainer(AuctionResultsRail, {
+    me: graphql`
+      fragment AuctionResultsRail_me on Me {
+        auctionResultsByFollowedArtists(first: 3, state: PAST) {
+          totalCount
+          edges {
+            cursor
+            node {
+              ...AuctionResultListItem_auctionResult
+              artistID
+              internalID
+            }
           }
         }
       }
-    }
-  `,
-})
+    `,
+  })
+)
 
 export const tracks = {
   tappedHeader: () => ({

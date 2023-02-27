@@ -5,6 +5,7 @@ import { SmallArtworkRail_artworks$data } from "__generated__/SmallArtworkRail_a
 import { ArtworkCardSize, ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
 import { useFeatureFlag } from "app/store/GlobalStore"
+import { isPad } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
 import { Button } from "palette"
 import React, { ReactElement } from "react"
@@ -53,6 +54,8 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
 }) => {
   const enableBrowseMoreArtworksCard = useFeatureFlag("AREnableBrowseMoreArtworksCard")
 
+  const isTablet = isPad()
+
   return (
     <PrefetchFlatList
       onEndReached={onEndReached}
@@ -73,7 +76,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
       // We need to set the maximum number of artists to not cause layout shifts
       // @ts-expect-error
       data={artworks.slice(0, MAX_NUMBER_OF_ARTWORKS)}
-      initialNumToRender={MAX_NUMBER_OF_ARTWORKS}
+      initialNumToRender={isTablet ? 10 : 5}
       contentContainerStyle={{ alignItems: "flex-end" }}
       renderItem={({ item, index }) => (
         <ArtworkRailCard

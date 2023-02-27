@@ -1,13 +1,14 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, SpacingUnit } from "@artsy/palette-mobile"
+import { Flex } from "@artsy/palette-mobile"
 import { LotsByFollowedArtistsRail_me$data } from "__generated__/LotsByFollowedArtistsRail_me.graphql"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SaleArtworkTileRailCardContainer } from "app/Components/SaleArtworkTileRailCard"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { isPad } from "app/utils/hardware"
 import { isCloseToEdge } from "app/utils/isCloseToEdge"
-import { useState } from "react"
+import { memo, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 export const PAGE_SIZE = 6
@@ -16,11 +17,11 @@ interface Props {
   title: string
   me: LotsByFollowedArtistsRail_me$data
   relay: RelayPaginationProp
-  mb?: SpacingUnit
 }
 
-export const LotsByFollowedArtistsRail: React.FC<Props> = ({ title, me, relay, mb }) => {
+export const LotsByFollowedArtistsRail: React.FC<Props> = ({ title, me, relay }) => {
   const [isLoading, setIsLoading] = useState(false)
+  const isTablet = isPad()
 
   const artworks = extractNodes(me?.lotsByFollowedArtistsConnection)
   const hasArtworks = artworks?.length
@@ -47,13 +48,13 @@ export const LotsByFollowedArtistsRail: React.FC<Props> = ({ title, me, relay, m
   }
 
   return (
-    <Flex mb={mb}>
+    <Flex>
       <Flex mx={2}>
         <SectionTitle title={title} onPress={() => navigate("/lots-by-artists-you-follow")} />
       </Flex>
       <CardRailFlatList
         data={artworks}
-        initialNumToRender={PAGE_SIZE}
+        initialNumToRender={isTablet ? 10 : 5}
         windowSize={3}
         renderItem={({ item: artwork }) => (
           <SaleArtworkTileRailCardContainer
@@ -73,60 +74,62 @@ export const LotsByFollowedArtistsRail: React.FC<Props> = ({ title, me, relay, m
   )
 }
 
-export const LotsByFollowedArtistsRailContainer = createPaginationContainer(
-  LotsByFollowedArtistsRail,
-  {
-    me: graphql`
-      fragment LotsByFollowedArtistsRail_me on Me
-      @argumentDefinitions(count: { type: "Int", defaultValue: 6 }, cursor: { type: "String" }) {
-        lotsByFollowedArtistsConnection(
-          first: $count
-          after: $cursor
-          includeArtworksByFollowedArtists: true
-          isAuction: true
-          liveSale: true
-        ) @connection(key: "LotsByFollowedArtistsRail_lotsByFollowedArtistsConnection") {
-          pageInfo {
-            hasNextPage
-            startCursor
-            endCursor
-          }
-          edges {
-            node {
-              id
-              href
-              saleArtwork {
-                ...SaleArtworkTileRailCard_saleArtwork
+export const LotsByFollowedArtistsRailContainer = memo(
+  createPaginationContainer(
+    LotsByFollowedArtistsRail,
+    {
+      me: graphql`
+        fragment LotsByFollowedArtistsRail_me on Me
+        @argumentDefinitions(count: { type: "Int", defaultValue: 6 }, cursor: { type: "String" }) {
+          lotsByFollowedArtistsConnection(
+            first: $count
+            after: $cursor
+            includeArtworksByFollowedArtists: true
+            isAuction: true
+            liveSale: true
+          ) @connection(key: "LotsByFollowedArtistsRail_lotsByFollowedArtistsConnection") {
+            pageInfo {
+              hasNextPage
+              startCursor
+              endCursor
+            }
+            edges {
+              node {
+                id
+                href
+                saleArtwork {
+                  ...SaleArtworkTileRailCard_saleArtwork
+                }
               }
             }
           }
         }
-      }
-    `,
-  },
-  {
-    getConnectionFromProps(props) {
-      return props?.me?.lotsByFollowedArtistsConnection
+      `,
     },
-    getFragmentVariables(prevVars, totalCount) {
-      return {
-        ...prevVars,
-        count: totalCount,
-      }
-    },
-    getVariables(_props, { count, cursor }, fragmentVariables) {
-      return {
-        ...fragmentVariables,
-        cursor,
-        count,
-      }
-    },
-    query: graphql`
-      query LotsByFollowedArtistsRailQuery($cursor: String, $count: Int!) {
-        me {
-          ...LotsByFollowedArtistsRail_me @arguments(cursor: $cursor, count: $count)
+    {
+      getConnectionFromProps(props) {
+        return props?.me?.lotsByFollowedArtistsConnection
+      },
+      getFragmentVariables(prevVars, totalCount) {
+        return {
+          ...prevVars,
+          count: totalCount,
         }
-      }
-    `,
-  }
+      },
+      getVariables(_props, { count, cursor }, fragmentVariables) {
+        return {
+          ...fragmentVariables,
+          cursor,
+          count,
+        }
+      },
+      query: graphql`
+        query LotsByFollowedArtistsRailQuery($cursor: String, $count: Int!) {
+          me {
+            ...LotsByFollowedArtistsRail_me @arguments(cursor: $cursor, count: $count)
+          }
+        }
+      `,
+    }
+  )
 )
