@@ -30,7 +30,7 @@ export const ArtQuizResultsScreen = () => {
   const pagerViewRef = useRef<PagerView>(null)
   const popoverMessage = usePopoverMessage()
 
-  const { goBack, navigate } = useNavigation<NavigationProp<ArtQuizNavigationStack>>()
+  const { goBack } = useNavigation<NavigationProp<ArtQuizNavigationStack>>()
   const { onDone } = useOnboardingContext()
 
   const [submitDislike] = useMutation<ArtQuizArtworksDislikeMutation>(DislikeArtworkMutation)
