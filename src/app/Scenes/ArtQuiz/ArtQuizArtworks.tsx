@@ -19,7 +19,8 @@ import { ArtQuizNavigationStack } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
 import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate as globalNavigate } from "app/system/navigation/navigate"
-import { Suspense, useEffect, useMemo, useRef, useState } from "react"
+import { extractNodes } from "app/utils/extractNodes"
+import { Suspense, useEffect, useRef, useState } from "react"
 import { Image } from "react-native"
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
 import { graphql, useLazyLoadQuery, useMutation } from "react-relay"
@@ -27,24 +28,9 @@ import { graphql, useLazyLoadQuery, useMutation } from "react-relay"
 export const ArtQuizResultsScreen = () => {
   const queryResult = useLazyLoadQuery<ArtQuizArtworksQuery>(artQuizArtworksQuery, {})
   const { userID } = GlobalStore.useAppState((store) => store.auth)
-  const quizArtworkConnection = queryResult.me?.quiz.quizArtworkConnection
 
-  // clone to make the array writable for sorting
-  const quizArtworks = quizArtworkConnection?.edges
-    ? // eslint-disable-next-line no-unsafe-optional-chaining
-      [...quizArtworkConnection?.edges]
-    : []
-
-  // sort the artworks by position, ascending
-  const sortedArtworks = useMemo(() => {
-    return quizArtworks.sort((a, b) => {
-      return a && b ? a.position - b.position : 0
-    })
-  }, [quizArtworks])
-
-  const artworks = sortedArtworks.map((edge) => edge?.node)
-
-  const lastInteractedArtworkIndex = quizArtworkConnection?.edges?.findIndex(
+  const artworks = extractNodes(queryResult.me?.quiz.quizArtworkConnection)
+  const lastInteractedArtworkIndex = queryResult.me?.quiz.quizArtworkConnection?.edges?.findIndex(
     (edge) => edge?.interactedAt === null
   )
   const [activeCardIndex, setActiveCardIndex] = useState(lastInteractedArtworkIndex ?? 0)
@@ -53,9 +39,6 @@ export const ArtQuizResultsScreen = () => {
 
   const { goBack, navigate } = useNavigation<NavigationProp<ArtQuizNavigationStack>>()
   const { onDone } = useOnboardingContext()
-
-  const currentArtwork = artworks[activeCardIndex]!
-  const previousArtwork = artworks[activeCardIndex - 1]!
 
   const [submitDislike] = useMutation<ArtQuizArtworksDislikeMutation>(DislikeArtworkMutation)
   const [submitSave] = useMutation<ArtQuizArtworksSaveMutation>(SaveArtworkMutation)
@@ -86,6 +69,8 @@ export const ArtQuizResultsScreen = () => {
   const handleNext = (action: "Like" | "Dislike") => {
     popoverMessage.hide()
     pagerViewRef.current?.setPage(activeCardIndex + 1)
+
+    const currentArtwork = artworks[activeCardIndex]
 
     if (action === "Like") {
       submitSave({
@@ -128,6 +113,8 @@ export const ArtQuizResultsScreen = () => {
     if (activeCardIndex === 0) {
       goBack()
     } else {
+      const previousArtwork = artworks[activeCardIndex - 1]
+
       pagerViewRef.current?.setPage(activeCardIndex - 1)
       const { isSaved, isDisliked } = previousArtwork
 
@@ -205,9 +192,9 @@ export const ArtQuizResultsScreen = () => {
           >
             {artworks.map((artwork) => {
               return (
-                <Flex key={artwork?.internalID}>
+                <Flex key={artwork.internalID}>
                   <Image
-                    source={{ uri: artwork?.imageUrl! }}
+                    source={{ uri: artwork.imageUrl! }}
                     style={{ flex: 1 }}
                     resizeMode="contain"
                   />
