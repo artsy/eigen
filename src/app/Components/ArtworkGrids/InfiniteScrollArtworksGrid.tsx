@@ -8,9 +8,12 @@
 
 import { ScreenOwnerType } from "@artsy/cohesion"
 import { Box, Flex } from "@artsy/palette-mobile"
-import { PAGE_SIZE } from "app/Components/constants"
+import { InfiniteScrollArtworksGrid_connection$data } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
+import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
 import ParentAwareScrollView from "app/Components/ParentAwareScrollView"
+import { PAGE_SIZE } from "app/Components/constants"
 import { MyCollectionArtworkGridItemFragmentContainer } from "app/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkGridItem"
+import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import { Button, Spinner } from "palette"
@@ -30,8 +33,6 @@ import {
 } from "react-native"
 import { createFragmentContainer, RelayPaginationProp } from "react-relay"
 import { graphql } from "relay-runtime"
-import { InfiniteScrollArtworksGrid_connection$data } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
-import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
 import Artwork, { ArtworkProps } from "./ArtworkGridItem"
 
 /**
@@ -208,6 +209,10 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
   contextScreenOwnerType,
   refreshControl,
 }) => {
+  const artworks = extractNodes(connection)
+
+  const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
+
   const getSectionDimension = (gridWidth: number | null | undefined) => {
     // Setting the dimension to 1 for tests to avoid adjusting the screen width
     if (__TEST__) {
@@ -251,7 +256,6 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
 
   const getSectionedArtworks = () => {
     const sectionRatioSums: number[] = []
-    const artworks = extractNodes(connection)
     const sectionedArtworksArray: Array<typeof artworks> = []
     const columnCount = sectionCount ?? 0
 
@@ -336,6 +340,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
             showLotLabel={showLotLabel}
             itemIndex={itemIndex}
             updateRecentSearchesOnTap={updateRecentSearchesOnTap}
+            navigateToPageableRoute={navigateToPageableRoute}
             {...itemComponentProps}
             height={imgHeight}
             {...componentSpecificProps}

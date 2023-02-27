@@ -8,6 +8,7 @@ import {
   WorksForYouScreenQuery,
 } from "app/Components/Containers/WorksForYou"
 import { FadeIn } from "app/Components/FadeIn"
+import { PageableScreensView } from "app/Components/PageableScreensView/PageableScreensView"
 import { ArtQuizArtworks } from "app/Scenes/ArtQuiz/ArtQuizArtworks"
 import { ArtQuizNavigation } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
 import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
@@ -136,7 +137,7 @@ import {
   ViewingRoomsListScreen,
   viewingRoomsListScreenQuery,
 } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { GlobalStore, useSelectedTab } from "./store/GlobalStore"
+import { GlobalStore, useFeatureFlag, useSelectedTab } from "./store/GlobalStore"
 import { propsStore } from "./store/PropsStore"
 import { DevMenu } from "./utils/DevMenu"
 import { addTrackingProvider, Schema, screenTrack } from "./utils/track"
@@ -164,9 +165,36 @@ addTrackingProvider("console", ConsoleTrackingProvider)
 interface ArtworkProps {
   artworkID: string
   isVisible: boolean
+  pageableSlugs: string[]
 }
 
-const Artwork = (props: ArtworkProps) => <ArtworkQueryRenderer {...props} />
+const Artwork = (props: ArtworkProps) => {
+  const enablePageableArtworkScreens = useFeatureFlag("AREnablePageableArtworkScreens")
+
+  const pageableSlugs = props.pageableSlugs ?? []
+
+  const screens = pageableSlugs.map((slug) => ({
+    name: slug,
+    Component: <ArtworkQueryRenderer {...props} artworkID={slug} />,
+  }))
+
+  // Check to see if we're within the context of an artwork rail and show
+  // pager view.
+  // TODO: Remove feature flag once we're ready to launch.
+  if (enablePageableArtworkScreens && screens.length > 0) {
+    return (
+      <PageableScreensView
+        screens={screens}
+        initialScreenName={props.artworkID}
+        prefetchScreensCount={5}
+      />
+    )
+    // If not within the context of an artwork collection, just render the
+    // individual artwork.
+  } else {
+    return <ArtworkQueryRenderer {...props} />
+  }
+}
 
 interface PartnerLocationsProps {
   partnerID: string

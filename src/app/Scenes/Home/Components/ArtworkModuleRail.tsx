@@ -4,6 +4,7 @@ import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
+import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { compact } from "lodash"
 import React, { memo, useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
@@ -65,6 +66,8 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
   // This is to satisfy the TypeScript compiler based on Metaphysics types.
   const artworks = compact(rail.results ?? [])
 
+  const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
+
   const showRail = artworks.length
 
   if (!showRail) {
@@ -91,7 +94,11 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
       }
     : undefined
 
-  return artworks.length ? (
+  if (artworks.length === 0) {
+    return null
+  }
+
+  return (
     <Flex ref={railRef}>
       <Flex pl={2} pr={2}>
         <SectionTitle title={title} subtitle={subtitle} onPress={handleTitlePress} />
@@ -112,12 +119,12 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
             )
           }
 
-          navigate(artwork.href!)
+          navigateToPageableRoute(artwork.href!)
         }}
         onMorePress={handlePressMore}
       />
     </Flex>
-  ) : null
+  )
 }
 
 export const ArtworkModuleRailFragmentContainer = memo(
@@ -127,6 +134,7 @@ export const ArtworkModuleRailFragmentContainer = memo(
         title
         key
         results {
+          slug
           ...LargeArtworkRail_artworks
         }
         context {
