@@ -31,18 +31,21 @@ export const TrackOrderSection: React.FC<Props> = ({ section }) => {
         <Text testID="orderStatus" variant="sm" style={{ textTransform: "capitalize" }}>
           {orderStatus}
         </Text>
-        {!!shipment?.trackingNumber ? (
+        {!!shipment?.trackingNumber && (
           <Text testID="trackingNumber" variant="sm" color="black60">
             Tracking:&nbsp;
             <Text variant="sm" color="black60" weight="medium">
               {shipment?.trackingNumber}
             </Text>
           </Text>
-        ) : (
+        )}
+
+        {!!trackingUrl === false && (
           <Text testID="noTrackingNumber" variant="sm" color="black60">
             Tracking not available
           </Text>
         )}
+
         {(!!shipment?.deliveryStart || !!createdAt) && (
           <Text testID="shippedOn" variant="sm" color="black60">
             Shipped on&nbsp;
