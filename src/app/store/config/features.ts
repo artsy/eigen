@@ -185,7 +185,8 @@ export const features = defineFeatures({
   AREnableESOnlySearch: {
     description: "Enable ES only search",
     showInDevMenu: true,
-    readyForRelease: false,
+    readyForRelease: true,
+    echoFlagKey: "AREnableESOnlySearch",
   },
   AREnableMoneyFormattingInMyCollectionForm: {
     description: "Enable Money formatting in MyCollection Form",
