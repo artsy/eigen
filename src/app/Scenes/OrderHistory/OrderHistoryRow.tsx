@@ -17,7 +17,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
   const [lineItem] = extractNodes(order?.lineItems)
   const { artwork, artworkVersion } = lineItem || {}
   const trackingUrl = getTrackingUrl(lineItem)
-  const orderStatus = getOrderStatus(order.displayState, lineItem)
+  const orderStatus = getOrderStatus(order.displayState)
   const orderIsInactive = orderStatus === "canceled" || orderStatus === "refunded"
   const isViewOffer = orderStatus === "pending" && order?.mode === "OFFER"
 
@@ -119,7 +119,6 @@ export const OrderHistoryRowContainer = createFragmentContainer(OrderHistoryRow,
         edges {
           node {
             shipment {
-              status
               trackingUrl
               trackingNumber
             }
