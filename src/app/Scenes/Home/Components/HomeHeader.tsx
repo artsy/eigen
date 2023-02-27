@@ -4,7 +4,7 @@ import { ActivityIndicator } from "./ActivityIndicator"
 
 export const HomeHeader: React.FC = () => {
   const hasUnseenNotifications = GlobalStore.useAppState(
-    (state) => state.bottomTabs.sessionState.displayUnseenNotificationsIndicator
+    (state) => state.bottomTabs.hasUnseenNotifications
   )
 
   return (
