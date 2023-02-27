@@ -1,7 +1,7 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { TrackOrderSection_section$data } from "__generated__/TrackOrderSection_section.graphql"
 import { extractNodes } from "app/utils/extractNodes"
-import { getOrderStatus, OrderState } from "app/utils/getOrderStatus"
+import { getOrderStatus } from "app/utils/getOrderStatus"
 import { getTrackingUrl } from "app/utils/getTrackingUrl"
 import { DateTime } from "luxon"
 import { Button } from "palette"
@@ -22,7 +22,7 @@ export const TrackOrderSection: React.FC<Props> = ({ section }) => {
   const [fulfillment] = extractNodes(fulfillments)
   const { estimatedDelivery, createdAt } = fulfillment || {}
   const trackingUrl = getTrackingUrl(lineItem)
-  const orderStatus = getOrderStatus(section.state as OrderState, lineItem)
+  const orderStatus = getOrderStatus(section.displayState)
   const deliveredStatus = orderStatus === "delivered"
 
   return (
@@ -96,7 +96,7 @@ export const TrackOrderSection: React.FC<Props> = ({ section }) => {
 export const TrackOrderSectionFragmentContainer = createFragmentContainer(TrackOrderSection, {
   section: graphql`
     fragment TrackOrderSection_section on CommerceOrder {
-      state
+      displayState
       lineItems(first: 1) {
         edges {
           node {
