@@ -15,8 +15,6 @@ export function getViewAllUrl(rail: ArtworkModuleRail_rail$data) {
   const context = rail.context
   const key = rail.key
 
-  console.log({ key: rail.key })
-
   switch (key) {
     case "followed_artists":
       return "/works-for-you"

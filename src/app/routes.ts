@@ -1,4 +1,3 @@
-import { parse } from "url"
 import { AppModule } from "app/AppRegistry"
 import { ArtsyWebViewConfig } from "app/Components/ArtsyWebView"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
@@ -7,6 +6,7 @@ import { compact } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { Platform } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
+import { parse } from "url"
 
 export function matchRoute(
   url: string
@@ -151,9 +151,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/tag/:tagID", "Tag"),
     addRoute("/show/:showID", "Show"),
     addRoute("/show/:showID/info", "ShowMoreInfo"),
-
     addRoute("/recently-viewed", "RecentlyViewed"),
-
     addRoute("/inquiry/:artworkID", "Inquiry"),
     addRoute("/viewing-rooms", "ViewingRooms"),
     addRoute("/auction-results-for-artists-you-follow", "AuctionResultsForArtistsYouFollow"),
