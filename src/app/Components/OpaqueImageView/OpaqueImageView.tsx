@@ -91,19 +91,19 @@ export default class OpaqueImageView extends React.Component<Props, State> {
       if (style == null) {
         return
       }
-      // if (
-      //   !(
-      //     this.state.aspectRatio ||
-      //     (style.width && style.height) ||
-      //     (props.height && props.width) ||
-      //     (style.height && style.flexGrow) ||
-      //     style.flex
-      //   )
-      // ) {
-      //   console.error(
-      //     "[OpaqueImageView] Either an aspect ratio or specific dimensions or flex should be specified."
-      //   )
-      // }
+      if (
+        !(
+          this.state.aspectRatio ||
+          (style.width && style.height) ||
+          (props.height && props.width) ||
+          (style.height && style.flexGrow) ||
+          style.flex
+        )
+      ) {
+        console.error(
+          "[OpaqueImageView] Either an aspect ratio or specific dimensions or flex should be specified."
+        )
+      }
     }
   }
 
