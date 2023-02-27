@@ -21,6 +21,8 @@ export function getViewAllUrl(rail: ArtworkModuleRail_rail$data) {
     case "followed_artist":
     case "related_artists":
       return context?.artist?.href
+    case "recently_viewed_works":
+      return "/recently-viewed"
     case "saved_works":
       return "/favorites"
     case "genes":

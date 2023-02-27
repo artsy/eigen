@@ -6,38 +6,36 @@ import {
   Spacer,
   SpacingUnitDSValueNumber,
 } from "@artsy/palette-mobile"
-import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
-import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
-import { Home_articlesConnection$data } from "__generated__/Home_articlesConnection.graphql"
-import { Home_emergingPicks$data } from "__generated__/Home_emergingPicks.graphql"
-import { Home_featured$data } from "__generated__/Home_featured.graphql"
-import { Home_homePageAbove$data } from "__generated__/Home_homePageAbove.graphql"
-import { Home_homePageBelow$data } from "__generated__/Home_homePageBelow.graphql"
-import { Home_meAbove$data } from "__generated__/Home_meAbove.graphql"
-import { Home_meBelow$data } from "__generated__/Home_meBelow.graphql"
-import { Home_newWorksForYou$data } from "__generated__/Home_newWorksForYou.graphql"
-import { Home_showsByFollowedArtists$data } from "__generated__/Home_showsByFollowedArtists.graphql"
-import { Search2Query } from "__generated__/Search2Query.graphql"
-import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { LargeArtworkRailPlaceholder } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { ArtistRailFragmentContainer } from "app/Components/Home/ArtistRails/ArtistRail"
 import { RecommendedArtistsRailFragmentContainer } from "app/Components/Home/ArtistRails/RecommendedArtistsRail"
 import { LotsByFollowedArtistsRailContainer } from "app/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail"
 import { articlesQueryVariables } from "app/Scenes/Articles/Articles"
+import { ActivityIndicator } from "app/Scenes/Home/Components/ActivityIndicator"
+import { ArticlesRailFragmentContainer } from "app/Scenes/Home/Components/ArticlesRail"
 import { ArtworkModuleRailFragmentContainer } from "app/Scenes/Home/Components/ArtworkModuleRail"
+import { ArtworkRecommendationsRail } from "app/Scenes/Home/Components/ArtworkRecommendationsRail"
 import { AuctionResultsRailFragmentContainer } from "app/Scenes/Home/Components/AuctionResultsRail"
 import { CollectionsRailFragmentContainer } from "app/Scenes/Home/Components/CollectionsRail"
+import { ContentCards } from "app/Scenes/Home/Components/ContentCards"
 import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/Home/Components/EmailConfirmationBanner"
 import { FairsRailFragmentContainer } from "app/Scenes/Home/Components/FairsRail"
+import { HomeFeedOnboardingRailFragmentContainer } from "app/Scenes/Home/Components/HomeFeedOnboardingRail"
+import { HomeHeader } from "app/Scenes/Home/Components/HomeHeader"
+import { HomeUpcomingAuctionsRail } from "app/Scenes/Home/Components/HomeUpcomingAuctionsRail"
 import { MarketingCollectionRail } from "app/Scenes/Home/Components/MarketingCollectionRail"
+import { NewWorksForYouRail } from "app/Scenes/Home/Components/NewWorksForYouRail"
 import { OldCollectionsRailFragmentContainer } from "app/Scenes/Home/Components/OldCollectionsRail"
 import { SalesRailFragmentContainer } from "app/Scenes/Home/Components/SalesRail"
+import { ShowsRailFragmentContainer } from "app/Scenes/Home/Components/ShowsRail"
+import { RailScrollRef } from "app/Scenes/Home/Components/types"
 import { lotsByArtistsYouFollowDefaultVariables } from "app/Scenes/LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import {
   DEFAULT_RECS_MODEL_VERSION,
   RECOMMENDATION_MODEL_EXPERIMENT_NAME,
 } from "app/Scenes/NewWorksForYou/NewWorksForYou"
+import { recentlyViewedQueryVariables } from "app/Scenes/RecentlyViewed/RecentlyViewed"
 import { search2QueryDefaultVariables } from "app/Scenes/Search/Search2"
 import { ViewingRoomsHomeMainRail } from "app/Scenes/ViewingRoom/Components/ViewingRoomsHomeRail"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
@@ -61,17 +59,19 @@ import { Join } from "palette"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
 import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
-
-import { ActivityIndicator } from "./Components/ActivityIndicator"
-import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
-import { ArtworkRecommendationsRail } from "./Components/ArtworkRecommendationsRail"
-import { ContentCards } from "./Components/ContentCards"
-import { HomeFeedOnboardingRailFragmentContainer } from "./Components/HomeFeedOnboardingRail"
-import { HomeHeader } from "./Components/HomeHeader"
-import { HomeUpcomingAuctionsRail } from "./Components/HomeUpcomingAuctionsRail"
-import { NewWorksForYouRail } from "./Components/NewWorksForYouRail"
-import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
-import { RailScrollRef } from "./Components/types"
+import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
+import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
+import { Home_articlesConnection$data } from "__generated__/Home_articlesConnection.graphql"
+import { Home_emergingPicks$data } from "__generated__/Home_emergingPicks.graphql"
+import { Home_featured$data } from "__generated__/Home_featured.graphql"
+import { Home_homePageAbove$data } from "__generated__/Home_homePageAbove.graphql"
+import { Home_homePageBelow$data } from "__generated__/Home_homePageBelow.graphql"
+import { Home_meAbove$data } from "__generated__/Home_meAbove.graphql"
+import { Home_meBelow$data } from "__generated__/Home_meBelow.graphql"
+import { Home_newWorksForYou$data } from "__generated__/Home_newWorksForYou.graphql"
+import { Home_showsByFollowedArtists$data } from "__generated__/Home_showsByFollowedArtists.graphql"
+import { Search2Query } from "__generated__/Search2Query.graphql"
+import { SearchQuery } from "__generated__/SearchQuery.graphql"
 
 const LARGE_MODULE_SEPARATOR_HEIGHT: SpacingUnitDSValueNumber = 4
 const MODULE_SEPARATOR_HEIGHT: SpacingUnitDSValueNumber = 6
@@ -222,6 +222,8 @@ const Home = (props: Props) => {
       title: "Recently Viewed",
       type: "artwork",
       data: homePageBelow?.recentlyViewedWorksArtworkModule,
+      prefetchUrl: "/recently-viewed",
+      prefetchVariables: recentlyViewedQueryVariables,
     },
     {
       title: "Similar to Works You've Viewed",

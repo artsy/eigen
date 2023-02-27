@@ -1,4 +1,7 @@
+import { PAGE_SIZE } from "app/Components/constants"
 import EventEmitter from "events"
+import { useState } from "react"
+import { RefreshControl } from "react-native"
 
 export const RefreshEvents = new EventEmitter()
 RefreshEvents.setMaxListeners(20)
@@ -17,4 +20,23 @@ export const refreshMyCollectionInsights = ({ collectionHasArtworksWithoutInsigh
 
 export const refreshFavoriteArtworks = () => {
   RefreshEvents.emit(FAVORITE_ARTWORKS_REFRESH_KEY)
+}
+
+export const useRefreshControl = (refetch: any, pageSize: number = PAGE_SIZE) => {
+  const [isRefreshing, setIsRefreshing] = useState(false)
+
+  const handleRefresh = () => {
+    setIsRefreshing(true)
+    refetch(
+      { count: pageSize },
+      {
+        fetchPolicy: "store-and-network",
+        onComplete: () => {
+          setIsRefreshing(false)
+        },
+      }
+    )
+  }
+
+  return <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
 }
