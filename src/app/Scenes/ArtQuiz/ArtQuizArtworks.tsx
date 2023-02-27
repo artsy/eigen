@@ -1,19 +1,11 @@
-import {
-  Spacer,
-  Touchable,
-  CloseIcon,
-  Flex,
-  HeartIcon,
-  Screen,
-  Text,
-  BackButton,
-} from "@artsy/palette-mobile"
+import { Touchable, Flex, Screen, Text, BackButton } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { ArtQuizArtworksDislikeMutation } from "__generated__/ArtQuizArtworksDislikeMutation.graphql"
 import { ArtQuizArtworksQuery } from "__generated__/ArtQuizArtworksQuery.graphql"
 import { ArtQuizArtworksSaveMutation } from "__generated__/ArtQuizArtworksSaveMutation.graphql"
 import { ArtQuizArtworksUpdateQuizMutation } from "__generated__/ArtQuizArtworksUpdateQuizMutation.graphql"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
+import { ArtQuizButton } from "app/Scenes/ArtQuiz/ArtQuizButton"
 import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
 import { ArtQuizNavigationStack } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
 import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
@@ -200,14 +192,9 @@ export const ArtQuizResultsScreen = () => {
             })}
           </PagerView>
         </Flex>
-        <Flex flexDirection="row" justifyContent="center" mb={6}>
-          <Touchable onPress={() => handleNext("Dislike")} style={{ marginHorizontal: 40 }}>
-            <CloseIcon height={40} width={50} />
-          </Touchable>
-          <Spacer y={2} />
-          <Touchable onPress={() => handleNext("Like")} style={{ marginHorizontal: 40 }}>
-            <HeartIcon height={40} width={50} />
-          </Touchable>
+        <Flex flexDirection="row" justifyContent="space-around" mb={6} mx={4}>
+          <ArtQuizButton variant="Dislike" onPress={() => handleNext("Dislike")} />
+          <ArtQuizButton variant="Like" onPress={() => handleNext("Like")} />
         </Flex>
       </Screen.Body>
     </Screen>

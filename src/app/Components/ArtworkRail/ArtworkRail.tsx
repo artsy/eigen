@@ -63,7 +63,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
       ListHeaderComponent={ListHeaderComponent}
       ListFooterComponent={
         enableBrowseMoreArtworksCard && onMorePress ? (
-          <BrowseMoreArtworksCard onPress={onMorePress} />
+          <BrowseMoreArtworksCard dark={dark} onPress={onMorePress} />
         ) : (
           ListFooterComponent
         )
@@ -152,13 +152,18 @@ export const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> =
 const SpacerComponent = () => <Spacer x={2} />
 
 interface BrowseMoreArtworksCardProps {
+  dark?: boolean
   onPress: () => void
 }
 
-const BrowseMoreArtworksCard: React.FC<BrowseMoreArtworksCardProps> = ({ onPress }) => {
+const BrowseMoreArtworksCard: React.FC<BrowseMoreArtworksCardProps> = ({ dark, onPress }) => {
   return (
     <Flex flex={1} px={1} mx={2} justifyContent="center">
-      <Button variant="outline" onPress={onPress} accessibilityLabel="Browse All Artworks">
+      <Button
+        variant={dark ? "outlineLight" : "outline"}
+        onPress={onPress}
+        accessibilityLabel="Browse All Artworks"
+      >
         Browse All Artworks
       </Button>
     </Flex>
