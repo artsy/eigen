@@ -7,7 +7,6 @@ import { OrderDetailsHeaderFragmentContainer } from "./Components/OrderDetailsHe
 const mockInfo = {
   createdAt: "2021-06-02T14:51:19+03:00",
   code: "075381384",
-  state: "SUBMITTED",
   requestedFulfillment: { __typename: "CommerceShip" },
   lineItems: { edges: [{ node: { shipment: null } }] },
 }
@@ -30,7 +29,9 @@ describe("OrderDetailsHeader", () => {
   })
 
   it("renders date, code, status, fulfillment fields", () => {
-    const tree = renderWithRelay({ CommerceOrder: () => mockInfo })
+    const tree = renderWithRelay({
+      CommerceOrder: () => ({ ...mockInfo, displayState: "SUBMITTED" }),
+    })
 
     expect(extractText(tree.UNSAFE_getByProps({ testID: "date" }))).toBe("Jun 2, 2021")
     expect(extractText(tree.UNSAFE_getByProps({ testID: "code" }))).toBe("075381384")
@@ -41,25 +42,27 @@ describe("OrderDetailsHeader", () => {
   describe("Renders correctly status and fulfillment fields", () => {
     describe("Renders correctly status and fulfillment fields", () => {
       describe("CommerceShip", () => {
-        it("SUBMITTED state", () => {
-          const tree = renderWithRelay({ CommerceOrder: () => mockInfo })
+        it("SUBMITTED displayState", () => {
+          const tree = renderWithRelay({
+            CommerceOrder: () => ({ ...mockInfo, displayState: "SUBMITTED" }),
+          })
 
           expect(extractText(tree.UNSAFE_getByProps({ testID: "status" }))).toBe("pending")
           expect(extractText(tree.UNSAFE_getByProps({ testID: "fulfillment" }))).toBe("Delivery")
         })
 
-        it("APPROVED state", () => {
+        it("APPROVED displayState", () => {
           const tree = renderWithRelay({
-            CommerceOrder: () => ({ ...mockInfo, state: "APPROVED" }),
+            CommerceOrder: () => ({ ...mockInfo, displayState: "APPROVED" }),
           })
 
           expect(extractText(tree.UNSAFE_getByProps({ testID: "status" }))).toBe("confirmed")
           expect(extractText(tree.UNSAFE_getByProps({ testID: "fulfillment" }))).toBe("Delivery")
         })
 
-        it("FULFILLED state", () => {
+        it("FULFILLED displayState", () => {
           const tree = renderWithRelay({
-            CommerceOrder: () => ({ ...mockInfo, state: "FULFILLED" }),
+            CommerceOrder: () => ({ ...mockInfo, displayState: "FULFILLED" }),
           })
 
           expect(extractText(tree.UNSAFE_getByProps({ testID: "status" }))).toBe("delivered")
@@ -68,11 +71,11 @@ describe("OrderDetailsHeader", () => {
       })
 
       describe("CommerceShipArtA", () => {
-        it("PENDING status", () => {
+        it("PROCESSING displayState", () => {
           const tree = renderWithRelay({
             CommerceOrder: () => ({
               ...mockInfo,
-              lineItems: { edges: [{ node: { shipment: { status: "pending" } } }] },
+              displayState: "PROCESSING",
             }),
           })
 
@@ -80,23 +83,11 @@ describe("OrderDetailsHeader", () => {
           expect(extractText(tree.UNSAFE_getByProps({ testID: "fulfillment" }))).toBe("Delivery")
         })
 
-        it("CONFIRMED status", () => {
+        it("IN_TRANSIT displayState", () => {
           const tree = renderWithRelay({
             CommerceOrder: () => ({
               ...mockInfo,
-              lineItems: { edges: [{ node: { shipment: { status: "confirmed" } } }] },
-            }),
-          })
-
-          expect(extractText(tree.UNSAFE_getByProps({ testID: "status" }))).toBe("processing")
-          expect(extractText(tree.UNSAFE_getByProps({ testID: "fulfillment" }))).toBe("Delivery")
-        })
-
-        it("COLLECTED status", () => {
-          const tree = renderWithRelay({
-            CommerceOrder: () => ({
-              ...mockInfo,
-              lineItems: { edges: [{ node: { shipment: { status: "collected" } } }] },
+              displayState: "IN_TRANSIT",
             }),
           })
 
@@ -104,23 +95,11 @@ describe("OrderDetailsHeader", () => {
           expect(extractText(tree.UNSAFE_getByProps({ testID: "fulfillment" }))).toBe("Delivery")
         })
 
-        it("IN_TRANSIT status", () => {
+        it("FULFILLED displayState", () => {
           const tree = renderWithRelay({
             CommerceOrder: () => ({
               ...mockInfo,
-              lineItems: { edges: [{ node: { shipment: { status: "in_transit" } } }] },
-            }),
-          })
-
-          expect(extractText(tree.UNSAFE_getByProps({ testID: "status" }))).toBe("in transit")
-          expect(extractText(tree.UNSAFE_getByProps({ testID: "fulfillment" }))).toBe("Delivery")
-        })
-
-        it("COMPLETED status", () => {
-          const tree = renderWithRelay({
-            CommerceOrder: () => ({
-              ...mockInfo,
-              lineItems: { edges: [{ node: { shipment: { status: "completed" } } }] },
+              displayState: "FULFILLED",
             }),
           })
 
@@ -128,11 +107,11 @@ describe("OrderDetailsHeader", () => {
           expect(extractText(tree.UNSAFE_getByProps({ testID: "fulfillment" }))).toBe("Delivery")
         })
 
-        it("CANCELED status", () => {
+        it("CANCELED displayState", () => {
           const tree = renderWithRelay({
             CommerceOrder: () => ({
               ...mockInfo,
-              lineItems: { edges: [{ node: { shipment: { status: "canceled" } } }] },
+              displayState: "CANCELED",
             }),
           })
 
@@ -142,10 +121,11 @@ describe("OrderDetailsHeader", () => {
       })
 
       describe("CommercePickup", () => {
-        it("SUBMITTED state", () => {
+        it("SUBMITTED displayState", () => {
           const tree = renderWithRelay({
             CommerceOrder: () => ({
               ...mockInfo,
+              displayState: "SUBMITTED",
               requestedFulfillment: { __typename: "CommercePickup" },
             }),
           })
@@ -154,11 +134,11 @@ describe("OrderDetailsHeader", () => {
           expect(extractText(tree.UNSAFE_getByProps({ testID: "fulfillment" }))).toBe("Pickup")
         })
 
-        it("APPROVED state", () => {
+        it("APPROVED displayState", () => {
           const tree = renderWithRelay({
             CommerceOrder: () => ({
               ...mockInfo,
-              state: "APPROVED",
+              displayState: "APPROVED",
               requestedFulfillment: { __typename: "CommercePickup" },
             }),
           })
@@ -167,11 +147,11 @@ describe("OrderDetailsHeader", () => {
           expect(extractText(tree.UNSAFE_getByProps({ testID: "fulfillment" }))).toBe("Pickup")
         })
 
-        it("FULFILLED state", () => {
+        it("FULFILLED displayState", () => {
           const tree = renderWithRelay({
             CommerceOrder: () => ({
               ...mockInfo,
-              state: "FULFILLED",
+              displayState: "FULFILLED",
               requestedFulfillment: { __typename: "CommercePickup" },
             }),
           })
