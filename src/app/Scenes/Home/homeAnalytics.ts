@@ -4,6 +4,7 @@ import { ArtworkModuleRail_rail$data } from "__generated__/ArtworkModuleRail_rai
 
 type ValidHomeDestination =
   | Analytics.OwnerType.auctions
+  | Analytics.OwnerType.collection
   | Analytics.OwnerType.sale
   | Analytics.OwnerType.fair
   | Analytics.OwnerType.artwork
@@ -94,6 +95,7 @@ export default class HomeAnalytics {
   static artworkShowMoreCardTapEvent(key: string | null): Analytics.TappedEntityGroup | null {
     const contextModule = HomeAnalytics.artworkRailContextModule(key)
     const destinationScreen = HomeAnalytics.artworkHeaderDestinationScreen(key)
+
     if (contextModule && destinationScreen) {
       return Analytics.tappedEntityGroup({
         contextScreenOwnerType: Analytics.OwnerType.home,
@@ -111,6 +113,7 @@ export default class HomeAnalytics {
   static artworkHeaderTapEvent(key: string | null): Analytics.TappedEntityGroup | null {
     const contextModule = HomeAnalytics.artworkRailContextModule(key)
     const destinationScreen = HomeAnalytics.artworkHeaderDestinationScreen(key)
+
     if (contextModule && destinationScreen) {
       return Analytics.tappedEntityGroup({
         contextScreenOwnerType: Analytics.OwnerType.home,
@@ -205,6 +208,8 @@ export default class HomeAnalytics {
         return Analytics.OwnerType.worksForYou
       case "genes":
         return Analytics.OwnerType.gene
+      case "curators-picks-emerging":
+        return Analytics.OwnerType.collection
       default:
         return null
     }

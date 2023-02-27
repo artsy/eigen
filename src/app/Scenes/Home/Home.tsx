@@ -9,7 +9,7 @@ import {
 import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { Home_articlesConnection$data } from "__generated__/Home_articlesConnection.graphql"
-import { Home_emergingPicksArtworks$data } from "__generated__/Home_emergingPicksArtworks.graphql"
+import { Home_emergingPicks$data } from "__generated__/Home_emergingPicks.graphql"
 import { Home_featured$data } from "__generated__/Home_featured.graphql"
 import { Home_homePageAbove$data } from "__generated__/Home_homePageAbove.graphql"
 import { Home_homePageBelow$data } from "__generated__/Home_homePageBelow.graphql"
@@ -97,7 +97,7 @@ interface Props extends ViewProps {
   meAbove: Home_meAbove$data | null
   meBelow: Home_meBelow$data | null
   relay: RelayRefetchProp
-  emergingPicksArtworks: Home_emergingPicksArtworks$data | null
+  emergingPicks: Home_emergingPicks$data | null
 }
 
 const Home = (props: Props) => {
@@ -115,7 +115,7 @@ const Home = (props: Props) => {
   }, [])
 
   const {
-    emergingPicksArtworks,
+    emergingPicks,
     homePageAbove,
     homePageBelow,
     meAbove,
@@ -190,10 +190,10 @@ const Home = (props: Props) => {
       hidden: !homePageBelow?.onboardingModule,
     },
     {
-      title: "Curators’ Picks: Emerging",
-      subtitle: "The best work by rising talents on Artsy, available now.",
+      title: "",
+      subtitle: "",
       type: "marketingCollection",
-      data: emergingPicksArtworks,
+      data: emergingPicks,
       hidden: !enableCuratorsPickRail,
     },
     {
@@ -276,9 +276,9 @@ const Home = (props: Props) => {
                 return (
                   <MarketingCollectionRail
                     contextModuleKey="curators-picks-emerging"
-                    viewer={item.data}
-                    title={item.title}
-                    subtitle={item.subtitle}
+                    home={homePageAbove}
+                    marketingCollection={item.data}
+                    marketingCollectionSlug="curators-picks-emerging-app"
                     mb={MODULE_SEPARATOR_HEIGHT}
                   />
                 )
@@ -473,6 +473,7 @@ export const HomeFragmentContainer = createRefetchContainer(
     // Make sure not to include modules that are part of "homePageBelow"
     homePageAbove: graphql`
       fragment Home_homePageAbove on HomePage {
+        ...MarketingCollectionRail_home
         activeBidsArtworkModule: artworkModule(key: ACTIVE_BIDS) {
           id
           ...ArtworkModuleRail_rail
@@ -551,10 +552,9 @@ export const HomeFragmentContainer = createRefetchContainer(
         ...NewWorksForYouRail_artworkConnection
       }
     `,
-    emergingPicksArtworks: graphql`
-      fragment Home_emergingPicksArtworks on Viewer {
-        ...MarketingCollectionRail_viewer
-          @arguments(marketingCollectionID: "curators-picks-emerging")
+    emergingPicks: graphql`
+      fragment Home_emergingPicks on MarketingCollection {
+        ...MarketingCollectionRail_marketingCollection
       }
     `,
   },
@@ -586,8 +586,8 @@ export const HomeFragmentContainer = createRefetchContainer(
       newWorksForYou: viewer {
         ...Home_newWorksForYou
       }
-      emergingPicksArtworks: viewer {
-        ...Home_emergingPicksArtworks
+      emergingPicks: marketingCollection(slug: "curators-picks-emerging") @optionalField {
+        ...Home_emergingPicks
       }
     }
   `
@@ -778,8 +778,8 @@ export const HomeQueryRenderer: React.FC = () => {
             homePage @optionalField {
               ...Home_homePageBelow
             }
-            emergingPicksArtworks: viewer @optionalField {
-              ...Home_emergingPicksArtworks
+            emergingPicks: marketingCollection(slug: "curators-picks-emerging") @optionalField {
+              ...Home_emergingPicks
             }
             featured: viewingRooms(featured: true) @optionalField {
               ...Home_featured
@@ -807,7 +807,7 @@ export const HomeQueryRenderer: React.FC = () => {
           return (
             <HomeFragmentContainer
               articlesConnection={above?.articlesConnection ?? null}
-              emergingPicksArtworks={below?.emergingPicksArtworks ?? null}
+              emergingPicks={below?.emergingPicks ?? null}
               showsByFollowedArtists={below?.me?.showsByFollowedArtists ?? null}
               featured={below ? below.featured : null}
               homePageAbove={above.homePage}
