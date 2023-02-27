@@ -1,8 +1,5 @@
 import { Flex, Text } from "@artsy/palette-mobile"
-import {
-  ArtistItem_artist$data,
-  ArtistItem_artist$key,
-} from "__generated__/ArtistItem_artist.graphql"
+import { ArtistItem_artist$key } from "__generated__/ArtistItem_artist.graphql"
 import {
   MedianSalePriceAtAuctionQuery,
   MedianSalePriceAtAuctionQuery$data,
@@ -12,14 +9,11 @@ import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { SearchInput } from "app/Components/SearchInput"
 import { extractNodes } from "app/utils/extractNodes"
-import { CleanRelayFragment } from "app/utils/relayHelpers"
 import React, { useEffect, useState } from "react"
 import { graphql, usePaginationFragment } from "react-relay"
 import { normalizeText } from "shared/utils"
 import { SelectArtistList } from "./Components/MyCollectionSelectArtist"
 import { artistsQueryVariables } from "./MedianSalePriceAtAuction"
-
-export type ArtistType = CleanRelayFragment<ArtistItem_artist$data>
 
 interface SelectArtistModalProps {
   queryData: MedianSalePriceAtAuctionQuery$data

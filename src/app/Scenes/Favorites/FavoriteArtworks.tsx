@@ -25,6 +25,7 @@ interface Props {
 }
 
 const SavedWorks: React.FC<Props> = ({ me, relay, onDataFetching }) => {
+  const { width } = useScreenDimensions()
   const [refreshingFromPull, setRefreshingFromPull] = useState<boolean>(false)
   const [fetchingMoreData, setFetchingMoreData] = useState<boolean>(false)
   const space = useSpace()
@@ -120,6 +121,7 @@ const SavedWorks: React.FC<Props> = ({ me, relay, onDataFetching }) => {
         hidePartner
         artistNamesTextStyle={{ weight: "regular" }}
         saleInfoTextStyle={{ weight: "medium", color: "black100" }}
+        width={width - space(2)}
       />
     </StickyTabPageScrollView>
   )

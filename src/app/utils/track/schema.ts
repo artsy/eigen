@@ -353,7 +353,6 @@ export enum ContextModules {
   Bibliography = "Bibliography",
   Collection = "Collection",
   CollectionDescription = "CollectionDescription",
-  CommercialButtons = "CommercialButtons",
   ExhibitionHistory = "ExhibitionHistory",
   FeaturedArtists = "FeaturedArtists",
   PartnerContext = "PartnerContext",

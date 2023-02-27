@@ -1,4 +1,5 @@
 import { Flex, SpacingUnit, Text } from "@artsy/palette-mobile"
+import { MarketingCollectionRail_viewer$key } from "__generated__/MarketingCollectionRail_viewer.graphql"
 import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
@@ -8,7 +9,6 @@ import { Image } from "react-native"
 import { useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { graphql } from "relay-runtime"
-import { MarketingCollectionRail_viewer$key } from "__generated__/MarketingCollectionRail_viewer.graphql"
 
 interface MarketingCollectionRailProps {
   viewer: MarketingCollectionRail_viewer$key

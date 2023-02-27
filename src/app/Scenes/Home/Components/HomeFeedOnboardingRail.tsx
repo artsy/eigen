@@ -4,7 +4,6 @@ import { HomeFeedOnboardingRail_onboardingModule$data } from "__generated__/Home
 import { EmbeddedCarousel } from "app/Components/EmbeddedCarousel"
 import { switchTab } from "app/system/navigation/navigate"
 import { useState } from "react"
-import { ImageSourcePropType } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { HomeFeedModalCarousel } from "./HomeFeedModalCarousel/HomeFeedModalCarousel"
@@ -14,15 +13,6 @@ interface HomeFeedOnboardingRailProps {
   title: string
   mb?: SpacingUnit
   onboardingModule: HomeFeedOnboardingRail_onboardingModule$data
-}
-
-export interface HomeFeedOnboardingRailItemProps {
-  shouldShow: boolean
-  type: "MyC" | "SWA"
-  title: string
-  subtitle: string
-  image: ImageSourcePropType
-  button: string
 }
 
 interface OnboardingDataItem {

@@ -1,4 +1,4 @@
-import { action, Action, createContextStore, State } from "easy-peasy"
+import { action, Action, createContextStore } from "easy-peasy"
 
 export interface ArtworkStoreModel {
   auctionState: string | null
@@ -6,8 +6,6 @@ export interface ArtworkStoreModel {
   setAuctionState: Action<this, string | null>
   setSelectedEditionId: Action<this, string | null>
 }
-
-export type ArtworkStoreState = State<ArtworkStoreModel>
 
 const artworkModel: ArtworkStoreModel = {
   auctionState: null,

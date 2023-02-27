@@ -35,12 +35,6 @@ type Order = NonNullable<
 type OrderEvent = Order["orderHistory"][number]
 type OrderEventWithKey = OrderEvent & { key: string }
 
-export type ConversationMessage = NonNullable<
-  NonNullable<
-    NonNullable<NonNullable<Props["conversation"]["messagesConnection"]>["edges"]>[number]
-  >["node"]
->
-
 export const Messages: React.FC<Props> = forwardRef((props, ref) => {
   const { conversation, relay, onDataFetching, onRefresh } = props
 
