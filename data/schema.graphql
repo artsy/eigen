@@ -7272,7 +7272,7 @@ input CreateOrderedSetMutationInput {
   itemIds: [String]
   itemType: String!
   key: String!
-  layout: String
+  layout: OrderedSetLayouts
   name: String
   ownerType: String
   published: Boolean
@@ -17142,7 +17142,7 @@ input UpdateOrderedSetMutationInput {
   itemIds: [String]
   itemType: String
   key: String
-  layout: String
+  layout: OrderedSetLayouts
   name: String
   ownerId: String
   ownerType: String
