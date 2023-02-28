@@ -1,4 +1,4 @@
-import { SpacingUnit, Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { OldCollectionsRail_collectionsModule$data } from "__generated__/OldCollectionsRail_collectionsModule.graphql"
 import {
   CardRailCard,
@@ -11,7 +11,7 @@ import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact } from "lodash"
-import React, { useImperativeHandle, useRef } from "react"
+import React, { memo, useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -21,7 +21,6 @@ interface Props {
   title: string
   subtitle?: string
   collectionsModule: OldCollectionsRail_collectionsModule$data
-  mb?: SpacingUnit
 }
 
 type Collection = OldCollectionsRail_collectionsModule$data["results"][0]
@@ -39,7 +38,7 @@ const OldCollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
   }
 
   return (
-    <Flex mb={props.mb}>
+    <Flex>
       <Flex pl={2} pr={2}>
         <SectionTitle title={props.title} subtitle={props.subtitle} />
       </Flex>
@@ -94,25 +93,27 @@ const OldCollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
   )
 }
 
-export const OldCollectionsRailFragmentContainer = createFragmentContainer(OldCollectionsRail, {
-  collectionsModule: graphql`
-    fragment OldCollectionsRail_collectionsModule on HomePageMarketingCollectionsModule {
-      results {
-        title
-        slug
-        artworksConnection(first: 5, sort: "-decayed_merch") {
-          counts {
-            total
-          }
-          edges {
-            node {
-              image {
-                url(version: "large")
+export const OldCollectionsRailFragmentContainer = memo(
+  createFragmentContainer(OldCollectionsRail, {
+    collectionsModule: graphql`
+      fragment OldCollectionsRail_collectionsModule on HomePageMarketingCollectionsModule {
+        results {
+          title
+          slug
+          artworksConnection(first: 5, sort: "-decayed_merch") {
+            counts {
+              total
+            }
+            edges {
+              node {
+                image {
+                  url(version: "large")
+                }
               }
             }
           }
         }
       }
-    }
-  `,
-})
+    `,
+  })
+)

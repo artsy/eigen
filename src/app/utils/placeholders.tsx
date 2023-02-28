@@ -104,15 +104,6 @@ export const PlaceholderRaggedText = ({
   )
 }
 
-export const PlaceholderImage = ({ height }: { height: number }) => (
-  <View>
-    <PlaceholderBox height={height} />
-    <View style={{ marginBottom: 20 }} />
-    <PlaceholderRaggedText numLines={2} seed={height} />
-    <View style={{ marginBottom: 20 }} />
-  </View>
-)
-
 export const PlaceholderGrid = () => (
   <Flex mx={2} flexDirection="row">
     <GenericGridPlaceholder width={useScreenDimensions().width - 40} />

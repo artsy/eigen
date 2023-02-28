@@ -185,7 +185,8 @@ export const features = defineFeatures({
   AREnableESOnlySearch: {
     description: "Enable ES only search",
     showInDevMenu: true,
-    readyForRelease: false,
+    readyForRelease: true,
+    echoFlagKey: "AREnableESOnlySearch",
   },
   AREnableMoneyFormattingInMyCollectionForm: {
     description: "Enable Money formatting in MyCollection Form",
@@ -215,6 +216,17 @@ export const features = defineFeatures({
     showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "AREnableCuratorsPickRail",
+  },
+  ARImpressionsTrackingHomeRailViews: {
+    description: "Enable tracking rail views on home screen",
+    showInDevMenu: true,
+    readyForRelease: true,
+    echoFlagKey: "ARImpressionsTrackingHomeRailViews",
+  },
+  AREnablePageableArtworkScreens: {
+    description: "Enable pageable artwork screens",
+    readyForRelease: false,
+    showInDevMenu: true,
   },
 })
 

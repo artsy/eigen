@@ -1,7 +1,7 @@
 import { Box, ClassTheme, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import React from "react"
-import { Animated, View } from "react-native"
+import { Animated } from "react-native"
 import styled from "styled-components/native"
 
 /**
@@ -50,14 +50,6 @@ const TabButton = styled.View<{ spaceEvenly?: boolean; active?: boolean }>`
     margin-bottom: -1px;
   `};
 `
-
-interface TabProps {
-  tabLabel: string
-}
-
-export const Tab: React.FC<TabProps> = ({ children }) => (
-  <View style={{ flex: 1, overflow: "hidden" }}>{children}</View>
-)
 
 export default class TabBar extends React.Component<TabBarProps> {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

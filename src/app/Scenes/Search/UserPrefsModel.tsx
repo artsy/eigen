@@ -23,13 +23,8 @@ const DEFAULT_CURRENCY =
 const DEFAULT_METRIC = "in"
 const DEFAULT_VIEW_OPTION = "grid"
 export const DEFAULT_PRICE_RANGE = "*-*"
-// please update this when adding new user preferences
-export interface UserPrefs {
-  pricePaidCurrency: Currency
-  metric: Metric
-  artworkViewOption: ViewOption
-}
 
+// please update this when adding new user preferences
 export interface UserPrefsModel {
   currency: Currency
   metric: Metric | ""

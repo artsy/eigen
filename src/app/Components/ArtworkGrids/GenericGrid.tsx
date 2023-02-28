@@ -1,6 +1,11 @@
+import { TextProps } from "@artsy/palette-mobile"
 import { GenericGrid_artworks$data } from "__generated__/GenericGrid_artworks.graphql"
 import Spinner from "app/Components/Spinner"
 import { Stack } from "app/Components/Stack"
+import {
+  PageableRouteProps,
+  useNavigateToPageableRoute,
+} from "app/system/navigation/useNavigateToPageableRoute"
 import { RandomNumberGenerator } from "app/utils/placeholders"
 import { times } from "lodash"
 import React from "react"
@@ -8,10 +13,13 @@ import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import Artwork, { ArtworkGridItemPlaceholder, ArtworkProps } from "./ArtworkGridItem"
 
-interface Props {
+interface Props extends Partial<PageableRouteProps> {
+  artistNamesTextStyle?: TextProps
+  saleInfoTextStyle?: TextProps
   artworks: GenericGrid_artworks$data
   sectionDirection?: "column" // FIXME: We don’t actually support more options atm
   sectionMargin?: number
+  hidePartner?: boolean
   itemMargin?: number
   isLoading?: boolean
   trackingFlow?: string
@@ -210,10 +218,16 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-const GenericGrid = createFragmentContainer(GenericArtworksGrid, {
+const injectHooks = (Component: typeof GenericArtworksGrid) => (props: Props) => {
+  const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: props.artworks })
+  return <Component {...props} navigateToPageableRoute={navigateToPageableRoute} />
+}
+
+const GenericGrid = createFragmentContainer(injectHooks(GenericArtworksGrid), {
   artworks: graphql`
     fragment GenericGrid_artworks on Artwork @relay(plural: true) {
       id
+      slug
       image(includeAll: false) {
         aspectRatio
       }

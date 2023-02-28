@@ -20,9 +20,8 @@ export const BottomTabs: React.FC<BottomTabBarProps> = (props) => {
   const unreadConversationsCount = GlobalStore.useAppState(
     (state) => state.bottomTabs.sessionState.unreadCounts.conversations
   )
-
-  const displayUnseenNotificationsIndicator = GlobalStore.useAppState(
-    (state) => state.bottomTabs.sessionState.displayUnseenNotificationsIndicator
+  const hasUnseenNotifications = GlobalStore.useAppState(
+    (state) => state.bottomTabs.hasUnseenNotifications
   )
 
   useEffect(() => {
@@ -50,7 +49,7 @@ export const BottomTabs: React.FC<BottomTabBarProps> = (props) => {
         }}
       />
       <Flex flexDirection="row" height={ICON_HEIGHT} px={1}>
-        <BottomTabsButton tab="home" forceDisplayVisualClue={displayUnseenNotificationsIndicator} />
+        <BottomTabsButton tab="home" forceDisplayVisualClue={hasUnseenNotifications} />
         <BottomTabsButton tab="search" />
         <BottomTabsButton tab="inbox" badgeCount={unreadConversationsCount} />
         <BottomTabsButton tab="sell" />

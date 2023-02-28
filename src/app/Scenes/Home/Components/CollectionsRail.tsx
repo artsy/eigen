@@ -1,4 +1,4 @@
-import { SpacingUnit, Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import themeGet from "@styled-system/theme-get"
 import { CollectionsRail_collectionsModule$data } from "__generated__/CollectionsRail_collectionsModule.graphql"
 import { FiveUpImageLayout } from "app/Components/FiveUpImageLayout"
@@ -8,7 +8,7 @@ import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact } from "lodash"
-import React, { useImperativeHandle, useRef } from "react"
+import React, { memo, useImperativeHandle, useRef } from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -19,7 +19,6 @@ interface Props {
   title: string
   subtitle?: string
   collectionsModule: CollectionsRail_collectionsModule$data
-  mb?: SpacingUnit
 }
 
 type Collection = CollectionsRail_collectionsModule$data["results"][0]
@@ -37,7 +36,7 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
   }
 
   return (
-    <Flex mb={props.mb}>
+    <Flex>
       <Flex pl={2} pr={2}>
         <SectionTitle title={props.title} subtitle={props.subtitle} />
       </Flex>
@@ -91,28 +90,30 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
   )
 }
 
-export const CollectionsRailFragmentContainer = createFragmentContainer(CollectionsRail, {
-  collectionsModule: graphql`
-    fragment CollectionsRail_collectionsModule on HomePageMarketingCollectionsModule {
-      results {
-        title
-        slug
-        artworksConnection(first: 5, sort: "-decayed_merch") {
-          counts {
-            total
-          }
-          edges {
-            node {
-              image {
-                url(version: "large")
+export const CollectionsRailFragmentContainer = memo(
+  createFragmentContainer(CollectionsRail, {
+    collectionsModule: graphql`
+      fragment CollectionsRail_collectionsModule on HomePageMarketingCollectionsModule {
+        results {
+          title
+          slug
+          artworksConnection(first: 5, sort: "-decayed_merch") {
+            counts {
+              total
+            }
+            edges {
+              node {
+                image {
+                  url(version: "large")
+                }
               }
             }
           }
         }
       }
-    }
-  `,
-})
+    `,
+  })
+)
 
 const CollectionCard = styled.TouchableHighlight.attrs(() => ({
   underlayColor: themeGet("colors.white100"),

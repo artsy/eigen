@@ -5,6 +5,7 @@ import { SmallArtworkRail_artworks$data } from "__generated__/SmallArtworkRail_a
 import { ArtworkCardSize, ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
 import { useFeatureFlag } from "app/store/GlobalStore"
+import { isPad } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
 import { Button } from "palette"
 import React, { ReactElement } from "react"
@@ -53,6 +54,8 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
 }) => {
   const enableBrowseMoreArtworksCard = useFeatureFlag("AREnableBrowseMoreArtworksCard")
 
+  const isTablet = isPad()
+
   return (
     <PrefetchFlatList
       onEndReached={onEndReached}
@@ -63,7 +66,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
       ListHeaderComponent={ListHeaderComponent}
       ListFooterComponent={
         enableBrowseMoreArtworksCard && onMorePress ? (
-          <BrowseMoreArtworksCard onPress={onMorePress} />
+          <BrowseMoreArtworksCard dark={dark} onPress={onMorePress} />
         ) : (
           ListFooterComponent
         )
@@ -73,7 +76,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
       // We need to set the maximum number of artists to not cause layout shifts
       // @ts-expect-error
       data={artworks.slice(0, MAX_NUMBER_OF_ARTWORKS)}
-      initialNumToRender={MAX_NUMBER_OF_ARTWORKS}
+      initialNumToRender={isTablet ? 10 : 5}
       contentContainerStyle={{ alignItems: "flex-end" }}
       renderItem={({ item, index }) => (
         <ArtworkRailCard
@@ -152,13 +155,18 @@ export const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> =
 const SpacerComponent = () => <Spacer x={2} />
 
 interface BrowseMoreArtworksCardProps {
+  dark?: boolean
   onPress: () => void
 }
 
-const BrowseMoreArtworksCard: React.FC<BrowseMoreArtworksCardProps> = ({ onPress }) => {
+const BrowseMoreArtworksCard: React.FC<BrowseMoreArtworksCardProps> = ({ dark, onPress }) => {
   return (
     <Flex flex={1} px={1} mx={2} justifyContent="center">
-      <Button variant="outline" onPress={onPress} accessibilityLabel="Browse All Artworks">
+      <Button
+        variant={dark ? "outlineLight" : "outline"}
+        onPress={onPress}
+        accessibilityLabel="Browse All Artworks"
+      >
         Browse All Artworks
       </Button>
     </Flex>

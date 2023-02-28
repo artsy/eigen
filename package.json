@@ -22,6 +22,7 @@
     "clean-android": "cd android; ./gradlew clean cleanBuildCache; cd -",
     "clean-ios": "yarn rimraf ~/Library/Developer/Xcode/DerivedData",
     "danger": "danger",
+    "dead-code": "./scripts/check-dead-code.sh",
     "deploy-beta": "./scripts/deploy-beta-both",
     "doctor": "./scripts/doctor.js",
     "flip_table": "./scripts/flip-table",
@@ -101,8 +102,8 @@
     "react-spring": "Try removing this! We have reanimated now."
   },
   "dependencies": {
-    "@artsy/cohesion": "4.105.0",
-    "@artsy/palette-mobile": "10.0.4",
+    "@artsy/cohesion": "4.109.0",
+    "@artsy/palette-mobile": "11.0.2",
     "@artsy/to-title-case": "1.1.0",
     "@expo/react-native-action-sheet": "3.8.0",
     "@gorhom/bottom-sheet": "4.4.5",
@@ -164,7 +165,7 @@
     "react-native-config": "https://github.com/artsy/react-native-config.git#v1.4.11-artsy",
     "react-native-credit-card-input": "0.4.1",
     "react-native-device-info": "10.3.0",
-    "react-native-fast-image": "8.5.11",
+    "react-native-fast-image": "8.6.3",
     "react-native-fbsdk-next": "11",
     "react-native-gesture-handler": "2.5.0",
     "react-native-haptic-feedback": "1.13.0",

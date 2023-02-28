@@ -222,17 +222,17 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@artsy/cohesion@4.105.0":
-  version "4.105.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.105.0.tgz#e91f2699fc7cb1ca9a3581dcc7aef0a86c1a27dd"
-  integrity sha512-rhp+NVDysBSXXJX3Zoe3hHNBHps5OaT6Azuvi/C+yfPbozJxa3kO+RHQ4CRMH/TCtsAhqAvOt1zI64xyqi+KfQ==
+"@artsy/cohesion@4.109.0":
+  version "4.109.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.109.0.tgz#d1f9d477ef40d4faa04b0b27aafa032d52d28d10"
+  integrity sha512-Ba82w8ffBtnmpgTqgjrYfLn5+3kj9a5zvC5enflNWZMms6PQghCXHExH1QappqXC1fsMMz4gNWolatQLPMXbaA==
   dependencies:
     core-js "3"
 
-"@artsy/palette-mobile@10.0.4":
-  version "10.0.4"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-10.0.4.tgz#dbf23dd8198fbb7aabab966f3b37c2ee7949f8a1"
-  integrity sha512-UqYErSyzTGCJl4FBVnEpyw5Y3vrEuvFQBw4CuFUc4mBNKLDYHrwsfmMtidaCV0j67evtzBApBsl6YsUhj5kCYQ==
+"@artsy/palette-mobile@11.0.2":
+  version "11.0.2"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-11.0.2.tgz#7ffeade19056d59c5ffc13d15169ec3b7ae14b2c"
+  integrity sha512-Y4GVa1Fyk6/V2ueWnOcq50k7VpWm8OgAhdZmeJp13cRWhbGNR+tsgI3wgI8SZm5VOQOM0SPtTamcn81DasaZcQ==
   dependencies:
     "@artsy/palette-tokens" "^4.0.1"
     "@styled-system/core" "^5.1.2"
@@ -13909,10 +13909,10 @@ react-native-device-info@10.3.0:
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-10.3.0.tgz#6bab64d84d3415dd00cc446c73ec5e2e61fddbe7"
   integrity sha512-/ziZN1sA1REbJTv5mQZ4tXggcTvSbct+u5kCaze8BmN//lbxcTvWsU6NQd4IihLt89VkbX+14IGc9sVApSxd/w==
 
-react-native-fast-image@8.5.11:
-  version "8.5.11"
-  resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-8.5.11.tgz#e3dc969d0e4e8df026646bf18194465aa55cbc2b"
-  integrity sha512-cNW4bIJg3nvKaheG8vGMfqCt5LMWX9MS5+wMudgKIHbGO51spRr4sgnlhVgwHLcZ5aeNOVJ8CPRxDIWKRq/0QA==
+react-native-fast-image@8.6.3:
+  version "8.6.3"
+  resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-8.6.3.tgz#6edc3f9190092a909d636d93eecbcc54a8822255"
+  integrity sha512-Sdw4ESidXCXOmQ9EcYguNY2swyoWmx53kym2zRsvi+VeFCHEdkO+WG1DK+6W81juot40bbfLNhkc63QnWtesNg==
 
 react-native-fbsdk-next@11:
   version "11.0.0"

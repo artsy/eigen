@@ -7,7 +7,7 @@ import { DurationProvider } from "app/Components/Countdown"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
-import { navigate } from "app/system/navigation/navigate"
+import { PageableRouteProps } from "app/system/navigation/useNavigateToPageableRoute"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import {
@@ -26,7 +26,7 @@ import { LotProgressBar } from "./LotProgressBar"
 
 const SAVE_ICON_SIZE = 22
 
-export interface ArtworkProps {
+export interface ArtworkProps extends Partial<PageableRouteProps> {
   artwork: ArtworkGridItem_artwork$data
   /** Overrides onPress and prevents the default behaviour. */
   onPress?: (artworkID: string) => void
@@ -65,6 +65,7 @@ export interface ArtworkProps {
 export const Artwork: React.FC<ArtworkProps> = ({
   artwork,
   onPress,
+  navigateToPageableRoute,
   trackTap,
   itemIndex,
   height,
@@ -96,6 +97,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   // This is needed to make sure the filter context is defined
   if (ArtworksFiltersStore.useStore()) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
     filterParams = filterArtworksParams(appliedFilters)
   }
@@ -161,7 +163,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
     addArtworkToRecentSearches()
     trackArtworkTap()
-    navigate(artwork.href!)
+    navigateToPageableRoute?.(artwork.href!)
   }
 
   const trackArtworkTap = () => {

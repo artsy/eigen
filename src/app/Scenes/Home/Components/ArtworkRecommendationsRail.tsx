@@ -4,9 +4,9 @@ import { ArtworkRecommendationsRail_me$key } from "__generated__/ArtworkRecommen
 import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
-import { navigate } from "app/system/navigation/navigate"
+import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
-import React, { useImperativeHandle, useRef } from "react"
+import React, { memo, useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -20,7 +20,7 @@ interface ArtworkRecommendationsRailProps {
 
 export const ArtworkRecommendationsRail: React.FC<
   ArtworkRecommendationsRailProps & RailScrollProps
-> = ({ title, me, scrollRef, mb }) => {
+> = memo(({ title, me, scrollRef, mb }) => {
   const { trackEvent } = useTracking()
 
   const { artworkRecommendations } = useFragment(artworksFragment, me)
@@ -33,6 +33,8 @@ export const ArtworkRecommendationsRail: React.FC<
   }))
 
   const artworks = extractNodes(artworkRecommendations)
+
+  const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
 
   if (!artworks.length) {
     return null
@@ -56,13 +58,13 @@ export const ArtworkRecommendationsRail: React.FC<
                 "single"
               )
             )
-            navigate(artwork.href!)
+            navigateToPageableRoute(artwork.href!)
           }}
         />
       </View>
     </Flex>
   )
-}
+})
 
 const artworksFragment = graphql`
   fragment ArtworkRecommendationsRail_me on Me
@@ -76,6 +78,7 @@ const artworksFragment = graphql`
       }
       edges {
         node {
+          slug
           ...LargeArtworkRail_artworks
         }
       }
