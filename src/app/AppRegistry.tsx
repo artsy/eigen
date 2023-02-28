@@ -11,6 +11,10 @@ import { FadeIn } from "app/Components/FadeIn"
 import { ArtQuizArtworks } from "app/Scenes/ArtQuiz/ArtQuizArtworks"
 import { ArtQuizNavigation } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
 import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
+import {
+  RecentlyViewedScreen,
+  RecentlyViewedScreenQuery,
+} from "app/Scenes/RecentlyViewed/RecentlyViewed"
 import { SearchScreenQuery } from "app/Scenes/Search/Search"
 import { SearchScreenQuery as SearchScreenQuery2 } from "app/Scenes/Search/Search2"
 import { SearchSwitchContainer } from "app/Scenes/Search/SearchSwitchContainer"
@@ -66,7 +70,8 @@ import { FairMoreInfoQueryRenderer } from "./Scenes/Fair/FairMoreInfo"
 import { Favorites } from "./Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer } from "./Scenes/Feature/Feature"
 import { GeneQueryRenderer } from "./Scenes/Gene/Gene"
-import { HomeQueryRenderer } from "./Scenes/Home/Home"
+// import { HomeQueryRenderer } from "./Scenes/Home/Home"
+import { HomeQueryRenderer } from "./Scenes/Home/Home2"
 import { MakeOfferModalQueryRenderer } from "./Scenes/Inbox/Components/Conversations/MakeOfferModal"
 import { PurchaseModalQueryRenderer } from "./Scenes/Inbox/Components/Conversations/PurchaseModal"
 import { ConversationNavigator } from "./Scenes/Inbox/ConversationNavigator"
@@ -145,10 +150,6 @@ import {
   SEGMENT_TRACKING_PROVIDER,
   SegmentTrackingProvider,
 } from "./utils/track/SegmentTrackingProvider"
-import {
-  RecentlyViewedScreen,
-  RecentlyViewedScreenQuery,
-} from "app/Scenes/RecentlyViewed/RecentlyViewed"
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
