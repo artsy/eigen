@@ -55,7 +55,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       },
       // Below-The-Fold Modules
       {
-        title: "Upcoming Auctions",
+        title: "Upcoming Auctions by Artists You Follow",
         type: "upcoming-auctions",
         data: props.meBelow,
         isEmpty: !props.meBelow?.auctionResultsByFollowedArtistsUpcomingCounts?.totalCount,

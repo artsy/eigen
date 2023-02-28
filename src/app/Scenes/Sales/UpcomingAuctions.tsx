@@ -40,7 +40,7 @@ export const UpcomingAuctions: React.FC<UpcomingAuctionsProps> = ({
 
   return (
     <Stack py={2} spacing={4}>
-      <SaleList title="Upcoming Auctions by Artists You Follow" sales={nodes} />
+      <SaleList title="Upcoming Auctions" sales={nodes} />
     </Stack>
   )
 }
