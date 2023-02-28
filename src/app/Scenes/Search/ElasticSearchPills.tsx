@@ -69,7 +69,7 @@ export const ElasticSearchPills = React.forwardRef<ScrollView, ElasticSearchPill
 export const ElasticSearchPillsQuery = graphql`
   fragment ElasticSearchPills_viewer on Viewer
   @argumentDefinitions(term: { type: "String!", defaultValue: "" }) {
-    searchConnection(first: 1, mode: AUTOSUGGEST, query: $term, aggregations: [TYPE]) {
+    searchConnection(first: 0, mode: AUTOSUGGEST, query: $term, aggregations: [TYPE]) {
       aggregations {
         counts {
           count
