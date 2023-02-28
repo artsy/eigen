@@ -3,13 +3,12 @@ import { OrderHistoryRowTestsQuery } from "__generated__/OrderHistoryRowTestsQue
 import { navigate } from "app/system/navigation/navigate"
 import { extractText } from "app/utils/tests/extractText"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { Button } from "palette"
 import { graphql } from "react-relay"
 import { OrderHistoryRowContainer } from "./OrderHistoryRow"
 
 const mockOrder = {
   internalID: "d1105415-4a55-4c3b-b71d-bfae06ec92df",
-  state: "SUBMITTED",
+  displayState: "SUBMITTED",
   buyerTotal: "11,200",
   createdAt: "2021-05-18T14:45:20+03:00",
   itemsTotal: "€11,000",
@@ -35,7 +34,7 @@ const mockOrder = {
   },
 }
 
-describe("Order history row", () => {
+describe("OrderHistoryRow", () => {
   const { renderWithRelay } = setupTestWrapper<OrderHistoryRowTestsQuery>({
     Component: (props) => {
       if (props?.commerceOrder) {
@@ -52,346 +51,258 @@ describe("Order history row", () => {
     `,
   })
 
-  describe("Render Order", () => {
-    it("with all fields", () => {
+  it("displays the artist name", () => {
+    const tree = renderWithRelay({ CommerceOrder: () => mockOrder })
+
+    expect(tree.queryByTestId("artist-names")?.children[0]).toBe("Torbjørn Rødland")
+  })
+
+  it("displays the partner name", () => {
+    const tree = renderWithRelay({ CommerceOrder: () => mockOrder })
+
+    expect(tree.queryByTestId("partner-name")?.children[0]).toBe("Andrea Festa Fine Art")
+  })
+
+  it("displays the order creation date", () => {
+    const tree = renderWithRelay({ CommerceOrder: () => mockOrder })
+
+    expect(tree.queryByTestId("date")?.children[0]).toBe("5/18/2021")
+  })
+
+  it("displays the price", () => {
+    const tree = renderWithRelay({ CommerceOrder: () => mockOrder })
+
+    expect(tree.queryByTestId("price")?.children[0]).toBe("11,200")
+  })
+
+  it("displays the display state", () => {
+    const tree = renderWithRelay({ CommerceOrder: () => mockOrder })
+
+    expect(tree.queryByTestId("order-status")?.children[0]).toBe("pending")
+  })
+
+  describe("artwork image", () => {
+    it("displays the image", () => {
       const tree = renderWithRelay({ CommerceOrder: () => mockOrder })
 
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "artist-names" }))).toBe(
-        "Torbjørn Rødland"
-      )
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "partner-name" }))).toBe(
-        "Andrea Festa Fine Art"
-      )
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "date" }))).toBe("5/18/2021")
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "price" }))).toBe("11,200")
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "order-status" }))).toBe("pending")
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "view-order-button" }))).toContain(
-        "View Order"
-      )
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "track-package-button" }))).toContain(
-        "Track Package"
-      )
-      expect(
-        tree.UNSAFE_getByProps({ testID: "image-container" }).findByProps({ testID: "image" })
-      ).toBeTruthy()
+      expect(tree.queryByTestId("image")).toBeTruthy()
     })
 
-    describe("Offer mode", () => {
-      it("View Offer button when SUBMITTED state", () => {
-        const tree = renderWithRelay({
-          CommerceOrder: () => ({ ...mockOrder, mode: "OFFER" }),
-        })
-
-        expect(extractText(tree.UNSAFE_getByProps({ testID: "view-order-button" }))).toContain(
-          "View Offer"
-        )
-      })
-
-      it("View Order button when APPROVED state", () => {
-        const tree = renderWithRelay({
-          CommerceOrder: () => ({ ...mockOrder, state: "APPROVED", mode: "OFFER" }),
-        })
-
-        expect(extractText(tree.UNSAFE_getByProps({ testID: "view-order-button" }))).toContain(
-          "View Order"
-        )
-      })
-    })
-
-    it("with gray box if no image", () => {
-      const order = {
-        ...mockOrder,
-        lineItems: {
-          edges: [
-            {
-              node: {
-                ...mockOrder.lineItems.edges[0].node,
-                artwork: {
-                  ...mockOrder.lineItems.edges[0].node.artwork,
-                  image: null,
-                },
-                artworkVersion: {
-                  image: null,
+    it("displays a gray box unless there is an image", () => {
+      const tree = renderWithRelay({
+        CommerceOrder: () => ({
+          ...mockOrder,
+          lineItems: {
+            edges: [
+              {
+                node: {
+                  ...mockOrder.lineItems.edges[0].node,
+                  artwork: {
+                    ...mockOrder.lineItems.edges[0].node.artwork,
+                    image: null,
+                  },
+                  artworkVersion: {
+                    image: null,
+                  },
                 },
               },
-            },
-          ],
-        },
-      }
-      const tree = renderWithRelay({ CommerceOrder: () => order })
+            ],
+          },
+        }),
+      })
 
-      expect(
-        tree.UNSAFE_getByProps({ testID: "image-container" }).findByProps({ testID: "image-box" })
-      ).toBeTruthy()
+      expect(tree.queryByTestId("image-box")).toBeTruthy()
     })
   })
 
-  describe("Orders without shipment status", () => {
-    it("SUBMITTED order", () => {
-      const tree = renderWithRelay({ CommerceOrder: () => mockOrder })
-
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "order-status" }))).toBe("pending")
-    })
-
-    it("APPROVED order", () => {
+  describe("track package button", () => {
+    it("is visible when a tracking URL is provided", () => {
       const tree = renderWithRelay({
-        CommerceOrder: () => ({ ...mockOrder, state: "APPROVED" }),
-      })
-
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "order-status" }))).toBe("confirmed")
-    })
-
-    it("PROCESSING_APPROVAL order", () => {
-      const tree = renderWithRelay({
-        CommerceOrder: () => ({ ...mockOrder, state: "PROCESSING_APPROVAL" }),
-      })
-
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "order-status" }))).toContain(
-        "payment processing"
-      )
-    })
-
-    it("FULFILLED order", () => {
-      const tree = renderWithRelay({
-        CommerceOrder: () => ({ ...mockOrder, state: "FULFILLED" }),
-      })
-
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "order-status" }))).toBe("delivered")
-    })
-
-    it("CANCELED order", () => {
-      const tree = renderWithRelay({
-        CommerceOrder: () => ({ ...mockOrder, state: "CANCELED" }),
-      })
-
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "order-status" }))).toBe("canceled")
-    })
-
-    describe("CANCELED/REFUNDED orders overrides any shipment status", () => {
-      const order = {
-        ...mockOrder,
-        state: "CANCELED",
-        lineItems: {
-          edges: [
-            {
-              node: {
-                ...mockOrder.lineItems.edges[0].node,
-                shipment: { status: "in_transit", trackingUrl: null, trackingNumber: null },
-                fulfillments: { edges: [{ node: { trackingId: null } }] },
+        CommerceOrder: () => ({
+          ...mockOrder,
+          lineItems: {
+            edges: [
+              {
+                node: {
+                  ...mockOrder.lineItems.edges[0].node,
+                  shipment: { trackingUrl: "https://tracking.com", trackingNumber: null },
+                  fulfillments: { edges: [{ node: { trackingId: null } }] },
+                },
               },
-            },
-          ],
-        },
-      }
-      it("CANCELED order without trackingId", () => {
-        const tree = renderWithRelay({ CommerceOrder: () => order })
-
-        expect(extractText(tree.UNSAFE_getByProps({ testID: "order-status" }))).toBe("canceled")
-        expect(tree.UNSAFE_getByProps({ testID: "view-order-button-box" })).not.toContain(Button)
+            ],
+          },
+        }),
       })
 
-      it("REFUNDED order without trackingId", () => {
-        const tree = renderWithRelay({
-          CommerceOrder: () => ({ ...order, state: "REFUNDED" }),
-        })
+      expect(tree.queryByTestId("track-package-button")).toBeTruthy()
+    })
 
-        expect(extractText(tree.UNSAFE_getByProps({ testID: "order-status" }))).toBe("refunded")
-        expect(tree.UNSAFE_getByProps({ testID: "view-order-button-box" })).not.toContain(Button)
+    it("is visible when a tracking number is provided", () => {
+      const tree = renderWithRelay({
+        CommerceOrder: () => ({
+          ...mockOrder,
+          lineItems: {
+            edges: [
+              {
+                node: {
+                  ...mockOrder.lineItems.edges[0].node,
+                  shipment: { trackingUrl: null, trackingNumber: "12345" },
+                  fulfillments: { edges: [{ node: { trackingId: null } }] },
+                },
+              },
+            ],
+          },
+        }),
       })
+
+      expect(tree.queryByTestId("track-package-button")).toBeTruthy()
+    })
+
+    it("is visible when a tracking ID is provided", () => {
+      const tree = renderWithRelay({
+        CommerceOrder: () => ({
+          ...mockOrder,
+          lineItems: {
+            edges: [
+              {
+                node: {
+                  ...mockOrder.lineItems.edges[0].node,
+                  shipment: { trackingUrl: null, trackingNumber: null },
+                  fulfillments: { edges: [{ node: { trackingId: "tracking-id" } }] },
+                },
+              },
+            ],
+          },
+        }),
+      })
+
+      expect(tree.queryByTestId("track-package-button")).toBeTruthy()
+    })
+
+    it("is not visible unless tracking information is provided", () => {
+      const tree = renderWithRelay({
+        CommerceOrder: () => ({
+          ...mockOrder,
+          lineItems: {
+            edges: [
+              {
+                node: {
+                  ...mockOrder.lineItems.edges[0].node,
+                  shipment: { trackingUrl: null, trackingNumber: null },
+                  fulfillments: { edges: [{ node: { trackingId: null } }] },
+                },
+              },
+            ],
+          },
+        }),
+      })
+
+      expect(tree.queryByTestId("track-package-button")).toBeNull()
     })
   })
 
-  describe("Offers with shipments", () => {
-    describe("when offer is still in negotiation with draft shipment status", () => {
-      const order = {
-        ...mockOrder,
-        mode: "OFFER",
-        state: "SUBMITTED",
-        lineItems: {
-          edges: [
-            {
-              node: {
-                ...mockOrder.lineItems.edges[0].node,
-                shipment: { status: "draft" },
-              },
-            },
-          ],
-        },
-      }
-
-      it("displays the correct order status", () => {
-        const tree = renderWithRelay({ CommerceOrder: () => order })
-
-        expect(extractText(tree.UNSAFE_getByProps({ testID: "order-status" }))).toBe("pending")
-      })
-
-      it("directs user to the orders counter offer modal on button press", () => {
-        const tree = renderWithRelay({ CommerceOrder: () => order })
-        const button = tree.UNSAFE_getByProps({ testID: "view-order-button" })
-
-        fireEvent.press(button)
-
-        expect(navigate).toHaveBeenCalledWith(`/orders/${mockOrder.internalID}`, {
-          modal: true,
-          passProps: { orderID: `${mockOrder.internalID}`, title: "Make Offer" },
-        })
-      })
-    })
-
-    describe("Approved Offers with shipment status", () => {
-      const order = {
-        ...mockOrder,
-        mode: "OFFER",
-        state: "APPROVED",
-        lineItems: {
-          edges: [
-            {
-              node: {
-                ...mockOrder.lineItems.edges[0].node,
-                shipment: { status: "pending" },
-              },
-            },
-          ],
-        },
-      }
-
-      it("directs user to the purchase summary screen on button press", () => {
-        const tree = renderWithRelay({ CommerceOrder: () => order })
-        const button = tree.UNSAFE_getByProps({ testID: "view-order-button" })
-
-        fireEvent.press(button)
-
-        expect(navigate).toHaveBeenCalledWith(`/user/purchases/${order.internalID}`)
-      })
-
-      it("displays the correct order status", () => {
-        const tree = renderWithRelay({ CommerceOrder: () => order })
-
-        expect(extractText(tree.UNSAFE_getByProps({ testID: "order-status" }))).toBe("processing")
-      })
-    })
-  })
-
-  describe("Orders with shipment status", () => {
-    const order = {
-      ...mockOrder,
-      state: "APPROVED",
-      lineItems: {
-        edges: [
-          {
-            node: {
-              ...mockOrder.lineItems.edges[0].node,
-              shipment: { status: "pending" },
-            },
-          },
-        ],
-      },
-    }
-
-    it("PENDING shipment status", () => {
-      const tree = renderWithRelay({ CommerceOrder: () => order })
-
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "order-status" }))).toBe("processing")
-    })
-
-    it("CONFIRMED shipment status", () => {
+  describe("view order button", () => {
+    it("is visible when the order is submitted", () => {
       const tree = renderWithRelay({
         CommerceOrder: () => ({
-          ...order,
-          lineItems: {
-            edges: [
-              {
-                node: {
-                  ...mockOrder.lineItems.edges[0].node,
-                  shipment: { status: "confirmed" },
-                },
-              },
-            ],
-          },
+          ...mockOrder,
+          displayState: "SUBMITTED",
         }),
       })
 
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "order-status" }))).toBe("processing")
+      expect(tree.queryByTestId("view-order-button")).toBeTruthy()
     })
 
-    it("COLLECTED shipment status", () => {
+    it("is not visible when the order is canceled", () => {
       const tree = renderWithRelay({
         CommerceOrder: () => ({
-          ...order,
-          lineItems: {
-            edges: [
-              {
-                node: {
-                  ...mockOrder.lineItems.edges[0].node,
-                  shipment: { status: "collected" },
-                },
-              },
-            ],
-          },
+          ...mockOrder,
+          displayState: "CANCELED",
         }),
       })
 
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "order-status" }))).toBe("in transit")
+      expect(tree.queryByTestId("view-order-button")).toBeNull()
     })
 
-    it("IN_TRANSIT shipment status", () => {
+    it("is not visible when the order is refunded", () => {
       const tree = renderWithRelay({
         CommerceOrder: () => ({
-          ...order,
-          lineItems: {
-            edges: [
-              {
-                node: {
-                  ...mockOrder.lineItems.edges[0].node,
-                  shipment: { status: "in_transit" },
-                },
-              },
-            ],
-          },
+          ...mockOrder,
+          displayState: "REFUNDED",
         }),
       })
 
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "order-status" }))).toBe("in transit")
+      expect(tree.queryByTestId("view-order-button")).toBeNull()
     })
 
-    it("COMPLETE shipment status", () => {
+    it("shows 'view order' when the order is submitted", () => {
       const tree = renderWithRelay({
         CommerceOrder: () => ({
-          ...order,
-          lineItems: {
-            edges: [
-              {
-                node: {
-                  ...mockOrder.lineItems.edges[0].node,
-                  shipment: { status: "completed" },
-                },
-              },
-            ],
-          },
+          ...mockOrder,
+          displayState: "SUBMITTED",
+          mode: "BUY",
         }),
       })
 
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "order-status" }))).toBe("delivered")
+      expect(extractText(tree.getByTestId("view-order-button"))).toContain("View Order")
     })
 
-    it("CANCELED shipment status", () => {
+    it("shows 'view offer' when the order has a submitted offer", () => {
       const tree = renderWithRelay({
         CommerceOrder: () => ({
-          ...order,
-          lineItems: {
-            edges: [
-              {
-                node: {
-                  ...mockOrder.lineItems.edges[0].node,
-                  shipment: { status: "canceled" },
-                },
-              },
-            ],
-          },
+          ...mockOrder,
+          displayState: "SUBMITTED",
+          mode: "OFFER",
         }),
       })
 
-      expect(extractText(tree.UNSAFE_getByProps({ testID: "order-status" }))).toBe("canceled")
+      expect(extractText(tree.getByTestId("view-order-button"))).toContain("View Offer")
+    })
+
+    it("shows 'view order' when the order has an approved offer", () => {
+      const tree = renderWithRelay({
+        CommerceOrder: () => ({
+          ...mockOrder,
+          displayState: "APPROVED",
+          mode: "OFFER",
+        }),
+      })
+
+      expect(extractText(tree.getByTestId("view-order-button"))).toContain("View Order")
+    })
+
+    it("navigates to the counteroffer when the order has a submitted offer", () => {
+      const tree = renderWithRelay({
+        CommerceOrder: () => ({
+          ...mockOrder,
+          internalID: "internal-id",
+          displayState: "SUBMITTED",
+          mode: "OFFER",
+        }),
+      })
+      const button = tree.UNSAFE_getByProps({ testID: "view-order-button" })
+
+      fireEvent.press(button)
+
+      expect(navigate).toHaveBeenCalledWith("/orders/internal-id", {
+        modal: true,
+        passProps: { orderID: "internal-id", title: "Make Offer" },
+      })
+    })
+
+    it("navigates to the purchase summary when the order has a processing offer", () => {
+      const tree = renderWithRelay({
+        CommerceOrder: () => ({
+          ...mockOrder,
+          internalID: "internal-id",
+          displayState: "PROCESSING",
+          mode: "OFFER",
+        }),
+      })
+
+      const button = tree.getByTestId("view-order-button")
+      fireEvent.press(button)
+      expect(navigate).toHaveBeenCalledWith("/user/purchases/internal-id")
     })
   })
 })
