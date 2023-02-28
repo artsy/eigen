@@ -1,5 +1,5 @@
 import { Flex } from "@artsy/palette-mobile"
-import { useState, useRef, useCallback } from "react"
+import { useState, useRef, useCallback, useEffect } from "react"
 import { PanResponder, Animated } from "react-native"
 import { Card, FancySwiperCard } from "./FancySwiperCard"
 
@@ -9,15 +9,34 @@ interface FancySwiperProps {
   cards: Card[]
   onSwipeRight: (index: number) => void
   onSwipeLeft: (index: number) => void
+  shouldRevertCard?: boolean
+  setShouldRevertCard?: (s: boolean) => void
 }
 
-export const FancySwiper = ({ cards, onSwipeRight, onSwipeLeft }: FancySwiperProps) => {
+export const FancySwiper = ({
+  cards,
+  onSwipeRight,
+  onSwipeLeft,
+  shouldRevertCard,
+  setShouldRevertCard,
+}: FancySwiperProps) => {
   const [remainingCards, setRemainingCardsCards] = useState(cards)
+  const [backUpCards, setBackUpCards] = useState<Card[]>([])
   const swiper = useRef<Animated.ValueXY>(new Animated.ValueXY()).current
+
+  useEffect(() => {
+    if (shouldRevertCard) {
+      bringBackCardOnTop()
+    }
+  }, [shouldRevertCard])
 
   const removeCardFromTop = useCallback(
     (swipeDirection: "right" | "left", index: number) => {
-      setRemainingCardsCards((prevState) => prevState.slice(0, -1))
+      const topCard = remainingCards.slice(-1)[0]
+      const newRemainingCards = remainingCards.slice(0, -1)
+      const newBackUpCards = backUpCards.concat(topCard)
+      setRemainingCardsCards(newRemainingCards)
+      setBackUpCards(newBackUpCards)
       // Revert the pan responder to its initial position
       swiper.setValue({ x: 0, y: 0 })
 
@@ -27,8 +46,20 @@ export const FancySwiper = ({ cards, onSwipeRight, onSwipeLeft }: FancySwiperPro
         onSwipeLeft(index)
       }
     },
-    [remainingCards, swiper]
+    [remainingCards, backUpCards, swiper]
   )
+
+  const bringBackCardOnTop = useCallback(() => {
+    if (backUpCards.length) {
+      const lastCard = backUpCards.slice(-1)[0]
+      const newBackUpCards = backUpCards.slice(0, -1)
+      const newRemainingCards = remainingCards.concat(lastCard)
+      setBackUpCards(newBackUpCards)
+      setRemainingCardsCards(newRemainingCards)
+      swiper.setValue({ x: 0, y: 0 })
+      setShouldRevertCard?.(false)
+    }
+  }, [remainingCards, backUpCards, swiper])
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,

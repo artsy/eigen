@@ -1,29 +1,39 @@
-import { Touchable, Flex, Screen, Text, BackButton } from "@artsy/palette-mobile"
+import {
+  Touchable,
+  Flex,
+  Screen,
+  Text,
+  BackButton,
+  useScreenDimensions,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { ArtQuizArtworksDislikeMutation } from "__generated__/ArtQuizArtworksDislikeMutation.graphql"
 import { ArtQuizArtworksQuery } from "__generated__/ArtQuizArtworksQuery.graphql"
 import { ArtQuizArtworksSaveMutation } from "__generated__/ArtQuizArtworksSaveMutation.graphql"
 import { ArtQuizArtworksUpdateQuizMutation } from "__generated__/ArtQuizArtworksUpdateQuizMutation.graphql"
+import { FancySwiper } from "app/Components/FancySwiper/FancySwiper"
+import { Card } from "app/Components/FancySwiper/FancySwiperCard"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { ArtQuizButton } from "app/Scenes/ArtQuiz/ArtQuizButton"
 import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Suspense, useEffect, useRef, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { Image } from "react-native"
-import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
 import { graphql, useLazyLoadQuery, useMutation } from "react-relay"
 
 const ArtQuizArtworksScreen = () => {
   const queryResult = useLazyLoadQuery<ArtQuizArtworksQuery>(artQuizArtworksQuery, {})
   const { userID } = GlobalStore.useAppState((store) => store.auth)
-
+  const { width } = useScreenDimensions()
+  const space = useSpace()
   const artworks = extractNodes(queryResult.me?.quiz.quizArtworkConnection)
   const lastInteractedArtworkIndex = queryResult.me?.quiz.quizArtworkConnection?.edges?.findIndex(
     (edge) => edge?.interactedAt === null
   )
   const [activeCardIndex, setActiveCardIndex] = useState(lastInteractedArtworkIndex ?? 0)
-  const pagerViewRef = useRef<PagerView>(null)
+  const [shouldRevertCard, setShouldRevertCard] = useState(false)
   const popoverMessage = usePopoverMessage()
 
   const [submitDislike] = useMutation<ArtQuizArtworksDislikeMutation>(DislikeArtworkMutation)
@@ -35,26 +45,20 @@ const ArtQuizArtworksScreen = () => {
       title: `Like it? Hit the heart.${"\n"}Not for you? Choose X.`,
       placement: "bottom",
       withPointer: "bottom",
-      style: { width: "70%", marginBottom: 70, left: 55 },
+      style: { width: "70%", marginBottom: 65, left: 55 },
     })
     if (activeCardIndex !== 0) {
       popoverMessage.hide()
     }
   }, [])
 
-  const handleIndexChange = (e: PagerViewOnPageScrollEvent) => {
-    if (e.nativeEvent.position !== undefined) {
-      // We need to avoid updating the index when the position is -1. This happens when the user
-      // scrolls left on the first page in iOS when the overdrag is enabled,
-      if (e.nativeEvent.position !== -1) {
-        setActiveCardIndex(e.nativeEvent.position)
-      }
-    }
+  const handleSwipe = (swipeDirection: "left" | "right") => {
+    handleNext(swipeDirection === "right" ? "Like" : "Dislike")
   }
 
   const handleNext = (action: "Like" | "Dislike") => {
     popoverMessage.hide()
-    pagerViewRef.current?.setPage(activeCardIndex + 1)
+    setActiveCardIndex((activeCardIndex) => activeCardIndex + 1)
 
     const currentArtwork = artworks[activeCardIndex]
 
@@ -102,9 +106,11 @@ const ArtQuizArtworksScreen = () => {
     if (activeCardIndex === 0) {
       goBack()
     } else {
+      setShouldRevertCard(true)
       const previousArtwork = artworks[activeCardIndex - 1]
 
-      pagerViewRef.current?.setPage(activeCardIndex - 1)
+      setActiveCardIndex((activeCardIndex) => activeCardIndex - 1)
+
       const { isSaved, isDisliked } = previousArtwork
 
       if (isSaved) {
@@ -147,6 +153,21 @@ const ArtQuizArtworksScreen = () => {
     navigate("/")
   }
 
+  const artworkCards: Card[] = artworks.map((artwork) => {
+    return {
+      jsx: (
+        <Flex width={width - space(4)} height={500} backgroundColor="white">
+          <Image
+            source={{ uri: artwork.image?.resized?.src }}
+            style={{ flex: 1 }}
+            resizeMode="contain"
+          />
+        </Flex>
+      ),
+      id: artwork.internalID,
+    }
+  })
+
   return (
     <Screen>
       <Screen.RawHeader>
@@ -172,26 +193,13 @@ const ArtQuizArtworksScreen = () => {
       </Screen.RawHeader>
       <Screen.Body>
         <Flex flex={1} py={2}>
-          <PagerView
-            ref={pagerViewRef}
-            style={{ flex: 1 }}
-            initialPage={activeCardIndex}
-            scrollEnabled={false}
-            onPageScroll={handleIndexChange}
-            overdrag
-          >
-            {artworks.map((artwork) => {
-              return (
-                <Flex key={artwork.internalID}>
-                  <Image
-                    source={{ uri: artwork.image?.resized?.src }}
-                    style={{ flex: 1 }}
-                    resizeMode="contain"
-                  />
-                </Flex>
-              )
-            })}
-          </PagerView>
+          <FancySwiper
+            cards={artworkCards}
+            onSwipeRight={() => handleSwipe("right")}
+            onSwipeLeft={() => handleSwipe("left")}
+            shouldRevertCard={shouldRevertCard}
+            setShouldRevertCard={() => setShouldRevertCard(false)}
+          />
         </Flex>
         <Flex flexDirection="row" justifyContent="space-around" mb={4} mx={4}>
           <ArtQuizButton variant="Dislike" onPress={() => handleNext("Dislike")} />
