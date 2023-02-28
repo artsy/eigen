@@ -687,10 +687,6 @@ export const HomeQueryRenderer: React.FC = () => {
             me @optionalField {
               ...Home_meAbove
             }
-            articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true)
-              @optionalField {
-              ...Home_articlesConnection
-            }
             newWorksForYou: viewer @optionalField {
               ...Home_newWorksForYou
             }
@@ -720,6 +716,10 @@ export const HomeQueryRenderer: React.FC = () => {
                 ...Home_showsByFollowedArtists
               }
             }
+            articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true)
+              @optionalField {
+              ...Home_articlesConnection
+            }
           }
         `,
         variables: {
@@ -734,7 +734,7 @@ export const HomeQueryRenderer: React.FC = () => {
 
           return (
             <HomeFragmentContainer
-              articlesConnection={above?.articlesConnection ?? null}
+              articlesConnection={below?.articlesConnection ?? null}
               emergingPicks={below?.emergingPicks ?? null}
               showsByFollowedArtists={below?.me?.showsByFollowedArtists ?? null}
               featured={below ? below.featured : null}
