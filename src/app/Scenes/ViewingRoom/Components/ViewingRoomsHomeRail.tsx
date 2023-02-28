@@ -1,4 +1,4 @@
-import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Spacer } from "@artsy/palette-mobile"
 import { ViewingRoomsHomeRailQuery } from "__generated__/ViewingRoomsHomeRailQuery.graphql"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { MediumCard } from "app/Components/Cards"
@@ -10,13 +10,13 @@ import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholder
 import { Schema } from "app/utils/track"
 import _ from "lodash"
 import { Touchable } from "palette"
-import React, { Suspense, memo } from "react"
+import React, { memo, Suspense } from "react"
 import { FlatList } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 import {
-  FeaturedRail,
   featuredFragment,
+  FeaturedRail,
   tracks as featuredTracks,
 } from "./ViewingRoomsListFeatured"
 import { tagForStatus } from "./ViewingRoomsListItem"
@@ -42,7 +42,6 @@ export const ViewingRoomsHomeMainRail: React.FC<ViewingRoomsHomeMainRailProps> =
               trackEvent(tracks.tappedViewingRoomsHeader())
               navigate("/viewing-rooms")
             }}
-            RightButtonContent={() => <Text color="black60">View all</Text>}
           />
         </Flex>
         {featuredLength > 0 ? (
