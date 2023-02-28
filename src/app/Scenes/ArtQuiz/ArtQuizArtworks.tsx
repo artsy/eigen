@@ -14,10 +14,11 @@ import { navigate as globalNavigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Suspense, useEffect, useRef, useState } from "react"
 import { Image } from "react-native"
+
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
 import { graphql, useLazyLoadQuery, useMutation } from "react-relay"
 
-export const ArtQuizResultsScreen = () => {
+const ArtQuizArtworksScreen = () => {
   const queryResult = useLazyLoadQuery<ArtQuizArtworksQuery>(artQuizArtworksQuery, {})
   const { userID } = GlobalStore.useAppState((store) => store.auth)
 
@@ -29,7 +30,7 @@ export const ArtQuizResultsScreen = () => {
   const pagerViewRef = useRef<PagerView>(null)
   const popoverMessage = usePopoverMessage()
 
-  const { goBack, navigate } = useNavigation<NavigationProp<ArtQuizNavigationStack>>()
+  const { goBack } = useNavigation<NavigationProp<ArtQuizNavigationStack>>()
   const { onDone } = useOnboardingContext()
 
   const [submitDislike] = useMutation<ArtQuizArtworksDislikeMutation>(DislikeArtworkMutation)
@@ -95,7 +96,11 @@ export const ArtQuizResultsScreen = () => {
     })
 
     if (activeCardIndex + 1 === artworks.length) {
-      navigate("ArtQuizResults", { isCalculatingResult: true })
+      globalNavigate("/art-quiz/results", {
+        passProps: {
+          isCalculatingResult: true,
+        },
+      })
       return
     }
   }
@@ -207,7 +212,7 @@ export const ArtQuizResultsScreen = () => {
 export const ArtQuizArtworks = () => {
   return (
     <Suspense fallback={<ArtQuizLoader />}>
-      <ArtQuizResultsScreen />
+      <ArtQuizArtworksScreen />
     </Suspense>
   )
 }

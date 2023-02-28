@@ -19,27 +19,25 @@ export const ArtQuizExploreArtworks = ({
     recommendedArtworks
   )
 
-  if (artworks.length === 0) {
-    return (
-      <Text variant="xs" color="black60">
-        We don't have any recommendations for you at this time.
-      </Text>
-    )
-  }
-
   return (
     <StickyTabPageScrollView
       contentContainerStyle={{
         paddingVertical: space(2),
       }}
     >
-      <GenericGrid
-        artworks={artworks}
-        width={dimensions.width - space(2)}
-        hidePartner
-        artistNamesTextStyle={{ weight: "regular" }}
-        saleInfoTextStyle={{ weight: "medium", color: "black100" }}
-      />
+      {artworks.length ? (
+        <GenericGrid
+          artworks={artworks}
+          width={dimensions.width - space(2)}
+          hidePartner
+          artistNamesTextStyle={{ weight: "regular" }}
+          saleInfoTextStyle={{ weight: "medium", color: "black100" }}
+        />
+      ) : (
+        <Text variant="xs" color="black60">
+          We don't have any recommendations for you at this time.
+        </Text>
+      )}
     </StickyTabPageScrollView>
   )
 }

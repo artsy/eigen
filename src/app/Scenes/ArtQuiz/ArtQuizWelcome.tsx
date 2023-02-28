@@ -1,13 +1,11 @@
 import { Spacer, Flex, Screen, Text, ArtsyLogoBlackIcon } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
 import { ArtQuizNavigationStack } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
 import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
 import { navigate as globalNavigate } from "app/system/navigation/navigate"
 import { Button } from "palette"
-import { Suspense } from "react"
 
-export const ArtQuizWelcomeScreen = () => {
+export const ArtQuizWelcome = () => {
   const { onDone } = useOnboardingContext()
   const { navigate } = useNavigation<NavigationProp<ArtQuizNavigationStack>>()
 
@@ -48,13 +46,5 @@ export const ArtQuizWelcomeScreen = () => {
         </Flex>
       </Screen.Body>
     </Screen>
-  )
-}
-
-export const ArtQuizWelcome = () => {
-  return (
-    <Suspense fallback={<ArtQuizLoader />}>
-      <ArtQuizWelcomeScreen />
-    </Suspense>
   )
 }
