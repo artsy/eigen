@@ -6,7 +6,7 @@ import { RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { PhotoRow } from "./PhotoRow"
 
-const mockEnvironment = defaultEnvironment as unknown as ReturnType<typeof createMockEnvironment>
+const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 const mockHandlePhotoDelete = jest.fn()
 
 describe("PhotoRow", () => {

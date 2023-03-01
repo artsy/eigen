@@ -23,7 +23,7 @@ class TestConsumer extends React.Component {
 }
 
 describe("TimeOffsetProvider", () => {
-  const mockEnvironment = defaultEnvironment as unknown as ReturnType<typeof createMockEnvironment>
+  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
   const TestWrapper = () => {
     return (

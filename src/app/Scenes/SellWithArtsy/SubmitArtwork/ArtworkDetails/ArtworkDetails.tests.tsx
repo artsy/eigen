@@ -27,7 +27,7 @@ jest.mock("../../mutations/updateConsignSubmissionMutation", () => ({
 
 const createConsignSubmissionMock = createConsignSubmission as jest.Mock
 const updateConsignSubmissionMock = updateConsignSubmission as jest.Mock
-const mockEnvironment = defaultEnvironment as unknown as ReturnType<typeof createMockEnvironment>
+const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
 describe("ArtworkDetails", () => {
   const TestRenderer = ({ isLastStep = false }: { isLastStep?: boolean }) => (

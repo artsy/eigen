@@ -8,6 +8,7 @@ import {
 } from "react-relay-network-modern/node8"
 import { Environment, RecordSource, Store } from "relay-runtime"
 
+import { createMockEnvironment } from "relay-test-utils"
 import { cacheMiddleware } from "./middlewares/cacheMiddleware"
 import { checkAuthenticationMiddleware } from "./middlewares/checkAuthenticationMiddleware"
 import { errorMiddleware } from "./middlewares/errorMiddleware"
@@ -64,4 +65,4 @@ export function createEnvironment(
  * @deprecated Use `getRelayEnvironment()` instead.
  * DO NOT USE THIS FUNCTION. It is only exported for legacy reasons.
  */
-export const defaultEnvironment = createEnvironment()
+export const defaultEnvironment = !__TEST__ ? createEnvironment() : createMockEnvironment()

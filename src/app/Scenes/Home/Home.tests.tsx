@@ -19,7 +19,7 @@ jest.mock("app/Scenes/Home/Components/SalesRail", () => ({
   SalesRailFragmentContainer: jest.fn(() => null),
 }))
 
-const mockEnvironment = defaultEnvironment as any as ReturnType<typeof createMockEnvironment>
+const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
 describe(HomeQueryRenderer, () => {
   const getWrapper = async () => {

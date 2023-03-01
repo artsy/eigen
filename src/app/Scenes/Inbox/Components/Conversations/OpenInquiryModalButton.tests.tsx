@@ -28,7 +28,7 @@ const tappedPurchaseEvent = {
 }
 
 describe("OpenInquiryModalButtonTestQueryRenderer", () => {
-  const mockEnvironment = defaultEnvironment as unknown as ReturnType<typeof createMockEnvironment>
+  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<OpenInquiryModalButtonTestQuery>
       environment={mockEnvironment}

@@ -15,7 +15,7 @@ import {
   OpenSettingsBanner,
 } from "./MyProfilePushNotifications"
 
-const env = defaultEnvironment as unknown as ReturnType<typeof createMockEnvironment>
+const env = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
 describe(SwitchMenu, () => {
   it("title is set to black100 when enabled", () => {

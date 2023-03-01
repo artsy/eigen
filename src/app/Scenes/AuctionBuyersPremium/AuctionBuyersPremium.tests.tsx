@@ -5,7 +5,7 @@ import { createMockEnvironment } from "relay-test-utils"
 import { AuctionBuyersPremiumQueryRenderer } from "./AuctionBuyersPremium"
 
 describe("AuctionBuyersPremium", () => {
-  const mockEnvironment = defaultEnvironment as unknown as ReturnType<typeof createMockEnvironment>
+  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
     mockEnvironment.mockClear()

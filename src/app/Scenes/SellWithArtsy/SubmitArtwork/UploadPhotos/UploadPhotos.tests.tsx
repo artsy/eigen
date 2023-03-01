@@ -9,7 +9,7 @@ import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { UploadPhotos } from "./UploadPhotos"
 
-const mockEnvironment = defaultEnvironment as unknown as ReturnType<typeof createMockEnvironment>
+const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
 describe("UploadPhotos", () => {
   const TestRenderer = ({ isLastStep = false }: { isLastStep?: boolean }) => (

@@ -9,7 +9,7 @@ import { createMockEnvironment } from "relay-test-utils"
 import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
 
 describe("SearchArtworks", () => {
-  const mockEnvironment = defaultEnvironment as unknown as ReturnType<typeof createMockEnvironment>
+  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
   const TestRenderer = () => {
     return <SearchArtworksQueryRenderer keyword="keyword" />

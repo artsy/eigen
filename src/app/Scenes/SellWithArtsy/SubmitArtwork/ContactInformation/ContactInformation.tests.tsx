@@ -20,7 +20,7 @@ describe("ContactInformationForm", () => {
   afterEach(() => {
     GlobalStore.actions.artworkSubmission.submission.resetSessionState()
   })
-  const mockEnvironment = defaultEnvironment as unknown as ReturnType<typeof createMockEnvironment>
+  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
   const handlePressTest = jest.fn()
   const TestRenderer = ({ isLastStep = true }: { isLastStep?: boolean }) => (
     <ContactInformationQueryRenderer handlePress={handlePressTest} isLastStep={isLastStep} />
