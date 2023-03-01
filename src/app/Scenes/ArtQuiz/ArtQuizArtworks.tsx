@@ -52,13 +52,24 @@ const ArtQuizArtworksScreen = () => {
     }
   }, [])
 
-  const handleSwipe = (swipeDirection: "left" | "right") => {
+  useEffect(() => {
+    if (activeCardIndex === artworks.length) {
+      navigate("/art-quiz/results", {
+        passProps: {
+          isCalculatingResult: true,
+        },
+      })
+    }
+  }, [activeCardIndex])
+
+  const handleSwipe = (swipeDirection: "left" | "right", index: number) => {
     handleNext(swipeDirection === "right" ? "Like" : "Dislike")
+    const activeIndex = artworks.length - index
+    setActiveCardIndex(activeIndex)
   }
 
   const handleNext = (action: "Like" | "Dislike") => {
     popoverMessage.hide()
-    setActiveCardIndex((activeCardIndex) => activeCardIndex + 1)
 
     const currentArtwork = artworks[activeCardIndex]
 
@@ -109,7 +120,7 @@ const ArtQuizArtworksScreen = () => {
       setShouldRevertCard(true)
       const previousArtwork = artworks[activeCardIndex - 1]
 
-      setActiveCardIndex((activeCardIndex) => activeCardIndex - 1)
+      setActiveCardIndex(activeCardIndex - 1)
 
       const { isSaved, isDisliked } = previousArtwork
 
@@ -153,7 +164,7 @@ const ArtQuizArtworksScreen = () => {
     navigate("/")
   }
 
-  const artworkCards: Card[] = artworks.map((artwork) => {
+  const artworkCards: Card[] = artworks.reverse().map((artwork) => {
     return {
       jsx: (
         <Flex width={width - space(4)} height={500} backgroundColor="white">
@@ -195,8 +206,8 @@ const ArtQuizArtworksScreen = () => {
         <Flex flex={1} py={2}>
           <FancySwiper
             cards={artworkCards}
-            onSwipeRight={() => handleSwipe("right")}
-            onSwipeLeft={() => handleSwipe("left")}
+            onSwipeRight={(index) => handleSwipe("right", index)}
+            onSwipeLeft={(index) => handleSwipe("left", index)}
             shouldRevertCard={shouldRevertCard}
             setShouldRevertCard={() => setShouldRevertCard(false)}
           />
