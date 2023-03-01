@@ -10,9 +10,11 @@ import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.gra
 import { SellWithArtsyHome_me$data } from "__generated__/SellWithArtsyHome_me.graphql"
 import { SellWithArtsyHome_recentlySoldArtworksTypeConnection$data } from "__generated__/SellWithArtsyHome_recentlySoldArtworksTypeConnection.graphql"
 import { CollectorsNetwork } from "app/Scenes/SellWithArtsy/Components/CollectorsNetwork"
+import { FAQSWA } from "app/Scenes/SellWithArtsy/Components/FAQSWA"
 import { GetInTouchBanner } from "app/Scenes/SellWithArtsy/Components/GetInTouchBanner"
 import { Highlights } from "app/Scenes/SellWithArtsy/Components/Highlights"
 import { MeetTheSpecialists } from "app/Scenes/SellWithArtsy/Components/MeetTheSpecialists"
+import { Testimonials } from "app/Scenes/SellWithArtsy/Components/Testimonials"
 import { WaysWeSell } from "app/Scenes/SellWithArtsy/Components/WaysWeSell"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
@@ -120,27 +122,38 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
             {enableNewSWALandingPage && <Spacer y={4} />}
             <SellWithArtsyRecentlySold recentlySoldArtworks={recentlySoldArtworks!} />
 
-            <Spacer y={4} />
-
-            <WhySellWithArtsy />
-
-            <Spacer y={4} />
-
-            <Flex mx={2}>
-              <Button
-                testID="footer-cta"
-                variant="fillDark"
-                block
-                onPress={() => handleConsignPress(consignArgs)}
-                haptic
-              >
-                <Text variant="sm">Submit an Artwork</Text>
-              </Button>
-            </Flex>
+            {enableNewSWALandingPage && (
+              <Join separator={<Spacer y={4} />}>
+                <></>
+                <Testimonials />
+                <FAQSWA />
+              </Join>
+            )}
 
             <Spacer y={4} />
 
-            <Footer />
+            {!enableNewSWALandingPage && <WhySellWithArtsy />}
+
+            {!enableNewSWALandingPage && (
+              <>
+                <Spacer y={4} />
+                <Flex mx={2}>
+                  <Button
+                    testID="footer-cta"
+                    variant="fillDark"
+                    block
+                    onPress={() => handleConsignPress(consignArgs)}
+                    haptic
+                  >
+                    <Text variant="sm">Submit an Artwork</Text>
+                  </Button>
+                </Flex>
+                <Spacer y={4} />
+              </>
+            )}
+
+            <Footer onConsignPress={handleConsignPress} />
+            {enableNewSWALandingPage && <Spacer y={4} />}
           </Flex>
         </ScrollView>
       </Flex>
