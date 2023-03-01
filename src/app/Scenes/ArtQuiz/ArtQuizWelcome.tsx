@@ -2,7 +2,6 @@ import { Spacer, Flex, Screen, Text, ArtsyLogoBlackIcon } from "@artsy/palette-m
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { ArtQuizNavigationStack } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
 import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
-import { navigate as globalNavigate } from "app/system/navigation/navigate"
 import { Button } from "palette"
 
 export const ArtQuizWelcome = () => {
@@ -38,7 +37,6 @@ export const ArtQuizWelcome = () => {
             variant="text"
             onPress={() => {
               onDone?.()
-              globalNavigate("/")
             }}
           >
             Skip

@@ -20,9 +20,9 @@ const ResultsScreen = () => {
   )
 }
 
-export const ArtQuizResults = ({ isCalculatingResult }: { isCalculatingResult?: boolean }) => {
+export const ArtQuizResults = () => {
   return (
-    <Suspense fallback={<ArtQuizLoader isCalculatingResult={isCalculatingResult} />}>
+    <Suspense fallback={<ArtQuizLoader isCalculatingResult={true} />}>
       <ResultsScreen />
     </Suspense>
   )

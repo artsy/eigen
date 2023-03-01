@@ -10,7 +10,6 @@ import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
 import { ArtQuizNavigationStack } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
 import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
 import { GlobalStore } from "app/store/GlobalStore"
-import { navigate as globalNavigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Suspense, useEffect, useRef, useState } from "react"
 import { Image } from "react-native"
@@ -30,7 +29,7 @@ const ArtQuizArtworksScreen = () => {
   const pagerViewRef = useRef<PagerView>(null)
   const popoverMessage = usePopoverMessage()
 
-  const { goBack } = useNavigation<NavigationProp<ArtQuizNavigationStack>>()
+  const { goBack, navigate } = useNavigation<NavigationProp<ArtQuizNavigationStack>>()
   const { onDone } = useOnboardingContext()
 
   const [submitDislike] = useMutation<ArtQuizArtworksDislikeMutation>(DislikeArtworkMutation)
@@ -42,7 +41,7 @@ const ArtQuizArtworksScreen = () => {
       title: `Like it? Hit the heart.${"\n"}Not for you? Choose X.`,
       placement: "bottom",
       withPointer: "bottom",
-      style: { width: "70%", marginBottom: 100, left: 55 },
+      style: { width: "70%", marginBottom: 70, left: 55 },
     })
     if (activeCardIndex !== 0) {
       popoverMessage.hide()
@@ -96,12 +95,7 @@ const ArtQuizArtworksScreen = () => {
     })
 
     if (activeCardIndex + 1 === artworks.length) {
-      globalNavigate("/art-quiz/results", {
-        passProps: {
-          isCalculatingResult: true,
-        },
-      })
-      return
+      navigate("ArtQuizResults")
     }
   }
 
@@ -152,7 +146,6 @@ const ArtQuizArtworksScreen = () => {
   const handleOnSkip = () => {
     onDone?.()
     popoverMessage.hide()
-    globalNavigate("/")
   }
 
   return (
@@ -172,7 +165,7 @@ const ArtQuizArtworksScreen = () => {
           <Touchable haptic="impactLight" onPress={handleOnSkip}>
             <Flex height="100%" justifyContent="center">
               <Text textAlign="right" variant="xs">
-                Skip
+                Close
               </Text>
             </Flex>
           </Touchable>
@@ -191,7 +184,7 @@ const ArtQuizArtworksScreen = () => {
               return (
                 <Flex key={artwork.internalID}>
                   <Image
-                    source={{ uri: artwork.imageUrl! }}
+                    source={{ uri: artwork.image?.resized?.src }}
                     style={{ flex: 1 }}
                     resizeMode="contain"
                   />
@@ -200,7 +193,7 @@ const ArtQuizArtworksScreen = () => {
             })}
           </PagerView>
         </Flex>
-        <Flex flexDirection="row" justifyContent="space-around" mb={6} mx={4}>
+        <Flex flexDirection="row" justifyContent="space-around" mb={4} mx={4}>
           <ArtQuizButton variant="Dislike" onPress={() => handleNext("Dislike")} />
           <ArtQuizButton variant="Like" onPress={() => handleNext("Like")} />
         </Flex>
@@ -227,7 +220,11 @@ const artQuizArtworksQuery = graphql`
             position
             node {
               internalID
-              imageUrl
+              image {
+                resized(width: 900, height: 900, version: ["normalized", "larger", "large"]) {
+                  src
+                }
+              }
               isDisliked
               isSaved
             }

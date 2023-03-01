@@ -1,3 +1,4 @@
+import { parse } from "url"
 import { AppModule } from "app/AppRegistry"
 import { ArtsyWebViewConfig } from "app/Components/ArtsyWebView"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
@@ -6,7 +7,6 @@ import { compact } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { Platform } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
-import { parse } from "url"
 
 export function matchRoute(
   url: string
@@ -207,8 +207,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     ),
 
     addRoute("/art-quiz", "ArtQuiz"),
-    addRoute("/art-quiz/artworks", "ArtQuizArtworks"),
-    addRoute("/art-quiz/results", "ArtQuizResults"),
 
     // TODO: Follow-up about below route names
     addRoute("/collections/my-collection/artworks/new/submissions/new", "SubmitArtwork"),
