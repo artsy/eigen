@@ -18,7 +18,7 @@ import { SavedSearchAlertForm, SavedSearchAlertFormProps, tracks } from "./Saved
 import { SavedSearchStoreProvider } from "./SavedSearchStore"
 
 const spyAlert = jest.spyOn(Alert, "alert")
-const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+const mockEnvironment = defaultEnvironment as unknown as ReturnType<typeof createMockEnvironment>
 const notificationPermissions = mockFetchNotificationPermissions(false)
 
 const withoutDuplicateAlert = async () => {

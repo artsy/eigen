@@ -5,7 +5,7 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 
-const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+const mockEnvironment = defaultEnvironment as unknown as ReturnType<typeof createMockEnvironment>
 
 describe("ArtworkDetailsForm", () => {
   const TestRenderer = () => (

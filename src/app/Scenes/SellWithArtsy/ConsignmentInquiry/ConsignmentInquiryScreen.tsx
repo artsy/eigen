@@ -9,6 +9,7 @@ import { FormikProvider, useFormik } from "formik"
 import { useState } from "react"
 import { useTracking } from "react-tracking"
 import { commitMutation, Environment, graphql } from "relay-runtime"
+import { MockEnvironment } from "relay-test-utils"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import * as Yup from "yup"
 import { ConsignmentInquiryConfirmation } from "./ConsignmentInquiryConfirmation"
@@ -39,7 +40,7 @@ const ValidationSchema = Yup.object().shape({
 })
 
 export const createConsignmentInquiry = (
-  environment: Environment,
+  environment: Environment | MockEnvironment,
   onCompleted: (response: ConsignmentInquiryScreenMutation["response"]) => void,
   onError: () => void,
   input: InquiryFormikSchema & { userId?: string; recipientEmail?: string }

@@ -25,9 +25,11 @@ export const populatedGrids = (grids?: ReadonlyArray<Grid | null> | null) => {
   }
 }
 
+// @ts-expect-error
 export const OtherWorksFragmentContainer = createFragmentContainer<{
   artwork: OtherWorks_artwork$data
 }>(
+  // @ts-expect-error
   (props) => {
     const { width } = useScreenDimensions()
     const space = useSpace()

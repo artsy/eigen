@@ -3,7 +3,7 @@ import {
   RelayNetworkLayer,
 } from "react-relay-network-modern/node8"
 import { Environment, RecordSource, Store } from "relay-runtime"
-import { RelayMockEnvironment } from "relay-test-utils"
+import { MockEnvironment } from "relay-test-utils"
 
 import { cacheMiddleware } from "./middlewares/cacheMiddleware"
 import { checkAuthenticationMiddleware } from "./middlewares/checkAuthenticationMiddleware"
@@ -51,8 +51,8 @@ export const getRelayEnvironment = () => defaultEnvironment
 
 // We could get rid of this, if we could type `getRelayEnvironment`
 // to be a func that returns `Environment` for regular code and
-// to be a func that returns `RelayMockEnvironment` for test code.
-export const getMockRelayEnvironment = getRelayEnvironment as () => RelayMockEnvironment
+// to be a func that returns `MockEnvironment` for test code.
+export const getMockRelayEnvironment = getRelayEnvironment as unknown as () => MockEnvironment
 
 // special relay env, more info here: https://github.com/artsy/eigen/pull/4489
 export const bottomTabsRelayEnvironment = new Environment({

@@ -15,6 +15,7 @@ import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { MockEnvironment } from "relay-test-utils"
 import { useScreenDimensions } from "shared/hooks"
 
 interface MarketStatsProps {
@@ -182,7 +183,7 @@ export const MarketStatsFragmentContainer = createFragmentContainer(MarketStats,
 
 export const MarketStatsQueryRenderer: React.FC<{
   artistInternalID: string
-  environment: RelayModernEnvironment
+  environment: RelayModernEnvironment | MockEnvironment
 }> = ({ artistInternalID, environment }) => {
   return (
     <QueryRenderer<MarketStatsQuery>

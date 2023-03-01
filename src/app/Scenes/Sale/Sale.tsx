@@ -27,13 +27,14 @@ import { ProvideScreenTracking, Schema } from "app/utils/track"
 import _, { times } from "lodash"
 import { DateTime } from "luxon"
 import { Join } from "palette"
-import React, { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { Animated, FlatList, RefreshControl } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import useInterval from "react-use/lib/useInterval"
 import usePrevious from "react-use/lib/usePrevious"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { MockEnvironment } from "relay-test-utils"
 import { BuyNowArtworksRailContainer } from "./Components/BuyNowArtworksRail"
 import { NewBuyNowArtworksRailContainer } from "./Components/NewBuyNowArtworksRail"
 import { NewSaleLotsListContainer } from "./Components/NewSaleLotsList"
@@ -144,7 +145,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
   }
 
   const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 30 })
-  const viewableItemsChangedRef = React.useRef(({ viewableItems }: ViewableItems) => {
+  const viewableItemsChangedRef = useRef(({ viewableItems }: ViewableItems) => {
     const artworksItem = (viewableItems! ?? []).find((viewableItem: ViewToken) => {
       return viewableItem?.item?.key === "saleLotsList"
     })
@@ -461,7 +462,7 @@ const SaleScreenBelowNewQuery = graphql`
 
 export const SaleQueryRenderer: React.FC<{
   saleID: string
-  environment?: RelayModernEnvironment
+  environment?: RelayModernEnvironment | MockEnvironment
 }> = ({ saleID, environment }) => {
   const { trackEvent } = useTracking()
   const enableArtworksConnection = useFeatureFlag("AREnableArtworksConnectionForAuction")

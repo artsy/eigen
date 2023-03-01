@@ -32,7 +32,7 @@ jest.mock("app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/uploadFileT
 const getConvectionGeminiKeyMock = getConvectionGeminiKey as jest.Mock<any>
 const getGeminiCredentialsForEnvironmentMock = getGeminiCredentialsForEnvironment as jest.Mock<any>
 const uploadFileToS3Mock = uploadFileToS3 as jest.Mock<any>
-const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+const mockEnvironment = defaultEnvironment as unknown as ReturnType<typeof createMockEnvironment>
 
 describe("MyCollectionArtworkForm", () => {
   describe("Editing an artwork", () => {

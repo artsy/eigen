@@ -28,6 +28,7 @@ import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } fro
 import { TrackingProp } from "react-tracking"
 import usePrevious from "react-use/lib/usePrevious"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { RelayMockEnvironment } from "relay-test-utils/lib/RelayModernMockEnvironment"
 import { ArtworkStore, ArtworkStoreProvider } from "./ArtworkStore"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
@@ -350,6 +351,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
     if (shouldRenderOtherWorks()) {
       sections.push({
         key: "otherWorks",
+        // @ts-expect-error
         element: <OtherWorks artwork={artworkBelowTheFold} />,
       })
     }
@@ -599,7 +601,7 @@ export const ArtworkScreenQuery = graphql`
 export const ArtworkQueryRenderer: React.FC<{
   artworkID: string
   isVisible: boolean
-  environment?: RelayModernEnvironment
+  environment?: RelayModernEnvironment | RelayMockEnvironment
   tracking?: TrackingProp
 }> = ({ artworkID, environment, ...others }) => {
   return (

@@ -5,9 +5,10 @@ import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { isNull } from "lodash"
 import { graphql, QueryRenderer } from "react-relay"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { MockEnvironment } from "relay-test-utils"
 
 export interface SearchCriteriaQueryRendererProps {
-  environment?: RelayModernEnvironment
+  environment?: RelayModernEnvironment | MockEnvironment
   searchCriteriaId?: string
   render: {
     renderPlaceholder: () => React.ReactElement

@@ -10,12 +10,12 @@ import { renderWithWrappers as _renderWithWrappers } from "app/utils/tests/rende
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { ReactElement } from "react"
 import { RelayEnvironmentProvider } from "react-relay"
-import { RelayMockEnvironment } from "relay-test-utils"
+import { MockEnvironment } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { BottomTabs, FETCH_NOTIFICATIONS_INFO_INTERVAL } from "./BottomTabs"
 
 describe(BottomTabs, () => {
-  const mockEnvironment = bottomTabsRelayEnvironment as RelayMockEnvironment
+  const mockEnvironment = bottomTabsRelayEnvironment as unknown as MockEnvironment
 
   const renderWithWrappers = (component: ReactElement) => {
     return _renderWithWrappers(component, { skipRelay: true })
@@ -208,7 +208,7 @@ const navigationState: BottomTabBarProps["state"] = {
 }
 
 const resolveNotificationsInfoQuery = (
-  mockEnvironment: RelayMockEnvironment,
+  mockEnvironment: MockEnvironment,
   resolvers: MockResolvers
 ) => {
   expect(mockEnvironment.mock.getMostRecentOperation().request.node.operation.name).toBe(

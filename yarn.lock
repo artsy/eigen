@@ -5031,10 +5031,10 @@
   dependencies:
     "@types/react" "^17"
 
-"@types/react-relay@*", "@types/react-relay@11.0.3":
-  version "11.0.3"
-  resolved "https://registry.yarnpkg.com/@types/react-relay/-/react-relay-11.0.3.tgz#95097049203f2f814e1330453d037841a2a310e5"
-  integrity sha512-hgKmTCswmZclKOqju/3pcVgJG3FtNrwfLLq4wtpZuQ/UJAyVeQ90SS6GiGZBr6hDZmcxNMIQCNyJ0YK5eE9Ceg==
+"@types/react-relay@*", "@types/react-relay@14.1.3":
+  version "14.1.3"
+  resolved "https://registry.yarnpkg.com/@types/react-relay/-/react-relay-14.1.3.tgz#d8a64e816c255910be7c94170e20472cafe5a51f"
+  integrity sha512-tsu+3jN0zeOYKV485fwUy3yMEZWkDVzC2JG0tJgEH6p9tcPQkBAUoXqEZFwSBtHtNo1etfa1Eityg3fC55qDvQ==
   dependencies:
     "@types/react" "*"
     "@types/relay-runtime" "*"
@@ -5078,15 +5078,15 @@
     "@types/scheduler" "*"
     csstype "^3.0.2"
 
-"@types/relay-runtime@*", "@types/relay-runtime@12.0.1":
-  version "12.0.1"
-  resolved "https://registry.yarnpkg.com/@types/relay-runtime/-/relay-runtime-12.0.1.tgz#a25a9755f7925a202a7ec3a49857de46943ecf02"
-  integrity sha512-zYhQjy7FtTb6cgGuwBT09NLL308GIlo/tcnsfmZ095l/135TD8VladcOkowK/3o8jDAbQ2uLsMJ4No2tcxRenA==
+"@types/relay-runtime@*", "@types/relay-runtime@14.1.3":
+  version "14.1.3"
+  resolved "https://registry.yarnpkg.com/@types/relay-runtime/-/relay-runtime-14.1.3.tgz#7b0bf67d3392caef90548a14dcbd93a1b0c3f25e"
+  integrity sha512-8RUPQYwySOUZTqX29K6doeLyeJIACvJWqotqg3ssVFBGqnQgsWjlpo00I2PeHa0f6dwim95fAhKz7ehaA46/Yw==
 
-"@types/relay-test-utils@6.0.5":
-  version "6.0.5"
-  resolved "https://registry.yarnpkg.com/@types/relay-test-utils/-/relay-test-utils-6.0.5.tgz#f3d4f3f2f159653ca3b8cdb4b19b45abfc6082d4"
-  integrity sha512-V7lHtLCW3fAsvHVb3LvwcUP8p983D0fUdAESSbMSgtDx75/GUP54zjRlNGif+J9ds/mk35ZunXPVy9wF4Fv3DA==
+"@types/relay-test-utils@14.1.0":
+  version "14.1.0"
+  resolved "https://registry.yarnpkg.com/@types/relay-test-utils/-/relay-test-utils-14.1.0.tgz#6b0aa8b7491212dc35c84e335f1ee1ce612555df"
+  integrity sha512-qwt9JDaNFa3VNTYC5FKvDE38a3Blz8Pav95xvqhY2g2ECoz47G6oocVR6qySTNQ/1kp2rFvhGG4TtyThlQBh5A==
   dependencies:
     "@types/react" "*"
     "@types/react-relay" "*"
@@ -5565,19 +5565,6 @@ anymatch@^3.0.3, anymatch@~3.1.2:
   dependencies:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
-
-apollo-link@^1.2.3:
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/apollo-link/-/apollo-link-1.2.3.tgz#9bd8d5fe1d88d31dc91dae9ecc22474d451fb70d"
-  dependencies:
-    apollo-utilities "^1.0.0"
-    zen-observable-ts "^0.8.10"
-
-apollo-utilities@^1.0.0, apollo-utilities@^1.0.1:
-  version "1.0.25"
-  resolved "https://registry.yarnpkg.com/apollo-utilities/-/apollo-utilities-1.0.25.tgz#899b00f5f990fb451675adf84cb3de82eb6372ea"
-  dependencies:
-    fast-json-stable-stringify "^2.0.0"
 
 appdirsjs@^1.2.4:
   version "1.2.6"
@@ -7502,10 +7489,6 @@ depd@~1.1.2:
   resolved "https://registry.yarnpkg.com/depd/-/depd-1.1.2.tgz#9bcd52e14c097763e749b274c4346ed2e560b5a9"
   integrity sha1-m81S4UwJd2PnSbJ0xDRu0uVgtak=
 
-deprecated-decorator@^0.1.6:
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/deprecated-decorator/-/deprecated-decorator-0.1.6.tgz#00966317b7a12fe92f3cc831f7583af329b86c37"
-
 deprecation@^2.0.0, deprecation@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/deprecation/-/deprecation-2.3.1.tgz#6368cbdb40abf3373b525ac87e4a260c3a700919"
@@ -9321,16 +9304,6 @@ graphql-tag@^2.9.2:
   resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.10.1.tgz#10aa41f1cd8fae5373eaf11f1f67260a3cad5e02"
   integrity sha512-jApXqWBzNXQ8jYa/HLkZJaVw9jgwNqZkywa2zfFn16Iv1Zb7ELNHkJaXHR7Quvd5SIGsy6Ny7SUKATgnu05uEg==
 
-graphql-tools@^4.0.2:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/graphql-tools/-/graphql-tools-4.0.3.tgz#23b5cb52c519212b1b2e4630a361464396ad264b"
-  dependencies:
-    apollo-link "^1.2.3"
-    apollo-utilities "^1.0.1"
-    deprecated-decorator "^0.1.6"
-    iterall "^1.1.3"
-    uuid "^3.1.0"
-
 graphql@15.3.0:
   version "15.3.0"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.3.0.tgz#3ad2b0caab0d110e3be4a5a9b2aa281e362b5278"
@@ -10414,11 +10387,6 @@ isurl@^1.0.0-alpha5:
   dependencies:
     has-to-string-tag-x "^1.2.0"
     is-object "^1.0.1"
-
-iterall@^1.1.3:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/iterall/-/iterall-1.2.2.tgz#92d70deb8028e0c39ff3164fdbf4d8b088130cd7"
-  integrity sha512-yynBb1g+RFUPY64fTrFv7nsjRrENBQJaX2UL+2Szc9REFrSNm1rpSXHGzhmAy7a9uv3vlvgBlXnf9RqmPH1/DA==
 
 iterate-iterator@^1.0.1:
   version "1.0.1"
@@ -14151,16 +14119,16 @@ react-relay-network-modern@6.2.1:
     core-js "^3.0.0"
     extract-files "^9.0.0"
 
-react-relay@14.0.0:
-  version "14.0.0"
-  resolved "https://registry.yarnpkg.com/react-relay/-/react-relay-14.0.0.tgz#c9f9b8912bcef589782bea6a382548d55d20d522"
-  integrity sha512-zqT8ZS1lq24p1R8nW5Vi03oB1Ix8aYJxyuSl4bB8XDjSNL0kFuAdN8R5LrundUd3vuKjkV1UBfb1xuuoRroUhA==
+react-relay@14.1.0:
+  version "14.1.0"
+  resolved "https://registry.yarnpkg.com/react-relay/-/react-relay-14.1.0.tgz#2a2349d33ca6558543340a12b363ee2de3db06a6"
+  integrity sha512-U4oHb5wn1LEi17x3AcZOy66MXs83tnYbsK7/YE1/3cQKCPrXhyVUQbEOC9L7jMX659jtS1NACae+7b03bryMCQ==
   dependencies:
     "@babel/runtime" "^7.0.0"
     fbjs "^3.0.2"
     invariant "^2.2.4"
     nullthrows "^1.1.1"
-    relay-runtime "14.0.0"
+    relay-runtime "14.1.0"
 
 react-shallow-renderer@^16.13.1:
   version "16.14.1"
@@ -14545,38 +14513,31 @@ relay-config@12.0.1:
   dependencies:
     cosmiconfig "^5.0.5"
 
-"relay-devtools-core@github:janicduplessis/relay-devtools#relay-devtools-core-v1.2.1-gitpkg":
+relay-devtools-core@janicduplessis/relay-devtools#relay-devtools-core-v1.2.1-gitpkg:
   version "1.2.1"
   resolved "https://codeload.github.com/janicduplessis/relay-devtools/tar.gz/3175e77be3027d0a4ca8ae1d9f5a1ab278afa8dc"
   dependencies:
     shell-quote "^1.6.1"
     ws "^7"
 
-relay-mock-network-layer@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/relay-mock-network-layer/-/relay-mock-network-layer-3.0.0.tgz#cdc9f116f5afcf9e1ce4092d7dc4c925b1457a2e"
-  integrity sha512-gMgFvGaT1cSfI08pYKXFiuCuSxroCCDgdEq853xsaqIyjclq0myRmf2YmV0QwZ0t1ej9If1A973FC58ZZLtiYw==
-  dependencies:
-    graphql-tools "^4.0.2"
-
-relay-runtime@14.0.0:
-  version "14.0.0"
-  resolved "https://registry.yarnpkg.com/relay-runtime/-/relay-runtime-14.0.0.tgz#e2fa40d73569d2ba5810c773fb85ac872b08b5d0"
-  integrity sha512-Rnf6EgCl3QY85il/gTEh6GHAR9hoRkjYWgMR2Y3Afugb8qLR0vL6m/GBYqol8W3L8B+XqZ2U04/g624DRpEqAw==
+relay-runtime@14.1.0:
+  version "14.1.0"
+  resolved "https://registry.yarnpkg.com/relay-runtime/-/relay-runtime-14.1.0.tgz#44b317101f560a16caea2eef8a52e254b03908fa"
+  integrity sha512-t2DR2hZviHrdEQrOvFqwmvRWvZ0SjI/r4bS5f3qvMyXt4g1kw3RTb2RNVmbKGg6zEQhf7Na/brdqE4roApmclQ==
   dependencies:
     "@babel/runtime" "^7.0.0"
     fbjs "^3.0.2"
     invariant "^2.2.4"
 
-relay-test-utils@14.0.0:
-  version "14.0.0"
-  resolved "https://registry.yarnpkg.com/relay-test-utils/-/relay-test-utils-14.0.0.tgz#2f67e369810f5714652bd72c46238fb52f247420"
-  integrity sha512-jWklGWWTFx+ZxMIisle6+0eyGVYqnarKpGwpgCitwWhGLoqTRIy2ChmqTX4ZPKfU3fq4g6Vqb1CXyga1GrHHnQ==
+relay-test-utils@14.1.0:
+  version "14.1.0"
+  resolved "https://registry.yarnpkg.com/relay-test-utils/-/relay-test-utils-14.1.0.tgz#c61177fb101e883ded45dc8e25c5f5543d0fb7b4"
+  integrity sha512-4Ftqc+LnHyhqU2LNOtD/UEqqutFF9qJn+xqn+xfxgUGjU4X42vVhAN8KdG3q4KqE142EX0S8oPX5kA0FyFFiWg==
   dependencies:
     "@babel/runtime" "^7.0.0"
     fbjs "^3.0.2"
     invariant "^2.2.4"
-    relay-runtime "14.0.0"
+    relay-runtime "14.1.0"
 
 remove-markdown@0.5.0:
   version "0.5.0"
@@ -16518,7 +16479,7 @@ uuid-browser@^3.1.0:
   resolved "https://registry.yarnpkg.com/uuid-browser/-/uuid-browser-3.1.0.tgz#0f05a40aef74f9e5951e20efbf44b11871e56410"
   integrity sha1-DwWkCu90+eWVHiDvv0SxGHHlZBA=
 
-uuid@^3.1.0, uuid@^3.3.2:
+uuid@^3.3.2:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
@@ -17482,13 +17443,3 @@ yup@0.31.1:
     lodash-es "^4.17.11"
     property-expr "^2.0.4"
     toposort "^2.0.2"
-
-zen-observable-ts@^0.8.10:
-  version "0.8.10"
-  resolved "https://registry.yarnpkg.com/zen-observable-ts/-/zen-observable-ts-0.8.10.tgz#18e2ce1c89fe026e9621fd83cc05168228fce829"
-  dependencies:
-    zen-observable "^0.8.0"
-
-zen-observable@^0.8.0:
-  version "0.8.11"
-  resolved "https://registry.yarnpkg.com/zen-observable/-/zen-observable-0.8.11.tgz#d3415885eeeb42ee5abb9821c95bb518fcd6d199"

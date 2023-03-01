@@ -10,7 +10,7 @@ import { createMockEnvironment } from "relay-test-utils"
 import { EditSavedSearchAlertQueryRenderer } from "./EditSavedSearchAlert"
 
 describe("EditSavedSearchAlert", () => {
-  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+  const mockEnvironment = defaultEnvironment as unknown as ReturnType<typeof createMockEnvironment>
   const notificationPermissions = mockFetchNotificationPermissions(false)
 
   beforeEach(() => {
