@@ -7,6 +7,7 @@ export const OFFSET_X = 100
 
 interface FancySwiperProps {
   cards: Card[]
+  initialIndex: number
   onSwipeRight: (index: number) => void
   onSwipeLeft: (index: number) => void
   shouldRevertCard?: boolean
@@ -15,19 +16,17 @@ interface FancySwiperProps {
 
 export const FancySwiper = ({
   cards,
+  initialIndex,
   onSwipeRight,
   onSwipeLeft,
-  shouldRevertCard,
-  setShouldRevertCard,
 }: FancySwiperProps) => {
-  const [remainingCards, setRemainingCards] = useState(cards)
+  const cardsBasedOnInitialIndex =
+    initialIndex > 0 ? cards.slice(0, initialIndex - 1) : cards.slice(initialIndex)
+
+  // const [remainingCards, setRemainingCards] = useState(cards)
+  const [remainingCards, setRemainingCards] = useState(cardsBasedOnInitialIndex)
   // const [backUpCards, setBackUpCards] = useState<Card[]>([])
   const swiper = useRef<Animated.ValueXY>(new Animated.ValueXY()).current
-
-  console.log(
-    "remainingCards ",
-    remainingCards.map((c) => c.id)
-  )
 
   const removeCardFromTop = useCallback(
     (swipeDirection: "right" | "left", index: number) => {
@@ -38,9 +37,6 @@ export const FancySwiper = ({
       // setBackUpCards(newBackUpCards)
       // Revert the pan responder to its initial position
       swiper.setValue({ x: 0, y: 0 })
-
-      console.log("index ", index)
-      console.log("removed Card ", cards[index].id)
 
       if (swipeDirection === "right") {
         onSwipeRight(index)

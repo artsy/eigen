@@ -52,26 +52,23 @@ const ArtQuizArtworksScreen = () => {
     }
   }, [])
 
-  useEffect(() => {
-    if (activeCardIndex === artworks.length) {
+  const handleSwipe = (swipeDirection: "left" | "right", index: number) => {
+    const activeIndex = artworks.length - index
+    if (activeIndex < artworks.length) {
+      setActiveCardIndex(activeIndex)
+      handleNext(swipeDirection === "right" ? "Like" : "Dislike", activeIndex)
+    } else {
       navigate("/art-quiz/results", {
         passProps: {
           isCalculatingResult: true,
         },
       })
     }
-  }, [activeCardIndex])
-
-  const handleSwipe = (swipeDirection: "left" | "right", index: number) => {
-    handleNext(swipeDirection === "right" ? "Like" : "Dislike")
-    const activeIndex = artworks.length - index
-    setActiveCardIndex(activeIndex)
   }
 
-  const handleNext = (action: "Like" | "Dislike") => {
+  const handleNext = (action: "Like" | "Dislike", activeIndex: number) => {
     popoverMessage.hide()
-
-    const currentArtwork = artworks[activeCardIndex]
+    const currentArtwork = artworks[activeIndex - 1]
 
     if (action === "Like") {
       submitSave({
@@ -206,6 +203,7 @@ const ArtQuizArtworksScreen = () => {
         <Flex flex={1} py={2}>
           <FancySwiper
             cards={artworkCards}
+            initialIndex={activeCardIndex}
             onSwipeRight={(index) => handleSwipe("right", index)}
             onSwipeLeft={(index) => handleSwipe("left", index)}
             shouldRevertCard={shouldRevertCard}
