@@ -116,6 +116,7 @@ export const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> =
   ListFooterComponent = SpacerComponent,
   hideArtistName = false,
   recentlySoldArtworks,
+  showPartnerName = true,
 }) => {
   return (
     <PrefetchFlatList
@@ -141,8 +142,9 @@ export const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> =
           priceRealizedDisplay={item?.priceRealized?.display!}
           lowEstimateDisplay={item?.lowEstimate?.display!}
           highEstimateDisplay={item?.highEstimate?.display!}
+          performanceDisplay={item?.performance?.mid ?? undefined}
           size={size}
-          showPartnerName
+          showPartnerName={showPartnerName}
           isRecentlySoldArtwork
           hideArtistName={hideArtistName}
         />
