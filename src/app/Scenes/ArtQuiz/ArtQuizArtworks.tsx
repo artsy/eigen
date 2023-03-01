@@ -68,6 +68,7 @@ const ArtQuizArtworksScreen = () => {
 
   const handleNext = (action: "Like" | "Dislike", activeIndex: number) => {
     popoverMessage.hide()
+
     const currentArtwork = artworks[activeIndex - 1]
 
     if (action === "Like") {
@@ -211,8 +212,8 @@ const ArtQuizArtworksScreen = () => {
           />
         </Flex>
         <Flex flexDirection="row" justifyContent="space-around" mb={4} mx={4}>
-          <ArtQuizButton variant="Dislike" onPress={() => handleNext("Dislike")} />
-          <ArtQuizButton variant="Like" onPress={() => handleNext("Like")} />
+          <ArtQuizButton variant="Dislike" onPress={() => handleNext("Dislike", activeCardIndex)} />
+          <ArtQuizButton variant="Like" onPress={() => handleNext("Like", activeCardIndex)} />
         </Flex>
       </Screen.Body>
     </Screen>
