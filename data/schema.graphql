@@ -11143,6 +11143,14 @@ type Me implements Node {
     last: Int
     page: Int
   ): ArtworkConnection
+
+  # A list of artworks from galleries the user follows.
+  newWorksFromGalleriesYouFollowConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkConnection
   orders(
     after: String
     before: String
