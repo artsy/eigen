@@ -12,6 +12,7 @@ import { PageableScreensView } from "app/Components/PageableScreensView/Pageable
 import { ArtQuizArtworks } from "app/Scenes/ArtQuiz/ArtQuizArtworks"
 import { ArtQuizNavigation } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
 import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
+import { ArtworkRecommendationsScreen } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
 import {
   RecentlyViewedScreen,
   RecentlyViewedScreenQuery,
@@ -147,8 +148,8 @@ import { DevMenu } from "./utils/DevMenu"
 import { addTrackingProvider, Schema, screenTrack } from "./utils/track"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import {
-  SEGMENT_TRACKING_PROVIDER,
   SegmentTrackingProvider,
+  SEGMENT_TRACKING_PROVIDER,
 } from "./utils/track/SegmentTrackingProvider"
 
 LogBox.ignoreLogs([
@@ -394,6 +395,7 @@ export const modules = defineModules({
   ArtworkMedium: reactModule(ArtworkMediumQueryRenderer),
   ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer),
   ArtworkCertificateAuthenticity: reactModule(CertificateOfAuthenticity),
+  ArtworkRecommendations: reactModule(ArtworkRecommendationsScreen),
   Auction: reactModule(SaleQueryRenderer, { fullBleed: true }, [SaleScreenQuery]),
   Auctions: reactModule(SalesScreen, {}, [SalesScreenQuery]),
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
