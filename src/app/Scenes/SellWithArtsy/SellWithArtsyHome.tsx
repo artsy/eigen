@@ -9,6 +9,7 @@ import { Spacer, Flex, Join, Text } from "@artsy/palette-mobile"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { SellWithArtsyHome_me$data } from "__generated__/SellWithArtsyHome_me.graphql"
 import { SellWithArtsyHome_recentlySoldArtworksTypeConnection$data } from "__generated__/SellWithArtsyHome_recentlySoldArtworksTypeConnection.graphql"
+import { CollectorsNetwork } from "app/Scenes/SellWithArtsy/Components/CollectorsNetwork"
 import { GetInTouchBanner } from "app/Scenes/SellWithArtsy/Components/GetInTouchBanner"
 import { Highlights } from "app/Scenes/SellWithArtsy/Components/Highlights"
 import { MeetTheSpecialists } from "app/Scenes/SellWithArtsy/Components/MeetTheSpecialists"
@@ -114,6 +115,8 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
                 <MeetTheSpecialists onInquiryPress={handleInquiryPress} />
               </Join>
             )}
+            {enableNewSWALandingPage && <Spacer y={4} />}
+            {enableNewSWALandingPage && <CollectorsNetwork />}
             {enableNewSWALandingPage && <Spacer y={4} />}
             <SellWithArtsyRecentlySold recentlySoldArtworks={recentlySoldArtworks!} />
 
