@@ -74,7 +74,7 @@ export const Testimonials: React.FC = () => {
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         renderItem={({ item }) => {
           return (
-            <Flex width={width} pl={2} alignItems={isAPad ? "center" : "left"}>
+            <Flex width={width} pl={2} alignItems={isAPad ? "center" : undefined}>
               <Flex pr={1} mb={4}>
                 <Text variant="md">{`"${item.reviewText}"`}</Text>
               </Flex>
