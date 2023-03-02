@@ -1,4 +1,5 @@
 import { Flex, Spacer, Text, useColor } from "@artsy/palette-mobile"
+import { isPad } from "app/utils/hardware"
 import { useCallback, useRef, useState } from "react"
 import { FlatList, Image } from "react-native"
 import Animated, {
@@ -60,6 +61,8 @@ export const Testimonials: React.FC = () => {
 
   const color = useColor()
   const { width } = useScreenDimensions()
+  const isAPad = isPad()
+
   return (
     <Flex mt={1}>
       <FlatList
@@ -71,7 +74,7 @@ export const Testimonials: React.FC = () => {
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         renderItem={({ item }) => {
           return (
-            <Flex width={width} pl={2}>
+            <Flex width={width} pl={2} alignItems={isAPad ? "center" : "left"}>
               <Flex pr={1} mb={4}>
                 <Text variant="md">{`"${item.reviewText}"`}</Text>
               </Flex>
@@ -96,7 +99,7 @@ export const Testimonials: React.FC = () => {
           )
         }}
       />
-      <Flex mx={2} mt={2}>
+      <Flex mx={2} mt={2} alignItems={isAPad ? "center" : "left"}>
         <Indicator total={REVIEWS.length} currentIndex={currentIndex} />
       </Flex>
     </Flex>
@@ -120,6 +123,7 @@ const Indicator: React.FC<{ total: number; currentIndex: number }> = ({ total, c
 
 const Dot: React.FC<{ currentIndex: number; index: number }> = ({ currentIndex, index }) => {
   const color = useColor()
+  const SIZE = isPad() ? 10 : 7
   const activeColor = color("black60")
   const inactiveColor = color("black15")
 
@@ -139,10 +143,10 @@ const Dot: React.FC<{ currentIndex: number; index: number }> = ({ currentIndex, 
       accessibilityLabel="Testimonial Pagination Indicator"
       style={[
         {
-          marginHorizontal: 7 * 0.8,
-          borderRadius: 7 / 2,
-          width: 7,
-          height: 7,
+          marginHorizontal: SIZE * 0.8,
+          borderRadius: SIZE / 2,
+          width: SIZE,
+          height: SIZE,
         },
         animatedStyle,
       ]}
