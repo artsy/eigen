@@ -363,6 +363,9 @@ const artQuizScreenOptions = {
   hidesBottomTabs: true,
   hidesBackButton: true,
   fullBleed: true,
+  screenOptions: {
+    gestureEnabled: false,
+  },
 }
 
 export type AppModule = keyof typeof modules
@@ -378,7 +381,13 @@ export const modules = defineModules({
   AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkForm, { hidesBackButton: true }),
   ArtQuiz: reactModule(ArtQuiz, artQuizScreenOptions),
   ArtQuizArtworks: reactModule(ArtQuizArtworks, artQuizScreenOptions),
-  ArtQuizResults: reactModule(ArtQuizResults, { hidesBackButton: true, fullBleed: true }),
+  ArtQuizResults: reactModule(ArtQuizResults, {
+    hidesBackButton: true,
+    fullBleed: true,
+    screenOptions: {
+      gestureEnabled: false,
+    },
+  }),
   Articles: reactModule(ArticlesScreen, {}, [ArticlesScreenQuery]),
   Artist: reactModule(ArtistQueryRenderer, { hidesBackButton: true }, [ArtistScreenQuery]),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),
@@ -454,12 +463,8 @@ export const modules = defineModules({
   FullFeaturedArtistList: reactModule(CollectionFullFeaturedArtistListQueryRenderer),
   Gene: reactModule(GeneQueryRenderer),
   Tag: reactModule(TagQueryRenderer),
-  // Home: reactModule(HomeQueryRenderer),
   Home: reactModule(HomeContainer, {
     isRootViewForTabName: "home",
-    hidesBottomTabs: true,
-    hidesBackButton: true,
-    fullBleed: true,
   }),
   Inbox: reactModule(InboxQueryRenderer, { isRootViewForTabName: "inbox" }, [InboxScreenQuery]),
   Inquiry: reactModule(Inquiry, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),

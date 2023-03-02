@@ -70,6 +70,10 @@
                 <data android:scheme="http" />
                 <data android:pathPrefix="/about" />
                 <data android:pathPrefix="/activity" />
+                <data android:pathPrefix="/art-quiz" />
+                <!-- this might need to be removed breaks some things -->
+                <data android:pathPrefix="/art-quiz/artworks" />
+                <data android:pathPrefix="/art-quiz/results" />
                 <data android:pathPrefix="/artist-series" />
                 <data android:pathPrefix="/article" />
                 <data android:pathPrefix="/articles" />
