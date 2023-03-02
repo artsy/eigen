@@ -1,7 +1,12 @@
 import { tappedTabBar } from "@artsy/cohesion"
 import { useColor, Text } from "@artsy/palette-mobile"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { unsafe__getSelectedTab, useSelectedTab, useVisualClue } from "app/store/GlobalStore"
+import {
+  GlobalStore,
+  unsafe__getSelectedTab,
+  useSelectedTab,
+  useVisualClue,
+} from "app/store/GlobalStore"
 import { VisualClueName } from "app/store/config/visualClues"
 import { switchTab } from "app/system/navigation/navigate"
 import { PopIn } from "palette"
@@ -50,6 +55,7 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
   const tracking = useTracking()
 
   const onPress = () => {
+    GlobalStore.actions.auth.setArtQuizState("close")
     if (tab === unsafe__getSelectedTab()) {
       LegacyNativeModules.ARScreenPresenterModule.popToRootOrScrollToTop(tab)
     } else {

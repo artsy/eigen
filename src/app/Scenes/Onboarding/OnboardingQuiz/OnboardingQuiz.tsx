@@ -4,7 +4,6 @@ import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingQuiz/Hook
 import { GlobalStore } from "app/store/GlobalStore"
 import { OnboardingProvider } from "./Hooks/useOnboardingContext"
 import { useUpdateUserProfile } from "./Hooks/useUpdateUserProfile"
-import { OnboardingArtTasteQuiz } from "./OnboardingArtTasteQuiz"
 import { OnboardingArtistsOnTheRise } from "./OnboardingArtistsOnTheRise"
 import { OnboardingCuratedArtworks } from "./OnboardingCuratedArtworks"
 import { OnboardingFollowArtists } from "./OnboardingFollowArtists"
@@ -24,7 +23,6 @@ export type OnboardingNavigationStack = {
   OnboardingArtistsOnTheRise: undefined
   OnboardingCuratedArtworks: undefined
   OnboardingTopAuctionLots: undefined
-  OnboardingArtTasteQuiz: undefined
   OnboardingFollowArtists: undefined
   OnboardingFollowGalleries: undefined
   OnboardingPostFollowLoadingScreen: undefined
@@ -46,6 +44,7 @@ export const OnboardingQuiz = () => {
     commitMutation({
       completedOnboarding: true,
     })
+    GlobalStore.actions.auth.setArtQuizState("open")
   }
 
   return (
@@ -95,8 +94,6 @@ export const OnboardingQuiz = () => {
             name="OnboardingPostFollowLoadingScreen"
             component={OnboardingPostFollowLoadingScreen}
           />
-
-          <StackNavigator.Screen name="OnboardingArtTasteQuiz" component={OnboardingArtTasteQuiz} />
         </StackNavigator.Navigator>
       </NavigationContainer>
     </OnboardingProvider>

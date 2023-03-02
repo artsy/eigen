@@ -1,7 +1,5 @@
-import { NavigationContainer } from "@react-navigation/native"
-import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
+import { createStackNavigator } from "@react-navigation/stack"
 import { ArtQuizNavigationQuery } from "__generated__/ArtQuizNavigationQuery.graphql"
-import { ArtQuizArtworks } from "app/Scenes/ArtQuiz/ArtQuizArtworks"
 import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
 import { ArtQuizWelcome } from "app/Scenes/ArtQuiz/ArtQuizWelcome"
 import { navigate } from "app/system/navigation/navigate"
@@ -15,14 +13,9 @@ export type ArtQuizNavigationStack = {
 
 export const StackNavigator = createStackNavigator<ArtQuizNavigationStack>()
 
-const ArtQuiz: React.FC = () => {
+const ArtQuizScreen: React.FC = () => {
   const queryResult = useLazyLoadQuery<ArtQuizNavigationQuery>(artQuizNavigationQuery, {}).me?.quiz
-
   const isQuizCompleted = !!queryResult?.completedAt
-  const lastInteractedArtworkIndex = queryResult?.quizArtworkConnection?.edges?.findIndex(
-    (edge) => edge?.interactedAt === null
-  )
-  const isQuizStartedButIncomplete = !!lastInteractedArtworkIndex
 
   useEffect(() => {
     if (isQuizCompleted) {
@@ -30,31 +23,13 @@ const ArtQuiz: React.FC = () => {
     }
   }, [isQuizCompleted])
 
-  if (isQuizStartedButIncomplete) {
-    return <ArtQuizArtworks />
-  }
-
-  return (
-    <NavigationContainer independent>
-      <StackNavigator.Navigator
-        screenOptions={{
-          ...TransitionPresets.DefaultTransition,
-          headerShown: false,
-          headerMode: "screen",
-          gestureEnabled: false,
-        }}
-      >
-        <StackNavigator.Screen name="ArtQuizWelcome" component={ArtQuizWelcome} />
-        <StackNavigator.Screen name="ArtQuizArtworks" component={ArtQuizArtworks} />
-      </StackNavigator.Navigator>
-    </NavigationContainer>
-  )
+  return <ArtQuizWelcome />
 }
 
-export const ArtQuizNavigation = () => {
+export const ArtQuiz = () => {
   return (
     <Suspense fallback={<ArtQuizLoader />}>
-      <ArtQuiz />
+      <ArtQuizScreen />
     </Suspense>
   )
 }

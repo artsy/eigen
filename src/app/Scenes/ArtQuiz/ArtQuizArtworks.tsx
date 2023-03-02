@@ -1,5 +1,4 @@
 import { Touchable, Flex, Screen, Text, BackButton } from "@artsy/palette-mobile"
-import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { ArtQuizArtworksDislikeMutation } from "__generated__/ArtQuizArtworksDislikeMutation.graphql"
 import { ArtQuizArtworksQuery } from "__generated__/ArtQuizArtworksQuery.graphql"
 import { ArtQuizArtworksSaveMutation } from "__generated__/ArtQuizArtworksSaveMutation.graphql"
@@ -7,10 +6,8 @@ import { ArtQuizArtworksUpdateQuizMutation } from "__generated__/ArtQuizArtworks
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { ArtQuizButton } from "app/Scenes/ArtQuiz/ArtQuizButton"
 import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
-import { ArtQuizNavigationStack } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
-import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
 import { GlobalStore } from "app/store/GlobalStore"
-import { navigate as globalNavigate } from "app/system/navigation/navigate"
+import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Suspense, useEffect, useRef, useState } from "react"
 import { Image } from "react-native"
@@ -29,9 +26,6 @@ const ArtQuizArtworksScreen = () => {
   const [activeCardIndex, setActiveCardIndex] = useState(lastInteractedArtworkIndex ?? 0)
   const pagerViewRef = useRef<PagerView>(null)
   const popoverMessage = usePopoverMessage()
-
-  const { goBack } = useNavigation<NavigationProp<ArtQuizNavigationStack>>()
-  const { onDone } = useOnboardingContext()
 
   const [submitDislike] = useMutation<ArtQuizArtworksDislikeMutation>(DislikeArtworkMutation)
   const [submitSave] = useMutation<ArtQuizArtworksSaveMutation>(SaveArtworkMutation)
@@ -96,7 +90,7 @@ const ArtQuizArtworksScreen = () => {
     })
 
     if (activeCardIndex + 1 === artworks.length) {
-      globalNavigate("/art-quiz/results", {
+      navigate("/art-quiz/results", {
         passProps: {
           isCalculatingResult: true,
         },
@@ -150,9 +144,9 @@ const ArtQuizArtworksScreen = () => {
   }
 
   const handleOnSkip = () => {
-    onDone?.()
     popoverMessage.hide()
-    globalNavigate("/")
+    GlobalStore.actions.auth.setArtQuizState("close")
+    navigate("/")
   }
 
   return (

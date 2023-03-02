@@ -9,8 +9,8 @@ import {
 } from "app/Components/Containers/WorksForYou"
 import { FadeIn } from "app/Components/FadeIn"
 import { PageableScreensView } from "app/Components/PageableScreensView/PageableScreensView"
+import { ArtQuiz } from "app/Scenes/ArtQuiz/ArtQuiz"
 import { ArtQuizArtworks } from "app/Scenes/ArtQuiz/ArtQuizArtworks"
-import { ArtQuizNavigation } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
 import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
 import { ArtworkRecommendationsScreen } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
 import {
@@ -376,7 +376,7 @@ export const modules = defineModules({
   DevMenu: reactModule(DevMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   About: reactModule(About),
   AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkForm, { hidesBackButton: true }),
-  ArtQuiz: reactModule(ArtQuizNavigation, artQuizScreenOptions),
+  ArtQuiz: reactModule(ArtQuiz, artQuizScreenOptions),
   ArtQuizArtworks: reactModule(ArtQuizArtworks, artQuizScreenOptions),
   ArtQuizResults: reactModule(ArtQuizResults, { hidesBackButton: true, fullBleed: true }),
   Articles: reactModule(ArticlesScreen, {}, [ArticlesScreenQuery]),

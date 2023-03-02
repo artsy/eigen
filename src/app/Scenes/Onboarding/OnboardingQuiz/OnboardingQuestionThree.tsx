@@ -23,6 +23,7 @@ export const OnboardingQuestionThree = () => {
   const { navigate } = useNavigation()
   const {
     state: { questionTwo, questionThree },
+    onDone,
   } = useOnboardingContext()
   const nextScreen = useNextOnboardingScreen()
 
@@ -32,8 +33,12 @@ export const OnboardingQuestionThree = () => {
     if (!!questionThree) {
       trackAnsweredQuestionThree(questionThree)
     }
-    // @ts-expect-error
-    navigate(nextScreen!)
+    if (questionThree === OPTION_THE_ART_TASTE_QUIZ) {
+      onDone()
+    } else {
+      // @ts-expect-error
+      navigate(nextScreen!)
+    }
   }, [navigate, nextScreen, questionThree, trackAnsweredQuestionThree])
 
   const options = useMemo(() => {
