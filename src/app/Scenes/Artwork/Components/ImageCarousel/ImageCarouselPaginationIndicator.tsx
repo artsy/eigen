@@ -56,12 +56,13 @@ export const PaginationDot: React.FC<{ diameter: number; index: number }> = ({
 export const ScrollBar: React.FC = () => {
   const color = useColor()
   const { images, xScrollOffsetAnimatedValue } = useContext(ImageCarouselContext)
-  if (images.length < 2) {
-    return null
-  }
 
   const { width: screenWidth } = useScreenDimensions()
   const barWidth = screenWidth / images.length
+
+  if (images.length < 2) {
+    return null
+  }
 
   return (
     <>
