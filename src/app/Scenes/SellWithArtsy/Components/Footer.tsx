@@ -1,9 +1,9 @@
 import { TappedConsignArgs } from "@artsy/cohesion"
-import { Button, Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { isPad } from "app/utils/hardware"
-import { Separator } from "palette"
+import { Button, Separator } from "palette"
 import React from "react"
 
 export const Footer: React.FC<{
