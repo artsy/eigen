@@ -2004,6 +2004,17 @@ type Artwork implements Node & Searchable & Sellable {
   # Returns the display label and detail when artwork has a certificate of authenticity
   certificateOfAuthenticity: ArtworkInfoRow
   collectingInstitution: String
+  collectionsConnection(
+    after: String
+    before: String
+    default: Boolean
+    first: Int
+    last: Int
+    page: Int
+    saves: Boolean
+    size: Int
+    sort: CollectionSorts
+  ): CollectionsConnection
 
   # The location of the artwork in My Collection
   collectorLocation: MyLocation
@@ -11143,6 +11154,14 @@ type Me implements Node {
     last: Int
     page: Int
   ): ArtworkConnection
+
+  # A list of artworks from galleries the user follows.
+  newWorksFromGalleriesYouFollowConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkConnection
   orders(
     after: String
     before: String
@@ -11266,6 +11285,14 @@ type Me implements Node {
     # Filter shows by chronological event status
     status: EventStatus
   ): ShowConnection
+
+  # A list of artworks similar to recently viewed artworks.
+  similarToRecentlyViewedConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkConnection
   type: String
 
   # The count of conversations with unread messages.
