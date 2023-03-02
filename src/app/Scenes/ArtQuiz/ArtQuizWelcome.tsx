@@ -2,8 +2,12 @@ import { Spacer, Flex, Screen, Text, ArtsyLogoBlackIcon } from "@artsy/palette-m
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { Button } from "palette"
+import { useBackHandler } from "shared/hooks/useBackHandler"
 
 export const ArtQuizWelcome = () => {
+  // prevents Android users from going back with hardware button
+  useBackHandler(() => true)
+
   return (
     <Screen>
       <Screen.Body>

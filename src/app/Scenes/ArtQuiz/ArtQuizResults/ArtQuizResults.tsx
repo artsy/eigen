@@ -4,8 +4,12 @@ import { ArtQuizResultsEmptyTabs } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQu
 import { ArtQuizResultsTabs } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsTabs"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
+import { useBackHandler } from "shared/hooks/useBackHandler"
 
 const ResultsScreen = () => {
+  // prevents Android users from going back with hardware button
+  useBackHandler(() => true)
+
   const queryResult = useLazyLoadQuery<ArtQuizResultsQuery>(artQuizResultsQuery, {})
   const hasSavedArtworks = queryResult.me?.quiz.savedArtworks.length
 
