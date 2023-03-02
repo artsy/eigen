@@ -360,7 +360,6 @@ function defineModules<T extends string>(obj: Record<T, ModuleDescriptor>) {
 }
 
 const artQuizScreenOptions = {
-  hidesBottomTabs: true,
   hidesBackButton: true,
   fullBleed: true,
   screenOptions: {
@@ -379,15 +378,9 @@ export const modules = defineModules({
   DevMenu: reactModule(DevMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   About: reactModule(About),
   AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkForm, { hidesBackButton: true }),
-  ArtQuiz: reactModule(ArtQuiz, artQuizScreenOptions),
-  ArtQuizArtworks: reactModule(ArtQuizArtworks, artQuizScreenOptions),
-  ArtQuizResults: reactModule(ArtQuizResults, {
-    hidesBackButton: true,
-    fullBleed: true,
-    screenOptions: {
-      gestureEnabled: false,
-    },
-  }),
+  ArtQuiz: reactModule(ArtQuiz, { ...artQuizScreenOptions, hidesBottomTabs: true }),
+  ArtQuizArtworks: reactModule(ArtQuizArtworks, { ...artQuizScreenOptions, hidesBottomTabs: true }),
+  ArtQuizResults: reactModule(ArtQuizResults, artQuizScreenOptions),
   Articles: reactModule(ArticlesScreen, {}, [ArticlesScreenQuery]),
   Artist: reactModule(ArtistQueryRenderer, { hidesBackButton: true }, [ArtistScreenQuery]),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),
