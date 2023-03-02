@@ -194,7 +194,6 @@ export const DevMenu = ({ onClose = () => dismissModal() }: { onClose(): void })
           <FeatureFlagMenuItem
             title="Open Art Quiz"
             onPress={() => {
-              GlobalStore.actions.auth.setArtQuizState("open")
               dismissModal(() => navigate("/art-quiz"))
             }}
           />
