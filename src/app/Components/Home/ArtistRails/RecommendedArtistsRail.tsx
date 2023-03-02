@@ -80,7 +80,7 @@ export const RecommendedArtistsRail: React.FC<RecommendedArtistsRailProps & Rail
   }
 
   return (
-    <Flex>
+    <Flex backgroundColor="green">
       <Flex pl={2} pr={2}>
         <SectionTitle title={title} subtitle={subtitle} />
       </Flex>

@@ -109,7 +109,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         data: props.meBelow,
         isEmpty: !props.meBelow?.artworkRecommendationsCounts?.totalCount,
         title: "Artwork Recommendations",
-        type: "artworkRecommendations",
+        type: "artwork-recommendations",
       },
       {
         contextModule: ContextModule.recommendedArtistsRail,

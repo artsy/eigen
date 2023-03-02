@@ -225,7 +225,7 @@ const Home = memo((props: HomeProps) => {
               scrollRef={scrollRefs.current[index]}
             />
           )
-        case "artworkRecommendations":
+        case "artwork-recommendations":
           return (
             <ArtworkRecommendationsRail
               title={item.title}
