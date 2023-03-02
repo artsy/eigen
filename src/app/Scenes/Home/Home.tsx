@@ -231,7 +231,6 @@ const Home = memo((props: HomeProps) => {
               title={item.title}
               me={item.data || null}
               scrollRef={scrollRefs.current[index]}
-              mb={4}
             />
           )
         case "auction-results":
