@@ -5,7 +5,8 @@ import { ArtQuizArtworks } from "app/Scenes/ArtQuiz/ArtQuizArtworks"
 import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
 import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
 import { ArtQuizWelcome } from "app/Scenes/ArtQuiz/ArtQuizWelcome"
-import { Suspense } from "react"
+import { navigate } from "app/system/navigation/navigate"
+import { Suspense, useEffect } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 export type ArtQuizNavigationStack = {
@@ -20,9 +21,11 @@ const ArtQuiz: React.FC = () => {
   const queryResult = useLazyLoadQuery<ArtQuizNavigationQuery>(artQuizNavigationQuery, {}).me?.quiz
   const isQuizCompleted = !!queryResult?.completedAt
 
-  if (isQuizCompleted) {
-    return <ArtQuizResults />
-  }
+  useEffect(() => {
+    if (isQuizCompleted) {
+      navigate("/art-quiz/results")
+    }
+  }, [isQuizCompleted])
 
   return (
     <NavigationContainer independent>

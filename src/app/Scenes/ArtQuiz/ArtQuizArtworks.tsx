@@ -10,10 +10,10 @@ import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
 import { ArtQuizNavigationStack } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
 import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
 import { GlobalStore } from "app/store/GlobalStore"
+import { navigate as globalNavigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Suspense, useEffect, useRef, useState } from "react"
 import { Image } from "react-native"
-
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
 import { graphql, useLazyLoadQuery, useMutation } from "react-relay"
 
@@ -29,7 +29,7 @@ const ArtQuizArtworksScreen = () => {
   const pagerViewRef = useRef<PagerView>(null)
   const popoverMessage = usePopoverMessage()
 
-  const { goBack, navigate } = useNavigation<NavigationProp<ArtQuizNavigationStack>>()
+  const { goBack } = useNavigation<NavigationProp<ArtQuizNavigationStack>>()
   const { onDone } = useOnboardingContext()
 
   const [submitDislike] = useMutation<ArtQuizArtworksDislikeMutation>(DislikeArtworkMutation)
@@ -95,7 +95,11 @@ const ArtQuizArtworksScreen = () => {
     })
 
     if (activeCardIndex + 1 === artworks.length) {
-      navigate("ArtQuizResults")
+      globalNavigate("/art-quiz/results", {
+        passProps: {
+          isCalculatingResult: true,
+        },
+      })
     }
   }
 
@@ -146,6 +150,7 @@ const ArtQuizArtworksScreen = () => {
   const handleOnSkip = () => {
     onDone?.()
     popoverMessage.hide()
+    globalNavigate("/")
   }
 
   return (
