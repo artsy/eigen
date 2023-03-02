@@ -3,13 +3,13 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 
 export const HomeContainer = () => {
-  const artQuizState = GlobalStore.useAppState((state) => state.auth.artQuizState)
+  const artQuizState = GlobalStore.useAppState((state) => state.auth.onboardingArtQuizState)
 
   const navigateToArtQuiz = async () => {
     await navigate("/art-quiz")
   }
 
-  if (artQuizState === "open") {
+  if (artQuizState === "incomplete") {
     navigateToArtQuiz()
     return null
   }

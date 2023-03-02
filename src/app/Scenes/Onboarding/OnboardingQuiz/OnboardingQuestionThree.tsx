@@ -12,7 +12,7 @@ import {
   OPTION_TOP_AUCTION_LOTS,
   OPTION_THE_ART_TASTE_QUIZ,
 } from "app/Scenes/Onboarding/OnboardingQuiz/config"
-import { useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { useCallback, useMemo } from "react"
 import { OnboardingQuestionTemplate } from "./Components/OnboardingQuestionTemplate"
 import { useNextOnboardingScreen } from "./Hooks/useNextOnboardingScreen"
@@ -34,6 +34,7 @@ export const OnboardingQuestionThree = () => {
       trackAnsweredQuestionThree(questionThree)
     }
     if (questionThree === OPTION_THE_ART_TASTE_QUIZ) {
+      GlobalStore.actions.auth.setArtQuizState("incomplete")
       onDone()
     } else {
       // @ts-expect-error

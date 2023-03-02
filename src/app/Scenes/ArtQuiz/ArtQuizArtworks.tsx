@@ -145,7 +145,7 @@ const ArtQuizArtworksScreen = () => {
 
   const handleOnSkip = () => {
     popoverMessage.hide()
-    GlobalStore.actions.auth.setArtQuizState("close")
+    GlobalStore.actions.auth.setArtQuizState("complete")
     navigate("/")
   }
 

@@ -44,7 +44,6 @@ export const OnboardingQuiz = () => {
     commitMutation({
       completedOnboarding: true,
     })
-    GlobalStore.actions.auth.setArtQuizState("open")
   }
 
   return (

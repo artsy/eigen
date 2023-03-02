@@ -45,10 +45,10 @@ export const Versions = {
   RenameAdminToLocalOverridesForFeatures: 33,
   MoveEnvironmentToDevicePrefsAndRenameAdminToLocal: 34,
   AddCategoryToSubmissionArtworkDetails: 35,
-  AddArtQuizStateToAuthModel: 36,
+  AddOnboardingArtQuizStateToAuthModel: 36,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddArtQuizStateToAuthModel
+export const CURRENT_APP_VERSION = Versions.AddOnboardingArtQuizStateToAuthModel
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -268,8 +268,8 @@ export const artsyAppMigrations: Migrations = {
     state.artworkSubmission.submission.artworkDetails.category = null
     state.artworkSubmission.submission.dirtyArtworkDetailsValues.category = null
   },
-  [Versions.AddArtQuizStateToAuthModel]: (state) => {
-    state.auth.artQuizState = "none"
+  [Versions.AddOnboardingArtQuizStateToAuthModel]: (state) => {
+    state.auth.onboardingArtQuizState = "none"
   },
 }
 

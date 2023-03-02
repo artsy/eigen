@@ -31,7 +31,7 @@ export const ArtQuizWelcome = () => {
             block
             variant="text"
             onPress={() => {
-              GlobalStore.actions.auth.setArtQuizState("close")
+              GlobalStore.actions.auth.setArtQuizState("complete")
             }}
           >
             Skip
