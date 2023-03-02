@@ -1,9 +1,8 @@
-import { Spacer, Flex, Text, CloseIcon } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { ArtQuizResultsTabsHeaderTriggerCampaignMutation } from "__generated__/ArtQuizResultsTabsHeaderTriggerCampaignMutation.graphql"
 import { Toast } from "app/Components/Toast/Toast"
-import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
 import { unsafe_getUserEmail } from "app/store/GlobalStore"
-import { Button, Touchable } from "palette"
+import { Button } from "palette"
 import { graphql, useMutation } from "react-relay"
 
 interface ArtQuizResultsTabsHeaderProps {
@@ -12,7 +11,6 @@ interface ArtQuizResultsTabsHeaderProps {
 }
 
 export const ArtQuizResultsTabsHeader = ({ title, subtitle }: ArtQuizResultsTabsHeaderProps) => {
-  const { onDone } = useOnboardingContext()
   const currentUserEmail = unsafe_getUserEmail()
   const [submitMutation, isLoading] = useMutation<ArtQuizResultsTabsHeaderTriggerCampaignMutation>(
     TriggerCampaignButtonMutation
@@ -36,12 +34,7 @@ export const ArtQuizResultsTabsHeader = ({ title, subtitle }: ArtQuizResultsTabs
 
   return (
     <Flex px={2}>
-      <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
-        <Text variant="lg">{title}</Text>
-        <Touchable onPress={onDone}>
-          <CloseIcon />
-        </Touchable>
-      </Flex>
+      <Text variant="lg">{title}</Text>
       <Text variant="sm" color="black60">
         {subtitle}
       </Text>
