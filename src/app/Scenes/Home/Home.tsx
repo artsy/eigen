@@ -49,7 +49,6 @@ import {
 import { search2QueryDefaultVariables } from "app/Scenes/Search/Search2"
 import { ViewingRoomsHomeMainRail } from "app/Scenes/ViewingRoom/Components/ViewingRoomsHomeRail"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
-import { navigate } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
@@ -123,7 +122,6 @@ export interface HomeProps extends ViewProps {
 
 const Home = memo((props: HomeProps) => {
   const viewedRails = useRef<Set<string>>(new Set()).current
-  const artQuizState = GlobalStore.useAppState((state) => state.auth.artQuizState)
   useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
   const isESOnlySearchEnabled = useFeatureFlag("AREnableESOnlySearch")
   const prefetchUrl = usePrefetch()
@@ -145,12 +143,6 @@ const Home = memo((props: HomeProps) => {
     prefetchUrl("inbox")
     prefetchUrl("sales")
   }, [])
-
-  useEffect(() => {
-    if (artQuizState === "open") {
-      navigate("/art-quiz")
-    }
-  }, [artQuizState])
 
   const { loading, relay } = props
 

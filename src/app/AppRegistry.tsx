@@ -13,6 +13,7 @@ import { ArtQuiz } from "app/Scenes/ArtQuiz/ArtQuiz"
 import { ArtQuizArtworks } from "app/Scenes/ArtQuiz/ArtQuizArtworks"
 import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
 import { ArtworkRecommendationsScreen } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
+import { HomeContainer } from "app/Scenes/Home/HomeContainer"
 import {
   RecentlyViewedScreen,
   RecentlyViewedScreenQuery,
@@ -72,7 +73,6 @@ import { FairMoreInfoQueryRenderer } from "./Scenes/Fair/FairMoreInfo"
 import { Favorites } from "./Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer } from "./Scenes/Feature/Feature"
 import { GeneQueryRenderer } from "./Scenes/Gene/Gene"
-import { HomeQueryRenderer } from "./Scenes/Home/Home"
 import { MakeOfferModalQueryRenderer } from "./Scenes/Inbox/Components/Conversations/MakeOfferModal"
 import { PurchaseModalQueryRenderer } from "./Scenes/Inbox/Components/Conversations/PurchaseModal"
 import { ConversationNavigator } from "./Scenes/Inbox/ConversationNavigator"
@@ -454,7 +454,13 @@ export const modules = defineModules({
   FullFeaturedArtistList: reactModule(CollectionFullFeaturedArtistListQueryRenderer),
   Gene: reactModule(GeneQueryRenderer),
   Tag: reactModule(TagQueryRenderer),
-  Home: reactModule(HomeQueryRenderer, { isRootViewForTabName: "home" }),
+  // Home: reactModule(HomeQueryRenderer),
+  Home: reactModule(HomeContainer, {
+    isRootViewForTabName: "home",
+    hidesBottomTabs: true,
+    hidesBackButton: true,
+    fullBleed: true,
+  }),
   Inbox: reactModule(InboxQueryRenderer, { isRootViewForTabName: "inbox" }, [InboxScreenQuery]),
   Inquiry: reactModule(Inquiry, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   LiveAuction: reactModule(LiveAuctionView, {
