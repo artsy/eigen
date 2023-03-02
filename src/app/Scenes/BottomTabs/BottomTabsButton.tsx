@@ -36,7 +36,7 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
   const isActive = selectedTab === tab
   const timeout = useRef<ReturnType<typeof setTimeout>>()
   const [isBeingPressed, setIsBeingPressed] = useState(false)
-
+  const artQuizState = GlobalStore.useAppState((state) => state.auth.artQuizState)
   const showActiveState = isActive || isBeingPressed
 
   const activeProgress = useRef(new Animated.Value(showActiveState ? 1 : 0)).current
@@ -55,7 +55,9 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
   const tracking = useTracking()
 
   const onPress = () => {
-    GlobalStore.actions.auth.setArtQuizState("close")
+    if (artQuizState === "open") {
+      GlobalStore.actions.auth.setArtQuizState("close")
+    }
     if (tab === unsafe__getSelectedTab()) {
       LegacyNativeModules.ARScreenPresenterModule.popToRootOrScrollToTop(tab)
     } else {
