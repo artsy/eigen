@@ -99,7 +99,7 @@ export const Testimonials: React.FC = () => {
           )
         }}
       />
-      <Flex mx={2} mt={2} alignItems={isAPad ? "center" : "left"}>
+      <Flex mx={2} mt={2} alignItems={isAPad ? "center" : undefined}>
         <Indicator total={REVIEWS.length} currentIndex={currentIndex} />
       </Flex>
     </Flex>
