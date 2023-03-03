@@ -172,8 +172,9 @@ const ArtQuizArtworksScreen = () => {
             resizeMode="contain"
           />
           <Text>
-            INDEX :: {index} :: {artwork.internalID}
+            INDEX :: {activeCardIndex} :: {artwork.internalID}
           </Text>
+          <Text>Array INDEX :: {index}</Text>
         </Flex>
       ),
       id: artwork.internalID,
