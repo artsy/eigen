@@ -32,6 +32,8 @@ export function getViewAllUrl(rail: ArtworkModuleRail_rail$data) {
     case "current_fairs":
     case "live_auctions":
       return context?.href
+    case "similar_to_recently_viewed":
+      return "/similar-to-recently-viewed"
   }
 }
 
