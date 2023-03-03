@@ -11,7 +11,6 @@ import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Suspense, useEffect, useRef, useState } from "react"
 import { Image } from "react-native"
-
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
 import { graphql, useLazyLoadQuery, useMutation } from "react-relay"
 
@@ -36,7 +35,7 @@ const ArtQuizArtworksScreen = () => {
       title: `Like it? Hit the heart.${"\n"}Not for you? Choose X.`,
       placement: "bottom",
       withPointer: "bottom",
-      style: { width: "70%", marginBottom: 100, left: 55 },
+      style: { width: "70%", marginBottom: 70, left: 55 },
     })
     if (activeCardIndex !== 0) {
       popoverMessage.hide()
@@ -95,7 +94,6 @@ const ArtQuizArtworksScreen = () => {
           isCalculatingResult: true,
         },
       })
-      return
     }
   }
 
@@ -166,7 +164,7 @@ const ArtQuizArtworksScreen = () => {
           <Touchable haptic="impactLight" onPress={handleOnSkip}>
             <Flex height="100%" justifyContent="center">
               <Text textAlign="right" variant="xs">
-                Skip
+                Close
               </Text>
             </Flex>
           </Touchable>
@@ -178,6 +176,7 @@ const ArtQuizArtworksScreen = () => {
             ref={pagerViewRef}
             style={{ flex: 1 }}
             initialPage={activeCardIndex}
+            scrollEnabled={false}
             onPageScroll={handleIndexChange}
             overdrag
           >
@@ -185,7 +184,7 @@ const ArtQuizArtworksScreen = () => {
               return (
                 <Flex key={artwork.internalID}>
                   <Image
-                    source={{ uri: artwork.imageUrl! }}
+                    source={{ uri: artwork.image?.resized?.src }}
                     style={{ flex: 1 }}
                     resizeMode="contain"
                   />
@@ -194,7 +193,7 @@ const ArtQuizArtworksScreen = () => {
             })}
           </PagerView>
         </Flex>
-        <Flex flexDirection="row" justifyContent="space-around" mb={6} mx={4}>
+        <Flex flexDirection="row" justifyContent="space-around" mb={4} mx={4}>
           <ArtQuizButton variant="Dislike" onPress={() => handleNext("Dislike")} />
           <ArtQuizButton variant="Like" onPress={() => handleNext("Like")} />
         </Flex>
@@ -221,7 +220,11 @@ const artQuizArtworksQuery = graphql`
             position
             node {
               internalID
-              imageUrl
+              image {
+                resized(width: 900, height: 900, version: ["normalized", "larger", "large"]) {
+                  src
+                }
+              }
               isDisliked
               isSaved
             }
