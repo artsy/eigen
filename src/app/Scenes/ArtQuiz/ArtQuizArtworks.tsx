@@ -160,7 +160,7 @@ const ArtQuizArtworksScreen = () => {
     navigate("/")
   }
 
-  const artworkCards: Card[] = artworks.slice(activeCardIndex).map((artwork, index) => {
+  const artworkCards: Card[] = artworks.slice(activeCardIndex).map((artwork) => {
     return {
       jsx: (
         <Flex width={width - space(4)} height={500} backgroundColor="white">
