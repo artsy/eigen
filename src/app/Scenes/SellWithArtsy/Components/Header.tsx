@@ -9,31 +9,22 @@ import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Button } from "palette"
 import { Image, ImageBackground } from "react-native"
-import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
-
-const consignArgs: TappedConsignArgs = {
-  contextModule: ContextModule.sellHeader,
-  contextScreenOwnerType: OwnerType.sell,
-  subject: "Submit a work",
-}
 
 interface HeaderProps {
   onConsignPress: (tappedConsignArgs: TappedConsignArgs) => void
-  onInquiryPress: () => void
+  onInquiryPress: (inquiryTrackingArgs?: TappedConsignmentInquiry) => void
 }
 
 export const Header: React.FC<HeaderProps> = ({ onConsignPress, onInquiryPress }) => {
   const enableNewSWALandingPage = useFeatureFlag("AREnableNewSWALandingPage")
 
-  const { trackEvent } = useTracking()
-  const handleSubmitPress = () => {
-    onConsignPress(consignArgs)
+  const handleSubmitPress = (subject: string) => {
+    onConsignPress(tracks.consignArgs(subject))
   }
 
   const handleInquiryPress = () => {
-    trackEvent(tracks.consignmentInquiryTapped())
-    onInquiryPress()
+    onInquiryPress(tracks.consignmentInquiryTapped())
   }
 
   return enableNewSWALandingPage ? (
@@ -43,13 +34,15 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress, onInquiryPress }
   )
 }
 
-const OldHeader: React.FC<{ handleInquiryPress: () => void; handleSubmitPress: () => void }> = ({
-  handleInquiryPress,
-  handleSubmitPress,
-}) => {
+const OldHeader: React.FC<{
+  handleInquiryPress: () => void
+  handleSubmitPress: (subject: string) => void
+}> = ({ handleInquiryPress, handleSubmitPress }) => {
   const screenDimensions = useScreenDimensions()
 
   const enableInquiry = useFeatureFlag("AREnableConsignmentInquiry")
+
+  const buttonText = "Submit an Artwork"
   return (
     <ImageBackground
       style={{ height: 430, width: screenDimensions.width }}
@@ -72,9 +65,17 @@ const OldHeader: React.FC<{ handleInquiryPress: () => void; handleSubmitPress: (
 
         <Spacer y={2} />
 
-        <Button testID="header-cta" variant="fillLight" block onPress={handleSubmitPress} haptic>
+        <Button
+          testID="header-cta"
+          variant="fillLight"
+          block
+          onPress={() => {
+            handleSubmitPress(buttonText)
+          }}
+          haptic
+        >
           <Text variant="sm" weight="medium">
-            Submit an Artwork
+            {buttonText}
           </Text>
         </Button>
 
@@ -103,10 +104,11 @@ const OldHeader: React.FC<{ handleInquiryPress: () => void; handleSubmitPress: (
   )
 }
 
-const NewHeader: React.FC<{ handleInquiryPress: () => void; handleSubmitPress: () => void }> = ({
-  handleInquiryPress,
-  handleSubmitPress,
-}) => {
+const NewHeader: React.FC<{
+  handleInquiryPress: () => void
+  handleSubmitPress: (subject: string) => void
+}> = ({ handleInquiryPress, handleSubmitPress }) => {
+  const buttonText = "Start Selling"
   return (
     <>
       <Image
@@ -124,10 +126,24 @@ const NewHeader: React.FC<{ handleInquiryPress: () => void; handleSubmitPress: (
           for your work.
         </Text>
         <Flex justifyContent="center" alignItems="center">
-          <Button block onPress={handleSubmitPress} my={1} variant="fillDark">
-            Start Selling
+          <Button
+            testID="Header-consign-CTA"
+            block
+            onPress={() => {
+              handleSubmitPress(buttonText)
+            }}
+            my={1}
+            variant="fillDark"
+          >
+            {buttonText}
           </Button>
-          <Button block onPress={handleInquiryPress} my={1} variant="outline">
+          <Button
+            testID="Header-inquiry-CTA"
+            block
+            onPress={handleInquiryPress}
+            my={1}
+            variant="outline"
+          >
             Get in Touch
           </Button>
         </Flex>
@@ -137,6 +153,11 @@ const NewHeader: React.FC<{ handleInquiryPress: () => void; handleSubmitPress: (
 }
 
 const tracks = {
+  consignArgs: (subject: string): TappedConsignArgs => ({
+    contextModule: ContextModule.sellHeader,
+    contextScreenOwnerType: OwnerType.sell,
+    subject,
+  }),
   consignmentInquiryTapped: (): TappedConsignmentInquiry => ({
     action: ActionType.tappedConsignmentInquiry,
     context_module: ContextModule.sellHeader,
