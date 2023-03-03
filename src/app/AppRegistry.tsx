@@ -151,6 +151,7 @@ import {
   SegmentTrackingProvider,
   SEGMENT_TRACKING_PROVIDER,
 } from "./utils/track/SegmentTrackingProvider"
+import { NewWorksFromGalleriesYouFollowScreen } from "app/Scenes/NewWorksFromGalleriesYouFollow/NewWorksFromGalleriesYouFollow"
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
@@ -506,6 +507,7 @@ export const modules = defineModules({
     hidesBackButton: true,
   }),
   MyProfilePushNotifications: reactModule(MyProfilePushNotificationsQueryRenderer),
+  NewWorksFromGalleriesYouFollow: reactModule(NewWorksFromGalleriesYouFollowScreen),
   DarkModeSettings: reactModule(DarkModeSettings),
   MySellingProfile: reactModule(View),
   Partner: reactModule(PartnerQueryRenderer),

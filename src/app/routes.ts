@@ -251,6 +251,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/lots-by-artists-you-follow", "LotsByArtistsYouFollow"),
     addRoute("/works-for-you", "WorksForYou"),
     addRoute("/new-for-you", "NewWorksForYou"),
+    addRoute("/new-works-from-galleries-you-follow", "NewWorksFromGalleriesYouFollow"),
     addRoute("/reverse-image", "ReverseImage"),
     addWebViewRoute("/categories"),
     addWebViewRoute("/privacy"),
