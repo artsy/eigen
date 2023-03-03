@@ -71,7 +71,7 @@ describe("New SellWithArtsyLandingPage", () => {
 
     beforeEach(() => {
       mockEnvironment = createMockEnvironment()
-      __globalStoreTestUtils__.injectFeatureFlags({ AREnableNewSWALandingPage: true })
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewSWALandingPage: true })
     })
 
     const TestWrapper = () => {
