@@ -11,7 +11,7 @@ export const HomeContainer = () => {
     await navigate("/art-quiz")
   }
 
-  if (artQuizState === "incomplete" && shouldShowArtQuiz) {
+  if (shouldShowArtQuiz && artQuizState === "incomplete") {
     navigateToArtQuiz()
     return null
   }
