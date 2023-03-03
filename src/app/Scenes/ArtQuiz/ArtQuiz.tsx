@@ -1,5 +1,7 @@
-import { createStackNavigator } from "@react-navigation/stack"
+import { NavigationContainer } from "@react-navigation/native"
+import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 import { ArtQuizNavigationQuery } from "__generated__/ArtQuizNavigationQuery.graphql"
+import { ArtQuizArtworks } from "app/Scenes/ArtQuiz/ArtQuizArtworks"
 import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
 import { ArtQuizWelcome } from "app/Scenes/ArtQuiz/ArtQuizWelcome"
 import { navigate } from "app/system/navigation/navigate"
@@ -23,7 +25,21 @@ const ArtQuizScreen: React.FC = () => {
     }
   }, [isQuizCompleted])
 
-  return <ArtQuizWelcome />
+  return (
+    <NavigationContainer independent>
+      <StackNavigator.Navigator
+        screenOptions={{
+          ...TransitionPresets.DefaultTransition,
+          headerShown: false,
+          headerMode: "screen",
+          gestureEnabled: false,
+        }}
+      >
+        <StackNavigator.Screen name="ArtQuizWelcome" component={ArtQuizWelcome} />
+        <StackNavigator.Screen name="ArtQuizArtworks" component={ArtQuizArtworks} />
+      </StackNavigator.Navigator>
+    </NavigationContainer>
+  )
 }
 
 export const ArtQuiz = () => {
