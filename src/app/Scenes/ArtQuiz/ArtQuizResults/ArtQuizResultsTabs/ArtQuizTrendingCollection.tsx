@@ -32,8 +32,8 @@ export const ArtQuizTrendingCollection = ({
           maxChars={textLimit}
           textStyle="new"
           color="black60"
-          textVariant="md"
-          linkTextVariant="md"
+          textVariant="sm"
+          linkTextVariant="sm"
         />
       </Flex>
       <Spacer y={1} />
