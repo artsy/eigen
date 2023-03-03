@@ -33,7 +33,6 @@ const ArtQuizArtworksScreen = () => {
     (edge) => edge?.interactedAt === null
   )
   const [activeCardIndex, setActiveCardIndex] = useState(lastInteractedArtworkIndex ?? 0)
-  const [shouldRevertCard, setShouldRevertCard] = useState(false)
   const popoverMessage = usePopoverMessage()
 
   const [submitDislike] = useMutation<ArtQuizArtworksDislikeMutation>(DislikeArtworkMutation)
@@ -52,10 +51,10 @@ const ArtQuizArtworksScreen = () => {
     }
   }, [])
 
-  const handleSwipe = (swipeDirection: "left" | "right", index: number) => {
-    const activeIndex = artworks.length - index
-    if (activeIndex < artworks.length) {
-      setActiveCardIndex(activeIndex)
+  const handleSwipe = (swipeDirection: "left" | "right", activeIndex: number) => {
+    console.log("Swipe direction :: ", swipeDirection, activeIndex)
+    if (activeIndex + 1 > artworks.length) {
+      setActiveCardIndex(activeIndex + 1)
       handleNext(swipeDirection === "right" ? "Like" : "Dislike", activeIndex)
     } else {
       navigate("/art-quiz/results", {
@@ -69,9 +68,10 @@ const ArtQuizArtworksScreen = () => {
   const handleNext = (action: "Like" | "Dislike", activeIndex: number) => {
     popoverMessage.hide()
 
-    const currentArtwork = artworks[activeIndex - 1]
+    const currentArtwork = artworks[activeIndex]
 
     if (action === "Like") {
+      console.log("Liked :: ", currentArtwork.internalID)
       submitSave({
         variables: {
           input: {
@@ -82,6 +82,7 @@ const ArtQuizArtworksScreen = () => {
     }
 
     if (action === "Dislike") {
+      console.log("Disked :: ", currentArtwork.internalID)
       submitDislike({
         variables: {
           input: {
@@ -115,7 +116,6 @@ const ArtQuizArtworksScreen = () => {
     if (activeCardIndex === 0) {
       goBack()
     } else {
-      setShouldRevertCard(true)
       const previousArtwork = artworks[activeCardIndex - 1]
 
       setActiveCardIndex(activeCardIndex - 1)
@@ -162,7 +162,7 @@ const ArtQuizArtworksScreen = () => {
     navigate("/")
   }
 
-  const artworkCards: Card[] = artworks.reverse().map((artwork) => {
+  const artworkCards: Card[] = artworks.slice(activeCardIndex).map((artwork, index) => {
     return {
       jsx: (
         <Flex width={width - space(4)} height={500} backgroundColor="white">
@@ -171,6 +171,9 @@ const ArtQuizArtworksScreen = () => {
             style={{ flex: 1 }}
             resizeMode="contain"
           />
+          <Text>
+            INDEX :: {index} :: {artwork.internalID}
+          </Text>
         </Flex>
       ),
       id: artwork.internalID,
@@ -204,11 +207,9 @@ const ArtQuizArtworksScreen = () => {
         <Flex flex={1} py={2}>
           <FancySwiper
             cards={artworkCards}
-            initialIndex={activeCardIndex}
+            activeIndex={activeCardIndex}
             onSwipeRight={(index) => handleSwipe("right", index)}
             onSwipeLeft={(index) => handleSwipe("left", index)}
-            shouldRevertCard={shouldRevertCard}
-            setShouldRevertCard={() => setShouldRevertCard(false)}
           />
         </Flex>
         <Flex flexDirection="row" justifyContent="space-around" mb={4} mx={4}>

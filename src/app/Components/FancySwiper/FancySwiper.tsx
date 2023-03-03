@@ -1,5 +1,5 @@
 import { Flex } from "@artsy/palette-mobile"
-import { useState, useRef, useCallback } from "react"
+import { useRef, useCallback } from "react"
 import { PanResponder, Animated } from "react-native"
 import { Card, FancySwiperCard } from "./FancySwiperCard"
 
@@ -7,57 +7,33 @@ export const OFFSET_X = 100
 
 interface FancySwiperProps {
   cards: Card[]
-  initialIndex: number
+  activeIndex: number
   onSwipeRight: (index: number) => void
   onSwipeLeft: (index: number) => void
-  shouldRevertCard?: boolean
-  setShouldRevertCard?: (s: boolean) => void
 }
 
 export const FancySwiper = ({
   cards,
-  initialIndex,
+  activeIndex,
   onSwipeRight,
   onSwipeLeft,
 }: FancySwiperProps) => {
-  const cardsBasedOnInitialIndex =
-    initialIndex > 0 ? cards.slice(0, initialIndex - 1) : cards.slice(initialIndex)
-
-  // const [remainingCards, setRemainingCards] = useState(cards)
-  const [remainingCards, setRemainingCards] = useState(cardsBasedOnInitialIndex)
-  // const [backUpCards, setBackUpCards] = useState<Card[]>([])
+  const remainingCards = cards.reverse()
   const swiper = useRef<Animated.ValueXY>(new Animated.ValueXY()).current
 
   const removeCardFromTop = useCallback(
-    (swipeDirection: "right" | "left", index: number) => {
-      // const topCard = remainingCards.slice(-1)[0]
-      const newRemainingCards = remainingCards.slice(0, -1)
-      // const newBackUpCards = backUpCards.concat(topCard)
-      setRemainingCards(newRemainingCards)
-      // setBackUpCards(newBackUpCards)
+    (swipeDirection: "right" | "left") => {
       // Revert the pan responder to its initial position
       swiper.setValue({ x: 0, y: 0 })
 
       if (swipeDirection === "right") {
-        onSwipeRight(index)
+        onSwipeRight(activeIndex)
       } else {
-        onSwipeLeft(index)
+        onSwipeLeft(activeIndex)
       }
     },
-    [remainingCards, swiper]
+    [remainingCards, activeIndex, swiper]
   )
-
-  // const bringBackCardOnTop = useCallback(() => {
-  //   if (backUpCards.length) {
-  //     const lastCard = backUpCards.slice(-1)[0]
-  //     const newBackUpCards = backUpCards.slice(0, -1)
-  //     const newRemainingCards = remainingCards.concat(lastCard)
-  //     setBackUpCards(newBackUpCards)
-  //     setRemainingCardsCards(newRemainingCards)
-  //     swiper.setValue({ x: 0, y: 0 })
-  //     setShouldRevertCard?.(false)
-  //   }
-  // }, [remainingCards, backUpCards, swiper])
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
@@ -81,7 +57,7 @@ export const FancySwiper = ({
           toValue: { x: 1000 * sign, y: dy },
           useNativeDriver: true,
         }).start(() => {
-          removeCardFromTop(swipeDirection, remainingCards.length - 1)
+          removeCardFromTop(swipeDirection)
         })
       }
     },
