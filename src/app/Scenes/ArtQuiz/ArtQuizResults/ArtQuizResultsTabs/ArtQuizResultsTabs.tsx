@@ -1,4 +1,3 @@
-import { Screen } from "@artsy/palette-mobile"
 import { ArtQuizResultsQuery$data } from "__generated__/ArtQuizResultsQuery.graphql"
 import { ArtQuizResultsTabs_me$key } from "__generated__/ArtQuizResultsTabs_me.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
@@ -7,6 +6,7 @@ import { ArtQuizExploreArtworks } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQui
 import { ArtQuizLikedArtworks } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizLikedArtworks"
 import { ArtQuizResultsTabsHeader } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsTabsHeader"
 import { compact } from "lodash"
+import { Screen } from "palette"
 import { graphql, useFragment } from "react-relay"
 
 enum Tab {
@@ -23,7 +23,7 @@ export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] 
 
   return (
     <Screen>
-      <Screen.Body fullwidth>
+      <Screen.Body fullwidth noBottomSafe>
         <StickyTabPage
           disableBackButtonUpdate
           tabs={compact([
