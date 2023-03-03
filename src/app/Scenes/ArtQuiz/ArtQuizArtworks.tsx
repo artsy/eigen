@@ -182,6 +182,7 @@ const ArtQuizArtworksScreen = () => {
             ref={pagerViewRef}
             style={{ flex: 1 }}
             initialPage={activeCardIndex}
+            scrollEnabled={false}
             onPageScroll={handleIndexChange}
             overdrag
           >
