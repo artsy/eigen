@@ -71,7 +71,6 @@ const ArtQuizArtworksScreen = () => {
     const currentArtwork = artworks[activeIndex]
 
     if (action === "Like") {
-      console.log("Liked :: ", currentArtwork.internalID)
       submitSave({
         variables: {
           input: {
@@ -82,7 +81,6 @@ const ArtQuizArtworksScreen = () => {
     }
 
     if (action === "Dislike") {
-      console.log("Disked :: ", currentArtwork.internalID)
       submitDislike({
         variables: {
           input: {
@@ -171,10 +169,6 @@ const ArtQuizArtworksScreen = () => {
             style={{ flex: 1 }}
             resizeMode="contain"
           />
-          <Text>
-            INDEX :: {activeCardIndex} :: {artwork.internalID}
-          </Text>
-          <Text>Array INDEX :: {index}</Text>
         </Flex>
       ),
       id: artwork.internalID,
