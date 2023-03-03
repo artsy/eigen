@@ -208,6 +208,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     ),
 
     addRoute("/art-quiz", "ArtQuiz"),
+    addRoute("/art-quiz/artworks", "ArtQuiz"),
     addRoute("/art-quiz/results", "ArtQuizResults"),
 
     // TODO: Follow-up about below route names

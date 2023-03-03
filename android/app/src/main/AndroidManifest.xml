@@ -71,6 +71,7 @@
                 <data android:pathPrefix="/about" />
                 <data android:pathPrefix="/activity" />
                 <data android:pathPrefix="/art-quiz" />
+                <data android:pathPrefix="/art-quiz/artworks" />
                 <data android:pathPrefix="/art-quiz/results" />
                 <data android:pathPrefix="/artist-series" />
                 <data android:pathPrefix="/article" />
