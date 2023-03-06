@@ -5749,6 +5749,9 @@ type ConsignmentInquiry {
   # Phone number of the inquirer
   phoneNumber: String
 
+  # An optional email from a member of the Collector Services team to whom the request was sent
+  recipientEmail: String
+
   # gravity user id if user is logged in
   userId: String
 }
@@ -7092,6 +7095,7 @@ input CreateConsignmentInquiryMutationInput {
   message: String!
   name: String!
   phoneNumber: String
+  recipientEmail: String
   userId: String
 }
 
