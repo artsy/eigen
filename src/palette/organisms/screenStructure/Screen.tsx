@@ -151,13 +151,15 @@ const SCREEN_HORIZONTAL_PADDING: SpacingUnitDSValueNumber = 2
 interface BodyProps extends Pick<FlexProps, "backgroundColor"> {
   children?: React.ReactNode
   scroll?: boolean
-  nosafe?: boolean
+  noTopSafe?: boolean
+  noBottomSafe?: boolean
   fullwidth?: boolean
 }
 
 const Body = ({
   scroll = false,
-  nosafe = false,
+  noTopSafe = false,
+  noBottomSafe = false,
   fullwidth = false,
   children,
   ...restFlexProps
@@ -166,8 +168,8 @@ const Body = ({
   const bottomView = getChildrenByType(children, Screen.BottomView)
   const { options } = useScreenContext()
   const insets = useSafeAreaInsets()
-  const withTopSafeArea = options.handleTopSafeArea && !nosafe
-  const withBottomSafeArea = !nosafe
+  const withTopSafeArea = options.handleTopSafeArea && !noTopSafe
+  const withBottomSafeArea = !noBottomSafe
 
   return (
     <>

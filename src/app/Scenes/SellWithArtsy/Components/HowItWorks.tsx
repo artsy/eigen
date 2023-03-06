@@ -1,4 +1,4 @@
-import { TappedConsignArgs } from "@artsy/cohesion"
+import { ContextModule, OwnerType, TappedConsignArgs } from "@artsy/cohesion"
 import { Spacer, ImageIcon, Tag2Icon, Payment2Icon, Box, Flex, Text } from "@artsy/palette-mobile"
 import { StepWithImage } from "app/Components/StepWithImage/StepWithImage"
 import { useFeatureFlag } from "app/store/GlobalStore"
@@ -44,6 +44,7 @@ const NEW_STEPS = [
 export const HowItWorks: React.FC<{
   onConsignPress: (tappedConsignArgs: TappedConsignArgs) => void
 }> = ({ onConsignPress }) => {
+  const buttonText = "Start Selling"
   const enableNewSWALandingPage = useFeatureFlag("AREnableNewSWALandingPage")
   if (enableNewSWALandingPage) {
     return (
@@ -61,9 +62,14 @@ export const HowItWorks: React.FC<{
               <Text variant="xs">{step.text}</Text>
             </Flex>
           ))}
-          {/**TODO: Implement tracking. Add sellHowItWorks to ContextModule */}
-          <Button block onPress={() => onConsignPress({} as TappedConsignArgs)}>
-            Start Selling
+          <Button
+            testID="HowItWorks-consign-CTA"
+            block
+            onPress={() => {
+              onConsignPress(tracks.consignArgs(buttonText))
+            }}
+          >
+            {buttonText}
           </Button>
         </Join>
       </Flex>
@@ -81,4 +87,12 @@ export const HowItWorks: React.FC<{
       </Join>
     </Box>
   )
+}
+
+const tracks = {
+  consignArgs: (subject: string): TappedConsignArgs => ({
+    contextModule: ContextModule.sellHowItWorks,
+    contextScreenOwnerType: OwnerType.sell,
+    subject,
+  }),
 }

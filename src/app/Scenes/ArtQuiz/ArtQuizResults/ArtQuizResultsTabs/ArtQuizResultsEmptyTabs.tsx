@@ -1,10 +1,11 @@
-import { Screen } from "@artsy/palette-mobile"
 import { ArtQuizResultsEmptyTabsQuery } from "__generated__/ArtQuizResultsEmptyTabsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { ArtQuizResultsTabsHeader } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsTabsHeader"
 import { ArtQuizTrendingArtists } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizTrendingArtists"
 import { ArtQuizTrendingCollections } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizTrendingCollections"
+import { navigate } from "app/system/navigation/navigate"
 import { compact } from "lodash"
+import { Screen } from "palette"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 enum Tab {
@@ -20,7 +21,8 @@ export const ArtQuizResultsEmptyTabs = () => {
 
   return (
     <Screen>
-      <Screen.Body fullwidth>
+      <Screen.Header onBack={() => navigate("/")} />
+      <Screen.Body fullwidth noBottomSafe>
         <StickyTabPage
           disableBackButtonUpdate
           tabs={compact([

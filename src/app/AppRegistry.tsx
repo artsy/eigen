@@ -9,10 +9,10 @@ import {
 } from "app/Components/Containers/WorksForYou"
 import { FadeIn } from "app/Components/FadeIn"
 import { PageableScreensView } from "app/Components/PageableScreensView/PageableScreensView"
-import { ArtQuizArtworks } from "app/Scenes/ArtQuiz/ArtQuizArtworks"
-import { ArtQuizNavigation } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
+import { ArtQuiz } from "app/Scenes/ArtQuiz/ArtQuiz"
 import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
 import { ArtworkRecommendationsScreen } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
+import { HomeContainer } from "app/Scenes/Home/HomeContainer"
 import { NewWorksFromGalleriesYouFollowScreen } from "app/Scenes/NewWorksFromGalleriesYouFollow/NewWorksFromGalleriesYouFollow"
 import {
   RecentlyViewedScreen,
@@ -74,7 +74,6 @@ import { FairMoreInfoQueryRenderer } from "./Scenes/Fair/FairMoreInfo"
 import { Favorites } from "./Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer } from "./Scenes/Feature/Feature"
 import { GeneQueryRenderer } from "./Scenes/Gene/Gene"
-import { HomeQueryRenderer } from "./Scenes/Home/Home"
 import { MakeOfferModalQueryRenderer } from "./Scenes/Inbox/Components/Conversations/MakeOfferModal"
 import { PurchaseModalQueryRenderer } from "./Scenes/Inbox/Components/Conversations/PurchaseModal"
 import { ConversationNavigator } from "./Scenes/Inbox/ConversationNavigator"
@@ -362,9 +361,11 @@ function defineModules<T extends string>(obj: Record<T, ModuleDescriptor>) {
 }
 
 const artQuizScreenOptions = {
-  hidesBottomTabs: true,
   hidesBackButton: true,
   fullBleed: true,
+  screenOptions: {
+    gestureEnabled: false,
+  },
 }
 
 export type AppModule = keyof typeof modules
@@ -378,9 +379,8 @@ export const modules = defineModules({
   DevMenu: reactModule(DevMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   About: reactModule(About),
   AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkForm, { hidesBackButton: true }),
-  ArtQuiz: reactModule(ArtQuizNavigation, artQuizScreenOptions),
-  ArtQuizArtworks: reactModule(ArtQuizArtworks, artQuizScreenOptions),
-  ArtQuizResults: reactModule(ArtQuizResults, { hidesBackButton: true, fullBleed: true }),
+  ArtQuiz: reactModule(ArtQuiz, { ...artQuizScreenOptions, hidesBottomTabs: true }),
+  ArtQuizResults: reactModule(ArtQuizResults, artQuizScreenOptions),
   Articles: reactModule(ArticlesScreen, {}, [ArticlesScreenQuery]),
   Artist: reactModule(ArtistQueryRenderer, { hidesBackButton: true }, [ArtistScreenQuery]),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),
@@ -456,7 +456,9 @@ export const modules = defineModules({
   FullFeaturedArtistList: reactModule(CollectionFullFeaturedArtistListQueryRenderer),
   Gene: reactModule(GeneQueryRenderer),
   Tag: reactModule(TagQueryRenderer),
-  Home: reactModule(HomeQueryRenderer, { isRootViewForTabName: "home" }),
+  Home: reactModule(HomeContainer, {
+    isRootViewForTabName: "home",
+  }),
   Inbox: reactModule(InboxQueryRenderer, { isRootViewForTabName: "inbox" }, [InboxScreenQuery]),
   Inquiry: reactModule(Inquiry, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   LiveAuction: reactModule(LiveAuctionView, {

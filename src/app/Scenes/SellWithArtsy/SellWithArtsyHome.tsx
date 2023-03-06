@@ -11,9 +11,9 @@ import { SellWithArtsyHome_me$data } from "__generated__/SellWithArtsyHome_me.gr
 import { SellWithArtsyHome_recentlySoldArtworksTypeConnection$data } from "__generated__/SellWithArtsyHome_recentlySoldArtworksTypeConnection.graphql"
 import { CollectorsNetwork } from "app/Scenes/SellWithArtsy/Components/CollectorsNetwork"
 import { FAQSWA } from "app/Scenes/SellWithArtsy/Components/FAQSWA"
-import { GetInTouchBanner } from "app/Scenes/SellWithArtsy/Components/GetInTouchBanner"
 import { Highlights } from "app/Scenes/SellWithArtsy/Components/Highlights"
 import { MeetTheSpecialists } from "app/Scenes/SellWithArtsy/Components/MeetTheSpecialists"
+import { SpeakToTheTeam } from "app/Scenes/SellWithArtsy/Components/SpeakToTheTeam"
 import { Testimonials } from "app/Scenes/SellWithArtsy/Components/Testimonials"
 import { WaysWeSell } from "app/Scenes/SellWithArtsy/Components/WaysWeSell"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
@@ -22,7 +22,7 @@ import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useLightStatusBarStyle } from "app/utils/useStatusBarStyle"
 import { Button, Screen } from "palette"
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -37,7 +37,7 @@ import { WhySellWithArtsy } from "./Components/WhySellWithArtsy"
 const consignArgs: TappedConsignArgs = {
   contextModule: ContextModule.sellFooter,
   contextScreenOwnerType: OwnerType.sell,
-  subject: "Submit a work",
+  subject: "Submit an Artwork",
 }
 
 interface SellWithArtsyHomeProps {
@@ -66,9 +66,8 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
   }
 
   const handleInquiryPress = (inquiryTrackingArgs?: TappedConsignmentInquiry) => {
-    //TODO: Implement Tracking. Add the right ContextModules
     if (inquiryTrackingArgs) {
-      // track
+      tracking.trackEvent(inquiryTrackingArgs)
     }
     navigate("/sell/inquiry", {
       passProps: {
@@ -113,7 +112,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
 
             {enableNewSWALandingPage && (
               <Join separator={<Spacer y={4} />}>
-                <GetInTouchBanner onInquiryPress={handleInquiryPress} />
+                <SpeakToTheTeam onInquiryPress={handleInquiryPress} />
                 <MeetTheSpecialists onInquiryPress={handleInquiryPress} />
               </Join>
             )}

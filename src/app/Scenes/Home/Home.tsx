@@ -122,7 +122,6 @@ export interface HomeProps extends ViewProps {
 
 const Home = memo((props: HomeProps) => {
   const viewedRails = useRef<Set<string>>(new Set()).current
-
   useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
   const isESOnlySearchEnabled = useFeatureFlag("AREnableESOnlySearch")
   const prefetchUrl = usePrefetch()
