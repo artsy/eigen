@@ -30,6 +30,7 @@ export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWork
     confidentialNotes,
     medium,
     attributionClass,
+    editionOf,
     dimensions,
     artworkLocation,
     date,
@@ -44,12 +45,16 @@ export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWork
     highRangeCents: Number(marketPriceInsights?.highRangeCents),
   })
 
+  const rarityText = `${capitalize(attributionClass?.shortDescription || undefined)}${
+    editionOf && "\n" + editionOf
+  }`
+
   return (
     <Flex mb={4}>
       {!!enablePriceEstimateRange && <Field label="Estimate Range" value={estimatePrice} />}
       <MetaDataField label="Medium" value={capitalize(category!)} />
       <MetaDataField label="Materials" value={capitalize(medium!)} />
-      <MetaDataField label="Rarity" value={capitalize(attributionClass?.name || undefined)} />
+      <MetaDataField label="Rarity" value={rarityText} />
       <MetaDataField label="Dimensions" value={metric === "in" ? dimensions?.in : dimensions?.cm} />
       <MetaDataField label="Location" value={artworkLocation} />
       <MetaDataField label="Year created" value={date} />
@@ -75,8 +80,9 @@ const artworkFragment = graphql`
     date
     provenance
     attributionClass {
-      name
+      shortDescription
     }
+    editionOf
     artworkLocation
     pricePaid {
       display
