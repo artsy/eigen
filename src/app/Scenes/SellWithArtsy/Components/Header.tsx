@@ -127,7 +127,7 @@ const NewHeader: React.FC<{
         </Text>
         <Flex justifyContent="center" alignItems="center">
           <Button
-            testID="Header-consign-CTA"
+            testID="header-consign-CTA"
             block
             onPress={() => {
               handleSubmitPress(buttonText)

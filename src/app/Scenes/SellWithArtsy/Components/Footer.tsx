@@ -75,7 +75,7 @@ const NewFooter: React.FC<{
       </Text>
       <Spacer y={2} />
       <Button
-        testID="Footer-consign-CTA"
+        testID="footer-consign-CTA"
         block={!isTablet}
         minWidth={isTablet ? "50%" : undefined}
         onPress={() => {

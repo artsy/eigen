@@ -82,7 +82,7 @@ describe("New SellWithArtsyLandingPage", () => {
     describe("Header Events", () => {
       it("tracks Consign Events", () => {
         const { getByTestId } = renderWithWrappers(<TestWrapper />)
-        const headerConsignButton = getByTestId("Header-consign-CTA")
+        const headerConsignButton = getByTestId("header-consign-CTA")
 
         fireEvent(headerConsignButton, "onPress")
         expect(mockTrackEvent).toHaveBeenCalledTimes(1)
