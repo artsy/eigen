@@ -46,7 +46,7 @@ export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWork
   })
 
   const rarityText = `${capitalize(attributionClass?.shortDescription || undefined)}${
-    editionOf && "\n" + editionOf
+    editionOf ? `\n ${editionOf}` : ""
   }`
 
   return (

@@ -56,7 +56,7 @@ describe("MyCollectionArtworkAbout", () => {
       expect(getByText("Materials")).toBeTruthy()
       expect(getByText("Painting")).toBeTruthy()
       expect(getByText("Rarity")).toBeTruthy()
-      expect(getByText("Unique")).toBeTruthy()
+      expect(getByText("Unique work")).toBeTruthy()
       expect(getByText("Dimensions")).toBeTruthy()
       expect(getByText("Location")).toBeTruthy()
       expect(getByText("Berlin")).toBeTruthy()
@@ -178,8 +178,9 @@ const artworkDataAvailable = {
       cm: "100 × 104 cm",
     },
     attributionClass: {
-      name: "Unique",
+      shortDescription: "Unique work",
     },
+    editionOf: null,
     artworkLocation: "Berlin",
     pricePaid: {
       display: "$12,000",
@@ -208,6 +209,7 @@ const artworkDataNotAvailable = {
       cm: null,
     },
     attributionClass: null,
+    editionOf: null,
     artworkLocation: "",
     pricePaid: null,
   },
