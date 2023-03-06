@@ -31,7 +31,6 @@ export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
   const isActive = selectedTab === tab
   const timeout = useRef<ReturnType<typeof setTimeout>>()
   const [isBeingPressed, setIsBeingPressed] = useState(false)
-
   const showActiveState = isActive || isBeingPressed
 
   const activeProgress = useRef(new Animated.Value(showActiveState ? 1 : 0)).current

@@ -3,7 +3,6 @@ import {
   OPTION_ARTISTS_ON_THE_RISE,
   OPTION_FOLLOW_ARTISTS_I_WANT_TO_COLLECT,
   OPTION_FOLLOW_GALLERIES_IM_INTERESTED_IN,
-  OPTION_THE_ART_TASTE_QUIZ,
   OPTION_TOP_AUCTION_LOTS,
 } from "app/Scenes/Onboarding/OnboardingQuiz/config"
 import { useOnboardingContext } from "./useOnboardingContext"
@@ -34,10 +33,5 @@ export const useNextOnboardingScreen = () => {
 
     case OPTION_FOLLOW_GALLERIES_IM_INTERESTED_IN:
       return screenNames.OnboardingFollowGalleries
-
-    case OPTION_THE_ART_TASTE_QUIZ:
-      return screenNames.OnboardingArtTasteQuiz
   }
 }
-
-// Loading screens??

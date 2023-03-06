@@ -15,24 +15,15 @@ export type ArtQuizNavigationStack = {
 
 export const StackNavigator = createStackNavigator<ArtQuizNavigationStack>()
 
-const ArtQuiz: React.FC = () => {
+const ArtQuizScreen: React.FC = () => {
   const queryResult = useLazyLoadQuery<ArtQuizNavigationQuery>(artQuizNavigationQuery, {}).me?.quiz
-
   const isQuizCompleted = !!queryResult?.completedAt
-  const lastInteractedArtworkIndex = queryResult?.quizArtworkConnection?.edges?.findIndex(
-    (edge) => edge?.interactedAt === null
-  )
-  const isQuizStartedButIncomplete = !!lastInteractedArtworkIndex
 
   useEffect(() => {
     if (isQuizCompleted) {
       navigate("/art-quiz/results")
     }
   }, [isQuizCompleted])
-
-  if (isQuizStartedButIncomplete) {
-    return <ArtQuizArtworks />
-  }
 
   return (
     <NavigationContainer independent>
@@ -51,10 +42,10 @@ const ArtQuiz: React.FC = () => {
   )
 }
 
-export const ArtQuizNavigation = () => {
+export const ArtQuiz = () => {
   return (
     <Suspense fallback={<ArtQuizLoader />}>
-      <ArtQuiz />
+      <ArtQuizScreen />
     </Suspense>
   )
 }
