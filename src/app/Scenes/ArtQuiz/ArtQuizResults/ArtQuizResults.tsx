@@ -2,7 +2,8 @@ import { ArtQuizResultsQuery } from "__generated__/ArtQuizResultsQuery.graphql"
 import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
 import { ArtQuizResultsEmptyTabs } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsEmptyTabs"
 import { ArtQuizResultsTabs } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsTabs"
-import { Suspense } from "react"
+import { GlobalStore } from "app/store/GlobalStore"
+import { Suspense, useEffect } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useBackHandler } from "shared/hooks/useBackHandler"
 
@@ -12,6 +13,10 @@ const ResultsScreen = () => {
 
   const queryResult = useLazyLoadQuery<ArtQuizResultsQuery>(artQuizResultsQuery, {})
   const hasSavedArtworks = queryResult.me?.quiz.savedArtworks.length
+
+  useEffect(() => {
+    GlobalStore.actions.auth.setArtQuizState("complete")
+  }, [])
 
   if (hasSavedArtworks) {
     return <ArtQuizResultsTabs me={queryResult.me} />
