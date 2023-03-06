@@ -13,6 +13,7 @@ import { ArtQuiz } from "app/Scenes/ArtQuiz/ArtQuiz"
 import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
 import { ArtworkRecommendationsScreen } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
 import { HomeContainer } from "app/Scenes/Home/HomeContainer"
+import { NewWorksFromGalleriesYouFollowScreen } from "app/Scenes/NewWorksFromGalleriesYouFollow/NewWorksFromGalleriesYouFollow"
 import {
   RecentlyViewedScreen,
   RecentlyViewedScreenQuery,
@@ -20,6 +21,7 @@ import {
 import { SearchScreenQuery } from "app/Scenes/Search/Search"
 import { SearchScreenQuery as SearchScreenQuery2 } from "app/Scenes/Search/Search2"
 import { SearchSwitchContainer } from "app/Scenes/Search/SearchSwitchContainer"
+import { SimilarToRecentlyViewedScreen } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
 import React from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
@@ -150,7 +152,6 @@ import {
   SegmentTrackingProvider,
   SEGMENT_TRACKING_PROVIDER,
 } from "./utils/track/SegmentTrackingProvider"
-import { NewWorksFromGalleriesYouFollowScreen } from "app/Scenes/NewWorksFromGalleriesYouFollow/NewWorksFromGalleriesYouFollow"
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
@@ -542,6 +543,7 @@ export const modules = defineModules({
     alwaysPresentModally: true,
     hasOwnModalCloseButton: false,
   }),
+  SimilarToRecentlyViewed: reactModule(SimilarToRecentlyViewedScreen),
   ConsignmentInquiry: reactModule(ConsignmentInquiryScreen, {
     screenOptions: {
       gestureEnabled: false,
