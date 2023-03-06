@@ -14,7 +14,6 @@ import { ArtQuizArtworksUpdateQuizMutation } from "__generated__/ArtQuizArtworks
 import { FancySwiper } from "app/Components/FancySwiper/FancySwiper"
 import { Card } from "app/Components/FancySwiper/FancySwiperCard"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
-import { ArtQuizButton } from "app/Scenes/ArtQuiz/ArtQuizButton"
 import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
@@ -199,18 +198,12 @@ const ArtQuizArtworksScreen = () => {
         </Flex>
       </Screen.RawHeader>
       <Screen.Body>
-        <Flex flex={1} py={2}>
-          <FancySwiper
-            cards={artworkCards}
-            activeIndex={activeCardIndex}
-            onSwipeRight={(index) => handleSwipe("right", index)}
-            onSwipeLeft={(index) => handleSwipe("left", index)}
-          />
-        </Flex>
-        <Flex flexDirection="row" justifyContent="space-around" mb={4} mx={4}>
-          <ArtQuizButton variant="Dislike" onPress={() => handleNext("Dislike", activeCardIndex)} />
-          <ArtQuizButton variant="Like" onPress={() => handleNext("Like", activeCardIndex)} />
-        </Flex>
+        <FancySwiper
+          cards={artworkCards}
+          activeIndex={activeCardIndex}
+          onSwipeRight={(index) => handleSwipe("right", index)}
+          onSwipeLeft={(index) => handleSwipe("left", index)}
+        />
       </Screen.Body>
     </Screen>
   )

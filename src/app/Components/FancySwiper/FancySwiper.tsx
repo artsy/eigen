@@ -1,4 +1,5 @@
 import { Flex } from "@artsy/palette-mobile"
+import { FancySwiperIcons } from "app/Components/FancySwiper/FancySwiperIcons"
 import { useRef, useCallback } from "react"
 import { PanResponder, Animated } from "react-native"
 import { Card, FancySwiperCard } from "./FancySwiperCard"
@@ -52,35 +53,44 @@ export const FancySwiper = ({
       } else {
         const sign = Math.sign(dx)
         const swipeDirection = sign > 0 ? "right" : "left"
-        // Move the card off the screen
-        Animated.timing(swiper, {
-          toValue: { x: 1000 * sign, y: dy },
-          useNativeDriver: true,
-        }).start(() => {
-          removeCardFromTop(swipeDirection)
-        })
+        onSwipeHandler(swipeDirection, dy)
       }
     },
   })
 
+  const onSwipeHandler = (swipeDirection: "right" | "left", toValueY?: number) => {
+    const sign = swipeDirection === "left" ? -1 : 1
+    // Move the card off the screen
+    Animated.timing(swiper, {
+      toValue: { x: 1000 * sign, y: toValueY || 0 },
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      removeCardFromTop(swipeDirection)
+    })
+  }
+
   return (
-    <Flex justifyContent="center" alignItems="center" flex={1}>
-      {remainingCards.map((card, index) => {
-        const isTopCard = index === remainingCards.length - 1
+    <>
+      <Flex justifyContent="center" alignItems="center" flex={1}>
+        {remainingCards.map((card, index) => {
+          const isTopCard = index === remainingCards.length - 1
 
-        // We would like to be able to drag the top card only
-        const gestureDraggers = isTopCard ? panResponder.panHandlers : {}
+          // We would like to be able to drag the top card only
+          const gestureDraggers = isTopCard ? panResponder.panHandlers : {}
 
-        return (
-          <FancySwiperCard
-            card={card}
-            key={card.id}
-            swiper={swiper}
-            isTopCard={isTopCard}
-            {...gestureDraggers}
-          />
-        )
-      })}
-    </Flex>
+          return (
+            <FancySwiperCard
+              card={card}
+              key={card.id}
+              swiper={swiper}
+              isTopCard={isTopCard}
+              {...gestureDraggers}
+            />
+          )
+        })}
+      </Flex>
+      <FancySwiperIcons swiper={swiper} OnPress={onSwipeHandler} />
+    </>
   )
 }
