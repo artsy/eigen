@@ -6,6 +6,7 @@ import {
   BackButton,
   useScreenDimensions,
   useSpace,
+  ScreenDimensionsProvider,
 } from "@artsy/palette-mobile"
 import { ArtQuizArtworksDislikeMutation } from "__generated__/ArtQuizArtworksDislikeMutation.graphql"
 import { ArtQuizArtworksQuery } from "__generated__/ArtQuizArtworksQuery.graphql"
@@ -20,6 +21,7 @@ import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Suspense, useEffect, useState } from "react"
 import { Image } from "react-native"
+
 import { graphql, useLazyLoadQuery, useMutation } from "react-relay"
 
 const ArtQuizArtworksScreen = () => {
@@ -51,17 +53,8 @@ const ArtQuizArtworksScreen = () => {
   }, [])
 
   const handleSwipe = (swipeDirection: "left" | "right", activeIndex: number) => {
-    console.log("Swipe direction :: ", swipeDirection, activeIndex)
-    if (activeIndex + 1 > artworks.length) {
-      setActiveCardIndex(activeIndex + 1)
-      handleNext(swipeDirection === "right" ? "Like" : "Dislike", activeIndex)
-    } else {
-      navigate("/art-quiz/results", {
-        passProps: {
-          isCalculatingResult: true,
-        },
-      })
-    }
+    setActiveCardIndex(activeIndex + 1)
+    handleNext(swipeDirection === "right" ? "Like" : "Dislike", activeIndex)
   }
 
   const handleNext = (action: "Like" | "Dislike", activeIndex: number) => {
@@ -99,7 +92,7 @@ const ArtQuizArtworksScreen = () => {
       },
     })
 
-    if (activeCardIndex + 1 === artworks.length) {
+    if (activeIndex + 1 === artworks.length) {
       navigate("/art-quiz/results", {
         passProps: {
           isCalculatingResult: true,
@@ -155,7 +148,6 @@ const ArtQuizArtworksScreen = () => {
 
   const handleOnSkip = () => {
     popoverMessage.hide()
-    GlobalStore.actions.auth.setArtQuizState("complete")
     navigate("/")
   }
 
@@ -191,7 +183,7 @@ const ArtQuizArtworksScreen = () => {
           <Touchable haptic="impactLight" onPress={handleOnSkip}>
             <Flex height="100%" justifyContent="center">
               <Text textAlign="right" variant="xs">
-                Close
+                Skip
               </Text>
             </Flex>
           </Touchable>
@@ -212,7 +204,9 @@ const ArtQuizArtworksScreen = () => {
 export const ArtQuizArtworks = () => {
   return (
     <Suspense fallback={<ArtQuizLoader />}>
-      <ArtQuizArtworksScreen />
+      <ScreenDimensionsProvider>
+        <ArtQuizArtworksScreen />
+      </ScreenDimensionsProvider>
     </Suspense>
   )
 }
