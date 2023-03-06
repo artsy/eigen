@@ -219,7 +219,6 @@ dependencies {
     api("com.squareup.okhttp3:logging-interceptor")
 
     implementation 'com.segment.analytics.android:analytics:4.+'
-    implementation 'com.segment.analytics.android.integrations:adjust:+'
     implementation platform('com.google.firebase:firebase-bom:28.1.0')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
