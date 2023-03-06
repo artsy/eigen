@@ -1,4 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
+import { Spacer, Box } from "@artsy/palette-mobile"
 import { CollectionArtworks_collection$data } from "__generated__/CollectionArtworks_collection.graphql"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
@@ -6,8 +7,8 @@ import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/Filter
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { get } from "app/utils/get"
 import { Schema } from "app/utils/track"
-import { Box, Spacer } from "palette"
-import React, { useEffect } from "react"
+import { SimpleMessage } from "palette"
+import React, { useEffect, useRef } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -35,6 +36,7 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({
   const { isDepartment } = collection
   const artworks = get(collection, (p) => p.collectionArtworks)
   const artworksTotal = artworks?.counts?.total
+  const initialArtworksTotal = useRef(artworksTotal)
 
   const setFiltersCountAction = ArtworksFiltersStore.useStoreActions(
     (action) => action.setFiltersCountAction
@@ -58,10 +60,20 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({
     })
   }
 
+  if (initialArtworksTotal.current === 0) {
+    return (
+      <Box my={1}>
+        <SimpleMessage>
+          There aren’t any works available in the collection at this time.
+        </SimpleMessage>
+      </Box>
+    )
+  }
+
   if (artworksTotal === 0) {
     return (
       <Box mb="80px">
-        <Spacer mt={3} />
+        <Spacer y={4} />
         <FilteredArtworkGridZeroState
           id={collection.id}
           slug={collection.slug}
@@ -86,7 +98,7 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({
 }
 
 const ArtworkGridWrapper = styled(Box)<{ isDepartment: boolean }>`
-  margin-top: ${(p: any /* STRICTNESS_MIGRATION */) => (p.isDepartment ? 0 : "-50px")};
+  margin-top: ${(p: any /* STRICTNESS_MIGRATION */) => (p.isDepartment ? "0px" : "-50px")};
   padding-bottom: 50px;
 `
 

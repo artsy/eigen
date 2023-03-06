@@ -1,8 +1,8 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
 import { UploadSizeLimitExceeded } from "@artsy/cohesion/dist/Schema/Events/UploadSizeLimitExceeded"
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { captureMessage } from "@sentry/react-native"
-import { storeLocalPhotos } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionImageUtil"
 import {
   Photo,
   PhotosFormModel,
@@ -11,7 +11,7 @@ import { removeAssetFromSubmission } from "app/Scenes/SellWithArtsy/mutations/re
 import { GlobalStore } from "app/store/GlobalStore"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { useFormikContext } from "formik"
-import { Button, Flex, Spacer, Text } from "palette"
+import { Button } from "palette"
 import { PhotoRow } from "palette/elements/PhotoRow/PhotoRow"
 import React, { useEffect, useState } from "react"
 import { useTracking } from "react-tracking"
@@ -100,9 +100,6 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
       photos: allPhotos,
     })
 
-    // store photos in asynstorage to be retrieved later when the user goes to My Collection
-    storeLocalPhotos(submission.submissionId, allPhotos)
-
     setFieldValue("photos", allPhotos)
   }
 
@@ -148,14 +145,14 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
 
   return (
     <>
-      <Flex style={{ borderColor: "lightgray", borderWidth: 1 }} mt={4} mb={2} p={2} pt={3} pb={3}>
+      <Flex style={{ borderColor: "lightgray", borderWidth: 1 }} mt={4} mb={2} p={2} pt={4} pb={4}>
         <Text variant="lg-display" color="black100" marginBottom={1}>
           Add Files Here
         </Text>
         <Text variant="sm-display" color="black60" marginBottom={1}>
           Files Supported: JPG, PNG, HEIC
         </Text>
-        <Text variant="sm-display" color="black60" marginBottom={3}>
+        <Text variant="sm-display" color="black60" marginBottom={4}>
           Total Maximum Size: 30MB
         </Text>
         <Button
@@ -168,7 +165,7 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
         >
           Add Photo
         </Button>
-        <Spacer mt={1} />
+        <Spacer y={1} />
       </Flex>
 
       {values.photos.map((photo: Photo, idx: number) => (

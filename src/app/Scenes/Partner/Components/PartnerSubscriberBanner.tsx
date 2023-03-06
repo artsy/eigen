@@ -1,6 +1,7 @@
+import { Box, LinkText } from "@artsy/palette-mobile"
 import { PartnerSubscriberBanner_partner$data } from "__generated__/PartnerSubscriberBanner_partner.graphql"
 import { navigate } from "app/system/navigation/navigate"
-import { Box, LinkText, SimpleMessage } from "palette"
+import { SimpleMessage } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface PartnerSubscriberBannerProps {

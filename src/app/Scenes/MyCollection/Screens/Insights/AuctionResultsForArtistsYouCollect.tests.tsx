@@ -5,7 +5,6 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { AuctionResultsForArtistsYouCollect } from "./AuctionResultsForArtistsYouCollect"
 
-
 describe("AuctionResultsForArtistsYouCollect", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 

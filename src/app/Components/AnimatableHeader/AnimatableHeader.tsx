@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, Flex, Text, useTheme } from "palette"
+import { ArrowLeftIcon, Flex, useTheme, Text } from "@artsy/palette-mobile"
 import { useEffect } from "react"
 import { TouchableOpacity } from "react-native"
 import Animated, { FadeInLeft, FadeOutLeft } from "react-native-reanimated"
@@ -39,7 +39,12 @@ export const AnimatableHeader = (props: AnimatableHeaderProps) => {
         <ArrowLeftIcon fill="black100" mt="2px" />
       </TouchableOpacity>
 
-      <Flex flex={1} height={headerHeight} justifyContent="center" ml={space("0.5") + space("1")}>
+      <Flex
+        flex={1}
+        height={headerHeight}
+        justifyContent="center"
+        ml={`${space(0.5) + space(1)}px`}
+      >
         {!!titleShown && (
           <Animated.View entering={FadeInLeft} exiting={FadeOutLeft}>
             <Text testID="animated-header-title" variant="sm" numberOfLines={2}>

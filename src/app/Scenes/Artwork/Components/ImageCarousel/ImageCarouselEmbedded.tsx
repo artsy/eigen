@@ -1,13 +1,20 @@
 import * as Sentry from "@sentry/react-native"
+import { ImageCarouselVimeoVideo } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselVimeoVideo"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { isPad } from "app/utils/hardware"
 import React, { useCallback, useContext } from "react"
-import { Animated, FlatList, NativeScrollEvent, NativeSyntheticEvent, Platform } from "react-native"
+import {
+  Animated,
+  FlatList,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  Platform,
+  View,
+} from "react-native"
 import { useScreenDimensions } from "shared/hooks"
-
-import { ImageCarouselContext, ImageDescriptor } from "./ImageCarouselContext"
+import { ImageCarouselContext, ImageCarouselMedia, ImageDescriptor } from "./ImageCarouselContext"
 import { ImageWithLoadingState } from "./ImageWithLoadingState"
-import { findClosestIndex, getMeasurements } from "./geometry"
+import { findClosestIndex, getMeasurements, ImageMeasurements } from "./geometry"
 
 interface ImageCarouselEmbeddedProps {
   cardHeight: number
@@ -31,6 +38,7 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
   }
 
   const {
+    media,
     images,
     embeddedFlatListRef: embeddedFlatListRef,
     embeddedImageRefs: embeddedImageRefs,
@@ -39,11 +47,10 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
     imageIndex,
   } = useContext(ImageCarouselContext)
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  const measurements = getMeasurements({ images, boundingBox: embeddedCardBoundingBox })
+  const measurements = getMeasurements({ media, boundingBox: embeddedCardBoundingBox })
   const offsets = measurements.map((m) => m.cumulativeScrollOffset)
 
-  const scrollEnabled = images.length > 1
+  const scrollEnabled = media.length > 1
 
   // update the imageIndex on scroll
   const onScroll = useCallback(
@@ -127,10 +134,10 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
   }, [])
 
   return (
-    <FlatList<ImageDescriptor>
+    <FlatList<ImageCarouselMedia>
       // force full re-render on orientation change
       key={screenDimensions.orientation}
-      data={images}
+      data={media}
       horizontal
       ref={embeddedFlatListRef}
       showsHorizontalScrollIndicator={false}
@@ -141,32 +148,76 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
         length: embeddedCardBoundingBox.width,
       })}
       snapToOffsets={offsets}
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      keyExtractor={(item) => item.url}
+      keyExtractor={(item) => item.url!}
       decelerationRate="fast"
       onScroll={onScroll}
       scrollEventThrottle={50}
       onResponderRelease={onResponderRelease}
       accessibilityLabel="Image Carousel"
-      initialNumToRender={Math.min(images.length, 20)}
+      initialNumToRender={Math.min(media.length, 20)}
       renderItem={({ item, index }) => {
-        const { ...styles } = measurements[index]
         return (
-          <ImageWithLoadingState
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            imageURL={item.url}
-            width={styles.width}
-            height={styles.height}
-            onPress={goFullScreen}
-            // make sure first image loads first
-            highPriority={index === 0}
-            ref={(ref) => {
-              embeddedImageRefs[index] = ref! /* STRICTNESS_MIGRATION */
-            }}
-            style={[styles, images.length === 1 ? { marginTop: 0, marginBottom: 0 } : {}]}
+          <EmbeddedItem
+            item={item}
+            index={index}
+            measurements={measurements}
+            embeddedCardBoundingBox={embeddedCardBoundingBox}
+            goFullScreen={goFullScreen}
+            embeddedImageRefs={embeddedImageRefs}
+            images={images}
           />
         )
       }}
+    />
+  )
+}
+
+const EmbeddedItem: React.FC<{
+  item: ImageCarouselMedia
+  index: number
+  measurements: ImageMeasurements[]
+  embeddedImageRefs: View[]
+  embeddedCardBoundingBox: { width: number; height: number }
+  images: ImageDescriptor[]
+  goFullScreen: () => void
+}> = ({
+  item,
+  index,
+  measurements,
+  embeddedCardBoundingBox,
+  goFullScreen,
+  embeddedImageRefs,
+  images,
+}) => {
+  const { ...styles } = measurements[index]
+
+  if (item.__typename === "Video") {
+    return (
+      <ImageCarouselVimeoVideo
+        width={styles.width}
+        height={styles.height}
+        maxHeight={embeddedCardBoundingBox.height}
+        vimeoUrl={item.url!}
+      />
+    )
+  }
+
+  if (!item.url) {
+    return null
+  }
+
+  return (
+    <ImageWithLoadingState
+      imageURL={item.resized?.src || item.url!}
+      width={styles.width}
+      height={styles.height}
+      onPress={goFullScreen}
+      // make sure first image loads first
+      highPriority={index === 0}
+      ref={(ref) => {
+        embeddedImageRefs[index] = ref! /* STRICTNESS_MIGRATION */
+      }}
+      style={[styles, images.length === 1 ? { marginTop: 0, marginBottom: 0 } : {}]}
     />
   )
 }

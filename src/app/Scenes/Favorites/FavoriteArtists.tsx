@@ -1,3 +1,4 @@
+import { Spacer, ClassTheme } from "@artsy/palette-mobile"
 import { FavoriteArtistsQuery } from "__generated__/FavoriteArtistsQuery.graphql"
 import { FavoriteArtists_me$data } from "__generated__/FavoriteArtists_me.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
@@ -10,7 +11,6 @@ import { PAGE_SIZE } from "app/Components/constants"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { ClassTheme, Spacer } from "palette"
 import React from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
@@ -104,7 +104,7 @@ class Artists extends React.Component<Props, State> {
               />
             }
             style={{ paddingHorizontal: 0 }}
-            ItemSeparatorComponent={() => <Spacer mb="10px" />}
+            ItemSeparatorComponent={() => <Spacer y={1} />}
             ListFooterComponent={
               this.state.fetchingMoreData ? (
                 <Spinner style={{ marginTop: 20, marginBottom: 20 }} />

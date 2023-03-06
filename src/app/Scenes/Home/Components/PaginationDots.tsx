@@ -1,4 +1,4 @@
-import { Flex } from "palette"
+import { Flex } from "@artsy/palette-mobile"
 import { useEffect, useRef } from "react"
 import { Animated } from "react-native"
 

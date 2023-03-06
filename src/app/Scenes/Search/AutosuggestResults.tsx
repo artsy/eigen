@@ -1,15 +1,16 @@
+import { quoteLeft, quoteRight, Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { AutosuggestResults_results$data } from "__generated__/AutosuggestResults_results.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import Spinner from "app/Components/Spinner"
+import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { isPad } from "app/utils/hardware"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
-import { Flex, quoteLeft, quoteRight, Spacer, Text } from "palette"
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { FlatList } from "react-native"
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
+import { FlatList, Keyboard } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
 import {
@@ -50,13 +51,13 @@ const AutosuggestResultsFlatList: React.FC<{
   onResultPress,
   trackResultPress,
   ListEmptyComponent = EmptyList,
-  ListHeaderComponent = () => <Spacer mb={2} />,
+  ListHeaderComponent = () => <Spacer y={2} />,
   HeaderComponent = null,
   prependResults = [],
 }) => {
   const [shouldShowLoadingPlaceholder, setShouldShowLoadingPlaceholder] = useState(true)
   const loadMore = useCallback(() => relay.loadMore(SUBSEQUENT_BATCH_SIZE), [])
-
+  const { inputRef } = useContext(SearchContext)
   // We only want to load more results after the user has started scrolling, and unfortunately
   // FlatList calls onEndReached right after mounting because the default threshold is quite
   // generous. We want that generosity during a scroll but most of the time a user will not
@@ -64,6 +65,11 @@ const AutosuggestResultsFlatList: React.FC<{
   // So we're using this flag to 'gate' loadMore
   const userHasStartedScrolling = useRef(false)
   const onScrollBeginDrag = useCallback(() => {
+    // blurs the input
+    inputRef.current?.blur()
+    // dismisses the keyboard
+    Keyboard.dismiss()
+
     if (!userHasStartedScrolling.current) {
       userHasStartedScrolling.current = true
       // fetch second page immediately
@@ -75,10 +81,14 @@ const AutosuggestResultsFlatList: React.FC<{
       loadMore()
     }
   }, [])
+
   useEffect(() => {
     if (query) {
       // the query changed, prevent loading more pages until the user starts scrolling
       userHasStartedScrolling.current = false
+    }
+    if (flatListRef.current) {
+      flatListRef.current.scrollToOffset({ offset: 0, animated: true })
     }
   }, [query])
 
@@ -132,7 +142,7 @@ const AutosuggestResultsFlatList: React.FC<{
 
   const ListFooterComponent = useMemo(() => {
     return () => (
-      <Flex justifyContent="center" p={3} pb={6} height={250}>
+      <Flex justifyContent="center" p={4} pb={6} height={250}>
         {hasMoreResults ? <Spinner /> : null}
       </Flex>
     )
@@ -190,8 +200,8 @@ const AutosuggestResultsFlatList: React.FC<{
 const EmptyList: React.FC<{ query: string }> = ({ query }) => {
   return (
     <>
-      <Spacer mt={1} />
-      <Spacer mt={2} />
+      <Spacer y={1} />
+      <Spacer y={2} />
       <Text variant="sm-display" textAlign="center">
         Sorry, we couldn’t find anything for {quoteLeft}
         {query}.{quoteRight}

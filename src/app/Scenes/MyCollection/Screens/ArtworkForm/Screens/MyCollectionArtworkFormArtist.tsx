@@ -1,4 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { Spacer } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
@@ -8,7 +9,6 @@ import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
 import { AutosuggestResultsPlaceholder } from "app/Scenes/Search/components/placeholders/AutosuggestResultsPlaceholder"
 import { GlobalStore } from "app/store/GlobalStore"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
-import { Spacer } from "palette"
 import { Suspense } from "react"
 import { useTracking } from "react-tracking"
 
@@ -75,11 +75,11 @@ const tracks = {
 const Placeholder: React.FC = () => (
   <ProvidePlaceholderContext>
     <PlaceholderBox height={50} />
-    <Spacer mt={2} />
+    <Spacer y={2} />
     <PlaceholderText width={250} />
-    <Spacer mt={4} />
+    <Spacer y={4} />
     <PlaceholderText width={180} />
-    <Spacer mb={2} />
+    <Spacer y={2} />
     <AutosuggestResultsPlaceholder />
   </ProvidePlaceholderContext>
 )

@@ -1,5 +1,5 @@
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { Flex, Spacer, Text } from "palette"
 import { LabeledTicker } from "."
 import { CountdownTimer, CountdownTimerProps } from "./CountdownTimer"
 
@@ -16,7 +16,7 @@ const dateString = (m: number) => new Date(m).toISOString()
 const CountdownText: React.FC<CountdownTimerProps> = ({ duration, label }) => (
   <Flex justifyContent="center" alignItems="center">
     <LabeledTicker
-      renderSeparator={() => <Spacer mr={0.5} />}
+      renderSeparator={() => <Spacer x={0.5} />}
       textProps={{ color: "white", variant: "sm" }}
       duration={duration}
     />

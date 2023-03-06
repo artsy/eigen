@@ -1,6 +1,9 @@
 /* eslint-disable react/no-unescaped-entities */
+import { Spacer } from "@artsy/palette-mobile"
+import { Flex } from "@artsy/palette-mobile"
+import { Text } from "@artsy/palette-mobile"
 import { storiesOf } from "@storybook/react-native"
-import { Button, Flex, Input, Spacer, Text } from "palette"
+import { Button, Input } from "palette"
 import { ScrollView } from "react-native"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
 
@@ -27,7 +30,7 @@ storiesOf("ArtsyKeyboardAvoidingView", module).add("ArtsyKeyboardAvoidingView", 
         <Input title="Hello" />
         <Input title="Hello" />
         <Input title="Hello" />
-        <Spacer mt={4} />
+        <Spacer y={4} />
         <Button>"Submit"</Button>
       </ScrollView>
     </Flex>

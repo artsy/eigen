@@ -1,5 +1,4 @@
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { NavStack } from "app/system/navigation/NavStack"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
@@ -7,7 +6,6 @@ import { RelayEnvironmentProvider } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { BottomTabsNavigator } from "./BottomTabsNavigator"
-
 
 jest.unmock("app/NativeModules/LegacyNativeModules")
 

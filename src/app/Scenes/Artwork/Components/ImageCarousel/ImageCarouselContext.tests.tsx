@@ -5,19 +5,27 @@ import { ImageCarouselContext, useNewImageCarouselContext } from "./ImageCarouse
 const contextMock: Parameters<typeof useNewImageCarouselContext>[0] = {
   images: [
     {
+      internalID: "123",
       height: 5,
       width: 5,
       url: "a",
       largeImageURL: "a",
+      resized: {
+        src: "a",
+      },
       deepZoom: {
         image: { url: "", format: "", tileSize: 300, size: { width: 302, height: 302 } },
       },
     },
     {
+      internalID: "1234",
       height: 5,
       width: 5,
       url: "b",
       largeImageURL: "a",
+      resized: {
+        src: "a",
+      },
       deepZoom: {
         image: { url: "", format: "", tileSize: 300, size: { width: 302, height: 302 } },
       },

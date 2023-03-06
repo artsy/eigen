@@ -1,15 +1,11 @@
+import { screen } from "@testing-library/react-native"
 import { TrackOrderSectionTestsQuery } from "__generated__/TrackOrderSectionTestsQuery.graphql"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { TrackOrderSectionFragmentContainer } from "./Components/TrackOrderSection"
 
-
 const CommerceShipOrder = {
-  state: "SUBMITTED",
-  requestedFulfillment: { __typename: "CommerceShip" },
+  displayState: "SUBMITTED",
   lineItems: {
     edges: [
       {
@@ -33,14 +29,12 @@ const CommerceShipOrder = {
 }
 
 const CommerceShipArtaOrder = {
-  state: "APPROVED",
-  requestedFulfillment: { __typename: "CommerceShipArta" },
+  displayState: "IN_TRANSIT",
   lineItems: {
     edges: [
       {
         node: {
           shipment: {
-            status: "in_transit",
             trackingUrl: "https://google.com",
             trackingNumber: "12345678910",
             deliveryStart: "2021-10-03T14:51:19+03:00",
@@ -55,158 +49,82 @@ const CommerceShipArtaOrder = {
 }
 
 describe("TrackOrderSection", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  beforeEach(() => (mockEnvironment = createMockEnvironment()))
-
-  const TestRenderer = () => (
-    <QueryRenderer<TrackOrderSectionTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query TrackOrderSectionTestsQuery @relay_test_operation {
-          commerceOrder(id: "some-id") {
-            internalID
-            ...TrackOrderSection_section
-          }
+  const { renderWithRelay } = setupTestWrapper<TrackOrderSectionTestsQuery>({
+    Component: (props) => <TrackOrderSectionFragmentContainer section={props.commerceOrder!} />,
+    query: graphql`
+      query TrackOrderSectionTestsQuery @relay_test_operation {
+        commerceOrder(id: "some-id") {
+          internalID
+          ...TrackOrderSection_section
         }
-      `}
-      variables={{}}
-      render={({ props }) => {
-        if (props?.commerceOrder) {
-          return <TrackOrderSectionFragmentContainer section={props.commerceOrder} />
-        }
-        return null
-      }}
-    />
-  )
-
-  describe("when CommerceShip", () => {
-    it("renders section", () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-      resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => CommerceShipOrder })
-
-      expect(extractText(tree.findByProps({ testID: "orderStatus" }))).toBe("pending")
-      expect(tree.findAllByProps({ testID: "trackingNumber" })).toHaveLength(0)
-      expect(extractText(tree.findByProps({ testID: "noTrackingNumber" }))).toBe(
-        "Tracking not available"
-      )
-      expect(extractText(tree.findByProps({ testID: "shippedOn" }))).toContain("Sep 2, 2021")
-      expect(extractText(tree.findByProps({ testID: "estimatedDelivery" }))).toContain(
-        "Oct 2, 2021"
-      )
-      expect(extractText(tree.findByProps({ testID: "trackingUrl" }))).toContain(
-        "View full tracking details"
-      )
-    })
-
-    it("not renders fields without data", () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        CommerceOrder: () => ({
-          ...CommerceShipOrder,
-          lineItems: { edges: [{ node: { shipment: null, fulfillments: null } }] },
-        }),
-      })
-
-      expect(extractText(tree.findByProps({ testID: "orderStatus" }))).toBe("pending")
-      expect(tree.findAllByProps({ testID: "trackingNumber" })).toHaveLength(0)
-      expect(extractText(tree.findByProps({ testID: "noTrackingNumber" }))).toBe(
-        "Tracking not available"
-      )
-      expect(tree.findAllByProps({ testID: "shippedOn" })).toHaveLength(0)
-      expect(tree.findAllByProps({ testID: "estimatedDelivery" })).toHaveLength(0)
-      expect(tree.findAllByProps({ testID: "trackingUrl" })).toHaveLength(0)
-    })
+      }
+    `,
+    variables: {},
   })
 
-  describe("when CommerceShipArta", () => {
-    it("renders section", () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        CommerceOrder: () => CommerceShipArtaOrder,
-      })
+  describe("with shipment/fulfillment data", () => {
+    describe("when shipped by partner (fulfillment type CommerceShip)", () => {
+      it("renders fulfillment details", () => {
+        renderWithRelay({ CommerceOrder: () => CommerceShipOrder })
 
-      expect(extractText(tree.findByProps({ testID: "orderStatus" }))).toBe("in transit")
-      expect(extractText(tree.findByProps({ testID: "trackingNumber" }))).toContain("12345678910")
-      expect(tree.findAllByProps({ testID: "noTrackingNumber" })).toHaveLength(0)
-      expect(extractText(tree.findByProps({ testID: "shippedOn" }))).toContain("Oct 3, 2021")
-      expect(extractText(tree.findByProps({ testID: "estimatedDelivery" }))).toContain(
-        "on September 20, 2021"
-      )
-      expect(extractText(tree.findByProps({ testID: "trackingUrl" }))).toContain(
-        "View full tracking details"
-      )
+        expect(screen.getByTestId("orderStatus")).toHaveTextContent("pending")
+        expect(screen.queryByTestId("trackingNumber")).toBeFalsy()
+        expect(screen.queryByTestId("noTrackingNumber")).toBeFalsy()
+        expect(screen.getByTestId("shippedOn")).toHaveTextContent("Sep 2, 2021")
+        expect(screen.getByTestId("estimatedDelivery")).toHaveTextContent("Oct 2, 2021")
+        expect(screen.getByTestId("trackingUrl")).toHaveTextContent("View full tracking details")
+      })
     })
 
-    it("not renders fields without data", () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        CommerceOrder: () => ({
-          ...CommerceShipArtaOrder,
-          lineItems: {
-            edges: [
-              {
-                node: {
-                  shipment: {
-                    status: "in_transit",
-                    trackingUrl: null,
-                    trackingNumber: null,
-                    deliveryStart: null,
-                    deliveryEnd: null,
-                    estimatedDeliveryWindow: null,
+    describe("when shipped with Arta (fulfillment type CommerceShipArta)", () => {
+      it("renders shipment details", () => {
+        renderWithRelay({ CommerceOrder: () => CommerceShipArtaOrder })
+
+        expect(screen.getByTestId("orderStatus")).toHaveTextContent("in transit")
+        expect(screen.queryByTestId("trackingNumber")).toHaveTextContent("12345678910")
+        expect(screen.queryByTestId("noTrackingNumber")).toBeFalsy()
+        expect(screen.getByTestId("shippedOn")).toHaveTextContent("Oct 3, 2021")
+        expect(screen.getByTestId("estimatedDelivery")).toHaveTextContent("on September 20, 2021")
+        expect(screen.getByTestId("trackingUrl")).toHaveTextContent("View full tracking details")
+      })
+
+      it("when delivered", () => {
+        renderWithRelay({
+          CommerceOrder: () => ({
+            ...CommerceShipArtaOrder,
+            displayState: "FULFILLED",
+            lineItems: {
+              edges: [
+                {
+                  node: {
+                    shipment: { deliveryEnd: "2021-09-02T14:51:19+03:00" },
                   },
-                  fulfillments: null,
                 },
-              },
-            ],
-          },
-        }),
+              ],
+            },
+          }),
+        })
+
+        expect(screen.getByTestId("deliveredStatus")).toHaveTextContent("Delivered on Sep 2, 2021")
       })
-
-      expect(extractText(tree.findByProps({ testID: "orderStatus" }))).toBe("in transit")
-      expect(tree.findAllByProps({ testID: "trackingNumber" })).toHaveLength(0)
-      expect(extractText(tree.findByProps({ testID: "noTrackingNumber" }))).toBe(
-        "Tracking not available"
-      )
-      expect(tree.findAllByProps({ testID: "shippedOn" })).toHaveLength(0)
-      expect(tree.findAllByProps({ testID: "estimatedDelivery" })).toHaveLength(0)
-      expect(tree.findAllByProps({ testID: "trackingUrl" })).toHaveLength(0)
-    })
-
-    it("when delivered", () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        CommerceOrder: () => ({
-          ...CommerceShipArtaOrder,
-          lineItems: {
-            edges: [
-              {
-                node: {
-                  shipment: { status: "completed", deliveryEnd: "2021-09-02T14:51:19+03:00" },
-                },
-              },
-            ],
-          },
-        }),
-      })
-
-      expect(extractText(tree.findByProps({ testID: "deliveredStatus" }))).toBe(
-        "Delivered on Sep 2, 2021"
-      )
     })
   })
 
-  describe("when CommercePickup", () => {
-    it("not renders section", () => {
-      const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-      resolveMostRecentRelayOperation(mockEnvironment, {
+  describe("without shipment/fulfillment data", () => {
+    it("doesn't render fields when fulfillment is null", () => {
+      renderWithRelay({
         CommerceOrder: () => ({
           ...CommerceShipOrder,
-          requestedFulfillment: { __typename: "CommercePickup" },
           lineItems: { edges: [{ node: { shipment: null, fulfillments: null } }] },
         }),
       })
 
-      expect(tree.instance).toBeNull()
+      expect(screen.getByTestId("orderStatus")).toHaveTextContent("pending")
+      expect(screen.queryByTestId("trackingNumber")).toBeFalsy()
+      expect(screen.getByTestId("noTrackingNumber")).toHaveTextContent("Tracking not available")
+      expect(screen.queryByTestId("shippedOn")).toBeFalsy()
+      expect(screen.queryByTestId("estimatedDelivery")).toBeFalsy()
+      expect(screen.queryByTestId("trackingUrl")).toBeFalsy()
     })
   })
 })

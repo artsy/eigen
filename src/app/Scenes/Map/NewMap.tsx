@@ -1,5 +1,5 @@
+import { Flex, Box } from "@artsy/palette-mobile"
 import MapboxGL from "@react-native-mapbox-gl/maps"
-import { Box, Flex } from "palette"
 import { FC, useRef, useState } from "react"
 import { Dimensions, StyleSheet, View } from "react-native"
 import Config from "react-native-config"
@@ -22,12 +22,12 @@ const styles = StyleSheet.create({
 
 const TopButtonsContainer = styled(Box)`
   position: absolute;
-  left: -25;
-  right: 0;
+  left: -25px;
+  right: 0px;
   z-index: 1;
   width: 100%;
-  height: 100;
-  bottom: 10;
+  height: 100px;
+  bottom: 10px;
 `
 
 const DEFAULT_ZOOM_LEVEL = 11

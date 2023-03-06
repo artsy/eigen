@@ -1,7 +1,16 @@
+import {
+  Spacer,
+  VerifiedIcon,
+  IconProps,
+  SecureLockIcon,
+  GuaranteeIcon,
+  Flex,
+  Box,
+  Text,
+  LinkText,
+} from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
-import { Box, Flex, IconProps, Join, LinkText, Spacer, Text, VerifiedIcon } from "palette"
-import { GuaranteeIcon } from "palette/svgs/GuaranteeIcon"
-import { SecureLockIcon } from "palette/svgs/SecureLockIcon"
+import { Join } from "palette"
 
 export const ArtsyGuarantee: React.FC = () => {
   const iconProps: IconProps = {
@@ -15,9 +24,9 @@ export const ArtsyGuarantee: React.FC = () => {
       <Text variant="md" color="black100">
         Be covered by the Artsy Guarantee when you checkout with Artsy
       </Text>
-      <Spacer mt={2} />
+      <Spacer y={2} />
 
-      <Join separator={<Spacer mt={1} />}>
+      <Join separator={<Spacer y={1} />}>
         <Flex flexDirection="row" alignItems="center">
           <SecureLockIcon
             accessibilityRole="image"

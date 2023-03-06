@@ -1,63 +1,45 @@
 import { NewSaleLotsListTestsQuery } from "__generated__/NewSaleLotsListTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { NewSaleLotsListContainer } from "./NewSaleLotsList"
 
-
 describe("NewSaleLotsList", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+  const { renderWithRelay } = setupTestWrapper<NewSaleLotsListTestsQuery>({
+    Component: (props) => {
+      if (props?.viewer) {
+        return (
+          <ArtworkFiltersStoreProvider>
+            <NewSaleLotsListContainer
+              viewer={props.viewer}
+              unfilteredArtworks={props.viewer.unfilteredArtworks}
+              saleID="saleID"
+              saleSlug="saleSlug"
+              scrollToTop={jest.fn()}
+            />
+          </ArtworkFiltersStoreProvider>
+        )
+      }
+      return null
+    },
+    query: graphql`
+      query NewSaleLotsListTestsQuery($saleID: ID) @relay_test_operation {
+        viewer {
+          unfilteredArtworks: artworksConnection(
+            saleID: $saleID
+            aggregations: [FOLLOWED_ARTISTS, ARTIST, MEDIUM, TOTAL]
+            first: 0
+          ) {
+            ...NewSaleLotsList_unfilteredArtworks
+          }
+          ...NewSaleLotsList_viewer @arguments(saleID: $saleID)
+        }
+      }
+    `,
   })
 
-  const TestRenderer = () => {
-    return (
-      <QueryRenderer<NewSaleLotsListTestsQuery>
-        environment={mockEnvironment}
-        query={graphql`
-          query NewSaleLotsListTestsQuery($saleID: ID) @relay_test_operation {
-            viewer {
-              unfilteredArtworks: artworksConnection(
-                saleID: $saleID
-                aggregations: [FOLLOWED_ARTISTS, ARTIST, MEDIUM, TOTAL]
-                first: 0
-              ) {
-                ...NewSaleLotsList_unfilteredArtworks
-              }
-              ...NewSaleLotsList_viewer @arguments(saleID: $saleID)
-            }
-          }
-        `}
-        variables={{ saleID: "saleID" }}
-        render={({ props }) => {
-          if (props?.viewer) {
-            return (
-              <ArtworkFiltersStoreProvider>
-                <NewSaleLotsListContainer
-                  viewer={props.viewer}
-                  unfilteredArtworks={props.viewer.unfilteredArtworks}
-                  saleID="saleID"
-                  saleSlug="saleSlug"
-                  scrollToTop={jest.fn()}
-                />
-              </ArtworkFiltersStoreProvider>
-            )
-          }
-
-          return null
-        }}
-      />
-    )
-  }
-
   it("renders nothing if not sale artworks are available", () => {
-    const { toJSON } = renderWithWrappers(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { toJSON } = renderWithRelay({
       FilterArtworksConnection: () => ({
         counts: {
           followedArtists: 0,
@@ -71,9 +53,7 @@ describe("NewSaleLotsList", () => {
   })
 
   it("renders content", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText } = renderWithRelay({
       FilterArtworksConnection: () => mockedFilterArtworksConnection,
     })
 
@@ -81,9 +61,7 @@ describe("NewSaleLotsList", () => {
   })
 
   it("renders header", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText } = renderWithRelay({
       FilterArtworksConnection: () => mockedFilterArtworksConnection,
     })
 

@@ -1,4 +1,4 @@
-import { Flex, Text } from "palette"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { useEffect, useState } from "react"
 import { LayoutAnimation } from "react-native"
 import { TouchableOpacity } from "react-native-gesture-handler"

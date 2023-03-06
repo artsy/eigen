@@ -5,7 +5,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ShippingAndTaxesFragmentContainer } from "./ShippingAndTaxes"
 
-
 describe("ShippingAndTaxes", () => {
   let env: ReturnType<typeof createMockEnvironment>
 

@@ -1,6 +1,7 @@
+import { Flex, useColor, Text } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Flex, Text, Touchable, useColor } from "palette"
+import { Touchable } from "palette"
 import { useEffect, useState } from "react"
 import { Animated } from "react-native"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
@@ -94,8 +95,8 @@ export const ToastComponent = ({
   }
 
   const innerTopBottom = (
-    <Flex flex={1} flexDirection="row" alignItems="center" mx="2">
-      {Icon !== undefined ? <Icon fill="white100" width={25} height={25} mr="1" /> : null}
+    <Flex flex={1} flexDirection="row" alignItems="center" mx={2}>
+      {Icon !== undefined ? <Icon fill="white100" width={25} height={25} mr={1} /> : null}
       <Text variant="xs" color="white100">
         {message}
       </Text>

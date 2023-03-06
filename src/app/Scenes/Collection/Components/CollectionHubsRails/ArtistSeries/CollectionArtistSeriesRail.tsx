@@ -1,8 +1,8 @@
+import { Flex, Text } from "@artsy/palette-mobile"
 import { CollectionArtistSeriesRail_collection$data } from "__generated__/CollectionArtistSeriesRail_collection.graphql"
 import { CollectionArtistSeriesRail_collectionGroup$data } from "__generated__/CollectionArtistSeriesRail_collectionGroup.graphql"
 import { GenericArtistSeriesRail } from "app/Components/GenericArtistSeriesRail"
 import { Schema } from "app/utils/track"
-import { Flex, Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface CollectionArtistSeriesRailProps {
@@ -16,7 +16,7 @@ export const CollectionArtistSeriesRail: React.FC<CollectionArtistSeriesRailProp
   const collections = collectionGroup?.members ?? []
 
   return (
-    <Flex ml="-20px">
+    <Flex ml={-2}>
       <Text variant="sm-display" mb={2} ml={4}>
         {collectionGroup.name}
       </Text>

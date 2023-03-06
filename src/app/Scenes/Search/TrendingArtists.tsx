@@ -1,4 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedArtistGroup } from "@artsy/cohesion"
+import { Spacer, Flex, Box, BoxProps } from "@artsy/palette-mobile"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { TrendingArtists_query$key } from "__generated__/TrendingArtists_query.graphql"
 import { ArtistCardContainer as ArtistCard } from "app/Components/Home/ArtistRails/ArtistCard"
@@ -7,7 +8,7 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
-import { Box, BoxProps, Flex, Spacer, Spinner } from "palette"
+import { Spinner } from "palette"
 import { usePaginationFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { graphql } from "relay-runtime"
@@ -65,8 +66,8 @@ export const TrendingArtists: React.FC<TrendingArtistsProps> = ({ data, ...boxPr
 
           return <TrendingArtistCard artist={item} onPress={onPress} />
         }}
-        ItemSeparatorComponent={() => <Spacer ml={1} />}
-        ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer mr={2} />}
+        ItemSeparatorComponent={() => <Spacer x={1} />}
+        ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer x={2} />}
       />
     </Box>
   )
@@ -74,7 +75,7 @@ export const TrendingArtists: React.FC<TrendingArtistsProps> = ({ data, ...boxPr
 
 const LoadingIndicator = () => {
   return (
-    <Flex flex={1} flexDirection="row" alignItems="center" justifyContent="center" px={3}>
+    <Flex flex={1} flexDirection="row" alignItems="center" justifyContent="center" px={4}>
       <Spinner />
     </Flex>
   )

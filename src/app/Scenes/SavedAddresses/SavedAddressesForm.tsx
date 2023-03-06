@@ -1,3 +1,4 @@
+import { Flex, Text } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import { SavedAddressesFormQuery } from "__generated__/SavedAddressesFormQuery.graphql"
 import { SavedAddressesForm_me$data } from "__generated__/SavedAddressesForm_me.graphql"
@@ -13,7 +14,7 @@ import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { Action, action, computed, Computed, createComponentStore } from "easy-peasy"
 import { times } from "lodash"
-import { Flex, Input, Text } from "palette"
+import { Input } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 import { PhoneInput } from "palette/elements/Input/PhoneInput/PhoneInput"
 import { cleanUserPhoneNumber } from "palette/elements/Input/PhoneInput/cleanUserPhoneNumber"
@@ -307,7 +308,7 @@ export const SavedAddressesFormContainer = createFragmentContainer(SavedAddresse
 export const SavedAddressesFormPlaceholder: React.FC<{ addressId?: string }> = (props) => {
   return (
     <PageWithSimpleHeader title={!!props?.addressId ? "Edit Address" : "Add New Address"}>
-      <Flex px={2} py={15}>
+      <Flex px={2} py="15px">
         {times(5).map((index) => (
           <Flex key={index} py={1}>
             <PlaceholderText height={15} width={50 + Math.random() * 100} />

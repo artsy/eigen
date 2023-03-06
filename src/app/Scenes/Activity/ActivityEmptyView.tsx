@@ -1,4 +1,4 @@
-import { apostrophe, Flex, quoteLeft, quoteRight, Spacer, Text } from "palette"
+import { apostrophe, quoteLeft, quoteRight, Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { NotificationType } from "./types"
 
 interface ActivityEmptyViewProps {
@@ -23,7 +23,7 @@ export const ActivityEmptyView: React.FC<ActivityEmptyViewProps> = ({ type }) =>
   return (
     <Flex mx={2} accessibilityLabel="Activities are empty">
       <Text textAlign="center">{entity.title}</Text>
-      <Spacer mt={2} />
+      <Spacer y={2} />
       <Text variant="xs" color="black60" textAlign="center">
         {entity.message}
       </Text>

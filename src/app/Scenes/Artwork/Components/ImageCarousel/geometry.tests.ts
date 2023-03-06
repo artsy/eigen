@@ -33,7 +33,7 @@ describe(getMeasurements, () => {
   it("arranges images on the carousel rail", () => {
     expect(
       getMeasurements({
-        images: [
+        media: [
           {
             width: 10,
             height: 10,
@@ -70,7 +70,7 @@ describe(getMeasurements, () => {
   it("collapses margins between images", () => {
     expect(
       getMeasurements({
-        images: [
+        media: [
           {
             width: 5,
             height: 10,

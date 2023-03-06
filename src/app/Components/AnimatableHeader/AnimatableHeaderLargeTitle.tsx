@@ -1,4 +1,4 @@
-import { Text, useSpace } from "palette"
+import { useSpace, Text } from "@artsy/palette-mobile"
 import Animated, { Extrapolate, interpolate, useAnimatedStyle } from "react-native-reanimated"
 import { useAnimatableHeaderContext } from "./AnimatableHeaderContext"
 

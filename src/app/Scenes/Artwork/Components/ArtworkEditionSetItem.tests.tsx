@@ -1,54 +1,40 @@
 import { fireEvent } from "@testing-library/react-native"
 import { ArtworkEditionSetItem_Test_Query } from "__generated__/ArtworkEditionSetItem_Test_Query.graphql"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { ArtworkEditionSetItemFragmentContainer as ArtworkEditionSetItem } from "./ArtworkEditionSetItem"
 
-
 describe("ArtworkEditionSetItem", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const onSelectEditionMock = jest.fn()
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+  const { renderWithRelay } = setupTestWrapper<ArtworkEditionSetItem_Test_Query>({
+    Component: (props) => {
+      const editionSets = props?.artwork?.editionSets ?? []
+      const firstEditionSet = editionSets[0]
+
+      if (firstEditionSet) {
+        return (
+          <ArtworkEditionSetItem
+            item={firstEditionSet}
+            isSelected={false}
+            onPress={onSelectEditionMock}
+          />
+        )
+      }
+
+      return null
+    },
+    query: graphql`
+      query ArtworkEditionSetItem_Test_Query {
+        artwork(id: "artworkID") {
+          editionSets {
+            ...ArtworkEditionSetItem_item
+          }
+        }
+      }
+    `,
   })
-
-  const TestRenderer = () => {
-    return (
-      <QueryRenderer<ArtworkEditionSetItem_Test_Query>
-        environment={mockEnvironment}
-        query={graphql`
-          query ArtworkEditionSetItem_Test_Query {
-            artwork(id: "artworkID") {
-              editionSets {
-                ...ArtworkEditionSetItem_item
-              }
-            }
-          }
-        `}
-        variables={{}}
-        render={({ props }) => {
-          const editionSets = props?.artwork?.editionSets ?? []
-          const firstEditionSet = editionSets[0]
-
-          if (firstEditionSet) {
-            return (
-              <ArtworkEditionSetItem
-                item={firstEditionSet}
-                isSelected={false}
-                onPress={onSelectEditionMock}
-              />
-            )
-          }
-
-          return null
-        }}
-      />
-    )
-  }
 
   describe("Dimensions", () => {
     it("display dimension in inches when if it is selected as the preferred metric", () => {
@@ -58,9 +44,7 @@ describe("ArtworkEditionSetItem", () => {
         },
       })
 
-      const { queryByText } = renderWithWrappers(<TestRenderer />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      const { queryByText } = renderWithRelay({
         Artwork: () => artwork,
       })
 
@@ -75,9 +59,7 @@ describe("ArtworkEditionSetItem", () => {
         },
       })
 
-      const { queryByText } = renderWithWrappers(<TestRenderer />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      const { queryByText } = renderWithRelay({
         Artwork: () => artwork,
       })
 
@@ -92,9 +74,7 @@ describe("ArtworkEditionSetItem", () => {
         },
       })
 
-      const { queryByText } = renderWithWrappers(<TestRenderer />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      const { queryByText } = renderWithRelay({
         Artwork: () => ({
           editionSets: [
             {
@@ -114,9 +94,7 @@ describe("ArtworkEditionSetItem", () => {
   })
 
   it("should call `onPress` handler with the selected edition set id", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText } = renderWithRelay({
       Artwork: () => artwork,
     })
 

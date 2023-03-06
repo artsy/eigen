@@ -1,4 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
+import { Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import {
   submitAnotherArtworkEvent,
@@ -8,7 +9,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { Box, Button, Flex, Spacer, Text } from "palette"
+import { Button } from "palette"
 import { ArtsyLogoHeader } from "palette/elements/Header/ArtsyLogoHeader"
 import { ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
@@ -36,20 +37,20 @@ export const ArtworkSubmittedScreen: React.FC<ArtworkSubmittedScreenNavigationPr
       <ScrollView>
         <Box>
           <ArtsyLogoHeader />
-          <Text variant="lg-display" mx="2">
+          <Text variant="lg-display" mx={2}>
             Your Artwork Has Been Submitted
           </Text>
-          <Spacer mb={2} />
-          <Text mx="2" color="black60">
+          <Spacer y={2} />
+          <Text mx={2} color="black60">
             We will email you within 1-3 days to confirm if your artwork has been accepted or not.
             In the meantime your submission will appear in the feature, My Collection.
           </Text>
-          <Spacer mb={2} />
-          <Text mx="2" color="black60">
+          <Spacer y={2} />
+          <Text mx={2} color="black60">
             With low fees, informed pricing, and multiple sales options, why not submit another
             piece with Artsy.
           </Text>
-          <Spacer mb={4} />
+          <Spacer y={4} />
           <Flex justifyContent="space-between" mx={2}>
             <Button
               block
@@ -62,7 +63,7 @@ export const ArtworkSubmittedScreen: React.FC<ArtworkSubmittedScreenNavigationPr
             >
               Submit Another Artwork
             </Button>
-            <Spacer mb={2} />
+            <Spacer y={2} />
             <Button
               block
               haptic
@@ -75,7 +76,7 @@ export const ArtworkSubmittedScreen: React.FC<ArtworkSubmittedScreenNavigationPr
             >
               View Artwork in My Collection
             </Button>
-            <Spacer mb={2} />
+            <Spacer y={2} />
           </Flex>
         </Box>
       </ScrollView>

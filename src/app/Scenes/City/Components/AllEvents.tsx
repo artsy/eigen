@@ -1,8 +1,9 @@
+import { Spacer, Box, Text } from "@artsy/palette-mobile"
 import { EventSection } from "app/Scenes/City/Components/EventSection"
 import { BucketResults } from "app/Scenes/Map/bucketCityResults"
 import { Show } from "app/Scenes/Map/types"
 import { isEqual } from "lodash"
-import { Box, Separator, Spacer, Text } from "palette"
+import { Separator } from "palette"
 import React from "react"
 import { FlatList, ViewProps } from "react-native"
 import { RelayProp } from "react-relay"
@@ -233,7 +234,7 @@ export class AllEvents extends React.Component<Props, State> {
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         keyExtractor={(item) => item.type}
         renderItem={(item) => this.renderItem(item)}
-        ListFooterComponent={() => <Spacer m={3} />}
+        ListFooterComponent={() => <Spacer y={4} />}
       />
     )
   }

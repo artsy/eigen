@@ -1,3 +1,4 @@
+import { Text } from "@artsy/palette-mobile"
 import { ArtistInsightsAuctionResultsTestsQuery } from "__generated__/ArtistInsightsAuctionResultsTestsQuery.graphql"
 import {
   ArtworkFiltersState,
@@ -13,11 +14,7 @@ import {
 import { SectionList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import {
-  ArtistInsightsAuctionResultsPaginationContainer,
-  SortMode,
-} from "./ArtistInsightsAuctionResults"
-
+import { ArtistInsightsAuctionResultsPaginationContainer } from "./ArtistInsightsAuctionResults"
 
 describe("ArtistInsightsAuctionResults", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -183,7 +180,7 @@ describe("ArtistInsightsAuctionResults", () => {
         }),
       })
 
-      expect(extractText(tree.root.findByType(SortMode))).toBe(
+      expect(extractText(tree.root.findAllByType(Text)[1])).toBe(
         "1 result • Sorted by most recent sale date"
       )
     })
@@ -198,7 +195,7 @@ describe("ArtistInsightsAuctionResults", () => {
           },
         }),
       })
-      expect(extractText(tree.root.findByType(SortMode))).toBe(
+      expect(extractText(tree.root.findAllByType(Text)[1])).toBe(
         "10 results • Sorted by most recent sale date"
       )
     })

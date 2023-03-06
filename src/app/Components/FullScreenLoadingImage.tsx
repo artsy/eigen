@@ -1,17 +1,17 @@
-import { CircularSpinner, Flex, Spacer, SpacingUnitTheme, Text } from "palette"
+import { Spacer, SpacerProps, Flex, Text } from "@artsy/palette-mobile"
+import { CircularSpinner } from "palette"
 import { ImageBackground, ImageSourcePropType, StyleSheet } from "react-native"
-import { SpaceProps } from "styled-system"
 
 interface FullScreenLoadingImageProps {
   loadingText: string
   imgSource: ImageSourcePropType
-  spacerHeight?: SpaceProps<SpacingUnitTheme>["my"]
+  spacerHeight?: SpacerProps["y"]
 }
 
 export const FullScreenLoadingImage: React.FC<FullScreenLoadingImageProps> = ({
   loadingText,
   imgSource,
-  spacerHeight = 5,
+  spacerHeight = 2,
 }) => {
   return (
     <ImageBackground
@@ -22,7 +22,7 @@ export const FullScreenLoadingImage: React.FC<FullScreenLoadingImageProps> = ({
       <Flex flex={1} alignItems="center" justifyContent="center">
         <CircularSpinner color="white100" size="large" />
 
-        <Spacer my={spacerHeight} />
+        <Spacer y={spacerHeight} />
 
         <Text variant="sm-display" color="white100" textAlign="center">
           {loadingText}

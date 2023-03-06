@@ -1,6 +1,6 @@
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { MarketingCollectionHeaderFragment_marketingCollection$key } from "__generated__/MarketingCollectionHeaderFragment_marketingCollection.graphql"
 import { OnboardingMarketingCollectionSlug } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingMarketingCollection"
-import { Flex, Spacer, Text } from "palette"
 import { ImageBackground, ImageSourcePropType } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
@@ -31,15 +31,15 @@ export const MarketingCollectionHeader: React.FC<MarketingCollectionHeaderProps>
         <Text variant="xl" color="white100">
           {collection.title}
         </Text>
-        <Spacer mt={2} />
+        <Spacer y={2} />
         <Text variant="sm" color="white100">
           {description}
         </Text>
-        <Spacer mt={2} />
+        <Spacer y={2} />
         <Text variant="sm" color="white100">
           {SAVE_INSTRUCTIONS}
         </Text>
-        <Spacer mt={4} />
+        <Spacer y={4} />
       </Flex>
     </ImageBackground>
   )

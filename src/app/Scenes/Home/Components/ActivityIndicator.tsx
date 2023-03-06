@@ -1,7 +1,7 @@
 import { ActionType } from "@artsy/cohesion"
 import { ClickedNotificationsBell } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
+import { BellIcon, Box, useTheme } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
-import { BellIcon, Box, useTheme } from "palette"
 import { VisualClueDot } from "palette/elements/VisualClue"
 import { TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"

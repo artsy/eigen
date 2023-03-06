@@ -1,14 +1,9 @@
-import { render } from "@testing-library/react-native"
-import { Theme } from "palette"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Support } from "./Support"
 
 describe("Support", () => {
   it("render", () => {
-    const { getByText } = render(
-      <Theme>
-        <Support />
-      </Theme>
-    )
+    const { getByText } = renderWithWrappers(<Support />)
 
     expect(getByText("Support")).toBeDefined()
     expect(getByText("Inquiries FAQ")).toBeDefined()

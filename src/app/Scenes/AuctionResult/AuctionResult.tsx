@@ -1,4 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
+import { Spacer, NoArtworkIcon, Flex, Box, useTheme, Text } from "@artsy/palette-mobile"
 import { AuctionResultQuery } from "__generated__/AuctionResultQuery.graphql"
 import { AuctionResult_artist$data } from "__generated__/AuctionResult_artist.graphql"
 import { AuctionResult_auctionResult$data } from "__generated__/AuctionResult_auctionResult.graphql"
@@ -16,7 +17,7 @@ import { screen } from "app/utils/track/helpers"
 import { useStickyScrollHeader } from "app/utils/useStickyScrollHeader"
 import { capitalize } from "lodash"
 import moment from "moment"
-import { Box, Flex, NoArtworkIcon, Separator, Spacer, Text, useTheme } from "palette"
+import { Separator } from "palette"
 import React, { useEffect, useState } from "react"
 import { Animated, Image, TextInput, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -97,7 +98,7 @@ export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
           <Text style={{ width: "35%" }} color="black60">
             {label}
           </Text>
-          <Flex width="65%" pl={15}>
+          <Flex width="65%" pl="15px">
             <Text pl={2} textAlign="right" testID={options?.testID} selectable>
               {value}
             </Text>
@@ -141,12 +142,12 @@ export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
 
   const renderRealizedPriceModal = () => (
     <>
-      <Spacer my={1} />
+      <Spacer y={1} />
       <Text>
         The sale price includes the hammer price and buyer’s premium, as well as any other
         additional fees (e.g., Artist’s Resale Rights).
       </Text>
-      <Spacer mb={2} />
+      <Spacer y={2} />
     </>
   )
 
@@ -358,7 +359,7 @@ const LoadingSkeleton = () => {
   }
   return (
     <Flex mx={2}>
-      <Spacer height={70} />
+      <Spacer y="70px" />
 
       <Flex flexDirection="row">
         {/* Image */}
@@ -366,24 +367,24 @@ const LoadingSkeleton = () => {
         <Flex ml={2} mt={1}>
           {/* Artist name */}
           <PlaceholderBox width={100} height={20} />
-          <Spacer mb={1} />
+          <Spacer y={1} />
           {/* Artwork name */}
           <PlaceholderBox width={150} height={25} />
         </Flex>
       </Flex>
-      <Spacer mb={4} />
+      <Spacer y={4} />
       {/* "Realized price" */}
       <PlaceholderBox width={100} height={15} />
-      <Spacer mb={1} />
+      <Spacer y={1} />
       {/* Price */}
       <PlaceholderBox width={120} height={40} />
-      <Spacer mb={1} />
+      <Spacer y={1} />
       {/* Ratio */}
       <PlaceholderBox width={200} height={20} />
-      <Spacer mb={4} />
+      <Spacer y={4} />
       {/* "details" */}
       <PlaceholderBox width={60} height={30} />
-      <Spacer mb={2} />
+      <Spacer y={2} />
       {details}
     </Flex>
   )

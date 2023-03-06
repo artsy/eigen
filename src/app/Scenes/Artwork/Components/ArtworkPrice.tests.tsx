@@ -8,7 +8,6 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtworkPrice } from "./ArtworkPrice"
 
-
 interface TestRendererProps {
   initialData?: Partial<ArtworkStoreModel>
 }

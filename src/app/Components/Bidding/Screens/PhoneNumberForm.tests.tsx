@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, waitFor } from "@testing-library/react-native"
 import { FakeNavigator } from "app/Components/Bidding/Helpers/FakeNavigator"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { PhoneNumberForm } from "./PhoneNumberForm"
@@ -27,8 +27,7 @@ describe("PhoneNumberForm component", () => {
     fireEvent.changeText(phoneInput, phoneNumber)
 
     fireEvent.press(container.queryAllByText("Add phone number")[1])
-
-    expect(onSubmitMock).toHaveBeenLastCalledWith(formattedPhoneNumber)
+    await waitFor(() => expect(onSubmitMock).toHaveBeenLastCalledWith(formattedPhoneNumber))
   })
 
   it("correctly populates relevant inputs with the passed address fields", () => {

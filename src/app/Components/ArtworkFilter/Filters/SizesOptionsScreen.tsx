@@ -1,3 +1,4 @@
+import { Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import {
   FilterData,
@@ -9,7 +10,7 @@ import {
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
-import { Box, Flex, RadioButton, Spacer, Text } from "palette"
+import { RadioButton } from "palette"
 import React, { useEffect, useState } from "react"
 import { CustomSizeInputs } from "./CustomSizeInputs"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
@@ -123,7 +124,7 @@ const CustomSizeInputsContainer: React.FC<CustomSizeInputsContainerProps> = ({
   }
 
   return (
-    <Box mx={15} my={2}>
+    <Box mx="15px" my={2}>
       <Flex flexDirection="row">
         {metrics.map((currentMetric) => {
           const isSelected = metric === currentMetric
@@ -135,12 +136,12 @@ const CustomSizeInputsContainer: React.FC<CustomSizeInputsContainerProps> = ({
                 selected={isSelected}
                 onPress={() => handleMetricChange(currentMetric)}
               />
-              <Text marginRight="3">{currentMetric}</Text>
+              <Text marginRight="4">{currentMetric}</Text>
             </React.Fragment>
           )
         })}
       </Flex>
-      <Spacer mt={2} />
+      <Spacer y={2} />
       <CustomSizeInputs
         label="Width"
         range={values.width}
@@ -148,7 +149,7 @@ const CustomSizeInputsContainer: React.FC<CustomSizeInputsContainerProps> = ({
         onChange={handleChange(FilterParamName.width)}
         selectedMetric={metric}
       />
-      <Spacer mt={2} />
+      <Spacer y={2} />
       <CustomSizeInputs
         label="Height"
         range={values.height}

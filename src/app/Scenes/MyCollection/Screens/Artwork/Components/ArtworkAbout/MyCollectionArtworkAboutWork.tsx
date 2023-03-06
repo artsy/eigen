@@ -1,10 +1,10 @@
+import { Flex } from "@artsy/palette-mobile"
 import { MyCollectionArtworkAboutWork_artwork$key } from "__generated__/MyCollectionArtworkAboutWork_artwork.graphql"
 import { MyCollectionArtworkAboutWork_marketPriceInsights$key } from "__generated__/MyCollectionArtworkAboutWork_marketPriceInsights.graphql"
 import { Field, MetaDataField } from "app/Scenes/MyCollection/Screens/Artwork/Components/Field"
 import { formatCentsToDollars } from "app/Scenes/MyCollection/utils/formatCentsToDollars"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { capitalize } from "lodash"
-import { Flex } from "palette"
 import { graphql, useFragment } from "react-relay"
 
 interface EstimatePriceType {
@@ -27,6 +27,7 @@ export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWork
 
   const {
     category,
+    confidentialNotes,
     medium,
     attributionClass,
     dimensions,
@@ -54,6 +55,9 @@ export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWork
       <MetaDataField label="Year created" value={date} />
       <MetaDataField label="Provenance" value={provenance} />
       <MetaDataField label="Price Paid" value={pricePaid?.display} />
+      {confidentialNotes ? (
+        <MetaDataField label="Notes" value={confidentialNotes} truncateLimit={70} />
+      ) : null}
     </Flex>
   )
 }
@@ -61,6 +65,7 @@ export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWork
 const artworkFragment = graphql`
   fragment MyCollectionArtworkAboutWork_artwork on Artwork {
     category
+    confidentialNotes
     medium
     metric
     dimensions {

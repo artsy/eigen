@@ -1,8 +1,8 @@
-import { act, fireEvent, getDefaultNormalizer, screen, within } from "@testing-library/react-native"
+import { nbsp, emdash, LinkText } from "@artsy/palette-mobile"
+import { fireEvent, getDefaultNormalizer, screen, within } from "@testing-library/react-native"
 import { navigate } from "app/system/navigation/navigate"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { emdash, LinkText, nbsp } from "palette"
 import { Text as RNText } from "react-native"
 import { ReadMore } from "./ReadMore"
 
@@ -58,12 +58,10 @@ describe("ReadMore", () => {
     expect(extractText(UNSAFE_queryAllByType(RNText)[1])).toBe(`Read${nbsp}more`)
 
     // Clicking "Read more" expands the text
-    act(() =>
-      fireEvent.press(
-        getByText(`Read${nbsp}more`, {
-          normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
-        })
-      )
+    fireEvent.press(
+      getByText(`Read${nbsp}more`, {
+        normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
+      })
     )
 
     expect(queryByText("This text is slightly longer than is allowed.")).toBeTruthy()
@@ -87,12 +85,10 @@ describe("ReadMore", () => {
     expect(UNSAFE_getAllByType(LinkText)).toHaveLength(2) // One for the `/artist/text` link, one for "Read more"
 
     // Clicking "Read more" expands the text
-    act(() =>
-      fireEvent.press(
-        getByText(`Read${nbsp}more`, {
-          normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
-        })
-      )
+    fireEvent.press(
+      getByText(`Read${nbsp}more`, {
+        normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
+      })
     )
 
     expect(within(getByText(/This/)).getByText(/text/)).toBeTruthy()
@@ -105,7 +101,7 @@ describe("ReadMore", () => {
       <ReadMore maxChars={7} content="Small [text](/artist/andy-warhol)." presentLinksModally />
     )
 
-    act(() => fireEvent.press(UNSAFE_getAllByType(LinkText)[0]))
+    fireEvent.press(UNSAFE_getAllByType(LinkText)[0])
 
     expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol", { modal: true })
   })
@@ -115,7 +111,7 @@ describe("ReadMore", () => {
       <ReadMore maxChars={7} content="Small [text](/artist/andy-warhol)." />
     )
 
-    act(() => fireEvent.press(UNSAFE_getAllByType(LinkText)[0]))
+    fireEvent.press(UNSAFE_getAllByType(LinkText)[0])
 
     expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol")
   })

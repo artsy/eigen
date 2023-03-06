@@ -1,4 +1,4 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { fireEvent, RenderResult, screen } from "@testing-library/react-native"
 import { MyCollectionTestsQuery } from "__generated__/MyCollectionTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
@@ -7,92 +7,66 @@ import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabP
 
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { navigate } from "app/system/navigation/navigate"
-import { extractText } from "app/utils/tests/extractText"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
-import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { ReactTestRenderer } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { MyCollectionContainer } from "./MyCollection"
 
-
 describe("MyCollection", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  const TestRenderer = () => (
-    <ArtworkFiltersStoreProvider>
-      <QueryRenderer<MyCollectionTestsQuery>
-        environment={mockEnvironment}
-        query={graphql`
-          query MyCollectionTestsQuery @relay_test_operation {
-            me {
-              ...MyCollection_me
-            }
-          }
-        `}
-        variables={{}}
-        render={({ props }) => {
-          if (props?.me) {
-            return (
-              <StickyTabPage
-                tabs={[
-                  {
-                    title: "test",
-                    content: <MyCollectionContainer me={props.me} />,
-                  },
-                ]}
-              />
-            )
-          }
-          return null
-        }}
-      />
-    </ArtworkFiltersStoreProvider>
-  )
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+  const { renderWithRelay } = setupTestWrapper<MyCollectionTestsQuery>({
+    Component: (props) => {
+      if (props?.me) {
+        return (
+          <ArtworkFiltersStoreProvider>
+            <StickyTabPage
+              tabs={[
+                {
+                  title: "test",
+                  content: <MyCollectionContainer me={props.me} />,
+                },
+              ]}
+            />
+          </ArtworkFiltersStoreProvider>
+        )
+      }
+      return null
+    },
+    query: graphql`
+      query MyCollectionTestsQuery @relay_test_operation {
+        me {
+          ...MyCollection_me
+        }
+      }
+    `,
   })
 
   afterEach(() => {
     jest.clearAllMocks()
   })
 
-  const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, mockResolvers)
-    )
-    return tree
-  }
-
-  const getZeroStateWrapper = () =>
-    getWrapper({
-      Me: () => ({
-        myCollectionConnection: {
-          edges: [],
-        },
-      }),
-    })
-
   describe("collection is empty", () => {
-    let tree: ReactTestRenderer
+    let tree: RenderResult
 
     beforeEach(() => {
-      tree = getZeroStateWrapper()
+      tree = renderWithRelay({
+        Me: () => ({
+          myCollectionConnection: {
+            edges: [],
+          },
+        }),
+      })
     })
 
     it("shows zerostate", () => {
-      expect(extractText(tree.root)).toContain("Your Art Collection in Your Pocket")
-      expect(extractText(tree.root)).toContain(
-        "Access market insights and manage your collection online."
-      )
+      expect(tree.getByText("Your Art Collection in Your Pocket")).toBeTruthy()
+      expect(
+        tree.getByText("Access market insights and manage your collection online.")
+      ).toBeTruthy()
     })
 
     it("navigates to MyCollectionArtworkForm when Add Artwork is pressed", () => {
-      const addArtworkButton = tree.root.findByProps({ testID: "add-artwork-button-zero-state" })
+      const addArtworkButton = tree.UNSAFE_getByProps({ testID: "add-artwork-button-zero-state" })
       addArtworkButton.props.onPress()
 
       expect(navigate).toHaveBeenCalledWith(
@@ -104,7 +78,7 @@ describe("MyCollection", () => {
     })
 
     it("tracks analytics event when Add Artwork is pressed", () => {
-      const addArtworkButton = tree.root.findByProps({ testID: "add-artwork-button-zero-state" })
+      const addArtworkButton = tree.UNSAFE_getByProps({ testID: "add-artwork-button-zero-state" })
       addArtworkButton.props.onPress()
 
       expect(mockTrackEvent).toHaveBeenCalledTimes(1)
@@ -122,22 +96,16 @@ describe("MyCollection", () => {
   })
 
   describe("collection is not empty", () => {
-    let tree: ReactTestRenderer
-    beforeEach(() => {
-      tree = getWrapper()
-    })
-
     it("renders without throwing an error", () => {
-      expect(tree.root.findByType(StickyTabPageScrollView)).toBeDefined()
-      expect(tree.root.findByType(InfiniteScrollMyCollectionArtworksGridContainer)).toBeDefined()
+      const tree = renderWithRelay()
+      expect(tree.UNSAFE_getByType(StickyTabPageScrollView)).toBeDefined()
+      expect(tree.UNSAFE_getByType(InfiniteScrollMyCollectionArtworksGridContainer)).toBeDefined()
     })
   })
 
   describe("sorting and filtering", () => {
     it.skip("filters and sorts without crashing", async () => {
-      renderWithWrappers(<TestRenderer />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      renderWithRelay({
         Me: () => ({
           myCollectionConnection,
         }),

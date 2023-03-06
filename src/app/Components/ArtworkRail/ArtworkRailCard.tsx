@@ -1,3 +1,4 @@
+import { Flex, HeartFillIcon, HeartIcon, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import {
   ArtworkRailCard_artwork$data,
@@ -5,11 +6,13 @@ import {
 } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { Schema } from "app/utils/track"
+import { sizeToFit } from "app/utils/useSizeToFit"
 import { compact } from "lodash"
-import { Flex, HeartFillIcon, HeartIcon, Spacer, Text, Touchable, useColor } from "palette"
+import { Touchable } from "palette"
 import { useMemo } from "react"
 import { GestureResponderEvent, PixelRatio } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"
@@ -18,7 +21,7 @@ import styled from "styled-components/native"
 import { LARGE_RAIL_IMAGE_WIDTH } from "./LargeArtworkRail"
 import { SMALL_RAIL_IMAGE_WIDTH } from "./SmallArtworkRail"
 
-export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = 60
+export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = 70
 const SAVE_ICON_SIZE = 26
 
 export const ARTWORK_RAIL_CARD_IMAGE_HEIGHT = {
@@ -26,16 +29,20 @@ export const ARTWORK_RAIL_CARD_IMAGE_HEIGHT = {
   large: 320,
 }
 
+const ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH = 295
+
 export type ArtworkCardSize = "small" | "large"
 
 export interface ArtworkRailCardProps {
   artwork: ArtworkRailCard_artwork$key
+  dark?: boolean
   hideArtistName?: boolean
-  hidePartnerName?: boolean
+  showPartnerName?: boolean
   isRecentlySoldArtwork?: boolean
   lotLabel?: string | null
   lowEstimateDisplay?: string
   highEstimateDisplay?: string
+  performanceDisplay?: string
   onPress?: (event: GestureResponderEvent) => void
   priceRealizedDisplay?: string
   showSaveIcon?: boolean
@@ -46,11 +53,13 @@ export interface ArtworkRailCardProps {
 
 export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   hideArtistName = false,
-  hidePartnerName = false,
+  showPartnerName = false,
+  dark = false,
   isRecentlySoldArtwork = false,
   lotLabel,
   lowEstimateDisplay,
   highEstimateDisplay,
+  performanceDisplay,
   onPress,
   priceRealizedDisplay,
   showSaveIcon = false,
@@ -73,6 +82,10 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
       ? getUrgencyTag(artwork?.sale?.endAt)
       : null
 
+  const primaryTextColor = dark ? "white100" : "black100"
+  const secondaryTextColor = dark ? "black15" : "black60"
+  const backgroundColor = dark ? "black100" : "white100"
+
   const getTextHeightByArtworkSize = (cardSize: ArtworkCardSize) => {
     if (cardSize === "small") {
       return ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + 30
@@ -81,11 +94,16 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   }
 
   const containerWidth = useMemo(() => {
-    const imageDimensions = getImageDimensions({
-      width: image?.resized?.width ?? 0,
-      height: image?.resized?.height ?? 0,
-      maxHeight: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
-    })
+    const imageDimensions = sizeToFit(
+      {
+        width: image?.resized?.width ?? 0,
+        height: image?.resized?.height ?? 0,
+      },
+      {
+        width: ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
+        height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
+      }
+    )
 
     switch (size) {
       case "small":
@@ -132,6 +150,11 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     trackEvent(tracks.saveOrUnsave(isSaved, internalID, slug, trackingContextScreenOwnerType))
   }
 
+  const enableNewSWALandingPage = useFeatureFlag("AREnableNewSWALandingPage")
+
+  const displayForRecentlySoldArtwork =
+    !!isRecentlySoldArtwork && size === "large" && enableNewSWALandingPage
+
   return (
     <ArtworkCard onPress={onPress || undefined} testID={testID}>
       <Flex>
@@ -154,28 +177,33 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
         >
           <Flex flex={1}>
             {!!lotLabel && (
-              <Text lineHeight="20" color="black60" numberOfLines={1}>
+              <Text lineHeight="20px" color={secondaryTextColor} numberOfLines={1}>
                 Lot {lotLabel}
               </Text>
             )}
             {!hideArtistName && !!artistNames && (
-              <Text numberOfLines={size === "small" ? 2 : 1} lineHeight="20" variant="xs">
+              <Text
+                color={primaryTextColor}
+                numberOfLines={size === "small" ? 2 : 1}
+                lineHeight={displayForRecentlySoldArtwork ? undefined : "20px"}
+                variant={displayForRecentlySoldArtwork ? "md" : "xs"}
+              >
                 {artistNames}
               </Text>
             )}
             {!!title && (
               <Text
-                lineHeight="20"
-                color="black60"
+                lineHeight={displayForRecentlySoldArtwork ? undefined : "20px"}
+                color={displayForRecentlySoldArtwork ? undefined : secondaryTextColor}
                 numberOfLines={size === "small" ? 2 : 1}
                 variant="xs"
-                fontStyle="italic"
+                fontStyle={displayForRecentlySoldArtwork ? undefined : "italic"}
               >
                 {title}
                 {!!date && (
                   <Text
-                    lineHeight="20"
-                    color="black60"
+                    lineHeight={displayForRecentlySoldArtwork ? undefined : "20px"}
+                    color={displayForRecentlySoldArtwork ? undefined : secondaryTextColor}
                     numberOfLines={size === "small" ? 2 : 1}
                     variant="xs"
                   >
@@ -186,38 +214,26 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
               </Text>
             )}
 
-            {!hidePartnerName && !!partner?.name && (
-              <Text lineHeight="20" color="black60" numberOfLines={1}>
+            {!!showPartnerName && !!partner?.name && (
+              <Text lineHeight="20px" variant="xs" color={secondaryTextColor} numberOfLines={1}>
                 {partner?.name}
               </Text>
             )}
             {!!isRecentlySoldArtwork && size === "large" && (
-              <>
-                <Spacer mt={2} />
-                <Flex flexDirection="row" justifyContent="space-between">
-                  <Text variant="xs" color="black60" numberOfLines={1} fontWeight="500">
-                    Estimate
-                  </Text>
-                  <Text variant="xs" color="black60" numberOfLines={1} fontWeight="500">
-                    {compact([lowEstimateDisplay, highEstimateDisplay]).join("—")}
-                  </Text>
-                </Flex>
-                <Flex flexDirection="row" justifyContent="space-between">
-                  <Text variant="xs" color="blue100" numberOfLines={1} fontWeight="500">
-                    Sold For (incl. premium)
-                  </Text>
-                  <Text variant="xs" color="blue100" numberOfLines={1} fontWeight="500">
-                    {priceRealizedDisplay}
-                  </Text>
-                </Flex>
-              </>
+              <RecentlySoldCardSection
+                priceRealizedDisplay={priceRealizedDisplay}
+                lowEstimateDisplay={lowEstimateDisplay}
+                highEstimateDisplay={highEstimateDisplay}
+                performanceDisplay={performanceDisplay}
+                secondaryTextColor={secondaryTextColor}
+              />
             )}
 
             {!!saleMessage && !isRecentlySoldArtwork && (
               <Text
-                lineHeight="20"
+                lineHeight="20px"
                 variant="xs"
-                color="black100"
+                color={primaryTextColor}
                 numberOfLines={1}
                 fontWeight={500}
               >
@@ -226,12 +242,13 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
             )}
           </Flex>
           {!!showSaveIcon && (
-            <Flex ml={0.2}>
+            <Flex>
               <Touchable
                 haptic
                 hitSlop={{ bottom: 5, right: 5, left: 5, top: 5 }}
                 onPress={handleArtworkSave}
                 testID="save-artwork-icon"
+                underlayColor={backgroundColor}
               >
                 {isSaved ? (
                   <HeartFillIcon
@@ -245,6 +262,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                     testID="empty-heart-icon"
                     height={SAVE_ICON_SIZE}
                     width={SAVE_ICON_SIZE}
+                    fill={primaryTextColor}
                   />
                 )}
               </Touchable>
@@ -284,11 +302,16 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
     )
   }
 
-  const imageDimensions = getImageDimensions({
-    width: width ?? 0,
-    height: height ?? 0,
-    maxHeight: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
-  })
+  const imageDimensions = sizeToFit(
+    {
+      width: width ?? 0,
+      height: height ?? 0,
+    },
+    {
+      width: ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
+      height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
+    }
+  )
 
   return (
     <Flex>
@@ -296,7 +319,7 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
         <OpaqueImageView
           style={{ maxHeight: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size] }}
           imageURL={src}
-          height={imageDimensions.height}
+          height={imageDimensions.height || ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size]}
           width={containerWidth!}
         />
       </Flex>
@@ -320,21 +343,59 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
   )
 }
 
-const getImageDimensions = ({
-  height,
-  width,
-  maxHeight,
-}: {
-  height: number
-  width: number
-  maxHeight: number
+const RecentlySoldCardSection: React.FC<
+  Pick<
+    ArtworkRailCardProps,
+    "priceRealizedDisplay" | "lowEstimateDisplay" | "highEstimateDisplay" | "performanceDisplay"
+  > & { secondaryTextColor: string }
+> = ({
+  priceRealizedDisplay,
+  lowEstimateDisplay,
+  highEstimateDisplay,
+  performanceDisplay,
+  secondaryTextColor,
 }) => {
-  const aspectRatio = width / height
-  if (height > maxHeight) {
-    const maxWidth = maxHeight * aspectRatio
-    return { width: maxWidth, height: maxHeight }
+  const enableNewSWALandingPage = useFeatureFlag("AREnableNewSWALandingPage")
+  if (enableNewSWALandingPage) {
+    return (
+      <>
+        <Flex flexDirection="row" justifyContent="space-between" mt={1}>
+          <Text variant="lg-display" numberOfLines={1}>
+            {priceRealizedDisplay}
+          </Text>
+          {performanceDisplay && (
+            <Text variant="lg-display" color="green" numberOfLines={1}>
+              {performanceDisplay}
+            </Text>
+          )}
+        </Flex>
+        <Text variant="xs" color="black60" lineHeight="20px">
+          Estimate {compact([lowEstimateDisplay, highEstimateDisplay]).join("—")}
+        </Text>
+      </>
+    )
   }
-  return { width, height }
+  return (
+    <>
+      <Spacer y={2} />
+      <Flex flexDirection="row" justifyContent="space-between">
+        <Text variant="xs" color={secondaryTextColor} numberOfLines={1} fontWeight="500">
+          Estimate
+        </Text>
+        <Text variant="xs" color={secondaryTextColor} numberOfLines={1} fontWeight="500">
+          {compact([lowEstimateDisplay, highEstimateDisplay]).join("—")}
+        </Text>
+      </Flex>
+      <Flex flexDirection="row" justifyContent="space-between">
+        <Text variant="xs" color="blue100" numberOfLines={1} fontWeight="500">
+          Sold For (incl. premium)
+        </Text>
+        <Text variant="xs" color="blue100" numberOfLines={1} fontWeight="500">
+          {priceRealizedDisplay}
+        </Text>
+      </Flex>
+    </>
+  )
 }
 
 const SaveArtworkMutation = graphql`

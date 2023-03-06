@@ -1,20 +1,14 @@
 import { fireEvent } from "@testing-library/react-native"
 import * as navigation from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { Theme } from "palette"
 import { graphql } from "react-relay"
 import { ItemArtworkFragmentContainer } from "./ItemArtwork"
 
-
 describe("ItemArtworkFragmentContainer", () => {
   const { renderWithRelay } = setupTestWrapper({
-    Component: (props: any) => (
-      <Theme>
-        <ItemArtworkFragmentContainer {...props} />
-      </Theme>
-    ),
+    Component: (props: any) => <ItemArtworkFragmentContainer {...props} />,
     query: graphql`
-      query ItemArtwork_Test_Query {
+      query ItemArtwork_Test_Query @relay_test_operation {
         artwork(id: "test-artwork") {
           ...ItemArtwork_artwork
         }

@@ -1,3 +1,4 @@
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { MyProfilePaymentDeleteCardMutation } from "__generated__/MyProfilePaymentDeleteCardMutation.graphql"
 import { MyProfilePaymentQuery } from "__generated__/MyProfilePaymentQuery.graphql"
 import { MyProfilePayment_me$data } from "__generated__/MyProfilePayment_me.graphql"
@@ -10,7 +11,6 @@ import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Flex, Spacer, Text } from "palette"
 import React, { useCallback, useEffect, useReducer, useState } from "react"
 import {
   ActivityIndicator,
@@ -158,9 +158,9 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPag
           </Flex>
         )}
         onEndReached={onLoadMore}
-        ItemSeparatorComponent={() => <Spacer mb={10} />}
+        ItemSeparatorComponent={() => <Spacer y={1} />}
         ListFooterComponent={
-          <Flex pt={creditCards.length === 0 ? 0 : "2"}>
+          <Flex pt={creditCards.length === 0 ? undefined : 2}>
             <MenuItem
               title="Add New Card"
               onPress={() => navigate("/my-profile/payment/new-card")}
@@ -175,7 +175,7 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPag
 
 export const MyProfilePaymentPlaceholder: React.FC<{}> = () => (
   <PageWithSimpleHeader title="Payment">
-    <Flex px={2} py={15}>
+    <Flex px={2} py="15px">
       {times(2).map((index: number) => (
         <Flex key={index} py={1}>
           <PlaceholderText width={100 + Math.random() * 100} />

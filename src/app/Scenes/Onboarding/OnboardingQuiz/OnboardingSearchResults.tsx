@@ -1,3 +1,4 @@
+import { Spacer, quoteLeft, quoteRight, Flex } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { OnboardingSearchResultsQuery } from "__generated__/OnboardingSearchResultsQuery.graphql"
 import { OnboardingSearchResults_viewer$key } from "__generated__/OnboardingSearchResults_viewer.graphql"
@@ -5,7 +6,7 @@ import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { times } from "lodash"
-import { Flex, Join, Message, quoteLeft, quoteRight, Spacer } from "palette"
+import { Join, Message } from "palette"
 import { Suspense } from "react"
 import { FlatList } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
@@ -46,7 +47,7 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entit
       contentContainerStyle={{
         paddingBottom: 80,
       }}
-      ItemSeparatorComponent={() => <Spacer mt={2} />}
+      ItemSeparatorComponent={() => <Spacer y={2} />}
       keyExtractor={(item, index) => {
         switch (item.__typename) {
           case "Artist":
@@ -92,7 +93,7 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entit
       }}
       ListEmptyComponent={
         <>
-          <Spacer mt={2} />
+          <Spacer y={2} />
           <Message
             variant="default"
             title={`Sorry, we couldn’t find anything for ${quoteLeft}${term}.${quoteRight}`}
@@ -168,7 +169,7 @@ const OnboardingSearchResultsFragment = graphql`
 const Placeholder = () => (
   <ProvidePlaceholderContext>
     <Flex testID="OnboardingSearchResultsPlaceholder">
-      <Join separator={<Spacer height={20} />}>
+      <Join separator={<Spacer y={2} />}>
         {times(10).map((index: number) => (
           <Flex key={index}>
             <ArtistListItemPlaceholder />

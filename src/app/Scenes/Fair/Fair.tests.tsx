@@ -15,7 +15,6 @@ import { FairFollowedArtistsRailFragmentContainer } from "./Components/FairFollo
 import { FairHeaderFragmentContainer } from "./Components/FairHeader"
 import { Fair, FairFragmentContainer } from "./Fair"
 
-
 describe("Fair", () => {
   const trackEvent = useTracking().trackEvent
   let env: ReturnType<typeof createMockEnvironment>

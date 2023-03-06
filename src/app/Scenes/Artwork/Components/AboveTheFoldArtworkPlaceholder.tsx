@@ -1,8 +1,8 @@
+import { Spacer, Flex, useSpace } from "@artsy/palette-mobile"
 import { useImagePlaceholderDimensions } from "app/Scenes/Artwork/helpers"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { PlaceholderBox, PlaceholderText, RandomNumberGenerator } from "app/utils/placeholders"
 import { times } from "lodash"
-import { Flex, Join, Separator, Spacer, useSpace } from "palette"
+import { Join } from "palette"
 import { useMemo } from "react"
 
 interface AboveTheFoldPlaceholderProps {
@@ -41,11 +41,11 @@ const ArtworkDetailPlaceholderText = () => {
 
 const ArtworkDetailsPlaceholder = () => {
   return (
-    <Join separator={<Spacer mt={1} />}>
+    <Join separator={<Spacer y={1} />}>
       {times(10).map((index) => (
         <Flex key={`detail-row-${index}`} flexDirection="row">
           <PlaceholderText width={128} height={20} />
-          <Spacer mr={2} />
+          <Spacer x={2} />
           <ArtworkDetailPlaceholderText />
         </Flex>
       ))}
@@ -53,9 +53,7 @@ const ArtworkDetailsPlaceholder = () => {
   )
 }
 
-const RedesignedAboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> = ({
-  artworkID,
-}) => {
+export const AboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> = ({ artworkID }) => {
   const space = useSpace()
   const { width, height } = useImagePlaceholderDimensions(artworkID)
 
@@ -67,7 +65,7 @@ const RedesignedAboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> 
           <PlaceholderBox width={20} height={20} />
 
           <Flex flexDirection="row" alignItems="center">
-            <PlaceholderBox width={25} height={25} marginRight={space(2)} />
+            <PlaceholderBox width={105} height={25} marginRight={space(1)} />
             <PlaceholderBox width={105} height={25} />
           </Flex>
         </Flex>
@@ -78,14 +76,14 @@ const RedesignedAboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> 
         <PlaceholderBox width={width} height={height} />
       </Flex>
 
-      <Spacer mt={1} />
+      <Spacer y={1} />
 
       {/* Content */}
       <Flex px={2}>
         {/* save/share buttons */}
         <ArtworkActionsPlaceholder />
 
-        <Spacer mb={4} />
+        <Spacer y={4} />
 
         {/* Artist name */}
         <PlaceholderText width={100} height={30} />
@@ -93,65 +91,11 @@ const RedesignedAboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> 
         {/* Artwork tombstone details */}
         <PlaceholderText width={250} height={26} />
 
-        <Spacer mb={4} />
+        <Spacer y={4} />
 
         {/* Artwork details */}
         <ArtworkDetailsPlaceholder />
       </Flex>
     </Flex>
   )
-}
-
-const CurrentAboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> = ({ artworkID }) => {
-  const space = useSpace()
-  const { width, height } = useImagePlaceholderDimensions(artworkID)
-
-  return (
-    <Flex pt={5} pb={2}>
-      {/* Artwork thumbnail */}
-      <Flex mx="auto">
-        <PlaceholderBox width={width} height={height} />
-      </Flex>
-      <Spacer mb={2} />
-
-      {/* Content */}
-      <Flex px={2} flex={1}>
-        {/* save/share buttons */}
-        <Flex flexDirection="row" justifyContent="center" alignItems="center" height={30}>
-          <PlaceholderBox width={50} height={15} marginHorizontal={space(1)} />
-          <PlaceholderBox width={50} height={15} marginHorizontal={space(1)} />
-          <PlaceholderBox width={50} height={15} marginHorizontal={space(1)} />
-        </Flex>
-        <Spacer mb={4} />
-
-        {/* Artist name */}
-        <PlaceholderText width={100} height={26} />
-
-        {/* Artwork tombstone details */}
-        <PlaceholderText width={250} height={26} marginBottom={0} />
-
-        {/* more junk */}
-        <Spacer mb={3} />
-        <Separator />
-        <Spacer mb={3} />
-
-        {/* Artwork price */}
-        <PlaceholderText width={100} height={36} />
-        <Spacer mb={1} />
-
-        {/* commerce button */}
-        <PlaceholderBox height={50} />
-      </Flex>
-    </Flex>
-  )
-}
-
-export const AboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> = (props) => {
-  const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
-
-  if (enableArtworkRedesign) {
-    return <RedesignedAboveTheFoldPlaceholder {...props} />
-  }
-
-  return <CurrentAboveTheFoldPlaceholder {...props} />
 }

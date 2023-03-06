@@ -1,3 +1,4 @@
+import { bullet, Flex, Text } from "@artsy/palette-mobile"
 import { FairsRail_fairsModule$data } from "__generated__/FairsRail_fairsModule.graphql"
 import {
   CardRailCard,
@@ -10,8 +11,7 @@ import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { concat, take } from "lodash"
-import { bullet, Flex, Text } from "palette"
-import React, { useImperativeHandle, useRef } from "react"
+import { memo, useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -21,7 +21,6 @@ interface Props {
   title: string
   subtitle?: string
   fairsModule: FairsRail_fairsModule$data
-  mb?: number
 }
 
 type FairItem = FairsRail_fairsModule$data["results"][0]
@@ -35,7 +34,7 @@ const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
   }))
 
   const FairHeader = () => (
-    <Flex pl="2" pr="2">
+    <Flex pl={2} pr={2}>
       <SectionTitle title={props.title} subtitle={props.subtitle} />
     </Flex>
   )
@@ -45,12 +44,12 @@ const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
   }
 
   return (
-    <Flex mb={props.mb}>
+    <Flex>
       {props.fairsModule.results.length ? <FairHeader /> : null}
       <CardRailFlatList<FairItem>
         listRef={listRef}
         data={props.fairsModule.results}
-        ListEmptyComponent={() => <React.Fragment />}
+        initialNumToRender={3}
         renderItem={({ item: result, index }) => {
           // Fairs are expected to always have >= 2 artworks and a hero image.
           // We can make assumptions about this in UI layout, but should still
@@ -79,12 +78,12 @@ const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
               <View>
                 <ThreeUpImageLayout imageURLs={artworkImageURLs} />
                 <MetadataContainer>
-                  <Text numberOfLines={1} lineHeight="20" variant="sm">
+                  <Text numberOfLines={1} lineHeight="20px" variant="sm">
                     {result?.name}
                   </Text>
                   <Text
                     numberOfLines={1}
-                    lineHeight="20"
+                    lineHeight="20px"
                     color="black60"
                     variant="sm"
                     testID="card-subtitle"
@@ -103,47 +102,49 @@ const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
   )
 }
 
-export const FairsRailFragmentContainer = createFragmentContainer(FairsRail, {
-  fairsModule: graphql`
-    fragment FairsRail_fairsModule on HomePageFairsModule {
-      results {
-        id
-        internalID
-        slug
-        profile {
+export const FairsRailFragmentContainer = memo(
+  createFragmentContainer(FairsRail, {
+    fairsModule: graphql`
+      fragment FairsRail_fairsModule on HomePageFairsModule {
+        results {
+          id
+          internalID
           slug
-        }
-        name
-        exhibitionPeriod(format: SHORT)
-        image {
-          url(version: "large")
-        }
-        location {
-          city
-          country
-        }
-        followedArtistArtworks: filterArtworksConnection(
-          first: 2
-          input: { includeArtworksByFollowedArtists: true }
-        ) {
-          edges {
-            node {
-              image {
-                url(version: "large")
+          profile {
+            slug
+          }
+          name
+          exhibitionPeriod(format: SHORT)
+          image {
+            url(version: "large")
+          }
+          location {
+            city
+            country
+          }
+          followedArtistArtworks: filterArtworksConnection(
+            first: 2
+            input: { includeArtworksByFollowedArtists: true }
+          ) {
+            edges {
+              node {
+                image {
+                  url(version: "large")
+                }
               }
             }
           }
-        }
-        otherArtworks: filterArtworksConnection(first: 2) {
-          edges {
-            node {
-              image {
-                url(version: "large")
+          otherArtworks: filterArtworksConnection(first: 2) {
+            edges {
+              node {
+                image {
+                  url(version: "large")
+                }
               }
             }
           }
         }
       }
-    }
-  `,
-})
+    `,
+  })
+)

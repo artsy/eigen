@@ -6,7 +6,6 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ShowArtworksEmptyStateFragmentContainer } from "./Components/ShowArtworksEmptyState"
 
-
 describe("ShowArtworksEmptyState", () => {
   let env: ReturnType<typeof createMockEnvironment>
 

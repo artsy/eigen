@@ -1,3 +1,4 @@
+import { Spacer, useColor, Text } from "@artsy/palette-mobile"
 import { ArtistAbout_artist$data } from "__generated__/ArtistAbout_artist.graphql"
 import { ArtistCollectionsRail_collections$data } from "__generated__/ArtistCollectionsRail_collections.graphql"
 import { CollectionArtistSeriesRail_collectionGroup$data } from "__generated__/CollectionArtistSeriesRail_collectionGroup.graphql"
@@ -6,7 +7,6 @@ import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
-import { Spacer, Text, useColor } from "palette"
 import { View } from "react-native"
 import { useTracking } from "react-tracking"
 // @ts-ignore
@@ -43,9 +43,9 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
         data={collections as GenericArtistSeriesItem[]}
         keyExtractor={(_item, index) => String(index)}
         initialNumToRender={3}
-        ListHeaderComponent={() => <Spacer mx={2} />}
-        ListFooterComponent={() => <Spacer mx={2} />}
-        ItemSeparatorComponent={() => <Spacer mx={0.5} />}
+        ListHeaderComponent={() => <Spacer x={2} />}
+        ListFooterComponent={() => <Spacer x={2} />}
+        ItemSeparatorComponent={() => <Spacer x={0.5} />}
         renderItem={({ item: result, index }) => {
           const artworkImageURLs = extractNodes(
             result?.artworksConnection,
@@ -76,13 +76,13 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
                 <ThreeUpImageLayout imageURLs={artworkImageURLs} />
 
                 <MetadataContainer>
-                  <GenericArtistSeriesTitle weight="medium" variant="sm">
+                  <Text weight="medium" variant="sm" m="15px" mb={0}>
                     {result.title}
-                  </GenericArtistSeriesTitle>
+                  </Text>
                   {!!result.priceGuidance && (
-                    <GenericArtistSeriesMeta color={color("black60")} variant="sm">
+                    <Text color={color("black60")} variant="sm" mx="15px">
                       {"From $" + `${result.priceGuidance.toLocaleString()}`}
-                    </GenericArtistSeriesMeta>
+                    </Text>
                   )}
                 </MetadataContainer>
               </View>
@@ -93,14 +93,6 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
     </View>
   )
 }
-
-export const GenericArtistSeriesMeta = styled(Text)`
-  margin: 0 15px;
-`
-
-export const GenericArtistSeriesTitle = styled(Text)`
-  margin: 15px 15px 0 15px;
-`
 
 const MetadataContainer = styled(View)`
   margin-bottom: 15px;

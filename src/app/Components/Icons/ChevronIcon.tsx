@@ -1,4 +1,4 @@
-import { Color, useColor } from "palette"
+import { useColor, Color } from "@artsy/palette-mobile"
 import Svg, { G, Path } from "react-native-svg"
 
 interface ChevronIconProps extends React.Props<ChevronIconProps> {

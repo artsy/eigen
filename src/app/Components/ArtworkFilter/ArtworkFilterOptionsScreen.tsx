@@ -1,3 +1,4 @@
+import { FilterIcon, Flex, Text } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { themeGet } from "@styled-system/theme-get"
 import { AnimatableHeader } from "app/Components/AnimatableHeader/AnimatableHeader"
@@ -18,7 +19,6 @@ import {
 import { Schema } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import _ from "lodash"
-import { FilterIcon, Flex, Text } from "palette"
 import React, { useMemo } from "react"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -341,17 +341,17 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
 
   return (
     <AnimatedBottomButton isVisible={isVisible} onPress={onPress} buttonStyles={roundedButtonStyle}>
-      <FilterArtworkButton px="2" style={roundedButtonStyle}>
+      <FilterArtworkButton px={2} style={roundedButtonStyle}>
         <FilterIcon fill="white100" />
-        <Text variant="sm" pl="1" py="1" color="white100" weight="medium">
+        <Text variant="sm" pl={1} py={1} color="white100" weight="medium">
           {text}
         </Text>
         {getFiltersCount() > 0 && (
           <>
-            <Text variant="sm" pl={0.5} py="1" color="white100" weight="medium">
+            <Text variant="sm" pl={0.5} py={1} color="white100" weight="medium">
               {"\u2022"}
             </Text>
-            <Text variant="sm" pl={0.5} py="1" color="white100" weight="medium">
+            <Text variant="sm" pl={0.5} py={1} color="white100" weight="medium">
               {getFiltersCount()}
             </Text>
           </>

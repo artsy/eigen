@@ -1,7 +1,7 @@
+import { LinkText } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { defaultRules, MarkdownRules } from "app/utils/renderMarkdown"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { LinkText } from "palette"
 import { Linking, Text } from "react-native"
 
 import { Markdown } from "./Markdown"

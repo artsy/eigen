@@ -1,5 +1,6 @@
+import { Spacer, Box, Text } from "@artsy/palette-mobile"
 import { goBack, navigate } from "app/system/navigation/navigate"
-import { Box, Button, Join, Spacer, Text } from "palette"
+import { Button, Join } from "palette"
 import { ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 
@@ -8,8 +9,8 @@ export const CertificateOfAuthenticity: React.FC = () => {
 
   return (
     <ScrollView>
-      <Box flex={1} pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px={2} py={2}>
-        <Join separator={<Spacer my={1.5} />}>
+      <Box flex={1} pt={`${safeAreaInsets.top}px`} pb={`${safeAreaInsets.bottom}px`} px={2} py={2}>
+        <Join separator={<Spacer y={2} />}>
           <Text variant="lg-display">Certificate of Authenticity</Text>
           <Text>
             A certificate of authenticity (COA) is a document from an authoritative source that

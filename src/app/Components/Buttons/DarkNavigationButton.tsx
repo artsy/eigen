@@ -1,5 +1,5 @@
+import { Flex, Box, ClassTheme, Text } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
-import { Box, ClassTheme, Flex, Text } from "palette"
 import React from "react"
 import { Image, TouchableWithoutFeedback } from "react-native"
 

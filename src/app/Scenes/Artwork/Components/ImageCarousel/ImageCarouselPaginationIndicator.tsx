@@ -1,4 +1,4 @@
-import { Flex, Spacer, useColor } from "palette"
+import { Spacer, Flex, useColor } from "@artsy/palette-mobile"
 import React, { useContext } from "react"
 import { Animated, View } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
@@ -17,12 +17,12 @@ export const PaginationIndicator: React.FC<{ indicatorType: IndicatorType }> = (
 }
 
 const PaginationDots: React.FC = () => {
-  const { images } = useContext(ImageCarouselContext)
+  const { media } = useContext(ImageCarouselContext)
   return (
     <>
-      <Spacer mb={2} />
+      <Spacer y={2} />
       <Flex flexDirection="row" justifyContent="center">
-        {images.map((_, index) => (
+        {media.map((_, index) => (
           <PaginationDot key={index} diameter={5} index={index} />
         ))}
       </Flex>
@@ -56,12 +56,13 @@ export const PaginationDot: React.FC<{ diameter: number; index: number }> = ({
 export const ScrollBar: React.FC = () => {
   const color = useColor()
   const { images, xScrollOffsetAnimatedValue } = useContext(ImageCarouselContext)
-  if (images.length < 2) {
-    return null
-  }
 
   const { width: screenWidth } = useScreenDimensions()
   const barWidth = screenWidth / images.length
+
+  if (images.length < 2) {
+    return null
+  }
 
   return (
     <>
@@ -75,7 +76,7 @@ export const ScrollBar: React.FC = () => {
           borderBottomColor: color("black30"),
         }}
       />
-      <Spacer mb={2} />
+      <Spacer y={2} />
       <Animated.View
         accessibilityLabel="Image Pagination Scroll Bar"
         style={{

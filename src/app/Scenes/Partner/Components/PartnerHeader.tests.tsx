@@ -7,7 +7,6 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { PartnerHeaderContainer as PartnerHeader } from "./PartnerHeader"
 
-
 describe("PartnerHeader", () => {
   const env = createMockEnvironment()
   const TestRenderer = () => (
@@ -42,7 +41,7 @@ describe("PartnerHeader", () => {
       })
     })
 
-    expect(extractText(tree.root)).toContain("1.2k works")
+    expect(extractText(tree.root)).toContain("1.2K works")
   })
 
   it("renders the partner name", async () => {

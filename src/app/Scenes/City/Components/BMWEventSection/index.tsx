@@ -1,9 +1,9 @@
+import { Box, ClassTheme, Text } from "@artsy/palette-mobile"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { Event } from "app/Scenes/City/Components/Event"
 import { Show } from "app/Scenes/Map/types"
 import { navigate } from "app/system/navigation/navigate"
 import { Schema, Track, track as _track } from "app/utils/track"
-import { Box, ClassTheme, Text } from "palette"
 import React from "react"
 import { RelayProp } from "react-relay"
 
@@ -88,7 +88,7 @@ export class BMWEventSection extends React.Component<Props> {
                 </Text>
               </Box>
             </Box>
-            <Box mb={3} px={2}>
+            <Box mb={4} px={2}>
               <CaretButton
                 onPress={() => this.getArtGuidePressed(artGuideUrl, citySlug)}
                 text="Get the BMW Art Guide"

@@ -1,3 +1,4 @@
+import { Spacer, Flex } from "@artsy/palette-mobile"
 import {
   Photo,
   PhotosFormModel,
@@ -5,7 +6,7 @@ import {
 } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Formik } from "formik"
-import { BulletedItem, CTAButton, Flex, Spacer } from "palette"
+import { CTAButton, BulletedItem } from "palette"
 import { UploadPhotosForm } from "./UploadPhotosForm"
 import { isSizeLimitExceeded } from "./utils/calculatePhotoSize"
 
@@ -46,7 +47,7 @@ export const UploadPhotos = ({
           return (
             <>
               <UploadPhotosForm isAnyPhotoLoading={isAnyPhotoLoading} />
-              <Spacer mt={2} />
+              <Spacer y={2} />
               <CTAButton
                 disabled={!isValid || isAnyPhotoLoading || isSizeLimitExceeded(values.photos)}
                 onPress={() => submitUploadPhotosStep()}

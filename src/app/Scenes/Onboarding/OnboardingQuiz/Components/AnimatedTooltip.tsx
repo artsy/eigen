@@ -1,4 +1,4 @@
-import { Flex, Text, useSpace } from "palette"
+import { Flex, useSpace, Text } from "@artsy/palette-mobile"
 import { useEffect, useRef, useState } from "react"
 import { Animated, Easing, Image, TouchableOpacity } from "react-native"
 import { useScreenDimensions } from "shared/hooks"

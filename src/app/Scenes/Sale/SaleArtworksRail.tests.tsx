@@ -1,13 +1,12 @@
+import { Flex } from "@artsy/palette-mobile"
 import { SaleArtworksRailTestsQuery } from "__generated__/SaleArtworksRailTestsQuery.graphql"
 import { SaleArtworkTileRailCardContainer } from "app/Components/SaleArtworkTileRailCard"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { Flex } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { INITIAL_NUMBER_TO_RENDER, SaleArtworksRailContainer } from "./Components/SaleArtworksRail"
-
 
 describe("SaleArtworksRail", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

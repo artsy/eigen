@@ -1,15 +1,14 @@
 import {
-  Button,
   FairIcon,
-  Flex,
-  GroupIcon,
   IconProps,
-  MuseumIcon,
+  InstitutionIcon,
   PublicationIcon,
-  SoloIcon,
+  UserMultiIcon,
+  UserSingleIcon,
+  Flex,
   Text,
-  Touchable,
-} from "palette"
+} from "@artsy/palette-mobile"
+import { Button, Touchable } from "palette"
 import { Fragment, FunctionComponent } from "react"
 import { Image } from "react-native"
 
@@ -40,7 +39,7 @@ export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({
 
   return (
     <Touchable haptic onPress={onPress} testID="career-highlight-card-item">
-      <Flex p={1} height={135} width={205} background="white" border={1} borderColor="black10">
+      <Flex p={1} height={135} width={205} backgroundColor="white" border={1} borderColor="black10">
         <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
           <Flex
             width={26}
@@ -120,13 +119,13 @@ export const getCareerHiglight = (type: CareerHighlightKind, count: number) => {
       label = `${
         pl ? "Artists are" : "Artist is"
       } collected by ${article}major institution${ending}.`
-      Icon = MuseumIcon
+      Icon = InstitutionIcon
       break
     case "GROUP_SHOW":
       label = `${
         pl ? "Artists were" : "Artist was"
       } in a group show at ${article}major institution${ending}.`
-      Icon = GroupIcon
+      Icon = UserMultiIcon
       break
     case "REVIEWED":
       label = `${
@@ -139,7 +138,7 @@ export const getCareerHiglight = (type: CareerHighlightKind, count: number) => {
       label = `${
         pl ? "Artists" : "Artist"
       } had a solo show at ${article}major institution${ending}.`
-      Icon = SoloIcon
+      Icon = UserSingleIcon
       break
     /*
     case "": // TODO: Collected by artists

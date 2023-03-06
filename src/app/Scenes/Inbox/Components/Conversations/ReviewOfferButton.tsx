@@ -1,16 +1,16 @@
 import { ActionType, OwnerType, TappedViewOffer } from "@artsy/cohesion"
+import {
+  ArrowRightIcon,
+  MoneyFillIcon,
+  AlertCircleFillIcon,
+  IconProps,
+  Flex,
+  Text,
+  Color,
+} from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { useEventTiming } from "app/utils/useEventTiming"
 import { DateTime } from "luxon"
-import {
-  AlertCircleFillIcon,
-  ArrowRightIcon,
-  Color,
-  Flex,
-  IconProps,
-  MoneyFillIcon,
-  Text,
-} from "palette"
 import { TouchableWithoutFeedback } from "react-native"
 import { useTracking } from "react-tracking"
 

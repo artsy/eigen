@@ -9,7 +9,6 @@ import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRece
 import { createMockEnvironment } from "relay-test-utils"
 import { EditSavedSearchAlertQueryRenderer } from "./EditSavedSearchAlert"
 
-
 describe("EditSavedSearchAlert", () => {
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
   const notificationPermissions = mockFetchNotificationPermissions(false)
@@ -102,7 +101,6 @@ describe("EditSavedSearchAlert", () => {
         searchCriteriaID: "savedSearchAlertId",
         attributes: {
           artistIDs: ["artistID"],
-          internalID: "internalID-1",
           materialsTerms: ["paper"],
         },
         userAlertSettings: {

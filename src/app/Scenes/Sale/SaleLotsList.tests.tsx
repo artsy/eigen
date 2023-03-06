@@ -1,3 +1,4 @@
+import { Text } from "@artsy/palette-mobile"
 import { SaleLotsListTestsQuery } from "__generated__/SaleLotsListTestsQuery.graphql"
 import {
   FilterParamName,
@@ -15,13 +16,7 @@ import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRece
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { SaleArtworkListContainer } from "./Components/SaleArtworkList"
-import {
-  FilterDescription,
-  FilterTitle,
-  SaleLotsListContainer,
-  SaleLotsListSortMode,
-} from "./Components/SaleLotsList"
-
+import { SaleLotsListContainer, SaleLotsListSortMode } from "./Components/SaleLotsList"
 
 describe("SaleLotsListContainer", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -159,8 +154,8 @@ describe("SaleLotsListContainer", () => {
         />
       )
 
-      expect(extractText(tree.root.findByType(FilterTitle))).toBe("Sorted by least bids")
-      expect(extractText(tree.root.findByType(FilterDescription))).toBe("Showing 20 of 100")
+      expect(extractText(tree.root.findAllByType(Text)[0])).toBe("Sorted by least bids")
+      expect(extractText(tree.root.findAllByType(Text)[1])).toBe("Showing 20 of 100")
     })
   })
 })

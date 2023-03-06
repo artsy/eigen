@@ -1,8 +1,9 @@
+import { Spacer, Flex } from "@artsy/palette-mobile"
 import { AlgoliaSearchResult, PillType } from "app/Scenes/Search/types"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { searchInsights } from "app/utils/useSearchInsightsConfig"
-import { Flex, Spacer, Touchable } from "palette"
+import { Touchable } from "palette"
 import { SearchHighlight } from "./SearchHighlight"
 import { IMAGE_SIZE, SearchResultImage } from "./SearchResultImage"
 
@@ -50,7 +51,7 @@ export const SearchResult: React.FC<SearchResultsItemProps> = ({
       <Flex height={IMAGE_SIZE} flexDirection="row" alignItems="center">
         <SearchResultImage imageURL={result.image_url} resultType={selectedPill.displayName} />
 
-        <Spacer ml={1} />
+        <Spacer x={1} />
 
         <Flex flex={1}>
           <SearchHighlight attribute="name" hit={result} />

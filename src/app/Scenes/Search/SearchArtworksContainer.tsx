@@ -26,7 +26,7 @@ export const SearchArtworksQueryRenderer: React.FC<{ keyword: string }> = ({ key
           initialProps: { keyword },
           renderFallback: ({ retry }) => <LoadFailureView onRetry={retry!} />,
         })}
-        variables={{ count: 20, keyword }}
+        variables={{ count: 10, keyword }}
         cacheConfig={{ force: true }}
       />
     </ArtworkFiltersStoreProvider>

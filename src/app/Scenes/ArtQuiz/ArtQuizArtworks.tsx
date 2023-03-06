@@ -1,34 +1,30 @@
-import { NavigationProp, useNavigation } from "@react-navigation/native"
+import { Touchable, Flex, Screen, Text, BackButton } from "@artsy/palette-mobile"
 import { ArtQuizArtworksDislikeMutation } from "__generated__/ArtQuizArtworksDislikeMutation.graphql"
 import { ArtQuizArtworksQuery } from "__generated__/ArtQuizArtworksQuery.graphql"
 import { ArtQuizArtworksSaveMutation } from "__generated__/ArtQuizArtworksSaveMutation.graphql"
 import { ArtQuizArtworksUpdateQuizMutation } from "__generated__/ArtQuizArtworksUpdateQuizMutation.graphql"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
-import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
+import { ArtQuizButton } from "app/Scenes/ArtQuiz/ArtQuizButton"
+import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
 import { GlobalStore } from "app/store/GlobalStore"
+import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { CloseIcon, Flex, HeartIcon, Screen, Spacer, Touchable } from "palette"
-import { useEffect, useRef, useState } from "react"
+import { Suspense, useEffect, useRef, useState } from "react"
 import { Image } from "react-native"
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
 import { graphql, useLazyLoadQuery, useMutation } from "react-relay"
-import { ArtQuizNavigationStack } from "./ArtQuiz"
 
-export const ArtQuizArtworks = () => {
-  const { goBack, navigate } = useNavigation<NavigationProp<ArtQuizNavigationStack>>()
-  const { onDone } = useOnboardingContext()
-  const [activeCardIndex, setActiveCardIndex] = useState(0)
-  const artQuizArtworksQueryResult = useLazyLoadQuery<ArtQuizArtworksQuery>(
-    artQuizArtworksQuery,
-    {}
-  )
+const ArtQuizArtworksScreen = () => {
+  const queryResult = useLazyLoadQuery<ArtQuizArtworksQuery>(artQuizArtworksQuery, {})
   const { userID } = GlobalStore.useAppState((store) => store.auth)
-  const artworks = extractNodes(artQuizArtworksQueryResult.me?.quiz.quizArtworkConnection)
+
+  const artworks = extractNodes(queryResult.me?.quiz.quizArtworkConnection)
+  const lastInteractedArtworkIndex = queryResult.me?.quiz.quizArtworkConnection?.edges?.findIndex(
+    (edge) => edge?.interactedAt === null
+  )
+  const [activeCardIndex, setActiveCardIndex] = useState(lastInteractedArtworkIndex ?? 0)
   const pagerViewRef = useRef<PagerView>(null)
   const popoverMessage = usePopoverMessage()
-
-  const currentArtwork = artworks[activeCardIndex]
-  const previousArtwork = artworks[activeCardIndex - 1]
 
   const [submitDislike] = useMutation<ArtQuizArtworksDislikeMutation>(DislikeArtworkMutation)
   const [submitSave] = useMutation<ArtQuizArtworksSaveMutation>(SaveArtworkMutation)
@@ -39,7 +35,7 @@ export const ArtQuizArtworks = () => {
       title: `Like it? Hit the heart.${"\n"}Not for you? Choose X.`,
       placement: "bottom",
       withPointer: "bottom",
-      style: { width: "70%", marginBottom: 80, left: 55 },
+      style: { width: "70%", marginBottom: 70, left: 55 },
     })
     if (activeCardIndex !== 0) {
       popoverMessage.hide()
@@ -58,13 +54,9 @@ export const ArtQuizArtworks = () => {
 
   const handleNext = (action: "Like" | "Dislike") => {
     popoverMessage.hide()
-
-    if (activeCardIndex + 1 === artworks.length) {
-      navigate("ArtQuizResultLoader")
-      return
-    }
-
     pagerViewRef.current?.setPage(activeCardIndex + 1)
+
+    const currentArtwork = artworks[activeCardIndex]
 
     if (action === "Like") {
       submitSave({
@@ -95,6 +87,14 @@ export const ArtQuizArtworks = () => {
         },
       },
     })
+
+    if (activeCardIndex + 1 === artworks.length) {
+      navigate("/art-quiz/results", {
+        passProps: {
+          isCalculatingResult: true,
+        },
+      })
+    }
   }
 
   const handleOnBack = () => {
@@ -102,6 +102,8 @@ export const ArtQuizArtworks = () => {
     if (activeCardIndex === 0) {
       goBack()
     } else {
+      const previousArtwork = artworks[activeCardIndex - 1]
+
       pagerViewRef.current?.setPage(activeCardIndex - 1)
       const { isSaved, isDisliked } = previousArtwork
 
@@ -140,28 +142,41 @@ export const ArtQuizArtworks = () => {
   }
 
   const handleOnSkip = () => {
-    onDone()
-    // Turn off Art quiz feature flag
-    GlobalStore.actions.artsyPrefs.features.setLocalOverride({
-      key: "ARShowArtQuizApp",
-      value: false,
-    })
     popoverMessage.hide()
+    GlobalStore.actions.auth.setArtQuizState("complete")
+    navigate("/")
   }
 
   return (
     <Screen>
-      <Screen.Header
-        onBack={handleOnBack}
-        title={`${activeCardIndex + 1}/${artworks.length}`}
-        onSkip={handleOnSkip}
-      />
+      <Screen.RawHeader>
+        <Flex
+          height={44}
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="space-between"
+          px={2}
+        >
+          <Flex>
+            <BackButton onPress={handleOnBack} />
+          </Flex>
+          <Text>{`${activeCardIndex + 1}/${artworks.length}`}</Text>
+          <Touchable haptic="impactLight" onPress={handleOnSkip}>
+            <Flex height="100%" justifyContent="center">
+              <Text textAlign="right" variant="xs">
+                Close
+              </Text>
+            </Flex>
+          </Touchable>
+        </Flex>
+      </Screen.RawHeader>
       <Screen.Body>
         <Flex flex={1} py={2}>
           <PagerView
             ref={pagerViewRef}
             style={{ flex: 1 }}
             initialPage={activeCardIndex}
+            scrollEnabled={false}
             onPageScroll={handleIndexChange}
             overdrag
           >
@@ -169,7 +184,7 @@ export const ArtQuizArtworks = () => {
               return (
                 <Flex key={artwork.internalID}>
                   <Image
-                    source={{ uri: artwork.imageUrl! }}
+                    source={{ uri: artwork.image?.resized?.src }}
                     style={{ flex: 1 }}
                     resizeMode="contain"
                   />
@@ -178,19 +193,20 @@ export const ArtQuizArtworks = () => {
             })}
           </PagerView>
         </Flex>
-        <Flex justifyContent="flex-end">
-          <Flex flexDirection="row" justifyContent="center" px={4}>
-            <Touchable onPress={() => handleNext("Dislike")}>
-              <CloseIcon height={40} width={50} />
-            </Touchable>
-            <Spacer m={3} />
-            <Touchable onPress={() => handleNext("Like")}>
-              <HeartIcon height={40} width={50} />
-            </Touchable>
-          </Flex>
+        <Flex flexDirection="row" justifyContent="space-around" mb={4} mx={4}>
+          <ArtQuizButton variant="Dislike" onPress={() => handleNext("Dislike")} />
+          <ArtQuizButton variant="Like" onPress={() => handleNext("Like")} />
         </Flex>
       </Screen.Body>
     </Screen>
+  )
+}
+
+export const ArtQuizArtworks = () => {
+  return (
+    <Suspense fallback={<ArtQuizLoader />}>
+      <ArtQuizArtworksScreen />
+    </Suspense>
   )
 }
 
@@ -200,9 +216,15 @@ const artQuizArtworksQuery = graphql`
       quiz {
         quizArtworkConnection(first: 16) {
           edges {
+            interactedAt
+            position
             node {
               internalID
-              imageUrl
+              image {
+                resized(width: 900, height: 900, version: ["normalized", "larger", "large"]) {
+                  src
+                }
+              }
               isDisliked
               isSaved
             }

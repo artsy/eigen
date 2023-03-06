@@ -1,6 +1,7 @@
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { Button, Flex, Spacer, Text } from "palette"
+import { Button } from "palette"
 
 interface Props {
   title: string
@@ -16,7 +17,7 @@ export const InfoModal: React.FC<Props> = ({ title, visible, onDismiss, children
       </FancyModalHeader>
 
       <Flex m={2}>{children}</Flex>
-      <Spacer mt={2} />
+      <Spacer y={2} />
       <Flex justifyContent="center" alignSelf="center" width="90%">
         <Button block haptic onPress={onDismiss}>
           Close

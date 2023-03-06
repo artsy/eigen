@@ -8,7 +8,6 @@ import { ShowHoursFragmentContainer } from "./Components/ShowHours"
 import { ShowLocationFragmentContainer } from "./Components/ShowLocation"
 import { ShowMoreInfo, ShowMoreInfoFragmentContainer } from "./Screens/ShowMoreInfo"
 
-
 describe("ShowMoreInfo", () => {
   let env: ReturnType<typeof createMockEnvironment>
 

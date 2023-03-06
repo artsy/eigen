@@ -1,3 +1,4 @@
+import { Flex, Box, useSpace, Text } from "@artsy/palette-mobile"
 import { ViewingRoomArtworksQueryRendererQuery } from "__generated__/ViewingRoomArtworksQueryRendererQuery.graphql"
 import { ViewingRoomArtworks_viewingRoom$data } from "__generated__/ViewingRoomArtworks_viewingRoom.graphql"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
@@ -8,7 +9,7 @@ import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { Box, Flex, OpaqueImageView, Separator, Spinner, Text, useSpace, Touchable } from "palette"
+import { OpaqueImageView, Separator, Spinner, Touchable } from "palette"
 import React, { useMemo, useState } from "react"
 import { FlatList, useWindowDimensions } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -67,7 +68,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) =
                     aspectRatio={artwork.image!.aspectRatio}
                   />
                 )}
-                <Box mt="1" mx="2">
+                <Box mt={1} mx={2}>
                   <Text variant="sm">{artwork.artistNames}</Text>
                   <Text variant="sm" color="black60" key={index}>
                     {artwork.title}
@@ -79,7 +80,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) =
               </Box>
             </Touchable>
             {!!artwork.additionalInformation && (
-              <Flex mx="2" mt="1">
+              <Flex mx={2} mt={1}>
                 <ReadMore
                   content={artwork.additionalInformation}
                   maxChars={300}
@@ -103,7 +104,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) =
         <Separator />
         <FlatList
           data={sections}
-          ItemSeparatorComponent={() => <Box px={2} mb={3} />}
+          ItemSeparatorComponent={() => <Box px={2} mb={4} />}
           renderItem={({ item }) => <Box>{item.content}</Box>}
           onEndReached={() => {
             if (isLoadingMore || !relay.hasMore()) {

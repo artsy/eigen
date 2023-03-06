@@ -1,7 +1,7 @@
+import { Spacer, Text } from "@artsy/palette-mobile"
 import { PartnerShowsRail_partner$data } from "__generated__/PartnerShowsRail_partner.graphql"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToEdge } from "app/utils/isCloseToEdge"
-import { Spacer, Text } from "palette"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -47,7 +47,7 @@ const PartnerShowsRail: React.FC<{
               return <RailItem show={item} />
             }}
           />
-          <Spacer mb={2} />
+          <Spacer y={2} />
         </>
       )}
     </>

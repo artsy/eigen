@@ -1,10 +1,11 @@
 import { ActionType, ContextModule, OwnerType, TappedShowMore } from "@artsy/cohesion"
+import { Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
 import { MyCollectionArtworkArtistArticles_artwork$data } from "__generated__/MyCollectionArtworkArtistArticles_artwork.graphql"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Box, Flex, Separator, Spacer, Text } from "palette"
+import { Separator } from "palette"
 import { Image, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -26,7 +27,7 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
 
   return (
     <ScreenMargin>
-      <Separator mb={3} />
+      <Separator mb={4} />
 
       <Text variant="sm" mb={2}>
         Latest Articles featuring {artist?.name}
@@ -55,7 +56,7 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
         )
       })}
 
-      <Spacer my={1} />
+      <Spacer y={1} />
 
       <Box mb={2}>
         <CaretButton

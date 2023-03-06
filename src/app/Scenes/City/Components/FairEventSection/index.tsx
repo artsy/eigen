@@ -1,7 +1,7 @@
+import { Box, ClassTheme, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { navigate } from "app/system/navigation/navigate"
-import { Box, ClassTheme, Text } from "palette"
 import { Component } from "react"
 import { FlatList } from "react-native"
 import styled from "styled-components/native"
@@ -9,7 +9,7 @@ import { FairEventSectionCard } from "./Components/FairEventSectionCard"
 
 const FairSectionBackground = styled(Box)`
   background: black;
-  margin-bottom: ${themeGet("space.1")}px;
+  margin-bottom: ${themeGet("space.1")};
 `
 
 interface Props {
@@ -40,7 +40,7 @@ export class FairEventSection extends Component<Props> {
       <ClassTheme>
         {({ space }) => (
           <FairSectionBackground>
-            <Box mx={2} mt={3}>
+            <Box mx={2} mt={4}>
               <Text variant="lg-display" color="white">
                 Fairs
               </Text>
@@ -53,7 +53,7 @@ export class FairEventSection extends Component<Props> {
               horizontal
             />
             {data.length > 2 && (
-              <Box mx={2} mb={3}>
+              <Box mx={2} mb={4}>
                 <CaretButton
                   onPress={() => this.viewAllPressed()}
                   text={`View all ${data.length} fairs`}

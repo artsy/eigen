@@ -1,17 +1,15 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Flex } from "@artsy/palette-mobile"
 import { NewWorksForYouRail_artworkConnection$key } from "__generated__/NewWorksForYouRail_artworkConnection.graphql"
 import { LargeArtworkRail } from "app/Components/ArtworkRail/LargeArtworkRail"
-import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { useExperimentVariant } from "app/utils/experiments/hooks"
-import { maybeReportExperimentVariant } from "app/utils/experiments/reporter"
+import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
-import { Flex } from "palette"
-import React, { useImperativeHandle, useRef } from "react"
+import React, { memo, useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -20,112 +18,79 @@ import { RailScrollProps } from "./types"
 interface NewWorksForYouRailProps {
   title: string
   artworkConnection: NewWorksForYouRail_artworkConnection$key
-  mb?: number
 }
 
-export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = ({
-  title,
-  artworkConnection,
-  scrollRef,
-  mb,
-}) => {
-  const { trackEvent } = useTracking()
-  const enforceLargeRail = useFeatureFlag("AREnforceLargeNewWorksRail")
-  const railVariant = useExperimentVariant("eigen-new-works-for-you-rail-size")
-  const enableSaveIcon = useFeatureFlag("AREnableLargeArtworkRailSaveIcon")
+export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = memo(
+  ({ title, artworkConnection, scrollRef }) => {
+    const { trackEvent } = useTracking()
+    const enableSaveIcon = useFeatureFlag("AREnableLargeArtworkRailSaveIcon")
 
-  trackExperimentVariant(
-    "eigen-new-works-for-you-rail-size",
-    railVariant.enabled,
-    railVariant.variant,
-    railVariant.payload
-  )
+    const { artworksForUser } = useFragment(artworksFragment, artworkConnection)
 
-  const { artworksForUser, smallArtworksForUser } = useFragment(artworksFragment, artworkConnection)
+    const railRef = useRef<View>(null)
+    const listRef = useRef<FlatList<any>>(null)
 
-  const railRef = useRef<View>(null)
-  const listRef = useRef<FlatList<any>>(null)
+    useImperativeHandle(scrollRef, () => ({
+      scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
+    }))
 
-  useImperativeHandle(scrollRef, () => ({
-    scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
-  }))
+    const artworks = extractNodes(artworksForUser)
 
-  const artworks = extractNodes(artworksForUser)
-  const smallArtworks = extractNodes(smallArtworksForUser)
+    const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
 
-  if (!artworks.length) {
-    return null
-  }
+    if (!artworks.length) {
+      return null
+    }
 
-  const handleOnArtworkPress = (artwork: any, position: any) => {
-    trackEvent(
-      HomeAnalytics.artworkThumbnailTapEvent(
-        ContextModule.newWorksForYouRail,
-        artwork.slug,
-        position,
-        "single"
+    const handleOnArtworkPress = (artwork: any, position: any) => {
+      trackEvent(
+        HomeAnalytics.artworkThumbnailTapEvent(
+          ContextModule.newWorksForYouRail,
+          artwork.slug,
+          artwork.internalID,
+          position,
+          "single"
+        )
       )
-    )
-    navigate(artwork.href!)
-  }
+      navigateToPageableRoute(artwork.href)
+    }
 
-  return (
-    <Flex mb={mb}>
-      <View ref={railRef}>
-        <Flex pl="2" pr="2">
-          <SectionTitle
-            title={title}
-            onPress={() => {
-              trackEvent(tracks.tappedHeader())
-              navigate(`/new-for-you`)
-            }}
-          />
-        </Flex>
-        {railVariant.variant === "experiment" || enforceLargeRail ? (
+    return (
+      <Flex>
+        <View ref={railRef}>
+          <Flex pl={2} pr={2}>
+            <SectionTitle
+              title={title}
+              onPress={() => {
+                trackEvent(tracks.tappedHeader())
+                navigate("/new-for-you")
+              }}
+            />
+          </Flex>
           <LargeArtworkRail
             artworks={artworks}
             onPress={handleOnArtworkPress}
             showSaveIcon={enableSaveIcon}
             trackingContextScreenOwnerType={Schema.OwnerEntityTypes.Home}
+            onMorePress={() => {
+              trackEvent(tracks.tappedMoreCard())
+              navigate("/new-for-you")
+            }}
           />
-        ) : (
-          <SmallArtworkRail
-            artworks={smallArtworks}
-            onPress={handleOnArtworkPress}
-            trackingContextScreenOwnerType={Schema.OwnerEntityTypes.Home}
-          />
-        )}
-      </View>
-    </Flex>
-  )
-}
+        </View>
+      </Flex>
+    )
+  }
+)
 
 const artworksFragment = graphql`
   fragment NewWorksForYouRail_artworkConnection on Viewer {
-    smallArtworksForUser: artworksForUser(
-      maxWorksPerArtist: 3
-      includeBackfill: true
-      first: 40
-      version: $worksForYouRecommendationsModelVariant
-    ) {
+    artworksForUser(maxWorksPerArtist: 3, includeBackfill: true, first: 40, version: $version) {
       edges {
         node {
           title
           internalID
-          ...SmallArtworkRail_artworks
-        }
-      }
-    }
-    artworksForUser(
-      maxWorksPerArtist: 3
-      includeBackfill: true
-      first: 40
-      version: $worksForYouRecommendationsModelVariant
-    ) {
-      edges {
-        node {
-          title
-          internalID
+          slug
           ...LargeArtworkRail_artworks
         }
       }
@@ -141,20 +106,11 @@ const tracks = {
     destination_screen_owner_type: OwnerType.newWorksForYou,
     type: "header",
   }),
-}
-
-const trackExperimentVariant = (
-  name: string,
-  enabled: boolean,
-  variant: string,
-  payload?: string
-) =>
-  maybeReportExperimentVariant({
-    experimentName: name,
-    enabled,
-    variantName: variant,
-    payload,
+  tappedMoreCard: () => ({
+    action: ActionType.tappedArtworkGroup,
     context_module: ContextModule.newWorksForYouRail,
-    context_owner_type: OwnerType.home,
-    context_owner_screen: OwnerType.home,
-  })
+    context_screen_owner_type: OwnerType.home,
+    destination_screen_owner_type: OwnerType.newWorksForYou,
+    type: "viewAll",
+  }),
+}

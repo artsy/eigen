@@ -1,9 +1,10 @@
+import { Spacer, Box, Text } from "@artsy/palette-mobile"
 import { ArtworkMediumQuery } from "__generated__/ArtworkMediumQuery.graphql"
 import { ArtworkMedium_artwork$data } from "__generated__/ArtworkMedium_artwork.graphql"
 import { goBack } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { Box, Button, Join, Separator, Spacer, Text } from "palette"
+import { Button, Join, Separator } from "palette"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
@@ -17,9 +18,9 @@ export const ArtworkMedium: React.FC<Props> = ({ artwork }) => {
 
   return (
     <ScrollView>
-      <Box pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px={2}>
-        <Box my={3}>
-          <Join separator={<Spacer my={1.5} />} flatten>
+      <Box pt={`${safeAreaInsets.top}px`} pb={`${safeAreaInsets.bottom}px`} px={2}>
+        <Box my={4}>
+          <Join separator={<Spacer y={2} />} flatten>
             {!!artwork.mediumType && (
               <>
                 <Text variant="lg-display">{artwork.mediumType.name}</Text>

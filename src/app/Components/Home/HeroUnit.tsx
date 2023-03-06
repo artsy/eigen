@@ -1,7 +1,8 @@
+import { Flex, useColor, Text } from "@artsy/palette-mobile"
 import { Trove_trove$data } from "__generated__/Trove_trove.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { isPad } from "app/utils/hardware"
-import { Flex, Text, Touchable, useColor } from "palette"
+import { Touchable } from "palette"
 import React, { useState } from "react"
 import { View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
@@ -35,7 +36,7 @@ export const HeroUnit: React.FC<Props> = ({ unit, onPress, isTrove = false }) =>
       <Flex
         height={height}
         justifyContent="flex-end"
-        p="2"
+        p={2}
         style={{ backgroundColor: color("black30") }}
       >
         <OpaqueImageView

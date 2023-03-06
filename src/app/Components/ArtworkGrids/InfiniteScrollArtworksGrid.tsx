@@ -7,14 +7,16 @@
 // 4. Update height of grid to encompass all items.
 
 import { ScreenOwnerType } from "@artsy/cohesion"
+import { Box, Flex } from "@artsy/palette-mobile"
 import { InfiniteScrollArtworksGrid_connection$data } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
 import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
 import ParentAwareScrollView from "app/Components/ParentAwareScrollView"
 import { PAGE_SIZE } from "app/Components/constants"
 import { MyCollectionArtworkGridItemFragmentContainer } from "app/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkGridItem"
+import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
-import { Box, Button, Flex, Spinner } from "palette"
+import { Button, Spinner } from "palette"
 import React, { useState } from "react"
 import {
   ActivityIndicator,
@@ -23,6 +25,7 @@ import {
   NativeScrollEvent,
   NativeSyntheticEvent,
   Platform,
+  RefreshControlProps,
   ScrollView,
   StyleSheet,
   View,
@@ -121,6 +124,11 @@ export interface Props {
   updateRecentSearchesOnTap?: boolean
 
   localSortAndFilterArtworks?: (artworks: any[]) => any[]
+
+  refreshControl?: React.ReactElement<
+    RefreshControlProps,
+    string | React.JSXElementConstructor<any>
+  >
 }
 
 interface PrivateProps {
@@ -130,11 +138,10 @@ interface PrivateProps {
   loadMore: RelayPaginationProp["loadMore"]
   hasMore: RelayPaginationProp["hasMore"]
   isLoading?: RelayPaginationProp["isLoading"]
-  myCollectionIsRefreshing?: boolean
 }
 
 interface MapperProps extends Omit<PrivateProps, "connection"> {
-  connection?: InfiniteScrollArtworksGrid_connection$data
+  connection?: InfiniteScrollArtworksGrid_connection$data | null
   myCollectionConnection?: InfiniteScrollArtworksGrid_myCollectionConnection$data
 }
 
@@ -200,8 +207,12 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
   contextScreenOwnerSlug,
   contextScreenOwnerId,
   contextScreenOwnerType,
-  myCollectionIsRefreshing,
+  refreshControl,
 }) => {
+  const artworks = extractNodes(connection)
+
+  const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
+
   const getSectionDimension = (gridWidth: number | null | undefined) => {
     // Setting the dimension to 1 for tests to avoid adjusting the screen width
     if (__TEST__) {
@@ -245,7 +256,6 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
 
   const getSectionedArtworks = () => {
     const sectionRatioSums: number[] = []
-    const artworks = extractNodes(connection)
     const sectionedArtworksArray: Array<typeof artworks> = []
     const columnCount = sectionCount ?? 0
 
@@ -330,9 +340,9 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
             showLotLabel={showLotLabel}
             itemIndex={itemIndex}
             updateRecentSearchesOnTap={updateRecentSearchesOnTap}
+            navigateToPageableRoute={navigateToPageableRoute}
             {...itemComponentProps}
             height={imgHeight}
-            myCollectionIsRefreshing={myCollectionIsRefreshing}
             {...componentSpecificProps}
           />
         )
@@ -397,6 +407,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
             handleFetchNextPageOnScroll(ev)
           }
         }}
+        refreshControl={refreshControl}
         scrollEventThrottle={scrollEventThrottle ?? 50}
         onLayout={onLayout}
         scrollsToTop={false}
@@ -414,8 +425,8 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
 
         {!autoFetch && !!hasMore() && (
           <Button
-            mt={5}
-            mb={3}
+            mt={6}
+            mb={4}
             variant="fillGray"
             size="large"
             block
@@ -436,8 +447,8 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
         <Flex
           alignItems="center"
           justifyContent="center"
-          p="3"
-          pb="9"
+          p={4}
+          pb={6}
           style={{ opacity: localIsLoading && hasMore() ? 1 : 0 }}
         >
           {!!autoFetch && (
@@ -481,11 +492,13 @@ export const InfiniteScrollArtworksGridContainer = createFragmentContainer(
           node {
             slug
             id
-            image {
+            image(includeAll: false) {
               aspectRatio
             }
-            ...ArtworkGridItem_artwork
-            ...MyCollectionArtworkGridItem_artwork @skip(if: $skipMyCollection)
+            ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
+            ...MyCollectionArtworkGridItem_artwork
+              @skip(if: $skipMyCollection)
+              @arguments(includeAllImages: false)
           }
         }
       }
@@ -510,7 +523,7 @@ export const InfiniteScrollMyCollectionArtworksGridContainer = createFragmentCon
             title
             slug
             id
-            image {
+            image(includeAll: true) {
               aspectRatio
             }
             artistNames
@@ -527,8 +540,10 @@ export const InfiniteScrollMyCollectionArtworksGridContainer = createFragmentCon
             height
             date
             ...MyCollectionArtworks_filterProps @relay(mask: false)
-            ...ArtworkGridItem_artwork @skip(if: $skipArtworkGridItem)
-            ...MyCollectionArtworkGridItem_artwork
+            ...ArtworkGridItem_artwork
+              @skip(if: $skipArtworkGridItem)
+              @arguments(includeAllImages: true)
+            ...MyCollectionArtworkGridItem_artwork @arguments(includeAllImages: true)
           }
         }
       }

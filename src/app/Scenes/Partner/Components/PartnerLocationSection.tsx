@@ -1,7 +1,8 @@
+import { Spacer, Text } from "@artsy/palette-mobile"
 import { PartnerLocationSection_partner$data } from "__generated__/PartnerLocationSection_partner.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { get } from "app/utils/get"
-import { Button, Spacer, Text } from "palette"
+import { Button } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -55,7 +56,7 @@ class PartnerLocationSection extends React.Component<Props> {
             )}
             .
           </Text>
-          <Spacer mb={2} />
+          <Spacer y={2} />
           <Button
             variant="fillGray"
             size="large"
@@ -65,7 +66,7 @@ class PartnerLocationSection extends React.Component<Props> {
           >
             See all location details
           </Button>
-          <Spacer mb={3} />
+          <Spacer y={4} />
         </>
       )
     )

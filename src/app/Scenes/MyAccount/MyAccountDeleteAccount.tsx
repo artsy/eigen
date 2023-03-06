@@ -1,3 +1,4 @@
+import { Spacer, GenomeIcon, AuctionIcon, Flex, Box, Text } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { MyAccountDeleteAccountQuery } from "__generated__/MyAccountDeleteAccountQuery.graphql"
 import { MyAccountDeleteAccount_me$data } from "__generated__/MyAccountDeleteAccount_me.graphql"
@@ -5,7 +6,7 @@ import { DeleteAccountInput } from "__generated__/deleteUserAccountMutation.grap
 import { GlobalStore } from "app/store/GlobalStore"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { AuctionIcon, Box, Button, Flex, GenomeIcon, Input, Spacer, Text } from "palette"
+import { Button, Input } from "palette"
 import React, { useState } from "react"
 import { Alert, InteractionManager, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -34,47 +35,47 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
   return (
     <ArtsyKeyboardAvoidingView>
       <ScrollView>
-        <Box pr="2" pl="2">
+        <Box pr={2} pl={2}>
           <Text variant="lg-display" mt="6">
             Delete My Account
           </Text>
-          <Spacer mt="3" />
+          <Spacer y={4} />
           <Text>Are you sure you want to delete your account?</Text>
-          <Spacer mt="2" />
+          <Spacer y={2} />
           <Text>If you delete your account:</Text>
-          <Spacer mt="2" />
-          <Flex flexDirection="row" alignItems="center" pr="1">
+          <Spacer y={2} />
+          <Flex flexDirection="row" alignItems="center" pr={1}>
             <Flex pb={1}>
               <GenomeIcon width={ICON_SIZE} height={ICON_SIZE} />
             </Flex>
-            <Text variant="xs" color={color("black100")} px="1" pb="1px">
+            <Text variant="xs" color={color("black100")} px={1} pb="1px">
               You will lose all data on Artsy including all existing offers, inquiries and mesages
               with Galleries
             </Text>
           </Flex>
-          <Spacer mt="2" />
-          <Flex flexDirection="row" alignItems="center" pr="1">
+          <Spacer y={2} />
+          <Flex flexDirection="row" alignItems="center" pr={1}>
             <Flex pb={1}>
               <AuctionIcon width={ICON_SIZE} height={ICON_SIZE} />
             </Flex>
-            <Text variant="xs" color={color("black100")} px="1" pb="1px">
+            <Text variant="xs" color={color("black100")} px={1} pb="1px">
               You won’t have access to any exclusive Artsy benefits, such as Artsy Curated Auctions,
               Private Sales, etc
             </Text>
           </Flex>
-          <Spacer mt="3" />
+          <Spacer y={4} />
           <Input
             multiline
             placeholder="Please share with us why you are leaving"
             onChangeText={setExplanation}
             error={!hasPassword ? error : undefined}
           />
-          <Spacer mt="3" />
+          <Spacer y={4} />
           <Text variant="xs" color={color("black100")} pb="1px">
             After you submit your request, we will disable your account. It may take up to 7 days to
             fully delete and remove all of your data.
           </Text>
-          <Spacer mt="2" />
+          <Spacer y={2} />
           {!!hasPassword && (
             <>
               <Input
@@ -83,7 +84,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
                 onChangeText={setPassword}
                 error={error}
               />
-              <Spacer mt="2" />
+              <Spacer y={2} />
             </>
           )}
           <Button
@@ -124,7 +125,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
           >
             Delete My Account
           </Button>
-          <Spacer mt="1" />
+          <Spacer y={1} />
           <Button block variant="outline" onPress={() => navigation.goBack()}>
             Cancel
           </Button>

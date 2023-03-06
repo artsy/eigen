@@ -1,7 +1,8 @@
+import { Spacer, Box, Text, LinkText } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { navigate } from "app/system/navigation/navigate"
 import { useFormikContext } from "formik"
-import { Box, Button, Input, LinkText, PhoneInput, Spacer, Text } from "palette"
+import { Button, Input, PhoneInput } from "palette"
 import { useEffect, useRef } from "react"
 import { Platform, ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
@@ -78,7 +79,7 @@ export const ConsignmentInquiryForm: React.FC<{
       keyboardDismissMode="interactive"
       keyboardShouldPersistTaps="handled"
     >
-      <Box pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px={2}>
+      <Box pt={`${safeAreaInsets.top}px`} pb={`${safeAreaInsets.bottom}px`} px={2}>
         <Box>
           <Text variant="lg-display" mb={2}>
             Contact a specialist
@@ -101,7 +102,7 @@ export const ConsignmentInquiryForm: React.FC<{
             value={values.name}
             error={errors.name}
           />
-          <Spacer m={2} />
+          <Spacer y={2} />
           <Input
             required
             ref={emailInputRef}
@@ -123,7 +124,7 @@ export const ConsignmentInquiryForm: React.FC<{
             textContentType={Platform.OS === "ios" ? "username" : "emailAddress"}
             error={errors.email}
           />
-          <Spacer m={2} />
+          <Spacer y={2} />
           <PhoneInput
             ref={phoneInputRef}
             testID="swa-inquiry-phone-input"
@@ -139,8 +140,7 @@ export const ConsignmentInquiryForm: React.FC<{
             accessibilityLabel="Phone number"
             shouldDisplayLocalError={false}
           />
-          <Spacer m={2} />
-          <Spacer m={1} />
+          <Spacer y={4} />
           <Input
             required
             ref={messageInputRef}
@@ -161,7 +161,7 @@ export const ConsignmentInquiryForm: React.FC<{
             autoCorrect={false}
             error={errors.message}
           />
-          <Spacer mb={4} />
+          <Spacer y={4} />
           <Text variant="xs" color="black60" mb={2}>
             By continuing, you agree to{" "}
             <LinkText variant="xs" onPress={() => navigate("/privacy", { modal: true })}>

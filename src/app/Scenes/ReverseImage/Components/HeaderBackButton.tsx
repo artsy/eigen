@@ -1,4 +1,5 @@
-import { BackButton, useSpace } from "palette"
+import { useSpace } from "@artsy/palette-mobile"
+import { BackButton } from "palette"
 
 interface HeaderBackButtonProps {
   onPress: () => void

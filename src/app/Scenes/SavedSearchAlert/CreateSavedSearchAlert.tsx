@@ -1,7 +1,7 @@
+import { Box } from "@artsy/palette-mobile"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
-import { Box } from "palette"
 import {
   CreateSavedSearchAlertNavigationStack,
   CreateSavedSearchAlertProps,

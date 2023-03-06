@@ -1,11 +1,11 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Spacer, Flex, Box } from "@artsy/palette-mobile"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { isPad } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
 import { useAlgoliaClient } from "app/utils/useAlgoliaClient"
 import { useAlgoliaIndices } from "app/utils/useAlgoliaIndices"
 import { useSearchInsightsConfig } from "app/utils/useSearchInsightsConfig"
-import { Box, Flex, Spacer } from "palette"
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Configure, connectSearchBox, InstantSearch } from "react-instantsearch-native"
 import { Platform, ScrollView } from "react-native"
@@ -18,7 +18,7 @@ import {
 } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
-import styled from "styled-components"
+import styled from "styled-components/native"
 import { CuratedCollections } from "./CuratedCollections"
 import { RecentSearches } from "./RecentSearches"
 import { RefetchWhenApiKeyExpiredContainer } from "./RefetchWhenApiKeyExpired"
@@ -220,17 +220,17 @@ export const Search: React.FC = () => {
 
                 {!!isSearchDiscoveryContentEnabled ? (
                   <>
-                    <Spacer mb={4} />
+                    <Spacer y={4} />
                     <TrendingArtists data={queryData} mb={4} />
                     <CuratedCollections collections={queryData} mb={4} />
                   </>
                 ) : (
-                  <Spacer mb={4} />
+                  <Spacer y={4} />
                 )}
 
                 <HorizontalPadding>{renderCityGuideCTA()}</HorizontalPadding>
 
-                <Spacer mb={4} />
+                <Spacer y={4} />
               </Scrollable>
             )}
           </Flex>

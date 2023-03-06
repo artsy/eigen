@@ -1,17 +1,22 @@
+import { Flex, Spacer } from "@artsy/palette-mobile"
 import { LargeArtworkRail_artworks$data } from "__generated__/LargeArtworkRail_artworks.graphql"
 import { SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$data } from "__generated__/SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection.graphql"
 import { SmallArtworkRail_artworks$data } from "__generated__/SmallArtworkRail_artworks.graphql"
 import { ArtworkCardSize, ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
+import { useFeatureFlag } from "app/store/GlobalStore"
+import { isPad } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
-import { Spacer } from "palette"
+import { Button } from "palette"
 import React, { ReactElement } from "react"
 import { FlatList } from "react-native"
 
 const MAX_NUMBER_OF_ARTWORKS = 30
 
 interface CommonArtworkRailProps {
+  dark?: boolean
   hideArtistName?: boolean
+  showPartnerName?: boolean
   ListFooterComponent?: ReactElement | null
   ListHeaderComponent?: ReactElement | null
   listRef?: React.RefObject<FlatList<any>>
@@ -20,6 +25,7 @@ interface CommonArtworkRailProps {
   size: ArtworkCardSize
   showSaveIcon?: boolean
   trackingContextScreenOwnerType?: Schema.OwnerEntityTypes
+  onMorePress?: () => void
 }
 
 export interface ArtworkRailProps extends CommonArtworkRailProps {
@@ -39,10 +45,17 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
   ListHeaderComponent = SpacerComponent,
   ListFooterComponent = SpacerComponent,
   hideArtistName = false,
+  showPartnerName = false,
+  dark = false,
   artworks,
   showSaveIcon = false,
   trackingContextScreenOwnerType,
+  onMorePress,
 }) => {
+  const enableBrowseMoreArtworksCard = useFeatureFlag("AREnableBrowseMoreArtworksCard")
+
+  const isTablet = isPad()
+
   return (
     <PrefetchFlatList
       onEndReached={onEndReached}
@@ -51,19 +64,26 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
       listRef={listRef}
       horizontal
       ListHeaderComponent={ListHeaderComponent}
-      ListFooterComponent={ListFooterComponent}
-      ItemSeparatorComponent={() => <Spacer width={15} />}
+      ListFooterComponent={
+        enableBrowseMoreArtworksCard && onMorePress ? (
+          <BrowseMoreArtworksCard dark={dark} onPress={onMorePress} />
+        ) : (
+          ListFooterComponent
+        )
+      }
+      ItemSeparatorComponent={() => <Spacer x="15px" />}
       showsHorizontalScrollIndicator={false}
       // We need to set the maximum number of artists to not cause layout shifts
       // @ts-expect-error
       data={artworks.slice(0, MAX_NUMBER_OF_ARTWORKS)}
-      initialNumToRender={MAX_NUMBER_OF_ARTWORKS}
+      initialNumToRender={isTablet ? 10 : 5}
       contentContainerStyle={{ alignItems: "flex-end" }}
       renderItem={({ item, index }) => (
         <ArtworkRailCard
           artwork={item}
-          hidePartnerName
+          showPartnerName={showPartnerName}
           hideArtistName={hideArtistName}
+          dark={dark}
           onPress={() => {
             onPress?.(item, index)
           }}
@@ -96,6 +116,7 @@ export const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> =
   ListFooterComponent = SpacerComponent,
   hideArtistName = false,
   recentlySoldArtworks,
+  showPartnerName = true,
 }) => {
   return (
     <PrefetchFlatList
@@ -106,9 +127,9 @@ export const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> =
       horizontal
       ListHeaderComponent={ListHeaderComponent}
       ListFooterComponent={ListFooterComponent}
-      ItemSeparatorComponent={() => <Spacer width={15} />}
+      ItemSeparatorComponent={() => <Spacer x="15px" />}
       showsHorizontalScrollIndicator={false}
-      // We need to set the maximum number of artists to not cause layout shifts
+      // We need to set the maximum number of artworks to not cause layout shifts
       data={recentlySoldArtworks.slice(0, MAX_NUMBER_OF_ARTWORKS)}
       initialNumToRender={MAX_NUMBER_OF_ARTWORKS}
       contentContainerStyle={{ alignItems: "flex-end" }}
@@ -121,8 +142,9 @@ export const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> =
           priceRealizedDisplay={item?.priceRealized?.display!}
           lowEstimateDisplay={item?.lowEstimate?.display!}
           highEstimateDisplay={item?.highEstimate?.display!}
+          performanceDisplay={item?.performance?.mid ?? undefined}
           size={size}
-          hidePartnerName
+          showPartnerName={showPartnerName}
           isRecentlySoldArtwork
           hideArtistName={hideArtistName}
         />
@@ -132,4 +154,23 @@ export const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> =
   )
 }
 
-const SpacerComponent = () => <Spacer mr={2} />
+const SpacerComponent = () => <Spacer x={2} />
+
+interface BrowseMoreArtworksCardProps {
+  dark?: boolean
+  onPress: () => void
+}
+
+const BrowseMoreArtworksCard: React.FC<BrowseMoreArtworksCardProps> = ({ dark, onPress }) => {
+  return (
+    <Flex flex={1} px={1} mx={2} justifyContent="center">
+      <Button
+        variant={dark ? "outlineLight" : "outline"}
+        onPress={onPress}
+        accessibilityLabel="Browse All Artworks"
+      >
+        Browse All Artworks
+      </Button>
+    </Flex>
+  )
+}

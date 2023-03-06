@@ -1,4 +1,3 @@
-import { isALocalImage } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
 import React from "react"
 import {
   Image,
@@ -78,10 +77,6 @@ interface State {
  * Use `OpaqueImageView` from palette instead.
  */
 export default class OpaqueImageView extends React.Component<Props, State> {
-  static defaultProps: Props = {
-    placeholderBackgroundColor: "#E7E7E7", // this is black10. Change it to that when this component becomes a function component.
-  }
-
   constructor(props: Props) {
     super(props)
 
@@ -116,18 +111,6 @@ export default class OpaqueImageView extends React.Component<Props, State> {
     const { imageURL, useRawURL } = this.props
 
     if (imageURL) {
-      if (isALocalImage(imageURL)) {
-        // we will always useRawURL for local images
-        if (imageURL.startsWith("file://")) {
-          return imageURL
-        }
-        if (imageURL.startsWith("/")) {
-          return "file://" + imageURL
-        }
-        // TODO:- Handling of './' paths
-        // Ignore android's assets:// path (This is because using assets:// in OpaqueImageView is not a use case for us now.)
-        return null
-      }
       if (useRawURL) {
         return imageURL
       }
@@ -168,11 +151,13 @@ export default class OpaqueImageView extends React.Component<Props, State> {
     let remainderProps = props
     if (Platform.OS === "ios" && this.props.imageURL) {
       const anyProps = props as any
-      anyProps.placeholderBackgroundColor = processColor(props.placeholderBackgroundColor)
+      anyProps.placeholderBackgroundColor = processColor(
+        props.placeholderBackgroundColor ?? "#E7E7E7"
+      )
     } else {
       const { ...remainder } = props
       remainderProps = remainder
-      backgroundColorStyle = { backgroundColor: props.placeholderBackgroundColor }
+      backgroundColorStyle = { backgroundColor: props.placeholderBackgroundColor ?? "#E7E7E7" }
     }
 
     if (React.Children.count(remainderProps.children) > 0) {

@@ -1,21 +1,30 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
-import {
-  ArtQuizResultsNavigation,
-  ArtQuizResultsNavigationScreens,
-} from "app/Scenes/ArtQuiz/ArtQuizResults/navigation"
-import { ArtQuizArtworks } from "./ArtQuizArtworks"
-import { ArtQuizWelcome } from "./ArtQuizWelcome"
+import { ArtQuizNavigationQuery } from "__generated__/ArtQuizNavigationQuery.graphql"
+import { ArtQuizArtworks } from "app/Scenes/ArtQuiz/ArtQuizArtworks"
+import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
+import { ArtQuizWelcome } from "app/Scenes/ArtQuiz/ArtQuizWelcome"
+import { navigate } from "app/system/navigation/navigate"
+import { Suspense, useEffect } from "react"
+import { graphql, useLazyLoadQuery } from "react-relay"
 
-// tslint:disable-next-line:interface-over-type-literal
 export type ArtQuizNavigationStack = {
   ArtQuizWelcome: undefined
   ArtQuizArtworks: undefined
-} & ArtQuizResultsNavigationScreens
+}
 
 export const StackNavigator = createStackNavigator<ArtQuizNavigationStack>()
 
-export const ArtQuiz: React.FC = () => {
+const ArtQuizScreen: React.FC = () => {
+  const queryResult = useLazyLoadQuery<ArtQuizNavigationQuery>(artQuizNavigationQuery, {}).me?.quiz
+  const isQuizCompleted = !!queryResult?.completedAt
+
+  useEffect(() => {
+    if (isQuizCompleted) {
+      navigate("/art-quiz/results")
+    }
+  }, [isQuizCompleted])
+
   return (
     <NavigationContainer independent>
       <StackNavigator.Navigator
@@ -28,8 +37,30 @@ export const ArtQuiz: React.FC = () => {
       >
         <StackNavigator.Screen name="ArtQuizWelcome" component={ArtQuizWelcome} />
         <StackNavigator.Screen name="ArtQuizArtworks" component={ArtQuizArtworks} />
-        {ArtQuizResultsNavigation()}
       </StackNavigator.Navigator>
     </NavigationContainer>
   )
 }
+
+export const ArtQuiz = () => {
+  return (
+    <Suspense fallback={<ArtQuizLoader />}>
+      <ArtQuizScreen />
+    </Suspense>
+  )
+}
+
+const artQuizNavigationQuery = graphql`
+  query ArtQuizNavigationQuery {
+    me {
+      quiz {
+        completedAt
+        quizArtworkConnection(first: 16) {
+          edges {
+            interactedAt
+          }
+        }
+      }
+    }
+  }
+`

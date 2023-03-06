@@ -1,14 +1,13 @@
+import { IncreaseIcon, DecreaseIcon } from "@artsy/palette-mobile"
 import { MarketStats_priceInsightsConnection$data } from "__generated__/MarketStats_priceInsightsConnection.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { DecreaseIcon, IncreaseIcon } from "palette"
 import { ReactTestInstance } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { MarketStatsFragmentContainer, MarketStatsQueryRenderer } from "./MarketStats"
-
 
 const trackEvent = useTracking().trackEvent
 

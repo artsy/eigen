@@ -1,3 +1,4 @@
+import { Spacer, AuctionIcon, ArtworkIcon, CloseIcon, Flex, Text } from "@artsy/palette-mobile"
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -9,8 +10,8 @@ import {
   SlugType,
 } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
-import { ArtworkIcon, AuctionIcon, CloseIcon, Flex, Pill, Spacer, Text, Touchable } from "palette"
-import React, { useContext } from "react"
+import { Pill, Touchable } from "palette"
+import { useContext } from "react"
 import { useTracking } from "react-tracking"
 import { ResultWithHighlight } from "./ResultWithHighlight"
 import { IMAGE_SIZE, SearchResultImage } from "./SearchResultImage"
@@ -65,7 +66,6 @@ export const AutosuggestSearchResult: React.FC<{
     if (onResultPress) {
       onResultPress(result)
     } else {
-      // @ts-expect-error
       inputRef.current?.blur()
       // need to wait a tick to push next view otherwise the input won't blur ¯\_(ツ)_/¯
       setTimeout(() => {
@@ -112,7 +112,7 @@ export const AutosuggestSearchResult: React.FC<{
             resultType={resultType}
           />
 
-          <Spacer ml={1} />
+          <Spacer x={1} />
 
           <Flex flex={1}>
             <ResultWithHighlight displayLabel={result.displayLabel!} highlight={highlight} />
@@ -145,11 +145,11 @@ export const AutosuggestSearchResult: React.FC<{
 
       {!!showNavigationButtons && (
         <>
-          <Spacer mb={1} />
+          <Spacer y={1} />
           <Flex flexDirection="row" alignItems="center">
-            <Spacer ml={4} />
+            <Spacer x={4} />
 
-            <Spacer ml={1} />
+            <Spacer x={1} />
             <Pill
               highlightEnabled
               Icon={ArtworkIcon}
@@ -159,7 +159,7 @@ export const AutosuggestSearchResult: React.FC<{
             >
               Artworks
             </Pill>
-            <Spacer ml={1} />
+            <Spacer x={1} />
             <Pill
               highlightEnabled
               Icon={AuctionIcon}

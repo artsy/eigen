@@ -1,4 +1,5 @@
 import { ScreenOwnerType, tappedMainArtworkGrid } from "@artsy/cohesion"
+import { Spacer, HeartIcon, HeartFillIcon, Flex, Box, Text, TextProps } from "@artsy/palette-mobile"
 import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -6,7 +7,7 @@ import { DurationProvider } from "app/Components/Countdown"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
-import { navigate } from "app/system/navigation/navigate"
+import { PageableRouteProps } from "app/system/navigation/useNavigateToPageableRoute"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import {
@@ -15,17 +16,7 @@ import {
   RandomNumberGenerator,
 } from "app/utils/placeholders"
 import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
-import {
-  Box,
-  Flex,
-  HeartFillIcon,
-  HeartIcon,
-  OpaqueImageView as NewOpaqueImageView,
-  Spacer,
-  Text,
-  TextProps,
-  Touchable,
-} from "palette"
+import { OpaqueImageView as NewOpaqueImageView, Touchable } from "palette"
 import React, { useRef } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql, useMutation } from "react-relay"
@@ -35,7 +26,7 @@ import { LotProgressBar } from "./LotProgressBar"
 
 const SAVE_ICON_SIZE = 22
 
-export interface ArtworkProps {
+export interface ArtworkProps extends Partial<PageableRouteProps> {
   artwork: ArtworkGridItem_artwork$data
   /** Overrides onPress and prevents the default behaviour. */
   onPress?: (artworkID: string) => void
@@ -74,6 +65,7 @@ export interface ArtworkProps {
 export const Artwork: React.FC<ArtworkProps> = ({
   artwork,
   onPress,
+  navigateToPageableRoute,
   trackTap,
   itemIndex,
   height,
@@ -101,10 +93,11 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageComponent")
   const [saveArtwork] = useMutation(SaveArtworkMutation)
 
-  let filterParams: any
+  let filterParams: any = undefined
 
   // This is needed to make sure the filter context is defined
   if (ArtworksFiltersStore.useStore()) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
     filterParams = filterArtworksParams(appliedFilters)
   }
@@ -170,7 +163,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
     addArtworkToRecentSearches()
     trackArtworkTap()
-    navigate(artwork.href!)
+    navigateToPageableRoute?.(artwork.href!)
   }
 
   const trackArtworkTap = () => {
@@ -278,7 +271,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
             )}
             {!!artwork.artistNames && (
               <Text
-                lineHeight="18"
+                lineHeight="18px"
                 weight="regular"
                 variant="xs"
                 numberOfLines={1}
@@ -289,14 +282,14 @@ export const Artwork: React.FC<ArtworkProps> = ({
             )}
             {!!artwork.title && (
               <Text
-                lineHeight="18"
+                lineHeight="18px"
                 variant="xs"
                 weight="regular"
                 color="black60"
                 numberOfLines={1}
                 {...titleTextStyle}
               >
-                <Text lineHeight="18" variant="xs" weight="regular" italic>
+                <Text lineHeight="18px" variant="xs" weight="regular" italic>
                   {artwork.title}
                 </Text>
                 {artwork.date ? `, ${artwork.date}` : ""}
@@ -305,7 +298,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
             {!hidePartner && !!artwork.partner?.name && (
               <Text
                 variant="xs"
-                lineHeight="18"
+                lineHeight="18px"
                 color="black60"
                 numberOfLines={1}
                 {...partnerNameTextStyle}
@@ -315,7 +308,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
             )}
             {!!saleInfo && !hideSaleInfo && (
               <Text
-                lineHeight="18"
+                lineHeight="18px"
                 variant="xs"
                 weight="medium"
                 numberOfLines={1}
@@ -326,7 +319,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
             )}
           </Flex>
           {!!eableArtworkGridSaveIcon && !hideSaveIcon && (
-            <Flex ml={0.2}>
+            <Flex>
               <Touchable haptic onPress={handleArtworkSave} testID="save-artwork-icon">
                 {artwork.isSaved ? (
                   <HeartFillIcon
@@ -414,7 +407,8 @@ export const saleMessageOrBidInfo = ({
 
 export default createFragmentContainer(Artwork, {
   artwork: graphql`
-    fragment ArtworkGridItem_artwork on Artwork {
+    fragment ArtworkGridItem_artwork on Artwork
+    @argumentDefinitions(includeAllImages: { type: "Boolean", defaultValue: false }) {
       title
       date
       saleMessage
@@ -450,7 +444,7 @@ export default createFragmentContainer(Artwork, {
       partner {
         name
       }
-      image {
+      image(includeAll: $includeAllImages) {
         url(version: "large")
         aspectRatio
       }
@@ -477,7 +471,7 @@ export const ArtworkGridItemPlaceholder: React.FC<{ seed?: number }> = ({
   return (
     <Flex>
       <PlaceholderBox height={rng.next({ from: 50, to: 150 })} width="100%" />
-      <Spacer mb="1" />
+      <Spacer y={1} />
       <PlaceholderRaggedText seed={rng.next()} numLines={2} />
     </Flex>
   )

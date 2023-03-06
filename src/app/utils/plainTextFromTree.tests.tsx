@@ -1,4 +1,4 @@
-import { Flex } from "palette"
+import { Flex } from "@artsy/palette-mobile"
 import { Text, View } from "react-native"
 import { plainTextFromTree } from "./plainTextFromTree"
 import { renderMarkdown } from "./renderMarkdown"

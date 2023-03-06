@@ -1,8 +1,9 @@
+import { Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
 import { CollapsibleArtworkDetails_artwork$data } from "__generated__/CollapsibleArtworkDetails_artwork.graphql"
 import ChevronIcon from "app/Components/Icons/ChevronIcon"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ArtworkDetailsRow } from "app/Scenes/Artwork/Components/ArtworkDetailsRow"
-import { Box, Collapse, Flex, Join, Separator, Spacer, Text } from "palette"
+import { Collapse, Join, Separator } from "palette"
 import React, { useState } from "react"
 import { LayoutAnimation, ScrollView, TouchableOpacity } from "react-native"
 
@@ -75,7 +76,7 @@ export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps>
         <Box height="230px">
           <ScrollView>
             <Flex mx={2} mb={1}>
-              <Join separator={<Spacer my={1} />}>
+              <Join separator={<Spacer y={1} />}>
                 {detailItems.map(({ title, value }, index) => (
                   <ArtworkDetailsRow key={index.toString()} title={title} value={value} />
                 ))}

@@ -1,5 +1,5 @@
+import { Spacer, IconProps, Text } from "@artsy/palette-mobile"
 import { Flex } from "app/Components/Bidding/Elements/Flex"
-import { IconProps, Spacer, Text } from "palette"
 
 interface StepWithImageProps {
   icon: React.FC<IconProps>
@@ -10,13 +10,13 @@ interface StepWithImageProps {
 export const StepWithImage: React.FC<StepWithImageProps> = ({ icon: Icon, text, title }) => {
   return (
     <Flex flexDirection="row">
-      <Flex pr={1} mr={0.3} style={{ paddingTop: 6 }}>
+      <Flex pr={1} mr="0.5" style={{ paddingTop: 6 }}>
         <Icon width={18} height={18} />
       </Flex>
 
       <Flex flex={1}>
         <Text variant="sm-display">{title}</Text>
-        <Spacer mb={0.3} />
+        <Spacer y={0.5} />
         <Text variant="sm" color="black60">
           {text}
         </Text>

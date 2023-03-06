@@ -21,7 +21,6 @@ import { SummarySectionFragmentContainer } from "./Components/SummarySection"
 import { TrackOrderSectionFragmentContainer } from "./Components/TrackOrderSection"
 import { WirePaymentSectionFragmentContainer } from "./Components/WirePaymentSection"
 
-
 const order = {
   requestedFulfillment: { __typename: "CommerceShip", name: "my name" },
   lineItems: { edges: [{ node: { artwork: { partner: { name: "partnerName" } } } }] },

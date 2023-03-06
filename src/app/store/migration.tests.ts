@@ -731,6 +731,7 @@ describe("App version Versions.AddSubmissionIdForMyCollection", () => {
     expect(migratedState.artworkSubmission.submission.submissionIdForMyCollection).toEqual("")
   })
 })
+
 describe("App version Versions.AddRecentPriceRangesModel", () => {
   const migrationToTest = Versions.AddRecentPriceRangesModel
 
@@ -814,22 +815,20 @@ describe("App version Versions.MoveEnvironmentToDevicePrefsAndRenameAdminToLocal
   })
 })
 
-describe("App version Versions.AddLastSeenNotificationPublishedAt", () => {
-  const migrationToTest = Versions.AddLastSeenNotificationPublishedAt
+describe("App version Versions.AddOnboardingArtQuizStateToAuthModel", () => {
+  const migrationToTest = Versions.AddOnboardingArtQuizStateToAuthModel
 
-  it("add lastSeenNotificationPublishedAt", () => {
+  it("removes deviceId", () => {
     const previousState = migrate({
       state: { version: 0 },
       toVersion: migrationToTest - 1,
     }) as any
-
-    expect(previousState.bottomTabs.lastSeenNotificationPublishedAt).toEqual(undefined)
 
     const migratedState = migrate({
       state: previousState,
       toVersion: migrationToTest,
     }) as any
 
-    expect(migratedState.bottomTabs.lastSeenNotificationPublishedAt).toEqual(null)
+    expect(migratedState.auth.onboardingArtQuizState).toEqual("none")
   })
 })

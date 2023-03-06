@@ -1,10 +1,11 @@
+import { Box, Text } from "@artsy/palette-mobile"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { ShowItemRow } from "app/Components/Lists/ShowItemRow"
 import Spinner from "app/Components/Spinner"
 import { MapTab, Show } from "app/Scenes/Map/types"
 import { navigate } from "app/system/navigation/navigate"
 import { isEqual } from "lodash"
-import { Box, Separator, SimpleMessage, Text } from "palette"
+import { Separator, SimpleMessage } from "palette"
 import React from "react"
 import { FlatList, FlatListProps } from "react-native"
 import { RelayProp } from "react-relay"
@@ -60,7 +61,7 @@ export class EventList extends React.Component<Props> {
       return (
         <>
           <Separator />
-          <Box mt={2} mb={3}>
+          <Box mt={2} mb={4}>
             <CaretButton
               onPress={() => this.viewAllPressed()}
               text={`View all ${bucket.length} shows`}
@@ -97,7 +98,7 @@ export class EventList extends React.Component<Props> {
         ListHeaderComponent={() => {
           if (!!header) {
             return (
-              <Box pt={6} mt={3} mb={2}>
+              <Box pt={6} mt={4} mb={2}>
                 <Text variant="lg-display">{header}</Text>
               </Box>
             )

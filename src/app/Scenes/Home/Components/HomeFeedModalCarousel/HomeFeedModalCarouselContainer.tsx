@@ -1,8 +1,9 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Flex, useSpace } from "@artsy/palette-mobile"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { navigate, popToRoot, switchTab } from "app/system/navigation/navigate"
 import { screen } from "app/utils/track/helpers"
-import { BackButton, Button, Flex, useSpace } from "palette"
+import { Button, BackButton } from "palette"
 import { useEffect, useRef, useState } from "react"
 import { BackHandler, LayoutAnimation, Modal, TouchableOpacity } from "react-native"
 import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
@@ -140,7 +141,7 @@ const Steps = ({
       justifyContent="space-between"
       pl={1}
       style={{ marginTop: topInset + 10 }}
-      pr={5}
+      pr={6}
       zIndex={101}
     >
       {Array.from({ length: numberOfSteps }).map((_, index) => (

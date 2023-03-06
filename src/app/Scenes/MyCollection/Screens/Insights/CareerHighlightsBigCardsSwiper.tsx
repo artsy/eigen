@@ -1,10 +1,10 @@
+import { Flex, useSpace, useColor } from "@artsy/palette-mobile"
 import { CareerHighlightsBigCardsSwiperQuery } from "__generated__/CareerHighlightsBigCardsSwiperQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { useSpringValue } from "app/Scenes/Artwork/Components/ImageCarousel/useSpringValue"
 import { goBack } from "app/system/navigation/navigate"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { compact } from "lodash"
-import { Flex, useColor, useSpace } from "palette"
 import { Suspense, useState } from "react"
 import {
   Animated,
@@ -31,11 +31,17 @@ interface Slides {
   content: JSX.Element
 }
 
-export const CareerHighlightsBigCardsSwiper: React.FC<{
+interface CareerHighlightsBigCardsSwiperScreenProps {
   type: CareerHighlightKind
   careerHighlightsAvailableTypes: CareerHighlightKind[]
   openPromoCard?: boolean
-}> = ({ type, careerHighlightsAvailableTypes, openPromoCard }) => {
+}
+
+const CareerHighlightsBigCardsSwiperScreen: React.FC<CareerHighlightsBigCardsSwiperScreenProps> = ({
+  type,
+  careerHighlightsAvailableTypes,
+  openPromoCard,
+}) => {
   const color = useColor()
   const space = useSpace()
   const insets = useSafeAreaInsets()
@@ -51,20 +57,21 @@ export const CareerHighlightsBigCardsSwiper: React.FC<{
 
   const myCollectionInfo = data.me?.myCollectionInfo
 
+  const openedCardIndex = openPromoCard
+    ? careerHighlightsAvailableTypes.length
+    : careerHighlightsAvailableTypes.indexOf(type)
+
+  const [sliderState, setSliderState] = useState({ currentPage: openedCardIndex })
+
   if (!myCollectionInfo) {
     return null
   }
 
   const numberOfSlides = careerHighlightsAvailableTypes.length + 1
-  const openedCardIndex = openPromoCard
-    ? careerHighlightsAvailableTypes.length
-    : careerHighlightsAvailableTypes.indexOf(type)
 
   // 18 is the close button size, 20 is screen margin and 10 is the spase between the
   // close button and the bar
   const barWidth = (screenWidth - 18 - 20 - 20 - 10) / numberOfSlides
-
-  const [sliderState, setSliderState] = useState({ currentPage: openedCardIndex })
 
   const shouldShowSlide = (slide: CareerHighlightKind) => {
     return careerHighlightsAvailableTypes.includes(slide)
@@ -120,9 +127,26 @@ export const CareerHighlightsBigCardsSwiper: React.FC<{
     // TODO: not to forget to mark the initial slide as seen as well
   }
 
+  const StepDot = ({ index }: { index: number }) => {
+    const opacityAnim = useSpringValue(sliderState.currentPage === index ? 1 : 0.2)
+    return (
+      <Animated.View
+        accessibilityLabel="Career Highlights Pagination Scroll Bar"
+        style={{
+          height: 2,
+          width: barWidth - space(1),
+          marginRight: space(1),
+          borderRadius: 2,
+          backgroundColor: color("black100"),
+          opacity: opacityAnim,
+        }}
+      />
+    )
+  }
+
   return (
     <>
-      <Flex mt={Platform.OS === "android" ? insets.top : 0}>
+      <Flex mt={Platform.OS === "android" ? `${insets.top}px` : undefined}>
         <FancyModalHeader
           alignItems="flex-start"
           rightCloseButton
@@ -139,40 +163,37 @@ export const CareerHighlightsBigCardsSwiper: React.FC<{
             testID="career-highlighs-big-cards-swiper"
           >
             {Array.from(Array(numberOfSlides).keys()).map((key, index) => (
-              <Animated.View
-                accessibilityLabel="Career Highlights Pagination Scroll Bar"
-                key={key}
-                style={{
-                  height: 2,
-                  width: barWidth - space(1),
-                  marginRight: space(1),
-                  borderRadius: 2,
-                  backgroundColor: color("black100"),
-                  opacity: useSpringValue(sliderState.currentPage === index ? 1 : 0.2),
-                }}
-              />
+              <StepDot key={key} index={index} />
             ))}
           </Flex>
         </FancyModalHeader>
       </Flex>
-      <Suspense fallback={openPromoCard ? <LoadingSkeletonPromoCard /> : <LoadingSkeleton />}>
-        <ScrollView
-          horizontal
-          scrollEventThrottle={10}
-          pagingEnabled
-          snapToAlignment="center"
-          showsHorizontalScrollIndicator={false}
-          contentOffset={{ x: screenWidth * openedCardIndex, y: 0 }}
-          onMomentumScrollEnd={(event: NativeSyntheticEvent<NativeScrollEvent>) =>
-            setSliderPage(event)
-          }
-        >
-          {slides.map(({ key, content }) => {
-            return <Flex key={key}>{content}</Flex>
-          })}
-        </ScrollView>
-      </Suspense>
+      <ScrollView
+        horizontal
+        scrollEventThrottle={10}
+        pagingEnabled
+        snapToAlignment="center"
+        showsHorizontalScrollIndicator={false}
+        contentOffset={{ x: screenWidth * openedCardIndex, y: 0 }}
+        onMomentumScrollEnd={(event: NativeSyntheticEvent<NativeScrollEvent>) =>
+          setSliderPage(event)
+        }
+      >
+        {slides.map(({ key, content }) => {
+          return <Flex key={key}>{content}</Flex>
+        })}
+      </ScrollView>
     </>
+  )
+}
+
+export const CareerHighlightsBigCardsSwiper = (
+  props: CareerHighlightsBigCardsSwiperScreenProps
+) => {
+  return (
+    <Suspense fallback={props.openPromoCard ? <LoadingSkeletonPromoCard /> : <LoadingSkeleton />}>
+      <CareerHighlightsBigCardsSwiperScreen {...props} />
+    </Suspense>
   )
 }
 

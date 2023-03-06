@@ -1,8 +1,8 @@
 import { InputRef } from "palette"
-import { createContext, Ref, useRef } from "react"
+import { createContext, Ref, RefObject, useRef } from "react"
 
 export const SearchContext = createContext<{
-  inputRef: Ref<InputRef>
+  inputRef: RefObject<InputRef>
   queryRef: Ref<string>
 }>(null as any)
 

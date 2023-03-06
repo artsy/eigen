@@ -1,9 +1,10 @@
+import { Flex } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { OnboardingMarketingCollectionQuery } from "__generated__/OnboardingMarketingCollectionQuery.graphql"
 import { FullScreenLoadingImage } from "app/Components/FullScreenLoadingImage"
 import { OnboardingResultsGrid } from "app/Scenes/Onboarding/OnboardingQuiz/Components/OnboardingResultsGrid"
 import { OnboardingNavigationStack } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingQuiz"
-import { Button, Flex, Screen } from "palette"
+import { Button, Screen } from "palette"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useBackHandler } from "shared/hooks/useBackHandler"
@@ -47,7 +48,7 @@ const OnboardingMarketingCollection: React.FC<OnboardingMarketingCollectionProps
           marketingCollection={marketingCollection!}
         />
         <OnboardingResultsGrid connection={marketingCollection?.artworks} />
-        <Flex p={2} background="white">
+        <Flex p={2} backgroundColor="white">
           <Button block onPress={() => navigate("OnboardingPostFollowLoadingScreen")} mb={1}>
             Explore More on Artsy
           </Button>
@@ -64,7 +65,6 @@ export const OnboardingMarketingCollectionScreen: React.FC<OnboardingMarketingCo
     fallback={
       <FullScreenLoadingImage
         imgSource={images[props.slug]}
-        spacerHeight="80px"
         loadingText={"Great choice" + "\n" + "We’re finding a collection for you"}
       />
     }

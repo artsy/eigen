@@ -1,63 +1,50 @@
 import { MyCollectionArtworkInsightsTestsQuery } from "__generated__/MyCollectionArtworkInsightsTestsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { MyCollectionArtworkInsights } from "./MyCollectionArtworkInsights"
 
-
 describe("MyCollectionArtworkInsights", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  const TestRenderer = () => (
-    <QueryRenderer<MyCollectionArtworkInsightsTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query MyCollectionArtworkInsightsTestsQuery @relay_test_operation {
-          artwork(id: "some-artwork-id") {
-            ...MyCollectionArtworkInsights_artwork
-          }
-
-          marketPriceInsights(artistId: "some-artist-id", medium: "painting") {
-            ...MyCollectionArtworkInsights_marketPriceInsights
-          }
-          me {
-            ...MyCollectionArtworkInsights_me
-          }
+  const { renderWithRelay } = setupTestWrapper<MyCollectionArtworkInsightsTestsQuery>({
+    Component: (props) => {
+      if (!props?.artwork || !props?.marketPriceInsights) {
+        return null
+      }
+      return (
+        <StickyTabPage
+          tabs={[
+            {
+              title: "test",
+              content: (
+                <MyCollectionArtworkInsights
+                  me={props.me}
+                  marketPriceInsights={props.marketPriceInsights}
+                  artwork={props?.artwork}
+                />
+              ),
+            },
+          ]}
+        />
+      )
+    },
+    query: graphql`
+      query MyCollectionArtworkInsightsTestsQuery @relay_test_operation {
+        artwork(id: "some-artwork-id") {
+          ...MyCollectionArtworkInsights_artwork
         }
-      `}
-      variables={{}}
-      render={({ props }) => {
-        if (!props?.artwork || !props?.marketPriceInsights) {
-          return null
-        }
-        return (
-          <StickyTabPage
-            tabs={[
-              {
-                title: "test",
-                content: (
-                  <MyCollectionArtworkInsights
-                    me={props.me}
-                    marketPriceInsights={props.marketPriceInsights}
-                    artwork={props?.artwork}
-                  />
-                ),
-              },
-            ]}
-          />
-        )
-      }}
-    />
-  )
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+        marketPriceInsights(artistId: "some-artist-id", medium: "painting") {
+          ...MyCollectionArtworkInsights_marketPriceInsights
+        }
+        me {
+          ...MyCollectionArtworkInsights_me
+        }
+      }
+    `,
   })
 
   it("renders without throwing an error", async () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText } = renderWithRelay({
       Query: () => ({
         artwork: mockArtwork,
         marketPriceInsights: mockMarketPriceInsights,
@@ -86,8 +73,7 @@ describe("MyCollectionArtworkInsights", () => {
 
   describe("Conditional Display of RequestForPriceEstimateBanner", () => {
     it("does not display RequestForPriceEstimateBanner when Artist is not P1", () => {
-      const { queryByTestId } = renderWithWrappers(<TestRenderer />)
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      const { queryByTestId } = renderWithRelay({
         Query: () => ({
           artwork: mockArtwork,
           marketPriceInsights: mockMarketPriceInsightsForHighDemandIndex,
@@ -97,8 +83,7 @@ describe("MyCollectionArtworkInsights", () => {
     })
 
     it("does not display when artwork is submitted", () => {
-      const { queryByTestId } = renderWithWrappers(<TestRenderer />)
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      const { queryByTestId } = renderWithRelay({
         Query: () => ({
           artwork: {
             ...mockArtworkForP1Artist,
@@ -114,9 +99,7 @@ describe("MyCollectionArtworkInsights", () => {
 
   describe("display of Submit for Sale section", () => {
     it("renders Submit for Sale section if P1 artist and artwork was not submitted to sale", () => {
-      const { getByText } = renderWithWrappers(<TestRenderer />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      const { getByText } = renderWithRelay({
         Query: () => ({
           artwork: {
             artist: {
@@ -132,9 +115,7 @@ describe("MyCollectionArtworkInsights", () => {
     })
 
     it("does not render Submit for Sale section if not P1 artist", () => {
-      const { getByText } = renderWithWrappers(<TestRenderer />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      const { getByText } = renderWithRelay({
         Query: () => ({
           artwork: {
             artist: {
@@ -151,9 +132,7 @@ describe("MyCollectionArtworkInsights", () => {
       )
     })
     it("does not render Submit for Sale section if P1 artist and artwork was submited to sale", () => {
-      const { getByText } = renderWithWrappers(<TestRenderer />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      const { getByText } = renderWithRelay({
         Query: () => ({
           artwork: {
             artist: {

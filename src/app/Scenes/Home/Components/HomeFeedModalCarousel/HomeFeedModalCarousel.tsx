@@ -1,7 +1,8 @@
+import { Spacer, GraphIcon, ArtworkIcon, Flex } from "@artsy/palette-mobile"
 import { PhoneIcon } from "app/Components/Icons/HomeFeedOnboarding/PhoneIcon"
 import { SellWithEaseIcon } from "app/Components/Icons/HomeFeedOnboarding/SellWithEaseIcon"
 import { StepWithImage } from "app/Components/StepWithImage/StepWithImage"
-import { ArtworkIcon, Flex, GraphIcon, Join, Spacer } from "palette"
+import { Join } from "palette"
 import { HomeFeedModalCarouselContainer } from "./HomeFeedModalCarouselContainer"
 import { HomeFeedModalCarouselScreenWrapper } from "./HomeFeedModalCarouselScreenWrapper"
 
@@ -44,7 +45,7 @@ export const HomeFeedModalCarousel: React.FC<HomeFeedModalCarouselProps> = ({
 const HowItWorksScreen = () => {
   return (
     <Flex mt={4}>
-      <Join separator={<Spacer mt={2} />}>
+      <Join separator={<Spacer y={2} />}>
         <StepWithImage
           title="Add your artworks"
           text="Upload images and details about your artworks to your private space."

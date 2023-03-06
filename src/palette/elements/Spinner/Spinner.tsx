@@ -1,5 +1,4 @@
-import { useColor } from "palette"
-import { Color } from "palette/Theme"
+import { Color, useColor } from "@artsy/palette-mobile"
 import React, { useEffect, useMemo } from "react"
 import { Animated, Easing, ViewProps } from "react-native"
 import styled from "styled-components/native"
@@ -112,6 +111,7 @@ const Bar = styled(Animated.View)<BarProps>`
   }};
 `
 
+// @ts-expect-error
 Bar.defaultProps = {
   width: 25,
   height: 6,

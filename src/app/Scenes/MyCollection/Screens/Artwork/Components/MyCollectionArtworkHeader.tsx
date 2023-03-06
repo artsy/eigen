@@ -1,20 +1,9 @@
 import { tappedCollectedArtworkImages } from "@artsy/cohesion"
-import { useNavigation } from "@react-navigation/native"
+import { useColor, Spacer, Flex, NoImageIcon, Text } from "@artsy/palette-mobile"
 import { MyCollectionArtworkHeader_artwork$key } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
-import {
-  CarouselImageDescriptor,
-  ImageCarousel,
-  ImageCarouselFragmentContainer,
-} from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
-import {
-  imageIsProcessing,
-  isImage,
-  removeLocalPhotos,
-} from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionImageUtil"
+import { ImageCarouselFragmentContainer } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
 import { navigate } from "app/system/navigation/navigate"
-import { LocalImage, retrieveLocalImages } from "app/utils/LocalImageStore"
-import { Flex, Join, NoImageIcon, Spacer, Text, useColor } from "palette"
-import React, { useEffect, useState } from "react"
+import { Join } from "palette"
 import { TouchableOpacity } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -29,20 +18,7 @@ interface MyCollectionArtworkHeaderProps {
 
 export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (props) => {
   const artwork = useFragment(myCollectionArtworkHeaderFragment, props.artwork)
-  const {
-    artistNames,
-    date,
-    images,
-    internalID,
-    title,
-    slug,
-    consignmentSubmission,
-    submissionId,
-  } = artwork
-  const [imagesToDisplay, setImagesToDisplay] = useState<
-    typeof images | CarouselImageDescriptor[] | null
-  >(images)
-  const [isDisplayingLocalImages, setIsDisplayingLocalImages] = useState(false)
+  const { artistNames, date, internalID, title, slug, consignmentSubmission } = artwork
 
   const dimensions = useScreenDimensions()
 
@@ -50,75 +26,23 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
 
   const { trackEvent } = useTracking()
 
-  const navigation = useNavigation()
-
-  useEffect(() => {
-    const unsubscribe = navigation?.addListener("focus", () => {
-      handleImages()
-    })
-    return unsubscribe
-  }, [navigation])
-
-  useEffect(() => {
-    handleImages()
-  }, [submissionId])
-
-  const mapLocalImages = (localImages: LocalImage[]) => {
-    return localImages.map((localImage) => ({
-      url: localImage.path,
-      width: localImage.width,
-      height: localImage.height,
-      deepZoom: null,
-      largeImageURL: localImage.path,
-    }))
-  }
-
-  const handleImages = async () => {
-    const defaultImage = images?.find((i) => i?.isDefault) || (images && images[0])
-    const [localVanillaArtworkImages, localSubmissionArtworkImages] = await Promise.all([
-      retrieveLocalImages(slug),
-      submissionId ? retrieveLocalImages(submissionId) : undefined,
-    ])
-    if (!isImage(defaultImage) || imageIsProcessing(defaultImage, "normalized")) {
-      // fallback to local images for this collection artwork
-      const mappedLocalImages = mapLocalImages(
-        localVanillaArtworkImages ?? localSubmissionArtworkImages ?? []
-      )
-
-      setImagesToDisplay(mappedLocalImages)
-      setIsDisplayingLocalImages(
-        !!localVanillaArtworkImages?.length || !!localSubmissionArtworkImages?.length
-      )
-      return
-    }
-
-    // TODO:- Handle case where images exist and user adds new images and
-    // new images are not yet avalable from Gemini. How Do You handle this????
-
-    // if there are no constraints, clear localPhotos from AsyncStorage
-    removeLocalPhotos(slug)
-  }
-
-  const ImagesToDisplayCarousel = isDisplayingLocalImages
-    ? ImageCarousel
-    : ImageCarouselFragmentContainer
+  const hasImages = artwork?.figures?.length > 0
 
   return (
-    <Join separator={<Spacer my={1} />}>
-      {/* ImageCarousel */}
-      {!!imagesToDisplay && imagesToDisplay.length ? (
-        <ImagesToDisplayCarousel
-          images={imagesToDisplay as any}
+    <Join separator={<Spacer y={1} />}>
+      {hasImages ? (
+        <ImageCarouselFragmentContainer
+          figures={artwork?.figures}
           cardHeight={dimensions.height / 3.5}
           onImagePressed={() => trackEvent(tracks.tappedCollectedArtworkImages(internalID, slug))}
         />
       ) : (
         <Flex
-          testID="Fallback-image-mycollection-header"
+          testID="MyCollectionArtworkHeaderFallback"
           bg={color("black5")}
           height={dimensions.height / 3.5}
           justifyContent="center"
-          mx={20}
+          mx={2}
         >
           <NoImageIcon fill="black60" mx="auto" />
         </Flex>
@@ -162,10 +86,8 @@ const myCollectionArtworkHeaderFragment = graphql`
     }
     artistNames
     date
-    images {
-      ...ImageCarousel_images
-      imageVersions
-      isDefault
+    figures(includeAll: true) {
+      ...ImageCarousel_figures
     }
     internalID
     slug

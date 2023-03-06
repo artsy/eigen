@@ -1,12 +1,13 @@
+import { Text } from "@artsy/palette-mobile"
 import { ArtworkExtraLinks_artwork$data } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { useSelectedTab } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
-import { Text } from "palette"
 import { View } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { createFragmentContainer } from "react-relay"
 import { useTracking } from "react-tracking"
+import { graphql } from "relay-runtime"
 import { AuctionFaqSection } from "./AuctionFaqSection"
 
 export interface ArtworkExtraLinksProps {
@@ -62,7 +63,6 @@ const ConsignmentsLink: React.FC<{ artistName: string }> = ({ artistName }) => {
 export const ArtworkExtraLinksFragmentContainer = createFragmentContainer(ArtworkExtraLinks, {
   artwork: graphql`
     fragment ArtworkExtraLinks_artwork on Artwork {
-      ...FaqAndSpecialistSection_artwork
       isAcquireable
       isInAuction
       isOfferable

@@ -1,7 +1,8 @@
+import { ArtsyLogoBlackIcon, Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { OnboardingWelcomeQuery } from "__generated__/OnboardingWelcomeQuery.graphql"
 import { GlobalStore } from "app/store/GlobalStore"
-import { ArtsyLogoIcon, Box, Button, Flex, Spacer, Spinner, Text } from "palette"
+import { Button, Spinner } from "palette"
 import { Suspense, useEffect } from "react"
 import { Image } from "react-native"
 import Animated, {
@@ -131,7 +132,7 @@ const OnboardingWelcome = () => {
             Ready to find{"\n"}
             art you love?
           </Text>
-          <Spacer mt={4} />
+          <Spacer y={4} />
           <AnimatedFlex entering={enteringAnim}>
             <Text variant="lg-display" color="white100">
               Start building your profile and tailor Artsy to your tastes.
@@ -153,7 +154,7 @@ const OnboardingWelcome = () => {
             >
               Get Started
             </Button>
-            <Spacer mt={1} />
+            <Spacer y={1} />
             <Button
               accessible
               accessibilityLabel="Skip Onboarding Quiz"
@@ -183,8 +184,8 @@ const ArtsyLogoAbsoluteHeader = () => {
   const { top } = useSafeAreaInsets()
 
   return (
-    <Box position="absolute" top={`${top + 44}px`} left="20px">
-      <ArtsyLogoIcon fill="white100" />
+    <Box position="absolute" top={`${top + 44}px`} left={2}>
+      <ArtsyLogoBlackIcon fill="white100" />
     </Box>
   )
 }
@@ -199,6 +200,13 @@ const OnboardingWelcomeScreenQuery = graphql`
   query OnboardingWelcomeQuery {
     me {
       name
+    }
+    artworksConnection(first: 1) {
+      edges {
+        node {
+          isSaved
+        }
+      }
     }
   }
 `

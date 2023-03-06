@@ -1,4 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { Spacer, Flex, Box } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import { SaleAboveTheFoldQuery } from "__generated__/SaleAboveTheFoldQuery.graphql"
 import { SaleBelowTheFoldNewQuery$data } from "__generated__/SaleBelowTheFoldNewQuery.graphql"
@@ -25,7 +26,7 @@ import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import _, { times } from "lodash"
 import { DateTime } from "luxon"
-import { Box, Flex, Join, Spacer } from "palette"
+import { Join } from "palette"
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { Animated, FlatList, RefreshControl } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
@@ -213,7 +214,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
     saleStatus(sale.startAt, sale.endAt, sale.registrationEndsAt) !== "closed" && {
       key: SALE_REGISTER_TO_BID,
       content: (
-        <Flex mx="2" mt={2}>
+        <Flex mx={2} mt={2}>
           <RegisterToBidButtonContainer
             sale={sale}
             me={me}
@@ -351,18 +352,18 @@ export const SalePlaceholder: React.FC<{}> = () => (
   <ProvidePlaceholderContext>
     <PlaceholderBox height={COVER_IMAGE_HEIGHT} width="100%" />
     <Flex px={2}>
-      <Join separator={<Spacer my={2} />}>
+      <Join separator={<Spacer y={2} />}>
         <Box>
           <PlaceholderText width={200 + Math.random() * 100} marginTop={20} />
           <PlaceholderText width={200 + Math.random() * 100} marginTop={20} />
-          <PlaceholderText width={100 + Math.random() * 100} marginTop={5} />
+          <PlaceholderText width={100 + Math.random() * 100} marginTop={6} />
         </Box>
         <Box>
           <PlaceholderText height={20} width={100 + Math.random() * 100} marginBottom={20} />
           <PlaceholderBox height={50} width="100%" />
         </Box>
         <Box>
-          <PlaceholderText height={20} width={100 + Math.random() * 100} marginBottom={5} />
+          <PlaceholderText height={20} width={100 + Math.random() * 100} marginBottom={6} />
           <Flex flexDirection="row" py={2}>
             {times(3).map((index: number) => (
               <Flex key={index} marginRight={1}>

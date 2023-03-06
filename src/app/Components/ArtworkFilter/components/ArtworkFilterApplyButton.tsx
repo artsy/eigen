@@ -1,4 +1,5 @@
-import { BellIcon, Box, Button, Separator, Text, useColor } from "palette"
+import { BellIcon, Box, useColor, Text } from "@artsy/palette-mobile"
+import { Button, Separator } from "palette"
 import { useState } from "react"
 import { Pressable } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
@@ -34,7 +35,7 @@ const InnerButton: React.FC<Button> = (props) => {
         <Text
           variant="xs"
           color="white100"
-          lineHeight={14}
+          lineHeight="14px"
           style={{ textDecorationLine: isPressed ? "underline" : "none" }}
         >
           {label}
@@ -96,7 +97,7 @@ export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> =
   return (
     <>
       <Separator my={0} />
-      <Box p={2} pb={30}>
+      <Box p={2} pb={4}>
         <Button
           disabled={disabled}
           onPress={onPress}

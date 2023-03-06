@@ -7,7 +7,7 @@ Adding a new component involves a few pieces of work! But don't worry, it's not 
 Create a new file in the `src/app/Components` directory. You'll likely need to create a subdirectory with a good name, too. Create a basic component.
 
 ```tsx
-import { Text } from "palette"
+import { Text } from "@artsy/palette-mobile"
 
 interface OurProps {
   whatever: string

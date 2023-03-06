@@ -1,6 +1,4 @@
-import { Flex } from "palette"
-import { Color } from "palette/Theme"
-import { useColor } from "palette/hooks"
+import { Flex, useColor, Color } from "@artsy/palette-mobile"
 import { useEffect, useState } from "react"
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
 

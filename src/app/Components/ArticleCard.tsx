@@ -1,8 +1,9 @@
+import { Spacer, Flex, useTheme, Text } from "@artsy/palette-mobile"
 import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { Flex, OpaqueImageView, Spacer, Text, useTheme } from "palette"
+import { OpaqueImageView } from "palette"
 import {
   GestureResponderEvent,
   TouchableWithoutFeedback,
@@ -61,7 +62,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
             ) : (
               <ImageView imageURL={imageURL} width={WIDTH} height={HEIGHT} />
             ))}
-          <Spacer mb={1} />
+          <Spacer y={1} />
           <Text variant="xs">{article.vertical || " "}</Text>
           <Text numberOfLines={3} ellipsizeMode="tail" variant="lg-display">
             {article.thumbnailTitle}

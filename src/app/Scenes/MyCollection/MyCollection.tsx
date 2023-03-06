@@ -1,4 +1,5 @@
 import { ActionType, AddCollectedArtwork, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Spacer, Flex } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
 import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"
@@ -38,7 +39,7 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
-import { Button, Flex, Separator, Spacer } from "palette"
+import { Button, Separator } from "palette"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -212,7 +213,6 @@ const MyCollection: React.FC<{
           relay={relay}
           showSearchBar={showSearchBar}
           setShowSearchBar={setShowSearchBar}
-          myCollectionIsRefreshing={isRefreshing}
         />
         {!!showDevAddButton && (
           <Button
@@ -321,7 +321,7 @@ export const MyCollectionQueryRenderer: React.FC = () => {
           renderPlaceholder: () => <MyCollectionPlaceholder />,
           renderFallback: ({ retry }) => (
             // align at the end with bottom margin to prevent the header to overlap the unable to load screen.
-            <LoadFailureView onRetry={retry!} justifyContent="flex-end" mb={100} />
+            <LoadFailureView onRetry={retry!} justifyContent="flex-end" mb="100px" />
           ),
         })}
       />
@@ -335,9 +335,9 @@ export const MyCollectionPlaceholder: React.FC = () => {
   return (
     <Flex>
       {/* collector's info */}
-      <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
+      <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px={2}>
         <Flex flex={1}>
-          <Spacer mb={20} />
+          <Spacer y={2} />
           {/* icon, name, time joined */}
           <Flex flexDirection="row">
             <PlaceholderBox width={50} height={50} borderRadius={50} />
@@ -348,26 +348,26 @@ export const MyCollectionPlaceholder: React.FC = () => {
             {/* settings icon */}
             <PlaceholderBox width={20} height={20} />
           </Flex>
-          <Spacer my={1} />
+          <Spacer y={1} />
         </Flex>
       </Flex>
-      <Spacer mb={2} mt={1} />
+      <Spacer y={4} />
       {/* tabs */}
       <Flex justifyContent="space-around" flexDirection="row" px={2}>
         <PlaceholderText width="25%" height={22} />
         <PlaceholderText width="25%" height={22} />
         <PlaceholderText width="25%" height={22} />
       </Flex>
-      <Spacer mb={1} />
+      <Spacer y={1} />
       <Separator />
-      <Spacer mb={1} />
+      <Spacer y={1} />
       {/* Sort & Filter  */}
       <Flex justifyContent="space-between" flexDirection="row" px={2} py={0.5}>
         <PlaceholderText width={120} height={22} />
         <PlaceholderText width={90} height={22} borderRadius={11} />
       </Flex>
       <Separator />
-      <Spacer mb={1} mt={0.5} />
+      <Spacer y={2} />
       {/* masonry grid */}
       {viewOption === "grid" ? (
         <PlaceholderGrid />
@@ -382,7 +382,7 @@ export const MyCollectionPlaceholder: React.FC = () => {
                   height={ARTWORK_LIST_IMAGE_SIZE}
                 />
               </Flex>
-              <Flex pl={15} flex={1}>
+              <Flex pl="15px" flex={1}>
                 <RandomWidthPlaceholderText minWidth={80} maxWidth={120} />
                 <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
                 <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />

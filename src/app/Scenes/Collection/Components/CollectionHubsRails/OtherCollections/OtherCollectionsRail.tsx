@@ -1,7 +1,7 @@
+import { Spacer, Text, TextProps } from "@artsy/palette-mobile"
 import { OtherCollectionsRail_collectionGroup$data } from "__generated__/OtherCollectionsRail_collectionGroup.graphql"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { navigate } from "app/system/navigation/navigate"
-import { Spacer, Text, TextProps } from "palette"
 import React, { useRef } from "react"
 import { TouchableOpacity, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -13,7 +13,7 @@ export interface OtherCollectionsRailProps {
 export const CollectionGroupMemberPill: React.FC<Partial<TextProps>> = (props) => (
   <Text
     variant="sm"
-    px={3}
+    px={4}
     py={2}
     bg="black10"
     // @ts-ignore
@@ -37,7 +37,7 @@ export const OtherCollectionsRail: React.FC<OtherCollectionsRailProps> = ({
         data={members}
         initialNumToRender={3}
         keyExtractor={({ id }) => id}
-        ItemSeparatorComponent={() => <Spacer mr={0.5} />}
+        ItemSeparatorComponent={() => <Spacer x={0.5} />}
         renderItem={({ item: { slug, title } }) => {
           return (
             <TouchableOpacity

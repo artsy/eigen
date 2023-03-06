@@ -5,37 +5,44 @@ import {
   TappedConsignArgs,
   TappedConsignmentInquiry,
 } from "@artsy/cohesion"
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { Button, Flex, Spacer, Text } from "palette"
-import { ImageBackground } from "react-native"
-import { useTracking } from "react-tracking"
+import { Button } from "palette"
+import { Image, ImageBackground } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
-
-const consignArgs: TappedConsignArgs = {
-  contextModule: ContextModule.sellHeader,
-  contextScreenOwnerType: OwnerType.sell,
-  subject: "Submit a work",
-}
 
 interface HeaderProps {
   onConsignPress: (tappedConsignArgs: TappedConsignArgs) => void
-  onInquiryPress: () => void
+  onInquiryPress: (inquiryTrackingArgs?: TappedConsignmentInquiry) => void
 }
 
 export const Header: React.FC<HeaderProps> = ({ onConsignPress, onInquiryPress }) => {
-  const { trackEvent } = useTracking()
-  const handleSubmitPress = () => {
-    onConsignPress(consignArgs)
+  const enableNewSWALandingPage = useFeatureFlag("AREnableNewSWALandingPage")
+
+  const handleSubmitPress = (subject: string) => {
+    onConsignPress(tracks.consignArgs(subject))
   }
 
   const handleInquiryPress = () => {
-    trackEvent(tracks.consignmentInquiryTapped())
-    onInquiryPress()
+    onInquiryPress(tracks.consignmentInquiryTapped())
   }
+
+  return enableNewSWALandingPage ? (
+    <NewHeader handleInquiryPress={handleInquiryPress} handleSubmitPress={handleSubmitPress} />
+  ) : (
+    <OldHeader handleInquiryPress={handleInquiryPress} handleSubmitPress={handleSubmitPress} />
+  )
+}
+
+const OldHeader: React.FC<{
+  handleInquiryPress: () => void
+  handleSubmitPress: (subject: string) => void
+}> = ({ handleInquiryPress, handleSubmitPress }) => {
   const screenDimensions = useScreenDimensions()
 
   const enableInquiry = useFeatureFlag("AREnableConsignmentInquiry")
 
+  const buttonText = "Submit an Artwork"
   return (
     <ImageBackground
       style={{ height: 430, width: screenDimensions.width }}
@@ -48,7 +55,7 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress, onInquiryPress }
             Sell Artworks from Your Collection
           </Text>
 
-          <Spacer mb={2} />
+          <Spacer y={2} />
 
           <Text variant="sm-display" color="white100">
             Our experts will find the best sales option for you, at auction, private sale, or
@@ -56,17 +63,25 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress, onInquiryPress }
           </Text>
         </Flex>
 
-        <Spacer mb={3} />
+        <Spacer y={2} />
 
-        <Button testID="header-cta" variant="fillLight" block onPress={handleSubmitPress} haptic>
+        <Button
+          testID="header-cta"
+          variant="fillLight"
+          block
+          onPress={() => {
+            handleSubmitPress(buttonText)
+          }}
+          haptic
+        >
           <Text variant="sm" weight="medium">
-            Submit an Artwork
+            {buttonText}
           </Text>
         </Button>
 
         {!!enableInquiry && (
           <>
-            <Spacer mb={2} />
+            <Spacer y={2} />
             <Button
               testID="header-inquiry-cta"
               variant="outlineLight"
@@ -79,7 +94,7 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress, onInquiryPress }
           </>
         )}
 
-        <Spacer mb={2} />
+        <Spacer y={2} />
 
         <Text variant="xs" italic color="white100">
           Alex Katz, Forest, 2009
@@ -89,7 +104,60 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress, onInquiryPress }
   )
 }
 
+const NewHeader: React.FC<{
+  handleInquiryPress: () => void
+  handleSubmitPress: (subject: string) => void
+}> = ({ handleInquiryPress, handleSubmitPress }) => {
+  const buttonText = "Start Selling"
+  return (
+    <>
+      <Image
+        source={require("images/swa-landing-page-header.png")}
+        style={{ width: "100%" }}
+        resizeMode="contain"
+      />
+
+      <Flex mx={2} mt={1}>
+        <Text variant="xl" mb={1}>
+          Sell art from your collection
+        </Text>
+        <Text variant="xs" mb={2}>
+          With our global reach and art market expertise, our specialists will find the right buyer
+          for your work.
+        </Text>
+        <Flex justifyContent="center" alignItems="center">
+          <Button
+            testID="header-consign-CTA"
+            block
+            onPress={() => {
+              handleSubmitPress(buttonText)
+            }}
+            my={1}
+            variant="fillDark"
+          >
+            {buttonText}
+          </Button>
+          <Button
+            testID="Header-inquiry-CTA"
+            block
+            onPress={handleInquiryPress}
+            my={1}
+            variant="outline"
+          >
+            Get in Touch
+          </Button>
+        </Flex>
+      </Flex>
+    </>
+  )
+}
+
 const tracks = {
+  consignArgs: (subject: string): TappedConsignArgs => ({
+    contextModule: ContextModule.sellHeader,
+    contextScreenOwnerType: OwnerType.sell,
+    subject,
+  }),
   consignmentInquiryTapped: (): TappedConsignmentInquiry => ({
     action: ActionType.tappedConsignmentInquiry,
     context_module: ContextModule.sellHeader,

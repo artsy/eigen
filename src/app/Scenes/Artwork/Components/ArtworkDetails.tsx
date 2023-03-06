@@ -1,7 +1,8 @@
+import { Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
 import { ArtworkDetails_artwork$key } from "__generated__/ArtworkDetails_artwork.graphql"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { Box, Flex, Join, Spacer, Text } from "palette"
+import { Join } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -102,7 +103,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ artwork }) => {
 
   return (
     <Box accessibilityLabel="Artwork Details">
-      <Join separator={<Spacer mt={1} />}>
+      <Join separator={<Spacer y={1} />}>
         {displayItems.map((item, index) => (
           <ArtworkDetailsRow key={`${item.title}-${index}`} title={item.title} value={item.value} />
         ))}

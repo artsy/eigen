@@ -1,4 +1,4 @@
-import { Flex, useSpace } from "palette"
+import { Flex, useSpace } from "@artsy/palette-mobile"
 import { GestureResponderEvent, TouchableWithoutFeedback } from "react-native"
 import { Background } from "./Background"
 import { FrameIndicators } from "./FrameIndicators"
@@ -19,17 +19,17 @@ export const CameraFramesContainer: React.FC<CameraFramesContainerProps> = (prop
 
   return (
     <Flex flex={1}>
-      <Background height={space("2")} />
+      <Background height={space(2)} />
 
       <Flex flex={1} flexDirection="row">
-        <Background width={space("2")} />
+        <Background width={space(2)} />
         <TouchableWithoutFeedback onPress={handleFocus} disabled={!focusEnabled}>
           <Flex flex={1} />
         </TouchableWithoutFeedback>
-        <Background width={space("2")} />
+        <Background width={space(2)} />
       </Flex>
 
-      <Background height={space("2")} />
+      <Background height={space(2)} />
 
       <FrameIndicators />
     </Flex>

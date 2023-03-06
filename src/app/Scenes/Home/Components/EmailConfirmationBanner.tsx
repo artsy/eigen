@@ -1,7 +1,8 @@
+import { Flex, Text } from "@artsy/palette-mobile"
 import { EmailConfirmationBanner_me$data } from "__generated__/EmailConfirmationBanner_me.graphql"
 import { verifyEmail } from "app/utils/verifyEmail"
-import { Flex, Spinner, Text, useColor } from "palette"
-import React, { useState } from "react"
+import { Spinner } from "palette"
+import { useState } from "react"
 import { Image, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 
@@ -11,7 +12,6 @@ export interface Props {
 }
 
 export const EmailConfirmationBanner: React.FC<Props> = ({ me, relay }) => {
-  const color = useColor()
   const [shouldDisplayBanner, toggleVisible] = useState<boolean>(me?.canRequestEmailConfirmation)
   const [isLoading, setLoading] = useState<boolean>(false)
   const [confirmed, setConfirmed] = useState<boolean>(false)
@@ -52,9 +52,9 @@ export const EmailConfirmationBanner: React.FC<Props> = ({ me, relay }) => {
   if (shouldDisplayBanner) {
     return (
       <Flex
-        px="2"
-        py="1"
-        background={color("black100")}
+        px={2}
+        py={1}
+        backgroundColor="black100"
         flexDirection="row"
         justifyContent="space-between"
         alignItems="center"
@@ -65,7 +65,7 @@ export const EmailConfirmationBanner: React.FC<Props> = ({ me, relay }) => {
               Sending a confirmation email...
             </Text>
 
-            <Flex pr="1">
+            <Flex pr={1}>
               <Spinner size="small" color="white100" />
             </Flex>
           </>

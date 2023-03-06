@@ -1,47 +1,30 @@
 import { fireEvent } from "@testing-library/react-native"
 import { OtherWorksTestsQuery } from "__generated__/OtherWorksTestsQuery.graphql"
 import { navigate } from "app/system/navigation/navigate"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { OtherWorksFragmentContainer } from "./OtherWorks/OtherWorks"
 
-
 describe("OtherWorks", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+  const { renderWithRelay } = setupTestWrapper<OtherWorksTestsQuery>({
+    Component: (props) => {
+      if (props?.artwork) {
+        return <OtherWorksFragmentContainer artwork={props.artwork} />
+      }
 
-  const TestWrapper = () => {
-    return (
-      <QueryRenderer<OtherWorksTestsQuery>
-        environment={mockEnvironment}
-        query={graphql`
-          query OtherWorksTestsQuery @relay_test_operation {
-            artwork(id: "artworkId") {
-              ...OtherWorks_artwork
-            }
-          }
-        `}
-        variables={{}}
-        render={({ props }) => {
-          if (props?.artwork) {
-            return <OtherWorksFragmentContainer artwork={props.artwork} />
-          }
-
-          return null
-        }}
-      />
-    )
-  }
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+      return null
+    },
+    query: graphql`
+      query OtherWorksTestsQuery @relay_test_operation {
+        artwork(id: "artworkId") {
+          ...OtherWorks_artwork
+        }
+      }
+    `,
   })
 
   it("renders no grids if there are none provided", () => {
-    const { toJSON } = renderWithWrappers(<TestWrapper />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { toJSON } = renderWithRelay({
       Artwork: () => ({
         contextGrids: null,
       }),
@@ -51,9 +34,7 @@ describe("OtherWorks", () => {
   })
 
   it("renders no grids if an empty array is provided", () => {
-    const { toJSON } = renderWithWrappers(<TestWrapper />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { toJSON } = renderWithRelay({
       Artwork: () => ({
         contextGrids: [],
       }),
@@ -63,9 +44,7 @@ describe("OtherWorks", () => {
   })
 
   it("renders the grid if one is provided", () => {
-    const { getByText, getByLabelText } = renderWithWrappers(<TestWrapper />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText, getByLabelText } = renderWithRelay({
       Artwork: () => ({
         contextGrids: [firstArtworkGridItem],
       }),
@@ -78,9 +57,7 @@ describe("OtherWorks", () => {
   })
 
   it("renders the grids if multiple are provided", () => {
-    const { getByText, getAllByLabelText } = renderWithWrappers(<TestWrapper />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText, getAllByLabelText } = renderWithRelay({
       Artwork: () => ({
         contextGrids: [firstArtworkGridItem, secondArtworkGridItem],
       }),
@@ -115,9 +92,7 @@ describe("OtherWorks", () => {
       },
     ]
 
-    const { getByText, queryByText } = renderWithWrappers(<TestWrapper />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText, queryByText } = renderWithRelay({
       Artwork: () => ({
         contextGrids,
       }),

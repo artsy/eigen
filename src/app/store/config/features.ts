@@ -103,7 +103,7 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableConversationalBuyNow",
   },
   AREnableArtworksFromNonArtsyArtists: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable My Collection artworks from non-Artsy artists",
     showInDevMenu: true,
     echoFlagKey: "AREnableArtworksFromNonArtsyArtists",
@@ -112,12 +112,6 @@ export const features = defineFeatures({
     readyForRelease: true,
     description: "Use artworksConnection for Auction screen",
     echoFlagKey: "AREnableArtworksConnectionForAuction",
-  },
-  AREnableMyCollectionHFOnboarding: {
-    readyForRelease: true,
-    description: "Enable My Collection home feed onboarding",
-    showInDevMenu: true,
-    echoFlagKey: "AREnableMyCollectionHFOnboarding",
   },
   AREnableCollectionsInOnboarding: {
     readyForRelease: true,
@@ -136,12 +130,6 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "ARReorderSWAArtworkSubmissionFlow",
   },
-  ARArtworkRedesingPhase2: {
-    description: "Enable redesigned artwork page (phase 2)",
-    showInDevMenu: true,
-    readyForRelease: true,
-    echoFlagKey: "ARArtworkRedesingPhase2",
-  },
   AREnablePanOnStaticHeader: {
     description: "Enable Scroll/Pan on StaticHeader",
     showInDevMenu: true,
@@ -158,11 +146,6 @@ export const features = defineFeatures({
     showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "AREnableSearchDiscoveryContentAndroid",
-  },
-  AREnforceLargeNewWorksRail: {
-    description: "Enforce large new works rail",
-    showInDevMenu: true,
-    readyForRelease: false,
   },
   AREnableArtworkGridSaveIcon: {
     description: "Enable artwork grid save icon",
@@ -197,12 +180,54 @@ export const features = defineFeatures({
   ARShowArtQuizApp: {
     description: "Show Art Quiz App",
     showInDevMenu: true,
-    readyForRelease: false,
+    readyForRelease: true,
+    echoFlagKey: "ARShowArtQuizApp",
   },
   AREnableESOnlySearch: {
     description: "Enable ES only search",
     showInDevMenu: true,
+    readyForRelease: true,
+    echoFlagKey: "AREnableESOnlySearch",
+  },
+  AREnableMoneyFormattingInMyCollectionForm: {
+    description: "Enable Money formatting in MyCollection Form",
+    showInDevMenu: true,
+    readyForRelease: true,
+    echoFlagKey: "AREnableMoneyFormattingInMyCollectionForm",
+  },
+  AREnableNewSWALandingPage: {
+    description: "Enable New SWA Landing Page",
+    showInDevMenu: true,
     readyForRelease: false,
+  },
+  AREnableBrowseMoreArtworksCard: {
+    description: "Enable Browse All Artworks Card on Home Screen",
+    showInDevMenu: true,
+    readyForRelease: true,
+    echoFlagKey: "AREnableBrowseMoreArtworksCard",
+  },
+  AREnableNewCollectionsRail: {
+    description: "Enable New Collections Rail",
+    showInDevMenu: true,
+    readyForRelease: true,
+    echoFlagKey: "AREnableNewCollectionsRail",
+  },
+  AREnableCuratorsPickRail: {
+    description: "Enable Curators Pick Rail",
+    showInDevMenu: true,
+    readyForRelease: true,
+    echoFlagKey: "AREnableCuratorsPickRail",
+  },
+  ARImpressionsTrackingHomeRailViews: {
+    description: "Enable tracking rail views on home screen",
+    showInDevMenu: true,
+    readyForRelease: true,
+    echoFlagKey: "ARImpressionsTrackingHomeRailViews",
+  },
+  AREnablePageableArtworkScreens: {
+    description: "Enable pageable artwork screens",
+    readyForRelease: false,
+    showInDevMenu: true,
   },
 })
 

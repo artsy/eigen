@@ -1,12 +1,12 @@
+import { Spacer, bullet, Flex, Box, Text } from "@artsy/palette-mobile"
 import { ArtistHeaderFollowArtistMutation } from "__generated__/ArtistHeaderFollowArtistMutation.graphql"
 import { ArtistHeader_artist$data } from "__generated__/ArtistHeader_artist.graphql"
 import { formatLargeNumberOfItems } from "app/utils/formatLargeNumberOfItems"
 import { Schema } from "app/utils/track"
-import { Box, bullet, Flex, FollowButton, Spacer, Text } from "palette"
+import { FollowButton } from "palette"
 import { useState } from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import styled from "styled-components/native"
 
 export const ARTIST_HEADER_HEIGHT = 156
 
@@ -120,7 +120,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
   return (
     <Box px={2} pt={6} pb={1}>
       <Text variant="lg-display">{artist.name}</Text>
-      <Spacer mb={1} />
+      <Spacer y={1} />
 
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
         <Flex flex={1}>
@@ -165,5 +165,3 @@ export const ArtistHeaderFragmentContainer = createFragmentContainer(ArtistHeade
     }
   `,
 })
-
-export const TextWrapper = styled(Text)``

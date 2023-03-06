@@ -1,4 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { addBreadcrumb } from "@sentry/react-native"
 import { BottomTabRoutes } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { matchRoute } from "app/routes"
@@ -11,13 +12,12 @@ import {
 import { dismissModal, goBack, GoBackProps, navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
 import { useWebViewCallback } from "app/utils/useWebViewEvent"
-import { Flex, Text } from "palette"
 import { parse as parseQueryString } from "query-string"
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import Share from "react-native-share"
 import WebView, { WebViewProps } from "react-native-webview"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "shared/hooks"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import { FancyModalHeader } from "./FancyModal/FancyModalHeader"
 
@@ -56,7 +56,7 @@ export const ArtsyWebViewPage = ({
   backProps?: GoBackProps
   backAction?: () => void
 } & ArtsyWebViewConfig) => {
-  const paddingTop = isPresentedModally ? 0 : useScreenDimensions().safeAreaInsets.top
+  const saInsets = useSafeAreaInsets()
 
   const [canGoBack, setCanGoBack] = useState(false)
   const webURL = useEnvironment().webURL
@@ -85,7 +85,7 @@ export const ArtsyWebViewPage = ({
     showShareButton ? handleArticleShare() : useRightCloseButton ? handleGoBack() : null
 
   return (
-    <Flex flex={1} pt={paddingTop} backgroundColor="white">
+    <Flex flex={1} pt={isPresentedModally ? 0 : `${saInsets.top}px`} backgroundColor="white">
       <ArtsyKeyboardAvoidingView>
         <FancyModalHeader
           useXButton={isPresentedModally && !canGoBack}

@@ -1,3 +1,4 @@
+import { Spacer, Box } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { InquiryQuery } from "__generated__/InquiryQuery.graphql"
 import { Inquiry_artwork$data } from "__generated__/Inquiry_artwork.graphql"
@@ -8,7 +9,7 @@ import { dismissModal } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Schema, Track, track as _track } from "app/utils/track"
-import { Box, Button, Separator, Spacer } from "palette"
+import { Button, Separator } from "palette"
 import React from "react"
 import { Dimensions, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -24,20 +25,20 @@ const Container = styled.View`
 `
 const Header = styled.View`
   align-self: stretch;
-  margin-top: 30;
+  margin-top: 30px;
   flex-direction: column;
-  margin-bottom: 30;
+  margin-bottom: 30px;
 `
 // This is really rubbish, but I basically have to create an equally sized element
 // on the top right, to get the title in the middle
 const PlaceholderView = styled(SmallHeadline)`
-  padding-right: 20;
+  padding-right: 20px;
   color: white;
 `
 const TitleView = styled.View`
   align-self: center;
   align-items: center;
-  margin-top: 6;
+  margin-top: 6px;
 `
 const PartnerName = styled(SmallHeadline)`
   font-size: 12;
@@ -47,32 +48,32 @@ const HeaderTextContainer = styled.View`
   justify-content: space-between;
 `
 const CancelButton = styled.TouchableOpacity`
-  padding-left: 20;
+  padding-left: 20px;
 `
 
 const Content = styled.View`
-  margin-left: 20;
-  margin-right: 20;
+  margin-left: 20px;
+  margin-right: 20px;
   align-self: ${isPad ? "center" : "stretch"};
-  ${isPad ? "width: 472;" : ""};
+  ${isPad ? "width: 472px;" : ""};
 `
 
 const InquiryTextInput = styled.TextInput`
   font-size: 16;
-  margin-top: 20;
+  margin-top: 20px;
   font-family: "Unica77LL-Regular";
 `
 const ResponseRate = styled(SmallHeadline)`
   color: ${themeGet("colors.copper100")};
-  margin-top: 5;
+  margin-top: 5px;
 `
 // TODO: Uncomment when use is uncommented in code below
 // const ResponseIndicator = styled.View`
-//   width: 8;
-//   height: 8;
-//   border-radius: 4;
-//   margin-top: 5;
-//   margin-right: 5;
+//   width: 8px;
+//   height: 8px;
+//   border-radius: 4px;
+//   margin-top: 5px;
+//   margin-right: 5px;
 //   background-color: ${colors["yellow-bold"]};
 // `
 
@@ -80,8 +81,8 @@ const ResponseRateLine = styled.View`
   flex: 1;
   flex-direction: row;
   align-items: center;
-  min-height: 12;
-  margin-top: 5;
+  min-height: 12px;
+  margin-top: 5px;
 `
 
 export interface BottomAlignedProps extends React.Props<JSX.Element> {
@@ -104,7 +105,7 @@ export const BottomAlignedButton: React.FC<BottomAlignedProps> = ({
       {children}
     </View>
     {!!showSeparator && <Separator key="separator" />}
-    <Spacer mb={1} />
+    <Spacer y={1} />
     <Box px={2}>
       <Button
         accessibilityLabel={buttonText}
@@ -116,7 +117,7 @@ export const BottomAlignedButton: React.FC<BottomAlignedProps> = ({
         {buttonText}
       </Button>
     </Box>
-    <Spacer mb={1} />
+    <Spacer y={1} />
   </ArtsyKeyboardAvoidingView>
 )
 
@@ -252,6 +253,7 @@ export class Inquiry extends React.Component<Props, State> {
               onEndEditing={() => {
                 this.setState({ text: null })
               }}
+              // @ts-expect-error
               onChangeText={(text) => this.setState({ text })}
             />
           </Content>

@@ -1,4 +1,4 @@
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import OpaqueImageView2 from "palette/elements/OpaqueImageView/OpaqueImageView2"
 import React from "react"
 import { TouchableWithoutFeedback, View, ViewProps } from "react-native"
 
@@ -30,7 +30,7 @@ export const ImageWithLoadingState = React.forwardRef<View, ImageWithLoadingStat
     return (
       <TouchableWithoutFeedback onPress={onPress} accessibilityLabel="Image with Loading State">
         <View style={[{ width, height }, props.style]} ref={ref}>
-          <OpaqueImageView
+          <OpaqueImageView2
             useRawURL
             onLoad={() => {
               if (props.onLoad) {

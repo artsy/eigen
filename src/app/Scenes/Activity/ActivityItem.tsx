@@ -1,5 +1,6 @@
 import { ActionType } from "@artsy/cohesion"
 import { ClickedActivityPanelNotificationItem } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import {
   ActivityItemMarkAsReadMutation,
@@ -11,12 +12,15 @@ import { ORDERED_ARTWORK_SORTS } from "app/Components/ArtworkFilter/Filters/Sort
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { last } from "lodash"
-import { Flex, OpaqueImageView, Spacer, Text } from "palette"
+import { OpaqueImageView } from "palette"
 import { parse as parseQueryString } from "query-string"
 import { TouchableOpacity } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
 import { RecordSourceSelectorProxy } from "relay-runtime"
+import { ActivityItemTypeLabel } from "./ActivityItemTypeLabel"
+import { isArtworksBasedNotification } from "./utils/isArtworksBasedNotification"
+import { shouldDisplayNotificationTypeLabel } from "./utils/shouldDisplayNotificationTypeLabel"
 
 interface ActivityItemProps {
   item: ActivityItem_item$key
@@ -40,15 +44,8 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
   const item = useFragment(activityItemFragment, props.item)
   const artworks = extractNodes(item.artworksConnection)
   const remainingArtworksCount = item.objectsCount - 4
-
-  const getNotificationType = () => {
-    if (item.notificationType === "ARTWORK_ALERT") {
-      return "Alert"
-    }
-
-    return null
-  }
-  const notificationTypeLabel = getNotificationType()
+  const shouldDisplayCounts =
+    isArtworksBasedNotification(item.notificationType) && remainingArtworksCount > 0
 
   const handlePress = () => {
     const splittedQueryParams = item.targetHref.split("?")
@@ -96,14 +93,8 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
       <Flex py={2} flexDirection="row" alignItems="center">
         <Flex flex={1}>
           <Flex flexDirection="row">
-            {!!notificationTypeLabel && (
-              <Text
-                color="blue100"
-                variant="xs"
-                accessibilityLabel={`Notification type: ${notificationTypeLabel}`}
-              >
-                {notificationTypeLabel} •{" "}
-              </Text>
+            {shouldDisplayNotificationTypeLabel(item.notificationType) && (
+              <ActivityItemTypeLabel notificationType={item.notificationType} />
             )}
 
             <Text variant="xs" color="black60">
@@ -117,7 +108,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
 
           <Text variant="sm-display">{item.message}</Text>
 
-          <Spacer mb={1} />
+          <Spacer y={1} />
 
           <Flex flexDirection="row" alignItems="center">
             {artworks.map((artwork) => {
@@ -136,7 +127,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = (props) => {
               )
             })}
 
-            {remainingArtworksCount > 0 && (
+            {shouldDisplayCounts && (
               <Text variant="xs" color="black60" accessibilityLabel="Remaining artworks count">
                 + {remainingArtworksCount}
               </Text>

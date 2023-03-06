@@ -1,16 +1,16 @@
+import {
+  Spacer,
+  MoneyFillIcon,
+  AlertCircleFillIcon,
+  IconProps,
+  Flex,
+  Text,
+  LinkText,
+  Color,
+} from "@artsy/palette-mobile"
 import { OrderUpdate_event$data } from "__generated__/OrderUpdate_event.graphql"
 
 import { navigate } from "app/system/navigation/navigate"
-import {
-  AlertCircleFillIcon,
-  Color,
-  Flex,
-  IconProps,
-  LinkText,
-  MoneyFillIcon,
-  Spacer,
-  Text,
-} from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TimeSince } from "./TimeSince"
 
@@ -113,7 +113,7 @@ export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event, conversationId 
           </Flex>
         </Flex>
       </Flex>
-      <Spacer mb={2} />
+      <Spacer y={2} />
     </Flex>
   )
 }

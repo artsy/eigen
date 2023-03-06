@@ -1,3 +1,4 @@
+import { Box, Text } from "@artsy/palette-mobile"
 import { CityFairListQuery } from "__generated__/CityFairListQuery.graphql"
 import { CityFairList_city$data } from "__generated__/CityFairList_city.graphql"
 import Spinner from "app/Components/Spinner"
@@ -6,7 +7,7 @@ import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Schema, screenTrack } from "app/utils/track"
-import { Box, Separator, Text } from "palette"
+import { Separator } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -71,7 +72,7 @@ class CityFairList extends React.Component<Props, State> {
         <FlatList
           ListHeaderComponent={() => {
             return (
-              <Box pt={6} mt={3} mb={2}>
+              <Box pt={6} mt={4} mb={2}>
                 <Text variant="lg-display">Fairs</Text>
               </Box>
             )

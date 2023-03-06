@@ -1,3 +1,4 @@
+import { Flex, Text } from "@artsy/palette-mobile"
 import DarkNavigationButton from "app/Components/Buttons/DarkNavigationButton"
 
 import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"
@@ -5,7 +6,6 @@ import { StickyTabPageTabBar } from "app/Components/StickyTabPage/StickyTabPageT
 import { useIsStaging } from "app/store/GlobalStore"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { compact } from "lodash"
-import { Flex, SettingsIcon as _SettingsIcon, Text } from "palette"
 import { View, ViewProps } from "react-native"
 import { useTracking } from "react-tracking"
 import { FavoriteArtistsQueryRenderer } from "./FavoriteArtists"

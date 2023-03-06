@@ -1,8 +1,9 @@
+import { Spacer, Box, Text } from "@artsy/palette-mobile"
 import { ArtworkHistory_artwork$data } from "__generated__/ArtworkHistory_artwork.graphql"
 import { ReadMore } from "app/Components/ReadMore"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
-import { Box, Join, Spacer, Text } from "palette"
+import { Join } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ArtworkHistoryProps {
@@ -26,7 +27,7 @@ export const ArtworkHistory: React.FC<ArtworkHistoryProps> = ({ artwork }) => {
   const textLimit = truncatedTextLimit()
 
   return (
-    <Join separator={<Spacer pb={3} />}>
+    <Join separator={<Spacer y={4} />}>
       {displaySections.map(({ title, value, contextModule }, index) => (
         <Box key={index}>
           <Text variant="md" pb={1}>

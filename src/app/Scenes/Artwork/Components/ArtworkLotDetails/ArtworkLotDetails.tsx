@@ -1,11 +1,11 @@
-/* eslint-disable react/no-unescaped-entities */
+import { Spacer, Box, Text, LinkText } from "@artsy/palette-mobile"
 import { ArtworkLotDetails_artwork$key } from "__generated__/ArtworkLotDetails_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { partnerName } from "app/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName"
 import { navigate } from "app/system/navigation/navigate"
 import { sendEmail } from "app/utils/sendEmail"
 import { Schema } from "app/utils/track"
-import { Box, Join, LinkText, Spacer, Text } from "palette"
+import { Join } from "palette"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtworkLotDetailsRow } from "./ArtworkLotDetailsRow"
@@ -72,7 +72,7 @@ export const ArtworkLotDetails: React.FC<ArtworkLotDetailsProps> = ({ artwork, a
   }
 
   return (
-    <Join separator={<Spacer mt={2} />}>
+    <Join separator={<Spacer y={2} />}>
       {!!estimate && <ArtworkLotDetailsRow title="Estimated value" value={estimate} />}
 
       {!!(shouldRenderExtraInfo && currentBid?.display) && (

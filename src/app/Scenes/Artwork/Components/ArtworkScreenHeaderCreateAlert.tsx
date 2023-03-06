@@ -5,6 +5,7 @@ import {
   ScreenOwnerType,
   TappedCreateAlert,
 } from "@artsy/cohesion"
+import { BellIcon } from "@artsy/palette-mobile"
 import { ArtworkScreenHeaderCreateAlert_artwork$data } from "__generated__/ArtworkScreenHeaderCreateAlert_artwork.graphql"
 import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
@@ -95,9 +96,9 @@ const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateAlertPro
       <Button
         size="small"
         variant={isForSale ? "outline" : "fillDark"}
-        textVariant="xs"
         haptic
         onPress={handleCreateAlertPress}
+        icon={<BellIcon fill={isForSale ? "black100" : "white100"} />}
       >
         Create Alert
       </Button>

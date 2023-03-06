@@ -1,6 +1,7 @@
+import { Flex } from "@artsy/palette-mobile"
 import { Stack } from "app/Components/Stack"
 import { getCurrentEmissionState, GlobalStore, unsafe__getEnvironment } from "app/store/GlobalStore"
-import { Flex, Input, Separator } from "palette"
+import { Input, Separator } from "palette"
 import React, { useEffect, useState } from "react"
 import { Alert } from "react-native"
 import {
@@ -93,7 +94,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
       onSave={onSave}
       contentContainerStyle={{ paddingHorizontal: 0 }}
     >
-      <Flex mx="2">
+      <Flex mx={2}>
         <Input
           autoComplete="password"
           autoFocus
@@ -106,8 +107,8 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
           error={receivedErrorCurrent}
         />
       </Flex>
-      <Separator mb="2" mt="3" />
-      <Stack mx="2">
+      <Separator mb={2} mt={4} />
+      <Stack mx={2}>
         <Input
           description="Must include at least one uppercase letter, one lowercase letter, and one number."
           onChangeText={setNewPassword}

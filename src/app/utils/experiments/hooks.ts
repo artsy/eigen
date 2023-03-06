@@ -39,9 +39,9 @@ export function useExperimentVariant(name: string): {
 
 export function useUnleashEnvironment(): { unleashEnv: "staging" | "production" } {
   const isStaging = useIsStaging()
-
+  const useProductionUnleash = useDevToggle("DTUseProductionUnleash")
   const unleashEnv = __DEV__
-    ? useDevToggle("DTUseProductionUnleash")
+    ? useProductionUnleash
       ? "production"
       : "staging"
     : isStaging

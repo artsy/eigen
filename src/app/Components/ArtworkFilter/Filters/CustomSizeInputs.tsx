@@ -1,5 +1,6 @@
+import { Spacer, Flex, Box, useColor, Text } from "@artsy/palette-mobile"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
-import { Box, Flex, Input, Join, Spacer, Text, useColor } from "palette"
+import { Input, Join } from "palette"
 import React, { useState } from "react"
 import { TextStyle } from "react-native"
 import { Numeric, Range } from "./helpers"
@@ -61,7 +62,7 @@ export const CustomSizeInputs: React.FC<CustomSizeInputsProps> = ({
         {label}
       </Text>
       <Flex flexDirection="row">
-        <Join separator={<Spacer ml={2} />}>
+        <Join separator={<Spacer x={2} />}>
           <Flex flex={1}>
             <Input
               description="Min"

@@ -20,17 +20,18 @@ import { myCollectionDeleteArtwork } from "app/Scenes/MyCollection/mutations/myC
 import { myCollectionUpdateArtwork } from "app/Scenes/MyCollection/mutations/myCollectionUpdateArtwork"
 import { deletedPhotos } from "app/Scenes/MyCollection/utils/deletedPhotos"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { GlobalStore, addClue, setVisualClueAsSeen } from "app/store/GlobalStore"
+import { addClue, GlobalStore, setVisualClueAsSeen } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
+import { storeLocalImage } from "app/utils/LocalImageStore"
 import { refreshMyCollection, refreshMyCollectionInsights } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
-import { isEqual } from "lodash"
+import { isEqual, reverse } from "lodash"
 import { useEffect, useRef, useState } from "react"
 import { Alert, InteractionManager } from "react-native"
 import { useTracking } from "react-tracking"
 import { SavingArtworkModal } from "./Components/SavingArtworkModal"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
-import { storeLocalPhotos, uploadPhotos } from "./MyCollectionImageUtil"
+import { uploadPhotos } from "./MyCollectionImageUtil"
 import { MyCollectionAddPhotos } from "./Screens/MyCollectionArtworkFormAddPhotos"
 import { MyCollectionArtworkFormArtist } from "./Screens/MyCollectionArtworkFormArtist"
 import { MyCollectionArtworkFormArtwork } from "./Screens/MyCollectionArtworkFormArtwork"
@@ -316,11 +317,12 @@ export const updateArtwork = async (
     ...others
   } = values
 
-  const externalImageUrls = await uploadPhotos(photos)
+  const newPhotos = photos.filter((photo) => photo.path)
+  const externalImageUrls = await uploadPhotos(newPhotos)
 
   let pricePaidCents
   if (pricePaidDollars && !isNaN(Number(pricePaidDollars))) {
-    pricePaidCents = Number(pricePaidDollars) * 100
+    pricePaidCents = parseFloat(pricePaidDollars) * 100
   }
 
   if (values.attributionClass !== "LIMITED_EDITION") {
@@ -351,10 +353,22 @@ export const updateArtwork = async (
       width: others.width,
     })
 
-    const slug = response.myCollectionCreateArtwork?.artworkOrError?.artworkEdge?.node?.slug
-    if (slug) {
-      storeLocalPhotos(slug, photos)
-    }
+    const artwork = response.myCollectionCreateArtwork?.artworkOrError?.artworkEdge?.node
+
+    // Store images locally
+    await Promise.all(
+      newPhotos.map(async (image, index) => {
+        const imageID = artwork?.images?.[index]?.internalID
+
+        if (!imageID) return
+
+        await storeLocalImage(imageID, {
+          path: image.path!,
+          width: image.width!,
+          height: image.height!,
+        })
+      })
+    )
 
     const hasMarketPriceInsights =
       response.myCollectionCreateArtwork?.artworkOrError?.artworkEdge?.node?.hasMarketPriceInsights
@@ -384,11 +398,27 @@ export const updateArtwork = async (
       width: others.width,
     })
 
-    const slug = response.myCollectionUpdateArtwork?.artworkOrError?.artwork?.slug
-    // if the user has updated images, save to local store
-    if (slug) {
-      storeLocalPhotos(slug, photos)
-    }
+    const updatedArtwork = response.myCollectionUpdateArtwork?.artworkOrError?.artwork
+
+    // Store images locally and start from the end because
+    // it's only possible to add new images at the end
+    const reversedImages = reverse([...(updatedArtwork?.images ?? [])])
+
+    await Promise.all(
+      reverse([...newPhotos]).map(async (image, index) => {
+        const imageID = reversedImages[index]?.internalID
+
+        if (!imageID) return
+
+        await storeLocalImage(imageID, {
+          path: image.path!,
+          width: image.width!,
+          height: image.height!,
+        })
+      })
+    )
+
+    // Delete images
     const deletedImages = deletedPhotos(dirtyFormCheckValues.photos, photos)
     for (const photo of deletedImages) {
       await deleteArtworkImage(props.artwork.internalID, photo.id)

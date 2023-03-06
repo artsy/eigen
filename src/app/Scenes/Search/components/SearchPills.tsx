@@ -1,5 +1,6 @@
+import { useSpace } from "@artsy/palette-mobile"
 import { PillType } from "app/Scenes/Search/types"
-import { Pill, useSpace } from "palette"
+import { Pill } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
 
@@ -20,7 +21,7 @@ export const SearchPills = React.forwardRef<ScrollView, SearchPillsProps>((props
       accessibilityLabel="Scroll view for result type filter options"
       ref={ref}
       horizontal
-      contentContainerStyle={{ paddingLeft: space(1.5), paddingRight: space(1) }}
+      contentContainerStyle={{ paddingLeft: space(2), paddingRight: space(1) }}
       showsHorizontalScrollIndicator={false}
       keyboardShouldPersistTaps="handled"
     >

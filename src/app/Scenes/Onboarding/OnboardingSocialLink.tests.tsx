@@ -9,7 +9,6 @@ import { createMockEnvironment } from "relay-test-utils"
 import { OnboardingNavigationStack } from "./Onboarding"
 import { OnboardingSocialLink } from "./OnboardingSocialLink"
 
-
 describe("OnboardingSocialLink", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const navigationMock = {

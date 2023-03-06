@@ -1,4 +1,5 @@
 import { ActionType, AddCollectedArtwork, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Spacer, LockIcon, Flex, useSpace, Text } from "@artsy/palette-mobile"
 import { MyCollection_me$data } from "__generated__/MyCollection_me.graphql"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
@@ -7,10 +8,11 @@ import { ZeroState } from "app/Components/States/ZeroState"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
 import { navigate, popToRoot } from "app/system/navigation/navigate"
+import { cleanLocalImages } from "app/utils/LocalImageStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
-import { Button, Flex, LockIcon, Spacer, Text, useSpace } from "palette"
-import { useState } from "react"
+import { Button } from "palette"
+import { useEffect, useState } from "react"
 import {
   Alert,
   Image,
@@ -34,7 +36,6 @@ interface MyCollectionArtworksProps {
   relay: RelayPaginationProp
   showSearchBar: boolean
   setShowSearchBar: (show: boolean) => void
-  myCollectionIsRefreshing?: boolean
 }
 
 export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
@@ -42,7 +43,6 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
   relay,
   showSearchBar,
   setShowSearchBar,
-  myCollectionIsRefreshing,
 }) => {
   const { height: screenHeight } = useScreenDimensions()
 
@@ -65,6 +65,10 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
     filterOptions,
     keywordFilter
   )
+
+  useEffect(() => {
+    cleanLocalImages()
+  }, [])
 
   if (artworks.length === 0) {
     return <MyCollectionZeroState />
@@ -150,7 +154,6 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
       {filteredArtworks.length > 0 ? (
         viewOption === "grid" ? (
           <InfiniteScrollMyCollectionArtworksGridContainer
-            myCollectionIsRefreshing={myCollectionIsRefreshing}
             myCollectionConnection={me.myCollectionConnection!}
             hasMore={relay.hasMore}
             loadMore={relay.loadMore}
@@ -167,7 +170,6 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
           />
         ) : (
           <MyCollectionArtworkList
-            myCollectionIsRefreshing={myCollectionIsRefreshing}
             myCollectionConnection={me.myCollectionConnection}
             hasMore={relay.hasMore}
             loadMore={relay.loadMore}
@@ -185,12 +187,12 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
           />
         )
       ) : (
-        <Flex py="6" px="2">
+        <Flex py={6} px={2}>
           <FilteredArtworkGridZeroState hideClearButton />
         </Flex>
       )}
 
-      {filteredArtworks.length > 0 && <Spacer mb={2} />}
+      {filteredArtworks.length > 0 && <Spacer y={2} />}
     </Flex>
   )
 }

@@ -1,8 +1,9 @@
+import { Flex, useColor } from "@artsy/palette-mobile"
 import {
   ImageCarouselContext,
   ImageDescriptor,
 } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
-import { Flex, Spinner, useColor } from "palette"
+import { Spinner } from "palette"
 import { useContext, useEffect, useState } from "react"
 import { LayoutAnimation } from "react-native"
 import FastImage from "react-native-fast-image"
@@ -94,7 +95,7 @@ export const ImageZoomViewAndroid: React.FC<ImageZoomViewAndroidProps> = ({ imag
           <Flex
             position="absolute"
             top={0}
-            pt={imageHeight / 2}
+            pt={`${imageHeight / 2}px`}
             left={0}
             opacity={0.5}
             backgroundColor="black10"

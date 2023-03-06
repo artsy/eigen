@@ -1,4 +1,4 @@
-import { DocumentIcon, Flex, FlexProps, useSpace } from "palette"
+import { DocumentIcon, Flex, FlexProps, useSpace } from "@artsy/palette-mobile"
 import { TouchableOpacity } from "react-native"
 import { CapturePhotoButton } from "./CapturePhotoButton"
 
@@ -35,7 +35,7 @@ export const CameraButtons: React.FC<CameraButtonsProps> = (props) => {
         <TouchableOpacity
           onPress={toggleFlash}
           disabled={!isCameraInitialized}
-          style={{ position: "absolute", right: space("2") }}
+          style={{ position: "absolute", right: space(2) }}
         >
           <Flex
             width={SMALL_BUTTONS_SIZE}
@@ -49,7 +49,7 @@ export const CameraButtons: React.FC<CameraButtonsProps> = (props) => {
       <TouchableOpacity
         onPress={selectPhotosFromLibrary}
         disabled={!isCameraInitialized}
-        style={{ position: "absolute", left: space("2") }}
+        style={{ position: "absolute", left: space(2) }}
       >
         <Flex
           width={SMALL_BUTTONS_SIZE}

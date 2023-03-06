@@ -1,38 +1,28 @@
 import { ArtworkInfoSectionTestsQuery } from "__generated__/ArtworkInfoSectionTestsQuery.graphql"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { ArtworkInfoSectionFragmentContainer } from "./Components/ArtworkInfoSection"
 
-
 describe("ArtworkInfoSection", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  beforeEach(() => (mockEnvironment = createMockEnvironment()))
+  const { renderWithRelay } = setupTestWrapper<ArtworkInfoSectionTestsQuery>({
+    Component: (props) => {
+      if (props?.commerceOrder) {
+        return <ArtworkInfoSectionFragmentContainer artwork={props.commerceOrder} />
+      }
+      return null
+    },
+    query: graphql`
+      query ArtworkInfoSectionTestsQuery @relay_test_operation {
+        commerceOrder(id: "some-id") {
+          internalID
+          ...ArtworkInfoSection_artwork
+        }
+      }
+    `,
+  })
 
-  const TestRenderer = () => (
-    <QueryRenderer<ArtworkInfoSectionTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query ArtworkInfoSectionTestsQuery @relay_test_operation {
-          commerceOrder(id: "some-id") {
-            internalID
-            ...ArtworkInfoSection_artwork
-          }
-        }
-      `}
-      variables={{}}
-      render={({ props }) => {
-        if (props?.commerceOrder) {
-          return <ArtworkInfoSectionFragmentContainer artwork={props.commerceOrder} />
-        }
-        return null
-      }}
-    />
-  )
   it("renders auction result when auction results are available", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const tree = renderWithRelay({
       CommerceOrder: () => ({
         internalID: "222",
         lineItems: {
@@ -60,18 +50,20 @@ describe("ArtworkInfoSection", () => {
       }),
     })
 
-    expect(tree.findByProps({ testID: "date" }).props.children).toBe("2017")
-    expect(tree.findByProps({ testID: "medium" }).props.children).toBe(
+    expect(tree.UNSAFE_getByProps({ testID: "date" }).props.children).toBe("2017")
+    expect(tree.UNSAFE_getByProps({ testID: "medium" }).props.children).toBe(
       "Rayon thread on poly twill backed"
     )
 
-    expect(tree.findByProps({ testID: "title" }).props.children).toBe(
+    expect(tree.UNSAFE_getByProps({ testID: "title" }).props.children).toBe(
       "Set of Six (Six) Scout Series Embroidered Patches, "
     )
-    expect(tree.findByProps({ testID: "image" }).props.source).toStrictEqual({
+    expect(tree.UNSAFE_getByProps({ testID: "image" }).props.source).toStrictEqual({
       uri: "https://homepages.cae.wisc.edu/~ece533/images/airplane.webp",
     })
-    expect(tree.findByProps({ testID: "artistNames" }).props.children).toBe("Kerry James Marshall")
-    expect(tree.findByProps({ testID: "editionOf" }).props.children).toBe("edit of 30")
+    expect(tree.UNSAFE_getByProps({ testID: "artistNames" }).props.children).toBe(
+      "Kerry James Marshall"
+    )
+    expect(tree.UNSAFE_getByProps({ testID: "editionOf" }).props.children).toBe("edit of 30")
   })
 })

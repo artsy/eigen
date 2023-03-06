@@ -1,3 +1,4 @@
+import { range, CheckIcon, Flex, Box, useColor, Text } from "@artsy/palette-mobile"
 import MultiSlider from "@ptomasroos/react-native-multi-slider"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
@@ -12,11 +13,10 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
 import { TouchableRow } from "app/Components/TouchableRow"
-import { Box, CheckIcon, Flex, Separator, Text, useColor } from "palette"
+import { Separator } from "palette"
 import React, { useState } from "react"
 import Haptic from "react-native-haptic-feedback"
 import { useScreenDimensions } from "shared/hooks"
-import styled from "styled-components/native"
 
 type YearOptionsScreenProps = StackScreenProps<ArtworkFilterNavigationStack, "YearOptionsScreen">
 
@@ -101,9 +101,9 @@ export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation
     <Flex flexGrow={1}>
       <ArtworkFilterBackHeader title="Year created" onLeftButtonPress={navigation.goBack} />
       <Flex flexGrow={1} py={2}>
-        <YearText variant="xs" mb={15} mx={2}>
-          {sliderValues[0]} – {sliderValues[1]}
-        </YearText>
+        <Text variant="xs" mb="15px" mx={2}>
+          {range(`${sliderValues[0]}`, `${sliderValues[1]}`)}
+        </Text>
         <Flex alignItems="center" mx={2}>
           <MultiSlider
             values={[Number(sliderValues[0]), Number(sliderValues[1])]}
@@ -171,7 +171,7 @@ export const OptionItem = ({ onPress, text, selected }: OptionItemProps) => (
       >
         <Text variant="xs">{text}</Text>
         {!!selected && (
-          <Box mb={0.1}>
+          <Box>
             <CheckIcon fill="black100" />
           </Box>
         )}
@@ -179,7 +179,3 @@ export const OptionItem = ({ onPress, text, selected }: OptionItemProps) => (
     </Flex>
   </TouchableRow>
 )
-
-export const YearText = styled(Text)`
-  margin-bottom: 15;
-`

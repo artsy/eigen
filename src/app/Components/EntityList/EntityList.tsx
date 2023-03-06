@@ -1,4 +1,4 @@
-import { Flex, Text } from "palette"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { TouchableOpacity } from "react-native"
 import { EntityItem, EntityItemProps, Item } from "./Components/EntityItem"
 
@@ -28,7 +28,7 @@ export const EntityList: React.FC<EntityListProps> = ({
 
   return (
     <Flex flexDirection="row" flexWrap="wrap">
-      <Text variant="sm" lineHeight="19">
+      <Text variant="sm" lineHeight="19px">
         {prefix + " "}
       </Text>
       {filteredList.map((item, i) => (
@@ -42,11 +42,11 @@ export const EntityList: React.FC<EntityListProps> = ({
       ))}
       {!!shouldShowMore && (
         <>
-          <Text variant="sm" lineHeight="19">
+          <Text variant="sm" lineHeight="19px">
             {" and "}
           </Text>
           <TouchableOpacity onPress={() => onViewAllPressed && onViewAllPressed()}>
-            <Text variant="sm" weight="medium" lineHeight="19">
+            <Text variant="sm" weight="medium" lineHeight="19px">
               {count - displayedItems + " others"}
             </Text>
           </TouchableOpacity>

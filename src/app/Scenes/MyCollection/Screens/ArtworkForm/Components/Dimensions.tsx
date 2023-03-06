@@ -1,8 +1,9 @@
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { throttle } from "lodash"
-import { Flex, Input, RadioButton, Spacer, Text } from "palette"
+import { Input, RadioButton } from "palette"
 import React, { useState } from "react"
 
 export const Dimensions: React.FC = () => {
@@ -25,7 +26,7 @@ export const Dimensions: React.FC = () => {
       <Flex flexDirection="row">
         <Text variant="xs">DIMENSIONS</Text>
       </Flex>
-      <Spacer mt={1} mb={0.3} />
+      <Spacer y={1} />
       <Flex flexDirection="row">
         <RadioButton
           onPress={() => handleMetricChange("cm")}
@@ -33,7 +34,7 @@ export const Dimensions: React.FC = () => {
           text="cm"
         />
 
-        <Spacer mr={3} />
+        <Spacer x={4} />
 
         <RadioButton
           onPress={() => handleMetricChange("in")}
@@ -41,7 +42,7 @@ export const Dimensions: React.FC = () => {
           text="in"
         />
       </Flex>
-      <Spacer my={1} />
+      <Spacer y={1} />
       <Flex flexDirection="row">
         <Flex mr={1} flex={1}>
           <Input

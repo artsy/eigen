@@ -478,8 +478,8 @@ PODS:
     - React
   - react-native-image-resizer (1.4.5):
     - React-Core
-  - react-native-in-app-review (4.1.1):
-    - React
+  - react-native-in-app-review (4.2.1):
+    - React-Core
   - react-native-mapbox-gl (8.5.0):
     - Mapbox-iOS-SDK (~> 6.4)
     - React
@@ -596,13 +596,11 @@ PODS:
     - React-Core
   - RNCClipboard (1.7.0):
     - React-Core
-  - RNCMaskedView (0.2.8):
-    - React-Core
   - RNDateTimePicker (6.1.2):
     - React-Core
   - RNDeviceInfo (10.3.0):
     - React-Core
-  - RNFastImage (8.5.11):
+  - RNFastImage (8.6.3):
     - React-Core
     - SDWebImage (~> 5.11.1)
     - SDWebImageWebPCoder (~> 0.8.4)
@@ -819,7 +817,6 @@ DEPENDENCIES:
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
-  - "RNCMaskedView (from `../node_modules/@react-native-masked-view/masked-view`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNFastImage (from `../node_modules/react-native-fast-image`)
@@ -1056,8 +1053,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNCClipboard:
     :path: "../node_modules/@react-native-clipboard/clipboard"
-  RNCMaskedView:
-    :path: "../node_modules/@react-native-masked-view/masked-view"
   RNDateTimePicker:
     :path: "../node_modules/@react-native-community/datetimepicker"
   RNDeviceInfo:
@@ -1208,7 +1203,7 @@ SPEC CHECKSUMS:
   react-native-flipper: 8d0ada062fbc2c7460cc0d343aded6fc3f9c90dc
   react-native-geolocation: c956aeb136625c23e0dce0467664af2c437888c9
   react-native-image-resizer: d9fb629a867335bdc13230ac2a58702bb8c8828f
-  react-native-in-app-review: c5ba75cc2c91238f42bd2de44fa0e65e93b7c9ea
+  react-native-in-app-review: a073f67c5f3392af6ea7fb383217cdb1aa2aa726
   react-native-mapbox-gl: 0308cba1da4edbc1aa0e82a7584ba50e52725996
   react-native-netinfo: 2517ad504b3d303e90d7a431b0fcaef76d207983
   react-native-pager-view: e76d64a5114a152e942caa09136e4e250709378c
@@ -1237,10 +1232,9 @@ SPEC CHECKSUMS:
   RNBootSplash: 24175aa28fe203b10c48dc34e78d946fd33c77af
   RNCAsyncStorage: b49b4e38a1548d03b74b30e558a1d18465b94be7
   RNCClipboard: 245417a78ab585e0d4d83926c28907e7b2bc24bd
-  RNCMaskedView: bc0170f389056201c82a55e242e5d90070e18e5a
   RNDateTimePicker: 6f1f0b4cf7c71b6e2aea7a3aa62969111084bbd1
   RNDeviceInfo: 4701f0bf2a06b34654745053db0ce4cb0c53ada7
-  RNFastImage: 1f2cab428712a4baaf78d6169eaec7f622556dd7
+  RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNGestureHandler: bad495418bcbd3ab47017a38d93d290ebd406f50
   RNGoogleSignin: 111fd4792913208f338fe3178005f7a22e490ff9
   RNImageCropPicker: 648356d68fbf9911a1016b3e3723885d28373eda

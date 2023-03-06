@@ -4,7 +4,7 @@ import styled from "styled-components/native"
 
 // @ts-ignore
 const Container = styled.View`
-  height: 30;
+  height: 30px;
   background-color: ${themeGet("colors.yellow10")};
   justify-content: center;
   align-items: center;
@@ -15,7 +15,7 @@ const ConnectivityMessage = styled.Text`
   text-align: center;
   font-family: "Unica77LL-Regular";
   font-size: 16;
-  padding-top: 5;
+  padding-top: 5px;
 `
 
 export default class ConnectivityBanner extends React.Component<any, any> {

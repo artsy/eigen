@@ -1,15 +1,6 @@
+import { Flex, SpacingUnitDSValueNumber, useSpace, Text } from "@artsy/palette-mobile"
 import SearchIcon from "app/Components/Icons/SearchIcon"
-import {
-  Flex,
-  Input,
-  INPUT_HEIGHT,
-  InputProps,
-  InputRef,
-  SpacingUnitV2,
-  SpacingUnitV3,
-  Text,
-  useSpace,
-} from "palette"
+import { Input, INPUT_HEIGHT, InputProps, InputRef } from "palette"
 import { forwardRef, useImperativeHandle, useRef, useState } from "react"
 import { TouchableOpacity, useWindowDimensions } from "react-native"
 import Animated, {
@@ -23,7 +14,7 @@ const MX = 2
 const CANCEL_BUTTON_DURATION = 180
 
 export interface SearchInputProps extends InputProps {
-  mx?: SpacingUnitV2 | SpacingUnitV3
+  mx?: SpacingUnitDSValueNumber
   enableCancelButton?: boolean
   onCancelPress?: () => void
 }

@@ -1,6 +1,7 @@
+import { Flex, Box, useSpace, Text } from "@artsy/palette-mobile"
 import { FilterData } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { TouchableRow } from "app/Components/TouchableRow"
-import { Box, Check, CHECK_SIZE, Flex, Text, useSpace } from "palette"
+import { Check, CHECK_SIZE } from "palette"
 import React, { memo } from "react"
 import { useScreenDimensions } from "shared/hooks"
 import styled from "styled-components/native"

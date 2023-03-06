@@ -1,3 +1,4 @@
+import { Spacer, Box, Text } from "@artsy/palette-mobile"
 import { ShowMoreInfoQuery } from "__generated__/ShowMoreInfoQuery.graphql"
 import { ShowMoreInfo_show$data } from "__generated__/ShowMoreInfo_show.graphql"
 import { PartnerEntityHeaderFragmentContainer as PartnerEntityHeader } from "app/Components/PartnerEntityHeader"
@@ -7,7 +8,6 @@ import { ShowLocationFragmentContainer as ShowLocation } from "app/Scenes/Show/C
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { Box, Spacer, Text } from "palette"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
@@ -145,9 +145,9 @@ export const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ show }) => {
       <FlatList<Section>
         data={sections}
         keyExtractor={({ key }) => key}
-        ListHeaderComponent={<Spacer mt={6} pt={2} />}
-        ListFooterComponent={<Spacer my={2} />}
-        ItemSeparatorComponent={() => <Spacer my={15} />}
+        ListHeaderComponent={<Spacer y={6} />}
+        ListFooterComponent={<Spacer y={2} />}
+        ItemSeparatorComponent={() => <Spacer y="15px" />}
         renderItem={({ item: { element } }) => element}
       />
     </ProvideScreenTracking>

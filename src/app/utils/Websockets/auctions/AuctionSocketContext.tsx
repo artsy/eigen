@@ -34,8 +34,6 @@ const initialValues = {
 
 const WebsocketContext = createContext<AuctionWebsocketContextProps>(initialValues)
 
-export const AuctionWebsocketContextConsumer = WebsocketContext.Consumer
-
 export const AuctionWebsocketContextProvider: React.FC<AuctionWebsocketContextProviderProps> = ({
   channelInfo,
   enabled,

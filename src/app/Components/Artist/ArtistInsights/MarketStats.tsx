@@ -1,4 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
+import { Spacer, IncreaseIcon, DecreaseIcon, Flex, Text } from "@artsy/palette-mobile"
 import { MarketStatsQuery } from "__generated__/MarketStatsQuery.graphql"
 import { MarketStats_priceInsightsConnection$data } from "__generated__/MarketStats_priceInsightsConnection.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
@@ -7,9 +8,9 @@ import { formatLargeNumber } from "app/utils/formatLargeNumber"
 import { formatSellThroughRate } from "app/utils/marketPriceInsightHelpers"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { DecreaseIcon, Flex, IncreaseIcon, Join, Separator, Spacer, Text } from "palette"
+import { Join, Separator } from "palette"
 import { Select } from "palette/elements/Select"
-import React, { useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -25,11 +26,8 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
 
   const priceInsights = extractNodes(priceInsightsConnection)
 
-  if (priceInsights.length === 0) {
-    return null
-  }
-
   const [selectedPriceInsight, setSelectedPriceInsight] = useState(priceInsights[0])
+  const { width: screenWidth } = useScreenDimensions()
 
   const mediumOptions = useRef<Array<{ value: string; label: string }>>(
     priceInsights
@@ -40,45 +38,49 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
       }))
   )
 
+  if (priceInsights.length === 0) {
+    return null
+  }
+
   const renderInfoModal = () => (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <Spacer my={1} />
+      <Spacer y={1} />
       <Text>
         The following data points provide an overview of an artist’s auction market for a specific
         medium (e.g., photography, painting) over the past 36 months.
       </Text>
-      <Spacer mb={2} />
+      <Spacer y={2} />
       <Text>
         These market signals bring together data from top auction houses around the world, including
         Christie’s, Sotheby’s, Phillips and Bonhams.
       </Text>
-      <Spacer mb={2} />
+      <Spacer y={2} />
       <Text>
         In this data set, please note that the sale price includes the hammer price and buyer’s
         premium, as well as any other additional fees (e.g., Artist’s Resale Rights). The data set
         only includes works valued over $1,000.
       </Text>
-      <Spacer mb={2} />
+      <Spacer y={2} />
       <Text fontWeight="bold">Average yearly lots sold</Text>
-      <Spacer mb={1} />
+      <Spacer y={1} />
       <Text>The average number of lots sold per year at auction over the past 36 months.</Text>
-      <Spacer mb={2} />
+      <Spacer y={2} />
       <Text fontWeight="bold">Sell-through rate</Text>
-      <Spacer mb={1} />
+      <Spacer y={1} />
       <Text>The percentage of lots in auctions that sold over the past 36 months.</Text>
-      <Spacer mb={2} />
+      <Spacer y={2} />
       <Text fontWeight="bold">Average sale price</Text>
-      <Spacer mb={1} />
+      <Spacer y={1} />
       <Text>The average sale price of lots sold at auction over the past 36 months.</Text>
-      <Spacer mb={2} />
+      <Spacer y={2} />
       <Text fontWeight="bold">Sale price over estimate</Text>
-      <Spacer mb={1} />
+      <Spacer y={1} />
       <Text>
         The average percentage difference of the sale price over the mid-estimate (the midpoint of
         the low and high estimates set by the auction house before the auction takes place) for lots
         sold at auction over the past 36 months.
       </Text>
-      <Spacer mb={100} />
+      <Spacer y="100px" />
     </ScrollView>
   )
 
@@ -130,7 +132,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
         }}
       />
       {/* Market Stats Values */}
-      <Flex flexDirection="row" flexWrap="wrap" mt={15}>
+      <Flex flexDirection="row" flexWrap="wrap" mt="15px">
         <Flex width="50%">
           <Text variant="lg-display" testID="annualLotsSold">
             {selectedPriceInsight.annualLotsSold}
@@ -149,7 +151,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
         </Flex>
         <Flex width="50%" mt={2}>
           <Flex width="50%" flexDirection="row" alignItems="center">
-            <Join separator={<Spacer mr={0.5} />}>
+            <Join separator={<Spacer x={0.5} />}>
               {deltaIcon}
               <Text variant="lg-display">{formattedMedianSaleOverEstimatePercentage}%</Text>
             </Join>
@@ -157,7 +159,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
           <Text variant="sm">Sale price over estimate</Text>
         </Flex>
       </Flex>
-      <Separator my={2} ml={-2} width={useScreenDimensions().width} />
+      <Separator my={2} ml={-2} width={screenWidth} />
     </>
   )
 }
@@ -216,26 +218,26 @@ const LoadingSkeleton = () => {
       <Text variant="xs" color="black60" my={0.5}>
         Last 36 months
       </Text>
-      <Spacer mb={0.5} />
+      <Spacer y={0.5} />
       <PlaceholderBox width="100%" height={40} />
-      <Flex flexDirection="row" flexWrap="wrap" mt={15}>
+      <Flex flexDirection="row" flexWrap="wrap" mt="15px">
         <Flex width="50%">
-          <Spacer mb={0.3} />
+          <Spacer y={0.5} />
           <PlaceholderText width={30} height={25} />
           <Text variant="sm">Yearly lots sold</Text>
         </Flex>
         <Flex width="50%">
-          <Spacer mb={0.3} />
+          <Spacer y={0.5} />
           <PlaceholderText width={60} height={25} />
           <Text variant="sm">Sell-through rate</Text>
         </Flex>
         <Flex width="50%" mt={2}>
-          <Spacer mb={0.3} />
+          <Spacer y={0.5} />
           <PlaceholderText width={50} height={25} />
           <Text variant="sm">Average sale price</Text>
         </Flex>
         <Flex width="50%" mt={2}>
-          <Spacer mb={0.3} />
+          <Spacer y={0.5} />
           <PlaceholderText width={70} height={25} />
           <Text variant="sm">Sale price over estimate</Text>
         </Flex>

@@ -5,7 +5,6 @@ import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRece
 import { createMockEnvironment } from "relay-test-utils"
 import { MyCollectionInsights } from "./MyCollectionInsights"
 
-
 describe("MyCollectionInsights", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 

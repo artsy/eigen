@@ -1,3 +1,4 @@
+import { Spacer, Flex, Box, useColor, Text } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
 import { OnboardingNavigationStack } from "app/Scenes/Onboarding/Onboarding"
@@ -7,7 +8,7 @@ import { showBlockedAuthError } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { BackButton } from "app/system/navigation/BackButton"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
-import { Box, Button, Flex, Spacer, Text, useColor } from "palette"
+import { Button } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Alert, Animated, ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
@@ -141,7 +142,7 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
   })
 
   return (
-    <Flex flex={1} backgroundColor="white" flexGrow={1} paddingBottom={10}>
+    <Flex flex={1} backgroundColor="white" flexGrow={1} pb={1}>
       <ArtsyKeyboardAvoidingView>
         <FormikProvider value={formik}>
           <NavigationContainer
@@ -206,19 +207,19 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="always"
       >
-        <Spacer mt={60} />
+        <Spacer y="60px" />
         <Box minHeight={85}>
           <Text variant="lg-display">{title}</Text>
           {!!caption && (
             <>
-              <Spacer mt={0.5} />
+              <Spacer y={0.5} />
               <Text variant="xs" color={color("black100")}>
                 {caption}
               </Text>
             </>
           )}
         </Box>
-        <Spacer mt={2} />
+        <Spacer y={2} />
         {children}
       </ScrollView>
       {!!onBackButtonPress && <BackButton onPress={onBackButtonPress} />}

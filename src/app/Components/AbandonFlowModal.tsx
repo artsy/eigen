@@ -1,5 +1,6 @@
+import { CloseIcon, Spacer, Box, Text } from "@artsy/palette-mobile"
 import { popToRoot } from "app/system/navigation/navigate"
-import { Box, Button, CloseIcon, Spacer, Text } from "palette"
+import { Button } from "palette"
 import { FancyModal } from "./FancyModal/FancyModal"
 import { FancyModalHeader } from "./FancyModal/FancyModalHeader"
 
@@ -37,7 +38,7 @@ export const AbandonFlowModal: React.FC<AbandonFlowModalProps> = ({
         <Button onPress={() => popToRoot()} block variant="fillDark" size="large">
           {leaveButtonTitle}
         </Button>
-        <Spacer m={1} />
+        <Spacer y={1} />
         <Button onPress={onDismiss} block variant="outline" size="large">
           {continueButtonTitle}
         </Button>

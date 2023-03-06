@@ -1,9 +1,10 @@
+import { Flex, Text } from "@artsy/palette-mobile"
 import { ArtsyWebView } from "app/Components/ArtsyWebView"
 import { Stack } from "app/Components/Stack"
 import { matchRoute } from "app/routes"
 import { GlobalStore, useEnvironment } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
-import { Button, Flex, Spinner, Text } from "palette"
+import { Button, Spinner } from "palette"
 import React, { useEffect, useState } from "react"
 import { Linking } from "react-native"
 

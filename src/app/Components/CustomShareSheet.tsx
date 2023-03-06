@@ -1,4 +1,5 @@
-import { ChevronIcon, Flex, Text, Touchable } from "palette"
+import { ChevronIcon, Flex, Text } from "@artsy/palette-mobile"
+import { Touchable } from "palette"
 import { useScreenDimensions } from "shared/hooks"
 import { FancyModal } from "./FancyModal/FancyModal"
 import { FancyModalHeader } from "./FancyModal/FancyModalHeader"
@@ -41,9 +42,9 @@ export const CustomShareSheetItem: React.FC<CustomShareSheetItemProps> = ({
   onPress,
 }) => (
   <Touchable onPress={onPress}>
-    <Flex width="100%" height={60} flexDirection="row" alignItems="center" px="2">
+    <Flex width="100%" height={60} flexDirection="row" alignItems="center" px={2}>
       {Icon}
-      <Text variant="sm" ml="2">
+      <Text variant="sm" ml={2}>
         {title}
       </Text>
       <Flex flex={1} />

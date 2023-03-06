@@ -1,9 +1,5 @@
+import { StarCircleIcon, Flex, useColor, Text, Color } from "@artsy/palette-mobile"
 import { compact, noop } from "lodash"
-import { Flex } from "palette"
-import { Color } from "palette/Theme"
-import { Text } from "palette/elements/Text"
-import { useColor } from "palette/hooks"
-import { StarCircleIcon } from "palette/svgs/StarCircleIcon"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { Dimensions } from "react-native"
 import { Defs, G, LinearGradient, Stop } from "react-native-svg"
@@ -405,7 +401,6 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
           )}
         </VictoryChart>
       </Flex>
-
       {!!lastPressedDatum && (
         <Flex position="absolute" top={70} left={lastPressedDatum.left}>
           <Text color="black60" variant="xs">

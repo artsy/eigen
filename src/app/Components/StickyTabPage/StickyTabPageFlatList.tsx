@@ -1,4 +1,4 @@
-import { useSpace } from "palette"
+import { useSpace } from "@artsy/palette-mobile"
 import React, { createContext, useContext, useRef, useState } from "react"
 import { FlatList, FlatListProps } from "react-native"
 import Animated from "react-native-reanimated"
@@ -17,8 +17,6 @@ interface FlatListRequiredContext {
 export const StickyTabPageFlatListContext = createContext<FlatListRequiredContext>(null as any)
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
-
-export type StickyTabPageFlatListType = typeof AnimatedFlatList
 
 export interface StickyTabSection {
   key: string // must be unique per-tab

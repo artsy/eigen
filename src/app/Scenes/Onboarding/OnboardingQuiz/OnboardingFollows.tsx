@@ -1,6 +1,7 @@
+import { Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { SearchInput } from "app/Components/SearchInput"
-import { Box, Button, Flex, ProgressBar, Screen, Spacer, Text } from "palette"
+import { Button, ProgressBar, Screen } from "palette"
 import { useState } from "react"
 import { useBackHandler } from "shared/hooks/useBackHandler"
 import { useDebouncedValue } from "shared/hooks/useDebouncedValue"
@@ -61,10 +62,10 @@ export const OnboardingFollows: React.FC<OnboardingFollowsProps> = ({ kind }) =>
               <Text variant="lg-display">{title}</Text>
             </Box>
           )}
-          <Spacer mt={2} />
+          <Spacer y={2} />
           <Flex backgroundColor="white" flex={1}>
             <SearchInput placeholder={placeholder} onChangeText={setQuery} />
-            <Spacer mt={2} />
+            <Spacer y={2} />
             {debouncedValue.length >= 2 ? (
               <OnboardingSearchResultsScreen term={debouncedValue} entities={entities} />
             ) : (

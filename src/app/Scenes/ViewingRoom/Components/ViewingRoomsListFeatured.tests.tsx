@@ -1,11 +1,10 @@
 import { ViewingRoomsListFeaturedTestsQuery } from "__generated__/ViewingRoomsListFeaturedTestsQuery.graphql"
+import { MediumCard } from "app/Components/Cards"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { MediumCard } from "palette"
 import { graphql, QueryRenderer, RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { FeaturedRail } from "./ViewingRoomsListFeatured"
-
 
 describe(FeaturedRail, () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

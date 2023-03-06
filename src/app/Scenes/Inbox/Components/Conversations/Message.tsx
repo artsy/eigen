@@ -1,9 +1,9 @@
+import { Spacer, Flex, BoxProps, ClassTheme, Text } from "@artsy/palette-mobile"
 import { Message_message$data } from "__generated__/Message_message.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { navigate } from "app/system/navigation/navigate"
 import { Schema, Track, track as _track } from "app/utils/track"
 import { compact } from "lodash"
-import { BoxProps, ClassTheme, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { Linking, Platform, View } from "react-native"
 import Hyperlink from "react-native-hyperlink"
@@ -124,7 +124,7 @@ export class Message extends React.Component<Props> {
                     </Text>
                   </Hyperlink>
                 </AttachmentContainer>
-                {!!message.attachments?.length && <Spacer mb={0.5} />}
+                {!!message.attachments?.length && <Spacer y={0.5} />}
                 {this.renderAttachmentPreviews(message.attachments, backgroundColor)}
               </Flex>
               {!!showTimeSince && (

@@ -1,3 +1,4 @@
+import { Spacer, useSpace } from "@artsy/palette-mobile"
 import { FavoriteArtworksQuery } from "__generated__/FavoriteArtworksQuery.graphql"
 import { FavoriteArtworks_me$data } from "__generated__/FavoriteArtworks_me.graphql"
 import GenericGrid, { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
@@ -11,7 +12,7 @@ import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { FAVORITE_ARTWORKS_REFRESH_KEY, RefreshEvents } from "app/utils/refreshHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { Button, Spacer, useSpace } from "palette"
+import { Button } from "palette"
 import { useEffect, useState } from "react"
 import { Image } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -24,6 +25,7 @@ interface Props {
 }
 
 const SavedWorks: React.FC<Props> = ({ me, relay, onDataFetching }) => {
+  const { width } = useScreenDimensions()
   const [refreshingFromPull, setRefreshingFromPull] = useState<boolean>(false)
   const [fetchingMoreData, setFetchingMoreData] = useState<boolean>(false)
   const space = useSpace()
@@ -84,7 +86,7 @@ const SavedWorks: React.FC<Props> = ({ me, relay, onDataFetching }) => {
           subtitle="Tap the heart on an artwork to find it again easily here."
           image={
             <>
-              <Spacer mt={1} />
+              <Spacer y={1} />
               <Image
                 source={require("images/SavesEmptyStateImage.jpg")}
                 resizeMode="contain"
@@ -119,6 +121,7 @@ const SavedWorks: React.FC<Props> = ({ me, relay, onDataFetching }) => {
         hidePartner
         artistNamesTextStyle={{ weight: "regular" }}
         saleInfoTextStyle={{ weight: "medium", color: "black100" }}
+        width={width - space(2)}
       />
     </StickyTabPageScrollView>
   )

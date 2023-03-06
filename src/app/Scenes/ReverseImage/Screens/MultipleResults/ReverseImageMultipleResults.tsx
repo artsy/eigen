@@ -1,9 +1,9 @@
+import { ArtsyLogoBlackIcon, Flex } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ReverseImageMultipleResultsQuery } from "__generated__/ReverseImageMultipleResultsQuery.graphql"
 import { HeaderBackButton } from "app/Scenes/ReverseImage/Components/HeaderBackButton"
 import { HeaderContainer } from "app/Scenes/ReverseImage/Components/HeaderContainer"
 import { ReverseImageNavigationStack } from "app/Scenes/ReverseImage/types"
-import { ArtsyLogoIcon, Flex } from "palette"
 import { Suspense } from "react"
 import { Image, StyleSheet } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -35,7 +35,7 @@ export const ReverseImageMultipleResults: React.FC<Props> = (props) => {
           justifyContent="center"
           alignItems="center"
         >
-          <ArtsyLogoIcon scale={0.75} fill="white100" />
+          <ArtsyLogoBlackIcon scale={0.75} fill="white100" />
         </Flex>
       </HeaderContainer>
 

@@ -1,6 +1,6 @@
 import { action } from "@storybook/addon-actions"
 import { storiesOf } from "@storybook/react-native"
-import { Button } from "palette/elements/Button/Button"
+import { Button } from "palette"
 import { useState } from "react"
 import { List } from "storybook/helpers"
 import { Dialog, DialogProps } from "."

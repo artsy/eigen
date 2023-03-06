@@ -1,4 +1,4 @@
-import { act, fireEvent } from "@testing-library/react-native"
+import { fireEvent } from "@testing-library/react-native"
 import { goBack } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { RequestForPriceEstimateConfirmationScreen } from "./RequestForPriceEstimateConfirmationScreen"
@@ -19,7 +19,7 @@ describe("RequestForPriceEstimateConfirmationScreen", () => {
 
   it("navigates correctly", () => {
     const { getByTestId } = getWrapper()
-    act(() => fireEvent.press(getByTestId("back-to-my-collection-button")))
+    fireEvent.press(getByTestId("back-to-my-collection-button"))
     expect(goBack).toHaveBeenCalled()
   })
 })

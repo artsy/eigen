@@ -1,10 +1,11 @@
+import { MapPinIcon, Flex, Text } from "@artsy/palette-mobile"
 import {
   getLocationDetails,
   getLocationPredictions,
   LocationWithDetails,
   SimpleLocation,
 } from "app/utils/googleMaps"
-import { Flex, Input, InputProps, LocationIcon, Text, Touchable } from "palette"
+import { Input, InputProps, Touchable } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
@@ -227,7 +228,7 @@ const LocationPredictions = ({
             testID={`autocomplete-location-prediction-${p.id}`}
           >
             <Flex flexDirection="row" alignItems="center">
-              <LocationIcon mr={1} />
+              <MapPinIcon mr={1} />
               <Text style={{ flex: 1 }} ellipsizeMode="tail" numberOfLines={1}>
                 {highlightedQuery(p.name)}
               </Text>

@@ -1,3 +1,4 @@
+import { Spacer, Flex, Box, useSpace, useColor, Text } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
@@ -11,24 +12,11 @@ import { Rarity } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/R
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { Currency } from "app/Scenes/Search/UserPrefsModel"
-import { GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { isEmpty } from "lodash"
-import {
-  Box,
-  Button,
-  Flex,
-  Input,
-  Join,
-  Message,
-  MoneyInput,
-  Separator,
-  Spacer,
-  Text,
-  useColor,
-  useSpace,
-} from "palette"
+import { Button, Input, Join, Message, MoneyInput, Separator } from "palette"
 import React, { useEffect, useState } from "react"
 import { Alert, Image, ScrollView, TouchableOpacity } from "react-native"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
@@ -85,6 +73,8 @@ export const MyCollectionArtworkFormMain: React.FC<
     artworkState.sessionState.formValues,
     artworkState.sessionState.dirtyFormCheckValues,
   ])
+
+  const enableMoneyFormatting = useFeatureFlag("AREnableMoneyFormattingInMyCollectionForm")
 
   const isFormDirty = () => {
     const { formValues, dirtyFormCheckValues } = artworkState.sessionState
@@ -148,7 +138,7 @@ export const MyCollectionArtworkFormMain: React.FC<
         <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
           {!!route.params.isSubmission && (
             <Message
-              containerStyle={{ marginX: space(2) }}
+              containerStyle={{ mx: `${space(2)}px` }}
               title="Changes will only appear in My Collection. They will not be applied to your sale submission."
               IconComponent={() => (
                 <Image
@@ -160,7 +150,7 @@ export const MyCollectionArtworkFormMain: React.FC<
           )}
 
           <Flex p={2}>
-            <Join separator={<Spacer my={1} />}>
+            <Join separator={<Spacer y={1} />}>
               {formik.values.artistSearchResult ? (
                 <ArtistSearchResult result={formik.values.artistSearchResult} />
               ) : (
@@ -212,20 +202,22 @@ export const MyCollectionArtworkFormMain: React.FC<
               <Rarity />
               <Dimensions />
               <MoneyInput
-                title="Price Paid"
-                placeholder="Price paid"
-                keyboardType="decimal-pad"
                 accessibilityLabel="Price paid"
+                currencyTextVariant="xs"
+                format={enableMoneyFormatting}
                 initialValues={{
                   currency: initialCurrency as Currency,
                   amount: formikValues.pricePaidDollars,
                 }}
+                keyboardType="decimal-pad"
                 onChange={(values) => {
                   formik.handleChange("pricePaidDollars")(values.amount ?? "")
                   formik.handleChange("pricePaidCurrency")(values.currency ?? "")
                   GlobalStore.actions.userPrefs.setCurrency(values.currency as Currency)
                 }}
+                placeholder="Price paid"
                 shouldDisplayLocalError={false}
+                title="Price Paid"
               />
               <Input
                 title="Location"
@@ -248,7 +240,7 @@ export const MyCollectionArtworkFormMain: React.FC<
             </Join>
           </Flex>
 
-          <Spacer mt={1} />
+          <Spacer y={1} />
 
           <PhotosButton
             testID="PhotosButton"
@@ -265,7 +257,7 @@ export const MyCollectionArtworkFormMain: React.FC<
             }}
           />
 
-          <Spacer mt={2} mb={1} />
+          <Spacer y={2} />
 
           <ScreenMargin>
             {modalType === "edit" && (
@@ -331,7 +323,7 @@ const PhotosButton: React.FC<{ onPress: () => void; testID?: string }> = ({ onPr
     <>
       <Separator />
       <TouchableOpacity onPress={onPress} testID={testID}>
-        <Spacer mt={2} />
+        <Spacer y={2} />
         <ScreenMargin>
           <ArrowDetails>
             <Flex flexDirection="row">
@@ -352,7 +344,7 @@ const PhotosButton: React.FC<{ onPress: () => void; testID?: string }> = ({ onPr
             )}
           </ArrowDetails>
         </ScreenMargin>
-        <Spacer mb={2} />
+        <Spacer y={2} />
       </TouchableOpacity>
       <Separator />
     </>

@@ -1,9 +1,10 @@
 import { tappedTabBar } from "@artsy/cohesion"
+import { useColor, Text } from "@artsy/palette-mobile"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { unsafe__getSelectedTab, useSelectedTab, useVisualClue } from "app/store/GlobalStore"
 import { VisualClueName } from "app/store/config/visualClues"
 import { switchTab } from "app/system/navigation/navigate"
-import { PopIn, Text, useColor } from "palette"
+import { PopIn } from "palette"
 import { VisualClueDot } from "palette/elements/VisualClue"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, Easing, TouchableWithoutFeedback, View } from "react-native"
@@ -13,17 +14,23 @@ import { BottomTabOption, BottomTabType } from "./BottomTabType"
 import { BottomTabsIcon, ICON_HEIGHT, ICON_WIDTH } from "./BottomTabsIcon"
 import { bottomTabsConfig } from "./bottomTabsConfig"
 
-export const BottomTabsButton: React.FC<{
+export interface BottomTabsButtonProps {
   tab: BottomTabType
   badgeCount?: number
   visualClue?: VisualClueName
   forceDisplayVisualClue?: boolean
-}> = ({ tab, badgeCount = 0, visualClue, forceDisplayVisualClue }) => {
+}
+
+export const BottomTabsButton: React.FC<BottomTabsButtonProps> = ({
+  tab,
+  badgeCount = 0,
+  visualClue,
+  forceDisplayVisualClue,
+}) => {
   const selectedTab = useSelectedTab()
   const isActive = selectedTab === tab
   const timeout = useRef<ReturnType<typeof setTimeout>>()
   const [isBeingPressed, setIsBeingPressed] = useState(false)
-
   const showActiveState = isActive || isBeingPressed
 
   const activeProgress = useRef(new Animated.Value(showActiveState ? 1 : 0)).current
@@ -91,7 +98,7 @@ export const BottomTabsButton: React.FC<{
         </IconWrapper>
 
         {!!badgeCount && (
-          <IconWrapper>
+          <IconWrapper accessibilityLabel="badge count">
             <View style={{ width: ICON_WIDTH, height: ICON_HEIGHT }}>
               <View
                 style={{
@@ -108,7 +115,7 @@ export const BottomTabsButton: React.FC<{
           </IconWrapper>
         )}
         {(!!showVisualClue(visualClue) || !!forceDisplayVisualClue) && (
-          <IconWrapper>
+          <IconWrapper accessibilityLabel={`${tab} visual clue`}>
             <View style={{ width: ICON_WIDTH, height: ICON_HEIGHT }}>
               <View
                 style={{
@@ -165,10 +172,10 @@ const Badge: React.FC<{ count: number }> = ({ count }) => {
 
 const IconWrapper = styled(View)`
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
   align-items: center;
   justify-content: center;
 `

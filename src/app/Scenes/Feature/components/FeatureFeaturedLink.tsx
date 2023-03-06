@@ -1,7 +1,7 @@
+import { Flex, Text } from "@artsy/palette-mobile"
 import { FeatureFeaturedLink_featuredLink$data } from "__generated__/FeatureFeaturedLink_featuredLink.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
-import { Flex, Text } from "palette"
 import { TouchableOpacity } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -51,7 +51,7 @@ const FeatureFeaturedLink: React.FC<FeatureFeaturedLinkProps> = ({ featuredLink,
         </Flex>
       </TouchableOpacity>
       {!!featuredLink.description && (
-        <Flex pt="2">
+        <Flex pt={2}>
           <FeatureMarkdown content={featuredLink.description} textProps={{ variant: "md" }} />
         </Flex>
       )}

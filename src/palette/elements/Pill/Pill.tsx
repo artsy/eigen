@@ -1,9 +1,14 @@
+import {
+  Spacer,
+  IconProps,
+  FlexProps,
+  Flex,
+  useColor,
+  Text,
+  useTextStyleForPalette,
+  Color,
+} from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-
-import { IconProps, Spacer, useColor } from "palette"
-import { Color } from "palette/Theme"
-import { Flex, FlexProps } from "palette/elements/Flex"
-import { Text, useTextStyleForPalette } from "palette/elements/Text"
 import { useState } from "react"
 import { GestureResponderEvent, Pressable, PressableProps } from "react-native"
 import { config } from "react-spring"
@@ -137,7 +142,7 @@ export const Pill: React.FC<PillProps> = ({
             {iconPosition === "left" && !!Icon && (
               <>
                 <Icon fill={iconColor} />
-                <Spacer mr={iconSpacerMargin} />
+                <Spacer x={iconSpacerMargin} />
               </>
             )}
             {!!imageUrl && <OpaqueImageViewContainer imageURL={imageUrl} />}
@@ -146,7 +151,7 @@ export const Pill: React.FC<PillProps> = ({
             </AnimatedText>
             {iconPosition === "right" && !!Icon && (
               <>
-                <Spacer mr={iconSpacerMargin} />
+                <Spacer x={iconSpacerMargin} />
                 <Icon fill={iconColor} />
               </>
             )}
@@ -208,11 +213,11 @@ const Container = styled(Flex)<PillProps>`
 `
 
 export const OpaqueImageViewContainer = styled(OpaqueImageView)`
-  width: 30;
-  height: 30;
-  border-radius: 15;
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
   overflow: hidden;
-  margin-right: 10;
+  margin-right: 10px;
 `
 
 const AnimatedContainer = animated(Container)

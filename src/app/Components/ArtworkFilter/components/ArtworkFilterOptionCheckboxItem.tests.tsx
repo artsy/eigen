@@ -6,7 +6,6 @@ import {
   ArtworksFiltersStore,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { act } from "react-test-renderer"
 import {
   ArtworkFilterOptionCheckboxItem,
   ArtworkFilterOptionCheckboxItemProps,
@@ -76,9 +75,7 @@ describe("ArtworkFilterOptionCheckboxItem", () => {
     let checked = getCheckedValue()
     expect(checked).toBe(false)
 
-    act(() => {
-      fireEvent.press(FilterOptionItem)
-    })
+    fireEvent.press(FilterOptionItem)
 
     checked = getCheckedValue()
     expect(checked).toBe(true)

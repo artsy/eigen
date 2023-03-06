@@ -1,4 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
+import { Spacer, Box } from "@artsy/palette-mobile"
 import { ArtistSeriesArtworks_artistSeries$data } from "__generated__/ArtistSeriesArtworks_artistSeries.graphql"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
@@ -6,7 +7,6 @@ import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/Filter
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ARTIST_SERIES_PAGE_SIZE } from "app/Components/constants"
 import { Schema } from "app/utils/track"
-import { Box, Spacer } from "palette"
 import React, { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -64,7 +64,7 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({
           slug={artistSeries.slug}
           trackClear={trackClear}
         />
-        <Spacer mb={2} />
+        <Spacer y={2} />
       </Box>
     )
   } else {

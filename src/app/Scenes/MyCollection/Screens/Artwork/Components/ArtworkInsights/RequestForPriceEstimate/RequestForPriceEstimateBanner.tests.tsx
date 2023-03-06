@@ -1,4 +1,4 @@
-import { act, fireEvent } from "@testing-library/react-native"
+import { fireEvent } from "@testing-library/react-native"
 import { RequestForPriceEstimateBannerTestsQuery } from "__generated__/RequestForPriceEstimateBannerTestsQuery.graphql"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -6,7 +6,6 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { RequestForPriceEstimateBanner } from "./RequestForPriceEstimateBanner"
-
 
 describe("RequestForPriceEstimateBanner", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -143,9 +142,7 @@ describe("RequestForPriceEstimateBanner", () => {
 
     const TheButton = getByTestId("request-price-estimate-button")
 
-    act(() => {
-      fireEvent.press(TheButton)
-    })
+    fireEvent.press(TheButton)
 
     expect(mockTrackEvent).toHaveBeenCalledTimes(1)
     expect(mockTrackEvent).toHaveBeenCalledWith({

@@ -1,21 +1,22 @@
 import { ContextModule, CustomService, OwnerType, share } from "@artsy/cohesion"
+import {
+  Spacer,
+  LinkIcon,
+  InstagramAppIcon,
+  ShareIcon,
+  WhatsAppAppIcon,
+  MoreIcon,
+  Flex,
+  Box,
+} from "@artsy/palette-mobile"
 import Clipboard from "@react-native-clipboard/clipboard"
 import { ArtworkHeader_artwork$data } from "__generated__/ArtworkHeader_artwork.graphql"
 import { CustomShareSheet, CustomShareSheetItem } from "app/Components/CustomShareSheet"
 import { useToast } from "app/Components/Toast/toastHook"
 import { unsafe__getEnvironment, useDevToggle } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
+import { guardFactory } from "app/utils/types/guardFactory"
 import { useCanOpenURL } from "app/utils/useCanOpenURL"
-import {
-  Box,
-  Flex,
-  InstagramAppIcon,
-  LinkIcon,
-  MoreIcon,
-  ShareIcon,
-  Spacer,
-  WhatsAppAppIcon,
-} from "palette"
 import React, { useRef, useState } from "react"
 import { Button, Modal, ScrollView } from "react-native"
 import Share from "react-native-share"
@@ -54,7 +55,8 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
   const showWhatsAppItem = useCanOpenURL("whatsapp://send?phone=+491898")
   const showInstagramStoriesItem = useCanOpenURL("instagram://user?username=instagram")
 
-  const currentImage = (artwork.images ?? [])[currentImageIndex]
+  const imageFigures = artwork.images.filter(guardFactory("__typename", "Image"))
+  const currentImage = (imageFigures ?? [])[currentImageIndex]
   const currentImageUrl = (currentImage?.url ?? "").replace(":version", "large")
 
   const shareArtwork = async () => {
@@ -126,9 +128,10 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
             <UnlistedArtworksBanner partnerName={artwork.partner?.name} />
           </Flex>
         )}
-        <Spacer mb={2} />
+        <Spacer y={2} />
         <ImageCarouselFragmentContainer
-          images={artwork.images as any /* STRICTNESS_MIGRATION */}
+          figures={artwork.figures}
+          setVideoAsCover={artwork.isSetVideoAsCover ?? false}
           cardHeight={screenDimensions.width >= 375 ? 340 : 290}
           onImageIndexChange={(imageIndex) => setCurrentImageIndex(imageIndex)}
         />
@@ -145,19 +148,21 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
             }}
           />
         </Flex>
-        <Spacer mb={4} />
+        <Spacer y={4} />
         <Box px={2}>
           <ArtworkTombstone artwork={artwork} refetchArtwork={refetchArtwork} />
         </Box>
       </Box>
       <CustomShareSheet visible={shareSheetVisible} setVisible={setShareSheetVisible}>
         <ScrollView>
-          <InstagramStoryViewShot
-            shotRef={shotRef}
-            href={currentImageUrl}
-            artist={artwork.artists![0]?.name!}
-            title={artwork.title!}
-          />
+          {currentImageUrl && (
+            <InstagramStoryViewShot
+              shotRef={shotRef}
+              href={currentImageUrl}
+              artist={artwork.artists![0]?.name!}
+              title={artwork.title!}
+            />
+          )}
 
           {showWhatsAppItem ? (
             <CustomShareSheetItem
@@ -166,6 +171,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
               onPress={() => shareArtworkOnWhatsApp()}
             />
           ) : null}
+
           {showInstagramStoriesItem ? (
             <CustomShareSheetItem
               title="Instagram Stories"
@@ -173,6 +179,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
               onPress={() => shareArtworkOnInstagramStory()}
             />
           ) : null}
+
           <CustomShareSheetItem
             title="Copy link"
             Icon={<LinkIcon />}
@@ -182,7 +189,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
         </ScrollView>
       </CustomShareSheet>
 
-      {debugInstagramShot && showInstagramShot ? (
+      {debugInstagramShot && showInstagramShot && currentImageUrl ? (
         <Modal visible={showInstagramShot} onRequestClose={() => setShowInstagramShot(false)}>
           <InstagramStoryViewShot
             // @ts-ignore
@@ -205,11 +212,19 @@ export const ArtworkHeaderFragmentContainer = createFragmentContainer(ArtworkHea
     fragment ArtworkHeader_artwork on Artwork {
       ...ArtworkActions_artwork
       ...ArtworkTombstone_artwork
-      images {
-        ...ImageCarousel_images
-        url: imageURL
-        imageVersions
+
+      figures {
+        ...ImageCarousel_figures
       }
+
+      images: figures {
+        __typename
+        ... on Image {
+          url
+        }
+      }
+
+      isSetVideoAsCover
       title
       href
       internalID

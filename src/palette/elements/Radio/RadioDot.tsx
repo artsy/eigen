@@ -1,5 +1,5 @@
+import { Box } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
-import { Box } from "palette/elements/Box"
 import styled, { css } from "styled-components/native"
 
 const RADIO_DOT_MODES = {
@@ -77,7 +77,7 @@ export const RadioDot: React.FC<RadioDotProps> = (props) => {
 const Container = styled(Box)<RadioDotProps>`
   width: 20px;
   height: 20px;
-  border-radius: 50;
+  border-radius: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -104,7 +104,7 @@ const Container = styled(Box)<RadioDotProps>`
 const Dot = styled(Box)<RadioDotProps>`
   width: 10px;
   height: 10px;
-  border-radius: 50;
+  border-radius: 50px;
   display: flex;
   align-items: center;
   justify-content: center;

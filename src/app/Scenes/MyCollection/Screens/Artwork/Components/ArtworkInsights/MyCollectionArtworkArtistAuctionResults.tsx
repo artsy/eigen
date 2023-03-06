@@ -1,4 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Flex } from "@artsy/palette-mobile"
 import { MyCollectionArtworkArtistAuctionResults_artwork$key } from "__generated__/MyCollectionArtworkArtistAuctionResults_artwork.graphql"
 import {
   AuctionResultListItemFragmentContainer,
@@ -7,7 +8,6 @@ import {
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex } from "palette"
 import { FlatList } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"

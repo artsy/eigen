@@ -2,7 +2,6 @@ import { extractText } from "app/utils/tests/extractText"
 import { setupTestWrapper_LEGACY } from "app/utils/tests/setupTestWrapper"
 import { ARTWORK_MEDIUM_QUERY, ArtworkMediumFragmentContainer } from "./ArtworkMedium"
 
-
 const { getWrapper } = setupTestWrapper_LEGACY({
   Component: ArtworkMediumFragmentContainer,
   query: ARTWORK_MEDIUM_QUERY,

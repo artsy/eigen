@@ -1,4 +1,4 @@
-import { Box, useColor } from "palette"
+import { Box, useColor } from "@artsy/palette-mobile"
 import Animated, { Extrapolate, interpolate, useAnimatedStyle } from "react-native-reanimated"
 import { useAnimatableHeaderContext } from "./AnimatableHeaderContext"
 
@@ -26,7 +26,7 @@ export const AnimatableHeaderShadow = () => {
 
   return (
     <Box
-      paddingBottom={5}
+      paddingBottom={6}
       overflow="hidden"
       position="absolute"
       top={headerHeight - SHADOW_CONTAINER_HEIGHT}

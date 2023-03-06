@@ -1,8 +1,9 @@
+import { Spacer, Flex } from "@artsy/palette-mobile"
 import { ArtworkCommercialButtons_artwork$key } from "__generated__/ArtworkCommercialButtons_artwork.graphql"
 import { ArtworkCommercialButtons_me$key } from "__generated__/ArtworkCommercialButtons_me.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
-import { Flex, Join, Spacer } from "palette"
+import { Join } from "palette"
 import { Children } from "react"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -23,7 +24,7 @@ const RowContainer: React.FC = ({ children }) => {
 
   return (
     <Flex flexDirection="row" alignItems="center">
-      <Join separator={<Spacer ml={1} />}>{childArray}</Join>
+      <Join separator={<Spacer x={1} />}>{childArray}</Join>
     </Flex>
   )
 }

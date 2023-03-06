@@ -1,8 +1,8 @@
+import { Flex } from "@artsy/palette-mobile"
 import { MyCollectionArtworkInsights_artwork$key } from "__generated__/MyCollectionArtworkInsights_artwork.graphql"
 import { MyCollectionArtworkInsights_marketPriceInsights$key } from "__generated__/MyCollectionArtworkInsights_marketPriceInsights.graphql"
 import { MyCollectionArtworkInsights_me$key } from "__generated__/MyCollectionArtworkInsights_me.graphql"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
-import { Flex } from "palette"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { MyCollectionArtworkArtistAuctionResults } from "./Components/ArtworkInsights/MyCollectionArtworkArtistAuctionResults"
@@ -34,7 +34,7 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
 
   return (
     <StickyTabPageScrollView>
-      <Flex mb={3} mt={2}>
+      <Flex mb={4} mt={2}>
         {!!artwork.marketPriceInsights && (
           <>
             <MyCollectionArtworkDemandIndex

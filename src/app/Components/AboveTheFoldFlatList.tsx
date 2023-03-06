@@ -19,7 +19,7 @@ export function AboveTheFoldFlatList<ItemType>(props: AboveTheFoldFlatListProps<
         }
         setUserHasScrolled(true)
       }}
-      windowSize={userHasScrolled ? props.windowSize || 5 : 1}
+      windowSize={userHasScrolled ? props.windowSize || 5 : 2}
     />
   )
 }

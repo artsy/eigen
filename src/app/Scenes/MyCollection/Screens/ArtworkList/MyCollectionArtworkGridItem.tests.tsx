@@ -12,7 +12,6 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MyCollectionArtworkGridItemFragmentContainer, tests } from "./MyCollectionArtworkGridItem"
 
-
 describe("MyCollectionArtworkGridItem", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
@@ -100,16 +99,13 @@ describe("MyCollectionArtworkGridItem", () => {
   })
 
   it("uses last uploaded image as a fallback when no url is present", async () => {
-    const localImageStoreMock = jest.spyOn(LocalImageStore, "retrieveLocalImages")
+    const localImageStoreMock = jest.spyOn(LocalImageStore, "getLocalImage")
     const localImage: LocalImage = {
       path: "some-local-path",
       width: 10,
       height: 10,
     }
-    const retrievalPromise = new Promise<LocalImage[]>((resolve) => {
-      resolve([localImage])
-    })
-    localImageStoreMock.mockImplementation(() => retrievalPromise)
+    localImageStoreMock.mockImplementation(async () => localImage)
 
     act(async () => {
       const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
@@ -124,7 +120,6 @@ describe("MyCollectionArtworkGridItem", () => {
           }),
         })
       )
-      await retrievalPromise
       const image = wrapper.root.findByType(RNImage)
       expect(image.props.source).toEqual({ uri: "some-local-path" })
     })

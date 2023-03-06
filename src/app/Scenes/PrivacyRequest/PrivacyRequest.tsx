@@ -1,6 +1,7 @@
+import { Spacer, Flex, Box, Text, LinkText } from "@artsy/palette-mobile"
 import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
 import { navigate } from "app/system/navigation/navigate"
-import { Box, Button, Flex, Join, LinkText, Separator, Spacer, Text } from "palette"
+import { Button, Join, Separator } from "palette"
 import React from "react"
 import { View } from "react-native"
 
@@ -16,9 +17,9 @@ export class PrivacyRequest extends React.Component {
           </Flex>
         </Box>
         <Separator />
-        <Spacer my={1} />
+        <Spacer y={1} />
         <Box mx={2}>
-          <Join separator={<Spacer mb={2} />}>
+          <Join separator={<Spacer y={2} />}>
             <Text variant="sm" textAlign="left">
               Please see Artsy’s{" "}
               <LinkText onPress={() => navigate("/privacy", { modal: true })}>

@@ -5,12 +5,13 @@ import {
   tappedEntityGroup,
   TappedEntityGroupArgs,
 } from "@artsy/cohesion"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { SaleArtworkListItem_artwork$data } from "__generated__/SaleArtworkListItem_artwork.graphql"
 import { saleMessageOrBidInfo } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
 import { getImageSquareDimensions } from "app/utils/resizeImage"
-import { Flex, Text, Touchable } from "palette"
+import { Touchable } from "palette"
 import React, { useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -111,7 +112,7 @@ export const SaleArtworkListItemContainer = createFragmentContainer(SaleArtworkL
       artistNames
       date
       href
-      image {
+      image(includeAll: false) {
         small: url(version: "small")
         aspectRatio
         height

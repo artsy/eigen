@@ -1,4 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { MyBidsQuery } from "__generated__/MyBidsQuery.graphql"
 import { MyBids_me$data } from "__generated__/MyBids_me.graphql"
 
@@ -6,7 +7,7 @@ import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { Flex, Join, Separator, Spacer, Text } from "palette"
+import { Join, Separator } from "palette"
 import { useEffect, useState } from "react"
 import { RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
@@ -80,7 +81,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
         {!!hasActiveSales && <BidTitle>Active Bids</BidTitle>}
         {!!hasActiveSales && (
           <Flex testID="active-section">
-            <Join separator={<Spacer my={1} />}>
+            <Join separator={<Spacer y={1} />}>
               {active.map((activeSale) => {
                 if (!activeSale) {
                   return null
@@ -130,7 +131,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
         {!!hasClosedBids && <BidTitle>Closed Bids</BidTitle>}
         {!!hasClosedBids && (
           <Flex testID="closed-section">
-            <Flex mt={2} px={1.5}>
+            <Flex mt={2} px={2}>
               <Join separator={<Separator my={2} />}>
                 {closed
                   .filter((closedSale) => closedSale?.saleArtworks?.length)
@@ -162,7 +163,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
             </Flex>
           </Flex>
         )}
-        <Spacer my={2} />
+        <Spacer y={2} />
       </ScrollView>
     </ProvideScreenTrackingWithCohesionSchema>
   )
@@ -170,7 +171,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
 
 const BidTitle: React.FC<{ topBorder?: boolean }> = (props) => (
   <Flex bg="white100">
-    <Text variant="sm-display" mx={1.5} my={2}>
+    <Text variant="sm-display" mx={2} my={2}>
       {props.children}
     </Text>
     <Separator />

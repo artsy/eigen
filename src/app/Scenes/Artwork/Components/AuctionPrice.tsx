@@ -1,8 +1,8 @@
+import { Spacer, CloseCircleIcon, CheckCircleIcon, Flex, Text } from "@artsy/palette-mobile"
 import { AuctionPrice_artwork$data } from "__generated__/AuctionPrice_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/system/navigation/navigate"
 import { get } from "app/utils/get"
-import { CheckCircleIcon, CloseCircleIcon, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -111,7 +111,7 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
         </Flex>
         {sale! /* STRICTNESS_MIGRATION */.isWithBuyersPremium && (
           <>
-            <Spacer mb={1} />
+            <Spacer y={1} />
             <Text variant="sm" color="black60">
               This auction has a{" "}
               <Text

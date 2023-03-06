@@ -1,7 +1,8 @@
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { ShowCard_show$data } from "__generated__/ShowCard_show.graphql"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
-import { Flex, Spacer, Text, Touchable } from "palette"
+import { Touchable } from "palette"
 import { GestureResponderEvent, ViewProps } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -26,7 +27,7 @@ export const ShowCard: React.FC<ShowCardProps> = ({ show, onPress }) => {
       <Touchable haptic onPress={onTap}>
         <Flex width={WIDTH} overflow="hidden">
           {!!imageURL && <ImageView imageURL={imageURL} width={WIDTH} height={HEIGHT} />}
-          <Spacer mb={1} />
+          <Spacer y={1} />
           <Text numberOfLines={3} ellipsizeMode="tail" variant="lg-display">
             {show.name}
           </Text>

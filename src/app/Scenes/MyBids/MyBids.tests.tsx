@@ -10,7 +10,6 @@ import { ClosedLotStanding } from "./Components/ClosedLotStanding"
 import { WatchedLot } from "./Components/WatchedLot"
 import { MyBidsContainer, MyBidsQueryRenderer } from "./MyBids"
 
-
 const closedSectionLots = (root: ReactTestInstance): ReactTestInstance[] => {
   const closedSection = root.findByProps({ testID: "closed-section" })
   return closedSection.findAllByType(ClosedLotStanding)

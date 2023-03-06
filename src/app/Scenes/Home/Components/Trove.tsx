@@ -1,12 +1,12 @@
+import { Flex, SpacingUnit } from "@artsy/palette-mobile"
 import { Trove_trove$data } from "__generated__/Trove_trove.graphql"
 import { HeroUnit } from "app/Components/Home/HeroUnit"
 import { navigate } from "app/system/navigation/navigate"
-import { Flex } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface TroveProps {
   trove: Trove_trove$data
-  mb?: number
+  mb?: SpacingUnit
 }
 
 const Trove: React.FC<TroveProps> = ({ trove, mb }) => {

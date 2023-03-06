@@ -1,11 +1,13 @@
+import { Spacer, CheckCircleFillIcon, Flex, Box, Text } from "@artsy/palette-mobile"
 import { useFocusEffect, useNavigation } from "@react-navigation/native"
 import {
   OnboardingContextAction,
   State,
   useOnboardingContext,
 } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
-import { Box, Button, CheckCircleFillIcon, Flex, ProgressBar, Screen, Spacer, Text } from "palette"
+import { Button, ProgressBar, Screen } from "palette"
 import { FC, useCallback, useState } from "react"
+import { LayoutAnimation } from "react-native"
 import { AnimatedFadingPill, FADE_OUT_PILL_ANIMATION_DURATION } from "./AnimatedFadingPill"
 
 interface OnboardingQuestionTemplateProps {
@@ -53,6 +55,7 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
     setHideUnselectedPills(true)
 
     setTimeout(() => {
+      LayoutAnimation.configureNext({ ...LayoutAnimation.Presets.easeInEaseOut, duration: 200 })
       setShowPillTick(true)
       next()
 
@@ -86,15 +89,15 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
           <ProgressBar progress={progress} />
         </Box>
         <Flex flex={1} flexDirection="column">
-          <Spacer m={2} />
+          <Spacer y={2} />
           <Text variant="lg-display">{question}</Text>
           {!!subtitle && (
             <>
-              <Spacer m={1} />
+              <Spacer y={1} />
               <Text variant="sm">{subtitle}</Text>
             </>
           )}
-          <Spacer m={2} />
+          <Spacer y={2} />
           {answers.map((answer) => (
             <AnimatedFadingPill
               mb={2}
@@ -102,7 +105,7 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
               key={`${answer}-pill`}
               rounded
               size="xs"
-              Icon={showPillTick && selected(answer) ? CheckCircleFillIcon : undefined}
+              Icon={showPillTick && selected(answer) ? CheckCircleFillIconWhite : undefined}
               iconPosition="left"
               onPress={() => dispatch({ type: action, payload: answer })}
               selected={selected(answer)}
@@ -120,6 +123,10 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
       </Screen.Body>
     </Screen>
   )
+}
+
+const CheckCircleFillIconWhite = () => {
+  return <CheckCircleFillIcon fill="white100" />
 }
 
 const STATE_KEYS: Record<Exclude<OnboardingContextAction["type"], "RESET">, keyof State> = {

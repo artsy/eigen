@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { act, fireEvent } from "@testing-library/react-native"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { myCollectionCreateArtworkMutation } from "__generated__/myCollectionCreateArtworkMutation.graphql"
 import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
@@ -11,10 +11,10 @@ import {
 } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/uploadFileToS3"
 import { GlobalStore, __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import * as LocalImageStore from "app/utils/LocalImageStore"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { Image } from "react-native-image-crop-picker"
-import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import {
   MyCollectionArtworkForm,
@@ -28,7 +28,6 @@ jest.mock("app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/uploadFileT
   getGeminiCredentialsForEnvironment: jest.fn(),
   uploadFileToS3: jest.fn(),
 }))
-
 
 const getConvectionGeminiKeyMock = getConvectionGeminiKey as jest.Mock<any>
 const getGeminiCredentialsForEnvironmentMock = getGeminiCredentialsForEnvironment as jest.Mock<any>
@@ -103,16 +102,14 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(getByText("Select an Artist")).toBeTruthy()
 
-        act(() =>
-          fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy")
-        )
+        fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy")
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({
             errors: [],
             data: mockArtistSearchResult,
           })
         )
-        act(() => fireEvent.press(getByTestId("autosuggest-search-result-Banksy")))
+        fireEvent.press(getByTestId("autosuggest-search-result-Banksy"))
 
         await flushPromiseQueue()
 
@@ -120,14 +117,14 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(getByText("Select an Artwork")).toBeTruthy()
 
-        act(() => fireEvent.changeText(getByPlaceholderText("Search artworks"), "banksy"))
+        fireEvent.changeText(getByPlaceholderText("Search artworks"), "banksy")
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({
             errors: [],
             data: mockArtworkSearchResult,
           })
         )
-        act(() => fireEvent.press(getByTestId("artworkGridItem-Morons")))
+        fireEvent.press(getByTestId("artworkGridItem-Morons"))
 
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({ errors: [], data: mockArtworkResult })
@@ -149,7 +146,7 @@ describe("MyCollectionArtworkForm", () => {
 
         // Complete Form
 
-        act(() => fireEvent.press(getByTestId("CompleteButton")))
+        fireEvent.press(getByTestId("CompleteButton"))
 
         await flushPromiseQueue()
 
@@ -219,9 +216,8 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(getByText("Select an Artist")).toBeTruthy()
 
-        act(() =>
-          fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy")
-        )
+        fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy")
+
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({
             errors: [],
@@ -231,7 +227,7 @@ describe("MyCollectionArtworkForm", () => {
 
         await flushPromiseQueue()
 
-        act(() => fireEvent.press(getByTestId("autosuggest-search-result-Banksy")))
+        fireEvent.press(getByTestId("autosuggest-search-result-Banksy"))
 
         await flushPromiseQueue()
 
@@ -239,9 +235,8 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(getByText("Select an Artwork")).toBeTruthy()
 
-        act(() =>
-          fireEvent.changeText(getByPlaceholderText("Search artworks"), "Test Artwork Title")
-        )
+        fireEvent.changeText(getByPlaceholderText("Search artworks"), "Test Artwork Title")
+
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({
             errors: [],
@@ -251,7 +246,7 @@ describe("MyCollectionArtworkForm", () => {
 
         await flushPromiseQueue()
 
-        act(() => fireEvent.press(getByTestId("my-collection-artwork-form-artwork-skip-button")))
+        fireEvent.press(getByTestId("my-collection-artwork-form-artwork-skip-button"))
 
         await flushPromiseQueue()
 
@@ -294,16 +289,15 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(getByText("Select an Artist")).toBeTruthy()
 
-        act(() =>
-          fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "foo bar")
-        )
+        fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "foo bar")
+
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({
             errors: [],
             data: mockArtistSearchResult,
           })
         )
-        act(() => fireEvent.press(getByTestId("my-collection-artwork-form-artist-skip-button")))
+        fireEvent.press(getByTestId("my-collection-artwork-form-artist-skip-button"))
 
         await flushPromiseQueue()
 
@@ -452,6 +446,15 @@ describe("MyCollectionArtworkForm", () => {
                     in: "23",
                     cm: "26",
                   },
+                  images: [
+                    {
+                      internalID: "some-internal-id",
+                      height: 100,
+                      width: 100,
+                      imageURL: "some-image-url",
+                      isDefault: true,
+                    },
+                  ],
                   artistNames: "some-artist-name",
                   category: null,
                   pricePaid: null,
@@ -461,7 +464,6 @@ describe("MyCollectionArtworkForm", () => {
                   editionNumber: null,
                   height: null,
                   medium: null,
-                  images: null,
                   isEdition: null,
                   metric: null,
                   artworkLocation: null,
@@ -479,13 +481,17 @@ describe("MyCollectionArtworkForm", () => {
         const addArtworkMock = jest.spyOn(artworkMutations, "myCollectionCreateArtwork")
         addArtworkMock.mockImplementation(() => Promise.resolve(artworkResponse))
 
-        const storeLocalPhotosMock = jest.spyOn(photoUtil, "storeLocalPhotos")
+        const storeLocalImageMock = jest.spyOn(LocalImageStore, "storeLocalImage")
 
         await updateArtwork(formValues, formCheckValues, props)
 
         expect(uploadPhotosMock).toBeCalledWith(fakePhotos)
         expect(addArtworkMock).toBeCalled()
-        expect(storeLocalPhotosMock).toBeCalledWith(expect.anything(), fakePhotos)
+        expect(storeLocalImageMock).toBeCalledWith("some-internal-id", {
+          height: 10,
+          path: "some-path",
+          width: 10,
+        })
       })
     })
   })
@@ -530,7 +536,7 @@ describe("MyCollectionArtworkForm", () => {
 
       // Select Artist Screen
 
-      act(() => fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy"))
+      fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy")
       act(() =>
         mockEnvironment.mock.resolveMostRecentOperation({
           errors: [],
@@ -539,20 +545,20 @@ describe("MyCollectionArtworkForm", () => {
       )
       await flushPromiseQueue()
 
-      act(() => fireEvent.press(getByTestId("autosuggest-search-result-Banksy")))
+      fireEvent.press(getByTestId("autosuggest-search-result-Banksy"))
 
       await flushPromiseQueue()
 
       // Select Artwork Screen
 
-      act(() => fireEvent.changeText(getByPlaceholderText("Search artworks"), "banksy"))
+      fireEvent.changeText(getByPlaceholderText("Search artworks"), "banksy")
       act(() =>
         mockEnvironment.mock.resolveMostRecentOperation({
           errors: [],
           data: mockArtworkSearchResult,
         })
       )
-      act(() => fireEvent.press(getByTestId("artworkGridItem-Morons")))
+      fireEvent.press(getByTestId("artworkGridItem-Morons"))
 
       act(() =>
         mockEnvironment.mock.resolveMostRecentOperation({ errors: [], data: mockArtworkResult })
@@ -561,7 +567,7 @@ describe("MyCollectionArtworkForm", () => {
       await flushPromiseQueue()
 
       // Complete Form
-      act(() => fireEvent.press(getByTestId("CompleteButton")))
+      fireEvent.press(getByTestId("CompleteButton"))
 
       await flushPromiseQueue()
 

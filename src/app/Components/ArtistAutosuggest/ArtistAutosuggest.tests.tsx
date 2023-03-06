@@ -1,10 +1,8 @@
 import { fireEvent } from "@testing-library/react-native"
 import { ArtworkDetails } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/ArtworkDetails"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
-import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
@@ -34,7 +32,7 @@ describe("ArtworkDetailsForm", () => {
       const { getByTestId } = renderWithWrappers(<TestRenderer />)
       const artistInput = getByTestId("Submission_ArtistInput")
 
-      act(() => fireEvent.changeText(artistInput, "max"))
+      fireEvent.changeText(artistInput, "max")
       expect(artistInput.props.value).toBe("max")
     })
   })

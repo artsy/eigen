@@ -1,3 +1,4 @@
+import { Text } from "@artsy/palette-mobile"
 import { BidInfoRow } from "app/Components/Bidding/Components/BidInfoRow"
 import { BillingAddress } from "app/Components/Bidding/Screens/BillingAddress"
 import { CreditCardForm } from "app/Components/Bidding/Screens/CreditCardForm"
@@ -5,7 +6,6 @@ import NavigatorIOS, {
   NavigatorIOSPushArgs,
 } from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Text } from "palette"
 
 import { PaymentInfo } from "./PaymentInfo"
 

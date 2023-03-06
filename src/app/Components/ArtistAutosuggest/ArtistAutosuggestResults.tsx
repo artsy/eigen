@@ -1,3 +1,4 @@
+import { Spacer, quoteLeft, quoteRight, Flex, useSpace, Text } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import { ArtistAutosuggestResultsQuery } from "__generated__/ArtistAutosuggestResultsQuery.graphql"
 import { ArtistAutosuggestResults_results$data } from "__generated__/ArtistAutosuggestResults_results.graphql"
@@ -9,7 +10,7 @@ import {
   RandomWidthPlaceholderText,
 } from "app/utils/placeholders"
 import { times } from "lodash"
-import { Flex, quoteLeft, quoteRight, Separator, Spacer, Text, useSpace } from "palette"
+import { Separator } from "palette"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -76,7 +77,7 @@ const ArtistAutosuggestResultsFlatList: React.FC<{
   if (noResults) {
     return (
       <AutoSuggestBoxContainer>
-        <Spacer mt={3} />
+        <Spacer y={4} />
         <Text variant="sm-display" textAlign="center">
           Sorry, we couldn’t find anything for {quoteLeft}
           {query}.{quoteRight}

@@ -1,3 +1,4 @@
+import { Text } from "@artsy/palette-mobile"
 import { Icon20 } from "app/Components/Bidding/Components/Icon"
 import { Title } from "app/Components/Bidding/Components/Title"
 import { Flex } from "app/Components/Bidding/Elements/Flex"
@@ -6,7 +7,7 @@ import { Markdown } from "app/Components/Markdown"
 import { dismissModal } from "app/system/navigation/navigate"
 import { defaultRules } from "app/utils/renderMarkdown"
 import { Schema, screenTrack } from "app/utils/track"
-import { Button, Text, Theme } from "palette"
+import { Button } from "palette"
 import React from "react"
 import { BackHandler, NativeEventSubscription, View } from "react-native"
 import { blockRegex } from "simple-markdown"
@@ -159,9 +160,7 @@ export class RegistrationResult extends React.Component<RegistrationResultProps>
 
     return (
       <View style={{ flex: 1 }}>
-        <Theme>
-          <FancyModalHeader useXButton onLeftButtonPress={() => dismissModal()} />
-        </Theme>
+        <FancyModalHeader useXButton onLeftButtonPress={() => dismissModal()} />
         <View style={{ padding: 20 }}>
           <Flex alignItems="center">
             {status !== RegistrationStatus.RegistrationStatusPending && (
@@ -170,7 +169,7 @@ export class RegistrationResult extends React.Component<RegistrationResultProps>
             <Title mt={2} mb={4}>
               {title}
             </Title>
-            <Markdown rules={markdownRules} mb={5}>
+            <Markdown rules={markdownRules} mb={6}>
               {msg}
             </Markdown>
           </Flex>

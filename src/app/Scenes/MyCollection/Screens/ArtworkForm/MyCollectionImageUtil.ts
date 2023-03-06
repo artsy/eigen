@@ -1,28 +1,8 @@
 import { MyCollectionArtworkHeader_artwork$data } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
 import { getMeasurements, Size } from "app/Scenes/Artwork/Components/ImageCarousel/geometry"
 import { ArtworkFormValues, Image } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
-import { deleteLocalImages, LocalImage, storeLocalImages } from "app/utils/LocalImageStore"
 import { getConvertedImageUrlFromS3 } from "app/utils/getConvertedImageUrlFromS3"
 import { ScreenDimensionsWithSafeAreas } from "shared/hooks"
-
-export const storeLocalPhotos = (slug: string, photos: Image[]) => {
-  const localImages: LocalImage[] = []
-  photos.forEach((photo, _) => {
-    if (photo.path && photo.height && photo.width) {
-      const image: LocalImage = {
-        path: photo.path,
-        width: photo.width,
-        height: photo.height,
-      }
-      localImages.push(image)
-    }
-  })
-  storeLocalImages(localImages, slug)
-}
-
-export const removeLocalPhotos = (slug: string) => {
-  deleteLocalImages(slug)
-}
 
 /**
  * Upload photos to s3 bucket
@@ -72,7 +52,7 @@ export const isImage = (toCheck: any): toCheck is Image => !!toCheck
 
 export const hasImagesStillProcessing = (
   mainImage: any,
-  imagesToCheck: MyCollectionArtworkHeader_artwork$data["images"]
+  imagesToCheck: MyCollectionArtworkHeader_artwork$data["figures"]
 ) => {
   if (!isImage(mainImage) || imageIsProcessing(mainImage, "normalized")) {
     return true
@@ -101,7 +81,7 @@ export const getBoundingBox = (
 
 export const getImageMeasurements = (imageSize: Size, boundingBox: Size) => {
   const measurements = getMeasurements({
-    images: [
+    media: [
       {
         height: imageSize.height,
         width: imageSize.width,

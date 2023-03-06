@@ -1,11 +1,12 @@
+import { Spacer, useTheme, ArtsyLogoWhiteIcon, Flex, Text } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import {
   ArtsyNativeModule,
   DEFAULT_NAVIGATION_BAR_COLOR,
 } from "app/NativeModules/ArtsyNativeModule"
 import backgroundImage from "images/WelcomeImage.jpg"
-import { ArtsyLogoWhiteIcon, Button, Flex, Screen, Spacer, Text, useTheme } from "palette"
-import React, { useEffect } from "react"
+import { Button, Screen } from "palette"
+import { useEffect } from "react"
 import { Dimensions, Image, Platform } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import Animated, {
@@ -115,7 +116,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
       </Screen.Background>
 
       <Screen.Body>
-        <Spacer y="1" />
+        <Spacer y={1} />
 
         <Animated.View style={[{ alignItems: "center", width: "100%" }, appearAnim]}>
           <ArtsyLogoWhiteIcon height={25} width={75} />
@@ -135,13 +136,13 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
             Collect Art by the World’s Leading Artists
           </Text>
 
-          <Spacer mt={1} />
+          <Spacer y={1} />
 
           <Text variant="sm" color="white">
             Build your personalized profile, get market insights, buy and sell art with confidence.
           </Text>
 
-          <Spacer mt={2} />
+          <Spacer y={2} />
 
           <Flex flexDirection="row">
             <Flex flex={1}>
@@ -156,7 +157,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
               </Button>
             </Flex>
 
-            <Spacer x="2" />
+            <Spacer x={2} />
 
             <Flex flex={1}>
               <Button
@@ -172,7 +173,11 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
           </Flex>
 
           <Text textAlign="center" color="black30" mt={4}>
-            Faith Ringgold <Text fontStyle="italic">Groovin' High, 1996</Text>.
+            Faith Ringgold{" "}
+            <Text fontStyle="italic" color="black30">
+              Groovin' High, 1996
+            </Text>
+            .
           </Text>
 
           <Screen.SafeBottomPadding />

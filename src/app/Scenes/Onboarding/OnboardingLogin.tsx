@@ -1,9 +1,10 @@
+import { Spacer, Flex, Box, useColor, Text } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { showBlockedAuthError } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { BackButton } from "app/system/navigation/BackButton"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
-import { Box, Button, Flex, Input, Spacer, Text, useColor } from "palette"
+import { Button, Input } from "palette"
 import { Touchable } from "palette/elements/Touchable/Touchable"
 import React, { useEffect, useRef } from "react"
 import { ScrollView } from "react-native"
@@ -74,7 +75,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
   }, [])
 
   return (
-    <Flex flex={1} backgroundColor="white" flexGrow={1} paddingBottom={10}>
+    <Flex flex={1} backgroundColor="white" flexGrow={1} pb={1}>
       <ArtsyKeyboardAvoidingView>
         <ScrollView
           contentContainerStyle={{
@@ -83,9 +84,9 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
           }}
           keyboardShouldPersistTaps="always"
         >
-          <Spacer mt={60} />
+          <Spacer y={6} />
           <Text variant="lg-display">Log In</Text>
-          <Spacer mt={50} />
+          <Spacer y={6} />
           <Box>
             <Input
               ref={emailInputRef}
@@ -116,7 +117,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
               textContentType="username"
               error={errors.email}
             />
-            <Spacer mt={2} />
+            <Spacer y={2} />
             <Input
               autoCapitalize="none"
               autoComplete="password"
@@ -149,7 +150,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
               error={errors.password}
             />
           </Box>
-          <Spacer mt={4} />
+          <Spacer y={4} />
           <Touchable
             onPress={() => {
               navigation.navigate("ForgotPassword")

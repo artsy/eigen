@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { themeGet } from "@styled-system/theme-get"
+import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { SaleLotsList_saleArtworksConnection$data } from "__generated__/SaleLotsList_saleArtworksConnection.graphql"
 import { SaleLotsList_unfilteredSaleArtworksConnection$data } from "__generated__/SaleLotsList_unfilteredSaleArtworksConnection.graphql"
 import {
@@ -14,11 +14,9 @@ import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilter
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { Schema } from "app/utils/track"
-import { Box, Flex, Text } from "palette"
 import React, { MutableRefObject, useCallback, useEffect, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import styled from "styled-components/native"
 import { SaleArtworkListContainer } from "./SaleArtworkList"
 
 interface Props {
@@ -51,12 +49,12 @@ export const SaleLotsListSortMode = ({
 
   return (
     <Flex px={2} mb={2}>
-      <FilterTitle variant="sm-display" ellipsizeMode="tail">
+      <Text variant="sm-display" ellipsizeMode="tail">
         Sorted by {getSortDescription()?.toLowerCase()}
-      </FilterTitle>
+      </Text>
 
       {!!filteredTotal && !!totalCount && (
-        <FilterDescription variant="sm">{`Showing ${filteredTotal} of ${totalCount}`}</FilterDescription>
+        <Text color="black60" variant="sm">{`Showing ${filteredTotal} of ${totalCount}`}</Text>
       )}
     </Flex>
   )
@@ -180,11 +178,6 @@ export const SaleLotsList: React.FC<Props> = ({
     </Flex>
   )
 }
-
-export const FilterTitle = styled(Text)``
-export const FilterDescription = styled(Text)`
-  color: ${themeGet("colors.black60")};
-`
 
 export const SaleLotsListContainer = createPaginationContainer(
   SaleLotsList,

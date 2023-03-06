@@ -1,7 +1,7 @@
+import { useColor, Text } from "@artsy/palette-mobile"
 import { createGeminiUrl } from "app/Components/OpaqueImageView/createGeminiUrl"
 import { useDevToggle } from "app/store/GlobalStore"
 import _ from "lodash"
-import { Text, useColor } from "palette"
 import React, { useCallback, useRef, useState, useEffect } from "react"
 import { Animated, ColorValue, PixelRatio, StyleSheet, View } from "react-native"
 import FastImage, { ImageStyle } from "react-native-fast-image"

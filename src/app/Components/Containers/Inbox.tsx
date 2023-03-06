@@ -1,4 +1,5 @@
 import { ActionType } from "@artsy/cohesion"
+import { CssTransition, Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { InboxQuery } from "__generated__/InboxQuery.graphql"
 import { Inbox_me$data } from "__generated__/Inbox_me.graphql"
 import { ConversationsContainer } from "app/Scenes/Inbox/Components/Conversations/Conversations"
@@ -9,7 +10,7 @@ import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { track } from "app/utils/track"
 import { ActionNames, ActionTypes } from "app/utils/track/schema"
-import { CssTransition, Flex, Separator, Spacer, Text } from "palette"
+import { Separator } from "palette"
 import React from "react"
 import { EmitterSubscription, View, ViewProps } from "react-native"
 // @ts-expect-error @types file generates duplicate declaration problems
@@ -28,7 +29,7 @@ const TabWrapper = (props: TabWrapperProps) => <View {...props} />
 
 export const InboxTabs = (props: TabBarProps) => (
   <>
-    <Flex flexDirection="row" px={1.5} mb={2}>
+    <Flex flexDirection="row" px={2} mb={2}>
       {props.tabs?.map((name: JSX.Element, page: number) => {
         const isTabActive = props.activeTab === page
         return (
@@ -217,28 +218,28 @@ export const InboxQueryRenderer: React.FC<{ isVisible: boolean }> = (props) => {
   )
 }
 
-export const InboxPlaceholder: React.FC<{}> = () => {
+export const InboxPlaceholder = () => {
   return (
     <Flex height="100%" testID="inbox-placeholder">
-      <Flex flexDirection="row" mx={2} mt={3} mb={1}>
+      <Flex flexDirection="row" mx={2} mt={4} mb={1}>
         <PlaceholderText width={60} height={26} />
-        <Spacer mx={1} />
+        <Spacer x={1} />
         <PlaceholderText width={80} height={26} />
       </Flex>
       <Flex>
         <Separator mx={1} />
       </Flex>
-      <Flex flex={1} px="2">
+      <Flex flex={1} px={2}>
         <Flex my="auto" alignItems="center">
           <PlaceholderText width={240} />
-          <Spacer mb={1} mt={1} />
+          <Spacer y={1} />
           <PlaceholderText width={230} />
 
           <PlaceholderText width={240} />
 
           <PlaceholderText width={200} />
           <PlaceholderText width={70} />
-          <Spacer mb={1} mt={1} />
+          <Spacer y={1} />
 
           <PlaceholderBox width={176} height={50} borderRadius={25} />
         </Flex>

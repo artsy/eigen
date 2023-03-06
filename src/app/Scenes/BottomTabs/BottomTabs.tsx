@@ -1,26 +1,27 @@
+import { Flex, useTheme } from "@artsy/palette-mobile"
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs"
 import { findFocusedRoute } from "@react-navigation/native"
 import { AppModule, modules } from "app/AppRegistry"
-import { GlobalStore, useFeatureFlag, useIsStaging } from "app/store/GlobalStore"
-import { Flex, Separator, useTheme } from "palette"
-import React, { useEffect } from "react"
+import { GlobalStore, useIsStaging } from "app/store/GlobalStore"
+import { Separator } from "palette"
+import { useEffect } from "react"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import useInterval from "react-use/lib/useInterval"
-import { useScreenDimensions } from "shared/hooks"
 import { BottomTabsButton } from "./BottomTabsButton"
 import { ICON_HEIGHT } from "./BottomTabsIcon"
+
+export const FETCH_NOTIFICATIONS_INFO_INTERVAL = 60 * 1000 // every 60 seconds
 
 export const BottomTabs: React.FC<BottomTabBarProps> = (props) => {
   const { color } = useTheme()
   const focusedRoute = findFocusedRoute(props.state)
   const params = focusedRoute?.params as any
   const module = modules[params?.moduleName as AppModule]
-  const enableArtworkRedesign = useFeatureFlag("ARArtworkRedesingPhase2")
   const unreadConversationsCount = GlobalStore.useAppState(
     (state) => state.bottomTabs.sessionState.unreadCounts.conversations
   )
-
-  const displayUnseenNotificationsIndicator = GlobalStore.useAppState(
-    (state) => state.bottomTabs.sessionState.displayUnseenNotificationsIndicator
+  const hasUnseenNotifications = GlobalStore.useAppState(
+    (state) => state.bottomTabs.hasUnseenNotifications
   )
 
   useEffect(() => {
@@ -30,25 +31,25 @@ export const BottomTabs: React.FC<BottomTabBarProps> = (props) => {
   useInterval(() => {
     GlobalStore.actions.bottomTabs.fetchNotificationsInfo()
     // run this every 60 seconds
-  }, 1000 * 60)
+  }, FETCH_NOTIFICATIONS_INFO_INTERVAL)
 
   const isStaging = useIsStaging()
 
-  const { bottom } = useScreenDimensions().safeAreaInsets
+  const { bottom } = useSafeAreaInsets()
 
-  if (enableArtworkRedesign && module?.options?.hidesBottomTabs) {
+  if (module?.options?.hidesBottomTabs) {
     return null
   }
 
   return (
-    <Flex position="absolute" left={0} right={0} bottom={0} paddingBottom={bottom} bg="white100">
+    <Flex position="absolute" left={0} right={0} bottom={0} pb={`${bottom}px`} bg="white100">
       <Separator
         style={{
           borderColor: isStaging ? color("devpurple") : color("black10"),
         }}
       />
       <Flex flexDirection="row" height={ICON_HEIGHT} px={1}>
-        <BottomTabsButton tab="home" forceDisplayVisualClue={displayUnseenNotificationsIndicator} />
+        <BottomTabsButton tab="home" forceDisplayVisualClue={hasUnseenNotifications} />
         <BottomTabsButton tab="search" />
         <BottomTabsButton tab="inbox" badgeCount={unreadConversationsCount} />
         <BottomTabsButton tab="sell" />

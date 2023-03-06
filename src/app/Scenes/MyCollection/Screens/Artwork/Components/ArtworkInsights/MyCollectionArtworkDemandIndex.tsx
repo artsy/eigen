@@ -1,9 +1,10 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
+import { Spacer, TriangleDown, Flex, Text } from "@artsy/palette-mobile"
 import { MyCollectionArtworkDemandIndex_artwork$key } from "__generated__/MyCollectionArtworkDemandIndex_artwork.graphql"
 import { MyCollectionArtworkDemandIndex_artworkPriceInsights$key } from "__generated__/MyCollectionArtworkDemandIndex_artworkPriceInsights.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import HighDemandIcon from "app/Components/Icons/HighDemandIcon"
-import { Flex, Separator, Spacer, Text, TriangleDown } from "palette"
+import { Separator } from "palette"
 import LinearGradient from "react-native-linear-gradient"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -35,7 +36,7 @@ export const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandI
         title="Demand index"
         modalContent={
           <>
-            <Spacer my={1} />
+            <Spacer y={1} />
             <Text>
               Overall strength of demand for this artist and medium combination. Based on the last
               36 months of auction sale data from top commercial auction houses.
@@ -45,7 +46,7 @@ export const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandI
         onPress={() => trackEvent(tracks.tappedInfoBubble(artwork?.internalID, artwork?.slug))}
       />
 
-      <Spacer my={1} />
+      <Spacer y={1} />
       <DemandRankScale demandRank={demandRank} demandRankDisplayText={demandRankDisplayText} />
 
       <Separator my={2} borderColor="black10" />

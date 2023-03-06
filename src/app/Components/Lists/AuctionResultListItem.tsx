@@ -1,3 +1,12 @@
+import {
+  Spacer,
+  bullet,
+  NoArtworkIcon,
+  Stopwatch,
+  Flex,
+  useColor,
+  Text,
+} from "@artsy/palette-mobile"
 import { AuctionResultListItem_auctionResult$data } from "__generated__/AuctionResultListItem_auctionResult.graphql"
 import { AuctionResultsMidEstimate } from "app/Components/AuctionResult/AuctionResultMidEstimate"
 import { auctionResultHasPrice, auctionResultText } from "app/Scenes/AuctionResult/helpers"
@@ -5,8 +14,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { QAInfoManualPanel, QAInfoRow } from "app/utils/QAInfo"
 import { capitalize } from "lodash"
 import moment from "moment"
-import { bullet, Flex, NoArtworkIcon, Spacer, Text, Touchable, useColor } from "palette"
-import { Stopwatch } from "palette/svgs/sf"
+import { Touchable } from "palette"
 import FastImage from "react-native-fast-image"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -86,8 +94,8 @@ const AuctionResultListItem: React.FC<Props> = ({
         )}
 
         {/* Sale Artwork Details */}
-        <Flex pl={15} flex={1} flexDirection="row" justifyContent="space-between">
-          <Flex flex={3}>
+        <Flex pl="15px" flex={1} flexDirection="row" justifyContent="space-between">
+          <Flex flex={4}>
             <Flex>
               {!!showArtistName && !!auctionResult.artist?.name && (
                 <Text variant="xs" color="black100" numberOfLines={2}>
@@ -120,7 +128,7 @@ const AuctionResultListItem: React.FC<Props> = ({
               </Text>
             )}
 
-            <Spacer mt={1} />
+            <Spacer y={1} />
 
             {!!auctionResult.saleDate && (
               <Text variant="xs" color="black60" numberOfLines={1} testID="saleInfo">
@@ -196,7 +204,7 @@ const AuctionResultPriceSection = ({
   )
 }
 
-export const AuctionResultListSeparator = () => <Spacer px={2} pt={2} />
+export const AuctionResultListSeparator = () => <Spacer y={2} />
 
 export const AuctionResultListItemFragmentContainer = createFragmentContainer(
   AuctionResultListItem,

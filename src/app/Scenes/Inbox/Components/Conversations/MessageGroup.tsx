@@ -1,11 +1,10 @@
+import { Spacer, Flex } from "@artsy/palette-mobile"
 import { Message_message$data } from "__generated__/Message_message.graphql"
 import { Messages_conversation$data } from "__generated__/Messages_conversation.graphql"
 import { OrderUpdate_event$data } from "__generated__/OrderUpdate_event.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import moment from "moment"
-import { Flex, Spacer } from "palette"
-import React from "react"
-
+import { Component } from "react"
 import { View } from "react-native"
 import styled from "styled-components/native"
 import { Message } from "./Message"
@@ -48,7 +47,7 @@ const IndividualMessage: React.FC<{
   const senderChanges = !!nextMessage && nextMessage.isFromUser !== message.isFromUser
   const spaceAfter = senderChanges || isLastMessage ? 2 : 0.5
   return (
-    <React.Fragment>
+    <>
       {!!message.body && (
         <Message
           message={message}
@@ -56,8 +55,8 @@ const IndividualMessage: React.FC<{
           conversationId={conversationId!}
         />
       )}
-      <Spacer mb={spaceAfter} />
-    </React.Fragment>
+      <Spacer y={spaceAfter} />
+    </>
   )
 }
 
@@ -80,7 +79,7 @@ const InitialMessage: React.FC<{
   )
 }
 
-export class MessageGroup extends React.Component<MessageGroupProps> {
+export class MessageGroup extends Component<MessageGroupProps> {
   render() {
     const { group, conversationId, isLastMessage, subjectItem } = this.props
     if (group[0].__typename === "%other") {

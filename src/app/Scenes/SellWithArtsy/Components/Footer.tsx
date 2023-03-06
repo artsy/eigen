@@ -1,8 +1,17 @@
+import { ContextModule, OwnerType, TappedConsignArgs } from "@artsy/cohesion"
+import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { Flex, Separator, Text } from "palette"
-import React from "react"
+import { isPad } from "app/utils/hardware"
+import { Button, Separator } from "palette"
 
-export const Footer: React.FC = () => {
+export const Footer: React.FC<{
+  onConsignPress: (tappedConsignArgs: TappedConsignArgs) => void
+}> = ({ onConsignPress }) => {
+  const enableNewSwaLandingPage = useFeatureFlag("AREnableNewSWALandingPage")
+  if (enableNewSwaLandingPage) {
+    return <NewFooter onConsignPress={onConsignPress} />
+  }
   const handleBecomeAPartnerPress = () => {
     navigate("https://partners.artsy.net")
   }
@@ -52,4 +61,37 @@ export const Footer: React.FC = () => {
       </Text>
     </Flex>
   )
+}
+
+const NewFooter: React.FC<{
+  onConsignPress: (tappedConsignArgs: TappedConsignArgs) => void
+}> = ({ onConsignPress }) => {
+  const isTablet = isPad()
+  const buttonText = "Start Selling"
+  return (
+    <Flex mx={2} alignItems={isTablet ? "center" : undefined}>
+      <Text variant="lg-display">
+        Sell with Artsy is the simple, contemporary way to sell art from your collection.
+      </Text>
+      <Spacer y={2} />
+      <Button
+        testID="footer-consign-CTA"
+        block={!isTablet}
+        minWidth={isTablet ? "50%" : undefined}
+        onPress={() => {
+          onConsignPress(tracks.consignArgs(buttonText))
+        }}
+      >
+        {buttonText}
+      </Button>
+    </Flex>
+  )
+}
+
+const tracks = {
+  consignArgs: (subject: string): TappedConsignArgs => ({
+    contextModule: ContextModule.sellFooter,
+    contextScreenOwnerType: OwnerType.sell,
+    subject,
+  }),
 }

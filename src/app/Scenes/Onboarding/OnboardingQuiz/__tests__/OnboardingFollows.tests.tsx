@@ -6,7 +6,6 @@ import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { createMockEnvironment } from "relay-test-utils"
 
-
 jest.mock("app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingTracking")
 
 jest.mock("app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext", () => {

@@ -1,355 +1,106 @@
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs"
+import { screen, waitFor, within } from "@testing-library/react-native"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
+import { BottomTabsButtonProps } from "app/Scenes/BottomTabs/BottomTabsButton"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { ModalStack } from "app/system/navigation/ModalStack"
-import { createEnvironment } from "app/system/relay/createEnvironment"
+import { bottomTabsRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { DateTime } from "luxon"
-import { act, ReactTestRenderer } from "react-test-renderer"
-import useInterval from "react-use/lib/useInterval"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { renderWithWrappers as _renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
+import { ReactElement } from "react"
+import { RelayEnvironmentProvider } from "react-relay"
+import { RelayMockEnvironment } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
-import { BottomTabs } from "./BottomTabs"
-import { BottomTabsButton } from "./BottomTabsButton"
-
-jest.mock("react-use/lib/useInterval")
-jest.mock("app/system/relay/createEnvironment", () => {
-  let env = require("relay-test-utils").createMockEnvironment()
-  const mock = {
-    createEnvironment: () => env,
-    __reset() {
-      env = require("relay-test-utils").createMockEnvironment()
-    },
-  }
-  return mock
-})
-let mockRelayEnvironment = {} as ReturnType<typeof createMockEnvironment>
-beforeEach(() => {
-  require("app/system/relay/createEnvironment").__reset()
-  mockRelayEnvironment = createEnvironment() as any
-})
-
-function resolveNotificationsInfoQuery(resolvers: MockResolvers) {
-  expect(mockRelayEnvironment.mock.getMostRecentOperation().request.node.operation.name).toBe(
-    "BottomTabsModelFetchNotificationsInfoQuery"
-  )
-  mockRelayEnvironment.mock.resolveMostRecentOperation((op) =>
-    MockPayloadGenerator.generate(op, resolvers)
-  )
-}
-
-const findButtonByTab = (tree: ReactTestRenderer, tab: ButtonProps["tab"]) => {
-  const buttons = tree.root.findAllByType(BottomTabsButton)
-  const buttonByTab = buttons.find((button) => (button.props as ButtonProps).tab === tab)
-
-  return buttonByTab
-}
-
-const TestWrapper: React.FC<Partial<BottomTabBarProps>> = (props) => {
-  return (
-    <GlobalStoreProvider>
-      <ModalStack>
-        {/* @ts-ignore */}
-        <BottomTabs state={navigationState} {...props} />
-      </ModalStack>
-    </GlobalStoreProvider>
-  )
-}
-
-type ButtonProps = React.ComponentProps<typeof BottomTabsButton>
+import { BottomTabs, FETCH_NOTIFICATIONS_INFO_INTERVAL } from "./BottomTabs"
 
 describe(BottomTabs, () => {
-  it(`displays the current unread notifications count`, async () => {
+  const mockEnvironment = bottomTabsRelayEnvironment as RelayMockEnvironment
+
+  const renderWithWrappers = (component: ReactElement) => {
+    return _renderWithWrappers(component, { skipRelay: true })
+  }
+
+  const TestWrapper = (props: Partial<BottomTabBarProps>) => {
+    return (
+      <RelayEnvironmentProvider environment={mockEnvironment}>
+        <ModalStack>
+          {/* @ts-ignore */}
+          <BottomTabs state={navigationState} {...props} />
+        </ModalStack>
+      </RelayEnvironmentProvider>
+    )
+  }
+
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it("displays the current unread notifications count", async () => {
     __globalStoreTestUtils__?.injectState({
       bottomTabs: { sessionState: { unreadCounts: { conversations: 4 } } },
     })
-    const tree = renderWithWrappersLEGACY(<TestWrapper />)
 
-    const inboxButton = findButtonByTab(tree, "inbox")
-    expect((inboxButton!.props as ButtonProps).badgeCount).toBe(4)
+    renderWithWrappers(<TestWrapper />)
+
+    const counter = await findBadgeCounterForTab("inbox")
+    expect(counter).toHaveTextContent("4")
   })
 
   describe("a blue dot on home icon", () => {
-    describe("should be displayed if there are unseen notifications", () => {
-      it("`lastSeenNotificationPublishedAt` is empty", async () => {
-        const currentDate = DateTime.local()
+    it("should be displayed if there are unseen notifications", async () => {
+      renderWithWrappers(<TestWrapper />)
 
-        __globalStoreTestUtils__?.injectState({
-          bottomTabs: {
-            lastSeenNotificationPublishedAt: null,
-          },
-        })
-        const tree = renderWithWrappersLEGACY(<TestWrapper />)
+      expect(screen.queryByLabelText("home visual clue")).toBeFalsy()
 
-        const prevHomeButton = findButtonByTab(tree, "home")
-        expect((prevHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
-
-        resolveNotificationsInfoQuery({
-          Me: () => ({
-            unreadConversationCount: 5,
-            unreadNotificationsCount: 1,
-          }),
-          Viewer: () => ({
-            notificationsConnection: {
-              edges: [
-                {
-                  node: {
-                    publishedAt: currentDate.toISO(),
-                  },
-                },
-              ],
-            },
-          }),
-        })
-
-        await flushPromiseQueue()
-
-        const currentHomeButton = findButtonByTab(tree, "home")
-        expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
+      resolveNotificationsInfoQuery(mockEnvironment, {
+        Me: () => ({
+          unreadConversationCount: 5,
+          unseenNotificationsCount: 1,
+        }),
       })
 
-      it("the latest notification `publishedAt` is more recent than the locally persisted `publishedAt`", async () => {
-        const currentDate = DateTime.local()
-        const prevNotificationPublishedAt = currentDate.minus({ hour: 1 }).toISO()
+      await flushPromiseQueue()
 
-        __globalStoreTestUtils__?.injectState({
-          bottomTabs: {
-            lastSeenNotificationPublishedAt: prevNotificationPublishedAt,
-          },
-        })
-        const tree = renderWithWrappersLEGACY(<TestWrapper />)
-
-        const prevHomeButton = findButtonByTab(tree, "home")
-        expect((prevHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
-
-        resolveNotificationsInfoQuery({
-          Me: () => ({
-            unreadConversationCount: 5,
-            unreadNotificationsCount: 1,
-          }),
-          Viewer: () => ({
-            notificationsConnection: {
-              edges: [
-                {
-                  node: {
-                    publishedAt: currentDate.toISO(),
-                  },
-                },
-                {
-                  node: {
-                    publishedAt: prevNotificationPublishedAt,
-                  },
-                },
-              ],
-            },
-          }),
-        })
-
-        await flushPromiseQueue()
-
-        const currentHomeButton = findButtonByTab(tree, "home")
-        expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
-      })
+      expect(screen.queryByLabelText("home visual clue")).toBeTruthy()
     })
 
-    describe("should NOT be displayed if there are NO unseen notifications", () => {
-      it("`lastSeenNotificationPublishedAt` is empty", async () => {
-        const publishedAt = DateTime.local().toISO()
+    it("should NOT be displayed if there are NO unseen notifications", async () => {
+      renderWithWrappers(<TestWrapper />)
 
-        __globalStoreTestUtils__?.injectState({
-          bottomTabs: {
-            lastSeenNotificationPublishedAt: null,
-          },
-        })
-        const tree = renderWithWrappersLEGACY(<TestWrapper />)
+      expect(screen.queryByLabelText("home visual clue")).toBeFalsy()
 
-        resolveNotificationsInfoQuery({
-          Me: () => ({
-            unreadConversationCount: 5,
-            unreadNotificationsCount: 0,
-          }),
-          Viewer: () => ({
-            notificationsConnection: {
-              edges: [
-                {
-                  node: {
-                    publishedAt: publishedAt,
-                  },
-                },
-              ],
-            },
-          }),
-        })
-
-        await flushPromiseQueue()
-
-        const currentHomeButton = findButtonByTab(tree, "home")
-        expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
+      resolveNotificationsInfoQuery(mockEnvironment, {
+        Me: () => ({
+          unreadConversationCount: 5,
+          unseenNotificationsCount: 0,
+        }),
       })
 
-      it("the latest notification `publishedAt` is equal to the locally persisted `publishedAt`", async () => {
-        const publishedAt = DateTime.local().toISO()
+      await flushPromiseQueue()
 
-        __globalStoreTestUtils__?.injectState({
-          bottomTabs: {
-            lastSeenNotificationPublishedAt: publishedAt,
-          },
-        })
-        const tree = renderWithWrappersLEGACY(<TestWrapper />)
-
-        resolveNotificationsInfoQuery({
-          Me: () => ({
-            unreadConversationCount: 5,
-            unreadNotificationsCount: 0,
-          }),
-          Viewer: () => ({
-            notificationsConnection: {
-              edges: [
-                {
-                  node: {
-                    publishedAt: publishedAt,
-                  },
-                },
-              ],
-            },
-          }),
-        })
-
-        await flushPromiseQueue()
-
-        const currentHomeButton = findButtonByTab(tree, "home")
-        expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
-      })
-
-      it("the latest notification `publishedAt` is more recent than the locally persisted `publishedAt`", async () => {
-        const currentDate = DateTime.local()
-
-        __globalStoreTestUtils__?.injectState({
-          bottomTabs: {
-            lastSeenNotificationPublishedAt: currentDate.minus({ hour: 1 }).toISO(),
-          },
-        })
-        const tree = renderWithWrappersLEGACY(<TestWrapper />)
-
-        resolveNotificationsInfoQuery({
-          Me: () => ({
-            unreadConversationCount: 5,
-            unreadNotificationsCount: 0,
-          }),
-          Viewer: () => ({
-            notificationsConnection: {
-              edges: [
-                {
-                  node: {
-                    publishedAt: currentDate.toISO(),
-                  },
-                },
-              ],
-            },
-          }),
-        })
-
-        await flushPromiseQueue()
-
-        const currentHomeButton = findButtonByTab(tree, "home")
-        expect((currentHomeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(false)
-      })
+      expect(screen.queryByLabelText("home visual clue")).toBeFalsy()
     })
   })
 
-  it(`fetches the notifications info on mount`, async () => {
-    const tree = renderWithWrappersLEGACY(<TestWrapper />)
+  it("sets the application icon badge count", async () => {
+    renderWithWrappers(<TestWrapper />)
 
-    await flushPromiseQueue()
-
-    expect(mockRelayEnvironment.mock.getAllOperations()).toHaveLength(1)
-
-    resolveNotificationsInfoQuery({
-      Me: () => ({
-        unreadConversationCount: 5,
-        unreadNotificationsCount: 1,
-      }),
-    })
-
-    await flushPromiseQueue()
-
-    const inboxButton = findButtonByTab(tree, "inbox")
-    expect((inboxButton!.props as ButtonProps).badgeCount).toBe(5)
-
-    const homeButton = findButtonByTab(tree, "home")
-    expect((homeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
-  })
-
-  it(`sets the application icon badge count`, async () => {
-    renderWithWrappersLEGACY(<TestWrapper />)
-
-    await flushPromiseQueue()
-
-    expect(mockRelayEnvironment.mock.getAllOperations()).toHaveLength(1)
-    resolveNotificationsInfoQuery({
+    resolveNotificationsInfoQuery(mockEnvironment, {
       Me: () => ({
         unreadConversationCount: 9,
+        unseenNotificationsCount: 1,
         unreadNotificationsCount: 1,
       }),
     })
 
     await flushPromiseQueue()
 
-    expect(
-      LegacyNativeModules.ARTemporaryAPIModule.setApplicationIconBadgeNumber
-    ).toHaveBeenCalledWith(10)
-  })
-
-  it(`fetches the notifications info once in a while`, async () => {
-    let tree: ReactTestRenderer | null = null
-    act(() => {
-      tree = renderWithWrappersLEGACY(<TestWrapper />)
-    })
-
-    expect(useInterval).toHaveBeenCalledWith(expect.any(Function), expect.any(Number))
-
-    await flushPromiseQueue()
-
-    resolveNotificationsInfoQuery({
-      Me: () => ({
-        unreadConversationCount: 1,
-        unreadNotificationsCount: 1,
-      }),
-    })
-
-    const intervalCallback = (useInterval as jest.Mock).mock.calls[0][0]
-
-    await flushPromiseQueue()
-
-    expect(mockRelayEnvironment.mock.getAllOperations()).toHaveLength(0)
-    act(() => intervalCallback())
-
-    await flushPromiseQueue()
-
-    expect(mockRelayEnvironment.mock.getAllOperations()).toHaveLength(1)
-
-    resolveNotificationsInfoQuery({
-      Me: () => ({
-        unreadConversationCount: 3,
-        unreadNotificationsCount: 1,
-      }),
-    })
-
-    await flushPromiseQueue()
-
-    // @ts-ignore
-    const inboxButton = findButtonByTab(tree, "inbox")
-    expect((inboxButton!.props as ButtonProps).badgeCount).toBe(3)
-
-    // @ts-ignore
-    const homeButton = findButtonByTab(tree, "home")
-    expect((homeButton!.props as ButtonProps).forceDisplayVisualClue).toBe(true)
+    const fn = LegacyNativeModules.ARTemporaryAPIModule.setApplicationIconBadgeNumber
+    expect(fn).toHaveBeenCalledWith(10)
   })
 
   it("should not be rendered if the `hidesBottomTabs` option is specified", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ ARArtworkRedesingPhase2: true })
-
     const state: BottomTabBarProps["state"] = {
       ...navigationState,
       routes: [
@@ -363,10 +114,73 @@ describe(BottomTabs, () => {
       ],
     }
 
-    const tree = renderWithWrappersLEGACY(<TestWrapper state={state} />)
-    const buttons = tree.root.findAllByType(BottomTabsButton)
+    renderWithWrappers(<TestWrapper state={state} />)
 
-    expect(buttons).toHaveLength(0)
+    expect(screen.queryByLabelText("home bottom tab")).toBeFalsy()
+    expect(screen.queryByLabelText("search bottom tab")).toBeFalsy()
+    expect(screen.queryByLabelText("inbox bottom tab")).toBeFalsy()
+    expect(screen.queryByLabelText("sell bottom tab")).toBeFalsy()
+    expect(screen.queryByLabelText("profile bottom tab")).toBeFalsy()
+  })
+
+  it("fetches the notifications info on mount", async () => {
+    renderWithWrappers(<TestWrapper />)
+
+    expect(mockEnvironment.mock.getAllOperations()).toHaveLength(1)
+
+    resolveNotificationsInfoQuery(mockEnvironment, {
+      Me: () => ({
+        unreadConversationCount: 5,
+        unseenNotificationsCount: 1,
+      }),
+    })
+
+    const counter = await findBadgeCounterForTab("inbox")
+    expect(counter).toHaveTextContent("5")
+
+    const homeButton = screen.getByLabelText("home bottom tab")
+    expect(within(homeButton).getByLabelText("home visual clue")).toBeTruthy()
+  })
+
+  /**
+   * This test case should be placed last, otherwise after `jest.useRealTimers`
+   * we will get `setImmediate is not a function` error for the next test cases
+   * It is related to this problem: https://github.com/artsy/eigen/blob/main/HACKS.md#jestfake-timers
+   */
+  it("fetches the notifications info once in a while", async () => {
+    jest.useFakeTimers({
+      legacyFakeTimers: true,
+    })
+
+    renderWithWrappers(<TestWrapper />)
+
+    // Initial query on mount
+    resolveNotificationsInfoQuery(mockEnvironment, {
+      Me: () => ({
+        unreadConversationCount: 5,
+      }),
+    })
+    expect(mockEnvironment.mock.getAllOperations()).toHaveLength(0)
+
+    // Check badge counters for initial query
+    const prevInboxCounter = await findBadgeCounterForTab("inbox")
+    expect(prevInboxCounter).toHaveTextContent("5")
+
+    // fast-forward until 1st call should be executed
+    jest.advanceTimersByTime(FETCH_NOTIFICATIONS_INFO_INTERVAL)
+
+    expect(mockEnvironment.mock.getAllOperations()).toHaveLength(1)
+    resolveNotificationsInfoQuery(mockEnvironment, {
+      Me: () => ({
+        unreadConversationCount: 3,
+      }),
+    })
+
+    // Check badge counters
+    const currentInboxCounter = await findBadgeCounterForTab("inbox")
+    expect(currentInboxCounter).toHaveTextContent("3")
+
+    jest.useRealTimers()
   })
 })
 
@@ -391,4 +205,26 @@ const navigationState: BottomTabBarProps["state"] = {
   ],
   stale: false,
   type: "tab",
+}
+
+const resolveNotificationsInfoQuery = (
+  mockEnvironment: RelayMockEnvironment,
+  resolvers: MockResolvers
+) => {
+  expect(mockEnvironment.mock.getMostRecentOperation().request.node.operation.name).toBe(
+    "BottomTabsModelFetchNotificationsInfoQuery"
+  )
+
+  resolveMostRecentRelayOperation(mockEnvironment, resolvers)
+}
+
+const findButtonByTabName = (tabName: BottomTabsButtonProps["tab"]) => {
+  return screen.getByLabelText(`${tabName} bottom tab`)
+}
+
+const findBadgeCounterForTab = async (tabName: BottomTabsButtonProps["tab"]) => {
+  const button = findButtonByTabName(tabName)
+  const result = await waitFor(() => within(button).getByLabelText("badge count"))
+
+  return result
 }

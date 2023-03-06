@@ -1,5 +1,6 @@
+import { Flex, useColor, Text } from "@artsy/palette-mobile"
 import { formatLargeNumber } from "app/utils/formatLargeNumber"
-import { Flex, LineGraph, Text, useColor } from "palette"
+import { LineGraph } from "palette"
 import { useScreenDimensions } from "shared/hooks"
 import {
   MedianSalePriceChartDuration,
@@ -8,6 +9,8 @@ import {
 
 export const MedianSalePriceChart: React.FC = () => {
   const color = useColor()
+  const { height: screenHeight, width: screenWidth } = useScreenDimensions()
+
   const dataContext = useMedianSalePriceChartDataContext()
   if (!dataContext) {
     return null
@@ -26,8 +29,6 @@ export const MedianSalePriceChart: React.FC = () => {
     selectedCategory,
   } = dataContext
 
-  const { height: screenHeight, width: screenWidth } = useScreenDimensions()
-
   const CHART_HEIGHT = screenHeight / 2.25
   const CHART_WIDTH = screenWidth
 
@@ -44,7 +45,7 @@ export const MedianSalePriceChart: React.FC = () => {
   const hasInsights = !!categories.length
 
   return (
-    <Flex paddingBottom={100}>
+    <Flex pb="100px">
       {selectedDuration === MedianSalePriceChartDuration["3 yrs"] && (
         <Flex>
           <LineGraph

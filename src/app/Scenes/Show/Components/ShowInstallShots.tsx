@@ -1,7 +1,7 @@
+import { Spacer, Box, BoxProps, Text } from "@artsy/palette-mobile"
 import { ShowInstallShots_show$data } from "__generated__/ShowInstallShots_show.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { compact } from "lodash"
-import { Box, BoxProps, Spacer, Text } from "palette"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -18,9 +18,9 @@ export const ShowInstallShots: React.FC<ShowInstallShotsProps> = ({ show, ...res
         data={images}
         horizontal
         showsHorizontalScrollIndicator={false}
-        ListHeaderComponent={<Spacer mx={1} />}
-        ListFooterComponent={<Spacer mx={1} />}
-        ItemSeparatorComponent={() => <Spacer mx={0.5} />}
+        ListHeaderComponent={<Spacer x={1} />}
+        ListFooterComponent={<Spacer x={1} />}
+        ItemSeparatorComponent={() => <Spacer x={0.5} />}
         keyExtractor={(image, i) => String(image.internalID || i)}
         renderItem={({ item: image }) => {
           if (!image.src || !image.dimensions) {

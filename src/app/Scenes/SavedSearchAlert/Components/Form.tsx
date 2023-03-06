@@ -1,3 +1,4 @@
+import { CloseIcon, Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 import {
   SavedSearchAlertFormValues,
@@ -6,17 +7,7 @@ import {
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useFormikContext } from "formik"
-import {
-  Box,
-  Button,
-  CloseIcon as RemoveIcon,
-  Flex,
-  Input,
-  InputTitle,
-  Pill,
-  Spacer,
-  Text,
-} from "palette"
+import { Button, Input, InputTitle, Pill } from "palette"
 import { SavedSearchAlertSwitch } from "./SavedSearchAlertSwitch"
 
 interface FormProps {
@@ -125,7 +116,7 @@ export const Form: React.FC<FormProps> = (props) => {
                   onRemovePill(pill)
                 }
               }}
-              Icon={isArtistPill(pill) ? undefined : RemoveIcon}
+              Icon={isArtistPill(pill) ? undefined : CloseIcon}
               block
             >
               {pill.label}
@@ -138,7 +129,7 @@ export const Form: React.FC<FormProps> = (props) => {
         onChange={onTogglePushNotification}
         active={values.push}
       />
-      <Spacer mt={2} />
+      <Spacer y={2} />
       <SavedSearchAlertSwitch
         label="Email Alerts"
         onChange={onToggleEmailNotification}
@@ -165,7 +156,7 @@ export const Form: React.FC<FormProps> = (props) => {
           Update email preferences
         </Text>
       )}
-      <Box mt={5}>
+      <Box mt={6}>
         <Button
           testID="save-alert-button"
           disabled={isSaveAlertButtonDisabled}
@@ -178,7 +169,7 @@ export const Form: React.FC<FormProps> = (props) => {
         </Button>
         {!!isEditMode && (
           <>
-            <Spacer mt={2} />
+            <Spacer y={2} />
             <Button
               testID="delete-alert-button"
               variant="outline"

@@ -10,7 +10,7 @@ import { Markdown } from "app/Components/Markdown"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
-import { Button, Theme } from "palette"
+import { Button } from "palette"
 import React from "react"
 import { BackHandler, ImageRequireSource, NativeEventSubscription, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -95,20 +95,18 @@ export class BidResult extends React.Component<BidResultProps> {
 
     return (
       <View style={{ flex: 1 }}>
-        <Theme>
-          <FancyModalHeader useXButton onLeftButtonPress={() => dismissModal()} />
-        </Theme>
+        <FancyModalHeader useXButton onLeftButtonPress={() => dismissModal()} />
         <Container mt={6}>
           <View>
             <Flex alignItems="center">
               <Icon20 source={Icons[status] || require("images/circle-x-red.png")} />
-              <Title mt={2} mb={5}>
+              <Title mt={2} mb={6}>
                 {status === "PENDING"
                   ? messageForPollingTimeout.title
                   : message_header || "You’re the highest bidder"}
               </Title>
               {status !== "WINNING" && (
-                <Markdown mb={5}>
+                <Markdown mb={6}>
                   {status === "PENDING"
                     ? messageForPollingTimeout.description
                     : message_description_md}

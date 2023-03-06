@@ -1,3 +1,4 @@
+import { Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
 import { MyAccountQuery } from "__generated__/MyAccountQuery.graphql"
 import { MyAccount_me$data } from "__generated__/MyAccount_me.graphql"
 import { MenuItem } from "app/Components/MenuItem"
@@ -11,7 +12,7 @@ import { useGoogleLink } from "app/utils/LinkedAccounts/google"
 import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Box, Button, Flex, Spacer, Text } from "palette"
+import { Button } from "palette"
 import { ActivityIndicator, Image, Platform, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { PRICE_BUCKETS } from "./MyAccountEditPriceRange"
@@ -45,9 +46,10 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
     isLoading: appleLoading,
   } = useAppleLink(relay.environment)
 
-  const facebookLinked = me.authentications.map((a) => a.provider).includes("FACEBOOK")
-  const googleLinked = me.authentications.map((a) => a.provider).includes("GOOGLE")
-  const appleLinked = me.authentications.map((a) => a.provider).includes("APPLE")
+  const providers = me.authentications.map((a) => a.provider)
+  const facebookLinked = providers.includes("FACEBOOK")
+  const googleLinked = providers.includes("GOOGLE")
+  const appleLinked = providers.includes("APPLE")
 
   const linkOrUnlink = (provider: "facebook" | "google" | "apple") => {
     switch (provider) {
@@ -98,7 +100,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
         )}
         {!!me.paddleNumber && <MenuItem title="Paddle Number" value={me.paddleNumber} />}
         {!!showLinkedAccounts && (
-          <Flex mt={3}>
+          <Flex mt={4}>
             <Box mx={2}>
               <SectionTitle title="LINKED ACCOUNTS" />
             </Box>
@@ -117,7 +119,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
                       resizeMode="contain"
                       style={{ marginRight: 10 }}
                     />
-                    <Text variant="sm-display" color="black60" lineHeight={18}>
+                    <Text variant="sm-display" color="black60" lineHeight="18px">
                       {facebookLinked ? "Unlink" : "Link"}
                     </Text>
                   </Flex>
@@ -144,7 +146,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
                       resizeMode="contain"
                       style={{ marginRight: 10 }}
                     />
-                    <Text variant="sm-display" color="black60" lineHeight={18}>
+                    <Text variant="sm-display" color="black60" lineHeight="18px">
                       {googleLinked ? "Unlink" : "Link"}
                     </Text>
                   </Flex>
@@ -171,7 +173,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
                         resizeMode="contain"
                         style={{ marginRight: 10, tintColor: "black" }}
                       />
-                      <Text variant="sm-display" color="black60" lineHeight={18}>
+                      <Text variant="sm-display" color="black60" lineHeight="18px">
                         {appleLinked ? "Unlink" : "Link"}
                       </Text>
                     </Flex>
@@ -186,7 +188,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
             )}
           </Flex>
         )}
-        <Spacer mt={2} />
+        <Spacer y={2} />
         <Button variant="text" block onPress={() => navigate("my-account/delete-account")}>
           <Text color="red100">Delete My Account</Text>
         </Button>
@@ -200,7 +202,7 @@ const MyAccountPlaceholder: React.FC = () => {
     <PageWithSimpleHeader title="Account">
       <Flex px={2} py={1}>
         {times(5).map((index: number) => (
-          <Flex key={index} py={7.5}>
+          <Flex key={index} py="7.5px">
             <PlaceholderText width={100 + Math.random() * 100} />
           </Flex>
         ))}

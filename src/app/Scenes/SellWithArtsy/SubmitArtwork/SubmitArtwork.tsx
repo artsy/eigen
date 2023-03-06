@@ -1,4 +1,5 @@
 import { OwnerType, ContextModule } from "@artsy/cohesion"
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
@@ -20,7 +21,7 @@ import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { isEqual } from "lodash"
-import { CollapsibleMenuItem, Flex, Join, Separator, Spacer, Text } from "palette"
+import { CollapsibleMenuItem, Join, Separator } from "palette"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
@@ -254,16 +255,16 @@ export const SubmitSWAArtworkFlow: React.FC<SubmitSWAArtworkFlowProps> = ({
     >
       <ArtsyKeyboardAvoidingView>
         <Flex>
+          <BackButton onPress={handleBackPress} style={{ top: 10, zIndex: 100 }} />
           <ScrollView
             ref={scrollViewRef}
             contentContainerStyle={{
-              paddingVertical: 20,
+              paddingVertical: 50,
               paddingHorizontal: 20,
               justifyContent: "center",
             }}
           >
-            <BackButton onPress={handleBackPress} style={{ top: 10 }} />
-            <Spacer mb={3} />
+            <Spacer y={4} />
             <Join separator={<Separator my={2} marginTop="40" marginBottom="20" />}>
               {items.map(({ overtitle, title, Content, contextModule }, index) => (
                 <CollapsibleMenuItem

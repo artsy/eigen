@@ -1,14 +1,13 @@
+import { Flex, Text } from "@artsy/palette-mobile"
 import { MessagesTestsQuery } from "__generated__/MessagesTestsQuery.graphql"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Flex, Text } from "palette"
 import { RefreshControl } from "react-native"
 import { QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { graphql } from "relay-runtime"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import Messages from "./Messages"
-
 
 jest.mock("@react-native-community/netinfo", () => {
   return {

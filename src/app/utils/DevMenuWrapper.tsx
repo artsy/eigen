@@ -1,11 +1,13 @@
+import { Flex } from "@artsy/palette-mobile"
+import { __unsafe__onboardingNavigationRef } from "app/Scenes/Onboarding/Onboarding"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { Flex } from "palette"
 import React, { useRef } from "react"
 import { Platform } from "react-native"
 
 export const DevMenuWrapper: React.FC = ({ children }) => {
   const userIsDev = GlobalStore.useAppState((store) => store.artsyPrefs.userIsDev.value)
+  const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
   const isDeepZoomModalVisible = GlobalStore.useAppState(
     (store) => store.devicePrefs.sessionState.isDeepZoomModalVisible
   )
@@ -32,7 +34,12 @@ export const DevMenuWrapper: React.FC = ({ children }) => {
 
         if (state.numTaps >= 5 && !isDeepZoomModalVisible) {
           state.numTaps = 0
-          navigate("/dev-menu")
+
+          if (!isLoggedIn) {
+            __unsafe__onboardingNavigationRef.current?.navigate("DevMenu")
+          } else {
+            navigate("/dev-menu")
+          }
         }
         return false
       }}

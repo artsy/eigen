@@ -7,7 +7,6 @@ import { createMockEnvironment } from "relay-test-utils"
 import { SaleActiveBidItemContainer } from "./Components/SaleActiveBidItem"
 import { SaleActiveBidsContainer } from "./Components/SaleActiveBids"
 
-
 describe("SaleActiveBids", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 

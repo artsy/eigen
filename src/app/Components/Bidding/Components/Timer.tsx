@@ -1,9 +1,9 @@
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { StateManager as CountdownStateManager } from "app/Components/Countdown"
 import { CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
 import { ModernTicker, SimpleTicker } from "app/Components/Countdown/Ticker"
 import { DateTime } from "luxon"
 import moment from "moment-timezone"
-import { Flex, Spacer, Text } from "palette"
 import PropTypes from "prop-types"
 import React from "react"
 import { ArtworkAuctionProgressBar } from "./ArtworkAuctionProgressBar"
@@ -181,7 +181,7 @@ export const Countdown: React.FC<CountdownProps> = ({
       </Text>
       {!!extendedBiddingPeriodMinutes && (
         <>
-          <Spacer mt={1} />
+          <Spacer y={1} />
           <Text variant="xs" color="black60" textAlign="center">
             *Closure times may be extended to accommodate last-minute bids
           </Text>

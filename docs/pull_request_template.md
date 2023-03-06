@@ -6,16 +6,17 @@ This PR resolves [] <!-- eg [PROJECT-XXXX] -->
 
 ### PR Checklist
 
-- [ ] I tested my changes on **iOS** / **Android**.
-- [ ] I added screenshots or videos to illustrate my changes.
-- [ ] I added Tests and Stories for my changes.
-- [ ] I added an [app state migration].
-- [ ] I hid my changes behind a [feature flag].
-- [ ] I have prefixed changes that need to be tested during a release QA with **[NEEDS EXTERNAL QA]** on the changelog.
+- [ ] I have tested my changes on **iOS** and **Android**.
+- [ ] I hid my changes behind a **[feature flag]**, or they don't need one.
+- [ ] I have included **screenshots** or **videos**, or I have not changed the UI.
+- [ ] I have added **tests**, or my changes don't require any.
+- [ ] I added an **[app state migration]**, or my changes do not require one.
+- [ ] I have documented any **follow-up work** that this PR will require, or it does not require any.
+- [ ] I have added a **changelog entry** below, or my changes do not require one.
 
 ### To the reviewers 👀
 
-- [ ] I would like **at least one** of the reviewers to run this PR on the simulator or device.
+- [ ] I would like **at least one** of the reviewers to **run** this PR on the simulator or device.
 
 <details><summary>Changelog updates</summary>
 
@@ -27,6 +28,7 @@ This PR resolves [] <!-- eg [PROJECT-XXXX] -->
 <!-- • Write a markdown list or just a single paragraph, but stick to plain text. -->
 <!-- 📖 eg. `Enable lotsByFollowedArtists - john` or `Fix phone input misalignment - mary`. -->
 <!-- 🤷‍♂️ Replace this entire block with the hashtag `#nochangelog` to avoid updating the changelog. -->
+<!-- ⚠️ Prefix with `[NEEDS EXTERNAL QA]` if a change requires external QA -->
 
 #### Cross-platform user-facing changes
 

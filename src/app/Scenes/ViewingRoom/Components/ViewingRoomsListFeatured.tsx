@@ -1,11 +1,12 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
+import { MediumCard } from "app/Components/Cards"
 import { RailScrollProps } from "app/Scenes/Home/Components/types"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
-import _ from "lodash"
-import { Spacer, MediumCard, Touchable } from "palette"
+import { Touchable } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -56,15 +57,15 @@ export const FeaturedRail: React.FC<FeaturedRailProps & Partial<RailScrollProps>
   return (
     <View>
       <AboveTheFoldFlatList
-        ListHeaderComponent={() => <Spacer ml="2" />}
-        ListFooterComponent={() => <Spacer ml="2" />}
+        ListHeaderComponent={() => <Spacer x={2} />}
+        ListFooterComponent={() => <Spacer x={2} />}
         horizontal
         listRef={listRef}
         showsHorizontalScrollIndicator={false}
         initialNumToRender={2}
         keyExtractor={(item) => item.internalID}
         data={featured}
-        ItemSeparatorComponent={() => <Spacer ml={15} />}
+        ItemSeparatorComponent={() => <Spacer x="15px" />}
         renderItem={({ item }) => {
           const tag = tagForStatus(item.status, item.distanceToOpen, item.distanceToClose)
           return (

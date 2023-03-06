@@ -2,7 +2,6 @@ import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { RequestConditionReportTestQuery } from "__generated__/RequestConditionReportTestQuery.graphql"
 import { RequestConditionReport_artwork$data } from "__generated__/RequestConditionReport_artwork.graphql"
 import { RequestConditionReport_me$data } from "__generated__/RequestConditionReport_me.graphql"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockPostEventToProviders } from "app/utils/tests/globallyMockedStuff"
 import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -126,7 +125,7 @@ describe("RequestConditionReport", () => {
       expect(getByLabelText("Condition Report Requested Modal")).toHaveProp("visible", false)
     })
 
-    it("displays correct text when ARArtworkRedesingPhase2 ff is false", () => {
+    it("displays correct text", () => {
       renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(env, {

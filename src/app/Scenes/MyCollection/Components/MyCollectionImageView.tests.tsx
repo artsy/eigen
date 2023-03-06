@@ -24,19 +24,16 @@ describe("MyCollectionImageView", () => {
       aspectRatio: 1,
       artworkSlug: "some-slug",
     }
-    const localImageStoreMock = jest.spyOn(LocalImageStore, "retrieveLocalImages")
+    const localImageStoreMock = jest.spyOn(LocalImageStore, "getLocalImage")
     const localImage: LocalImage = {
       path: "some-local-path",
       width: 10,
       height: 10,
     }
-    const retrievalPromise = new Promise<LocalImage[]>((resolve) => {
-      resolve([localImage])
-    })
-    localImageStoreMock.mockImplementation(() => retrievalPromise)
+
+    localImageStoreMock.mockImplementation(async () => localImage)
 
     act(async () => {
-      await retrievalPromise
       const { getByTestId } = renderWithWrappers(<MyCollectionImageView {...props} />)
       const image = getByTestId("Image-Local")
       expect(image).toBeDefined()
@@ -51,14 +48,10 @@ describe("MyCollectionImageView", () => {
       aspectRatio: 1,
       artworkSlug: "some-slug",
     }
-    const localImageStoreMock = jest.spyOn(LocalImageStore, "retrieveLocalImages")
-    const retrievalPromise = new Promise<LocalImage[] | null>((resolve) => {
-      resolve(null)
-    })
-    localImageStoreMock.mockImplementation(() => retrievalPromise)
+    const localImageStoreMock = jest.spyOn(LocalImageStore, "getLocalImage")
+    localImageStoreMock.mockImplementation(async () => null)
 
     act(async () => {
-      await retrievalPromise
       const { getByTestId } = renderWithWrappers(<MyCollectionImageView {...props} />)
       const fallback = getByTestId("Fallback")
       expect(fallback).toBeDefined()

@@ -1,4 +1,4 @@
-import { Flex, Text } from "palette"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { ColoredDot } from "./ColoredDot"
 import { LineChartData } from "./types"
 

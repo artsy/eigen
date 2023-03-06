@@ -1,5 +1,5 @@
+import { Flex, Text } from "@artsy/palette-mobile"
 import { storiesOf } from "@storybook/react-native"
-import { Flex, Text } from "palette"
 import { ProgressBar } from "./"
 
 storiesOf("Progress Indicators", module).add("ProgressBar", () => (

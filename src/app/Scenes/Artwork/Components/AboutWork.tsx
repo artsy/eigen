@@ -1,8 +1,9 @@
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { AboutWork_artwork$data } from "__generated__/AboutWork_artwork.graphql"
 import { ReadMore } from "app/Components/ReadMore"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
-import { Flex, Join, Spacer, Text } from "palette"
+import { Join } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface AboutWorkProps {
@@ -19,7 +20,7 @@ export const AboutWork: React.FC<AboutWorkProps> = ({ artwork }) => {
   }
 
   return (
-    <Join separator={<Spacer mb={2} />}>
+    <Join separator={<Spacer y={2} />}>
       <Text variant="md">About the work</Text>
       {!!additionalInformation && (
         <ReadMore

@@ -1,5 +1,5 @@
+import { Box } from "@artsy/palette-mobile"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { Box } from "palette"
 import styled from "styled-components/native"
 
 interface ThreeUpImageLayoutProps {

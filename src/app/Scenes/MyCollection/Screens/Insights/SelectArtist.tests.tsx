@@ -8,7 +8,6 @@ import {
   MedianSalePriceAtAuctionScreenQuery,
 } from "./MedianSalePriceAtAuction"
 
-
 describe("SelectArtist", () => {
   const TestRenderer = () => {
     useLazyLoadQuery<MedianSalePriceAtAuctionQuery>(MedianSalePriceAtAuctionScreenQuery, {

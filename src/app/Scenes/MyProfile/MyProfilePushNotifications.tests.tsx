@@ -1,10 +1,10 @@
+import { Text } from "@artsy/palette-mobile"
 import { SwitchMenu } from "app/Components/SwitchMenu"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotificationPermissions"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { Text } from "palette"
 import { Platform, Switch } from "react-native"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
@@ -14,7 +14,6 @@ import {
   MyProfilePushNotificationsQueryRenderer,
   OpenSettingsBanner,
 } from "./MyProfilePushNotifications"
-
 
 const env = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 

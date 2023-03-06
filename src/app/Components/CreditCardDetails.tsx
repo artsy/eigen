@@ -1,5 +1,5 @@
+import { bullet, CreditCardIcon, Flex, Text } from "@artsy/palette-mobile"
 import { CreditCardDetails_card$data } from "__generated__/CreditCardDetails_card.graphql"
-import { bullet, CreditCardIcon, Flex, Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 const CreditCardDetails = ({
@@ -10,7 +10,7 @@ const CreditCardDetails = ({
   <Flex alignItems="center" flexDirection="row">
     <CreditCardIcon type={brand as any} width={30} height={20} />
     <Flex flexDirection="row" alignItems="baseline">
-      <Text variant="sm-display" color="black100" mx="1">
+      <Text variant="sm-display" color="black100" mx={1}>
         {bullet}
         {bullet}
         {bullet}

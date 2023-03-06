@@ -1,7 +1,7 @@
+import { Text } from "@artsy/palette-mobile"
 import { CountdownProps } from "app/Components/Bidding/Components/Timer"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import moment from "moment"
-import { Text } from "palette"
 import { StateManager } from "./StateManager"
 
 describe("StateManager", () => {

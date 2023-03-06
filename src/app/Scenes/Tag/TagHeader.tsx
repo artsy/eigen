@@ -1,5 +1,5 @@
+import { Box, Text } from "@artsy/palette-mobile"
 import { TagHeader_tag$data } from "__generated__/TagHeader_tag.graphql"
-import { Box, Text } from "palette"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 interface HeaderProps {
@@ -9,7 +9,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ tag }) => {
   return (
-    <Box marginTop={60} justifyContent="center">
+    <Box mt={6} justifyContent="center">
       <Text variant="lg-display">{tag.name}</Text>
     </Box>
   )

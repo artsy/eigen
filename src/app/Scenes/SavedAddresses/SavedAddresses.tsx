@@ -1,3 +1,4 @@
+import { Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import { themeGet } from "@styled-system/theme-get"
 import { SavedAddressesQuery } from "__generated__/SavedAddressesQuery.graphql"
@@ -10,7 +11,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Box, Flex, Separator, Spacer, Text, Touchable } from "palette"
+import { Separator, Touchable } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createRefetchContainer, QueryRenderer, RelayRefetchProp } from "react-relay"
@@ -27,7 +28,7 @@ const Card = styled(Flex)`
   border: 1px solid
     ${(props: CardProps) =>
       props.isDefault ? themeGet("colors.black100") : themeGet("colors.black30")};
-  border-radius: 4;
+  border-radius: 4px;
 `
 
 const NUM_ADDRESSES_TO_FETCH = 10
@@ -100,19 +101,19 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me$data; relay: RelayRefetch
         renderItem={({ item }) => (
           <>
             <Flex mx={2}>
-              <Card py={2} px={16} isDefault={item.isDefault}>
-                <Text fontSize={16} lineHeight={24}>
+              <Card py={2} px="16px" isDefault={item.isDefault}>
+                <Text fontSize={16} lineHeight="24px">
                   {item.name}
                 </Text>
-                <Text fontSize={16} lineHeight={24} color="black60">
+                <Text fontSize={16} lineHeight="24px" color="black60">
                   {[item.addressLine1, item?.addressLine2, item?.addressLine3]
                     .filter(Boolean)
                     .join(", ")}
                 </Text>
-                <Text fontSize={16} lineHeight={24} color="black60">
+                <Text fontSize={16} lineHeight="24px" color="black60">
                   {item.city}, {item.postalCode}
                 </Text>
-                <Spacer height={10} />
+                <Spacer y={1} />
                 <Text variant="sm" color="black60">
                   {item?.phoneNumber}
                 </Text>
@@ -144,7 +145,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me$data; relay: RelayRefetch
               </Card>
             </Flex>
 
-            <Spacer height={40} />
+            <Spacer y={4} />
           </>
         )}
         ListFooterComponent={
@@ -164,11 +165,11 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me$data; relay: RelayRefetch
           )
         }
         ListEmptyComponent={
-          <Flex py={3} px={2} alignItems="center" height="100%" justifyContent="center">
+          <Flex py={4} px={2} alignItems="center" height="100%" justifyContent="center">
             <Text variant="sm-display" mb={2}>
               No Saved Addresses
             </Text>
-            <Text variant="xs" textAlign="center" mb={3}>
+            <Text variant="xs" textAlign="center" mb={4}>
               Please add an address for a faster checkout experience in the future.
             </Text>
             <AddAddressButton
@@ -187,7 +188,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me$data; relay: RelayRefetch
 export const SavedAddressesPlaceholder: React.FC = () => {
   return (
     <PageWithSimpleHeader title="Saved Addresses">
-      <Flex px={2} py={15}>
+      <Flex px={2} py="15px">
         {times(2).map((index: number) => (
           <Flex key={index} py={1}>
             <PlaceholderText width={100 + Math.random() * 100} />

@@ -1,9 +1,9 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
+import { Spacer, IncreaseIcon, DecreaseIcon, Flex, useSpace, Text } from "@artsy/palette-mobile"
 import { MyCollectionArtworkArtistMarket_artwork$key } from "__generated__/MyCollectionArtworkArtistMarket_artwork.graphql"
 import { MyCollectionArtworkArtistMarket_artworkPriceInsights$key } from "__generated__/MyCollectionArtworkArtistMarket_artworkPriceInsights.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { formatSellThroughRate } from "app/utils/marketPriceInsightHelpers"
-import { DecreaseIcon, Flex, IncreaseIcon, Spacer, Text, useSpace } from "palette"
 import { ReactElement } from "react"
 import { FlatList, View } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -50,7 +50,7 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
       <Flex flexDirection="row" alignItems="center">
         <Arrow fill={color} width={15} height={15} />
 
-        <Spacer mr={1} />
+        <Spacer x={1} />
 
         <Text variant="lg-display" color={color}>
           {Math.abs(value)}%
@@ -118,7 +118,7 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
         modalTitle="Artist Market Insights"
         modalContent={
           <>
-            <Spacer my={0.5} />
+            <Spacer y={0.5} />
             <Text>
               These statistics are based on the last 36 months of auction sale data from top
               commercial auction houses.
@@ -128,7 +128,7 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
         onPress={() => trackEvent(tracks.tappedInfoBubble(artwork.internalID, artwork.slug))}
       />
 
-      <Spacer mb={2} mt={0.5} />
+      <Spacer y={2} />
 
       <View
         style={{

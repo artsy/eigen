@@ -1,12 +1,17 @@
+import { Spacer, Flex, useColor, Text } from "@artsy/palette-mobile"
 import { MenuItem } from "app/Components/MenuItem"
 import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
 import { Tab } from "app/Scenes/Favorites/Favorites"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { Button, Flex, Separator, Spacer, Text, useColor } from "palette"
+import { Button, Separator } from "palette"
 import { Alert, ScrollView } from "react-native"
 
-export const MyProfileSettings: React.FC<{}> = () => {
+interface MyProfileSettingsProps {
+  onSuccess?: () => void
+}
+
+export const MyProfileSettings: React.FC<MyProfileSettingsProps> = ({ onSuccess }) => {
   const showOrderHistory = useFeatureFlag("AREnableOrderHistoryOption")
   const showSavedAddresses = useFeatureFlag("AREnableSavedAddresses")
   const darkModeSupport = useFeatureFlag("ARDarkModeSupport")
@@ -16,11 +21,20 @@ export const MyProfileSettings: React.FC<{}> = () => {
 
   return (
     <ScrollView>
-      <Text variant="lg-display" mx="2" mt="6">
+      <Text variant="lg-display" mx={2} mt="6">
         Settings
       </Text>
-      <Spacer my={1} />
-      <MenuItem title="Edit Profile" onPress={() => navigate("my-profile/edit")} />
+      <Spacer y={1} />
+      <MenuItem
+        title="Edit Profile"
+        onPress={() =>
+          navigate("my-profile/edit", {
+            passProps: {
+              onSuccess,
+            },
+          })
+        }
+      />
       <Separator my={1} borderColor={separatorColor} />
       <MenuItem title="Saved Alerts" onPress={() => navigate("my-profile/saved-search-alerts")} />
       <Separator my={1} borderColor={separatorColor} />
@@ -36,9 +50,9 @@ export const MyProfileSettings: React.FC<{}> = () => {
       />
       <Separator my={1} borderColor={separatorColor} />
 
-      <Spacer mt={2} mb={1} />
+      <Spacer y={2} />
       <SectionHeading title="Account Settings" />
-      <Spacer mt={1} />
+      <Spacer y={1} />
       <MenuItem title="Account" onPress={() => navigate("my-account")} />
       <Separator my={1} borderColor={separatorColor} />
       {!!showOrderHistory && (
@@ -84,25 +98,18 @@ export const MyProfileSettings: React.FC<{}> = () => {
       <MenuItem title="About" onPress={() => navigate("about")} />
       <Separator my={1} borderColor={separatorColor} />
 
-      <Flex
-        flexDirection="row"
-        alignItems="center"
-        justifyContent="center"
-        py={7.5}
-        px="2"
-        pr="15px"
-      >
+      <Flex flexDirection="row" alignItems="center" justifyContent="center" py="7.5px" px={2}>
         <Button variant="fillDark" haptic onPress={confirmLogout} block>
-          Log Out{" "}
+          Log Out
         </Button>
       </Flex>
-      <Spacer mb={1} />
+      <Spacer y={1} />
     </ScrollView>
   )
 }
 
 export const SectionHeading: React.FC<{ title: string }> = ({ title }) => (
-  <Text variant="sm-display" color="black60" mb="1" mx="2">
+  <Text variant="sm-display" color="black60" mb={1} mx={2}>
     {title}
   </Text>
 )

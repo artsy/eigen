@@ -1,3 +1,4 @@
+import { Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
 import { ArtistAutosuggest } from "app/Components/ArtistAutosuggest/ArtistAutosuggest"
 import { buildLocationDisplay, LocationAutocomplete } from "app/Components/LocationAutocomplete"
 import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/CategoryPicker"
@@ -5,17 +6,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
 import { LocationWithDetails } from "app/utils/googleMaps"
 import { useFormikContext } from "formik"
-import {
-  Box,
-  BulletedItem,
-  Flex,
-  Input,
-  InputTitle,
-  LinkButton,
-  RadioButton,
-  Spacer,
-  Text,
-} from "palette"
+import { LinkButton, BulletedItem, Input, InputTitle, RadioButton } from "palette"
 import { Select, SelectOption } from "palette/elements/Select"
 import React, { useEffect, useRef, useState } from "react"
 import { InfoModal } from "./InfoModal/InfoModal"
@@ -26,7 +17,7 @@ import {
 import { limitedEditionValue, rarityOptions } from "./utils/rarityOptions"
 import { ArtworkDetailsFormModel } from "./validation"
 
-const StandardSpace = () => <Spacer mt={4} />
+const StandardSpace = () => <Spacer y={4} />
 
 export const ArtworkDetailsForm: React.FC = () => {
   const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
@@ -113,7 +104,7 @@ export const ArtworkDetailsForm: React.FC = () => {
       </InfoModal>
       {values.attributionClass === limitedEditionValue && (
         <>
-          <Spacer mt={2} />
+          <Spacer y={2} />
           <Flex flexDirection="row" justifyContent="space-between">
             <Box width="48%" mr={1}>
               <Input
@@ -140,7 +131,7 @@ export const ArtworkDetailsForm: React.FC = () => {
       )}
       <StandardSpace />
       <InputTitle>Dimensions</InputTitle>
-      <Spacer mt={1} />
+      <Spacer y={1} />
       <Flex flexDirection="row">
         <RadioButton
           mr={2}
@@ -154,7 +145,7 @@ export const ArtworkDetailsForm: React.FC = () => {
           onPress={() => setFieldValue("dimensionsMetric", "cm")}
         />
       </Flex>
-      <Spacer mt={2} />
+      <Spacer y={2} />
       <Flex flexDirection="row" justifyContent="space-between">
         <Box width="31%" mr={1}>
           <Input

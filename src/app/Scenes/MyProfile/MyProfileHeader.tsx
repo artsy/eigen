@@ -1,41 +1,49 @@
+import {
+  MapPinIcon,
+  BriefcaseIcon,
+  SettingsIcon,
+  InstitutionIcon,
+  Flex,
+  Box,
+  useColor,
+  Text,
+} from "@artsy/palette-mobile"
 import { MyProfileHeader_me$key } from "__generated__/MyProfileHeader_me.graphql"
 import { navigate } from "app/system/navigation/navigate"
-import {
-  Avatar,
-  Box,
-  BriefcaseIcon,
-  Flex,
-  MapPinIcon,
-  MuseumIcon,
-  SettingsIcon,
-  Text,
-  Touchable,
-  useColor,
-} from "palette"
-import React, { useContext } from "react"
+import { useLocalImageStorage } from "app/utils/LocalImageStore"
+import { useRefetch } from "app/utils/relayHelpers"
+import { Avatar, Touchable } from "palette"
 import { Image, TouchableOpacity } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
-import { MyProfileContext } from "./MyProfileProvider"
 import { normalizeMyProfileBio } from "./utils"
 
 const ICON_SIZE = 14
 
 export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props) => {
+  const { fetchKey, refetch } = useRefetch()
   const me = useFragment(myProfileHeaderFragment, props.me)
 
   const color = useColor()
 
-  const { localImage } = useContext(MyProfileContext)
+  const localImage = useLocalImageStorage("profile", undefined, undefined, fetchKey)
 
-  const userProfileImagePath = localImage || me?.icon?.url
+  const userProfileImagePath = localImage?.path || me?.icon?.url
 
   return (
     <Flex pt={2}>
       <Flex flexDirection="row" alignItems="center" px={2}>
         <Box height={45} width={45} borderRadius={25} backgroundColor={color("black10")}>
           <TouchableOpacity
-            onPress={() => navigate("/my-profile/edit")}
+            onPress={() => {
+              navigate("/my-profile/edit", {
+                passProps: {
+                  onSuccess: () => {
+                    refetch()
+                  },
+                },
+              })
+            }}
             testID="profile-image"
             style={{
               height: 45,
@@ -53,11 +61,11 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
           </TouchableOpacity>
         </Box>
         <Flex flex={1} px={1}>
-          <Text fontSize={20} lineHeight={24} color={color("black100")}>
+          <Text fontSize={20} lineHeight="24px" color="black100">
             {me?.name}
           </Text>
           {!!me?.createdAt && (
-            <Text variant="xs" color={color("black60")}>{`Member since ${new Date(
+            <Text variant="xs" color="black60">{`Member since ${new Date(
               me?.createdAt
             ).getFullYear()}`}</Text>
           )}
@@ -65,7 +73,15 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
         <Touchable
           haptic
           hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
-          onPress={() => navigate("/my-profile/settings")}
+          onPress={() =>
+            navigate("/my-profile/settings", {
+              passProps: {
+                onSuccess: () => {
+                  refetch()
+                },
+              },
+            })
+          }
           style={{ height: "100%" }}
         >
           <SettingsIcon height={24} width={24} fill="black100" />
@@ -99,7 +115,7 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
 
         {!!me?.otherRelevantPositions && (
           <Flex flexDirection="row" alignItems="center" pr={0.5} pb={0.5}>
-            <MuseumIcon fill="black60" width={ICON_SIZE} height={ICON_SIZE} />
+            <InstitutionIcon fill="black60" width={ICON_SIZE} height={ICON_SIZE} />
             <Text variant="xs" color={color("black60")} px={0.5}>
               {me?.otherRelevantPositions}
             </Text>
@@ -111,7 +127,8 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
 }
 
 const myProfileHeaderFragment = graphql`
-  fragment MyProfileHeader_me on Me {
+  fragment MyProfileHeader_me on Me
+  @refetchable(queryName: "MyProfileHeaderMyProfileHeaderFragmentRefetchQuery") {
     name
     bio
     location {

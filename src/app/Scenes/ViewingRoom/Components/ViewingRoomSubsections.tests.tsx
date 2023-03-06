@@ -1,12 +1,11 @@
+import { Box } from "@artsy/palette-mobile"
 import { ViewingRoomSubsectionsTestsQuery } from "__generated__/ViewingRoomSubsectionsTestsQuery.graphql"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { Box } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ViewingRoomSubsectionsContainer } from "./ViewingRoomSubsections"
-
 
 describe("ViewingRoomSubsections", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

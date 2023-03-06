@@ -8,7 +8,6 @@ import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRece
 import { createMockEnvironment } from "relay-test-utils"
 import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
 
-
 describe("SearchArtworks", () => {
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 

@@ -1,6 +1,6 @@
+import { Text } from "@artsy/palette-mobile"
 import { About_tag$data } from "__generated__/About_tag.graphql"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
-import { Text } from "palette"
 import { View } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import { createFragmentContainer, graphql } from "react-relay"

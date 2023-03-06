@@ -1,9 +1,10 @@
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { ContactInformationQueryRendererQuery } from "__generated__/ContactInformationQueryRendererQuery.graphql"
 import { ContactInformation_me$data } from "__generated__/ContactInformation_me.graphql"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { Formik } from "formik"
 import { noop } from "lodash"
-import { CTAButton, Flex, Input, Spacer, Text } from "palette"
+import { CTAButton, Input } from "palette"
 import { PhoneInput } from "palette/elements/Input/PhoneInput/PhoneInput"
 import React, { useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -37,7 +38,7 @@ export const ContactInformation: React.FC<{
           <Text color="black60">
             We will only use these details to contact you regarding your submission.
           </Text>
-          <Spacer mt={4} />
+          <Spacer y={4} />
           <Input
             title="Name"
             placeholder="Your full name"
@@ -48,7 +49,7 @@ export const ContactInformation: React.FC<{
             onFocus={() => setIsNameInputFocused(true)}
             error={!isNameInputFocused && values.userName && errors.userName ? errors.userName : ""}
           />
-          <Spacer mt={4} />
+          <Spacer y={4} />
           <Input
             title="Email"
             placeholder="Your email address"
@@ -62,7 +63,7 @@ export const ContactInformation: React.FC<{
               !isEmailInputFocused && values.userEmail && errors.userEmail ? errors.userEmail : ""
             }
           />
-          <Spacer mt={4} />
+          <Spacer y={4} />
           <PhoneInput
             title="Phone number"
             placeholder="(000) 000-0000"
@@ -72,7 +73,7 @@ export const ContactInformation: React.FC<{
             accessibilityLabel="Phone number"
             shouldDisplayLocalError={false}
           />
-          <Spacer mt={6} />
+          <Spacer y={6} />
           <CTAButton
             testID="Submission_ContactInformation_Button"
             onPress={handleSubmit}

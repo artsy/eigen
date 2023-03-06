@@ -1,4 +1,4 @@
-import { useSpace } from "palette"
+import { useSpace } from "@artsy/palette-mobile"
 import { useState } from "react"
 import { NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { useSharedValue } from "react-native-reanimated"

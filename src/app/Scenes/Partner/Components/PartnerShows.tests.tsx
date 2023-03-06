@@ -1,55 +1,38 @@
 import { PartnerShowsTestsQuery } from "__generated__/PartnerShowsTestsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { cloneDeep } from "lodash"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { graphql } from "react-relay"
 import { PartnerShowsFragmentContainer as PartnerShows } from "./PartnerShows"
 
-
 describe("PartnerShows", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+  const { renderWithRelay } = setupTestWrapper<PartnerShowsTestsQuery>({
+    Component: (props) => {
+      if (!props?.partner) {
+        return null
+      }
+      return (
+        <StickyTabPage
+          tabs={[
+            {
+              title: "test",
+              content: <PartnerShows partner={props.partner} />,
+            },
+          ]}
+        />
+      )
+    },
+    query: graphql`
+      query PartnerShowsTestsQuery @raw_response_type {
+        partner(id: "gagosian") {
+          ...PartnerShows_partner
+        }
+      }
+    `,
   })
 
-  const TestWrapper = () => {
-    return (
-      <QueryRenderer<PartnerShowsTestsQuery>
-        environment={mockEnvironment}
-        query={graphql`
-          query PartnerShowsTestsQuery @raw_response_type {
-            partner(id: "gagosian") {
-              ...PartnerShows_partner
-            }
-          }
-        `}
-        render={({ props }) => {
-          if (!props?.partner) {
-            return null
-          }
-          return (
-            <StickyTabPage
-              tabs={[
-                {
-                  title: "test",
-                  content: <PartnerShows partner={props.partner} />,
-                },
-              ]}
-            />
-          )
-        }}
-        variables={{}}
-      />
-    )
-  }
-
-  it("renders the shows correctly", async () => {
-    const { getByText } = await renderWithWrappers(<TestWrapper />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+  it("renders the shows correctly", () => {
+    const { getByText } = renderWithRelay({
       Partner: () => PartnerShowsFixture,
     })
 
@@ -65,16 +48,14 @@ describe("PartnerShows", () => {
     expect(getByText("Frieze London 2019: Sterling Ruby Online Viewing Room")).toBeTruthy()
   })
 
-  it("doesn't show non-displayable", async () => {
+  it("doesn't show non-displayable", () => {
     const fixture = cloneDeep(PartnerShowsFixture)
     // @ts-ignore
     fixture.pastShows.edges[0].node.isDisplayable = false
     // @ts-ignore
     fixture.currentAndUpcomingShows.edges[0].node.isDisplayable = false
 
-    const { queryByText } = renderWithWrappers(<TestWrapper />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { queryByText } = renderWithRelay({
       Partner: () => fixture,
     })
 

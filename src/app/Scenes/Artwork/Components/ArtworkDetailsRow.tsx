@@ -1,7 +1,7 @@
+import { Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
 import { ReadMore } from "app/Components/ReadMore"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
-import { Box, Flex, Spacer, Text } from "palette"
 import React from "react"
 
 interface Tracking {
@@ -30,7 +30,7 @@ export const ArtworkDetailsRow: React.FC<ArtworkDetailsRowProps> = ({
           {title}
         </Text>
       </Box>
-      <Spacer mr={2} />
+      <Spacer x={2} />
       <Box flex={1}>
         {React.isValidElement(value) ? (
           value

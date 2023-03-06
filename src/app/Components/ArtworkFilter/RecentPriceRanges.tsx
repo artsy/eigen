@@ -1,10 +1,11 @@
+import { Spacer, Flex, Box, useSpace, Text } from "@artsy/palette-mobile"
 import { DEFAULT_PRICE_RANGE as USER_PREFERRED_DEFAULT_PRICE_RANGE } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import {
   MAX_SHOWN_RECENT_PRICE_RANGES,
   useRecentPriceRanges,
 } from "app/store/RecentPriceRangesModel"
-import { Box, Flex, Join, Pill, Spacer, Text, useSpace } from "palette"
+import { Join, Pill } from "palette"
 import { useRef } from "react"
 import { Platform, ScrollView, TouchableOpacity } from "react-native"
 import { parsePriceRange, parsePriceRangeLabel, PriceRange } from "./Filters/helpers"
@@ -59,7 +60,7 @@ export const RecentPriceRanges: React.FC<RecentPriceRangesProps> = ({
         )}
       </Flex>
 
-      <Spacer mt={2} />
+      <Spacer y={2} />
 
       {isEmptyPriceRanges ? (
         <EmptyState />
@@ -103,11 +104,11 @@ const RecentPriceRangesList: React.FC<RecentPriceRangesListProps> = ({
     <ScrollView
       ref={recentPriceRangeScrollRef}
       horizontal
-      contentContainerStyle={{ paddingHorizontal: space("2") }}
+      contentContainerStyle={{ paddingHorizontal: space(2) }}
       showsHorizontalScrollIndicator={false}
     >
       <Flex flexDirection="row">
-        <Join separator={<Spacer ml={1} />}>
+        <Join separator={<Spacer x={1} />}>
           {priceRanges.map((recentPrice) => {
             const { value } = recentPrice
             const [min, max] = parsePriceRange(value)

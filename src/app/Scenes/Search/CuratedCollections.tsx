@@ -1,8 +1,8 @@
+import { Spacer, Box, BoxProps } from "@artsy/palette-mobile"
 import { CuratedCollections_collections$key } from "__generated__/CuratedCollections_collections.graphql"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { compact } from "lodash"
-import { Box, BoxProps, Spacer } from "palette"
 import { graphql, useFragment } from "react-relay"
 import { CuratedCollectionItem } from "./CuratedCollectionItem"
 
@@ -33,7 +33,7 @@ export const CuratedCollections: React.FC<CuratedCollectionsProps> = ({
         renderItem={({ item, index }) => {
           return <CuratedCollectionItem collection={item} position={index} />
         }}
-        ItemSeparatorComponent={() => <Spacer ml={1} />}
+        ItemSeparatorComponent={() => <Spacer x={1} />}
       />
     </Box>
   )

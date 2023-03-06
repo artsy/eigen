@@ -43,7 +43,6 @@ export interface ArtworkFiltersModel {
 }
 
 export type ArtworkFiltersState = State<ArtworkFiltersModel>
-export type ArtworkFiltersAction = Action<ArtworkFiltersModel>
 
 export const getArtworkFiltersModel = (): ArtworkFiltersModel => ({
   /**

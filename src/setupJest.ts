@@ -92,6 +92,8 @@ jest.mock("@react-native-async-storage/async-storage", () => mockAsyncStorage)
 
 jest.mock("@react-native-community/netinfo", () => mockRNCNetInfo)
 
+jest.mock("react-native-vision-camera", () => {})
+
 jest.mock("react-native-safe-area-context", () => mockSafeAreaContext)
 
 require("jest-fetch-mock").enableMocks()
@@ -195,6 +197,7 @@ jest.mock("@sentry/react-native", () => ({
   setUser() {},
   addBreadcrumb() {},
   withScope() {},
+  Severity: "info",
 }))
 
 // Needing to mock react-native-scrollable-tab-view due to Flow issue
@@ -356,16 +359,6 @@ function getNativeModules(): OurNativeModules {
       presentEmailComposerWithSubject: jest.fn(),
       presentMediaPreviewController: jest.fn(),
     },
-    ARTakeCameraPhotoModule: {
-      errorCodes: {
-        cameraNotAvailable: "cameraNotAvailable",
-        imageMediaNotAvailable: "imageMediaNotAvailable",
-        cameraAccessDenied: "cameraAccessDenied",
-        saveFailed: "saveFailed",
-      },
-      triggerCameraModal: jest.fn(),
-    },
-
     ARCocoaConstantsModule: {
       UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
       AREnabled: true,
@@ -436,16 +429,6 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
       presentEmailComposerWithSubject: jest.fn(),
       presentMediaPreviewController: jest.fn(),
     },
-    ARTakeCameraPhotoModule: {
-      errorCodes: {
-        cameraNotAvailable: "cameraNotAvailable",
-        imageMediaNotAvailable: "imageMediaNotAvailable",
-        cameraAccessDenied: "cameraAccessDenied",
-        saveFailed: "saveFailed",
-      },
-      triggerCameraModal: jest.fn(),
-    },
-
     ARCocoaConstantsModule: {
       UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
       AREnabled: true,
@@ -550,6 +533,7 @@ jest.mock("app/system/relay/defaultEnvironment", () => {
   return {
     getRelayEnvironment: mockedFunction,
     getMockRelayEnvironment: mockedFunction,
+    bottomTabsRelayEnvironment: mockEnvironment,
   }
 })
 const resetMockEnvironment = () => {

@@ -1,3 +1,4 @@
+import { Text } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
 import { AggregateOption, FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
@@ -6,7 +7,7 @@ import {
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { Separator, Text } from "palette"
+import { Separator } from "palette"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 type PriceRangeOptionsScreenProps = StackScreenProps<
@@ -69,7 +70,7 @@ export const EstimateRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> 
       filterOptions={options}
       ListHeaderComponent={
         <>
-          <Text variant="sm" color="black60" textAlign="center" my={15}>
+          <Text variant="sm" color="black60" textAlign="center" my="15px">
             Based on the estimate for the lot
           </Text>
           <Separator />

@@ -1,3 +1,4 @@
+import { Flex, Box, ClassTheme, Text } from "@artsy/palette-mobile"
 import MapboxGL, { MapViewProps, OnPressEvent } from "@react-native-mapbox-gl/maps"
 import { themeGet } from "@styled-system/theme-get"
 import { GlobalMap_viewer$data } from "__generated__/GlobalMap_viewer.graphql"
@@ -14,13 +15,12 @@ import {
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema, screenTrack, track } from "app/utils/track"
 import { get, isEqual, uniq } from "lodash"
-import { Box, ClassTheme, Flex, Text } from "palette"
 import React from "react"
 import { Animated, Dimensions, Image, View } from "react-native"
 import Config from "react-native-config"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 // @ts-ignore
-import { animated, config, Spring } from "react-spring/renderprops-native.cjs"
+import { animated, config, Spring } from "react-spring/renderprops-native.cjs" // TODO: get rid of this, and then remove `react-spring` from eigen.
 import { SafeAreaInsets } from "shared/hooks"
 import styled from "styled-components/native"
 import Supercluster, { AnyProps, ClusterProperties, PointFeature } from "supercluster"
@@ -43,25 +43,25 @@ const AnimatedView = animated(View)
 
 const ShowCardContainer = styled(Box)`
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 200;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  height: 200px;
 `
 
 const LoadingScreen = styled(Image)`
   position: absolute;
-  left: 0;
-  top: 0;
+  left: 0px;
+  top: 0px;
 `
 
 const TopButtonsContainer = styled(Box)`
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 0px;
+  right: 0px;
   z-index: 1;
   width: 100%;
-  height: 100;
+  height: 100px;
 `
 
 interface Props {
@@ -582,7 +582,7 @@ export class GlobalMap extends React.Component<Props, State> {
                   ],
                 }}
               >
-                <Flex flexDirection="row" justifyContent="flex-end" alignContent="flex-end" px={3}>
+                <Flex flexDirection="row" justifyContent="flex-end" alignContent="flex-end" px={4}>
                   <CitySwitcherButton
                     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                     sponsoredContentUrl={
@@ -773,7 +773,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
 const SelectedCluster = styled(Flex)`
   background-color: ${themeGet("colors.blue100")};
-  border-radius: 60;
+  border-radius: 60px;
   flex-direction: row;
   justify-content: center;
   align-items: center;

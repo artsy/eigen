@@ -1,3 +1,4 @@
+import { Flex, Box, ClassTheme, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ShowItemRowMutation } from "__generated__/ShowItemRowMutation.graphql"
 import { ShowItemRow_show$data } from "__generated__/ShowItemRow_show.graphql"
@@ -8,7 +9,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { hrefForPartialShow } from "app/utils/router"
 import { Schema, Track, track as _track } from "app/utils/track"
 import { debounce } from "lodash"
-import { Box, Button, ClassTheme, Flex, Text, Touchable } from "palette"
+import { Button, Touchable } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -126,7 +127,7 @@ export class ShowItemRow extends React.Component<Props, State> {
         {({ color }) => (
           <Flex flexDirection="row" alignItems="center">
             {!imageURL ? (
-              <DefaultImageContainer p={15}>
+              <DefaultImageContainer p="15px">
                 <Pin color={color("white100")} pinHeight={30} pinWidth={30} />
               </DefaultImageContainer>
             ) : (
@@ -134,15 +135,15 @@ export class ShowItemRow extends React.Component<Props, State> {
                 <OpaqueImageView width={62} height={62} imageURL={imageURL} />
               </DefaultImageContainer>
             )}
-            <Flex flexDirection="column" flexGrow={1} width={165} mr={10}>
+            <Flex flexDirection="column" flexGrow={1} width={165} mr={1}>
               {!!(show.partner && show.partner.name) && (
                 <Text
                   variant="sm"
-                  lineHeight="20"
+                  lineHeight="20px"
                   color="black"
                   weight="medium"
                   numberOfLines={1}
-                  ml={15}
+                  ml="15px"
                 >
                   {show.partner.name}
                 </Text>
@@ -150,9 +151,9 @@ export class ShowItemRow extends React.Component<Props, State> {
               {!!show.name && (
                 <Text
                   variant="sm"
-                  lineHeight="20"
+                  lineHeight="20px"
                   color={color("black60")}
-                  ml={15}
+                  ml="15px"
                   numberOfLines={1}
                 >
                   {show.name}
@@ -161,9 +162,9 @@ export class ShowItemRow extends React.Component<Props, State> {
               {!!(show.exhibition_period && show.status) && (
                 <Text
                   variant="sm"
-                  lineHeight="20"
+                  lineHeight="20px"
                   color={color("black60")}
-                  ml={15}
+                  ml="15px"
                   numberOfLines={1}
                 >
                   {show.status.includes("closed")
@@ -249,6 +250,6 @@ export const ShowItemRowContainer = createFragmentContainer(ShowItemRow, {
 const DefaultImageContainer = styled(Box)`
   align-items: center;
   background-color: ${themeGet("colors.black10")};
-  height: ${themeGet("space.6")}px;
-  width: ${themeGet("space.6")}px;
+  height: ${themeGet("space.6")};
+  width: ${themeGet("space.6")};
 `

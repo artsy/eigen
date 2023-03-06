@@ -1,4 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
+import { Spacer, bullet, Flex, Box, Text } from "@artsy/palette-mobile"
 import { ArtistInsightsAuctionResults_artist$data } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
 import {
   filterArtworksParams,
@@ -21,13 +22,12 @@ import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { debounce } from "lodash"
-import { Box, bullet, Flex, Separator, Spacer, Text } from "palette"
+import { Separator } from "palette"
 import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { SectionList, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
-import styled from "styled-components/native"
 
 interface Props {
   artist: ArtistInsightsAuctionResults_artist$data
@@ -37,6 +37,7 @@ interface Props {
 
 const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollToTop }) => {
   const tracking = useTracking()
+  const { width: screenWidth, height: screenHeight } = useScreenDimensions()
 
   const auctionResults = extractNodes(artist.auctionResultsConnection)
 
@@ -120,17 +121,17 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
 
   const renderAuctionResultsModal = () => (
     <>
-      <Spacer my={1} />
+      <Spacer y={1} />
       <Text>
         These auction results bring together sale data from top auction houses around the world,
         including Christie’s, Sotheby’s, Phillips and Bonhams. Results are updated daily.
       </Text>
-      <Spacer mb={2} />
+      <Spacer y={2} />
       <Text>
         Please note that the sale price includes the hammer price and buyer’s premium, as well as
         any other additional fees (e.g., Artist’s Resale Rights).
       </Text>
-      <Spacer mb={2} />
+      <Spacer y={2} />
     </>
   )
 
@@ -184,7 +185,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
   return (
     <View
       // Setting min height to keep scroll position when user searches with the keyword filter.
-      style={{ minHeight: useScreenDimensions().height }}
+      style={{ minHeight: screenHeight }}
     >
       <Flex>
         <Flex flexDirection="row" alignItems="center">
@@ -201,13 +202,13 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
             modalContent={renderAuctionResultsModal()}
           />
         </Flex>
-        <SortMode variant="xs" color="black60">
+        <Text variant="xs" color="black60">
           {!!artist.auctionResultsConnection?.totalCount
             ? new Intl.NumberFormat().format(artist.auctionResultsConnection.totalCount)
             : 0}{" "}
           {resultsString} {bullet} Sorted by {getSortDescription()?.toLowerCase()}
-        </SortMode>
-        <Separator mt="2" />
+        </Text>
+        <Separator mt={2} />
         <KeywordFilter
           artistId={artist.internalID}
           artistSlug={artist.slug}
@@ -238,7 +239,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
             </Flex>
           )}
           ItemSeparatorComponent={AuctionResultListSeparator}
-          style={{ width: useScreenDimensions().width, left: -20 }}
+          style={{ width: screenWidth, left: -20 }}
           onEndReached={loadMoreAuctionResults}
           ListFooterComponent={
             loadingMoreData ? (
@@ -261,8 +262,6 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
     </View>
   )
 }
-
-export const SortMode = styled(Text)``
 
 export const ArtistInsightsAuctionResultsPaginationContainer = createPaginationContainer(
   ArtistInsightsAuctionResults,

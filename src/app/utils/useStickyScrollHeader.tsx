@@ -1,5 +1,5 @@
+import { Flex, Text } from "@artsy/palette-mobile"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { Flex, Text } from "palette"
 import { useMemo, useRef } from "react"
 import { Animated, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 

@@ -1,3 +1,4 @@
+import { Flex, useSpace } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
 import {
@@ -9,7 +10,6 @@ import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components
 import { useArtworkFiltersAggregation } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { useLayout } from "app/utils/useLayout"
 import { compact, sortBy } from "lodash"
-import { Flex, useSpace } from "palette"
 import { ColorsSwatch } from "./ColorsSwatch"
 import { useMultiSelect } from "./useMultiSelect"
 

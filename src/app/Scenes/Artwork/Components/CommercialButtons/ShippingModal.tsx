@@ -1,8 +1,8 @@
+import { Flex, Text } from "@artsy/palette-mobile"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { LocationAutocomplete } from "app/Components/LocationAutocomplete"
 import { LocationWithDetails } from "app/utils/googleMaps"
-import { Flex, Text } from "palette"
 import React, { useState } from "react"
 import { ScrollView } from "react-native"
 

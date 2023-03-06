@@ -1,15 +1,15 @@
-import { themeGet } from "@styled-system/theme-get"
-import { ResponsiveAlignItemsValue } from "app/Components/Bidding/Elements/types"
 import {
-  ArrowLeftIcon,
   ArrowRightIcon,
   CloseIcon,
-  Flex,
-  Separator,
+  ArrowLeftIcon,
   ShareIcon,
-  Text,
+  Flex,
   useTheme,
-} from "palette"
+  Text,
+} from "@artsy/palette-mobile"
+import { themeGet } from "@styled-system/theme-get"
+import { ResponsiveAlignItemsValue } from "app/Components/Bidding/Elements/types"
+import { Separator } from "palette"
 import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 
@@ -122,17 +122,17 @@ export const Container = styled(Flex)`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  height: ${themeGet("space.6")}px;
+  height: ${themeGet("space.6")};
 `
 
 export const LeftButtonContainer = styled(TouchableOpacity)`
-  padding-left: ${themeGet("space.2")}px;
-  padding-right: ${themeGet("space.2")}px;
+  padding-left: ${themeGet("space.2")};
+  padding-right: ${themeGet("space.2")};
   justify-content: center;
 `
 
 export const RightButtonContainer = styled(TouchableOpacity)`
-  padding-left: ${themeGet("space.2")}px;
-  padding-right: ${themeGet("space.2")}px;
+  padding-left: ${themeGet("space.2")};
+  padding-right: ${themeGet("space.2")};
   justify-content: center;
 `

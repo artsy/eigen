@@ -1,7 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { AppModule } from "app/AppRegistry"
-import { ArtQuiz } from "app/Scenes/ArtQuiz/ArtQuiz"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { NavStack } from "app/system/navigation/NavStack"
 import { BottomTabType } from "./BottomTabType"
 import { BottomTabs } from "./BottomTabs"
@@ -18,12 +16,6 @@ const TabContent = ({
 }
 
 export const BottomTabsNavigator = () => {
-  // TODO: Remove this feature flag after succussful QAing of Quiz App
-  const ARShowArtQuizApp = useFeatureFlag("ARShowArtQuizApp")
-  if (ARShowArtQuizApp) {
-    return <ArtQuiz />
-  }
-
   return (
     <Tab.Navigator
       tabBar={(props) => <BottomTabs {...props} />}

@@ -1,3 +1,4 @@
+import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { MyProfilePushNotificationsQuery } from "__generated__/MyProfilePushNotificationsQuery.graphql"
 import { MyProfilePushNotifications_me$data } from "__generated__/MyProfilePushNotifications_me.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
@@ -12,7 +13,7 @@ import {
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import useAppState from "app/utils/useAppState"
 import { debounce } from "lodash"
-import { Box, Button, Flex, Join, Separator, Text } from "palette"
+import { Button, Join, Separator } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
 import {
   ActivityIndicator,
@@ -47,11 +48,11 @@ export type UserPushNotificationSettings =
 
 export const OpenSettingsBanner = () => (
   <>
-    <Flex py={3} px={2} backgroundColor="black5" alignItems="center">
+    <Flex py={4} px={2} backgroundColor="black5" alignItems="center">
       <Text variant="sm-display" weight="medium" color="black">
         Artsy would like to send you notifications
       </Text>
-      <Text variant="sm" textAlign="center" color="black60" marginTop="1" marginBottom="2">
+      <Text variant="sm" textAlign="center" color="black60" marginTop={1} marginBottom={2}>
         {INSTRUCTIONS}
       </Text>
       <Button
@@ -72,11 +73,11 @@ export const OpenSettingsBanner = () => (
 
 export const AllowPushNotificationsBanner = () => (
   <>
-    <Flex py={3} px={2} backgroundColor="black5" alignItems="center">
+    <Flex py={4} px={2} backgroundColor="black5" alignItems="center">
       <Text variant="sm-display" weight="medium" color="black">
         Artsy would like to send you notifications
       </Text>
-      <Text variant="sm" textAlign="center" color="black60" marginTop="1" marginBottom="2">
+      <Text variant="sm" textAlign="center" color="black60" marginTop={1} marginBottom={2}>
         We need your permission to send push notifications, which may include alerts, artwork
         reminders or purchase updates.
       </Text>

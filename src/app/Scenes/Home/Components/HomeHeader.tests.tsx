@@ -2,7 +2,6 @@ import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { HomeHeader } from "./HomeHeader"
 
-
 describe("HomeHeader", () => {
   const TestRenderer: React.FC = () => {
     return <HomeHeader />
@@ -12,7 +11,11 @@ describe("HomeHeader", () => {
     it("should NOT render unseen indicator when there are no unseen notifications", async () => {
       __globalStoreTestUtils__?.injectState({
         bottomTabs: {
-          sessionState: { displayUnseenNotificationsIndicator: false },
+          sessionState: {
+            unseenCounts: {
+              notifications: 0,
+            },
+          },
         },
       })
 
@@ -25,7 +28,11 @@ describe("HomeHeader", () => {
     it("should render unseen indicator when there are unseen notifications", async () => {
       __globalStoreTestUtils__?.injectState({
         bottomTabs: {
-          sessionState: { displayUnseenNotificationsIndicator: true },
+          sessionState: {
+            unseenCounts: {
+              notifications: 5,
+            },
+          },
         },
       })
 

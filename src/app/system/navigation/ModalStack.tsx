@@ -4,8 +4,10 @@ import {
   createStackNavigator,
   StackCardStyleInterpolator,
 } from "@react-navigation/stack"
+import { Severity, addBreadcrumb } from "@sentry/react-native"
 import { AppModule, modules } from "app/AppRegistry"
 import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
+import { logNavigation } from "app/utils/loggers"
 import { Platform } from "react-native"
 import { NavStack } from "./NavStack"
 import { useReloadedDevNavigationState } from "./useReloadedDevNavigationState"
@@ -21,7 +23,32 @@ const Stack = createStackNavigator()
 export const ModalStack: React.FC = ({ children }) => {
   const initialState = useReloadedDevNavigationState("main_modal_stack", __unsafe_mainModalStackRef)
   return (
-    <NavigationContainer ref={__unsafe_mainModalStackRef} initialState={initialState}>
+    <NavigationContainer
+      ref={__unsafe_mainModalStackRef}
+      initialState={initialState}
+      onStateChange={() => {
+        const currentRoute = __unsafe_mainModalStackRef.current?.getCurrentRoute()
+
+        if (currentRoute) {
+          const params = currentRoute.params as any
+
+          if (__DEV__ && logNavigation) {
+            console.log(
+              `navigated to ${params.moduleName} ${
+                params.props ? JSON.stringify(params.props) : ""
+              } `
+            )
+          }
+
+          addBreadcrumb({
+            message: `navigated to ${params.moduleName}`,
+            category: "navigation",
+            data: { ...params },
+            level: Severity.Info,
+          })
+        }
+      }}
+    >
       <Stack.Navigator
         screenOptions={({ route }) => {
           const rootModuleName: AppModule | undefined = (route.params as any)?.rootModuleName

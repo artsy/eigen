@@ -1,5 +1,5 @@
+import { Flex, Box } from "@artsy/palette-mobile"
 import Crosshair from "app/Components/Icons/Crosshair"
-import { Box, Flex } from "palette"
 import { Component } from "react"
 import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
@@ -18,9 +18,9 @@ const shadowDetails: any = {
 
 const Background = styled(Flex)`
   background: white;
-  height: 40;
-  width: 40;
-  border-radius: 20;
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
   align-content: center;
   align-self: flex-end;
 `

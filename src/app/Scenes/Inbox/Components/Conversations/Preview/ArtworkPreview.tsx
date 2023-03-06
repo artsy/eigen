@@ -1,17 +1,18 @@
+import { Flex, ClassTheme, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ArtworkPreview_artwork$data } from "__generated__/ArtworkPreview_artwork.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Schema, Track, track as _track } from "app/utils/track"
-import { ClassTheme, Flex, Text, Touchable } from "palette"
+import { Touchable } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 const Container = styled.View`
   background-color: ${themeGet("colors.black100")};
-  border-radius: 15;
+  border-radius: 15px;
   overflow: hidden;
-  margin-bottom: 5;
+  margin-bottom: 5px;
 `
 
 const ImageContainer = styled(Flex)`
@@ -31,8 +32,8 @@ const TextContainer = styled(VerticalLayout)`
 `
 
 const TitleAndDate = styled.View`
-  margin-top: 3;
-  margin-right: 12;
+  margin-top: 3px;
+  margin-right: 12px;
   flex-direction: row;
   justify-content: flex-start;
 `

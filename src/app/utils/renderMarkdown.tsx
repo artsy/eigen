@@ -1,7 +1,8 @@
+import { ClassTheme, Text, LinkText, TextProps } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { decode } from "html-entities"
 import _ from "lodash"
-import { ClassTheme, LinkText, Separator, Text, TextProps } from "palette"
+import { Separator } from "palette"
 import { Text as RNText, View } from "react-native"
 import SimpleMarkdown, { ParserRule, ParserRules, ReactNodeOutput } from "simple-markdown"
 import { sendEmailWithMailTo } from "./sendEmail"
@@ -187,7 +188,7 @@ export function defaultRules({
 
         const variant = map[node.level] || "md"
         return (
-          <Text mb="1" key={state.key} variant={variant}>
+          <Text mb={1} key={state.key} variant={variant}>
             {output(node.content, state)}
           </Text>
         )

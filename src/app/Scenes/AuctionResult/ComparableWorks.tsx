@@ -1,4 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { ComparableWorks_auctionResult$data } from "__generated__/ComparableWorks_auctionResult.graphql"
 import {
   AuctionResultListItemFragmentContainer,
@@ -7,7 +8,7 @@ import {
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact } from "lodash"
-import { Flex, Join, Text } from "palette"
+import { Join } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 

@@ -1,3 +1,4 @@
+import { EnvelopeIcon, Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { captureMessage } from "@sentry/react-native"
 import LoadingModal from "app/Components/Modals/LoadingModal"
@@ -9,8 +10,7 @@ import {
 import { GlobalStore } from "app/store/GlobalStore"
 import { osMajorVersion } from "app/utils/platformUtil"
 import { capitalize } from "lodash"
-import { Button, Flex, Join, Screen, Spacer, Text } from "palette"
-import { EnvelopeIcon } from "palette/svgs/EnvelopeIcon"
+import { Button, Join, Screen } from "palette"
 import { useEffect } from "react"
 import { Alert, Image, InteractionManager, Platform } from "react-native"
 import { OnboardingNavigationStack } from "./Onboarding"
@@ -161,7 +161,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
       <Screen.Body>
         <Flex justifyContent="center" flex={1}>
           <LoadingModal isVisible={isLoading} dark />
-          <Join separator={<Spacer y={60} />}>
+          <Join separator={<Spacer y={6} />}>
             <Text variant="xl">{mode === "login" ? "Log in" : "Sign Up"}</Text>
             <>
               <Button

@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native"
 import { SearchInput as SearchBox } from "app/Components/SearchInput"
 import { useSearchProviderValues } from "app/Scenes/Search/SearchContext"
+import { SEARCH_THROTTLE_INTERVAL } from "app/Scenes/Search/constants"
 import { Schema } from "app/utils/track"
 import { throttle } from "lodash"
 import { useEffect, useMemo } from "react"
@@ -14,8 +15,6 @@ export interface SearchInputProps {
   onTextChange: (value: string) => void
 }
 
-const SEARCH_THROTTLE_INTERVAL = 500
-
 export const SearchInput: React.FC<SearchInputProps> = ({
   currentRefinement,
   placeholder,
@@ -25,7 +24,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   const { trackEvent } = useTracking()
   const searchProviderValues = useSearchProviderValues(currentRefinement)
   const isAndroid = Platform.OS === "android"
-  const navigation = isAndroid ? useNavigation() : null
+  const navigation = useNavigation()
   const handleChangeText = useMemo(
     () =>
       throttle((value) => {

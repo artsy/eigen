@@ -1,16 +1,10 @@
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { Theme } from "palette"
 import { graphql } from "react-relay"
 import { ItemInfoFragmentContainer } from "./ItemInfo"
 
-
 describe("ItemInfoFragmentContainer", () => {
   const { renderWithRelay } = setupTestWrapper({
-    Component: ({ me }: any) => (
-      <Theme>
-        <ItemInfoFragmentContainer item={me.conversation.items[0].item} />
-      </Theme>
-    ),
+    Component: ({ me }: any) => <ItemInfoFragmentContainer item={me.conversation.items[0].item} />,
     query: graphql`
       query ItemInfo_Test_Query {
         me {

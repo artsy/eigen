@@ -1,15 +1,7 @@
+import { Spacer, TriangleDown, Flex, useColor, Text } from "@artsy/palette-mobile"
 import * as glibphone from "google-libphonenumber"
 import replace from "lodash/replace"
-import {
-  Flex,
-  InputProps,
-  InputRef,
-  Spacer,
-  Text,
-  Touchable,
-  TriangleDown,
-  useColor,
-} from "palette"
+import { InputProps, InputRef, Touchable } from "palette"
 import {
   INTERNALSelectAndInputCombinationBase,
   ValuePayload,
@@ -141,16 +133,16 @@ export const PhoneInput = forwardRef<
           renderButtonForSelect={({ selectedValue, onPress }) => {
             return (
               <Touchable onPress={onPress}>
-                <Flex flexDirection="row" style={{ width: "100%", height: "100%" }}>
-                  <Flex flexDirection="row" px="1" alignItems="center" backgroundColor="black10">
+                <Flex flex={1} flexDirection="row" style={{ width: "100%", height: "100%" }}>
+                  <Flex flexDirection="row" px={1} alignItems="center" backgroundColor="black10">
                     {/* selectedValue should always be present */}
                     <Text variant="sm-display">
                       {countryIndex[selectedValue ?? countryCode].flag}
                     </Text>
-                    <Spacer mr={0.5} />
+                    <Spacer x={0.5} />
                     <TriangleDown width="8" />
                   </Flex>
-                  <Flex justifyContent="center" pl="1">
+                  <Flex justifyContent="center" pl={1}>
                     <Text variant="sm" color="black60">
                       +{dialCode}
                     </Text>
@@ -163,11 +155,11 @@ export const PhoneInput = forwardRef<
             return (
               <Flex flexDirection="row" alignItems="center" flexShrink={1}>
                 <Text variant="sm-display">{countryIndex[value].flag}</Text>
-                <Spacer mr="1" />
+                <Spacer x={1} />
                 <Text variant="sm-display" style={{ width: 45 }}>
                   +{countryIndex[value].dialCode}
                 </Text>
-                <Spacer mr="1" />
+                <Spacer x={1} />
                 <Text
                   variant="sm-display"
                   numberOfLines={1}

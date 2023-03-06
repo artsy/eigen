@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# Navigate to a specific route in Eigen:
+# $ ./scripts/navigate-to-route-android /artwork/sadaharu-horio-ku-wei-zhen-zhi-untitled-73
+npx uri-scheme open "artsy://${1}" --android

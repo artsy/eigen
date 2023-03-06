@@ -1,5 +1,5 @@
+import { Text } from "@artsy/palette-mobile"
 import { storiesOf } from "@storybook/react-native"
-import { Text } from "palette/elements/Text"
 import { List } from "storybook/helpers"
 import { VisualClueDot, VisualClueText } from "./"
 

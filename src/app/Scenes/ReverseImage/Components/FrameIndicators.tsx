@@ -1,4 +1,4 @@
-import { Flex } from "palette"
+import { Flex } from "@artsy/palette-mobile"
 import { StyleSheet } from "react-native"
 import { FrameIndicator } from "./FrameIndicator"
 

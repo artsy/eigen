@@ -5,6 +5,7 @@ import {
   ScreenOwnerType,
   TappedCreateAlert,
 } from "@artsy/cohesion"
+import { Spacer, Box, Text } from "@artsy/palette-mobile"
 import { CreateArtworkAlertButtonsSection_artwork$data } from "__generated__/CreateArtworkAlertButtonsSection_artwork.graphql"
 import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
@@ -15,7 +16,7 @@ import {
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { compact, isEmpty } from "lodash"
-import { Box, Button, Spacer, Text } from "palette"
+import { Button } from "palette"
 import { FC, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -99,7 +100,7 @@ const CreateArtworkAlertButtonsSection: FC<CreateArtworkAlertButtonsSectionProps
             <Text variant="xs" color="black60">
               Be notified when a similar work is available
             </Text>
-            <Spacer mt={2} />
+            <Spacer y={2} />
 
             <Button block onPress={handleCreateAlertPress}>
               Create Alert

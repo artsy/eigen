@@ -1,9 +1,9 @@
+import { Flex } from "@artsy/palette-mobile"
 import { ArtistItem_artist$key } from "__generated__/ArtistItem_artist.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import Spinner from "app/Components/Spinner"
 import { ArtistItem } from "app/Scenes/MyCollection/Screens/Insights/ArtistItem"
 import { isPad } from "app/utils/hardware"
-import { Flex } from "palette"
 import { useScreenDimensions } from "shared/hooks"
 
 interface SelectArtistListProps {
@@ -34,7 +34,7 @@ export const SelectArtistList: React.FC<SelectArtistListProps> = (props) => {
       )}
       ListFooterComponent={
         isLoadingNext ? (
-          <Flex my={3} flexDirection="row" justifyContent="center">
+          <Flex my={4} flexDirection="row" justifyContent="center">
             <Spinner />
           </Flex>
         ) : null

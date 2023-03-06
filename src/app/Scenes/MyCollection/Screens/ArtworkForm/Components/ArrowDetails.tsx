@@ -1,4 +1,4 @@
-import { ArrowRightIcon, Box, Flex } from "palette"
+import { ArrowRightIcon, Flex, Box } from "@artsy/palette-mobile"
 
 export const ArrowDetails: React.FC = ({ children }) => {
   return (

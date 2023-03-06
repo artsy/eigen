@@ -54,6 +54,10 @@ dist/*
 # JS caches
 .cache
 
+# Yalc local publishing for local dev
+.yalc/
+yalc.lock
+
 # Custom
 .apphub
 .awcache

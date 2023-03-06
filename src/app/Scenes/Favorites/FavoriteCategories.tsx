@@ -1,3 +1,4 @@
+import { Spacer } from "@artsy/palette-mobile"
 import { FavoriteCategoriesQuery } from "__generated__/FavoriteCategoriesQuery.graphql"
 import { FavoriteCategories_me$data } from "__generated__/FavoriteCategories_me.graphql"
 import { SavedItemRow } from "app/Components/Lists/SavedItemRow"
@@ -11,7 +12,6 @@ import { PAGE_SIZE } from "app/Components/constants"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { Spacer } from "palette"
 
 import React from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -92,7 +92,7 @@ export class Categories extends React.Component<Props, State> {
         style={{ paddingHorizontal: 0 }}
         contentContainerStyle={{ paddingVertical: 15 }}
         data={rows}
-        ItemSeparatorComponent={() => <Spacer mb="5px" />}
+        ItemSeparatorComponent={() => <Spacer y={0.5} />}
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
         refreshControl={

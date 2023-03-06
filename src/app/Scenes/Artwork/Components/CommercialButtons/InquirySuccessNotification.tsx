@@ -1,6 +1,6 @@
+import { Flex, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { navigate } from "app/system/navigation/navigate"
-import { Flex, Text } from "palette"
 import React, { useEffect } from "react"
 import { Animated, Modal, TouchableOpacity } from "react-native"
 import { useScreenDimensions } from "shared/hooks"

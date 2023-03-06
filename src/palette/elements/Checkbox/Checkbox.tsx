@@ -1,6 +1,6 @@
+import { Box, CssTransition, Flex, FlexProps, useTheme, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
-import { CssTransition, Flex, FlexProps, Text, useTheme } from "palette"
-import React, { useState } from "react"
+import { useState } from "react"
 import {
   PixelRatio,
   StyleSheet,
@@ -89,7 +89,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
             <CssTransition
               style={[
                 styles(fontScale).container,
-                text || subtitle || children ? { marginRight: space("1") * fontScale } : {},
+                text || subtitle || children ? { marginRight: space(1) * fontScale } : {},
                 checkboxStyle,
               ]}
               animate={["backgroundColor", "borderColor"]}
@@ -115,7 +115,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         </Flex>
 
         {!!subtitle && (
-          <Flex ml={(CHECKBOX_SIZE + space("1")) * fontScale} mt="6px">
+          <Flex ml={`${(CHECKBOX_SIZE + space(1)) * fontScale}px`} mt="6px">
             <Text variant="xs" color={subtitleColor}>
               {subtitle}
             </Text>
@@ -146,16 +146,18 @@ interface CheckMarkProps {
 
 // This component represents the √ mark in CSS. We are not using styled-system since it's easier to specify raw CSS
 // properties with styled-component.
-export const CheckMark = styled.View.attrs<CheckMarkProps>({})`
-  transform: rotate(-45deg);
-  top: -12%;
-  width: ${(props) => props.size * 0.625};
-  height: ${(props) => props.size * 0.3125};
-  border-bottom-color: white;
-  border-bottom-width: 2px;
-  border-left-color: white;
-  border-left-width: 2px;
-`
+export const CheckMark = ({ size }: CheckMarkProps) => (
+  <Box
+    style={{ transform: [{ rotate: "-45deg" }] }}
+    top="-12%"
+    width={size * 0.625}
+    height={size * 0.3125}
+    borderBottomWidth="2px"
+    borderBottomColor="white100"
+    borderLeftWidth="2px"
+    borderLeftColor="white100"
+  />
+)
 
 export const DisabledMark = styled(CheckMark)`
   border-bottom-color: ${themeGet("colors.black30")};

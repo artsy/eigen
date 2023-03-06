@@ -6,7 +6,7 @@ import {
   createConsignSubmission,
   updateConsignSubmission,
 } from "app/Scenes/SellWithArtsy/mutations"
-import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -24,7 +24,6 @@ jest.mock("../../mutations/createConsignSubmissionMutation", () => ({
 jest.mock("../../mutations/updateConsignSubmissionMutation", () => ({
   updateConsignSubmission: jest.fn().mockResolvedValue("54321"),
 }))
-
 
 const createConsignSubmissionMock = createConsignSubmission as jest.Mock
 const updateConsignSubmissionMock = updateConsignSubmission as jest.Mock

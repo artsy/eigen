@@ -1,6 +1,7 @@
+import { Spacer, Flex, useColor, Text } from "@artsy/palette-mobile"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
-import { Flex, Spacer, Text, Touchable, useColor } from "palette"
+import { Touchable } from "palette"
 
 interface SavedItemRowProps {
   href: string
@@ -30,14 +31,14 @@ export const SavedItemRow: React.FC<SavedItemRowProps> = ({
         }}
         style={{ paddingVertical: 5 }}
       >
-        <Flex flexDirection="row" alignItems="center" justifyContent="flex-start" px="2">
+        <Flex flexDirection="row" alignItems="center" justifyContent="flex-start" px={2}>
           <OpaqueImageView
             imageURL={imageURL}
             width={size}
             height={size}
             style={{ borderRadius: square_image ? 2 : size / 2, overflow: "hidden" }}
           />
-          <Spacer mr="2" />
+          <Spacer x={2} />
           <Text variant="sm" weight="medium">
             {name}
           </Text>

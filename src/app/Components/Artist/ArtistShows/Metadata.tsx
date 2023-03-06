@@ -1,6 +1,6 @@
+import { Text } from "@artsy/palette-mobile"
 import { Metadata_show$data } from "__generated__/Metadata_show.graphql"
 import { capitalize } from "lodash"
-import { Text } from "palette"
 import React from "react"
 import { View, ViewProps } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"

@@ -1,9 +1,10 @@
 import { ActionType, OwnerType, TappedBuyNow, TappedMakeOffer } from "@artsy/cohesion"
+import { Spacer, ShieldIcon, Flex, Text } from "@artsy/palette-mobile"
 import { OpenInquiryModalButton_artwork$data } from "__generated__/OpenInquiryModalButton_artwork.graphql"
 import { ShadowSeparator } from "app/Scenes/Inbox/Components/ShadowSeparator"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { Button, Flex, ShieldIcon, Spacer, Text } from "palette"
+import { Button } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { InquiryMakeOfferButtonFragmentContainer } from "./InquiryMakeOfferButton"
@@ -70,7 +71,7 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({
               </Flex>
             )}
             {!!isAcquireableFromInquiry &&
-              (!!isOfferableFromInquiry || !!isOfferableConversationalBuyNow) && <Spacer ml={1} />}
+              (!!isOfferableFromInquiry || !!isOfferableConversationalBuyNow) && <Spacer x={1} />}
             {(!!isOfferableFromInquiry || !!isOfferableConversationalBuyNow) && (
               <Flex flex={1}>
                 <Button
@@ -106,7 +107,7 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({
               </Flex>
             )}
             {!!isAcquireableFromInquiry &&
-              (!!isOfferableFromInquiry || !!isOfferableConversationalBuyNow) && <Spacer ml={1} />}
+              (!!isOfferableFromInquiry || !!isOfferableConversationalBuyNow) && <Spacer x={1} />}
             {(!!isOfferableFromInquiry || !!isOfferableConversationalBuyNow) && (
               <Flex flex={1}>
                 <InquiryMakeOfferButtonFragmentContainer

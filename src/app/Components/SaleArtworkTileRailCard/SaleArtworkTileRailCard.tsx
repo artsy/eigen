@@ -5,11 +5,11 @@ import {
   tappedEntityGroup,
   TappedEntityGroupArgs,
 } from "@artsy/cohesion"
+import { Flex, Box, useColor, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { SaleArtworkTileRailCard_saleArtwork$data } from "__generated__/SaleArtworkTileRailCard_saleArtwork.graphql"
 import { saleMessageOrBidInfo } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { Box, Flex, Text, useColor } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -87,13 +87,13 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
   )
 
   const artistNamesDisplay = artwork.artistNames ? (
-    <Text color="black60" lineHeight="20" numberOfLines={1}>
+    <Text color="black60" lineHeight="20px" numberOfLines={1}>
       {artwork.artistNames}
     </Text>
   ) : null
 
   const saleMessageDisplay = artwork.saleMessage ? (
-    <Text variant="xs" lineHeight="20" numberOfLines={1}>
+    <Text variant="xs" lineHeight="20px" numberOfLines={1}>
       {artwork.saleMessage}
     </Text>
   ) : null
@@ -109,20 +109,20 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
   })
 
   const customSaleMessageDisplay = useCustomSaleMessage ? (
-    <Text variant="xs" lineHeight="20" numberOfLines={1}>
+    <Text variant="xs" lineHeight="20px" numberOfLines={1}>
       {customSaleMessage}
     </Text>
   ) : null
 
   const titleAndDateDisplay =
     artwork.title || artwork.date ? (
-      <Text color="black60" lineHeight="20" numberOfLines={1}>
+      <Text color="black60" lineHeight="20px" numberOfLines={1}>
         {[artwork.title, artwork.date].filter(Boolean).join(", ")}
       </Text>
     ) : null
 
   const lotNumber = saleArtwork.lotLabel ? (
-    <Text numberOfLines={1} lineHeight="20" variant="sm">
+    <Text numberOfLines={1} lineHeight="20px" variant="sm">
       Lot {saleArtwork.lotLabel}
     </Text>
   ) : null

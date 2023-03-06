@@ -1,6 +1,8 @@
+import { NoArtworkIcon, Flex, useColor, Text } from "@artsy/palette-mobile"
 import { MedianAuctionPriceRail_me$data } from "__generated__/MedianAuctionPriceRail_me.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { Flex, NoArtworkIcon, Text, Touchable, useColor } from "palette"
+import { Touchable } from "palette"
+import { ToolTip } from "palette/elements/ToolTip"
 
 export type MedianSalePriceArtwork = NonNullable<
   NonNullable<NonNullable<MedianAuctionPriceRail_me$data["priceInsightUpdates"]>["edges"]>[0]
@@ -8,10 +10,15 @@ export type MedianSalePriceArtwork = NonNullable<
 
 interface Props {
   artworks: MedianSalePriceArtwork[]
+  enableToolTip?: boolean
   onPress?: (medium?: string) => void
 }
 
-export const MedianAuctionPriceListItem: React.FC<Props> = ({ artworks, onPress }) => {
+export const MedianAuctionPriceListItem: React.FC<Props> = ({
+  artworks,
+  enableToolTip = false,
+  onPress,
+}) => {
   const color = useColor()
 
   const firstItem = artworks[0]
@@ -44,7 +51,7 @@ export const MedianAuctionPriceListItem: React.FC<Props> = ({ artworks, onPress 
               <NoArtworkIcon width={20} height={20} opacity={0.3} />
             )}
           </Flex>
-          <Flex pl={15}>
+          <Flex pl="15px">
             <Text variant="xs" ellipsizeMode="middle">
               {artist?.name}
             </Text>
@@ -54,13 +61,21 @@ export const MedianAuctionPriceListItem: React.FC<Props> = ({ artworks, onPress 
           </Flex>
         </Flex>
         <Flex mx={2} pt={1} pb={1} flexDirection="row" justifyContent="space-between">
-          <Flex flex={1} pr={15}>
+          <Flex flex={1} pr="15px">
             <Text variant="xs">{firstItem?.mediumType?.name}</Text>
           </Flex>
           <Flex alignItems="flex-end">
-            <Text variant="xs" weight="medium">
-              {firstItem?.marketPriceInsights?.medianSalePriceDisplayText}
-            </Text>
+            <ToolTip
+              enabled={enableToolTip}
+              initialToolTipText="Tap to interact with graph"
+              position="TOP"
+              tapToDismiss
+              // default yOffset is 5. Adjust however you see fit
+            >
+              <Text variant="xs" weight="medium">
+                {firstItem?.marketPriceInsights?.medianSalePriceDisplayText}
+              </Text>
+            </ToolTip>
           </Flex>
         </Flex>
       </Touchable>
@@ -75,7 +90,7 @@ export const MedianAuctionPriceListItem: React.FC<Props> = ({ artworks, onPress 
           }}
         >
           <Flex mx={2} pt={index === 0 ? 0 : 1} flexDirection="row" justifyContent="space-between">
-            <Flex flex={1} pr={15}>
+            <Flex flex={1} pr="15px">
               <Text variant="xs">{artwork?.mediumType?.name}</Text>
             </Flex>
             <Flex alignItems="flex-end">

@@ -1,10 +1,10 @@
+import { CheckIcon, Flex, Box, Text } from "@artsy/palette-mobile"
 import { ParamListBase } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { FilterData } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
-import { Box, CheckIcon, Flex, Separator, Text } from "palette"
+import { Separator } from "palette"
 import { FlatList, TouchableOpacity } from "react-native"
-import styled from "styled-components/native"
 
 interface MultiSelectOptionScreenProps {
   filterHeaderText: string
@@ -44,7 +44,7 @@ export const MultiSelectCheckOptionScreen: React.FC<MultiSelectOptionScreenProps
   return (
     <Flex flexGrow={1}>
       <ArtworkFilterBackHeader title={filterHeaderText} onLeftButtonPress={handleBackNavigation} />
-      <Flex mb={120}>
+      <Flex mb={12}>
         <FlatList
           initialNumToRender={10}
           ListHeaderComponent={ListHeaderComponent}
@@ -71,15 +71,6 @@ export const MultiSelectCheckOptionScreen: React.FC<MultiSelectOptionScreenProps
   )
 }
 
-export const OptionListItem = styled(Flex)`
-  flex-direction: row;
-  justify-content: space-between;
-  flex-grow: 1;
-  align-items: flex-end;
-  border-left-width: 0;
-  border-top-width: 0;
-`
-
 export const CheckMarkOptionListItem = ({
   item,
   onSelect,
@@ -98,7 +89,7 @@ export const CheckMarkOptionListItem = ({
         justifyContent="space-between"
         flexGrow={1}
         alignItems="center"
-        pl={hasExtraLeftPadding ? 3 : 2}
+        pl={hasExtraLeftPadding ? 4 : 2}
         pr={2}
         height={60}
       >
@@ -113,7 +104,7 @@ export const CheckMarkOptionListItem = ({
         </Text>
 
         {!!selected && (
-          <Box mb={0.1}>
+          <Box>
             <CheckIcon fill="black100" />
           </Box>
         )}

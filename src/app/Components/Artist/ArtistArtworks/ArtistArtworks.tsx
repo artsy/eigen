@@ -1,4 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
+import { Spacer, Box } from "@artsy/palette-mobile"
 import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { Aggregations, FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
@@ -22,7 +23,7 @@ import {
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { Schema } from "app/utils/track"
-import { Box, Message, Spacer } from "palette"
+import { Message } from "palette"
 import React, { useContext, useEffect, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -195,7 +196,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
     } else {
       return (
         <>
-          <Spacer mb={1} />
+          <Spacer y={1} />
           <InfiniteScrollArtworksGrid
             connection={artist.artworks!}
             loadMore={relay.loadMore}

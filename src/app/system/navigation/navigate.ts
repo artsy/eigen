@@ -1,6 +1,6 @@
 import { EventEmitter } from "events"
 import { ActionType, OwnerType, Screen } from "@artsy/cohesion"
-import { addBreadcrumb } from "@sentry/react-native"
+import { Severity, addBreadcrumb } from "@sentry/react-native"
 import { AppModule, modules, ViewOptions } from "app/AppRegistry"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
@@ -42,6 +42,13 @@ let lastInvocation = { url: "", timestamp: 0 }
 export async function navigate(url: string, options: NavigateOptions = {}) {
   let targetURL = url
 
+  addBreadcrumb({
+    message: `navigate to ${url}`,
+    category: "navigation",
+    data: { url, options },
+    level: Severity.Info,
+  })
+
   // handle artsy:// urls, we can just remove it
   targetURL = url.replace("artsy://", "")
 
@@ -73,11 +80,6 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
     Linking.openURL(result.url)
     return
   }
-
-  addBreadcrumb({
-    message: `user navigated to ${url}`,
-    category: "navigation",
-  })
 
   const module = modules[result.module]
   const presentModally = options.modal ?? module.options.alwaysPresentModally ?? false

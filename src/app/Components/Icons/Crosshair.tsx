@@ -1,4 +1,4 @@
-import { Color, useColor } from "palette"
+import { useColor, Color } from "@artsy/palette-mobile"
 import Svg, { Circle, G, Path } from "react-native-svg"
 
 const Crosshair: React.FC<{ color?: Color }> = (props) => {

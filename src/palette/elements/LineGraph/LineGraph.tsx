@@ -1,4 +1,4 @@
-import { Flex, Spacer } from "palette"
+import { Spacer, Flex } from "@artsy/palette-mobile"
 import { useMemo } from "react"
 import { InterpolationPropType } from "victory-core"
 import { LineGraphBandProps, LineGraphBands } from "./LineGraphBands"
@@ -6,7 +6,6 @@ import { LineGraphCategoryPicker } from "./LineGraphCategoryPicker"
 import { LineGraphChart } from "./LineGraphChart"
 import { LineGraphHeader } from "./LineGraphHeader"
 import { AxisDisplayType } from "./helpers"
-import { _AVAILABLE_MEDIUMS } from "./testHelpers"
 import { LineChartData } from "./types"
 
 interface Props {
@@ -101,7 +100,7 @@ export const LineGraph: React.FC<Props> = ({
             onBandSelected={onBandSelected}
           />
         </Flex>
-        <Spacer mb={0.5} />
+        <Spacer y={0.5} />
         {!!categories && !!onCategorySelected && !!selectedCategory && (
           <LineGraphCategoryPicker
             categories={categories}

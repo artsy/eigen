@@ -1,7 +1,7 @@
+import { Spacer, ClassTheme, Text } from "@artsy/palette-mobile"
 import { RelatedArtist_artist$data } from "__generated__/RelatedArtist_artist.graphql"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/system/navigation/navigate"
-import { ClassTheme, Spacer, Text } from "palette"
 import { Component } from "react"
 import { TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -29,7 +29,7 @@ class RelatedArtist extends Component<Props> {
             style={[this.props.imageSize, { overflow: "hidden", borderRadius: 2 }]}
             imageURL={imageURL}
           />
-          <Spacer mb={1} />
+          <Spacer y={1} />
           <Text variant="sm" weight="medium">
             {artist.name}
           </Text>

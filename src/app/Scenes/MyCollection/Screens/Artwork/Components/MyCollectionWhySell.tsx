@@ -1,9 +1,10 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { MyCollectionWhySell_artwork$key } from "__generated__/MyCollectionWhySell_artwork.graphql"
 import { initializeSubmissionArtworkForm } from "app/Scenes/MyCollection/utils/initializeSubmissionArtworkForm"
 import { navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
-import { Button, Flex, Separator, Spacer, Text } from "palette"
+import { Button, Separator } from "palette"
 import { useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { graphql } from "relay-runtime"
@@ -40,7 +41,7 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
       <Text variant="sm-display" testID="SWA-banner-in-MC">
         Interested in Selling This Work?
       </Text>
-      <Spacer mt={0.5} />
+      <Spacer y={0.5} />
       <Text variant="xs" color="black60" mb={2}>
         Let our experts find the best sales option for you.
       </Text>
@@ -102,7 +103,7 @@ const artworkFragment = graphql`
     attributionClass {
       name
     }
-    images {
+    images(includeAll: true) {
       url: imageURL
     }
     editionNumber

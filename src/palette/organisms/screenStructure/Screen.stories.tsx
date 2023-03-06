@@ -1,5 +1,6 @@
+import { Flex, Text } from "@artsy/palette-mobile"
 import { ComponentMeta, ComponentStory } from "@storybook/react-native"
-import { Button, Flex, Input, Text } from "palette"
+import { Button, Input } from "palette"
 import { Screen } from "./Screen"
 
 const ScreenMeta: ComponentMeta<typeof Screen> = {
@@ -107,7 +108,7 @@ export const ScrollScreenWithRegularHeader: ScreenStory = () => (
 export const ScrollScreenWithFloatingHeader: ScreenStory = () => (
   <Screen>
     <Screen.FloatingHeader onBack={() => {}} />
-    <Screen.Body scroll nosafe>
+    <Screen.Body scroll noTopSafe noBottomSafe>
       <Text>Hello</Text>
     </Screen.Body>
   </Screen>

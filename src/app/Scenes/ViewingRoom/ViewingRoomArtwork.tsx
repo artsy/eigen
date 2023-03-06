@@ -1,6 +1,8 @@
+import { Spacer, EyeOpenedIcon, Flex, Box, Text } from "@artsy/palette-mobile"
 import { ViewingRoomArtworkQuery } from "__generated__/ViewingRoomArtworkQuery.graphql"
 import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
 import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoomArtwork_viewingRoomInfo.graphql"
+import { LargeCard } from "app/Components/Cards"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { ImageCarousel } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
 import { navigate } from "app/system/navigation/navigate"
@@ -8,17 +10,7 @@ import { cm2in } from "app/utils/conversions"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import _ from "lodash"
-import {
-  Box,
-  Button,
-  EyeOpenedIcon,
-  Flex,
-  LargeCard,
-  Separator,
-  Spacer,
-  Text,
-  Touchable,
-} from "palette"
+import { Button, Separator, Touchable } from "palette"
 import React, { Suspense, useEffect } from "react"
 import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
 import {
@@ -62,7 +54,7 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
     )
   }
 
-  const moreImages = _.drop(selectedArtwork.images!, 1)
+  const moreImages = _.drop(selectedArtwork.figures!, 1)
 
   const tag = tagForStatus(vrInfo.status, vrInfo.distanceToOpen, vrInfo.distanceToClose)
 
@@ -72,13 +64,16 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
     >
       <ScrollView>
         <Flex>
-          <ImageCarousel images={[selectedArtwork.images![0]] as any} cardHeight={screenHeight} />
+          <ImageCarousel
+            staticImages={[selectedArtwork.figures![0]] as any}
+            cardHeight={screenHeight}
+          />
           {!!(
             LegacyNativeModules.ARCocoaConstantsModule.AREnabled && selectedArtwork.isHangable
           ) && (
             <Flex
               position="absolute"
-              bottom="1"
+              bottom={1}
               right="1"
               backgroundColor="white100"
               borderColor="black5"
@@ -86,33 +81,33 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
               borderRadius={2}
             >
               <TouchableWithoutFeedback onPress={viewInAR}>
-                <Flex flexDirection="row" mx="1" height={24} alignItems="center">
+                <Flex flexDirection="row" mx={1} height={24} alignItems="center">
                   <EyeOpenedIcon />
-                  <Spacer ml={0.5} />
+                  <Spacer x={0.5} />
                   <Text variant="xs">View on wall</Text>
                 </Flex>
               </TouchableWithoutFeedback>
             </Flex>
           )}
         </Flex>
-        <Box mt="2" mx="2">
+        <Box mt={2} mx={2}>
           <Text variant="sm-display" color="black100">
             {selectedArtwork.artistNames}
           </Text>
           <Text variant="sm" color="black60">
             {selectedArtwork.title}, {selectedArtwork.date}
           </Text>
-          <Spacer mt="2" />
+          <Spacer y={2} />
           <Text variant="sm" color="black100">
             {selectedArtwork.saleMessage}
           </Text>
           {!!selectedArtwork.additionalInformation && (
             <>
-              <Spacer mt="2" />
+              <Spacer y={2} />
               <Text variant="sm">{selectedArtwork.additionalInformation}</Text>
             </>
           )}
-          <Spacer mt="4" />
+          <Spacer y={4} />
           <Button
             variant="fillDark"
             block
@@ -129,30 +124,30 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
 
         {moreImages.length > 0 && (
           <>
-            <Box mx="2">
-              <Spacer mt="3" />
+            <Box mx={2}>
+              <Spacer y={4} />
               <Separator />
-              <Spacer mt="3" />
+              <Spacer y={4} />
               <Text variant="sm">More images</Text>
-              <Spacer mt="2" />
+              <Spacer y={2} />
             </Box>
             <FlatList
               data={moreImages}
               keyExtractor={(_item, index) => `${index}`}
               renderItem={({ item }) => (
-                <ImageCarousel images={[item] as any} cardHeight={screenHeight} />
+                <ImageCarousel staticImages={[item] as any} cardHeight={screenHeight} />
               )}
-              ItemSeparatorComponent={() => <Spacer mt={0.5} />}
+              ItemSeparatorComponent={() => <Spacer y={0.5} />}
             />
           </>
         )}
 
-        <Box mx="2">
-          <Spacer mt="3" />
+        <Box mx={2}>
+          <Spacer y={4} />
           <Separator />
-          <Spacer mt="3" />
+          <Spacer y={4} />
           <Text variant="sm">In viewing room</Text>
-          <Spacer mt="2" />
+          <Spacer y={2} />
         </Box>
         <Touchable onPress={() => navigate(`/viewing-room/${vrInfo.slug!}`)}>
           <LargeCard
@@ -219,7 +214,7 @@ export const ViewingRoomArtworkScreen: React.FC<{
 export const Placeholder = () => (
   <ProvidePlaceholderContext>
     <PlaceholderBox width="100%" height="60%" />
-    <Flex mt="2" ml="2">
+    <Flex mt={2} ml={2}>
       <PlaceholderText width={130 + Math.random() * 100} marginTop={10} />
       <PlaceholderText width={100 + Math.random() * 100} marginTop={8} />
       <PlaceholderText width={100 + Math.random() * 100} marginTop={15} />
@@ -266,8 +261,8 @@ const selectedArtworkFragmentSpec = graphql`
     widthCm
     heightCm
     id
-    images {
-      ...ImageCarousel_images @relay(mask: false) # We need this because ImageCarousel uses regular react-relay and we have relay-hooks here.
+    figures {
+      ...ImageCarousel_figures @relay(mask: false) # We need this because ImageCarousel uses regular react-relay and we have relay-hooks here.
     }
   }
 `
