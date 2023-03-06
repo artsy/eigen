@@ -29,6 +29,11 @@ export const AUCTION_HOUSE_OPTIONS: FilterData[] = [
     paramName: FilterParamName.organizations,
     paramValue: "Bonhams",
   },
+  {
+    displayText: "Artsy Auction",
+    paramName: FilterParamName.organizations,
+    paramValue: "Artsy Auction",
+  },
 ]
 
 type AuctionHouseOptionsScreenProps = StackScreenProps<
