@@ -183,7 +183,7 @@ const ArtQuizArtworksScreen = () => {
           <Touchable haptic="impactLight" onPress={handleOnSkip}>
             <Flex height="100%" justifyContent="center">
               <Text textAlign="right" variant="xs">
-                Skip
+                Close
               </Text>
             </Flex>
           </Touchable>
