@@ -152,6 +152,7 @@ interface SignUpParams {
 type OAuthParams = EmailOAuthParams | FacebookOAuthParams | GoogleOAuthParams | AppleOAuthParams
 
 type OnboardingState = "none" | "incomplete" | "complete"
+type OnboardingArtQuizState = "none" | "incomplete" | "complete"
 
 export interface AuthPromiseResolveType {
   success: boolean
@@ -181,6 +182,7 @@ export interface AuthModel {
   xAppToken: string | null
   xApptokenExpiresIn: string | null
   onboardingState: OnboardingState
+  onboardingArtQuizState: OnboardingArtQuizState
   userEmail: string | null
   previousSessionUserID: string | null
 
@@ -240,6 +242,7 @@ export interface AuthModel {
     GlobalStoreModel,
     ReturnType<typeof fetch>
   >
+  setArtQuizState: Action<this, OnboardingArtQuizState>
   signOut: Thunk<this>
 }
 
@@ -258,6 +261,7 @@ export const getAuthModel = (): AuthModel => ({
   xAppToken: null,
   xApptokenExpiresIn: null,
   onboardingState: "none",
+  onboardingArtQuizState: "none",
   userEmail: null,
   previousSessionUserID: null,
   userHasArtsyEmail: computed((state) => isArtsyEmail(state.userEmail ?? "")),
@@ -887,6 +891,9 @@ export const getAuthModel = (): AuthModel => ({
         }
       }
     })
+  }),
+  setArtQuizState: action((state, artQuizState) => {
+    state.onboardingArtQuizState = artQuizState
   }),
   signOut: thunk(async () => {
     const signOutGoogle = async () => {
