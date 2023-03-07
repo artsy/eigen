@@ -193,22 +193,28 @@ export const ArtsyWebView = forwardRef<
           // In case of a webview presented modally, if the targetURL is a tab View,
           // we need to dismiss the modal first to avoid having a tab rendered within the modal
           const modulePathName = new URL(targetURL).pathname?.split(/\/+/).filter(Boolean) ?? []
-          console.log({ isPresentedModally, modulePathName })
-          if (
+
+          const shouldDismissModal =
             isPresentedModally &&
             result.type === "match" &&
             modulePathName.length > 0 &&
             BottomTabRoutes.includes("/" + modulePathName[0])
-          ) {
-            dismissModal()
-          }
 
           // if it's an external url, or a route with a native view, use `navigate`
           if (!__TEST__) {
             innerRef.current?.stopLoading()
           }
-          navigate(targetURL)
           setLoadProgress(null)
+
+          if (shouldDismissModal) {
+            dismissModal(() => {
+              // We need to navigate only after the modal has been dismissed to avoid a race
+              // condition breaking the UI
+              navigate(targetURL)
+            })
+          } else {
+            navigate(targetURL)
+          }
         }}
       />
       <ProgressBar loadProgress={loadProgress} />
