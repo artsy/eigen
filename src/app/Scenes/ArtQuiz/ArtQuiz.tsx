@@ -55,11 +55,6 @@ const artQuizNavigationQuery = graphql`
     me {
       quiz {
         completedAt
-        quizArtworkConnection(first: 16) {
-          edges {
-            interactedAt
-          }
-        }
       }
     }
   }
