@@ -26,8 +26,8 @@ export const Field: React.FC<{
   }
 
   return (
-    <Flex flexDirection="row" justifyContent="space-between" my={1}>
-      <Text variant="xs" color="black100" pr={1}>
+    <Flex flexDirection="row" my={1}>
+      <Text variant="xs" color="black100" pr={1} style={{ minWidth: 120 }}>
         {label}
       </Text>
 
