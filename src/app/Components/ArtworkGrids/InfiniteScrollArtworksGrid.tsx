@@ -441,21 +441,21 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
             <Spinner />
           </Flex>
         )}
-      </ScrollViewWrapper>
 
-      {!!localIsLoading && hasMore() && (
-        <Flex
-          alignItems="center"
-          justifyContent="center"
-          p={4}
-          pb={6}
-          style={{ opacity: localIsLoading && hasMore() ? 1 : 0 }}
-        >
-          {!!autoFetch && (
-            <ActivityIndicator color={Platform.OS === "android" ? "black" : undefined} />
-          )}
-        </Flex>
-      )}
+        {!!localIsLoading && hasMore() && (
+          <Flex
+            alignItems="center"
+            justifyContent="center"
+            m={4}
+            mb={6}
+            style={{ opacity: localIsLoading && hasMore() ? 1 : 0 }}
+          >
+            {!!autoFetch && (
+              <ActivityIndicator color={Platform.OS === "android" ? "black" : undefined} />
+            )}
+          </Flex>
+        )}
+      </ScrollViewWrapper>
 
       {renderFooter()}
     </>
