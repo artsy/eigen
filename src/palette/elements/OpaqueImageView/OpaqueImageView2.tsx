@@ -93,7 +93,7 @@ export const OpaqueImageView: React.FC<Props> = ({ aspectRatio, ...props }) => {
       )
     ) {
       console.error(
-        "[OpaqueImageView] Either an aspect ratio or specific dimensions or flex should be specified."
+        "[OpaqueImageView2] Either an aspect ratio or specific dimensions or flex should be specified."
       )
       return <View style={{ height: 100, width: 100, backgroundColor: "red" }} />
     }
