@@ -87,6 +87,7 @@ import {
 } from "react-native"
 import { RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
 
+import { useTracking } from "react-tracking"
 import { useContentCards } from "./Components/ContentCards"
 import HomeAnalytics from "./homeAnalytics"
 import { useHomeModules } from "./homeModules"
@@ -125,6 +126,8 @@ const Home = memo((props: HomeProps) => {
   useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
   const isESOnlySearchEnabled = useFeatureFlag("AREnableESOnlySearch")
   const prefetchUrl = usePrefetch()
+  const tracking = useTracking()
+
   const { cards } = useContentCards()
 
   const viewabilityConfig = useRef<FlatListProps<HomeModule>["viewabilityConfig"]>({
@@ -161,10 +164,13 @@ const Home = memo((props: HomeProps) => {
       if (enableRailViewsTracking && enableRailViewsTrackingExperiment.enabled) {
         viewableItems.forEach(({ item: { title, contextModule } }: { item: HomeModule }) => {
           if (contextModule && !viewedRails.has(title)) {
-            HomeAnalytics.trackRailViewed({
-              contextModule: contextModule,
-              positionY: modules.findIndex((module) => module.title === title),
-            })
+            viewedRails.add(title)
+            tracking.trackEvent(
+              HomeAnalytics.trackRailViewed({
+                contextModule: contextModule,
+                positionY: modules.findIndex((module) => module.title === title),
+              })
+            )
           }
         })
       }
