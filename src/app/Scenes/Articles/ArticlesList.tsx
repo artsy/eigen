@@ -44,7 +44,7 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
         context_screen_owner_type: OwnerType.articles,
       })}
     >
-      <Flex flexDirection="column" justifyContent="space-between" height="100%" pb="80px">
+      <Flex flexDirection="column" justifyContent="space-between" height="100%">
         <Separator />
         <FlatList
           numColumns={numColumns}
