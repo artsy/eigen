@@ -90,7 +90,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     if (cardSize === "small") {
       return ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + 30
     }
-    return ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + (isRecentlySoldArtwork ? 30 : 0)
+    return ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + (isRecentlySoldArtwork ? 50 : 0)
   }
 
   const containerWidth = useMemo(() => {

@@ -89,7 +89,7 @@ const OldHeader: React.FC<{
               onPress={handleInquiryPress}
               haptic
             >
-              <Text variant="sm">Get in Touch</Text>
+              Get in Touch
             </Button>
           </>
         )}

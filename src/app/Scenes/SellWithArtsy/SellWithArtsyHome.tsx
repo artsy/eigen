@@ -5,7 +5,7 @@ import {
   TappedConsignArgs,
   TappedConsignmentInquiry,
 } from "@artsy/cohesion"
-import { Spacer, Flex, Join, Text } from "@artsy/palette-mobile"
+import { Spacer, Flex, Join } from "@artsy/palette-mobile"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { SellWithArtsyHome_me$data } from "__generated__/SellWithArtsyHome_me.graphql"
 import { SellWithArtsyHome_recentlySoldArtworksTypeConnection$data } from "__generated__/SellWithArtsyHome_recentlySoldArtworksTypeConnection.graphql"
@@ -144,7 +144,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
                     onPress={() => handleConsignPress(consignArgs)}
                     haptic
                   >
-                    <Text variant="sm">Submit an Artwork</Text>
+                    Submit an Artwork
                   </Button>
                 </Flex>
                 <Spacer y={4} />
