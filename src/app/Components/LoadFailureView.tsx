@@ -22,6 +22,10 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
   const [isAnimating, setIsAnimating] = useState(false)
   const showErrorInLoadFailureViewToggle = useDevToggle("DTShowErrorInLoadFailureView")
 
+  const isStaging = useIsStaging()
+
+  const showErrorMessage = __DEV__ || isStaging || showErrorInLoadFailureViewToggle
+
   const playAnimation = () => {
     setIsAnimating(true)
     Animated.loop(
@@ -33,9 +37,6 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
       })
     ).start()
   }
-
-  const showErrorMessage = __DEV__ || showErrorInLoadFailureViewToggle
-  const isStaging = useIsStaging()
 
   return (
     <Flex flex={1} alignItems="center" justifyContent="center" {...restProps}>
