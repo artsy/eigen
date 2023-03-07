@@ -21,6 +21,7 @@ import {
 import { ImageCarouselEmbedded } from "./ImageCarouselEmbedded"
 import { IndicatorType, PaginationIndicator } from "./ImageCarouselPaginationIndicator"
 import { fitInside } from "./geometry"
+import { captureMessage } from "@sentry/react-native"
 
 export interface CarouselImageDescriptor extends ImageDescriptor {
   imageVersions?: string[]
@@ -187,14 +188,28 @@ const useImageCarouselMedia = (
     (image, index) => isALocalImage(image.url) || localImages?.[index]
   )
 
+  const fallbackSize = screenDimensions.width
+
   const images = useMemo(() => {
     const mappedImages =
-      imageFigures?.map((image, i) => ({
-        ...image,
-        url: localImages?.[i]?.path || image.url,
-        width: localImages?.[i]?.width || image.width,
-        height: localImages?.[i]?.height || image.height,
-      })) ??
+      imageFigures?.map((image, i) => {
+        const imageWidth = localImages?.[i]?.width || image.width
+        const imageHeight = localImages?.[i]?.height || image.height
+
+        if (!imageWidth || !imageHeight) {
+          if (!__DEV__) {
+            captureMessage("ImageCarousel: image width or height is missing.")
+          }
+          console.log("ImageCarousel: image width or height is missing", image)
+        }
+
+        return {
+          ...image,
+          url: localImages?.[i]?.path || image.url,
+          width: imageWidth || fallbackSize,
+          height: imageHeight || fallbackSize,
+        }
+      }) ??
       props.staticImages ??
       []
 
