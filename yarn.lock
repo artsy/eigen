@@ -3574,7 +3574,7 @@
     prop-types "^15.6.1"
     react-lifecycles-compat "^3.0.4"
 
-"@react-native-async-storage/async-storage@1.16.1", "@react-native-async-storage/async-storage@^1.15.17":
+"@react-native-async-storage/async-storage@1.16.1":
   version "1.16.1"
   resolved "https://registry.yarnpkg.com/@react-native-async-storage/async-storage/-/async-storage-1.16.1.tgz#1dbaa9e0f9736e4ab8fc04c628bbb608fd80b068"
   integrity sha512-aQ7ka+Ii1e/q+7AVFIZPt4kDeSH8b784wMDtz19Kf4A7hf+OgCHBlUQpOXsrv8XxhlBxu0hv4tfrDO15ChnV0Q==
@@ -16342,12 +16342,11 @@ universalify@^2.0.0:
   resolved "https://registry.yarnpkg.com/universalify/-/universalify-2.0.0.tgz#75a4984efedc4b08975c5aeb73f530d02df25717"
   integrity sha512-hAZsKq7Yy11Zu1DE0OzWjw7nnLZmJZYTDZZyEFHZdUhV8FkH5MCfoU1XMaxXovpyW5nq5scPqq0ZDP9Zyl04oQ==
 
-unleash-proxy-client@1.11.0:
-  version "1.11.0"
-  resolved "https://registry.yarnpkg.com/unleash-proxy-client/-/unleash-proxy-client-1.11.0.tgz#baaedc0a3315ab3d3ec03151d73c8c7eec0ffcf2"
-  integrity sha512-z5qwSo0i2G+nKS3WeKhfVxDAED8CmlrfoXtUz1AOsCmhZ81GvkHFvvhMAWKdqGKyk86qojcEeA5c5adWX2HYjg==
+unleash-proxy-client@2.4.3:
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/unleash-proxy-client/-/unleash-proxy-client-2.4.3.tgz#47588a66812b92bacc5e8aaafe1acb06e50893b8"
+  integrity sha512-ILJIHNSeh7ajHczemNE19Rl3NpVU3voFouYIgWCbJd+OhuJ9elfpuD1LF5yucEJq8AuWKkEM2AzUFFOTiv/2Sw==
   dependencies:
-    "@react-native-async-storage/async-storage" "^1.15.17"
     tiny-emitter "^2.1.0"
     uuid "^8.3.2"
 
