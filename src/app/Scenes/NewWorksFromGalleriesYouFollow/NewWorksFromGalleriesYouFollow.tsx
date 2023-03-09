@@ -42,7 +42,9 @@ export const NewWorksFromGalleriesYouFollow: React.FC<
         {artworks.length ? (
           <InfiniteScrollArtworksGridContainer
             connection={data?.newWorksFromGalleriesYouFollowConnection}
-            loadMore={(pageSize) => loadNext(pageSize)}
+            loadMore={(pageSize, onComplete) =>
+              loadNext(pageSize, { onComplete: onComplete as any })
+            }
             hasMore={() => hasNext}
             isLoading={() => isLoadingNext}
             pageSize={PAGE_SIZE}
