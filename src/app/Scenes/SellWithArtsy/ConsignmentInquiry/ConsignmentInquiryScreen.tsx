@@ -42,7 +42,7 @@ export const createConsignmentInquiry = (
   environment: Environment,
   onCompleted: (response: ConsignmentInquiryScreenMutation["response"]) => void,
   onError: () => void,
-  input: InquiryFormikSchema & { userId?: string } & { recipientEmail?: string }
+  input: InquiryFormikSchema & { userId?: string; recipientEmail?: string }
 ) => {
   commitMutation<ConsignmentInquiryScreenMutation>(environment, {
     mutation: graphql`
