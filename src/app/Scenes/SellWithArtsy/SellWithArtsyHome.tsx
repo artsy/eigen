@@ -65,7 +65,11 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
     navigate(route)
   }
 
-  const handleInquiryPress = (inquiryTrackingArgs?: TappedConsignmentInquiry) => {
+  const handleInquiryPress = (
+    inquiryTrackingArgs?: TappedConsignmentInquiry,
+    recipientEmail?: string,
+    recipientName?: string
+  ) => {
     if (inquiryTrackingArgs) {
       tracking.trackEvent(inquiryTrackingArgs)
     }
@@ -75,6 +79,8 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
         name: me?.name ?? "",
         phone: me?.phone ?? "",
         userId: me?.internalID ?? undefined,
+        recipientEmail: recipientEmail ?? null,
+        recipientName: recipientName ?? null,
       },
     })
   }
