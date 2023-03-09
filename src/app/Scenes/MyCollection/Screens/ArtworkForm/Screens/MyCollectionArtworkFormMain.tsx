@@ -26,6 +26,8 @@ const SHOW_FORM_VALIDATION_ERRORS_IN_DEV = false
 export const MyCollectionArtworkFormMain: React.FC<
   StackScreenProps<ArtworkFormScreen, "ArtworkFormMain">
 > = ({ route, navigation }) => {
+  const enableNotesField = useFeatureFlag("AREnableMyCollectionNotesField")
+
   const artworkActions = GlobalStore.actions.myCollection.artwork
   const artworkState = GlobalStore.useAppState((state) => state.myCollection.artwork)
   const [showAbandonModal, setShowAbandonModal] = useState(false)
@@ -238,16 +240,18 @@ export const MyCollectionArtworkFormMain: React.FC<
                 accessibilityLabel="Enter city where the artwork is located"
                 value={formikValues.artworkLocation}
               />
-              <Input
-                multiline
-                maxLength={500}
-                title="Notes"
-                onChangeText={formik.handleChange("confidentialNotes")}
-                onBlur={formik.handleBlur("confidentialNotes")}
-                testID="NotesInput"
-                accessibilityLabel="Notes"
-                value={formikValues.confidentialNotes}
-              />
+              {!!enableNotesField && (
+                <Input
+                  multiline
+                  maxLength={500}
+                  title="Notes"
+                  onChangeText={formik.handleChange("confidentialNotes")}
+                  onBlur={formik.handleBlur("confidentialNotes")}
+                  testID="NotesInput"
+                  accessibilityLabel="Notes"
+                  value={formikValues.confidentialNotes}
+                />
+              )}
             </Join>
           </Flex>
 
