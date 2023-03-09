@@ -210,8 +210,7 @@
     "unleash-proxy-client": "1.11.0",
     "url": "0.11.0",
     "victory-native": "36.6.8",
-    "yup": "0.31.1",
-    "zustand": "3.6.9"
+    "yup": "0.31.1"
   },
   "devDependencies": {
     "@artsy/update-repo": "0.6.0",
