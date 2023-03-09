@@ -20,6 +20,7 @@ interface InquiryScreenProps {
   phone: string
   userId?: string
   recipientEmail?: string
+  recipientName?: string
 }
 
 export interface InquiryFormikSchema {
@@ -76,6 +77,7 @@ export const ConsignmentInquiryScreen: React.FC<InquiryScreenProps> = ({
   phone,
   userId,
   recipientEmail,
+  recipientName,
 }) => {
   const [showAbandonModal, setShowAbandonModal] = useState(false)
   const [showConfirmedModal, setShowConfirmedModal] = useState(false)
@@ -131,6 +133,7 @@ export const ConsignmentInquiryScreen: React.FC<InquiryScreenProps> = ({
           <ConsignmentInquiryForm
             confirmLeaveEdit={(v) => setShowAbandonModal(v)}
             canPopScreen={canPopScreen}
+            recipientName={recipientName}
           />
         </ArtsyKeyboardAvoidingView>
 

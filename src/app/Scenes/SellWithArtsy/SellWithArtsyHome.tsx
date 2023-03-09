@@ -67,7 +67,8 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
 
   const handleInquiryPress = (
     inquiryTrackingArgs?: TappedConsignmentInquiry,
-    recipientEmail?: string
+    recipientEmail?: string,
+    recipientName?: string
   ) => {
     if (inquiryTrackingArgs) {
       tracking.trackEvent(inquiryTrackingArgs)
@@ -79,6 +80,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
         phone: me?.phone ?? "",
         userId: me?.internalID ?? undefined,
         recipientEmail: recipientEmail ?? null,
+        recipientName: recipientName ?? null,
       },
     })
   }
