@@ -27,7 +27,7 @@ const pills: PillData[] = [
 ]
 
 export const MeetTheSpecialists: React.FC<{
-  onInquiryPress: (trackingargs?: TappedConsignmentInquiry) => void
+  onInquiryPress: (trackingargs?: TappedConsignmentInquiry, recipientEmail?: string) => void
 }> = ({ onInquiryPress }) => {
   const color = useColor()
   const space = useSpace()
@@ -114,7 +114,7 @@ export const MeetTheSpecialists: React.FC<{
                   mt={1}
                   variant="outlineLight"
                   onPress={() => {
-                    onInquiryPress(tracks.consignmentInquiryTapped(buttonText))
+                    onInquiryPress(tracks.consignmentInquiryTapped(buttonText), item.email)
                   }}
                 >
                   {buttonText}
