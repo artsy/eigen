@@ -40,7 +40,7 @@ export const RecentlyViewed: React.FC<RecentlyViewedScreenProps> = () => {
         {artworks.length ? (
           <InfiniteScrollArtworksGridContainer
             connection={data?.recentlyViewedArtworksConnection}
-            loadMore={(pageSize) => loadNext(pageSize)}
+            loadMore={(pageSize, onComplete) => loadNext(pageSize, { onComplete } as any)}
             hasMore={() => hasNext}
             isLoading={() => isLoadingNext}
             pageSize={PAGE_SIZE}
