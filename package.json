@@ -103,7 +103,7 @@
   },
   "dependencies": {
     "@artsy/cohesion": "4.117.0",
-    "@artsy/palette-mobile": "11.0.2",
+    "@artsy/palette-mobile": "11.0.3",
     "@artsy/to-title-case": "1.1.0",
     "@expo/react-native-action-sheet": "3.8.0",
     "@gorhom/bottom-sheet": "4.4.5",
@@ -210,8 +210,7 @@
     "unleash-proxy-client": "2.4.3",
     "url": "0.11.0",
     "victory-native": "36.6.8",
-    "yup": "0.31.1",
-    "zustand": "3.6.9"
+    "yup": "0.31.1"
   },
   "devDependencies": {
     "@artsy/update-repo": "0.6.0",

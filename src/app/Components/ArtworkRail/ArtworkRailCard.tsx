@@ -365,7 +365,7 @@ const RecentlySoldCardSection: React.FC<
           </Text>
           {performanceDisplay && (
             <Text variant="lg-display" color="green" numberOfLines={1}>
-              {performanceDisplay}
+              {`+${performanceDisplay}`}
             </Text>
           )}
         </Flex>

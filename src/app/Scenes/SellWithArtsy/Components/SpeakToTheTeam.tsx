@@ -10,22 +10,24 @@ export const SpeakToTheTeam: React.FC<{
   const color = useColor()
   const isAPad = isPad()
   return (
-    <Flex bg="black100" py={2}>
-      <Flex mx={2} pt={1}>
-        <Text variant="lg" color={color("white100")}>
-          Selling multiple artworks? Get in touch to connect with a specialist.
-        </Text>
-        <Spacer y={4} />
-        <Button
-          testID="SpeakToTheTeam-inquiry-CTA"
-          variant="outline"
-          block
-          onPress={() => {
-            onInquiryPress(tracks.consignmentInquiryTapped())
-          }}
-        >
-          Get in Touch
-        </Button>
+    <Flex bg="black100" pt={2}>
+      <Flex pt={1}>
+        <Flex mx={2}>
+          <Text variant="lg" color={color("white100")}>
+            Selling multiple artworks? Get in touch to connect with a specialist.
+          </Text>
+          <Spacer y={4} />
+          <Button
+            testID="SpeakToTheTeam-inquiry-CTA"
+            variant="outline"
+            block
+            onPress={() => {
+              onInquiryPress(tracks.consignmentInquiryTapped())
+            }}
+          >
+            Get in Touch
+          </Button>
+        </Flex>
         <Spacer y={isAPad ? 4 : 2} />
         <Image
           source={
@@ -35,11 +37,10 @@ export const SpeakToTheTeam: React.FC<{
           }
           style={{
             width: "100%",
+            height: isAPad ? 500 : 180,
             alignSelf: "center",
-            // the image for ipad has too much space on the left
-            right: isAPad ? 50 : undefined,
           }}
-          resizeMode="contain"
+          resizeMode={isAPad ? "contain" : "cover"}
         />
       </Flex>
     </Flex>

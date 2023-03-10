@@ -15892,6 +15892,9 @@ input SendIdentityVerificationEmailMutationInput {
   # The name to be used for the user undergoing identity verification
   name: String
 
+  # Whether an automated identity verification is sent or not
+  sendEmail: Boolean
+
   # The user Id for the user undergoing identity verification
   userID: String
 }

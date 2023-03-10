@@ -25,19 +25,19 @@ const STEPS = [
 const NEW_STEPS = [
   {
     title: "Submit your artwork",
-    text: "Upload images and artwork details via our online submission tool.",
+    text: "Upload artwork images and details through our online tool. Our specialists will let you know if we currently have market demand.",
   },
   {
-    title: "Get an assigned expert",
-    text: "Our specialists will review your submission and provide a price estimate.",
+    title: "Meet your expert",
+    text: "If your artwork is accepted, you’re matched with a specialist to guide you on pricing, sales options, and vetting potential buyers.",
   },
   {
-    title: "Be guided at every step",
-    text: "Our specialists will review your submission and provide a price estimate.",
+    title: "Get a sales option",
+    text: "You’ll get a tailored sales strategy with a price estimate and we select the best sales option for your work, either auction, private sale or direct listing on Artsy.",
   },
   {
     title: "Sell your work",
-    text: "Once your work sells, our logistics team will handle artwork shipping and payment.",
+    text: "Your artwork stays with you until it sells. Meanwhile, our logistics team handles everything, from organizing shipping to getting your payment to you.",
   },
 ]
 
@@ -50,9 +50,7 @@ export const HowItWorks: React.FC<{
     return (
       <Flex mx={2}>
         <Text variant="lg-display">How it works</Text>
-        <Text variant="xs">
-          Submit your artwork to discover if Artsy currently has a market for your work
-        </Text>
+
         <Spacer y={2} />
         <Join separator={<Spacer y={2} />}>
           {NEW_STEPS.map((step, index) => (
@@ -62,6 +60,7 @@ export const HowItWorks: React.FC<{
               <Text variant="xs">{step.text}</Text>
             </Flex>
           ))}
+          <Spacer y={2} />
           <Button
             testID="HowItWorks-consign-CTA"
             block

@@ -7,6 +7,7 @@ import {
 } from "@artsy/cohesion"
 import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { useFeatureFlag } from "app/store/GlobalStore"
+import { isPad } from "app/utils/hardware"
 import { Button } from "palette"
 import { Image, ImageBackground } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
@@ -109,12 +110,15 @@ const NewHeader: React.FC<{
   handleSubmitPress: (subject: string) => void
 }> = ({ handleInquiryPress, handleSubmitPress }) => {
   const buttonText = "Start Selling"
+  const { safeAreaInsets, width } = useScreenDimensions()
+  const isTablet = isPad()
   return (
-    <>
+    <Flex style={{ marginTop: safeAreaInsets.top }}>
+      <Spacer y={2} />
       <Image
         source={require("images/swa-landing-page-header.png")}
-        style={{ width: "100%" }}
-        resizeMode="contain"
+        style={{ width: isTablet ? "100%" : width, height: isTablet ? 480 : 340 }}
+        resizeMode={isTablet ? "contain" : "cover"}
       />
 
       <Flex mx={2} mt={1}>
@@ -122,8 +126,8 @@ const NewHeader: React.FC<{
           Sell art from your collection
         </Text>
         <Text variant="xs" mb={2}>
-          With our global reach and art market expertise, our specialists will find the right buyer
-          for your work.
+          Our experts find the best sales opportunity for your work, through our vast global network
+          of buyers.
         </Text>
         <Flex justifyContent="center" alignItems="center">
           <Button
@@ -148,7 +152,7 @@ const NewHeader: React.FC<{
           </Button>
         </Flex>
       </Flex>
-    </>
+    </Flex>
   )
 }
 

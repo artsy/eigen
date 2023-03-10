@@ -1,4 +1,4 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { isPad } from "app/utils/hardware"
 import { Image } from "react-native"
 
@@ -13,15 +13,15 @@ export const CollectorsNetwork: React.FC = () => {
         <Flex flexDirection="row" alignItems="center">
           <Flex>
             <Flex mb={2}>
-              <Text variant="xl">2.5 M</Text>
-              <Text variant="sm-display">Art lovers</Text>
+              <Text variant="xl">3M+</Text>
+              <Text variant="sm-display">registered buyers worldwide</Text>
             </Flex>
             <Flex mb={2}>
-              <Text variant="xl">4000+</Text>
-              <Text variant="sm-display">Auction houses and Galleries</Text>
+              <Text variant="xl">30,000</Text>
+              <Text variant="sm-display">Artworks sold at auction </Text>
             </Flex>
             <Flex mb={2}>
-              <Text variant="xl">90</Text>
+              <Text variant="xl">190</Text>
               <Text variant="sm-display">Countries</Text>
             </Flex>
           </Flex>
@@ -39,19 +39,19 @@ export const CollectorsNetwork: React.FC = () => {
       <Text variant="lg-display" mb={2}>
         Reach a global network of collectors
       </Text>
-      <Flex flexDirection="row">
-        <Flex width="50%">
-          <Text variant="xl">2.5 M</Text>
-          <Text variant="sm-display">Art lovers</Text>
-        </Flex>
-        <Flex width="50%">
-          <Text variant="xl">4000+</Text>
-          <Text variant="sm-display">Auction houses and Galleries</Text>
-        </Flex>
+      <Flex>
+        <Text variant="xl">3M+</Text>
+        <Text variant="sm-display">registered buyers worldwide</Text>
       </Flex>
+      <Spacer y={2} />
       <Flex flexDirection="row" mb={2}>
-        <Flex width="50%">
-          <Text variant="xl">90</Text>
+        <Flex>
+          <Text variant="xl">30,000</Text>
+          <Text variant="sm-display">Artworks sold at auction </Text>
+        </Flex>
+        <Spacer x={2} />
+        <Flex>
+          <Text variant="xl">190</Text>
           <Text variant="sm-display">Countries</Text>
         </Flex>
       </Flex>
