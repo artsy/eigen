@@ -171,7 +171,7 @@
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
-	<string>Launch Screen</string>
+	<string>Launch Screen.xib</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>arm64</string>
