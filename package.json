@@ -105,7 +105,7 @@
     "@artsy/cohesion": "4.118.0",
     "@artsy/palette-mobile": "11.0.3",
     "@artsy/to-title-case": "1.1.0",
-    "@expo/react-native-action-sheet": "3.8.0",
+    "@expo/react-native-action-sheet": "4.0.1",
     "@gorhom/bottom-sheet": "4.4.5",
     "@invertase/react-native-apple-authentication": "2.1.5",
     "@kesha-antonov/react-native-action-cable": "1.1.0",

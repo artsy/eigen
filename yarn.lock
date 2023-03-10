@@ -2424,10 +2424,10 @@
     base64-js "^1.2.3"
     xmlbuilder "^14.0.0"
 
-"@expo/react-native-action-sheet@3.8.0":
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/@expo/react-native-action-sheet/-/react-native-action-sheet-3.8.0.tgz#0db8b70ea8550ceb2983abda8584efa3a61d7389"
-  integrity sha512-tCfwysuqy0sfaN+aA98IKUrwCLKsbDHSYLcnHrx9wNbawOHNez8rSeFtieAS48/HyrPI75yg/ZGvxe6UsJRS8Q==
+"@expo/react-native-action-sheet@4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@expo/react-native-action-sheet/-/react-native-action-sheet-4.0.1.tgz#fa78e55a87a741f235be2c4ce0b0ea2b6afd06cf"
+  integrity sha512-FwCFpjpB6yzrK8CIWssLlh/i6zQFytFBiJfNdz0mJ2ckU4hWk8SrjB37P0Q4kF7w0bnIdYzPgRbdPR9hnfFqPw==
   dependencies:
     "@types/hoist-non-react-statics" "^3.3.1"
     hoist-non-react-statics "^3.3.0"
