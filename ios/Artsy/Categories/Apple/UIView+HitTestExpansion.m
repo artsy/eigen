@@ -7,7 +7,6 @@
 @implementation UIView (HitTestExpansion)
 
 static const NSString *KEY_HIT_TEST_EDGE_INSETS = @"HitTestEdgeInsets";
-static BOOL ARHasSwizzledSetFrame;
 
 - (void)ar_extendHitTestSizeByWidth:(CGFloat)width andHeight:(CGFloat)height
 {
