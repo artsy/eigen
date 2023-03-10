@@ -3875,6 +3875,7 @@ type CommerceBuyOrder implements CommerceOrder {
   buyerDetails: OrderParty
   buyerPhoneNumber: String
   buyerPhoneNumberCountryCode: String
+  buyerProfile: CollectorProfileType
   buyerTotal(
     decimal: String = "."
 
@@ -4609,6 +4610,7 @@ type CommerceOfferOrder implements CommerceOrder {
   buyerDetails: OrderParty
   buyerPhoneNumber: String
   buyerPhoneNumberCountryCode: String
+  buyerProfile: CollectorProfileType
   buyerTotal(
     decimal: String = "."
 
@@ -4843,6 +4845,7 @@ interface CommerceOrder {
   buyerDetails: OrderParty
   buyerPhoneNumber: String
   buyerPhoneNumberCountryCode: String
+  buyerProfile: CollectorProfileType
   buyerTotal(
     decimal: String = "."
 
@@ -10964,7 +10967,7 @@ type Me implements Node {
   ): CollectionsConnection
   collectorLevel: Int
 
-  # A collector profile.
+  # Current user's collector profile.
   collectorProfile: CollectorProfileType
 
   # A conversation, usually between a user and a partner
@@ -13920,6 +13923,9 @@ type Query {
     # A slug for the city, conforming to Gravity's city slug naming conventions
     slug: String
   ): City
+
+  # A collector profile.
+  collectorProfile(userID: String): CollectorProfileType
 
   # Find balance of an account associated with a setup intent
   commerceBankAccountBalance(bankAccountId: ID, setupIntentId: ID): CommerceBankAccountBalance
@@ -18238,6 +18244,9 @@ type Viewer {
     # A slug for the city, conforming to Gravity's city slug naming conventions
     slug: String
   ): City
+
+  # A collector profile.
+  collectorProfile(userID: String): CollectorProfileType
 
   # A conversation, usually between a user and a partner
   conversation(
