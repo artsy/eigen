@@ -1,30 +1,12 @@
 import { ActionType, ContextModule, OwnerType, TappedConsignmentInquiry } from "@artsy/cohesion"
 import { Flex, Spacer, Text, useColor, useSpace } from "@artsy/palette-mobile"
-import { SPECIALISTS, Specialty } from "app/Scenes/SellWithArtsy/utils/specialistsData"
+import { useSWALandingPageData } from "app/Scenes/SellWithArtsy/utils/useSWALandingPageData"
+import { PlaceholderBox, PlaceholderButton, PlaceholderText } from "app/utils/placeholders"
+import { uniqBy } from "lodash"
 import { Button, Pill } from "palette"
 import { useState } from "react"
 import { FlatList, ImageBackground, ScrollView } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
-
-interface PillData {
-  type: Specialty
-  title: string
-}
-
-const pills: PillData[] = [
-  {
-    type: "auctions",
-    title: "Auctions",
-  },
-  {
-    type: "priveteSalesAndAdvisory",
-    title: "Private Sales & Advisory",
-  },
-  {
-    type: "collectorServices",
-    title: "Collector Services",
-  },
-]
 
 export const MeetTheSpecialists: React.FC<{
   onInquiryPress: (
@@ -36,9 +18,29 @@ export const MeetTheSpecialists: React.FC<{
   const color = useColor()
   const space = useSpace()
 
-  const initialSpecialty: Specialty = "auctions"
-  const [selectedSpecialty, setSelectedSpecialty] = useState<Specialty>(initialSpecialty)
-  const specialistsToDisplay = SPECIALISTS.filter((i) => i.specialty === selectedSpecialty)
+  const initialSpecialty = "auctions"
+  const [selectedSpecialty, setSelectedSpecialty] = useState<string>(initialSpecialty)
+
+  const { specialists } = useSWALandingPageData()
+
+  if (!specialists) {
+    return <LoadingSkeleton />
+  }
+
+  const pills = uniqBy(
+    specialists.map((specialist) => {
+      let titleText = specialist.specialty.replace(/([A-Z])/g, " $1")
+      titleText = titleText.replace(/ And /g, " & ")
+      const title = titleText.charAt(0).toUpperCase() + titleText.slice(1)
+      return {
+        type: specialist.specialty,
+        title,
+      }
+    }),
+    "title"
+  )
+
+  const specialistsToDisplay = specialists.filter((i) => i.specialty === selectedSpecialty)
 
   return (
     <Flex>
@@ -93,7 +95,7 @@ export const MeetTheSpecialists: React.FC<{
           const imgWidth = 250
           return (
             <ImageBackground
-              source={item.image}
+              source={{ uri: item.image }}
               resizeMode="cover"
               style={{
                 width: imgWidth,
@@ -168,4 +170,41 @@ const tracks = {
     context_screen_owner_type: OwnerType.sell,
     subject,
   }),
+}
+
+const LoadingSkeleton = () => {
+  return (
+    <Flex>
+      <PlaceholderText marginHorizontal={20} width="60%" height={40} />
+      <PlaceholderText marginHorizontal={20} />
+      <PlaceholderText marginHorizontal={20} />
+
+      <Spacer y={2} />
+      <FlatList
+        contentContainerStyle={{ marginLeft: 20 }}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        data={[1, 2, 3]}
+        renderItem={() => {
+          const imgHeightToWidthRatio = 1.511 // based on designs
+          const imgWidth = 250
+          return (
+            <PlaceholderBox
+              width={imgWidth}
+              height={imgWidth * imgHeightToWidthRatio}
+              marginRight={10}
+            />
+          )
+        }}
+        keyExtractor={(item) => item + "yy"}
+        ListFooterComponent={() => <Spacer x={4} />}
+      />
+      <Flex mx={2} mt={2}>
+        <PlaceholderText />
+        <PlaceholderText />
+
+        <PlaceholderButton />
+      </Flex>
+    </Flex>
+  )
 }

@@ -1,5 +1,7 @@
 import { Flex, Spacer, Text, useColor } from "@artsy/palette-mobile"
+import { useSWALandingPageData } from "app/Scenes/SellWithArtsy/utils/useSWALandingPageData"
 import { isPad } from "app/utils/hardware"
+import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { useCallback, useRef, useState } from "react"
 import { FlatList, Image } from "react-native"
 import Animated, {
@@ -10,39 +12,9 @@ import Animated, {
 } from "react-native-reanimated"
 import { useScreenDimensions } from "shared/hooks"
 
-interface ReviewsData {
-  reviewText: string
-  image: string // TODO:
-  reviewerName: string
-  galery: string
-}
-
-const REVIEWS: ReviewsData[] = [
-  {
-    reviewText:
-      "My specialist kept me transparently informed from our initial conversation throughout. They took care of everything smoothly - from finding the right buyer to taking care of shipping and final payment.",
-    image: "image",
-    reviewerName: "Joe Bloggs",
-    galery: "White Cube Gallery",
-  },
-  {
-    reviewText:
-      "2 My specialist kept me transparently informed from our initial conversation throughout. They took care of everything smoothly - from finding the right buyer to taking care of shipping and final payment.",
-    image: "image",
-    reviewerName: "Joe Bloggs",
-    galery: "White Cube Gallery",
-  },
-  {
-    reviewText:
-      "3 My specialist kept me transparently informed from our initial conversation throughout. They took care of everything smoothly - from finding the right buyer to taking care of shipping and final payment.",
-    image: "image",
-    reviewerName: "Joe Bloggs",
-    galery: "White Cube Gallery",
-  },
-]
-
 export const Testimonials: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
+  const { testimonials } = useSWALandingPageData()
 
   const onViewableItemsChanged = useCallback(({ viewableItems }) => {
     if (viewableItems.length > 0) {
@@ -63,10 +35,14 @@ export const Testimonials: React.FC = () => {
   const { width } = useScreenDimensions()
   const isAPad = isPad()
 
+  if (!testimonials) {
+    return <LoadingSkeleton />
+  }
+
   return (
     <Flex mt={1}>
       <FlatList
-        data={REVIEWS}
+        data={testimonials}
         horizontal
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item) => item.reviewText}
@@ -91,7 +67,7 @@ export const Testimonials: React.FC = () => {
                 <Flex ml={1}>
                   <Text variant="xs">{item.reviewerName}</Text>
                   <Text variant="xs" color="black60">
-                    {item.galery}
+                    {item.gallery}
                   </Text>
                 </Flex>
               </Flex>
@@ -100,7 +76,7 @@ export const Testimonials: React.FC = () => {
         }}
       />
       <Flex mx={2} mt={2} alignItems={isAPad ? "center" : undefined}>
-        <Indicator total={REVIEWS.length} currentIndex={currentIndex} />
+        <Indicator total={testimonials.length} currentIndex={currentIndex} />
       </Flex>
     </Flex>
   )
@@ -151,5 +127,41 @@ const Dot: React.FC<{ currentIndex: number; index: number }> = ({ currentIndex, 
         animatedStyle,
       ]}
     />
+  )
+}
+
+const LoadingSkeleton = () => {
+  const { width } = useScreenDimensions()
+  const isAPad = isPad()
+  const color = useColor()
+  return (
+    <Flex mt={1}>
+      <Flex width={width} pl={2} alignItems={isAPad ? "center" : undefined}>
+        <Flex pr={1} mb={4}>
+          <PlaceholderText width="80%" />
+          <PlaceholderText width="95%" />
+          <PlaceholderText width="79%" />
+          <PlaceholderText />
+          <PlaceholderText width="50%" />
+        </Flex>
+        <Flex flexDirection="row" alignItems="center">
+          <PlaceholderBox
+            width={50}
+            height={50}
+            borderRadius={50}
+            backgroundColor={color("black30")}
+          />
+
+          <Flex ml={1}>
+            <PlaceholderText />
+            <PlaceholderText />
+          </Flex>
+        </Flex>
+      </Flex>
+
+      <Flex mx={2} mt={2} alignItems={isAPad ? "center" : undefined}>
+        <Indicator total={[1, 2, 3].length} currentIndex={0} />
+      </Flex>
+    </Flex>
   )
 }

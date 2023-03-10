@@ -1,0 +1,77 @@
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import { useEffect, useState } from "react"
+
+interface SpecialistsData {
+  specialty: string
+  image: string
+  name: string
+  firstName: string
+  jobTitle: string
+  bio: string
+  email: string
+}
+
+interface TestimonialData {
+  reviewText: string
+  image: string
+  reviewerName: string
+  gallery: string
+}
+
+interface CacheDataType {
+  createdAt: number
+  data: {
+    specialists: SpecialistsData[]
+    testimonials: TestimonialData[]
+  }
+}
+
+const SWA_LANDING_PAGE_DATA_KEY = "SWA_LANDING_PAGE_DATA_KEY"
+
+const CacheValidPeriodInMs = 86400000
+
+const dataUrl = "https://sell-with-artsy.s3.amazonaws.com/landingpagedata.json"
+
+export const useSWALandingPageData = () => {
+  const [data, setData] = useState<CacheDataType["data"]>({ specialists: null, testimonials: null })
+
+  useEffect(() => {
+    AsyncStorage.getItem(SWA_LANDING_PAGE_DATA_KEY)
+      .then((value) => {
+        if (value) {
+          const data: CacheDataType = JSON.parse(value)
+          const shouldRefetch =
+            new Date().getTime() - new Date(data.createdAt).getTime() > CacheValidPeriodInMs
+          if (shouldRefetch) {
+            fetchData()
+            return
+          }
+          setData(data.data)
+          return
+        }
+        fetchData()
+      })
+      .catch(() => {
+        fetchData()
+      })
+  }, [])
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch(dataUrl)
+      const data = await response.json()
+      setData(data)
+      AsyncStorage.setItem(
+        SWA_LANDING_PAGE_DATA_KEY,
+        JSON.stringify({
+          createdAt: new Date().getTime(),
+          data,
+        })
+      )
+    } catch (error) {
+      console.error("[SWALandingPageDataError] Error:", error)
+    }
+  }
+
+  return data
+}
