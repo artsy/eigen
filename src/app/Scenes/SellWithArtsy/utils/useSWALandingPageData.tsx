@@ -21,14 +21,14 @@ interface TestimonialData {
 interface CacheDataType {
   createdAt: number
   data: {
-    specialists: SpecialistsData[]
-    testimonials: TestimonialData[]
+    specialists: SpecialistsData[] | null
+    testimonials: TestimonialData[] | null
   }
 }
 
 const SWA_LANDING_PAGE_DATA_KEY = "SWA_LANDING_PAGE_DATA_KEY"
 
-const CacheValidPeriodInMs = 86400000
+const CacheValidPeriodInMs = 86400000 // 24 hours
 
 const dataUrl = "https://sell-with-artsy.s3.amazonaws.com/landingpagedata.json"
 
