@@ -10,6 +10,7 @@ import { SellWithArtsyHomeQueryRenderer } from "./SellWithArtsyHome"
 jest.mock("../../utils/useStatusBarStyle", () => {
   return {
     useLightStatusBarStyle: jest.fn(),
+    useSwitchStatusBarStyle: jest.fn(),
   }
 })
 
