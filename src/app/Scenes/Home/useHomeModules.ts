@@ -47,7 +47,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       {
         contextModule: ContextModule.auctionRail,
         data: props.homePageAbove?.salesModule,
-        isEmpty: isEmpty(props.homePageAbove?.salesModule),
+        isEmpty: isEmpty(props.homePageAbove?.salesModule?.results),
         prefetchUrl: "/auctions",
         subtitle: "Discover and Bid on Works for You",
         title: "Auctions",
@@ -83,7 +83,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       {
         data: props.homePageBelow?.onboardingModule,
         hidden: !props.homePageBelow?.onboardingModule,
-        isEmpty: !isOnboardingVisible(props.homePageBelow?._onboardingModule),
+        isEmpty: !isOnboardingVisible(props.homePageBelow?.onboardingModule),
         title: "Do More on Artsy",
         type: "homeFeedOnboarding",
       },
@@ -114,14 +114,14 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       {
         contextModule: ContextModule.recommendedArtistsRail,
         data: props.meBelow,
-        isEmpty: !props.meBelow?.artistRecommendationsCounts?.totalCount,
+        isEmpty: !props.meBelow?.artistRecommendationsCounts,
         title: "Recommended Artists",
         type: "recommended-artists",
       },
       {
         contextModule: ContextModule.trendingArtistsRail,
         data: props.homePageBelow?.popularArtistsArtistModule,
-        isEmpty: isEmpty(props.homePageBelow?.popularArtistsArtistModule),
+        isEmpty: isEmpty(props.homePageBelow?.popularArtistsArtistModule?.results),
         title: "Trending Artists",
         type: "artist",
       },
@@ -164,7 +164,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       {
         contextModule: ContextModule.fairRail,
         data: props.homePageBelow?.fairsModule,
-        isEmpty: isEmpty(props.homePageBelow?.fairsModule),
+        isEmpty: isEmpty(props.homePageBelow?.fairsModule?.results),
         subtitle: "See Works in Top Art Fairs",
         title: "Featured Fairs",
         type: "fairs",

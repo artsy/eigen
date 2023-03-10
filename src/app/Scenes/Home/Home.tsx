@@ -366,16 +366,13 @@ export const HomeFragmentContainer = memo(
         fragment Home_homePageAbove on HomePage {
           ...MarketingCollectionRail_home
           activeBidsArtworkModule: artworkModule(key: ACTIVE_BIDS) {
-            results {
-              id
-            }
-            ...ArtworkModuleRail_rail
+            ...ArtworkModuleRail_rail @relay(mask: false)
           }
           salesModule {
-            ...SalesRail_salesModule
+            ...SalesRail_salesModule @relay(mask: false)
           }
           recommendedArtistsArtistModule: artistModule(key: SUGGESTED) {
-            ...ArtistRail_rail
+            ...ArtistRail_rail @relay(mask: false)
           }
         }
       `,
@@ -383,40 +380,26 @@ export const HomeFragmentContainer = memo(
       homePageBelow: graphql`
         fragment Home_homePageBelow on HomePage @argumentDefinitions {
           recentlyViewedWorksArtworkModule: artworkModule(key: RECENTLY_VIEWED_WORKS) {
-            results {
-              id
-            }
-            ...ArtworkModuleRail_rail
+            ...ArtworkModuleRail_rail @relay(mask: false)
           }
           similarToRecentlyViewedArtworkModule: artworkModule(key: SIMILAR_TO_RECENTLY_VIEWED) {
-            results {
-              id
-            }
-            ...ArtworkModuleRail_rail
+            ...ArtworkModuleRail_rail @relay(mask: false)
           }
           worksFromGalleriesYouFollowArtworkModule: artworkModule(key: FOLLOWED_GALLERIES) {
-            results {
-              id
-            }
-            ...ArtworkModuleRail_rail
+            ...ArtworkModuleRail_rail @relay(mask: false)
           }
           popularArtistsArtistModule: artistModule(key: CURATED_TRENDING) {
-            ...ArtistRail_rail
+            ...ArtistRail_rail @relay(mask: false)
           }
           fairsModule {
-            ...FairsRail_fairsModule
+            ...FairsRail_fairsModule @relay(mask: false)
           }
           marketingCollectionsModule {
             ...OldCollectionsRail_collectionsModule
             ...CollectionsRail_collectionsModule
           }
-          _onboardingModule: onboardingModule @optionalField {
-            showMyCollectionCard
-            showSWACard
-          }
-
           onboardingModule @optionalField {
-            ...HomeFeedOnboardingRail_onboardingModule
+            ...HomeFeedOnboardingRail_onboardingModule @relay(mask: false)
           }
         }
       `,
