@@ -40,7 +40,7 @@ export const SpeakToTheTeam: React.FC<{
             height: isAPad ? 500 : 180,
             alignSelf: "center",
           }}
-          resizeMode="contain"
+          resizeMode={isAPad ? "contain" : "cover"}
         />
       </Flex>
     </Flex>

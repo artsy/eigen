@@ -110,15 +110,15 @@ const NewHeader: React.FC<{
   handleSubmitPress: (subject: string) => void
 }> = ({ handleInquiryPress, handleSubmitPress }) => {
   const buttonText = "Start Selling"
-  const { safeAreaInsets } = useScreenDimensions()
+  const { safeAreaInsets, width } = useScreenDimensions()
   const isTablet = isPad()
   return (
     <Flex style={{ marginTop: safeAreaInsets.top }}>
       <Spacer y={2} />
       <Image
         source={require("images/swa-landing-page-header.png")}
-        style={{ width: "100%", height: isTablet ? 480 : 340 }}
-        resizeMode="contain"
+        style={{ width: isTablet ? "100%" : width, height: isTablet ? 480 : 340 }}
+        resizeMode={isTablet ? "contain" : "cover"}
       />
 
       <Flex mx={2} mt={1}>
