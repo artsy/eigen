@@ -229,10 +229,10 @@
   dependencies:
     core-js "3"
 
-"@artsy/palette-mobile@11.0.2":
-  version "11.0.2"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-11.0.2.tgz#7ffeade19056d59c5ffc13d15169ec3b7ae14b2c"
-  integrity sha512-Y4GVa1Fyk6/V2ueWnOcq50k7VpWm8OgAhdZmeJp13cRWhbGNR+tsgI3wgI8SZm5VOQOM0SPtTamcn81DasaZcQ==
+"@artsy/palette-mobile@11.0.3":
+  version "11.0.3"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-11.0.3.tgz#f9986764b6e67e3448a3d850960e552cd451b67b"
+  integrity sha512-nub6fHK5AVLA17TLJPeHcieSBbCzOhqrHCI215orvP8BZ94Lz/5Gakjj+gdMhXiSd0TR3dNI0HQJA8oj8Iq3VA==
   dependencies:
     "@artsy/palette-tokens" "^4.0.1"
     "@styled-system/core" "^5.1.2"
@@ -17486,8 +17486,3 @@ zen-observable-ts@^0.8.10:
 zen-observable@^0.8.0:
   version "0.8.11"
   resolved "https://registry.yarnpkg.com/zen-observable/-/zen-observable-0.8.11.tgz#d3415885eeeb42ee5abb9821c95bb518fcd6d199"
-
-zustand@3.6.9:
-  version "3.6.9"
-  resolved "https://registry.yarnpkg.com/zustand/-/zustand-3.6.9.tgz#f61a756ddea9f95c7ee7cfd3af2f88c10078afbc"
-  integrity sha512-OvDNu/jEWpRnEC7k8xh8GKjqYog7td6FZrLMuHs/IeI8WhrCwV+FngVuwMIFhp5kysZXr6emaeReMqjLGaldAQ==

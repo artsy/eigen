@@ -20,10 +20,10 @@ import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { useLightStatusBarStyle } from "app/utils/useStatusBarStyle"
+import { useSwitchStatusBarStyle } from "app/utils/useStatusBarStyle"
 import { Button, Screen } from "palette"
 import { useEffect } from "react"
-import { ScrollView } from "react-native"
+import { ScrollView, StatusBarStyle } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
@@ -49,8 +49,14 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
   recentlySoldArtworks,
   me,
 }) => {
-  useLightStatusBarStyle()
   const enableNewSWALandingPage = useFeatureFlag("AREnableNewSWALandingPage")
+
+  const onFocusStatusBarStyle: StatusBarStyle = enableNewSWALandingPage
+    ? "dark-content"
+    : "light-content"
+  const onBlurStatusBarStyle: StatusBarStyle = "dark-content"
+
+  useSwitchStatusBarStyle(onFocusStatusBarStyle, onBlurStatusBarStyle)
 
   const { height: screenHeight } = useScreenDimensions()
   const tracking = useTracking()
@@ -110,25 +116,25 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
                 <WaysWeSell />
               </Join>
             )}
-            {enableNewSWALandingPage && <Spacer y={4} />}
+            {enableNewSWALandingPage && <Spacer y={6} />}
 
             <HowItWorks onConsignPress={handleConsignPress} />
-
+            {enableNewSWALandingPage && <Spacer y={2} />}
             <Spacer y={4} />
 
             {enableNewSWALandingPage && (
-              <Join separator={<Spacer y={4} />}>
+              <Join separator={<Spacer y={6} />}>
                 <SpeakToTheTeam onInquiryPress={handleInquiryPress} />
                 <MeetTheSpecialists onInquiryPress={handleInquiryPress} />
               </Join>
             )}
-            {enableNewSWALandingPage && <Spacer y={4} />}
+            {enableNewSWALandingPage && <Spacer y={6} />}
             {enableNewSWALandingPage && <CollectorsNetwork />}
-            {enableNewSWALandingPage && <Spacer y={4} />}
+            {enableNewSWALandingPage && <Spacer y={6} />}
             <SellWithArtsyRecentlySold recentlySoldArtworks={recentlySoldArtworks!} />
 
             {enableNewSWALandingPage && (
-              <Join separator={<Spacer y={4} />}>
+              <Join separator={<Spacer y={6} />}>
                 <></>
                 <Testimonials />
                 <FAQSWA />
@@ -136,6 +142,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
             )}
 
             <Spacer y={4} />
+            {enableNewSWALandingPage && <Spacer y={2} />}
 
             {!enableNewSWALandingPage && <WhySellWithArtsy />}
 

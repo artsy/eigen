@@ -229,6 +229,12 @@ export const features = defineFeatures({
     readyForRelease: false,
     showInDevMenu: true,
   },
+  AREnableMyCollectionNotesField: {
+    description: "Enable My Collection Notes Field",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableMyCollectionNotesField",
+  },
 })
 
 export interface DevToggleDescriptor {

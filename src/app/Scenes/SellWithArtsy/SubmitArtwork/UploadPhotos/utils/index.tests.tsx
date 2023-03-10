@@ -4,6 +4,7 @@ import { SellWithArtsy } from "."
 jest.mock("../../../../../utils/useStatusBarStyle", () => {
   return {
     useLightStatusBarStyle: jest.fn(),
+    useSwitchStatusBarStyle: jest.fn(),
   }
 })
 

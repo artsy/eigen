@@ -23,8 +23,6 @@ export interface ArtworkFormValues {
   artistDisplayName?: string
   artistSearchResult: AutosuggestResult | null
   category: string // this refers to "materials" in UI
-  pricePaidDollars: string
-  pricePaidCurrency: string
   date: string
   depth: string
   editionSize: string
@@ -33,8 +31,11 @@ export interface ArtworkFormValues {
   isEdition: boolean
   medium: string
   metric: Metric | ""
+  confidentialNotes: string
   photos: Image[]
   provenance: string
+  pricePaidDollars: string
+  pricePaidCurrency: string
   title: string
   width: string
   artworkLocation: string
@@ -47,8 +48,6 @@ export const initialFormValues: ArtworkFormValues = {
   artistDisplayName: undefined,
   artistSearchResult: null,
   category: "",
-  pricePaidDollars: "",
-  pricePaidCurrency: "",
   date: "",
   depth: "",
   editionSize: "",
@@ -57,7 +56,10 @@ export const initialFormValues: ArtworkFormValues = {
   isEdition: false,
   medium: "",
   metric: "",
+  confidentialNotes: "",
   photos: [],
+  pricePaidDollars: "",
+  pricePaidCurrency: "",
   provenance: "",
   title: "",
   width: "",
@@ -191,6 +193,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       },
       attributionClass,
       category: artwork.category,
+      confidentialNotes: artwork.confidentialNotes,
       date: artwork.date,
       depth: artwork.depth,
       pricePaidDollars: pricePaidDollars?.toString() ?? "",
