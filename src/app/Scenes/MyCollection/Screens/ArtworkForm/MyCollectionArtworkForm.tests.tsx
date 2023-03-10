@@ -142,6 +142,7 @@ describe("MyCollectionArtworkForm", () => {
         expect(getByTestId("WidthInput").props.value).toBe(30)
         expect(getByTestId("HeightInput").props.value).toBe(20)
         expect(getByTestId("DepthInput").props.value).toBe(40)
+        expect(getByTestId("NotesInput").props.value).toBe("")
         expect(getByText("1 photo added")).toBeTruthy()
 
         // Complete Form
@@ -173,6 +174,7 @@ describe("MyCollectionArtworkForm", () => {
               "artworkLocation": "",
               "attributionClass": undefined,
               "category": "Print",
+              "confidentialNotes": "",
               "date": "2007",
               "depth": 40,
               "editionNumber": "",
@@ -260,6 +262,7 @@ describe("MyCollectionArtworkForm", () => {
         expect(getByTestId("WidthInput").props.value).toBe("")
         expect(getByTestId("HeightInput").props.value).toBe("")
         expect(getByTestId("DepthInput").props.value).toBe("")
+        expect(getByTestId("NotesInput").props.value).toBe("")
       })
     })
 
@@ -312,6 +315,7 @@ describe("MyCollectionArtworkForm", () => {
         expect(getByTestId("WidthInput").props.value).toBe("")
         expect(getByTestId("HeightInput").props.value).toBe("")
         expect(getByTestId("DepthInput").props.value).toBe("")
+        expect(getByTestId("NotesInput").props.value).toBe("")
       })
     })
   })
@@ -394,6 +398,7 @@ describe("MyCollectionArtworkForm", () => {
             internalID: "some-internal-id",
           },
           category: "oil on oil",
+          confidentialNotes: "some-notes",
           medium: "photography",
           pricePaidDollars: "$100",
           pricePaidCurrency: "USD",
@@ -439,6 +444,7 @@ describe("MyCollectionArtworkForm", () => {
                       isP1: false,
                     },
                   },
+                  confidentialNotes: "some-notes",
                   consignmentSubmission: {
                     displayText: "In progress",
                   },
@@ -699,6 +705,7 @@ const mockArtwork = {
   },
   artistNames: "Banksy",
   category: "Print",
+  confidentialNotes: "some-notes",
   pricePaid: null,
   date: "2007",
   depth: "40",
