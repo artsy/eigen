@@ -22,7 +22,7 @@ export async function requestPhotos(allowMultiple = true): Promise<Image[]> {
 }
 
 export async function showPhotoActionSheet(
-  showActionSheet: (options: ActionSheetOptions, callback: (i: number) => void) => void,
+  showActionSheet: (options: ActionSheetOptions, callback: (i?: number) => void) => void,
   useModal = false,
   allowMultiple = true
 ): Promise<Image[]> {
