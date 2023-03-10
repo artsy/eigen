@@ -14566,10 +14566,10 @@ relay-test-utils@14.0.0:
     invariant "^2.2.4"
     relay-runtime "14.0.0"
 
-remove-markdown@0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/remove-markdown/-/remove-markdown-0.1.0.tgz#cf8b66e9e6fcb4acc9721048adeee7a357698ba9"
-  integrity sha1-z4tm6eb8tKzJchBIre7no1dpi6k=
+remove-markdown@0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/remove-markdown/-/remove-markdown-0.5.0.tgz#a596264bbd60b9ceab2e2ae86e5789eee91aee32"
+  integrity sha512-x917M80K97K5IN1L8lUvFehsfhR8cYjGQ/yAMRI9E7JIKivtl5Emo5iD13DhMr+VojzMCiYk8V2byNPwT/oapg==
 
 remove-markdown@^0.3.0:
   version "0.3.0"

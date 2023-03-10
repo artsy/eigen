@@ -194,7 +194,7 @@
     "react-spring": "8.0.23",
     "react-tracking": "9.2.0",
     "react-use": "17.1.0",
-    "remove-markdown": "0.1.0",
+    "remove-markdown": "0.5.0",
     "rn-async-storage-flipper": "0.0.10",
     "rn-fetch-blob": "0.12.0",
     "rxjs": "7.5.6",
