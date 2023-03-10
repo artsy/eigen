@@ -1,9 +1,18 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
-import { Spacer, NoArtworkIcon, Flex, Box, useTheme, Text } from "@artsy/palette-mobile"
+import {
+  Box,
+  Flex,
+  Join,
+  NoArtworkIcon,
+  Spacer,
+  Text,
+  useSpace,
+  useTheme,
+} from "@artsy/palette-mobile"
 import { AuctionResultQuery } from "__generated__/AuctionResultQuery.graphql"
 import { AuctionResult_artist$data } from "__generated__/AuctionResult_artist.graphql"
 import { AuctionResult_auctionResult$data } from "__generated__/AuctionResult_auctionResult.graphql"
-import { AuctionResultsMidEstimate } from "app/Components/AuctionResult/AuctionResultMidEstimate"
+import { ratioColor } from "app/Components/AuctionResult/AuctionResultMidEstimate"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { navigate } from "app/system/navigation/navigate"
@@ -20,12 +29,13 @@ import moment from "moment"
 import { Separator } from "palette"
 import React, { useEffect, useState } from "react"
 import { Animated, Image, TextInput, TouchableWithoutFeedback } from "react-native"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { QueryRenderer, createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
+import { useScreenDimensions } from "shared/hooks/useScreenDimensions"
 import { ComparableWorksFragmentContainer } from "./ComparableWorks"
-import { auctionResultHasPrice, AuctionResultHelperData, auctionResultText } from "./helpers"
+import { AuctionResultHelperData, auctionResultText } from "./helpers"
 
-const CONTAINER_HEIGHT = 80
+const CONTAINER_HEIGHT = 400
 
 interface Props {
   artist: AuctionResult_artist$data
@@ -34,26 +44,8 @@ interface Props {
 
 export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
   const { theme } = useTheme()
-  const [imageHeight, setImageHeight] = useState<number>(0)
-  const [imageWidth, setImageWidth] = useState<number>(0)
 
   const tracking = useTracking()
-
-  if (!auctionResult) {
-    // The only chance someone would land on this case is using a deep link for an auction result
-    // that is no longer there
-    return <Flex />
-  }
-
-  useEffect(() => {
-    if (auctionResult.images?.thumbnail?.url) {
-      Image.getSize(auctionResult.images.thumbnail.url, (width, height) => {
-        const imageDimensions = getImageSquareDimensions(height, width, CONTAINER_HEIGHT)
-        setImageHeight(imageDimensions.height)
-        setImageWidth(imageDimensions.width)
-      })
-    }
-  }, [])
 
   const { headerElement, scrollProps } = useStickyScrollHeader({
     header: (
@@ -78,7 +70,7 @@ export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
       </Flex>
       {options?.fullWidth ? (
         <Flex>
-          <Text color="black60" mb={1}>
+          <Text color="black60" variant="xs" mb={1}>
             {label}
           </Text>
           <TextInput
@@ -88,18 +80,18 @@ export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
             scrollEnabled={false}
             style={{
               fontFamily: theme.fonts.sans.regular,
-              fontSize: 14,
+              fontSize: 13, // stands for xs
               lineHeight: 21,
             }}
           />
         </Flex>
       ) : (
         <Flex flexDirection="row" justifyContent="space-between">
-          <Text style={{ width: "35%" }} color="black60">
+          <Text style={{ width: "35%" }} variant="xs" color="black60">
             {label}
           </Text>
           <Flex width="65%" pl="15px">
-            <Text pl={2} textAlign="right" testID={options?.testID} selectable>
+            <Text pl={2} textAlign="right" variant="xs" testID={options?.testID} selectable>
               {value}
             </Text>
           </Flex>
@@ -107,7 +99,7 @@ export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
       )}
     </Flex>
   )
-  if (auctionResult.estimate?.display) {
+  if (auctionResult.estimate?.display && !auctionResult.isUpcoming) {
     details.push(makeRow("Pre-sale estimate", auctionResult.estimate?.display))
   }
   if (auctionResult.mediumText) {
@@ -136,7 +128,6 @@ export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
     details.push(makeRow("Sale location", auctionResult.location))
   }
 
-  const hasSalePrice = auctionResultHasPrice(auctionResult as AuctionResultHelperData)
   const salePriceMessage = auctionResultText(auctionResult as AuctionResultHelperData)
   const showPriceUSD = auctionResult.priceRealized?.displayUSD && auctionResult.currency !== "USD"
 
@@ -162,86 +153,114 @@ export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
     />
   )
 
+  const SalePrice = () => {
+    if (!auctionResult.isUpcoming) {
+      return (
+        <>
+          <Flex flexDirection="row" mb={1}>
+            <InfoButton
+              titleElement={
+                <Text variant="sm-display" mr={0.5}>
+                  Sale Price
+                </Text>
+              }
+              trackEvent={() => {
+                tracking.trackEvent(tracks.tapMarketStatsInfo())
+              }}
+              modalTitle="Sale Price"
+              maxModalHeight={180}
+              modalContent={renderRealizedPriceModal()}
+            />
+          </Flex>
+
+          {auctionResult.estimate?.display ? (
+            <Flex mb={0.5}>
+              {!!auctionResult.priceRealized?.display && (
+                <Text variant="md">
+                  {auctionResult.priceRealized.display}
+                  {!!auctionResult?.performance?.mid && (
+                    <Text color={ratioColor(auctionResult.performance.mid)}>
+                      {" "}
+                      {auctionResult?.priceRealized?.display[0] === "-" ? "-" : "+"}
+                      {new Intl.NumberFormat().format(
+                        Number(auctionResult.performance?.mid.replace(/%|-/gm, ""))
+                      )}
+                      % est
+                    </Text>
+                  )}
+                </Text>
+              )}
+
+              {!!showPriceUSD && (
+                <Text variant="xs" color="black60" testID="priceUSD">
+                  {auctionResult.priceRealized?.displayUSD}
+                </Text>
+              )}
+            </Flex>
+          ) : (
+            <Text variant="lg-display">{salePriceMessage}</Text>
+          )}
+        </>
+      )
+    }
+    return (
+      <Flex mb={1}>
+        <InfoButton
+          titleElement={
+            <Text variant="sm-display" mr={0.5}>
+              Pre-sale Estimate
+            </Text>
+          }
+          trackEvent={() => {
+            tracking.trackEvent(tracks.tapMarketStatsInfo())
+          }}
+          modalTitle="Pre-sale Estimate"
+          maxModalHeight={180}
+          modalContent={renderRealizedPriceModal()}
+        />
+
+        {!!auctionResult.estimate?.display ? (
+          <Text variant="md">{auctionResult.estimate.display}</Text>
+        ) : (
+          <Text variant="md" italic>
+            Estimate not available
+          </Text>
+        )}
+      </Flex>
+    )
+  }
+
   return (
     <ProvideScreenTrackingWithCohesionSchema info={tracks.screen(auctionResult.internalID)}>
       <Animated.ScrollView {...scrollProps}>
         <FancyModalHeader hideBottomDivider />
-        <Box px={2} pb={4}>
-          <Flex mt={1} mb={4} style={{ flexDirection: "row" }}>
-            {!!auctionResult.images?.thumbnail?.url && !!imageHeight && !!imageWidth ? (
-              <Flex height={CONTAINER_HEIGHT} width={CONTAINER_HEIGHT} justifyContent="center">
-                <Image
-                  style={{ height: imageHeight, width: imageWidth }}
-                  source={{ uri: auctionResult.images?.thumbnail?.url }}
-                />
-              </Flex>
-            ) : (
-              <Box
-                style={{ height: CONTAINER_HEIGHT, width: CONTAINER_HEIGHT }}
-                backgroundColor="black10"
-                alignItems="center"
-                justifyContent="center"
-              >
-                {!auctionResult.images?.thumbnail?.url && (
-                  <NoArtworkIcon width={28} height={28} opacity={0.3} />
-                )}
-              </Box>
-            )}
-            <Flex justifyContent="center" flex={1} ml={2}>
-              <TouchableWithoutFeedback
-                onPress={() => artist?.href && navigate(artist.href)}
-                hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
-              >
-                <Text variant="sm">{artist?.name}</Text>
-              </TouchableWithoutFeedback>
-              <Text variant="sm-display">
-                {auctionResult.title}
-                {!!auctionResult.dateText && `, ${auctionResult.dateText}`}
-              </Text>
-            </Flex>
-          </Flex>
-          {!!hasSalePrice && (
-            <Flex flexDirection="row" mb={1}>
-              <InfoButton
-                titleElement={
-                  <Text variant="sm-display" mr={0.5}>
-                    Sale Price
-                  </Text>
-                }
-                trackEvent={() => {
-                  tracking.trackEvent(tracks.tapMarketStatsInfo())
-                }}
-                modalTitle="Sale Price"
-                maxModalHeight={180}
-                modalContent={renderRealizedPriceModal()}
-              />
-            </Flex>
-          )}
-          {hasSalePrice ? (
-            <>
-              <Flex mb={0.5}>
-                <Text variant="lg-display">{auctionResult.priceRealized?.display}</Text>
-                {!!showPriceUSD && (
-                  <Text variant="sm" color="black60" testID="priceUSD">
-                    {auctionResult.priceRealized?.displayUSD}
-                  </Text>
-                )}
-              </Flex>
-              {!!auctionResult.performance?.mid && (
-                <AuctionResultsMidEstimate
-                  textVariant="xs"
-                  value={auctionResult.performance.mid}
-                  shortDescription="mid-estimate"
-                />
-              )}
-            </>
-          ) : (
-            <Text variant="lg-display">{salePriceMessage}</Text>
+        <Join separator={<Spacer y={2} />}>
+          {!!auctionResult?.images?.larger && (
+            <AuctionResultImage image={auctionResult.images.larger} />
           )}
 
-          <Text variant="sm-display" mt={4} mb={1}>
-            Stats
-          </Text>
+          <Flex px={2} mt={2}>
+            <TouchableWithoutFeedback
+              onPress={() => artist?.href && navigate(artist.href)}
+              hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
+            >
+              <Text variant="sm-display">{artist?.name}</Text>
+            </TouchableWithoutFeedback>
+
+            <Text variant="sm-display">{auctionResult.title}</Text>
+            <Text variant="xs" color="black60" my={0.5}>
+              {[
+                moment(auctionResult.saleDate).utc().format("MMM D, YYYY"),
+                auctionResult.organization,
+              ].join(" • ")}
+            </Text>
+          </Flex>
+
+          <Flex px={2}>
+            <SalePrice />
+          </Flex>
+        </Join>
+        <Box px={2} pb={4}>
           {details}
           <ComparableWorksFragmentContainer auctionResult={auctionResult} />
         </Box>
@@ -252,6 +271,47 @@ export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
   )
 }
 
+const AuctionResultImage = ({
+  image,
+}: {
+  image: NonNullable<NonNullable<AuctionResult_auctionResult$data["images"]>["larger"]>
+}) => {
+  const [imageHeight, setImageHeight] = useState<number>(0)
+  const [imageWidth, setImageWidth] = useState<number>(0)
+
+  const { width } = useScreenDimensions()
+  const space = useSpace()
+
+  const containerLength = Math.min(400, width - 2 * space(2))
+
+  useEffect(() => {
+    if (image.url) {
+      Image.getSize(image.url, (width, height) => {
+        const imageDimensions = getImageSquareDimensions(height, width, CONTAINER_HEIGHT)
+        setImageHeight(imageDimensions.height)
+        setImageWidth(imageDimensions.width)
+      })
+    }
+  }, [])
+
+  if (!!image.url && !!imageHeight && !!imageWidth) {
+    return (
+      <Flex height={containerLength} width="100%" justifyContent="center" alignItems="center">
+        <Image style={{ height: imageHeight, width: imageWidth }} source={{ uri: image.url }} />
+      </Flex>
+    )
+  }
+  return (
+    <Box
+      style={{ height: containerLength, width: containerLength }}
+      backgroundColor="black10"
+      alignItems="center"
+      justifyContent="center"
+    >
+      {!image.url && <NoArtworkIcon width={28} height={28} opacity={0.3} />}
+    </Box>
+  )
+}
 export const AuctionResultFragmentContainer = createFragmentContainer(AuctionResult, {
   auctionResult: graphql`
     fragment AuctionResult_auctionResult on AuctionResult {
@@ -272,9 +332,10 @@ export const AuctionResultFragmentContainer = createFragmentContainer(AuctionRes
         high
         low
       }
+      isUpcoming
       images {
-        thumbnail {
-          url(version: "square140")
+        larger {
+          url
           height
           width
           aspectRatio
