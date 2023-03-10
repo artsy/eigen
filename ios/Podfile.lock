@@ -657,7 +657,7 @@ PODS:
   - RNSentry (3.2.13):
     - React-Core
     - Sentry (= 7.9.0)
-  - RNShare (7.3.6):
+  - RNShare (8.2.1):
     - React-Core
   - RNSVG (9.13.3):
     - React
@@ -1244,7 +1244,7 @@ SPEC CHECKSUMS:
   RNReanimated: 81ae02204392903240908ab05385e178b4f88690
   RNScreens: 4a1af06327774490d97342c00aee0c2bafb497b7
   RNSentry: 0aa1567f66c20390f3834637fc4f73380dcd0774
-  RNShare: b955e66f1af2849711f13c193debda72b94f8aa0
+  RNShare: eaee3dd5a06dad397c7d3b14762007035c5de405
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d

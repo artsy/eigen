@@ -19,6 +19,7 @@ import { guardFactory } from "app/utils/types/guardFactory"
 import { useCanOpenURL } from "app/utils/useCanOpenURL"
 import React, { useRef, useState } from "react"
 import { Button, Modal, ScrollView } from "react-native"
+import Config from "react-native-config"
 import Share from "react-native-share"
 import ViewShot from "react-native-view-shot"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -104,6 +105,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
     const base64Data = `data:image/png;base64,${base64RawData}`
 
     await Share.shareSingle({
+      appId: Config.ARTSY_FACEBOOK_APP_ID,
       social: Share.Social.INSTAGRAM_STORIES,
       backgroundImage: base64Data,
     })
