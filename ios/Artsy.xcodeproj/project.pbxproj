@@ -231,11 +231,6 @@
 		CB762B3C2911A5E100881194 /* ARVIRModalClose@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB762B342911A5E100881194 /* ARVIRModalClose@2x.png */; };
 		CB762B3D2911A5E100881194 /* ARVIRShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = CB762B352911A5E100881194 /* ARVIRShadow.png */; };
 		CB762B3E2911A5E100881194 /* ar_vir_opening_frame.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB762B362911A5E100881194 /* ar_vir_opening_frame.jpg */; };
-		CBE3211C27D9615000395A93 /* OldAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3210827D9615000395A93 /* OldAdminView.swift */; };
-		CBE3211D27D9615000395A93 /* ARTCityGuideViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3210927D9615000395A93 /* ARTCityGuideViewManager.m */; };
-		CBE3211E27D9615000395A93 /* ARTLiveAuctionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3210C27D9615000395A93 /* ARTLiveAuctionViewManager.m */; };
-		CBE3211F27D9615000395A93 /* LiveAuctionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3210D27D9615000395A93 /* LiveAuctionView.swift */; };
-		CBE3212027D9615000395A93 /* ARTOldAdminViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3210E27D9615000395A93 /* ARTOldAdminViewManager.m */; };
 		CBE3266F27E275A300395A93 /* ARAppConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3245D27E275A100395A93 /* ARAppConstants.m */; };
 		CBE3267027E275A300395A93 /* ARDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3245E27E275A100395A93 /* ARDefaults.m */; };
 		CBE3267127E275A300395A93 /* UITableViewController+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3246127E275A100395A93 /* UITableViewController+Animations.swift */; };
@@ -970,17 +965,6 @@
 		CB762B352911A5E100881194 /* ARVIRShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ARVIRShadow.png; sourceTree = "<group>"; };
 		CB762B362911A5E100881194 /* ar_vir_opening_frame.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ar_vir_opening_frame.jpg; sourceTree = "<group>"; };
 		CBA7CF22282BF6310025AEA5 /* Artsy_Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Artsy_Tests-Info.plist"; sourceTree = "<group>"; };
-		CBE3210827D9615000395A93 /* OldAdminView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OldAdminView.swift; sourceTree = "<group>"; };
-		CBE3210927D9615000395A93 /* ARTCityGuideViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTCityGuideViewManager.m; sourceTree = "<group>"; };
-		CBE3210A27D9615000395A93 /* ARTOldAdminViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTOldAdminViewManager.h; sourceTree = "<group>"; };
-		CBE3210B27D9615000395A93 /* ARTNativeScreenPresenterModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTNativeScreenPresenterModule.h; sourceTree = "<group>"; };
-		CBE3210C27D9615000395A93 /* ARTLiveAuctionViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTLiveAuctionViewManager.m; sourceTree = "<group>"; };
-		CBE3210D27D9615000395A93 /* LiveAuctionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveAuctionView.swift; sourceTree = "<group>"; };
-		CBE3210E27D9615000395A93 /* ARTOldAdminViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTOldAdminViewManager.m; sourceTree = "<group>"; };
-		CBE3210F27D9615000395A93 /* ARTCityGuideViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTCityGuideViewManager.h; sourceTree = "<group>"; };
-		CBE3211027D9615000395A93 /* ARTNativeScreenPresenterModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTNativeScreenPresenterModule.m; sourceTree = "<group>"; };
-		CBE3211127D9615000395A93 /* CityGuideView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CityGuideView.swift; sourceTree = "<group>"; };
-		CBE3211227D9615000395A93 /* ARTLiveAuctionViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTLiveAuctionViewManager.h; sourceTree = "<group>"; };
 		CBE3211427D9615000395A93 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		CBE3245B27E275A100395A93 /* ARAppConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAppConstants.h; sourceTree = "<group>"; };
 		CBE3245C27E275A100395A93 /* ARDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDefaults.h; sourceTree = "<group>"; };
@@ -2560,28 +2544,9 @@
 				CBE324BF27E275A100395A93 /* View_Controllers */,
 				CBE3256F27E275A100395A93 /* Views */,
 				CB61B85327B585F00007922D /* GoogleService-Info.plist */,
-				CBE3210727D9615000395A93 /* NativeModules */,
 				CBE3211427D9615000395A93 /* Images.xcassets */,
 			);
 			path = Artsy;
-			sourceTree = "<group>";
-		};
-		CBE3210727D9615000395A93 /* NativeModules */ = {
-			isa = PBXGroup;
-			children = (
-				CBE3210827D9615000395A93 /* OldAdminView.swift */,
-				CBE3210927D9615000395A93 /* ARTCityGuideViewManager.m */,
-				CBE3210A27D9615000395A93 /* ARTOldAdminViewManager.h */,
-				CBE3210B27D9615000395A93 /* ARTNativeScreenPresenterModule.h */,
-				CBE3210C27D9615000395A93 /* ARTLiveAuctionViewManager.m */,
-				CBE3210D27D9615000395A93 /* LiveAuctionView.swift */,
-				CBE3210E27D9615000395A93 /* ARTOldAdminViewManager.m */,
-				CBE3210F27D9615000395A93 /* ARTCityGuideViewManager.h */,
-				CBE3211027D9615000395A93 /* ARTNativeScreenPresenterModule.m */,
-				CBE3211127D9615000395A93 /* CityGuideView.swift */,
-				CBE3211227D9615000395A93 /* ARTLiveAuctionViewManager.h */,
-			);
-			path = NativeModules;
 			sourceTree = "<group>";
 		};
 		CBE3245A27E275A100395A93 /* Constants */ = {
@@ -3928,7 +3893,6 @@
 			files = (
 				1A4B97C7283CDD5A00878EAE /* ARMapContainerViewController.m in Sources */,
 				CBE3279227E275A400395A93 /* User.m in Sources */,
-				CBE3211D27D9615000395A93 /* ARTCityGuideViewManager.m in Sources */,
 				CBE3277927E275A400395A93 /* ArtsyAPI+Notifications.m in Sources */,
 				CBE3267327E275A300395A93 /* Int+Metrification.swift in Sources */,
 				CBE326CE27E275A300395A93 /* LiveAuctionBidButton.swift in Sources */,
@@ -3965,7 +3929,6 @@
 				CBE3267627E275A300395A93 /* NSAttributedString+Additions.swift in Sources */,
 				1A4E5124283F91BA0008EF35 /* ARButtonSubclasses.m in Sources */,
 				CBE326ED27E275A300395A93 /* SCNArtworkNode.m in Sources */,
-				CBE3211C27D9615000395A93 /* OldAdminView.swift in Sources */,
 				CBE3278927E275A400395A93 /* PartnerShow.m in Sources */,
 				CBE3269927E275A300395A93 /* SwiftExtensions.swift in Sources */,
 				CBE3271227E275A300395A93 /* AuctionColors.swift in Sources */,
@@ -4057,7 +4020,6 @@
 				CBE3271C27E275A300395A93 /* RefinableType.swift in Sources */,
 				CBE327A227E275A400395A93 /* SystemTime.m in Sources */,
 				CBE3269B27E275A300395A93 /* ARAppDelegate+Echo.m in Sources */,
-				CBE3212027D9615000395A93 /* ARTOldAdminViewManager.m in Sources */,
 				CBE3279F27E275A400395A93 /* Bid.m in Sources */,
 				1A4B97BC283CDD5A00878EAE /* ARCocoaConstantsModule.m in Sources */,
 				CBE3277127E275A400395A93 /* ArtsyAPI.m in Sources */,
@@ -4076,7 +4038,6 @@
 				1A4B97CD283CDD5A00878EAE /* AROpaqueImageViewManager.m in Sources */,
 				1A4B97C4283CDD5A00878EAE /* ARCityComponentViewController.m in Sources */,
 				CBE3269E27E275A300395A93 /* AROptions.m in Sources */,
-				CBE3211E27D9615000395A93 /* ARTLiveAuctionViewManager.m in Sources */,
 				CBE326B327E275A300395A93 /* LotListCollectionViewCell.swift in Sources */,
 				CBE327A127E275A400395A93 /* BidderPosition.m in Sources */,
 				CBE326DF27E275A300395A93 /* ARStandardDateFormatter.m in Sources */,
@@ -4092,7 +4053,6 @@
 				CBE3270827E275A300395A93 /* StoryboardConstants.swift in Sources */,
 				CBE326BC27E275A300395A93 /* LotListCollectionViewCell+Private.swift in Sources */,
 				CBE3271A27E275A300395A93 /* ARNavigationButton.m in Sources */,
-				CBE3211F27D9615000395A93 /* LiveAuctionView.swift in Sources */,
 				CBE3277727E275A400395A93 /* ArtsyAPI+SystemTime.m in Sources */,
 				CBE3268527E275A300395A93 /* UIViewController+FullScreenLoading.m in Sources */,
 				CBE326EF27E275A300395A93 /* ARAugmentedVIRSetupViewController.m in Sources */,
