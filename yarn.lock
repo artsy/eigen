@@ -3735,11 +3735,6 @@
   dependencies:
     invariant "^2.2.4"
 
-"@react-native-community/geolocation@2.0.2":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@react-native-community/geolocation/-/geolocation-2.0.2.tgz#ba8b40f560ead8d014740d1cdea970b33f19312e"
-  integrity sha512-tTNXRCgnhJBu79mulQwzabXRpDqfh/uaDqfHVpvF0nX4NTpolpy6mvTRiFg7eWFPGRArsnZz1EYp6rHfJWGgEA==
-
 "@react-native-community/netinfo@9.3.7":
   version "9.3.7"
   resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-9.3.7.tgz#92407f679f00bae005c785a9284e61d63e292b34"

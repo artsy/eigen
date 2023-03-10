@@ -114,7 +114,6 @@
     "@react-native-clipboard/clipboard": "1.7.0",
     "@react-native-community/cameraroll": "1.3.0",
     "@react-native-community/datetimepicker": "6.1.2",
-    "@react-native-community/geolocation": "2.0.2",
     "@react-native-community/netinfo": "9.3.7",
     "@react-native-community/slider": "4.2.1",
     "@react-native-cookies/cookies": "6.0.11",
