@@ -203,7 +203,7 @@
     "simple-markdown": "0.7.3",
     "styled-components": "5.3.6",
     "styled-system": "5.1.5",
-    "supercluster": "6.0.2",
+    "supercluster": "7.1.5",
     "tipsi-stripe": "https://github.com/artsy/tipsi-stripe.git#fix-infinite-loop",
     "tsutils": "3.21.0",
     "unleash-proxy-client": "2.4.3",
