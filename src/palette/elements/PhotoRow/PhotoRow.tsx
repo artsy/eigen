@@ -55,12 +55,18 @@ const PhotoRowPlaceholder = ({ progress }: { progress: number }) => (
   </PhotoRowContainer>
 )
 interface PhotoRowProps {
+  hideDeleteButton?: boolean
   photo: Photo
   onPhotoDelete: (arg: Photo) => void
   progress: number
 }
 
-export const PhotoRow = ({ photo, onPhotoDelete, progress }: PhotoRowProps) => {
+export const PhotoRow = ({
+  hideDeleteButton = false,
+  photo,
+  onPhotoDelete,
+  progress,
+}: PhotoRowProps) => {
   if (photo.loading) {
     return <PhotoRowPlaceholder progress={progress} />
   }
@@ -77,15 +83,17 @@ export const PhotoRow = ({ photo, onPhotoDelete, progress }: PhotoRowProps) => {
       </Flex>
       <Flex flexDirection="row" alignItems="center">
         <Text>{photo.sizeDisplayValue}</Text>
-        <Button
-          ml={1}
-          variant="text"
-          size="small"
-          onPress={() => onPhotoDelete(photo)}
-          testID="Submission_Delete_Photo_Button"
-        >
-          <Text style={{ textDecorationLine: "underline" }}>Delete</Text>
-        </Button>
+        {!hideDeleteButton && (
+          <Button
+            ml={1}
+            variant="text"
+            size="small"
+            onPress={() => onPhotoDelete(photo)}
+            testID="Submission_Delete_Photo_Button"
+          >
+            <Text style={{ textDecorationLine: "underline" }}>Delete</Text>
+          </Button>
+        )}
       </Flex>
     </PhotoRowContainer>
   )
