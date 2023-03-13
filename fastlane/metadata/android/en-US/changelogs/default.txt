@@ -1,5 +1,8 @@
 This update includes a number of improvements and bug fixes including:
 
-- See new works from galleries you follow directly in your home feed.
+- An art taste quiz for new users to rate artworks and get recommendations
+- New Curators' Picks collection displayed in your home feed
+- A fresh design for our collections
+- Improved ways to view and browse artwork collections
 
 Have feedback? Email us at support@artsy.net

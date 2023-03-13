@@ -82,7 +82,7 @@ const auctionResultsForArtistsYouCollectFragment = graphql`
   fragment AuctionResultsForArtistsYouCollect_me on Me
   @refetchable(queryName: "AuctionResultsForArtistsYouCollect_meRefetch")
   @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" }) {
-    myCollectionAuctionResults(first: $count, after: $after)
+    myCollectionAuctionResults(first: $count, after: $after, state: PAST)
       @connection(key: "AuctionResults_myCollectionAuctionResults") {
       totalCount
       edges {

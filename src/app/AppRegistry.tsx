@@ -8,12 +8,20 @@ import {
   WorksForYouScreenQuery,
 } from "app/Components/Containers/WorksForYou"
 import { FadeIn } from "app/Components/FadeIn"
-import { ArtQuizArtworks } from "app/Scenes/ArtQuiz/ArtQuizArtworks"
-import { ArtQuizNavigation } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
+import { PageableScreensView } from "app/Components/PageableScreensView/PageableScreensView"
+import { ArtQuiz } from "app/Scenes/ArtQuiz/ArtQuiz"
 import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
+import { ArtworkRecommendationsScreen } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
+import { HomeContainer } from "app/Scenes/Home/HomeContainer"
+import { NewWorksFromGalleriesYouFollowScreen } from "app/Scenes/NewWorksFromGalleriesYouFollow/NewWorksFromGalleriesYouFollow"
+import {
+  RecentlyViewedScreen,
+  RecentlyViewedScreenQuery,
+} from "app/Scenes/RecentlyViewed/RecentlyViewed"
 import { SearchScreenQuery } from "app/Scenes/Search/Search"
 import { SearchScreenQuery as SearchScreenQuery2 } from "app/Scenes/Search/Search2"
 import { SearchSwitchContainer } from "app/Scenes/Search/SearchSwitchContainer"
+import { SimilarToRecentlyViewedScreen } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
 import React from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
@@ -66,7 +74,6 @@ import { FairMoreInfoQueryRenderer } from "./Scenes/Fair/FairMoreInfo"
 import { Favorites } from "./Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer } from "./Scenes/Feature/Feature"
 import { GeneQueryRenderer } from "./Scenes/Gene/Gene"
-import { HomeQueryRenderer } from "./Scenes/Home/Home"
 import { MakeOfferModalQueryRenderer } from "./Scenes/Inbox/Components/Conversations/MakeOfferModal"
 import { PurchaseModalQueryRenderer } from "./Scenes/Inbox/Components/Conversations/PurchaseModal"
 import { ConversationNavigator } from "./Scenes/Inbox/ConversationNavigator"
@@ -136,14 +143,14 @@ import {
   ViewingRoomsListScreen,
   viewingRoomsListScreenQuery,
 } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { GlobalStore, useSelectedTab } from "./store/GlobalStore"
+import { GlobalStore, useFeatureFlag, useSelectedTab } from "./store/GlobalStore"
 import { propsStore } from "./store/PropsStore"
 import { DevMenu } from "./utils/DevMenu"
 import { addTrackingProvider, Schema, screenTrack } from "./utils/track"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import {
-  SEGMENT_TRACKING_PROVIDER,
   SegmentTrackingProvider,
+  SEGMENT_TRACKING_PROVIDER,
 } from "./utils/track/SegmentTrackingProvider"
 
 LogBox.ignoreLogs([
@@ -160,9 +167,36 @@ addTrackingProvider("console", ConsoleTrackingProvider)
 interface ArtworkProps {
   artworkID: string
   isVisible: boolean
+  pageableSlugs: string[]
 }
 
-const Artwork = (props: ArtworkProps) => <ArtworkQueryRenderer {...props} />
+const Artwork = (props: ArtworkProps) => {
+  const enablePageableArtworkScreens = useFeatureFlag("AREnablePageableArtworkScreens")
+
+  const pageableSlugs = props.pageableSlugs ?? []
+
+  const screens = pageableSlugs.map((slug) => ({
+    name: slug,
+    Component: <ArtworkQueryRenderer {...props} artworkID={slug} />,
+  }))
+
+  // Check to see if we're within the context of an artwork rail and show
+  // pager view.
+  // TODO: Remove feature flag once we're ready to launch.
+  if (enablePageableArtworkScreens && screens.length > 0) {
+    return (
+      <PageableScreensView
+        screens={screens}
+        initialScreenName={props.artworkID}
+        prefetchScreensCount={5}
+      />
+    )
+    // If not within the context of an artwork collection, just render the
+    // individual artwork.
+  } else {
+    return <ArtworkQueryRenderer {...props} />
+  }
+}
 
 interface PartnerLocationsProps {
   partnerID: string
@@ -327,9 +361,11 @@ function defineModules<T extends string>(obj: Record<T, ModuleDescriptor>) {
 }
 
 const artQuizScreenOptions = {
-  hidesBottomTabs: true,
   hidesBackButton: true,
   fullBleed: true,
+  screenOptions: {
+    gestureEnabled: false,
+  },
 }
 
 export type AppModule = keyof typeof modules
@@ -343,8 +379,7 @@ export const modules = defineModules({
   DevMenu: reactModule(DevMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   About: reactModule(About),
   AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkForm, { hidesBackButton: true }),
-  ArtQuiz: reactModule(ArtQuizNavigation, artQuizScreenOptions),
-  ArtQuizArtworks: reactModule(ArtQuizArtworks, artQuizScreenOptions),
+  ArtQuiz: reactModule(ArtQuiz, { ...artQuizScreenOptions, hidesBottomTabs: true }),
   ArtQuizResults: reactModule(ArtQuizResults, artQuizScreenOptions),
   Articles: reactModule(ArticlesScreen, {}, [ArticlesScreenQuery]),
   Artist: reactModule(ArtistQueryRenderer, { hidesBackButton: true }, [ArtistScreenQuery]),
@@ -362,6 +397,7 @@ export const modules = defineModules({
   ArtworkMedium: reactModule(ArtworkMediumQueryRenderer),
   ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer),
   ArtworkCertificateAuthenticity: reactModule(CertificateOfAuthenticity),
+  ArtworkRecommendations: reactModule(ArtworkRecommendationsScreen),
   Auction: reactModule(SaleQueryRenderer, { fullBleed: true }, [SaleScreenQuery]),
   Auctions: reactModule(SalesScreen, {}, [SalesScreenQuery]),
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
@@ -420,7 +456,9 @@ export const modules = defineModules({
   FullFeaturedArtistList: reactModule(CollectionFullFeaturedArtistListQueryRenderer),
   Gene: reactModule(GeneQueryRenderer),
   Tag: reactModule(TagQueryRenderer),
-  Home: reactModule(HomeQueryRenderer, { isRootViewForTabName: "home" }),
+  Home: reactModule(HomeContainer, {
+    isRootViewForTabName: "home",
+  }),
   Inbox: reactModule(InboxQueryRenderer, { isRootViewForTabName: "inbox" }, [InboxScreenQuery]),
   Inquiry: reactModule(Inquiry, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   LiveAuction: reactModule(LiveAuctionView, {
@@ -472,6 +510,7 @@ export const modules = defineModules({
     hidesBackButton: true,
   }),
   MyProfilePushNotifications: reactModule(MyProfilePushNotificationsQueryRenderer),
+  NewWorksFromGalleriesYouFollow: reactModule(NewWorksFromGalleriesYouFollowScreen),
   DarkModeSettings: reactModule(DarkModeSettings),
   MySellingProfile: reactModule(View),
   Partner: reactModule(PartnerQueryRenderer),
@@ -482,6 +521,7 @@ export const modules = defineModules({
     RequestForPriceEstimateConfirmationScreen,
     { hidesBackButton: true }
   ),
+  RecentlyViewed: reactModule(RecentlyViewedScreen, {}, [RecentlyViewedScreenQuery]),
   ReverseImage: reactModule(ReverseImage, {
     hidesBackButton: true,
     fullBleed: true,
@@ -503,6 +543,7 @@ export const modules = defineModules({
     alwaysPresentModally: true,
     hasOwnModalCloseButton: false,
   }),
+  SimilarToRecentlyViewed: reactModule(SimilarToRecentlyViewedScreen),
   ConsignmentInquiry: reactModule(ConsignmentInquiryScreen, {
     screenOptions: {
       gestureEnabled: false,

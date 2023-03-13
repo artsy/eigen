@@ -1,5 +1,3 @@
-import { GlobalMap_viewer$data } from "__generated__/GlobalMap_viewer.graphql"
-
 import { Fair, Show } from "app/Scenes/Map/types"
 
 // Here is a sample GeoJSON document
@@ -17,13 +15,6 @@ import { Fair, Show } from "app/Scenes/Map/types"
 //         }
 //       },
 // }
-
-export type FairsEdge = NonNullable<
-  NonNullable<NonNullable<GlobalMap_viewer$data["city"]>["fairs"]>["edges"]
->
-export type ShowsEdge = NonNullable<
-  NonNullable<NonNullable<GlobalMap_viewer$data["city"]>["shows"]>["edges"]
->
 
 export const showsToGeoCityShow = (edges: Show[]): Show[] =>
   edges.map((node) => {

@@ -11,6 +11,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { debounce } from "lodash"
 import { FollowButton } from "palette"
+import { TouchableOpacity } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"
 
 export const ArtQuizArtist = ({ artistData }: { artistData: ArtQuizArtist_artist$key | null }) => {
@@ -40,37 +41,43 @@ export const ArtQuizArtist = ({ artistData }: { artistData: ArtQuizArtist_artist
 
   return (
     <Flex pt={2}>
-      <Flex px={2} flexDirection="row" justifyContent="space-between">
-        <Flex flex={1}>
-          <Text variant="lg-display">{artist?.name}</Text>
-          <Text variant="lg-display" color="black60">
-            {artist?.formattedNationalityAndBirthday}
-          </Text>
+      <TouchableOpacity
+        onPress={() => {
+          navigate(`/artist/${artist?.slug}`)
+        }}
+      >
+        <Flex px={2} flexDirection="row" justifyContent="space-between">
+          <Flex flex={1}>
+            <Text variant="lg-display">{artist?.name}</Text>
+            <Text variant="lg-display" color="black60">
+              {artist?.formattedNationalityAndBirthday}
+            </Text>
+          </Flex>
+          <Flex>
+            <FollowButton
+              isFollowed={!!artist?.isFollowed}
+              onPress={() => handleFollowChange(artist!)}
+            />
+          </Flex>
         </Flex>
-        <Flex>
-          <FollowButton
-            isFollowed={!!artist?.isFollowed}
-            onPress={() => handleFollowChange(artist!)}
+        <Spacer y={1} />
+        <Flex px={2}>
+          <ReadMore
+            content={artist?.biographyBlurb?.text!}
+            maxChars={textLimit}
+            textStyle="new"
+            textVariant="sm"
+            linkTextVariant="sm-display"
           />
         </Flex>
-      </Flex>
-      <Spacer y={1} />
-      <Flex px={2}>
-        <ReadMore
-          content={artist?.biographyBlurb?.text!}
-          maxChars={textLimit}
-          textStyle="new"
-          textVariant="sm"
-          linkTextVariant="sm-display"
+        <Spacer y={2} />
+        <SmallArtworkRail
+          artworks={artworks}
+          onPress={(artwork) => {
+            navigate(artwork?.href!)
+          }}
         />
-      </Flex>
-      <Spacer y={1} />
-      <SmallArtworkRail
-        artworks={artworks}
-        onPress={(artwork) => {
-          navigate(artwork?.href!)
-        }}
-      />
+      </TouchableOpacity>
     </Flex>
   )
 }

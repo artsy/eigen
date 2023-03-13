@@ -180,12 +180,14 @@ export const features = defineFeatures({
   ARShowArtQuizApp: {
     description: "Show Art Quiz App",
     showInDevMenu: true,
-    readyForRelease: false,
+    readyForRelease: true,
+    echoFlagKey: "ARShowArtQuizApp",
   },
   AREnableESOnlySearch: {
     description: "Enable ES only search",
     showInDevMenu: true,
-    readyForRelease: false,
+    readyForRelease: true,
+    echoFlagKey: "AREnableESOnlySearch",
   },
   AREnableMoneyFormattingInMyCollectionForm: {
     description: "Enable Money formatting in MyCollection Form",
@@ -199,7 +201,7 @@ export const features = defineFeatures({
     readyForRelease: false,
   },
   AREnableBrowseMoreArtworksCard: {
-    description: "Enable Browse More Artworks Card on Home Screen",
+    description: "Enable Browse All Artworks Card on Home Screen",
     showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "AREnableBrowseMoreArtworksCard",
@@ -215,6 +217,23 @@ export const features = defineFeatures({
     showInDevMenu: true,
     readyForRelease: true,
     echoFlagKey: "AREnableCuratorsPickRail",
+  },
+  ARImpressionsTrackingHomeRailViews: {
+    description: "Enable tracking rail views on home screen",
+    showInDevMenu: true,
+    readyForRelease: true,
+    echoFlagKey: "ARImpressionsTrackingHomeRailViews",
+  },
+  AREnablePageableArtworkScreens: {
+    description: "Enable pageable artwork screens",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
+  AREnableMyCollectionNotesField: {
+    description: "Enable My Collection Notes Field",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableMyCollectionNotesField",
   },
 })
 

@@ -11,7 +11,8 @@ import { InquiryFormikSchema } from "./ConsignmentInquiryScreen"
 export const ConsignmentInquiryForm: React.FC<{
   confirmLeaveEdit: (v: boolean) => void
   canPopScreen: boolean
-}> = ({ confirmLeaveEdit, canPopScreen }) => {
+  recipientName?: string
+}> = ({ confirmLeaveEdit, canPopScreen, recipientName }) => {
   const { safeAreaInsets } = useScreenDimensions()
   const { values, handleChange, errors, setErrors, handleSubmit, isValid, dirty } =
     useFormikContext<InquiryFormikSchema>()
@@ -82,7 +83,7 @@ export const ConsignmentInquiryForm: React.FC<{
       <Box pt={`${safeAreaInsets.top}px`} pb={`${safeAreaInsets.bottom}px`} px={2}>
         <Box>
           <Text variant="lg-display" mb={2}>
-            Contact a specialist
+            {!!recipientName ? `Contact ${recipientName}` : "Contact a specialist"}
           </Text>
           <Input
             required

@@ -130,6 +130,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/artist/:artistID/shows", "ArtistShows"),
     addRoute("/artwork/:artworkID", "Artwork"),
     addRoute("/artwork/:artworkID/medium", "ArtworkMedium"),
+    addRoute("/artwork-recommendations", "ArtworkRecommendations"),
     addRoute("/artist/:artistID/auction-results", "Artist", (params) => ({
       ...params,
       initialTab: "Insights",
@@ -151,7 +152,8 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/tag/:tagID", "Tag"),
     addRoute("/show/:showID", "Show"),
     addRoute("/show/:showID/info", "ShowMoreInfo"),
-
+    addRoute("/recently-viewed", "RecentlyViewed"),
+    addRoute("/similar-to-recently-viewed", "SimilarToRecentlyViewed"),
     addRoute("/inquiry/:artworkID", "Inquiry"),
     addRoute("/viewing-rooms", "ViewingRooms"),
     addRoute("/auction-results-for-artists-you-follow", "AuctionResultsForArtistsYouFollow"),
@@ -207,7 +209,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     ),
 
     addRoute("/art-quiz", "ArtQuiz"),
-    addRoute("/art-quiz/artworks", "ArtQuizArtworks"),
+    addRoute("/art-quiz/artworks", "ArtQuiz"),
     addRoute("/art-quiz/results", "ArtQuizResults"),
 
     // TODO: Follow-up about below route names
@@ -250,6 +252,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/lots-by-artists-you-follow", "LotsByArtistsYouFollow"),
     addRoute("/works-for-you", "WorksForYou"),
     addRoute("/new-for-you", "NewWorksForYou"),
+    addRoute("/new-works-from-galleries-you-follow", "NewWorksFromGalleriesYouFollow"),
     addRoute("/reverse-image", "ReverseImage"),
     addWebViewRoute("/categories"),
     addWebViewRoute("/privacy"),

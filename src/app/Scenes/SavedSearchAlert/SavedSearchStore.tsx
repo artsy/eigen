@@ -5,7 +5,7 @@ import {
   SearchCriteria,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { action, Action, createContextStore, State } from "easy-peasy"
+import { action, Action, createContextStore } from "easy-peasy"
 
 interface SavedSearchModel {
   attributes: SearchCriteriaAttributes
@@ -21,8 +21,6 @@ interface SavedSearchModel {
     }
   >
 }
-
-export type SavedSearchState = State<SavedSearchModel>
 
 const savedSearchModel: SavedSearchModel = {
   attributes: {},

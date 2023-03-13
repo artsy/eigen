@@ -2,8 +2,10 @@ import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { ArtQuizTrendingCollection_collection$key } from "__generated__/ArtQuizTrendingCollection_collection.graphql"
 import { ArtQuizTrendingCollections_viewer$data } from "__generated__/ArtQuizTrendingCollections_viewer.graphql"
 import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
+import { ReadMore } from "app/Components/ReadMore"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { truncatedTextLimit } from "app/utils/hardware"
 import { graphql, useFragment } from "react-relay"
 
 export const ArtQuizTrendingCollection = ({
@@ -11,6 +13,7 @@ export const ArtQuizTrendingCollection = ({
 }: {
   collectionData: NonNullable<ArtQuizTrendingCollections_viewer$data["marketingCollections"]>[0]
 }) => {
+  const textLimit = truncatedTextLimit()
   const collection = useFragment<ArtQuizTrendingCollection_collection$key>(
     artQuizTrendingCollectionFragment,
     collectionData
@@ -23,10 +26,15 @@ export const ArtQuizTrendingCollection = ({
   return (
     <Flex pt={2}>
       <Flex px={2}>
-        <Text variant="sm">{collection?.title}</Text>
-        <Text variant="sm" color="black60">
-          {collection?.description}
-        </Text>
+        <Text variant="md">{collection?.title}</Text>
+        <ReadMore
+          content={collection?.description!}
+          maxChars={textLimit}
+          textStyle="new"
+          color="black60"
+          textVariant="sm"
+          linkTextVariant="sm"
+        />
       </Flex>
       <Spacer y={1} />
       <SmallArtworkRail

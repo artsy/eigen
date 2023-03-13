@@ -108,7 +108,7 @@ export const ScrollScreenWithRegularHeader: ScreenStory = () => (
 export const ScrollScreenWithFloatingHeader: ScreenStory = () => (
   <Screen>
     <Screen.FloatingHeader onBack={() => {}} />
-    <Screen.Body scroll nosafe>
+    <Screen.Body scroll noTopSafe noBottomSafe>
       <Text>Hello</Text>
     </Screen.Body>
   </Screen>

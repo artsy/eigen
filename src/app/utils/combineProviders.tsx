@@ -2,6 +2,7 @@ type AllowedProvider =
   | React.FC
   | React.ComponentClass<{ children: React.ReactNode }>
   | React.ComponentType
+  | React.ForwardRefExoticComponent<any>
 type FilteredOutProvider = false | undefined
 
 type ProviderList = Array<AllowedProvider | FilteredOutProvider>

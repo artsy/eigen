@@ -1,24 +1,16 @@
 import { Spacer, Flex, Screen, Text, ArtsyLogoBlackIcon } from "@artsy/palette-mobile"
-import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { ArtQuizWelcomeQuery } from "__generated__/ArtQuizWelcomeQuery.graphql"
-import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
-import { ArtQuizNavigationStack } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
-import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
-import { extractNodes } from "app/utils/extractNodes"
+import { useNavigation, NavigationProp } from "@react-navigation/native"
+import { ArtQuizNavigationStack } from "app/Scenes/ArtQuiz/ArtQuiz"
+import { GlobalStore } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
 import { Button } from "palette"
-import { Suspense } from "react"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { useBackHandler } from "shared/hooks/useBackHandler"
 
-export const ArtQuizWelcomeScreen = () => {
-  const { onDone } = useOnboardingContext()
-  const queryResult = useLazyLoadQuery<ArtQuizWelcomeQuery>(artQuizWelcomeQuery, {})
-  const { navigate } = useNavigation<NavigationProp<ArtQuizNavigationStack>>()
+export const ArtQuizWelcome = () => {
+  // prevents Android users from going back with hardware button
+  useBackHandler(() => true)
 
-  const artworks = extractNodes(queryResult.artworksConnection)
-
-  if (!artworks) {
-    return null
-  }
+  const { navigate: quizStackNavigate } = useNavigation<NavigationProp<ArtQuizNavigationStack>>()
 
   return (
     <Screen>
@@ -35,16 +27,18 @@ export const ArtQuizWelcomeScreen = () => {
           </Text>
         </Flex>
         <Flex justifyContent="flex-end">
-          <Button
-            block
-            onPress={() => {
-              return navigate("ArtQuizArtworks")
-            }}
-          >
+          <Button block onPress={() => quizStackNavigate("ArtQuizArtworks")}>
             Start the Quiz
           </Button>
           <Spacer y={1} />
-          <Button block variant="text" onPress={onDone}>
+          <Button
+            block
+            variant="text"
+            onPress={() => {
+              GlobalStore.actions.auth.setArtQuizState("complete")
+              navigate("/")
+            }}
+          >
             Skip
           </Button>
         </Flex>
@@ -52,23 +46,3 @@ export const ArtQuizWelcomeScreen = () => {
     </Screen>
   )
 }
-
-export const ArtQuizWelcome = () => {
-  return (
-    <Suspense fallback={<ArtQuizLoader />}>
-      <ArtQuizWelcomeScreen />
-    </Suspense>
-  )
-}
-
-const artQuizWelcomeQuery = graphql`
-  query ArtQuizWelcomeQuery {
-    artworksConnection(first: 1) {
-      edges {
-        node {
-          isSaved
-        }
-      }
-    }
-  }
-`

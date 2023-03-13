@@ -244,7 +244,3 @@ export const extractPills = (options: ExtractPillsOptions) => {
 
   return compact([...artistPills, ...pillsFromCriteria])
 }
-
-export const extractPillValue = (pills: SavedSearchPill[]) => {
-  return pills.map((pill) => pill.value)
-}

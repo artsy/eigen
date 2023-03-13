@@ -56,7 +56,36 @@ describe("MyCollectionArtworkAbout", () => {
       expect(getByText("Materials")).toBeTruthy()
       expect(getByText("Painting")).toBeTruthy()
       expect(getByText("Rarity")).toBeTruthy()
-      expect(getByText("Unique")).toBeTruthy()
+      expect(getByText("Unique work")).toBeTruthy()
+      expect(getByText("Dimensions")).toBeTruthy()
+      expect(getByText("Location")).toBeTruthy()
+      expect(getByText("Berlin")).toBeTruthy()
+      expect(getByText("39 2/5 × 40 9/10 in")).toBeTruthy()
+      expect(getByText("Year created")).toBeTruthy()
+      expect(getByText("2007")).toBeTruthy()
+      expect(getByText("Provenance")).toBeTruthy()
+      expect(getByText("Signed, Sealed, Delivered!")).toBeTruthy()
+      expect(getByText("Price Paid")).toBeTruthy()
+      expect(getByText("$12,000")).toBeTruthy()
+    })
+
+    it("renders the edition information when the artwork is part of limited edition", () => {
+      const { getByText } = renderWithRelay({
+        Query: () => ({
+          artwork: {
+            ...artworkDataAvailable.artwork,
+            attributionClass: { shortDescription: "Part of a limited edition set" },
+            editionOf: "Edition 3/10",
+          },
+        }),
+      })
+
+      expect(getByText("Medium")).toBeTruthy()
+      expect(getByText("Oil on canvas")).toBeTruthy()
+      expect(getByText("Materials")).toBeTruthy()
+      expect(getByText("Painting")).toBeTruthy()
+      expect(getByText("Rarity")).toBeTruthy()
+      expect(getByText("Part of a limited edition set\nEdition 3/10")).toBeTruthy()
       expect(getByText("Dimensions")).toBeTruthy()
       expect(getByText("Location")).toBeTruthy()
       expect(getByText("Berlin")).toBeTruthy()
@@ -178,8 +207,9 @@ const artworkDataAvailable = {
       cm: "100 × 104 cm",
     },
     attributionClass: {
-      name: "Unique",
+      shortDescription: "Unique work",
     },
+    editionOf: null,
     artworkLocation: "Berlin",
     pricePaid: {
       display: "$12,000",
@@ -208,6 +238,7 @@ const artworkDataNotAvailable = {
       cm: null,
     },
     attributionClass: null,
+    editionOf: null,
     artworkLocation: "",
     pricePaid: null,
   },

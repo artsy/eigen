@@ -99,7 +99,6 @@ type CircleProps = Omit<SpinnerProps, "color"> & { color?: string }
 
 const Circle = styled(Animated.View)<CircleProps>`
   background: black;
-  position: absolute;
 
   ${(props) => {
     const { width, height, borderWidth, radius } = getSize(props)
@@ -129,11 +128,9 @@ Circle.defaultProps = {
 
 const CircleBackground = styled(Animated.View)<CircleProps>`
   background: black;
-  position: absolute;
 
   ${(props) => {
     const { width, height, borderWidth, radius } = getSize(props)
-
     return `
       opacity: 0.4;
       border: ${borderWidth}px solid ${props.color};
@@ -141,6 +138,7 @@ const CircleBackground = styled(Animated.View)<CircleProps>`
       background: transparent;
       width: ${width}px;
       height: ${height}px;
+      top: ${height}px;
     `
   }};
 `

@@ -97,7 +97,7 @@ export const tappedOnMap = (
         return this.options.length - 1
       },
     },
-    (buttonIndex: number) => {
+    (buttonIndex: number | undefined) => {
       if (buttonIndex === 0) {
         const mapLink = mapLinkForService(
           MapServiceURLType.Apple,

@@ -19,6 +19,8 @@ interface InquiryScreenProps {
   email: string
   phone: string
   userId?: string
+  recipientEmail?: string
+  recipientName?: string
 }
 
 export interface InquiryFormikSchema {
@@ -40,7 +42,7 @@ export const createConsignmentInquiry = (
   environment: Environment,
   onCompleted: (response: ConsignmentInquiryScreenMutation["response"]) => void,
   onError: () => void,
-  input: InquiryFormikSchema & { userId?: string }
+  input: InquiryFormikSchema & { userId?: string; recipientEmail?: string }
 ) => {
   commitMutation<ConsignmentInquiryScreenMutation>(environment, {
     mutation: graphql`
@@ -74,6 +76,8 @@ export const ConsignmentInquiryScreen: React.FC<InquiryScreenProps> = ({
   name,
   phone,
   userId,
+  recipientEmail,
+  recipientName,
 }) => {
   const [showAbandonModal, setShowAbandonModal] = useState(false)
   const [showConfirmedModal, setShowConfirmedModal] = useState(false)
@@ -90,7 +94,9 @@ export const ConsignmentInquiryScreen: React.FC<InquiryScreenProps> = ({
     },
 
     onSubmit: async ({ email, name, phoneNumber, message }) => {
-      const input = { email, name, phoneNumber, message, userId }
+      const input = !!recipientEmail
+        ? { email, name, phoneNumber, message, userId, recipientEmail }
+        : { email, name, phoneNumber, message, userId }
       const onCompleted = (response: ConsignmentInquiryScreenMutation["response"]) => {
         const consignmentInquiryId =
           response.createConsignmentInquiry?.consignmentInquiryOrError?.consignmentInquiry
@@ -127,6 +133,7 @@ export const ConsignmentInquiryScreen: React.FC<InquiryScreenProps> = ({
           <ConsignmentInquiryForm
             confirmLeaveEdit={(v) => setShowAbandonModal(v)}
             canPopScreen={canPopScreen}
+            recipientName={recipientName}
           />
         </ArtsyKeyboardAvoidingView>
 

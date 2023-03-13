@@ -1498,6 +1498,9 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
       HIGH_AUCTION_RECORD
       ARTSY_VANGUARD_YEAR
       CRITICALLY_ACCLAIMED
+      RESIDENCIES
+      PRIVATE_COLLECTIONS
+      AWARDS
     ]
   ): [ArtistInsight!]!
 
@@ -1703,11 +1706,14 @@ type ArtistInsight {
 enum ArtistInsightKind {
   ACTIVE_SECONDARY_MARKET
   ARTSY_VANGUARD_YEAR
+  AWARDS
   BIENNIAL
   COLLECTED
   CRITICALLY_ACCLAIMED
   GROUP_SHOW
   HIGH_AUCTION_RECORD
+  PRIVATE_COLLECTIONS
+  RESIDENCIES
   REVIEWED
   SOLO_SHOW
 }
@@ -1998,6 +2004,17 @@ type Artwork implements Node & Searchable & Sellable {
   # Returns the display label and detail when artwork has a certificate of authenticity
   certificateOfAuthenticity: ArtworkInfoRow
   collectingInstitution: String
+  collectionsConnection(
+    after: String
+    before: String
+    default: Boolean
+    first: Int
+    last: Int
+    page: Int
+    saves: Boolean
+    size: Int
+    sort: CollectionSorts
+  ): CollectionsConnection
 
   # The location of the artwork in My Collection
   collectorLocation: MyLocation
@@ -2556,6 +2573,9 @@ type ArtworkVersion implements Node {
   # The Artwork Version attribution class
   attributionClass: AttributionClass
 
+  # Artwork condition description
+  condition_description: String
+
   # The Artwork Version formatted date
   date: String
 
@@ -2576,6 +2596,9 @@ type ArtworkVersion implements Node {
 
   # The Artwork Version medium
   medium: String
+
+  # Artwork provenance
+  provenance: String
 
   # Artwork title
   title: String
@@ -3852,6 +3875,7 @@ type CommerceBuyOrder implements CommerceOrder {
   buyerDetails: OrderParty
   buyerPhoneNumber: String
   buyerPhoneNumberCountryCode: String
+  buyerProfile: CollectorProfileType
   buyerTotal(
     decimal: String = "."
 
@@ -4586,6 +4610,7 @@ type CommerceOfferOrder implements CommerceOrder {
   buyerDetails: OrderParty
   buyerPhoneNumber: String
   buyerPhoneNumberCountryCode: String
+  buyerProfile: CollectorProfileType
   buyerTotal(
     decimal: String = "."
 
@@ -4820,6 +4845,7 @@ interface CommerceOrder {
   buyerDetails: OrderParty
   buyerPhoneNumber: String
   buyerPhoneNumberCountryCode: String
+  buyerProfile: CollectorProfileType
   buyerTotal(
     decimal: String = "."
 
@@ -5731,6 +5757,9 @@ type ConsignmentInquiry {
 
   # Phone number of the inquirer
   phoneNumber: String
+
+  # An optional email from a member of the Collector Services team to whom the request was sent
+  recipientEmail: String
 
   # gravity user id if user is logged in
   userId: String
@@ -7075,6 +7104,7 @@ input CreateConsignmentInquiryMutationInput {
   message: String!
   name: String!
   phoneNumber: String
+  recipientEmail: String
   userId: String
 }
 
@@ -7266,7 +7296,7 @@ input CreateOrderedSetMutationInput {
   itemIds: [String]
   itemType: String!
   key: String!
-  layout: String
+  layout: OrderedSetLayouts
   name: String
   ownerType: String
   published: Boolean
@@ -10937,7 +10967,7 @@ type Me implements Node {
   ): CollectionsConnection
   collectorLevel: Int
 
-  # A collector profile.
+  # Current user's collector profile.
   collectorProfile: CollectorProfileType
 
   # A conversation, usually between a user and a partner
@@ -11137,6 +11167,14 @@ type Me implements Node {
     last: Int
     page: Int
   ): ArtworkConnection
+
+  # A list of artworks from galleries the user follows.
+  newWorksFromGalleriesYouFollowConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkConnection
   orders(
     after: String
     before: String
@@ -11260,6 +11298,14 @@ type Me implements Node {
     # Filter shows by chronological event status
     status: EventStatus
   ): ShowConnection
+
+  # A list of artworks similar to recently viewed artworks.
+  similarToRecentlyViewedConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkConnection
   type: String
 
   # The count of conversations with unread messages.
@@ -11898,7 +11944,7 @@ type Mutation {
   ): updateNotificationPreferencesMutationPayload
 
   # updates an ordered set.
-  updateOrderedSet(input: updateOrderedSetMutationInput!): updateOrderedSetMutationPayload
+  updateOrderedSet(input: UpdateOrderedSetMutationInput!): UpdateOrderedSetMutationPayload
 
   # Update a quiz artwork interacted_with flag
   updateQuiz(input: updateQuizMutationInput!): updateQuizMutationPayload
@@ -13878,6 +13924,9 @@ type Query {
     slug: String
   ): City
 
+  # A collector profile.
+  collectorProfile(userID: String): CollectorProfileType
+
   # Find balance of an account associated with a setup intent
   commerceBankAccountBalance(bankAccountId: ID, setupIntentId: ID): CommerceBankAccountBalance
 
@@ -15849,6 +15898,9 @@ input SendIdentityVerificationEmailMutationInput {
   # The name to be used for the user undergoing identity verification
   name: String
 
+  # Whether an automated identity verification is sent or not
+  sendEmail: Boolean
+
   # The user Id for the user undergoing identity verification
   userID: String
 }
@@ -17121,34 +17173,39 @@ type updateNotificationPreferencesMutationPayload {
   notificationPreferences(authenticationToken: String): [NotificationPreference!]!
 }
 
-type updateOrderedSetFailure {
+type UpdateOrderedSetFailure {
   mutationError: GravityMutationError
 }
 
-input updateOrderedSetMutationInput {
+input UpdateOrderedSetMutationInput {
   clientMutationId: String
   description: String
   id: String!
+  internalName: String
   itemId: String
+
+  # Modify the OrderedSet's items to only included provided ids. An empty array will remove all items from the set
+  itemIds: [String]
   itemType: String
   key: String
-  layout: String
+  layout: OrderedSetLayouts
   name: String
   ownerId: String
   ownerType: String
   published: Boolean
+  unsetOwner: Boolean
 }
 
-type updateOrderedSetMutationPayload {
+type UpdateOrderedSetMutationPayload {
   clientMutationId: String
 
   # On success: the ordered set updated.
-  orderedSetOrError: updateOrderedSetResponseOrError
+  orderedSetOrError: UpdateOrderedSetResponseOrError
 }
 
-union updateOrderedSetResponseOrError = updateOrderedSetFailure | updateOrderedSetSuccess
+union UpdateOrderedSetResponseOrError = UpdateOrderedSetFailure | UpdateOrderedSetSuccess
 
-type updateOrderedSetSuccess {
+type UpdateOrderedSetSuccess {
   feature: Feature
   set: OrderedSet
 }
@@ -18187,6 +18244,9 @@ type Viewer {
     # A slug for the city, conforming to Gravity's city slug naming conventions
     slug: String
   ): City
+
+  # A collector profile.
+  collectorProfile(userID: String): CollectorProfileType
 
   # A conversation, usually between a user and a partner
   conversation(

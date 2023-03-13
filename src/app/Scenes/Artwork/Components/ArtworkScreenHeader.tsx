@@ -1,16 +1,16 @@
-import { HeartIcon, HeartFillIcon, Flex, useSpace } from "@artsy/palette-mobile"
+import { HeartIcon, HeartFillIcon, Flex, useSpace, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkScreenHeader_artwork$data } from "__generated__/ArtworkScreenHeader_artwork.graphql"
 import { useIsStaging } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { Schema } from "app/utils/track"
-import { BackButton, Button } from "palette"
+import { BackButton, Touchable } from "palette"
 import { createFragmentContainer, graphql, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtworkScreenHeaderCreateAlertFragmentContainer } from "./ArtworkScreenHeaderCreateAlert"
 
 const HEADER_HEIGHT = 44
-const SAVE_ICON_SIZE = 20
+const SAVE_ICON_SIZE = 22
 
 interface SaveIconProps {
   isSaved: boolean
@@ -101,24 +101,27 @@ const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) =>
       </Flex>
 
       <Flex flexDirection="row" alignItems="center">
-        <Button
+        <Touchable
           hitSlop={{
             top: space(1),
             left: space(1),
-            right: 0,
+            right: space(1),
             bottom: space(1),
           }}
-          size="small"
-          variant="text"
           haptic
           accessibilityRole="button"
           accessibilityLabel="Save artwork"
           onPress={handleArtworkSave}
-          icon={<SaveIcon isSaved={!!isSaved} />}
-          longestText="Saved"
         >
-          {isSaved ? "Saved" : "Save"}
-        </Button>
+          <Flex flex={1} justifyContent="center" alignItems="center" flexDirection="row">
+            <SaveIcon isSaved={!!isSaved} />
+            <Spacer x={0.5} />
+            {/* the spaces below are to not make the icon jumpy when changing from save to saved will work on a more permanent fix */}
+            <Text variant="sm">{isSaved ? "Saved" : "Save   "}</Text>
+          </Flex>
+        </Touchable>
+
+        <Spacer x={2} />
 
         <ArtworkScreenHeaderCreateAlertFragmentContainer artwork={artwork} />
       </Flex>

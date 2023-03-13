@@ -1,45 +1,40 @@
 import {
-  Spacer,
   Touchable,
-  CloseIcon,
   Flex,
-  HeartIcon,
   Screen,
   Text,
   BackButton,
+  useScreenDimensions,
+  useSpace,
+  ScreenDimensionsProvider,
 } from "@artsy/palette-mobile"
-import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { ArtQuizArtworksDislikeMutation } from "__generated__/ArtQuizArtworksDislikeMutation.graphql"
 import { ArtQuizArtworksQuery } from "__generated__/ArtQuizArtworksQuery.graphql"
 import { ArtQuizArtworksSaveMutation } from "__generated__/ArtQuizArtworksSaveMutation.graphql"
 import { ArtQuizArtworksUpdateQuizMutation } from "__generated__/ArtQuizArtworksUpdateQuizMutation.graphql"
+import { FancySwiper } from "app/Components/FancySwiper/FancySwiper"
+import { Card } from "app/Components/FancySwiper/FancySwiperCard"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
-import { ArtQuizNavigationStack } from "app/Scenes/ArtQuiz/ArtQuizNavigation"
-import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
 import { GlobalStore } from "app/store/GlobalStore"
+import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Suspense, useEffect, useRef, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { Image } from "react-native"
-import PagerView, { PagerViewOnPageScrollEvent } from "react-native-pager-view"
+
 import { graphql, useLazyLoadQuery, useMutation } from "react-relay"
 
-export const ArtQuizResultsScreen = () => {
-  const [activeCardIndex, setActiveCardIndex] = useState(0)
-  const artQuizArtworksQueryResult = useLazyLoadQuery<ArtQuizArtworksQuery>(
-    artQuizArtworksQuery,
-    {}
-  )
+const ArtQuizArtworksScreen = () => {
+  const queryResult = useLazyLoadQuery<ArtQuizArtworksQuery>(artQuizArtworksQuery, {})
   const { userID } = GlobalStore.useAppState((store) => store.auth)
-  const artworks = extractNodes(artQuizArtworksQueryResult.me?.quiz.quizArtworkConnection)
-  const pagerViewRef = useRef<PagerView>(null)
+  const { width } = useScreenDimensions()
+  const space = useSpace()
+  const artworks = extractNodes(queryResult.me?.quiz.quizArtworkConnection)
+  const lastInteractedArtworkIndex = queryResult.me?.quiz.quizArtworkConnection?.edges?.findIndex(
+    (edge) => edge?.interactedAt === null
+  )
+  const [activeCardIndex, setActiveCardIndex] = useState(lastInteractedArtworkIndex ?? 0)
   const popoverMessage = usePopoverMessage()
-
-  const { goBack, navigate } = useNavigation<NavigationProp<ArtQuizNavigationStack>>()
-  const { onDone } = useOnboardingContext()
-
-  const currentArtwork = artworks[activeCardIndex]
-  const previousArtwork = artworks[activeCardIndex - 1]
 
   const [submitDislike] = useMutation<ArtQuizArtworksDislikeMutation>(DislikeArtworkMutation)
   const [submitSave] = useMutation<ArtQuizArtworksSaveMutation>(SaveArtworkMutation)
@@ -50,27 +45,22 @@ export const ArtQuizResultsScreen = () => {
       title: `Like it? Hit the heart.${"\n"}Not for you? Choose X.`,
       placement: "bottom",
       withPointer: "bottom",
-      style: { width: "70%", marginBottom: 100, left: 55 },
+      style: { width: "70%", marginBottom: 65, left: 55 },
     })
     if (activeCardIndex !== 0) {
       popoverMessage.hide()
     }
   }, [])
 
-  const handleIndexChange = (e: PagerViewOnPageScrollEvent) => {
-    if (e.nativeEvent.position !== undefined) {
-      // We need to avoid updating the index when the position is -1. This happens when the user
-      // scrolls left on the first page in iOS when the overdrag is enabled,
-      if (e.nativeEvent.position !== -1) {
-        setActiveCardIndex(e.nativeEvent.position)
-      }
-    }
+  const handleSwipe = (swipeDirection: "left" | "right", activeIndex: number) => {
+    setActiveCardIndex(activeIndex + 1)
+    handleNext(swipeDirection === "right" ? "Like" : "Dislike", activeIndex)
   }
 
-  const handleNext = (action: "Like" | "Dislike") => {
+  const handleNext = (action: "Like" | "Dislike", activeIndex: number) => {
     popoverMessage.hide()
 
-    pagerViewRef.current?.setPage(activeCardIndex + 1)
+    const currentArtwork = artworks[activeIndex]
 
     if (action === "Like") {
       submitSave({
@@ -102,9 +92,12 @@ export const ArtQuizResultsScreen = () => {
       },
     })
 
-    if (activeCardIndex + 1 === artworks.length) {
-      navigate("ArtQuizResults", { isCalculatingResult: true })
-      return
+    if (activeIndex + 1 === artworks.length) {
+      navigate("/art-quiz/results", {
+        passProps: {
+          isCalculatingResult: true,
+        },
+      })
     }
   }
 
@@ -113,7 +106,10 @@ export const ArtQuizResultsScreen = () => {
     if (activeCardIndex === 0) {
       goBack()
     } else {
-      pagerViewRef.current?.setPage(activeCardIndex - 1)
+      const previousArtwork = artworks[activeCardIndex - 1]
+
+      setActiveCardIndex(activeCardIndex - 1)
+
       const { isSaved, isDisliked } = previousArtwork
 
       if (isSaved) {
@@ -151,9 +147,24 @@ export const ArtQuizResultsScreen = () => {
   }
 
   const handleOnSkip = () => {
-    onDone()
     popoverMessage.hide()
+    navigate("/")
   }
+
+  const artworkCards: Card[] = artworks.slice(activeCardIndex).map((artwork) => {
+    return {
+      jsx: (
+        <Flex width={width - space(4)} height={500} backgroundColor="white">
+          <Image
+            source={{ uri: artwork.image?.resized?.src }}
+            style={{ flex: 1 }}
+            resizeMode="contain"
+          />
+        </Flex>
+      ),
+      id: artwork.internalID,
+    }
+  })
 
   return (
     <Screen>
@@ -172,43 +183,19 @@ export const ArtQuizResultsScreen = () => {
           <Touchable haptic="impactLight" onPress={handleOnSkip}>
             <Flex height="100%" justifyContent="center">
               <Text textAlign="right" variant="xs">
-                Skip
+                Close
               </Text>
             </Flex>
           </Touchable>
         </Flex>
       </Screen.RawHeader>
       <Screen.Body>
-        <Flex flex={1} py={2}>
-          <PagerView
-            ref={pagerViewRef}
-            style={{ flex: 1 }}
-            initialPage={activeCardIndex}
-            onPageScroll={handleIndexChange}
-            overdrag
-          >
-            {artworks.map((artwork) => {
-              return (
-                <Flex key={artwork.internalID}>
-                  <Image
-                    source={{ uri: artwork.imageUrl! }}
-                    style={{ flex: 1 }}
-                    resizeMode="contain"
-                  />
-                </Flex>
-              )
-            })}
-          </PagerView>
-        </Flex>
-        <Flex flexDirection="row" justifyContent="center" mb={6}>
-          <Touchable onPress={() => handleNext("Dislike")} style={{ marginHorizontal: 40 }}>
-            <CloseIcon height={40} width={50} />
-          </Touchable>
-          <Spacer y={2} />
-          <Touchable onPress={() => handleNext("Like")} style={{ marginHorizontal: 40 }}>
-            <HeartIcon height={40} width={50} />
-          </Touchable>
-        </Flex>
+        <FancySwiper
+          cards={artworkCards}
+          activeIndex={activeCardIndex}
+          onSwipeRight={(index) => handleSwipe("right", index)}
+          onSwipeLeft={(index) => handleSwipe("left", index)}
+        />
       </Screen.Body>
     </Screen>
   )
@@ -217,7 +204,9 @@ export const ArtQuizResultsScreen = () => {
 export const ArtQuizArtworks = () => {
   return (
     <Suspense fallback={<ArtQuizLoader />}>
-      <ArtQuizResultsScreen />
+      <ScreenDimensionsProvider>
+        <ArtQuizArtworksScreen />
+      </ScreenDimensionsProvider>
     </Suspense>
   )
 }
@@ -228,9 +217,15 @@ const artQuizArtworksQuery = graphql`
       quiz {
         quizArtworkConnection(first: 16) {
           edges {
+            interactedAt
+            position
             node {
               internalID
-              imageUrl
+              image {
+                resized(width: 900, height: 900, version: ["normalized", "larger", "large"]) {
+                  src
+                }
+              }
               isDisliked
               isSaved
             }

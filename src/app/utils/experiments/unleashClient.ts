@@ -55,7 +55,7 @@ const createUnleashClient = (userId: string | undefined) => {
       name: key,
       enabled: experiments[key].fallbackEnabled,
       variant: {
-        enabled: experiments[key].fallbackVariant ?? false,
+        enabled: experiments[key].fallbackVariant ? true : false,
         name: experiments[key].fallbackVariant ?? "disabled",
         payload:
           experiments[key].fallbackPayload === undefined

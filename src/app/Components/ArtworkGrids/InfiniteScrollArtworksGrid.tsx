@@ -7,12 +7,13 @@
 // 4. Update height of grid to encompass all items.
 
 import { ScreenOwnerType } from "@artsy/cohesion"
-import { Flex, Box } from "@artsy/palette-mobile"
+import { Box, Flex } from "@artsy/palette-mobile"
 import { InfiniteScrollArtworksGrid_connection$data } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
 import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
 import ParentAwareScrollView from "app/Components/ParentAwareScrollView"
 import { PAGE_SIZE } from "app/Components/constants"
 import { MyCollectionArtworkGridItemFragmentContainer } from "app/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkGridItem"
+import { useNavigateToPageableRoute } from "app/system/navigation/useNavigateToPageableRoute"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import { Button, Spinner } from "palette"
@@ -24,6 +25,7 @@ import {
   NativeScrollEvent,
   NativeSyntheticEvent,
   Platform,
+  RefreshControlProps,
   ScrollView,
   StyleSheet,
   View,
@@ -122,6 +124,11 @@ export interface Props {
   updateRecentSearchesOnTap?: boolean
 
   localSortAndFilterArtworks?: (artworks: any[]) => any[]
+
+  refreshControl?: React.ReactElement<
+    RefreshControlProps,
+    string | React.JSXElementConstructor<any>
+  >
 }
 
 interface PrivateProps {
@@ -134,7 +141,7 @@ interface PrivateProps {
 }
 
 interface MapperProps extends Omit<PrivateProps, "connection"> {
-  connection?: InfiniteScrollArtworksGrid_connection$data
+  connection?: InfiniteScrollArtworksGrid_connection$data | null
   myCollectionConnection?: InfiniteScrollArtworksGrid_myCollectionConnection$data
 }
 
@@ -200,7 +207,12 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
   contextScreenOwnerSlug,
   contextScreenOwnerId,
   contextScreenOwnerType,
+  refreshControl,
 }) => {
+  const artworks = extractNodes(connection)
+
+  const { navigateToPageableRoute } = useNavigateToPageableRoute({ items: artworks })
+
   const getSectionDimension = (gridWidth: number | null | undefined) => {
     // Setting the dimension to 1 for tests to avoid adjusting the screen width
     if (__TEST__) {
@@ -244,7 +256,6 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
 
   const getSectionedArtworks = () => {
     const sectionRatioSums: number[] = []
-    const artworks = extractNodes(connection)
     const sectionedArtworksArray: Array<typeof artworks> = []
     const columnCount = sectionCount ?? 0
 
@@ -329,6 +340,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
             showLotLabel={showLotLabel}
             itemIndex={itemIndex}
             updateRecentSearchesOnTap={updateRecentSearchesOnTap}
+            navigateToPageableRoute={navigateToPageableRoute}
             {...itemComponentProps}
             height={imgHeight}
             {...componentSpecificProps}
@@ -395,6 +407,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
             handleFetchNextPageOnScroll(ev)
           }
         }}
+        refreshControl={refreshControl}
         scrollEventThrottle={scrollEventThrottle ?? 50}
         onLayout={onLayout}
         scrollsToTop={false}
@@ -428,21 +441,21 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
             <Spinner />
           </Flex>
         )}
-      </ScrollViewWrapper>
 
-      {!!localIsLoading && hasMore() && (
-        <Flex
-          alignItems="center"
-          justifyContent="center"
-          p={4}
-          pb={6}
-          style={{ opacity: localIsLoading && hasMore() ? 1 : 0 }}
-        >
-          {!!autoFetch && (
-            <ActivityIndicator color={Platform.OS === "android" ? "black" : undefined} />
-          )}
-        </Flex>
-      )}
+        {!!localIsLoading && hasMore() && (
+          <Flex
+            alignItems="center"
+            justifyContent="center"
+            m={4}
+            mb={6}
+            style={{ opacity: localIsLoading && hasMore() ? 1 : 0 }}
+          >
+            {!!autoFetch && (
+              <ActivityIndicator color={Platform.OS === "android" ? "black" : undefined} />
+            )}
+          </Flex>
+        )}
+      </ScrollViewWrapper>
 
       {renderFooter()}
     </>

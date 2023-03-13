@@ -1,10 +1,8 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, SpacingUnit } from "@artsy/palette-mobile"
 import { HomeFeedOnboardingRail_onboardingModule$data } from "__generated__/HomeFeedOnboardingRail_onboardingModule.graphql"
 import { EmbeddedCarousel } from "app/Components/EmbeddedCarousel"
 import { switchTab } from "app/system/navigation/navigate"
-import { useState } from "react"
-import { ImageSourcePropType } from "react-native"
+import { memo, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { HomeFeedModalCarousel } from "./HomeFeedModalCarousel/HomeFeedModalCarousel"
@@ -12,17 +10,7 @@ import { HomeFeedOnboardingCard } from "./HomeFeedOnboardingCard"
 
 interface HomeFeedOnboardingRailProps {
   title: string
-  mb?: SpacingUnit
   onboardingModule: HomeFeedOnboardingRail_onboardingModule$data
-}
-
-export interface HomeFeedOnboardingRailItemProps {
-  shouldShow: boolean
-  type: "MyC" | "SWA"
-  title: string
-  subtitle: string
-  image: ImageSourcePropType
-  button: string
 }
 
 interface OnboardingDataItem {
@@ -30,11 +18,25 @@ interface OnboardingDataItem {
   jsx: JSX.Element
 }
 
+export const isOnboardingVisible = (
+  onboardingModule:
+    | Omit<HomeFeedOnboardingRail_onboardingModule$data, " $fragmentType">
+    | null
+    | undefined
+) => {
+  return !!onboardingModule?.showMyCollectionCard || !!onboardingModule?.showSWACard
+}
+
 export const HomeFeedOnboardingRail: React.FC<HomeFeedOnboardingRailProps> = (props) => {
-  const { mb, title, onboardingModule } = props
+  const { title, onboardingModule } = props
   const { trackEvent } = useTracking()
 
   const [isMyCollectionModalVisible, setIsMyCollectionModalVisible] = useState(false)
+
+  if (!isOnboardingVisible(onboardingModule)) {
+    return null
+  }
+
   const onboardingCardsData: OnboardingDataItem[] = [
     {
       visible: onboardingModule.showMyCollectionCard,
@@ -84,23 +86,22 @@ export const HomeFeedOnboardingRail: React.FC<HomeFeedOnboardingRailProps> = (pr
         title={title}
         data={visibleOnboardingCardsData}
         renderItem={({ item }: { item: OnboardingDataItem }) => {
-          return <Flex mb={mb}>{item.jsx}</Flex>
+          return item.jsx
         }}
       />
     </>
   )
 }
 
-export const HomeFeedOnboardingRailFragmentContainer = createFragmentContainer(
-  HomeFeedOnboardingRail,
-  {
+export const HomeFeedOnboardingRailFragmentContainer = memo(
+  createFragmentContainer(HomeFeedOnboardingRail, {
     onboardingModule: graphql`
       fragment HomeFeedOnboardingRail_onboardingModule on HomePageMyCollectionOnboardingModule {
         showMyCollectionCard
         showSWACard
       }
     `,
-  }
+  })
 )
 
 const tracks = {

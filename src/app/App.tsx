@@ -23,7 +23,7 @@ import { ArtsyNativeModule, DEFAULT_NAVIGATION_BAR_COLOR } from "./NativeModules
 import { Providers } from "./Providers"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
-import { Onboarding } from "./Scenes/Onboarding/Onboarding"
+import { Onboarding, __unsafe__onboardingNavigationRef } from "./Scenes/Onboarding/Onboarding"
 import { DynamicIslandStagingIndicator } from "./utils/DynamicIslandStagingIndicator"
 import { createAllChannels, savePendingToken } from "./utils/PushNotification"
 import { useInitializeQueryPrefetching } from "./utils/queryPrefetching"
@@ -50,20 +50,26 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
 
 const useRageShakeDevMenu = () => {
   const userIsDev = GlobalStore.useAppState((s) => s.artsyPrefs.userIsDev.value)
+  const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
+  const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
 
   useEffect(() => {
     const subscription = RNShake.addListener(() => {
-      if (!userIsDev) {
+      if (!userIsDev || !isHydrated) {
         return
       }
 
-      navigate("/dev-menu")
+      if (!isLoggedIn) {
+        __unsafe__onboardingNavigationRef.current?.navigate("DevMenu")
+      } else {
+        navigate("/dev-menu", { modal: true })
+      }
     })
 
     return () => {
       subscription.remove()
     }
-  }, [userIsDev])
+  }, [userIsDev, isHydrated, isLoggedIn])
 }
 
 const Main = () => {

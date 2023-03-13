@@ -2,6 +2,7 @@ import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
 import { ArticleCardContainer } from "app/Components/ArticleCard"
+import { isPad } from "app/utils/hardware"
 import {
   PlaceholderBox,
   ProvidePlaceholderContext,
@@ -43,7 +44,7 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
         context_screen_owner_type: OwnerType.articles,
       })}
     >
-      <Flex flexDirection="column" justifyContent="space-between" height="100%" pb="80px">
+      <Flex flexDirection="column" justifyContent="space-between" height="100%">
         <Separator />
         <FlatList
           numColumns={numColumns}
@@ -107,8 +108,8 @@ export const ArticlesListItem: React.FC<ArticlesListItemProps> = ({ children, in
 }
 
 export const useNumColumns = () => {
-  const { width, orientation } = useScreenDimensions()
-  const isTablet = width > 700
+  const { orientation } = useScreenDimensions()
+  const isTablet = isPad()
 
   if (!isTablet) {
     return 1

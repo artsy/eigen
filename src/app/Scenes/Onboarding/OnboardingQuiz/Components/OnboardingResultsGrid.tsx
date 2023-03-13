@@ -1,12 +1,11 @@
 import {
-  HeartIcon,
-  HeartFillIcon,
-  Flex,
   Box,
-  SpacingUnitDSValueNumber,
-  useTheme,
+  Flex,
+  HeartFillIcon,
+  HeartIcon,
   Text,
   TextProps,
+  useTheme,
 } from "@artsy/palette-mobile"
 import {
   OnboardingResultsGrid_connection$data,
@@ -21,9 +20,7 @@ import { FC } from "react"
 import { Dimensions, ScrollView } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"
 
-const DEFAULT_ITEM_PADDING: SpacingUnitDSValueNumber = 2
-const DEFAULT_ITEM_MARGIN: SpacingUnitDSValueNumber = 2
-const DEFAULT_SECTION_MARGIN: SpacingUnitDSValueNumber = 2
+const DEFAULT_SECTION_MARGIN = 20
 
 export type GridItem = NonNullable<
   NonNullable<OnboardingResultsGrid_connection$data["edges"]>[number]
@@ -37,9 +34,6 @@ export const OnboardingResultsGrid: FC<OnboardingResultsGridProps> = ({ connecti
   const { space } = useTheme()
 
   const [commit] = useMutation(SaveArtworkMutation)
-  if (!connection) {
-    return null
-  }
 
   const result = useFragment(OnboardingResultsGridFragment, connection)
   const gridItems = extractNodes(result)
@@ -72,11 +66,16 @@ export const OnboardingResultsGrid: FC<OnboardingResultsGridProps> = ({ connecti
         const artwork = sectionedGridItems[column][row]
         items.push(
           <Touchable key={artwork.slug} onPress={() => handleSaveArtwork(artwork)}>
-            <GridItem artwork={artwork} itemWidth={itemWidth} p={DEFAULT_ITEM_PADDING} />
+            <GridItem artwork={artwork} itemWidth={itemWidth} />
           </Touchable>
         )
         items.push(
-          <Flex m={DEFAULT_ITEM_MARGIN} key={`spacer-${row}`} accessibilityLabel="Spacer View" />
+          <Flex
+            // @ts-ignore
+            m={DEFAULT_SECTION_MARGIN + "px"}
+            key={`spacer-${row}`}
+            accessibilityLabel="Spacer View"
+          />
         )
       }
       sections.push(
@@ -84,13 +83,18 @@ export const OnboardingResultsGrid: FC<OnboardingResultsGridProps> = ({ connecti
           flex={1}
           flexDirection="column"
           key={column}
-          mr={column === columns - 1 ? undefined : DEFAULT_SECTION_MARGIN}
+          // @ts-ignore
+          mr={column === columns - 1 ? undefined : DEFAULT_SECTION_MARGIN + "px"}
         >
           {items}
         </Flex>
       )
     }
     return sections
+  }
+
+  if (!connection) {
+    return null
   }
 
   return (

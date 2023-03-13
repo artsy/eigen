@@ -5,22 +5,25 @@ import {
   TappedConsignArgs,
   TappedConsignmentInquiry,
 } from "@artsy/cohesion"
-import { Spacer, Flex, Join, Text } from "@artsy/palette-mobile"
+import { Spacer, Flex, Join } from "@artsy/palette-mobile"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { SellWithArtsyHome_me$data } from "__generated__/SellWithArtsyHome_me.graphql"
 import { SellWithArtsyHome_recentlySoldArtworksTypeConnection$data } from "__generated__/SellWithArtsyHome_recentlySoldArtworksTypeConnection.graphql"
-import { GetInTouchBanner } from "app/Scenes/SellWithArtsy/Components/GetInTouchBanner"
+import { CollectorsNetwork } from "app/Scenes/SellWithArtsy/Components/CollectorsNetwork"
+import { FAQSWA } from "app/Scenes/SellWithArtsy/Components/FAQSWA"
 import { Highlights } from "app/Scenes/SellWithArtsy/Components/Highlights"
 import { MeetTheSpecialists } from "app/Scenes/SellWithArtsy/Components/MeetTheSpecialists"
+import { SpeakToTheTeam } from "app/Scenes/SellWithArtsy/Components/SpeakToTheTeam"
+import { Testimonials } from "app/Scenes/SellWithArtsy/Components/Testimonials"
 import { WaysWeSell } from "app/Scenes/SellWithArtsy/Components/WaysWeSell"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { useLightStatusBarStyle } from "app/utils/useStatusBarStyle"
+import { useSwitchStatusBarStyle } from "app/utils/useStatusBarStyle"
 import { Button, Screen } from "palette"
-import React, { useEffect } from "react"
-import { ScrollView } from "react-native"
+import { useEffect } from "react"
+import { ScrollView, StatusBarStyle } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
@@ -34,7 +37,7 @@ import { WhySellWithArtsy } from "./Components/WhySellWithArtsy"
 const consignArgs: TappedConsignArgs = {
   contextModule: ContextModule.sellFooter,
   contextScreenOwnerType: OwnerType.sell,
-  subject: "Submit a work",
+  subject: "Submit an Artwork",
 }
 
 interface SellWithArtsyHomeProps {
@@ -46,8 +49,14 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
   recentlySoldArtworks,
   me,
 }) => {
-  useLightStatusBarStyle()
   const enableNewSWALandingPage = useFeatureFlag("AREnableNewSWALandingPage")
+
+  const onFocusStatusBarStyle: StatusBarStyle = enableNewSWALandingPage
+    ? "dark-content"
+    : "light-content"
+  const onBlurStatusBarStyle: StatusBarStyle = "dark-content"
+
+  useSwitchStatusBarStyle(onFocusStatusBarStyle, onBlurStatusBarStyle)
 
   const { height: screenHeight } = useScreenDimensions()
   const tracking = useTracking()
@@ -62,10 +71,13 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
     navigate(route)
   }
 
-  const handleInquiryPress = (inquiryTrackingArgs?: TappedConsignmentInquiry) => {
-    //TODO: Implement Tracking. Add the right ContextModules
+  const handleInquiryPress = (
+    inquiryTrackingArgs?: TappedConsignmentInquiry,
+    recipientEmail?: string,
+    recipientName?: string
+  ) => {
     if (inquiryTrackingArgs) {
-      // track
+      tracking.trackEvent(inquiryTrackingArgs)
     }
     navigate("/sell/inquiry", {
       passProps: {
@@ -73,6 +85,8 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
         name: me?.name ?? "",
         phone: me?.phone ?? "",
         userId: me?.internalID ?? undefined,
+        recipientEmail: recipientEmail ?? null,
+        recipientName: recipientName ?? null,
       },
     })
   }
@@ -102,42 +116,56 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
                 <WaysWeSell />
               </Join>
             )}
-            {enableNewSWALandingPage && <Spacer y={4} />}
+            {enableNewSWALandingPage && <Spacer y={6} />}
 
             <HowItWorks onConsignPress={handleConsignPress} />
-
+            {enableNewSWALandingPage && <Spacer y={2} />}
             <Spacer y={4} />
 
             {enableNewSWALandingPage && (
-              <Join separator={<Spacer y={4} />}>
-                <GetInTouchBanner onInquiryPress={handleInquiryPress} />
+              <Join separator={<Spacer y={6} />}>
+                <SpeakToTheTeam onInquiryPress={handleInquiryPress} />
                 <MeetTheSpecialists onInquiryPress={handleInquiryPress} />
               </Join>
             )}
-            {enableNewSWALandingPage && <Spacer y={4} />}
+            {enableNewSWALandingPage && <Spacer y={6} />}
+            {enableNewSWALandingPage && <CollectorsNetwork />}
+            {enableNewSWALandingPage && <Spacer y={6} />}
             <SellWithArtsyRecentlySold recentlySoldArtworks={recentlySoldArtworks!} />
 
-            <Spacer y={4} />
-
-            <WhySellWithArtsy />
-
-            <Spacer y={4} />
-
-            <Flex mx={2}>
-              <Button
-                testID="footer-cta"
-                variant="fillDark"
-                block
-                onPress={() => handleConsignPress(consignArgs)}
-                haptic
-              >
-                <Text variant="sm">Submit an Artwork</Text>
-              </Button>
-            </Flex>
+            {enableNewSWALandingPage && (
+              <Join separator={<Spacer y={6} />}>
+                <></>
+                <Testimonials />
+                <FAQSWA />
+              </Join>
+            )}
 
             <Spacer y={4} />
+            {enableNewSWALandingPage && <Spacer y={2} />}
 
-            <Footer />
+            {!enableNewSWALandingPage && <WhySellWithArtsy />}
+
+            {!enableNewSWALandingPage && (
+              <>
+                <Spacer y={4} />
+                <Flex mx={2}>
+                  <Button
+                    testID="footer-cta"
+                    variant="fillDark"
+                    block
+                    onPress={() => handleConsignPress(consignArgs)}
+                    haptic
+                  >
+                    Submit an Artwork
+                  </Button>
+                </Flex>
+                <Spacer y={4} />
+              </>
+            )}
+
+            <Footer onConsignPress={handleConsignPress} />
+            {enableNewSWALandingPage && <Spacer y={4} />}
           </Flex>
         </ScrollView>
       </Flex>

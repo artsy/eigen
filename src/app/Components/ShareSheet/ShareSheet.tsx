@@ -14,6 +14,7 @@ import { Schema } from "app/utils/track"
 import { useCanOpenURL } from "app/utils/useCanOpenURL"
 import React, { useRef } from "react"
 import { ScrollView } from "react-native"
+import Config from "react-native-config"
 import RNShare, { ShareOptions } from "react-native-share"
 import ViewShot from "react-native-view-shot"
 import { useTracking } from "react-tracking"
@@ -82,6 +83,7 @@ export const ShareSheet: React.FC<ShareSheetProps> = (props) => {
       const event = tracks.share(contextModule, ownerType, entry, CustomService.instagram_stories)
 
       await RNShare.shareSingle({
+        appId: Config.ARTSY_FACEBOOK_APP_ID,
         social: RNShare.Social.INSTAGRAM_STORIES,
         backgroundImage: base64Data,
       })

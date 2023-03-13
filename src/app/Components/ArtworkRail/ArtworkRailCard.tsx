@@ -6,6 +6,7 @@ import {
 } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { Schema } from "app/utils/track"
@@ -41,6 +42,7 @@ export interface ArtworkRailCardProps {
   lotLabel?: string | null
   lowEstimateDisplay?: string
   highEstimateDisplay?: string
+  performanceDisplay?: string
   onPress?: (event: GestureResponderEvent) => void
   priceRealizedDisplay?: string
   showSaveIcon?: boolean
@@ -57,6 +59,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   lotLabel,
   lowEstimateDisplay,
   highEstimateDisplay,
+  performanceDisplay,
   onPress,
   priceRealizedDisplay,
   showSaveIcon = false,
@@ -87,7 +90,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     if (cardSize === "small") {
       return ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + 30
     }
-    return ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + (isRecentlySoldArtwork ? 30 : 0)
+    return ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + (isRecentlySoldArtwork ? 50 : 0)
   }
 
   const containerWidth = useMemo(() => {
@@ -147,6 +150,11 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     trackEvent(tracks.saveOrUnsave(isSaved, internalID, slug, trackingContextScreenOwnerType))
   }
 
+  const enableNewSWALandingPage = useFeatureFlag("AREnableNewSWALandingPage")
+
+  const displayForRecentlySoldArtwork =
+    !!isRecentlySoldArtwork && size === "large" && enableNewSWALandingPage
+
   return (
     <ArtworkCard onPress={onPress || undefined} testID={testID}>
       <Flex>
@@ -177,25 +185,25 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
               <Text
                 color={primaryTextColor}
                 numberOfLines={size === "small" ? 2 : 1}
-                lineHeight="20px"
-                variant="xs"
+                lineHeight={displayForRecentlySoldArtwork ? undefined : "20px"}
+                variant={displayForRecentlySoldArtwork ? "md" : "xs"}
               >
                 {artistNames}
               </Text>
             )}
             {!!title && (
               <Text
-                lineHeight="20px"
-                color={secondaryTextColor}
+                lineHeight={displayForRecentlySoldArtwork ? undefined : "20px"}
+                color={displayForRecentlySoldArtwork ? undefined : secondaryTextColor}
                 numberOfLines={size === "small" ? 2 : 1}
                 variant="xs"
-                fontStyle="italic"
+                fontStyle={displayForRecentlySoldArtwork ? undefined : "italic"}
               >
                 {title}
                 {!!date && (
                   <Text
-                    lineHeight="20px"
-                    color={secondaryTextColor}
+                    lineHeight={displayForRecentlySoldArtwork ? undefined : "20px"}
+                    color={displayForRecentlySoldArtwork ? undefined : secondaryTextColor}
                     numberOfLines={size === "small" ? 2 : 1}
                     variant="xs"
                   >
@@ -212,25 +220,13 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
               </Text>
             )}
             {!!isRecentlySoldArtwork && size === "large" && (
-              <>
-                <Spacer y={2} />
-                <Flex flexDirection="row" justifyContent="space-between">
-                  <Text variant="xs" color={secondaryTextColor} numberOfLines={1} fontWeight="500">
-                    Estimate
-                  </Text>
-                  <Text variant="xs" color={secondaryTextColor} numberOfLines={1} fontWeight="500">
-                    {compact([lowEstimateDisplay, highEstimateDisplay]).join("—")}
-                  </Text>
-                </Flex>
-                <Flex flexDirection="row" justifyContent="space-between">
-                  <Text variant="xs" color="blue100" numberOfLines={1} fontWeight="500">
-                    Sold For (incl. premium)
-                  </Text>
-                  <Text variant="xs" color="blue100" numberOfLines={1} fontWeight="500">
-                    {priceRealizedDisplay}
-                  </Text>
-                </Flex>
-              </>
+              <RecentlySoldCardSection
+                priceRealizedDisplay={priceRealizedDisplay}
+                lowEstimateDisplay={lowEstimateDisplay}
+                highEstimateDisplay={highEstimateDisplay}
+                performanceDisplay={performanceDisplay}
+                secondaryTextColor={secondaryTextColor}
+              />
             )}
 
             {!!saleMessage && !isRecentlySoldArtwork && (
@@ -344,6 +340,61 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
         </Flex>
       )}
     </Flex>
+  )
+}
+
+const RecentlySoldCardSection: React.FC<
+  Pick<
+    ArtworkRailCardProps,
+    "priceRealizedDisplay" | "lowEstimateDisplay" | "highEstimateDisplay" | "performanceDisplay"
+  > & { secondaryTextColor: string }
+> = ({
+  priceRealizedDisplay,
+  lowEstimateDisplay,
+  highEstimateDisplay,
+  performanceDisplay,
+  secondaryTextColor,
+}) => {
+  const enableNewSWALandingPage = useFeatureFlag("AREnableNewSWALandingPage")
+  if (enableNewSWALandingPage) {
+    return (
+      <>
+        <Flex flexDirection="row" justifyContent="space-between" mt={1}>
+          <Text variant="lg-display" numberOfLines={1}>
+            {priceRealizedDisplay}
+          </Text>
+          {performanceDisplay && (
+            <Text variant="lg-display" color="green" numberOfLines={1}>
+              {`+${performanceDisplay}`}
+            </Text>
+          )}
+        </Flex>
+        <Text variant="xs" color="black60" lineHeight="20px">
+          Estimate {compact([lowEstimateDisplay, highEstimateDisplay]).join("—")}
+        </Text>
+      </>
+    )
+  }
+  return (
+    <>
+      <Spacer y={2} />
+      <Flex flexDirection="row" justifyContent="space-between">
+        <Text variant="xs" color={secondaryTextColor} numberOfLines={1} fontWeight="500">
+          Estimate
+        </Text>
+        <Text variant="xs" color={secondaryTextColor} numberOfLines={1} fontWeight="500">
+          {compact([lowEstimateDisplay, highEstimateDisplay]).join("—")}
+        </Text>
+      </Flex>
+      <Flex flexDirection="row" justifyContent="space-between">
+        <Text variant="xs" color="blue100" numberOfLines={1} fontWeight="500">
+          Sold For (incl. premium)
+        </Text>
+        <Text variant="xs" color="blue100" numberOfLines={1} fontWeight="500">
+          {priceRealizedDisplay}
+        </Text>
+      </Flex>
+    </>
   )
 }
 

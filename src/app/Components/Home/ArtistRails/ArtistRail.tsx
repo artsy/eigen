@@ -2,7 +2,7 @@
 //       version. In reality it should be updated to never render the React component but instead update the store and
 //       let Relay re-render the cards.
 
-import { Flex, SpacingUnit } from "@artsy/palette-mobile"
+import { Flex } from "@artsy/palette-mobile"
 import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
 import { ArtistRailFollowMutation } from "__generated__/ArtistRailFollowMutation.graphql"
 import { ArtistRailNewSuggestionQuery } from "__generated__/ArtistRailNewSuggestionQuery.graphql"
@@ -40,7 +40,6 @@ interface Props extends ViewProps {
   subtitle?: string
   relay: RelayProp
   rail: ArtistRail_rail$data
-  mb?: SpacingUnit
 }
 
 const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
@@ -210,7 +209,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
   }
 
   return artists.length ? (
-    <Flex mb={props.mb}>
+    <Flex>
       <Flex pl={2} pr={2}>
         <SectionTitle title={props.title} subtitle={props.subtitle} />
       </Flex>

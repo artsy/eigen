@@ -135,6 +135,7 @@ describe("ShareSheet", () => {
 
       await waitFor(() =>
         expect(Share.shareSingle).toBeCalledWith({
+          appId: "artsy_facebook_app_id",
           social: "instagramstories",
           backgroundImage: "data",
         })

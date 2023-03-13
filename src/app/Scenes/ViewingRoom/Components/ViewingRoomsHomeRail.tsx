@@ -1,15 +1,16 @@
-import { Spacer, Flex, SpacingUnit, Text } from "@artsy/palette-mobile"
+import { Flex, Spacer } from "@artsy/palette-mobile"
 import { ViewingRoomsHomeRailQuery } from "__generated__/ViewingRoomsHomeRailQuery.graphql"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { MediumCard } from "app/Components/Cards"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { isPad } from "app/utils/hardware"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { Schema } from "app/utils/track"
 import _ from "lodash"
 import { Touchable } from "palette"
-import React, { Suspense } from "react"
+import React, { memo, Suspense } from "react"
 import { FlatList } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -23,46 +24,42 @@ import { tagForStatus } from "./ViewingRoomsListItem"
 interface ViewingRoomsHomeMainRailProps {
   featured: ViewingRoomsListFeatured_featured$key
   title: string
-  mb?: SpacingUnit
 }
 
-export const ViewingRoomsHomeMainRail: React.FC<ViewingRoomsHomeMainRailProps> = ({
-  featured,
-  title,
-  mb,
-}) => {
-  const { trackEvent } = useTracking()
+export const ViewingRoomsHomeMainRail: React.FC<ViewingRoomsHomeMainRailProps> = memo(
+  ({ featured, title }) => {
+    const { trackEvent } = useTracking()
 
-  const featuredData = useFragment(featuredFragment, featured)
-  const featuredLength = extractNodes(featuredData).length
+    const featuredData = useFragment(featuredFragment, featured)
+    const featuredLength = extractNodes(featuredData).length
 
-  return (
-    <Flex mb={mb}>
-      <Flex mx={2}>
-        <SectionTitle
-          title={title}
-          onPress={() => {
-            trackEvent(tracks.tappedViewingRoomsHeader())
-            navigate("/viewing-rooms")
-          }}
-          RightButtonContent={() => <Text color="black60">View all</Text>}
-        />
-      </Flex>
-      {featuredLength > 0 ? (
-        <FeaturedRail
-          featured={featured}
-          trackInfo={{ screen: Schema.PageNames.Home, ownerType: Schema.OwnerEntityTypes.Home }}
-        />
-      ) : (
-        <Suspense fallback={<Placeholder />}>
-          <ViewingRoomsHomeRail
+    return (
+      <Flex>
+        <Flex mx={2}>
+          <SectionTitle
+            title={title}
+            onPress={() => {
+              trackEvent(tracks.tappedViewingRoomsHeader())
+              navigate("/viewing-rooms")
+            }}
+          />
+        </Flex>
+        {featuredLength > 0 ? (
+          <FeaturedRail
+            featured={featured}
             trackInfo={{ screen: Schema.PageNames.Home, ownerType: Schema.OwnerEntityTypes.Home }}
           />
-        </Suspense>
-      )}
-    </Flex>
-  )
-}
+        ) : (
+          <Suspense fallback={<Placeholder />}>
+            <ViewingRoomsHomeRail
+              trackInfo={{ screen: Schema.PageNames.Home, ownerType: Schema.OwnerEntityTypes.Home }}
+            />
+          </Suspense>
+        )}
+      </Flex>
+    )
+  }
+)
 
 const Placeholder = () => (
   <ProvidePlaceholderContext>
@@ -84,6 +81,7 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({ trac
   const queryData = useLazyLoadQuery<ViewingRoomsHomeRailQuery>(ViewingRoomsHomeRailMainQuery, {})
   const regular = extractNodes(queryData.viewingRooms)
 
+  const isTablet = isPad()
   const { trackEvent } = useTracking()
 
   return (
@@ -93,6 +91,7 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({ trac
         ListHeaderComponent={() => <Spacer x={2} />}
         ListFooterComponent={() => <Spacer x={2} />}
         data={regular}
+        initialNumToRender={isTablet ? 10 : 5}
         keyExtractor={(item) => `${item.internalID}`}
         renderItem={({ item }) => {
           const tag = tagForStatus(item.status, item.distanceToOpen, item.distanceToClose)

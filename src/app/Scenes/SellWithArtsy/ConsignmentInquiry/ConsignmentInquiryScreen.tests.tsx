@@ -23,12 +23,28 @@ describe("ConsignmentInquiryScreen", () => {
       message: "Message to You",
     }
 
+    const inputWithRecipientEmail = {
+      ...otherProps,
+      phoneNumber: phone,
+      message: "Message to You",
+      recipientEmail: "test@artsymail.com",
+    }
+
     const environment = createMockEnvironment()
 
     const onCompleted = jest.fn()
 
     it("sends Consignment Inquiries", () => {
       createConsignmentInquiry(environment, onCompleted, jest.fn(), input)
+      const operation = environment.mock.getMostRecentOperation()
+      act(() => {
+        environment.mock.resolve(operation, MockPayloadGenerator.generate(operation))
+      })
+      expect(onCompleted).toBeCalled()
+    })
+
+    it("sends Consignment Inquiries with recipientEmail ", () => {
+      createConsignmentInquiry(environment, onCompleted, jest.fn(), inputWithRecipientEmail)
       const operation = environment.mock.getMostRecentOperation()
       act(() => {
         environment.mock.resolve(operation, MockPayloadGenerator.generate(operation))
