@@ -1,10 +1,12 @@
 import { ActionType, ContextModule, OwnerType, TappedConsignmentInquiry } from "@artsy/cohesion"
 import { Flex, Spacer, Text, useColor, useSpace } from "@artsy/palette-mobile"
 import { SPECIALISTS, Specialty } from "app/Scenes/SellWithArtsy/utils/specialistsData"
+import { isPad } from "app/utils/hardware"
 import { Button, Pill } from "palette"
 import { useState } from "react"
 import { FlatList, ImageBackground, ScrollView } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
+import { useScreenDimensions } from "shared/hooks"
 
 interface PillData {
   type: Specialty
@@ -35,6 +37,8 @@ export const MeetTheSpecialists: React.FC<{
 }> = ({ onInquiryPress }) => {
   const color = useColor()
   const space = useSpace()
+  const { width: deviceWidth } = useScreenDimensions()
+  const isTablet = isPad()
 
   const initialSpecialty: Specialty = "auctions"
   const [selectedSpecialty, setSelectedSpecialty] = useState<Specialty>(initialSpecialty)
@@ -42,12 +46,11 @@ export const MeetTheSpecialists: React.FC<{
 
   return (
     <Flex>
-      <Text variant="lg-display" mx={2}>
+      <Text variant="lg-display" mx={2} mb={1}>
         Meet the specialists
       </Text>
       <Text variant="xs" mb={2} mx={2}>
-        Our in-house experts cover Post-War and Contemporary Art, Prints and Multiples, Street Art
-        and Photographs.
+        Our specialists span today’s most popular collecting categories.
       </Text>
       <ScrollView
         contentContainerStyle={{ marginHorizontal: space(2) }}
@@ -90,7 +93,7 @@ export const MeetTheSpecialists: React.FC<{
         renderItem={({ item }) => {
           const buttonText = `Contact ${item.firstName}`
           const imgHeightToWidthRatio = 1.511 // based on designs
-          const imgWidth = 250
+          const imgWidth = isTablet ? 400 : deviceWidth - space(6)
           return (
             <ImageBackground
               source={item.image}
@@ -142,8 +145,7 @@ export const MeetTheSpecialists: React.FC<{
       />
       <Flex mx={2} mt={2}>
         <Text variant="md" mb={2}>
-          Not sure which of our experts is the right fit for your work? Get in touch and we'll
-          connect you.
+          Not sure who’s the right fit for your collection? Get in touch and we’ll connect you.
         </Text>
 
         <Button

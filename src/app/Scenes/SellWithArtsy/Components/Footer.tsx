@@ -70,8 +70,8 @@ const NewFooter: React.FC<{
   const buttonText = "Start Selling"
   return (
     <Flex mx={2} alignItems={isTablet ? "center" : undefined}>
-      <Text variant="lg-display">
-        Sell with Artsy is the simple, contemporary way to sell art from your collection.
+      <Text variant="lg-display" textAlign="center">
+        Meet your new advisor. It’s Artsy.
       </Text>
       <Spacer y={2} />
       <Button
@@ -84,6 +84,26 @@ const NewFooter: React.FC<{
       >
         {buttonText}
       </Button>
+      <Spacer y={4} />
+      <Separator />
+      <Flex my={2}>
+        <Text variant="md">Gallerist or Art Dealer?</Text>
+        <Flex></Flex>
+        <Text variant="xs" color="black60">
+          <Text
+            variant="xs"
+            color="black60"
+            onPress={() => navigate("https://partners.artsy.net/")}
+            style={{ textDecorationLine: "underline" }}
+          >
+            {" "}
+            Become a partner
+          </Text>{" "}
+          to access the world’s largest online art marketplace.
+        </Text>
+      </Flex>
+      <Separator />
+      <Spacer y={4} />
     </Flex>
   )
 }

@@ -16,8 +16,8 @@ export const FAQSWA: React.FC = () => {
       flexDirection={isTablet ? "row" : "column"}
       maxWidth={deviceWidth}
     >
-      <Flex mx={2}>
-        <Text variant="md" mb={4} color="white100">
+      <Flex mt={2} mb={4}>
+        <Text variant="lg" mb={4} color="white100">
           No upfront fees, clear pricing estimates and commission structures.
         </Text>
         <Text variant="xs" color="white100" mb={2}>

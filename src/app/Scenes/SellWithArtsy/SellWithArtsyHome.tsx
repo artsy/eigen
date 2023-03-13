@@ -58,7 +58,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
 
   useSwitchStatusBarStyle(onFocusStatusBarStyle, onBlurStatusBarStyle)
 
-  const { height: screenHeight } = useScreenDimensions()
+  const { height: screenHeight, safeAreaInsets } = useScreenDimensions()
   const tracking = useTracking()
 
   const handleConsignPress = (tappedConsignArgs: TappedConsignArgs) => {
@@ -103,7 +103,13 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
 
   return (
     <Screen.Background>
-      <Flex flex={1} justifyContent="center" alignItems="center" minHeight={screenHeight}>
+      <Flex
+        flex={1}
+        justifyContent="center"
+        alignItems="center"
+        minHeight={screenHeight}
+        style={{ paddingTop: enableNewSWALandingPage ? safeAreaInsets.top : undefined }}
+      >
         <ScrollView showsVerticalScrollIndicator={false}>
           <Flex pb={6}>
             <Header onConsignPress={handleConsignPress} onInquiryPress={handleInquiryPress} />
