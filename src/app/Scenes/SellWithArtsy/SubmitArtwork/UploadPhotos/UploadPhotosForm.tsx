@@ -114,7 +114,6 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
   // remove photo from submission and Formik values
   const handlePhotoDelete = async (photo: Photo) => {
     try {
-      await removeAssetFromSubmission({ assetID: photo.id })
       const filteredPhotos = values.photos.filter((p: Photo) => p.id !== photo.id)
       const isTotalSizeLimitExceeded = isSizeLimitExceeded(filteredPhotos)
       // make sure to clean error state from photos, if total size limit is not exceed after deletion
@@ -136,6 +135,8 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
         photos: filteredPhotos,
       })
       setFieldValue("photos", filteredPhotos)
+
+      await removeAssetFromSubmission({ assetID: photo.id })
     } catch (error) {
       photo.error = true
       photo.errorMessage = "Photo could not be deleted"
@@ -172,6 +173,7 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
         <PhotoRow
           key={idx}
           photo={photo}
+          hideDeleteButton={isAnyPhotoLoading}
           onPhotoDelete={handlePhotoDelete}
           progress={progress[photo.path] ?? 0}
         />
