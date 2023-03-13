@@ -18,26 +18,29 @@ jest.mock("./utils/useSWALandingPageData", () => {
   return {
     useSWALandingPageData: jest.fn().mockImplementation(() => {
       return {
-        specialists: [
-          {
-            specialty: "collectorServices",
-            name: "Dana Rodriguez",
-            firstName: "Dana",
-            jobTitle: "Associate, Collector Services",
-            bio: "20-year veteran as the VP of Artsy's commercial and benefit auctions businesses.",
-            image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2",
-            email: "dana.rodriguez@artsy.net",
-          },
-        ],
-        testimonials: [
-          {
-            reviewText:
-              "My specialist kept me transparently informed from our initial conversation throughout. They took care of everything smoothly - from finding the right buyer to taking care of shipping and final payment.",
-            image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d",
-            reviewerName: "Joe Bloggs",
-            gallery: "White Cube Gallery",
-          },
-        ],
+        data: {
+          specialists: [
+            {
+              specialty: "collectorServices",
+              name: "Dana Rodriguez",
+              firstName: "Dana",
+              jobTitle: "Associate, Collector Services",
+              bio: "20-year veteran as the VP of Artsy's commercial and benefit auctions businesses.",
+              image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2",
+              email: "dana.rodriguez@artsy.net",
+            },
+          ],
+          testimonials: [
+            {
+              reviewText:
+                "My specialist kept me transparently informed from our initial conversation throughout. They took care of everything smoothly - from finding the right buyer to taking care of shipping and final payment.",
+              image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d",
+              reviewerName: "Joe Bloggs",
+              gallery: "White Cube Gallery",
+            },
+          ],
+        },
+        loading: false,
       }
     }),
   }

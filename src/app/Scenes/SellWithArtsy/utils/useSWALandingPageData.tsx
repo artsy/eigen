@@ -33,6 +33,7 @@ const CacheValidPeriodInMs = 86400000 // 24 hours
 const dataUrl = "https://sell-with-artsy.s3.amazonaws.com/landingpagedata.json"
 
 export const useSWALandingPageData = () => {
+  const [loading, setLoading] = useState(false)
   const [data, setData] = useState<CacheDataType["data"]>({ specialists: null, testimonials: null })
 
   useEffect(() => {
@@ -57,10 +58,12 @@ export const useSWALandingPageData = () => {
   }, [])
 
   const fetchData = async () => {
+    setLoading(true)
     try {
       const response = await fetch(dataUrl)
       const data = await response.json()
       setData(data)
+      setLoading(false)
       AsyncStorage.setItem(
         SWA_LANDING_PAGE_DATA_KEY,
         JSON.stringify({
@@ -69,9 +72,10 @@ export const useSWALandingPageData = () => {
         })
       )
     } catch (error) {
+      setLoading(false)
       console.error("[SWALandingPageDataError] Error:", error)
     }
   }
 
-  return data
+  return { data, loading }
 }

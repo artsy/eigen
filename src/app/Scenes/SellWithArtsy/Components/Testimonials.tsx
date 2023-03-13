@@ -14,7 +14,10 @@ import { useScreenDimensions } from "shared/hooks"
 
 export const Testimonials: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const { testimonials } = useSWALandingPageData()
+  const {
+    data: { testimonials },
+    loading,
+  } = useSWALandingPageData()
 
   const onViewableItemsChanged = useCallback(({ viewableItems }) => {
     if (viewableItems.length > 0) {
@@ -34,6 +37,10 @@ export const Testimonials: React.FC = () => {
   const color = useColor()
   const { width } = useScreenDimensions()
   const isAPad = isPad()
+
+  if (loading) {
+    return <LoadingSkeleton />
+  }
 
   if (!testimonials) {
     return <LoadingSkeleton />

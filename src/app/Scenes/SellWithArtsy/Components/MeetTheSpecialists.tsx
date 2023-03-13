@@ -21,14 +21,22 @@ export const MeetTheSpecialists: React.FC<{
   const initialSpecialty = "auctions"
   const [selectedSpecialty, setSelectedSpecialty] = useState<string>(initialSpecialty)
 
-  const { specialists } = useSWALandingPageData()
+  const {
+    data: { specialists },
+    loading,
+  } = useSWALandingPageData()
 
-  if (!specialists) {
+  if (loading) {
     return <LoadingSkeleton />
   }
 
-  const pills = uniqBy(
+  if (!specialists) {
+    return null
+  }
+
+  const pillLabels = uniqBy(
     specialists.map((specialist) => {
+      // derives the labels from specialists type.
       let titleText = specialist.specialty.replace(/([A-Z])/g, " $1")
       titleText = titleText.replace(/ And /g, " & ")
       const title = titleText.charAt(0).toUpperCase() + titleText.slice(1)
@@ -56,7 +64,7 @@ export const MeetTheSpecialists: React.FC<{
         horizontal
         showsHorizontalScrollIndicator={false}
       >
-        {pills.map((pill) => (
+        {pillLabels.map((pill) => (
           <Pill
             key={pill.title}
             rounded
