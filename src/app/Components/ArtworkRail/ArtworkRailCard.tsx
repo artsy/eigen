@@ -1,4 +1,12 @@
-import { Flex, HeartFillIcon, HeartIcon, Spacer, Text, useColor } from "@artsy/palette-mobile"
+import {
+  Flex,
+  HeartFillIcon,
+  HeartIcon,
+  Spacer,
+  Text,
+  useColor,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import {
   ArtworkRailCard_artwork$data,
@@ -8,6 +16,7 @@ import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "app/Compone
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
+import { isPad } from "app/utils/hardware"
 import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { Schema } from "app/utils/track"
 import { sizeToFit } from "app/utils/useSizeToFit"
@@ -17,6 +26,7 @@ import { useMemo } from "react"
 import { GestureResponderEvent, PixelRatio } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
+import { useScreenDimensions } from "shared/hooks"
 import styled from "styled-components/native"
 import { LARGE_RAIL_IMAGE_WIDTH } from "./LargeArtworkRail"
 import { SMALL_RAIL_IMAGE_WIDTH } from "./SmallArtworkRail"
@@ -27,11 +37,12 @@ const SAVE_ICON_SIZE = 26
 export const ARTWORK_RAIL_CARD_IMAGE_HEIGHT = {
   small: 230,
   large: 320,
+  extraLarge: 400,
 }
 
 const ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH = 295
 
-export type ArtworkCardSize = "small" | "large"
+export type ArtworkCardSize = "small" | "large" | "extraLarge"
 
 export interface ArtworkRailCardProps {
   artwork: ArtworkRailCard_artwork$key
@@ -68,6 +79,11 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   trackingContextScreenOwnerType,
   ...restProps
 }) => {
+  const isTablet = isPad()
+  const space = useSpace()
+  const { width } = useScreenDimensions()
+  const EXTRALARGE_RAIL_CARD_IMAGE_WIDTH = isTablet ? 400 : width - space(6)
+
   const { trackEvent } = useTracking()
   const fontScale = PixelRatio.getFontScale()
   const [saveArtwork] = useMutation(SaveArtworkMutation)
@@ -100,7 +116,9 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
         height: image?.resized?.height ?? 0,
       },
       {
-        width: ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
+        width: isRecentlySoldArtwork
+          ? EXTRALARGE_RAIL_CARD_IMAGE_WIDTH
+          : ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
         height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
       }
     )
@@ -113,6 +131,16 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
           return SMALL_RAIL_IMAGE_WIDTH
         } else if (imageDimensions.width >= LARGE_RAIL_IMAGE_WIDTH) {
           return LARGE_RAIL_IMAGE_WIDTH
+        } else {
+          return imageDimensions.width
+        }
+      case "extraLarge":
+        if (imageDimensions.width <= SMALL_RAIL_IMAGE_WIDTH) {
+          return SMALL_RAIL_IMAGE_WIDTH
+        } else if (imageDimensions.width <= LARGE_RAIL_IMAGE_WIDTH) {
+          return LARGE_RAIL_IMAGE_WIDTH
+        } else if (imageDimensions.width >= EXTRALARGE_RAIL_CARD_IMAGE_WIDTH) {
+          return EXTRALARGE_RAIL_CARD_IMAGE_WIDTH
         } else {
           return imageDimensions.width
         }
@@ -153,7 +181,9 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const enableNewSWALandingPage = useFeatureFlag("AREnableNewSWALandingPage")
 
   const displayForRecentlySoldArtwork =
-    !!isRecentlySoldArtwork && size === "large" && enableNewSWALandingPage
+    !!isRecentlySoldArtwork &&
+    (size === "large" || size === "extraLarge") &&
+    enableNewSWALandingPage
 
   return (
     <ArtworkCard onPress={onPress || undefined} testID={testID}>
@@ -219,7 +249,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                 {partner?.name}
               </Text>
             )}
-            {!!isRecentlySoldArtwork && size === "large" && (
+            {!!isRecentlySoldArtwork && (size === "large" || size === "extraLarge") && (
               <RecentlySoldCardSection
                 priceRealizedDisplay={priceRealizedDisplay}
                 lowEstimateDisplay={lowEstimateDisplay}
