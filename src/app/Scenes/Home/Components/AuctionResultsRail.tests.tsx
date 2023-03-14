@@ -7,6 +7,7 @@ import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { AuctionResultsRail } from "./AuctionResultsRail"
+import { ContextModule } from "@artsy/cohesion"
 
 describe("AuctionResultsRailFragmentContainer", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -29,6 +30,7 @@ describe("AuctionResultsRailFragmentContainer", () => {
           return (
             <AuctionResultsRail
               title="Latest Auction Results"
+              contextModule={ContextModule.auctionResultsRail}
               auctionResults={props?.me?.auctionResultsByFollowedArtists!}
             />
           )
