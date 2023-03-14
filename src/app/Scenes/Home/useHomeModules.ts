@@ -56,17 +56,17 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
       // Below-The-Fold Modules
       {
         title: "Upcoming Auctions by Artists You Follow",
-        type: "upcoming-auctions",
-        data: props.meBelow,
-        isEmpty: !props.meBelow?.auctionResultsByFollowedArtistsUpcomingCounts?.totalCount,
+        type: "auction-results",
+        data: props.meBelow?.auctionResultsByFollowedArtistsUpcoming,
+        isEmpty: !props.meBelow?.auctionResultsByFollowedArtistsUpcoming?.totalCount,
         hidden: !showUpcomingAuctionResultsRail,
         contextModule: ContextModule.upcomingAuctionsRail,
       },
       {
         title: "Latest Auction Results",
         type: "auction-results",
-        data: props.meBelow,
-        isEmpty: !props.meBelow?.auctionResultsByFollowedArtistsPastCounts?.totalCount,
+        data: props.meBelow?.auctionResultsByFollowedArtistsPast,
+        isEmpty: !props.meBelow?.auctionResultsByFollowedArtistsPast?.totalCount,
         prefetchUrl: "/auction-results-for-artists-you-follow",
         contextModule: ContextModule.auctionResultsRail,
       },

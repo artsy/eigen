@@ -28,14 +28,13 @@ import { ActivityIndicator } from "app/Scenes/Home/Components/ActivityIndicator"
 import { ArticlesRailFragmentContainer } from "app/Scenes/Home/Components/ArticlesRail"
 import { ArtworkModuleRailFragmentContainer } from "app/Scenes/Home/Components/ArtworkModuleRail"
 import { ArtworkRecommendationsRail } from "app/Scenes/Home/Components/ArtworkRecommendationsRail"
-import { AuctionResultsRailFragmentContainer } from "app/Scenes/Home/Components/AuctionResultsRail"
+import { AuctionResultsRail } from "app/Scenes/Home/Components/AuctionResultsRail"
 import { CollectionsRailFragmentContainer } from "app/Scenes/Home/Components/CollectionsRail"
 import { ContentCards } from "app/Scenes/Home/Components/ContentCards"
 import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/Home/Components/EmailConfirmationBanner"
 import { FairsRailFragmentContainer } from "app/Scenes/Home/Components/FairsRail"
 import { HomeFeedOnboardingRailFragmentContainer } from "app/Scenes/Home/Components/HomeFeedOnboardingRail"
 import { HomeHeader } from "app/Scenes/Home/Components/HomeHeader"
-import { HomeUpcomingAuctionsRail } from "app/Scenes/Home/Components/HomeUpcomingAuctionsRail"
 import { MarketingCollectionRail } from "app/Scenes/Home/Components/MarketingCollectionRail"
 import { NewWorksForYouRail } from "app/Scenes/Home/Components/NewWorksForYouRail"
 import { OldCollectionsRailFragmentContainer } from "app/Scenes/Home/Components/OldCollectionsRail"
@@ -238,8 +237,6 @@ const Home = memo((props: HomeProps) => {
               scrollRef={scrollRefs.current[index]}
             />
           )
-        case "auction-results":
-          return <AuctionResultsRailFragmentContainer title={item.title} me={item.data} />
         case "collections":
           return enableNewCollectionsRail ? (
             <CollectionsRailFragmentContainer
@@ -291,8 +288,8 @@ const Home = memo((props: HomeProps) => {
           )
         case "shows":
           return <ShowsRailFragmentContainer title={item.title} showsConnection={item.data} />
-        case "upcoming-auctions":
-          return <HomeUpcomingAuctionsRail title={item.title} me={item.data} />
+        case "auction-results":
+          return <AuctionResultsRail title={item.title} auctionResults={item.data} />
         case "viewing-rooms":
           return <ViewingRoomsHomeMainRail title={item.title} featured={item.data} />
         default:
@@ -444,22 +441,24 @@ export const HomeFragmentContainer = memo(
           artworkRecommendationsCounts: artworkRecommendations(first: 1) {
             totalCount
           }
+
           ...ArtworkRecommendationsRail_me
 
-          auctionResultsByFollowedArtistsPastCounts: auctionResultsByFollowedArtists(
-            first: 1
+          auctionResultsByFollowedArtistsPast: auctionResultsByFollowedArtists(
+            first: 12
             state: PAST
           ) {
             totalCount
+            ...AuctionResultsRail_auctionResults
           }
-          ...AuctionResultsRail_me
-          auctionResultsByFollowedArtistsUpcomingCounts: auctionResultsByFollowedArtists(
-            first: 1
+
+          auctionResultsByFollowedArtistsUpcoming: auctionResultsByFollowedArtists(
+            first: 12
             state: UPCOMING
           ) {
             totalCount
+            ...AuctionResultsRail_auctionResults
           }
-          ...HomeUpcomingAuctionsRail_me
         }
       `,
       articlesConnection: graphql`
@@ -499,7 +498,6 @@ export const HomeFragmentContainer = memo(
         }
         me @optionalField {
           ...Home_meAbove
-          ...AuctionResultsRail_me
           ...RecommendedArtistsRail_me
           showsByFollowedArtists(first: 10, status: RUNNING_AND_UPCOMING) @optionalField {
             ...Home_showsByFollowedArtists
@@ -716,7 +714,6 @@ export const HomeQueryRenderer: React.FC = () => {
             me @optionalField {
               ...Home_meBelow
               ...RecommendedArtistsRail_me
-              ...AuctionResultsRail_me
               showsByFollowedArtists(first: 20, status: RUNNING_AND_UPCOMING) @optionalField {
                 ...Home_showsByFollowedArtists
               }

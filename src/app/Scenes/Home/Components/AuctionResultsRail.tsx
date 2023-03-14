@@ -1,106 +1,94 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
-import { AuctionResultsRail_me$data } from "__generated__/AuctionResultsRail_me.graphql"
-import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
-import {
-  AuctionResultListItemFragmentContainer,
-  AuctionResultListSeparator,
-} from "app/Components/Lists/AuctionResultListItem"
+import { AuctionResultsRail_auctionResults$key } from "__generated__/AuctionResultsRail_auctionResults.graphql"
+import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { memo } from "react"
-import { createFragmentContainer, graphql } from "react-relay"
+import { FlatList } from "react-native"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
+import { useScreenDimensions } from "shared/hooks"
 
-interface Props {
+interface AuctionResultsRailProps {
+  auctionResults: AuctionResultsRail_auctionResults$key
   title: string
 }
 
-const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me$data } & Props> = ({
-  title,
-  me,
-}) => {
-  const { trackEvent } = useTracking()
-  const auctionResultsByFollowedArtists = extractNodes(me?.auctionResultsByFollowedArtists)
-  const navigateToAuctionResultsForArtistsYouFollow = () => {
-    trackEvent(tracks.tappedHeader())
-    navigate(`/auction-results-for-artists-you-follow`)
+const getViewAllUrl = (title: string) => {
+  switch (title) {
+    case "Upcoming Auctions By Artists You Follow":
+      return "/upcoming-auction-results"
+    case "Latest Auction Results":
+      return "/auction-results-for-artists-you-follow"
+    default:
+      throw "Unknown title for AuctionResultsRail: " + title
   }
+}
 
-  if (!auctionResultsByFollowedArtists?.length) {
-    return null
-  }
+export const AuctionResultsRail: React.FC<AuctionResultsRailProps> = memo(
+  ({ title, ...restProps }) => {
+    const { trackEvent } = useTracking()
+    const auctionResults = useFragment(meFragment, restProps.auctionResults)
 
-  return (
-    <Flex>
-      <Flex pl={2} pr={2}>
-        <SectionTitle title={title} onPress={navigateToAuctionResultsForArtistsYouFollow} />
-      </Flex>
+    const { width: screenWidth } = useScreenDimensions()
 
-      <CardRailFlatList
-        data={auctionResultsByFollowedArtists}
-        keyExtractor={(_, index) => String(index)}
-        horizontal={false}
-        initialNumToRender={3}
-        ItemSeparatorComponent={AuctionResultListSeparator}
-        renderItem={({ item, index }) => {
-          if (!item) {
-            return <></>
-          }
+    const filteredAuctionResults = extractNodes(auctionResults).filter(
+      (auctionResult) => auctionResult
+    )
 
-          return (
+    if (!auctionResults || auctionResults?.totalCount === 0) {
+      return null
+    }
+
+    return (
+      <Flex>
+        <Flex pl={2} pr={2}>
+          <SectionTitle
+            title={title}
+            onPress={() => {
+              trackEvent(tracks.tappedHeader())
+              navigate(getViewAllUrl(title))
+            }}
+          />
+        </Flex>
+        <FlatList
+          horizontal
+          data={filteredAuctionResults}
+          showsHorizontalScrollIndicator={false}
+          initialNumToRender={3}
+          renderItem={({ item }) => (
             <AuctionResultListItemFragmentContainer
               showArtistName
               auctionResult={item}
-              onPress={() => {
-                trackEvent(tracks.tappedThumbnail(item.internalID, index))
-                navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
-              }}
+              width={screenWidth * 0.9}
             />
-          )
-        }}
-      />
-    </Flex>
-  )
-}
-
-export const AuctionResultsRailFragmentContainer = memo(
-  createFragmentContainer(AuctionResultsRail, {
-    me: graphql`
-      fragment AuctionResultsRail_me on Me {
-        auctionResultsByFollowedArtists(first: 3, state: PAST) {
-          totalCount
-          edges {
-            cursor
-            node {
-              ...AuctionResultListItem_auctionResult
-              artistID
-              internalID
-            }
-          }
-        }
-      }
-    `,
-  })
+          )}
+        />
+      </Flex>
+    )
+  }
 )
 
-export const tracks = {
-  tappedHeader: () => ({
-    action: ActionType.tappedAuctionResultGroup,
-    context_module: ContextModule.auctionResultsRail,
-    context_screen_owner_type: OwnerType.home,
-    destination_screen_owner_type: OwnerType.auctionResultsForArtistsYouFollow,
-    type: "header",
-  }),
+const meFragment = graphql`
+  fragment AuctionResultsRail_auctionResults on AuctionResultConnection {
+    totalCount
+    edges {
+      node {
+        ...AuctionResultListItem_auctionResult
+        internalID
+      }
+    }
+  }
+`
 
-  tappedThumbnail: (auctionResultId: string, position: number) => ({
-    action: ActionType.tappedAuctionResultGroup,
-    context_module: ContextModule.auctionResultsRail,
+const tracks = {
+  tappedHeader: () => ({
+    action: ActionType.tappedArtworkGroup,
+    context_module: ContextModule.upcomingAuctionsRail,
     context_screen_owner_type: OwnerType.home,
-    destination_screen_owner_type: OwnerType.auctionResult,
-    destination_screen_owner_id: auctionResultId,
-    horizontal_slide_position: position,
-    type: "thumbnail",
+    destination_screen_owner_type: OwnerType.upcomingAuctions,
+    type: "header",
   }),
 }

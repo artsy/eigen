@@ -6,7 +6,7 @@ import { cloneDeep, first } from "lodash"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { AuctionResultsRailFragmentContainer } from "./AuctionResultsRail"
+import { AuctionResultsRail } from "./AuctionResultsRail"
 
 describe("AuctionResultsRailFragmentContainer", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -17,14 +17,21 @@ describe("AuctionResultsRailFragmentContainer", () => {
       query={graphql`
         query AuctionResultsRailTestsQuery @raw_response_type {
           me {
-            ...AuctionResultsRail_me
+            auctionResultsByFollowedArtists(first: 12, state: UPCOMING) {
+              ...AuctionResultsRail_auctionResults
+            }
           }
         }
       `}
       variables={{}}
       render={({ props, error }) => {
         if (props) {
-          return <AuctionResultsRailFragmentContainer title="Auction Results" me={props.me!} />
+          return (
+            <AuctionResultsRail
+              title="Latest Auction Results"
+              auctionResults={props?.me?.auctionResultsByFollowedArtists!}
+            />
+          )
         } else if (error) {
           console.log(error)
         }
