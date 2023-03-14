@@ -282,6 +282,7 @@ const AuctionResultImage = ({
 }) => {
   const [imageHeight, setImageHeight] = useState<number>(0)
   const [imageWidth, setImageWidth] = useState<number>(0)
+  const [isLoading, setIsLoading] = useState(true)
 
   const { width } = useScreenDimensions()
   const space = useSpace()
@@ -294,25 +295,31 @@ const AuctionResultImage = ({
         const imageDimensions = getImageSquareDimensions(height, width, CONTAINER_HEIGHT)
         setImageHeight(imageDimensions.height)
         setImageWidth(imageDimensions.width)
+        setIsLoading(false)
       })
+    } else {
+      setIsLoading(false)
     }
   }, [])
 
   if (!!image.url && !!imageHeight && !!imageWidth) {
     return (
-      <Flex height={containerLength} width="100%" justifyContent="center" alignItems="center">
-        <Image style={{ height: imageHeight, width: imageWidth }} source={{ uri: image.url }} />
+      <Flex width="100%" height={CONTAINER_HEIGHT} justifyContent="center" alignItems="center">
+        <Image
+          style={{ height: imageHeight, width: imageWidth, overflow: "hidden" }}
+          source={{ uri: image.url }}
+        />
       </Flex>
     )
   }
   return (
     <Box
-      style={{ height: containerLength, width: containerLength }}
+      style={{ height: containerLength, width: "100%" }}
       backgroundColor="black10"
       alignItems="center"
       justifyContent="center"
     >
-      {!image.url && <NoArtworkIcon width={28} height={28} opacity={0.3} />}
+      {!image.url && !isLoading && <NoArtworkIcon width={28} height={28} opacity={0.3} />}
     </Box>
   )
 }
@@ -438,7 +445,7 @@ const LoadingSkeleton = () => {
   }
   return (
     <Flex>
-      <Spacer y="70px" />
+      <Spacer y="60px" />
 
       {/* Image */}
       <PlaceholderBox width="100%" height={CONTAINER_HEIGHT} />
