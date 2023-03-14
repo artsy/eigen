@@ -118,11 +118,14 @@ export const homeFragment = graphql`
 
 const marketingCollectionFragment = graphql`
   fragment MarketingCollectionRail_marketingCollection on MarketingCollection
-  @argumentDefinitions(marketingCollectionID: { type: "String" }) {
+  @argumentDefinitions(
+    marketingCollectionID: { type: "String" }
+    input: { type: "FilterArtworksInput" }
+  ) {
     title
     headerImage
     slug
-    artworksConnection(first: 12, marketingCollectionID: $marketingCollectionID) {
+    artworksConnection(first: 12, marketingCollectionID: $marketingCollectionID, input: $input) {
       edges {
         node {
           internalID

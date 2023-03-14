@@ -485,6 +485,7 @@ export const HomeFragmentContainer = memo(
       emergingPicks: graphql`
         fragment Home_emergingPicks on MarketingCollection {
           ...MarketingCollectionRail_marketingCollection
+            @arguments(input: { sort: "-decayed_merch" })
         }
       `,
     },
