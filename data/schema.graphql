@@ -6870,14 +6870,21 @@ type Conversation implements Node {
     )
 
   # A connection for all messages in a single conversation
-  messages(after: String, before: String, first: Int, last: Int, sort: sort): MessageConnection
-    @deprecated(reason: "Prefer messagesConnection")
+  messages(
+    after: String
+    before: String
+    first: Int
+    includeDeliveryPending: Boolean
+    last: Int
+    sort: sort
+  ): MessageConnection @deprecated(reason: "Prefer messagesConnection")
 
   # A connection for all messages in a single conversation
   messagesConnection(
     after: String
     before: String
     first: Int
+    includeDeliveryPending: Boolean
     last: Int
     sort: sort
   ): MessageConnection
