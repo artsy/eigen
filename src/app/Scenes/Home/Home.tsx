@@ -289,7 +289,13 @@ const Home = memo((props: HomeProps) => {
         case "shows":
           return <ShowsRailFragmentContainer title={item.title} showsConnection={item.data} />
         case "auction-results":
-          return <AuctionResultsRail title={item.title} auctionResults={item.data} />
+          return (
+            <AuctionResultsRail
+              title={item.title}
+              contextModule={item.contextModule}
+              auctionResults={item.data}
+            />
+          )
         case "viewing-rooms":
           return <ViewingRoomsHomeMainRail title={item.title} featured={item.data} />
         default:

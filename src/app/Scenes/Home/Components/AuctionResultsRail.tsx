@@ -13,6 +13,7 @@ import { useScreenDimensions } from "shared/hooks"
 
 interface AuctionResultsRailProps {
   auctionResults: AuctionResultsRail_auctionResults$key
+  contextModule: ContextModule
   title: string
 }
 
@@ -28,7 +29,7 @@ const getViewAllUrl = (title: string) => {
 }
 
 export const AuctionResultsRail: React.FC<AuctionResultsRailProps> = memo(
-  ({ title, ...restProps }) => {
+  ({ contextModule, title, ...restProps }) => {
     const { trackEvent } = useTracking()
     const auctionResults = useFragment(meFragment, restProps.auctionResults)
 
@@ -48,7 +49,7 @@ export const AuctionResultsRail: React.FC<AuctionResultsRailProps> = memo(
           <SectionTitle
             title={title}
             onPress={() => {
-              trackEvent(tracks.tappedHeader())
+              trackEvent(tracks.tappedHeader(contextModule))
               navigate(getViewAllUrl(title))
             }}
           />
@@ -83,10 +84,11 @@ const meFragment = graphql`
   }
 `
 
+// TODO: Fix tracking
 const tracks = {
-  tappedHeader: () => ({
+  tappedHeader: (contextModule: ContextModule) => ({
     action: ActionType.tappedArtworkGroup,
-    context_module: ContextModule.upcomingAuctionsRail,
+    context_module: contextModule,
     context_screen_owner_type: OwnerType.home,
     destination_screen_owner_type: OwnerType.upcomingAuctions,
     type: "header",
