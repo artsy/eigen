@@ -1,14 +1,13 @@
 import { ActionType, ContextModule, OwnerType, TappedConsignmentInquiry } from "@artsy/cohesion"
 import { Flex, Spacer, Text, useColor, useSpace } from "@artsy/palette-mobile"
+import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import { useSWALandingPageData } from "app/Scenes/SellWithArtsy/utils/useSWALandingPageData"
-import { isPad } from "app/utils/hardware"
 import { PlaceholderBox, PlaceholderButton, PlaceholderText } from "app/utils/placeholders"
 import { uniqBy } from "lodash"
 import { Button, Pill } from "palette"
 import { useState } from "react"
 import { FlatList, ImageBackground, ScrollView } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
-import { useScreenDimensions } from "shared/hooks"
 
 export const MeetTheSpecialists: React.FC<{
   onInquiryPress: (
@@ -19,8 +18,9 @@ export const MeetTheSpecialists: React.FC<{
 }> = ({ onInquiryPress }) => {
   const color = useColor()
   const space = useSpace()
-  const { width: deviceWidth } = useScreenDimensions()
-  const isTablet = isPad()
+
+  const imgHeightToWidthRatio = 1.511 // based on designs
+  const imgWidth = useExtraLargeWidth()
 
   const initialSpecialty = "auctions"
   const [selectedSpecialty, setSelectedSpecialty] = useState<string>(initialSpecialty)
@@ -102,8 +102,6 @@ export const MeetTheSpecialists: React.FC<{
         data={specialistsToDisplay}
         renderItem={({ item }) => {
           const buttonText = `Contact ${item.firstName}`
-          const imgHeightToWidthRatio = 1.511 // based on designs
-          const imgWidth = isTablet ? 400 : deviceWidth - space(6)
           return (
             <ImageBackground
               source={{ uri: item.image }}
@@ -183,6 +181,8 @@ const tracks = {
 }
 
 const LoadingSkeleton = () => {
+  const imgHeightToWidthRatio = 1.511 // based on designs
+  const imgWidth = useExtraLargeWidth()
   return (
     <Flex>
       <PlaceholderText marginHorizontal={20} width="60%" height={40} />
@@ -196,8 +196,6 @@ const LoadingSkeleton = () => {
         showsHorizontalScrollIndicator={false}
         data={[1, 2, 3]}
         renderItem={() => {
-          const imgHeightToWidthRatio = 1.511 // based on designs
-          const imgWidth = 250
           return (
             <PlaceholderBox
               width={imgWidth}

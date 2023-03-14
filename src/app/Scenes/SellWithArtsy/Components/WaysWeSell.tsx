@@ -1,7 +1,7 @@
 import { Flex, Spacer, Text, useColor, useSpace } from "@artsy/palette-mobile"
+import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import { Image } from "react-native"
 import { FlatList } from "react-native-gesture-handler"
-import { useScreenDimensions } from "shared/hooks"
 
 const data = [
   {
@@ -21,7 +21,7 @@ const data = [
 export const WaysWeSell: React.FC = () => {
   const space = useSpace()
   const color = useColor()
-  const { width } = useScreenDimensions()
+  const maxImageWidth = useExtraLargeWidth()
   return (
     <Flex bg="black100" py={4}>
       <Flex mx={2}>
@@ -38,7 +38,7 @@ export const WaysWeSell: React.FC = () => {
         showsHorizontalScrollIndicator={false}
         data={data}
         renderItem={({ item, index }) => (
-          <Flex maxWidth={width / 1.2} mr={2} alignSelf="flex-end">
+          <Flex maxWidth={maxImageWidth} mr={2} alignSelf="flex-end">
             <Image
               source={
                 // because these images are suffixed @1x, @2x etc we cannot `require` outside Image
@@ -50,7 +50,7 @@ export const WaysWeSell: React.FC = () => {
                   ? require("images/ways-we-sell-private-sales.png")
                   : require("images/ways-we-sell-online-storefront.png")
               }
-              style={{ maxWidth: width - space(6) }}
+              style={{ maxWidth: maxImageWidth }}
               resizeMode="cover"
             />
 

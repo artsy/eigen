@@ -1,22 +1,14 @@
-import {
-  Flex,
-  HeartFillIcon,
-  HeartIcon,
-  Spacer,
-  Text,
-  useColor,
-  useSpace,
-} from "@artsy/palette-mobile"
+import { Flex, HeartFillIcon, HeartIcon, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import {
   ArtworkRailCard_artwork$data,
   ArtworkRailCard_artwork$key,
 } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { saleMessageOrBidInfo as defaultSaleMessageOrBidInfo } from "app/Components/ArtworkGrids/ArtworkGridItem"
+import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
-import { isPad } from "app/utils/hardware"
 import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { Schema } from "app/utils/track"
 import { sizeToFit } from "app/utils/useSizeToFit"
@@ -26,7 +18,6 @@ import { useMemo } from "react"
 import { GestureResponderEvent, PixelRatio } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "shared/hooks"
 import styled from "styled-components/native"
 import { LARGE_RAIL_IMAGE_WIDTH } from "./LargeArtworkRail"
 import { SMALL_RAIL_IMAGE_WIDTH } from "./SmallArtworkRail"
@@ -79,10 +70,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   trackingContextScreenOwnerType,
   ...restProps
 }) => {
-  const isTablet = isPad()
-  const space = useSpace()
-  const { width } = useScreenDimensions()
-  const EXTRALARGE_RAIL_CARD_IMAGE_WIDTH = isTablet ? 400 : width - space(6)
+  const EXTRALARGE_RAIL_CARD_IMAGE_WIDTH = useExtraLargeWidth()
 
   const { trackEvent } = useTracking()
   const fontScale = PixelRatio.getFontScale()
@@ -320,11 +308,7 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
   isRecentlySoldArtwork,
 }) => {
   const color = useColor()
-  const isTablet = isPad()
-  const space = useSpace()
-  const { width: deviceWidth } = useScreenDimensions()
-  const EXTRALARGE_RAIL_CARD_IMAGE_WIDTH = isTablet ? 400 : deviceWidth - space(6)
-
+  const EXTRALARGE_RAIL_CARD_IMAGE_WIDTH = useExtraLargeWidth()
   const { width, height, src } = image?.resized || {}
 
   if (!src) {
