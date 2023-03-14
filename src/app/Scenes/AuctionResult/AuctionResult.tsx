@@ -10,16 +10,17 @@ import {
   useTheme,
 } from "@artsy/palette-mobile"
 import { AuctionResultQuery } from "__generated__/AuctionResultQuery.graphql"
-import { AuctionResult_artist$data } from "__generated__/AuctionResult_artist.graphql"
-import { AuctionResult_auctionResult$data } from "__generated__/AuctionResult_auctionResult.graphql"
+import { AuctionResult_artist$key } from "__generated__/AuctionResult_artist.graphql"
+import {
+  AuctionResult_auctionResult$data,
+  AuctionResult_auctionResult$key,
+} from "__generated__/AuctionResult_auctionResult.graphql"
 import { ratioColor } from "app/Components/AuctionResult/AuctionResultMidEstimate"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { navigate } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { QAInfoPanel } from "app/utils/QAInfo"
 import { PlaceholderBox } from "app/utils/placeholders"
-import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { getImageSquareDimensions } from "app/utils/resizeImage"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -27,9 +28,9 @@ import { useStickyScrollHeader } from "app/utils/useStickyScrollHeader"
 import { capitalize } from "lodash"
 import moment from "moment"
 import { Separator } from "palette"
-import React, { useEffect, useState } from "react"
+import React, { Suspense, useEffect, useState } from "react"
 import { Animated, Image, TextInput, TouchableWithoutFeedback } from "react-native"
-import { QueryRenderer, createFragmentContainer, graphql } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks/useScreenDimensions"
 import { ComparableWorksFragmentContainer } from "./ComparableWorks"
@@ -38,11 +39,13 @@ import { AuctionResultHelperData, auctionResultText } from "./helpers"
 const CONTAINER_HEIGHT = 400
 
 interface Props {
-  artist: AuctionResult_artist$data
-  auctionResult: AuctionResult_auctionResult$data
+  artist: AuctionResult_artist$key
+  auctionResult: AuctionResult_auctionResult$key
 }
 
-export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
+export const AuctionResult: React.FC<Props> = (props) => {
+  const artist = useFragment(artistFragment, props.artist)
+  const auctionResult = useFragment(auctionResultFragment, props.auctionResult)
   const { theme } = useTheme()
 
   const tracking = useTracking()
@@ -312,93 +315,107 @@ const AuctionResultImage = ({
     </Box>
   )
 }
-export const AuctionResultFragmentContainer = createFragmentContainer(AuctionResult, {
-  auctionResult: graphql`
-    fragment AuctionResult_auctionResult on AuctionResult {
-      id
-      internalID
-      artistID
-      boughtIn
-      currency
-      categoryText
-      dateText
-      dimensions {
+
+const auctionResultFragment = graphql`
+  fragment AuctionResult_auctionResult on AuctionResult {
+    id
+    internalID
+    artistID
+    boughtIn
+    currency
+    categoryText
+    dateText
+    dimensions {
+      height
+      width
+    }
+    dimensionText
+    estimate {
+      display
+      high
+      low
+    }
+    isUpcoming
+    images {
+      larger {
+        url
         height
         width
+        aspectRatio
       }
-      dimensionText
-      estimate {
-        display
-        high
-        low
-      }
-      isUpcoming
-      images {
-        larger {
-          url
-          height
-          width
-          aspectRatio
-        }
-      }
-      location
-      mediumText
-      organization
-      performance {
-        mid
-      }
-      currency
-      priceRealized {
-        cents
-        centsUSD
-        display
-        displayUSD
-      }
-      saleDate
-      saleTitle
-      title
-      ...ComparableWorks_auctionResult
     }
-  `,
-  artist: graphql`
-    fragment AuctionResult_artist on Artist {
-      name
-      href
+    location
+    mediumText
+    organization
+    performance {
+      mid
     }
-  `,
-})
+    currency
+    priceRealized {
+      cents
+      centsUSD
+      display
+      displayUSD
+    }
+    saleDate
+    saleTitle
+    title
+    ...ComparableWorks_auctionResult
+  }
+`
+
+const artistFragment = graphql`
+  fragment AuctionResult_artist on Artist {
+    name
+    href
+  }
+`
+
+const AuctionResultScreenQuery = graphql`
+  query AuctionResultQuery($auctionResultInternalID: String!, $artistID: String!) {
+    auctionResult(id: $auctionResultInternalID) {
+      ...AuctionResult_auctionResult
+    }
+    artist(id: $artistID) {
+      ...AuctionResult_artist
+    }
+  }
+`
 
 interface AuctionResultQueryRendererProps {
   auctionResultInternalID: string
   artistID: string
 }
 
-export const AuctionResultQueryRenderer: React.FC<AuctionResultQueryRendererProps> = ({
+export const AuctionResultScreenContainer: React.FC<AuctionResultQueryRendererProps> = ({
   auctionResultInternalID,
   artistID,
 }) => {
+  const data = useLazyLoadQuery<AuctionResultQuery>(
+    AuctionResultScreenQuery,
+    {
+      auctionResultInternalID,
+      artistID,
+    },
+    {
+      fetchPolicy: "store-and-network",
+    }
+  )
+  if (!data?.auctionResult || !data?.artist) {
+    return (
+      <Flex>
+        <Text>Wrong link</Text>
+      </Flex>
+    )
+  }
+  return <AuctionResult artist={data.artist} auctionResult={data.auctionResult} />
+}
+
+export const AuctionResultQueryRenderer: React.FC<AuctionResultQueryRendererProps> = (props) => {
   return (
-    <QueryRenderer<AuctionResultQuery>
-      environment={defaultEnvironment}
-      query={graphql`
-        query AuctionResultQuery($auctionResultInternalID: String!, $artistID: String!) {
-          auctionResult: auctionResult(id: $auctionResultInternalID) {
-            ...AuctionResult_auctionResult
-          }
-          artist: artist(id: $artistID) {
-            ...AuctionResult_artist
-          }
-        }
-      `}
-      variables={{
-        auctionResultInternalID,
-        artistID,
-      }}
-      render={renderWithPlaceholder({
-        Container: AuctionResultFragmentContainer,
-        renderPlaceholder: LoadingSkeleton,
-      })}
-    />
+    <Suspense fallback={<LoadingSkeleton />}>
+      <AuctionResultScreenContainer {...props} />
+    </Suspense>
   )
 }
 
@@ -419,33 +436,27 @@ const LoadingSkeleton = () => {
     )
   }
   return (
-    <Flex mx={2}>
+    <Flex>
       <Spacer y="70px" />
 
-      <Flex flexDirection="row">
-        {/* Image */}
-        <PlaceholderBox width={CONTAINER_HEIGHT} height={CONTAINER_HEIGHT} />
-        <Flex ml={2} mt={1}>
-          {/* Artist name */}
-          <PlaceholderBox width={100} height={20} />
-          <Spacer y={1} />
-          {/* Artwork name */}
-          <PlaceholderBox width={150} height={25} />
-        </Flex>
+      {/* Image */}
+      <PlaceholderBox width="100%" height={CONTAINER_HEIGHT} />
+
+      <Flex px={2}>
+        <Spacer y={4} />
+        {/* "Realized price" */}
+        <PlaceholderBox width={100} height={15} />
+        <Spacer y={1} />
+        {/* Price */}
+        <PlaceholderBox width={120} height={40} />
+        <Spacer y={1} />
+        {/* Ratio */}
+        <PlaceholderBox width={200} height={20} />
+        <Spacer y={4} />
+        {/* "details" */}
+        <PlaceholderBox width={60} height={30} />
+        <Spacer y={2} />
       </Flex>
-      <Spacer y={4} />
-      {/* "Realized price" */}
-      <PlaceholderBox width={100} height={15} />
-      <Spacer y={1} />
-      {/* Price */}
-      <PlaceholderBox width={120} height={40} />
-      <Spacer y={1} />
-      {/* Ratio */}
-      <PlaceholderBox width={200} height={20} />
-      <Spacer y={4} />
-      {/* "details" */}
-      <PlaceholderBox width={60} height={30} />
-      <Spacer y={2} />
       {details}
     </Flex>
   )
