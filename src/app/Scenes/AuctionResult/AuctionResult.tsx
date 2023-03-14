@@ -32,7 +32,7 @@ import React, { Suspense, useEffect, useState } from "react"
 import { Animated, Image, TextInput, TouchableWithoutFeedback } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "shared/hooks/useScreenDimensions"
+import { useScreenDimensions } from "shared/hooks"
 import { ComparableWorksFragmentContainer } from "./ComparableWorks"
 import { AuctionResultHelperData, auctionResultText } from "./helpers"
 
@@ -46,6 +46,7 @@ interface Props {
 export const AuctionResult: React.FC<Props> = (props) => {
   const artist = useFragment(artistFragment, props.artist)
   const auctionResult = useFragment(auctionResultFragment, props.auctionResult)
+
   const { theme } = useTheme()
 
   const tracking = useTracking()
