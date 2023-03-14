@@ -16,7 +16,7 @@ export const images: Record<OnboardingMarketingCollectionSlug, ImageSourcePropTy
   "top-auction-lots": require("images/HirstTheWonder.jpg"),
 }
 
-const SAVE_INSTRUCTIONS = "Love an artwork? Tap twice to save it."
+const SAVE_INSTRUCTIONS = "Love an artwork? Tap the heart to save it."
 
 export const MarketingCollectionHeader: React.FC<MarketingCollectionHeaderProps> = ({
   collectionSlug,

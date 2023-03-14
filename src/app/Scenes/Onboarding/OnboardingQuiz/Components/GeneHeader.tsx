@@ -21,7 +21,7 @@ export const images: Record<OnboardingGeneId, ImageSourcePropType> = {
   "our-top-auction-lots": require("images/HirstTheWonder.jpg"),
 }
 
-const SAVE_INSTRUCTIONS = "Love an artwork? Tap twice to save it."
+const SAVE_INSTRUCTIONS = "Love an artwork? Tap the heart to save it."
 
 export const GeneHeader: React.FC<GeneHeaderProps> = ({ geneID, gene, description }) => {
   const [shouldDisplayTooltip, setShouldDisplayTooltip] = useState(false)
