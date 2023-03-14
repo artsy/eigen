@@ -594,6 +594,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
             <Box m={4}>
               <Button
+                testID="bid-button"
                 loading={this.state.isLoading}
                 block
                 width={100}

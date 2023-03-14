@@ -197,7 +197,7 @@ describe("when pressing register button", () => {
       creditCardToken: stripeToken,
     })
 
-    await component.root.findAllByType(Button)[1].props.onPress()
+    await component.root.findByProps({ testID: "register-button" }).props.onPress()
     expect(relay.commitMutation).toHaveBeenCalledWith(
       expect.any(Object),
       expect.objectContaining({
@@ -239,7 +239,7 @@ describe("when pressing register button", () => {
     component.root.findByType(Registration).instance.setState({ conditionsOfSaleChecked: true })
 
     relay.commitMutation = jest.fn()
-    component.root.findAllByType(Button)[1].props.onPress()
+    component.root.findByProps({ testID: "register-button" }).props.onPress()
 
     expect(relay.commitMutation).toHaveBeenCalled()
   })
@@ -258,7 +258,7 @@ describe("when pressing register button", () => {
       billingAddress,
     })
 
-    component.root.findAllByType(Button)[1].props.onPress()
+    component.root.findByProps({ testID: "register-button" }).props.onPress()
 
     const yourMaxBidRow = component.root.findAllByType(TouchableWithoutFeedback)[0]
     const creditCardRow = component.root.findAllByType(TouchableWithoutFeedback)[1]
@@ -302,7 +302,7 @@ describe("when pressing register button", () => {
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).props.onPress()
-    await component.root.findAllByType(Button)[1].props.onPress()
+    await component.root.findByProps({ testID: "register-button" }).props.onPress()
 
     expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
       "There was a problem processing your information. Check your payment details and try again.",
@@ -332,7 +332,7 @@ describe("when pressing register button", () => {
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).props.onPress()
-    component.root.findAllByType(Button)[1].props.onPress()
+    component.root.findByProps({ testID: "register-button" }).props.onPress()
 
     jest.runAllTicks()
 
@@ -363,7 +363,7 @@ describe("when pressing register button", () => {
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).props.onPress()
-    await component.root.findAllByType(Button)[1].props.onPress()
+    await component.root.findByProps({ testID: "register-button" }).props.onPress()
 
     jest.runAllTicks()
     expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
@@ -388,7 +388,7 @@ describe("when pressing register button", () => {
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).props.onPress()
-    component.root.findAllByType(Button)[1].props.onPress()
+    component.root.findByProps({ testID: "register-button" }).props.onPress()
 
     expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
       "There was a problem processing your phone number, please try again.",
@@ -422,7 +422,7 @@ describe("when pressing register button", () => {
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).props.onPress()
-    component.root.findAllByType(Button)[1].props.onPress()
+    component.root.findByProps({ testID: "register-button" }).props.onPress()
 
     jest.runAllTicks()
     expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
@@ -460,7 +460,7 @@ describe("when pressing register button", () => {
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).props.onPress()
-    component.root.findAllByType(Button)[1].props.onPress()
+    component.root.findByProps({ testID: "register-button" }).props.onPress()
 
     jest.runAllTicks()
 
@@ -495,7 +495,7 @@ describe("when pressing register button", () => {
     component.root.findByType(Registration).instance.setState({ billingAddress })
     component.root.findByType(Registration).instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).props.onPress()
-    component.root.findAllByType(Button)[1].props.onPress()
+    component.root.findByProps({ testID: "register-button" }).props.onPress()
 
     jest.runAllTicks()
 
@@ -524,7 +524,7 @@ describe("when pressing register button", () => {
     )
 
     component.root.findByType(Checkbox).props.onPress()
-    await component.root.findAllByType(Button)[1].props.onPress()
+    await component.root.findByProps({ testID: "register-button" }).props.onPress()
 
     expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
       "There was a problem processing your information. Check your payment details and try again.",
@@ -550,7 +550,7 @@ describe("when pressing register button", () => {
     )
 
     component.root.findByType(Checkbox).props.onPress()
-    await component.root.findAllByType(Button)[1].props.onPress()
+    await component.root.findByProps({ testID: "register-button" }).props.onPress()
 
     expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
       "There was a problem processing your information. Check your payment details and try again.",
@@ -574,7 +574,7 @@ describe("when pressing register button", () => {
     )
 
     component.root.findByType(Checkbox).props.onPress()
-    component.root.findAllByType(Button)[1].props.onPress()
+    component.root.findByProps({ testID: "register-button" }).props.onPress()
     jest.runAllTicks()
 
     expect(mockPostNotificationName).toHaveBeenCalledWith("ARAuctionArtworkRegistrationUpdated", {
@@ -606,7 +606,7 @@ describe("when pressing register button", () => {
     const component = renderWithWrappersLEGACY(<Registration {...propsWithIDVSale} />)
 
     component.root.findByType(Checkbox).props.onPress()
-    component.root.findAllByType(Button)[1].props.onPress()
+    component.root.findByProps({ testID: "register-button" }).props.onPress()
     jest.runAllTicks()
 
     expect(nextStep.component).toEqual(RegistrationResult)
@@ -629,7 +629,7 @@ describe("when pressing register button", () => {
     )
 
     component.root.findByType(Checkbox).props.onPress()
-    component.root.findAllByType(Button)[1].props.onPress()
+    component.root.findByProps({ testID: "register-button" }).props.onPress()
 
     jest.runAllTicks()
 
@@ -663,7 +663,7 @@ describe("when pressing register button", () => {
     const component = renderWithWrappersLEGACY(<Registration {...propsWithIDVSale} />)
 
     component.root.findByType(Checkbox).props.onPress()
-    component.root.findAllByType(Button)[1].props.onPress()
+    component.root.findByProps({ testID: "register-button" }).props.onPress()
     jest.runAllTicks()
 
     expect(nextStep.component).toEqual(RegistrationResult)

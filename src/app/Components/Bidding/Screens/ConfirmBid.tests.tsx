@@ -60,7 +60,7 @@ describe("ConfirmBid", () => {
     .postNotificationName as jest.Mock
 
   const findPlaceBidButton = (component: ReactTestRenderer) => {
-    return component.root.findAllByType(Button)[1]
+    return component.root.findByProps({ testID: "bid-button" })
   }
 
   const mountConfirmBidComponent = (props: ConfirmBidProps) => {
