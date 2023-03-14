@@ -309,6 +309,7 @@ export interface ArtworkRailCardImageProps {
   size: ArtworkCardSize
   urgencyTag?: string | null
   containerWidth?: number | null
+  isRecentlySoldArtwork?: boolean
 }
 
 const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
@@ -316,8 +317,13 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
   size,
   urgencyTag = null,
   containerWidth,
+  isRecentlySoldArtwork,
 }) => {
   const color = useColor()
+  const isTablet = isPad()
+  const space = useSpace()
+  const { width: deviceWidth } = useScreenDimensions()
+  const EXTRALARGE_RAIL_CARD_IMAGE_WIDTH = isTablet ? 400 : deviceWidth - space(6)
 
   const { width, height, src } = image?.resized || {}
 
@@ -338,7 +344,9 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
       height: height ?? 0,
     },
     {
-      width: ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
+      width: isRecentlySoldArtwork
+        ? EXTRALARGE_RAIL_CARD_IMAGE_WIDTH
+        : ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
       height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
     }
   )
