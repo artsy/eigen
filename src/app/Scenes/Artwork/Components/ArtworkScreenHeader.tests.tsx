@@ -28,7 +28,7 @@ describe("ArtworkScreenHeader", () => {
     `,
   })
 
-  it("renders the header", async () => {
+  it("renders the header", () => {
     renderWithRelay({
       Artwork: () => ({
         artists: [{ name: "test" }],
@@ -40,7 +40,7 @@ describe("ArtworkScreenHeader", () => {
     expect(screen.queryByText("Create Alert")).toBeTruthy()
   })
 
-  it("calls go back when the back button is pressed", async () => {
+  it("calls go back when the back button is pressed", () => {
     renderWithRelay({})
 
     expect(screen.queryByLabelText("Go back")).toBeTruthy()
@@ -51,7 +51,7 @@ describe("ArtworkScreenHeader", () => {
   })
 
   describe("Create alert button", () => {
-    it("renders the header but not the create alert button if the artwork doesn't have an associated artist", async () => {
+    it("renders the header but not the create alert button if the artwork doesn't have an associated artist", () => {
       renderWithRelay({
         Artwork: () => ({
           artists: [],

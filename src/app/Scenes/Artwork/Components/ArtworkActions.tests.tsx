@@ -30,7 +30,7 @@ describe("ArtworkActions", () => {
   })
 
   describe("share button message", () => {
-    it("displays only 3 artists when there are more than 3 artist", async () => {
+    it("displays only 3 artists when there are more than 3 artist", () => {
       const content = shareContent("Title 1", "/artwork/title-1", [
         { name: "Artist 1" },
         { name: "Artist 2" },
@@ -44,7 +44,7 @@ describe("ArtworkActions", () => {
       })
     })
 
-    it("displays 1 artists", async () => {
+    it("displays 1 artists", () => {
       const content = shareContent("Title 1", "/artwork/title-1", [{ name: "Artist 1" }])
       expect(content).toMatchObject({
         title: "Title 1 by Artist 1 on Artsy",
@@ -53,7 +53,7 @@ describe("ArtworkActions", () => {
       })
     })
 
-    it("displays only the title if there's no artists", async () => {
+    it("displays only the title if there's no artists", () => {
       const content = shareContent("Title 1", "/artwork/title-1", null)
       expect(content).toMatchObject({
         title: "Title 1 on Artsy",
@@ -135,7 +135,7 @@ describe("ArtworkActions", () => {
   })
 
   describe("Save button", () => {
-    it("should trigger save mutation when user presses save button", async () => {
+    it("should trigger save mutation when user presses save button", () => {
       const { env } = renderWithRelay({
         Artwork: () => ({
           isSaved: false,
@@ -151,7 +151,7 @@ describe("ArtworkActions", () => {
       )
     })
 
-    it("should track save event when user saves and artwork successfully", async () => {
+    it("should track save event when user saves and artwork successfully", () => {
       const { env } = renderWithRelay({
         Artwork: () => ({
           isSaved: false,
