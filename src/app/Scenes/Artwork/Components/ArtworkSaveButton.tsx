@@ -1,8 +1,9 @@
-import { Flex, HeartFillIcon, HeartIcon, Spacer, Text, useSpace } from "@artsy/palette-mobile"
+import { Box, Flex, HeartFillIcon, HeartIcon, Spacer, Text, useSpace } from "@artsy/palette-mobile"
 import { ArtworkSaveButton_artwork$key } from "__generated__/ArtworkSaveButton_artwork.graphql"
 import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { Schema } from "app/utils/track"
 import { Touchable } from "palette"
+import { StyleSheet } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -60,8 +61,19 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({ artwork })
       <Flex flexDirection="row" justifyContent="flex-start" alignItems="center">
         {isSaved ? <HeartFillIcon fill="blue100" /> : <HeartIcon />}
         <Spacer x={0.5} />
-        {/* the spaces below are to not make the icon jumpy when changing from save to saved will work on a more permanent fix */}
-        <Text variant="sm">{isSaved ? "Saved" : "Save   "}</Text>
+
+        <Box position="relative">
+          {/* Longest text transparent to prevent changing text pushing elements on the right */}
+          {/* Hiding it in the testing environment since it is not visible to the users */}
+          {!__TEST__ && (
+            <Text variant="sm" color="transparent">
+              Saved
+            </Text>
+          )}
+          <Box {...StyleSheet.absoluteFillObject}>
+            <Text variant="sm">{isSaved ? "Saved" : "Save"}</Text>
+          </Box>
+        </Box>
       </Flex>
     </Touchable>
   )
