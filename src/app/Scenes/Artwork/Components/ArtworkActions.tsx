@@ -1,5 +1,6 @@
 import { EyeOpenedIcon, ShareIcon, Flex, Text } from "@artsy/palette-mobile"
 import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
+import { ArtworkHeader_artwork$data } from "__generated__/ArtworkHeader_artwork.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { cm2in } from "app/utils/conversions"
@@ -11,7 +12,6 @@ import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-
 interface ArtworkActionsProps {
   artwork: ArtworkActions_artwork$data
   shareOnPress: () => void
@@ -20,7 +20,7 @@ interface ArtworkActionsProps {
 export const shareContent = (
   title: string,
   href: string,
-  artists: ArtworkActions_artwork$data["artists"]
+  artists: ArtworkHeader_artwork$data["artists"]
 ) => {
   let computedTitle: string | null = null
 
@@ -94,12 +94,7 @@ export const ArtworkActionsFragmentContainer = createFragmentContainer(ArtworkAc
     fragment ArtworkActions_artwork on Artwork {
       id
       slug
-      title
-      href
       isHangable
-      artists {
-        name
-      }
       image {
         url
       }

@@ -116,17 +116,7 @@ describe("ArtworkActions", () => {
 
 const artworkActionsArtwork: ArtworkActions_artwork$data = {
   id: "artwork12345",
-  title: "test title",
   slug: "andreas-rod-prinzknecht",
-  href: "/artwork/andreas-rod-prinzknecht",
-  artists: [
-    {
-      name: "Andreas Rod",
-    },
-    {
-      name: "Arthur Sopin",
-    },
-  ],
   image: {
     url: "image.com/image",
   },
