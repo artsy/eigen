@@ -134,13 +134,11 @@ export const ArtworkActions: React.FC<ArtworkActionsProps> = ({
         accessibilityLabel="Save artwork"
         onPress={handleArtworkSave}
       >
-        {/* <Flex flex={1} justifyContent="center" alignItems="center" flexDirection="row" pr={2}> */}
         <UtilButton pr={2}>
           <SaveIcon isSaved={!!isSaved} />
           <Spacer x={0.5} />
           {/* the spaces below are to not make the icon jumpy when changing from save to saved will work on a more permanent fix */}
           <Text variant="sm">{isSaved ? "Saved" : "Save   "}</Text>
-          {/* </Flex> */}
         </UtilButton>
       </Touchable>
       {!!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && isHangable) && (
