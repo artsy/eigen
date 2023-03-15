@@ -1,24 +1,14 @@
-import {
-  EyeOpenedIcon,
-  ShareIcon,
-  Flex,
-  Text,
-  HeartFillIcon,
-  HeartIcon,
-  useSpace,
-  Spacer,
-} from "@artsy/palette-mobile"
+import { EyeOpenedIcon, ShareIcon, Flex, Text, useSpace } from "@artsy/palette-mobile"
 import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkHeader_artwork$data } from "__generated__/ArtworkHeader_artwork.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { ArtworkSaveButton } from "app/Scenes/Artwork/Components/ArtworkSaveButton"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { cm2in } from "app/utils/conversions"
-import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { Schema } from "app/utils/track"
 import { take } from "lodash"
 import { Touchable } from "palette"
-import React from "react"
-import { createFragmentContainer, graphql, useMutation } from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
@@ -26,13 +16,6 @@ interface ArtworkActionsProps {
   artwork: ArtworkActions_artwork$data
   shareOnPress: () => void
 }
-
-interface SaveIconProps {
-  isSaved: boolean
-}
-
-const SaveIcon: React.FC<SaveIconProps> = ({ isSaved }) =>
-  isSaved ? <HeartFillIcon fill="blue100" /> : <HeartIcon />
 
 export const shareContent = (
   title: string,
@@ -55,23 +38,10 @@ export const shareContent = (
   }
 }
 
-export const ArtworkActions: React.FC<ArtworkActionsProps> = ({
-  artwork: { internalID, image, id, slug, heightCm, widthCm, isHangable, isSaved },
-  shareOnPress,
-}) => {
+export const ArtworkActions: React.FC<ArtworkActionsProps> = ({ artwork, shareOnPress }) => {
+  const { image, id, slug, heightCm, widthCm, isHangable } = artwork
   const { trackEvent } = useTracking()
   const space = useSpace()
-
-  const [commit] = useMutation(graphql`
-    mutation ArtworkActionsSaveMutation($input: SaveArtworkInput!) {
-      saveArtwork(input: $input) {
-        artwork {
-          id
-          isSaved
-        }
-      }
-    }
-  `)
 
   const openViewInRoom = () => {
     const heightIn = cm2in(heightCm!)
@@ -92,55 +62,9 @@ export const ArtworkActions: React.FC<ArtworkActionsProps> = ({
     )
   }
 
-  const handleArtworkSave = () => {
-    commit({
-      variables: {
-        input: {
-          artworkID: internalID,
-          remove: isSaved,
-        },
-      },
-      optimisticResponse: {
-        saveArtwork: {
-          artwork: {
-            id,
-            isSaved: !isSaved,
-          },
-        },
-      },
-      onCompleted: () => {
-        refreshFavoriteArtworks()
-        trackEvent({
-          action_name: isSaved ? Schema.ActionNames.ArtworkUnsave : Schema.ActionNames.ArtworkSave,
-          action_type: Schema.ActionTypes.Success,
-          context_module: Schema.ContextModules.ArtworkActions,
-        })
-      },
-      onError: () => {
-        refreshFavoriteArtworks()
-      },
-    })
-  }
-
   return (
     <Flex justifyContent="center" flexDirection="row" width="100%">
-      <Touchable
-        hitSlop={{
-          top: space(1),
-          left: space(1),
-          bottom: space(1),
-        }}
-        accessibilityRole="button"
-        accessibilityLabel="Save artwork"
-        onPress={handleArtworkSave}
-      >
-        <UtilButton pr={2}>
-          <SaveIcon isSaved={!!isSaved} />
-          <Spacer x={0.5} />
-          {/* the spaces below are to not make the icon jumpy when changing from save to saved will work on a more permanent fix */}
-          <Text variant="sm">{isSaved ? "Saved" : "Save   "}</Text>
-        </UtilButton>
-      </Touchable>
+      <ArtworkSaveButton artwork={artwork} />
       {!!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && isHangable) && (
         <Touchable
           hitSlop={{
@@ -183,11 +107,10 @@ const UtilButton = styled(Flex)`
 export const ArtworkActionsFragmentContainer = createFragmentContainer(ArtworkActions, {
   artwork: graphql`
     fragment ArtworkActions_artwork on Artwork {
+      ...ArtworkSaveButton_artwork
       id
-      internalID
       slug
       isHangable
-      isSaved
       image {
         url
       }
