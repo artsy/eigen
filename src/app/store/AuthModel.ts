@@ -19,6 +19,7 @@ import {
   LoginManager,
 } from "react-native-fbsdk-next"
 import Keychain from "react-native-keychain"
+import SiftReactNative from "sift-react-native"
 import { AuthError } from "./AuthError"
 import { getCurrentEmissionState, GlobalStore } from "./GlobalStore"
 import type { GlobalStoreModel } from "./GlobalStoreModel"
@@ -903,6 +904,8 @@ export const getAuthModel = (): AuthModel => ({
         console.error(error)
       }
     }
+
+    SiftReactNative.unsetUserId()
 
     await Promise.all([
       Platform.OS === "ios"
