@@ -6,7 +6,7 @@ At artsy we have several ways of retrieving an image.
 
 Image urls are retrieved from metaphysics.
 
-[This doc](https://www.notion.so/artsy/Handling-Images-On-The-Web-In-Force-5c6832bf4b3e431cb4830061ce057399), although web specific, provides some more context on how we handle images.
+[This doc 🔐](https://www.notion.so/artsy/Handling-Images-On-The-Web-In-Force-5c6832bf4b3e431cb4830061ce057399), although web specific, provides some more context on how we handle images.
 
 In general, our current **preferred practice** is to use the normalized image and resize it as necessary using on-the-fly resizing.
 
@@ -25,9 +25,9 @@ The way how we do this is to require
 
 A graphQL query
 
-```
+```graphql
 {
-	show(id: "62dbddc6b70486000d2332bb") {
+  show(id: "62dbddc6b70486000d2332bb") {
     images {
       square: cropped(height: 500, width: 500, version: "normalized") {
         url
@@ -35,12 +35,11 @@ A graphQL query
     }
   }
 }
-
 ```
 
 The same query in RN
 
-```
+```tsx
 import { Dimensions } from "react-native"
 
 const windowWidth = Number(Dimensions.get("window").width)
@@ -59,20 +58,20 @@ const showInstallsQuery = graphql`
 `
 ```
 
-### Using the image inside an <Image> component
+### Using the image inside an `<Image>` component
 
-```
-# assuming you iterate over images with i as an index
-<Image source={{uri:show.images[0].square.url}} />
+```tsx
+//  assuming you iterate over images with i as an index
+<Image source={{ uri: show.images[i].square.url }} />
 ```
 
 ## I want a full size image
 
 if you want to use the full image size you can use the resized helper instead of cropped, and just supply the width, letting it figure out height itself, based on the original image dimensions:
 
-```
+```graphql
 {
-	show(id: "62dbddc6b70486000d2332bb") {
+  show(id: "62dbddc6b70486000d2332bb") {
     images {
       resized(height: 500, version: "normalized") {
         url
@@ -80,12 +79,11 @@ if you want to use the full image size you can use the resized helper instead of
     }
   }
 }
-
 ```
 
-### Using the image inside an <Image> component
+### Using the image inside an `<Image>` component
 
-```
-# assuming you iterate over images with i as an index
-<Image source={{uri:show.images[i].resized.url}} />
+```tsx
+// assuming you iterate over images with i as an index
+<Image source={{ uri: show.images[i].resized.url }} />
 ```

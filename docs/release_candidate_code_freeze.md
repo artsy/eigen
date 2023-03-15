@@ -52,7 +52,7 @@ The changes on the release-candidate branch might be cherry-picks only, or it mi
 ## Slack thread for reference
 
 Here is a thread from a previous time we did this:
-https://artsy.slack.com/archives/C01B2P6LJUU/p1627916686040500
+[Slack Thread 🔐](https://artsy.slack.com/archives/C01B2P6LJUU/p1627916686040500)
 
 ## Example PR
 

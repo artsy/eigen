@@ -74,4 +74,4 @@ After that, we can archive that experiment in the Unleash dashboard.
 
 ## Still need help?
 
-Ask for help in the #practice-mobile slack channel, we will be happy to assist!
+Ask for help in the [#practice-mobile 🔐](https://artsy.slack.com/archives/C02BAQ5K7) slack channel, we will be happy to assist!
