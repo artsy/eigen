@@ -1,21 +1,39 @@
-import { EyeOpenedIcon, ShareIcon, Flex, Text } from "@artsy/palette-mobile"
+import {
+  EyeOpenedIcon,
+  ShareIcon,
+  Flex,
+  Text,
+  HeartFillIcon,
+  HeartIcon,
+  useSpace,
+  Spacer,
+} from "@artsy/palette-mobile"
 import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkHeader_artwork$data } from "__generated__/ArtworkHeader_artwork.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { cm2in } from "app/utils/conversions"
+import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { Schema } from "app/utils/track"
 import { take } from "lodash"
 import { Touchable } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { createFragmentContainer, graphql, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
+
 interface ArtworkActionsProps {
   artwork: ArtworkActions_artwork$data
   shareOnPress: () => void
 }
+
+interface SaveIconProps {
+  isSaved: boolean
+}
+
+const SaveIcon: React.FC<SaveIconProps> = ({ isSaved }) =>
+  isSaved ? <HeartFillIcon fill="blue100" /> : <HeartIcon />
 
 export const shareContent = (
   title: string,
@@ -39,10 +57,22 @@ export const shareContent = (
 }
 
 export const ArtworkActions: React.FC<ArtworkActionsProps> = ({
-  artwork: { image, id, slug, heightCm, widthCm, isHangable },
+  artwork: { internalID, image, id, slug, heightCm, widthCm, isHangable, isSaved },
   shareOnPress,
 }) => {
   const { trackEvent } = useTracking()
+  const space = useSpace()
+
+  const [commit] = useMutation(graphql`
+    mutation ArtworkActionsSaveMutation($input: SaveArtworkInput!) {
+      saveArtwork(input: $input) {
+        artwork {
+          id
+          isSaved
+        }
+      }
+    }
+  `)
 
   const openViewInRoom = () => {
     const heightIn = cm2in(heightCm!)
@@ -63,8 +93,57 @@ export const ArtworkActions: React.FC<ArtworkActionsProps> = ({
     )
   }
 
+  const handleArtworkSave = () => {
+    commit({
+      variables: {
+        input: {
+          artworkID: internalID,
+          remove: isSaved,
+        },
+      },
+      optimisticResponse: {
+        saveArtwork: {
+          artwork: {
+            id,
+            isSaved: !isSaved,
+          },
+        },
+      },
+      onCompleted: () => {
+        refreshFavoriteArtworks()
+        trackEvent({
+          action_name: isSaved ? Schema.ActionNames.ArtworkUnsave : Schema.ActionNames.ArtworkSave,
+          action_type: Schema.ActionTypes.Success,
+          context_module: Schema.ContextModules.ArtworkActions,
+        })
+      },
+      onError: () => {
+        refreshFavoriteArtworks()
+      },
+    })
+  }
+
   return (
     <Flex justifyContent="center" flexDirection="row" width="100%">
+      <Touchable
+        hitSlop={{
+          top: space(1),
+          left: space(1),
+          right: space(1),
+          bottom: space(1),
+        }}
+        haptic
+        accessibilityRole="button"
+        accessibilityLabel="Save artwork"
+        onPress={handleArtworkSave}
+      >
+        <Flex flex={1} justifyContent="center" alignItems="center" flexDirection="row" pr={2}>
+          <SaveIcon isSaved={!!isSaved} />
+          <Spacer x={0.5} />
+          {/* the spaces below are to not make the icon jumpy when changing from save to saved will work on a more permanent fix */}
+          <Text variant="sm">{isSaved ? "Saved" : "Save   "}</Text>
+        </Flex>
+      </Touchable>
       {!!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && isHangable) && (
         <TouchableWithoutFeedback onPress={() => openViewInRoom()}>
           <UtilButton pr={2}>
@@ -93,8 +172,10 @@ export const ArtworkActionsFragmentContainer = createFragmentContainer(ArtworkAc
   artwork: graphql`
     fragment ArtworkActions_artwork on Artwork {
       id
+      internalID
       slug
       isHangable
+      isSaved
       image {
         url
       }
