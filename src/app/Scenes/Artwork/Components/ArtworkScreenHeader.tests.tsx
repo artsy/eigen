@@ -2,7 +2,6 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkScreenHeaderTestQuery } from "__generated__/ArtworkScreenHeaderTestQuery.graphql"
 import { ArtworkStoreProvider } from "app/Scenes/Artwork/ArtworkStore"
 import { goBack } from "app/system/navigation/navigate"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -32,23 +31,17 @@ describe("ArtworkScreenHeader", () => {
   it("renders the header", async () => {
     renderWithRelay({
       Artwork: () => ({
-        isSaved: false,
         artists: [{ name: "test" }],
       }),
     })
 
-    await flushPromiseQueue()
-
     expect(screen.queryByLabelText("Artwork page header")).toBeTruthy()
     expect(screen.queryByLabelText("Go back")).toBeTruthy()
-    expect(screen.queryByLabelText("Save artwork")).toBeTruthy()
     expect(screen.queryByText("Create Alert")).toBeTruthy()
   })
 
   it("calls go back when the back button is pressed", async () => {
     renderWithRelay({})
-
-    await flushPromiseQueue()
 
     expect(screen.queryByLabelText("Go back")).toBeTruthy()
 
@@ -61,15 +54,11 @@ describe("ArtworkScreenHeader", () => {
     it("renders the header but not the create alert button if the artwork doesn't have an associated artist", async () => {
       renderWithRelay({
         Artwork: () => ({
-          isSaved: false,
           artists: [],
         }),
       })
 
-      await flushPromiseQueue()
-
       expect(screen.queryByLabelText("Go back")).toBeTruthy()
-      expect(screen.queryByLabelText("Save artwork")).toBeTruthy()
       expect(screen.queryByText("Create Alert")).toBeFalsy()
     })
 
