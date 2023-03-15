@@ -125,7 +125,7 @@ const marketingCollectionFragment = graphql`
     title
     headerImage
     slug
-    artworksConnection(first: 12, marketingCollectionID: $marketingCollectionID, input: $input) {
+    artworksConnection(first: 20, marketingCollectionID: $marketingCollectionID, input: $input) {
       edges {
         node {
           internalID
