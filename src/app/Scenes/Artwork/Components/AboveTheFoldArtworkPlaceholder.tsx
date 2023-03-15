@@ -14,7 +14,7 @@ const ArtworkActionsPlaceholder = () => {
 
   return (
     <Flex flexDirection="row" justifyContent="center">
-      {times(2).map((index) => (
+      {times(3).map((index) => (
         <PlaceholderBox
           key={`auction-${index}`}
           width={50}
