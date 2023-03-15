@@ -1,8 +1,14 @@
+import { fireEvent, screen } from "@testing-library/react-native"
+import { ArtworkActionsTestQuery } from "__generated__/ArtworkActionsTestQuery.graphql"
 import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { ArtworkActions, shareContent } from "./ArtworkActions"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
+import { ArtworkActions, ArtworkActionsFragmentContainer, shareContent } from "./ArtworkActions"
 
 jest.unmock("app/NativeModules/LegacyNativeModules")
 
@@ -76,16 +82,16 @@ describe("ArtworkActions", () => {
     expect(queryByText("View in Room")).toBeFalsy()
   })
 
-  it("should NOT display 'Save' button if work is in an open auction ", () => {
+  it("should display 'Save' button", () => {
     const { queryByText } = renderWithWrappers(
       <ArtworkActions shareOnPress={jest.fn()} artwork={artworkActionsArtwork} />
     )
 
-    expect(queryByText("Save")).toBeFalsy()
+    expect(queryByText("Save")).toBeTruthy()
     expect(queryByText("Saved")).toBeFalsy()
   })
 
-  it("should NOT display 'Watch lot' button if work is in an open auction ", () => {
+  it("should display 'Save' button if work is in an open auction", () => {
     const artworkActionsArtworkInAuction = {
       ...artworkActionsArtwork,
       sale: {
@@ -98,6 +104,8 @@ describe("ArtworkActions", () => {
       <ArtworkActions shareOnPress={jest.fn()} artwork={artworkActionsArtworkInAuction} />
     )
 
+    expect(queryByText("Save")).toBeTruthy()
+    expect(queryByText("Saved")).toBeFalsy()
     expect(queryByText("Watch lot")).toBeFalsy()
     expect(queryByLabelText("watch lot icon")).toBeFalsy()
   })
@@ -112,11 +120,66 @@ describe("ArtworkActions", () => {
       expect(queryByText("Share")).toBeTruthy()
     })
   })
+
+  describe("Save button", () => {
+    const { renderWithRelay } = setupTestWrapper<ArtworkActionsTestQuery>({
+      Component: ({ artwork }) => (
+        <ArtworkActionsFragmentContainer artwork={artwork!} shareOnPress={() => jest.fn()} />
+      ),
+      query: graphql`
+        query ArtworkActionsTestQuery @relay_test_operation @raw_response_type {
+          artwork(id: "some-artwork") {
+            ...ArtworkActions_artwork
+          }
+        }
+      `,
+    })
+
+    it("should trigger save mutation when user presses save button", async () => {
+      const { env } = renderWithRelay({
+        Artwork: () => ({
+          isSaved: false,
+        }),
+      })
+
+      expect(screen.getByLabelText("Save artwork")).toBeTruthy()
+
+      fireEvent.press(screen.getByLabelText("Save artwork"))
+
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+        "ArtworkActionsSaveMutation"
+      )
+    })
+
+    it("should track save event when user saves and artwork successfully", async () => {
+      const { env } = renderWithRelay({
+        Artwork: () => ({
+          isSaved: false,
+        }),
+      })
+
+      fireEvent.press(screen.getByLabelText("Save artwork"))
+
+      resolveMostRecentRelayOperation(env, {})
+
+      expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+        [
+          {
+            "action_name": "artworkSave",
+            "action_type": "success",
+            "context_module": "ArtworkActions",
+          },
+        ]
+      `)
+    })
+  })
 })
 
 const artworkActionsArtwork: ArtworkActions_artwork$data = {
   id: "artwork12345",
   slug: "andreas-rod-prinzknecht",
+  isSaved: false,
+  internalID: "artwork12345",
   image: {
     url: "image.com/image",
   },
