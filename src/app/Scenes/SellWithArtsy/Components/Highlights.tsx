@@ -1,5 +1,6 @@
-import { Flex, StarCircleIcon, Text } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import {
+  LightStarIcon,
   MoneyCircleIcon,
   WorldGlobeCircleIcon,
 } from "app/Scenes/SellWithArtsy/Components/icons/Icons"
@@ -11,7 +12,7 @@ const reasons = [
     text: "With lower fees than traditional auction houses and dealers, you take home more of the final sale price.",
   },
   {
-    icon: <StarCircleIcon height={40} width={40} />,
+    icon: <LightStarIcon height={40} width={40} />,
     title: "Tap into our expertise",
     text: "Our team has a wealth of experience in the secondary art market. A dedicated specialist will be with you every step of the way.",
   },

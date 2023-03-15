@@ -235,6 +235,16 @@ export const features = defineFeatures({
     showInDevMenu: true,
     echoFlagKey: "AREnableMyCollectionNotesField",
   },
+  AREnableSWALandingPageMeetTheSpecialist: {
+    description: "Enable MeetTheSpecialist on SWA Landing Page",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
+  AREnableSWALandingPageTestimonials: {
+    description: "Enable Testimonials on SWA Landing Page",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {

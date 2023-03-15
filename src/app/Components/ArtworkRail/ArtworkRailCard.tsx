@@ -72,6 +72,8 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
 }) => {
   const EXTRALARGE_RAIL_CARD_IMAGE_WIDTH = useExtraLargeWidth()
 
+  const enableNewSWALandingPage = useFeatureFlag("AREnableNewSWALandingPage")
+
   const { trackEvent } = useTracking()
   const fontScale = PixelRatio.getFontScale()
   const [saveArtwork] = useMutation(SaveArtworkMutation)
@@ -104,9 +106,10 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
         height: image?.resized?.height ?? 0,
       },
       {
-        width: isRecentlySoldArtwork
-          ? EXTRALARGE_RAIL_CARD_IMAGE_WIDTH
-          : ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
+        width:
+          isRecentlySoldArtwork && enableNewSWALandingPage
+            ? EXTRALARGE_RAIL_CARD_IMAGE_WIDTH
+            : ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
         height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
       }
     )
@@ -166,8 +169,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     trackEvent(tracks.saveOrUnsave(isSaved, internalID, slug, trackingContextScreenOwnerType))
   }
 
-  const enableNewSWALandingPage = useFeatureFlag("AREnableNewSWALandingPage")
-
   const displayForRecentlySoldArtwork =
     !!isRecentlySoldArtwork &&
     (size === "large" || size === "extraLarge") &&
@@ -181,6 +182,11 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
           image={image}
           size={size}
           urgencyTag={urgencyTag}
+          imageHeightExtra={
+            displayForRecentlySoldArtwork
+              ? getTextHeightByArtworkSize(size) - ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT
+              : undefined
+          }
         />
         <Flex
           my={1}
@@ -298,6 +304,11 @@ export interface ArtworkRailCardImageProps {
   urgencyTag?: string | null
   containerWidth?: number | null
   isRecentlySoldArtwork?: boolean
+  /** imageHeightExtra is an optional padding value you might want to add to image height
+   * When using large width like with RecentlySold, image appears cropped
+   * TODO: - Investigate why
+   */
+  imageHeightExtra?: number
 }
 
 const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
@@ -306,9 +317,12 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
   urgencyTag = null,
   containerWidth,
   isRecentlySoldArtwork,
+  imageHeightExtra = 0,
 }) => {
   const color = useColor()
   const EXTRALARGE_RAIL_CARD_IMAGE_WIDTH = useExtraLargeWidth()
+  const enableNewSWALandingPage = useFeatureFlag("AREnableNewSWALandingPage")
+
   const { width, height, src } = image?.resized || {}
 
   if (!src) {
@@ -328,9 +342,10 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
       height: height ?? 0,
     },
     {
-      width: isRecentlySoldArtwork
-        ? EXTRALARGE_RAIL_CARD_IMAGE_WIDTH
-        : ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
+      width:
+        isRecentlySoldArtwork && enableNewSWALandingPage
+          ? EXTRALARGE_RAIL_CARD_IMAGE_WIDTH
+          : ARTWORK_LARGE_RAIL_CARD_IMAGE_WIDTH,
       height: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size],
     }
   )
@@ -341,7 +356,11 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
         <OpaqueImageView
           style={{ maxHeight: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size] }}
           imageURL={src}
-          height={imageDimensions.height || ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size]}
+          height={
+            imageDimensions.height
+              ? imageDimensions.height + imageHeightExtra
+              : ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size]
+          }
           width={containerWidth!}
         />
       </Flex>
@@ -380,7 +399,7 @@ const RecentlySoldCardSection: React.FC<
   const enableNewSWALandingPage = useFeatureFlag("AREnableNewSWALandingPage")
   if (enableNewSWALandingPage) {
     return (
-      <>
+      <Flex>
         <Flex flexDirection="row" justifyContent="space-between" mt={1}>
           <Text variant="lg-display" numberOfLines={1}>
             {priceRealizedDisplay}
@@ -394,7 +413,7 @@ const RecentlySoldCardSection: React.FC<
         <Text variant="xs" color="black60" lineHeight="20px">
           Estimate {compact([lowEstimateDisplay, highEstimateDisplay]).join("—")}
         </Text>
-      </>
+      </Flex>
     )
   }
   return (

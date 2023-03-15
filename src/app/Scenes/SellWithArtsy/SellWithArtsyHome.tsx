@@ -50,6 +50,8 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
   me,
 }) => {
   const enableNewSWALandingPage = useFeatureFlag("AREnableNewSWALandingPage")
+  const enableMeetTheSpecialist = useFeatureFlag("AREnableSWALandingPageMeetTheSpecialist")
+  const enableTestimonials = useFeatureFlag("AREnableSWALandingPageTestimonials")
 
   const onFocusStatusBarStyle: StatusBarStyle = enableNewSWALandingPage
     ? "dark-content"
@@ -128,11 +130,10 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
             {enableNewSWALandingPage && <Spacer y={2} />}
             <Spacer y={4} />
 
-            {enableNewSWALandingPage && (
-              <Join separator={<Spacer y={6} />}>
-                <SpeakToTheTeam onInquiryPress={handleInquiryPress} />
-                <MeetTheSpecialists onInquiryPress={handleInquiryPress} />
-              </Join>
+            {enableNewSWALandingPage && <SpeakToTheTeam onInquiryPress={handleInquiryPress} />}
+            {enableNewSWALandingPage && enableMeetTheSpecialist && <Spacer y={6} />}
+            {enableNewSWALandingPage && enableMeetTheSpecialist && (
+              <MeetTheSpecialists onInquiryPress={handleInquiryPress} />
             )}
             {enableNewSWALandingPage && <Spacer y={6} />}
             {enableNewSWALandingPage && <CollectorsNetwork />}
@@ -142,7 +143,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
             {enableNewSWALandingPage && (
               <Join separator={<Spacer y={6} />}>
                 <></>
-                <Testimonials />
+                {enableTestimonials && <Testimonials />}
                 <FAQSWA />
               </Join>
             )}
