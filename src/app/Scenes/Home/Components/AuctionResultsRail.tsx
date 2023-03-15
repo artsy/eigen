@@ -17,19 +17,21 @@ interface AuctionResultsRailProps {
   title: string
 }
 
-const getViewAllUrl = (title: string) => {
-  switch (title) {
-    case "Upcoming Auctions By Artists You Follow":
+const getViewAllUrl = (contextModule: ContextModule) => {
+  switch (contextModule) {
+    case ContextModule.upcomingAuctionsRail:
       return "/upcoming-auction-results"
-    case "Latest Auction Results":
+    case ContextModule.auctionResultsRail:
       return "/auction-results-for-artists-you-follow"
     default:
-      throw "Unknown title for AuctionResultsRail: " + title
+      throw "Unknown view all URL for AuctionResultsRail: " + contextModule
   }
 }
 
 export const AuctionResultsRail: React.FC<AuctionResultsRailProps> = memo(
   ({ contextModule, title, ...restProps }) => {
+    const viewAllUrl = getViewAllUrl(contextModule)
+
     const { trackEvent } = useTracking()
     const auctionResults = useFragment(meFragment, restProps.auctionResults)
 
@@ -50,7 +52,7 @@ export const AuctionResultsRail: React.FC<AuctionResultsRailProps> = memo(
             title={title}
             onPress={() => {
               trackEvent(tracks.tappedHeader(contextModule))
-              navigate(getViewAllUrl(title))
+              navigate(viewAllUrl)
             }}
           />
         </Flex>
