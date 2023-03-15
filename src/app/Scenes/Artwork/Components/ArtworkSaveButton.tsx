@@ -57,7 +57,7 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({ artwork })
       accessibilityLabel="Save artwork"
       onPress={handleArtworkSave}
     >
-      <Flex flexDirection="row" justifyContent="flex-start" alignItems="center" pr={2}>
+      <Flex flexDirection="row" justifyContent="flex-start" alignItems="center">
         {isSaved ? <HeartFillIcon fill="blue100" /> : <HeartIcon />}
         <Spacer x={0.5} />
         {/* the spaces below are to not make the icon jumpy when changing from save to saved will work on a more permanent fix */}

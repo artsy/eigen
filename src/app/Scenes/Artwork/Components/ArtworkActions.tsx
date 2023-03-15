@@ -1,4 +1,4 @@
-import { EyeOpenedIcon, ShareIcon, Flex, Text, useSpace } from "@artsy/palette-mobile"
+import { EyeOpenedIcon, ShareIcon, Flex, Text, useSpace, Join, Spacer } from "@artsy/palette-mobile"
 import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkHeader_artwork$data } from "__generated__/ArtworkHeader_artwork.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
@@ -64,36 +64,38 @@ export const ArtworkActions: React.FC<ArtworkActionsProps> = ({ artwork, shareOn
 
   return (
     <Flex justifyContent="center" flexDirection="row" width="100%">
-      <ArtworkSaveButton artwork={artwork} />
-      {!!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && isHangable) && (
+      <Join separator={<Spacer x={2} />}>
+        <ArtworkSaveButton artwork={artwork} />
+        {!!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && isHangable) && (
+          <Touchable
+            hitSlop={{
+              top: space(1),
+              bottom: space(1),
+            }}
+            haptic
+            onPress={() => openViewInRoom()}
+          >
+            <UtilButton>
+              <EyeOpenedIcon mr={0.5} />
+              <Text variant="sm">View in Room</Text>
+            </UtilButton>
+          </Touchable>
+        )}
         <Touchable
           hitSlop={{
             top: space(1),
             bottom: space(1),
+            right: space(1),
           }}
           haptic
-          onPress={() => openViewInRoom()}
+          onPress={() => shareOnPress()}
         >
-          <UtilButton pr={2}>
-            <EyeOpenedIcon mr={0.5} />
-            <Text variant="sm">View in Room</Text>
+          <UtilButton>
+            <ShareIcon mr={0.5} />
+            <Text variant="sm">Share</Text>
           </UtilButton>
         </Touchable>
-      )}
-      <Touchable
-        hitSlop={{
-          top: space(1),
-          bottom: space(1),
-          right: space(1),
-        }}
-        haptic
-        onPress={() => shareOnPress()}
-      >
-        <UtilButton>
-          <ShareIcon mr={0.5} />
-          <Text variant="sm">Share</Text>
-        </UtilButton>
-      </Touchable>
+      </Join>
     </Flex>
   )
 }
