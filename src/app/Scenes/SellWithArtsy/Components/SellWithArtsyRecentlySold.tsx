@@ -52,7 +52,7 @@ export const SellWithArtsyRecentlySold: React.FC<SellWithArtsyRecentlySoldProps>
           )
           navigate(recentlySoldArtwork?.artwork?.href!)
         }}
-        size="large"
+        size={enableNewSWALandingPage ? "extraLarge" : "large"}
         showPartnerName={!enableNewSWALandingPage}
       />
     </Flex>

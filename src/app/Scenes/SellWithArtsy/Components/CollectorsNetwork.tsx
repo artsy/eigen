@@ -14,15 +14,15 @@ export const CollectorsNetwork: React.FC = () => {
           <Flex>
             <Flex mb={2}>
               <Text variant="xl">3M+</Text>
-              <Text variant="sm-display">registered buyers worldwide</Text>
+              <Text variant="xs">registered buyers worldwide</Text>
             </Flex>
             <Flex mb={2}>
-              <Text variant="xl">30,000</Text>
-              <Text variant="sm-display">Artworks sold at auction </Text>
+              <Text variant="xl">3,000</Text>
+              <Text variant="xs">miles average transaction distance</Text>
             </Flex>
             <Flex mb={2}>
               <Text variant="xl">190</Text>
-              <Text variant="sm-display">Countries</Text>
+              <Text variant="xs">countries</Text>
             </Flex>
           </Flex>
           <Image
@@ -41,18 +41,18 @@ export const CollectorsNetwork: React.FC = () => {
       </Text>
       <Flex>
         <Text variant="xl">3M+</Text>
-        <Text variant="sm-display">registered buyers worldwide</Text>
+        <Text variant="xs">registered buyers worldwide</Text>
       </Flex>
       <Spacer y={2} />
       <Flex flexDirection="row" mb={2}>
-        <Flex>
-          <Text variant="xl">30,000</Text>
-          <Text variant="sm-display">Artworks sold at auction </Text>
+        <Flex maxWidth="60%">
+          <Text variant="xl">3,000</Text>
+          <Text variant="xs">miles average transaction distance</Text>
         </Flex>
         <Spacer x={2} />
         <Flex>
           <Text variant="xl">190</Text>
-          <Text variant="sm-display">Countries</Text>
+          <Text variant="xs">countries</Text>
         </Flex>
       </Flex>
       <Image

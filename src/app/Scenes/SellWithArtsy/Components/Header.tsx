@@ -110,10 +110,10 @@ const NewHeader: React.FC<{
   handleSubmitPress: (subject: string) => void
 }> = ({ handleInquiryPress, handleSubmitPress }) => {
   const buttonText = "Start Selling"
-  const { safeAreaInsets, width } = useScreenDimensions()
+  const { width } = useScreenDimensions()
   const isTablet = isPad()
   return (
-    <Flex style={{ marginTop: safeAreaInsets.top }}>
+    <Flex>
       <Spacer y={2} />
       <Image
         source={require("images/swa-landing-page-header.png")}
@@ -126,8 +126,8 @@ const NewHeader: React.FC<{
           Sell art from your collection
         </Text>
         <Text variant="xs" mb={2}>
-          Our experts find the best sales opportunity for your work, through our vast global network
-          of buyers.
+          With our global reach and art market expertise, our specialists will find the best sales
+          option for your work.
         </Text>
         <Flex justifyContent="center" alignItems="center">
           <Button

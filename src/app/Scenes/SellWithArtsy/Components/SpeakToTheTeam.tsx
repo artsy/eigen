@@ -28,7 +28,7 @@ export const SpeakToTheTeam: React.FC<{
             Get in Touch
           </Button>
         </Flex>
-        <Spacer y={isAPad ? 4 : 2} />
+        <Spacer y={4} />
         <Image
           source={
             isAPad

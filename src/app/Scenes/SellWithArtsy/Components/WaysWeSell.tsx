@@ -1,35 +1,35 @@
 import { Flex, Spacer, Text, useColor, useSpace } from "@artsy/palette-mobile"
+import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import { Image } from "react-native"
 import { FlatList } from "react-native-gesture-handler"
-import { useScreenDimensions } from "shared/hooks"
 
 const data = [
   {
     title: "Auctions",
-    text: "Find the highest bidder, with our roster of auction houses in 190 countries.",
+    text: "Our curated auctions provide you with multiple opportunities to reach the widest audience and successfully achieve your artwork’s full potential.",
   },
   {
     title: "Private Sales",
-    text: "We match your work to potential buyers in our global network of collectors.",
+    text: "We offer tailored and discreet sales arrangements for our collectors’ highest value and most sensitive artworks.",
   },
   {
     title: "Online storefront",
-    text: "List directly on Artsy.net, the world’s largest online art marketplace.",
+    text: "When your work is listed directly on Artsy.net—the world’s largest online art marketplace—it reaches over 3 million art lovers.",
   },
 ]
 
 export const WaysWeSell: React.FC = () => {
   const space = useSpace()
   const color = useColor()
-  const { width } = useScreenDimensions()
+  const maxImageWidth = useExtraLargeWidth()
   return (
     <Flex bg="black100" py={4}>
       <Flex mx={2}>
         <Text variant="lg" color={color("white100")} mb={1}>
-          Ways we sell your work
+          A sales strategy tailored to your artwork
         </Text>
         <Text variant="xs" color={color("white100")} mb={2}>
-          We create a tailored strategy to find the optimal sales method for your artwork
+          A dedicated specialist works with you to select the best sales option for your artwork.
         </Text>
       </Flex>
       <FlatList
@@ -38,7 +38,7 @@ export const WaysWeSell: React.FC = () => {
         showsHorizontalScrollIndicator={false}
         data={data}
         renderItem={({ item, index }) => (
-          <Flex maxWidth={width / 1.2} mr={2} alignSelf="flex-end">
+          <Flex maxWidth={maxImageWidth} mr={2} alignSelf="flex-end">
             <Image
               source={
                 // because these images are suffixed @1x, @2x etc we cannot `require` outside Image
@@ -50,14 +50,14 @@ export const WaysWeSell: React.FC = () => {
                   ? require("images/ways-we-sell-private-sales.png")
                   : require("images/ways-we-sell-online-storefront.png")
               }
-              style={{ maxWidth: width - space(6) }}
+              style={{ maxWidth: maxImageWidth }}
               resizeMode="cover"
             />
 
             <Text variant="md" color={color("white100")} mt={1}>
               {item.title}
             </Text>
-            <Text variant="xs" color={color("white100")} mt={1}>
+            <Text variant="xs" color={color("white100")} mt={1} maxWidth>
               {item.text}
             </Text>
           </Flex>

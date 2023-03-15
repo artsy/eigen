@@ -50,6 +50,8 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
   me,
 }) => {
   const enableNewSWALandingPage = useFeatureFlag("AREnableNewSWALandingPage")
+  const enableMeetTheSpecialist = useFeatureFlag("AREnableSWALandingPageMeetTheSpecialist")
+  const enableTestimonials = useFeatureFlag("AREnableSWALandingPageTestimonials")
 
   const onFocusStatusBarStyle: StatusBarStyle = enableNewSWALandingPage
     ? "dark-content"
@@ -58,7 +60,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
 
   useSwitchStatusBarStyle(onFocusStatusBarStyle, onBlurStatusBarStyle)
 
-  const { height: screenHeight } = useScreenDimensions()
+  const { height: screenHeight, safeAreaInsets } = useScreenDimensions()
   const tracking = useTracking()
 
   const handleConsignPress = (tappedConsignArgs: TappedConsignArgs) => {
@@ -103,7 +105,13 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
 
   return (
     <Screen.Background>
-      <Flex flex={1} justifyContent="center" alignItems="center" minHeight={screenHeight}>
+      <Flex
+        flex={1}
+        justifyContent="center"
+        alignItems="center"
+        minHeight={screenHeight}
+        style={{ paddingTop: enableNewSWALandingPage ? safeAreaInsets.top : undefined }}
+      >
         <ScrollView showsVerticalScrollIndicator={false}>
           <Flex pb={6}>
             <Header onConsignPress={handleConsignPress} onInquiryPress={handleInquiryPress} />
@@ -122,11 +130,10 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
             {enableNewSWALandingPage && <Spacer y={2} />}
             <Spacer y={4} />
 
-            {enableNewSWALandingPage && (
-              <Join separator={<Spacer y={6} />}>
-                <SpeakToTheTeam onInquiryPress={handleInquiryPress} />
-                <MeetTheSpecialists onInquiryPress={handleInquiryPress} />
-              </Join>
+            {enableNewSWALandingPage && <SpeakToTheTeam onInquiryPress={handleInquiryPress} />}
+            {enableNewSWALandingPage && enableMeetTheSpecialist && <Spacer y={6} />}
+            {enableNewSWALandingPage && enableMeetTheSpecialist && (
+              <MeetTheSpecialists onInquiryPress={handleInquiryPress} />
             )}
             {enableNewSWALandingPage && <Spacer y={6} />}
             {enableNewSWALandingPage && <CollectorsNetwork />}
@@ -136,7 +143,7 @@ export const SellWithArtsyHome: React.FC<SellWithArtsyHomeProps> = ({
             {enableNewSWALandingPage && (
               <Join separator={<Spacer y={6} />}>
                 <></>
-                <Testimonials />
+                {enableTestimonials && <Testimonials />}
                 <FAQSWA />
               </Join>
             )}
