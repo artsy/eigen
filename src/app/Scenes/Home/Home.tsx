@@ -432,7 +432,11 @@ export const HomeFragmentContainer = memo(
             isAuction: true
             liveSale: true
           ) {
-            totalCount
+            edges {
+              node {
+                id
+              }
+            }
           }
           ...LotsByFollowedArtistsRail_me
         }
