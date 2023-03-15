@@ -1,78 +1,20 @@
-import { HeartIcon, HeartFillIcon, Flex, useSpace, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, useSpace } from "@artsy/palette-mobile"
 import { ArtworkScreenHeader_artwork$data } from "__generated__/ArtworkScreenHeader_artwork.graphql"
 import { useIsStaging } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
-import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
-import { Schema } from "app/utils/track"
-import { BackButton, Touchable } from "palette"
-import { createFragmentContainer, graphql, useMutation } from "react-relay"
-import { useTracking } from "react-tracking"
+import { BackButton } from "palette"
+import { createFragmentContainer, graphql } from "react-relay"
 import { ArtworkScreenHeaderCreateAlertFragmentContainer } from "./ArtworkScreenHeaderCreateAlert"
 
 const HEADER_HEIGHT = 44
-const SAVE_ICON_SIZE = 22
-
-interface SaveIconProps {
-  isSaved: boolean
-}
-
-const SaveIcon: React.FC<SaveIconProps> = ({ isSaved }) =>
-  isSaved ? (
-    <HeartFillIcon fill="blue100" width={SAVE_ICON_SIZE} height={SAVE_ICON_SIZE} />
-  ) : (
-    <HeartIcon width={SAVE_ICON_SIZE} height={SAVE_ICON_SIZE} />
-  )
 
 interface ArtworkScreenHeaderProps {
   artwork: ArtworkScreenHeader_artwork$data
 }
 
 const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) => {
-  const { trackEvent } = useTracking()
   const isStaging = useIsStaging()
   const space = useSpace()
-  const { isSaved } = artwork
-
-  const [commit] = useMutation(graphql`
-    mutation ArtworkScreenHeaderSaveMutation($input: SaveArtworkInput!) {
-      saveArtwork(input: $input) {
-        artwork {
-          id
-          isSaved
-        }
-      }
-    }
-  `)
-
-  const handleArtworkSave = () => {
-    commit({
-      variables: {
-        input: {
-          artworkID: artwork.internalID,
-          remove: isSaved,
-        },
-      },
-      optimisticResponse: {
-        saveArtwork: {
-          artwork: {
-            id: artwork.id,
-            isSaved: !isSaved,
-          },
-        },
-      },
-      onCompleted: () => {
-        refreshFavoriteArtworks()
-        trackEvent({
-          action_name: isSaved ? Schema.ActionNames.ArtworkUnsave : Schema.ActionNames.ArtworkSave,
-          action_type: Schema.ActionTypes.Success,
-          context_module: Schema.ContextModules.ArtworkActions,
-        })
-      },
-      onError: () => {
-        refreshFavoriteArtworks()
-      },
-    })
-  }
 
   return (
     <Flex
@@ -101,28 +43,6 @@ const ArtworkScreenHeader: React.FC<ArtworkScreenHeaderProps> = ({ artwork }) =>
       </Flex>
 
       <Flex flexDirection="row" alignItems="center">
-        <Touchable
-          hitSlop={{
-            top: space(1),
-            left: space(1),
-            right: space(1),
-            bottom: space(1),
-          }}
-          haptic
-          accessibilityRole="button"
-          accessibilityLabel="Save artwork"
-          onPress={handleArtworkSave}
-        >
-          <Flex flex={1} justifyContent="center" alignItems="center" flexDirection="row">
-            <SaveIcon isSaved={!!isSaved} />
-            <Spacer x={0.5} />
-            {/* the spaces below are to not make the icon jumpy when changing from save to saved will work on a more permanent fix */}
-            <Text variant="sm">{isSaved ? "Saved" : "Save   "}</Text>
-          </Flex>
-        </Touchable>
-
-        <Spacer x={2} />
-
         <ArtworkScreenHeaderCreateAlertFragmentContainer artwork={artwork} />
       </Flex>
     </Flex>
@@ -133,10 +53,6 @@ export const ArtworkScreenHeaderFragmentContainer = createFragmentContainer(Artw
   artwork: graphql`
     fragment ArtworkScreenHeader_artwork on Artwork {
       ...ArtworkScreenHeaderCreateAlert_artwork
-      id
-      internalID
-      slug
-      isSaved
     }
   `,
 })

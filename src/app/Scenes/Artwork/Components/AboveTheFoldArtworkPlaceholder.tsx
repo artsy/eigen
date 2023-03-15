@@ -54,7 +54,6 @@ const ArtworkDetailsPlaceholder = () => {
 }
 
 export const AboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> = ({ artworkID }) => {
-  const space = useSpace()
   const { width, height } = useImagePlaceholderDimensions(artworkID)
 
   return (
@@ -65,7 +64,6 @@ export const AboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> = (
           <PlaceholderBox width={20} height={20} />
 
           <Flex flexDirection="row" alignItems="center">
-            <PlaceholderBox width={105} height={25} marginRight={space(1)} />
             <PlaceholderBox width={105} height={25} />
           </Flex>
         </Flex>
