@@ -3,7 +3,6 @@ import { bidderPositionQuery } from "app/Components/Bidding/Screens/ConfirmBid/B
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { waitUntil } from "app/utils/tests/waitUntil"
-import { Button } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 import { Select } from "palette/elements/Select"
 import "react-native"
@@ -52,7 +51,7 @@ it("allows bidders with a qualified credit card to bid", async () => {
   )
 
   screen.root.findByType(Select).props.onSelectValue(null, 2)
-  screen.root.findAllByType(Button)[0].props.onPress()
+  screen.root.findByProps({ testID: "next-button" }).props.onPress()
 
   screen = fakeNavigator.nextStep()
   expect(extractText(screen.root)).toContain("Confirm your bid")
@@ -66,7 +65,7 @@ it("allows bidders with a qualified credit card to bid", async () => {
   }) as any
 
   screen.root.findByType(Checkbox).props.onPress()
-  screen.root.findAllByType(Button)[1].props.onPress()
+  screen.root.findByProps({ testID: "bid-button" }).props.onPress()
 
   await waitUntil(() => fakeNavigator.stackSize() === 2)
 
@@ -85,7 +84,7 @@ it("allows bidders without a qualified credit card to register a card and bid", 
   )
 
   screen.root.findByType(Select).props.onSelectValue(null, 2)
-  screen.root.findAllByType(Button)[0].props.onPress()
+  screen.root.findByProps({ testID: "next-button" }).props.onPress()
 
   screen = fakeNavigator.nextStep()
 

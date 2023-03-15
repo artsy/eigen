@@ -92,7 +92,7 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
           )}
         </View>
 
-        <Button block onPress={this.onPressNext} style={{ flexGrow: 0 }}>
+        <Button testID="next-button" block onPress={this.onPressNext} style={{ flexGrow: 0 }}>
           Next
         </Button>
       </Flex>

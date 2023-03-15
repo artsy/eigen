@@ -7,6 +7,7 @@
         <item name="android:statusBarColor">@color/white_background</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:forceDarkAllowed">false</item>
+        <item name="android:editTextBackground">@drawable/rn_edit_text_material</item>
     </style>
 
     <style name="Theme.FullScreenDialog" parent="Theme.AppCompat.Light.NoActionBar">
