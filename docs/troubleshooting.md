@@ -122,7 +122,7 @@ const source = resolveAssetSource(this.props.source)
 console.log(source) // => { uri: "pods/Assets/.../some-video.mp4" }
 ```
 
-See [Video.tsx](https://github.com/artsy/emission/tree/master/src/app/Components/Video.tsx) for an example implementation and [here](https://facebook.github.io/react-native/docs/images#static-non-image-resources) for a list of supported file formats.
+See [Video.tsx](https://github.com/artsy/emission/blob/master/src/lib/Components/Video.tsx) for an example implementation and [here](https://facebook.github.io/react-native/docs/images#static-non-image-resources) for a list of supported file formats.
 
 ### Update native snapshots
 

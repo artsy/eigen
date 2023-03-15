@@ -26,7 +26,7 @@ _Please note: Links should point to specific commits, and not a branch (in case 
 
 ### Examples & Hacks
 
-Check out our lists of [examples](#../../../EXAMPLES.md) and [hacks](#../../../HACKS.md).
+Check out our lists of [examples](/EXAMPLES.md) and [hacks](/HACKS.md).
 
 ### History
 
@@ -154,7 +154,7 @@ Refactoring components using HoCs in favour of hooks is encouraged.
 
 ### Testing
 
-Please read more about testing here [/docs/testing.md]
+Please read more about testing [here](testing.md).
 
 ### Navigation
 

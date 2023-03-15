@@ -7,13 +7,11 @@
 3. Inside your NewComponent folder create index.tsx and `export * from './NewComponent'`
 4. In src/storybook/storybook.requires.js
 
-```typescript
+```tsx
 const getStories = () => {
-  return [
-    require("<path>/NewComponent.stories.tsx"),
-  ]
+  return [require("<path>/NewComponent.stories.tsx")]
 }
-
+```
 
 We use [Storybook](https://storybook.js.org/tutorials/intro-to-storybook/react-native/en/get-started/) to build and display our UI components in isolation.
 
@@ -22,9 +20,7 @@ We use [Storybook](https://storybook.js.org/tutorials/intro-to-storybook/react-n
 Opens a web server and browser UI that runs alongside the simulator.
 
 ```
-
 yarn storybook-server
-
 ```
 
 **Run Storybook as standalone app**
@@ -32,9 +28,7 @@ yarn storybook-server
 Opens Storybook without loading the entire app (instead of `yarn start`).
 
 ```
-
 yarn start-storybook
-
 ```
 
 The screen can also be opened from the Dev Menu.
@@ -44,11 +38,9 @@ The screen can also be opened from the Dev Menu.
 Opens storybook as a screen in the app.
 
 ```
-
 yarn storybook-ios
 yarn storybook-android
-
-````
+```
 
 **Adding new storybook stories**
 
@@ -60,4 +52,4 @@ You can look for other stories files for reference, but the main structure is:
 storiesOf("Checkbox", module)
   .add("A Story Name", () => <Checkbox someProp="wow" />)
   .add("Another Story Name", () => <Checkbox otherProps="NICE" />)
-````
+```

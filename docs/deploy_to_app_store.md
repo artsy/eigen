@@ -4,7 +4,7 @@ App Store builds have to go through the beta process first. [Check out the beta 
 
 ## Test the Beta
 
-Eigen's beta pre-submission checklist has [moved into Notion](https://www.notion.so/artsy/Pre-submission-QA-Checklist-785e3233fdcf423f95ee239ab3c22ec3).
+Eigen's beta pre-submission checklist has [moved into Notion 🔐](https://www.notion.so/artsy/Pre-submission-QA-Checklist-785e3233fdcf423f95ee239ab3c22ec3).
 
 ## Preparing to Ship a Final Version
 
@@ -26,8 +26,8 @@ Our App Store releases are done manually, instead of automatically once Apple ap
 > _When the app is approved for release, a slack message is sent to notify the #practice-mobile channel and an email from Apple Store Connect is sent to mobile [at] artsymail [dot] com_
 
 1. Run `./scripts/release-ios-app`
-2. Monitor [Sentry](https://sentry.io/artsynet/eigen/) in the #practice-mobile channel on Slack for any errors (all production errors are sent to Slack when they first occur).
-3. Make sure to let the team know over at [#dev](https://artsy.slack.com/archives/C02BC3HEJ)!. Don't forget to thank everyone who contributed 💜
+2. Monitor [Sentry 🔐](https://sentry.io/artsynet/eigen/) in the #practice-mobile channel on Slack for any errors (all production errors are sent to Slack when they first occur).
+3. Make sure to let the team know over at [#dev 🔐](https://artsy.slack.com/archives/C02BC3HEJ)!. Don't forget to thank everyone who contributed 💜
 
 ## Prepare for the Next Release
 

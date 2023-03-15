@@ -9,15 +9,15 @@ For bigger features that will take longer than a sprint, we put development behi
 ## Contents
 
 - [Echo](#echo)
-- How to Develop a Feature in Eigen [link](#how-to-develop-a-feature-in-eigen)
-- Add a feature flag [link](#add-a-feature-flag)
-  - **Step 1**: Configure the feature flag on features.ts and echo [link](#step-1-configure-the-feature-flag-on-featurests)
-  - **Step 2**: Place the feature flag in the part of code where it will be used [link](#step-2-place-the-feature-flag-in-the-part-of-code-where-it-will-be-used)
-  - **Step 3**: Enable the feature flag [link](#step-3-enable-the-feature-flag)
-- Test a feature flag [link](#test-a-feature-flag)
-- QA [link](#qa)
-- Release a feature [link](#release-a-feature)
-- Remove a Feature Flag [link](#remove-a-feature-flag)
+- [How to Develop a Feature in Eigen](#how-to-develop-a-feature-in-eigen)
+- [Add a feature flag](#add-a-feature-flag)
+  - **Step 1**: [Configure the feature flag on features.ts and echo](#step-1-configure-the-feature-flag-on-featurests)
+  - **Step 2**: [Place the feature flag in the part of code where it will be used](#step-2-place-the-feature-flag-in-the-part-of-code-where-it-will-be-used)
+  - **Step 3**: [Enable the feature flag](#step-3-enable-the-feature-flag)
+- [Test a feature flag](#test-a-feature-flag)
+- [QA](#qa)
+- [Release a feature](#release-a-feature)
+- [Remove a Feature Flag](#remove-a-feature-flag)
 
 ## Echo
 
@@ -65,7 +65,7 @@ First you need to add the new feature block in `src/app/store/config/features.ts
    }
 ```
 
-The `description` property is what makes it possible to override the feature flag from the [Dev Menu](/dev_menu.md).
+The `description` property is what makes it possible to override the feature flag from the [Dev Menu](debugging.md#our-own-dev-settings-menu).
 
 We also need to add a flag in Echo, our remote feature flags configuration service.
 [Here](https://github.com/artsy/echo/commit/978a103e2c67a8010fabb2184f84aaef31d16f93) is an example PR for how to do that. The general feature development flow around adding a flag and updating Echo is like so:
@@ -128,9 +128,9 @@ __globalStoreTestUtils__?.injectFeatureFlags({ ARShowMarketingBanner: true })
 
 ## QA
 
-You can find documentation about how to do QA on the new shiny feature [here](https://www.notion.so/artsy/Setting-up-a-QA-script-for-a-New-Feature-from-a-non-MX-Team-5569acfd38f84c4b80e9af5c1d5389e8).
+You can find documentation about how to do QA on the new shiny feature [here 🔐](https://www.notion.so/artsy/Setting-up-a-QA-script-for-a-New-Feature-from-a-non-MX-Team-5569acfd38f84c4b80e9af5c1d5389e8).
 
-There is also the general QA page [here](https://www.notion.so/artsy/QA-decba0c3a57a4508b726f3a8624ceca3).
+There is also the general QA page [here 🔐](https://www.notion.so/artsy/QA-decba0c3a57a4508b726f3a8624ceca3).
 
 ## Release a feature
 

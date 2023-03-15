@@ -17,7 +17,7 @@
 - [Testing](testing.md)
 - [Feature Flags](developing_a_feature.md)
 - [Debugging](debugging.md)
-- [Navigation](adding_a_new_route.md) & adding a new route
+- [Navigation & adding a new route](adding_a_new_route.md)
 - [Add a new component](adding_new_components.md)
 - [State Migrations](adding_state_migrations.md)
 - [Analytics and Tracking](analytics_and_tracking.md)
@@ -28,11 +28,10 @@
 - [Converting an image to webp](convert_image.md)
 
 - [Metaflags](metaflags.md)
-- [Hide loggers](metaflags.md/#hide-loggers)
+- [Hide loggers](metaflags.md#hide-loggers)
 - [Visual Clues](add_a_visual_clue.md)
 - [Unleash - Experiments](add_an_experiment.md)
 - [Notifications](push_notifications.md)
-- [Updating Emission](updating_emission.md)
 - [Secret keys](adding_new_keys.md)
 - [Certificates](certs.md)
 - [Test on a real device: create a beta](deploy_to_beta.md)
@@ -49,7 +48,7 @@
 
 - [App Store Deployment](deploy_to_app_store.md)
 - [Play Store Deployment](deploy_to_play_store.md)
-- [Deploy a hot fix](deploy_a_hot_fix.md)
+- [Deploy a hot fix](deploy_a_hotfix.md)
 - [Beta Deployment](deploy_to_beta.md)
 - [Certificates & Code Signing](certs.md)
 - [release candidate code freeze](release_candidate_code_freeze.md)
@@ -62,6 +61,6 @@
 
 ### Can these be removed?
 
-- [Ancient_changelog.md](Ancient_changelog.md)
+- [Ancient_changelog.md](ANCIENT_CHANGLOG.md)
 - [ANCIENT_EMISSION_CHANGELOG.md](ANCIENT_EMISSION_CHANGELOG.md)
 - [overview.md](overview.md)

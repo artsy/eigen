@@ -36,11 +36,11 @@ New fashion Example: [ArtworkConsignments.tests.tsx](https://github.com/artsy/ei
 Old fashioned: You can use a TestRenderer to wrap your component with a QueryRenderer and pass the test query data.
 Old fashion Example: [Inbox.tests.tsx](https://github.com/artsy/eigen/blob/c96dd0807555d69ca2e8655dc68085276d249080/src/app/Containers/Inbox.tests.tsx)
 
-- ⭐️ [`setupTestWrapperTL`](https://github.com/artsy/eigen/blob/main/src/app/tests/setupTestWrapper_LEGACY.tsx) Uses react-native testing library. **Our default method for testing a component**. Can be used on all components.
+- ⭐️ [`setupTestWrapperTL`](https://github.com/artsy/eigen/blob/main/src/app/utils/tests/setupTestWrapper.tsx#L143-L180) Uses react-native testing library. **Our default method for testing a component**. Can be used on all components.
 
-- ⭐️ [`renderWithWrappers`](https://github.com/artsy/eigen/blob/main/src/app/tests/renderWithWrappers.tsx#L88-L103) Wraps the component with a number of wrappers such as TrackingProvider, GlobalStoreProvider, SafeAreaProvider, etc. Using `testing library`. See the list of wrappers [here](https://github.com/artsy/eigen/blob/main/src/app/tests/renderWithWrappers.tsx#L19-L25).
+- ⭐️ [`renderWithWrappers`](https://github.com/artsy/eigen/blob/main/src/app/utils/tests/renderWithWrappers.tsx#L79-L89) Wraps the component with a number of wrappers such as TrackingProvider, GlobalStoreProvider, SafeAreaProvider, etc. Using `testing library`. See the list of wrappers [here](https://github.com/artsy/eigen/blob/main/src/app/Providers.tsx#L47-L62).
 
-- ⭐️ `renderWithHookWrappersTL` Wraps the component with a relay hook environment, and a Suspense fallback. Example: [Activity.tests.tsx](https://github.com/artsy/eigen/blob/1a611488042f6eccfc62862fddf7d06a17087f0e/src/app/Scenes/Activity/Activity.tests.tsx)
+- ⭐️ [`renderWithHookWrappersTL`](https://github.com/artsy/eigen/blob/main/src/app/utils/tests/renderWithWrappers.tsx#L91-L101) Wraps the component with a relay hook environment, and a Suspense fallback. Example: [Activity.tests.tsx](https://github.com/artsy/eigen/blob/1a611488042f6eccfc62862fddf7d06a17087f0e/src/app/Scenes/Activity/Activity.tests.tsx)
 
 For components that use relay requests.
 
@@ -65,9 +65,9 @@ It gives you access to all the [queries](https://callstack.github.io/react-nativ
 
 Suggestion: Would it make sense to either remove this abstraction alltogether, or suggest it as the main course of action?
 
-- [`resolveMostRecentRelayOperation`](https://github.com/artsy/eigen/blob/main/src/app/tests/resolveMostRecentRelayOperation.ts#L51-L64) resolves the query request. We use it after rendering a component that has relay requests. Your rendered component makes a request and we use this function in tests to resolve it. Example file: [Inbox.tests.tsx](https://github.com/artsy/eigen/blob/c96dd0807555d69ca2e8655dc68085276d249080/src/app/Containers/Inbox.tests.tsx)
+- [`resolveMostRecentRelayOperation`](https://github.com/artsy/eigen/blob/main/src/app/utils/tests/resolveMostRecentRelayOperation.ts#L51-L64) resolves the query request. We use it after rendering a component that has relay requests. Your rendered component makes a request and we use this function in tests to resolve it. Example file: [Inbox.tests.tsx](https://github.com/artsy/eigen/blob/c96dd0807555d69ca2e8655dc68085276d249080/src/app/Containers/Inbox.tests.tsx)
 
-- [`rejectMostRecentRelayOperation`](https://github.com/artsy/eigen/blob/main/src/app/tests/rejectMostRecentRelayOperation.ts) for example if network is off / bad / you have a server error. Example: [FollowArtistLink.tests.tsx](https://github.com/artsy/eigen/blob/cfcdd1429732ea04dc26134e1bf4a4d4cb96f16e/src/app/Scenes/Artwork/Components/FollowArtistLink.tests.tsx)
+- [`rejectMostRecentRelayOperation`](https://github.com/artsy/eigen/blob/main/src/app/utils/tests/rejectMostRecentRelayOperation.ts) for example if network is off / bad / you have a server error. Example: [FollowArtistLink.tests.tsx](https://github.com/artsy/eigen/blob/cfcdd1429732ea04dc26134e1bf4a4d4cb96f16e/src/app/Scenes/Artwork/Components/FollowArtistLink.tests.tsx)
 
 - [`flushPromiseQueue`](https://github.com/artsy/eigen/blob/476c3a280a8126056b1d093b51db3e4eba5dbeb2/src/app/tests/flushPromiseQueue.ts) This is a hack - try to avoid it if possible.
 
@@ -112,13 +112,13 @@ Hopefully one day we will update also the relay testing infra and we will update
 
 #### Components not using relay
 
-- [CustomSizeInputs.tests.tsx](src/app/Components/ArtworkFilter/Filters/CustomSizeInputs.tests.tsx)
-- [SizesOptionsScreen.tests.tsx](src/app/Components/ArtworkFilter/Filters/SizesOptionsScreen.tests.tsx)
+- [CustomSizeInputs.tests.tsx](/src/app/Components/ArtworkFilter/Filters/CustomSizeInputs.tests.tsx)
+- [SizesOptionsScreen.tests.tsx](/src/app/Components/ArtworkFilter/Filters/SizesOptionsScreen.tests.tsx)
 
 #### Components using relay
 
-- [Search.tests.tsx](src/app/Scenes/Search/Search.tests.tsx)
-- [ArtistSavedSearch.tests.tsx](src/app/Scenes/Artist/ArtistSavedSearch.tests.tsx)
+- [Search.tests.tsx](/src/app/Scenes/Search/Search.tests.tsx)
+- [ArtistSavedSearch.tests.tsx](/src/app/Scenes/Artist/ArtistSavedSearch.tests.tsx)
 
 ## with Relay [WIP]
 
@@ -164,10 +164,10 @@ Example of using multiple environments: ContactInformation.tests.tsx
 setupJest:
 We have initialisations of mocks such as
 
-```
- jest.mock("app/system/relay/createEnvironment", () => {
-   return {
-     defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
-   }
- })
+```tsx
+jest.mock("app/system/relay/createEnvironment", () => {
+  return {
+    defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
+  }
+})
 ```
