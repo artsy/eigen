@@ -37,7 +37,7 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
     )
   }
 
-  const targetURL = imageURL.replace(":version", "square")
+  const targetURL = imageURL.replace(":version", "large")
   return (
     <Flex testID="Image-Remote">
       <OpaqueImageView2

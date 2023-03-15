@@ -93,11 +93,14 @@ export const MyCollectionAddPhotos: React.FC<StackScreenProps<ArtworkFormScreen,
 
 const ImageItem: React.FC<{ item: ImageProps; imageSize: number }> = ({ item, imageSize }) => {
   const [deleting, setDeleting] = useState(false)
+
+  const imageUrl = item.imageURL?.replace(":version", "square")
+
   return (
     <Flex mt={0.5}>
       <Image
         style={{ width: imageSize, height: imageSize, resizeMode: "cover" }}
-        source={{ uri: item.imageURL?.replace(":version", "medium") || item.path }}
+        source={{ uri: imageUrl || item.path }}
       />
       {!deleting && (
         <DeletePhotoButton
