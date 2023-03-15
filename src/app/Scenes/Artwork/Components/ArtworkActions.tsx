@@ -18,7 +18,6 @@ import { Schema } from "app/utils/track"
 import { take } from "lodash"
 import { Touchable } from "palette"
 import React from "react"
-import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -129,30 +128,45 @@ export const ArtworkActions: React.FC<ArtworkActionsProps> = ({
         hitSlop={{
           top: space(1),
           left: space(1),
-          right: space(1),
           bottom: space(1),
         }}
-        haptic
         accessibilityRole="button"
         accessibilityLabel="Save artwork"
         onPress={handleArtworkSave}
       >
-        <Flex flex={1} justifyContent="center" alignItems="center" flexDirection="row" pr={2}>
+        {/* <Flex flex={1} justifyContent="center" alignItems="center" flexDirection="row" pr={2}> */}
+        <UtilButton pr={2}>
           <SaveIcon isSaved={!!isSaved} />
           <Spacer x={0.5} />
           {/* the spaces below are to not make the icon jumpy when changing from save to saved will work on a more permanent fix */}
           <Text variant="sm">{isSaved ? "Saved" : "Save   "}</Text>
-        </Flex>
+          {/* </Flex> */}
+        </UtilButton>
       </Touchable>
       {!!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && isHangable) && (
-        <TouchableWithoutFeedback onPress={() => openViewInRoom()}>
+        <Touchable
+          hitSlop={{
+            top: space(1),
+            bottom: space(1),
+          }}
+          haptic
+          onPress={() => openViewInRoom()}
+        >
           <UtilButton pr={2}>
             <EyeOpenedIcon mr={0.5} />
             <Text variant="sm">View in Room</Text>
           </UtilButton>
-        </TouchableWithoutFeedback>
+        </Touchable>
       )}
-      <Touchable haptic onPress={() => shareOnPress()}>
+      <Touchable
+        hitSlop={{
+          top: space(1),
+          bottom: space(1),
+          right: space(1),
+        }}
+        haptic
+        onPress={() => shareOnPress()}
+      >
         <UtilButton>
           <ShareIcon mr={0.5} />
           <Text variant="sm">Share</Text>
