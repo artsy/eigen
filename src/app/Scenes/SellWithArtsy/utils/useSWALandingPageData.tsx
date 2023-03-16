@@ -30,7 +30,7 @@ const SWA_LANDING_PAGE_DATA_KEY = "SWA_LANDING_PAGE_DATA_KEY"
 
 const CacheValidPeriodInMs = 86400000 // 24 hours
 
-const dataUrl = "https://sell-with-artsy.s3.amazonaws.com/landingpagedata.json"
+const dataUrl = "https://artsy-public.s3.amazonaws.com/sell-with-artsy/landingpagedata.json"
 
 export const useSWALandingPageData = () => {
   const [loading, setLoading] = useState(false)
