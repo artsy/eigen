@@ -1,18 +1,36 @@
+import { fireEvent, screen } from "@testing-library/react-native"
+import { ArtworkActionsTestQuery } from "__generated__/ArtworkActionsTestQuery.graphql"
 import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { ArtworkActions, shareContent } from "./ArtworkActions"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
+import { ArtworkActionsFragmentContainer, shareContent } from "./ArtworkActions"
 
 jest.unmock("app/NativeModules/LegacyNativeModules")
 
 describe("ArtworkActions", () => {
+  const { renderWithRelay } = setupTestWrapper<ArtworkActionsTestQuery>({
+    Component: ({ artwork }) => (
+      <ArtworkActionsFragmentContainer artwork={artwork!} shareOnPress={() => jest.fn()} />
+    ),
+    query: graphql`
+      query ArtworkActionsTestQuery @relay_test_operation @raw_response_type {
+        artwork(id: "some-artwork") {
+          ...ArtworkActions_artwork
+        }
+      }
+    `,
+  })
+
   beforeEach(() => {
     __globalStoreTestUtils__?.setProductionMode()
   })
 
   describe("share button message", () => {
-    it("displays only 3 artists when there are more than 3 artist", async () => {
+    it("displays only 3 artists when there are more than 3 artist", () => {
       const content = shareContent("Title 1", "/artwork/title-1", [
         { name: "Artist 1" },
         { name: "Artist 2" },
@@ -26,7 +44,7 @@ describe("ArtworkActions", () => {
       })
     })
 
-    it("displays 1 artists", async () => {
+    it("displays 1 artists", () => {
       const content = shareContent("Title 1", "/artwork/title-1", [{ name: "Artist 1" }])
       expect(content).toMatchObject({
         title: "Title 1 by Artist 1 on Artsy",
@@ -35,7 +53,7 @@ describe("ArtworkActions", () => {
       })
     })
 
-    it("displays only the title if there's no artists", async () => {
+    it("displays only the title if there's no artists", () => {
       const content = shareContent("Title 1", "/artwork/title-1", null)
       expect(content).toMatchObject({
         title: "Title 1 on Artsy",
@@ -55,12 +73,12 @@ describe("ArtworkActions", () => {
   })
 
   it("renders buttons correctly", () => {
-    const { queryByText } = renderWithWrappers(
-      <ArtworkActions shareOnPress={jest.fn} artwork={artworkActionsArtwork} />
-    )
+    renderWithRelay({
+      Artwork: () => artworkActionsArtwork,
+    })
 
-    expect(queryByText("View in Room")).toBeTruthy()
-    expect(queryByText("Share")).toBeTruthy()
+    expect(screen.queryByText("View in Room")).toBeTruthy()
+    expect(screen.queryByText("Share")).toBeTruthy()
   })
 
   it("does not show the View in Room option if the artwork is not hangable", () => {
@@ -68,24 +86,24 @@ describe("ArtworkActions", () => {
       ...artworkActionsArtwork,
       isHangable: false,
     }
-    const { queryByText } = renderWithWrappers(
-      <ArtworkActions shareOnPress={jest.fn} artwork={artworkActionsArtworkNotHangable} />
-    )
+    renderWithRelay({
+      Artwork: () => artworkActionsArtworkNotHangable,
+    })
 
-    expect(queryByText("Share")).toBeTruthy()
-    expect(queryByText("View in Room")).toBeFalsy()
+    expect(screen.queryByText("Share")).toBeTruthy()
+    expect(screen.queryByText("View in Room")).toBeFalsy()
   })
 
-  it("should NOT display 'Save' button if work is in an open auction ", () => {
-    const { queryByText } = renderWithWrappers(
-      <ArtworkActions shareOnPress={jest.fn()} artwork={artworkActionsArtwork} />
-    )
+  it("should display 'Save' button", () => {
+    renderWithRelay({
+      Artwork: () => artworkActionsArtwork,
+    })
 
-    expect(queryByText("Save")).toBeFalsy()
-    expect(queryByText("Saved")).toBeFalsy()
+    expect(screen.queryByText("Save")).toBeTruthy()
+    expect(screen.queryByText("Saved")).toBeFalsy()
   })
 
-  it("should NOT display 'Watch lot' button if work is in an open auction ", () => {
+  it("should display 'Save' button if work is in an open auction", () => {
     const artworkActionsArtworkInAuction = {
       ...artworkActionsArtwork,
       sale: {
@@ -94,39 +112,72 @@ describe("ArtworkActions", () => {
       },
     }
 
-    const { queryByText, queryByLabelText } = renderWithWrappers(
-      <ArtworkActions shareOnPress={jest.fn()} artwork={artworkActionsArtworkInAuction} />
-    )
+    renderWithRelay({
+      Artwork: () => artworkActionsArtworkInAuction,
+    })
 
-    expect(queryByText("Watch lot")).toBeFalsy()
-    expect(queryByLabelText("watch lot icon")).toBeFalsy()
+    expect(screen.queryByText("Save")).toBeTruthy()
+    expect(screen.queryByText("Saved")).toBeFalsy()
+    expect(screen.queryByText("Watch lot")).toBeFalsy()
+    expect(screen.queryByLabelText("watch lot icon")).toBeFalsy()
   })
 
   describe("without AR enabled", () => {
     it("does not show the View in Room option if the phone does not have AREnabled", () => {
       LegacyNativeModules.ARCocoaConstantsModule.AREnabled = false
-      const { queryByText } = renderWithWrappers(
-        <ArtworkActions shareOnPress={jest.fn()} artwork={artworkActionsArtwork} />
-      )
 
-      expect(queryByText("Share")).toBeTruthy()
+      renderWithRelay({
+        Artwork: () => artworkActionsArtwork,
+      })
+
+      expect(screen.queryByText("Share")).toBeTruthy()
+    })
+  })
+
+  describe("Save button", () => {
+    it("should trigger save mutation when user presses save button", () => {
+      const { env } = renderWithRelay({
+        Artwork: () => ({
+          isSaved: false,
+        }),
+      })
+
+      expect(screen.getByLabelText("Save artwork")).toBeTruthy()
+
+      fireEvent.press(screen.getByLabelText("Save artwork"))
+
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+        "ArtworkSaveButtonMutation"
+      )
+    })
+
+    it("should track save event when user saves and artwork successfully", () => {
+      const { env } = renderWithRelay({
+        Artwork: () => ({
+          isSaved: false,
+        }),
+      })
+
+      fireEvent.press(screen.getByLabelText("Save artwork"))
+
+      resolveMostRecentRelayOperation(env, {})
+
+      expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+        [
+          {
+            "action_name": "artworkSave",
+            "action_type": "success",
+            "context_module": "ArtworkActions",
+          },
+        ]
+      `)
     })
   })
 })
 
 const artworkActionsArtwork: ArtworkActions_artwork$data = {
   id: "artwork12345",
-  title: "test title",
   slug: "andreas-rod-prinzknecht",
-  href: "/artwork/andreas-rod-prinzknecht",
-  artists: [
-    {
-      name: "Andreas Rod",
-    },
-    {
-      name: "Arthur Sopin",
-    },
-  ],
   image: {
     url: "image.com/image",
   },
@@ -134,4 +185,5 @@ const artworkActionsArtwork: ArtworkActions_artwork$data = {
   heightCm: 10,
   widthCm: 10,
   " $fragmentType": "ArtworkActions_artwork",
+  " $fragmentSpreads": null as any,
 }

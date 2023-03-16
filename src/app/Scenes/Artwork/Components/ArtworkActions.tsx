@@ -1,26 +1,26 @@
-import { EyeOpenedIcon, ShareIcon, Flex, Text } from "@artsy/palette-mobile"
+import { EyeOpenedIcon, ShareIcon, Flex, Text, useSpace, Join, Spacer } from "@artsy/palette-mobile"
 import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
+import { ArtworkHeader_artwork$data } from "__generated__/ArtworkHeader_artwork.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { ArtworkSaveButton } from "app/Scenes/Artwork/Components/ArtworkSaveButton"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { cm2in } from "app/utils/conversions"
-import { Schema, track } from "app/utils/track"
+import { Schema } from "app/utils/track"
 import { take } from "lodash"
 import { Touchable } from "palette"
-import React from "react"
-import { TouchableWithoutFeedback } from "react-native"
-import { createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
 interface ArtworkActionsProps {
   artwork: ArtworkActions_artwork$data
-  relay?: RelayProp
   shareOnPress: () => void
 }
 
 export const shareContent = (
   title: string,
   href: string,
-  artists: ArtworkActions_artwork$data["artists"]
+  artists: ArtworkHeader_artwork$data["artists"]
 ) => {
   let computedTitle: string | null = null
 
@@ -38,19 +38,20 @@ export const shareContent = (
   }
 }
 
-@track()
-export class ArtworkActions extends React.Component<ArtworkActionsProps> {
-  @track(() => ({
-    action_name: Schema.ActionNames.ViewInRoom,
-    action_type: Schema.ActionTypes.Tap,
-    context_module: Schema.ContextModules.ArtworkActions,
-  }))
-  openViewInRoom() {
-    const {
-      artwork: { image, id, slug, heightCm, widthCm },
-    } = this.props
+export const ArtworkActions: React.FC<ArtworkActionsProps> = ({ artwork, shareOnPress }) => {
+  const { image, id, slug, heightCm, widthCm, isHangable } = artwork
+  const { trackEvent } = useTracking()
+  const space = useSpace()
+
+  const openViewInRoom = () => {
     const heightIn = cm2in(heightCm!)
     const widthIn = cm2in(widthCm!)
+
+    trackEvent({
+      action_name: Schema.ActionNames.ViewInRoom,
+      action_type: Schema.ActionTypes.Tap,
+      context_module: Schema.ContextModules.ArtworkActions,
+    })
 
     LegacyNativeModules.ARTNativeScreenPresenterModule.presentAugmentedRealityVIR(
       image?.url!,
@@ -61,30 +62,42 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
     )
   }
 
-  render() {
-    const {
-      artwork: { isHangable },
-    } = this.props
-
-    return (
-      <Flex justifyContent="center" flexDirection="row" width="100%">
+  return (
+    <Flex justifyContent="center" flexDirection="row" width="100%">
+      <Join separator={<Spacer x={2} />}>
+        <ArtworkSaveButton artwork={artwork} />
         {!!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && isHangable) && (
-          <TouchableWithoutFeedback onPress={() => this.openViewInRoom()}>
-            <UtilButton pr={2}>
+          <Touchable
+            hitSlop={{
+              top: space(1),
+              bottom: space(1),
+            }}
+            haptic
+            onPress={() => openViewInRoom()}
+          >
+            <UtilButton>
               <EyeOpenedIcon mr={0.5} />
               <Text variant="sm">View in Room</Text>
             </UtilButton>
-          </TouchableWithoutFeedback>
+          </Touchable>
         )}
-        <Touchable haptic onPress={() => this.props.shareOnPress()}>
+        <Touchable
+          hitSlop={{
+            top: space(1),
+            bottom: space(1),
+            right: space(1),
+          }}
+          haptic
+          onPress={() => shareOnPress()}
+        >
           <UtilButton>
             <ShareIcon mr={0.5} />
             <Text variant="sm">Share</Text>
           </UtilButton>
         </Touchable>
-      </Flex>
-    )
-  }
+      </Join>
+    </Flex>
+  )
 }
 
 const UtilButton = styled(Flex)`
@@ -96,14 +109,10 @@ const UtilButton = styled(Flex)`
 export const ArtworkActionsFragmentContainer = createFragmentContainer(ArtworkActions, {
   artwork: graphql`
     fragment ArtworkActions_artwork on Artwork {
+      ...ArtworkSaveButton_artwork
       id
       slug
-      title
-      href
       isHangable
-      artists {
-        name
-      }
       image {
         url
       }
