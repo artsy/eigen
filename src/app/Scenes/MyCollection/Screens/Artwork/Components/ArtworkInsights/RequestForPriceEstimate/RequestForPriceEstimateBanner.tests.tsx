@@ -64,13 +64,8 @@ describe("RequestForPriceEstimateBanner", () => {
     resolveData({
       Artwork: () => ({
         internalID: "some-internal-id",
-        submissionId: null,
         hasPriceEstimateRequest: false,
-        artist: {
-          targetSupply: {
-            isP1: true,
-          },
-        },
+        isPriceEstimateRequestable: true,
       }),
       MarketPriceInsights: () => ({
         demandRank: 7.5,
@@ -79,6 +74,21 @@ describe("RequestForPriceEstimateBanner", () => {
     expect(getByTestId("request-price-estimate-button")).toBeDefined()
     expect(getByTestId("request-price-estimate-banner-title")).toBeDefined()
     expect(getByTestId("request-price-estimate-banner-description")).toBeDefined()
+  })
+
+  it("rendering nothing if the price estimate is not requestable", () => {
+    const { queryByTestId } = renderWithWrappers(<TestRenderer />)
+    resolveData({
+      Artwork: () => ({
+        internalID: "some-internal-id",
+        hasPriceEstimateRequest: false,
+        isPriceEstimateRequestable: false,
+      }),
+    })
+
+    expect(queryByTestId("request-price-estimate-button")).toBeNull()
+    expect(queryByTestId("request-price-estimate-banner-title")).toBeNull()
+    expect(queryByTestId("request-price-estimate-banner-description")).toBeNull()
   })
 
   it("renders 'requested' state if in global store without throwing an error", () => {
@@ -127,13 +137,8 @@ describe("RequestForPriceEstimateBanner", () => {
       Artwork: () => ({
         internalID: "artwork-id",
         slug: "artwork-slug",
-        submissionId: null,
         hasPriceEstimateRequest: false,
-        artist: {
-          targetSupply: {
-            isP1: true,
-          },
-        },
+        isPriceEstimateRequestable: true,
       }),
       MarketPriceInsights: () => ({
         demandRank: 7.5,
