@@ -49,7 +49,11 @@ export const SearchResult: React.FC<SearchResultsItemProps> = ({
   return (
     <Touchable onPress={onPress}>
       <Flex height={IMAGE_SIZE} flexDirection="row" alignItems="center">
-        <SearchResultImage imageURL={result.image_url} resultType={selectedPill.displayName} />
+        <SearchResultImage
+          testID="search-result-image"
+          imageURL={result.image_url}
+          resultType={selectedPill.displayName}
+        />
 
         <Spacer x={1} />
 
