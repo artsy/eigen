@@ -67,9 +67,9 @@ import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { times } from "lodash"
 import { Join } from "palette"
 import React, {
-  RefObject,
   createRef,
   memo,
+  RefObject,
   useCallback,
   useEffect,
   useMemo,
@@ -85,7 +85,7 @@ import {
   ViewToken,
   ViewabilityConfig,
 } from "react-native"
-import { RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
+import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 
 import { useTracking } from "react-tracking"
 import { useContentCards } from "./Components/ContentCards"
@@ -124,6 +124,8 @@ export interface HomeProps extends ViewProps {
 
 const Home = memo((props: HomeProps) => {
   const viewedRails = useRef<Set<string>>(new Set()).current
+
+  const [visibleRails, seVisibleRails] = useState<Set<string>>(new Set())
   useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
   const isESOnlySearchEnabled = useFeatureFlag("AREnableESOnlySearch")
   const prefetchUrl = usePrefetch()
@@ -151,6 +153,8 @@ const Home = memo((props: HomeProps) => {
 
   const enableNewCollectionsRail = useFeatureFlag("AREnableNewCollectionsRail")
   const enableRailViewsTracking = useFeatureFlag("ARImpressionsTrackingHomeRailViews")
+  const enableItemViewsTracking = useFeatureFlag("ARImpressionsTrackingHomeItemViews")
+
   // Needed to support percentage rollout of the experiment
   const enableRailViewsTrackingExperiment = useExperimentVariant(
     "CX-impressions-tracking-home-rail-views"
@@ -159,8 +163,20 @@ const Home = memo((props: HomeProps) => {
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
   const { modules, allModulesKeys } = useHomeModules(props, cards)
 
-  const onViewableItemsChanged = React.useRef(
+  const onViewableItemsChanged = useRef(
     ({ viewableItems }: { viewableItems: ViewToken[]; changed: ViewToken[] }) => {
+      const newVisibleRails = new Set<string>()
+
+      // Track currently visible rails // needed to enabe tracking artwork views
+      if (enableItemViewsTracking) {
+        viewableItems.forEach(({ item: { title } }: { item: HomeModule }) => {
+          newVisibleRails.add(title)
+        })
+
+        seVisibleRails(newVisibleRails)
+      }
+
+      // Track all viewed rails
       if (enableRailViewsTracking && enableRailViewsTrackingExperiment.enabled) {
         viewableItems.forEach(({ item: { key, contextModule } }: { item: HomeModule }) => {
           if (contextModule && !viewedRails.has(key)) {
@@ -244,6 +260,7 @@ const Home = memo((props: HomeProps) => {
             <ArtworkRecommendationsRail
               title={item.title}
               me={item.data || null}
+              isRailVisible={visibleRails.has(item.title)}
               scrollRef={scrollRefs.current[index]}
             />
           )
@@ -275,9 +292,10 @@ const Home = memo((props: HomeProps) => {
         case "newWorksForYou":
           return (
             <NewWorksForYouRail
-              title={item.title}
               artworkConnection={item.data}
+              isRailVisible={visibleRails.has(item.title)}
               scrollRef={scrollRefs.current[index]}
+              title={item.title}
             />
           )
         case "recommended-artists":
@@ -312,7 +330,7 @@ const Home = memo((props: HomeProps) => {
           return null
       }
     },
-    []
+    [visibleRails]
   )
 
   return (
