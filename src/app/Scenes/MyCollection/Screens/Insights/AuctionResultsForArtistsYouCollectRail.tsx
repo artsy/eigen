@@ -26,6 +26,8 @@ export const AuctionResultsForArtistsYouCollectRail: React.FC<
   const fragmentData = useFragment(auctionResultsForArtistsYouCollectRailFragment, me)
   const auctionResultsData = extractNodes(fragmentData.myCollectionAuctionResults)
 
+  const { width } = useScreenDimensions()
+
   if (!auctionResultsData.length) {
     return null
   }
@@ -54,7 +56,7 @@ export const AuctionResultsForArtistsYouCollectRail: React.FC<
           />
         )}
         ItemSeparatorComponent={AuctionResultListSeparator}
-        style={{ width: useScreenDimensions().width, left: -20 }}
+        style={{ width, left: -20 }}
       />
     </Flex>
   )
@@ -62,7 +64,7 @@ export const AuctionResultsForArtistsYouCollectRail: React.FC<
 
 const auctionResultsForArtistsYouCollectRailFragment = graphql`
   fragment AuctionResultsForArtistsYouCollectRail_me on Me {
-    myCollectionAuctionResults(first: 3) {
+    myCollectionAuctionResults(first: 3, state: PAST) {
       totalCount
       edges {
         node {
