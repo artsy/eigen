@@ -198,7 +198,8 @@ export const features = defineFeatures({
   AREnableNewSWALandingPage: {
     description: "Enable New SWA Landing Page",
     showInDevMenu: true,
-    readyForRelease: false,
+    readyForRelease: true,
+    echoFlagKey: "AREnableNewSWALandingPage",
   },
   AREnableBrowseMoreArtworksCard: {
     description: "Enable Browse All Artworks Card on Home Screen",
@@ -237,13 +238,15 @@ export const features = defineFeatures({
   },
   AREnableSWALandingPageMeetTheSpecialist: {
     description: "Enable MeetTheSpecialist on SWA Landing Page",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableSWALandingPageMeetTheSpecialist",
   },
   AREnableSWALandingPageTestimonials: {
     description: "Enable Testimonials on SWA Landing Page",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableSWALandingPageTestimonials",
   },
 })
 
