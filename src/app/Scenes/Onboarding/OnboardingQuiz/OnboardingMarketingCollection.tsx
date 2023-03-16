@@ -1,8 +1,8 @@
 import { Flex } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { OnboardingMarketingCollectionQuery } from "__generated__/OnboardingMarketingCollectionQuery.graphql"
+import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { FullScreenLoadingImage } from "app/Components/FullScreenLoadingImage"
-import { OnboardingResultsGrid } from "app/Scenes/Onboarding/OnboardingQuiz/Components/OnboardingResultsGrid"
 import { OnboardingNavigationStack } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingQuiz"
 import { Button, Screen } from "palette"
 import { Suspense } from "react"
@@ -47,7 +47,13 @@ const OnboardingMarketingCollection: React.FC<OnboardingMarketingCollectionProps
           description={description}
           marketingCollection={marketingCollection!}
         />
-        <OnboardingResultsGrid connection={marketingCollection?.artworks} />
+        <InfiniteScrollArtworksGrid
+          // we are deliberately limiting the number of artworks shown in these grids
+          loadMore={() => null}
+          hasMore={() => false}
+          connection={marketingCollection?.artworks}
+          shouldAddPadding
+        />
         <Flex p={2} backgroundColor="white">
           <Button block onPress={() => navigate("OnboardingPostFollowLoadingScreen")} mb={1}>
             Explore More on Artsy
@@ -79,7 +85,7 @@ const OnboardingMarketingCollectionScreenQuery = graphql`
       ...MarketingCollectionHeaderFragment_marketingCollection
       internalID
       artworks: artworksConnection(first: 100, page: 1, sort: "-decayed_merch") {
-        ...OnboardingResultsGrid_connection
+        ...InfiniteScrollArtworksGrid_connection
       }
     }
   }

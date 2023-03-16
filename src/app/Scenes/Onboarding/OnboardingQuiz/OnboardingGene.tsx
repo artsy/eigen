@@ -1,8 +1,8 @@
 import { Flex } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { OnboardingGeneQuery } from "__generated__/OnboardingGeneQuery.graphql"
+import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { FullScreenLoadingImage } from "app/Components/FullScreenLoadingImage"
-import { OnboardingResultsGrid } from "app/Scenes/Onboarding/OnboardingQuiz/Components/OnboardingResultsGrid"
 import { OnboardingNavigationStack } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingQuiz"
 import { Button, Screen } from "palette"
 import { Suspense } from "react"
@@ -34,7 +34,13 @@ const OnboardingGene: React.FC<OnboardingGeneProps> = ({ id, description }) => {
     <Screen>
       <Screen.Background>
         <GeneHeader geneID={id} description={description} gene={gene!} />
-        <OnboardingResultsGrid connection={gene?.artworks} />
+        <InfiniteScrollArtworksGrid
+          // we are deliberately limiting the number of artworks shown in these grids
+          loadMore={() => null}
+          hasMore={() => false}
+          connection={gene?.artworks}
+          shouldAddPadding
+        />
         <Flex p={2} backgroundColor="white">
           <Button block onPress={() => navigate("OnboardingPostFollowLoadingScreen")} mb={1}>
             Explore More on Artsy
@@ -76,7 +82,7 @@ const OnboardingGeneScreenQuery = graphql`
         inquireableOnly: true
         forSale: true
       ) {
-        ...OnboardingResultsGrid_connection
+        ...InfiniteScrollArtworksGrid_connection
       }
     }
   }
