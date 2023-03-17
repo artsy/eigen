@@ -4,7 +4,6 @@ import { AuctionResultsRail_auctionResults$key } from "__generated__/AuctionResu
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { memo } from "react"
@@ -33,7 +32,6 @@ const getViewAllUrl = (contextModule: ContextModule) => {
 export const AuctionResultsRail: React.FC<AuctionResultsRailProps> = memo(
   ({ contextModule, title, ...restProps }) => {
     const viewAllUrl = getViewAllUrl(contextModule)
-    const enableBrowseMoreRailCard = useFeatureFlag("AREnableBrowseMoreRailCard")
     const { trackEvent } = useTracking()
     const auctionResults = useFragment(meFragment, restProps.auctionResults)
 
@@ -76,7 +74,7 @@ export const AuctionResultsRail: React.FC<AuctionResultsRailProps> = memo(
             />
           )}
           ListFooterComponent={
-            enableBrowseMoreRailCard && handleOnMorePress ? (
+            handleOnMorePress ? (
               <BrowseMoreRailCard onPress={handleOnMorePress} text="Browse All Results" />
             ) : undefined
           }

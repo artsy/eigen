@@ -31,6 +31,16 @@ export default class HomeAnalytics {
     })
   }
 
+  static auctionBrowseMoreTapEvent(): TappedEntityGroup {
+    return tappedEntityGroup({
+      contextModule: ContextModule.auctionRail,
+      contextScreenOwnerType: OwnerType.home,
+      destinationScreenOwnerType: OwnerType.auctions,
+      moduleHeight: "double",
+      type: "viewAll",
+    })
+  }
+
   static auctionThumbnailTapEvent(
     id?: string,
     slug?: string,

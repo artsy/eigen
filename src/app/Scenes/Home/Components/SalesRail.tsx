@@ -1,5 +1,6 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { SalesRail_salesModule$data } from "__generated__/SalesRail_salesModule.graphql"
+import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import {
   CardRailCard,
   CardRailMetadataContainer as MetadataContainer,
@@ -45,6 +46,11 @@ const SalesRail: React.FC<Props & RailScrollProps> = ({
   }))
 
   const hasSales = salesModule.results?.length
+
+  const handleOnMorePress = () => {
+    tracking.trackEvent(HomeAnalytics.auctionBrowseMoreTapEvent())
+    navigate("/auctions")
+  }
 
   if (!hasSales) {
     return null
@@ -118,6 +124,11 @@ const SalesRail: React.FC<Props & RailScrollProps> = ({
             </CardRailCard>
           )
         }}
+        ListFooterComponent={
+          handleOnMorePress ? (
+            <BrowseMoreRailCard onPress={handleOnMorePress} text="Browse All Auctions" />
+          ) : undefined
+        }
       />
     </Flex>
   )
