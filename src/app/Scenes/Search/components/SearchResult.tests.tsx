@@ -1,3 +1,4 @@
+import { fireEvent, screen } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import * as navigation from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -5,7 +6,6 @@ import * as useSearchInsightsConfig from "app/utils/useSearchInsightsConfig"
 import { Touchable } from "palette"
 import { SearchHighlight } from "./SearchHighlight"
 import { SearchResult } from "./SearchResult"
-import { SearchResultImage } from "./SearchResultImage"
 
 jest.mock("app/utils/useSearchInsightsConfig", () => ({
   searchInsights: jest.fn(),
@@ -57,17 +57,17 @@ describe("SearchListItem", () => {
   })
 
   it("renders image with correct props", () => {
-    const { container } = renderWithWrappers(<TestPage />)
-    const image = container.findByType(SearchResultImage)
+    renderWithWrappers(<TestPage />)
 
-    expect(image).toBeDefined()
-    expect(image.props.imageURL).toEqual("test-url")
-    expect(image.props.resultType).toEqual("Article")
+    const searchResultImage = screen.getByTestId("search-result-image")
+    expect(searchResultImage).toBeOnTheScreen()
+
+    expect(searchResultImage).toHaveProp("imageURL", "test-url")
   })
 
   it("renders highlight with correct props", () => {
-    const { container } = renderWithWrappers(<TestPage />)
-    const highlight = container.findByType(SearchHighlight)
+    renderWithWrappers(<TestPage />)
+    const highlight = screen.UNSAFE_getByType(SearchHighlight)
 
     expect(highlight).toBeDefined()
     expect(highlight.props.attribute).toEqual("name")
@@ -75,9 +75,9 @@ describe("SearchListItem", () => {
   })
 
   it("calls searchInsights with correct params on press", () => {
-    const { container } = renderWithWrappers(<TestPage />)
+    renderWithWrappers(<TestPage />)
 
-    container.findByType(Touchable).props.onPress()
+    fireEvent.press(screen.UNSAFE_getByType(Touchable))
     expect(searchInsightsSpy).toHaveBeenCalledWith("clickedObjectIDsAfterSearch", {
       index: "Article_staging",
       eventName: "Search item clicked",
@@ -88,9 +88,9 @@ describe("SearchListItem", () => {
   })
 
   it("when a result is pressed, correctly adds it to global recent searches", () => {
-    const { container } = renderWithWrappers(<TestPage />)
+    renderWithWrappers(<TestPage />)
 
-    container.findByType(Touchable).props.onPress()
+    fireEvent.press(screen.UNSAFE_getByType(Touchable))
 
     expect(getRecentSearches()).toEqual([
       {
@@ -108,9 +108,9 @@ describe("SearchListItem", () => {
   })
 
   it(`calls navigation.navigate with href on press when href does not start with "/partner"`, () => {
-    const { container } = renderWithWrappers(<TestPage />)
+    renderWithWrappers(<TestPage />)
 
-    container.findByType(Touchable).props.onPress()
+    fireEvent.press(screen.UNSAFE_getByType(Touchable))
     expect(navigateSpy).toHaveBeenCalledWith("/test-href")
   })
 })

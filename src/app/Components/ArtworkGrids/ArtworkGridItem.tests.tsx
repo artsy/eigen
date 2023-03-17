@@ -1,11 +1,9 @@
 import { OwnerType } from "@artsy/cohesion"
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
-import { Touchable } from "palette"
-import "react-native"
 import Artwork from "./ArtworkGridItem"
 
 const ArtworkWithProviders = (props: any) => {
@@ -69,7 +67,7 @@ describe("recent searches", () => {
   })
 
   it("is updated when an artwork clicked and updateRecentSearchesOnTap is true", () => {
-    const { container } = renderWithHookWrappersTL(
+    renderWithHookWrappersTL(
       <ArtworkWithProviders
         artwork={artworkProps({})}
         contextScreenOwnerType={OwnerType.artist}
@@ -80,7 +78,7 @@ describe("recent searches", () => {
       />
     )
 
-    container.findByType(Touchable).props.onPress()
+    fireEvent.press(screen.getByTestId("artworkGridItem-Some Kind of Dinosaur"))
 
     expect(getRecentSearches()).toEqual([
       {
@@ -98,7 +96,7 @@ describe("recent searches", () => {
   })
 
   it("not updated when updateRecentSearchesOnTap is not passed, falling to false by default", () => {
-    const { container } = renderWithHookWrappersTL(
+    renderWithHookWrappersTL(
       <ArtworkWithProviders
         artwork={artworkProps({})}
         contextScreenOwnerType={OwnerType.artist}
@@ -108,7 +106,7 @@ describe("recent searches", () => {
       />
     )
 
-    container.findByType(Touchable).props.onPress()
+    fireEvent.press(screen.getByTestId("artworkGridItem-Some Kind of Dinosaur"))
 
     expect(getRecentSearches()).toEqual([])
   })

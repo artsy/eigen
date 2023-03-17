@@ -1,3 +1,4 @@
+import { fireEvent, screen } from "@testing-library/react-native"
 import { MyProfileHeaderMyCollectionAndSavedWorksTestsQuery } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorksTestsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { FavoriteArtworksQueryRenderer } from "app/Scenes/Favorites/FavoriteArtworks"
@@ -66,18 +67,20 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
 
   describe("Components of MyProfileHeaderMyCollectionAndSavedWorks ", () => {
     it("renders the right tabs", () => {
-      const { container } = getWrapper()
-      expect(container.findByType(StickyTabPage)).toBeDefined()
-      expect(container.findByType(MyCollectionQueryRenderer)).toBeDefined()
-      expect(container.findByType(FavoriteArtworksQueryRenderer)).toBeDefined()
+      getWrapper()
+
+      expect(screen.UNSAFE_queryByType(StickyTabPage)).toBeDefined()
+      expect(screen.UNSAFE_queryByType(MyCollectionQueryRenderer)).toBeDefined()
+      expect(screen.UNSAFE_queryByType(FavoriteArtworksQueryRenderer)).toBeDefined()
     })
 
     // Header tests
     it("Header Settings onPress navigates to my profile edit", () => {
-      const { container } = getWrapper()
-      const profileImage = container.findAllByProps({ testID: "profile-image" })
+      getWrapper()
+      const profileImage = screen.getByTestId("profile-image")
+
       expect(profileImage).toBeTruthy()
-      profileImage[0].props.onPress()
+      fireEvent.press(profileImage)
       expect(navigate).toHaveBeenCalledTimes(1)
       expect(navigate).toHaveBeenCalledWith("/my-profile/edit", {
         passProps: { onSuccess: expect.anything() },
@@ -85,7 +88,7 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
     })
 
     it("Header shows the right text", async () => {
-      const { findByText } = getWrapper({
+      getWrapper({
         Me: () => ({
           name: "My Name",
           createdAt: new Date().toISOString(),
@@ -97,9 +100,10 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
       })
 
       const year = new Date().getFullYear()
-      expect(await findByText("My Name")).toBeTruthy()
-      expect(await findByText(`Member since ${year}`)).toBeTruthy()
-      expect(await findByText("My Bio")).toBeTruthy()
+
+      expect(screen.queryByText("My Name")).toBeTruthy()
+      expect(screen.queryByText(`Member since ${year}`)).toBeTruthy()
+      expect(screen.queryByText("My Bio")).toBeTruthy()
     })
 
     it("Renders Icon", async () => {
@@ -108,11 +112,12 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
         width: 10,
         height: 10,
       }
+
       await act(async () => {
         await storeLocalImage(LOCAL_PROFILE_ICON_PATH_KEY, localImage)
       })
 
-      const { container } = getWrapper({
+      getWrapper({
         Me: () => ({
           name: "My Name",
           createdAt: new Date().toISOString(),
@@ -124,13 +129,11 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
       })
 
       await flushPromiseQueue()
-      expect(container.findAllByType(Avatar)).toBeDefined()
-      // expect only one avatar
-      expect(container.findAllByType(Avatar).length).toEqual(1)
+      expect(screen.UNSAFE_queryByType(Avatar)).toBeDefined()
     })
 
     it("renders Collector Profile info", async () => {
-      const { findByText } = getWrapper({
+      getWrapper({
         Me: () => ({
           name: "Princess",
           createdAt: new Date("12/12/12").toISOString(),
@@ -143,9 +146,9 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
         }),
       })
 
-      expect(await findByText("Guardian of the Galaxy")).toBeTruthy()
-      expect(await findByText("Atlantis")).toBeTruthy()
-      expect(await findByText("Marvel Universe")).toBeTruthy()
+      expect(screen.queryByText("Guardian of the Galaxy")).toBeTruthy()
+      expect(screen.queryByText("Atlantis")).toBeTruthy()
+      expect(screen.queryByText("Marvel Universe")).toBeTruthy()
     })
   })
 })

@@ -4516,10 +4516,10 @@
     "@babel/runtime" "^7.12.5"
     react-error-boundary "^3.1.0"
 
-"@testing-library/react-native@11.5.3":
-  version "11.5.3"
-  resolved "https://registry.yarnpkg.com/@testing-library/react-native/-/react-native-11.5.3.tgz#661fb28da14e2133b820ca6cc8314385f1099438"
-  integrity sha512-upsNevSl0M8mzJkpU1M4O/3ABsyUw8OLeSqblMjsYPWSVh4ocVZy9s53UssPmgrvP5IRAVvVo0WllVwA3tcfgw==
+"@testing-library/react-native@12.0.0":
+  version "12.0.0"
+  resolved "https://registry.yarnpkg.com/@testing-library/react-native/-/react-native-12.0.0.tgz#6604b9daa9a32b1a4287c3b501658768adaf11c3"
+  integrity sha512-Wa7TsEbsduLaLNK9sycgIpSqC4v3tt0zzH5BIDqqNEVN+LQqeX9UdWxD6JFcKgbXJVqWvPq5Y3fzQbYqOaf9zw==
   dependencies:
     pretty-format "^29.0.0"
 

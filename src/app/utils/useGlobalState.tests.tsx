@@ -1,5 +1,5 @@
 import { act, renderHook } from "@testing-library/react-hooks"
-import { extractText } from "app/utils/tests/extractText"
+import { screen } from "@testing-library/react-native"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Text } from "react-native"
 import { useGlobalState } from "./useGlobalState"
@@ -40,30 +40,30 @@ describe(useGlobalState, () => {
   })
 
   it("does not cause the wrapper to be updated by default", () => {
-    const { container } = renderWithWrappers(<TestComponent />)
+    renderWithWrappers(<TestComponent />)
 
-    expect(extractText(container)).toBe("Hello 0")
+    expect(screen.queryByText("Hello 0")).toBeOnTheScreen()
 
     setN(5)
 
-    expect(extractText(container)).toBe("Hello 0")
+    expect(screen.queryByText("Hello 0")).toBeOnTheScreen()
 
     setN(-245)
 
-    expect(extractText(container)).toBe("Hello 0")
+    expect(screen.queryByText("Hello 0")).toBeOnTheScreen()
   })
 
   it("does cause the wrapper to be updated when listening", () => {
-    const { container } = renderWithWrappers(<TestComponent listen />)
+    renderWithWrappers(<TestComponent listen />)
 
-    expect(extractText(container)).toBe("Hello 0")
+    expect(screen.queryByText("Hello 0")).toBeOnTheScreen()
 
     setN(5)
 
-    expect(extractText(container)).toBe("Hello 5")
+    expect(screen.queryByText("Hello 5")).toBeOnTheScreen()
 
     setN(-245)
 
-    expect(extractText(container)).toBe("Hello -245")
+    expect(screen.queryByText("Hello -245")).toBeOnTheScreen()
   })
 })
