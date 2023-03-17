@@ -201,11 +201,11 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "AREnableNewSWALandingPage",
   },
-  AREnableBrowseMoreRailCard: {
+  AREnableBrowseMoreArtworksCard: {
     description: "Enable Browse All Artworks Card on Home Screen",
     showInDevMenu: true,
     readyForRelease: true,
-    echoFlagKey: "AREnableBrowseMoreRailCard",
+    echoFlagKey: "AREnableBrowseMoreArtworksCard",
   },
   AREnableNewCollectionsRail: {
     description: "Enable New Collections Rail",

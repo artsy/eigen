@@ -9,7 +9,7 @@ interface BrowseMoreRailCardProps {
 }
 
 export const BrowseMoreRailCard: React.FC<BrowseMoreRailCardProps> = ({ dark, onPress, text }) => {
-  const enableBrowseMoreRailCard = useFeatureFlag("AREnableBrowseMoreRailCard")
+  const enableBrowseMoreRailCard = useFeatureFlag("AREnableBrowseMoreArtworksCard")
 
   if (!enableBrowseMoreRailCard) {
     return null
