@@ -2175,6 +2175,7 @@ type Artwork implements Node & Searchable & Sellable {
   # Whether a user can make an offer on the work through inquiry
   isOfferableFromInquiry: Boolean
   isOnHold: String
+  isPriceEstimateRequestable: Boolean
   isPriceHidden: Boolean
   isPriceRange: Boolean
   isSaved: Boolean
