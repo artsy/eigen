@@ -1,7 +1,18 @@
-import { Box, Flex, HeartFillIcon, HeartIcon, Spacer, Text, useSpace } from "@artsy/palette-mobile"
+import {
+  BellIcon,
+  BellFillIcon,
+  Box,
+  Flex,
+  HeartFillIcon,
+  HeartIcon,
+  Spacer,
+  Text,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { ArtworkSaveButton_artwork$key } from "__generated__/ArtworkSaveButton_artwork.graphql"
 import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { Schema } from "app/utils/track"
+import { isEmpty } from "lodash"
 import { Touchable } from "palette"
 import { StyleSheet } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"
@@ -11,11 +22,42 @@ interface ArtworkSaveButtonProps {
   artwork: ArtworkSaveButton_artwork$key
 }
 
+interface SaveButtonIconProps {
+  isSaved: boolean
+  isOpenSale: boolean
+}
+
+const SaveButtonIcon: React.FC<SaveButtonIconProps> = ({ isSaved, isOpenSale }) => {
+  if (isOpenSale) {
+    return isSaved ? (
+      <BellFillIcon accessibilityLabel="unwatch lot icon" fill="blue100" />
+    ) : (
+      <BellIcon accessibilityLabel="watch lot icon" />
+    )
+  }
+
+  return isSaved ? (
+    <HeartFillIcon accessibilityLabel="Saved icon" fill="blue100" />
+  ) : (
+    <HeartIcon accessibilityLabel="Save icon" />
+  )
+}
+
+const getSaveButtonText = (isSaved: boolean, isOpenSale: boolean) => {
+  if (isOpenSale) {
+    return "Watch lot"
+  }
+
+  return isSaved ? "Saved" : "Save"
+}
+
 export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({ artwork }) => {
   const space = useSpace()
   const { trackEvent } = useTracking()
-  const { isSaved, internalID, id } = useFragment(ArtworkSaveButtonFragment, artwork)
+  const { isSaved, internalID, id, sale } = useFragment(ArtworkSaveButtonFragment, artwork)
   const [commit] = useMutation(ArtworkSaveMutation)
+
+  const isOpenSale = !isEmpty(sale) && sale?.isAuction && !sale?.isClosed
 
   const handleArtworkSave = () => {
     commit({
@@ -47,6 +89,8 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({ artwork })
     })
   }
 
+  const buttonCopy = getSaveButtonText(!!isSaved, !!isOpenSale)
+
   return (
     <Touchable
       hitSlop={{
@@ -55,23 +99,24 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({ artwork })
         bottom: space(1),
       }}
       accessibilityRole="button"
-      accessibilityLabel="Save artwork"
+      accessibilityLabel={buttonCopy}
       onPress={handleArtworkSave}
     >
       <Flex flexDirection="row" justifyContent="flex-start" alignItems="center">
-        {isSaved ? <HeartFillIcon fill="blue100" /> : <HeartIcon />}
+        <SaveButtonIcon isSaved={!!isSaved} isOpenSale={!!isOpenSale} />
         <Spacer x={0.5} />
 
         <Box position="relative">
           {/* Longest text transparent to prevent changing text pushing elements on the right */}
           {/* Hiding it in the testing environment since it is not visible to the users */}
+          {/* Hidden from screen readers */}
           {!__TEST__ && (
-            <Text variant="sm" color="transparent">
-              Saved
+            <Text variant="sm" color="transparent" accessibilityElementsHidden>
+              {isOpenSale ? "Watch lot" : "Saved"}
             </Text>
           )}
           <Box {...StyleSheet.absoluteFillObject}>
-            <Text variant="sm">{isSaved ? "Saved" : "Save"}</Text>
+            <Text variant="sm">{buttonCopy}</Text>
           </Box>
         </Box>
       </Flex>
@@ -84,6 +129,10 @@ const ArtworkSaveButtonFragment = graphql`
     id
     internalID
     isSaved
+    sale {
+      isAuction
+      isClosed
+    }
   }
 `
 
