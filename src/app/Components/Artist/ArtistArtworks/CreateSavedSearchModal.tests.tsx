@@ -52,9 +52,10 @@ describe("CreateSavedSearchModal", () => {
   })
 
   it("should navigate to the saved search alerts list when popover is pressed", async () => {
-    const { container, getByText } = renderWithWrappers(<TestRenderer />)
+    const { getByText, UNSAFE_root } = renderWithWrappers(<TestRenderer />)
 
-    container.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
+    UNSAFE_root.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
+
     fireEvent.press(getByText("Your alert has been created."))
 
     expect(navigate).toHaveBeenCalledWith("/my-profile/settings", {
@@ -64,9 +65,9 @@ describe("CreateSavedSearchModal", () => {
   })
 
   it("should call navigate twice", async () => {
-    const { container, getByText } = renderWithWrappers(<TestRenderer />)
+    const { UNSAFE_root, getByText } = renderWithWrappers(<TestRenderer />)
 
-    container.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
+    UNSAFE_root.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
     fireEvent.press(getByText("Your alert has been created."))
 
     await delay(200)
@@ -79,9 +80,9 @@ describe("CreateSavedSearchModal", () => {
   })
 
   it("tracks clicks when the create alert button is pressed", async () => {
-    const { container } = renderWithWrappers(<TestRenderer />)
+    const { UNSAFE_root } = renderWithWrappers(<TestRenderer />)
 
-    container.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
+    UNSAFE_root.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       tracks.toggleSavedSearch(true, OwnerType.artist, "ownerId", "ownerSlug", "savedSearchAlertId")

@@ -32,10 +32,8 @@ describe("extractText", () => {
   })
 
   it("works for Inputs", () => {
-    renderWithWrappers(<RNTextInput value="wow" />)
+    const { UNSAFE_root } = renderWithWrappers(<RNTextInput value="wow" />)
 
-    const container = screen.toJSON() as ReactTestInstance
-
-    expect(extractText(container)).toEqual("wow")
+    expect(extractText(UNSAFE_root)).toEqual("wow")
   })
 })
