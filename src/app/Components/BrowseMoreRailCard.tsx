@@ -20,7 +20,7 @@ export const BrowseMoreRailCard: React.FC<BrowseMoreRailCardProps> = ({ dark, on
       <Button
         variant={dark ? "outlineLight" : "outline"}
         onPress={onPress}
-        accessibilityLabel="Browse All Artworks"
+        accessibilityLabel={text}
       >
         {text}
       </Button>
