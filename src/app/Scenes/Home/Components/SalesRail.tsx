@@ -47,7 +47,7 @@ const SalesRail: React.FC<Props & RailScrollProps> = ({
 
   const hasSales = salesModule.results?.length
 
-  const handleOnMorePress = () => {
+  const handleMorePress = () => {
     tracking.trackEvent(HomeAnalytics.auctionBrowseMoreTapEvent())
     navigate("/auctions")
   }
@@ -125,8 +125,8 @@ const SalesRail: React.FC<Props & RailScrollProps> = ({
           )
         }}
         ListFooterComponent={
-          handleOnMorePress ? (
-            <BrowseMoreRailCard onPress={handleOnMorePress} text="Browse All Auctions" />
+          handleMorePress ? (
+            <BrowseMoreRailCard onPress={handleMorePress} text="Browse All Auctions" />
           ) : undefined
         }
       />

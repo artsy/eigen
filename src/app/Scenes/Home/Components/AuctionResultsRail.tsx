@@ -45,7 +45,7 @@ export const AuctionResultsRail: React.FC<AuctionResultsRailProps> = memo(
       return null
     }
 
-    const handleOnMorePress = () => {
+    const handleMorePress = () => {
       trackEvent(tracks.tappedViewAll(contextModule))
       navigate(viewAllUrl)
     }
@@ -74,8 +74,8 @@ export const AuctionResultsRail: React.FC<AuctionResultsRailProps> = memo(
             />
           )}
           ListFooterComponent={
-            handleOnMorePress ? (
-              <BrowseMoreRailCard onPress={handleOnMorePress} text="Browse All Results" />
+            handleMorePress ? (
+              <BrowseMoreRailCard onPress={handleMorePress} text="Browse All Results" />
             ) : undefined
           }
         />
