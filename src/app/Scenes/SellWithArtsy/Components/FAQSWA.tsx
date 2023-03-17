@@ -10,12 +10,7 @@ export const FAQSWA: React.FC = () => {
   const isTablet = isPad()
   const { width: deviceWidth } = useScreenDimensions()
   return (
-    <Flex
-      pt={4}
-      backgroundColor="black100"
-      flexDirection={isTablet ? "row" : "column"}
-      maxWidth={deviceWidth}
-    >
+    <Flex pt={4} backgroundColor="black100" maxWidth={deviceWidth}>
       <Flex mx={2} mt={2} mb={4}>
         <Text variant="lg" mb={4} color="white100">
           No upfront fees, clear pricing estimates, and competitive commission structures.
@@ -24,8 +19,7 @@ export const FAQSWA: React.FC = () => {
           Have more questions?
         </Text>
         <Button
-          block={!isTablet}
-          minWidth={isTablet ? "50%" : undefined}
+          block
           onPress={() => {
             navigate(supportUrl)
           }}
@@ -37,7 +31,7 @@ export const FAQSWA: React.FC = () => {
       </Flex>
       <Image
         source={require("images/swa-faq-image.png")}
-        style={{ width: isTablet ? "40%" : "100%", height: 200 }}
+        style={{ width: "100%", height: isTablet ? 480 : 200 }}
         resizeMode="cover"
       />
     </Flex>
