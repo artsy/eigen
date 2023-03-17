@@ -22,25 +22,24 @@ interface ArtworkSaveButtonProps {
   artwork: ArtworkSaveButton_artwork$key
 }
 
-interface SaveButtonIconProps {
+interface IconProps {
   isSaved: boolean
-  isOpenSale: boolean
 }
 
-const SaveButtonIcon: React.FC<SaveButtonIconProps> = ({ isSaved, isOpenSale }) => {
-  if (isOpenSale) {
-    return isSaved ? (
-      <BellFillIcon accessibilityLabel="unwatch lot icon" fill="blue100" />
-    ) : (
-      <BellIcon accessibilityLabel="watch lot icon" />
-    )
+const WatchLotIcon: React.FC<IconProps> = ({ isSaved }) => {
+  if (isSaved) {
+    return <BellFillIcon accessibilityLabel="unwatch lot icon" fill="blue100" />
   }
 
-  return isSaved ? (
-    <HeartFillIcon accessibilityLabel="Saved icon" fill="blue100" />
-  ) : (
-    <HeartIcon accessibilityLabel="Save icon" />
-  )
+  return <BellIcon accessibilityLabel="watch lot icon" />
+}
+
+const SaveButtonIcon: React.FC<IconProps> = ({ isSaved }) => {
+  if (isSaved) {
+    return <HeartFillIcon accessibilityLabel="Saved icon" fill="blue100" />
+  }
+
+  return <HeartIcon accessibilityLabel="Save icon" />
 }
 
 const getSaveButtonText = (isSaved: boolean, isOpenSale: boolean) => {
@@ -49,6 +48,18 @@ const getSaveButtonText = (isSaved: boolean, isOpenSale: boolean) => {
   }
 
   return isSaved ? "Saved" : "Save"
+}
+
+const getA11yLabel = (isSaved: boolean, isOpenSale: boolean) => {
+  if (isOpenSale) {
+    return "Watch lot"
+  }
+
+  if (isSaved) {
+    return "Unsave artwork"
+  }
+
+  return "Save artwork"
 }
 
 export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({ artwork }) => {
@@ -89,7 +100,7 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({ artwork })
     })
   }
 
-  const a11yLabel = isOpenSale ? "Watch lot" : isSaved ? "Unsave artwork" : "Save artwork"
+  const a11yLabel = getA11yLabel(!!isSaved, !!isOpenSale)
   const buttonCopy = getSaveButtonText(!!isSaved, !!isOpenSale)
 
   return (
@@ -104,7 +115,7 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({ artwork })
       onPress={handleArtworkSave}
     >
       <Flex flexDirection="row" justifyContent="flex-start" alignItems="center">
-        <SaveButtonIcon isSaved={!!isSaved} isOpenSale={!!isOpenSale} />
+        {isOpenSale ? <WatchLotIcon isSaved={!!isSaved} /> : <SaveButtonIcon isSaved={!!isSaved} />}
         <Spacer x={0.5} />
 
         <Box position="relative">
