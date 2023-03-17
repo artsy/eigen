@@ -114,7 +114,6 @@ const NewHeader: React.FC<{
   const isTablet = isPad()
   return (
     <Flex>
-      <Spacer y={2} />
       <Image
         source={require("images/swa-landing-page-header.png")}
         style={{ width: isTablet ? "100%" : width, height: isTablet ? 480 : 340 }}

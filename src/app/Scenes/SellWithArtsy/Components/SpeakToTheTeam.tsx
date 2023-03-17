@@ -14,7 +14,8 @@ export const SpeakToTheTeam: React.FC<{
       <Flex pt={1}>
         <Flex mx={2}>
           <Text variant="lg" color={color("white100")}>
-            Selling multiple artworks? Get in touch to connect with a specialist.
+            Interested in selling multiple artworks? {"\n"}
+            Speak with our team.
           </Text>
           <Spacer y={4} />
           <Button
