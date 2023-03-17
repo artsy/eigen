@@ -36,7 +36,6 @@ export const Testimonials: React.FC = () => {
 
   const color = useColor()
   const { width } = useScreenDimensions()
-  const isAPad = isPad()
 
   if (loading) {
     return <LoadingSkeleton />
@@ -57,9 +56,9 @@ export const Testimonials: React.FC = () => {
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         renderItem={({ item }) => {
           return (
-            <Flex width={width} pl={2} alignItems={isAPad ? "center" : undefined}>
+            <Flex width={width} pl={2} alignItems="center">
               <Flex pr={1} mb={4}>
-                <Text variant="md">{`"${item.reviewText}"`}</Text>
+                <Text variant="md" textAlign="center">{`"${item.reviewText}"`}</Text>
               </Flex>
               <Flex flexDirection="row" alignItems="center">
                 <Image
@@ -82,7 +81,7 @@ export const Testimonials: React.FC = () => {
           )
         }}
       />
-      <Flex mx={2} mt={2} alignItems={isAPad ? "center" : undefined}>
+      <Flex mx={2} mt={2} alignItems="center">
         <Indicator total={testimonials.length} currentIndex={currentIndex} />
       </Flex>
     </Flex>
@@ -139,11 +138,10 @@ const Dot: React.FC<{ currentIndex: number; index: number }> = ({ currentIndex, 
 
 const LoadingSkeleton = () => {
   const { width } = useScreenDimensions()
-  const isAPad = isPad()
   const color = useColor()
   return (
     <Flex mt={1}>
-      <Flex width={width} pl={2} alignItems={isAPad ? "center" : undefined}>
+      <Flex width={width} pl={2} alignItems="center">
         <Flex pr={1} mb={4}>
           <PlaceholderText width="80%" />
           <PlaceholderText width="95%" />
@@ -166,7 +164,7 @@ const LoadingSkeleton = () => {
         </Flex>
       </Flex>
 
-      <Flex mx={2} mt={2} alignItems={isAPad ? "center" : undefined}>
+      <Flex mx={2} mt={2} alignItems="center">
         <Indicator total={[1, 2, 3].length} currentIndex={0} />
       </Flex>
     </Flex>
