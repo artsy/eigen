@@ -18,7 +18,7 @@ export const FAQSWA: React.FC = () => {
     >
       <Flex mx={2} mt={2} mb={4}>
         <Text variant="lg" mb={4} color="white100">
-          No upfront fees, clear pricing estimates and commission structures.
+          No upfront fees, clear pricing estimates, and competitive commission structures.
         </Text>
         <Text variant="xs" color="white100" mb={2}>
           Have more questions?

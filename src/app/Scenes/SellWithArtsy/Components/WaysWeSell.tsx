@@ -25,7 +25,7 @@ export const WaysWeSell: React.FC = () => {
   return (
     <Flex bg="black100" py={4}>
       <Flex mx={2}>
-        <Text variant="lg" color={color("white100")} mb={1}>
+        <Text variant="lg-display" color={color("white100")} mb={1}>
           A sales strategy tailored to your artwork
         </Text>
         <Text variant="xs" color={color("white100")} mb={2}>
