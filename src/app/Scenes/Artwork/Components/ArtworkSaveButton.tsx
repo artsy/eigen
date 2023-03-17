@@ -89,6 +89,7 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({ artwork })
     })
   }
 
+  const a11yLabel = isOpenSale ? "Watch lot" : isSaved ? "Unsave artwork" : "Save artwork"
   const buttonCopy = getSaveButtonText(!!isSaved, !!isOpenSale)
 
   return (
@@ -99,7 +100,7 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({ artwork })
         bottom: space(1),
       }}
       accessibilityRole="button"
-      accessibilityLabel={buttonCopy}
+      accessibilityLabel={a11yLabel}
       onPress={handleArtworkSave}
     >
       <Flex flexDirection="row" justifyContent="flex-start" alignItems="center">
