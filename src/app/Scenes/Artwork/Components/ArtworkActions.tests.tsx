@@ -103,7 +103,7 @@ describe("ArtworkActions", () => {
     expect(screen.queryByText("Saved")).toBeFalsy()
   })
 
-  it("should display 'Save' button if work is in an open auction", () => {
+  it("should display 'Watch lot' button if work is in an open auction", () => {
     const artworkActionsArtworkInAuction = {
       ...artworkActionsArtwork,
       sale: {
@@ -116,10 +116,10 @@ describe("ArtworkActions", () => {
       Artwork: () => artworkActionsArtworkInAuction,
     })
 
-    expect(screen.queryByText("Save")).toBeTruthy()
+    expect(screen.queryByText("Save")).toBeFalsy()
     expect(screen.queryByText("Saved")).toBeFalsy()
-    expect(screen.queryByText("Watch lot")).toBeFalsy()
-    expect(screen.queryByLabelText("watch lot icon")).toBeFalsy()
+    expect(screen.queryByText("Watch lot")).toBeTruthy()
+    expect(screen.queryByLabelText("watch lot icon")).toBeTruthy()
   })
 
   describe("without AR enabled", () => {
