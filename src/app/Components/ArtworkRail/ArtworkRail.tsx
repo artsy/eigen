@@ -1,13 +1,12 @@
-import { Flex, Spacer } from "@artsy/palette-mobile"
+import { Spacer } from "@artsy/palette-mobile"
 import { LargeArtworkRail_artworks$data } from "__generated__/LargeArtworkRail_artworks.graphql"
 import { SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection$data } from "__generated__/SellWithArtsyRecentlySold_recentlySoldArtworkTypeConnection.graphql"
 import { SmallArtworkRail_artworks$data } from "__generated__/SmallArtworkRail_artworks.graphql"
 import { ArtworkCardSize, ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
+import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { isPad } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
-import { Button } from "palette"
 import React, { ReactElement } from "react"
 import { FlatList } from "react-native"
 
@@ -52,8 +51,6 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
   trackingContextScreenOwnerType,
   onMorePress,
 }) => {
-  const enableBrowseMoreArtworksCard = useFeatureFlag("AREnableBrowseMoreArtworksCard")
-
   const isTablet = isPad()
 
   return (
@@ -65,8 +62,8 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
       horizontal
       ListHeaderComponent={ListHeaderComponent}
       ListFooterComponent={
-        enableBrowseMoreArtworksCard && onMorePress ? (
-          <BrowseMoreArtworksCard dark={dark} onPress={onMorePress} />
+        onMorePress ? (
+          <BrowseMoreRailCard dark={dark} onPress={onMorePress} text="Browse All Artworks" />
         ) : (
           ListFooterComponent
         )
@@ -155,22 +152,3 @@ export const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> =
 }
 
 const SpacerComponent = () => <Spacer x={2} />
-
-interface BrowseMoreArtworksCardProps {
-  dark?: boolean
-  onPress: () => void
-}
-
-const BrowseMoreArtworksCard: React.FC<BrowseMoreArtworksCardProps> = ({ dark, onPress }) => {
-  return (
-    <Flex flex={1} px={1} mx={2} justifyContent="center">
-      <Button
-        variant={dark ? "outlineLight" : "outline"}
-        onPress={onPress}
-        accessibilityLabel="Browse All Artworks"
-      >
-        Browse All Artworks
-      </Button>
-    </Flex>
-  )
-}

@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import { AuctionResultsRail_auctionResults$key } from "__generated__/AuctionResultsRail_auctionResults.graphql"
+import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
@@ -31,7 +32,6 @@ const getViewAllUrl = (contextModule: ContextModule) => {
 export const AuctionResultsRail: React.FC<AuctionResultsRailProps> = memo(
   ({ contextModule, title, ...restProps }) => {
     const viewAllUrl = getViewAllUrl(contextModule)
-
     const { trackEvent } = useTracking()
     const auctionResults = useFragment(meFragment, restProps.auctionResults)
 
@@ -43,6 +43,11 @@ export const AuctionResultsRail: React.FC<AuctionResultsRailProps> = memo(
 
     if (!auctionResults || auctionResults?.totalCount === 0) {
       return null
+    }
+
+    const handleMorePress = () => {
+      trackEvent(tracks.tappedViewAll(contextModule))
+      navigate(viewAllUrl)
     }
 
     return (
@@ -68,6 +73,11 @@ export const AuctionResultsRail: React.FC<AuctionResultsRailProps> = memo(
               width={screenWidth * 0.9}
             />
           )}
+          ListFooterComponent={
+            handleMorePress ? (
+              <BrowseMoreRailCard onPress={handleMorePress} text="Browse All Results" />
+            ) : undefined
+          }
         />
       </Flex>
     )
@@ -86,7 +96,6 @@ const meFragment = graphql`
   }
 `
 
-// TODO: Fix tracking
 const tracks = {
   tappedHeader: (contextModule: ContextModule) => ({
     action: ActionType.tappedArtworkGroup,
@@ -94,5 +103,12 @@ const tracks = {
     context_screen_owner_type: OwnerType.home,
     destination_screen_owner_type: OwnerType.upcomingAuctions,
     type: "header",
+  }),
+  tappedViewAll: (contextModule: ContextModule) => ({
+    action: ActionType.tappedArtworkGroup,
+    context_module: contextModule,
+    context_screen_owner_type: OwnerType.home,
+    destination_screen_owner_type: OwnerType.upcomingAuctions,
+    type: "viewAll",
   }),
 }
