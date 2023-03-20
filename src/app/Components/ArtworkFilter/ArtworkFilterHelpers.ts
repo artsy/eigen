@@ -173,6 +173,7 @@ export type AggregationName =
   | "PARTNER"
   | "PRICE_RANGE"
   | "SIMPLE_PRICE_HISTOGRAM"
+  | "state"
 
 export interface Aggregation {
   count: number
@@ -228,6 +229,7 @@ export const filterKeyFromAggregation: Record<
   PARTNER: FilterParamName.partnerIDs,
   PRICE_RANGE: FilterParamName.priceRange,
   SIMPLE_PRICE_HISTOGRAM: "SIMPLE_PRICE_HISTOGRAM",
+  state: "state",
 }
 
 const DEFAULT_ARTWORKS_PARAMS = {
@@ -343,20 +345,21 @@ export const filterArtworksParams = (
 // For most cases filter key can simply be FilterParamName, exception
 // is gallery and institution which share a paramName in metaphysics
 export const aggregationNameFromFilter: Record<string, AggregationName | undefined> = {
+  additionalGeneIDs: "MEDIUM",
   artistIDs: "ARTIST",
   artistNationalities: "ARTIST_NATIONALITY",
   artistsIFollow: "FOLLOWED_ARTISTS",
   colors: "COLOR",
-  sizes: "DIMENSION_RANGE",
   earliestCreatedYear: "earliestCreatedYear",
   latestCreatedYear: "latestCreatedYear",
   locationCities: "LOCATION_CITY",
   majorPeriods: "MAJOR_PERIOD",
   materialsTerms: "MATERIALS_TERMS",
   medium: "MEDIUM",
-  additionalGeneIDs: "MEDIUM",
   partnerIDs: "PARTNER",
   priceRange: "PRICE_RANGE",
+  sizes: "DIMENSION_RANGE",
+  state: "state",
 }
 
 export const aggregationForFilter = (filterKey: string, aggregations: Aggregations) => {

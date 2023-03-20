@@ -82,6 +82,15 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
         },
       ],
     },
+    {
+      slice: "state",
+      counts: [
+        {
+          value: artist.upcomingAuctionResults?.totalCount || 0,
+          name: "state",
+        },
+      ],
+    },
   ]
 
   useArtworkFilters({
