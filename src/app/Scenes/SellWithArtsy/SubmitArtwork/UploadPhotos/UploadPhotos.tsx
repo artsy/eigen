@@ -39,6 +39,7 @@ export const UploadPhotos = ({
         initialValues={submission.photos}
         onSubmit={submitUploadPhotosStep}
         validationSchema={photosValidationSchema}
+        validateOnChange
         validateOnMount
       >
         {({ values, isValid }) => {
