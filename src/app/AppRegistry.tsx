@@ -402,7 +402,7 @@ export const modules = defineModules({
   Auctions: reactModule(SalesScreen, {}, [SalesScreenQuery]),
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
 
-  AuctionResult: reactModule(AuctionResultQueryRenderer),
+  AuctionResult: reactModule(AuctionResultQueryRenderer, { hidesBackButton: true }),
   AuctionResultsForArtistsYouFollow: reactModule(
     AuctionResultsForArtistsYouFollowQueryRenderer,
     {},
