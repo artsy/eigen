@@ -44,6 +44,7 @@ describe("Activity", () => {
     expect(getAllByText("Pre-sale Estimate")).toBeTruthy()
     expect(getAllByText("£70,000–£100,000")).toBeTruthy()
     expect(getAllByText("London, New Bond Street")).toBeTruthy()
+    expect(getAllByText("Lot number")).toBeTruthy()
   })
 })
 
@@ -68,6 +69,7 @@ const auctionResultFixture: CleanRelayFragment<AuctionResult_auctionResult$data>
   internalID: "1001538",
   isUpcoming: true,
   location: "London, New Bond Street",
+  lotNumber: "1234",
   mediumText: "signed",
   organization: "Bonhams",
   performance: { mid: null },

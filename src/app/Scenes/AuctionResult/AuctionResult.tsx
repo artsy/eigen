@@ -100,9 +100,6 @@ export const AuctionResult: React.FC<Props> = (props) => {
   if (auctionResult.dimensionText) {
     details.push(makeRow("Dimensions", auctionResult.dimensionText))
   }
-  if (auctionResult.dateText) {
-    details.push(makeRow("Artwork date", auctionResult.dateText))
-  }
   if (auctionResult.saleDate) {
     details.push(
       makeRow("Sale date", moment(auctionResult.saleDate).utc().format("MMM D, YYYY"), {
@@ -113,11 +110,14 @@ export const AuctionResult: React.FC<Props> = (props) => {
   if (auctionResult.organization) {
     details.push(makeRow("Auction house", auctionResult.organization))
   }
+  if (auctionResult.location) {
+    details.push(makeRow("Sale location", auctionResult.location))
+  }
   if (auctionResult.saleTitle) {
     details.push(makeRow("Sale name", auctionResult.saleTitle))
   }
-  if (auctionResult.location) {
-    details.push(makeRow("Sale location", auctionResult.location))
+  if (auctionResult.lotNumber) {
+    details.push(makeRow("Lot number", auctionResult.lotNumber))
   }
 
   const salePriceMessage = auctionResultText(auctionResult as AuctionResultHelperData)
@@ -172,7 +172,7 @@ export const AuctionResult: React.FC<Props> = (props) => {
                   {auctionResult.priceRealized.display}
                   {!!auctionResult?.performance?.mid && (
                     <Text color={ratioColor(auctionResult.performance.mid)}>
-                      {" "}
+                      {"    "}
                       {auctionResult?.priceRealized?.display[0] === "-" ? "-" : "+"}
                       {new Intl.NumberFormat().format(
                         Number(auctionResult.performance?.mid.replace(/%|-/gm, ""))
@@ -255,7 +255,7 @@ export const AuctionResult: React.FC<Props> = (props) => {
             </Text>
           </Flex>
 
-          <Flex px={2}>
+          <Flex px={2} mb={2}>
             <SalePrice />
           </Flex>
         </Join>
@@ -347,6 +347,7 @@ const auctionResultFragment = graphql`
       }
     }
     location
+    lotNumber
     mediumText
     organization
     performance {
