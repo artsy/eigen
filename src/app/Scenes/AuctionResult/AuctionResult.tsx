@@ -18,18 +18,17 @@ import {
 import { ratioColor } from "app/Components/AuctionResult/AuctionResultMidEstimate"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { navigate } from "app/system/navigation/navigate"
+import { goBack, navigate } from "app/system/navigation/navigate"
 import { QAInfoPanel } from "app/utils/QAInfo"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { getImageSquareDimensions } from "app/utils/resizeImage"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { useStickyScrollHeader } from "app/utils/useStickyScrollHeader"
 import { capitalize } from "lodash"
 import moment from "moment"
 import { Separator } from "palette"
 import React, { Suspense, useEffect, useState } from "react"
-import { Animated, Image, TextInput, TouchableWithoutFeedback } from "react-native"
+import { Image, ScrollView, TextInput, TouchableWithoutFeedback } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
@@ -50,17 +49,6 @@ export const AuctionResult: React.FC<Props> = (props) => {
   const { theme } = useTheme()
 
   const tracking = useTracking()
-
-  const { headerElement, scrollProps } = useStickyScrollHeader({
-    header: (
-      <Flex flex={1} pl={6} pr={4} pt={0.5} flexDirection="row">
-        <Text variant="sm" numberOfLines={1} style={{ flexShrink: 1 }}>
-          {auctionResult.title}
-        </Text>
-        {!!auctionResult.dateText && <Text variant="sm">, {auctionResult.dateText}</Text>}
-      </Flex>
-    ),
-  })
 
   const details = []
   const makeRow = (
@@ -236,8 +224,15 @@ export const AuctionResult: React.FC<Props> = (props) => {
 
   return (
     <ProvideScreenTrackingWithCohesionSchema info={tracks.screen(auctionResult.internalID)}>
-      <Animated.ScrollView {...scrollProps}>
-        <FancyModalHeader hideBottomDivider />
+      <FancyModalHeader hideBottomDivider onLeftButtonPress={goBack}>
+        <Flex flex={1} pl={6} pr={4} pt={0.5} flexDirection="row">
+          <Text variant="sm" numberOfLines={1} style={{ flexShrink: 1 }}>
+            {auctionResult.title}
+          </Text>
+          {!!auctionResult.dateText && <Text variant="sm">, {auctionResult.dateText}</Text>}
+        </Flex>
+      </FancyModalHeader>
+      <ScrollView>
         <Join separator={<Spacer y={2} />}>
           {!!auctionResult?.images?.larger && (
             <AuctionResultImage image={auctionResult.images.larger} />
@@ -269,8 +264,7 @@ export const AuctionResult: React.FC<Props> = (props) => {
           <ComparableWorksFragmentContainer auctionResult={auctionResult} />
         </Box>
         <QAInfo />
-      </Animated.ScrollView>
-      {headerElement}
+      </ScrollView>
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }
