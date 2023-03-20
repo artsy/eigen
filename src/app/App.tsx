@@ -155,6 +155,10 @@ const Main = () => {
   )
 }
 
+if (__DEV__) {
+  require("react-native-flipper-relay-devtools").addPlugin()
+}
+
 export const App = () => (
   <Providers>
     <DevMenuWrapper>

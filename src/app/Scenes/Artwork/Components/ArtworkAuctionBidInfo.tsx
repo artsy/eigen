@@ -6,6 +6,7 @@ import {
   Text,
 } from "@artsy/palette-mobile"
 import { ArtworkAuctionBidInfo_artwork$key } from "__generated__/ArtworkAuctionBidInfo_artwork.graphql"
+import { useEffect } from "react"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 
@@ -23,6 +24,10 @@ export const ArtworkAuctionBidInfo: React.FC<ArtworkAuctionBidInfoProps> = ({
   const myLotStanding = data.myLotStanding?.[0]
   const myBidPresent = !!myLotStanding?.mostRecentBid
   const label = bidsCount > 0 ? "Current bid" : "Starting bid"
+
+  useEffect(() => {
+    console.log("ArtworkAuctionBidInfo", data)
+  })
 
   const renderBidResultIcon = () => {
     if (!myBidPresent) {
@@ -79,6 +84,10 @@ const artworkAuctionBidInfoFragment = graphql`
       }
       mostRecentBid {
         internalID
+        maxBid {
+          display
+          cents
+        }
       }
     }
     saleArtwork {
