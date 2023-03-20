@@ -2,6 +2,7 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import _ from "lodash"
+import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { ArtistQueryRenderer } from "./Artist"
@@ -47,7 +48,7 @@ describe("Saved search banner on artist screen", () => {
     renderWithWrappers(
       <ArtistQueryRenderer
         artistID="ignored"
-        environment={environment}
+        environment={environment as unknown as RelayModernEnvironment}
         searchCriteriaID={searchCriteriaID}
       />
     )

@@ -28,7 +28,6 @@ import React, { useEffect } from "react"
 import { ActivityIndicator, View } from "react-native"
 import { graphql } from "react-relay"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { MockEnvironment } from "relay-test-utils"
 
 const INITIAL_TAB = "Artworks"
 
@@ -133,7 +132,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
 }
 
 interface ArtistQueryRendererProps {
-  environment?: RelayModernEnvironment | MockEnvironment
+  environment?: RelayModernEnvironment
   initialTab?: string
   searchCriteriaID?: string
   search_criteria_id?: string

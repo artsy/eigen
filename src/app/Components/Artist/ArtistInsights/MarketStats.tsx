@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
-import { Spacer, IncreaseIcon, DecreaseIcon, Flex, Text } from "@artsy/palette-mobile"
+import { DecreaseIcon, Flex, IncreaseIcon, Spacer, Text } from "@artsy/palette-mobile"
 import { MarketStatsQuery } from "__generated__/MarketStatsQuery.graphql"
 import { MarketStats_priceInsightsConnection$data } from "__generated__/MarketStats_priceInsightsConnection.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
@@ -15,7 +15,6 @@ import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { MockEnvironment } from "relay-test-utils"
 import { useScreenDimensions } from "shared/hooks"
 
 interface MarketStatsProps {
@@ -183,7 +182,7 @@ export const MarketStatsFragmentContainer = createFragmentContainer(MarketStats,
 
 export const MarketStatsQueryRenderer: React.FC<{
   artistInternalID: string
-  environment: RelayModernEnvironment | MockEnvironment
+  environment: RelayModernEnvironment
 }> = ({ artistInternalID, environment }) => {
   return (
     <QueryRenderer<MarketStatsQuery>

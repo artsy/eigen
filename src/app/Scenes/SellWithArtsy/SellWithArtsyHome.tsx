@@ -27,7 +27,6 @@ import { ScrollView, StatusBarStyle } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { MockEnvironment } from "relay-test-utils"
 import { useScreenDimensions } from "shared/hooks"
 import { Footer } from "./Components/Footer"
 import { Header } from "./Components/Header"
@@ -198,7 +197,7 @@ const SellWithArtsyHomeContainer = createFragmentContainer(SellWithArtsyHome, {
 })
 
 interface SellWithArtsyHomeQueryRendererProps {
-  environment?: RelayModernEnvironment | MockEnvironment
+  environment?: RelayModernEnvironment
 }
 
 export const SellWithArtsyHomeScreenQuery = graphql`

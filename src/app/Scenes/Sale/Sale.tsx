@@ -34,7 +34,6 @@ import { useTracking } from "react-tracking"
 import useInterval from "react-use/lib/useInterval"
 import usePrevious from "react-use/lib/usePrevious"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { MockEnvironment } from "relay-test-utils"
 import { BuyNowArtworksRailContainer } from "./Components/BuyNowArtworksRail"
 import { NewBuyNowArtworksRailContainer } from "./Components/NewBuyNowArtworksRail"
 import { NewSaleLotsListContainer } from "./Components/NewSaleLotsList"
@@ -462,7 +461,7 @@ const SaleScreenBelowNewQuery = graphql`
 
 export const SaleQueryRenderer: React.FC<{
   saleID: string
-  environment?: RelayModernEnvironment | MockEnvironment
+  environment?: RelayModernEnvironment
 }> = ({ saleID, environment }) => {
   const { trackEvent } = useTracking()
   const enableArtworksConnection = useFeatureFlag("AREnableArtworksConnectionForAuction")

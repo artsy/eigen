@@ -3,6 +3,7 @@ import { fireEvent } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { SellWithArtsyRecentlySold } from "./Components/SellWithArtsyRecentlySold"
 import { SellWithArtsyHomeQueryRenderer } from "./SellWithArtsyHome"
@@ -54,7 +55,11 @@ describe("ConsignmentsHome index", () => {
   })
 
   const TestWrapper = () => {
-    return <SellWithArtsyHomeQueryRenderer environment={mockEnvironment} />
+    return (
+      <SellWithArtsyHomeQueryRenderer
+        environment={mockEnvironment as unknown as RelayModernEnvironment}
+      />
+    )
   }
 
   it("renders dynamic components", () => {
@@ -112,7 +117,11 @@ describe("New SellWithArtsyLandingPage", () => {
     })
 
     const TestWrapper = () => {
-      return <SellWithArtsyHomeQueryRenderer environment={mockEnvironment} />
+      return (
+        <SellWithArtsyHomeQueryRenderer
+          environment={mockEnvironment as unknown as RelayModernEnvironment}
+        />
+      )
     }
 
     // HEADER
