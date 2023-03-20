@@ -1,4 +1,7 @@
-import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  aggregationForFilter,
+  FilterParamName,
+} from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworksFiltersStore,
   useSelectedOptionsDisplay,
@@ -18,6 +21,7 @@ export const ArtworkFilterOptionCheckboxItem: React.FC<ArtworkFilterOptionCheckb
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.selectFiltersAction
   )
+  const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
 
   const selectedOptions = useSelectedOptionsDisplay()
 
@@ -50,6 +54,13 @@ export const ArtworkFilterOptionCheckboxItem: React.FC<ArtworkFilterOptionCheckb
     return !!selectedOption
   }, [selectedOption])
 
+  const aggregation = aggregationForFilter(FilterParamName.state, aggregations)
+
+  const hasAggregation = aggregation !== undefined
+
+  if (hasAggregation && !aggregation.counts[0].value) {
+    return null
+  }
   return (
     <ArtworkFilterOptionItem
       item={item}
