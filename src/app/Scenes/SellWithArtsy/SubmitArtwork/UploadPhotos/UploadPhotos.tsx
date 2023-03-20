@@ -7,6 +7,7 @@ import {
 import { GlobalStore } from "app/store/GlobalStore"
 import { Formik } from "formik"
 import { CTAButton, BulletedItem } from "palette"
+import { useRef } from "react"
 import { UploadPhotosForm } from "./UploadPhotosForm"
 import { isSizeLimitExceeded } from "./utils/calculatePhotoSize"
 
@@ -18,6 +19,7 @@ export const UploadPhotos = ({
   isLastStep: boolean
 }) => {
   const { submission } = GlobalStore.useAppState((state) => state.artworkSubmission)
+  const initialSubmissionPhotos = useRef(submission.photos).current
 
   const submitUploadPhotosStep = () => {
     handlePress({})
@@ -36,9 +38,10 @@ export const UploadPhotos = ({
       </Flex>
 
       <Formik<PhotosFormModel>
-        initialValues={submission.photos}
+        initialValues={initialSubmissionPhotos}
         onSubmit={submitUploadPhotosStep}
         validationSchema={photosValidationSchema}
+        validateOnChange
         validateOnMount
       >
         {({ values, isValid }) => {

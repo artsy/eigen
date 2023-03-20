@@ -115,22 +115,16 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
   const handlePhotoDelete = async (photo: Photo) => {
     try {
       const filteredPhotos = values.photos.filter((p: Photo) => p.id !== photo.id)
-      const isTotalSizeLimitExceeded = isSizeLimitExceeded(filteredPhotos)
-      // make sure to clean error state from photos, if total size limit is not exceed after deletion
-      if (!isTotalSizeLimitExceeded) {
-        filteredPhotos.forEach((p: Photo) => {
-          p.error = false
-          p.errorMessage = ""
-        })
-      }
 
       // set photos for my collection, and submission flow state and Formik
       GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
         photos: filteredPhotos,
       })
+
       GlobalStore.actions.artworkSubmission.submission.setSubmissionIdForMyCollection(
         submission.submissionId
       )
+
       GlobalStore.actions.artworkSubmission.submission.setPhotos({
         photos: filteredPhotos,
       })
