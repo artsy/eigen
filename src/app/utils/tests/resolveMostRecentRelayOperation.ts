@@ -41,7 +41,7 @@ const goodMockResolver = (ctx: MockResolverContext) => {
   }
   paths[prefix] = fullpath
 
-  return `${prefix}-${generateID(ctx.path)}`
+  return `${prefix}-${generateID(ctx?.path || undefined)}`
 }
 export const DefaultMockResolvers: MockResolvers = {
   ID: (ctx) => goodMockResolver(ctx),

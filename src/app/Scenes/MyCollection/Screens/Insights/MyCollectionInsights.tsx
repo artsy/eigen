@@ -14,7 +14,7 @@ import {
   RefreshEvents,
 } from "app/utils/refreshHelpers"
 import { Spinner } from "palette"
-import React, { Suspense, useContext, useEffect, useState } from "react"
+import { Suspense, useContext, useEffect, useState } from "react"
 import { useLazyLoadQuery } from "react-relay"
 import { fetchQuery, graphql } from "relay-runtime"
 import { ActivateMoreMarketInsightsBanner } from "./ActivateMoreMarketInsightsBanner"

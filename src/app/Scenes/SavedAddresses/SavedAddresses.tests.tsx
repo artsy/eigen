@@ -9,7 +9,7 @@ import { SavedAddressesContainer, SavedAddressesQueryRenderer, util } from "./Sa
 
 describe(SavedAddressesQueryRenderer, () => {
   type MockEnvironment = ReturnType<typeof createMockEnvironment>
-  const mockEnvironment = defaultEnvironment as MockEnvironment
+  const mockEnvironment = defaultEnvironment as unknown as MockEnvironment
   const TestRenderer = () => (
     <QueryRenderer<SavedAddressesTestsQuery>
       environment={defaultEnvironment}

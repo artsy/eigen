@@ -8,7 +8,7 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { UserProfileQueryRenderer } from "./LoggedInUserInfo"
 
-const env = defaultEnvironment as any as ReturnType<typeof createMockEnvironment>
+const env = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
 describe(UserProfileQueryRenderer, () => {
   it("spins until the operation resolves", () => {

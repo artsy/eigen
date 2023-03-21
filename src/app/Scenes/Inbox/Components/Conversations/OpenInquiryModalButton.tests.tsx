@@ -10,6 +10,7 @@ import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { OpenInquiryModalButtonFragmentContainer } from "./OpenInquiryModalButton"
 
+// eslint-disable-next-line react-hooks/rules-of-hooks
 const trackEvent = useTracking().trackEvent
 
 const tappedMakeOfferEvent = {

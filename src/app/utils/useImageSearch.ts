@@ -3,7 +3,7 @@ import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { ReactNativeFile } from "extract-files"
 import { useState } from "react"
 import { Platform } from "react-native"
-import { fetchQuery, graphql } from "react-relay"
+import { fetchQuery, graphql } from "relay-runtime"
 import RNFetchBlob from "rn-fetch-blob"
 import { resizeImage } from "./resizeImage"
 

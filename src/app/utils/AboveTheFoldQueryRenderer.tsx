@@ -1,14 +1,20 @@
 import React, { useEffect, useMemo, useState } from "react"
 import { QueryRenderer } from "react-relay"
-import { CacheConfig, FetchPolicy, GraphQLTaggedNode, OperationType } from "relay-runtime"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import {
+  CacheConfig,
+  Environment,
+  FetchPolicy,
+  GraphQLTaggedNode,
+  OperationType,
+} from "relay-runtime"
+import { MockEnvironment } from "relay-test-utils"
 import { renderWithPlaceholder } from "./renderWithPlaceholder"
 
 interface AboveTheFoldQueryRendererProps<
   AboveQuery extends OperationType,
   BelowQuery extends OperationType
 > {
-  environment: RelayModernEnvironment
+  environment: Environment | MockEnvironment
   above: {
     query: GraphQLTaggedNode
     variables: AboveQuery["variables"]
@@ -58,11 +64,11 @@ export function AboveTheFoldQueryRenderer<
   // If we didn't debounce we'd end up calling render twice in quick succession, once without below-the-fold data and then again with
   // That would create a some nasy jank
   const [hasFinishedDebouncing, setHasFinishedDebouncing] = useState(__TEST__)
-  if (!__TEST__) {
-    useEffect(() => {
+  useEffect(() => {
+    if (!__TEST__) {
       setTimeout(() => setHasFinishedDebouncing(true), 30)
-    }, [])
-  }
+    }
+  }, [])
 
   // we should call render if we have all the data already
   // we should also call render if we are no longer waiting for a debounce

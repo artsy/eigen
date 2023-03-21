@@ -1,7 +1,7 @@
 import { Theme } from "@artsy/palette-mobile"
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { Spinner, Theme as LegacyTheme } from "palette"
+import { Theme as LegacyTheme, Spinner } from "palette"
 import { Component, Suspense } from "react"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { SafeAreaProvider } from "react-native-safe-area-context"
@@ -71,7 +71,9 @@ const GestureHandlerProvider = (props: { children?: React.ReactNode }) => (
 )
 
 const RelayDefaultEnvProvider = (props: { children?: React.ReactNode }) => (
-  <RelayEnvironmentProvider environment={getRelayEnvironment()} {...props} />
+  <RelayEnvironmentProvider environment={getRelayEnvironment()}>
+    {props.children}
+  </RelayEnvironmentProvider>
 )
 
 const SuspenseProvider = (props: { children?: React.ReactNode }) => (

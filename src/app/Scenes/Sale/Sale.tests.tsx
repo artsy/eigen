@@ -4,6 +4,7 @@ import { navigate, popParentViewController } from "app/system/navigation/navigat
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { DateTime } from "luxon"
 import { Suspense } from "react"
+import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
 import { SaleQueryRenderer } from "./Sale"
@@ -18,7 +19,10 @@ describe("Sale", () => {
 
   const TestRenderer = () => (
     <Suspense fallback={() => null}>
-      <SaleQueryRenderer saleID="sale-id" environment={mockEnvironment} />
+      <SaleQueryRenderer
+        saleID="sale-id"
+        environment={mockEnvironment as unknown as RelayModernEnvironment}
+      />
     </Suspense>
   )
 

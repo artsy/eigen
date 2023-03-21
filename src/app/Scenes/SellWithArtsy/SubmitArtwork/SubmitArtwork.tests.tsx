@@ -50,7 +50,9 @@ describe(SubmitArtwork, () => {
   })
 
   describe("Submission Flow", () => {
-    const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+    const mockEnvironment = defaultEnvironment as unknown as ReturnType<
+      typeof createMockEnvironment
+    >
 
     afterEach(() => {
       GlobalStore.actions.artworkSubmission.submission.resetSessionState()
@@ -201,7 +203,9 @@ describe(SubmitArtwork, () => {
   })
 
   describe("Submission VisualClues", () => {
-    const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+    const mockEnvironment = defaultEnvironment as unknown as ReturnType<
+      typeof createMockEnvironment
+    >
 
     let addClueSpy = jest
       .spyOn(GlobalStore.actions.visualClue, "addClue")

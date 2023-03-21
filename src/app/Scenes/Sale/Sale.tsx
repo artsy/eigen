@@ -27,7 +27,7 @@ import { ProvideScreenTracking, Schema } from "app/utils/track"
 import _, { times } from "lodash"
 import { DateTime } from "luxon"
 import { Join } from "palette"
-import React, { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { Animated, FlatList, RefreshControl } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -144,7 +144,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
   }
 
   const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 30 })
-  const viewableItemsChangedRef = React.useRef(({ viewableItems }: ViewableItems) => {
+  const viewableItemsChangedRef = useRef(({ viewableItems }: ViewableItems) => {
     const artworksItem = (viewableItems! ?? []).find((viewableItem: ViewToken) => {
       return viewableItem?.item?.key === "saleLotsList"
     })
