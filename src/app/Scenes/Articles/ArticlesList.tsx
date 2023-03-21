@@ -123,7 +123,13 @@ export const ArticlesPlaceholder = () => {
 
   return (
     <ProvidePlaceholderContext>
-      <Flex flexDirection="column" justifyContent="space-between" height="100%" pb="8px">
+      <Flex
+        testID="articles-screen-placeholder"
+        flexDirection="column"
+        justifyContent="space-between"
+        height="100%"
+        pb="8px"
+      >
         <Separator />
         <FlatList
           numColumns={numColumns}
