@@ -1,5 +1,7 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
+import { AsyncStorageDevtools } from "app/system/devTools/AsyncStorageDevTools"
+import { setupFlipper } from "app/system/devTools/flipper"
 import { useErrorReporting } from "app/system/errorReporting/hooks"
 import { ModalStack } from "app/system/navigation/ModalStack"
 import { navigate } from "app/system/navigation/navigate"
@@ -39,9 +41,9 @@ import useSyncNativeAuthState from "./utils/useSyncAuthState"
 if (__DEV__) {
   // Don't open RN dev menu with shake. We use it for our own Dev Menu.
   NativeModules.DevSettings.setIsShakeToShowDevMenuEnabled(false)
-  // Add flipper relay devtools only in dev mode
-  require("react-native-flipper-relay-devtools").addPlugin()
 }
+
+setupFlipper()
 
 addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)
 addTrackingProvider("console", ConsoleTrackingProvider)
@@ -159,6 +161,8 @@ const Main = () => {
 
 export const App = () => (
   <Providers>
+    <AsyncStorageDevtools />
+
     <DevMenuWrapper>
       <Main />
     </DevMenuWrapper>
