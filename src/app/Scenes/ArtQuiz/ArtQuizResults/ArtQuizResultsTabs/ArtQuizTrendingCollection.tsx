@@ -28,7 +28,7 @@ export const ArtQuizTrendingCollection = ({
       <Flex px={2}>
         <Text variant="md">{collection?.title}</Text>
         <ReadMore
-          content={collection?.description!}
+          content={collection?.descriptionMarkdown!}
           maxChars={textLimit}
           textStyle="new"
           color="black60"
@@ -50,7 +50,7 @@ export const ArtQuizTrendingCollection = ({
 const artQuizTrendingCollectionFragment = graphql`
   fragment ArtQuizTrendingCollection_collection on MarketingCollection {
     title
-    description
+    descriptionMarkdown
     artworksConnection(first: 16) {
       edges {
         node {
