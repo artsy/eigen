@@ -475,7 +475,7 @@ export const SaleQueryRenderer: React.FC<{
       render={() => {
         return (
           <AboveTheFoldQueryRenderer<SaleAboveTheFoldQuery, SaleBelowTheFoldQuery>
-            environment={environment || defaultEnvironment}
+            environment={environment || defaultEnvironment()}
             above={{
               query: SaleScreenQuery,
               variables: { saleID, saleSlug: saleID },

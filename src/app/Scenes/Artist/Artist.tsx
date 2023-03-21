@@ -21,7 +21,7 @@ import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlacehold
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"
 import { SearchCriteriaQueryRenderer } from "app/Scenes/Artist/SearchCriteria"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useEffect } from "react"
@@ -204,7 +204,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
 
           return (
             <AboveTheFoldQueryRenderer<ArtistAboveTheFoldQuery, ArtistBelowTheFoldQuery>
-              environment={environment || defaultEnvironment}
+              environment={environment || getRelayEnvironment()}
               above={{
                 query: ArtistScreenQuery,
                 variables: {
