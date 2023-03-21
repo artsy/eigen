@@ -79,10 +79,6 @@ const artworkAuctionBidInfoFragment = graphql`
       }
       mostRecentBid {
         internalID
-        maxBid {
-          display
-          cents
-        }
       }
     }
     saleArtwork {

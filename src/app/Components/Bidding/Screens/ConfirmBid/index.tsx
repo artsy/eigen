@@ -280,16 +280,13 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                     bidderPositions
                   }
                   artwork {
-                    id
                     myLotStanding(live: true) {
                       activeBid {
                         isWinning
                       }
                       mostRecentBid {
-                        internalID
                         maxBid {
                           display
-                          cents
                         }
                       }
                     }
@@ -330,14 +327,14 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       .catch((error) => this.presentErrorResult(error))
   }
 
-  async checkBidderPosition(data: BidderPositionQuery["response"] | undefined) {
+  checkBidderPosition(data: BidderPositionQuery["response"] | undefined) {
     // eslint-disable-next-line no-unsafe-optional-chaining
     const { bidder_position } = data?.me!
 
     if (bidder_position!.status === "PENDING" && this.pollCount < MAX_POLL_ATTEMPTS) {
       // initiating new request here (vs setInterval) to make sure we wait for the previous call to return before making a new one
       const wait = __TEST__ ? (cb: any) => cb() : setTimeout
-      await wait(() => {
+      wait(() => {
         bidderPositionQuery(bidder_position!.position!.internalID)
           .then(this.checkBidderPosition.bind(this))
           .catch((error) => this.presentErrorResult(error))

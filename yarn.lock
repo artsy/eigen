@@ -13898,13 +13898,6 @@ react-native-flip-card@^3.4.1:
   dependencies:
     prop-types "^15.5.10"
 
-react-native-flipper-relay-devtools@1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/react-native-flipper-relay-devtools/-/react-native-flipper-relay-devtools-1.0.3.tgz#d27170f99a33217bd23d3d1873152f8a144d611c"
-  integrity sha512-hqXIBQXBctr6LJstALHuWBRbVs1ApIcnC7bKarm1f2tWihMahVmnxJu82unCIhQOJrl7H6VTn+fMz8qx/mV6ZA==
-  dependencies:
-    relay-devtools-core janicduplessis/relay-devtools#relay-devtools-core-v1.2.1-gitpkg
-
 react-native-flipper@0.131.1:
   version "0.131.1"
   resolved "https://registry.yarnpkg.com/react-native-flipper/-/react-native-flipper-0.131.1.tgz#b1a43e40a442187fa78c5ed6d478471ff4a2686c"
@@ -14540,13 +14533,6 @@ relay-config@12.0.1:
   integrity sha512-vq7GLLsGPpb/tZr9kmfbfe5sLO1cGa67jpCp4Xtk+N98fMInCu9YIH8R/FxxUhKVPnpLQf3ecmz+s+/MjzcnTQ==
   dependencies:
     cosmiconfig "^5.0.5"
-
-"relay-devtools-core@github:janicduplessis/relay-devtools#relay-devtools-core-v1.2.1-gitpkg":
-  version "1.2.1"
-  resolved "https://codeload.github.com/janicduplessis/relay-devtools/tar.gz/3175e77be3027d0a4ca8ae1d9f5a1ab278afa8dc"
-  dependencies:
-    shell-quote "^1.6.1"
-    ws "^7"
 
 relay-mock-network-layer@3.0.0:
   version "3.0.0"
