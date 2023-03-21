@@ -58,9 +58,10 @@ export const ArtworkFilterOptionCheckboxItem: React.FC<ArtworkFilterOptionCheckb
 
   const hasAggregation = aggregation !== undefined
 
-  if (hasAggregation && !aggregation.counts[0].value) {
+  if (hasAggregation && !aggregation.counts[0].value && item.filterType === "state") {
     return null
   }
+
   return (
     <ArtworkFilterOptionItem
       item={item}
