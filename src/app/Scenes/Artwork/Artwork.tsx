@@ -12,7 +12,8 @@ import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } fro
 import { OfferSubmittedModal } from "app/Scenes/Inbox/Components/Conversations/OfferSubmittedModal"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigationEvents } from "app/system/navigation/navigate"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+
+import { defaultEnvironment } from "app/system/relay/createEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { QAInfoPanel } from "app/utils/QAInfo"
 import {
@@ -608,7 +609,7 @@ export const ArtworkQueryRenderer: React.FC<{
         render={() => {
           return (
             <AboveTheFoldQueryRenderer<ArtworkAboveTheFoldQuery, ArtworkBelowTheFoldQuery>
-              environment={environment || getRelayEnvironment()}
+              environment={environment || defaultEnvironment}
               above={{
                 query: ArtworkScreenQuery,
                 variables: { artworkID },

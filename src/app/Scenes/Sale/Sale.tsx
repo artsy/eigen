@@ -19,7 +19,7 @@ import Spinner from "app/Components/Spinner"
 import { CascadingEndTimesBanner } from "app/Scenes/Artwork/Components/CascadingEndTimesBanner"
 import { unsafe__getEnvironment, useFeatureFlag } from "app/store/GlobalStore"
 import { navigate, popParentViewController } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { AuctionWebsocketContextProvider } from "app/utils/Websockets/auctions/AuctionSocketContext"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
@@ -475,7 +475,7 @@ export const SaleQueryRenderer: React.FC<{
       render={() => {
         return (
           <AboveTheFoldQueryRenderer<SaleAboveTheFoldQuery, SaleBelowTheFoldQuery>
-            environment={environment || defaultEnvironment()}
+            environment={environment || getRelayEnvironment()}
             above={{
               query: SaleScreenQuery,
               variables: { saleID, saleSlug: saleID },
