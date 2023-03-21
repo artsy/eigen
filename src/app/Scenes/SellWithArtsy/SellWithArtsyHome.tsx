@@ -18,7 +18,7 @@ import { Testimonials } from "app/Scenes/SellWithArtsy/Components/Testimonials"
 import { WaysWeSell } from "app/Scenes/SellWithArtsy/Components/WaysWeSell"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { defaultEnvironment } from "app/system/relay/createEnvironment"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useSwitchStatusBarStyle } from "app/utils/useStatusBarStyle"
 import { Button, Screen } from "palette"
@@ -216,7 +216,7 @@ export const SellWithArtsyHomeQueryRenderer: React.FC<SellWithArtsyHomeQueryRend
 }) => {
   return (
     <QueryRenderer<SellWithArtsyHomeQuery>
-      environment={environment || defaultEnvironment}
+      environment={environment || getRelayEnvironment()}
       variables={{}}
       query={SellWithArtsyHomeScreenQuery}
       render={renderWithPlaceholder({
