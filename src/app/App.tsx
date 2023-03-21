@@ -36,9 +36,11 @@ import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
 import { useScreenReaderTracking } from "./utils/useScreenReaderTracking"
 import useSyncNativeAuthState from "./utils/useSyncAuthState"
 
-// Don't open RN dev menu with shake. We use it for our own Dev Menu.
 if (__DEV__) {
+  // Don't open RN dev menu with shake. We use it for our own Dev Menu.
   NativeModules.DevSettings.setIsShakeToShowDevMenuEnabled(false)
+  // Add flipper relay devtools only in dev mode
+  require("react-native-flipper-relay-devtools").addPlugin()
 }
 
 addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)
