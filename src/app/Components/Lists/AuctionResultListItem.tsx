@@ -182,7 +182,7 @@ const AuctionResultPriceSection = ({
             <Text variant="xs" testID="priceUSD">
               {auctionResult.priceRealized?.displayUSD}
             </Text>
-          )}{" "}
+          )}
         </Text>
       </Text>
     )
