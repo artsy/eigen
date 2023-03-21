@@ -199,7 +199,6 @@ export const getStaticFilterOptionsByMode = (
         filterOptionToDisplayConfigMap.organizations,
         filterOptionToDisplayConfigMap.sizes,
         filterOptionToDisplayConfigMap.sort,
-        filterOptionToDisplayConfigMap.state,
         filterOptionToDisplayConfigMap.year,
       ]
 
