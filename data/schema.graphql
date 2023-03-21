@@ -11348,6 +11348,7 @@ type Me implements Node {
 type MeCounts {
   followedArtists: Int!
   savedArtworks: Int!
+  savedSearches: Int!
 }
 
 type MergeArtistsFailure {
