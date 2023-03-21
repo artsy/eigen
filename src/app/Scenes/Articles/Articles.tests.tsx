@@ -4,7 +4,7 @@ import { ArticlesScreen } from "./Articles"
 
 describe("Articles", () => {
   const { renderWithRelay } = setupTestWrapper({
-    Component: (props: any) => <ArticlesScreen {...props} />,
+    Component: () => <ArticlesScreen />,
   })
 
   it("renders articles", async () => {
