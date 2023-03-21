@@ -14541,7 +14541,7 @@ relay-config@12.0.1:
   dependencies:
     cosmiconfig "^5.0.5"
 
-"relay-devtools-core@github:janicduplessis/relay-devtools#relay-devtools-core-v1.2.1-gitpkg":
+relay-devtools-core@janicduplessis/relay-devtools#relay-devtools-core-v1.2.1-gitpkg:
   version "1.2.1"
   resolved "https://codeload.github.com/janicduplessis/relay-devtools/tar.gz/3175e77be3027d0a4ca8ae1d9f5a1ab278afa8dc"
   dependencies:
