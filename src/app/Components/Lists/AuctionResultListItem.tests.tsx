@@ -1,5 +1,4 @@
 import { AuctionResultListItemTestsQuery } from "__generated__/AuctionResultListItemTestsQuery.graphql"
-import { AuctionResultsMidEstimate } from "app/Components/AuctionResult/AuctionResultMidEstimate"
 import { extractNodes } from "app/utils/extractNodes"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
@@ -74,7 +73,7 @@ describe("AuctionResults", () => {
       }),
     })
 
-    expect(extractText(tree.findByProps({ testID: "price" }))).toBe("$one gazillion (+10% est)")
+    expect(extractText(tree.findByProps({ testID: "price" }))).toBe("$one gazillion")
     expect(tree.findAllByProps({ testID: "priceUSD" }).length).toBe(0)
   })
 
@@ -107,7 +106,7 @@ describe("AuctionResults", () => {
     })
 
     expect(extractText(tree.findByProps({ testID: "price" }))).toBe(
-      "€one gazillion • $one gazillion (+10% est)"
+      "€one gazillion • $one gazillion"
     )
     expect(extractText(tree.findByProps({ testID: "priceUSD" }))).toBe("$one gazillion")
   })
@@ -187,9 +186,5 @@ describe("AuctionResults", () => {
     })
 
     expect(tree.root.findByProps({ testID: "saleInfo" }).props.children).toContain("Jan 12, 2021")
-    expect(tree.root.findAllByType(AuctionResultsMidEstimate)[0].props.value).toEqual("mid-1")
-    expect(tree.root.findAllByType(AuctionResultsMidEstimate)[0].props.shortDescription).toEqual(
-      "est"
-    )
   })
 })

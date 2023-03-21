@@ -165,23 +165,21 @@ export const AuctionResult: React.FC<Props> = (props) => {
             />
           </Flex>
 
-          {auctionResult.estimate?.display ? (
+          {auctionResult.priceRealized?.display ? (
             <Flex mb={0.5}>
-              {!!auctionResult.priceRealized?.display && (
-                <Text variant="md">
-                  {auctionResult.priceRealized.display}
-                  {!!auctionResult?.performance?.mid && (
-                    <Text color={ratioColor(auctionResult.performance.mid)}>
-                      {"    "}
-                      {auctionResult?.priceRealized?.display[0] === "-" ? "-" : "+"}
-                      {new Intl.NumberFormat().format(
-                        Number(auctionResult.performance?.mid.replace(/%|-/gm, ""))
-                      )}
-                      % est
-                    </Text>
-                  )}
-                </Text>
-              )}
+              <Text variant="md">
+                {auctionResult.priceRealized.display}
+                {!!auctionResult?.performance?.mid && (
+                  <Text color={ratioColor(auctionResult.performance.mid)}>
+                    {"    "}
+                    {auctionResult?.priceRealized?.display[0] === "-" ? "-" : "+"}
+                    {new Intl.NumberFormat().format(
+                      Number(auctionResult.performance?.mid.replace(/%|-/gm, ""))
+                    )}
+                    % est
+                  </Text>
+                )}
+              </Text>
 
               {!!showPriceUSD && (
                 <Text variant="xs" color="black60" testID="priceUSD">

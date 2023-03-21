@@ -1,14 +1,13 @@
 import {
-  Spacer,
   bullet,
-  NoArtworkIcon,
-  Stopwatch,
   Flex,
-  useColor,
+  NoArtworkIcon,
+  Spacer,
+  Stopwatch,
   Text,
+  useColor,
 } from "@artsy/palette-mobile"
 import { AuctionResultListItem_auctionResult$data } from "__generated__/AuctionResultListItem_auctionResult.graphql"
-import { AuctionResultsMidEstimate } from "app/Components/AuctionResult/AuctionResultMidEstimate"
 import { auctionResultHasPrice, auctionResultText } from "app/Scenes/AuctionResult/helpers"
 import { navigate } from "app/system/navigation/navigate"
 import { QAInfoManualPanel, QAInfoRow } from "app/utils/QAInfo"
@@ -183,11 +182,8 @@ const AuctionResultPriceSection = ({
             <Text variant="xs" testID="priceUSD">
               {auctionResult.priceRealized?.displayUSD}
             </Text>
-          )}{" "}
+          )}
         </Text>
-        {!!auctionResult.performance?.mid && (
-          <AuctionResultsMidEstimate value={auctionResult.performance.mid} shortDescription="est" />
-        )}
       </Text>
     )
   }
