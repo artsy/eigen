@@ -310,6 +310,7 @@
     "pull-lock": "1.0.0",
     "react-dom": "17.0.2",
     "react-native-flipper": "0.131.1",
+    "react-native-flipper-relay-devtools": "1.0.3",
     "react-relay-network-modern": "6.2.1",
     "react-test-renderer": "17.0.2",
     "recursive-readdir-sync": "1.0.6",
