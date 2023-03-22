@@ -18,20 +18,28 @@ interface AuctionResultsRailProps {
   title: string
 }
 
-const getViewAllUrl = (contextModule: ContextModule) => {
+const getDetailsByContextModule = (
+  contextModule: ContextModule
+): { url: string; browseAllButtonText: string } => {
   switch (contextModule) {
     case ContextModule.upcomingAuctionsRail:
-      return "/upcoming-auction-results"
+      return {
+        url: "/upcoming-auction-results",
+        browseAllButtonText: "Browse All Auctions",
+      }
     case ContextModule.auctionResultsRail:
-      return "/auction-results-for-artists-you-follow"
+      return {
+        url: "/auction-results-for-artists-you-follow",
+        browseAllButtonText: "Browse All Results",
+      }
     default:
-      throw "Unknown view all URL for AuctionResultsRail: " + contextModule
+      throw "Unknown ContextModule"
   }
 }
 
 export const AuctionResultsRail: React.FC<AuctionResultsRailProps> = memo(
   ({ contextModule, title, ...restProps }) => {
-    const viewAllUrl = getViewAllUrl(contextModule)
+    const { url: viewAllUrl, browseAllButtonText } = getDetailsByContextModule(contextModule)
     const { trackEvent } = useTracking()
     const auctionResults = useFragment(meFragment, restProps.auctionResults)
 
@@ -75,7 +83,7 @@ export const AuctionResultsRail: React.FC<AuctionResultsRailProps> = memo(
           )}
           ListFooterComponent={
             handleMorePress ? (
-              <BrowseMoreRailCard onPress={handleMorePress} text="Browse All Results" />
+              <BrowseMoreRailCard onPress={handleMorePress} text={browseAllButtonText} />
             ) : undefined
           }
         />
