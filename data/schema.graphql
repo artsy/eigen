@@ -7330,6 +7330,7 @@ input CreateSavedSearchInput {
 type CreateSavedSearchPayload {
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
+  me: Me
   savedSearchOrErrors: SearchCriteriaOrErrorsUnion!
 }
 
