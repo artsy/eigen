@@ -18,18 +18,18 @@ interface AuctionResultsRailProps {
   title: string
 }
 
-const getDetailsByContextModule = (
+export const getDetailsByContextModule = (
   contextModule: ContextModule
-): { url: string; browseAllButtonText: string } => {
+): { viewAllUrl: string; browseAllButtonText: string } => {
   switch (contextModule) {
     case ContextModule.upcomingAuctionsRail:
       return {
-        url: "/upcoming-auction-results",
+        viewAllUrl: "/upcoming-auction-results",
         browseAllButtonText: "Browse All Auctions",
       }
     case ContextModule.auctionResultsRail:
       return {
-        url: "/auction-results-for-artists-you-follow",
+        viewAllUrl: "/auction-results-for-artists-you-follow",
         browseAllButtonText: "Browse All Results",
       }
     default:
@@ -39,7 +39,7 @@ const getDetailsByContextModule = (
 
 export const AuctionResultsRail: React.FC<AuctionResultsRailProps> = memo(
   ({ contextModule, title, ...restProps }) => {
-    const { url: viewAllUrl, browseAllButtonText } = getDetailsByContextModule(contextModule)
+    const { viewAllUrl, browseAllButtonText } = getDetailsByContextModule(contextModule)
     const { trackEvent } = useTracking()
     const auctionResults = useFragment(meFragment, restProps.auctionResults)
 

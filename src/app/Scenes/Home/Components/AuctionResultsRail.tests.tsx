@@ -1,3 +1,4 @@
+import { ContextModule } from "@artsy/cohesion"
 import { AuctionResultsRailTestsQuery } from "__generated__/AuctionResultsRailTestsQuery.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
@@ -6,8 +7,7 @@ import { cloneDeep, first } from "lodash"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { AuctionResultsRail } from "./AuctionResultsRail"
-import { ContextModule } from "@artsy/cohesion"
+import { AuctionResultsRail, getDetailsByContextModule } from "./AuctionResultsRail"
 
 describe("AuctionResultsRailFragmentContainer", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -84,6 +84,24 @@ describe("AuctionResultsRailFragmentContainer", () => {
 
     first(tree.root.findAllByType(SectionTitle))?.props.onPress()
     expect(navigate).toHaveBeenCalledWith("/auction-results-for-artists-you-follow")
+  })
+})
+
+describe(getDetailsByContextModule, () => {
+  it("returns the correct details for the upcoming auction results rail", () => {
+    const details = getDetailsByContextModule(ContextModule.upcomingAuctionsRail)
+    expect(details).toEqual({
+      viewAllUrl: "/upcoming-auction-results",
+      browseAllButtonText: "Browse All Auctions",
+    })
+  })
+
+  it("returns the correct details for the past auction results rail", () => {
+    const details = getDetailsByContextModule(ContextModule.auctionResultsRail)
+    expect(details).toEqual({
+      viewAllUrl: "/auction-results-for-artists-you-follow",
+      browseAllButtonText: "Browse All Results",
+    })
   })
 })
 
