@@ -1,24 +1,5 @@
 # Debugging
 
-Eigen has two developer menus: The regular react-native In-App Developer Menu + our own Dev Settings Menu.
-
-## Our Own Dev Settings Menu
-
-This is a custom menu that we use for all our in house built-in debugging features (clearing relay cache, throwing sentry errors, showing analytics events ...etc) in addition to enabling/disabling feature flags.
-
-![dev-settings-menu](./screenshots/dev-settings-menu.png)
-
-By default, this menu is disabled if you are running the app in a production build or if you are on staging in a non-artsy mail account. To enable it:
-
-1. Run the app in the simulator or a real device.
-   1a. Developer mode should be on in you are developing (`__DEV__` is true, or you are logged in with an artsy email). Make sure it is, by going to Profile > About. If "Version" has a one pixel purple line on the right, then you are good to go. If not, then you need to tap "Version" 7 times quickly, to enable developer mode.
-2. Simulate a ‘shake’ event (<kbd>^⌘Z</kbd>), which will bring up the Dev Menu.
-
-## In-App Developer Menu
-
-You can access the developer menu by using the <kbd>⌘D</kbd> keyboard shortcut when your app is running in the iOS Simulator, or <kbd>⌘M</kbd> when running in an Android emulator on Mac OS and Ctrl+M on Windows and Linux.
-![In-app-developer-menu](./screenshots/in-app-developer-menu.png)
-
 ## Breakpoints
 
 To enable breakpoints, you need to **Start Remote JS Debugging** from the **In-App Developer menu**
