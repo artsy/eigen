@@ -17,7 +17,6 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
         self.sceneView.backgroundColor = UIColor.black
         self.view.addSubview(self.sceneView)
         self.sceneView.align(toView: self.view!)
-        print("Got config with artwork \(config.artworkSlug)")
 
         let scene = SCNScene()
 
@@ -26,15 +25,24 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
             self.sceneView.showsStatistics = true
         }
 
+        let config = ARWorldTrackingConfiguration()
+        config
+            .planeDetection = .vertical
         self.sceneView.delegate = self
         self.sceneView.scene = scene
         self.sceneView.session.delegate = self
+        self.sceneView.session.run(config)
 
         let backButton = setupBackButton()
         self.view.addSubview(backButton)
 
         let backButtonConstraints = self.backButtonConstraints(backButton: backButton)
         self.view.addConstraints(backButtonConstraints)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        sceneView.session.pause()
     }
 
     private func backButtonConstraints(backButton: UIButton) -> [NSLayoutConstraint] {
@@ -75,5 +83,38 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
         }
 
         presentingVC?.dismiss(animated: true)
+    }
+
+    func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+        guard let planeAnchor = anchor as? ARPlaneAnchor, planeAnchor.alignment == .vertical else { return }
+
+        let planeNode = createPlaneNode(for: planeAnchor)
+        node.addChildNode(planeNode)
+    }
+
+    func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
+        guard let planeAnchor = anchor as? ARPlaneAnchor, planeAnchor.alignment == .vertical else { return }
+
+        if let planeNode = node.childNodes.first, let plane = planeNode.geometry as? SCNPlane {
+            updatePlaneNode(planeNode, with: plane, for: planeAnchor)
+        }
+    }
+
+    func createPlaneNode(for planeAnchor: ARPlaneAnchor) -> SCNNode {
+        let plane = SCNPlane(width: CGFloat(planeAnchor.extent.x), height: CGFloat(planeAnchor.extent.z))
+        plane.firstMaterial?.diffuse.contents = UIColor.blue.withAlphaComponent(0.5)
+
+        let planeNode = SCNNode(geometry: plane)
+        planeNode.position = SCNVector3(planeAnchor.center.x, 0, planeAnchor.center.z)
+        planeNode.eulerAngles.x = -.pi / 2
+
+        return planeNode
+    }
+
+    func updatePlaneNode(_ planeNode: SCNNode, with plane: SCNPlane, for planeAnchor: ARPlaneAnchor) {
+        plane.width = CGFloat(planeAnchor.extent.x)
+        plane.height = CGFloat(planeAnchor.extent.z)
+
+        planeNode.position = SCNVector3(planeAnchor.center.x, 0, planeAnchor.center.z)
     }
 }

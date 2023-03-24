@@ -49,7 +49,7 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
             config.artworkID = artworkId;
             config.artworkSlug = artworkSlug;
             config.floorBasedVIR = YES;
-            config.debugMode =  [AROptions boolForOption:AROptionsDebugARVIR];
+            config.debugMode =  YES; //[AROptions boolForOption:AROptionsDebugARVIR];
 
             if (allowedAccess) {
                 if (hasLidarEnabledDevice) { // Lidar device we can do instant vertical detection
