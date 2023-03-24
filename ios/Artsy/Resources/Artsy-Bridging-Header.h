@@ -116,3 +116,6 @@
 
 // Sentry Swift Access
 #import "ARSentryReporter.h"
+
+// AR
+#import "ARAugmentedRealityConfig.h"

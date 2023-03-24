@@ -54,6 +54,7 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
             if (allowedAccess) {
                 if (hasLidarEnabledDevice) { // Lidar device we can do instant vertical detection
                     ARAugmentedWallBasedVIRViewController *viewInRoomWallVC = [[ARAugmentedWallBasedVIRViewController alloc] init];
+                    viewInRoomWallVC.config = config;
                     viewInRoomWallVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
                     [[self.class currentlyPresentedVC] presentViewController:viewInRoomWallVC animated:YES completion:nil];
                 } else {
