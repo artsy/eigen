@@ -1,5 +1,11 @@
 # Debugging
 
+There are multiple tools available to help you debug your app. This document will cover our preferred tools and how to use them:
+
+- [React Native Debugger](https://github.com/jhen0409/react-native-debugger)
+- [Flipper](https://fbflipper.com/)
+- [VSCode](https://blog.logrocket.com/debugging-react-native-vs-code/)
+
 ## Breakpoints
 
 To enable breakpoints, you need to **Start Remote JS Debugging** from the **In-App Developer menu**
