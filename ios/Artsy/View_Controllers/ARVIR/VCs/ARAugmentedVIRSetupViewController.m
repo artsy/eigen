@@ -259,6 +259,14 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
     return [ARWorldTrackingConfiguration isSupported];
 }
 
++ (BOOL)hasLidarEnabledDevice
+{
+    if (@available(iOS 14.0, *)) {
+        return [ARWorldTrackingConfiguration supportsSceneReconstruction:ARSceneReconstructionMesh];
+    }
+    return NO;
+}
+
 + (void)canSkipARSetup:(NSUserDefaults *)defaults callback:(void (^)(bool allowedAccess))closure
 {
     BOOL access = [defaults boolForKey:ARAugmentedRealityCameraAccessGiven];

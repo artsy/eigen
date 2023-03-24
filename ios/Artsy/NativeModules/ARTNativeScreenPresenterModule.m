@@ -32,6 +32,7 @@ RCT_EXPORT_MODULE()
 RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)widthIn height:(CGFloat)heightIn artworkSlug:(NSString *)artworkSlug artworkId:(NSString *)artworkId)
 {
     BOOL supportsARVIR = [ARAugmentedVIRSetupViewController canOpenARView];
+    BOOL hasLidarEnabledDevice = [ARAugmentedVIRSetupViewController hasLidarEnabledDevice];
     if (!supportsARVIR) {
         // we don't expect emission to call this when there's no AR support
         return;
@@ -51,9 +52,13 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
             config.debugMode =  [AROptions boolForOption:AROptionsDebugARVIR];
 
             if (allowedAccess) {
-                ARAugmentedFloorBasedVIRViewController *viewInRoomVC = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:config];
-                viewInRoomVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                [[self.class currentlyPresentedVC] presentViewController:viewInRoomVC animated:YES completion:nil];
+                if (hasLidarEnabledDevice) { // Lidar device we can do instant vertical detection
+                    NSLog(@"Here is where I should show the instant plane detection vc");
+                } else {
+                    ARAugmentedFloorBasedVIRViewController *viewInRoomVC = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:config];
+                    viewInRoomVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                    [[self.class currentlyPresentedVC] presentViewController:viewInRoomVC animated:YES completion:nil];
+                }
             } else {
                 ArtsyEcho *echo = [[ArtsyEcho alloc] init];
                 [echo setup];

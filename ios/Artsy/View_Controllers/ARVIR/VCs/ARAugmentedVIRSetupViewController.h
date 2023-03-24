@@ -12,6 +12,8 @@
 
 /// Is AR even supported?
 + (BOOL)canOpenARView;
+/// Do they have a lidar enabled device?
++ (BOOL)hasLidarEnabledDevice;
 /// Have they already given access, and placed a work?
 + (void)canSkipARSetup:(NSUserDefaults *)defaults callback:(void (^)(bool allowedAccess))closure;
 /// Request access

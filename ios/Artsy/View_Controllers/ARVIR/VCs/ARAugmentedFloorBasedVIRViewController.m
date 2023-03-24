@@ -163,8 +163,6 @@ NS_ASSUME_NONNULL_BEGIN
 
     [super viewDidLoad];
 
-    BOOL isLiDAREnabled = [self isLiDAREnabled];
-
     [self.view addSubview:self.sceneView];
     [self.sceneView alignToView:self.view];
 
@@ -261,13 +259,6 @@ NS_ASSUME_NONNULL_BEGIN
         [self.view layoutIfNeeded];
         [informational layoutIfNeeded];
     }];
-}
-
-- (BOOL)isLiDAREnabled {
-    if (@available(iOS 14.0, *)) {
-        return [ARWorldTrackingConfiguration supportsSceneReconstruction:ARSceneReconstructionMesh];
-    }
-    return NO;
 }
 
 - (void)dismissInformationalViewAnimated
