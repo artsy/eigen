@@ -58,10 +58,10 @@ export interface Props {
   itemMargin?: number
 
   /** A component to render at the top of all items */
-  HeaderComponent?: React.ComponentType<any> | React.ReactElement<any>
+  HeaderComponent?: JSX.Element
 
   /** A component to render at the bottom of all items */
-  FooterComponent?: React.ComponentType<any> | React.ReactElement<any>
+  FooterComponent?: JSX.Element
 
   /** Pass true if artworks should have a Box wrapper with gutter padding */
   shouldAddPadding?: boolean
@@ -376,22 +376,6 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
     return sections
   }
 
-  const renderHeader = () => {
-    if (!HeaderComponent) {
-      return null
-    }
-
-    return React.isValidElement(HeaderComponent) ? HeaderComponent : <HeaderComponent />
-  }
-
-  const renderFooter = () => {
-    if (!FooterComponent) {
-      return null
-    }
-
-    return React.isValidElement(FooterComponent) ? FooterComponent : <FooterComponent />
-  }
-
   const renderedArtworks = sectionDimension ? renderSections() : null
 
   const boxPadding = shouldAddPadding ? 2 : 0
@@ -416,7 +400,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
       >
-        {renderHeader()}
+        {!!HeaderComponent && HeaderComponent}
         <Box px={boxPadding}>
           <View style={styles.container} accessibilityLabel="Artworks Content View">
             {renderedArtworks}
@@ -457,7 +441,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
         )}
       </ScrollViewWrapper>
 
-      {renderFooter()}
+      {!!FooterComponent && FooterComponent}
     </>
   )
 }

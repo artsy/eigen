@@ -49,7 +49,7 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
         useParentAwareScrollView={false}
         itemComponentProps={{ hideSaleInfo: true, hidePartner: true, onPress: handlePress }}
         hideSaveIcon
-        FooterComponent={() => (
+        FooterComponent={
           <Flex alignItems="center">
             {/* Using `FadeIn` prevents the button from being displayed too early. */}
             <FadeIn delay={100} slide={false}>
@@ -58,7 +58,7 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
               </Button>
             </FadeIn>
           </Flex>
-        )}
+        }
       />
     </Flex>
   )
