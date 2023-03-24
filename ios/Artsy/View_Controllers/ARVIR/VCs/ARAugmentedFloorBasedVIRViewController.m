@@ -22,6 +22,9 @@
 #import "ARVIRHorizontalPlaneInteractionController.h"
 #import "ARAugmentedVIRSetupViewController.h"
 #import "ARInformationView.h"
+#import <ARKit/ARKit.h>
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface _ARWhiteFlatButton : ARWhiteFlatButton
 @end
@@ -160,6 +163,8 @@ NS_ASSUME_NONNULL_BEGIN
 
     [super viewDidLoad];
 
+    BOOL isLiDAREnabled = [self isLiDAREnabled];
+
     [self.view addSubview:self.sceneView];
     [self.sceneView alignToView:self.view];
 
@@ -200,6 +205,8 @@ NS_ASSUME_NONNULL_BEGIN
     backButton.layer.shadowColor = [UIColor blackColor].CGColor;
     backButton.layer.shadowOffset = CGSizeMake(0, 0);
     backButton.layer.shadowOpacity = 0.4;
+
+
 
     ARClearFlatButton *resetARButton = [[_ARClearFlatButton alloc] init];
     [resetARButton setTitle:@"Reset" forState:UIControlStateNormal];
@@ -254,6 +261,13 @@ NS_ASSUME_NONNULL_BEGIN
         [self.view layoutIfNeeded];
         [informational layoutIfNeeded];
     }];
+}
+
+- (BOOL)isLiDAREnabled {
+    if (@available(iOS 14.0, *)) {
+        return [ARWorldTrackingConfiguration supportsSceneReconstruction:ARSceneReconstructionMesh];
+    }
+    return NO;
 }
 
 - (void)dismissInformationalViewAnimated
