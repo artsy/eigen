@@ -53,7 +53,9 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
 
             if (allowedAccess) {
                 if (hasLidarEnabledDevice) { // Lidar device we can do instant vertical detection
-                    NSLog(@"Here is where I should show the instant plane detection vc");
+                    ARAugmentedWallBasedVIRViewController *viewInRoomWallVC = [[ARAugmentedWallBasedVIRViewController alloc] init];
+                    viewInRoomWallVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                    [[self.class currentlyPresentedVC] presentViewController:viewInRoomWallVC animated:YES completion:nil];
                 } else {
                     ARAugmentedFloorBasedVIRViewController *viewInRoomVC = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:config];
                     viewInRoomVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
