@@ -60,9 +60,38 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
         // TODO: Should I still do the idle timer thing?
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        // TODO: analytics
+        super.viewDidAppear(animated)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.presentInformationalInterface(animated: true)
+        }
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         sceneView.session.pause()
+    }
+
+    private func presentInformationalInterface(animated: Bool) {
+        guard let informationView = self.informationView else {
+            return
+        }
+
+        if informationView.alpha > 0 {
+            return
+        }
+
+        UIView.animateIf(animated, duration: ARAnimationDuration, options: .curveEaseOut) {
+            self.informationViewBottomConstraint?.constant = 0
+            informationView.alpha = 1
+            // TODO:
+            // self.resetButton.alpha = 0
+            informationView.setNeedsUpdateConstraints()
+            self.view.layoutIfNeeded()
+            informationView.layoutIfNeeded()
+        }
     }
 
     private func backButtonConstraints(backButton: UIButton) -> [NSLayoutConstraint] {
@@ -93,8 +122,19 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
 
     private func viewStates(forInformationView: ARInformationView) -> [InformationalViewState] {
 
+        let pointAtWallViewState = InformationalViewState()
+        pointAtWallViewState.xOutOfYMessage = "Step 1 of 2"
+        pointAtWallViewState.bodyString = "Point your device at a wall nearby."
+        let spinner = ARSpinner()
+        spinner.spinnerColor = UIColor.white
+        spinner.constrainHeight("40")
+        pointAtWallViewState.contents = spinner
+        pointAtWallViewState.onStart = { (customView: UIView) in
+            spinner.startAnimating()
+        }
+
         let positionArtworkViewState = InformationalViewState()
-        positionArtworkViewState.xOutOfYMessage = " "
+        positionArtworkViewState.xOutOfYMessage = "Step 2 of 2"
         positionArtworkViewState.bodyString = "Position the work on the wall and tap to place."
         let placeArtworkButton = ARWhiteFlatButton()
         placeArtworkButton.setTitle("Place Work", for: .normal)
@@ -112,7 +152,7 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
         doneArtworkButton.addTarget(self, action: #selector(dismissInformationalViewAnimated), for: .touchUpInside)
         congratsArtworkViewState.contents = doneArtworkButton
 
-        return [positionArtworkViewState, congratsArtworkViewState]
+        return [pointAtWallViewState, positionArtworkViewState, congratsArtworkViewState]
     }
 
     @objc func placeArtwork() {
