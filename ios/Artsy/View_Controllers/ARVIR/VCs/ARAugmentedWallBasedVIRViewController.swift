@@ -5,6 +5,8 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
 
     var config : ARAugmentedRealityConfig!
     var sceneView : ARSCNView!
+    var informationView : ARInformationView?
+    var informationViewBottomConstraint : NSLayoutConstraint?
 
     @objc func initWithConfig(_ config: ARAugmentedRealityConfig) {
         self.config = config
@@ -13,10 +15,15 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        guard let view = self.view else {
+            return
+        }
+
         self.view.backgroundColor = UIColor.black
         self.sceneView.backgroundColor = UIColor.black
         self.view.addSubview(self.sceneView)
-        self.sceneView.align(toView: self.view!)
+        self.sceneView.align(toView: view)
 
         let scene = SCNScene()
 
@@ -38,6 +45,19 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
 
         let backButtonConstraints = self.backButtonConstraints(backButton: backButton)
         self.view.addConstraints(backButtonConstraints)
+
+        let informationView = ARInformationView()
+        let informationViewStates = self.viewStates(forInformationView: informationView)
+        informationView.setup(with: informationViewStates)
+        informationView.alpha = 0
+        self.view.addSubview(informationView)
+        informationView.alignLeading("0", trailing: "0", toView: view)
+        informationView.constrainHeight("221")
+        self.informationViewBottomConstraint = informationView.alignBottomEdge(withView: view, predicate: "0")
+        self.informationViewBottomConstraint?.constant = 40
+        self.informationView = informationView
+
+        // TODO: Should I still do the idle timer thing?
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -69,6 +89,53 @@ class ARAugmentedWallBasedVIRViewController: UIViewController, ARSCNViewDelegate
         backButton.layer.shadowOffset = CGSize(width: 0, height: 0)
         backButton.layer.shadowOpacity = 0.4
         return backButton
+    }
+
+    private func viewStates(forInformationView: ARInformationView) -> [InformationalViewState] {
+
+        let positionArtworkViewState = InformationalViewState()
+        positionArtworkViewState.xOutOfYMessage = " "
+        positionArtworkViewState.bodyString = "Position the work on the wall and tap to place."
+        let placeArtworkButton = ARWhiteFlatButton()
+        placeArtworkButton.setTitle("Place Work", for: .normal)
+        placeArtworkButton.constrainHeight("50")
+        placeArtworkButton.addTarget(self, action: #selector(placeArtwork), for: .touchUpInside)
+        positionArtworkViewState.contents = placeArtworkButton
+
+        let congratsArtworkViewState = InformationalViewState()
+        congratsArtworkViewState.xOutOfYMessage = " "
+        congratsArtworkViewState.bodyString = "The work has been placed. Walk around the work to view it in your space."
+
+        let doneArtworkButton = ARClearFlatButton()
+        doneArtworkButton.setTitle("Done", for: .normal)
+        doneArtworkButton.constrainHeight("50")
+        doneArtworkButton.addTarget(self, action: #selector(dismissInformationalViewAnimated), for: .touchUpInside)
+        congratsArtworkViewState.contents = doneArtworkButton
+
+        return [positionArtworkViewState, congratsArtworkViewState]
+    }
+
+    @objc func placeArtwork() {
+        print("Here is where I should place the artwork")
+    }
+
+    @objc func dismissInformationalViewAnimated() {
+        self.dismissInformationalView(animated: true)
+    }
+
+    private func dismissInformationalView(animated: Bool) {
+        guard let informationView = self.informationView else {
+            return
+        }
+
+        UIView.animateIf(animated, duration: ARAnimationQuickDuration, options: .curveEaseOut) {
+            self.informationViewBottomConstraint?.constant = 40
+            informationView.alpha = 0
+            // TODO:
+            // self.resetButton.alpha = 1
+            informationView.setNeedsUpdateConstraints()
+            informationView.layoutIfNeeded()
+        }
     }
 
     @objc func exitARContext() {

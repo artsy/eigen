@@ -120,3 +120,4 @@
 // AR
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedVIRSetupViewController.h"
+#import "ARInformationView.h"
