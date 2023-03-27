@@ -14,7 +14,6 @@ const REPLACE_ANIMATION_VELOCITY = 350
 
 export const PopoverMessageContext = React.createContext<PopoverMessageContextContextValue>({
   show: () => {},
-
   hide: () => {},
 })
 
