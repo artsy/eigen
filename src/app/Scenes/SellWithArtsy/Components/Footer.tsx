@@ -71,7 +71,7 @@ const NewFooter: React.FC<{
   return (
     <Flex mx={2} alignItems={isTablet ? "center" : undefined}>
       <Text variant="lg-display" textAlign="center">
-        Meet your new advisor. It’s Artsy.
+        Meet your new advisor.{"\n"}It’s Artsy.
       </Text>
       <Spacer y={2} />
       <Button
