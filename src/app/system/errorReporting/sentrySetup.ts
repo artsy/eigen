@@ -34,7 +34,7 @@ export function setupSentry(props: Partial<Sentry.ReactNativeOptions> = {}) {
   }
 
   Sentry.init({
-    dsn: !ossUser ? sentryDSN : undefined,
+    dsn: sentryDSN,
     release: eigenSentryReleaseName(),
     dist: DeviceInfo.getBuildNumber(),
     enableAutoSessionTracking: true,
