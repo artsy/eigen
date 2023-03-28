@@ -1,9 +1,8 @@
-import { CloseIcon, Flex, useColor, Text } from "@artsy/palette-mobile"
+import { CloseIcon, Flex, Text, useColor } from "@artsy/palette-mobile"
 import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
 
-import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
+import { extractNodes } from "app/utils/extractNodes"
 import { FollowButton, OpaqueImageView as NewOpaqueImageView, Touchable } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
@@ -17,8 +16,23 @@ interface ArtistCardProps {
   onPress?: () => void
 }
 
+const IMAGE_MAX_HEIGHT = 180
+
 export const ArtistCard: React.FC<ArtistCardProps> = ({ artist, onDismiss, onFollow, onPress }) => {
   const color = useColor()
+
+  const artistImages = extractNodes(artist.filterArtworksConnection)
+    .filter((artwork) => {
+      // Image is valid and has a width and height
+      return (
+        artwork.image?.resized?.src && artwork.image.resized.width && artwork.image.resized.height
+      )
+    })
+    .map((artwork) => artwork.image?.resized) as Array<{
+    height: number
+    src: string
+    width: number
+  }>
 
   const handlePress = () => {
     onPress?.()
@@ -28,22 +42,11 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({ artist, onDismiss, onFol
     }
   }
 
-  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageComponent")
-
   return (
     <ArtistCardWrapper onPress={handlePress}>
       <Flex>
-        <Flex>
-          {enableNewOpaqueImageView ? (
-            <NewOpaqueImageView
-              imageURL={artist?.image?.url}
-              width={ARTIST_CARD_WIDTH}
-              height={180}
-            />
-          ) : (
-            <ImageView imageURL={artist?.image?.url} width={ARTIST_CARD_WIDTH} height={180} />
-          )}
-        </Flex>
+        <ArtworkCardImages images={artistImages} />
+
         <Flex flexDirection="row" mt={1}>
           <Flex flex={1} flexDirection="column" justifyContent="center">
             <Text numberOfLines={1}>{artist.name}</Text>
@@ -83,6 +86,79 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({ artist, onDismiss, onFol
   )
 }
 
+// Refers to how much should images hide behind each other
+const IMAGE_OVERLAY = 20
+// Refers to how much should images be zoomed in
+const ZOOM_IN_FACTOR = 1.5
+// Refers to the difference in height factor between two consecutive images
+const DIFFERENCE_FACTOR = 0.25
+
+const ArtworkCardImages = ({
+  images,
+}: {
+  images: Array<{
+    height: number
+    src: string
+    width: number
+  }>
+}) => {
+  const numOfImages = images.length
+
+  const imageWidth = ARTIST_CARD_WIDTH / numOfImages + IMAGE_OVERLAY
+
+  const getContainerHeight = (index: number) => {
+    let indexFactor
+    switch (index) {
+      case 0:
+        indexFactor = 0
+        break
+      case 1:
+        indexFactor = 2
+        break
+      case 2:
+        indexFactor = 1
+        break
+
+      default:
+        indexFactor = 0
+        break
+    }
+    return IMAGE_MAX_HEIGHT - IMAGE_MAX_HEIGHT * DIFFERENCE_FACTOR * indexFactor
+  }
+
+  return (
+    <Flex flexDirection="row" justifyContent="space-around" width={ARTIST_CARD_WIDTH}>
+      {images.length > 0 ? (
+        images.map((image, index) => {
+          const imageAspectRatio = image.width / image.height
+
+          const containerHeight = getContainerHeight(index)
+
+          return (
+            <Flex height={IMAGE_MAX_HEIGHT} key={image.src} justifyContent="flex-end">
+              <Flex
+                height={containerHeight}
+                width={imageWidth}
+                justifyContent="center"
+                alignItems="center"
+                overflow="hidden"
+              >
+                <NewOpaqueImageView
+                  imageURL={image.src}
+                  aspectRatio={imageAspectRatio}
+                  height={containerHeight * ZOOM_IN_FACTOR}
+                />
+              </Flex>
+            </Flex>
+          )
+        })
+      ) : (
+        <Flex height={IMAGE_MAX_HEIGHT} width={ARTIST_CARD_WIDTH} backgroundColor="black10" />
+      )}
+    </Flex>
+  )
+}
+
 export const ArtistCardWrapper = styled.TouchableHighlight.attrs(() => ({
   underlayColor: "transparent",
 }))`
@@ -106,6 +182,19 @@ export const ArtistCardContainer = createFragmentContainer(ArtistCard, {
         name
       }
       isFollowed
+      filterArtworksConnection(first: 3, sort: "-weighted_iconicity") {
+        edges {
+          node {
+            image {
+              resized(width: 295) {
+                src
+                width
+                height
+              }
+            }
+          }
+        }
+      }
     }
   `,
 })
