@@ -10,5 +10,11 @@ cp metaflags.example.json metaflags.json
 
 # Need a phony Google plist to compile the project but it won't be used
 touch ios/Artsy/GoogleService-Info.plist
+echo '<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+</dict>
+</plist>' > ios/Artsy/GoogleService-Info.plist
 
 ./scripts/setup-oss-fonts
