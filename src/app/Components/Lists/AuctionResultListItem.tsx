@@ -44,17 +44,22 @@ const AuctionResultListItem: React.FC<Props> = ({
     </QAInfoManualPanel>
   )
 
+  const handlePress = () => {
+    // For upcoming auction results that are happening in Artsy we want to navigate to the lot page
+    if (auctionResult.isUpcoming && auctionResult.isInArtsyAuction && auctionResult.externalURL) {
+      navigate(auctionResult.externalURL)
+      return
+    }
+
+    if (onPress) {
+      onPress()
+    } else {
+      navigate(`/artist/${auctionResult.artistID}/auction-result/${auctionResult.internalID}`)
+    }
+  }
+
   return (
-    <Touchable
-      underlayColor={color("black5")}
-      onPress={() => {
-        if (onPress) {
-          onPress()
-        } else {
-          navigate(`/artist/${auctionResult.artistID}/auction-result/${auctionResult.internalID}`)
-        }
-      }}
-    >
+    <Touchable underlayColor={color("black5")} onPress={handlePress}>
       <Flex px={withHorizontalPadding ? 2 : 0} flexDirection="row" width={width}>
         {/* Sale Artwork Thumbnail Image */}
         {!auctionResult.images?.thumbnail?.url ? (
@@ -216,6 +221,8 @@ export const AuctionResultListItemFragmentContainer = createFragmentContainer(
           name
         }
         isUpcoming
+        isInArtsyAuction
+        externalURL
         images {
           thumbnail {
             url(version: "square140")
