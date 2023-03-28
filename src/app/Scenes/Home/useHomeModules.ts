@@ -112,6 +112,13 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         type: "artwork-recommendations",
       },
       {
+        contextModule: ContextModule.newWorksByGalleriesYouFollowRail,
+        data: props.homePageBelow?.worksFromGalleriesYouFollowArtworkModule,
+        isEmpty: isEmpty(props.homePageBelow?.worksFromGalleriesYouFollowArtworkModule?.results),
+        title: "New Works from Galleries You Follow",
+        type: "artwork",
+      },
+      {
         contextModule: ContextModule.recommendedArtistsRail,
         data: props.meBelow,
         isEmpty: !props.meBelow?.artistRecommendationsCounts?.totalCount,
@@ -125,13 +132,7 @@ export const useHomeModules = (props: HomeProps, cards: ReactAppboy.CaptionedCon
         title: "Trending Artists",
         type: "artist",
       },
-      {
-        contextModule: ContextModule.newWorksByGalleriesYouFollowRail,
-        data: props.homePageBelow?.worksFromGalleriesYouFollowArtworkModule,
-        isEmpty: isEmpty(props.homePageBelow?.worksFromGalleriesYouFollowArtworkModule?.results),
-        title: "New Works from Galleries You Follow",
-        type: "artwork",
-      },
+
       {
         contextModule: ContextModule.recentlyViewedRail,
         data: props.homePageBelow?.recentlyViewedWorksArtworkModule,
