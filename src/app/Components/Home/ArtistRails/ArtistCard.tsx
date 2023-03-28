@@ -183,7 +183,7 @@ export const ArtistCardContainer = createFragmentContainer(ArtistCard, {
         name
       }
       isFollowed
-      filterArtworksConnection(first: 3, sort: "-decayed_merch") {
+      filterArtworksConnection(first: 3, sort: "-weighted_iconicity") {
         edges {
           node {
             image {
